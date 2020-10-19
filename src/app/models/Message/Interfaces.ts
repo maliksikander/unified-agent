@@ -1,4 +1,5 @@
 import { MessageType, participantType, participantRole } from './Enums';
+import { ITenant } from '../Tenant/Interfaces';
 
 export interface IMessage {
     id: string;
@@ -89,10 +90,6 @@ interface IUserCredentials {
 }
 
 interface IServiceIdentifier {
-
-}
-
-export interface ITenant {
 
 }
 
