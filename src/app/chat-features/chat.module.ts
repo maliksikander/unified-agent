@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 
 import { SharedModule } from '../shared/shared.module';
+import { ChatRoutingModule } from './chat-routing.module';
 
 import { ChatsComponent } from './chats/chats.component';
 import { InteractionsComponent } from './interactions/interactions.component';
 import { CustomerInfoComponent } from './customer-info/customer-info.component';
-
 
 
 @NgModule({
@@ -15,7 +15,8 @@ import { CustomerInfoComponent } from './customer-info/customer-info.component';
     CustomerInfoComponent
   ],
   imports: [
-    SharedModule
+    SharedModule,
+    ChatRoutingModule
   ],
 })
 export class ChatModule { }

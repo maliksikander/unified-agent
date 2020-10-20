@@ -7,6 +7,7 @@ import { NoRouteFoundComponent } from './no-route-found/no-route-found.component
 export const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
+    { path: 'customers', loadChildren: './chat-features/chat.module#ChatModule' },
     { path: '**', component: NoRouteFoundComponent }
 ];
 

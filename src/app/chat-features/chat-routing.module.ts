@@ -3,17 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { ChatsComponent } from './chats/chats.component';
 
-
 const appRoutes: Routes = [
-    {
-        path: 'customers',
-        children: [
-            { path: 'chats', component: ChatsComponent },
-            { path: '', redirectTo: '/customers/chats', pathMatch: 'full' },
-        ]
-    }
-];
 
+    { path: 'chats', component: ChatsComponent },
+    { path: '', redirectTo: '/customers/chats', pathMatch: 'full' },
+];
 
 @NgModule({
 
