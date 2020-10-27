@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/login.component';
 import { AppComponent } from './app.component';
 import { NoRouteFoundComponent } from './no-route-found/no-route-found.component';
+import {MatProgressSpinnerModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { NoRouteFoundComponent } from './no-route-found/no-route-found.component
     BrowserModule,
     AppRoutingModule,
     CommonModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   exports: [
