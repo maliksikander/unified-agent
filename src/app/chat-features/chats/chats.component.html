@@ -1,1 +1,50 @@
-<p>chats works!</p>
+<p>Chat component</p>
+<div class="ef_container main-tab-area-left">
+  <div id="content">
+    <div class="no-chat-active" *ngIf="conversations.length === 0">
+      <h3>No Chat Active</h3>
+    </div>
+    <div id="main-content">
+<!--      <button color="primary" class="left-bar-trigger" (click)="barExpand = !barExpand" ><mat-icon>{{barExpand ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}</mat-icon></button>-->
+      <mat-tab-group class="main-tab-group main-tab-group user-list-tab" >
+
+        <mat-tab class="main-left-tab-list" *ngFor="let conversation of conversations;">
+
+          <div class="row" >
+            <div class="chat-contacts left-bar-contacts">
+              <ng-template mat-tab-label >
+                                <span class="get-events">
+                                <div class="user-badge">
+<!--                                <circle-progress class="laft-bar-data"-->
+<!--                                                 [ngClass]="{'active-supervisor':conversation.userRole=='Whisper' || conversation.userRole=='BargeIn'}"-->
+<!--                                                 [percent]="100" [radius]="15" [outerStrokeWidth]="3" [innerStrokeWidth]="2"-->
+<!--                                                 [outerStrokeColor]="conversation.color"-->
+<!--                                                 [innerStrokeColor]="conversation.innerStrokeColor" [space]=-3-->
+<!--                                                 [animation]="conversation.animation" [animationDuration]="conversation.duration"-->
+<!--                                                 [title]="conversation.title | slice :0 :2 |uppercase" [titleFontSize]="10"-->
+<!--                                                 [showSubtitle]="false" [showUnits]="false" [renderOnClick]="false">-->
+<!--                                </circle-progress>-->
+                                  <!--<div class="{{conversation.confidenceLevel}} {{conversation.timerClass}} timercircle ">-->
+<!--                                <span class="badge1"-->
+<!--                                      [hidden]="conversation.unreadCount==0">{{conversation.unreadCount}}</span>-->
+                                  <span class="tabLabel">
+                                  {{conversation.title | slice :0 :2 |uppercase}}
+                                  </span>
+                                  <!--</div>-->
+                                </div>
+                                <span class="user-name">{{conversation.title}}</span>
+                                </span>
+              </ng-template>
+            </div>
+            <div class="chat-contents">
+              <div class="main-tab-content">
+                <app-interactions [conversation]="conversation"></app-interactions>
+              </div>
+            </div>
+          </div> <!-- row end -->
+
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>

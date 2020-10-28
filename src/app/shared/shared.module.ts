@@ -10,32 +10,32 @@ import {
   MatSidenavModule, MatSlideToggleModule, MatSnackBarModule, MatTableModule, MatTabsModule,
   MatToolbarModule, MatTooltipModule
 } from '@angular/material';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {CommonModule} from '@angular/common';
 
 
 @NgModule({
   declarations: [],
   imports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
-    BrowserAnimationsModule, MatCheckboxModule, MatButtonModule,
+    MatCheckboxModule, MatButtonModule,
     MatRadioModule, ReactiveFormsModule,
     MatListModule, MatSnackBarModule, MatTableModule, MatProgressSpinnerModule,
     MatProgressBarModule, MatCardModule, MatChipsModule, MatFormFieldModule,
     MatTabsModule, MatSelectModule, MatInputModule, MatTooltipModule,
     FormsModule, MatExpansionModule, MatMenuModule, MatSlideToggleModule,
     MatAutocompleteModule, MatDialogModule, MatTabsModule,
-    MatDatepickerModule, MatNativeDateModule,
+    MatDatepickerModule, MatNativeDateModule, CommonModule
   ], exports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
-    MatDrawer, BrowserAnimationsModule, MatCheckboxModule,
+    MatDrawer, MatCheckboxModule,
     MatButtonModule, MatRadioModule,
     ReactiveFormsModule, MatListModule, MatSnackBarModule,
     MatProgressSpinnerModule, MatTableModule, MatProgressBarModule,
     MatCardModule, MatChipsModule, MatFormFieldModule, MatInputModule,
     MatTabsModule, MatSelectModule, MatTooltipModule, FormsModule, MatExpansionModule,
     MatMenuModule, MatSlideToggleModule, MatAutocompleteModule, MatDialogModule, MatTabsModule,
-    MatDatepickerModule, MatNativeDateModule, DragDropModule
+    MatDatepickerModule, MatNativeDateModule, DragDropModule, CommonModule
   ]
 })
 export class SharedModule { }

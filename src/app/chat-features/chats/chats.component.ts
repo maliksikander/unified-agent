@@ -6,6 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chats.component.scss']
 })
 export class ChatsComponent implements OnInit {
+  conversations = [
+    {title: 'farhan'},
+    {title: 'raza'}
+  ];
 
   constructor() { }
 
