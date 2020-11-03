@@ -1,0 +1,171 @@
+<div class="profile-detail container-fluid">
+  <div class="row main-header">
+  <div class="main-logo col-md-4">
+    <img src="assets/images/d-logo.png">
+  </div>
+  <div class="col-md-8 right-profile-area">
+    <div class="info">
+<!--      <div (click)="openOutboundMsgDialog()" *ngIf="config._EnableOutboundSms" class="message-trigger-area">-->
+<!--        <button mat-button class="chat-message-trigger" >-->
+<!--          <span class="material-icons">textsms</span>-->
+<!--        </button>-->
+<!--      </div>-->
+
+<!--      <h3 class="supervisor-heading" *ngIf="supervisor">Supervisor</h3>-->
+      <div class="avatar {{agent.state | lowercase}}" id="avatar">
+<mat-icon>person</mat-icon>
+      </div>
+      <h3 class="agent_name">
+        <p [matTooltip]="agent.name">{{agent.name}}</p>
+        <span>
+                    (Ext: {{agent.extension}})
+                </span>
+      </h3>
+      <div class="agent-state-small">
+                <span class="agent-state-icon {{agent.state | lowercase}} material-icons">
+                    radio_button_checked
+                </span>
+        <!--<span class="agent-current-state">{{agent.state}}</span>-->
+        <span class="agent-current-state"
+              *ngIf="agent.state === 'READY'">Ready</span>
+
+      </div>
+
+      <div class="agent-state">
+        <span class="state">{{agent.state}}</span>
+        <!--<span *ngIf="agent.state=='NOT_READY'" class="timer_state">Not Ready</span>-->
+        <!--<span *ngIf="agent.state=='READY'" class="timer_state">Ready</span>-->
+        <!--<span *ngIf="agent.state=='BUSY'" class="timer_state">Busy</span>-->
+
+        <div class="agent-current-state">
+          <button mat-button [matMenuTriggerFor]="state" class="{{agent.state | lowercase}}"
+                  [ngClass]="agent.state==='READY' ? 'ready': agent.state =='INTERRUPTED' ? 'interrupted' : agent.state =='BUSY' ? 'busy':  'not-ready'">
+            <span *ngIf="agent.state === 'READY' ">{{ agent.state }}</span>
+
+            <i class="material-icons">
+              arrow_drop_down
+            </i>
+          </button>
+          <mat-menu class="matMenu" #state="matMenu" yPosition="below" panelClass="custom"
+                    [overlapTrigger]="false">
+            <button mat-menu-item class="state-trigger-main"
+                    [disabled]="agent.state==='ACTIVE' ||  agent.state==='PENDING_NOT_READY' || agent.state==='READY' || agent.state =='INTERRUPTED'  || agent.state =='BUSY' || !isConnected"
+                   >
+              <mat-icon style="color: limegreen;font-size: 20px" >radio_button_checked</mat-icon>
+<!--              <mat-icon style="color: grey;font-size: 20px" *ngIf="!isConnected">radio_button_checked</mat-icon>-->
+              <!--<mat-icon *ngIf="agent.state==='READY' || agent.state =='INTERRUPTED'  || agent.state =='BUSY' || !isConnected" style="color: grey;font-size: 20px">lens-->
+              <!--</mat-icon>-->
+
+              {{agent.state}}
+            </button>
+            <button mat-menu-item class="state-trigger-main" [disabled]="!isConnected"
+                    *ngIf="agent.state==='PENDING_NOT_READY'" >
+              <mat-icon style="color: limegreen;font-size: 20px" *ngIf="isConnected">radio_button_checked</mat-icon>
+              <mat-icon style="color: grey;font-size: 20px" *ngIf="!isConnected">radio_button_checked</mat-icon>
+              <!--<mat-icon *ngIf="agent.state==='READY' || agent.state =='INTERRUPTED'  || agent.state =='BUSY' || !isConnected" style="color: grey;font-size: 20px">lens-->
+              <!--</mat-icon>-->
+
+              Active
+            </button>
+            <button mat-menu-item class="state-trigger-main"
+                    [disabled]="agent.state==='NOT_READY' || agent.state =='INTERRUPTED' || agent.state =='PENDING_NOT_READY' || !isConnected"
+                    >
+
+              <!--<mat-icon *ngIf="agent.state==='NOT_READY' || agent.state =='INTERRUPTED'  || agent.state =='BUSY' || !isConnected" style="color:grey; font-size: 20px">lens-->
+              <!--</mat-icon>-->
+              <mat-icon style="color:orange; font-size: 20px" *ngIf="isConnected">radio_button_checked</mat-icon>
+              <mat-icon style="color: grey;font-size: 20px" *ngIf="!isConnected">radio_button_checked</mat-icon>
+
+              Not Ready
+            </button>
+          </mat-menu>
+        </div>
+
+        <span class="time_state">11:10</span>
+
+      </div>
+<!--      <div class="announcement-trigger-area">-->
+<!--        <span *ngIf="isUnreadAnnouncements" class="notification-hint">{{unreadAnnouncementCounter}}</span>-->
+<!--        <button mat-icon-button class="announcement-trigger" [ngClass]="{'announcement-tab-opened': sidenav.opened}" (click)="sidenav.toggle();onAnnouncements()"> <img src="assets/images/announcement.svg"></button>-->
+
+<!--      </div>-->
+      <div class="multi-language">
+        <button mat-button [matMenuTriggerFor]="languageSelection" class="language-trigger">
+          <img src="assets/flags/{{languageFlag}}" width="20" onError="this.src='assets/flags/generic.png';">
+          {{languageName}} <i class="material-icons">
+          arrow_drop_down
+        </i></button>
+
+        <mat-menu #languageSelection="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
+          <button mat-menu-item class="language-selection" (click)="lang(language.code)"
+                  *ngFor="let language of languages">
+            <img src="assets/flags/{{language.flag}}" width="20"
+                 onError="this.src='assets/flags/generic.png';">{{language.name}}
+          </button>
+
+        </mat-menu>
+
+        <mat-menu #agentState="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
+          <button mat-menu-item class="state-trigger">
+
+            <mat-icon
+              style="color: grey;font-size: 20px">radio_button_checked
+            </mat-icon>
+            {{ agent.state}}
+          </button>
+          <button mat-menu-item class="state-trigger">
+            <mat-icon  style="color:orange; font-size: 20px">
+              radio_button_checked
+            </mat-icon>
+            Not Ready
+          </button>
+        </mat-menu>
+      </div>
+
+
+      <div class="vert-dropdown">
+        <button mat-button [matMenuTriggerFor]="menu" class="vert-button">
+          <i class="material-icons">
+            more_vert
+          </i>
+        </button>
+        <mat-menu class="matMenu" #menu="matMenu" backdropClass="main-menu-list" [xPosition]="'before'">
+          <div class="menu-list-content">
+
+            <p class="menu-trigger-custom state-trigger">
+              <span class="inner-btn">{{agent.state}}</span>
+
+              <button mat-menu-item class="{{agent.state | lowercase}} mat-menu-item-submenu-trigger {{isConnected}}"
+                      [matMenuTriggerFor]="agentState">
+                                <span
+                                  *ngIf="agent.state==='NOT_READY'">{{ agent.state }}</span>
+                <span *ngIf="agent.state==='READY'">{{ agent.state }}</span>
+
+              </button>
+            </p>
+            <p class="menu-trigger-custom logged-time ">11:12
+              <span class="time_state"> 22:55</span>
+            </p>
+
+            <p class="menu-trigger-custom select-language">
+              <span class="inner-btn ">Language</span>
+
+              <button mat-menu-item [matMenuTriggerFor]="languageSelection" class="language-trigger">
+                <img src="assets/flags/{{languageFlag}}" width="20"
+                     onError="this.src='assets/flags/generic.png';">{{languageName}} </button>
+            </p>
+
+
+            <p class="menu-trigger-custom logged-out-trigger">
+              <button mat-menu-item >
+                Logout
+                <mat-icon style="color: gray;font-size: 20px;">exit_to_app</mat-icon>
+              </button>
+            </p>
+          </div>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>

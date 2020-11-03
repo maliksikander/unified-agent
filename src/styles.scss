@@ -1,7 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+$white-color: #fff;
+html, body {
+  height: 100%;
+}
+button{
+  outline: none !important;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 //Loading Area
 .loading-area {
@@ -9,8 +17,111 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   z-index: 9;
   width: 100%;
   height: 100%;
-  background: rgba(255,255,255,.5);
+  background: rgba(255, 255, 255, .5);
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+//main-tab-area
+
+mat-tab-group.chat-tab-area {
+  flex-direction: row;
+  //border: 5px solid #E2E2E2;
+
+  .mat-tab-header-pagination {
+    display: none !important;
+  }
+
+  .mat-tab-body-wrapper {
+    width: calc(100% - 60px);
+    border-left: 5px solid #E2E2E2;
+  }
+
+  .mat-tab-header {
+    width: 60px;
+    background: $white-color;
+    .mat-ink-bar{
+      display: none !important;
+    }
+    .mat-tab-labels {
+      display: block;
+
+      .mat-tab-label {
+        padding: 0;
+        width: 50px;
+        display: block !important;
+        min-width: inherit;
+        margin: 5px auto;
+        background: transparent;
+        box-shadow: inset 1.5px 0 0 #F3F6F8, inset 0 1.5px 0 #F3F6F8, inset 0 -1.5px 0 #F3F6F8, inset -1.5px 0 0 #F3F6F8;
+        height: 50px;
+        text-align: center;
+        opacity: 1;
+        border-radius: 5px;
+
+        &.mat-tab-label-active{
+          background: #C4E9F6 !important;
+          box-shadow: inset 1.5px 0 0 #3FABF3, inset 0 1.5px 0 #3FABF3, inset 0 -1.5px 0 #3FABF3, inset -1.5px 0 0 #3FABF3;
+
+          svg circle:nth-child(3) {
+            fill: white;
+          }
+        }
+
+        .get-events{
+          width: 100%;
+          display: inline-block;
+          position: absolute;
+          left: 0;
+          top: 0;
+
+          svg {
+            height: 50px !important;
+            width: 50px !important;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+
+
+// Right Tabs
+.mat-drawer-container.mat-sidenav-container.mat-drawer-container-has-open {
+  width: 280px;
+  display: inherit;
+  transition: all .5s;
+  transform: none !important;
+  min-width: 280px;
+  border-left: 5px solid #e2e2e2;
+}
+.mat-drawer-container.mat-sidenav-container {
+  width: 0;
+  transition: all .5s;
+  min-width: 0;
+}
+.mat-drawer-inner-container{
+  overflow: hidden !important;
+}
+
+mat-sidenav.mat-drawer.mat-sidenav {
+  width: 100%;
+  transform: none !important;
+  transition: all .5s;
+  visibility: visible !important;
+}
+
+//Logout menu Style
+.mat-menu-content {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+.logged-out-trigger{
+  margin: 0;
+}
+.mat-menu-panel{
+  min-height: 30px !important;
 }

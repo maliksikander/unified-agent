@@ -1,0 +1,49 @@
+.ef_container{
+  height: calc(100% - 45px);
+  position: absolute;
+  top: 45px;
+}
+#content{
+  margin: -1px 0;
+  display: flex;
+  flex-direction: row;
+  border: 5px solid #e2e2e2;
+  height: calc(100% + 1px) !important;
+}
+div#main-content {
+  display: inline-block;
+  width: calc(100% - 55px);
+  float: left;
+}
+
+.right-info-bar {
+  height: 100%;
+  right: 0;
+  width: 55px;
+  border-left: 2px solid #add0ff;
+  min-width: 55px;
+
+
+  //display: inline-block;
+  //width: 100px;
+  //position: relative;
+  //height: 100%;
+  //border: 5px solid #ccc;
+  //border-left-width: 0;
+
+ button {
+
+   position: relative;
+   z-index: 999;
+   padding: 0;
+   min-width: 20px;
+   width: 100%;
+   border-radius: 0;
+    //position: absolute;
+    //right: 0;
+    //width: 50px;
+    //min-width: inherit;
+    //z-index: 99;
+    //overflow: hidden;
+  }
+}

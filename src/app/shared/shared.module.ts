@@ -25,7 +25,7 @@ import {CommonModule} from '@angular/common';
     MatTabsModule, MatSelectModule, MatInputModule, MatTooltipModule,
     FormsModule, MatExpansionModule, MatMenuModule, MatSlideToggleModule,
     MatAutocompleteModule, MatDialogModule, MatTabsModule,
-    MatDatepickerModule, MatNativeDateModule, CommonModule
+    MatDatepickerModule, MatNativeDateModule, CommonModule, MatIconModule
   ], exports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
     MatDrawer, MatCheckboxModule,
