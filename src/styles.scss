@@ -1,14 +1,50 @@
 /* You can add global styles to this file, and also import other style files */
-$white-color: #fff;
-html, body {
-  height: 100%;
+@import "src/app/globalVariables";
+@import '~material-design-icons/iconfont/material-icons.css';
+
+@font-face {
+  font-family: 'Roboto';
+  src: local('Roboto Light'), local('Roboto-light'),
+  url('/assets/fonts/roboto/Roboto-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+
 }
+
+@font-face {
+  font-family: 'Roboto';
+  src: local('Roboto Regular'), local('Roboto-Regular'),
+  url('/assets/fonts/roboto/Roboto-Regular.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: local('Roboto Medium'), local('Roboto-Medium'),
+  url('/assets/fonts/roboto/Roboto-Medium.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: local('Roboto Bold'), local('Roboto-Bold'),
+  url('/assets/fonts/roboto/Roboto-Bold.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+}
+html,body{
+  height: 100%;
+  font-family: "Roboto", Arial, sans-serif !important;
+  background: transparent !important;
+  font-weight: normal;
+}
+$white-color: #fff;
+
 button{
   outline: none !important;
-}
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 //Loading Area
@@ -93,24 +129,26 @@ mat-tab-group.chat-tab-area {
 .mat-drawer-container.mat-sidenav-container.mat-drawer-container-has-open {
   width: 280px;
   display: inherit;
-  transition: all .5s;
+  transition: all .3s;
   transform: none !important;
   min-width: 280px;
   border-left: 5px solid #e2e2e2;
 }
 .mat-drawer-container.mat-sidenav-container {
   width: 0;
-  transition: all .5s;
+  transition: all .3s;
   min-width: 0;
+  margin-right: 56px;
+  height: 100%;
 }
 .mat-drawer-inner-container{
-  overflow: hidden !important;
+  overflow: auto !important;
 }
 
 mat-sidenav.mat-drawer.mat-sidenav {
   width: 100%;
   transform: none !important;
-  transition: all .5s;
+  transition: all .3s;
   visibility: visible !important;
 }
 
@@ -124,4 +162,33 @@ mat-sidenav.mat-drawer.mat-sidenav {
 }
 .mat-menu-panel{
   min-height: 30px !important;
+}
+
+//right-bar
+.right-drag-content {
+  .mat-expansion-panel-body {
+    padding: 0;
+    border-top-width: 0 !important;
+    border: 1px solid $header-gray-color;
+  }
+}
+
+//Channels Icon
+.channel-icon{
+  &.web, &.web-channel{
+   background: $web-color !important;
+
+  }
+  &.facebook, &.facebook-channel{
+    background: $facebook-color !important;
+  }
+  &.sms{
+    background: $sms-color !important;
+  }
+  &.whatsapp, &.whatsapp-channel{
+    background: $whatsapp-color !important;
+  }
+  &.viber{
+    background: $viber-color !important;
+  }
 }

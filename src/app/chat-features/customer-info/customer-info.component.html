@@ -1,1 +1,352 @@
-<p>customer-info works!</p>
+<!--Right Sidebar trigger area-->
+
+<div class="right-info-bar">
+  <button mat-raised-button (click)="sidenav.toggle()">
+    <mat-icon>people</mat-icon>
+  </button>
+</div>
+
+
+<!--Right sidebar-->
+<mat-sidenav-container
+  class="right-side-bar-main" (backdropClick)="close()">
+  <mat-sidenav #sidenav (keydown.escape)="close()" disableClose position="end">
+    <div class="bar-content">
+
+      <mat-accordion class="right-drag-accordion" cdkDropList (cdkDropListDropped)="drop($event)">
+        <div class="right-drag-content" *ngFor="let acc of customArray">
+
+          <mat-expansion-panel class="drag-expansion-panel" *ngIf="acc == 'media_channel'" cdkDrag>
+            <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
+              <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Media Channels
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <ul class="channel-list">
+              <li>
+                <img src="assets/images/landline-phone-colored.svg"/>
+                <p>
+                  <strong>+4466985845</strong>
+                  <small>Landline Business</small>
+                </p>
+              </li>
+              <li>
+                <img src="assets/images/phone-colored.svg"/>
+                <p>
+                  <strong>+446698988</strong>
+                  <small>Mobile Personal</small>
+                  <span class="channel-list-action">
+                                        <button mat-icon-button><mat-icon>call</mat-icon></button>
+                                        <button mat-icon-button><mat-icon>message</mat-icon></button>
+                                        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+                               </span>
+                </p>
+              </li>
+              <li>
+                <img src="assets/images/whatsapp-colored.svg"/>
+                <p>
+                  <strong>+446698985</strong>
+                  <small>Whatsapp Personal</small>
+                  <span class="channel-list-action">
+                                        <button mat-icon-button><mat-icon>call</mat-icon></button>
+                                        <button mat-icon-button><mat-icon>message</mat-icon></button>
+                    <!--                                        <button mat-icon-button><mat-icon>mail</mat-icon></button>-->
+                                        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+                               </span>
+                </p>
+              </li>
+              <li>
+                <img src="assets/images/envelope-colored.svg"/>
+                <p>
+                  <strong>a.stanler@skytechinc.com</strong>
+                  <small>Email Business</small>
+                  <span class="channel-list-action">
+                                        <button mat-icon-button><mat-icon>mail</mat-icon></button>
+                                        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+                               </span>
+                </p>
+              </li>
+              <li>
+                <img src="assets/images/facebook-colored.svg"/>
+                <p>
+                  <strong>Skytech Inc.</strong>
+                  <small>Facebook Business</small>
+                  <span class="channel-list-action">
+                                        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+                               </span>
+                </p>
+              </li>
+              <li>
+                <img src="assets/images/skype-colored.svg"/>
+                <p>
+                  <strong>adam.reedsuk</strong>
+                  <small>Landline Residence</small>
+                  <span class="channel-list-action">
+                                        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+                               </span>
+                </p>
+              </li>
+              <li>
+                <img src="assets/images/safari-colored.svg"/>
+                <p>
+                  <strong>Desktop Browser 1</strong>
+                  <small>Landline Residence</small>
+                  <span class="channel-list-action">
+                                        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+                               </span>
+                </p>
+              </li>
+              <li>
+                <img src="assets/images/chrome-colored.svg"/>
+                <p>
+                  <strong>Desktop Browser 2</strong>
+                  <small>Landline Residence</small>
+                  <span class="channel-list-action">
+                                        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+                               </span>
+                </p>
+              </li>
+
+            </ul>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel class="drag-expansion-panel" *ngIf="acc == 'customer_profile'" cdkDrag>
+            <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
+              <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Customer Profile
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="profile-area">
+              <h3>{{customer.info.name | slice :0 :2 |uppercase}}</h3>
+              <h5 class="user-name">{{customer.info.name}}
+                <p class="user-from">London, United Kingdom</p>
+              </h5>
+            </div>
+
+            <div class="user-pre-detail">
+              <div class="user-detail-area">
+                <label>Email</label>
+                <p class="label-detail">{{customer.info?.email}}</p>
+
+              </div>
+              <div class="user-detail-area">
+                <label>Phone</label>
+                <p class="label-detail">{{customer?.info.phone}}</p>
+              </div>
+              <div class="user-detail-area">
+                <label>Language</label>
+                <p class="label-detail">
+                  {{customer?.lang == "" ? customer?.info.language : customer?.lang }}</p>
+
+              </div>
+              <div class="user-detail-area">
+                <label>Channel</label>
+                <p class="label-detail">{{customer?.info.channel}}</p>
+              </div>
+              <div class="crm-trigger">
+                <p>Not a correct customer profile?</p>
+                <button mat-raised-button>Re-link Customer Profile</button>
+                <button *ngIf="false" mat-raised-button>link CRM</button>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel class="drag-expansion-panel" *ngIf="acc == 'link_profile'" cdkDrag>
+            <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
+              <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Link Profile
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="linked-area">
+              <h5>{{options.length}} profiles matches this customer data.</h5>
+              <ul class="match-content">
+                <li *ngFor="let option of options">
+                  {{option}}
+                  <button mat-icon-button class="waves-effect">
+                    <mat-icon>insert_link</mat-icon>
+                  </button>
+                </li>
+              </ul>
+
+              <div class="linked-action">
+                <strong>You may link customer to appropriate profile or create a new customer</strong>
+
+                <button mat-raised-button>View all contacts</button>
+                <button mat-raised-button>Create New Customer</button>
+
+              </div>
+            </div>
+
+          </mat-expansion-panel>
+
+          <mat-expansion-panel class="drag-expansion-panel" *ngIf="acc == 'active_sessions'" cdkDrag>
+            <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
+              <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Active Channels
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="profile-area multi-channel-area">
+              <mat-accordion>
+
+                <!--Web chat channel accordion-->
+                <mat-expansion-panel class="chat-channel-area">
+                  <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'"
+                                              style="border-radius: 0;border-bottom: 0;">
+                    <div class="channel-icon-area">
+                      <span class="channel-icon web"><img src="/assets/images/web.svg"></span>
+                      <label>Web Chat</label>
+                    </div>
+                  </mat-expansion-panel-header>
+                  <div class="channel-inner-content">
+                    <!--Web chat desktop channel accordion-->
+                    <mat-expansion-panel>
+                      <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
+                        <div class="channel-icon-area web-channel-inner">
+                          <label>Desktop Chat</label>
+                        </div>
+                      </mat-expansion-panel-header>
+
+                      <ul class="requested-channel-content">
+                        <li>
+                          <label>Name</label>
+                          Adam Stanler
+                        </li>
+                        <li>
+                          <label>Email</label>
+                          astanler@gmail.com
+                        </li>
+                        <li>
+                          <label>Phone Number</label>
+                          +44 85878478
+                        </li>
+                        <li>
+                          <label>Browser</label>
+                          Google Chrome
+                        </li>
+                        <li>
+                          <label>IP Address</label>
+                          41.78.244.244
+                        </li>
+                      </ul>
+                    </mat-expansion-panel>
+
+                    <!--Web chat desktop channel accordion-->
+                    <mat-expansion-panel>
+                      <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
+                        <div class="channel-icon-area web-channel-inner">
+                          <label>Mobile Chat</label>
+                        </div>
+                      </mat-expansion-panel-header>
+
+                      <ul class="requested-channel-content">
+                        <li>
+                          <label>Name</label>
+                          Adam Stanler
+                        </li>
+                        <li>
+                          <label>Email</label>
+                          astanler@gmail.com
+                        </li>
+                        <li>
+                          <label>Phone Number</label>
+                          +44 85878478
+                        </li>
+                        <li>
+                          <label>Mobile Type</label>
+                          Android
+                        </li>
+                        <li>
+                          <label>Browser</label>
+                          Google Chrome
+                        </li>
+                        <li>
+                          <label>IP Address</label>
+                          41.78.244.244
+                        </li>
+                      </ul>
+                    </mat-expansion-panel>
+                  </div>
+
+                </mat-expansion-panel>
+
+                <!--Facebook channel accordion-->
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
+                    <div class="channel-icon-area">
+                      <span class="channel-icon facebook"><img src="/assets/images/facebook.svg"></span>
+                      <label>Facebook Chat</label>
+                    </div>
+                  </mat-expansion-panel-header>
+
+                  <ul class="requested-channel-content">
+                    <li>
+                      <label>Name</label>
+                      Adam Stanler
+                    </li>
+                    <li>
+                      <label>Email</label>
+                      astanler@gmail.com
+                    </li>
+                    <li>
+                      <label>Phone Number</label>
+                      +44 85878478
+                    </li>
+                    <li>
+                      <label>Browser</label>
+                      Google Chrome
+                    </li>
+                    <li>
+                      <label>IP Address</label>
+                      41.78.244.244
+                    </li>
+                  </ul>
+                </mat-expansion-panel>
+
+                <!--Facebook channel accordion-->
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
+                    <div class="channel-icon-area">
+                      <span class="channel-icon whatsapp"><img src="/assets/images/whatsapp.svg"></span>
+                      <label>whatsapp Chat</label>
+                    </div>
+                  </mat-expansion-panel-header>
+
+                  <ul class="requested-channel-content">
+                    <li>
+                      <label>Name</label>
+                      Adam Stanler
+                    </li>
+                    <li>
+                      <label>Email</label>
+                      astanler@gmail.com
+                    </li>
+                    <li>
+                      <label>Phone Number</label>
+                      +44 85878478
+                    </li>
+                    <li>
+                      <label>Browser</label>
+                      Google Chrome
+                    </li>
+                    <li>
+                      <label>IP Address</label>
+                      41.78.244.244
+                    </li>
+                  </ul>
+                </mat-expansion-panel>
+
+              </mat-accordion>
+            </div>
+
+          </mat-expansion-panel>
+
+        </div>
+      </mat-accordion>
+    </div>
+
+
+  </mat-sidenav>
+
+  <!--  <mat-sidenav-content>-->
+  <!--    <p>hi </p>-->
+  <!--  </mat-sidenav-content>-->
+</mat-sidenav-container>

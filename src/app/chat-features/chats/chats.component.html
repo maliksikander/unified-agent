@@ -39,22 +39,6 @@
         </mat-tab>
       </mat-tab-group>
     </div>
-
-    <mat-sidenav-container
-      class="example-container" (backdropClick)="close()">
-      <mat-sidenav #sidenav (keydown.escape)="close()" disableClose position="end">
-        Right bar content
-      </mat-sidenav>
-
-      <mat-sidenav-content>
-        <p>hi </p>
-      </mat-sidenav-content>
-    </mat-sidenav-container>
-
-    <div class="right-info-bar">
-      <button mat-raised-button (click)="sidenav.toggle()">
-        <mat-icon>people_alt</mat-icon>
-      </button>
-    </div>
+<app-customer-info></app-customer-info>
   </div>
 </div>

@@ -171,18 +171,34 @@
   &.false{
     border: 1px solid #999 !important;
     color: #999 !important;
+
+    mat-icon{
+      color: #999 !important;
+    }
   }
   &.ready {
     border: 1px solid #25CB8D;
+    mat-icon{
+      color: #25CB8D !important;
+    }
   }
   &.active {
     @extend .ready;
+    mat-icon{
+      color: #25CB8D !important;
+    }
   }
   &.not_ready {
     border: 1px solid #fdb635;
+    mat-icon{
+      color: #fdb635 !important;
+    }
   }
   &.pending_not_ready {
-    @extend .not_ready
+    @extend .not_ready;
+    mat-icon{
+    color: #fdb635 !important;
+  }
   }
 
   &.interrupted {
@@ -283,9 +299,8 @@
   font-weight: 100;
 }
 
-.main-logo{
-  display: inline-block;
-  padding-right: 8px;
+.main-logo {
+  align-self: center;
 }
 .supervisor-trigger{
   display: inline-block;

@@ -8,7 +8,6 @@ import {FocusOrigin} from '@angular/cdk/a11y';
   styleUrls: ['./chats.component.scss']
 })
 export class ChatsComponent implements OnInit {
-  @ViewChild('sidenav',  {static: true}) sidenav: MatSidenav;
 
   conversations = [
     {title: 'farhan'},
@@ -20,9 +19,6 @@ export class ChatsComponent implements OnInit {
 
   ngOnInit() {
   }
-  close() {
-    // this.reason = reason;
-    this.sidenav.close();
-  }
+
 
 }
