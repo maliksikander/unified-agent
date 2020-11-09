@@ -1,14 +1,14 @@
 <div class="container-fluid main-chat-bar">
   <div class="row">
-    <div class="col-md-4 customer-showcase">
-      <h3 matTooltip="{{customer.info.name}}" matTooltipPosition="right" class="customer-highlight">
-        {{customer.info.name | slice :0 :2 |uppercase}}
+    <div class="col-md-4 customer-showcase" >
+      <h3  matTooltipPosition="right" class="customer-highlight">
+        {{convers[0].title | slice :0 :2 |uppercase}}
 
         <span class="channel-icon {{customer.info.channel}}">
                 <img *ngIf="channelUrl" src="{{channelUrl}}">
               </span>
       </h3>
-      <h5 class="customer-name" [matTooltip]="customer.info.name">{{customer.info.name | slice :0 :50}}
+      <h5 class="customer-name" [matTooltip]="convers.title">{{convers[0].title | slice :0 :50}}
         <span class="chat-timer">( 11:32 )</span>
 
       </h5>
@@ -60,16 +60,503 @@
 <div  id="chat-content" class="container-fluid main-chat-area">
   <div class="row">
   <div class="chat-messages-main">
-      <div class="line-info"><span>Nov 6, 2020 </span></div>
-      <div class="chat-message user-message" >
+
+    <div class="instruction-main">
+      <div class="instruction-inner">
+        <!--                <div class="int-date">-->
+        <!--                    <span>Fri<b>08</b></span>-->
+        <!--                </div>-->
+        <mat-accordion>
+
+          <div class="instruction-content">
+            <div class="int-date">
+              <span>Fri<b>08</b></span>
+            </div>
+            <div class="panel-divider">
+              <div class="line-info">
+                <!--                    <p>11:12 AM </p>-->
+              </div>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
+                  <mat-panel-title>
+                    <div class="panel-header">
+                      <ul>
+                        <li>
+                          <time>11:45 AM</time>
+                        </li>
+                        <li class="agent-pic">
+                          <span><img src="/assets/images/ag1.png"> </span>
+                          <span><img src="/assets/images/cs1.png"> </span>
+                          <span><img src="/assets/images/bot1.png"> </span>
+                        </li>
+                        <li class="social-logo">
+                          <span><img src="/assets/images/web.svg"> </span>
+                          <span><img src="/assets/images/facebook.svg"> </span>
+                        </li>
+                        <li class="section-duration">
+                          <time>02min 20sec</time>
+                        </li>
+                        <li class="section-tags">
+                          <span>Tag A</span>
+                          <span>Tag B</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+
+                some detail text
+
+              </mat-expansion-panel>
+            </div>
+
+            <div class="panel-divider">
+              <div class="line-info">
+                <!--                    <p>11:12 AM </p>-->
+              </div>
+              <mat-expansion-panel>
+                <!--Call View-->
+
+                <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
+                  <mat-panel-title>
+                    <div class="panel-header">
+                      <ul>
+                        <li>
+                          <time>11:45 AM</time>
+                        </li>
+                        <li class="agent-pic">
+                          <span><img src="/assets/images/ag1.png"> </span>
+                        </li>
+                        <li class="agent-pic call-notify">
+                          <span><img src="/assets/images/incoming-call.svg"> </span>
+                        </li>
+                        <li class="agent-pic">
+                          <span><img src="/assets/images/cs1.png"> </span>
+                        </li>
+                        <li class="section-duration">
+                          <time>02min 20sec</time>
+                        </li>
+                        <li class="section-tags">
+                          <span>Tag A</span>
+                          <span>Tag B</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <!--Call View-->
+
+                <div class="panel-header call-history-panel inner-detail">
+                  <div class="history-time">
+                    <time>11:45 AM</time>
+                  </div>
+                  <div class="history-detail inner-detail-history">
+                    <mat-expansion-panel>
+
+                      <mat-expansion-panel-header [collapsedHeight]="'40px'"
+                                                  [expandedHeight]="'40px'">
+                        <mat-panel-title>
+                          <div class="panel-header">
+                            <ul>
+                              <li><span class="phone-number">12345678</span></li>
+                              <li class="agent-pic call-notify">
+                                <span><img src="/assets/images/incoming-call.svg"> </span>
+                              </li>
+                              <li class="agent-pic call-services">
+                                <p><span><img src="/assets/images/cs1.png"></span> Customer
+                                  Services</p>
+                              </li>
+                              <li class="section-duration">
+                                <time>02min 20sec</time>
+                              </li>
+                              <li class="agent-pic call-notify">
+                                <span><img src="/assets/images/call-transfer.svg"> </span>
+                              </li>
+                              <li class="section-tags">
+                                <span>Tag A</span>
+                                <span>Tag B</span>
+                              </li>
+                              <li class="agent-pic">
+                                <span><img src="/assets/images/call-record.svg"> </span>
+                              </li>
+                            </ul>
+                          </div>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+
+                      <div class="summary-detail">
+                        <ul>
+                          <li><label>Agent ID </label>:<span>Name</span></li>
+                          <li><label>CSQ </label>:<span>CSQ</span></li>
+                          <li><label>Call Duration</label>:<span>02 mins</span></li>
+                          <li><label>Form UR</label>:<span>not Submitted</span></li>
+
+                          <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>
+                          <li><label>Time</label>:<span>14min 50sec</span></li>
+                          <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>
+                          <li><label>Recording URL</label>:<span>https://rec_url</span></li>
+                        </ul>
+                      </div>
+                    </mat-expansion-panel>
+
+                    <!--<ul>-->
+                    <!--<li class="agent-pic">-->
+                    <!--<span><img src="/assets/images/incoming-call.svg"> </span>-->
+                    <!--</li>-->
+                    <!--<li class="agent-pic call-services">-->
+                    <!--<p><span><img src="/assets/images/ag1.png"></span>Tech Support</p>-->
+                    <!--</li>-->
+                    <!--<li class="section-duration">-->
+                    <!--<time>02min 20sec</time>-->
+                    <!--</li>-->
+                    <!--<li class="agent-pic">-->
+                    <!--<span><img src="/assets/images/call-end.svg"> </span>-->
+                    <!--</li>-->
+                    <!--<li class="section-tags">-->
+                    <!--<span>Tag A</span>-->
+                    <!--<span>Tag B</span>-->
+                    <!--</li>-->
+                    <!--<li class="agent-pic">-->
+                    <!--<span><img src="/assets/images/call-record.svg"> </span>-->
+                    <!--</li>-->
+                    <!--</ul>-->
+                  </div>
+                </div>
+                <div class="panel-header call-history-panel inner-detail">
+                  <div class="history-time">
+                    <time>11:45 AM</time>
+                  </div>
+                  <div class="history-detail inner-detail-history">
+                    <mat-expansion-panel>
+
+                      <mat-expansion-panel-header [collapsedHeight]="'40px'"
+                                                  [expandedHeight]="'40px'">
+                        <mat-panel-title>
+                          <div class="panel-header">
+                            <ul>
+                              <li class="agent-pic call-notify">
+                                <span><img src="/assets/images/incoming-call.svg"> </span>
+                              </li>
+                              <li class="agent-pic call-services">
+                                <p><span><img src="/assets/images/ag1.png"></span>Tech
+                                  Support</p>
+                              </li>
+                              <li class="section-duration">
+                                <time>02min 20sec</time>
+                              </li>
+                              <li class="agent-pic call-notify">
+                                <span><img src="/assets/images/call-end.svg"> </span>
+                              </li>
+                              <li class="section-tags">
+                                <span>Tag A</span>
+                                <span>Tag B</span>
+                              </li>
+                              <li class="agent-pic">
+                                <span><img src="/assets/images/call-record.svg"> </span>
+                              </li>
+                            </ul>
+                          </div>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <div class="summary-detail">
+                        <ul>
+                          <li><label>Agent ID </label>:<span>Name</span></li>
+                          <li><label>CSQ </label>:<span>CSQ</span></li>
+                          <li><label>Call Duration</label>:<span>02 mins</span></li>
+                          <li><label>Form UR</label>:<span>not Submitted</span></li>
+
+                          <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>
+                          <li><label>Time</label>:<span>14min 50sec</span></li>
+                          <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>
+                          <li><label>Recording URL</label>:<span>https://rec_url</span></li>
+
+                        </ul>
+                      </div>
+                    </mat-expansion-panel>
+
+                    <!--<ul>-->
+                    <!--<li class="agent-pic">-->
+                    <!--<span><img src="/assets/images/incoming-call.svg"> </span>-->
+                    <!--</li>-->
+                    <!--<li class="agent-pic call-services">-->
+                    <!--<p><span><img src="/assets/images/ag1.png"></span>Tech Support</p>-->
+                    <!--</li>-->
+                    <!--<li class="section-duration">-->
+                    <!--<time>02min 20sec</time>-->
+                    <!--</li>-->
+                    <!--<li class="agent-pic">-->
+                    <!--<span><img src="/assets/images/call-end.svg"> </span>-->
+                    <!--</li>-->
+                    <!--<li class="section-tags">-->
+                    <!--<span>Tag A</span>-->
+                    <!--<span>Tag B</span>-->
+                    <!--</li>-->
+                    <!--<li class="agent-pic">-->
+                    <!--<span><img src="/assets/images/call-record.svg"> </span>-->
+                    <!--</li>-->
+                    <!--</ul>-->
+                  </div>
+                </div>
+
+              </mat-expansion-panel>
+            </div>
+          </div>
+
+          <div class="instruction-content">
+            <div class="int-date">
+              <span>Sun<b>10</b></span>
+            </div>
+            <div class="panel-divider">
+              <div class="line-info">
+                <!--                    <p>11:12 AM </p>-->
+              </div>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
+                  <mat-panel-title>
+                    <div class="panel-header">
+                      <ul>
+                        <li>
+                          <time>11:45 AM</time>
+                        </li>
+                        <li class="agent-pic">
+                          <span><img src="/assets/images/ag1.png"> </span>
+                          <span><img src="/assets/images/cs1.png"> </span>
+                          <span><img src="/assets/images/bot1.png"> </span>
+                        </li>
+                        <li class="social-logo">
+                          <span><img src="/assets/images/web.svg"> </span>
+                          <span><img src="/assets/images/facebook.svg"> </span>
+                        </li>
+                        <li class="section-duration">
+                          <time>02min 20sec</time>
+                        </li>
+                        <li class="section-tags">
+                          <span>Tag A</span>
+                          <span>Tag B</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+
+                some detail text
+
+              </mat-expansion-panel>
+            </div>
+
+            <div class="panel-divider">
+              <div class="line-info">
+                <!--                    <p>11:12 AM </p>-->
+              </div>
+              <mat-expansion-panel>
+                <!--Call View-->
+
+                <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
+                  <mat-panel-title>
+                    <div class="panel-header">
+                      <ul>
+                        <li>
+                          <time>11:45 AM</time>
+                        </li>
+                        <li class="agent-pic">
+                          <span><img src="/assets/images/ag1.png"> </span>
+                        </li>
+                        <li class="agent-pic call-notify">
+                          <span><img src="/assets/images/incoming-call.svg"> </span>
+                        </li>
+                        <li class="agent-pic">
+                          <span><img src="/assets/images/cs1.png"> </span>
+                        </li>
+                        <li class="section-duration">
+                          <time>02min 20sec</time>
+                        </li>
+                        <li class="section-tags">
+                          <span>Tag A</span>
+                          <span>Tag B</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <!--Call View-->
+
+                <div class="panel-header call-history-panel inner-detail">
+                  <div class="history-time">
+                    <time>11:45 AM</time>
+                  </div>
+                  <div class="history-detail inner-detail-history">
+                    <mat-expansion-panel>
+
+                      <mat-expansion-panel-header [collapsedHeight]="'40px'"
+                                                  [expandedHeight]="'40px'">
+                        <mat-panel-title>
+                          <div class="panel-header">
+                            <ul>
+                              <li><span class="phone-number">12345678</span></li>
+                              <li class="agent-pic call-notify">
+                                <span><img src="/assets/images/incoming-call.svg"> </span>
+                              </li>
+                              <li class="agent-pic call-services">
+                                <p><span><img src="/assets/images/cs1.png"></span> Customer
+                                  Services</p>
+                              </li>
+                              <li class="section-duration">
+                                <time>02min 20sec</time>
+                              </li>
+                              <li class="agent-pic call-notify">
+                                <span><img src="/assets/images/call-transfer.svg"> </span>
+                              </li>
+                              <li class="section-tags">
+                                <span>Tag A</span>
+                                <span>Tag B</span>
+                              </li>
+                              <li class="agent-pic">
+                                <span><img src="/assets/images/call-record.svg"> </span>
+                              </li>
+                            </ul>
+                          </div>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+
+                      <div class="summary-detail">
+                        <ul>
+                          <li><label>Agent ID </label>:<span>Name</span></li>
+                          <li><label>CSQ </label>:<span>CSQ</span></li>
+                          <li><label>Call Duration</label>:<span>02 mins</span></li>
+                          <li><label>Form UR</label>:<span>not Submitted</span></li>
+
+                          <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>
+                          <li><label>Time</label>:<span>14min 50sec</span></li>
+                          <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>
+                          <li><label>Recording URL</label>:<span>https://rec_url</span></li>
+
+                        </ul>
+                      </div>
+                    </mat-expansion-panel>
+
+                    <!--<ul>-->
+                    <!--<li class="agent-pic">-->
+                    <!--<span><img src="/assets/images/incoming-call.svg"> </span>-->
+                    <!--</li>-->
+                    <!--<li class="agent-pic call-services">-->
+                    <!--<p><span><img src="/assets/images/ag1.png"></span>Tech Support</p>-->
+                    <!--</li>-->
+                    <!--<li class="section-duration">-->
+                    <!--<time>02min 20sec</time>-->
+                    <!--</li>-->
+                    <!--<li class="agent-pic">-->
+                    <!--<span><img src="/assets/images/call-end.svg"> </span>-->
+                    <!--</li>-->
+                    <!--<li class="section-tags">-->
+                    <!--<span>Tag A</span>-->
+                    <!--<span>Tag B</span>-->
+                    <!--</li>-->
+                    <!--<li class="agent-pic">-->
+                    <!--<span><img src="/assets/images/call-record.svg"> </span>-->
+                    <!--</li>-->
+                    <!--</ul>-->
+                  </div>
+                </div>
+                <div class="panel-header call-history-panel inner-detail">
+                  <div class="history-time">
+                    <time>11:45 AM</time>
+                  </div>
+                  <div class="history-detail inner-detail-history">
+                    <mat-expansion-panel>
+
+                      <mat-expansion-panel-header [collapsedHeight]="'40px'"
+                                                  [expandedHeight]="'40px'">
+                        <mat-panel-title>
+                          <div class="panel-header">
+                            <ul>
+                              <li class="agent-pic call-notify">
+                                <span><img src="/assets/images/incoming-call.svg"> </span>
+                              </li>
+                              <li class="agent-pic call-services">
+                                <p><span><img src="/assets/images/ag1.png"></span>Tech
+                                  Support</p>
+                              </li>
+                              <li class="section-duration">
+                                <time>02min 20sec</time>
+                              </li>
+                              <li class="agent-pic call-notify">
+                                <span><img src="/assets/images/call-end.svg"> </span>
+                              </li>
+                              <li class="section-tags">
+                                <span>Tag A</span>
+                                <span>Tag B</span>
+                              </li>
+                              <li class="agent-pic">
+                                <span><img src="/assets/images/call-record.svg"> </span>
+                              </li>
+                            </ul>
+                          </div>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <div class="summary-detail">
+                        <ul>
+                          <li><label>Agent ID </label>:<span>Name</span></li>
+                          <li><label>CSQ </label>:<span>CSQ</span></li>
+                          <li><label>Call Duration</label>:<span>02 mins</span></li>
+                          <li><label>Form UR</label>:<span>not Submitted</span></li>
+
+                          <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>
+                          <li><label>Time</label>:<span>14min 50sec</span></li>
+                          <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>
+                          <li><label>Recording URL</label>:<span>https://rec_url</span></li>
+
+                        </ul>
+                      </div>
+                    </mat-expansion-panel>
+
+                    <!--<ul>-->
+                    <!--<li class="agent-pic">-->
+                    <!--<span><img src="/assets/images/incoming-call.svg"> </span>-->
+                    <!--</li>-->
+                    <!--<li class="agent-pic call-services">-->
+                    <!--<p><span><img src="/assets/images/ag1.png"></span>Tech Support</p>-->
+                    <!--</li>-->
+                    <!--<li class="section-duration">-->
+                    <!--<time>02min 20sec</time>-->
+                    <!--</li>-->
+                    <!--<li class="agent-pic">-->
+                    <!--<span><img src="/assets/images/call-end.svg"> </span>-->
+                    <!--</li>-->
+                    <!--<li class="section-tags">-->
+                    <!--<span>Tag A</span>-->
+                    <!--<span>Tag B</span>-->
+                    <!--</li>-->
+                    <!--<li class="agent-pic">-->
+                    <!--<span><img src="/assets/images/call-record.svg"> </span>-->
+                    <!--</li>-->
+                    <!--</ul>-->
+                  </div>
+                </div>
+
+              </mat-expansion-panel>
+            </div>
+          </div>
+        </mat-accordion>
+      </div>
+    </div>
+
+
+    <div class="instruction-content chat-session-main">
+      <div class="int-date"><span>Mon<b>09</b></span></div>
+      <div *ngFor="let con of convers">
+      <div class="chat-message user-message">
         <div class="profile-pic">
           <div class="active-channel channel-icon {{customer.info.channel}}"><img width="20" src="../assets/images/web.svg"></div>
-          <div class="profile-pic-area user-img"> FA</div>
+          <div class="profile-pic-area user-img">{{con.title | slice :0 :2 |uppercase}}</div>
         </div>
-        <div class="chat-message-content "><p>/human</p>
+        <div class="chat-message-content "><p>{{con.message}}</p>
         </div>
         <span class="chat-time">16:15:45</span>
       </div>
+    </div>
+  </div>
       <div class="chat-message agent-message">
         <div class="profile-pic">
           <div class="active-channel channel-icon web"><img width="20" src="../assets/images/web.svg"></div>
@@ -77,14 +564,27 @@
         </div>
         <div class="chat-message-content "><p>hello</p></div>
         <span class="chat-time">16:16:06 </span></div>
-<!--      <div class="chat-message agent-message ">-->
-<!--        <div class="profile-pic">-->
-<!--          <div class="active-channel web"><img width="20" src="../assets/images/web.svg"></div>-->
-<!--          <div class="profile-pic-area user-img"> FA</div>-->
-<!--        </div>-->
-<!--        <div class="chat-message-content "><p style="white-space: pre-line">how are you today</p></div>-->
-<!--        <span class="chat-time">16:16:13 </span>-->
-<!--      </div>-->
+      <div class="chat-message agent-message ">
+        <div class="profile-pic">
+          <div class="active-channel channel-icon web"><img width="20" src="../assets/images/web.svg"></div>
+          <div class="profile-pic-area user-img"> FA</div>
+        </div>
+        <div class="chat-message-content "><p style="white-space: pre-line">how are you today</p></div>
+        <span class="chat-time">16:16:13 </span>
+      </div>
   </div>
+    <div class="chat-footer">
+      <div class="message-composer">
+        <form class="reply-form">
+          <label class="count-reply">{{replyInput.value.length}}/200</label>
+          <div class="mat-form-field form-group chat-area">
+            <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea"
+                class="resize-none" #replyInput name="message">
+            </textarea>
+          </div>
+        </form>
+      </div>
+    </div>
+
   </div>
 </div>

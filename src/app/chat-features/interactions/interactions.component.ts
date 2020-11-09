@@ -7,8 +7,8 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class InteractionsComponent implements OnInit {
   // tslint:disable-next-line:no-input-rename
-  @Input('conversation') conversation: any;
-  conversations = [];
+  @Input('convers') convers: any;
+  conversation = [];
   unidentified = true;
   isConnected = true;
   channelUrl = 'assets/images/web.svg';
@@ -34,6 +34,8 @@ export class InteractionsComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.con = this.convers;
+    console.log('con', this.convers[0].title)
   }
 
 }

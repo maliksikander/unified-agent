@@ -9,13 +9,40 @@ import {FocusOrigin} from '@angular/cdk/a11y';
 })
 export class ChatsComponent implements OnInit {
 
-  conversations = [
-    {title: 'farhan'},
-    {title: 'raza'}
+  conversations = [{
+    conversation: [
+      {
+        title: 'farhan',
+        message: 'Hello How are you today?'
+      },
+      {
+        title: 'farhan',
+        message: 'Share number where I can call in emergency situations.'
+      },
+      {
+        title: 'farhan',
+        message: 'Hi. Please share the email ID for support team.'
+      }
+    ]
+  },
+    {
+      conversation: [
+        {
+          title: 'raza',
+          message: 'Share number where I can call in emergency situations.'
+        },
+        {
+          title: 'raza',
+          message: 'Hi. Please share the email ID for support team.'
+        }
+      ]
+    }
+
   ];
 
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }
