@@ -6,7 +6,6 @@ import { ChatRoutingModule } from './chat-routing.module';
 import { ChatsComponent } from './chats/chats.component';
 import { InteractionsComponent } from './interactions/interactions.component';
 import { CustomerInfoComponent } from './customer-info/customer-info.component';
-import {NgCircleProgressModule} from 'ng-circle-progress';
 
 
 @NgModule({
@@ -18,7 +17,6 @@ import {NgCircleProgressModule} from 'ng-circle-progress';
   imports: [
     SharedModule,
     ChatRoutingModule,
-    NgCircleProgressModule
   ],
 })
 export class ChatModule { }
