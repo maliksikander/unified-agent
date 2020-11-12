@@ -192,3 +192,10 @@ mat-sidenav.mat-drawer.mat-sidenav {
     background: $viber-color !important;
   }
 }
+
+.panel-divider {
+  mat-expansion-panel {
+    box-shadow: none !important;
+    border: 1px solid #F1F1F1;
+  }
+}

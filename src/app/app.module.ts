@@ -26,15 +26,6 @@ import {SharedModule} from './shared/shared.module';
     CommonModule,
     BrowserAnimationsModule,
     MatProgressSpinnerModule,
-    NgCircleProgressModule.forRoot({
-      // set defaults here
-      radius: 100,
-      outerStrokeWidth: 16,
-      innerStrokeWidth: 8,
-      outerStrokeColor: '#78C000',
-      innerStrokeColor: '#3f51b5',//"#C7E596",
-      animationDuration: 0,
-    }),
     SharedModule
   ],
   providers: [],

@@ -384,7 +384,6 @@
 
 .panel-divider {
 
-
   .panel-header {
     ul {
       margin: 0;
@@ -513,13 +512,13 @@
 
       &.inner-detail-history {
         width: calc(100% - 90px);
-        margin-left: 15px;
+        margin-left: 10px;
         position: relative;
 
         &:before {
           content: "";
           position: absolute;
-          left: 0;
+          left: -1px;
           border-right: 1px solid #ccc;
           height: 100%;
           top: 18px;

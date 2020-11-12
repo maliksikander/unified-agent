@@ -301,6 +301,11 @@
 
 .main-logo {
   align-self: center;
+
+   img {
+     //width: 120px;
+    height: 32px;
+  }
 }
 .supervisor-trigger{
   display: inline-block;
