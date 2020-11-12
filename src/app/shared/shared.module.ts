@@ -13,6 +13,9 @@ import {
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { HttpClientModule } from '@angular/common/http';
+
+
 
 @NgModule({
   declarations: [],
@@ -34,6 +37,7 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
       innerStrokeColor: '#3f51b5',
       animationDuration: 0,
     }),
+    HttpClientModule
   ], exports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
     MatDrawer, MatCheckboxModule,
@@ -43,7 +47,7 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
     MatCardModule, MatChipsModule, MatFormFieldModule, MatInputModule,
     MatTabsModule, MatSelectModule, MatTooltipModule, FormsModule, MatExpansionModule,
     MatMenuModule, MatSlideToggleModule, MatAutocompleteModule, MatDialogModule, MatTabsModule,
-    MatDatepickerModule, MatNativeDateModule, DragDropModule, CommonModule, NgCircleProgressModule
+    MatDatepickerModule, MatNativeDateModule, DragDropModule, CommonModule, NgCircleProgressModule,HttpClientModule
   ]
 })
 export class SharedModule { }

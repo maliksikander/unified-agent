@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { NoRouteFoundComponent } from './no-route-found/no-route-found.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { SharedModule } from './shared/shared.module';
+import { appConfigService } from './services/appConfig.service';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,13 @@ import { SharedModule } from './shared/shared.module';
     BrowserAnimationsModule,
     SharedModule
   ],
-  providers: [],
+  providers: [appConfigService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (_appConfigService: appConfigService) => () => _appConfigService.loadConfig(),
+      deps: [appConfigService],
+      multi: true
+    }],
   exports: [
     BrowserModule,
     CommonModule,
