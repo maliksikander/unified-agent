@@ -192,7 +192,12 @@ mat-sidenav.mat-drawer.mat-sidenav {
     background: $viber-color !important;
   }
 }
-
+.panel-divider {
+  mat-expansion-panel {
+    box-shadow: none !important;
+    border: 1px solid #F1F1F1;
+  }
+}
 snack-bar-container.err-class {
   background: red;
   color: white;
