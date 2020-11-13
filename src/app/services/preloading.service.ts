@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class CustomPreloadingService implements PreloadingStrategy{
+export class preloadingService implements PreloadingStrategy{
 
   constructor() { }
   preload(route: Route, fn: () => Observable<any>): Observable<any> {
