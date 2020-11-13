@@ -3,7 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './login/login.component';
 import { NoRouteFoundComponent } from './no-route-found/no-route-found.component';
-import { CustomPreloadingService } from './services/custom-preloading.service';
+import { preloadingService } from './services/preloading.service';
 
 export const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -15,7 +15,7 @@ export const appRoutes: Routes = [
 @NgModule({
 
     imports: [
-        RouterModule.forRoot(appRoutes, { preloadingStrategy: CustomPreloadingService }),
+        RouterModule.forRoot(appRoutes, { preloadingStrategy: preloadingService }),
     ],
     exports: [RouterModule]
 })

@@ -9,15 +9,22 @@ import { appConfigService } from './appConfig.service';
 
 export class httpService {
 
-    baseUrl;
-    constructor(private _appConfigService : appConfigService, private _httpClient: HttpClient) {}
+    apiEndpoints;
 
+    constructor(public _appConfigService: appConfigService, private _httpClient: HttpClient) {
 
-    login(user): Observable<any> {
-        return this._httpClient.post<any>(this.baseUrl + "/api/login", user, {
+        this.apiEndpoints = {
+            token:  "/v1/agent/token"
+        }
+    }
+
+    userAuthentication(user): Observable<any> {
+
+        return this._httpClient.get<any>(this._appConfigService.GAT_URL+this.apiEndpoints.token, {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
-            })
+            }),
+            params: { username: user.username, password: user.password }
         })
     }
 
