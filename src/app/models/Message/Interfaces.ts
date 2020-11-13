@@ -96,3 +96,13 @@ interface IServiceIdentifier {
 interface ILanguageCode {
 
 }
+
+
+export class Message {
+
+    message: IMessage;
+    constructor(message: IMessage) {
+        this.message = message;
+    }
+
+}

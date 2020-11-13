@@ -8,10 +8,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/login.component';
 import { AppComponent } from './app.component';
 import { NoRouteFoundComponent } from './no-route-found/no-route-found.component';
-import {MatProgressSpinnerModule} from '@angular/material';
-import {NgCircleProgressModule} from 'ng-circle-progress';
 import { AppHeaderComponent } from './app-header/app-header.component';
-import {SharedModule} from './shared/shared.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +23,6 @@ import {SharedModule} from './shared/shared.module';
     AppRoutingModule,
     CommonModule,
     BrowserAnimationsModule,
-    MatProgressSpinnerModule,
     SharedModule
   ],
   providers: [],

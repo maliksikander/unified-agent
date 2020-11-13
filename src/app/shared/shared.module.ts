@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatAutocompleteModule,
   MatButtonModule, MatCardModule,
@@ -10,9 +10,9 @@ import {
   MatSidenavModule, MatSlideToggleModule, MatSnackBarModule, MatTableModule, MatTabsModule,
   MatToolbarModule, MatTooltipModule
 } from '@angular/material';
-import {DragDropModule} from '@angular/cdk/drag-drop';
-import {CommonModule} from '@angular/common';
-
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
+import { NgCircleProgressModule } from 'ng-circle-progress';
 
 @NgModule({
   declarations: [],
@@ -25,7 +25,15 @@ import {CommonModule} from '@angular/common';
     MatTabsModule, MatSelectModule, MatInputModule, MatTooltipModule,
     FormsModule, MatExpansionModule, MatMenuModule, MatSlideToggleModule,
     MatAutocompleteModule, MatDialogModule, MatTabsModule,
-    MatDatepickerModule, MatNativeDateModule, CommonModule
+    MatDatepickerModule, MatNativeDateModule, CommonModule,
+    NgCircleProgressModule.forRoot({
+      radius: 100,
+      outerStrokeWidth: 16,
+      innerStrokeWidth: 8,
+      outerStrokeColor: '#78C000',
+      innerStrokeColor: '#3f51b5',
+      animationDuration: 0,
+    }),
   ], exports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
     MatDrawer, MatCheckboxModule,
@@ -35,7 +43,7 @@ import {CommonModule} from '@angular/common';
     MatCardModule, MatChipsModule, MatFormFieldModule, MatInputModule,
     MatTabsModule, MatSelectModule, MatTooltipModule, FormsModule, MatExpansionModule,
     MatMenuModule, MatSlideToggleModule, MatAutocompleteModule, MatDialogModule, MatTabsModule,
-    MatDatepickerModule, MatNativeDateModule, DragDropModule, CommonModule
+    MatDatepickerModule, MatNativeDateModule, DragDropModule, CommonModule, NgCircleProgressModule
   ]
 })
 export class SharedModule { }

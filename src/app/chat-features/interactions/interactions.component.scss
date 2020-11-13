@@ -1,4 +1,4 @@
-@import "src/app/globalVariables";
+@import "src/app/shared/globalVariables";
 
 .main-chat-bar {
   background: $header-gray-color;
@@ -493,7 +493,6 @@
 
 
     .history-time {
-      display: inline-block;
       padding-right: 12px;
       float: left;
       position: relative;
@@ -618,8 +617,19 @@
 
     label.count-reply {
       position: absolute;
-      right: 72px;
-      top: 5px;
+      right: 18px;
+      top: 2px;
+      font-size: 10px;
+      color: #707070;
+    }
+
+    .chat-composer-trigger {
+      width: 140px;
+
+      mat-icon {
+        color: #707070;
+        font-size: 18px;
+      }
     }
 
     textarea {
