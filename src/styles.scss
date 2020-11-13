@@ -192,3 +192,21 @@ mat-sidenav.mat-drawer.mat-sidenav {
     background: $viber-color !important;
   }
 }
+
+snack-bar-container.err-class {
+  background: red;
+  color: white;
+  text-align: center;
+}
+
+snack-bar-container.succ-class {
+  background: green;
+  color: white;
+  text-align: center;
+
+}
+
+.mat-simple-snackbar span {
+  margin: auto;
+  text-align: center;
+}

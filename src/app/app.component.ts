@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { snackbarService } from './services/snackbar.service';
 
 
 @Component({
@@ -13,17 +14,19 @@ export class AppComponent implements OnInit {
 
   currentRoute: string;
 
-  constructor(private router: Router) {
+  constructor(private _router: Router, private _snackbarService : snackbarService ) {
   }
 
   ngOnInit() {
 
-    this.router.events
+    this._router.events
       .subscribe((event: any) => {
         if (event.url) {
           this.currentRoute = event.url;
         }
       });
+
+      this._snackbarService.open('hello', 'err')
 
   }
 
