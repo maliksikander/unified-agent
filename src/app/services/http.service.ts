@@ -20,7 +20,7 @@ export class httpService {
 
     userAuthentication(user): Observable<any> {
 
-        return this._httpClient.get<any>(this._appConfigService.GAT_URL+this.apiEndpoints.token, {
+        return this._httpClient.get<any>(this._appConfigService.config.GAT_URL+this.apiEndpoints.token, {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
             }),

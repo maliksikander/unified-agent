@@ -1,4 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { cacheService } from '../services/cache.service';
+import { socketService } from '../services/socket.service';
 
 @Component({
   selector: 'app-header',
@@ -15,17 +17,28 @@ export class AppHeaderComponent implements OnInit {
   languageFlag = 'en.png';
   languageName = 'English';
   languages = [
-    {code: 'en', name: 'English', flag: 'en.png'},
-    {code: 'fr', name: 'French', flag: 'fr.png'}
+    { code: 'en', name: 'English', flag: 'en.png' },
+    { code: 'fr', name: 'French', flag: 'fr.png' }
   ];
 
 
+  constructor(public _cacheService: cacheService, private _socketService: socketService) {
 
-
-  constructor() {
   }
 
   ngOnInit() {
+  }
+
+  changeState(state) {
+
+    if (state == 0) {
+      this._socketService.emit('changeAgentState', { "agentId": 'admin', "state": "NOT_READY" });
+    }
+
+    if (state == 1) {
+      this._socketService.emit('changeAgentState', { "agentId": 'admin', "state": "READY" });
+    }
+
   }
 
   lang(lang) {
