@@ -23,17 +23,24 @@
 
     mat-card-content {
       display: flex !important;
-      flex-wrap: wrap;
-      flex-direction: row;
+      height: 100%;
 
       .chat-request {
         width: 50px;
         border-right: 1px solid #ccc;
+        display: inline-flex;
+        justify-content: center;
 
         p {
-          margin: 0 2px;
           text-align: center;
-          align-self: center;
+          margin: auto;
+          width: 25px;
+          height: 25px;
+          height: 25px;
+          background: rgba(0,0,0,.5);
+          border-radius: 100%;
+          display: inline-flex;
+          justify-content: center;
         }
       }
 
@@ -50,6 +57,7 @@
       }
       .notification-trigger {
         margin-right: 10px;
+        align-self: center;
         button{
           background: #5D6367;
           font-size: 11px;
