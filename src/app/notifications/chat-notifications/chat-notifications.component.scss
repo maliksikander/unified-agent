@@ -1,0 +1,76 @@
+.main-notification-area {
+  position: fixed;
+  z-index: 9999;
+  right: 2em;
+  width: 350px;
+
+  .notification-panel {
+    margin: 0 0 5px;
+    font-family: Roboto, sans-serif;
+    font-weight: 300;
+    background: #25CB8D;
+    min-height: 35px;
+    padding: 0;
+    display: table;
+    float: right;
+    clear: both;
+    min-width: 320px;
+    text-align: left;
+  }
+
+  mat-card {
+    width: 100%;
+
+    mat-card-content {
+      display: flex !important;
+      height: 100%;
+
+      .chat-request {
+        width: 50px;
+        border-right: 1px solid #ccc;
+        display: inline-flex;
+        justify-content: center;
+
+        p {
+          text-align: center;
+          margin: auto;
+          width: 25px;
+          height: 25px;
+          height: 25px;
+          background: rgba(0,0,0,.5);
+          border-radius: 100%;
+          display: inline-flex;
+          justify-content: center;
+        }
+      }
+
+      .requested-name {
+        flex: 2;
+        margin: 0 5px;
+        align-self: center;
+
+        p {
+          margin: 0;
+          font-size: 12px;
+          color: #fff;
+        }
+      }
+      .notification-trigger {
+        margin-right: 10px;
+        align-self: center;
+        button{
+          background: #5D6367;
+          font-size: 11px;
+          color: #fff;
+          height: 30px;
+          width: 75px;
+          line-height: 30px;
+          margin: 5px;
+        }
+      }
+
+    }
+  }
+}
+
+

@@ -11,13 +11,15 @@ import { NoRouteFoundComponent } from './no-route-found/no-route-found.component
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { SharedModule } from './shared/shared.module';
 import { appConfigService } from './services/appConfig.service';
+import { ChatNotificationsComponent } from './notifications/chat-notifications/chat-notifications.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     NoRouteFoundComponent,
-    AppHeaderComponent
+    AppHeaderComponent,
+    ChatNotificationsComponent
   ],
   imports: [
     BrowserModule,
