@@ -8,7 +8,6 @@
     margin: 0 0 5px;
     font-family: Roboto, sans-serif;
     font-weight: 300;
-    background: #25CB8D;
     min-height: 35px;
     padding: 0;
     display: table;
@@ -24,12 +23,14 @@
     mat-card-content {
       display: flex !important;
       height: 100%;
-
+      border-radius: 3px;
+      
       .chat-request {
         width: 50px;
         border-right: 1px solid #ccc;
         display: inline-flex;
         justify-content: center;
+        border-radius: 120px;
 
         p {
           text-align: center;
@@ -72,5 +73,11 @@
     }
   }
 }
+.identified{
+  background: #25CB8D;
 
+}
+.un-identified{
+  background: #ff3e3e;
 
+}

@@ -28,6 +28,8 @@ import { ChatNotificationsComponent } from './notifications/chat-notifications/c
     BrowserAnimationsModule,
     SharedModule
   ],
+  entryComponents: [
+  ],
   providers: [appConfigService,
     {
       provide: APP_INITIALIZER,

@@ -3,6 +3,7 @@ import * as io from 'socket.io-client';
 import { Observable } from 'rxjs';
 import { appConfigService } from './appConfig.service';
 import { cacheService } from './cache.service';
+import { sharedService } from './shared.service';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,7 @@ export class socketService {
     socket: any;
     uri: string;
 
-    constructor(private _appConfigService: appConfigService, private _cacheService: cacheService) {
+    constructor(private _appConfigService: appConfigService, private _cacheService: cacheService, private _sharedService: sharedService) {
     }
 
 
@@ -32,7 +33,12 @@ export class socketService {
         });
 
         this.listen('errors').subscribe((res: any) => {
-            console.log("socket errors " ,res);
+            console.log("socket errors ", res);
+        });
+
+        this.listen('taskRequest').subscribe((res: any) => {
+            console.log("taskRequest ", res);
+            this.triggerNewChatRequest(res);
         });
     }
 
@@ -47,6 +53,10 @@ export class socketService {
 
     emit(eventName: string, data: any) {
         this.socket.emit(eventName, data);
+    }
+
+    triggerNewChatRequest(data) {
+        this._sharedService.serviceChangeMessage({ msg: 'openRequestHeader', data: data });
     }
 
 }

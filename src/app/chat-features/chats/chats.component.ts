@@ -41,7 +41,7 @@ export class ChatsComponent implements OnInit {
 
   ];
 
-  activeChat: boolean = true;
+  activeChat: boolean = false;
 
   constructor(private _socketService: socketService) {
     this._socketService.connectToSocket();

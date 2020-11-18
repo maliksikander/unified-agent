@@ -14,17 +14,16 @@ export class httpService {
     constructor(public _appConfigService: appConfigService, private _httpClient: HttpClient) {
 
         this.apiEndpoints = {
-            token:  "/v1/agent/token"
+            login: "/v1/agent/login"
         }
     }
 
-    userAuthentication(user): Observable<any> {
+    login(user): Observable<any> {
 
-        return this._httpClient.get<any>(this._appConfigService.config.GAT_URL+this.apiEndpoints.token, {
+        return this._httpClient.post<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.login, user, {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
-            }),
-            params: { username: user.username, password: user.password }
+            })
         })
     }
 

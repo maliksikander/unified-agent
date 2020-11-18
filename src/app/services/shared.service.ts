@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { snackbarService } from './snackbar.service';
 
 @Injectable({
@@ -8,6 +9,13 @@ import { snackbarService } from './snackbar.service';
 export class sharedService {
 
     constructor(private _snackbarService: snackbarService) { }
+
+
+    private serviceMessageSource = new BehaviorSubject({ msg: null, data: null });
+    serviceCurrentMessage = this.serviceMessageSource.asObservable();
+    serviceChangeMessage(data: any) {
+        this.serviceMessageSource.next(data);
+    }
 
     Interceptor(e, res) {
 

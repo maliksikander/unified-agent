@@ -1,4 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { sharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-interactions',
@@ -30,12 +31,11 @@ export class InteractionsComponent implements OnInit {
   };
 
 
-  constructor() {
+  constructor(private _sharedService: sharedService) {
   }
 
   ngOnInit() {
-    // this.con = this.convers;
-    console.log('con', this.convers[0].title)
+
   }
 
 }
