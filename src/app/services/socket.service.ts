@@ -21,18 +21,18 @@ export class socketService {
         this.uri = this._appConfigService.config.SOCKET_URL;
 
         this.socket = io.connect(this.uri, {
-            query: { token: 'token', agentId: 'agentId' }
+            query: { token: this._cacheService.agent.details.access_token, agentId: this._cacheService.agent.details.username }
         }).on('error', function (err) {
             console.error(err);
         });
 
         this.listen('agentPresence').subscribe((res: any) => {
             console.log(res);
-            this._cacheService.agent.agentPresence = res;
+            this._cacheService.agent.presence = res;
         });
 
         this.listen('errors').subscribe((res: any) => {
-            console.log(res);
+            console.log("socket errors " ,res);
         });
     }
 

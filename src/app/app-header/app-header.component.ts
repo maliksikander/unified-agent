@@ -9,7 +9,7 @@ import { socketService } from '../services/socket.service';
 })
 export class AppHeaderComponent implements OnInit {
   agent = {
-    state: 'READY',
+    state: 'blbla',
     name: 'Bryan Miller',
     extension: 1126,
   };
@@ -32,11 +32,11 @@ export class AppHeaderComponent implements OnInit {
   changeState(state) {
 
     if (state == 0) {
-      this._socketService.emit('changeAgentState', { "agentId": 'admin', "state": "NOT_READY" });
+      this._socketService.emit('changeAgentState', { "agentId": this._cacheService.agent.details.username, "state": "NOT_READY" });
     }
 
     if (state == 1) {
-      this._socketService.emit('changeAgentState', { "agentId": 'admin', "state": "READY" });
+      this._socketService.emit('changeAgentState', { "agentId": this._cacheService.agent.details.username, "state": "READY" });
     }
 
   }

@@ -14,11 +14,12 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { HttpClientModule } from '@angular/common/http';
+import { RemoveUnderscorePipe } from './pipes/underScore.pipe';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [RemoveUnderscorePipe],
   imports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
     MatCheckboxModule, MatButtonModule,
@@ -47,7 +48,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatCardModule, MatChipsModule, MatFormFieldModule, MatInputModule,
     MatTabsModule, MatSelectModule, MatTooltipModule, FormsModule, MatExpansionModule,
     MatMenuModule, MatSlideToggleModule, MatAutocompleteModule, MatDialogModule, MatTabsModule,
-    MatDatepickerModule, MatNativeDateModule, DragDropModule, CommonModule, NgCircleProgressModule,HttpClientModule
+    MatDatepickerModule, MatNativeDateModule, DragDropModule, CommonModule, NgCircleProgressModule,HttpClientModule,RemoveUnderscorePipe
   ]
 })
 export class SharedModule { }

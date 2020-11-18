@@ -41,6 +41,7 @@ export class ChatsComponent implements OnInit {
 
   ];
 
+  activeChat: boolean = true;
 
   constructor(private _socketService: socketService) {
     this._socketService.connectToSocket();
@@ -49,5 +50,5 @@ export class ChatsComponent implements OnInit {
   ngOnInit() {
   }
 
-
+ 
 }

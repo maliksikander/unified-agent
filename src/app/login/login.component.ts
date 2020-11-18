@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { httpService } from '../services/http.service';
 import { sharedService } from '../services/shared.service';
+import { cacheService } from '../services/cache.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,7 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
 
-  constructor(private _httpService: httpService, private _router: Router, private fb: FormBuilder, private _sharedService: sharedService) {
+  constructor(private _cacheService: cacheService, private _httpService: httpService, private _router: Router, private fb: FormBuilder, private _sharedService: sharedService) {
 
     this.loginForm = this.fb.group({
       password: ['', [Validators.required]],
@@ -30,6 +31,8 @@ export class LoginComponent implements OnInit {
     this._httpService.userAuthentication(this.loginForm.value).subscribe((e) => {
 
       this._router.navigate(['customers']);
+      console.log("this is login resp ", e.data);
+      this._cacheService.agent.details = e.data;
 
     }, (error) => {
       this._sharedService.Interceptor(error.error, 'err')

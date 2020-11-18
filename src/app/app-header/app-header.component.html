@@ -12,34 +12,29 @@
         <!--      </div>-->
 
         <!--      <h3 class="supervisor-heading" *ngIf="supervisor">Supervisor</h3>-->
-        <div class="avatar {{agent.state | lowercase}}" id="avatar">
+        <div class="avatar {{_cacheService.agent.presence.agentState | lowercase}}" id="avatar">
           <mat-icon>person</mat-icon>
         </div>
         <h3 class="agent_name">
-          <p [matTooltip]="agent.name">{{agent.name}}</p>
+          <p [matTooltip]="_cacheService.agent.details.username">{{_cacheService.agent.details.username}}</p>
           <span>
             (Ext: {{agent.extension}})
           </span>
         </h3>
         <div class="agent-state-small">
-          <span class="agent-state-icon {{agent.state | lowercase}} material-icons">
+          <span class="agent-state-icon {{_cacheService.agent.presence.agentState | lowercase}} material-icons">
             radio_button_checked
           </span>
-          <!--<span class="agent-current-state">{{agent.state}}</span>-->
-          <span class="agent-current-state" *ngIf="agent.state === 'READY'">Ready</span>
+      
 
         </div>
 
         <div class="agent-state">
-          <span class="state">{{agent.state}}</span>
-          <!--<span *ngIf="agent.state=='NOT_READY'" class="timer_state">Not Ready</span>-->
-          <!--<span *ngIf="agent.state=='READY'" class="timer_state">Ready</span>-->
-          <!--<span *ngIf="agent.state=='BUSY'" class="timer_state">Busy</span>-->
-
+          <span class="state">STATE</span>
+      
           <div class="agent-current-state">
-            <button mat-button [matMenuTriggerFor]="state" class="{{agent.state | lowercase}}"
-              [ngClass]="agent.state==='READY' ? 'ready': agent.state =='INTERRUPTED' ? 'interrupted' : agent.state =='BUSY' ? 'busy':  'not-ready'">
-              <span>{{_cacheService.agent.agentPresence.agentState | uppercase }}</span>
+            <button mat-button [matMenuTriggerFor]="state" class="{{_cacheService.agent.presence.agentState | lowercase}}">
+              <span>{{_cacheService.agent.presence.agentState | removeUnderscore }}</span>
 
               <i class="material-icons">
                 arrow_drop_down
@@ -62,11 +57,7 @@
           <span class="time_state">11:10</span>
 
         </div>
-        <!--      <div class="announcement-trigger-area">-->
-        <!--        <span *ngIf="isUnreadAnnouncements" class="notification-hint">{{unreadAnnouncementCounter}}</span>-->
-        <!--        <button mat-icon-button class="announcement-trigger" [ngClass]="{'announcement-tab-opened': sidenav.opened}" (click)="sidenav.toggle();onAnnouncements()"> <img src="assets/images/announcement.svg"></button>-->
-
-        <!--      </div>-->
+      
         <div class="multi-language">
           <button mat-button [matMenuTriggerFor]="languageSelection" class="language-trigger">
             <img src="assets/flags/{{languageFlag}}" width="20" onError="this.src='assets/flags/generic.png';">
@@ -84,17 +75,17 @@
           </mat-menu>
 
           <mat-menu #agentState="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
-            <button mat-menu-item class="state-trigger">
+            <button (click)="changeState(1)" mat-menu-item class="state-trigger">
 
-              <mat-icon style="color: grey;font-size: 20px">radio_button_checked
+              <mat-icon style="color: limegreen;font-size: 20px">radio_button_checked
               </mat-icon>
-              {{ agent.state}}
+              READY
             </button>
-            <button mat-menu-item class="state-trigger">
+            <button (click)="changeState(0)" mat-menu-item class="state-trigger">
               <mat-icon style="color:orange; font-size: 20px">
                 radio_button_checked
               </mat-icon>
-              Not Ready
+              NOT READY
             </button>
           </mat-menu>
         </div>
@@ -110,12 +101,11 @@
             <div class="menu-list-content">
 
               <p class="menu-trigger-custom state-trigger">
-                <span class="inner-btn">{{agent.state}}</span>
+                <span class="inner-btn">STATE</span>
 
-                <button mat-menu-item class="{{agent.state | lowercase}} mat-menu-item-submenu-trigger {{isConnected}}"
+                <button mat-menu-item class="{{_cacheService.agent.presence.agentState | lowercase}} mat-menu-item-submenu-trigger"
                   [matMenuTriggerFor]="agentState">
-                  <span *ngIf="agent.state==='NOT_READY'">{{ agent.state }}</span>
-                  <span *ngIf="agent.state==='READY'">{{ agent.state }}</span>
+                  <span>{{ _cacheService.agent.presence.agentState | removeUnderscore }}</span>
 
                 </button>
               </p>
