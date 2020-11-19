@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   title = 'unified-agent-gadget';
 
   currentRoute: string;
-  activeRequestHeader: boolean = false;
+  requestHeaderState: boolean = false;
   requestHeaderData;
 
   constructor(private _router: Router, private _sharedService: sharedService) {
@@ -21,10 +21,10 @@ export class AppComponent implements OnInit {
     this._sharedService.serviceCurrentMessage.subscribe((e) => {
 
       if (e.msg == 'openRequestHeader') {
-        this.activeRequestHeader = true;
+        this.requestHeaderState = true;
         this.requestHeaderData = e.data;
       }
-      console.log("i am called " , e)
+      console.log("i am called ", e)
 
     })
 
@@ -38,6 +38,10 @@ export class AppComponent implements OnInit {
           this.currentRoute = event.url;
         }
       });
+  }
+
+  requestHeaderEvents(requestHeaderState) {
+    this.requestHeaderState = requestHeaderState;
   }
 
 }

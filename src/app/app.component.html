@@ -1,3 +1,3 @@
 <app-header *ngIf="currentRoute != '/login'"></app-header>
-<app-chat-notifications [data]="requestHeaderData" *ngIf="activeRequestHeader"></app-chat-notifications>
+<app-chat-notifications (closeRequestHeaderEvent)="requestHeaderEvents($event)" [data]="requestHeaderData" *ngIf="requestHeaderState"></app-chat-notifications>
 <router-outlet></router-outlet>

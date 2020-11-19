@@ -10,7 +10,7 @@
             <p>{{customerName != null ? customerName : 'UNKNOWN' }}</p>
           </div>
           <div class="notification-trigger">
-            <button class="mat-flat-button" mat-button>Accept</button>
+            <button (click)="getTopicSubscription()" class="mat-flat-button" mat-button>Accept</button>
           </div>
         </mat-card-content>
       </mat-card>
