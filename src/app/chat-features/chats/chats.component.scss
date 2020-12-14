@@ -23,3 +23,31 @@ div#main-content {
     color: #808080d1;
     font-size: 30px;
 }
+
+.badge1 {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 8px;
+  background: #DB0505;
+  color: white;
+  padding: 4px;
+  width: 16px;
+  height: 16px;
+  text-align: center;
+  line-height: 9px;
+  border-radius: 50%;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7);
+
+  &.channel-badge{
+    right: inherit;
+    left: 4px;
+    background: transparent;
+    img {
+      width: 16px;
+      left: 0;
+      position: absolute;
+      top: 0;
+    }
+  }
+}

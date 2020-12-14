@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   requestHeaderState: boolean = false;
   requestHeaderData;
 
-  constructor(private _router: Router, private _sharedService: sharedService, private _socketService: socketService) {
+  constructor(private _router: Router, private _sharedService: sharedService) {
 
     this._sharedService.serviceCurrentMessage.subscribe((e) => {
 

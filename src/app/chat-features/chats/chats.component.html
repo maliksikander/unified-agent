@@ -1,13 +1,11 @@
-<div *ngIf="activeChat" class="ef_container container-fluid p-0">
+<div *ngIf ="_socketService.conversations[0] != null"  class="ef_container container-fluid p-0">
   <div id="content" class="h-100">
-    <div class="no-chat-active" *ngIf="conversations.length === 0">
-      <h3>No Chat Active</h3>
-    </div>
+    
     <div id="main-content" class="h-100">
       <!--      <button color="primary" class="left-bar-trigger" (click)="barExpand = !barExpand" ><mat-icon>{{barExpand ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}</mat-icon></button>-->
       <mat-tab-group class="chat-tab-area h-100">
 
-        <mat-tab class="main-chat-tab h-100" *ngFor="let conversation of conversations;">
+        <mat-tab class="main-chat-tab h-100" *ngFor="let conversation of _socketService.conversations;">
 
           <div class="chat-contacts left-bar-contacts">
             <ng-template mat-tab-label>
@@ -16,12 +14,13 @@
                   <circle-progress class="laft-bar-data" [percent]="100" [radius]="15" [outerStrokeWidth]="2"
                     [innerStrokeWidth]="2" [outerStrokeColor]="'#3f51b5'" [innerStrokeColor]="'#F3F6F8'" [space]=-1
                     [animation]="conversation.animation" [animationDuration]="600"
-                    [title]="conversation.messages[0].title | slice :0 :2 |uppercase" [titleFontSize]="10"
+                    [title]="conversation.messages[0].header.sender.participant.displayName | slice :0 :2 |uppercase" [titleFontSize]="10"
                     [showSubtitle]="false" [showUnits]="false" [renderOnClick]="false">
                   </circle-progress>
-
+                  <span class="badge1"
+                  [hidden]="conversation.unreadCount==0">2</span>
                 </div>
-                <span class="user-name">{{conversation.messages.title}}</span>
+                <span class="user-name">{{conversation.messages[0].header.sender.participant.displayName}}</span>
               </span>
             </ng-template>
           </div>
@@ -39,6 +38,6 @@
   </div>
 </div>
 
-<div *ngIf="!activeChat" class="no-chat">
+<div *ngIf ="_socketService.conversations[0] == null" class="no-chat">
   NO CHAT AVAILABLE
 </div>

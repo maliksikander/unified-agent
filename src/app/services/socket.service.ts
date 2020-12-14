@@ -16,12 +16,13 @@ export class socketService {
     conversations: any = [];
 
     constructor(private _appConfigService: appConfigService, private _cacheService: cacheService, private _sharedService: sharedService) {
-        this.connectToSocket();
     }
 
 
     connectToSocket() {
         this.uri = this._appConfigService.config.SOCKET_URL;
+
+        console.log("username------ "+this._cacheService.agent.details.username)
 
         this.socket = io.connect(this.uri, {
             query: { token: this._cacheService.agent.details.access_token, agentId: this._cacheService.agent.details.username }
@@ -74,9 +75,9 @@ export class socketService {
         });
 
         if (sameTopicIdObj) {
-            sameTopicIdObj.conversation.push(res.message);
+            sameTopicIdObj.messages.push(res.message);
         } else {
-            this.conversations.push({ topicId: res.topicId, conversation: [res.message] });
+            this.conversations.push({ topicId: res.topicId, messages: [res.message] });
         }
     }
 

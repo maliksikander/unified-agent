@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { cacheService } from 'src/app/services/cache.service';
 import { sharedService } from 'src/app/services/shared.service';
+import { socketService } from 'src/app/services/socket.service';
 
 @Component({
   selector: 'app-interactions',
@@ -31,10 +33,24 @@ export class InteractionsComponent implements OnInit {
   };
 
 
-  constructor(private _sharedService: sharedService) {
+  constructor(private _sharedService: sharedService, private _cacheService: cacheService, private _socketService: socketService) {
   }
 
   ngOnInit() {
+    console.log("i am called hello")
+  }
+
+  onSend(text) {
+    let message = JSON.parse(JSON.stringify(this.messages[this.messages.length - 1]));
+
+    message.header.sender.type = "agent";
+    message.header.sender.role = "agent";
+    message.header.sender.id = this._cacheService.agent.details.username;
+    message.header.sender.displayName = this._cacheService.agent.details.username;
+    message.body.markdownTest = text;
+
+    this._socketService.emit('sendMessage', message);
+
 
   }
 

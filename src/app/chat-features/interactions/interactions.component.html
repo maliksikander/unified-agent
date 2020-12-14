@@ -2,13 +2,13 @@
   <div class="row">
     <div class="col-md-4 customer-showcase">
       <h3 matTooltipPosition="right" class="customer-highlight">
-        {{messages[0].title | slice :0 :2 |uppercase}}
+        {{messages[0].header.sender.participant.displayName | slice :0 :2 |uppercase}}
 
         <span class="channel-icon {{customer.info.channel}}">
           <img *ngIf="channelUrl" src="{{channelUrl}}">
         </span>
       </h3>
-      <h5 class="customer-name" [matTooltip]="messages.title">{{messages[0].title | slice :0 :50}}
+      <h5 class="customer-name" [matTooltip]="messages.title">{{messages[0].header.sender.participant.displayName | slice :0 :50}}
         <span class="chat-timer">( 11:32 )</span>
 
       </h5>
@@ -459,14 +459,14 @@
       <div class="instruction-content chat-session-main">
         <div class="int-date"><span>Mon<b>09</b></span></div>
         <div *ngFor="let message of messages">
-          <div class="chat-message" [ngClass]="(message.title == 'farhan') ?'user-message':'agent-message'">
+          <div class="chat-message" [ngClass]="(message.header.sender.type == 'customer') ?'user-message':'agent-message'">
             <div class="profile-pic">
               <div class="active-channel channel-icon {{customer.info.channel}}"><img width="20"
                   src="../assets/images/web.svg"></div>
-              <div class="profile-pic-area user-img">{{message.title | slice :0 :2 |uppercase}}</div>
+              <div class="profile-pic-area user-img">{{message.header.sender.participant.displayName | slice :0 :2 |uppercase}}</div>
             </div>
             <div class="chat-message-content ">
-              <p>{{message.message}}</p>
+              <p>{{message.body.markdownTest}}</p>
             </div>
             <span class="chat-time">16:15:45</span>
           </div>
@@ -508,7 +508,7 @@
             <button class="timer-off composer-trigger" mat-icon-button>
               <mat-icon>timer_off</mat-icon>
             </button>
-            <button class="send-btn composer-trigger" mat-icon-button>
+            <button (click)="onSend(replyInput.value)" class="send-btn composer-trigger" mat-icon-button>
               <mat-icon>send</mat-icon>
             </button>
           </div>
