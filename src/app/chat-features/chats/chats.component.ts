@@ -23,6 +23,14 @@ export class ChatsComponent implements OnInit {
       {
         title: 'farhan',
         message: 'Hi. Please share the email ID for support team.'
+      },
+      {
+        title: 'raza',
+        message: 'hello'
+      },
+      {
+        title: 'raza',
+        message: 'how are you'
       }
     ]
   },
@@ -35,6 +43,14 @@ export class ChatsComponent implements OnInit {
       {
         title: 'raza',
         message: 'Hi. Please share the email ID for support team.'
+      },
+      {
+        title: 'raza',
+        message: 'hello 12'
+      },
+      {
+        title: 'raza',
+        message: 'how are you 12'
       }
     ]
   }

@@ -1,12 +1,12 @@
 <div class="container-fluid main-chat-bar">
   <div class="row">
-    <div class="col-md-4 customer-showcase" >
-      <h3  matTooltipPosition="right" class="customer-highlight">
+    <div class="col-md-4 customer-showcase">
+      <h3 matTooltipPosition="right" class="customer-highlight">
         {{messages[0].title | slice :0 :2 |uppercase}}
 
         <span class="channel-icon {{customer.info.channel}}">
-                <img *ngIf="channelUrl" src="{{channelUrl}}">
-              </span>
+          <img *ngIf="channelUrl" src="{{channelUrl}}">
+        </span>
       </h3>
       <h5 class="customer-name" [matTooltip]="messages.title">{{messages[0].title | slice :0 :50}}
         <span class="chat-timer">( 11:32 )</span>
@@ -57,13 +57,13 @@
 
 
 <!--Interactions Area Start -->
-<div  id="chat-content" class="container-fluid main-chat-area">
+<div id="chat-content" class="container-fluid main-chat-area">
   <div class="row">
-  <div class="chat-messages-main">
+    <div class="chat-messages-main">
 
 
-    <!-- voice message chat area -->
-    <!-- <div class="instruction-main">
+      <!-- voice message chat area -->
+      <!-- <div class="instruction-main">
       <div class="instruction-inner">
       
         <mat-accordion>
@@ -454,54 +454,61 @@
     </div> -->
 
 
-    <!-- simple chat area -->
+      <!-- simple chat area -->
 
-    <div class="instruction-content chat-session-main">
-      <div class="int-date"><span>Mon<b>09</b></span></div>
-      <div *ngFor="let con of messages">
-      <div class="chat-message user-message">
-        <div class="profile-pic">
-          <div class="active-channel channel-icon {{customer.info.channel}}"><img width="20" src="../assets/images/web.svg"></div>
-          <div class="profile-pic-area user-img">{{con.title | slice :0 :2 |uppercase}}</div>
+      <div class="instruction-content chat-session-main">
+        <div class="int-date"><span>Mon<b>09</b></span></div>
+        <div *ngFor="let message of messages">
+          <div class="chat-message" [ngClass]="(message.title == 'farhan') ?'user-message':'agent-message'">
+            <div class="profile-pic">
+              <div class="active-channel channel-icon {{customer.info.channel}}"><img width="20"
+                  src="../assets/images/web.svg"></div>
+              <div class="profile-pic-area user-img">{{message.title | slice :0 :2 |uppercase}}</div>
+            </div>
+            <div class="chat-message-content ">
+              <p>{{message.message}}</p>
+            </div>
+            <span class="chat-time">16:15:45</span>
+          </div>
         </div>
-        <div class="chat-message-content "><p>{{con.message}}</p>
-        </div>
-        <span class="chat-time">16:15:45</span>
       </div>
-    </div>
-  </div>
-      <div class="chat-message agent-message">
+      <!-- <div class="chat-message agent-message">
         <div class="profile-pic">
           <div class="active-channel channel-icon web"><img width="20" src="../assets/images/web.svg"></div>
           <div class="profile-pic-area user-img"> FA</div>
         </div>
-        <div class="chat-message-content "><p>hello</p></div>
-        <span class="chat-time">16:16:06 </span></div>
+        <div class="chat-message-content ">
+          <p>hello</p>
+        </div>
+        <span class="chat-time">16:16:06 </span>
+      </div>
       <div class="chat-message agent-message ">
         <div class="profile-pic">
           <div class="active-channel channel-icon web"><img width="20" src="../assets/images/web.svg"></div>
           <div class="profile-pic-area user-img"> FA</div>
         </div>
-        <div class="chat-message-content "><p style="white-space: pre-line">how are you today</p></div>
+        <div class="chat-message-content ">
+          <p style="white-space: pre-line">how are you today</p>
+        </div>
         <span class="chat-time">16:16:13 </span>
-      </div>
-  </div>
+      </div> -->
+    </div>
     <div class="chat-footer">
       <div class="message-composer">
         <form class="reply-form">
           <label class="count-reply">{{replyInput.value.length}}/200</label>
           <div class="mat-form-field form-group chat-area">
             <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea"
-                class="resize-none" #replyInput name="message" placeholder="Type a message here."></textarea>
+              class="resize-none" #replyInput name="message" placeholder="Type a message here."></textarea>
           </div>
           <div class="chat-composer-trigger">
-            <button  class="video-call composer-trigger" mat-icon-button>
+            <button class="video-call composer-trigger" mat-icon-button>
               <mat-icon>voice_chat</mat-icon>
             </button>
-            <button  class="timer-off composer-trigger" mat-icon-button>
+            <button class="timer-off composer-trigger" mat-icon-button>
               <mat-icon>timer_off</mat-icon>
             </button>
-            <button  class="send-btn composer-trigger" mat-icon-button>
+            <button class="send-btn composer-trigger" mat-icon-button>
               <mat-icon>send</mat-icon>
             </button>
           </div>
