@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { appConfigService } from './services/appConfig.service';
 import { sharedService } from './services/shared.service';
+import { socketService } from './services/socket.service';
 
 
 @Component({
@@ -16,7 +18,7 @@ export class AppComponent implements OnInit {
   requestHeaderState: boolean = false;
   requestHeaderData;
 
-  constructor(private _router: Router, private _sharedService: sharedService) {
+  constructor(private _router: Router, private _sharedService: sharedService, private _socketService: socketService) {
 
     this._sharedService.serviceCurrentMessage.subscribe((e) => {
 
@@ -24,8 +26,6 @@ export class AppComponent implements OnInit {
         this.requestHeaderState = true;
         this.requestHeaderData = e.data;
       }
-      console.log("i am called ", e)
-
     })
 
   }

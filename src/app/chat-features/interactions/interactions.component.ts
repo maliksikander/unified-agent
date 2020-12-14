@@ -8,7 +8,7 @@ import { sharedService } from 'src/app/services/shared.service';
 })
 export class InteractionsComponent implements OnInit {
   // tslint:disable-next-line:no-input-rename
-  @Input('convers') convers: any;
+  @Input('messages') messages: any;
   conversation = [];
   unidentified = true;
   isConnected = true;

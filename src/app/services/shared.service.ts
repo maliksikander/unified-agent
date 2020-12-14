@@ -25,6 +25,10 @@ export class sharedService {
 
                 this._snackbarService.open('UNAUTHORIZED USER', 'err');
 
+            } else if (e.statusCode == 412) {
+
+                this._snackbarService.open('Precondition failed', 'err');
+
             } else { this._snackbarService.open('Something went wrong', 'err') }
         }
         if (res == 'succ') {

@@ -24,11 +24,9 @@ export class ChatNotificationsComponent implements OnInit {
     console.log("this is data ", this.data)
     if (this.data.channelSession.associatedCustomer.firstName) {
       this.customerName = this.data.channelSession.associatedCustomer.firstName;
-      console.log("name " + this.data.channelSession.associatedCustomer.firstName)
       this.identified = true;
     }
-    this.channel = this.data.channelSession.channel.type.name;
-    console.log("channel " + this.data.channelSession.channel.type.name)
+    this.channel = this.data.channelSession.channel.channelConnector.type.name;
     this.channelImageSrc = 'assets/images/' + this.channel.toLowerCase() + '.svg';
 
   }

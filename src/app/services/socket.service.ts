@@ -13,8 +13,10 @@ export class socketService {
 
     socket: any;
     uri: string;
+    conversations: any = [];
 
     constructor(private _appConfigService: appConfigService, private _cacheService: cacheService, private _sharedService: sharedService) {
+        this.connectToSocket();
     }
 
 
@@ -40,6 +42,12 @@ export class socketService {
             console.log("taskRequest ", res);
             this.triggerNewChatRequest(res);
         });
+
+        this.listen('onMessage').subscribe((res: any) => {
+            res.message = JSON.parse(res.message);
+            this.onMessageHandler(res);
+            console.log("onMessage parse s", res);
+        })
     }
 
     listen(eventName: string) {
@@ -58,5 +66,19 @@ export class socketService {
     triggerNewChatRequest(data) {
         this._sharedService.serviceChangeMessage({ msg: 'openRequestHeader', data: data });
     }
+
+
+    onMessageHandler(res) {
+        let sameTopicIdObj = this.conversations.find((e) => {
+            return e.topicId == res.topicId
+        });
+
+        if (sameTopicIdObj) {
+            sameTopicIdObj.conversation.push(res.message);
+        } else {
+            this.conversations.push({ topicId: res.topicId, conversation: [res.message] });
+        }
+    }
+
 
 }

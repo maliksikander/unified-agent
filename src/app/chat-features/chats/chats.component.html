@@ -16,18 +16,18 @@
                   <circle-progress class="laft-bar-data" [percent]="100" [radius]="15" [outerStrokeWidth]="2"
                     [innerStrokeWidth]="2" [outerStrokeColor]="'#3f51b5'" [innerStrokeColor]="'#F3F6F8'" [space]=-1
                     [animation]="conversation.animation" [animationDuration]="600"
-                    [title]="conversation.conversation[0].title | slice :0 :2 |uppercase" [titleFontSize]="10"
+                    [title]="conversation.messages[0].title | slice :0 :2 |uppercase" [titleFontSize]="10"
                     [showSubtitle]="false" [showUnits]="false" [renderOnClick]="false">
                   </circle-progress>
 
                 </div>
-                <span class="user-name">{{conversation.conversation.title}}</span>
+                <span class="user-name">{{conversation.messages.title}}</span>
               </span>
             </ng-template>
           </div>
           <div class="chat-contents">
             <div class="main-tab-content">
-              <app-interactions [convers]="conversation.conversation"></app-interactions>
+              <app-interactions [messages]="conversation.messages"></app-interactions>
             </div>
           </div>
           <!-- row end -->

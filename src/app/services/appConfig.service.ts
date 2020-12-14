@@ -13,12 +13,14 @@ export class appConfigService {
     constructor(private _httpClient: HttpClient) { }
 
     loadConfig() {
-        this._httpClient.get(this.configUrl).subscribe((e: any) => {
 
-            this.config.GAT_URL = e.GAT_URL;
-            this.config.SOCKET_URL = e.SOCKET_URL
+        return this._httpClient.get(this.configUrl)
+            .toPromise().then((e: any) => {
 
-        });
+                this.config.GAT_URL = e.GAT_URL;
+                this.config.SOCKET_URL = e.SOCKET_URL;
+
+            });
     }
 }
 

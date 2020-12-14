@@ -11,7 +11,7 @@ import { socketService } from 'src/app/services/socket.service';
 export class ChatsComponent implements OnInit {
 
   conversations = [{
-    conversation: [
+    messages: [
       {
         title: 'farhan',
         message: 'Hello How are you today?'
@@ -27,7 +27,7 @@ export class ChatsComponent implements OnInit {
     ]
   },
   {
-    conversation: [
+    messages: [
       {
         title: 'raza',
         message: 'Share number where I can call in emergency situations.'
@@ -41,14 +41,15 @@ export class ChatsComponent implements OnInit {
 
   ];
 
-  activeChat: boolean = false;
+  activeChat: boolean = true;
 
   constructor(private _socketService: socketService) {
-    this._socketService.connectToSocket();
+
   }
 
   ngOnInit() {
+
   }
 
- 
+
 }

@@ -2,13 +2,13 @@
   <div class="row">
     <div class="col-md-4 customer-showcase" >
       <h3  matTooltipPosition="right" class="customer-highlight">
-        {{convers[0].title | slice :0 :2 |uppercase}}
+        {{messages[0].title | slice :0 :2 |uppercase}}
 
         <span class="channel-icon {{customer.info.channel}}">
                 <img *ngIf="channelUrl" src="{{channelUrl}}">
               </span>
       </h3>
-      <h5 class="customer-name" [matTooltip]="convers.title">{{convers[0].title | slice :0 :50}}
+      <h5 class="customer-name" [matTooltip]="messages.title">{{messages[0].title | slice :0 :50}}
         <span class="chat-timer">( 11:32 )</span>
 
       </h5>
@@ -61,11 +61,11 @@
   <div class="row">
   <div class="chat-messages-main">
 
-    <div class="instruction-main">
+
+    <!-- voice message chat area -->
+    <!-- <div class="instruction-main">
       <div class="instruction-inner">
-        <!--                <div class="int-date">-->
-        <!--                    <span>Fri<b>08</b></span>-->
-        <!--                </div>-->
+      
         <mat-accordion>
 
           <div class="instruction-content">
@@ -74,7 +74,6 @@
             </div>
             <div class="panel-divider">
               <div class="line-info">
-                <!--                    <p>11:12 AM </p>-->
               </div>
               <mat-expansion-panel>
                 <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
@@ -113,10 +112,8 @@
 
             <div class="panel-divider">
               <div class="line-info">
-                <!--                    <p>11:12 AM </p>-->
               </div>
               <mat-expansion-panel>
-                <!--Call View-->
 
                 <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
                   <mat-panel-title>
@@ -145,7 +142,6 @@
                     </div>
                   </mat-panel-title>
                 </mat-expansion-panel-header>
-                <!--Call View-->
 
                 <div class="panel-header call-history-panel inner-detail">
                   <div class="history-time">
@@ -200,27 +196,7 @@
                       </div>
                     </mat-expansion-panel>
 
-                    <!--<ul>-->
-                    <!--<li class="agent-pic">-->
-                    <!--<span><img src="/assets/images/incoming-call.svg"> </span>-->
-                    <!--</li>-->
-                    <!--<li class="agent-pic call-services">-->
-                    <!--<p><span><img src="/assets/images/ag1.png"></span>Tech Support</p>-->
-                    <!--</li>-->
-                    <!--<li class="section-duration">-->
-                    <!--<time>02min 20sec</time>-->
-                    <!--</li>-->
-                    <!--<li class="agent-pic">-->
-                    <!--<span><img src="/assets/images/call-end.svg"> </span>-->
-                    <!--</li>-->
-                    <!--<li class="section-tags">-->
-                    <!--<span>Tag A</span>-->
-                    <!--<span>Tag B</span>-->
-                    <!--</li>-->
-                    <!--<li class="agent-pic">-->
-                    <!--<span><img src="/assets/images/call-record.svg"> </span>-->
-                    <!--</li>-->
-                    <!--</ul>-->
+                    
                   </div>
                 </div>
                 <div class="panel-header call-history-panel inner-detail">
@@ -275,27 +251,6 @@
                       </div>
                     </mat-expansion-panel>
 
-                    <!--<ul>-->
-                    <!--<li class="agent-pic">-->
-                    <!--<span><img src="/assets/images/incoming-call.svg"> </span>-->
-                    <!--</li>-->
-                    <!--<li class="agent-pic call-services">-->
-                    <!--<p><span><img src="/assets/images/ag1.png"></span>Tech Support</p>-->
-                    <!--</li>-->
-                    <!--<li class="section-duration">-->
-                    <!--<time>02min 20sec</time>-->
-                    <!--</li>-->
-                    <!--<li class="agent-pic">-->
-                    <!--<span><img src="/assets/images/call-end.svg"> </span>-->
-                    <!--</li>-->
-                    <!--<li class="section-tags">-->
-                    <!--<span>Tag A</span>-->
-                    <!--<span>Tag B</span>-->
-                    <!--</li>-->
-                    <!--<li class="agent-pic">-->
-                    <!--<span><img src="/assets/images/call-record.svg"> </span>-->
-                    <!--</li>-->
-                    <!--</ul>-->
                   </div>
                 </div>
 
@@ -309,7 +264,6 @@
             </div>
             <div class="panel-divider">
               <div class="line-info">
-                <!--                    <p>11:12 AM </p>-->
               </div>
               <mat-expansion-panel>
                 <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
@@ -348,10 +302,8 @@
 
             <div class="panel-divider">
               <div class="line-info">
-                <!--                    <p>11:12 AM </p>-->
               </div>
               <mat-expansion-panel>
-                <!--Call View-->
 
                 <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
                   <mat-panel-title>
@@ -380,7 +332,6 @@
                     </div>
                   </mat-panel-title>
                 </mat-expansion-panel-header>
-                <!--Call View-->
 
                 <div class="panel-header call-history-panel inner-detail">
                   <div class="history-time">
@@ -436,27 +387,7 @@
                       </div>
                     </mat-expansion-panel>
 
-                    <!--<ul>-->
-                    <!--<li class="agent-pic">-->
-                    <!--<span><img src="/assets/images/incoming-call.svg"> </span>-->
-                    <!--</li>-->
-                    <!--<li class="agent-pic call-services">-->
-                    <!--<p><span><img src="/assets/images/ag1.png"></span>Tech Support</p>-->
-                    <!--</li>-->
-                    <!--<li class="section-duration">-->
-                    <!--<time>02min 20sec</time>-->
-                    <!--</li>-->
-                    <!--<li class="agent-pic">-->
-                    <!--<span><img src="/assets/images/call-end.svg"> </span>-->
-                    <!--</li>-->
-                    <!--<li class="section-tags">-->
-                    <!--<span>Tag A</span>-->
-                    <!--<span>Tag B</span>-->
-                    <!--</li>-->
-                    <!--<li class="agent-pic">-->
-                    <!--<span><img src="/assets/images/call-record.svg"> </span>-->
-                    <!--</li>-->
-                    <!--</ul>-->
+                   
                   </div>
                 </div>
                 <div class="panel-header call-history-panel inner-detail">
@@ -511,27 +442,7 @@
                       </div>
                     </mat-expansion-panel>
 
-                    <!--<ul>-->
-                    <!--<li class="agent-pic">-->
-                    <!--<span><img src="/assets/images/incoming-call.svg"> </span>-->
-                    <!--</li>-->
-                    <!--<li class="agent-pic call-services">-->
-                    <!--<p><span><img src="/assets/images/ag1.png"></span>Tech Support</p>-->
-                    <!--</li>-->
-                    <!--<li class="section-duration">-->
-                    <!--<time>02min 20sec</time>-->
-                    <!--</li>-->
-                    <!--<li class="agent-pic">-->
-                    <!--<span><img src="/assets/images/call-end.svg"> </span>-->
-                    <!--</li>-->
-                    <!--<li class="section-tags">-->
-                    <!--<span>Tag A</span>-->
-                    <!--<span>Tag B</span>-->
-                    <!--</li>-->
-                    <!--<li class="agent-pic">-->
-                    <!--<span><img src="/assets/images/call-record.svg"> </span>-->
-                    <!--</li>-->
-                    <!--</ul>-->
+                  
                   </div>
                 </div>
 
@@ -540,12 +451,14 @@
           </div>
         </mat-accordion>
       </div>
-    </div>
+    </div> -->
 
+
+    <!-- simple chat area -->
 
     <div class="instruction-content chat-session-main">
       <div class="int-date"><span>Mon<b>09</b></span></div>
-      <div *ngFor="let con of convers">
+      <div *ngFor="let con of messages">
       <div class="chat-message user-message">
         <div class="profile-pic">
           <div class="active-channel channel-icon {{customer.info.channel}}"><img width="20" src="../assets/images/web.svg"></div>

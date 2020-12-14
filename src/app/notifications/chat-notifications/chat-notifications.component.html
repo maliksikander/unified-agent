@@ -7,7 +7,7 @@
             <p class="channel-icon"><img [src]="channelImageSrc"></p>
           </div>
           <div class="requested-name">
-            <p>{{customerName != null ? customerName : 'UNKNOWN' }}</p>
+            <p>{{customerName != null ? customerName : 'UNIDENTIFIED CUSTOMER' }}</p>
           </div>
           <div class="notification-trigger">
             <button (click)="getTopicSubscription()" class="mat-flat-button" mat-button>Accept</button>
