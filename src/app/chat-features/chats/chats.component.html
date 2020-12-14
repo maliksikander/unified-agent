@@ -18,7 +18,7 @@
                     [showSubtitle]="false" [showUnits]="false" [renderOnClick]="false">
                   </circle-progress>
                   <span class="badge1"
-                  [hidden]="conversation.unreadCount==0">2</span>
+                  [hidden]="conversation.unReadCount == 0">{{conversation.unReadCount}}</span>
                 </div>
                 <span class="user-name">{{conversation.messages[0].header.sender.participant.displayName}}</span>
               </span>
@@ -26,7 +26,7 @@
           </div>
           <div class="chat-contents">
             <div class="main-tab-content">
-              <app-interactions [messages]="conversation.messages"></app-interactions>
+              <app-interactions [conversation]="conversation"></app-interactions>
             </div>
           </div>
           <!-- row end -->

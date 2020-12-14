@@ -10,8 +10,7 @@ import { socketService } from 'src/app/services/socket.service';
 })
 export class InteractionsComponent implements OnInit {
   // tslint:disable-next-line:no-input-rename
-  @Input('messages') messages: any;
-  conversation = [];
+  @Input('conversation') conversation: any;
   unidentified = true;
   isConnected = true;
   channelUrl = 'assets/images/web.svg';
@@ -41,7 +40,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   onSend(text) {
-    let message = JSON.parse(JSON.stringify(this.messages[this.messages.length - 1]));
+    let message = JSON.parse(JSON.stringify(this.conversation.messages[this.conversation.messages.length - 1]));
 
     message.header.sender.type = "agent";
     message.header.sender.role = "agent";
@@ -51,7 +50,10 @@ export class InteractionsComponent implements OnInit {
 
     this._socketService.emit('sendMessage', message);
 
+  }
 
+  onTextAreaClick() {
+    this.conversation.unReadCount = 0;
   }
 
 }

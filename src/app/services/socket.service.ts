@@ -22,7 +22,7 @@ export class socketService {
     connectToSocket() {
         this.uri = this._appConfigService.config.SOCKET_URL;
 
-        console.log("username------ "+this._cacheService.agent.details.username)
+        console.log("username------ " + this._cacheService.agent.details.username)
 
         this.socket = io.connect(this.uri, {
             query: { token: this._cacheService.agent.details.access_token, agentId: this._cacheService.agent.details.username }
@@ -76,8 +76,9 @@ export class socketService {
 
         if (sameTopicIdObj) {
             sameTopicIdObj.messages.push(res.message);
+            if (res.message.header.sender.type != 'agent') { ++sameTopicIdObj.unReadCount; }
         } else {
-            this.conversations.push({ topicId: res.topicId, messages: [res.message] });
+            this.conversations.push({ topicId: res.topicId, messages: [res.message], unReadCount: 1 });
         }
     }
 
