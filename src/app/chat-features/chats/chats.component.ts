@@ -66,5 +66,10 @@ export class ChatsComponent implements OnInit {
     this._socketService.connectToSocket();
   }
 
+  currentTabIndex;
+  onTabChange(event) {
+    // console.log("parent called "+event)
+    // this.currentTabIndex = event;
+  }
 
 }

@@ -2,14 +2,14 @@
   <div class="row">
     <div class="col-md-4 customer-showcase">
       <h3 matTooltipPosition="right" class="customer-highlight">
-        {{conversation.messages[0].header.sender.participant.displayName | slice :0 :2 |uppercase}}
+        {{conversation.messages[conversation.messages.length -1].header.channelSession.associatedCustomer.firstName | slice :0 :2 |uppercase}}
 
         <span class="channel-icon {{customer.info.channel}}">
           <img *ngIf="channelUrl" src="{{channelUrl}}">
         </span>
       </h3>
-      <h5 class="customer-name" [matTooltip]="conversation.messages[0].header.sender.participant.displayName">
-        {{conversation.messages[0].header.sender.participant.displayName | slice :0 :50}}
+      <h5 class="customer-name" [matTooltip]="conversation.messages[conversation.messages.length -1].header.channelSession.associatedCustomer.firstName">
+        {{conversation.messages[conversation.messages.length -1].header.channelSession.associatedCustomer.firstName | slice :0 :50}}
         <span class="chat-timer">( 11:32 )</span>
 
       </h5>

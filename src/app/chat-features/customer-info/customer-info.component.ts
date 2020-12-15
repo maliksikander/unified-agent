@@ -10,7 +10,7 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 export class CustomerInfoComponent implements OnInit {
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
   // tslint:disable-next-line:no-input-rename
-  @Input('conversation') conversation: any;
+  @Input() conversation: any;
   customArray = [
     'media_channel',
     'customer_profile',
@@ -41,6 +41,8 @@ export class CustomerInfoComponent implements OnInit {
   }
 
   ngOnInit() {
+   // console.log("child called conversation "+this.conversation);
+
   }
 
   close() {

@@ -1,11 +1,12 @@
-<div *ngIf ="_socketService.conversations[0] != null"  class="ef_container container-fluid p-0">
+<div *ngIf="_socketService.conversations[0] != null" class="ef_container container-fluid p-0">
   <div id="content" class="h-100">
-    
+
     <div id="main-content" class="h-100">
       <!--      <button color="primary" class="left-bar-trigger" (click)="barExpand = !barExpand" ><mat-icon>{{barExpand ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}</mat-icon></button>-->
-      <mat-tab-group class="chat-tab-area h-100">
+      <mat-tab-group (selectedIndexChange)="onTabChange($event)" class="chat-tab-area h-100">
 
-        <mat-tab class="main-chat-tab h-100" *ngFor="let conversation of _socketService.conversations;">
+        <mat-tab  class="main-chat-tab h-100"
+          *ngFor="let conversation of _socketService.conversations;">
 
           <div class="chat-contacts left-bar-contacts">
             <ng-template mat-tab-label>
@@ -14,13 +15,13 @@
                   <circle-progress class="laft-bar-data" [percent]="100" [radius]="15" [outerStrokeWidth]="2"
                     [innerStrokeWidth]="2" [outerStrokeColor]="'#3f51b5'" [innerStrokeColor]="'#F3F6F8'" [space]=-1
                     [animation]="conversation.animation" [animationDuration]="600"
-                    [title]="conversation.messages[0].header.sender.participant.displayName | slice :0 :2 |uppercase" [titleFontSize]="10"
-                    [showSubtitle]="false" [showUnits]="false" [renderOnClick]="false">
+                    [title]="conversation.messages[conversation.messages.length -1].header.channelSession.associatedCustomer.firstName | slice :0 :2 |uppercase"
+                    [titleFontSize]="10" [showSubtitle]="false" [showUnits]="false" [renderOnClick]="false">
                   </circle-progress>
-                  <span class="badge1"
-                  [hidden]="conversation.unReadCount == 0">{{conversation.unReadCount}}</span>
+                  <span class="badge1" [hidden]="conversation.unReadCount == 0">{{conversation.unReadCount}}</span>
                 </div>
-                <span class="user-name">{{conversation.messages[0].header.sender.participant.displayName}}</span>
+                <span class="user-name">{{conversation.messages[conversation.messages.length
+                  -1].header.channelSession.associatedCustomer.firstName}}</span>
               </span>
             </ng-template>
           </div>
@@ -30,14 +31,15 @@
             </div>
           </div>
           <!-- row end -->
+          <!-- <app-customer-info [conversation]="conversation"></app-customer-info> -->
 
         </mat-tab>
       </mat-tab-group>
     </div>
-    <app-customer-info></app-customer-info>
+    <app-customer-info ></app-customer-info>
   </div>
 </div>
 
-<div *ngIf ="_socketService.conversations[0] == null" class="no-chat">
+<div *ngIf="_socketService.conversations[0] == null" class="no-chat">
   NO CHAT AVAILABLE
 </div>
