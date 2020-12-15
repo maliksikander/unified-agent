@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { cacheService } from '../services/cache.service';
+import { sharedService } from '../services/shared.service';
 import { socketService } from '../services/socket.service';
 
 @Component({
@@ -21,12 +22,39 @@ export class AppHeaderComponent implements OnInit {
     { code: 'fr', name: 'French', flag: 'fr.png' }
   ];
 
+  startTime: Date;
+  stopTime: Date;
+  active: boolean = false
+  get display() { return (this.startTime && this.stopTime) ? +this.stopTime - +this.startTime : 0 }
 
-  constructor(public _cacheService: cacheService, private _socketService: socketService) {
+  timer() {
+    if (this.active) {
+      this.stopTime = new Date()
+      setTimeout(() => {
+        this.timer()
+      }, 1000)
+    }
+  }
+
+  constructor(public _cacheService: cacheService, private _socketService: socketService, private _sharedService : sharedService) {
 
   }
 
   ngOnInit() {
+    
+    this._sharedService.serviceCurrentMessage.subscribe((e) => {
+
+      if (e.msg == 'stateChanged') {
+        this.reStartTimer();
+      }
+    })
+  }
+
+  reStartTimer() {
+    this.startTime = new Date()
+    this.stopTime = this.stopTime
+    this.active = true
+    this.timer()
   }
 
   changeState(state) {

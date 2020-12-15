@@ -54,7 +54,7 @@
             </mat-menu>
           </div>
 
-          <span class="time_state">11:10</span>
+          <span class="time_state">{{display | date :"HH:mm:ss":'UTC'}}</span>
 
         </div>
       
@@ -109,8 +109,8 @@
 
                 </button>
               </p>
-              <p class="menu-trigger-custom logged-time ">11:12
-                <span class="time_state"> 22:55</span>
+              <p class="menu-trigger-custom logged-time ">{{display | date :"HH:mm:ss":'UTC'}}
+                <span class="time_state">11:12</span>
               </p>
 
               <p class="menu-trigger-custom select-language">

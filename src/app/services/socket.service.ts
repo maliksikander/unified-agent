@@ -33,6 +33,7 @@ export class socketService {
         this.listen('agentPresence').subscribe((res: any) => {
             console.log(res);
             this._cacheService.agent.presence = res;
+            this._sharedService.serviceChangeMessage({ msg: 'stateChanged', data: null });
         });
 
         this.listen('errors').subscribe((res: any) => {

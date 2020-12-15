@@ -471,7 +471,7 @@
             <div class="chat-message-content ">
               <p>{{message.body.markdownTest}}</p>
             </div>
-            <span class="chat-time">16:15:45</span>
+            <span class="chat-time">{{message.header.timeStamp | date:'h:mm:ss'}}</span>
           </div>
         </div>
       </div>
