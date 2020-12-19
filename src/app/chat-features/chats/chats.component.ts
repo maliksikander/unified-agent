@@ -67,9 +67,10 @@ export class ChatsComponent implements OnInit {
   }
 
   currentTabIndex;
-  onTabChange(event) {
-    // console.log("parent called "+event)
-    // this.currentTabIndex = event;
+  onTabChange(index) {
+    console.log("parent called " + index);
+    this.currentTabIndex = index;
+
   }
 
 }

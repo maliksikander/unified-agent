@@ -1,16 +1,19 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {MatSidenav} from '@angular/material';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { socketService } from 'src/app/services/socket.service';
+import { sharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-customer-info',
   templateUrl: './customer-info.component.html',
   styleUrls: ['./customer-info.component.scss']
 })
-export class CustomerInfoComponent implements OnInit {
-  @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
+export class CustomerInfoComponent implements OnInit, OnChanges {
+  @ViewChild('sidenav', { static: true }) sidenav: MatSidenav;
   // tslint:disable-next-line:no-input-rename
-  @Input() conversation: any;
+  @Input() currentTabIndex: any;
+  message;
   customArray = [
     'media_channel',
     'customer_profile',
@@ -37,15 +40,36 @@ export class CustomerInfoComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
   }
-  constructor() {
+  constructor(public _socketService: socketService, private _sharedService: sharedService) {
+    this._sharedService.serviceCurrentMessage.subscribe((e) => {
+
+      if (e.msg == 'onMessage') {
+
+        this.updateCustomerInfo()
+      }
+    })
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.currentTabIndex.currentValue != undefined) {
+      this.updateCustomerInfo()
+    }
+    console.log("on changes ", this.message)
   }
 
   ngOnInit() {
-   // console.log("child called conversation "+this.conversation);
+    // console.log("child called conversation "+this.conversation);
 
   }
 
   close() {
     this.sidenav.close();
   }
+
+
+  updateCustomerInfo() {
+    let index = this.currentTabIndex == null ? 0 : this.currentTabIndex;
+    let conversation = this._socketService.conversations[index];
+    this.message = conversation.messages[conversation.messages.length - 1];
+  }
+
 }

@@ -81,6 +81,8 @@ export class socketService {
         } else {
             this.conversations.push({ topicId: res.topicId, messages: [res.message], unReadCount: 1 });
         }
+        this._sharedService.serviceChangeMessage({ msg: 'onMessage', data: null });
+
     }
 
 
