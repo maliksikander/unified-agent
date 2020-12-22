@@ -17,6 +17,17 @@ export class sharedService {
         this.serviceMessageSource.next(data);
     }
 
+    getIndexFromTopicId(topicId, array) {
+        let index = array.findIndex((e) => {
+          return e.topicId == topicId
+        });
+        return index;
+      }
+    
+      spliceArray(index, array) {
+        array.splice(index, 1);
+      }
+
     Interceptor(e, res) {
 
         if (res == 'err') {

@@ -13,18 +13,16 @@ import { socketService } from './services/socket.service';
 export class AppComponent implements OnInit {
 
   title = 'unified-agent-gadget';
+  requests = [];
 
   currentRoute: string;
-  requestHeaderState: boolean = false;
-  requestHeaderData;
 
   constructor(private _router: Router, private _sharedService: sharedService) {
 
     this._sharedService.serviceCurrentMessage.subscribe((e) => {
 
       if (e.msg == 'openRequestHeader') {
-        this.requestHeaderState = true;
-        this.requestHeaderData = e.data;
+        this.requests.push(e.data);
       }
     })
 
@@ -40,8 +38,15 @@ export class AppComponent implements OnInit {
       });
   }
 
-  requestHeaderEvents(requestHeaderState) {
-    this.requestHeaderState = requestHeaderState;
+  requestHeaderEvents(topicId) {
+
+    this.removeRequestFromRequestArray(topicId);
+  }
+
+
+  removeRequestFromRequestArray(topicId) {
+    let index = this._sharedService.getIndexFromTopicId(topicId, this.requests);
+    this._sharedService.spliceArray(index, this.requests);
   }
 
 }
