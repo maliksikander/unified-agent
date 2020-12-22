@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import * as io from 'socket.io-client';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { appConfigService } from './appConfig.service';
 import { cacheService } from './cache.service';
 import { sharedService } from './shared.service';
@@ -14,6 +14,10 @@ export class socketService {
     socket: any;
     uri: string;
     conversations: any = [];
+
+    private _conversationsListener: BehaviorSubject<any> = new BehaviorSubject([]);
+
+    public readonly conversationsListener: Observable<any> = this._conversationsListener.asObservable();
 
     constructor(private _appConfigService: appConfigService, private _cacheService: cacheService, private _sharedService: sharedService) {
     }
@@ -81,7 +85,9 @@ export class socketService {
         } else {
             this.conversations.push({ topicId: res.topicId, messages: [res.message], unReadCount: 1 });
         }
+
         this._sharedService.serviceChangeMessage({ msg: 'onMessage', data: null });
+        this._conversationsListener.next(this.conversations);
 
     }
 

@@ -58,7 +58,7 @@ export class ChatsComponent implements OnInit {
   ];
 
 
-  constructor(public _socketService: socketService) {
+  constructor(private _socketService: socketService) {
 
   }
 

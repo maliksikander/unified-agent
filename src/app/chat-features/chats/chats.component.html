@@ -1,4 +1,4 @@
-<div *ngIf="_socketService.conversations[0] != null" class="ef_container container-fluid p-0">
+<div *ngIf="(_socketService.conversationsListener | async)?.length > 0"  class="ef_container container-fluid p-0">
   <div id="content" class="h-100">
 
     <div id="main-content" class="h-100">
@@ -6,8 +6,7 @@
       <mat-tab-group (selectedIndexChange)="onTabChange($event)" class="chat-tab-area h-100">
 
         <mat-tab  class="main-chat-tab h-100"
-          *ngFor="let conversation of _socketService.conversations;">
-
+          *ngFor="let conversation of (_socketService.conversationsListener | async)">
           <div class="chat-contacts left-bar-contacts">
             <ng-template mat-tab-label>
               <span class="get-events">
@@ -40,6 +39,6 @@
   </div>
 </div>
 
-<div *ngIf="_socketService.conversations[0] == null" class="no-chat">
+<div *ngIf="(_socketService.conversationsListener | async)?.length == 0" class="no-chat">
   NO CHAT AVAILABLE
 </div>

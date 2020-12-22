@@ -469,7 +469,7 @@
                 |uppercase}}</div>
             </div>
             <div class="chat-message-content ">
-              <p>{{message.body.markdownTest}}</p>
+              <p [innerHTML]="message.body.markdownTest | linkify | ibsformat"></p>
             </div>
             <span class="chat-time">{{message.header.timeStamp | date:'h:mm:ss'}}</span>
           </div>
