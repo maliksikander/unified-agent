@@ -58,12 +58,11 @@ export class ChatsComponent implements OnInit {
   ];
 
 
-  constructor(private _socketService: socketService) {
+  constructor() {
 
   }
 
   ngOnInit() {
-    this._socketService.connectToSocket();
   }
 
   currentTabIndex;

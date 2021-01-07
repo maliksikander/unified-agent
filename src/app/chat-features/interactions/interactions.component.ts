@@ -36,24 +36,24 @@ export class InteractionsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("i am called hello")
+  //  console.log("i am called hello")
   }
 
   onSend(text) {
-    let message = JSON.parse(JSON.stringify(this.conversation.messages[this.conversation.messages.length - 1]));
+    // let message = JSON.parse(JSON.stringify(this.conversation.messages[this.conversation.messages.length - 1]));
 
-    message.header.sender.type = "agent";
-    message.header.sender.role = "agent";
-    message.header.sender.participant.id = this._cacheService.agent.details.username;
-    message.header.sender.participant.displayName = this._cacheService.agent.details.username;
-    message.body.markdownTest = text;
+    // message.header.sender.type = "agent";
+    // message.header.sender.role = "agent";
+    // message.header.sender.participant.id = this._cacheService.agent.details.username;
+    // message.header.sender.participant.displayName = this._cacheService.agent.details.username;
+    // message.body.markdownTest = text;
 
-    this._socketService.emit('sendMessage', message);
+    // this._socketService.emit('sendMessage', message);
 
   }
 
   onTextAreaClick() {
-    this.conversation.unReadCount = 0;
+ //   this.conversation.unReadCount = 0;
   }
 
 }

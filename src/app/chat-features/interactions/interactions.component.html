@@ -2,14 +2,14 @@
   <div class="row">
     <div class="col-md-4 customer-showcase">
       <h3 matTooltipPosition="right" class="customer-highlight">
-        {{conversation.messages[conversation.messages.length -1].header.channelSession.associatedCustomer.firstName | slice :0 :2 |uppercase}}
+        {{conversation.messages.title | slice :0 :2 |uppercase}}
 
-        <span class="channel-icon {{customer.info.channel}}">
+        <span class="channel-icon {{channelUrl}}">
           <img *ngIf="channelUrl" src="{{channelUrl}}">
         </span>
       </h3>
-      <h5 class="customer-name" [matTooltip]="conversation.messages[conversation.messages.length -1].header.channelSession.associatedCustomer.firstName">
-        {{conversation.messages[conversation.messages.length -1].header.channelSession.associatedCustomer.firstName | slice :0 :50}}
+      <h5 class="customer-name">
+        {{conversation.messages.title | slice :0 :50}}
         <span class="chat-timer">( 11:32 )</span>
 
       </h5>
@@ -461,17 +461,17 @@
         <div class="int-date"><span>Mon<b>09</b></span></div>
         <div *ngFor="let message of conversation.messages">
           <div class="chat-message"
-            [ngClass]="(message.header.sender.type == 'customer') ?'user-message':'agent-message'">
+            [ngClass]="agent-message">
             <div class="profile-pic">
               <div class="active-channel channel-icon {{customer.info.channel}}"><img width="20"
                   src="../assets/images/web.svg"></div>
-              <div class="profile-pic-area user-img">{{message.header.sender.participant.displayName | slice :0 :2
+              <div class="profile-pic-area user-img">{{message.title | slice :0 :2
                 |uppercase}}</div>
             </div>
             <div class="chat-message-content ">
-              <p [innerHTML]="message.body.markdownTest | linkify | ibsformat"></p>
+              <p [innerHTML]="message.message | linkify | ibsformat"></p>
             </div>
-            <span class="chat-time">{{message.header.timeStamp | date:'h:mm:ss'}}</span>
+            <span class="chat-time">12/12/12</span>
           </div>
         </div>
       </div>
