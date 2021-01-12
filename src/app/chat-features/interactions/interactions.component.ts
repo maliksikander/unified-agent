@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { cacheService } from 'src/app/services/cache.service';
 import { sharedService } from 'src/app/services/shared.service';
 import { socketService } from 'src/app/services/socket.service';
+import {MatDialog} from '@angular/material';
 
 @Component({
   selector: 'app-interactions',
@@ -13,8 +14,13 @@ export class InteractionsComponent implements OnInit {
   @Input('conversation') conversation: any;
   unidentified = true;
   isConnected = true;
+  popTitle = "Notes"
+  @Input('messages') messages: any;
+
   channelUrl = 'assets/images/web.svg';
   options: string[] = ['Glenn Helgass', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', 'Glenn Helgass', ' Ev Gayforth'];
+  categories: string[] = ['Fayina Addinall', 'Doy Ortelt', ' Ev Gayforth', 'Adam Joe Stanler'];
+
   customer: any = {
     type: 'Customer',
     info: {
@@ -30,13 +36,17 @@ export class InteractionsComponent implements OnInit {
       url: 'http://localhost:4200/',
     }
   };
+  convers: any[];
 
 
-  constructor(private _sharedService: sharedService, private _cacheService: cacheService, private _socketService: socketService) {
+  constructor(private _sharedService: sharedService, private _cacheService: cacheService, private _socketService: socketService, private dialog: MatDialog) {
   }
 
   ngOnInit() {
   //  console.log("i am called hello")
+    this.convers = this.conversation;
+
+
   }
 
   onSend(text) {
@@ -50,6 +60,13 @@ export class InteractionsComponent implements OnInit {
 
     // this._socketService.emit('sendMessage', message);
 
+  }
+  openDialog(templateRef, e): void {
+    this.popTitle = e;
+
+    this.dialog.open(templateRef, {
+      panelClass: 'wrap-dialog',
+    });
   }
 
   onTextAreaClick() {

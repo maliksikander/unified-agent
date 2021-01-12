@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { MatSidenav } from '@angular/material';
+import {MatDialog, MatSidenav} from '@angular/material';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { socketService } from 'src/app/services/socket.service';
 import { sharedService } from 'src/app/services/shared.service';
@@ -35,25 +35,26 @@ export class CustomerInfoComponent implements OnInit, OnChanges {
       url: 'http://localhost:4200/',
     }
   };
+  outgoingCallingNumber = '+446698988';
   options: string[] = ['Glenn Helgass', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall',
     'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', 'Glenn Helgass', ' Ev Gayforth'];
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
   }
-  constructor(public _socketService: socketService, private _sharedService: sharedService) {
+  constructor(public _socketService: socketService, private _sharedService: sharedService,  private dialog: MatDialog) {
     this._sharedService.serviceCurrentMessage.subscribe((e) => {
 
-      if (e.msg == 'onMessage') {
+      if (e.msg === 'onMessage') {
 
-        this.updateCustomerInfo()
+        this.updateCustomerInfo();
       }
     })
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.currentTabIndex.currentValue != undefined) {
-      this.updateCustomerInfo()
+    if (changes.currentTabIndex.currentValue !== undefined) {
+      this.updateCustomerInfo();
     }
-    console.log("on changes ", this.message)
+    console.log("on changes ", this.message);
   }
 
   ngOnInit() {
@@ -70,6 +71,14 @@ export class CustomerInfoComponent implements OnInit, OnChanges {
     let index = this.currentTabIndex == null ? 0 : this.currentTabIndex;
     let conversation = this._socketService.conversations[index];
     this.message = conversation.messages[conversation.messages.length - 1];
+  }
+  openDialog(templateRef, e): void {
+    this.outgoingCallingNumber = e;
+
+    this.dialog.open(templateRef, {
+      panelClass: 'calling-dialog',
+      width: '350px'
+    });
   }
 
 }

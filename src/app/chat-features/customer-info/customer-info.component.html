@@ -35,10 +35,10 @@
                   <strong>+446698988</strong>
                   <small>Mobile Personal</small>
                   <span class="channel-list-action">
-                                        <button mat-icon-button><mat-icon>call</mat-icon></button>
-                                        <button mat-icon-button><mat-icon>message</mat-icon></button>
-                                        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
-                               </span>
+                    <button mat-icon-button (click)="openDialog(callingTemplate, '+446698988')"><mat-icon>call</mat-icon></button>
+                    <button mat-icon-button><mat-icon>message</mat-icon></button>
+                    <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+                  </span>
                 </p>
               </li>
               <li>
@@ -47,11 +47,11 @@
                   <strong>+446698985</strong>
                   <small>Whatsapp Personal</small>
                   <span class="channel-list-action">
-                                        <button mat-icon-button><mat-icon>call</mat-icon></button>
-                                        <button mat-icon-button><mat-icon>message</mat-icon></button>
-                    <!--                                        <button mat-icon-button><mat-icon>mail</mat-icon></button>-->
-                                        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
-                               </span>
+                    <button mat-icon-button><mat-icon>call</mat-icon></button>
+                    <button mat-icon-button><mat-icon>message</mat-icon></button>
+                    <!--<button mat-icon-button><mat-icon>mail</mat-icon></button>-->
+                    <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+                    </span>
                 </p>
               </li>
               <li>
@@ -60,9 +60,9 @@
                   <strong>a.stanler@skytechinc.com</strong>
                   <small>Email Business</small>
                   <span class="channel-list-action">
-                                        <button mat-icon-button><mat-icon>mail</mat-icon></button>
-                                        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
-                               </span>
+                  <button mat-icon-button><mat-icon>mail</mat-icon></button>
+                  <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+                  </span>
                 </p>
               </li>
               <li>
@@ -71,8 +71,8 @@
                   <strong>Skytech Inc.</strong>
                   <small>Facebook Business</small>
                   <span class="channel-list-action">
-                                        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
-                               </span>
+                  <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+                  </span>
                 </p>
               </li>
               <li>
@@ -81,8 +81,8 @@
                   <strong>adam.reedsuk</strong>
                   <small>Landline Residence</small>
                   <span class="channel-list-action">
-                                        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
-                               </span>
+                    <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+                    </span>
                 </p>
               </li>
               <li>
@@ -91,8 +91,8 @@
                   <strong>Desktop Browser 1</strong>
                   <small>Landline Residence</small>
                   <span class="channel-list-action">
-                                        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
-                               </span>
+                    <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+                    </span>
                 </p>
               </li>
               <li>
@@ -101,8 +101,8 @@
                   <strong>Desktop Browser 2</strong>
                   <small>Landline Residence</small>
                   <span class="channel-list-action">
-                                        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
-                               </span>
+                    <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+                    </span>
                 </p>
               </li>
 
@@ -300,7 +300,7 @@
                   </ul>
                 </mat-expansion-panel>
 
-                <!--Facebook channel accordion-->
+                <!--Whatsapp channel accordion-->
                 <mat-expansion-panel>
                   <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                     <div class="channel-icon-area">
@@ -332,6 +332,42 @@
                     </li>
                   </ul>
                 </mat-expansion-panel>
+                <!--Call Active accordion-->
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
+                    <div class="channel-icon-area">
+                      <span class="channel-icon voice-call"><img src="/assets/images/voice-call.svg"></span>
+                      <label>Voice Call</label>
+                    </div>
+                  </mat-expansion-panel-header>
+
+                  <ul class="requested-channel-content">
+                    <li>
+                      <label>Call Time</label>
+                      11:20 AM
+                    </li>
+                    <li>
+                      <label>Customer</label>
+                      Stacy Miller
+                    </li>
+                    <li>
+                      <label>Call Type</label>
+                      Incoming Call
+                    </li>
+                    <li>
+                      <label>IVR Trail</label>
+                      IVR-2 > 1236 > Complaint Registration > Landline > Cross Talk > CSR
+                    </li>
+                    <li>
+                      <label>Call Attached Data</label>
+                      <a href="">https://tinyurl.com/yyk6qks3</a>
+                    </li>
+                    <li>
+                      <label>Call Disposition</label>
+                      <a>Transferred</a>
+                    </li>
+                  </ul>
+                </mat-expansion-panel>
 
               </mat-accordion>
             </div>
@@ -349,3 +385,28 @@
   <!--    <p>hi </p>-->
   <!--  </mat-sidenav-content>-->
 </mat-sidenav-container>
+
+<ng-template #callingTemplate>
+  <div class="calling-dialog-main">
+    <div class="dialog-main-content">
+      <div class="row m-0">
+        <div class="call-content">
+        <div class="call-icon">
+          <mat-icon>phone</mat-icon>
+        </div>
+        <div class="call-detail">
+          <p>initiate outgoing call to</p>
+          <h4>Stacy Miller</h4>
+          <strong>{{outgoingCallingNumber}}</strong>
+          <small>(Mobile)</small>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <div class="call-trigger">
+      <button mat-button [mat-dialog-close]="true" class="call-btn" cdkFocusInitial>Call</button>
+      <button mat-button mat-dialog-close class="cancel-call">Cancel</button>
+    </div>
+  </div>
+</ng-template>

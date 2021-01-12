@@ -162,6 +162,7 @@ mat-sidenav.mat-drawer.mat-sidenav {
 }
 .mat-menu-panel{
   min-height: 30px !important;
+  overflow: hidden !important;
 }
 
 //right-bar
@@ -191,6 +192,10 @@ mat-sidenav.mat-drawer.mat-sidenav {
   &.viber{
     background: $viber-color !important;
   }
+  &.voice-call{
+    background: $call-color !important;
+
+  }
 }
 .panel-divider {
   mat-expansion-panel {
@@ -214,4 +219,96 @@ snack-bar-container.succ-class {
 .mat-simple-snackbar span {
   margin: auto;
   text-align: center;
+}
+
+//Expansion panel
+.instruction-content {
+  mat-expansion-panel-header.mat-expanded {
+    background: #F5F5F5 !important;
+    border-radius: 0;
+    margin-bottom: 10px;
+  }
+  .mat-expansion-panel-spacing {
+    margin-top: -1px;
+  }
+
+  .history-detail.inner-detail-history {
+    mat-expansion-panel-header:hover{
+      background: #FBFBFB;
+    }
+    .mat-expanded {
+      background: #FBFBFB;
+    }
+  }
+}
+
+.list-group-item {
+  .mat-button-wrapper {
+padding: 0 !important;
+  }
+}
+
+.wrap-trigger{
+  background: #f1f1f1;
+  color: #707070;
+  padding: 0 5px !important;
+  height: 38px !important;
+  line-height: 38px !important;
+  z-index: 2;
+  &:hover{
+    background: lighten($dark-gray-color, 80%) !important;
+  }
+  span{
+    margin-left: 5px;
+    font-size: 12px;
+  }
+
+  .icon-trigger {
+    width: 28px;
+    height: 28px;
+    background: #fff;
+    border-radius: 100%;
+    display: inline-block;
+    text-align: center;
+    line-height: 28px;
+  }
+}
+
+//Dialog Globally
+
+.mat-dialog-container{
+  padding: 0 !important;
+}
+.wrap-dialog{
+  width: 100% !important;
+  max-width: 580px !important;
+}
+.dialog-header {
+  background: #F0F4F8;
+  height: 38px;
+  padding: 0 10px;
+  position: relative;
+
+  h4{
+    font-size: 14px;
+    color: $blue-text-color;
+    line-height: 36px;
+  }
+  button {
+    position: absolute;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid $blue-text-color;
+    min-width: inherit;
+    text-align: center;
+    padding: 0;
+    border-radius: 100%;
+    top: 4px;
+    mat-icon{
+      line-height: 20px;
+      font-size: 18px;
+    }
+  }
 }

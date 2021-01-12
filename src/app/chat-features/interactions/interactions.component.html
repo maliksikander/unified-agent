@@ -2,14 +2,13 @@
   <div class="row">
     <div class="col-md-4 customer-showcase">
       <h3 matTooltipPosition="right" class="customer-highlight">
-        {{conversation.messages.title | slice :0 :2 |uppercase}}
+        {{messages[0].title | slice :0 :2 |uppercase}}
 
-        <span class="channel-icon {{channelUrl}}">
+        <span class="channel-icon {{customer.info.channel}}">
           <img *ngIf="channelUrl" src="{{channelUrl}}">
         </span>
       </h3>
-      <h5 class="customer-name">
-        {{conversation.messages.title | slice :0 :50}}
+      <h5 class="customer-name" [matTooltip]="messages.title">{{messages[0].title | slice :0 :50}}
         <span class="chat-timer">( 11:32 )</span>
 
       </h5>
@@ -48,6 +47,39 @@
           </button>
         </li>
       </ul>
+<!--Call controls-->
+      <ul class="list-group list-group-horizontal agent-controls call-controls">
+        <li class="list-group-item">
+          <button mat-icon-button>
+            <mat-icon>textsms</mat-icon>
+          </button>
+        </li>
+        <li class="list-group-item">
+          <button mat-icon-button>
+            <mat-icon>phone_forwarded</mat-icon>
+          </button>
+        </li>
+        <li class="list-group-item">
+          <button mat-icon-button>
+            <mat-icon>mic</mat-icon>
+          </button>
+        </li>
+        <li class="list-group-item">
+          <button mat-icon-button>
+            <mat-icon>volume_off</mat-icon>
+          </button>
+        </li>
+        <li class="list-group-item">
+          <button mat-icon-button>
+            <mat-icon>pause</mat-icon>
+          </button>
+        </li>
+        <li class="list-group-item call-end">
+          <button mat-icon-button>
+            <mat-icon>call_end</mat-icon>
+          </button>
+        </li>
+      </ul>
 
     </div>
 
@@ -64,9 +96,9 @@
 
 
       <!-- voice message chat area -->
-      <!-- <div class="instruction-main">
+       <div class="instruction-main">
       <div class="instruction-inner">
-      
+
         <mat-accordion>
 
           <div class="instruction-content">
@@ -197,7 +229,7 @@
                       </div>
                     </mat-expansion-panel>
 
-                    
+
                   </div>
                 </div>
                 <div class="panel-header call-history-panel inner-detail">
@@ -388,7 +420,7 @@
                       </div>
                     </mat-expansion-panel>
 
-                   
+
                   </div>
                 </div>
                 <div class="panel-header call-history-panel inner-detail">
@@ -443,25 +475,73 @@
                       </div>
                     </mat-expansion-panel>
 
-                  
+
                   </div>
                 </div>
-
+                <div class="wrap-notes">
+                  <button mat-icon-button [matMenuTriggerFor]="WrapMenu" aria-label="icon-button with a menu">
+                    <mat-icon>more_horiz</mat-icon>
+                  </button>
+                  <mat-menu backdropClass="menu-wraper"  #WrapMenu="matMenu" yPosition="above" xPosition="before">
+                    <button class="wrap-trigger" (click)="openDialog(noteTemplate, 'Note')" mat-menu-item>
+                      <span class="icon-trigger"><img src="/assets/images/note.svg" alt="Note"></span>
+                      <span>Note</span>
+                    </button>
+                    <button class="wrap-trigger" (click)="openDialog(noteTemplate, 'Chat Wrap-up')" mat-menu-item>
+                      <span class="icon-trigger"><img src="/assets/images/wrap.svg" alt="Wrap"></span>
+                      <span>Wrap-Up</span>
+                    </button>
+                  </mat-menu>
+                </div>
               </mat-expansion-panel>
             </div>
           </div>
         </mat-accordion>
       </div>
-    </div> -->
+    </div>
 
 
       <!-- simple chat area -->
 
+    <div class="instruction-content chat-session-main">
+      <div class="int-date"><span>Mon<b>09</b></span></div>
+      <div *ngFor="let con of convers">
+      <div class="chat-message user-message">
+        <div class="profile-pic">
+          <div class="active-channel channel-icon {{customer.info.channel}}"><img width="20" src="../assets/images/web.svg"></div>
+          <div class="profile-pic-area user-img">{{con.title | slice :0 :2 |uppercase}}</div>
+        </div>
+        <div class="chat-message-content "><p>{{con.message}}</p>
+        </div>
+        <span class="chat-time">16:15:45</span>
+      </div>
+    </div>
+
+
+      <div class="tags-data panel-divider">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
+            <mat-panel-title>
+              <div class="panel-header tags-panel-header">
+               <ul>
+                 <li><span class="visited"><mat-icon>language</mat-icon> https://www.expertflow.com/chat/</span></li> <li>Customer submitted 'Product Information' form</li>
+               </ul>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+
+          some detail text
+
+        </mat-expansion-panel>
+      </div>
+  </div>
+      <div class="chat-message agent-message">
       <div class="instruction-content chat-session-main">
         <div class="int-date"><span>Mon<b>09</b></span></div>
-        <div *ngFor="let message of conversation.messages">
+        <div *ngFor="let message of conversation">
           <div class="chat-message"
-            [ngClass]="agent-message">
+            [ngClass]="">
             <div class="profile-pic">
               <div class="active-channel channel-icon {{customer.info.channel}}"><img width="20"
                   src="../assets/images/web.svg"></div>
@@ -471,7 +551,7 @@
             <div class="chat-message-content ">
               <p [innerHTML]="message.message | linkify | ibsformat"></p>
             </div>
-            <span class="chat-time">12/12/12</span>
+            <span class="chat-time">16:15:45</span>
           </div>
         </div>
       </div>
@@ -522,3 +602,63 @@
 
   </div>
 </div>
+
+<ng-template #noteTemplate>
+  <div class="note-dialog-main">
+    <div class="dialog-header">
+      <h4 mat-dialog-title>{{popTitle}}       <button mat-button mat-dialog-close><mat-icon>close</mat-icon></button></h4>
+    </div>
+    <div class="dialog-main-content">
+      <div class="row m-0">
+        <div class="col-md-4">
+          <div class="categories-area divider-content">
+            <h4>Categories</h4>
+            <div class="selected-area">
+              <div class="select-categories">
+                  <mat-chip-list>
+                    <mat-chip>Doy Ortelt <mat-icon>close</mat-icon></mat-chip>
+                  </mat-chip-list>
+              </div>
+            </div>
+            <div class="categories-label">
+              <ul>
+                <li *ngFor="let option of categories">
+                  {{option}}
+                </li>
+              </ul>
+          </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="wrap-up-area divider-content">
+            <h4>Wrap-Up Codes</h4>
+            <div class="selected-area">
+              <div class="select-categories">
+                <mat-chip-list>
+                  <mat-chip>Doy Ortelt <mat-icon>close</mat-icon></mat-chip>
+                </mat-chip-list>
+              </div>
+            </div>
+            <div class="categories-label">
+              <ul>
+                <li *ngFor="let option of categories">
+                  {{option}}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+          <div class="note-area col-md-12">
+            <h4>Notes</h4>
+            <textarea></textarea>
+          </div>
+      </div>
+    </div>
+
+    <div class="action-trigger text-right">
+      <button mat-button mat-dialog-close class="close-btn">Cancel</button>
+      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial>Apply</button>
+    </div>
+  </div>
+</ng-template>

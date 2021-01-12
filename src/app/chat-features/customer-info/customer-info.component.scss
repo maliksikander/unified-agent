@@ -168,7 +168,8 @@
         label{
           display: block;
           font-size: 10px;
-          color:  lighten($dark-gray-color, 50%);
+          color:  lighten($dark-gray-color, 70%);
+          margin: 0;
         }
       }
     }
@@ -423,4 +424,71 @@
     }
   }
 
+}
+
+//Calling Dialog
+.calling-dialog-main {
+  padding: 20px;
+  .call-content {
+    text-align: center;
+    width: 100%;
+
+    .call-icon {
+      width: 80px;
+      margin: 0 auto;
+      border: 1px solid lighten($blue-text-color, 30%);
+      height: 80px;
+      line-height: 80px;
+      border-radius: 100%;
+      text-align: center;
+      padding: 0;
+
+      mat-icon {
+        color: $red-color;
+        font-size: 34px;
+        height: 80px;
+        line-height: 80px;
+        width: 80px;
+      }
+    }
+
+    .call-detail {
+      margin-top: 20px;
+      color: lighten($dark-gray-color, 40%);
+
+      p {
+        font-size: 12px;
+        margin: 0;
+      }
+
+      h4 {
+        color: $blue-text-color;
+        font-size: 22px;
+        margin: 0;
+      }
+
+      strong {
+        font-size: 15px;
+        display: block;
+      }
+    }
+  }
+  .call-trigger {
+    button {
+      width: 100%;
+      color: lighten($dark-gray-color, 40%);
+      padding: 0;
+      height: 30px;
+      line-height: 30px;
+      border: 1px solid lighten($dark-gray-color, 40%);
+      opacity: 1;
+
+      &.call-btn {
+        background: $green-color;
+        color: #ffffff;
+        border-color: $green-color;
+        margin: 8px 0;
+      }
+    }
+  }
 }
