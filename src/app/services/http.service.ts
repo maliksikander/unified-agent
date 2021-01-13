@@ -14,7 +14,7 @@ export class httpService {
     constructor(public _appConfigService: appConfigService, private _httpClient: HttpClient) {
 
         this.apiEndpoints = {
-            login: "/v1/agent/login"
+            login: "/api/v1/agent/login"
         }
     }
 
