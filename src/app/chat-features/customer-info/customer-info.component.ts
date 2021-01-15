@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {MatDialog, MatSidenav} from '@angular/material';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { socketService } from 'src/app/services/socket.service';
@@ -13,6 +13,9 @@ export class CustomerInfoComponent implements OnInit, OnChanges {
   @ViewChild('sidenav', { static: true }) sidenav: MatSidenav;
   // tslint:disable-next-line:no-input-rename
   @Input() currentTabIndex: any;
+  @Input('conversation') conversation: any;
+  @Output() expandCustomerInfo = new EventEmitter<any>();
+
   message;
   customArray = [
     'media_channel',
@@ -35,6 +38,7 @@ export class CustomerInfoComponent implements OnInit, OnChanges {
       url: 'http://localhost:4200/',
     }
   };
+  barOpened = false;
   outgoingCallingNumber = '+446698988';
   options: string[] = ['Glenn Helgass', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall',
     'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', 'Glenn Helgass', ' Ev Gayforth'];
@@ -80,5 +84,8 @@ export class CustomerInfoComponent implements OnInit, OnChanges {
       width: '350px'
     });
   }
-
+  customerInfoToggle() {
+    this.barOpened = !this.barOpened;
+    this.expandCustomerInfo.emit(this.barOpened);
+  }
 }

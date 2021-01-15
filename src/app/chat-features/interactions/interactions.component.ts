@@ -14,7 +14,7 @@ export class InteractionsComponent implements OnInit {
   @Input('conversation') conversation: any;
   unidentified = true;
   isConnected = true;
-  popTitle = "Notes"
+  popTitle = "Notes";
   @Input('messages') messages: any;
 
   channelUrl = 'assets/images/web.svg';
@@ -38,14 +38,13 @@ export class InteractionsComponent implements OnInit {
   };
   convers: any[];
 
-
   constructor(private _sharedService: sharedService, private _cacheService: cacheService, private _socketService: socketService, private dialog: MatDialog) {
+
   }
 
   ngOnInit() {
   //  console.log("i am called hello")
     this.convers = this.conversation;
-
 
   }
 

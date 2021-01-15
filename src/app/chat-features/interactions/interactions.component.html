@@ -47,8 +47,15 @@
           </button>
         </li>
       </ul>
+
+      <!-- Ringing controls-->
+      <span *ngIf="" class="ringing-controls"> Calling <strong>'+4444858988'</strong> Mobile
+        <button mat-icon-button>
+            <mat-icon>call_end</mat-icon>
+          </button>
+      </span>
 <!--Call controls-->
-      <ul class="list-group list-group-horizontal agent-controls call-controls">
+      <ul *ngIf="" class="list-group list-group-horizontal agent-controls call-controls">
         <li class="list-group-item">
           <button mat-icon-button>
             <mat-icon>textsms</mat-icon>
@@ -662,3 +669,4 @@
     </div>
   </div>
 </ng-template>
+</div>
