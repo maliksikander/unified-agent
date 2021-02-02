@@ -588,8 +588,94 @@
         <form class="reply-form">
           <label class="count-reply">{{replyInput.value.length}}/200</label>
           <div class="mat-form-field form-group chat-area">
-            <textarea (click)="onTextAreaClick()" matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea"
+            <textarea (click)="onTextAreaClick()"  [(ngModel)]="message" (keyup)="onKey($event)"
+                      name="message"  (change)="textChanged($event)" [matAutocomplete]="auto"  matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea"
               class="resize-none" #replyInput name="message" placeholder="Type a message here."></textarea>
+            <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete"  (closed)="closeSelection()" (opened)="displaySuggestions()">
+
+
+              <div class="suggested-content" #mainScreen [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}" >
+                <div class="suggested-tab suggested-tabs-update" [ngClass]="{'animate-content': displaySuggestionsAnimation}">
+                  <ng-container *ngFor="let action of actions | LockFilter: message">
+                    <mat-option [value]="action?.message || action?.name" (click)="message=action?.message || action?.name" *ngIf="action.message != undefined || action.name != undefined">
+                      {{action.message || action.name}}
+                      <button mat-mini-fab class="canned-trigger edit-trigger" (click)="message=action.message || action.name">
+                        <i class="material-icons">
+                          edit
+                        </i>
+                      </button>
+                      <button mat-mini-fab class="canned-trigger send-suggestion" (click)="sendAutoMsg(action.message || action.name)" >
+                        <i class="material-icons">
+                          send
+                        </i>
+                      </button>
+                    </mat-option>
+                  </ng-container>
+                </div>
+<!--                <mat-tab-group animationDuration="0ms">-->
+                  <!--<mat-tab label="Suggested Answer" *ngIf="actions.length > 0">-->
+                  <!--<div class="suggested-tab" *ngIf="actions.length > 0">-->
+                  <!--<mat-option *ngFor="let action of actions | LockFilter: message" [value]="action?.message || action?.name"-->
+                  <!--(click)="message=action.message || action.name">-->
+                  <!--{{action.message || action.name}}-->
+                  <!--</mat-option>-->
+                  <!--</div>-->
+                  <!--</mat-tab>-->
+
+<!--                  <mat-tab label="Canned Messages">-->
+                    <div *ngIf="!displaySuggestionsArea && cannedTabOpen"  class="right-canned-message-list main-canned-message-area">
+                      <strong>Canned Messages</strong>
+                      <div class="bar-content">
+                        <!--<mat-tab-group mat-align-tabs="center">-->
+                        <!--<mat-tab label="{{'chatdetail.cannedMessages'|translate}}">-->
+                        <!--<div class="canned-search-area search-area">-->
+                        <!--<mat-form-field appearance="outline">-->
+                        <!--<input matInput placeholder="Search" autocomplete="off" [(ngModel)]="canned">-->
+                        <!--<mat-icon matSuffix>search</mat-icon>-->
+                        <!--</mat-form-field>-->
+                        <!--</div>-->
+
+                        <mat-tab-group class="inner-tabs" animationDuration="0ms">
+                          <ng-container *ngFor="let msg of cannedMessages; let i = index">
+                            <mat-tab *ngIf="i<3" label="{{msg.category}}">
+                              <mat-option class="custom-tab-area"
+                                          [value]="cMsg"
+                                          *ngFor="let cMsg of msg.messages | LockFilter: message">
+                                {{cMsg}}
+                                {{cMsg.count}}
+
+                                <button mat-mini-fab color="primary" class="canned-trigger edit-trigger"
+                                        (click)="message=action.message || action.name">
+                                  <i class="material-icons">
+                                    edit
+                                  </i>
+                                </button>
+                                <button mat-mini-fab color="primary" class="canned-trigger send-suggestion"
+                                        (click)="sendAutoMsg(action.message || action.name)">
+                                  <i class="material-icons">
+                                    send
+                                  </i>
+                                </button>
+                              </mat-option>
+
+                            </mat-tab>
+                          </ng-container>
+                        </mat-tab-group>
+                        <!--</mat-tab>-->
+
+
+                        <!---->
+                        <!--</mat-tab-group>-->
+                      </div>
+                    </div>
+<!--                  </mat-tab>-->
+<!--                </mat-tab-group>-->
+
+              </div>
+            </mat-autocomplete>
+
+
+
           </div>
           <div class="chat-composer-trigger">
             <button class="video-call composer-trigger" mat-icon-button>

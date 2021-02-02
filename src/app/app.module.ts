@@ -12,6 +12,7 @@ import { AppHeaderComponent } from './app-header/app-header.component';
 import { SharedModule } from './shared/shared.module';
 import { appConfigService } from './services/appConfig.service';
 import { ChatNotificationsComponent } from './notifications/chat-notifications/chat-notifications.component';
+import {ConfirmationService, MessageService} from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { ChatNotificationsComponent } from './notifications/chat-notifications/c
   ],
   entryComponents: [
   ],
-  providers: [appConfigService,
+  providers: [appConfigService, MessageService, ConfirmationService,
     {
       provide: APP_INITIALIZER,
       useFactory: (_appConfigService: appConfigService) => () => _appConfigService.loadConfig(),

@@ -17,6 +17,25 @@ import { HttpClientModule } from '@angular/common/http';
 import { RemoveUnderscorePipe } from './pipes/underScore.pipe';
 import { NgxLinkifyjsModule } from 'ngx-linkifyjs';
 import { ibsformatPipe } from './pipes/ibsFormat.pipe';
+import {TableModule} from 'primeng/table';
+import {SliderModule} from 'primeng/slider';
+import {CalendarModule} from 'primeng/calendar';
+import {DialogModule} from 'primeng/dialog';
+import {MultiSelectModule} from 'primeng/multiselect';
+import {ContextMenuModule} from 'primeng/contextmenu';
+import {DropdownModule} from 'primeng/dropdown';
+import {ButtonModule} from 'primeng/button';
+import {ToastModule} from 'primeng/toast';
+import {InputTextModule} from 'primeng/inputtext';
+import {ProgressBarModule} from 'primeng/progressbar';
+import {FileUploadModule} from 'primeng/fileupload';
+import {ToolbarModule} from 'primeng/toolbar';
+import {RatingModule} from 'primeng/rating';
+import {RadioButtonModule} from 'primeng/radiobutton';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {InputTextareaModule} from 'primeng/inputtextarea';
+import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
+
 
 
 
@@ -40,7 +59,28 @@ import { ibsformatPipe } from './pipes/ibsFormat.pipe';
       innerStrokeColor: '#3f51b5',
       animationDuration: 0,
     }),
-    HttpClientModule, NgxLinkifyjsModule.forRoot()
+    HttpClientModule, NgxLinkifyjsModule.forRoot(),
+    TableModule,
+    CalendarModule,
+    SliderModule,
+    DialogModule,
+    MultiSelectModule,
+    ContextMenuModule,
+    DropdownModule,
+    ButtonModule,
+    ToastModule,
+    InputTextModule,
+    ProgressBarModule,
+    HttpClientModule,
+    FileUploadModule,
+    ToolbarModule,
+    RatingModule,
+    FormsModule,
+    RadioButtonModule,
+    ConfirmDialogModule,
+    InputTextareaModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule
   ], exports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
     MatDrawer, MatCheckboxModule,
@@ -51,7 +91,27 @@ import { ibsformatPipe } from './pipes/ibsFormat.pipe';
     MatTabsModule, MatSelectModule, MatTooltipModule, FormsModule, MatExpansionModule,
     MatMenuModule, MatSlideToggleModule, MatAutocompleteModule, MatDialogModule, MatTabsModule,
     MatDatepickerModule, MatNativeDateModule, DragDropModule, CommonModule, NgCircleProgressModule, HttpClientModule,
-    RemoveUnderscorePipe, NgxLinkifyjsModule, ibsformatPipe
+    RemoveUnderscorePipe, NgxLinkifyjsModule, ibsformatPipe,  TableModule,
+    CalendarModule,
+    SliderModule,
+    DialogModule,
+    MultiSelectModule,
+    ContextMenuModule,
+    DropdownModule,
+    ButtonModule,
+    ToastModule,
+    InputTextModule,
+    ProgressBarModule,
+    HttpClientModule,
+    FileUploadModule,
+    ToolbarModule,
+    RatingModule,
+    FormsModule,
+    RadioButtonModule,
+    ConfirmDialogModule,
+    InputTextareaModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule
   ]
 })
 export class SharedModule { }

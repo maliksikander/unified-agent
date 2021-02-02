@@ -25,13 +25,13 @@
           <span class="agent-state-icon {{_cacheService.agent.presence.agentState | lowercase}} material-icons">
             radio_button_checked
           </span>
-      
+
 
         </div>
 
         <div class="agent-state">
           <span class="state">STATE</span>
-      
+
           <div class="agent-current-state">
             <button mat-button [matMenuTriggerFor]="state" class="{{_cacheService.agent.presence.agentState | lowercase}}">
               <span>{{_cacheService.agent.presence.agentState | removeUnderscore }}</span>
@@ -57,7 +57,7 @@
           <span class="time_state">{{display | date :"HH:mm:ss":'UTC'}}</span>
 
         </div>
-      
+
         <div class="multi-language">
           <button mat-button [matMenuTriggerFor]="languageSelection" class="language-trigger">
             <img src="assets/flags/{{languageFlag}}" width="20" onError="this.src='assets/flags/generic.png';">

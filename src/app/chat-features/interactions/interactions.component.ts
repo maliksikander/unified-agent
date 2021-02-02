@@ -36,8 +36,38 @@ export class InteractionsComponent implements OnInit {
       url: 'http://localhost:4200/',
     }
   };
+  message = "";
   convers: any[];
-
+  cannedMessages = [
+      {
+        "category": "marketing",
+        "messages": [
+          "Hi, how are you",
+          "How may I help you?"
+        ]
+      },
+      {
+        "category": "information",
+        "messages": [
+          "Info message 1",
+          "Info message 2"
+        ]
+      }
+    ];
+  actions =  [
+      {
+        "name": "A *Lifeline* *Crisis* *Supporter* will be with you  as soon as possible. There may be a short wait.\nReply *Y* if you are ok to answer *6* questions to better support you, otherwise reply *N*.\nSee ll.org.au/terms for our T&C's. Text *FINISH* to end your conversation with Lifeline at anytime.\n",
+      },
+    {
+        "name": "If you are ok to answer *6* questions to better support you, otherwise reply *N*.\nSee ll.org.au/terms for our T&C's. Text *FINISH* to end your conversation with Lifeline at anytime.\n",
+      },
+    {
+      "name": "There may be a short wait.\nReply *Y* if you are ok to answer *6* questions to better support you, otherwise reply *N*.\nSee ll.org.au/terms for our T&C's. Text *FINISH* to end your conversation with Lifeline at anytime.\n",
+    }
+    ];
+  isSuggestion = false;
+  displaySuggestionsArea = false;
+  cannedTabOpen = false;
   constructor(private _sharedService: sharedService, private _cacheService: cacheService, private _socketService: socketService, private dialog: MatDialog) {
 
   }
@@ -70,6 +100,42 @@ export class InteractionsComponent implements OnInit {
 
   onTextAreaClick() {
  //   this.conversation.unReadCount = 0;
+  }
+
+  textChanged(event) {
+    const el: any = document.getElementById('messageTextarea');
+    this.message = el.value;
+  }
+
+  onKey(event) {
+    this.message = event.target.value;
+    if (this.message === "" && event.keyCode === 40) {
+      // alert('up key Click Event!');
+      this.isSuggestion = true;
+    } else if (this.message === "" && event.keyCode === 38) {
+      this.isSuggestion = false;
+
+    }
+    console.log("onKey: ", this.message);
+    if (this.message[0] === '/') {
+      this.displaySuggestionsArea = false;
+
+      // setTimeout(() => {
+      //   this.mainHeight = this.elementView.nativeElement.offsetHeight;
+      //   this.viewHeight = this.mainHeight + 180 + 'px';
+      //   this.scrollToBottom();
+      // }, 500);
+
+      console.log('value is 0')
+      this.cannedTabOpen = true;
+    } else {
+      this.cannedTabOpen = false;
+      // this.viewHeight = '180px';
+    }
+    // if (this.message[0] === '.') {
+    //     console.log('value is 0')
+    //     this.isTemplateOpen = false;
+    // }
   }
 
 }
