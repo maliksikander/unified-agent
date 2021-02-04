@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { appConfigService } from './appConfig.service';
 import { cacheService } from './cache.service';
 import { sharedService } from './shared.service';
+import { promise } from "protractor";
 
 @Injectable({
     providedIn: 'root'
@@ -26,17 +27,21 @@ export class socketService {
     connectToSocket() {
         this.uri = this._appConfigService.config.SOCKET_URL;
 
-        console.log("username------ " + this._cacheService.agent.details.username)
+        console.log("username------ " + this._cacheService.agentDetails.agent.username)
 
         this.socket = io.connect(this.uri, {
-            query: { token: this._cacheService.agent.details.access_token, agentId: this._cacheService.agent.details.username }
+            query: { 
+              //  token: this._cacheService.agent.details.access_token, 
+                agent: JSON.stringify( this._cacheService.agentDetails.agent)
+                
+            }
         }).on('error', function (err) {
             console.error(err);
         });
 
         this.listen('agentPresence').subscribe((res: any) => {
             console.log(res);
-            this._cacheService.agent.presence = res;
+            this._cacheService.agentDetails.presence = res;
             this._sharedService.serviceChangeMessage({ msg: 'stateChanged', data: null });
         });
 

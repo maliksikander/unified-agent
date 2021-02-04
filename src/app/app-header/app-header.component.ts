@@ -60,11 +60,11 @@ export class AppHeaderComponent implements OnInit {
   changeState(state) {
 
     if (state == 0) {
-      this._socketService.emit('changeAgentState', { "agentId": this._cacheService.agent.details.username, "state": "NOT_READY" });
+      this._socketService.emit('changeAgentState', { "agent": this._cacheService.agentDetails.agent, "state": "NOT_READY" });
     }
 
     if (state == 1) {
-      this._socketService.emit('changeAgentState', { "agentId": this._cacheService.agent.details.username, "state": "READY" });
+      this._socketService.emit('changeAgentState', { "agent": this._cacheService.agentDetails.agent, "state": "READY" });
     }
 
   }

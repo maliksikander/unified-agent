@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
 
       this._router.navigate(['customers']);
       console.log("this is login resp ", e.data);
-      this._cacheService.agent.details = e.data;
+      this._cacheService.agentDetails.agent = e.data;
 
     }, (error) => {
       this._sharedService.Interceptor(error.error, 'err')

@@ -32,7 +32,7 @@ export class ChatNotificationsComponent implements OnInit {
   }
 
   getTopicSubscription() {
-    this._socketService.emit('topicSubscription', { agentId: this._cacheService.agent.details.username, topicId: this.data.topicId });
+    this._socketService.emit('topicSubscription', { agentId: this._cacheService.agentDetails.agent.id, topicId: this.data.topicId });
     this.closeRequestHeaderEvent.emit(this.data.topicId);
   }
 

@@ -6,10 +6,10 @@ import { Injectable } from "@angular/core";
 
 export class cacheService {
 
-    agentdetails: any = {};
-    agentPresence: any = {};
+    private agent: any = {};
+    private agentPresence: any = {};
     
-    agent = { details: this.agentdetails, presence: this.agentPresence }
+    agentDetails = { agent: this.agent, presence: this.agentPresence }
 
     constructor() {
 
