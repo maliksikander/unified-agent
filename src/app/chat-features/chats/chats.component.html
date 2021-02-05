@@ -14,13 +14,13 @@
                   <circle-progress class="laft-bar-data" [percent]="100" [radius]="15" [outerStrokeWidth]="2"
                     [innerStrokeWidth]="2" [outerStrokeColor]="'#3f51b5'" [innerStrokeColor]="'#F3F6F8'" [space]=-1
                     [animation]="conversation.animation" [animationDuration]="600"
-                    [title]="conversation.messages[conversation.messages.length -1].header.channelSession.associatedCustomer.firstName | slice :0 :2 |uppercase"
+                    [title]="conversation.messages[conversation.messages.length -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | slice :0 :2 |uppercase"
                     [titleFontSize]="10" [showSubtitle]="false" [showUnits]="false" [renderOnClick]="false">
                   </circle-progress>
                   <span class="badge1" [hidden]="conversation.unReadCount == 0">{{conversation.unReadCount}}</span>
                 </div>
                 <span class="user-name">{{conversation.messages[conversation.messages.length
-                  -1].header.channelSession.associatedCustomer.firstName}}</span>
+                  -1].header.channelSession.linkedCustomer.associatedCustomer.firstName}}</span>
               </span>
             </ng-template>
           </div>

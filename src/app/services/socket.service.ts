@@ -86,7 +86,7 @@ export class socketService {
 
         if (sameTopicIdObj) {
             sameTopicIdObj.messages.push(res.message);
-            if (res.message.header.sender.type != 'agent') { ++sameTopicIdObj.unReadCount; }
+            if (res.message.header.sender.type.toLowerCase() != 'agent') { ++sameTopicIdObj.unReadCount; }
         } else {
             this.conversations.push({ topicId: res.topicId, messages: [res.message], unReadCount: 1 });
         }

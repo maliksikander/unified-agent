@@ -22,8 +22,8 @@ export class ChatNotificationsComponent implements OnInit {
   ngOnInit() {
 
     console.log("this is data ", this.data)
-    if (this.data.channelSession.associatedCustomer.firstName) {
-      this.customerName = this.data.channelSession.associatedCustomer.firstName;
+    if (!this.data.channelSession.linkedCustomer.isAnonymous) {
+      this.customerName = this.data.channelSession.linkedCustomer.associatedCustomer.firstName;
       this.identified = true;
     }
     this.channel = this.data.channelSession.channel.channelConnector.type.name;

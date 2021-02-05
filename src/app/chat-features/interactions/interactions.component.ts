@@ -42,11 +42,11 @@ export class InteractionsComponent implements OnInit {
   onSend(text) {
     let message = JSON.parse(JSON.stringify(this.conversation.messages[this.conversation.messages.length - 1]));
 
-    message.header.sender.type = "agent";
-    message.header.sender.role = "agent";
+    message.header.sender.type = "AGENT";
+    message.header.sender.role = "AGENT";
     message.header.sender.participant.id = this._cacheService.agentDetails.agent.id;
     message.header.sender.participant.displayName = this._cacheService.agentDetails.agent.username;
-    message.body.markdownTest = text;
+    message.body.markdownText = text;
 
     this._socketService.emit('sendMessage', message);
 
