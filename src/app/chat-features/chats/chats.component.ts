@@ -14,15 +14,33 @@ export class ChatsComponent implements OnInit {
     messages: [
       {
         title: 'farhan',
-        message: 'Hello How are you today?'
+        message: 'Hello How are you today?',
+        showIntent: false,
+        intents: [
+          'Share number where I can call in emergency situations.',
+          'Share number where I can call in emergency situations.',
+          'Share number where I can call in emergency situations.'
+      ]
       },
       {
         title: 'farhan',
-        message: 'Share number where I can call in emergency situations.'
+        message: 'Share number where I can call in emergency situations.',
+        showIntent: false,
+        intents: [
+          'Share number where I can call in emergency situations.',
+          'Share number where I can call in emergency situations.',
+          'Share number where I can call in emergency situations.'
+        ]
       },
       {
         title: 'farhan',
-        message: 'Hi. Please share the email ID for support team.'
+        message: 'Hi. Please share the email ID for support team.',
+        showIntent: false,
+        intents: [
+          'Share number where I can call in emergency situations.',
+          'Share number where I can call in emergency situations.',
+          'Share number where I can call in emergency situations.'
+        ]
       },
       {
         title: 'raza',

@@ -18,7 +18,7 @@ export class CustomerInfoComponent implements OnInit, OnChanges {
 
   message;
   customArray = [
-    'media_channel',
+    // 'media_channel',
     'customer_profile',
     'active_sessions',
     'link_profile'
@@ -38,6 +38,8 @@ export class CustomerInfoComponent implements OnInit, OnChanges {
       url: 'http://localhost:4200/',
     }
   };
+  displayCustomerChannels = false;
+  displayProfile = true;
   barOpened = false;
   outgoingCallingNumber = '+446698988';
   options: string[] = ['Glenn Helgass', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall',

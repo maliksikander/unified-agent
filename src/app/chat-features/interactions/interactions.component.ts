@@ -56,25 +56,28 @@ export class InteractionsComponent implements OnInit {
     ];
   actions =  [
       {
-        "name": "A *Lifeline* *Crisis* *Supporter* will be with you  as soon as possible. There may be a short wait.\nReply *Y* if you are ok to answer *6* questions to better support you, otherwise reply *N*.\nSee ll.org.au/terms for our T&C's. Text *FINISH* to end your conversation with Lifeline at anytime.\n",
+        "name": "If a customer submits a support ticket, they deserve 1. confirmation that you received the ticket, and 2. affirmation that you are working on it.",
       },
     {
-        "name": "If you are ok to answer *6* questions to better support you, otherwise reply *N*.\nSee ll.org.au/terms for our T&C's. Text *FINISH* to end your conversation with Lifeline at anytime.\n",
+        "name": "If possible, personalize this response relative to the issue. If a customer filled out a form with drop-down category, this is easy. Additionally, you can train your reps to know which response to use.",
       },
     {
-      "name": "There may be a short wait.\nReply *Y* if you are ok to answer *6* questions to better support you, otherwise reply *N*.\nSee ll.org.au/terms for our T&C's. Text *FINISH* to end your conversation with Lifeline at anytime.\n",
+      "name": "To help ameliorate this tendency, make sure you proactively follow-up with them letting them know you're still working hard to reach a resolution, and that you will let them know when there are updates. This shows you care.",
     }
     ];
   isSuggestion = false;
   displaySuggestionsArea = false;
   cannedTabOpen = false;
+  quickReplies = true;
   constructor(private _sharedService: sharedService, private _cacheService: cacheService, private _socketService: socketService, private dialog: MatDialog) {
 
   }
 
   ngOnInit() {
   //  console.log("i am called hello")
-    this.convers = this.conversation;
+    this.convers = this.messages;
+    console.log('hello', this.messages)
+
 
   }
 
@@ -117,8 +120,9 @@ export class InteractionsComponent implements OnInit {
 
     }
     console.log("onKey: ", this.message);
-    if (this.message[0] === '/') {
+    if (this.message[0] === '/' || this.message[0] === ' ') {
       this.displaySuggestionsArea = false;
+      this.quickReplies = false;
 
       // setTimeout(() => {
       //   this.mainHeight = this.elementView.nativeElement.offsetHeight;
@@ -130,6 +134,7 @@ export class InteractionsComponent implements OnInit {
       this.cannedTabOpen = true;
     } else {
       this.cannedTabOpen = false;
+      this.quickReplies = true;
       // this.viewHeight = '180px';
     }
     // if (this.message[0] === '.') {

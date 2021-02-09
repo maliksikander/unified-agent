@@ -513,14 +513,52 @@
     <div class="instruction-content chat-session-main">
       <div class="int-date"><span>Mon<b>09</b></span></div>
       <div *ngFor="let con of convers">
-      <div class="chat-message user-message">
+      <div class="chat-message" [ngClass]="{'agent-message': con.title == 'raza'}">
         <div class="profile-pic">
           <div class="active-channel channel-icon {{customer.info.channel}}"><img width="20" src="../assets/images/web.svg"></div>
           <div class="profile-pic-area user-img">{{con.title | slice :0 :2 |uppercase}}</div>
         </div>
-        <div class="chat-message-content "><p>{{con.message}}</p>
+        <div class="chat-message-content ">
+          <p>{{con.message}}</p>
+          <button mat-icon-button class="user_settings" *ngIf="con.title === 'farhan'"
+                  (click)="con.showIntent=!con.showIntent" >
+          </button>
+
         </div>
         <span class="chat-time">16:15:45</span>
+
+        <div class="chat-intents" *ngIf="con.intents && con.showIntent==true">
+          <div class="intents-inner">
+            <p *ngFor="let intent of con.intents"
+               [ngClass]="{'selected_intent': intent.name == message.selectedIntent?.intentName}">
+              {{intent}}
+<!--              <b>{{intent.confidence.toFixed(2)}}</b>-->
+            </p>
+            <!--<div class="clearfix clear"></div>-->
+<!--            <ul class="suggested-content intents-content">-->
+<!--              <li *ngFor="let action of con.selectedIntent?.actions"-->
+<!--                  (click)="isTemplateOpen=!isTemplateOpen ; tran(action.message || action.name); message.showIntent=!message.showIntent">-->
+<!--                                <span *ngIf="action.confidence>botThresholds.t1.minScore" class="confidence-level" style="color:#25CB8D">-->
+<!--                                    {{action.confidence * 100 | number:'1.0-0'}}%-->
+<!--                                </span>-->
+<!--                <span *ngIf="action.confidence>botThresholds.t2.minScore && action.confidence<botThresholds.t1.minScore" class="confidence-level"-->
+<!--                      style="color:#FFB300">-->
+<!--                                    {{action.confidence * 100 | number:'1.0-0'}}%-->
+<!--                                </span>-->
+<!--                <span *ngIf="action.confidence<botThresholds.t2.minScore" class="confidence-level" style="color:#CB0808">-->
+<!--                                    {{action.confidence * 100 | number:'1.0-0'}}%-->
+<!--                                </span>-->
+<!--                {{action.message || action.name}}-->
+<!--                <button mat-mini-fab class="canned-trigger edit-trigger"-->
+<!--                        (click)="tran(action.message || action.name); message.showIntent=!message.showIntent">-->
+<!--                  <i class="material-icons">-->
+<!--                    edit-->
+<!--                  </i>-->
+<!--                </button>-->
+<!--              </li>-->
+<!--            </ul>-->
+          </div>
+        </div>
       </div>
     </div>
 
@@ -542,26 +580,7 @@
 
         </mat-expansion-panel>
       </div>
-  </div>
-      <div class="chat-message agent-message">
-      <div class="instruction-content chat-session-main">
-        <div class="int-date"><span>Mon<b>09</b></span></div>
-        <div *ngFor="let message of conversation">
-          <div class="chat-message"
-            [ngClass]="">
-            <div class="profile-pic">
-              <div class="active-channel channel-icon {{customer.info.channel}}"><img width="20"
-                  src="../assets/images/web.svg"></div>
-              <div class="profile-pic-area user-img">{{message.title | slice :0 :2
-                |uppercase}}</div>
-            </div>
-            <div class="chat-message-content ">
-              <p [innerHTML]="message.message | linkify | ibsformat"></p>
-            </div>
-            <span class="chat-time">16:15:45</span>
-          </div>
-        </div>
-      </div>
+
       <!-- <div class="chat-message agent-message">
         <div class="profile-pic">
           <div class="active-channel channel-icon web"><img width="20" src="../assets/images/web.svg"></div>
@@ -595,7 +614,7 @@
 
 
               <div class="suggested-content" #mainScreen [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}" >
-                <div class="suggested-tab suggested-tabs-update" [ngClass]="{'animate-content': displaySuggestionsAnimation}">
+                <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies" [ngClass]="{'animate-content': displaySuggestionsAnimation}">
                   <ng-container *ngFor="let action of actions | LockFilter: message">
                     <mat-option [value]="action?.message || action?.name" (click)="message=action?.message || action?.name" *ngIf="action.message != undefined || action.name != undefined">
                       {{action.message || action.name}}
@@ -612,7 +631,7 @@
                     </mat-option>
                   </ng-container>
                 </div>
-<!--                <mat-tab-group animationDuration="0ms">-->
+                <mat-tab-group animationDuration="0ms" *ngIf="!displaySuggestionsArea && cannedTabOpen">
                   <!--<mat-tab label="Suggested Answer" *ngIf="actions.length > 0">-->
                   <!--<div class="suggested-tab" *ngIf="actions.length > 0">-->
                   <!--<mat-option *ngFor="let action of actions | LockFilter: message" [value]="action?.message || action?.name"-->
@@ -622,9 +641,9 @@
                   <!--</div>-->
                   <!--</mat-tab>-->
 
-<!--                  <mat-tab label="Canned Messages">-->
-                    <div *ngIf="!displaySuggestionsArea && cannedTabOpen"  class="right-canned-message-list main-canned-message-area">
-                      <strong>Canned Messages</strong>
+                  <mat-tab label="Canned Messages">
+                    <div  class="right-canned-message-list main-canned-message-area">
+<!--                      <strong>Canned Messages</strong>-->
                       <div class="bar-content">
                         <!--<mat-tab-group mat-align-tabs="center">-->
                         <!--<mat-tab label="{{'chatdetail.cannedMessages'|translate}}">-->
@@ -668,8 +687,27 @@
                         <!--</mat-tab-group>-->
                       </div>
                     </div>
-<!--                  </mat-tab>-->
-<!--                </mat-tab-group>-->
+                  </mat-tab>
+
+                  <mat-tab label="Bot Suggestions">
+                    <ng-container *ngFor="let action of actions | LockFilter: message">
+                      <mat-option [value]="action?.message || action?.name" (click)="message=action?.message || action?.name" *ngIf="action.message != undefined || action.name != undefined">
+                        {{action.message || action.name}}
+                        <button mat-mini-fab class="canned-trigger edit-trigger" (click)="message=action.message || action.name">
+                          <i class="material-icons">
+                            edit
+                          </i>
+                        </button>
+                        <button mat-mini-fab class="canned-trigger send-suggestion" (click)="sendAutoMsg(action.message || action.name)" >
+                          <i class="material-icons">
+                            send
+                          </i>
+                        </button>
+                      </mat-option>
+                    </ng-container>
+
+                  </mat-tab>
+                </mat-tab-group>
 
               </div>
             </mat-autocomplete>

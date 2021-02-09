@@ -41,6 +41,7 @@
     }
     ul{
       padding: 0 5px;
+      clear: both;
     }
     mat-expansion-panel-header {
       background: $header-gray-color !important;
@@ -50,6 +51,7 @@
         font-size: 13px;
         color: lighten($dark-gray-color, 50%);
         font-weight: 600;
+        align-items: center;
       }
     }
   }
@@ -59,7 +61,7 @@
       box-shadow: none !important;
       border-radius: 0;
       &.chat-channel-area {
-        border: 1px solid #c0ecf9;
+        //border: 1px solid #c0ecf9;
         background: lighten($dark-gray-color, 60%);
 
         mat-expansion-panel-header{
@@ -90,6 +92,16 @@
         text-align: center;
         display: inline-block;
         margin-right: 8px;
+      }
+      .call-time {
+        background: #fff !important;
+        width: inherit !important;
+        padding: 0 5px !important;
+        border-radius: 5px !important;
+        height: 18px !important;
+        line-height: 18px !important;
+        top: -1px;
+        position: relative;
       }
 
       label{
@@ -180,17 +192,17 @@
 
 
 .profile-area {
-  padding: 10px 15px;
+  padding: 0;
 
   h3 {
     text-align: center;
     margin: 0;
-    font-size: 18px;
-    width: 50px;
-    height: 50px;
-    background: lighten($blue-text-color, 50%);
-    color: lighten($blue-text-color, 30%);
-    line-height: 50px;
+    font-size: 14px;
+    width: 30px;
+    height: 30px;
+    background: #fff;
+    color: $blue-text-color;
+    line-height: 30px;
     border-radius: 100%;
     float: left;
   }
@@ -203,7 +215,7 @@
     font-weight: bold;
     text-transform: capitalize;
     display: inline-block;
-    line-height: 26px;
+    line-height: 30px;
     padding-left: 10px;
   }
 
@@ -499,6 +511,30 @@
         color: #ffffff;
         border-color: $green-color;
         margin: 8px 0;
+      }
+    }
+  }
+}
+
+.custom-tab-area{
+  margin: 3px 0;
+  ul{
+    padding: 0;
+    margin: 0;
+    display: flex;
+
+    li{
+      background: #F3F6F8;
+      color: #999;
+      padding: 5px 2px;
+      list-style: none;
+      cursor: pointer;
+      font-size: 12px;
+      text-align: center;
+      flex: 2;
+      &.tab-active{
+        background: #fff;
+        color: $blue-text-color;
       }
     }
   }
