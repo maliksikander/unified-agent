@@ -44,8 +44,9 @@ export class InteractionsComponent implements OnInit {
 
     message.header.sender.type = "AGENT";
     message.header.sender.role = "AGENT";
-    message.header.sender.participant.id = this._cacheService.agentDetails.agent.id;
-    message.header.sender.participant.displayName = this._cacheService.agentDetails.agent.username;
+    message.header.sender.participant = {};
+    message.header.sender.participant.keyCloakUser = this._cacheService.agentDetails.agent;
+    message.header.sender.participant.routingAttributes = [];
     message.body.markdownText = text;
 
     this._socketService.emit('sendMessage', message);

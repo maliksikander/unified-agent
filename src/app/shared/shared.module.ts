@@ -17,11 +17,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { RemoveUnderscorePipe } from './pipes/underScore.pipe';
 import { NgxLinkifyjsModule } from 'ngx-linkifyjs';
 import { ibsformatPipe } from './pipes/ibsFormat.pipe';
+import { getSenderNamePipe } from './pipes/getSenderName.pipe';
 
 
 
 @NgModule({
-  declarations: [RemoveUnderscorePipe, ibsformatPipe],
+  declarations: [RemoveUnderscorePipe, ibsformatPipe, getSenderNamePipe],
   imports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
     MatCheckboxModule, MatButtonModule,
@@ -51,7 +52,7 @@ import { ibsformatPipe } from './pipes/ibsFormat.pipe';
     MatTabsModule, MatSelectModule, MatTooltipModule, FormsModule, MatExpansionModule,
     MatMenuModule, MatSlideToggleModule, MatAutocompleteModule, MatDialogModule, MatTabsModule,
     MatDatepickerModule, MatNativeDateModule, DragDropModule, CommonModule, NgCircleProgressModule, HttpClientModule,
-    RemoveUnderscorePipe, NgxLinkifyjsModule, ibsformatPipe
+    RemoveUnderscorePipe, NgxLinkifyjsModule, ibsformatPipe, getSenderNamePipe
   ]
 })
 export class SharedModule { }

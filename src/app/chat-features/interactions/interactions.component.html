@@ -2,14 +2,17 @@
   <div class="row">
     <div class="col-md-4 customer-showcase">
       <h3 matTooltipPosition="right" class="customer-highlight">
-        {{conversation.messages[conversation.messages.length -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | slice :0 :2 |uppercase}}
+        {{conversation.messages[conversation.messages.length
+        -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | slice :0 :2 |uppercase}}
 
         <span class="channel-icon {{customer.info.channel}}">
           <img *ngIf="channelUrl" src="{{channelUrl}}">
         </span>
       </h3>
-      <h5 class="customer-name" [matTooltip]="conversation.messages[conversation.messages.length -1].header.channelSession.linkedCustomer.associatedCustomer.firstName">
-        {{conversation.messages[conversation.messages.length -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | slice :0 :50}}
+      <h5 class="customer-name"
+        [matTooltip]="conversation.messages[conversation.messages.length -1].header.channelSession.linkedCustomer.associatedCustomer.firstName">
+        {{conversation.messages[conversation.messages.length
+        -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | slice :0 :50}}
         <span class="chat-timer">( 11:32 )</span>
 
       </h5>
@@ -465,7 +468,7 @@
             <div class="profile-pic">
               <div class="active-channel channel-icon {{customer.info.channel}}"><img width="20"
                   src="../assets/images/web.svg"></div>
-              <div class="profile-pic-area user-img">{{message.header.sender.participant.displayName | slice :0 :2
+              <div class="profile-pic-area user-img">{{message.header.sender | getSenderName | slice :0 :2
                 |uppercase}}</div>
             </div>
             <div class="chat-message-content ">
@@ -501,8 +504,9 @@
         <form class="reply-form">
           <label class="count-reply">{{replyInput.value.length}}/200</label>
           <div class="mat-form-field form-group chat-area">
-            <textarea (click)="onTextAreaClick()" matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea"
-              class="resize-none" #replyInput name="message" placeholder="Type a message here."></textarea>
+            <textarea (click)="onTextAreaClick()" matInput cdkTextareaAutosize cdkAutosizeMinRows="1"
+              cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none" #replyInput name="message"
+              placeholder="Type a message here."></textarea>
           </div>
           <div class="chat-composer-trigger">
             <button class="video-call composer-trigger" mat-icon-button>
