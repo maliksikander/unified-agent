@@ -38,6 +38,8 @@ export class InteractionsComponent implements OnInit {
   };
   message = "";
   convers: any[];
+  ringing = false;
+  callControls = false;
   cannedMessages = [
       {
         "category": "marketing",

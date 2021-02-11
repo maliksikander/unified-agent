@@ -1495,3 +1495,9 @@ padding: 0 !important;
   display: flex;
   flex-wrap: nowrap;
 }
+.intents-inner{
+  .mat-button-wrapper {
+    line-height: 6px;
+    padding: 0 !important;
+  }
+}

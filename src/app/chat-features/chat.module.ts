@@ -9,6 +9,7 @@ import { CustomerInfoComponent } from './customer-info/customer-info.component';
 import {PhonebookComponent} from '../phonebook/phonebook.component';
 import {CreateCustomerComponent} from '../create-customer/create-customer.component';
 import {SearchPipe} from '../search.pipe';
+import {SupervisorDashboardComponent} from '../supervisor-dashboard/supervisor-dashboard.component';
 
 
 @NgModule({

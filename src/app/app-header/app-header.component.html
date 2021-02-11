@@ -12,7 +12,7 @@
         <!--      </div>-->
 
         <!--      <h3 class="supervisor-heading" *ngIf="supervisor">Supervisor</h3>-->
-        <div class="avatar {{_cacheService.agent.presence.agentState | lowercase}}" id="avatar">
+        <div class="avatar ready {{_cacheService.agent.presence.agentState | lowercase}}" id="avatar">
           <mat-icon>person</mat-icon>
         </div>
         <h3 class="agent_name">
@@ -33,8 +33,8 @@
           <span class="state">STATE</span>
 
           <div class="agent-current-state">
-            <button mat-button [matMenuTriggerFor]="state" class="{{_cacheService.agent.presence.agentState | lowercase}}">
-              <span>{{_cacheService.agent.presence.agentState | removeUnderscore }}</span>
+            <button mat-button [matMenuTriggerFor]="state" class="ready {{_cacheService.agent.presence.agentState | lowercase}}">
+              <span>{{_cacheService.agent.presence.agentState | removeUnderscore }} Ready</span>
 
               <i class="material-icons">
                 arrow_drop_down

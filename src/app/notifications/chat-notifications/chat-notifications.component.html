@@ -1,4 +1,4 @@
-<div class="main-notification-area">
+<div class="main-notification-area" *ngIf="displayNotification">
   <div class="notification-area">
     <div class="row main-panel">
       <mat-card class="notification-panel mat-card">
@@ -10,7 +10,7 @@
             <p>{{customerName != null ? customerName : 'UNIDENTIFIED CUSTOMER' }}</p>
           </div>
           <div class="notification-trigger">
-            <button (click)="getTopicSubscription()" class="mat-flat-button" mat-button>Accept</button>
+            <button (click)="displayNotification = false; getTopicSubscription()" class="mat-flat-button" mat-button>Accept</button>
           </div>
         </mat-card-content>
       </mat-card>

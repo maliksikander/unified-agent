@@ -49,13 +49,13 @@
       </ul>
 
       <!-- Ringing controls-->
-      <span *ngIf="" class="ringing-controls"> Calling <strong>'+4444858988'</strong> Mobile
+      <span *ngIf="ringing" class="ringing-controls"> Calling <strong>'+4444858988'</strong> Mobile
         <button mat-icon-button>
             <mat-icon>call_end</mat-icon>
           </button>
       </span>
 <!--Call controls-->
-      <ul *ngIf="" class="list-group list-group-horizontal agent-controls call-controls">
+      <ul *ngIf="callControls" class="list-group list-group-horizontal agent-controls call-controls">
         <li class="list-group-item">
           <button mat-icon-button>
             <mat-icon>textsms</mat-icon>
@@ -526,6 +526,7 @@
 
         </div>
         <span class="chat-time">16:15:45</span>
+        <span class="material-icons delivery-status" *ngIf="con.title === 'raza'">done_all</span>
 
         <div class="chat-intents" *ngIf="con.intents && con.showIntent==true">
           <div class="intents-inner">
@@ -533,6 +534,17 @@
                [ngClass]="{'selected_intent': intent.name == message.selectedIntent?.intentName}">
               {{intent}}
 <!--              <b>{{intent.confidence.toFixed(2)}}</b>-->
+              <button mat-mini-fab class="canned-trigger edit-trigger"
+                      (click)="message=action.message || action.name">
+                <i class="material-icons">
+                  edit
+                </i>
+              </button>
+              <button mat-mini-fab class="canned-trigger send-suggestion" (click)="message=action.message || action.name" >
+                <i class="material-icons">
+                  send
+                </i>
+              </button>
             </p>
             <!--<div class="clearfix clear"></div>-->
 <!--            <ul class="suggested-content intents-content">-->

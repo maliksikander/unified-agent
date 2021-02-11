@@ -19,7 +19,7 @@ export class ChatsComponent implements OnInit {
         intents: [
           'Share number where I can call in emergency situations.',
           'Share number where I can call in emergency situations.',
-          'Share number where I can call in emergency situations.'
+          'Share number where I can call in emergency situations.',
       ]
       },
       {
