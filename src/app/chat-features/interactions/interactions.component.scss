@@ -715,6 +715,23 @@
       max-height: 80px !important;
     }
   }
+
+  span.selected-channel {
+    position: absolute;
+    left: 0;
+    top: -26px;
+    font-size: 10px;
+    margin-left: 5px;
+    color: #9D9D9D;
+    background: #fff;
+    padding: 5px;
+    border-radius: 0 12px 12px 0;
+
+    label {
+      margin: 0;
+      color: $blue-text-color;
+    }
+  }
 }
 
 //GTM Expansion panel

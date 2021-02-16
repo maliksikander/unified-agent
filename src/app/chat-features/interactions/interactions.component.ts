@@ -39,7 +39,7 @@ export class InteractionsComponent implements OnInit {
   message = "";
   convers: any[];
   ringing = false;
-  callControls = false;
+  callControls = true;
   cannedMessages = [
       {
         "category": "marketing",

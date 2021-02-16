@@ -13,7 +13,7 @@ import { SharedModule } from './shared/shared.module';
 import { appConfigService } from './services/appConfig.service';
 import { ChatNotificationsComponent } from './notifications/chat-notifications/chat-notifications.component';
 import {ConfirmationService, MessageService} from 'primeng/api';
-// import { SupervisorDashboardComponent } from './supervisor-dashboard/supervisor-dashboard.component';
+import { SupervisorDashboardComponent } from './supervisor-dashboard/supervisor-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -21,8 +21,8 @@ import {ConfirmationService, MessageService} from 'primeng/api';
     LoginComponent,
     NoRouteFoundComponent,
     AppHeaderComponent,
-    ChatNotificationsComponent
-    // SupervisorDashboardComponent
+    ChatNotificationsComponent,
+    SupervisorDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +43,8 @@ import {ConfirmationService, MessageService} from 'primeng/api';
   exports: [
     BrowserModule,
     CommonModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    SupervisorDashboardComponent
   ],
   bootstrap: [AppComponent]
 })

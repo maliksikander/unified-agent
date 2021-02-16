@@ -9,10 +9,10 @@ const appRoutes: Routes = [
 
     { path: 'chats', component: ChatsComponent },
     { path: 'phonebook', component: PhonebookComponent },
-    // { path: 'supervisor-dashboard', component: SupervisorDashboardComponent },
+    // { path: 'supervisor', component: SupervisorDashboardComponent },
     { path: '', redirectTo: '/customers/chats', pathMatch: 'full' },
     { path: 'phonebook', redirectTo: '/customers/phonebook', pathMatch: 'full' },
-    // { path: 'supervisor-dashboard', redirectTo: '/supervisor-dashboard', pathMatch: 'full' },
+    // { path: 'supervisor', redirectTo: '/supervisor', pathMatch: 'full' },
 ];
 
 @NgModule({
