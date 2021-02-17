@@ -5,10 +5,10 @@
         <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #mainMenu="matMenu">
-        <button mat-menu-item class="main-menu-item">
+        <button routerLink="/supervisor/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"  mat-menu-item class="main-menu-item">
           <span>Supervisor Dashboard</span>
         </button>
-        <button mat-menu-item class="main-menu-item">
+        <button routerLink="/supervisor/announcement"  routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
           <span>Supervisor Announcements </span>
         </button>
         <button mat-menu-item class="main-menu-item">
@@ -43,8 +43,6 @@
           <span class="agent-state-icon {{_cacheService.agent.presence.agentState | lowercase}} material-icons">
             radio_button_checked
           </span>
-
-
         </div>
 
         <div class="agent-state">

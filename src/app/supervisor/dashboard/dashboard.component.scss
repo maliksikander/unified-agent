@@ -370,6 +370,7 @@ mat-header-row.mat-header-row {
     flex-wrap: wrap;
     margin: 0;
     min-width: 350px;
+    padding-left: 0;
 
     li {
       flex: 50%;
@@ -377,6 +378,7 @@ mat-header-row.mat-header-row {
       font-size: 12px;
       color: #000;
       padding: 3px 5px;
+      list-style: none;
 
       span {
         text-transform: capitalize;
@@ -389,6 +391,10 @@ mat-header-row.mat-header-row {
 
 .expand-area {
   position: relative;
+
+  .info-icon{
+    cursor: pointer;
+  }
 
   &.info-expanded {
     padding-bottom: 18px;

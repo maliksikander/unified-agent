@@ -20,10 +20,10 @@ const ELEMENT_DATA: PeriodicElement[] = [
 
 @Component({
   selector: 'app-supervisor-dashboard',
-  templateUrl: './supervisor-dashboard.component.html',
-  styleUrls: ['./supervisor-dashboard.component.scss']
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss']
 })
-export class SupervisorDashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit {
   agentChatInfo = false;
   queueStatsInfo = false;
   displayedColumns: string[] = ['handRaise', 'title', 'agent', 'team', 'time', 'channel'];

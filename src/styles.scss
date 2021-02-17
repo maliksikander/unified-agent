@@ -1647,7 +1647,7 @@ padding: 0 !important;
     float: right;
     height: 20px;
     line-height: 20px;
-    bottom: 5px;
+    top: 0;
   }
 
   .mat-cell {
@@ -1656,6 +1656,29 @@ padding: 0 !important;
     line-height: 30px;
     span{
       line-height: 30px;
+    }
+  }
+}
+
+
+.table-trigger .mat-button-wrapper {
+  padding: 0 !important;
+}
+
+//Announcement Selection Trigger
+.selection-trigger {
+  .mat-form-field-infix {
+    padding: 1px 0;
+    border-top-width: 10px !important;
+    height: 38px;
+    line-height: 19px;
+  }
+  .mat-form-field-wrapper{
+    margin: 0 !important;
+    padding: 0 !important;
+
+    .mat-select-arrow-wrapper {
+      transform: translateY(0%);
     }
   }
 }
