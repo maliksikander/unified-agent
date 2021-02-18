@@ -467,9 +467,9 @@
             [ngClass]="((message.header.sender.type | lowercase) == 'customer') ?'user-message':'agent-message'">
             <div class="profile-pic">
               <div
-                class="active-channel channel-icon {{message.header.channelSession.channel.channelConnector.type.name | lowercase}}">
+                class="active-channel channel-icon {{(message.header.sender.type | lowercase) == 'customer' ? (message.header.channelSession.channel.channelConnector.type.name | lowercase) : 'web'}}">
                 <img width="20"
-                  src="../assets/images/{{message.header.channelSession.channel.channelConnector.type.name | lowercase}}.svg">
+                  src="../assets/images/{{(message.header.sender.type | lowercase) == 'customer' ? (message.header.channelSession.channel.channelConnector.type.name | lowercase) : 'web'}}.svg">
               </div>
               <div class="profile-pic-area user-img">{{message.header.sender | getSenderName | slice :0 :2
                 |uppercase}}</div>

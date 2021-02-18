@@ -30,10 +30,10 @@ export class socketService {
         console.log("username------ " + this._cacheService.agentDetails.agent.username)
 
         this.socket = io.connect(this.uri, {
-            query: { 
-              //  token: this._cacheService.agent.details.access_token, 
-                agent: JSON.stringify( this._cacheService.agentDetails.agent)
-                
+            query: {
+                //  token: this._cacheService.agent.details.access_token, 
+                agent: JSON.stringify(this._cacheService.agentDetails.agent)
+
             }
         }).on('error', function (err) {
             console.error(err);
@@ -58,7 +58,14 @@ export class socketService {
             res.message = JSON.parse(res.message);
             this.onMessageHandler(res);
             console.log("onMessage parse s", res);
-        })
+        });
+
+        this.listen('oldTopicMessages').subscribe((res: any) => {
+            console.log("oldTopicMessages", res);
+            this.conversations.push({ topicId: res.topicId, messages: res.message });
+            this._conversationsListener.next(this.conversations);
+
+        });
     }
 
     listen(eventName: string) {
