@@ -15,6 +15,9 @@ import { ChatNotificationsComponent } from './notifications/chat-notifications/c
 import {ConfirmationService, MessageService} from 'primeng/api';
 import { AnnouncementComponent } from './announcement/announcement.component';
 import {DashboardComponent} from './supervisor/dashboard/supervisor-dashboard.component';
+import {AnnouncementDialogComponent} from './supervisor/announcement-dialog/announcement-dialog.component';
+import {PhonebookComponent} from './phonebook/phonebook.component';
+import {CreateCustomerComponent} from './create-customer/create-customer.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,10 @@ import {DashboardComponent} from './supervisor/dashboard/supervisor-dashboard.co
     AppHeaderComponent,
     ChatNotificationsComponent,
     DashboardComponent,
-    AnnouncementComponent
+    AnnouncementComponent,
+    AnnouncementDialogComponent,
+    PhonebookComponent,
+    CreateCustomerComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,6 +40,7 @@ import {DashboardComponent} from './supervisor/dashboard/supervisor-dashboard.co
     SharedModule
   ],
   entryComponents: [
+    AnnouncementDialogComponent
   ],
   providers: [appConfigService, MessageService, ConfirmationService,
     {
@@ -45,9 +52,7 @@ import {DashboardComponent} from './supervisor/dashboard/supervisor-dashboard.co
   exports: [
     BrowserModule,
     CommonModule,
-    BrowserAnimationsModule,
-    DashboardComponent,
-    AnnouncementComponent
+    BrowserAnimationsModule
   ],
   bootstrap: [AppComponent]
 })

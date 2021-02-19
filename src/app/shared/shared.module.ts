@@ -35,12 +35,13 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
+import {SearchPipe} from './pipes/search.pipe';
 
 
 
 
 @NgModule({
-  declarations: [RemoveUnderscorePipe, ibsformatPipe],
+  declarations: [RemoveUnderscorePipe, ibsformatPipe, SearchPipe],
   imports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
     MatCheckboxModule, MatButtonModule,
@@ -111,7 +112,8 @@ import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
     ConfirmDialogModule,
     InputTextareaModule,
     OwlDateTimeModule,
-    OwlNativeDateTimeModule
+    OwlNativeDateTimeModule,
+    SearchPipe
   ]
 })
 export class SharedModule { }

@@ -57,9 +57,9 @@ export class CustomerInfoComponent implements OnInit, OnChanges {
     })
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.currentTabIndex.currentValue !== undefined) {
-      this.updateCustomerInfo();
-    }
+    // if (changes.currentTabIndex.currentValue !== undefined) {
+    //   this.updateCustomerInfo();
+    // }
     console.log("on changes ", this.message);
   }
 

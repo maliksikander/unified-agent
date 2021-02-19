@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {CreateCustomerComponent} from '../create-customer/create-customer.component';
+import {AnnouncementDialogComponent} from '../supervisor/announcement-dialog/announcement-dialog.component';
+import {MatDialog} from '@angular/material';
 
 @Component({
   selector: 'app-announcement',
@@ -66,9 +69,15 @@ export class AnnouncementComponent implements OnInit {
     },
 
   ]
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit() {
+  }
+  onCreateAnnouncement() {
+    const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
+
+
+    });
   }
 
 }

@@ -1516,12 +1516,17 @@ padding: 0 !important;
   table.mat-table{
     border-radius: 5px 5px 0 0;
   }
-  thead{
-    &:after{
-      content: "";
-      display: block;
-      height: 50px;
+  &.supervisor-table-search{
+    thead {
+      &:after {
+        content: "";
+        display: block;
+        height: 50px;
+      }
     }
+  }
+
+  thead{
     tr.mat-header-row {
       height: 26px !important;
 
