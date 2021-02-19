@@ -13,8 +13,7 @@ import { socketService } from './services/socket.service';
 export class AppComponent implements OnInit {
 
   title = 'unified-agent-gadget';
-  requests = [{name:"farhan",
-  channel: 'web'}];
+  requests = [];
 
   currentRoute: string;
 
@@ -22,9 +21,9 @@ export class AppComponent implements OnInit {
 
     this._sharedService.serviceCurrentMessage.subscribe((e) => {
 
-      // if (e.msg == 'openRequestHeader') {
-      //   this.requests.push(e.data);
-      // }
+      if (e.msg == 'openRequestHeader') {
+        this.requests.push(e.data);
+      }
     })
 
   }

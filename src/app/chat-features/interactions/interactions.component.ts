@@ -72,11 +72,7 @@ export class InteractionsComponent implements OnInit {
   cannedTabOpen = false;
   quickReplies = true;
   constructor(private _sharedService: sharedService, private _cacheService: cacheService, private _socketService: socketService, private dialog: MatDialog) {
-
-
-  constructor(private _sharedService: sharedService, private _cacheService: cacheService, private _socketService: socketService) {
   }
-
   ngOnInit() {
   //  console.log("i am called hello")
     this.convers = this.messages;
