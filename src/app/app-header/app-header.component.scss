@@ -309,6 +309,26 @@
     height: 32px;
   }
 }
+button.main-menu {
+  position: relative;
+  top: -2px;
+  margin-right: 10px;
+  mat-icon{
+    color: #b4b4b4;
+    font-size: 28px;
+  }
+}
+button.main-menu-item{
+  border-bottom: 1px dashed #ccc;
+
+  &.active{
+    background: #d9d9d9 !important;
+    cursor: default;
+  }
+  &:last-child{
+    border-color: transparent;
+  }
+}
 .supervisor-trigger{
   display: inline-block;
   padding-left: 20px;

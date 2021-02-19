@@ -6,6 +6,7 @@ import { ChatRoutingModule } from './chat-routing.module';
 import { ChatsComponent } from './chats/chats.component';
 import { InteractionsComponent } from './interactions/interactions.component';
 import { CustomerInfoComponent } from './customer-info/customer-info.component';
+import {MatDialogModule} from '@angular/material';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { CustomerInfoComponent } from './customer-info/customer-info.component';
   imports: [
     SharedModule,
     ChatRoutingModule,
+    MatDialogModule
   ],
 })
 export class ChatModule { }

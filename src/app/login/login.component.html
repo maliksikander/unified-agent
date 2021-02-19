@@ -27,7 +27,7 @@
           <mat-checkbox >Keep me logged in</mat-checkbox>
       </div> -->
           <div class="form-group login-trigger">
-            <button [disabled]="!loginForm.valid" (click)="login()" class="button flip-in-ver-right form-control">LOGIN</button>
+            <button [disabled]="!loginForm.valid" [routerLink]="['/customers/chats']" (click)="login()" class="button flip-in-ver-right form-control">LOGIN</button>
           </div>
         </form>
       </div>

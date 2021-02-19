@@ -1,14 +1,15 @@
 <div *ngIf="(_socketService.conversationsListener | async)?.length > 0"  class="ef_container container-fluid p-0">
   <div id="content" class="h-100">
 
-    <div id="main-content" class="h-100">
+    <div id="main-content" class="h-100" [ngClass]="{'customer-bar-opened': isBarOPened}">
       <!--      <button color="primary" class="left-bar-trigger" (click)="barExpand = !barExpand" ><mat-icon>{{barExpand ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}</mat-icon></button>-->
       <mat-tab-group (selectedIndexChange)="onTabChange($event)" class="chat-tab-area h-100">
 
-        <mat-tab  class="main-chat-tab h-100"
-          *ngFor="let conversation of (_socketService.conversationsListener | async)">
-          <div class="chat-contacts left-bar-contacts">
-            <ng-template mat-tab-label>
+        <mat-tab class="main-chat-tab h-100"
+                 *ngFor="let conversation of (_socketService.conversationsListener | async)">
+          <div class="main-chat-bar-area">
+            <div class="chat-contacts left-bar-contacts">
+              <ng-template mat-tab-label>
               <span class="get-events">
                 <div class="user-badge">
                   <circle-progress class="laft-bar-data" [percent]="100" [radius]="15" [outerStrokeWidth]="2"
@@ -30,12 +31,14 @@
             </div>
           </div>
           <!-- row end -->
-          <!-- <app-customer-info [conversation]="conversation"></app-customer-info> -->
-
+          <div class="customer-info-main">
+            <app-customer-info (expandCustomerInfo)="eventFromChild($event)"
+                               [currentTabIndex]="currentTabIndex"></app-customer-info>
+          </div>
         </mat-tab>
       </mat-tab-group>
     </div>
-    <app-customer-info [currentTabIndex]="currentTabIndex"></app-customer-info>
+<!--    <app-customer-info [currentTabIndex]="currentTabIndex"></app-customer-info>-->
   </div>
 </div>
 

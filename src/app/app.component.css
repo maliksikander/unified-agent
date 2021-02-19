@@ -2,11 +2,12 @@
   height: 45px;
 }
 
-.child-noti{
+.child-notification{
   display: list-item;
     margin-bottom: 20px;
 }
 
-.parent-noti{
+.parent-notification{
   position: absolute;
+  top: 100px;
 }

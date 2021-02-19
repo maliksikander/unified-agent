@@ -12,8 +12,16 @@
 }
 div#main-content {
   display: inline-block;
-  width: calc(100% - 55px);
+  //width: calc(100% - 55px);
+  width: 100%;
   float: left;
+
+  .main-chat-bar-area{
+    width: calc(100% - 55px);
+    position: relative;
+    height: calc(100% - 0px);
+    float: left;
+  }
 }
 
 .no-chat{
@@ -50,4 +58,12 @@ div#main-content {
       top: 0;
     }
   }
+}
+
+.customer-info-main{
+  height: 100%;
+  width: 55px;
+  min-width: 55px;
+  position: absolute;
+  right: 0;
 }

@@ -1,0 +1,171 @@
+@import "src/app/shared/globalVariables";
+.phonebook-main {
+  background: #F2F2F2;
+  margin-bottom: 15px !important;
+  min-height: 50px;
+  padding-right: 10px;
+  position: relative;
+  padding-left: 50px;
+  .back-to-chat{
+    background: lighten($blue-text-color, 40%);
+    height: 50px;
+    width: 50px !important;
+    position: absolute;
+    left: 0;
+    border-radius: 0;
+    min-width: inherit;
+    padding: 0;
+    text-align: center;
+    &:after {
+      content: "";
+      width: 18px;
+      height: 18px;
+      position: absolute;
+      left: 22px;
+      top: 16px;
+      transform: rotate(45deg);
+      border-left: 2px solid $blue-text-color;
+      border-bottom: 2px solid $blue-text-color;
+    }
+  }
+  .customer-heading{
+    align-self: center;
+
+    h4{
+      font-size: 16px;
+      color: $blue-text-color;
+      margin: 0;
+      display: inline-block;
+      line-height: 30px;
+    }
+  }
+  .filter-selection{
+    display: inline-block;
+    margin-left: 10px;
+
+    mat-chip {
+      background: #fff !important;
+      border: 1px solid #c7c7c7;
+      color: #9f9f9f !important;
+      min-height: 26px;
+      font-size: 12px;
+      padding: 5px 5px 5px 10px !important;
+    }
+  }
+  .right-actions{
+    align-self: center;
+
+    button{
+      font-size: 13px;
+      background: #1D9AC0;
+      color: #ffffff;
+      border: 0;
+      &:hover{
+        background: darken(#1D9AC0, 10%);
+      }
+    &.btn-action{
+      background: #EEF9DE;
+      color: #707070;
+      margin-right: 5px;
+      &:hover{
+        background: darken(#EEF9DE, 10%);
+      }
+    }
+    }
+  }
+}
+
+
+
+
+
+
+
+.action-trigger{
+  display: none !important;
+}
+.hover{
+  color: darken(#c5c5c5, 20%);
+  transition: all .3s;
+}
+span.filter-icon {
+  position: relative;
+  top: -1px;
+  color: #c5c5c5;
+  cursor: pointer;
+  transition: all .3s;
+  &:hover{
+    @extend .hover;
+  }
+}
+span.sorting-icons {
+  float: right;
+  top: 7px;
+  width: 22px;
+  color: #c5c5c5;
+  transition: all .3s;
+  cursor: pointer;
+  margin-right: 3px;
+  &:hover{
+    @extend .hover;
+  }
+  span {
+    width: 7px;
+  }
+}
+.drag-icon {
+  float: left;
+  text-shadow: -5px 0 0 #C5C5C5;
+  color: #C5C5C5;
+  font-size: 20px !important;
+  text-align: center;
+  width: 18px !important;
+  line-height: 20px !important;
+  cursor: pointer;
+  transition: all .3s;
+  height: 20px;
+  margin-bottom: 8px;
+  margin-left: 5px;
+  &:hover{
+    @extend .hover;
+    text-shadow: -5px 0 0 darken(#c5c5c5, 20%);
+  }
+}
+
+
+.customer-search{
+  padding: 5px;
+  position: relative;
+  background: #F2F2F2;
+  border-top: 1px solid #efefef;
+
+  input{
+    width: 100%;
+    border: 1px solid #efefef;
+    border-radius: 3px;
+    height: 25px;
+    line-height: 25px;
+  }
+
+  .close-filter {
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    right: 8px;
+    top: 12px;
+    cursor: pointer;
+
+    mat-icon{
+      font-size: 14px;
+      color: #DBDBDB;
+      transition: all .3s;
+    }
+    &:hover{
+      mat-icon{
+        color: #707070;
+        transition: all .3s;
+      }
+    }
+  }
+}
+

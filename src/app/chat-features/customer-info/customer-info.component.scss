@@ -1,13 +1,14 @@
 @import "src/app/shared/globalVariables";
 
 .right-info-bar {
-  height: calc(100% - 8px);
-  width: 55px;
+  height: 100%;
+  width: 56px;
   border-left: 2px solid lighten($blue-text-color, 42%);
   min-width: 55px;
   position: absolute;
-  right: 6px;
-
+  right: 0;
+  background: #fff;
+  z-index: 2;
   button {
     position: relative;
     z-index: 999;
@@ -40,6 +41,7 @@
     }
     ul{
       padding: 0 5px;
+      clear: both;
     }
     mat-expansion-panel-header {
       background: $header-gray-color !important;
@@ -49,6 +51,7 @@
         font-size: 13px;
         color: lighten($dark-gray-color, 50%);
         font-weight: 600;
+        align-items: center;
       }
     }
   }
@@ -58,7 +61,7 @@
       box-shadow: none !important;
       border-radius: 0;
       &.chat-channel-area {
-        border: 1px solid #c0ecf9;
+        //border: 1px solid #c0ecf9;
         background: lighten($dark-gray-color, 60%);
 
         mat-expansion-panel-header{
@@ -89,6 +92,16 @@
         text-align: center;
         display: inline-block;
         margin-right: 8px;
+      }
+      .call-time {
+        background: #fff !important;
+        width: inherit !important;
+        padding: 0 5px !important;
+        border-radius: 5px !important;
+        height: 18px !important;
+        line-height: 18px !important;
+        top: -1px;
+        position: relative;
       }
 
       label{
@@ -168,7 +181,8 @@
         label{
           display: block;
           font-size: 10px;
-          color:  lighten($dark-gray-color, 50%);
+          color:  lighten($dark-gray-color, 70%);
+          margin: 0;
         }
       }
     }
@@ -178,17 +192,17 @@
 
 
 .profile-area {
-  padding: 10px 15px;
+  padding: 0;
 
   h3 {
     text-align: center;
     margin: 0;
-    font-size: 18px;
-    width: 50px;
-    height: 50px;
-    background: lighten($blue-text-color, 50%);
-    color: lighten($blue-text-color, 30%);
-    line-height: 50px;
+    font-size: 14px;
+    width: 30px;
+    height: 30px;
+    background: #fff;
+    color: $blue-text-color;
+    line-height: 30px;
     border-radius: 100%;
     float: left;
   }
@@ -201,7 +215,7 @@
     font-weight: bold;
     text-transform: capitalize;
     display: inline-block;
-    line-height: 26px;
+    line-height: 30px;
     padding-left: 10px;
   }
 
@@ -401,26 +415,127 @@
       }
     }
   }
-  .linked-action{
-    text-align: center;
 
-    strong{
-      display: block;
+}
+.linked-action{
+  text-align: center;
+
+  p{
+    display: block;
+    text-align: center;
+    padding: 10px 0;
+    color: #5B5B5B;
+    font-size: 12px;
+    line-height: 18px;
+    margin: 0;
+  }
+  button {
+    background: $blue-text-color;
+    color: lighten($dark-gray-color, 100%);
+    font-size: 10px;
+    padding: 0;
+    min-width: 115px;
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    font-weight: 400;
+    margin: 0 3px 10px;
+  }
+}
+.crm-trigger{
+  @extend .linked-action;
+  button {
+    min-width: 150px;
+  }
+}
+
+//Calling Dialog
+.calling-dialog-main {
+  padding: 20px;
+  .call-content {
+    text-align: center;
+    width: 100%;
+
+    .call-icon {
+      width: 80px;
+      margin: 0 auto;
+      border: 1px solid lighten($blue-text-color, 30%);
+      height: 80px;
+      line-height: 80px;
+      border-radius: 100%;
       text-align: center;
-      padding: 10px 18px;
-      color: #929292;
-      font-size: 12px;
+      padding: 0;
+
+      mat-icon {
+        color: $red-color;
+        font-size: 34px;
+        height: 80px;
+        line-height: 80px;
+        width: 80px;
+      }
     }
-    button {
-      background: $blue-text-color;
-      color: lighten($dark-gray-color, 100%);
-      font-size: 12px;
-      padding: 0 10px;
-      width: 45%;
-      display: inline-block;
-      height: 28px;
-      line-height: 28px;
+
+    .call-detail {
+      margin-top: 20px;
+      color: lighten($dark-gray-color, 40%);
+
+      p {
+        font-size: 12px;
+        margin: 0;
+      }
+
+      h4 {
+        color: $blue-text-color;
+        font-size: 22px;
+        margin: 0;
+      }
+
+      strong {
+        font-size: 15px;
+        display: block;
+      }
     }
   }
+  .call-trigger {
+    button {
+      width: 100%;
+      color: lighten($dark-gray-color, 40%);
+      padding: 0;
+      height: 30px;
+      line-height: 30px;
+      border: 1px solid lighten($dark-gray-color, 40%);
+      opacity: 1;
 
+      &.call-btn {
+        background: $green-color;
+        color: #ffffff;
+        border-color: $green-color;
+        margin: 8px 0;
+      }
+    }
+  }
+}
+
+.custom-tab-area{
+  margin: 3px 0;
+  ul{
+    padding: 0;
+    margin: 0;
+    display: flex;
+
+    li{
+      background: #F3F6F8;
+      color: #999;
+      padding: 5px 2px;
+      list-style: none;
+      cursor: pointer;
+      font-size: 12px;
+      text-align: center;
+      flex: 2;
+      &.tab-active{
+        background: #fff;
+        color: $blue-text-color;
+      }
+    }
+  }
 }

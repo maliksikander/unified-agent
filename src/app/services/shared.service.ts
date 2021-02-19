@@ -23,7 +23,7 @@ export class sharedService {
         });
         return index;
       }
-    
+
       spliceArray(index, array) {
         array.splice(index, 1);
       }

@@ -13,14 +13,17 @@ export class ChatNotificationsComponent implements OnInit {
   @Input() data: any;
   customerName: string = null;
   channel: string;
-  identified: boolean = false;
+  identified = true;
   channelImageSrc: string;
+  displayNotification = false;
   @Output() closeRequestHeaderEvent = new EventEmitter<boolean>();
 
   constructor(private _socketService: socketService, private _cacheService: cacheService) { }
 
   ngOnInit() {
+    this.customerName = 'Stacy Miller';
 
+    this.channelImageSrc = 'assets/images/web.svg';
     console.log("this is data ", this.data)
     if (!this.data.channelSession.linkedCustomer.isAnonymous) {
       this.customerName = this.data.channelSession.linkedCustomer.associatedCustomer.firstName;

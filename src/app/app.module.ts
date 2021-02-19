@@ -12,6 +12,12 @@ import { AppHeaderComponent } from './app-header/app-header.component';
 import { SharedModule } from './shared/shared.module';
 import { appConfigService } from './services/appConfig.service';
 import { ChatNotificationsComponent } from './notifications/chat-notifications/chat-notifications.component';
+import {ConfirmationService, MessageService} from 'primeng/api';
+import { AnnouncementComponent } from './announcement/announcement.component';
+import {DashboardComponent} from './supervisor/dashboard/supervisor-dashboard.component';
+import {AnnouncementDialogComponent} from './supervisor/announcement-dialog/announcement-dialog.component';
+import {PhonebookComponent} from './phonebook/phonebook.component';
+import {CreateCustomerComponent} from './create-customer/create-customer.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +25,12 @@ import { ChatNotificationsComponent } from './notifications/chat-notifications/c
     LoginComponent,
     NoRouteFoundComponent,
     AppHeaderComponent,
-    ChatNotificationsComponent
+    ChatNotificationsComponent,
+    DashboardComponent,
+    AnnouncementComponent,
+    AnnouncementDialogComponent,
+    PhonebookComponent,
+    CreateCustomerComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,8 +40,9 @@ import { ChatNotificationsComponent } from './notifications/chat-notifications/c
     SharedModule
   ],
   entryComponents: [
+    AnnouncementDialogComponent
   ],
-  providers: [appConfigService,
+  providers: [appConfigService, MessageService, ConfirmationService,
     {
       provide: APP_INITIALIZER,
       useFactory: (_appConfigService: appConfigService) => () => _appConfigService.loadConfig(),

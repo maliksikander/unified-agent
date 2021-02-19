@@ -1,6 +1,24 @@
 <div class="profile-detail container-fluid">
   <div class="row main-header">
     <div class="main-logo col-md-4">
+      <button class="main-menu" mat-icon-button [matMenuTriggerFor]="mainMenu" aria-label="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #mainMenu="matMenu">
+        <button routerLink="/supervisor/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"  mat-menu-item class="main-menu-item">
+          <span>Supervisor Dashboard</span>
+        </button>
+        <button routerLink="/supervisor/announcement"  routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
+          <span>Supervisor Announcements </span>
+        </button>
+        <button routerLink="/customers/chats"  routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
+          <span>Customer Conversation View</span>
+        </button>
+        <button routerLink="/customers/phonebook"  routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
+          <span>Customer List View</span>
+        </button>
+      </mat-menu>
+
       <img src="assets/images/expertflow-logo.png">
     </div>
     <div class="col-md-8 right-profile-area">
@@ -12,6 +30,7 @@
         <!--      </div>-->
 
         <!--      <h3 class="supervisor-heading" *ngIf="supervisor">Supervisor</h3>-->
+        <div class="avatar ready {{_cacheService.agent.presence.agentState | lowercase}}" id="avatar">
         <div class="avatar {{_cacheService.agentDetails.presence.state | lowercase}}" id="avatar">
           <mat-icon>person</mat-icon>
         </div>
@@ -25,13 +44,11 @@
           <span class="agent-state-icon {{_cacheService.agentDetails.presence.state | lowercase}} material-icons">
             radio_button_checked
           </span>
-      
-
         </div>
 
         <div class="agent-state">
           <span class="state">STATE</span>
-      
+
           <div class="agent-current-state">
             <button mat-button [matMenuTriggerFor]="state" class="{{_cacheService.agentDetails.presence.state | lowercase}}">
               <span>{{_cacheService.agentDetails.presence.state | removeUnderscore }}</span>
@@ -57,7 +74,7 @@
           <span class="time_state">{{display | date :"HH:mm:ss":'UTC'}}</span>
 
         </div>
-      
+
         <div class="multi-language">
           <button mat-button [matMenuTriggerFor]="languageSelection" class="language-trigger">
             <img src="assets/flags/{{languageFlag}}" width="20" onError="this.src='assets/flags/generic.png';">
