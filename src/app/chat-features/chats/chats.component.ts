@@ -20,7 +20,7 @@ export class ChatsComponent implements OnInit {
           'Share number where I can call in emergency situations.',
           'Share number where I can call in emergency situations.',
           'Share number where I can call in emergency situations.',
-      ]
+        ]
       },
       {
         title: 'farhan',
@@ -77,11 +77,12 @@ export class ChatsComponent implements OnInit {
 
   isBarOPened = false;
 
-  constructor() {
+  constructor(private _socketService: socketService) {
 
   }
 
   ngOnInit() {
+    this._socketService.connectToSocket();
   }
 
   currentTabIndex;
@@ -90,7 +91,6 @@ export class ChatsComponent implements OnInit {
     this.currentTabIndex = index;
 
   }
-
   eventFromChild(data) {
     this.isBarOPened = data;
   }

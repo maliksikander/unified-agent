@@ -30,9 +30,11 @@ export class LoginComponent implements OnInit {
   login() {
     this._httpService.login(this.loginForm.value).subscribe((e) => {
 
-      this._router.navigate(['customers']);
       console.log("this is login resp ", e.data);
       this._cacheService.agentDetails.agent = e.data;
+      console.log("going to customers")
+      this._router.navigate(['customers']);
+
 
     }, (error) => {
       this._sharedService.Interceptor(error.error, 'err')
