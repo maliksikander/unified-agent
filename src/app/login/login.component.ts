@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material';
 import { httpService } from '../services/http.service';
 import { sharedService } from '../services/shared.service';
 import { cacheService } from '../services/cache.service';
+import { socketService } from '../services/socket.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
 
-  constructor(private _cacheService: cacheService, private _httpService: httpService, private _router: Router, private fb: FormBuilder, private _sharedService: sharedService) {
+  constructor(private _socketService: socketService, private _cacheService: cacheService, private _httpService: httpService, private _router: Router, private fb: FormBuilder, private _sharedService: sharedService) {
 
     this.loginForm = this.fb.group({
       password: ['', [Validators.required]],
@@ -32,7 +33,8 @@ export class LoginComponent implements OnInit {
 
       console.log("this is login resp ", e.data);
       this._cacheService.agentDetails.agent = e.data;
-      console.log("going to customers")
+
+      this._socketService.connectToSocket();
       this._router.navigate(['customers']);
 
 

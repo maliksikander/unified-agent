@@ -12,12 +12,12 @@ import { AppHeaderComponent } from './app-header/app-header.component';
 import { SharedModule } from './shared/shared.module';
 import { appConfigService } from './services/appConfig.service';
 import { ChatNotificationsComponent } from './notifications/chat-notifications/chat-notifications.component';
-import {ConfirmationService, MessageService} from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { AnnouncementComponent } from './announcement/announcement.component';
-import {DashboardComponent} from './supervisor/dashboard/supervisor-dashboard.component';
-import {AnnouncementDialogComponent} from './supervisor/announcement-dialog/announcement-dialog.component';
-import {PhonebookComponent} from './phonebook/phonebook.component';
-import {CreateCustomerComponent} from './create-customer/create-customer.component';
+import { DashboardComponent } from './supervisor/dashboard/supervisor-dashboard.component';
+import { AnnouncementDialogComponent } from './supervisor/announcement-dialog/announcement-dialog.component';
+import { PhonebookComponent } from './phonebook/phonebook.component';
+import { CreateCustomerComponent } from './create-customer/create-customer.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +40,7 @@ import {CreateCustomerComponent} from './create-customer/create-customer.compone
     SharedModule
   ],
   entryComponents: [
-    AnnouncementDialogComponent
+    AnnouncementDialogComponent, CreateCustomerComponent
   ],
   providers: [appConfigService, MessageService, ConfirmationService,
     {

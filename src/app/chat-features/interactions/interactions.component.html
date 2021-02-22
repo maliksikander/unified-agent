@@ -120,9 +120,9 @@
             [ngClass]="((message.header.sender.type | lowercase) == 'customer') ?'user-message':'agent-message'">
             <div class="profile-pic">
               <div
-                class="active-channel channel-icon {{(message.header.sender.type | lowercase) == 'customer' ? (message.header.channelSession.channel.channelConnector.type.name | lowercase) : 'web'}}">
+                class="active-channel channel-icon {{message.header.channelSession.channel.channelConnector.type.name | lowercase}}">
                 <img width="20"
-                  src="../assets/images/{{(message.header.sender.type | lowercase) == 'customer' ? (message.header.channelSession.channel.channelConnector.type.name | lowercase) : 'web'}}.svg">
+                  src="../assets/images/{{message.header.channelSession.channel.channelConnector.type.name | lowercase}}.svg">
               </div>
               <div class="profile-pic-area user-img">{{message.header.sender | getSenderName | slice :0 :2
                 |uppercase}}</div>
@@ -162,7 +162,7 @@
 
   </div>
   <div class="chat-footer">
-    <span class="selected-channel">Selected Channel: <label>Web</label></span>
+    <span class="selected-channel">Selected Channel: <label>{{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.type.name}}</label></span>
     <div class="message-composer">
       <form class="reply-form">
         <label class="count-reply">{{replyInput.value.length}}/200</label>

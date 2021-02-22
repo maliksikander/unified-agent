@@ -1,6 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDrawerToggleResult, MatSidenav } from '@angular/material';
-import { FocusOrigin } from '@angular/cdk/a11y';
 import { socketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -82,7 +80,6 @@ export class ChatsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._socketService.connectToSocket();
   }
 
   currentTabIndex;
