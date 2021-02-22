@@ -5,8 +5,10 @@
         {{conversation.messages[conversation.messages.length
         -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | slice :0 :2 |uppercase}}
 
-        <span class="channel-icon {{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.type.name | lowercase}}">
-          <img src="../assets/images/{{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.type.name | lowercase}}.svg">
+        <span
+          class="channel-icon {{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.type.name | lowercase}}">
+          <img
+            src="../assets/images/{{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.type.name | lowercase}}.svg">
         </span>
       </h3>
       <h5 class="customer-name"
@@ -52,6 +54,46 @@
         </li>
       </ul>
 
+      <!-- Ringing controls-->
+      <!-- <span *ngIf="ringing" class="ringing-controls"> Calling <strong>'+4444858988'</strong> Mobile
+        <button mat-icon-button>
+          <mat-icon>call_end</mat-icon>
+        </button>
+      </span> -->
+      <!--Call controls-->
+      <!-- <ul *ngIf="callControls" class="list-group list-group-horizontal agent-controls call-controls">
+        <li class="list-group-item">
+          <button mat-icon-button>
+            <mat-icon>textsms</mat-icon>
+          </button>
+        </li>
+        <li class="list-group-item">
+          <button mat-icon-button>
+            <mat-icon>phone_forwarded</mat-icon>
+          </button>
+        </li>
+        <li class="list-group-item">
+          <button mat-icon-button>
+            <mat-icon>mic</mat-icon>
+          </button>
+        </li>
+        <li class="list-group-item">
+          <button mat-icon-button>
+            <mat-icon>volume_off</mat-icon>
+          </button>
+        </li>
+        <li class="list-group-item">
+          <button mat-icon-button>
+            <mat-icon>pause</mat-icon>
+          </button>
+        </li>
+        <li class="list-group-item call-end">
+          <button mat-icon-button>
+            <mat-icon>call_end</mat-icon>
+          </button>
+        </li>
+      </ul> -->
+
     </div>
 
   </div>
@@ -67,395 +109,6 @@
 
 
       <!-- voice message chat area -->
-      <!-- <div class="instruction-main">
-      <div class="instruction-inner">
-      
-        <mat-accordion>
-
-          <div class="instruction-content">
-            <div class="int-date">
-              <span>Fri<b>07</b></span>
-            </div>
-            <div class="panel-divider">
-              <div class="line-info">
-              </div>
-              <mat-expansion-panel>
-                <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
-                  <mat-panel-title>
-                    <div class="panel-header">
-                      <ul>
-                        <li>
-                          <time>11:45 AM</time>
-                        </li>
-                        <li class="agent-pic">
-                          <span><img src="/assets/images/ag1.png"> </span>
-                          <span><img src="/assets/images/cs1.png"> </span>
-                          <span><img src="/assets/images/bot1.png"> </span>
-                        </li>
-                        <li class="social-logo">
-                          <span><img src="/assets/images/web.svg"> </span>
-                          <span><img src="/assets/images/facebook.svg"> </span>
-                        </li>
-                        <li class="section-duration">
-                          <time>02min 20sec</time>
-                        </li>
-                        <li class="section-tags">
-                          <span>Tag A</span>
-                          <span>Tag B</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-
-
-                some detail text
-
-              </mat-expansion-panel>
-            </div>
-
-            <div class="panel-divider">
-              <div class="line-info">
-              </div>
-              <mat-expansion-panel>
-
-                <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
-                  <mat-panel-title>
-                    <div class="panel-header">
-                      <ul>
-                        <li>
-                          <time>11:45 AM</time>
-                        </li>
-                        <li class="agent-pic">
-                          <span><img src="/assets/images/ag1.png"> </span>
-                        </li>
-                        <li class="agent-pic call-notify">
-                          <span><img src="/assets/images/incoming-call.svg"> </span>
-                        </li>
-                        <li class="agent-pic">
-                          <span><img src="/assets/images/cs1.png"> </span>
-                        </li>
-                        <li class="section-duration">
-                          <time>02min 20sec</time>
-                        </li>
-                        <li class="section-tags">
-                          <span>Tag A</span>
-                          <span>Tag B</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-
-                <div class="panel-header call-history-panel inner-detail">
-                  <div class="history-time">
-                    <time>11:45 AM</time>
-                  </div>
-                  <div class="history-detail inner-detail-history">
-                    <mat-expansion-panel>
-
-                      <mat-expansion-panel-header [collapsedHeight]="'40px'"
-                                                  [expandedHeight]="'40px'">
-                        <mat-panel-title>
-                          <div class="panel-header">
-                            <ul>
-                              <li><span class="phone-number">12345678</span></li>
-                              <li class="agent-pic call-notify">
-                                <span><img src="/assets/images/incoming-call.svg"> </span>
-                              </li>
-                              <li class="agent-pic call-services">
-                                <p><span><img src="/assets/images/cs1.png"></span> Customer
-                                  Services</p>
-                              </li>
-                              <li class="section-duration">
-                                <time>02min 20sec</time>
-                              </li>
-                              <li class="agent-pic call-notify">
-                                <span><img src="/assets/images/call-transfer.svg"> </span>
-                              </li>
-                              <li class="section-tags">
-                                <span>Tag A</span>
-                                <span>Tag B</span>
-                              </li>
-                              <li class="agent-pic">
-                                <span><img src="/assets/images/call-record.svg"> </span>
-                              </li>
-                            </ul>
-                          </div>
-                        </mat-panel-title>
-                      </mat-expansion-panel-header>
-
-                      <div class="summary-detail">
-                        <ul>
-                          <li><label>Agent ID </label>:<span>Name</span></li>
-                          <li><label>CSQ </label>:<span>CSQ</span></li>
-                          <li><label>Call Duration</label>:<span>02 mins</span></li>
-                          <li><label>Form UR</label>:<span>not Submitted</span></li>
-
-                          <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>
-                          <li><label>Time</label>:<span>14min 50sec</span></li>
-                          <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>
-                          <li><label>Recording URL</label>:<span>https://rec_url</span></li>
-                        </ul>
-                      </div>
-                    </mat-expansion-panel>
-
-                    
-                  </div>
-                </div>
-                <div class="panel-header call-history-panel inner-detail">
-                  <div class="history-time">
-                    <time>11:45 AM</time>
-                  </div>
-                  <div class="history-detail inner-detail-history">
-                    <mat-expansion-panel>
-
-                      <mat-expansion-panel-header [collapsedHeight]="'40px'"
-                                                  [expandedHeight]="'40px'">
-                        <mat-panel-title>
-                          <div class="panel-header">
-                            <ul>
-                              <li class="agent-pic call-notify">
-                                <span><img src="/assets/images/incoming-call.svg"> </span>
-                              </li>
-                              <li class="agent-pic call-services">
-                                <p><span><img src="/assets/images/ag1.png"></span>Tech
-                                  Support</p>
-                              </li>
-                              <li class="section-duration">
-                                <time>02min 20sec</time>
-                              </li>
-                              <li class="agent-pic call-notify">
-                                <span><img src="/assets/images/call-end.svg"> </span>
-                              </li>
-                              <li class="section-tags">
-                                <span>Tag A</span>
-                                <span>Tag B</span>
-                              </li>
-                              <li class="agent-pic">
-                                <span><img src="/assets/images/call-record.svg"> </span>
-                              </li>
-                            </ul>
-                          </div>
-                        </mat-panel-title>
-                      </mat-expansion-panel-header>
-                      <div class="summary-detail">
-                        <ul>
-                          <li><label>Agent ID </label>:<span>Name</span></li>
-                          <li><label>CSQ </label>:<span>CSQ</span></li>
-                          <li><label>Call Duration</label>:<span>02 mins</span></li>
-                          <li><label>Form UR</label>:<span>not Submitted</span></li>
-
-                          <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>
-                          <li><label>Time</label>:<span>14min 50sec</span></li>
-                          <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>
-                          <li><label>Recording URL</label>:<span>https://rec_url</span></li>
-
-                        </ul>
-                      </div>
-                    </mat-expansion-panel>
-
-                  </div>
-                </div>
-
-              </mat-expansion-panel>
-            </div>
-          </div>
-
-          <div class="instruction-content">
-            <div class="int-date">
-              <span>Sun<b>08</b></span>
-            </div>
-            <div class="panel-divider">
-              <div class="line-info">
-              </div>
-              <mat-expansion-panel>
-                <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
-                  <mat-panel-title>
-                    <div class="panel-header">
-                      <ul>
-                        <li>
-                          <time>11:45 AM</time>
-                        </li>
-                        <li class="agent-pic">
-                          <span><img src="/assets/images/ag1.png"> </span>
-                          <span><img src="/assets/images/cs1.png"> </span>
-                          <span><img src="/assets/images/bot1.png"> </span>
-                        </li>
-                        <li class="social-logo">
-                          <span><img src="/assets/images/web.svg"> </span>
-                          <span><img src="/assets/images/facebook.svg"> </span>
-                        </li>
-                        <li class="section-duration">
-                          <time>02min 20sec</time>
-                        </li>
-                        <li class="section-tags">
-                          <span>Tag A</span>
-                          <span>Tag B</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-
-
-                some detail text
-
-              </mat-expansion-panel>
-            </div>
-
-            <div class="panel-divider">
-              <div class="line-info">
-              </div>
-              <mat-expansion-panel>
-
-                <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
-                  <mat-panel-title>
-                    <div class="panel-header">
-                      <ul>
-                        <li>
-                          <time>11:45 AM</time>
-                        </li>
-                        <li class="agent-pic">
-                          <span><img src="/assets/images/ag1.png"> </span>
-                        </li>
-                        <li class="agent-pic call-notify">
-                          <span><img src="/assets/images/incoming-call.svg"> </span>
-                        </li>
-                        <li class="agent-pic">
-                          <span><img src="/assets/images/cs1.png"> </span>
-                        </li>
-                        <li class="section-duration">
-                          <time>02min 20sec</time>
-                        </li>
-                        <li class="section-tags">
-                          <span>Tag A</span>
-                          <span>Tag B</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-
-                <div class="panel-header call-history-panel inner-detail">
-                  <div class="history-time">
-                    <time>11:45 AM</time>
-                  </div>
-                  <div class="history-detail inner-detail-history">
-                    <mat-expansion-panel>
-
-                      <mat-expansion-panel-header [collapsedHeight]="'40px'"
-                                                  [expandedHeight]="'40px'">
-                        <mat-panel-title>
-                          <div class="panel-header">
-                            <ul>
-                              <li><span class="phone-number">12345678</span></li>
-                              <li class="agent-pic call-notify">
-                                <span><img src="/assets/images/incoming-call.svg"> </span>
-                              </li>
-                              <li class="agent-pic call-services">
-                                <p><span><img src="/assets/images/cs1.png"></span> Customer
-                                  Services</p>
-                              </li>
-                              <li class="section-duration">
-                                <time>02min 20sec</time>
-                              </li>
-                              <li class="agent-pic call-notify">
-                                <span><img src="/assets/images/call-transfer.svg"> </span>
-                              </li>
-                              <li class="section-tags">
-                                <span>Tag A</span>
-                                <span>Tag B</span>
-                              </li>
-                              <li class="agent-pic">
-                                <span><img src="/assets/images/call-record.svg"> </span>
-                              </li>
-                            </ul>
-                          </div>
-                        </mat-panel-title>
-                      </mat-expansion-panel-header>
-
-                      <div class="summary-detail">
-                        <ul>
-                          <li><label>Agent ID </label>:<span>Name</span></li>
-                          <li><label>CSQ </label>:<span>CSQ</span></li>
-                          <li><label>Call Duration</label>:<span>02 mins</span></li>
-                          <li><label>Form UR</label>:<span>not Submitted</span></li>
-
-                          <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>
-                          <li><label>Time</label>:<span>14min 50sec</span></li>
-                          <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>
-                          <li><label>Recording URL</label>:<span>https://rec_url</span></li>
-
-                        </ul>
-                      </div>
-                    </mat-expansion-panel>
-
-                   
-                  </div>
-                </div>
-                <div class="panel-header call-history-panel inner-detail">
-                  <div class="history-time">
-                    <time>11:45 AM</time>
-                  </div>
-                  <div class="history-detail inner-detail-history">
-                    <mat-expansion-panel>
-
-                      <mat-expansion-panel-header [collapsedHeight]="'40px'"
-                                                  [expandedHeight]="'40px'">
-                        <mat-panel-title>
-                          <div class="panel-header">
-                            <ul>
-                              <li class="agent-pic call-notify">
-                                <span><img src="/assets/images/incoming-call.svg"> </span>
-                              </li>
-                              <li class="agent-pic call-services">
-                                <p><span><img src="/assets/images/ag1.png"></span>Tech
-                                  Support</p>
-                              </li>
-                              <li class="section-duration">
-                                <time>02min 20sec</time>
-                              </li>
-                              <li class="agent-pic call-notify">
-                                <span><img src="/assets/images/call-end.svg"> </span>
-                              </li>
-                              <li class="section-tags">
-                                <span>Tag A</span>
-                                <span>Tag B</span>
-                              </li>
-                              <li class="agent-pic">
-                                <span><img src="/assets/images/call-record.svg"> </span>
-                              </li>
-                            </ul>
-                          </div>
-                        </mat-panel-title>
-                      </mat-expansion-panel-header>
-                      <div class="summary-detail">
-                        <ul>
-                          <li><label>Agent ID </label>:<span>Name</span></li>
-                          <li><label>CSQ </label>:<span>CSQ</span></li>
-                          <li><label>Call Duration</label>:<span>02 mins</span></li>
-                          <li><label>Form UR</label>:<span>not Submitted</span></li>
-
-                          <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>
-                          <li><label>Time</label>:<span>14min 50sec</span></li>
-                          <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>
-                          <li><label>Recording URL</label>:<span>https://rec_url</span></li>
-
-                        </ul>
-                      </div>
-                    </mat-expansion-panel>
-
-                  
-                  </div>
-                </div>
-
-              </mat-expansion-panel>
-            </div>
-          </div>
-        </mat-accordion>
-      </div>
-    </div> -->
 
 
       <!-- simple chat area -->
@@ -476,56 +129,225 @@
             </div>
             <div class="chat-message-content ">
               <p [innerHTML]="message.body.markdownText | linkify | ibsformat"></p>
+              <!-- <button mat-icon-button class="user_settings" *ngIf="con.title === 'farhan'"
+                      (click)="con.showIntent=!con.showIntent" >
+              </button> -->
             </div>
             <span class="chat-time">{{message.header.timeStamp | date:'h:mm:ss'}}</span>
+            <!-- <span class="material-icons delivery-status" *ngIf="con.title === 'raza'">done_all</span> -->
+            <!-- <div class="chat-intents" *ngIf="con.intents && con.showIntent==true">
+              <div class="intents-inner">
+                <p *ngFor="let intent of con.intents"
+                   [ngClass]="{'selected_intent': intent.name == message.selectedIntent?.intentName}">
+                  {{intent}}
+                  <button mat-mini-fab class="canned-trigger edit-trigger"
+                          (click)="message=action.message || action.name">
+                    <i class="material-icons">
+                      edit
+                    </i>
+                  </button>
+                  <button mat-mini-fab class="canned-trigger send-suggestion" (click)="message=action.message || action.name" >
+                    <i class="material-icons">
+                      send
+                    </i>
+                  </button>
+                </p>
+             
+              </div>
+            </div> -->
           </div>
         </div>
-      </div>
-      <!-- <div class="chat-message agent-message">
-        <div class="profile-pic">
-          <div class="active-channel channel-icon web"><img width="20" src="../assets/images/web.svg"></div>
-          <div class="profile-pic-area user-img"> FA</div>
-        </div>
-        <div class="chat-message-content ">
-          <p>hello</p>
-        </div>
-        <span class="chat-time">16:16:06 </span>
-      </div>
-      <div class="chat-message agent-message ">
-        <div class="profile-pic">
-          <div class="active-channel channel-icon web"><img width="20" src="../assets/images/web.svg"></div>
-          <div class="profile-pic-area user-img"> FA</div>
-        </div>
-        <div class="chat-message-content ">
-          <p style="white-space: pre-line">how are you today</p>
-        </div>
-        <span class="chat-time">16:16:13 </span>
-      </div> -->
-    </div>
-    <div class="chat-footer">
-      <div class="message-composer">
-        <form class="reply-form">
-          <label class="count-reply">{{replyInput.value.length}}/200</label>
-          <div class="mat-form-field form-group chat-area">
-            <textarea (click)="onTextAreaClick()" matInput cdkTextareaAutosize cdkAutosizeMinRows="1"
-              cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none" #replyInput name="message"
-              placeholder="Type a message here."></textarea>
-          </div>
-          <div class="chat-composer-trigger">
-            <button class="video-call composer-trigger" mat-icon-button>
-              <mat-icon>voice_chat</mat-icon>
-            </button>
-            <button class="timer-off composer-trigger" mat-icon-button>
-              <mat-icon>timer_off</mat-icon>
-            </button>
-            <button (click)="onSend(replyInput.value); replyInput.value = null " class="send-btn composer-trigger"
-              mat-icon-button>
-              <mat-icon>send</mat-icon>
-            </button>
-          </div>
-        </form>
       </div>
     </div>
 
   </div>
+  <div class="chat-footer">
+    <span class="selected-channel">Selected Channel: <label>Web</label></span>
+    <div class="message-composer">
+      <form class="reply-form">
+        <label class="count-reply">{{replyInput.value.length}}/200</label>
+        <div class="mat-form-field form-group chat-area">
+
+
+          <textarea (click)="onTextAreaClick()" [(ngModel)]="message" (keyup)="onKey($event)" name="message"
+            (change)="textChanged($event)" [matAutocomplete]="auto" matInput cdkTextareaAutosize cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none" #replyInput name="message"
+            placeholder="Type a message here."></textarea>
+          <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete">
+            
+            <div class="suggested-content" #mainScreen
+              [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}">
+              <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies"
+                [ngClass]="{'animate-content': displaySuggestionsAnimation}">
+                <ng-container *ngFor="let action of actions | LockFilter: message">
+                  <mat-option [value]="action?.message || action?.name"
+                    (click)="message=action?.message || action?.name"
+                    *ngIf="action.message != undefined || action.name != undefined">
+                    {{action.message || action.name}}
+                    <button mat-mini-fab class="canned-trigger edit-trigger"
+                      (click)="message=action.message || action.name">
+                      <i class="material-icons">
+                        edit
+                      </i>
+                    </button>
+                    <button mat-mini-fab class="canned-trigger send-suggestion"
+                      (click)="sendAutoMsg(action.message || action.name)">
+                      <i class="material-icons">
+                        send
+                      </i>
+                    </button>
+                  </mat-option>
+                </ng-container>
+              </div>
+              <mat-tab-group animationDuration="0ms" *ngIf="!displaySuggestionsArea && cannedTabOpen">
+            
+
+                <mat-tab label="Canned Messages">
+                  <div class="right-canned-message-list main-canned-message-area">
+                    <div class="bar-content">
+                    
+                      <mat-tab-group class="inner-tabs" animationDuration="0ms">
+                        <ng-container *ngFor="let msg of cannedMessages; let i = index">
+                          <mat-tab *ngIf="i<3" label="{{msg.category}}">
+                            <mat-option class="custom-tab-area" [value]="cMsg"
+                              *ngFor="let cMsg of msg.messages | LockFilter: message">
+                              {{cMsg}}
+                              {{cMsg.count}}
+
+                              <button mat-mini-fab color="primary" class="canned-trigger edit-trigger"
+                                (click)="message=action.message || action.name">
+                                <i class="material-icons">
+                                  edit
+                                </i>
+                              </button>
+                              <button mat-mini-fab color="primary" class="canned-trigger send-suggestion"
+                                (click)="sendAutoMsg(action.message || action.name)">
+                                <i class="material-icons">
+                                  send
+                                </i>
+                              </button>
+                            </mat-option>
+
+                          </mat-tab>
+                        </ng-container>
+                      </mat-tab-group>
+                      <!--</mat-tab>-->
+
+
+                      <!---->
+                      <!--</mat-tab-group>-->
+                    </div>
+                  </div>
+                </mat-tab>
+
+                <mat-tab label="Bot Suggestions">
+                  <ng-container *ngFor="let action of actions | LockFilter: message">
+                    <mat-option [value]="action?.message || action?.name"
+                      (click)="message=action?.message || action?.name"
+                      *ngIf="action.message != undefined || action.name != undefined">
+                      {{action.message || action.name}}
+                      <button mat-mini-fab class="canned-trigger edit-trigger"
+                        (click)="message=action.message || action.name">
+                        <i class="material-icons">
+                          edit
+                        </i>
+                      </button>
+                      <button mat-mini-fab class="canned-trigger send-suggestion"
+                        (click)="sendAutoMsg(action.message || action.name)">
+                        <i class="material-icons">
+                          send
+                        </i>
+                      </button>
+                    </mat-option>
+                  </ng-container>
+
+                </mat-tab>
+              </mat-tab-group>
+
+            </div>
+          </mat-autocomplete>
+
+
+
+        </div>
+        <div class="chat-composer-trigger">
+          <button class="video-call composer-trigger" mat-icon-button>
+            <mat-icon>voice_chat</mat-icon>
+          </button>
+          <button class="timer-off composer-trigger" mat-icon-button>
+            <mat-icon>timer_off</mat-icon>
+          </button>
+          <button (click)="onSend(replyInput.value); replyInput.value = null " class="send-btn composer-trigger"
+            mat-icon-button>
+            <mat-icon>send</mat-icon>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 </div>
+
+<ng-template #noteTemplate>
+  <div class="note-dialog-main">
+    <div class="dialog-header">
+      <h4 mat-dialog-title>{{popTitle}} <button mat-button mat-dialog-close>
+          <mat-icon>close</mat-icon>
+        </button></h4>
+    </div>
+    <div class="dialog-main-content">
+      <div class="row m-0">
+        <div class="col-md-4">
+          <div class="categories-area divider-content">
+            <h4>Categories</h4>
+            <div class="selected-area">
+              <div class="select-categories">
+                <mat-chip-list>
+                  <mat-chip>Doy Ortelt <mat-icon>close</mat-icon>
+                  </mat-chip>
+                </mat-chip-list>
+              </div>
+            </div>
+            <div class="categories-label">
+              <ul>
+                <li *ngFor="let option of categories">
+                  {{option}}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="wrap-up-area divider-content">
+            <h4>Wrap-Up Codes</h4>
+            <div class="selected-area">
+              <div class="select-categories">
+                <mat-chip-list>
+                  <mat-chip>Doy Ortelt <mat-icon>close</mat-icon>
+                  </mat-chip>
+                </mat-chip-list>
+              </div>
+            </div>
+            <div class="categories-label">
+              <ul>
+                <li *ngFor="let option of categories">
+                  {{option}}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="note-area col-md-12">
+          <h4>Notes</h4>
+          <textarea></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-trigger text-right">
+      <button mat-button mat-dialog-close class="close-btn">Cancel</button>
+      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial>Apply</button>
+    </div>
+  </div>
+</ng-template>
