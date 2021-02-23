@@ -75,9 +75,22 @@ export class AnnouncementComponent implements OnInit {
   }
   onCreateAnnouncement() {
     const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
-
+      panelClass: 'new-announcement-dialog',
 
     });
   }
 
+  onUpdateAnnouncement(){
+    this.onCreateAnnouncement();
+  }
+  confirmationDialog(templateRef, data) {
+    this.dialog.closeAll()
+    const dialogRef = this.dialog.open(templateRef, {
+      width: '490px',
+      panelClass: 'confirm-dialog'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
+  }
 }

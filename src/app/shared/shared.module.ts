@@ -36,6 +36,7 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
 import {SearchPipe} from './pipes/search.pipe';
+import {NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule} from 'ngx-mat-datetime-picker';
 
 
 
@@ -81,7 +82,10 @@ import {SearchPipe} from './pipes/search.pipe';
     ConfirmDialogModule,
     InputTextareaModule,
     OwlDateTimeModule,
-    OwlNativeDateTimeModule
+    OwlNativeDateTimeModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule,
   ], exports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
     MatDrawer, MatCheckboxModule,
@@ -113,7 +117,10 @@ import {SearchPipe} from './pipes/search.pipe';
     InputTextareaModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    SearchPipe
+    SearchPipe,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule
   ]
 })
 export class SharedModule { }

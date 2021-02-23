@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { cacheService } from 'src/app/services/cache.service';
 import { sharedService } from 'src/app/services/shared.service';
 import { socketService } from 'src/app/services/socket.service';
@@ -16,6 +16,8 @@ export class InteractionsComponent implements OnInit {
   isConnected = true;
   popTitle = "Notes";
   @Input('messages') messages: any;
+  @Output() expandCustomerInfo = new EventEmitter<any>();
+  isBarOPened = false;
 
   channelUrl = 'assets/images/web.svg';
   options: string[] = ['Glenn Helgass', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', 'Glenn Helgass', ' Ev Gayforth'];
@@ -145,4 +147,8 @@ export class InteractionsComponent implements OnInit {
     // }
   }
 
+
+  eventFromChild(data) {
+    this.isBarOPened = data;
+  }
 }

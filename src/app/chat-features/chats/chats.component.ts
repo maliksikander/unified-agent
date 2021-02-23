@@ -75,7 +75,6 @@ export class ChatsComponent implements OnInit {
 
   ];
 
-  isBarOPened = false;
 
   constructor() {
 
@@ -91,7 +90,4 @@ export class ChatsComponent implements OnInit {
 
   }
 
-  eventFromChild(data) {
-    this.isBarOPened = data;
-  }
 }

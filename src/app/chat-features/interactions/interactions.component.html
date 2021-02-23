@@ -1,3 +1,6 @@
+
+<div class="interaction-main" [ngClass]="{'customer-bar-opened': isBarOPened}">
+<div class="interaction-inner">
 <div class="container-fluid main-chat-bar">
   <div class="row">
     <div class="col-md-4 customer-showcase">
@@ -94,8 +97,6 @@
 
 </div>
 <!--/Top bar-->
-
-
 <!--Interactions Area Start -->
 <div id="chat-content" class="container-fluid main-chat-area">
   <div class="row">
@@ -806,4 +807,10 @@
     </div>
   </div>
 </ng-template>
+</div>
+</div>
+
+<div class="customer-info-main">
+  <app-customer-info (expandCustomerInfo)="eventFromChild($event)"></app-customer-info>
+</div>
 </div>

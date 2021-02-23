@@ -2,7 +2,7 @@
 <div class="ef_container container-fluid p-0">
   <div id="content" class="h-100">
 
-    <div id="main-content" class="h-100" [ngClass]="{'customer-bar-opened': isBarOPened}">
+    <div id="main-content" class="h-100">
       <!--      <button color="primary" class="left-bar-trigger" (click)="barExpand = !barExpand" ><mat-icon>{{barExpand ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}</mat-icon></button>-->
       <mat-tab-group (selectedIndexChange)="onTabChange($event)" class="chat-tab-area h-100">
 
@@ -34,14 +34,9 @@
             </div>
           </div>
           <!-- row end -->
-          <div class="customer-info-main">
-            <app-customer-info (expandCustomerInfo)="eventFromChild($event)"
-                              [conversation]="conversation.messages[0].title"></app-customer-info>
-          </div>
         </mat-tab>
       </mat-tab-group>
     </div>
-    <!--    <app-customer-info></app-customer-info>-->
   </div>
 </div>
 
