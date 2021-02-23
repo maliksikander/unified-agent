@@ -1,69 +1,69 @@
 <div class="interaction-main" [ngClass]="{'customer-bar-opened': isBarOPened}">
-<div class="interaction-inner">
-<div class="container-fluid main-chat-bar">
-  <div class="row">
-    <div class="col-md-4 customer-showcase">
-      <h3 matTooltipPosition="right" class="customer-highlight">
-        {{conversation.messages[conversation.messages.length
-        -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | slice :0 :2 |uppercase}}
+  <div class="interaction-inner">
+    <div [ngClass]="{'unidentified-customer':conversation.messages[conversation.messages.length -1].header.channelSession.linkedCustomer.isAnonymous}" class="container-fluid main-chat-bar">
+      <div class="row">
+        <div class="col-md-4 customer-showcase">
+          <h3 matTooltipPosition="right" class="customer-highlight">
+            {{conversation.messages[conversation.messages.length
+            -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | slice :0 :2 |uppercase}}
 
-        <span
-          class="channel-icon {{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.type.name | lowercase}}">
-          <img
-            src="../assets/images/{{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.type.name | lowercase}}.svg">
-        </span>
-      </h3>
-      <h5 class="customer-name"
-        [matTooltip]="conversation.messages[conversation.messages.length -1].header.channelSession.linkedCustomer.associatedCustomer.firstName">
-        {{conversation.messages[conversation.messages.length
-        -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | slice :0 :50}}
-        <span class="chat-timer">( 11:32 )</span>
+            <span
+              class="channel-icon {{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.type.name | lowercase}}">
+              <img
+                src="../assets/images/{{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.type.name | lowercase}}.svg">
+            </span>
+          </h3>
+          <h5 class="customer-name"
+            [matTooltip]="conversation.messages[conversation.messages.length -1].header.channelSession.linkedCustomer.associatedCustomer.firstName">
+            {{conversation.messages[conversation.messages.length
+            -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | slice :0 :50}}
+            <span class="chat-timer">( 11:32 )</span>
 
-      </h5>
-    </div>
-    <div class="col-md-8 agent-actions">
-      <ul class="list-group list-group-horizontal agent-controls">
-        <li class="list-group-item">
-          <button mat-icon-button>
-            <mat-icon>group</mat-icon>
-          </button>
-        </li>
-        <li class="list-group-item">
-          <button mat-icon-button>
-            <mat-icon>history</mat-icon>
-          </button>
-        </li>
-        <li class="list-group-item">
-          <button mat-icon-button>
-            <mat-icon>chat_bubble</mat-icon>
-            <i class="material-icons arrow-red arrow-gray">arrow_forward</i>
-          </button>
-        </li>
-        <li class="list-group-item">
-          <button mat-icon-button>
-            <mat-icon>person_add</mat-icon>
-          </button>
-        </li>
-        <li class="list-group-item">
-          <button mat-icon-button>
-            <mat-icon>pan_tool</mat-icon>
-          </button>
-        </li>
-        <li class="list-group-item">
-          <button mat-icon-button>
-            <mat-icon>close</mat-icon>
-          </button>
-        </li>
-      </ul>
+          </h5>
+        </div>
+        <div class="col-md-8 agent-actions">
+          <ul class="list-group list-group-horizontal agent-controls">
+            <li class="list-group-item">
+              <button mat-icon-button>
+                <mat-icon>group</mat-icon>
+              </button>
+            </li>
+            <li class="list-group-item">
+              <button mat-icon-button>
+                <mat-icon>history</mat-icon>
+              </button>
+            </li>
+            <li class="list-group-item">
+              <button mat-icon-button>
+                <mat-icon>chat_bubble</mat-icon>
+                <i class="material-icons arrow-red arrow-gray">arrow_forward</i>
+              </button>
+            </li>
+            <li class="list-group-item">
+              <button mat-icon-button>
+                <mat-icon>person_add</mat-icon>
+              </button>
+            </li>
+            <li class="list-group-item">
+              <button mat-icon-button>
+                <mat-icon>pan_tool</mat-icon>
+              </button>
+            </li>
+            <li class="list-group-item">
+              <button mat-icon-button>
+                <mat-icon>close</mat-icon>
+              </button>
+            </li>
+          </ul>
 
-      <!-- Ringing controls-->
-      <!-- <span *ngIf="ringing" class="ringing-controls"> Calling <strong>'+4444858988'</strong> Mobile
+          <!-- Ringing controls-->
+          <!-- <span *ngIf="ringing" class="ringing-controls"> Calling <strong>'+4444858988'</strong> Mobile
         <button mat-icon-button>
           <mat-icon>call_end</mat-icon>
         </button>
       </span> -->
-      <!--Call controls-->
-      <!-- <ul *ngIf="callControls" class="list-group list-group-horizontal agent-controls call-controls">
+          <!--Call controls-->
+          <!-- <ul *ngIf="callControls" class="list-group list-group-horizontal agent-controls call-controls">
         <li class="list-group-item">
           <button mat-icon-button>
             <mat-icon>textsms</mat-icon>
@@ -96,48 +96,48 @@
         </li>
       </ul> -->
 
+        </div>
+
+      </div>
+
     </div>
-
-  </div>
-
-</div>
-<!--/Top bar-->
+    <!--/Top bar-->
 
 
-<!--Interactions Area Start -->
-<div id="chat-content" class="container-fluid main-chat-area">
-  <div class="row">
-    <div class="chat-messages-main">
+    <!--Interactions Area Start -->
+    <div id="chat-content" class="container-fluid main-chat-area">
+      <div class="row">
+        <div class="chat-messages-main">
 
 
-      <!-- voice message chat area -->
+          <!-- voice message chat area -->
 
 
-      <!-- simple chat area -->
+          <!-- simple chat area -->
 
-      <div class="instruction-content chat-session-main">
-        <div class="int-date"><span>Mon<b>09</b></span></div>
-        <div *ngFor="let message of conversation.messages">
-          <div class="chat-message"
-            [ngClass]="((message.header.sender.type | lowercase) == 'customer') ?'user-message':'agent-message'">
-            <div class="profile-pic">
-              <div
-                class="active-channel channel-icon {{message.header.channelSession.channel.channelConnector.type.name | lowercase}}">
-                <img width="20"
-                  src="../assets/images/{{message.header.channelSession.channel.channelConnector.type.name | lowercase}}.svg">
-              </div>
-              <div class="profile-pic-area user-img">{{message.header.sender | getSenderName | slice :0 :2
-                |uppercase}}</div>
-            </div>
-            <div class="chat-message-content ">
-              <p [innerHTML]="message.body.markdownText | linkify | ibsformat"></p>
-              <!-- <button mat-icon-button class="user_settings" *ngIf="con.title === 'farhan'"
+          <div class="instruction-content chat-session-main">
+            <div class="int-date"><span>Mon<b>09</b></span></div>
+            <div *ngFor="let message of conversation.messages">
+              <div class="chat-message"
+                [ngClass]="((message.header.sender.type | lowercase) == 'customer') ?'user-message':'agent-message'">
+                <div class="profile-pic">
+                  <div
+                    class="active-channel channel-icon {{message.header.channelSession.channel.channelConnector.type.name | lowercase}}">
+                    <img width="20"
+                      src="../assets/images/{{message.header.channelSession.channel.channelConnector.type.name | lowercase}}.svg">
+                  </div>
+                  <div class="profile-pic-area user-img">{{message.header.sender | getSenderName | slice :0 :2
+                    |uppercase}}</div>
+                </div>
+                <div class="chat-message-content ">
+                  <p [innerHTML]="message.body.markdownText | linkify | ibsformat"></p>
+                  <!-- <button mat-icon-button class="user_settings" *ngIf="con.title === 'farhan'"
                       (click)="con.showIntent=!con.showIntent" >
               </button> -->
-            </div>
-            <span class="chat-time">{{message.header.timeStamp | date:'h:mm:ss'}}</span>
-            <!-- <span class="material-icons delivery-status" *ngIf="con.title === 'raza'">done_all</span> -->
-            <!-- <div class="chat-intents" *ngIf="con.intents && con.showIntent==true">
+                </div>
+                <span class="chat-time">{{message.header.timeStamp | date:'h:mm:ss'}}</span>
+                <!-- <span class="material-icons delivery-status" *ngIf="con.title === 'raza'">done_all</span> -->
+                <!-- <div class="chat-intents" *ngIf="con.intents && con.showIntent==true">
               <div class="intents-inner">
                 <p *ngFor="let intent of con.intents"
                    [ngClass]="{'selected_intent': intent.name == message.selectedIntent?.intentName}">
@@ -157,205 +157,207 @@
              
               </div>
             </div> -->
+              </div>
+            </div>
           </div>
         </div>
+
       </div>
-    </div>
-
-  </div>
-  <div class="chat-footer">
-    <span class="selected-channel">Selected Channel: <label>{{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.type.name | titlecase}}</label></span>
-    <div class="message-composer">
-      <form class="reply-form">
-        <label class="count-reply">{{replyInput.value.length}}/200</label>
-        <div class="mat-form-field form-group chat-area">
+      <div class="chat-footer">
+        <span class="selected-channel">Selected Channel: <label>{{conversation.messages[conversation.messages.length
+            -1].header.channelSession.channel.channelConnector.type.name | titlecase}}</label></span>
+        <div class="message-composer">
+          <form class="reply-form">
+            <label class="count-reply">{{replyInput.value.length}}/200</label>
+            <div class="mat-form-field form-group chat-area">
 
 
-          <textarea (click)="onTextAreaClick()" [(ngModel)]="message" (keyup)="onKey($event)" name="message"
-            (change)="textChanged($event)" [matAutocomplete]="auto" matInput cdkTextareaAutosize cdkAutosizeMinRows="1"
-            cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none" #replyInput name="message"
-            placeholder="Type a message here."></textarea>
-          <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete">
-            
-            <div class="suggested-content" #mainScreen
-              [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}">
-              <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies"
-                [ngClass]="{'animate-content': displaySuggestionsAnimation}">
-                <ng-container *ngFor="let action of actions | LockFilter: message">
-                  <mat-option [value]="action?.message || action?.name"
-                    (click)="message=action?.message || action?.name"
-                    *ngIf="action.message != undefined || action.name != undefined">
-                    {{action.message || action.name}}
-                    <button mat-mini-fab class="canned-trigger edit-trigger"
-                      (click)="message=action.message || action.name">
-                      <i class="material-icons">
-                        edit
-                      </i>
-                    </button>
-                    <button mat-mini-fab class="canned-trigger send-suggestion"
-                      (click)="sendAutoMsg(action.message || action.name)">
-                      <i class="material-icons">
-                        send
-                      </i>
-                    </button>
-                  </mat-option>
-                </ng-container>
-              </div>
-              <mat-tab-group animationDuration="0ms" *ngIf="!displaySuggestionsArea && cannedTabOpen">
-            
+              <textarea (click)="onTextAreaClick()" [(ngModel)]="message" (keyup)="onKey($event)" name="message"
+                (change)="textChanged($event)" [matAutocomplete]="auto" matInput cdkTextareaAutosize
+                cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none" #replyInput
+                name="message" placeholder="Type a message here."></textarea>
+              <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete">
 
-                <mat-tab label="Canned Messages">
-                  <div class="right-canned-message-list main-canned-message-area">
-                    <div class="bar-content">
-                    
-                      <mat-tab-group class="inner-tabs" animationDuration="0ms">
-                        <ng-container *ngFor="let msg of cannedMessages; let i = index">
-                          <mat-tab *ngIf="i<3" label="{{msg.category}}">
-                            <mat-option class="custom-tab-area" [value]="cMsg"
-                              *ngFor="let cMsg of msg.messages | LockFilter: message">
-                              {{cMsg}}
-                              {{cMsg.count}}
-
-                              <button mat-mini-fab color="primary" class="canned-trigger edit-trigger"
-                                (click)="message=action.message || action.name">
-                                <i class="material-icons">
-                                  edit
-                                </i>
-                              </button>
-                              <button mat-mini-fab color="primary" class="canned-trigger send-suggestion"
-                                (click)="sendAutoMsg(action.message || action.name)">
-                                <i class="material-icons">
-                                  send
-                                </i>
-                              </button>
-                            </mat-option>
-
-                          </mat-tab>
-                        </ng-container>
-                      </mat-tab-group>
-                      <!--</mat-tab>-->
-
-
-                      <!---->
-                      <!--</mat-tab-group>-->
-                    </div>
+                <div class="suggested-content" #mainScreen
+                  [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}">
+                  <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies"
+                    [ngClass]="{'animate-content': displaySuggestionsAnimation}">
+                    <ng-container *ngFor="let action of actions | LockFilter: message">
+                      <mat-option [value]="action?.message || action?.name"
+                        (click)="message=action?.message || action?.name"
+                        *ngIf="action.message != undefined || action.name != undefined">
+                        {{action.message || action.name}}
+                        <button mat-mini-fab class="canned-trigger edit-trigger"
+                          (click)="message=action.message || action.name">
+                          <i class="material-icons">
+                            edit
+                          </i>
+                        </button>
+                        <button mat-mini-fab class="canned-trigger send-suggestion"
+                          (click)="sendAutoMsg(action.message || action.name)">
+                          <i class="material-icons">
+                            send
+                          </i>
+                        </button>
+                      </mat-option>
+                    </ng-container>
                   </div>
-                </mat-tab>
+                  <mat-tab-group animationDuration="0ms" *ngIf="!displaySuggestionsArea && cannedTabOpen">
 
-                <mat-tab label="Bot Suggestions">
-                  <ng-container *ngFor="let action of actions | LockFilter: message">
-                    <mat-option [value]="action?.message || action?.name"
-                      (click)="message=action?.message || action?.name"
-                      *ngIf="action.message != undefined || action.name != undefined">
-                      {{action.message || action.name}}
-                      <button mat-mini-fab class="canned-trigger edit-trigger"
-                        (click)="message=action.message || action.name">
-                        <i class="material-icons">
-                          edit
-                        </i>
-                      </button>
-                      <button mat-mini-fab class="canned-trigger send-suggestion"
-                        (click)="sendAutoMsg(action.message || action.name)">
-                        <i class="material-icons">
-                          send
-                        </i>
-                      </button>
-                    </mat-option>
-                  </ng-container>
 
-                </mat-tab>
-              </mat-tab-group>
+                    <mat-tab label="Canned Messages">
+                      <div class="right-canned-message-list main-canned-message-area">
+                        <div class="bar-content">
+
+                          <mat-tab-group class="inner-tabs" animationDuration="0ms">
+                            <ng-container *ngFor="let msg of cannedMessages; let i = index">
+                              <mat-tab *ngIf="i<3" label="{{msg.category}}">
+                                <mat-option class="custom-tab-area" [value]="cMsg"
+                                  *ngFor="let cMsg of msg.messages | LockFilter: message">
+                                  {{cMsg}}
+                                  {{cMsg.count}}
+
+                                  <button mat-mini-fab color="primary" class="canned-trigger edit-trigger"
+                                    (click)="message=action.message || action.name">
+                                    <i class="material-icons">
+                                      edit
+                                    </i>
+                                  </button>
+                                  <button mat-mini-fab color="primary" class="canned-trigger send-suggestion"
+                                    (click)="sendAutoMsg(action.message || action.name)">
+                                    <i class="material-icons">
+                                      send
+                                    </i>
+                                  </button>
+                                </mat-option>
+
+                              </mat-tab>
+                            </ng-container>
+                          </mat-tab-group>
+                          <!--</mat-tab>-->
+
+
+                          <!---->
+                          <!--</mat-tab-group>-->
+                        </div>
+                      </div>
+                    </mat-tab>
+
+                    <mat-tab label="Bot Suggestions">
+                      <ng-container *ngFor="let action of actions | LockFilter: message">
+                        <mat-option [value]="action?.message || action?.name"
+                          (click)="message=action?.message || action?.name"
+                          *ngIf="action.message != undefined || action.name != undefined">
+                          {{action.message || action.name}}
+                          <button mat-mini-fab class="canned-trigger edit-trigger"
+                            (click)="message=action.message || action.name">
+                            <i class="material-icons">
+                              edit
+                            </i>
+                          </button>
+                          <button mat-mini-fab class="canned-trigger send-suggestion"
+                            (click)="sendAutoMsg(action.message || action.name)">
+                            <i class="material-icons">
+                              send
+                            </i>
+                          </button>
+                        </mat-option>
+                      </ng-container>
+
+                    </mat-tab>
+                  </mat-tab-group>
+
+                </div>
+              </mat-autocomplete>
+
+
 
             </div>
-          </mat-autocomplete>
-
-
-
-        </div>
-        <div class="chat-composer-trigger">
-          <button class="video-call composer-trigger" mat-icon-button>
-            <mat-icon>voice_chat</mat-icon>
-          </button>
-          <button class="timer-off composer-trigger" mat-icon-button>
-            <mat-icon>timer_off</mat-icon>
-          </button>
-          <button (click)="onSend(replyInput.value); replyInput.value = null " class="send-btn composer-trigger"
-            mat-icon-button>
-            <mat-icon>send</mat-icon>
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-</div>
-
-<ng-template #noteTemplate>
-  <div class="note-dialog-main">
-    <div class="dialog-header">
-      <h4 mat-dialog-title>{{popTitle}} <button mat-button mat-dialog-close>
-          <mat-icon>close</mat-icon>
-        </button></h4>
-    </div>
-    <div class="dialog-main-content">
-      <div class="row m-0">
-        <div class="col-md-4">
-          <div class="categories-area divider-content">
-            <h4>Categories</h4>
-            <div class="selected-area">
-              <div class="select-categories">
-                <mat-chip-list>
-                  <mat-chip>Doy Ortelt <mat-icon>close</mat-icon>
-                  </mat-chip>
-                </mat-chip-list>
-              </div>
+            <div class="chat-composer-trigger">
+              <button class="video-call composer-trigger" mat-icon-button>
+                <mat-icon>voice_chat</mat-icon>
+              </button>
+              <button class="timer-off composer-trigger" mat-icon-button>
+                <mat-icon>timer_off</mat-icon>
+              </button>
+              <button (click)="onSend(replyInput.value); replyInput.value = null " class="send-btn composer-trigger"
+                mat-icon-button>
+                <mat-icon>send</mat-icon>
+              </button>
             </div>
-            <div class="categories-label">
-              <ul>
-                <li *ngFor="let option of categories">
-                  {{option}}
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <div class="wrap-up-area divider-content">
-            <h4>Wrap-Up Codes</h4>
-            <div class="selected-area">
-              <div class="select-categories">
-                <mat-chip-list>
-                  <mat-chip>Doy Ortelt <mat-icon>close</mat-icon>
-                  </mat-chip>
-                </mat-chip-list>
-              </div>
-            </div>
-            <div class="categories-label">
-              <ul>
-                <li *ngFor="let option of categories">
-                  {{option}}
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="note-area col-md-12">
-          <h4>Notes</h4>
-          <textarea></textarea>
+          </form>
         </div>
       </div>
+
     </div>
 
-    <div class="action-trigger text-right">
-      <button mat-button mat-dialog-close class="close-btn">Cancel</button>
-      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial>Apply</button>
-    </div>
+    <ng-template #noteTemplate>
+      <div class="note-dialog-main">
+        <div class="dialog-header">
+          <h4 mat-dialog-title>{{popTitle}} <button mat-button mat-dialog-close>
+              <mat-icon>close</mat-icon>
+            </button></h4>
+        </div>
+        <div class="dialog-main-content">
+          <div class="row m-0">
+            <div class="col-md-4">
+              <div class="categories-area divider-content">
+                <h4>Categories</h4>
+                <div class="selected-area">
+                  <div class="select-categories">
+                    <mat-chip-list>
+                      <mat-chip>Doy Ortelt <mat-icon>close</mat-icon>
+                      </mat-chip>
+                    </mat-chip-list>
+                  </div>
+                </div>
+                <div class="categories-label">
+                  <ul>
+                    <li *ngFor="let option of categories">
+                      {{option}}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="wrap-up-area divider-content">
+                <h4>Wrap-Up Codes</h4>
+                <div class="selected-area">
+                  <div class="select-categories">
+                    <mat-chip-list>
+                      <mat-chip>Doy Ortelt <mat-icon>close</mat-icon>
+                      </mat-chip>
+                    </mat-chip-list>
+                  </div>
+                </div>
+                <div class="categories-label">
+                  <ul>
+                    <li *ngFor="let option of categories">
+                      {{option}}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="note-area col-md-12">
+              <h4>Notes</h4>
+              <textarea></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-trigger text-right">
+          <button mat-button mat-dialog-close class="close-btn">Cancel</button>
+          <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial>Apply</button>
+        </div>
+      </div>
+    </ng-template>
   </div>
-</ng-template>
-</div>
 
-<div class="customer-info-main">
-  <app-customer-info (expandCustomerInfo)="eventFromChild($event)"></app-customer-info>
-</div>
+  <div class="customer-info-main">
+    <app-customer-info [message]="conversation.messages[conversation.messages.length - 1]"
+      (expandCustomerInfo)="eventFromChild($event)"></app-customer-info>
+  </div>
 </div>

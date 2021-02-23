@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from "@angular/core";
 import { ibsFormat } from "ibs-format";
 
-@Pipe({ name: "ibsformat" })
+@Pipe({ name: "ibsformat", pure: true })
 export class ibsformatPipe implements PipeTransform {
     transform(value: any, args?: any): any {
         value = ibsFormat(

@@ -237,9 +237,9 @@
     border-bottom: 1px dotted lighten($dark-gray-color, 60%);
     margin-bottom: 8px;
 
-    &:last-child {
-      border-bottom: 0;
-    }
+    // &:last-child {
+    //   border-bottom: 0;
+    // }
 
     .label-detail {
       margin: 0 0 3px;
@@ -251,6 +251,7 @@
       font-size: 9px;
       color: lighten($dark-gray-color, 70%);
       font-weight: 600;
+      margin-bottom : 0;
     }
   }
 }

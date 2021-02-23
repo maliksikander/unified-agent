@@ -18,31 +18,32 @@ import { RemoveUnderscorePipe } from './pipes/underScore.pipe';
 import { NgxLinkifyjsModule } from 'ngx-linkifyjs';
 import { ibsformatPipe } from './pipes/ibsFormat.pipe';
 import { getSenderNamePipe } from './pipes/getSenderName.pipe';
-import {TableModule} from 'primeng/table';
-import {SliderModule} from 'primeng/slider';
-import {CalendarModule} from 'primeng/calendar';
-import {DialogModule} from 'primeng/dialog';
-import {MultiSelectModule} from 'primeng/multiselect';
-import {ContextMenuModule} from 'primeng/contextmenu';
-import {DropdownModule} from 'primeng/dropdown';
-import {ButtonModule} from 'primeng/button';
-import {ToastModule} from 'primeng/toast';
-import {InputTextModule} from 'primeng/inputtext';
-import {ProgressBarModule} from 'primeng/progressbar';
-import {FileUploadModule} from 'primeng/fileupload';
-import {ToolbarModule} from 'primeng/toolbar';
-import {RatingModule} from 'primeng/rating';
-import {RadioButtonModule} from 'primeng/radiobutton';
-import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import {InputTextareaModule} from 'primeng/inputtextarea';
-import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
-import {SearchPipe} from './pipes/search.pipe';
+import { TableModule } from 'primeng/table';
+import { SliderModule } from 'primeng/slider';
+import { CalendarModule } from 'primeng/calendar';
+import { DialogModule } from 'primeng/dialog';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ContextMenuModule } from 'primeng/contextmenu';
+import { DropdownModule } from 'primeng/dropdown';
+import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { InputTextModule } from 'primeng/inputtext';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ToolbarModule } from 'primeng/toolbar';
+import { RatingModule } from 'primeng/rating';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { SearchPipe } from './pipes/search.pipe';
+import { sentenceCasePipe } from './pipes/sentenceCase.pipe';
 
 
 
 
 @NgModule({
-  declarations: [RemoveUnderscorePipe, ibsformatPipe, getSenderNamePipe, SearchPipe],
+  declarations: [RemoveUnderscorePipe, ibsformatPipe, getSenderNamePipe, SearchPipe, sentenceCasePipe],
   imports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
     MatCheckboxModule, MatButtonModule,
@@ -93,7 +94,7 @@ import {SearchPipe} from './pipes/search.pipe';
     MatTabsModule, MatSelectModule, MatTooltipModule, FormsModule, MatExpansionModule,
     MatMenuModule, MatSlideToggleModule, MatAutocompleteModule, MatDialogModule, MatTabsModule,
     MatDatepickerModule, MatNativeDateModule, DragDropModule, CommonModule, NgCircleProgressModule, HttpClientModule,
-    RemoveUnderscorePipe, NgxLinkifyjsModule, ibsformatPipe,  TableModule,
+    RemoveUnderscorePipe, NgxLinkifyjsModule, ibsformatPipe, TableModule,
     CalendarModule,
     SliderModule,
     DialogModule,
@@ -114,7 +115,7 @@ import {SearchPipe} from './pipes/search.pipe';
     InputTextareaModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    SearchPipe, getSenderNamePipe
+    SearchPipe, getSenderNamePipe, sentenceCasePipe
   ]
 })
 export class SharedModule { }

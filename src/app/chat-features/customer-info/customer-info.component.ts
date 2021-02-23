@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatDialog, MatSidenav } from '@angular/material';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { socketService } from 'src/app/services/socket.service';
@@ -9,14 +9,14 @@ import { sharedService } from 'src/app/services/shared.service';
   templateUrl: './customer-info.component.html',
   styleUrls: ['./customer-info.component.scss']
 })
-export class CustomerInfoComponent implements OnInit, OnChanges {
+export class CustomerInfoComponent implements OnInit {
   @ViewChild('sidenav', { static: true }) sidenav: MatSidenav;
   // tslint:disable-next-line:no-input-rename
-  @Input() currentTabIndex: any;
-  @Input('conversation') conversation: any;
+  @Input() message: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
+  customerProfileFormData: any;
 
-  message;
+
   customArray = [
     // 'media_channel',
     'customer_profile',
@@ -50,15 +50,8 @@ export class CustomerInfoComponent implements OnInit, OnChanges {
   constructor(public _socketService: socketService, private dialog: MatDialog) {
 
   }
-  ngOnChanges(changes: SimpleChanges): void {
-    // if (changes.currentTabIndex.currentValue !== undefined) {
-    //   this.updateCustomerInfo();
-    // }
-    console.log("on changes ", this.message);
-  }
 
   ngOnInit() {
-    // console.log("child called conversation "+this.conversation);
 
   }
 
@@ -67,11 +60,6 @@ export class CustomerInfoComponent implements OnInit, OnChanges {
   }
 
 
-  updateCustomerInfo() {
-    let index = this.currentTabIndex == null ? 0 : this.currentTabIndex;
-    let conversation = this._socketService.conversations[index];
-    this.message = conversation.messages[conversation.messages.length - 1];
-  }
   openDialog(templateRef, e): void {
     this.outgoingCallingNumber = e;
 
@@ -80,8 +68,32 @@ export class CustomerInfoComponent implements OnInit, OnChanges {
       width: '350px'
     });
   }
+
   customerInfoToggle() {
     this.barOpened = !this.barOpened;
     this.expandCustomerInfo.emit(this.barOpened);
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.message.currentValue != undefined) {
+      this.message = null;
+      this.message = JSON.parse(JSON.stringify(changes.message.currentValue));
+      this.customerProfileFormData = this.getProfileFormData(this.message.header.channelSession.linkedCustomer.associatedCustomer);
+
+    }
+  }
+
+
+  getProfileFormData(obj) {
+    let processedObj = [];
+    let keys = Object.keys(obj);
+    let values = Object.values(obj);
+    for (let i = 0; i < keys.length; i++) {
+      if (keys[i] != "id") {
+        processedObj.push({ key: keys[i], value: values[i] });
+      }
+    }
+    return processedObj;
+  }
+
 }

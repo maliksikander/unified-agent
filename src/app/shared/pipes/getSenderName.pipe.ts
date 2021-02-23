@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({ name: 'getSenderName' })
+@Pipe({ name: 'getSenderName', pure: true })
 export class getSenderNamePipe implements PipeTransform {
     transform(sender: any, args?: any): any {
 
