@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { cacheService } from 'src/app/services/cache.service';
 import { sharedService } from 'src/app/services/shared.service';
 import { socketService } from 'src/app/services/socket.service';
@@ -12,6 +12,10 @@ import { MatDialog } from '@angular/material';
 export class InteractionsComponent implements OnInit {
   // tslint:disable-next-line:no-input-rename
   @Input('conversation') conversation: any;
+  @Output() expandCustomerInfo = new EventEmitter<any>();
+  isBarOPened = false;
+
+
   unidentified = true;
   isConnected = true;
   popTitle = "Notes";
@@ -138,5 +142,7 @@ export class InteractionsComponent implements OnInit {
     //     this.isTemplateOpen = false;
     // }
   }
-
+  eventFromChild(data) {
+    this.isBarOPened = data;
+  }
 }

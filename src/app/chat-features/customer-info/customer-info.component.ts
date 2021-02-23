@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
-import {MatDialog, MatSidenav} from '@angular/material';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { MatDialog, MatSidenav } from '@angular/material';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { socketService } from 'src/app/services/socket.service';
 import { sharedService } from 'src/app/services/shared.service';
@@ -47,14 +47,8 @@ export class CustomerInfoComponent implements OnInit, OnChanges {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
   }
-  constructor(public _socketService: socketService, private _sharedService: sharedService,  private dialog: MatDialog) {
-    this._sharedService.serviceCurrentMessage.subscribe((e) => {
+  constructor(public _socketService: socketService, private dialog: MatDialog) {
 
-      if (e.msg === 'onMessage') {
-
-        this.updateCustomerInfo();
-      }
-    })
   }
   ngOnChanges(changes: SimpleChanges): void {
     // if (changes.currentTabIndex.currentValue !== undefined) {

@@ -62,7 +62,7 @@ export class socketService {
 
         this.listen('oldTopicMessages').subscribe((res: any) => {
             console.log("oldTopicMessages", res);
-            this.conversations.push({ topicId: res.topicId, messages: res.message });
+            this.conversations.push({ topicId: res.topicId, messages: res.message, unReadCount: undefined });
             this._conversationsListener.next(this.conversations);
 
         });
@@ -93,12 +93,12 @@ export class socketService {
 
         if (sameTopicIdObj) {
             sameTopicIdObj.messages.push(res.message);
+            sameTopicIdObj.unReadCount ? undefined : sameTopicIdObj.unReadCount = 0;
             if (res.message.header.sender.type.toLowerCase() != 'agent') { ++sameTopicIdObj.unReadCount; }
         } else {
             this.conversations.push({ topicId: res.topicId, messages: [res.message], unReadCount: 1 });
         }
 
-        this._sharedService.serviceChangeMessage({ msg: 'onMessage', data: null });
         this._conversationsListener.next(this.conversations);
 
     }

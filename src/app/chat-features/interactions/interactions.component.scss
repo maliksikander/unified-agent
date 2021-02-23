@@ -202,10 +202,11 @@
 #chat-content {
   .chat-messages-main {
     height: calc(100% - 132px);
-    width: 100%;
+    width: calc(100% - 55px);
     position: absolute;
     overflow: auto;
     padding: 0 20px;
+    left: 0;
 
     //  message-bubble
 
@@ -1048,4 +1049,42 @@
   line-height: 30px;
   margin-right: 10px;
   color: #41b1ca;
+}
+
+
+
+//Interaction and customer information view
+.interaction-inner{
+  width: calc(100% - 55px);
+  //position: relative;
+  height: calc(100% - 0px);
+  float: left;
+}
+
+.customer-info-main{
+  height: 100%;
+  width: 55px;
+  min-width: 55px;
+  position: absolute;
+  right: 0;
+}
+
+//Expand view 3rd party bar
+.customer-bar-opened {
+  .customer-info-main {
+    width: 340px;
+    border-left: 5px solid #e2e2e2;
+  }
+    .interaction-inner {
+    width: calc(100% - 340px) !important;
+    //border-left: 5px solid #e2e2e2;
+  }
+
+  .main-chat-area, .chat-messages-main {
+    width: calc(100% - 340px) !important;
+  }
+
+  .chat-footer {
+    width: calc(100% - 418px) !important;
+  }
 }

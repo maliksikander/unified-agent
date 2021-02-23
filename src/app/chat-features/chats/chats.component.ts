@@ -73,7 +73,6 @@ export class ChatsComponent implements OnInit {
 
   ];
 
-  isBarOPened = false;
 
   constructor(private _socketService: socketService) {
 
@@ -82,13 +81,6 @@ export class ChatsComponent implements OnInit {
   ngOnInit() {
   }
 
-  currentTabIndex;
-  onTabChange(index) {
-    console.log("parent called " + index);
-    this.currentTabIndex = index;
-
-  }
-  eventFromChild(data) {
-    this.isBarOPened = data;
-  }
+  
+  
 }
