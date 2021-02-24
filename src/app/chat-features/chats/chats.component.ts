@@ -8,79 +8,15 @@ import { socketService } from 'src/app/services/socket.service';
 })
 export class ChatsComponent implements OnInit {
 
-  conversations = [{
-    messages: [
-      {
-        title: 'farhan',
-        message: 'Hello How are you today?',
-        showIntent: false,
-        intents: [
-          'Share number where I can call in emergency situations.',
-          'Share number where I can call in emergency situations.',
-          'Share number where I can call in emergency situations.',
-        ]
-      },
-      {
-        title: 'farhan',
-        message: 'Share number where I can call in emergency situations.',
-        showIntent: false,
-        intents: [
-          'Share number where I can call in emergency situations.',
-          'Share number where I can call in emergency situations.',
-          'Share number where I can call in emergency situations.'
-        ]
-      },
-      {
-        title: 'farhan',
-        message: 'Hi. Please share the email ID for support team.',
-        showIntent: false,
-        intents: [
-          'Share number where I can call in emergency situations.',
-          'Share number where I can call in emergency situations.',
-          'Share number where I can call in emergency situations.'
-        ]
-      },
-      {
-        title: 'raza',
-        message: 'hello'
-      },
-      {
-        title: 'raza',
-        message: 'how are you'
-      }
-    ]
-  },
-  {
-    messages: [
-      {
-        title: 'raza',
-        message: 'Share number where I can call in emergency situations.'
-      },
-      {
-        title: 'raza',
-        message: 'Hi. Please share the email ID for support team.'
-      },
-      {
-        title: 'raza',
-        message: 'hello 12'
-      },
-      {
-        title: 'raza',
-        message: 'how are you 12'
-      }
-    ]
-  }
-
-  ];
-
+  conversations=[];
 
   constructor(private _socketService: socketService) {
 
   }
-
   ngOnInit() {
+  
   }
 
-  
-  
+
+
 }

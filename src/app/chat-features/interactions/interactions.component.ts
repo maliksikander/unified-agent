@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { cacheService } from 'src/app/services/cache.service';
 import { sharedService } from 'src/app/services/shared.service';
 import { socketService } from 'src/app/services/socket.service';
@@ -11,9 +11,12 @@ import { MatDialog } from '@angular/material';
 })
 export class InteractionsComponent implements OnInit {
   // tslint:disable-next-line:no-input-rename
-  @Input('conversation') conversation: any;
+  @Input() conversation: any;
+  @Input() dummy :any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
   isBarOPened = false;
+  activeSessions=[];
+
 
 
   unidentified = true;
@@ -145,4 +148,5 @@ export class InteractionsComponent implements OnInit {
   eventFromChild(data) {
     this.isBarOPened = data;
   }
+ 
 }

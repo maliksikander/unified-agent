@@ -38,12 +38,13 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { SearchPipe } from './pipes/search.pipe';
 import { sentenceCasePipe } from './pipes/sentenceCase.pipe';
+import { convertToFormDataPipe } from './pipes/convertToFormData.pipe';
 
 
 
 
 @NgModule({
-  declarations: [RemoveUnderscorePipe, ibsformatPipe, getSenderNamePipe, SearchPipe, sentenceCasePipe],
+  declarations: [RemoveUnderscorePipe, ibsformatPipe, getSenderNamePipe, SearchPipe, sentenceCasePipe, convertToFormDataPipe],
   imports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
     MatCheckboxModule, MatButtonModule,
@@ -115,7 +116,7 @@ import { sentenceCasePipe } from './pipes/sentenceCase.pipe';
     InputTextareaModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    SearchPipe, getSenderNamePipe, sentenceCasePipe
+    SearchPipe, getSenderNamePipe, sentenceCasePipe, convertToFormDataPipe
   ]
 })
 export class SharedModule { }

@@ -13,6 +13,7 @@ export class CustomerInfoComponent implements OnInit {
   @ViewChild('sidenav', { static: true }) sidenav: MatSidenav;
   // tslint:disable-next-line:no-input-rename
   @Input() message: any;
+  @Input() activeChannelSessions: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
   customerProfileFormData: any;
 
@@ -42,6 +43,7 @@ export class CustomerInfoComponent implements OnInit {
   displayProfile = true;
   barOpened = false;
   outgoingCallingNumber = '+446698988';
+  customerActiveSessions = [];
   options: string[] = ['Glenn Helgass', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall',
     'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', 'Glenn Helgass', ' Ev Gayforth'];
   drop(event: CdkDragDrop<string[]>) {
@@ -75,11 +77,15 @@ export class CustomerInfoComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.message.currentValue != undefined) {
+    console.log("changes ", changes)
+    if (changes.message && changes.message.currentValue != undefined) {
       this.message = null;
-      this.message = JSON.parse(JSON.stringify(changes.message.currentValue));
+      this.message = changes.message.currentValue;
       this.customerProfileFormData = this.getProfileFormData(this.message.header.channelSession.linkedCustomer.associatedCustomer);
-
+    }
+    if (changes.activeChannelSessions && changes.activeChannelSessions.currentValue != undefined) {
+      this.activeChannelSessions = null;
+      this.activeChannelSessions = changes.activeChannelSessions.currentValue;
     }
   }
 
@@ -95,5 +101,7 @@ export class CustomerInfoComponent implements OnInit {
     }
     return processedObj;
   }
+
+
 
 }

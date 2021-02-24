@@ -1,6 +1,8 @@
 <div class="interaction-main" [ngClass]="{'customer-bar-opened': isBarOPened}">
   <div class="interaction-inner">
-    <div [ngClass]="{'unidentified-customer':conversation.messages[conversation.messages.length -1].header.channelSession.linkedCustomer.isAnonymous}" class="container-fluid main-chat-bar">
+    <div
+      [ngClass]="{'unidentified-customer':conversation.messages[conversation.messages.length -1].header.channelSession.linkedCustomer.isAnonymous}"
+      class="container-fluid main-chat-bar">
       <div class="row">
         <div class="col-md-4 customer-showcase">
           <h3 matTooltipPosition="right" class="customer-highlight">
@@ -357,7 +359,8 @@
   </div>
 
   <div class="customer-info-main">
-    <app-customer-info [message]="conversation.messages[conversation.messages.length - 1]"
-      (expandCustomerInfo)="eventFromChild($event)"></app-customer-info>
+    <app-customer-info [activeChannelSessions]="conversation.activeChannelSessions"
+      [message]="conversation.messages[conversation.messages.length - 1]" (expandCustomerInfo)="eventFromChild($event)">
+    </app-customer-info>
   </div>
 </div>

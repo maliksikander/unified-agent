@@ -62,11 +62,12 @@ export class socketService {
 
         this.listen('oldTopicMessages').subscribe((res: any) => {
             console.log("oldTopicMessages", res);
-            this.conversations.push({ topicId: res.topicId, messages: res.message, unReadCount: undefined });
+            this.conversations.push({ topicId: res.topicId, messages: res.message, activeChannelSessions: this.getActiveChannelSessions(res.message), unReadCount: undefined });
             this._conversationsListener.next(this.conversations);
 
         });
     }
+
 
     listen(eventName: string) {
 
@@ -94,14 +95,30 @@ export class socketService {
         if (sameTopicIdObj) {
             sameTopicIdObj.messages.push(res.message);
             sameTopicIdObj.unReadCount ? undefined : sameTopicIdObj.unReadCount = 0;
-            if (res.message.header.sender.type.toLowerCase() != 'agent') { ++sameTopicIdObj.unReadCount; }
+            if (res.message.header.sender.type.toLowerCase() != 'agent') {
+                sameTopicIdObj['activeChannelSessions'] = this.getActiveChannelSessions(sameTopicIdObj.messages)
+
+                ++sameTopicIdObj.unReadCount;
+            }
         } else {
-            this.conversations.push({ topicId: res.topicId, messages: [res.message], unReadCount: 1 });
+            this.conversations.push({ topicId: res.topicId, messages: [res.message], activeChannelSessions: res.message.header.channelSession, unReadCount: undefined });
         }
-
         this._conversationsListener.next(this.conversations);
-
     }
 
+    getActiveChannelSessions(messages) {
+        let lookup = {};
+        let activeChannelSessions = [];
+
+        for (let message, i = 0; message = messages[i++];) {
+            let id = message.header.channelSession.id;
+
+            if (!(id in lookup)) {
+                lookup[id] = 1;
+                activeChannelSessions.push(message.header.channelSession);
+            }
+        }
+        return activeChannelSessions;
+    }
 
 }

@@ -308,185 +308,24 @@
             <div class="profile-area multi-channel-area">
               <mat-accordion>
 
-                <!--Web chat channel accordion-->
-                <mat-expansion-panel class="chat-channel-area">
-                  <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'"
-                    style="border-radius: 0;border-bottom: 0;">
-                    <div class="channel-icon-area">
-                      <span class="channel-icon web"><img src="/assets/images/web.svg"></span>
-                      <label>Web Chat</label>
-                    </div>
-                  </mat-expansion-panel-header>
-                  <div class="channel-inner-content">
-                    <!--Web chat desktop channel accordion-->
-                    <mat-expansion-panel>
-                      <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
-                        <div class="channel-icon-area web-channel-inner">
-                          <label>Desktop Chat</label>
-                        </div>
-                      </mat-expansion-panel-header>
-
-                      <ul class="requested-channel-content">
-                        <li>
-                          <label>Name</label>
-                          Adam Stanler
-                        </li>
-                        <li>
-                          <label>Email</label>
-                          astanler@gmail.com
-                        </li>
-                        <li>
-                          <label>Phone Number</label>
-                          +44 85878478
-                        </li>
-                        <li>
-                          <label>Browser</label>
-                          Google Chrome
-                        </li>
-                        <li>
-                          <label>IP Address</label>
-                          41.78.244.244
-                        </li>
-                      </ul>
-                    </mat-expansion-panel>
-
-                    <!--Web chat desktop channel accordion-->
-                    <mat-expansion-panel>
-                      <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
-                        <div class="channel-icon-area web-channel-inner">
-                          <label>Mobile Chat</label>
-                        </div>
-                      </mat-expansion-panel-header>
-
-                      <ul class="requested-channel-content">
-                        <li>
-                          <label>Name</label>
-                          Adam Stanler
-                        </li>
-                        <li>
-                          <label>Email</label>
-                          astanler@gmail.com
-                        </li>
-                        <li>
-                          <label>Phone Number</label>
-                          +44 85878478
-                        </li>
-                        <li>
-                          <label>Mobile Type</label>
-                          Android
-                        </li>
-                        <li>
-                          <label>Browser</label>
-                          Google Chrome
-                        </li>
-                        <li>
-                          <label>IP Address</label>
-                          41.78.244.244
-                        </li>
-                      </ul>
-                    </mat-expansion-panel>
-                  </div>
-
-                </mat-expansion-panel>
-
-                <!--Facebook channel accordion-->
-                <mat-expansion-panel>
+                <mat-expansion-panel *ngFor="let channelSession of activeChannelSessions">
                   <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                     <div class="channel-icon-area">
-                      <span class="channel-icon facebook"><img src="/assets/images/facebook.svg"></span>
-                      <label>Facebook Chat</label>
+                      <span class="channel-icon {{channelSession.channel.channelConnector.type.name | lowercase}}"><img
+                          src="/assets/images/{{channelSession.channel.channelConnector.type.name | lowercase}}.svg"></span>
+                      <label>{{channelSession.channel.channelConnector.type.name | titlecase}} Channel</label>
                     </div>
                   </mat-expansion-panel-header>
-
                   <ul class="requested-channel-content">
                     <li>
-                      <label>Name</label>
-                      Adam Stanler
-                    </li>
-                    <li>
-                      <label>Email</label>
-                      astanler@gmail.com
-                    </li>
-                    <li>
-                      <label>Phone Number</label>
-                      +44 85878478
-                    </li>
-                    <li>
-                      <label>Browser</label>
-                      Google Chrome
-                    </li>
-                    <li>
-                      <label>IP Address</label>
-                      41.78.244.244
+                      <label>Customer Identifier</label>
+                      {{channelSession.channelData.channelCustomerIdentifier}}
                     </li>
                   </ul>
-                </mat-expansion-panel>
-
-                <!--Whatsapp channel accordion-->
-                <mat-expansion-panel>
-                  <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
-                    <div class="channel-icon-area">
-                      <span class="channel-icon whatsapp"><img src="/assets/images/whatsapp.svg"></span>
-                      <label>whatsapp Chat</label>
-                    </div>
-                  </mat-expansion-panel-header>
-
-                  <ul class="requested-channel-content">
+                  <ul class="requested-channel-content" *ngFor="let obj of channelSession.channelData.additionalAttribute | convertToFormData">
                     <li>
-                      <label>Name</label>
-                      Adam Stanler
-                    </li>
-                    <li>
-                      <label>Email</label>
-                      astanler@gmail.com
-                    </li>
-                    <li>
-                      <label>Phone Number</label>
-                      +44 85878478
-                    </li>
-                    <li>
-                      <label>Browser</label>
-                      Google Chrome
-                    </li>
-                    <li>
-                      <label>IP Address</label>
-                      41.78.244.244
-                    </li>
-                  </ul>
-                </mat-expansion-panel>
-                <!--Call Active accordion-->
-                <mat-expansion-panel>
-                  <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
-                    <div class="channel-icon-area">
-                      <span class="channel-icon voice-call"><img src="/assets/images/voice-call.svg"></span>
-                      <label>Voice Call <span class="call-time">03:33</span></label>
-                    </div>
-                  </mat-expansion-panel-header>
-
-                  <ul class="requested-channel-content">
-                    <li>
-                      <label>Call Time</label>
-                      11:20 AM
-                    </li>
-                    <li>
-                      <label>Customer</label>
-                      Stacy Miller
-                    </li>
-                    <li>
-                      <label>Call Type</label>
-                      Incoming Call
-                    </li>
-                    <li>
-                      <label>IVR Trail</label>
-                      IVR-2 > 1236 > Complaint Registration > Landline > Cross Talk > CSR
-                    </li>
-                    <li>
-                      <label>Call Attached Data</label>
-                      <a href="">https://tinyurl.com/yyk6qks3</a>
-                    </li>
-                    <li>
-                      <label>Call Disposition</label>
-                      <a>Transferred</a>
+                      <label>{{obj.key | sentenceCase}}</label>
+                      {{obj.value}}
                     </li>
                   </ul>
                 </mat-expansion-panel>
