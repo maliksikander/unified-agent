@@ -9,11 +9,11 @@
 <!--Right sidebar-->
 <mat-sidenav-container
   class="right-side-bar-main" (backdropClick)="close()">
-  <mat-sidenav #sidenav (keydown.escape)="close()" disableClose position="end">
+  <mat-sidenav #sidenav (keydown.escape)="close()" disableClose position="end" [perfectScrollbar]>
     <div class="bar-content">
 
       <mat-accordion class="right-drag-accordion" cdkDropList (cdkDropListDropped)="drop($event)">
-        <div class="right-drag-content" *ngFor="let acc of customArray">
+        <div class="right-drag-content">
 
 <!--          <mat-expansion-panel class="drag-expansion-panel" *ngIf="acc == 'media_channel'" cdkDrag>-->
 <!--            <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">-->
@@ -109,7 +109,7 @@
 <!--            </ul>-->
 <!--          </mat-expansion-panel>-->
 
-          <mat-expansion-panel class="drag-expansion-panel" *ngIf="acc == 'customer_profile'" cdkDrag>
+          <mat-expansion-panel class="drag-expansion-panel" cdkDrag>
             <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
               <mat-panel-title><span class="material-icons drag-icon">more_vert</span>
                 <div class="profile-area">
@@ -250,7 +250,7 @@
 
 
 
-          <mat-expansion-panel class="drag-expansion-panel" *ngIf="acc == 'link_profile'" cdkDrag>
+          <mat-expansion-panel class="drag-expansion-panel" cdkDrag>
             <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
               <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Link Profile
               </mat-panel-title>
@@ -278,7 +278,7 @@
 
           </mat-expansion-panel>
 
-          <mat-expansion-panel class="drag-expansion-panel" *ngIf="acc == 'active_sessions'" cdkDrag>
+          <mat-expansion-panel class="drag-expansion-panel" cdkDrag>
             <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
               <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Active Channels
               </mat-panel-title>

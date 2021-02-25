@@ -100,15 +100,13 @@
 <!--Interactions Area Start -->
 <div id="chat-content" class="container-fluid main-chat-area">
   <div class="row">
-    <div class="chat-messages-main">
-
+    <div class="chat-messages-main" [perfectScrollbar]  [style.height]="replyInput?.offsetHeight > 80 ? 'calc(100% - ' + (replyInput?.offsetHeight+100)+'px)' : 'calc(100% - '+ viewHeight+')'">
 
       <!-- voice message chat area -->
        <div class="instruction-main">
       <div class="instruction-inner">
 
         <mat-accordion>
-
           <div class="instruction-content">
             <div class="int-date">
               <span>Fri<b>07</b></span>
@@ -620,13 +618,12 @@
       <div class="message-composer">
         <form class="reply-form">
           <label class="count-reply">{{replyInput.value.length}}/200</label>
-          <div class="mat-form-field form-group chat-area">
-            <textarea (click)="onTextAreaClick()"  [(ngModel)]="message" (keyup)="onKey($event)"
+          <div class="mat-form-field chat-area"  [ngClass]="{'expand-area-height':replyInput?.offsetHeight > 50}">
+            <textarea [perfectScrollbar] (click)="onTextAreaClick()" data-emoji-picker="true"  [(ngModel)]="message" (keyup)="onKey($event)"
                       name="message"  (change)="textChanged($event)" [matAutocomplete]="auto"  matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea"
-              class="resize-none" #replyInput name="message" placeholder="Type a message here."></textarea>
-            <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete"  (closed)="closeSelection()" (opened)="displaySuggestions()">
+              class="resize-none" #replyInput name="message" placeholder="Type a message here..."></textarea>
 
-
+            <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete">
               <div class="suggested-content" #mainScreen [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}" >
                 <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies" [ngClass]="{'animate-content': displaySuggestionsAnimation}">
                   <ng-container *ngFor="let action of actions | LockFilter: message">
@@ -730,7 +727,7 @@
 
           </div>
           <div class="chat-composer-trigger">
-            <button class="video-call composer-trigger" mat-icon-button>
+            <button class="video-call composer-trigger" (click)="emoji()" mat-icon-button>
               <mat-icon>voice_chat</mat-icon>
             </button>
             <button class="timer-off composer-trigger" mat-icon-button>

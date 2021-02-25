@@ -7,6 +7,7 @@ import { ChatsComponent } from './chats/chats.component';
 import { InteractionsComponent } from './interactions/interactions.component';
 import { CustomerInfoComponent } from './customer-info/customer-info.component';
 import {MatDialogModule} from '@angular/material';
+import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import {MatDialogModule} from '@angular/material';
   imports: [
     SharedModule,
     ChatRoutingModule,
-    MatDialogModule
+    MatDialogModule,
+    PerfectScrollbarModule
   ],
 })
 export class ChatModule { }

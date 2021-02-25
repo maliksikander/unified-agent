@@ -39,8 +39,6 @@ import {SearchPipe} from './pipes/search.pipe';
 import {NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule} from 'ngx-mat-datetime-picker';
 
 
-
-
 @NgModule({
   declarations: [RemoveUnderscorePipe, ibsformatPipe, SearchPipe],
   imports: [
@@ -85,7 +83,7 @@ import {NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModu
     OwlNativeDateTimeModule,
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
-    NgxMatNativeDateModule,
+    NgxMatNativeDateModule
   ], exports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
     MatDrawer, MatCheckboxModule,

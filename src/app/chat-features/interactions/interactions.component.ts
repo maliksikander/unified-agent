@@ -3,7 +3,9 @@ import { cacheService } from 'src/app/services/cache.service';
 import { sharedService } from 'src/app/services/shared.service';
 import { socketService } from 'src/app/services/socket.service';
 import {MatDialog} from '@angular/material';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
+declare var EmojiPicker: any;
 @Component({
   selector: 'app-interactions',
   templateUrl: './interactions.component.html',
@@ -18,6 +20,7 @@ export class InteractionsComponent implements OnInit {
   @Input('messages') messages: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
   isBarOPened = false;
+  public config: PerfectScrollbarConfigInterface = {};
 
   channelUrl = 'assets/images/web.svg';
   options: string[] = ['Glenn Helgass', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', 'Glenn Helgass', ' Ev Gayforth'];
@@ -73,14 +76,19 @@ export class InteractionsComponent implements OnInit {
   displaySuggestionsArea = false;
   cannedTabOpen = false;
   quickReplies = true;
+  viewHeight = '180px';
+
   constructor(private _sharedService: sharedService, private _cacheService: cacheService, private _socketService: socketService, private dialog: MatDialog) {
 
   }
 
   ngOnInit() {
-  //  console.log("i am called hello")
+    //  console.log("i am called hello")
     this.convers = this.messages;
     console.log('hello', this.messages)
+    setTimeout(() => {
+      new EmojiPicker();
+    },500);
 
 
   }

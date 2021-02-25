@@ -4,7 +4,10 @@
 @import '~primeng/resources/themes/nova-light/theme.css';
 @import '~primeng/resources/primeng.min.css';
 @import '~@progress/kendo-theme-default/dist/all.css';
-
+@import '~perfect-scrollbar/css/perfect-scrollbar.css';
+textarea, #EmojiLink a{
+  font-family: "Roboto", sans-serif, "Segoe UI", "Segoe UI Emoji", "Apple Color Emoji" !important;
+}
 @font-face {
   font-family: 'Roboto';
   src: local('Roboto Light'), local('Roboto-light'),
@@ -40,7 +43,7 @@
 }
 html,body{
   height: 100%;
-  font-family: "Roboto", Arial, sans-serif !important;
+  font-family: "Roboto", sans-serif, "Segoe UI", "Segoe UI Emoji", "Apple Color Emoji";
   background: transparent !important;
   font-weight: normal;
 }
@@ -144,7 +147,7 @@ mat-tab-group.chat-tab-area {
   height: 100%;
 }
 .mat-drawer-inner-container{
-  overflow: auto !important;
+  overflow: visible !important;
 }
 
 mat-sidenav.mat-drawer.mat-sidenav {
@@ -1867,5 +1870,29 @@ ngx-mat-datetime-content, .time-container {
 .confirm-dialog {
   mat-dialog-container {
     padding: 0;
+  }
+}
+
+//Default scrolling position
+.ps__rail-y{
+  right: 0 !important;
+  left: inherit !important;
+}
+
+
+//Emoji Style
+.emoji-trigger {
+  display: block;
+  overflow: hidden;
+  top: 60% !important;
+  transform: rotateZ(2deg) translate(0, -32%);
+
+  i.material-icons {
+    color: #707070;
+    font-size: 19px;
+    position: relative;
+    top: -1px;
+    max-width: 20px;
+    text-align: center;
   }
 }
