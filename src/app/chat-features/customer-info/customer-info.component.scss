@@ -2,15 +2,15 @@
 
 .right-info-bar {
   height: 100%;
-  width: 56px;
-  border-left: 2px solid lighten($blue-text-color, 42%);
-  min-width: 55px;
+  width: 0;
+  //border-left: 2px solid lighten($blue-text-color, 42%);
+  min-width: 0;
   position: absolute;
   right: 0;
   background: #fff;
   z-index: 2;
   button {
-    position: relative;
+    position: absolute;
     z-index: 999;
     padding: 0;
     min-width: 20px;
@@ -20,6 +20,8 @@
     box-shadow: none;
     background: lighten($blue-text-color, 42%);
     color: $blue-text-color;
+    right: 0;
+    bottom: 78px;
   }
 }
 

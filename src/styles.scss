@@ -1203,6 +1203,10 @@ padding: 0 !important;
   .suggested-answer {
     max-width: calc(100% - 415px) !important;
   }
+
+  .right-info-bar button {
+    right: 285px !important;
+  }
 }
 .suggested-answer {
   position: fixed !important;

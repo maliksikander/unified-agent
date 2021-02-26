@@ -202,7 +202,7 @@
 #chat-content {
   .chat-messages-main {
     height: calc(100% - 132px);
-    width: calc(100% - 55px);
+    width: calc(100% - 0px);
     position: absolute;
     overflow: auto;
     padding: 0 20px;
@@ -660,20 +660,13 @@
 }
 
 
-//Chat Footer
-.chat-footer {
-
-
-
-}
-
-//Textarea
+//Chat footer / Textarea
 
 .chat-footer {
   position: fixed;
   z-index: 3;
-  bottom: 8px;
-  width: calc(100% - 133px);
+  bottom: 4px;
+  width: calc(100% - 77px);
   left: 72px;
   min-height: 80px;
   max-height: 460px;
@@ -681,7 +674,7 @@
   color: rgba(0, 0, 0, 0.87);
   border-top: 1px solid rgba(37, 175, 203, .47);
   padding: 0;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+  //box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 
   span.selected-channel {
     position: absolute;
@@ -1131,7 +1124,7 @@
 
 //Interaction and customer information view
 .interaction-inner{
-  width: calc(100% - 55px);
+  width: calc(100% - 0px);
   //position: relative;
   height: calc(100% - 0px);
   float: left;
@@ -1139,8 +1132,8 @@
 
 .customer-info-main{
   height: 100%;
-  width: 55px;
-  min-width: 55px;
+  width: 0;
+  min-width: 0;
   position: absolute;
   right: 0;
 }
@@ -1148,20 +1141,21 @@
 //Expand view 3rd party bar
 .customer-bar-opened {
   .customer-info-main {
-    width: 340px;
+    width: 285px;
     border-left: 5px solid #e2e2e2;
   }
     .interaction-inner {
-    width: calc(100% - 340px) !important;
+    width: calc(100% - 285px) !important;
     //border-left: 5px solid #e2e2e2;
   }
 
   .main-chat-area, .chat-messages-main {
-    width: calc(100% - 340px) !important;
+    width: calc(100% - 285px) !important;
+    display: inline-block;
   }
 
   .chat-footer {
-    width: calc(100% - 418px) !important;
+    width: calc(100% - 362px) !important;
   }
 }
 
