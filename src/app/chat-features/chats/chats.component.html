@@ -21,7 +21,8 @@
                                    [titleFontSize]="10"
                                    [showSubtitle]="false" [showUnits]="false" [renderOnClick]="false">
                   </circle-progress>
-                  <span class="badge1"></span>
+                  <span class="badge1">1</span>
+                  <span class="badge1 channel-badge"><img src="assets/images/monitoring.svg"> </span>
                 </div>
                 <span class="user-name">{{conversation.messages.title}}</span>
               </span>
@@ -35,7 +36,40 @@
           </div>
           <!-- row end -->
         </mat-tab>
+
+        <mat-tab class="main-chat-tab h-100"
+                 *ngFor="let conversation of conversations">
+          <div class="main-chat-bar-area">
+            <div class="chat-contacts left-bar-contacts">
+              <ng-template mat-tab-label>
+              <span class="get-events offline-customers">
+                <div class="user-badge">
+                  <circle-progress class="laft-bar-data" [percent]="100" [radius]="15" [outerStrokeWidth]="2"
+                                   [innerStrokeWidth]="2" [outerStrokeColor]="'#cccccc'" [innerStrokeColor]="'#F3F6F8'"
+                                   [space]=-1
+                                   [animation]="conversation.animation" [animationDuration]="600"
+                                   [title]="conversation.messages[0].title | slice :0 :2 |uppercase"
+                                   [titleFontSize]="10"
+                                   [showSubtitle]="false" [showUnits]="false" [renderOnClick]="false">
+                  </circle-progress>
+                </div>
+                <span class="user-name">{{conversation.messages.title}}</span>
+              </span>
+              </ng-template>
+            </div>
+            <div class="chat-contents">
+              <div class="main-tab-content">
+                <app-interactions [messages]="conversation.messages"></app-interactions>
+              </div>
+            </div>
+          </div>
+          <!-- row end -->
+        </mat-tab>
+
       </mat-tab-group>
+      <button class="add-customer" mat-fab routerLink="/customers/phonebook"><mat-icon>add</mat-icon></button>
+
+
     </div>
   </div>
 </div>

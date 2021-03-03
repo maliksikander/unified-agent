@@ -83,6 +83,9 @@ mat-tab-group.chat-tab-area {
   .mat-tab-header {
     width: 60px;
     background: $white-color;
+    height: fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
     .mat-ink-bar{
       display: none !important;
     }
@@ -143,7 +146,7 @@ mat-tab-group.chat-tab-area {
   //width: 0;
   transition: all .3s;
   min-width: 0;
-  margin-right: 56px;
+  margin-right: 0;
   height: 100%;
 }
 .mat-drawer-inner-container{
@@ -1899,4 +1902,26 @@ ngx-mat-datetime-content, .time-container {
     max-width: 20px;
     text-align: center;
   }
+}
+
+//Add customer trigger
+button.add-customer {
+  position: absolute;
+  bottom: 17px;
+  width: 35px;
+  height: 35px;
+  line-height: 0;
+  left: 18px;
+  background: #F5F5F5 !important;
+  color: #393939 !important;
+  box-shadow: none !important;
+
+  .mat-button-wrapper{
+    padding: 0 !important;
+  }
+}
+
+//Announcement Tab
+.announcement-tab{
+  transition: all 0s !important;
 }

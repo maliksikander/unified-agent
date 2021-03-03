@@ -1,7 +1,7 @@
 <!--Right Sidebar trigger area-->
 <div class="right-info-bar">
   <button mat-raised-button (click)="sidenav.toggle(); customerInfoToggle()">
-    <mat-icon>people</mat-icon>
+    <mat-icon>{{barOpened ? 'navigate_next' : 'navigate_before'}}</mat-icon>
   </button>
 </div>
 

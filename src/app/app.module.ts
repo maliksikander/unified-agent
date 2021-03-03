@@ -18,6 +18,7 @@ import {DashboardComponent} from './supervisor/dashboard/supervisor-dashboard.co
 import {AnnouncementDialogComponent} from './supervisor/announcement-dialog/announcement-dialog.component';
 import {PhonebookComponent} from './phonebook/phonebook.component';
 import {CreateCustomerComponent} from './create-customer/create-customer.component';
+import { AgentAnnouncementsComponent } from './announcement/agent-announcements/agent-announcements.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import {CreateCustomerComponent} from './create-customer/create-customer.compone
     AnnouncementDialogComponent,
     PhonebookComponent,
     CreateCustomerComponent,
+    AgentAnnouncementsComponent,
   ],
   imports: [
     BrowserModule,
