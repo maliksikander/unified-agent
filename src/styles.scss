@@ -86,6 +86,7 @@ mat-tab-group.chat-tab-area {
     height: fit-content;
     height: -moz-fit-content;
     height: fit-content;
+    margin-top: 45px;
     .mat-ink-bar{
       display: none !important;
     }
@@ -130,6 +131,59 @@ mat-tab-group.chat-tab-area {
     }
   }
 
+}
+
+//Expanded view
+.user-name {
+  //width: calc(100% - 50px);
+  line-height: 50px;
+  padding-left: 10px;
+  text-align: left;
+  text-transform: capitalize;
+  color: #5D5D5D;
+  font-size: 13px;
+  display: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+  max-width: 200px;
+}
+#main-content{
+  .chat-tab-area.bar-expand {
+    .user-name {
+      display: inline-block;
+    }
+    .mat-tab-header {
+      width: 280px;
+      .mat-tab-label{
+        margin: 5px !important;
+        width: calc(100% - 10px) !important;
+
+        .get-events{
+          text-align: left;
+        }
+      }
+    }
+
+    .mat-tab-body-wrapper {
+      width: calc(100% - 280px);
+    }
+    .user-badge {
+      text-align: left;
+      max-width: 50px;
+      position: relative;
+      float: left;
+    }
+
+    .chat-footer {
+      width: calc(100% - 295px) !important;
+      left: 290px !important;
+    }
+    .customer-bar-opened .chat-footer{
+      width: calc(100% - 580px) !important;
+    }
+
+  }
 }
 
 
@@ -1907,7 +1961,7 @@ ngx-mat-datetime-content, .time-container {
 //Add customer trigger
 button.add-customer {
   position: absolute;
-  bottom: 17px;
+  top: 12px;
   width: 35px;
   height: 35px;
   line-height: 0;
@@ -1915,6 +1969,7 @@ button.add-customer {
   background: #F5F5F5 !important;
   color: #393939 !important;
   box-shadow: none !important;
+  z-index: 2;
 
   .mat-button-wrapper{
     padding: 0 !important;

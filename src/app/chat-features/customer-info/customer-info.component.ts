@@ -41,6 +41,7 @@ export class CustomerInfoComponent implements OnInit, OnChanges {
   displayCustomerChannels = false;
   displayProfile = true;
   barOpened = false;
+  reRouteText = '';
   outgoingCallingNumber = '+446698988';
   options: string[] = ['Glenn Helgass', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall',
     'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', 'Glenn Helgass', ' Ev Gayforth'];
@@ -84,6 +85,14 @@ export class CustomerInfoComponent implements OnInit, OnChanges {
     this.dialog.open(templateRef, {
       panelClass: 'calling-dialog',
       width: '350px'
+    });
+  }
+  reRouteDialog(templateRef, e): void {
+    this.reRouteText = e;
+
+    this.dialog.open(templateRef, {
+      panelClass: 're-route-dialog',
+      minWidth: '450px'
     });
   }
   customerInfoToggle() {

@@ -74,7 +74,7 @@ export class ChatsComponent implements OnInit {
   }
 
   ];
-
+  barExpand = false;
 
   constructor() {
 
