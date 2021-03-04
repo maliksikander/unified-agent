@@ -6,7 +6,8 @@
   background-image: url("../../assets/images/login-background.png");
   background-size: cover;
   background-position: center;
-top: 0;
+  top: 0;
+  z-index: 9;
 
   .row {
     height: 100%;

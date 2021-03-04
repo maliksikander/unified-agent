@@ -34,7 +34,7 @@
           <mat-icon>person</mat-icon>
         </div>
         <h3 class="agent_name">
-          <p [matTooltip]="_cacheService.agent.details.username">{{_cacheService.agent.details.username}}</p>
+          <p [matTooltip]="_cacheService.agent.details.username">{{_cacheService.agent.details.username ? _cacheService.agent.details.username: 'Bryan Miller'}}</p>
           <span>
             (Ext: {{agent.extension}})
           </span>
