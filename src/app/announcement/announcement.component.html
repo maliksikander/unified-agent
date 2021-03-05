@@ -12,7 +12,7 @@
         </mat-select>
       </mat-form-field>
 
-      <button mat-button class="new-announcement" (click)="onCreateAnnouncement(newAnnouncement)"><span
+      <button mat-button class="new-announcement" (click)="onCreateAnnouncement()"><span
         class="announcement-icon"><img src="assets/images/promotion.svg"> </span>New Announcement
       </button>
     </div>
@@ -33,9 +33,9 @@
             <td>{{announcement.created_by}}</td>
             <td>{{announcement.expiry_time}}</td>
             <span class="table-trigger">
-<button mat-mini-fab (click)="onUpdateAnnouncement(announcement,newAnnouncement)"><i
+<button mat-mini-fab (click)="onUpdateAnnouncement()"><i
   class="material-icons">edit</i></button>
-<button mat-mini-fab (click)="confirmationDialog(isConfirm, announcement)"><i
+<button mat-mini-fab (click)="confirmationDialog()"><i
   class="material-icons">delete</i></button>
 </span>
           </tr>
@@ -46,7 +46,7 @@
         <!--<h3 *ngIf="!dataBool" class="noData" translate>No_data</h3>-->
 
       </div>
-      <button *ngIf="isLoadMore" mat-raised-button type="button"
+      <button mat-raised-button type="button"
               class="send-announcement announcement-action load-more-announcement" (click)="onLoadMore()">Load More
       </button>
     </div>

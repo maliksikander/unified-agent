@@ -12,10 +12,10 @@ import { MatDialog } from '@angular/material';
 export class InteractionsComponent implements OnInit {
   // tslint:disable-next-line:no-input-rename
   @Input() conversation: any;
-  @Input() dummy :any;
+  @Input() dummy: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
   isBarOPened = false;
-  activeSessions=[];
+  activeSessions = [];
 
 
 
@@ -148,5 +148,11 @@ export class InteractionsComponent implements OnInit {
   eventFromChild(data) {
     this.isBarOPened = data;
   }
- 
+
+  topicUnsub() {
+    console.log("going to unsub from topic " + this.conversation.topicId);
+    this._socketService.emit('sendMessage', { event: 'unsub', topicId: this.conversation.topicId, agentId: this._cacheService.agentDetails.agent.id });
+
+  }
+
 }

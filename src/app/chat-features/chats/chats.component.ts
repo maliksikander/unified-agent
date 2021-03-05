@@ -10,13 +10,11 @@ export class ChatsComponent implements OnInit {
 
   conversations=[];
 
-  constructor(private _socketService: socketService) {
+  constructor(public _socketService: socketService) {
 
   }
   ngOnInit() {
   
   }
-
-
 
 }

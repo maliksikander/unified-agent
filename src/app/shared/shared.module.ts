@@ -39,12 +39,13 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { SearchPipe } from './pipes/search.pipe';
 import { sentenceCasePipe } from './pipes/sentenceCase.pipe';
 import { convertToFormDataPipe } from './pipes/convertToFormData.pipe';
+import { getFirstTwoLettersPipe } from './pipes/getFirstTwoLetters.pipe';
 
 
 
 
 @NgModule({
-  declarations: [RemoveUnderscorePipe, ibsformatPipe, getSenderNamePipe, SearchPipe, sentenceCasePipe, convertToFormDataPipe],
+  declarations: [RemoveUnderscorePipe, ibsformatPipe, getSenderNamePipe, SearchPipe, sentenceCasePipe, convertToFormDataPipe, getFirstTwoLettersPipe],
   imports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
     MatCheckboxModule, MatButtonModule,
@@ -116,7 +117,7 @@ import { convertToFormDataPipe } from './pipes/convertToFormData.pipe';
     InputTextareaModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    SearchPipe, getSenderNamePipe, sentenceCasePipe, convertToFormDataPipe
+    SearchPipe, getSenderNamePipe, sentenceCasePipe, convertToFormDataPipe, getFirstTwoLettersPipe
   ]
 })
 export class SharedModule { }

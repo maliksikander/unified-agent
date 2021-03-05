@@ -80,4 +80,14 @@ export class AnnouncementComponent implements OnInit {
     });
   }
 
+  onUpdateAnnouncement(){
+
+  }
+  confirmationDialog(){
+
+  }
+  onLoadMore(){
+  }
+  onFilterAnnouncements(a){}
+  
 }

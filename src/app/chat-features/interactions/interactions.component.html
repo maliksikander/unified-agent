@@ -7,8 +7,7 @@
         <div class="col-md-4 customer-showcase">
           <h3 matTooltipPosition="right" class="customer-highlight">
             {{conversation.messages[conversation.messages.length
-            -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | slice :0 :2 |uppercase}}
-
+            -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | getFirstTwoLetters}}
             <span
               class="channel-icon {{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.type.name | lowercase}}">
               <img
@@ -53,7 +52,7 @@
             </li>
             <li class="list-group-item">
               <button mat-icon-button>
-                <mat-icon>close</mat-icon>
+                <mat-icon (click)="topicUnsub()">close</mat-icon>
               </button>
             </li>
           </ul>
@@ -128,8 +127,7 @@
                     <img width="20"
                       src="../assets/images/{{message.header.channelSession.channel.channelConnector.type.name | lowercase}}.svg">
                   </div>
-                  <div class="profile-pic-area user-img">{{message.header.sender | getSenderName | slice :0 :2
-                    |uppercase}}</div>
+                  <div class="profile-pic-area user-img">{{message.header.sender | getSenderName:true}}</div>
                 </div>
                 <div class="chat-message-content ">
                   <p [innerHTML]="message.body.markdownText | linkify | ibsformat"></p>
@@ -182,8 +180,7 @@
 
                 <div class="suggested-content" #mainScreen
                   [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}">
-                  <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies"
-                    [ngClass]="{'animate-content': displaySuggestionsAnimation}">
+                  <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies">
                     <ng-container *ngFor="let action of actions | LockFilter: message">
                       <mat-option [value]="action?.message || action?.name"
                         (click)="message=action?.message || action?.name"
@@ -195,8 +192,7 @@
                             edit
                           </i>
                         </button>
-                        <button mat-mini-fab class="canned-trigger send-suggestion"
-                          (click)="sendAutoMsg(action.message || action.name)">
+                        <button mat-mini-fab class="canned-trigger send-suggestion">
                           <i class="material-icons">
                             send
                           </i>
@@ -219,14 +215,12 @@
                                   {{cMsg}}
                                   {{cMsg.count}}
 
-                                  <button mat-mini-fab color="primary" class="canned-trigger edit-trigger"
-                                    (click)="message=action.message || action.name">
+                                  <button mat-mini-fab color="primary" class="canned-trigger edit-trigger">
                                     <i class="material-icons">
                                       edit
                                     </i>
                                   </button>
-                                  <button mat-mini-fab color="primary" class="canned-trigger send-suggestion"
-                                    (click)="sendAutoMsg(action.message || action.name)">
+                                  <button mat-mini-fab color="primary" class="canned-trigger send-suggestion">
                                     <i class="material-icons">
                                       send
                                     </i>
@@ -257,8 +251,7 @@
                               edit
                             </i>
                           </button>
-                          <button mat-mini-fab class="canned-trigger send-suggestion"
-                            (click)="sendAutoMsg(action.message || action.name)">
+                          <button mat-mini-fab class="canned-trigger send-suggestion">
                             <i class="material-icons">
                               send
                             </i>

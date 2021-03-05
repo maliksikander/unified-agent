@@ -1,7 +1,7 @@
 <div *ngIf="(_socketService.conversationsListener | async)?.length > 0" class="ef_container container-fluid p-0">
   <div id="content" class="h-100">
 
-    <div id="main-content" class="h-100" [ngClass]="{'customer-bar-opened': isBarOPened}">
+    <div id="main-content" class="h-100" >
       <!--      <button color="primary" class="left-bar-trigger" (click)="barExpand = !barExpand" ><mat-icon>{{barExpand ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}</mat-icon></button>-->
       <mat-tab-group class="chat-tab-area h-100">
 
@@ -15,7 +15,7 @@
                     <circle-progress class="laft-bar-data" [percent]="100" [radius]="15" [outerStrokeWidth]="2"
                       [innerStrokeWidth]="2" [outerStrokeColor]="'#3f51b5'" [innerStrokeColor]="'#F3F6F8'" [space]=-1
                       [animation]="conversation.animation" [animationDuration]="600"
-                      [title]="conversation.messages[conversation.messages.length -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | slice :0 :2 |uppercase"
+                      [title]="conversation.messages[conversation.messages.length -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | getFirstTwoLetters"
                       [titleFontSize]="10" [showSubtitle]="false" [showUnits]="false" [renderOnClick]="false">
                     </circle-progress>
                     <span class="badge1" [hidden]="conversation.unReadCount == 0">{{conversation.unReadCount}}</span>
