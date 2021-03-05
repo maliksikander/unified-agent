@@ -1162,3 +1162,24 @@
 }
 
 
+button.send-btn.attachment-btn {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  height: 30px;
+
+  input{
+    width: 20px;
+    position: absolute;
+    opacity: 0;
+    cursor: pointer !important;
+    left: 0;
+    top: 0;
+    z-index: 2;
+  }
+  mat-icon{
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
