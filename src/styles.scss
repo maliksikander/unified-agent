@@ -101,7 +101,7 @@ mat-tab-group.chat-tab-area {
         margin: 5px auto;
         background: transparent;
         box-shadow: inset 1.5px 0 0 #F3F6F8, inset 0 1.5px 0 #F3F6F8, inset 0 -1.5px 0 #F3F6F8, inset -1.5px 0 0 #F3F6F8;
-        height: 50px;
+        height: 46px;
         text-align: center;
         opacity: 1;
         border-radius: 5px;
@@ -123,7 +123,7 @@ mat-tab-group.chat-tab-area {
           top: 0;
 
           svg {
-            height: 50px !important;
+            height: 46px !important;
             width: 50px !important;
           }
         }
@@ -263,6 +263,9 @@ mat-sidenav.mat-drawer.mat-sidenav {
   mat-expansion-panel {
     box-shadow: none !important;
     border: 1px solid #F1F1F1;
+  }
+  .mat-expansion-panel-header{
+    padding: 0 10px 0 0;
   }
 }
 snack-bar-container.err-class {
@@ -1979,4 +1982,59 @@ button.add-customer {
 //Announcement Tab
 .announcement-tab{
   transition: all 0s !important;
+}
+
+
+
+//interaction history expanded view
+.instruction-content .panel-divider {
+  .mat-expanded {
+    .section-tags {
+      span {
+        background: #fff !important;
+        color: #707070 !important;
+
+      }
+    }
+
+    .mat-expansion-panel-header{
+      .section-tags {
+        span {
+          background: #707070 !important;
+          color: #fff !important;
+
+        }
+      }
+      &.mat-expanded {
+        .section-tags {
+          span {
+            background: #fff !important;
+            color: #707070 !important;
+
+          }
+        }
+      }
+    }
+  }
+}
+
+
+//Default expansion dropdown arrow
+.mat-expansion-indicator::after {
+border: 0 !important;
+  padding: 3px;
+  vertical-align: middle;
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  letter-spacing: normal;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  content: 'arrow_drop_down' !important;
+  transform: rotate(0deg) !important;
 }

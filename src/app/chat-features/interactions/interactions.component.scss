@@ -95,6 +95,7 @@
       width: 30px;
       height: 30px;
       margin: 0 5px;
+      background: transparent;
 
       &.call-end {
         button {
@@ -122,6 +123,7 @@
         box-shadow: none;
         background: $white-color;
         display: block;
+        margin: 0 auto;
 
         .arrow-gray {
           right: 4px;
@@ -155,6 +157,7 @@
           @extend button;
           font-size: 18px;
           color: lighten($dark-gray-color, 60%);
+          background: transparent !important;
         }
       }
     }
@@ -537,14 +540,14 @@
 
   .section-tags {
     span {
-      background: #707070;
+      background: #f7f7f7;
       margin: 0 3px;
       padding: 3px 8px;
       border-radius: 15px;
       font-size: 10px !important;
       position: relative;
       top: -2px;
-      color: #fff !important;
+      color: #707070;
 
     }
   }
