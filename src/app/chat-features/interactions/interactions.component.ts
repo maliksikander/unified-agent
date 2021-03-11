@@ -122,7 +122,6 @@ export class InteractionsComponent implements OnInit {
       this.isSuggestion = false;
 
     }
-    console.log("onKey: ", this.message);
     if (this.message[0] === '/' || this.message[0] === ' ') {
       this.displaySuggestionsArea = false;
       this.quickReplies = false;
@@ -133,7 +132,6 @@ export class InteractionsComponent implements OnInit {
       //   this.scrollToBottom();
       // }, 500);
 
-      console.log('value is 0')
       this.cannedTabOpen = true;
     } else {
       this.cannedTabOpen = false;
@@ -151,7 +149,7 @@ export class InteractionsComponent implements OnInit {
 
   topicUnsub() {
     console.log("going to unsub from topic " + this.conversation.topicId);
-    this._socketService.emit('sendMessage', { event: 'unsub', topicId: this.conversation.topicId, agentId: this._cacheService.agentDetails.agent.id });
+    this._socketService.emit('topicUnsubscription', { topicId: this.conversation.topicId, agentId: this._cacheService.agentDetails.agent.id });
 
   }
 

@@ -66,6 +66,14 @@ export class socketService {
             this._conversationsListener.next(this.conversations);
 
         });
+
+        this.listen('topicUnsubscription').subscribe((res: any) => {
+            console.log("topicUnsubscription", res);
+            this.conversations = this.conversations.filter(e => {
+                return e.topicId != res.topicId;
+            });
+            this._conversationsListener.next(this.conversations);
+        });
     }
 
 
@@ -95,7 +103,7 @@ export class socketService {
         if (sameTopicIdObj) {
             sameTopicIdObj.messages.push(res.message);
             sameTopicIdObj.unReadCount ? undefined : sameTopicIdObj.unReadCount = 0;
-            if (res.message.header.sender.type.toLowerCase() != 'agent') {
+            if (res.message.header.sender.type.toLowerCase() == 'customer') {
                 sameTopicIdObj['activeChannelSessions'] = this.getActiveChannelSessions(sameTopicIdObj.messages)
 
                 ++sameTopicIdObj.unReadCount;

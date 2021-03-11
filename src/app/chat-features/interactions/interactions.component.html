@@ -127,7 +127,11 @@
                     <img width="20"
                       src="../assets/images/{{message.header.channelSession.channel.channelConnector.type.name | lowercase}}.svg">
                   </div>
-                  <div class="profile-pic-area user-img">{{message.header.sender | getSenderName:true}}</div>
+                  <div *ngIf="(message.header.sender.type | lowercase) != 'bot'" class="profile-pic-area user-img">
+                    {{message.header.sender | getSenderName:true}}</div>
+                  <div *ngIf="(message.header.sender.type | lowercase) == 'bot'"><img
+                      src="../assets/images/robot.png">
+                  </div>
                 </div>
                 <div class="chat-message-content ">
                   <p [innerHTML]="message.body.markdownText | linkify | ibsformat"></p>

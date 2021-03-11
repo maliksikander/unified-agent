@@ -9,6 +9,8 @@ export class getSenderNamePipe implements PipeTransform {
             name = sender.participant.linkedCustomer.associatedCustomer.firstName;
         } else if (sender.type.toLowerCase() == 'agent') {
             name = sender.participant.keyCloakUser.username;
+        } else if (sender.type.toLowerCase() == 'bot') {
+            name = 'bot'
         } else {
             return " "
         }
