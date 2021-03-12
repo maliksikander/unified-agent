@@ -1,3 +1,8 @@
+.main-supervisor-area {
+  border: 5px solid #E2E2E2;
+  height: calc(100% - 42px);
+}
+
 //Handraise icon
 .hand-icon {
   font-size: 10px;
@@ -33,7 +38,7 @@
   z-index: 2;
   border-right: 1px solid #DEDEDE;
   border-left: 1px solid #DEDEDE;
-  height: 55px;
+  height: 42px;
   width: 100%;
   padding-top: 5px;
 }
@@ -43,6 +48,7 @@
     font-size: 13px;
     color: #000;
     font-weight: 600;
+    margin: 12px 10px;
   }
 
   .main-table {

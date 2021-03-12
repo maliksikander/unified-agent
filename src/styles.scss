@@ -1570,7 +1570,7 @@ padding: 0 !important;
       &:after {
         content: "";
         display: block;
-        height: 50px;
+        height: 40px;
       }
     }
   }
@@ -1598,7 +1598,8 @@ padding: 0 !important;
   }
   .search-field .mat-form-field-infix {
     padding: 0 !important;
-    padding-bottom: 10px !important;
+    padding-bottom: 6px !important;
+    border-top-width: 6px;
   }
   .mat-form-field-wrapper{
     padding: 0 !important;
