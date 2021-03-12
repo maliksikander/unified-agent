@@ -132,32 +132,31 @@
                 </div>
                 <div class="chat-message-content ">
                   <p [innerHTML]="message.body.markdownText | linkify | ibsformat"></p>
-                  <!-- <button mat-icon-button class="user_settings" *ngIf="con.title === 'farhan'"
-                      (click)="con.showIntent=!con.showIntent" >
-              </button> -->
+                  <button mat-icon-button class="user_settings"
+                    *ngIf="((message.header.sender.type | lowercase) == 'customer') && message.botSuggestions"
+                    (click)="message.showBotSuggestions =! message.showBotSuggestions ">
+                  </button>
                 </div>
                 <span class="chat-time">{{message.header.timeStamp | date:'h:mm:ss'}}</span>
                 <!-- <span class="material-icons delivery-status" *ngIf="con.title === 'raza'">done_all</span> -->
-                <!-- <div class="chat-intents" *ngIf="con.intents && con.showIntent==true">
-              <div class="intents-inner">
-                <p *ngFor="let intent of con.intents"
-                   [ngClass]="{'selected_intent': intent.name == message.selectedIntent?.intentName}">
-                  {{intent}}
-                  <button mat-mini-fab class="canned-trigger edit-trigger"
-                          (click)="message=action.message || action.name">
-                    <i class="material-icons">
-                      edit
-                    </i>
-                  </button>
-                  <button mat-mini-fab class="canned-trigger send-suggestion" (click)="message=action.message || action.name" >
-                    <i class="material-icons">
-                      send
-                    </i>
-                  </button>
-                </p>
-             
-              </div>
-            </div> -->
+                <div class="chat-intents" *ngIf="message.showBotSuggestions">
+                  <div class="intents-inner">
+                    <p *ngFor="let botSuggestion of message.botSuggestions">
+                      {{botSuggestion.messageBody.markdownText}}
+                      <button mat-mini-fab class="canned-trigger edit-trigger">     
+                        <i class="material-icons">
+                          edit
+                        </i>
+                      </button>
+                      <button mat-mini-fab class="canned-trigger send-suggestion">
+                        <i class="material-icons">
+                          send
+                        </i>
+                      </button>
+                    </p>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>

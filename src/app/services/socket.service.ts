@@ -154,6 +154,7 @@ export class socketService {
 
         if (message) {
             message['botSuggestions'] = suggestionMessage.suggestions;
+            message['showBotSuggestions'] = false;
             console.log("bot suggestion founded ", message);
             this._conversationsListener.next(this.conversations);
         }

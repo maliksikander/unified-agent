@@ -102,6 +102,7 @@ export class InteractionsComponent implements OnInit {
     message.header.sender.participant.routingAttributes = [];
     message.body.markdownText = text;
     delete message['botSuggestions'];
+    delete message['showBotSuggestions'];
 
     this._socketService.emit('sendMessage', message);
 
