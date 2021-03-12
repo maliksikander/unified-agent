@@ -40,6 +40,8 @@ import { SearchPipe } from './pipes/search.pipe';
 import { sentenceCasePipe } from './pipes/sentenceCase.pipe';
 import { convertToFormDataPipe } from './pipes/convertToFormData.pipe';
 import { getFirstTwoLettersPipe } from './pipes/getFirstTwoLetters.pipe';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import {NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule} from 'ngx-mat-datetime-picker';
 
 
 
@@ -55,7 +57,8 @@ import { getFirstTwoLettersPipe } from './pipes/getFirstTwoLetters.pipe';
     MatTabsModule, MatSelectModule, MatInputModule, MatTooltipModule,
     FormsModule, MatExpansionModule, MatMenuModule, MatSlideToggleModule,
     MatAutocompleteModule, MatDialogModule, MatTabsModule,
-    MatDatepickerModule, MatNativeDateModule, CommonModule,
+    MatDatepickerModule, MatNativeDateModule, CommonModule, PerfectScrollbarModule,
+    NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule,
     NgCircleProgressModule.forRoot({
       radius: 100,
       outerStrokeWidth: 16,
@@ -85,7 +88,8 @@ import { getFirstTwoLettersPipe } from './pipes/getFirstTwoLetters.pipe';
     ConfirmDialogModule,
     InputTextareaModule,
     OwlDateTimeModule,
-    OwlNativeDateTimeModule
+    OwlNativeDateTimeModule,
+
   ], exports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
     MatDrawer, MatCheckboxModule,
@@ -116,7 +120,8 @@ import { getFirstTwoLettersPipe } from './pipes/getFirstTwoLetters.pipe';
     ConfirmDialogModule,
     InputTextareaModule,
     OwlDateTimeModule,
-    OwlNativeDateTimeModule,
+    OwlNativeDateTimeModule, PerfectScrollbarModule,
+    NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule,
     SearchPipe, getSenderNamePipe, sentenceCasePipe, convertToFormDataPipe, getFirstTwoLettersPipe
   ]
 })

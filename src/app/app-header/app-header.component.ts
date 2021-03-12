@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { cacheService } from '../services/cache.service';
 import { sharedService } from '../services/shared.service';
 import { socketService } from '../services/socket.service';
+import {MatSidenav} from '@angular/material';
 
 @Component({
   selector: 'app-header',
   templateUrl: './app-header.component.html',
   styleUrls: ['./app-header.component.scss']
 })
+
 export class AppHeaderComponent implements OnInit {
   agent = {
     state: 'blbla',
@@ -41,7 +43,7 @@ export class AppHeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
     this._sharedService.serviceCurrentMessage.subscribe((e) => {
 
       if (e.msg == 'stateChanged') {
@@ -77,5 +79,6 @@ export class AppHeaderComponent implements OnInit {
       this.languageFlag = selectedLanguage.flag;
     }
   }
+
 
 }

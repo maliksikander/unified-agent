@@ -2,14 +2,14 @@
 <!-- there is {{message.header.channelSession.linkedCustomer.associatedCustomer.firstName}} -->
 <div class="right-info-bar">
   <button mat-raised-button (click)="sidenav.toggle(); customerInfoToggle()">
-    <mat-icon>people</mat-icon>
+    <mat-icon>{{barOpened ? 'navigate_next' : 'navigate_before'}}</mat-icon>
   </button>
 </div>
 
 
 <!--Right sidebar-->
 <mat-sidenav-container class="right-side-bar-main" (backdropClick)="close()">
-  <mat-sidenav #sidenav (keydown.escape)="close()" disableClose position="end">
+  <mat-sidenav #sidenav (keydown.escape)="close()" disableClose position="end" [perfectScrollbar]>
     <div class="bar-content">
 
       <mat-accordion class="right-drag-accordion" cdkDropList (cdkDropListDropped)="drop($event)">
@@ -113,7 +113,8 @@
             <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
               <mat-panel-title><span class="material-icons drag-icon">more_vert</span>
                 <div class="profile-area">
-                  <h3>{{message.header.channelSession.linkedCustomer.associatedCustomer.firstName | getFirstTwoLetters}}</h3>
+                  <h3>{{message.header.channelSession.linkedCustomer.associatedCustomer.firstName | getFirstTwoLetters}}
+                  </h3>
                   <h5 class="user-name">{{message.header.channelSession.linkedCustomer.associatedCustomer.firstName}}
                     <!--                    <p class="user-from">London, United Kingdom</p>-->
                   </h5>
@@ -267,7 +268,7 @@
           <!-- customer Suggestions Tab start-->
           <mat-expansion-panel class="drag-expansion-panel"
             *ngIf="message.header.channelSession.customerSuggestions.length != 0" cdkDrag>
-            <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
+            <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
               <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Link Profile
               </mat-panel-title>
             </mat-expansion-panel-header>
@@ -299,7 +300,7 @@
 
 
           <mat-expansion-panel class="drag-expansion-panel" cdkDrag>
-            <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
+            <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
               <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Active Channels
               </mat-panel-title>
             </mat-expansion-panel-header>
@@ -313,6 +314,16 @@
                       <span class="channel-icon {{channelSession.channel.channelConnector.type.name | lowercase}}"><img
                           src="/assets/images/{{channelSession.channel.channelConnector.type.name | lowercase}}.svg"></span>
                       <label>{{channelSession.channel.channelConnector.type.name | titlecase}} Channel</label>
+
+                      <button (click)="moveSession($event)" mat-button [matMenuTriggerFor]="rerouteMenu" class="re-route-session">Move</button>
+                      <mat-menu #rerouteMenu="matMenu">
+                        <button class="re-route-trigger" (click)="reRouteDialog(reRouteSessionConfirmation, 're-route')"
+                          mat-menu-item>Re-route Session</button>
+                        <button class="re-route-trigger"
+                          (click)="reRouteDialog(reRouteSessionConfirmation, 're-assign')" mat-menu-item>Re-assign to
+                          self</button>
+                      </mat-menu>
+
                     </div>
                   </mat-expansion-panel-header>
                   <ul class="requested-channel-content">
@@ -321,7 +332,8 @@
                       {{channelSession.channelData.channelCustomerIdentifier}}
                     </li>
                   </ul>
-                  <ul class="requested-channel-content" *ngFor="let obj of channelSession.channelData.additionalAttribute | convertToFormData">
+                  <ul class="requested-channel-content"
+                    *ngFor="let obj of channelSession.channelData.additionalAttribute | convertToFormData">
                     <li>
                       <label>{{obj.key | sentenceCase}}</label>
                       {{obj.value}}
@@ -367,6 +379,22 @@
     <div class="call-trigger">
       <button mat-button [mat-dialog-close]="true" class="call-btn" cdkFocusInitial>Call</button>
       <button mat-button mat-dialog-close class="cancel-call">Cancel</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #reRouteSessionConfirmation>
+  <div class="confirmation-dialog">
+    <div class="confirmation-header">
+      <h3>{{reRouteText}} Chat Session</h3>
+    </div>
+    <div class="confirmation-content">
+      <p>{{reRouteText == 're-assign' ? 'Are you sure You want re-assign chat session to your self?' : 'Are you sure You
+        want re-route Whatsapp chat session to another agent?'}}</p>
+      <div class="confirmation-action">
+        <button mat-raised-button class="close-btn" mat-dialog-close>Cancel</button>
+        <button mat-raised-button class="confirm-btn">Confirm</button>
+      </div>
     </div>
   </div>
 </ng-template>

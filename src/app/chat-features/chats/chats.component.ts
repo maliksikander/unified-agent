@@ -8,13 +8,14 @@ import { socketService } from 'src/app/services/socket.service';
 })
 export class ChatsComponent implements OnInit {
 
-  conversations=[];
+  conversations = [];
+  barExpand = false;
 
   constructor(public _socketService: socketService) {
 
   }
   ngOnInit() {
-  
+
   }
 
 }

@@ -66,32 +66,32 @@
           <!--Call controls-->
           <!-- <ul *ngIf="callControls" class="list-group list-group-horizontal agent-controls call-controls">
         <li class="list-group-item">
-          <button mat-icon-button>
+          <button mat-fab>
             <mat-icon>textsms</mat-icon>
           </button>
         </li>
         <li class="list-group-item">
-          <button mat-icon-button>
+          <button mat-fab>
             <mat-icon>phone_forwarded</mat-icon>
           </button>
         </li>
         <li class="list-group-item">
-          <button mat-icon-button>
+          <button mat-fab>
             <mat-icon>mic</mat-icon>
           </button>
         </li>
         <li class="list-group-item">
-          <button mat-icon-button>
+          <button mat-fab>
             <mat-icon>volume_off</mat-icon>
           </button>
         </li>
         <li class="list-group-item">
-          <button mat-icon-button>
+          <button mat-fab>
             <mat-icon>pause</mat-icon>
           </button>
         </li>
         <li class="list-group-item call-end">
-          <button mat-icon-button>
+          <button mat-fab>
             <mat-icon>call_end</mat-icon>
           </button>
         </li>
@@ -103,13 +103,11 @@
 
     </div>
     <!--/Top bar-->
-
-
     <!--Interactions Area Start -->
     <div id="chat-content" class="container-fluid main-chat-area">
       <div class="row">
-        <div class="chat-messages-main">
-
+        <div class="chat-messages-main" [perfectScrollbar]
+          [style.height]="replyInput?.offsetHeight > 80 ? 'calc(100% - ' + (replyInput?.offsetHeight+100)+'px)' : 'calc(100% - '+ viewHeight+')'">
 
           <!-- voice message chat area -->
 
@@ -129,8 +127,7 @@
                   </div>
                   <div *ngIf="(message.header.sender.type | lowercase) != 'bot'" class="profile-pic-area user-img">
                     {{message.header.sender | getSenderName:true}}</div>
-                  <div *ngIf="(message.header.sender.type | lowercase) == 'bot'"><img
-                      src="../assets/images/robot.png">
+                  <div *ngIf="(message.header.sender.type | lowercase) == 'bot'"><img src="../assets/images/robot.png">
                   </div>
                 </div>
                 <div class="chat-message-content ">
@@ -167,43 +164,47 @@
         </div>
 
       </div>
-      <div class="chat-footer">
-        <span class="selected-channel">Selected Channel: <label>{{conversation.messages[conversation.messages.length
-            -1].header.channelSession.channel.channelConnector.type.name | titlecase}}</label></span>
-        <div class="message-composer">
-          <form class="reply-form">
-            <label class="count-reply">{{replyInput.value.length}}/200</label>
-            <div class="mat-form-field form-group chat-area">
 
+    </div>
+    <div class="chat-footer">
+      <span class="selected-channel">Selected Channel: <label>{{conversation.messages[conversation.messages.length
+          -1].header.channelSession.channel.channelConnector.type.name | titlecase}}</label></span>
+      <div class="message-composer">
+        <form class="reply-form">
+          <label class="count-reply">{{replyInput.value.length}}/200</label>
+          <div class="mat-form-field chat-area" [ngClass]="{'expand-area-height':replyInput?.offsetHeight > 50}">
+            <textarea [perfectScrollbar] (click)="onTextAreaClick()" data-emoji-picker="true" [(ngModel)]="message"
+              (keyup)="onKey($event)" name="message" (change)="textChanged($event)" [matAutocomplete]="auto" matInput
+              cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none"
+              #replyInput name="message" placeholder="Type a message here..."></textarea>
 
-              <textarea (click)="onTextAreaClick()" [(ngModel)]="message" (keyup)="onKey($event)" name="message"
-                (change)="textChanged($event)" [matAutocomplete]="auto" matInput cdkTextareaAutosize
-                cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none" #replyInput
-                name="message" placeholder="Type a message here."></textarea>
-              <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete">
+            <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete">
+              <div class="suggested-content" #mainScreen
+                [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}">
+                <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies"
+                  [ngClass]="{'animate-content': displaySuggestionsAnimation}">
+                  <ng-container *ngFor="let action of actions | LockFilter: message">
+                    <mat-option [value]="action?.message || action?.name"
+                      (click)="message=action?.message || action?.name"
+                      *ngIf="action.message != undefined || action.name != undefined">
+                      {{action.message || action.name}}
+                      <button mat-mini-fab class="canned-trigger edit-trigger"
+                        (click)="message=action.message || action.name">
+                        <i class="material-icons">
+                          edit
+                        </i>
+                      </button>
+                      <button mat-mini-fab class="canned-trigger send-suggestion"
+                        (click)="sendAutoMsg(action.message || action.name)">
+                        <i class="material-icons">
+                          send
+                        </i>
+                      </button>
+                    </mat-option>
+                  </ng-container>
+                </div>
+               
 
-                <div class="suggested-content" #mainScreen
-                  [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}">
-                  <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies">
-                    <ng-container *ngFor="let action of actions | LockFilter: message">
-                      <mat-option [value]="action?.message || action?.name"
-                        (click)="message=action?.message || action?.name"
-                        *ngIf="action.message != undefined || action.name != undefined">
-                        {{action.message || action.name}}
-                        <button mat-mini-fab class="canned-trigger edit-trigger"
-                          (click)="message=action.message || action.name">
-                          <i class="material-icons">
-                            edit
-                          </i>
-                        </button>
-                        <button mat-mini-fab class="canned-trigger send-suggestion">
-                          <i class="material-icons">
-                            send
-                          </i>
-                        </button>
-                      </mat-option>
-                    </ng-container>
-                  </div>
                   <mat-tab-group animationDuration="0ms" *ngIf="!displaySuggestionsArea && cannedTabOpen">
 
 
@@ -265,27 +266,36 @@
 
                     </mat-tab>
                   </mat-tab-group>
+              </div>
+            </mat-autocomplete>
+          </div>
 
-                </div>
-              </mat-autocomplete>
+          <div class="chat-composer-trigger">
+            <button class="video-call composer-trigger" (click)="emoji()" mat-icon-button>
+              <mat-icon>voice_chat</mat-icon>
+            </button>
+            <button (click)="onSend(replyInput.value); replyInput.value = null " *ngIf="replyInput.value.length > 0"
+              class="send-btn composer-trigger" mat-icon-button>
+              <mat-icon>send</mat-icon>
+            </button>
 
+            <button class="send-btn attachment-btn composer-trigger" mat-icon-button
+              *ngIf="replyInput.value.length < 1">
+              <input #myFileInput type="file" name="ef_chatbox_chat_file_upload" id="uploadFileBtn"
+                class="file-upload-input">
+              <mat-icon>attach_file</mat-icon>
+            </button>
 
+            <!--            <span class="attachment-btn" >-->
+            <!--            <input #myFileInput *ngIf="replyInput.value.length < 1" (change)="uploadFile($event.target.files)" type="file" [disabled]="chatServerDown || conversation.state =='ended'"-->
+            <!--                   name="ef_chatbox_chat_file_upload" id="uploadFileBtn" class="file-upload-input">-->
+            <!--            <i class="material-icons" *ngIf="replyInput.value.length < 1">-->
+            <!--                attach_file-->
+            <!--            </i>-->
+            <!--        </span>-->
 
-            </div>
-            <div class="chat-composer-trigger">
-              <button class="video-call composer-trigger" mat-icon-button>
-                <mat-icon>voice_chat</mat-icon>
-              </button>
-              <button class="timer-off composer-trigger" mat-icon-button>
-                <mat-icon>timer_off</mat-icon>
-              </button>
-              <button (click)="onSend(replyInput.value); replyInput.value = null " class="send-btn composer-trigger"
-                mat-icon-button>
-                <mat-icon>send</mat-icon>
-              </button>
-            </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
 
     </div>

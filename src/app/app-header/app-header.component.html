@@ -6,10 +6,10 @@
       </button>
       <mat-menu #mainMenu="matMenu">
         <button routerLink="/supervisor/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"  mat-menu-item class="main-menu-item">
-          <span>Supervisor Dashboard</span>
+          <span>Dashboard</span>
         </button>
         <button routerLink="/supervisor/announcement"  routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
-          <span>Supervisor Announcements </span>
+          <span>Team Announcements </span>
         </button>
         <button routerLink="/customers/chats"  routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
           <span>Customer Conversation View</span>
@@ -46,7 +46,7 @@
         </div>
 
         <div class="agent-state">
-          <span class="state">STATE</span>
+          <span class="state">State</span>
 
           <div class="agent-current-state">
             <button mat-button [matMenuTriggerFor]="state" class="{{_cacheService.agentDetails.presence.state | lowercase}}">
@@ -73,6 +73,13 @@
           <span class="time_state">{{display | date :"HH:mm:ss":'UTC'}}</span>
 
         </div>
+        <!-- <div class="announcement-trigger-area" >
+          <span class="notification-hint">2</span>
+          <button mat-icon-button class="announcement-trigger"
+                  [ngClass]="{'announcement-tab-opened': sidenav.opened}"
+                  (click)="sidenav.toggle()"> <img src="assets/images/announcement.svg"></button>
+
+        </div> -->
 
         <div class="multi-language">
           <button mat-button [matMenuTriggerFor]="languageSelection" class="language-trigger">
@@ -150,4 +157,17 @@
       </div>
     </div>
   </div>
+
+  <mat-sidenav-container (backdropClick)="close()"  hasBackdrop="true"  class="right-canned-message-list announcement-tab"
+                         [ngClass]="{'mat-drawer-opened': sidenav?.opened}">
+    <mat-sidenav #sidenav position="end"  (keydown.escape)="close()" mode="over" disableClose mode="over">
+
+
+      <div class="announcement-tab-header">
+        <h4>Announcements</h4>
+      </div>
+
+    </mat-sidenav>
+
+  </mat-sidenav-container>
 </div>

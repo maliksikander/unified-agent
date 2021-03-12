@@ -3,7 +3,9 @@ import { cacheService } from 'src/app/services/cache.service';
 import { sharedService } from 'src/app/services/shared.service';
 import { socketService } from 'src/app/services/socket.service';
 import { MatDialog } from '@angular/material';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
+declare var EmojiPicker: any;
 @Component({
   selector: 'app-interactions',
   templateUrl: './interactions.component.html',
@@ -14,6 +16,7 @@ export class InteractionsComponent implements OnInit {
   @Input() conversation: any;
   @Input() dummy: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
+  public config: PerfectScrollbarConfigInterface = {};
   isBarOPened = false;
   activeSessions = [];
 
@@ -77,11 +80,16 @@ export class InteractionsComponent implements OnInit {
   displaySuggestionsArea = false;
   cannedTabOpen = false;
   quickReplies = true;
+  viewHeight = '180px';
+
   constructor(private _sharedService: sharedService, private _cacheService: cacheService, private _socketService: socketService, private dialog: MatDialog) {
   }
   ngOnInit() {
     //  console.log("i am called hello")
     this.convers = this.conversation.messages;
+    setTimeout(() => {
+      new EmojiPicker();
+    },500);
   }
 
   onSend(text) {

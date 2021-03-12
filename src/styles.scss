@@ -4,7 +4,10 @@
 @import '~primeng/resources/themes/nova-light/theme.css';
 @import '~primeng/resources/primeng.min.css';
 @import '~@progress/kendo-theme-default/dist/all.css';
-
+@import '~perfect-scrollbar/css/perfect-scrollbar.css';
+textarea, #EmojiLink a{
+  font-family: "Roboto", sans-serif, "Segoe UI", "Segoe UI Emoji", "Apple Color Emoji" !important;
+}
 @font-face {
   font-family: 'Roboto';
   src: local('Roboto Light'), local('Roboto-light'),
@@ -40,7 +43,7 @@
 }
 html,body{
   height: 100%;
-  font-family: "Roboto", Arial, sans-serif !important;
+  font-family: "Roboto", sans-serif, "Segoe UI", "Segoe UI Emoji", "Apple Color Emoji";
   background: transparent !important;
   font-weight: normal;
 }
@@ -80,6 +83,10 @@ mat-tab-group.chat-tab-area {
   .mat-tab-header {
     width: 60px;
     background: $white-color;
+    height: fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
+    margin-top: 45px;
     .mat-ink-bar{
       display: none !important;
     }
@@ -94,7 +101,7 @@ mat-tab-group.chat-tab-area {
         margin: 5px auto;
         background: transparent;
         box-shadow: inset 1.5px 0 0 #F3F6F8, inset 0 1.5px 0 #F3F6F8, inset 0 -1.5px 0 #F3F6F8, inset -1.5px 0 0 #F3F6F8;
-        height: 50px;
+        height: 46px;
         text-align: center;
         opacity: 1;
         border-radius: 5px;
@@ -116,7 +123,7 @@ mat-tab-group.chat-tab-area {
           top: 0;
 
           svg {
-            height: 50px !important;
+            height: 46px !important;
             width: 50px !important;
           }
         }
@@ -124,6 +131,59 @@ mat-tab-group.chat-tab-area {
     }
   }
 
+}
+
+//Expanded view
+.user-name {
+  //width: calc(100% - 50px);
+  line-height: 50px;
+  padding-left: 10px;
+  text-align: left;
+  text-transform: capitalize;
+  color: #5D5D5D;
+  font-size: 13px;
+  display: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+  max-width: 200px;
+}
+#main-content{
+  .chat-tab-area.bar-expand {
+    .user-name {
+      display: inline-block;
+    }
+    .mat-tab-header {
+      width: 280px;
+      .mat-tab-label{
+        margin: 5px !important;
+        width: calc(100% - 10px) !important;
+
+        .get-events{
+          text-align: left;
+        }
+      }
+    }
+
+    .mat-tab-body-wrapper {
+      width: calc(100% - 280px);
+    }
+    .user-badge {
+      text-align: left;
+      max-width: 50px;
+      position: relative;
+      float: left;
+    }
+
+    .chat-footer {
+      width: calc(100% - 295px) !important;
+      left: 290px !important;
+    }
+    .customer-bar-opened .chat-footer{
+      width: calc(100% - 580px) !important;
+    }
+
+  }
 }
 
 
@@ -140,11 +200,11 @@ mat-tab-group.chat-tab-area {
   //width: 0;
   transition: all .3s;
   min-width: 0;
-  margin-right: 56px;
+  margin-right: 0;
   height: 100%;
 }
 .mat-drawer-inner-container{
-  overflow: auto !important;
+  overflow: visible !important;
 }
 
 mat-sidenav.mat-drawer.mat-sidenav {
@@ -203,6 +263,9 @@ mat-sidenav.mat-drawer.mat-sidenav {
   mat-expansion-panel {
     box-shadow: none !important;
     border: 1px solid #F1F1F1;
+  }
+  .mat-expansion-panel-header{
+    padding: 0 10px 0 0;
   }
 }
 snack-bar-container.err-class {
@@ -315,30 +378,12 @@ padding: 0 !important;
   }
 }
 
-
 .mat-tab-body{
   overflow: hidden !important;
 }
 .mat-tab-body-content{
   overflow: inherit !important;
 }
-
-//Expand view 3rd party bar
-.customer-bar-opened {
-  .customer-info-main {
-    width: 340px !important;
-    border-left: 5px solid #e2e2e2;
-  }
-
-  .main-chat-bar-area {
-    width: calc(100% - 340px) !important;
-  }
-
-  .chat-footer {
-    width: calc(100% - 418px) !important;
-  }
-}
-
 
 //primeng table
 
@@ -1218,6 +1263,10 @@ padding: 0 !important;
   .suggested-answer {
     max-width: calc(100% - 415px) !important;
   }
+
+  .right-info-bar button {
+    right: 285px !important;
+  }
 }
 .suggested-answer {
   position: fixed !important;
@@ -1686,4 +1735,306 @@ padding: 0 !important;
       transform: translateY(0%);
     }
   }
+}
+
+
+
+// Announcement area
+.list-trigger-area span.mat-button-wrapper {
+  padding: 0;
+  line-height: 0;
+}
+
+.announcement-tab {
+  .mat-drawer-backdrop {
+    background: transparent !important;
+  }
+}
+
+.announcement-selection-area {
+
+  .mat-form-field-flex{
+    padding: 0 !important;
+  }
+  .mat-form-field-infix {
+    padding: 10px !important;
+    border: 0;
+    background: #EFEFEF;
+    border-radius: 3px;
+    //max-width: 140px;
+  }
+
+  .mat-form-field-wrapper {
+    padding: 0 !important;
+  }
+
+  .mat-form-field-underline {
+    display: none;
+  }
+}
+
+.new-announcement-dialog {
+  max-width: 900px !important;
+  width: 100%;
+
+  .mat-dialog-container {
+    padding: 0 !important;
+
+    .mat-dialog-content {
+      margin: 0 !important;
+    }
+  }
+
+  .announcement-container {
+    padding: 0 !important;
+  }
+
+  .mat-dialog-content {
+    margin: 0 !important;
+    position: relative;
+  }
+}
+
+.new-announcement-form {
+  input:not([type]):focus:not([readonly]) {
+    box-shadow: none !important;
+    border: 0 !important;
+  }
+
+
+  .mat-form-field-infix {
+    padding-top: 15px !important;
+    border: 0;
+    width: 100%;
+    padding-bottom: 15px !important;
+  }
+
+  .textarea-field {
+    .mat-form-field-infix {
+      padding: 0 !important;
+    }
+  }
+
+  .date-selection {
+    display: inline-block;
+    margin-right: 15px;
+
+    .mat-form-field-flex {
+      height: 42px;
+      line-height: 17px;
+    }
+
+    .mat-form-field-infix {
+      padding: 0 !important;
+      top: 15px;
+    }
+
+    input {
+      margin: 0;
+      border: 0;
+    }
+
+    .mat-form-field-suffix {
+      top: 4px !important;
+      position: absolute;
+      right: 0;
+    }
+  }
+
+}
+
+.team-selection {
+  .mat-form-field-infix {
+    padding-top: 13px !important;
+    padding-bottom: 13px !important;
+  }
+
+  .mat-select-value-text {
+    span {
+      line-height: 20px;
+    }
+  }
+
+  .mat-select-arrow-wrapper {
+    transform: translateY(13%) !important;
+  }
+}
+
+ngx-mat-datetime-content, .time-container {
+  .mat-form-field-wrapper {
+    padding: 0 !important;
+  }
+
+  .mat-calendar-content {
+    padding-bottom: 0;
+  }
+
+  .mat-calendar-body tr:last-child {
+    border: 0;
+  }
+
+  .mat-calendar-table-header {
+    th {
+      padding: 0 0 5px 0;
+    }
+
+    tr {
+      padding: 0;
+    }
+  }
+
+  .mat-form-field-wrapper {
+    padding: 0;
+  }
+
+  .mat-form-field-infix {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
+
+  input {
+    border: 0 !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 20px !important;
+    line-height: 20px !important;
+  }
+
+  .mat-form-field-underline {
+    display: none;
+  }
+
+  tr {
+    border: 0;
+
+    td {
+      padding: 0;
+    }
+  }
+
+  .actions {
+    display: inline;
+    padding: 5px 15px;
+    justify-content: flex-end;
+    position: absolute;
+    right: 0;
+    bottom: 10px;
+    z-index: 99;
+  }
+
+  .time-container {
+    justify-content: left !important;
+    padding: 5px 0 !important;
+  }
+}
+
+//Confirm Dialog
+.confirm-dialog {
+  mat-dialog-container {
+    padding: 0;
+  }
+}
+
+//Default scrolling position
+.ps__rail-y{
+  right: 0 !important;
+  left: inherit !important;
+}
+
+
+//Emoji Style
+.emoji-trigger {
+  display: block;
+  overflow: hidden;
+  top: 60% !important;
+  transform: rotateZ(2deg) translate(0, -32%);
+
+  i.material-icons {
+    color: #707070;
+    font-size: 19px;
+    position: relative;
+    top: -1px;
+    max-width: 20px;
+    text-align: center;
+  }
+}
+
+//Add customer trigger
+button.add-customer {
+  position: absolute;
+  top: 12px;
+  width: 35px;
+  height: 35px;
+  line-height: 0;
+  left: 18px;
+  background: #F5F5F5 !important;
+  color: #393939 !important;
+  box-shadow: none !important;
+  z-index: 2;
+
+  .mat-button-wrapper{
+    padding: 0 !important;
+  }
+}
+
+//Announcement Tab
+.announcement-tab{
+  transition: all 0s !important;
+}
+
+
+
+//interaction history expanded view
+.instruction-content .panel-divider {
+  .mat-expanded {
+    .section-tags {
+      span {
+        background: #fff !important;
+        color: #707070 !important;
+
+      }
+    }
+
+    .mat-expansion-panel-header{
+      .section-tags {
+        span {
+          background: #707070 !important;
+          color: #fff !important;
+
+        }
+      }
+      &.mat-expanded {
+        .section-tags {
+          span {
+            background: #fff !important;
+            color: #707070 !important;
+
+          }
+        }
+      }
+    }
+  }
+}
+
+
+//Default expansion dropdown arrow
+.mat-expansion-indicator::after {
+border: 0 !important;
+  padding: 3px;
+  vertical-align: middle;
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  letter-spacing: normal;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  content: 'arrow_drop_down' !important;
+  transform: rotate(0deg) !important;
 }

@@ -42,6 +42,7 @@ export class CustomerInfoComponent implements OnInit {
   displayCustomerChannels = false;
   displayProfile = true;
   barOpened = false;
+  reRouteText = '';
   outgoingCallingNumber = '+446698988';
   customerActiveSessions = [];
   options: string[] = ['Glenn Helgass', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall',
@@ -70,7 +71,14 @@ export class CustomerInfoComponent implements OnInit {
       width: '350px'
     });
   }
+  reRouteDialog(templateRef, e): void {
+    this.reRouteText = e;
 
+    this.dialog.open(templateRef, {
+      panelClass: 're-route-dialog',
+      minWidth: '450px'
+    });
+  }
   customerInfoToggle() {
     this.barOpened = !this.barOpened;
     this.expandCustomerInfo.emit(this.barOpened);
@@ -102,6 +110,8 @@ export class CustomerInfoComponent implements OnInit {
     return processedObj;
   }
 
-
+  moveSession(event) {
+    event.stopPropagation();
+  }
 
 }

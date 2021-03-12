@@ -1,7 +1,7 @@
 .ef_container{
-  height: calc(100% - 45px);
+  height: calc(100% - 40px);
   position: absolute;
-  top: 45px;
+  top: 40px;
 }
 #content{
   margin: -1px 0;
@@ -38,7 +38,7 @@ div#main-content {
   text-align: center;
   line-height: 9px;
   border-radius: 50%;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
 
   &.channel-badge{
     right: inherit;
@@ -51,5 +51,31 @@ div#main-content {
       top: 0;
     }
   }
+}
+
+//Bar expand/collapse
+.left-bar-trigger {
+  position: absolute;
+  left: 24px;
+  bottom: 16px;
+  transition: all .2s;
+  background: transparent !important;
+  border-radius: 0;
+  border: 0;
+  cursor: pointer;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  transform: rotate(180deg);
+
+  &.arrow_left {
+    left: 240px !important;
+    transform: rotate(0deg);
+  }
+  .mat-icon {
+    font-size: 15px;
+    color: #25afcb;
+  }
+
 }
 

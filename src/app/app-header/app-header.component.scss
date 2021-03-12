@@ -17,7 +17,7 @@
       flex-wrap: wrap;
       align-items: center;
       justify-content: flex-end;
-      height: 45px;
+      min-height: 40px;
 
       .agent-state{
         display: inline-block;
@@ -800,11 +800,13 @@ button.main-menu-item{
 
 .right-canned-message-list.mat-drawer-opened.announcement-tab {
   opacity: 1;
-  height: calc(100% - 40px) !important;
-  right: 0;
+  height: calc(100% - 135px) !important;
   overflow: inherit;
-  top: 40px;
+  top: 50px;
   width: 320px;
+  position: fixed;
+  right: 0;
+  z-index: 99;
 
   .mat-sidenav{
     top: 0;
@@ -856,4 +858,55 @@ button.language-selection img {
   width: 14px;
   position: relative;
   left: -5px;
+}
+
+
+.announcement-trigger-area{
+  border-right: 1px solid #f1f1f1;
+  padding: 0 10px;
+  margin-right: 15px;
+  position: relative;
+  width: 40px;
+
+  button{
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    background: #f1f1f1;
+    overflow: hidden;
+    transition: all .2s;
+
+    img{
+      position: relative;
+      top: -11px;
+      width: 12px;
+      transition: all .2s;
+    }
+
+    &:hover, &.announcement-tab-opened{
+      background: #D4F5FB;
+      transition: all .2s;
+      img{
+        top: 5px;
+        transition: all .2s;
+      }
+    }
+  }
+
+  .notification-hint{
+    position: absolute;
+    background: red;
+    width: 13px;
+    height: 13px;
+    display: block;
+    z-index: 9;
+    font-size: 9px;
+    color: #fff;
+    line-height: 13px;
+    text-align: center;
+    right: 4px;
+    top: -4px;
+    font-weight: 600;
+    border-radius: 100%;
+  }
 }
