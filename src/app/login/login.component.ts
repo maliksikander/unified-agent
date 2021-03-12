@@ -29,17 +29,21 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this._httpService.login(this.loginForm.value).subscribe((e) => {
+    // this._httpService.login(this.loginForm.value).subscribe((e) => {
 
-      console.log("this is login resp ", e.data);
-      this._cacheService.agentDetails.agent = e.data;
+    //   console.log("this is login resp ", e.data);
+    //   this._cacheService.agentDetails.agent = e.data;
+
+    //   this._socketService.connectToSocket();
+    //   this._router.navigate(['customers']);
+
+
+    // }, (error) => {
+    //   this._sharedService.Interceptor(error.error, 'err')
+    // })
+    this._cacheService.agentDetails.agent = {id:'nabeel',username:'nabeel'};
 
       this._socketService.connectToSocket();
       this._router.navigate(['customers']);
-
-
-    }, (error) => {
-      this._sharedService.Interceptor(error.error, 'err')
-    })
   }
 }

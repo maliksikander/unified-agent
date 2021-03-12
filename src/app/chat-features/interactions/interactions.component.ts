@@ -101,6 +101,7 @@ export class InteractionsComponent implements OnInit {
     message.header.sender.participant.keyCloakUser = this._cacheService.agentDetails.agent;
     message.header.sender.participant.routingAttributes = [];
     message.body.markdownText = text;
+    delete message['botSuggestions'];
 
     this._socketService.emit('sendMessage', message);
 

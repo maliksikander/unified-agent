@@ -62,17 +62,15 @@ export class socketService {
 
         this.listen('oldTopicMessages').subscribe((res: any) => {
             console.log("oldTopicMessages", res);
-            this.conversations.push({ topicId: res.topicId, messages: res.message, activeChannelSessions: this.getActiveChannelSessions(res.message), unReadCount: undefined });
+            let activeChannelSessions = this.getActiveChannelSessions(res.message);
+            this.conversations.push({ topicId: res.topicId, messages: res.message, activeChannelSessions: activeChannelSessions, unReadCount: undefined });
             this._conversationsListener.next(this.conversations);
 
         });
 
         this.listen('topicUnsubscription').subscribe((res: any) => {
             console.log("topicUnsubscription", res);
-            this.conversations = this.conversations.filter(e => {
-                return e.topicId != res.topicId;
-            });
-            this._conversationsListener.next(this.conversations);
+            this.removeConversation(res.topicId);
         });
     }
 
@@ -96,22 +94,29 @@ export class socketService {
 
 
     onMessageHandler(res) {
-        let sameTopicIdObj = this.conversations.find((e) => {
+
+        let sameTopicConversation = this.conversations.find((e) => {
             return e.topicId == res.topicId
         });
 
-        if (sameTopicIdObj) {
-            sameTopicIdObj.messages.push(res.message);
-            sameTopicIdObj.unReadCount ? undefined : sameTopicIdObj.unReadCount = 0;
-            if (res.message.header.sender.type.toLowerCase() == 'customer') {
-                sameTopicIdObj['activeChannelSessions'] = this.getActiveChannelSessions(sameTopicIdObj.messages)
+        if (res.type == 'message') {
 
-                ++sameTopicIdObj.unReadCount;
+            if (sameTopicConversation) {
+                sameTopicConversation.messages.push(res.message);
+                sameTopicConversation.unReadCount ? undefined : sameTopicConversation.unReadCount = 0;
+                if (res.message.header.sender.type.toLowerCase() == 'customer') {
+                    sameTopicConversation['activeChannelSessions'] = this.getActiveChannelSessions(sameTopicConversation.messages)
+
+                    ++sameTopicConversation.unReadCount;
+                }
+            } else {
+                this.conversations.push({ topicId: res.topicId, messages: [res.message], activeChannelSessions: res.message.header.channelSession, unReadCount: undefined });
             }
-        } else {
-            this.conversations.push({ topicId: res.topicId, messages: [res.message], activeChannelSessions: res.message.header.channelSession, unReadCount: undefined });
+            this._conversationsListener.next(this.conversations);
         }
-        this._conversationsListener.next(this.conversations);
+        else if (res.type == 'suggestionMessage') {
+            this.mergeBotSuggestions(sameTopicConversation, res.message);
+        }
     }
 
     getActiveChannelSessions(messages) {
@@ -119,14 +124,39 @@ export class socketService {
         let activeChannelSessions = [];
 
         for (let message, i = 0; message = messages[i++];) {
-            let id = message.header.channelSession.id;
+            if (message.header.sender.type.toLowerCase() == 'customer') {
+                let id = message.header.channelSession.id;
 
-            if (!(id in lookup)) {
-                lookup[id] = 1;
-                activeChannelSessions.push(message.header.channelSession);
+                if (!(id in lookup)) {
+                    lookup[id] = 1;
+                    activeChannelSessions.push(message.header.channelSession);
+                }
             }
         }
         return activeChannelSessions;
+    }
+
+    removeConversation(topicId) {
+        this.conversations = this.conversations.filter(e => {
+            return e.topicId != topicId;
+        });
+        this._conversationsListener.next(this.conversations);
+    }
+
+
+    mergeBotSuggestions(conversation, suggestionMessage) {
+
+        let message = conversation.messages.find((e) => {
+            if (e.header.sender.type.toLowerCase() == 'customer') {
+                return e.id == suggestionMessage.requestedMessage.id;
+            }
+        });
+
+        if (message) {
+            message['botSuggestions'] = suggestionMessage.suggestions;
+            console.log("bot suggestion founded ", message);
+            this._conversationsListener.next(this.conversations);
+        }
     }
 
 }

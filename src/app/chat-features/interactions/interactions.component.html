@@ -183,89 +183,96 @@
                 [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}">
                 <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies"
                   [ngClass]="{'animate-content': displaySuggestionsAnimation}">
-                  <ng-container *ngFor="let action of actions | LockFilter: message">
-                    <mat-option [value]="action?.message || action?.name"
-                      (click)="message=action?.message || action?.name"
-                      *ngIf="action.message != undefined || action.name != undefined">
-                      {{action.message || action.name}}
-                      <button mat-mini-fab class="canned-trigger edit-trigger"
-                        (click)="message=action.message || action.name">
-                        <i class="material-icons">
-                          edit
-                        </i>
-                      </button>
-                      <button mat-mini-fab class="canned-trigger send-suggestion"
-                        (click)="sendAutoMsg(action.message || action.name)">
-                        <i class="material-icons">
-                          send
-                        </i>
-                      </button>
-                    </mat-option>
+                  <ng-container
+                    *ngFor="let botSuggestion of conversation.messages[conversation.messages.length -1]?.botSuggestions | LockFilter: message">
+                    <ng-container *ngIf="botSuggestion?.messageBody.type == 'PLAIN'">
+                      <mat-option [value]="botSuggestion?.messageBody.markdownText"
+                        (click)="replyInput.value=botSuggestion?.messageBody.markdownText"
+                        *ngIf="botSuggestion.messageBody.markdownText != undefined">
+                        {{botSuggestion.messageBody.markdownText}}
+                        <button mat-mini-fab class="canned-trigger edit-trigger"
+                          (click)="replyInput.value=botSuggestion.messageBody.markdownText">
+                          <i class="material-icons">
+                            edit
+                          </i>
+                        </button>
+                        <button mat-mini-fab class="canned-trigger send-suggestion"
+                          (click)="onSend(botSuggestion.messageBody.markdownText); replyInput.value = null">
+                          <i class="material-icons">
+                            send
+                          </i>
+                        </button>
+                      </mat-option>
+                    </ng-container>
                   </ng-container>
                 </div>
-               
-
-                  <mat-tab-group animationDuration="0ms" *ngIf="!displaySuggestionsArea && cannedTabOpen">
 
 
-                    <mat-tab label="Canned Messages">
-                      <div class="right-canned-message-list main-canned-message-area">
-                        <div class="bar-content">
-
-                          <mat-tab-group class="inner-tabs" animationDuration="0ms">
-                            <ng-container *ngFor="let msg of cannedMessages; let i = index">
-                              <mat-tab *ngIf="i<3" label="{{msg.category}}">
-                                <mat-option class="custom-tab-area" [value]="cMsg"
-                                  *ngFor="let cMsg of msg.messages | LockFilter: message">
-                                  {{cMsg}}
-                                  {{cMsg.count}}
-
-                                  <button mat-mini-fab color="primary" class="canned-trigger edit-trigger">
-                                    <i class="material-icons">
-                                      edit
-                                    </i>
-                                  </button>
-                                  <button mat-mini-fab color="primary" class="canned-trigger send-suggestion">
-                                    <i class="material-icons">
-                                      send
-                                    </i>
-                                  </button>
-                                </mat-option>
-
-                              </mat-tab>
-                            </ng-container>
-                          </mat-tab-group>
-                          <!--</mat-tab>-->
+                <mat-tab-group animationDuration="0ms" *ngIf="!displaySuggestionsArea && cannedTabOpen">
 
 
-                          <!---->
-                          <!--</mat-tab-group>-->
-                        </div>
+                  <mat-tab label="Canned Messages">
+                    <div class="right-canned-message-list main-canned-message-area">
+                      <div class="bar-content">
+
+                        <mat-tab-group class="inner-tabs" animationDuration="0ms">
+                          <ng-container *ngFor="let msg of cannedMessages; let i = index">
+                            <mat-tab *ngIf="i<3" label="{{msg.category}}">
+                              <mat-option class="custom-tab-area" [value]="cMsg"
+                                *ngFor="let cMsg of msg.messages | LockFilter: message">
+                                {{cMsg}}
+                                {{cMsg.count}}
+
+                                <button mat-mini-fab color="primary" class="canned-trigger edit-trigger">
+                                  <i class="material-icons">
+                                    edit
+                                  </i>
+                                </button>
+                                <button mat-mini-fab color="primary" class="canned-trigger send-suggestion">
+                                  <i class="material-icons">
+                                    send
+                                  </i>
+                                </button>
+                              </mat-option>
+
+                            </mat-tab>
+                          </ng-container>
+                        </mat-tab-group>
+                        <!--</mat-tab>-->
+
+
+                        <!---->
+                        <!--</mat-tab-group>-->
                       </div>
-                    </mat-tab>
+                    </div>
+                  </mat-tab>
 
-                    <mat-tab label="Bot Suggestions">
-                      <ng-container *ngFor="let action of actions | LockFilter: message">
-                        <mat-option [value]="action?.message || action?.name"
-                          (click)="message=action?.message || action?.name"
-                          *ngIf="action.message != undefined || action.name != undefined">
-                          {{action.message || action.name}}
+                  <mat-tab label="Bot Suggestions">
+                    <ng-container
+                      *ngFor="let botSuggestion of conversation.messages[conversation.messages.length -1]?.botSuggestions | LockFilter: message">
+                      <ng-container *ngIf="botSuggestion?.messageBody.type == 'PLAIN'">
+                        <mat-option [value]="botSuggestion?.messageBody.markdownText"
+                          (click)="replyInput.value=botSuggestion?.messageBody.markdownText"
+                          *ngIf="botSuggestion.messageBody.markdownText != undefined">
+                          {{botSuggestion.messageBody.markdownText}}
                           <button mat-mini-fab class="canned-trigger edit-trigger"
-                            (click)="message=action.message || action.name">
+                            (click)="replyInput.value=botSuggestion.messageBody.markdownText">
                             <i class="material-icons">
                               edit
                             </i>
                           </button>
-                          <button mat-mini-fab class="canned-trigger send-suggestion">
+                          <button (click)="onSend(botSuggestion.messageBody.markdownText); replyInput.value = null"
+                            mat-mini-fab class="canned-trigger send-suggestion">
                             <i class="material-icons">
                               send
                             </i>
                           </button>
                         </mat-option>
                       </ng-container>
+                    </ng-container>
 
-                    </mat-tab>
-                  </mat-tab-group>
+                  </mat-tab>
+                </mat-tab-group>
               </div>
             </mat-autocomplete>
           </div>
