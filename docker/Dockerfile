@@ -1,25 +1,15 @@
-#FROM gitlab.expertflow.com:9242/general/nginx:1.19.0-alpine
-
 FROM nginx:alpine
-
-#RUN mkdir -p /app
 
 WORKDIR /usr/share/nginx/html
 
-#COPY package.json /app
+COPY dist/ .
 
-#RUN npm install
- 
-#COPY dist/ .
+COPY config.json.template .
 
-RUN ls -ltr 
+COPY docker-entrypoint.sh .
 
-COPY . .
+COPY environment_variables.env .
 
-#RUN npm run build
+RUN chmod +x docker-entrypoint.sh
 
-#COPY --from=build-step /app/dist/unified-agent-gadget  
-
-EXPOSE 80
-
-ENTRYPOINT ["./docker-entrypoint.sh"]
+ENTRYPOINT ["sh","./docker-entrypoint.sh"]
