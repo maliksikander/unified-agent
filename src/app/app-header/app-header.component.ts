@@ -79,6 +79,6 @@ export class AppHeaderComponent implements OnInit {
       this.languageFlag = selectedLanguage.flag;
     }
   }
-
+close(){}
 
 }

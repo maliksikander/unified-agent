@@ -176,12 +176,13 @@
               (keyup)="onKey($event)" name="message" (change)="textChanged($event)" [matAutocomplete]="auto" matInput
               cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none"
               #replyInput name="message" placeholder="Type a message here..."></textarea>
+              <!-- [ngClass]="{'animate-content': displaySuggestionsAnimation}" -->
 
             <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete">
               <div class="suggested-content" #mainScreen
                 [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}">
                 <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies"
-                  [ngClass]="{'animate-content': displaySuggestionsAnimation}">
+                  >
                   <ng-container
                     *ngFor="let botSuggestion of conversation.messages[conversation.messages.length -1]?.botSuggestions | LockFilter: message">
                     <ng-container *ngIf="botSuggestion?.messageBody.type == 'PLAIN'">

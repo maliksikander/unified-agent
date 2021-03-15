@@ -92,6 +92,7 @@ export class InteractionsComponent implements OnInit {
     },500);
   }
 
+  emoji(){}
   onSend(text) {
     let message = JSON.parse(JSON.stringify(this.conversation.messages[this.conversation.messages.length - 1]));
 
