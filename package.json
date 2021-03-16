@@ -9,7 +9,8 @@
     "e2e": "ng e2e",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:cc": "jest --coverage"
+    "test:cc": "jest --coverage",
+    "sonar": "node sonar-project.js"
   },
   "private": true,
   "dependencies": {
@@ -63,7 +64,9 @@
     "typescript": "~3.5.3",
     "jest": "^26.6.3",
     "@types/jest": "^26.0.20",
-    "jest-preset-angular": "^8.4.0"
+    "jest-preset-angular": "^8.4.0",
+    "sonar-scanner": "^3.1.0",
+    "sonarqube-scanner": "^2.8.0"
   },
   "jest": {
     "testResultsProcessor": "jest-sonar-reporter"

@@ -1,0 +1,1 @@
+{"rules":{"block-no-empty":true,"selector-type-no-unknown":[true,{"ignoreTypes":["/^(mat|md|fa)-/"]}]}}

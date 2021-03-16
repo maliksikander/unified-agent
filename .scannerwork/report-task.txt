@@ -1,0 +1,6 @@
+projectKey=unified-agent-cim-417
+serverUrl=http://sonarqube.expertflow.com:9000
+serverVersion=8.4.1.35646
+dashboardUrl=http://sonarqube.expertflow.com:9000/dashboard?id=unified-agent-cim-417
+ceTaskId=AXg7uCBCS8ig5dxrQjCt
+ceTaskUrl=http://sonarqube.expertflow.com:9000/api/ce/task?id=AXg7uCBCS8ig5dxrQjCt
