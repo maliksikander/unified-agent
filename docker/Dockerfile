@@ -1,4 +1,4 @@
-FROM nginx:alpine
+FROM gitlab.expertflow.com:9242/general/nginx:1.19.0-alpine
 
 WORKDIR /usr/share/nginx/html
 
