@@ -1,6 +1,6 @@
 variables:
-  IMAGE_NAME: ${CI_REGISTRY_IMAGE}/build:${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}-${CI_COMMIT_SHA}
-  #IMAGE_NAME: ${CI_REGISTRY_IMAGE}/build:${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}
+  #IMAGE_NAME: ${CI_REGISTRY_IMAGE}/build:${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}-${CI_COMMIT_SHA}
+  IMAGE_NAME: ${CI_REGISTRY_IMAGE}/build:${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}
 stages:
   #- validate
   #- compile
@@ -194,7 +194,7 @@ ng_build:
    when: on_success
    image: gitlab.expertflow.com:9242/general/node:CSN-3623
    script:
-   - npm install
+   - npm run build
    #- export TIME_TOKEN=$(env TZ=GMT-5 date +%d_%m_%Y-%H_%M_%S)
    #- echo "${TIME_TOKEN} ${BUILD_NUMBER}"
    #- mv target/bot-framework-*.jar target/bot-framework-"${BUILD_TIME}_build-${BUILD_NUMBER}".jar
@@ -302,8 +302,8 @@ container_publish:
     - echo "${TIME_TOKEN} ${BUILD_NUMBER}"
     - docker login -u gitlab-ci-token -p "$CI_JOB_TOKEN" "${CI_REGISTRY}"
     - docker pull "$IMAGE_NAME"
-    - docker tag "$IMAGE_NAME" "${CI_REGISTRY_IMAGE}:${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}-${BUILD_TIME}_build-${BUILD_NUMBER}"
-    - docker push "${CI_REGISTRY_IMAGE}:${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}-${BUILD_TIME}_build-${BUILD_NUMBER}"
+    - docker tag "$IMAGE_NAME" "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}-${BUILD_TIME}_build-${BUILD_NUMBER}"
+    - docker push "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}-${BUILD_TIME}_build-${BUILD_NUMBER}"
     #- |
     #    if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" == "master" ]; then
     #      docker tag "$IMAGE_NAME" "${CI_REGISTRY_IMAGE}:latest"
