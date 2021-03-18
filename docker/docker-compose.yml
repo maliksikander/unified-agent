@@ -3,7 +3,7 @@ version: '3'
 services:
   node-app:
     container_name: unified-agent
-    image: unified-agent:v1
+    image: gitlab.expertflow.com:9242/cim/unified-agent/build:CIM-469-b4858122d479d956ffc77f17e420e2d73459b969
     env_file: 
       - ./environment_variables.env
     ports: 
