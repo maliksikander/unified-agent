@@ -19,14 +19,14 @@ export class sharedService {
 
     getIndexFromTopicId(topicId, array) {
         let index = array.findIndex((e) => {
-          return e.topicId == topicId
+            return e.topicId == topicId
         });
         return index;
-      }
+    }
 
-      spliceArray(index, array) {
+    spliceArray(index, array) {
         array.splice(index, 1);
-      }
+    }
 
     Interceptor(e, res) {
 

@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { IKeycloakUser, IAgentPresence } from '../models/User/Interfaces'
 
 @Injectable({
     providedIn: 'root'
@@ -6,12 +7,15 @@ import { Injectable } from "@angular/core";
 
 export class cacheService {
 
-    private agent: any = {};
-    private agentPresence: any = {};
-    
-    agentDetails = { agent: this.agent, presence: this.agentPresence }
+    agent: IKeycloakUser;
+    agentPresence: IAgentPresence;
+
+    // agentDetails = { agent: this.agent, presence: this.agentPresence }
 
     constructor() {
+
+        this.agent = { id: " ", firstName: "", lastName: "", roles: [] };
+        this.agentPresence = { agent: { id: " ", keyCloakUser: { id: " ", firstName: "", lastName: "", roles: [] } }, state: "", stateChangeTime: "" }
 
     }
 

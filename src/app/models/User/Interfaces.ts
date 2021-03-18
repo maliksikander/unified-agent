@@ -1,15 +1,17 @@
 import { ITenant } from '../Tenant/Interfaces';
 
-export interface ICCUser {
+export interface IKeycloakUser {
     id: string;
-    teams: ITeam[];
+    username?: string
     firstName: string;
     lastName: string;
-    extention: number;
+    extention?: number;
     roles: [];
-    queue: string;
-    tenant: ITenant;
-    routingAttributes: []
+    queue?: string;
+    tenant?: ITenant;
+    teams?: ITeam[];
+    routingAttributes?: [];
+    permittedResources?: [];
 
 }
 
@@ -20,3 +22,17 @@ interface ITeam {
 }
 
 
+export interface ICCUser {
+    id?: string;
+    keyCloakUser: IKeycloakUser;
+    associatedRoutingAttributes?: [];
+}
+
+export interface IAgentPresence {
+    agent: ICCUser
+    state: string;
+    statusMessage?: string;
+    agentMRDState?: [];
+    stateChangeTime: string;
+    topics?: [];
+}

@@ -4,6 +4,8 @@ import { sharedService } from 'src/app/services/shared.service';
 import { socketService } from 'src/app/services/socket.service';
 import { MatDialog } from '@angular/material';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { CimEvent } from '../../models/Event/cimEvent';
+import { v4 as uuidv4 } from 'uuid';
 
 declare var EmojiPicker: any;
 @Component({
@@ -89,23 +91,24 @@ export class InteractionsComponent implements OnInit {
     this.convers = this.conversation.messages;
     setTimeout(() => {
       new EmojiPicker();
-    },500);
+    }, 500);
   }
 
-  emoji(){}
+  emoji() { }
   onSend(text) {
     let message = JSON.parse(JSON.stringify(this.conversation.messages[this.conversation.messages.length - 1]));
-
+    message.id = uuidv4();
+    message.header.timestamp = new Date().toISOString();
     message.header.sender.type = "AGENT";
     message.header.sender.role = "AGENT";
     message.header.sender.participant = {};
-    message.header.sender.participant.keyCloakUser = this._cacheService.agentDetails.agent;
+    message.header.sender.participant.keyCloakUser = this._cacheService.agent;
     message.header.sender.participant.routingAttributes = [];
     message.body.markdownText = text;
     delete message['botSuggestions'];
     delete message['showBotSuggestions'];
 
-    this._socketService.emit('sendMessage', message);
+    this._socketService.emit('publishCimEvent', new CimEvent('AGENT_MESSAGE', 'MESSAGE', message));
 
   }
   openDialog(templateRef, e): void {
@@ -160,7 +163,7 @@ export class InteractionsComponent implements OnInit {
 
   topicUnsub() {
     console.log("going to unsub from topic " + this.conversation.topicId);
-    this._socketService.emit('topicUnsubscription', { topicId: this.conversation.topicId, agentId: this._cacheService.agentDetails.agent.id });
+    this._socketService.emit('topicUnsubscription', { topicId: this.conversation.topicId, agentId: this._cacheService.agent.id });
 
   }
 

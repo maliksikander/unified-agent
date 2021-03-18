@@ -27,12 +27,12 @@ export class socketService {
     connectToSocket() {
         this.uri = this._appConfigService.config.SOCKET_URL;
 
-        console.log("username------ " + this._cacheService.agentDetails.agent.username)
+        console.log("username------ " + this._cacheService.agent.username)
 
         this.socket = io.connect(this.uri, {
             query: {
                 //  token: this._cacheService.agent.details.access_token, 
-                agent: JSON.stringify(this._cacheService.agentDetails.agent)
+                agent: JSON.stringify(this._cacheService.agent)
 
             }
         }).on('error', function (err) {
@@ -41,7 +41,7 @@ export class socketService {
 
         this.listen('agentPresence').subscribe((res: any) => {
             console.log(res);
-            this._cacheService.agentDetails.presence = res;
+            this._cacheService.agentPresence= res;
             this._sharedService.serviceChangeMessage({ msg: 'stateChanged', data: null });
         });
 
@@ -54,18 +54,14 @@ export class socketService {
             this.triggerNewChatRequest(res);
         });
 
-        this.listen('onMessage').subscribe((res: any) => {
-            res.message = JSON.parse(res.message);
-            this.onMessageHandler(res);
-            console.log("onMessage parse s", res);
+        this.listen('onCimEvent').subscribe((res: any) => {
+            this.onCimEventHandler(JSON.parse(res.cimEvent), res.topicId);
+            console.log("onCimEvent parse s", res);
         });
 
-        this.listen('oldTopicMessages').subscribe((res: any) => {
-            console.log("oldTopicMessages", res);
-            let activeChannelSessions = this.getActiveChannelSessions(res.message);
-            this.conversations.push({ topicId: res.topicId, messages: res.message, activeChannelSessions: activeChannelSessions, unReadCount: undefined });
-            this._conversationsListener.next(this.conversations);
-
+        this.listen('onOldCimEvents').subscribe((res: any) => {
+            console.log("onOldCimEvents", res);
+            this.onOldCimEventsHandler(res.cimEvents, res.topicId);
         });
 
         this.listen('topicUnsubscription').subscribe((res: any) => {
@@ -93,30 +89,42 @@ export class socketService {
     }
 
 
-    onMessageHandler(res) {
+    onCimEventHandler(cimEvent, topicId) {
 
         let sameTopicConversation = this.conversations.find((e) => {
-            return e.topicId == res.topicId
+            return e.topicId == topicId
         });
 
-        if (res.type == 'message') {
+        if (cimEvent.type.toLowerCase() == 'message') {
 
             if (sameTopicConversation) {
-                sameTopicConversation.messages.push(res.message);
+                sameTopicConversation.messages.push(cimEvent.data);
                 sameTopicConversation.unReadCount ? undefined : sameTopicConversation.unReadCount = 0;
-                if (res.message.header.sender.type.toLowerCase() == 'customer') {
+                if (cimEvent.data.header.sender.type.toLowerCase() == 'customer') {
                     sameTopicConversation['activeChannelSessions'] = this.getActiveChannelSessions(sameTopicConversation.messages)
 
                     ++sameTopicConversation.unReadCount;
                 }
             } else {
-                this.conversations.push({ topicId: res.topicId, messages: [res.message], activeChannelSessions: res.message.header.channelSession, unReadCount: undefined });
+                this.conversations.push({ topicId: topicId, messages: [cimEvent.data], activeChannelSessions: cimEvent.data.header.channelSession, unReadCount: undefined });
             }
             this._conversationsListener.next(this.conversations);
         }
-        else if (res.type == 'suggestionMessage') {
-            this.mergeBotSuggestions(sameTopicConversation, res.message);
+        else if (cimEvent.type.toLowerCase() == 'suggestion') {
+            this.mergeBotSuggestions(sameTopicConversation, cimEvent.data);
         }
+    }
+
+    onOldCimEventsHandler(cimEvents, topicId) {
+        let oldTopicMessages = [];
+        cimEvents.forEach(cimEvent => {
+            if (cimEvent.type.toLowerCase() == 'message') {
+                oldTopicMessages.push(cimEvent.data);
+            }
+        });
+        let activeChannelSessions = this.getActiveChannelSessions(oldTopicMessages);
+        this.conversations.push({ topicId: topicId, messages: oldTopicMessages, activeChannelSessions: activeChannelSessions, unReadCount: undefined });
+        this._conversationsListener.next(this.conversations);
     }
 
     getActiveChannelSessions(messages) {
