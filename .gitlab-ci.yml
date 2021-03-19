@@ -247,7 +247,7 @@ ng_build:
            #- dist
 
 #+==================Runs on merge requests only========================+
-build:image:
+build_image_on_merge:
  image: docker:latest
  stage: docker_build_merge
  when: manual
@@ -271,7 +271,7 @@ build:image:
  allow_failure: false
  
  #+==================Runs on merge requests only========================+
-build:image:
+build_image_in_branch:
  image: docker:latest
  stage: docker_build_branch
  when: manual
@@ -340,7 +340,7 @@ anchore_scan_api:
     - /^CIM-.*$/
 
 #+==================Runs on merge requests only========================+
-container_publish:
+container_publish_on_merge:
   stage: publish_merge
   image: docker:latest
   when: manual
@@ -367,7 +367,7 @@ container_publish:
     - merge_requests
 
 #+==================Runs on merge requests only========================+
-container_publish:
+container_publish_in_branch:
   stage: publish_branch
   image: docker:latest
   when: manual
