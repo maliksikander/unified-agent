@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import { cacheService } from 'src/app/services/cache.service';
 import { sharedService } from 'src/app/services/shared.service';
 import { socketService } from 'src/app/services/socket.service';
-import {MatDialog} from '@angular/material';
+import {MatAccordion, MatDialog} from '@angular/material';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
 declare var EmojiPicker: any;
@@ -11,7 +11,7 @@ declare var EmojiPicker: any;
   templateUrl: './interactions.component.html',
   styleUrls: ['./interactions.component.scss']
 })
-export class InteractionsComponent implements OnInit {
+export class InteractionsComponent implements OnInit , AfterViewInit{
   // tslint:disable-next-line:no-input-rename
   @Input('conversation') conversation: any;
   unidentified = true;
@@ -21,6 +21,9 @@ export class InteractionsComponent implements OnInit {
   @Output() expandCustomerInfo = new EventEmitter<any>();
   isBarOPened = false;
   public config: PerfectScrollbarConfigInterface = {};
+  @ViewChild('replyInput' , {static: true}) elementView: ElementRef;
+  expanedHeight = 0;
+
 
   channelUrl = 'assets/images/web.svg';
   options: string[] = ['Glenn Helgass', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', 'Glenn Helgass', ' Ev Gayforth'];
@@ -78,7 +81,7 @@ export class InteractionsComponent implements OnInit {
   quickReplies = true;
   viewHeight = '180px';
 
-  constructor(private _sharedService: sharedService, private _cacheService: cacheService, private _socketService: socketService, private dialog: MatDialog) {
+  constructor( private _sharedService: sharedService, private _cacheService: cacheService, private _socketService: socketService, private dialog: MatDialog) {
 
   }
 
@@ -90,6 +93,9 @@ export class InteractionsComponent implements OnInit {
       new EmojiPicker();
     },500);
 
+
+  }
+  ngAfterViewInit() {
 
   }
 
@@ -123,6 +129,8 @@ export class InteractionsComponent implements OnInit {
   }
 
   onKey(event) {
+    this.expanedHeight = this.elementView.nativeElement.offsetHeight
+    console.log(this.expanedHeight);
     this.message = event.target.value;
     if (this.message === "" && event.keyCode === 40) {
       // alert('up key Click Event!');

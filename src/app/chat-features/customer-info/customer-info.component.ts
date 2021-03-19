@@ -87,9 +87,9 @@ export class CustomerInfoComponent implements OnInit, OnChanges {
       width: '350px'
     });
   }
-  reRouteDialog(templateRef, e): void {
+  reRouteDialog(templateRef, e, event): void {
     this.reRouteText = e;
-
+    event.stopPropagation();
     this.dialog.open(templateRef, {
       panelClass: 're-route-dialog',
       minWidth: '450px'

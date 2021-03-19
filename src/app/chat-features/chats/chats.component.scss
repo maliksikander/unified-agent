@@ -57,20 +57,20 @@ div#main-content {
 //Bar expand/collapse
 .left-bar-trigger {
   position: absolute;
-  left: 24px;
+  left: 13px;
   bottom: 16px;
-  transition: all .2s;
+  transition: all 0.2s;
   background: transparent !important;
   border-radius: 0;
   border: 0;
   cursor: pointer;
   z-index: 10;
-  width: 32px;
+  width: 44px;
   height: 32px;
   transform: rotate(180deg);
 
   &.arrow_left {
-    left: 240px !important;
+    //left: 240px !important;
     transform: rotate(0deg);
   }
   .mat-icon {

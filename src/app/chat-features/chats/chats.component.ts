@@ -15,7 +15,6 @@ export class ChatsComponent implements OnInit {
       {
         title: 'farhan',
         message: 'Hello How are you today?',
-        showIntent: false,
         intents: [
           'Share number where I can call in emergency situations.',
           'Share number where I can call in emergency situations.',

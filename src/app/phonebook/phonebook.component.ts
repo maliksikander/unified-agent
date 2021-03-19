@@ -11,7 +11,8 @@ import {CreateCustomerComponent} from '../create-customer/create-customer.compon
 })
 export class PhonebookComponent implements OnInit {
   customers;
-
+  FilterSelected = 'action';
+  selectedTeam = 'us-corporate';
   showLblTooltip: boolean = false;
   LblTooltipId;
   lblSearch: boolean = false;

@@ -520,7 +520,7 @@
         <div class="chat-message-content ">
           <p>{{con.message}}</p>
           <button mat-icon-button class="user_settings" *ngIf="con.title === 'farhan'"
-                  (click)="con.showIntent=!con.showIntent" >
+                  (click)="con.showIntent=!con.showIntent">
           </button>
 
         </div>
@@ -618,30 +618,13 @@
       <div class="message-composer">
         <form class="reply-form">
           <label class="count-reply">{{replyInput.value.length}}/200</label>
-          <div class="mat-form-field chat-area"  [ngClass]="{'expand-area-height':replyInput?.offsetHeight > 50}">
+          <div class="mat-form-field chat-area"  [ngClass]="{'expand-area-height':expanedHeight > 50}">
             <textarea [perfectScrollbar] (click)="onTextAreaClick()" data-emoji-picker="true"  [(ngModel)]="message" (keyup)="onKey($event)"
                       name="message"  (change)="textChanged($event)" [matAutocomplete]="auto"  matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea"
               class="resize-none" #replyInput name="message" placeholder="Type a message here..."></textarea>
 
             <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete">
               <div class="suggested-content" #mainScreen [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}" >
-                <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies" [ngClass]="{'animate-content': displaySuggestionsAnimation}">
-                  <ng-container *ngFor="let action of actions | LockFilter: message">
-                    <mat-option [value]="action?.message || action?.name" (click)="message=action?.message || action?.name" *ngIf="action.message != undefined || action.name != undefined">
-                      {{action.message || action.name}}
-                      <button mat-mini-fab class="canned-trigger edit-trigger" (click)="message=action.message || action.name">
-                        <i class="material-icons">
-                          edit
-                        </i>
-                      </button>
-                      <button mat-mini-fab class="canned-trigger send-suggestion" (click)="sendAutoMsg(action.message || action.name)" >
-                        <i class="material-icons">
-                          send
-                        </i>
-                      </button>
-                    </mat-option>
-                  </ng-container>
-                </div>
                 <mat-tab-group animationDuration="0ms" *ngIf="!displaySuggestionsArea && cannedTabOpen">
                   <!--<mat-tab label="Suggested Answer" *ngIf="actions.length > 0">-->
                   <!--<div class="suggested-tab" *ngIf="actions.length > 0">-->

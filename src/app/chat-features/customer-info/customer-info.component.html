@@ -16,7 +16,7 @@
         <div class="right-drag-content">
 
 <!--          <mat-expansion-panel class="drag-expansion-panel" *ngIf="acc == 'media_channel'" cdkDrag>-->
-<!--            <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">-->
+<!--            <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">-->
 <!--              <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Media Channels-->
 <!--              </mat-panel-title>-->
 <!--            </mat-expansion-panel-header>-->
@@ -110,7 +110,7 @@
 <!--          </mat-expansion-panel>-->
 
           <mat-expansion-panel class="drag-expansion-panel" cdkDrag>
-            <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
+            <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
               <mat-panel-title><span class="material-icons drag-icon">more_vert</span>
                 <div class="profile-area">
                   <h3>{{customer.info.name | slice :0 :2 |uppercase}}</h3>
@@ -251,7 +251,7 @@
 
 
           <mat-expansion-panel class="drag-expansion-panel" cdkDrag>
-            <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
+            <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
               <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Link Profile
               </mat-panel-title>
             </mat-expansion-panel-header>
@@ -279,7 +279,7 @@
           </mat-expansion-panel>
 
           <mat-expansion-panel class="drag-expansion-panel" cdkDrag>
-            <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
+            <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
               <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Active Channels
               </mat-panel-title>
             </mat-expansion-panel-header>
@@ -296,8 +296,8 @@
                       <label>Web Chat</label>
                       <button mat-button [matMenuTriggerFor]="rerouteMenu" class="re-route-session">Move</button>
                       <mat-menu #rerouteMenu="matMenu">
-                        <button class="re-route-trigger" (click)="reRouteDialog(reRouteSessionConfirmation, 're-route')" mat-menu-item>Re-route Session</button>
-                        <button class="re-route-trigger" (click)="reRouteDialog(reRouteSessionConfirmation, 're-assign')" mat-menu-item>Re-assign to self</button>
+                        <button class="re-route-trigger" (click)="reRouteDialog(reRouteSessionConfirmation, 're-route', $event)" mat-menu-item>Re-route Session</button>
+                        <button class="re-route-trigger" (click)="reRouteDialog(reRouteSessionConfirmation, 're-assign', $event)" mat-menu-item>Re-assign to self</button>
                       </mat-menu>
                     </div>
                   </mat-expansion-panel-header>
