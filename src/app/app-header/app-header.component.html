@@ -30,17 +30,17 @@
         <!--      </div>-->
 
         <!--      <h3 class="supervisor-heading" *ngIf="supervisor">Supervisor</h3>-->
-        <div class="avatar {{_cacheService.agentDetails.presence.state | lowercase}}" id="avatar">
+        <div class="avatar {{_cacheService.agentPresence.state | lowercase}}" id="avatar">
           <mat-icon>person</mat-icon>
         </div>
         <h3 class="agent_name">
-          <p [matTooltip]="_cacheService.agentDetails.agent.username">{{_cacheService.agentDetails.agent.username}}</p>
+          <p [matTooltip]="_cacheService.agent.username">{{_cacheService.agent.username}}</p>
           <span>
             (Ext: {{agent.extension}})
           </span>
         </h3>
         <div class="agent-state-small">
-          <span class="agent-state-icon {{_cacheService.agentDetails.presence.state | lowercase}} material-icons">
+          <span class="agent-state-icon {{_cacheService.agentPresence.state | lowercase}} material-icons">
             radio_button_checked
           </span>
         </div>
@@ -49,8 +49,8 @@
           <span class="state">State</span>
 
           <div class="agent-current-state">
-            <button mat-button [matMenuTriggerFor]="state" class="{{_cacheService.agentDetails.presence.state | lowercase}}">
-              <span>{{_cacheService.agentDetails.presence.state | removeUnderscore }}</span>
+            <button mat-button [matMenuTriggerFor]="state" class="{{_cacheService.agentPresence.state | lowercase}}">
+              <span>{{_cacheService.agentPresence.state | removeUnderscore }}</span>
 
               <i class="material-icons">
                 arrow_drop_down
@@ -126,9 +126,9 @@
               <p class="menu-trigger-custom state-trigger">
                 <span class="inner-btn">STATE</span>
 
-                <button mat-menu-item class="{{_cacheService.agentDetails.presence.state | lowercase}} mat-menu-item-submenu-trigger"
+                <button mat-menu-item class="{{_cacheService.agentPresence.state | lowercase}} mat-menu-item-submenu-trigger"
                   [matMenuTriggerFor]="agentState">
-                  <span>{{ _cacheService.agentDetails.presence.state | removeUnderscore }}</span>
+                  <span>{{ _cacheService.agentPresence.state | removeUnderscore }}</span>
 
                 </button>
               </p>

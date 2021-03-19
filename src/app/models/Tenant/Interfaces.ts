@@ -1,3 +1,1 @@
-export interface ITenant {
-
-}
+export interface ITenant {}

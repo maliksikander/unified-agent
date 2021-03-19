@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'app-no-route-found',
-  templateUrl: './no-route-found.component.html',
-  styleUrls: ['./no-route-found.component.scss']
+  selector: "app-no-route-found",
+  templateUrl: "./no-route-found.component.html",
+  styleUrls: ["./no-route-found.component.scss"]
 })
 export class NoRouteFoundComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }
