@@ -383,8 +383,8 @@ container_publish:
     - echo "${TIME_TOKEN}"
     - docker login -u gitlab-ci-token -p "$CI_JOB_TOKEN" "${CI_REGISTRY}"
     - docker pull "$IMAGE_NAME"
-    - docker tag "$IMAGE_NAME" "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}-${BUILD_TIME}"
-    - docker push "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}-${BUILD_TIME}"
+    - docker tag "$IMAGE_NAME" "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}-${TIME_TOKEN}"
+    - docker push "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}-${TIME_TOKEN}"
     #- |
     #    if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" == "master" ]; then
     #      docker tag "$IMAGE_NAME" "${CI_REGISTRY_IMAGE}:latest"
