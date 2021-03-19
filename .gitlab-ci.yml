@@ -6,13 +6,15 @@ stages:
   #- compile
   - test
   - code_format
-  - artifacts
   - node-scan
+  - artifacts
   - init
   - build
-  - docker_build
+  - docker_build_merge
+  - docker_build_branch
   - scan_api
-  - publish
+  - publish_merge
+  - publish_branch
 ##+==================Runs on Every Commit and merge requests========================+
 # node-validate:
 #   stage: validate
@@ -47,67 +49,43 @@ node-test:
   image: gitlab.expertflow.com:9242/general/node:CSN-3623
   script:
     - npm install
-    - npm run test:cc
+    - npm run coverage
   only:
     - /^CIM-.*$/
     - merge_requests
   allow_failure: false
   cache:
-    key: ${CI_COMMIT_REF_SLUG}
+    key: unified-agent-cache
     paths:
       - node_modules
-  artifacts:
-    paths:
-        - coverage
-        - node_modules/
+      - coverage
+#  artifacts:
+#    paths:
+#        - coverage
+#        - node_modules/
 
 #+==================Runs on Every Commit and merge requests========================+
 
-# node-format:
-#   stage: code_format
-#   when: on_success
-#   image: 
-#   script:
-
-#   allow_failure: false
+ node-format:
+   stage: code_format
+   when: on_success
+   image: 
+   script:
+     - npm run format:check
+   allow_failure: false
 #   artifacts:
 #       expire_in: 999 yrs
 #       paths:
 #           - node_modules
-#   only:
-#     - /^CIM-.*$/
-#     - merge_requests
-#   cache:
-#       key: ${CI_COMMIT_REF_SLUG}
-#       paths:
-#           - node_modules
-
-node_artifacts:
-   stage: artifacts
-   when: on_success
-   image: gitlab.expertflow.com:9242/general/node:CSN-3623
-   script:
-   #- npm install
-   - npm run build
-   - export TIME_TOKEN=$(env TZ=GMT-5 date +%d_%m_%Y-%H_%M_%S)
-   - echo "${TIME_TOKEN}"
-   #- rm -rf node_modules/.sonar
-   #- mv target/bot-framework-*.jar target/bot-framework-"${TIME_TOKEN}".jar
-   #- mv target/bot-framework-*.jar.original target/bot-framework-"${TIME_TOKEN}".jar.original
-
-   artifacts:
-       name: "$CI_PROJECT_TITLE-$TIME_TOKEN"
-       paths:
-           - dist
-       expire_in: 999 yrs
-   allow_failure: false
+   only:
+     - /^CIM-.*$/
+     - merge_requests
    cache:
-       key: ${CI_COMMIT_REF_SLUG}
+       key: unified-agent-cache
        paths:
            - node_modules
-           - dist
-   only:
-   - /^CIM-.*$/
+
+
 
 
 #==================Runs on merge requests only========================+
@@ -151,14 +129,42 @@ sonarqube-test:
     - /^CIM-.*$/
     - merge_requests
   allow_failure: false
-  #cache:
-    #key: ${CI_COMMIT_REF_SLUG}
-    #paths:
-      #- /root/.sonar/cache
+  cache:
+    key: unified-agent-cache
+    paths:
+      - node_modules
+      - coverage
   #=artifacts:
     #paths:
         #- coverage
 
+
+node_artifacts:
+   stage: artifacts
+   when: on_success
+   image: gitlab.expertflow.com:9242/general/node:CSN-3623
+   script:
+   #- npm install
+   - npm run build
+   - export TIME_TOKEN=$(env TZ=GMT-5 date +%d_%m_%Y-%H_%M_%S)
+   - echo "${TIME_TOKEN}"
+   #- rm -rf node_modules/.sonar
+   #- mv target/bot-framework-*.jar target/bot-framework-"${TIME_TOKEN}".jar
+   #- mv target/bot-framework-*.jar.original target/bot-framework-"${TIME_TOKEN}".jar.original
+
+   artifacts:
+       name: "$CI_PROJECT_TITLE-$TIME_TOKEN"
+       paths:
+           - dist
+       expire_in: 999 yrs
+   allow_failure: false
+   cache:
+       key: unified-agent-cache
+       paths:
+           - node_modules
+           #- dist
+   only:
+   - /^CIM-.*$/
 
 #+==================Runs on merge requests only========================+
 
@@ -207,18 +213,17 @@ ng_build:
        expire_in: 999 yrs
    allow_failure: false
    only:
-   - /^CIM-.*$/
    - merge_requests
    cache:
-       key: ${CI_COMMIT_REF_SLUG}
+       key: unified-agent-cache
        paths:
            - node_modules
-           - dist
+           #- dist
 
 #+==================Runs on merge requests only========================+
 build:image:
  image: docker:latest
- stage: docker_build
+ stage: docker_build_merge
  when: manual
  services:
    - docker:dind
@@ -237,6 +242,29 @@ build:image:
    - docker push "$IMAGE_NAME"
  only:
    - merge_requests
+ allow_failure: false
+ 
+ #+==================Runs on merge requests only========================+
+build:image:
+ image: docker:latest
+ stage: docker_build_branch
+ when: manual
+ services:
+   - docker:dind
+ before_script:
+   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+ dependencies:
+   - node_artifacts
+ script:
+   - echo ${BUILD_TIME} ${BUILD_NUMBER}
+   #- cp -r ./target/bot-framework-"${BUILD_TIME}_build-${BUILD_NUMBER}".jar ./docker/bot-framework.jar
+   #- cp -r $(ls -A | grep -v -E "docker|coverage|.sonar") ./docker/
+   - cp -r dist ./docker/
+   - cd docker
+   - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
+   - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" "$IMAGE_NAME"
+   - docker push "$IMAGE_NAME"
+ only:
    - /^CIM-.*$/  
  allow_failure: false
 
@@ -287,7 +315,7 @@ anchore_scan_api:
 
 #+==================Runs on merge requests only========================+
 container_publish:
-  stage: publish
+  stage: publish_merge
   image: docker:latest
   when: manual
   services:
@@ -311,5 +339,32 @@ container_publish:
     #    fi
   only:
     - merge_requests
+
+#+==================Runs on merge requests only========================+
+container_publish:
+  stage: publish_branch
+  image: docker:latest
+  when: manual
+  services:
+    - docker:dind
+
+  variables:
+    #DOCKER_DRIVER: overlay2
+    GIT_STRATEGY: none
+
+  script:
+    - export TIME_TOKEN=$(env TZ=GMT-5 date +%d_%m_%Y-%H_%M_%S)
+    - echo "${TIME_TOKEN}"
+    - docker login -u gitlab-ci-token -p "$CI_JOB_TOKEN" "${CI_REGISTRY}"
+    - docker pull "$IMAGE_NAME"
+    - docker tag "$IMAGE_NAME" "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}-${BUILD_TIME}"
+    - docker push "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}-${BUILD_TIME}"
+    #- |
+    #    if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" == "master" ]; then
+    #      docker tag "$IMAGE_NAME" "${CI_REGISTRY_IMAGE}:latest"
+    #      docker push "${CI_REGISTRY_IMAGE}:latest"
+    #    fi
+  only:
+
     - /^CIM-.*$/
 
