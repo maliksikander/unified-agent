@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'app-create-customer',
-  templateUrl: './create-customer.component.html',
-  styleUrls: ['./create-customer.component.scss']
+  selector: "app-create-customer",
+  templateUrl: "./create-customer.component.html",
+  styleUrls: ["./create-customer.component.scss"]
 })
 export class CreateCustomerComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

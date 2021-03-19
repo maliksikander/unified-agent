@@ -1,8 +1,5 @@
 {
-    "singleQuote": true,
-    "printWidth": 125,
-    "jsxBracketSameLine":true,
-    "trailingComma":"none"
-
-  }
-  
+  "printWidth": 150,
+  "trailingComma": "none",
+  "bracketSpacing": true
+}
