@@ -69,7 +69,7 @@ node-test:
 node-format:
    stage: code_format
    when: on_success
-   image: 
+   image: node:latest
    script:
      - npm run format:check
    allow_failure: false
