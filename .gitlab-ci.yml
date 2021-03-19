@@ -4,6 +4,7 @@ variables:
 stages:
   #- validate
   #- compile
+  - node-modules
   - test
   - code_format
   - node-scan
@@ -41,14 +42,35 @@ stages:
 #     paths:
 #       - node_modules
 
+#+==================Runs on Every Commit and merge requests========================+
+node-modules-generate:
+  stage: node-modules
+  image: gitlab.expertflow.com:9242/general/node:CSN-3623
+  script:
+    - npm install
+  only:
+     refs:
+       - /^CIM-.*$/
+       - merge_requests
+     changes:
+       - package.json
+  allow_failure: false
+  cache:
+    key: unified-agent-cache
+    paths:
+      - node_modules
+#  artifacts:
+#    paths:
+#        - coverage
+#        - node_modules/
 
 #+==================Runs on Every Commit and merge requests========================+
-
+#+==================Runs on Every Commit and merge requests========================+
 node-test:
   stage: test
   image: gitlab.expertflow.com:9242/general/node:CSN-3623
   script:
-    - npm install
+    #- npm install
     - npm run coverage
   only:
     - /^CIM-.*$/
