@@ -106,6 +106,7 @@ node-format:
        key: unified-agent-cache
        paths:
            - node_modules
+       policy: pull
 
 
 
@@ -156,6 +157,7 @@ sonarqube-test:
     paths:
       - node_modules
       - coverage
+    policy: pull
   #=artifacts:
     #paths:
         #- coverage
@@ -185,6 +187,7 @@ node_artifacts:
        paths:
            - node_modules
            #- dist
+       policy: pull
    only:
    - /^CIM-.*$/
 
@@ -240,6 +243,7 @@ ng_build:
        key: unified-agent-cache
        paths:
            - node_modules
+       policy: pull
            #- dist
 
 #+==================Runs on merge requests only========================+
