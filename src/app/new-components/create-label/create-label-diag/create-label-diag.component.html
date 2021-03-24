@@ -1,0 +1,41 @@
+<div class="header">
+  <div class="headerName">{{data.header}}</div>
+  <mat-icon (click)="onNoClick()" class="closeBtn">close</mat-icon>
+</div>
+
+<div class="input-area">
+
+  <div class="lbl">label</div>
+
+  <mat-form-field class="field" appearance="outline">
+    <input matInput [formControl]="name">
+    <mat-error *ngIf="name.hasError('required')">
+     CREATE_ATTRIBUTE_CLASS.FIELD_IS_MANDATORY
+    </mat-error>
+    <mat-error *ngIf="name.hasError('maxlength')">
+     LBLS.MAX_LEN
+    </mat-error>
+    <mat-error *ngIf="name.hasError('validName')">
+      ALRDY
+    </mat-error>
+  </mat-form-field>
+
+  <span (click)="open = true" class="opener">
+    <span [ngStyle]="{'background-color':currentColor}" class="dot">
+    </span>
+    <span>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </span>
+  </span>
+  <span *ngIf="open" class="clr-pkr scale-up-center">
+    <span (click)="currentColor = colorCode; open = false" [ngStyle]="{'background-color': colorCode}"
+      *ngFor="let colorCode of labelColorCode" class="dots">
+    </span>
+  </span>
+</div>
+
+
+<div class="btns">
+  <button (click)="onNoClick()" class="cancel-btn">CANCEL</button>
+  <button *ngIf="name.valid" (click)="makeObject()" class="save-btn">SAVE</button>
+</div>

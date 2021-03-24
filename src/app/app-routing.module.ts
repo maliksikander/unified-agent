@@ -7,10 +7,12 @@ import { preloadingService } from './services/preloading.service';
 import {AnnouncementComponent} from './announcement/announcement.component';
 import {DashboardComponent} from './supervisor/dashboard/supervisor-dashboard.component';
 import {PhonebookComponent} from './phonebook/phonebook.component';
+import {CreateLabelComponent} from './new-components/create-label/create-label.component';
 
 export const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'customers/phonebook', component: PhonebookComponent },
+    { path: 'label', component: CreateLabelComponent },
     { path: 'supervisor/dashboard', component: DashboardComponent },
     { path: 'supervisor/announcement', component: AnnouncementComponent },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
