@@ -1,24 +1,16 @@
 <div class="header">
-  <div class="headerName">{{data.header}}</div>
+  <div class="headerName">Add label</div>
   <mat-icon (click)="onNoClick()" class="closeBtn">close</mat-icon>
 </div>
 
-<div class="input-area">
+<div class="label-create-area">
 
-  <div class="lbl">label</div>
-
-  <mat-form-field class="field" appearance="outline">
-    <input matInput [formControl]="name">
-    <mat-error *ngIf="name.hasError('required')">
-     CREATE_ATTRIBUTE_CLASS.FIELD_IS_MANDATORY
-    </mat-error>
-    <mat-error *ngIf="name.hasError('maxlength')">
-     LBLS.MAX_LEN
-    </mat-error>
-    <mat-error *ngIf="name.hasError('validName')">
-      ALRDY
-    </mat-error>
-  </mat-form-field>
+  <div class="form-group label-name">
+    <label class="text-left">Label</label>
+    <mat-form-field class="field" appearance="outline">
+      <input matInput>
+    </mat-form-field>
+  </div>
 
   <span (click)="open = true" class="opener">
     <span [ngStyle]="{'background-color':currentColor}" class="dot">
@@ -32,10 +24,12 @@
       *ngFor="let colorCode of labelColorCode" class="dots">
     </span>
   </span>
-</div>
 
 
-<div class="btns">
-  <button (click)="onNoClick()" class="cancel-btn">CANCEL</button>
-  <button *ngIf="name.valid" (click)="makeObject()" class="save-btn">SAVE</button>
+  <div class="btns">
+    <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
+    <button (click)="makeObject()" class="save-btn">Create</button>
+  </div>
+
 </div>
+

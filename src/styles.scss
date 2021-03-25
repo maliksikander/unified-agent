@@ -2047,3 +2047,22 @@ button.add-customer {
 //  content: 'arrow_drop_down' !important;
 //  transform: rotate(0deg) !important;
 }
+
+
+
+//Create label popup
+.label-create-area {
+
+  .mat-form-field{
+    width: 100%;
+  }
+
+  .mat-form-field-wrapper{
+    padding: 0;
+
+    .mat-form-field-infix{
+      padding: 10px 0;
+      border: 0;
+    }
+  }
+}
