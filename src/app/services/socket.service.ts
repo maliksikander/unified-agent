@@ -52,8 +52,10 @@ export class socketService {
     });
 
     this.listen("onCimEvent").subscribe((res: any) => {
-      this.onCimEventHandler(JSON.parse(res.cimEvent), res.topicId);
-      console.log("onCimEvent parse s", res);
+      console.log("onCimEvent", res);
+       this.onCimEventHandler(JSON.parse(res.cimEvent), res.topicId);
+    //  this.onCimEventHandler(res.cimEvent, res.topicId);
+
     });
 
     this.listen("onOldCimEvents").subscribe((res: any) => {
@@ -101,7 +103,7 @@ export class socketService {
         this.conversations.push({
           topicId: topicId,
           messages: [cimEvent.data],
-          activeChannelSessions: cimEvent.data.header.channelSession,
+          activeChannelSessions: [cimEvent.data.header.channelSession],
           unReadCount: undefined
         });
       }

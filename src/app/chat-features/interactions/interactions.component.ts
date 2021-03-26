@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from "@angular/core";
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
@@ -19,12 +19,14 @@ export class InteractionsComponent implements OnInit {
   @Input() dummy: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
   public config: PerfectScrollbarConfigInterface = {};
+  @ViewChild('replyInput' , {static: true}) elementView: ElementRef;
   isBarOPened = false;
   activeSessions = [];
 
   unidentified = true;
   isConnected = true;
   popTitle = "Notes";
+  expanedHeight = 0;
 
   channelUrl = "assets/images/web.svg";
   options: string[] = [
@@ -100,7 +102,7 @@ export class InteractionsComponent implements OnInit {
     private _cacheService: cacheService,
     private _socketService: socketService,
     private dialog: MatDialog
-  ) {}
+  ) { }
   ngOnInit() {
     //  console.log("i am called hello")
     this.convers = this.conversation.messages;
@@ -109,7 +111,8 @@ export class InteractionsComponent implements OnInit {
     }, 500);
   }
 
-  emoji() {}
+  emoji() { }
+
   onSend(text) {
     let message = JSON.parse(JSON.stringify(this.conversation.messages[this.conversation.messages.length - 1]));
     message.id = uuidv4();
@@ -117,7 +120,7 @@ export class InteractionsComponent implements OnInit {
     message.header.sender.type = "AGENT";
     message.header.sender.role = "AGENT";
     message.header.sender.participant = {};
-    message.header.sender.participant.keyCloakUser = this._cacheService.agent;
+    message.header.sender.participant.keycloakUser = this._cacheService.agent;
     message.header.sender.participant.routingAttributes = [];
     message.body.markdownText = text;
     delete message["botSuggestions"];
@@ -125,6 +128,8 @@ export class InteractionsComponent implements OnInit {
 
     this._socketService.emit("publishCimEvent", new CimEvent("AGENT_MESSAGE", "MESSAGE", message));
   }
+
+
   openDialog(templateRef, e): void {
     this.popTitle = e;
 
@@ -143,12 +148,12 @@ export class InteractionsComponent implements OnInit {
 
   onKey(event) {
     this.message = event.target.value;
-    if (this.message === "" && event.keyCode === 40) {
-      // alert('up key Click Event!');
-      this.isSuggestion = true;
-    } else if (this.message === "" && event.keyCode === 38) {
-      this.isSuggestion = false;
-    }
+    this.expanedHeight = this.elementView.nativeElement.offsetHeight;
+    // if (this.message === "" && event.keyCode === 40) {
+    //   this.isSuggestion = true;
+    // } else if (this.message === "" && event.keyCode === 38) {
+    //   this.isSuggestion = false;
+    // }
     if (this.message[0] === "/" || this.message[0] === " ") {
       this.displaySuggestionsArea = false;
       this.quickReplies = false;

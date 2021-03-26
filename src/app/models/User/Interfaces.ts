@@ -22,7 +22,8 @@ interface ITeam {
 
 export interface ICCUser {
   id?: string;
-  keyCloakUser: IKeycloakUser;
+  participantType?: "CCUser",
+  keycloakUser: IKeycloakUser;
   associatedRoutingAttributes?: [];
 }
 

@@ -143,7 +143,7 @@
                   <div class="intents-inner">
                     <p *ngFor="let botSuggestion of message.botSuggestions">
                       {{botSuggestion.messageBody.markdownText}}
-                      <button mat-mini-fab class="canned-trigger edit-trigger">     
+                      <button mat-mini-fab class="canned-trigger edit-trigger">
                         <i class="material-icons">
                           edit
                         </i>
@@ -171,17 +171,18 @@
       <div class="message-composer">
         <form class="reply-form">
           <label class="count-reply">{{replyInput.value.length}}/200</label>
-          <div class="mat-form-field chat-area" [ngClass]="{'expand-area-height':replyInput?.offsetHeight > 50}">
+          <div class="mat-form-field chat-area" [ngClass]="{'expand-area-height':expanedHeight > 50}">
             <textarea [perfectScrollbar] (click)="onTextAreaClick()" data-emoji-picker="true" [(ngModel)]="message"
               (keyup)="onKey($event)" name="message" (change)="textChanged($event)" [matAutocomplete]="auto" matInput
               cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none"
-              #replyInput name="message" placeholder="Type a message here..."></textarea>
-              <!-- [ngClass]="{'animate-content': displaySuggestionsAnimation}" -->
+              #replyInput name="message"
+              placeholder="{{conversation.messages[conversation.messages.length -1]?.botSuggestions ? 'Bot suggestions are available type / for viewing' :'Type a message here...'}}"></textarea>
+            <!-- [ngClass]="{'animate-content': displaySuggestionsAnimation}" -->
 
             <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete">
               <div class="suggested-content" #mainScreen
                 [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}">
-                <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies"
+                <!-- <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies"
                   >
                   <ng-container
                     *ngFor="let botSuggestion of conversation.messages[conversation.messages.length -1]?.botSuggestions | LockFilter: message">
@@ -205,7 +206,7 @@
                       </mat-option>
                     </ng-container>
                   </ng-container>
-                </div>
+                </div> -->
 
 
                 <mat-tab-group animationDuration="0ms" *ngIf="!displaySuggestionsArea && cannedTabOpen">
@@ -238,11 +239,6 @@
                             </mat-tab>
                           </ng-container>
                         </mat-tab-group>
-                        <!--</mat-tab>-->
-
-
-                        <!---->
-                        <!--</mat-tab-group>-->
                       </div>
                     </div>
                   </mat-tab>
