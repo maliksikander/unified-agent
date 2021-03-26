@@ -1,0 +1,81 @@
+.ef_container{
+  height: calc(100% - 40px);
+  position: absolute;
+  top: 40px;
+}
+#content{
+  margin: -1px 0;
+  display: flex;
+  flex-direction: row;
+  border: 5px solid #e2e2e2;
+  height: calc(100% + 1px) !important;
+}
+div#main-content {
+  //display: inline-block;
+  //width: calc(100% - 55px);
+  width: 100%;
+  float: left;
+}
+
+.no-chat{
+  text-align: center;
+    position: relative;
+    top: 40%;
+    color: #808080d1;
+    font-size: 30px;
+}
+
+.badge1 {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 8px;
+  background: #DB0505;
+  color: white;
+  padding: 4px;
+  width: 16px;
+  height: 16px;
+  text-align: center;
+  line-height: 9px;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+
+  &.channel-badge{
+    right: inherit;
+    left: 4px;
+    background: transparent;
+    img {
+      width: 16px;
+      left: 0;
+      position: absolute;
+      top: 0;
+    }
+  }
+}
+
+//Bar expand/collapse
+.left-bar-trigger {
+  position: absolute;
+  left: 24px;
+  bottom: 16px;
+  transition: all .2s;
+  background: transparent !important;
+  border-radius: 0;
+  border: 0;
+  cursor: pointer;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  transform: rotate(180deg);
+
+  &.arrow_left {
+    left: 240px !important;
+    transform: rotate(0deg);
+  }
+  .mat-icon {
+    font-size: 15px;
+    color: #25afcb;
+  }
+
+}
+

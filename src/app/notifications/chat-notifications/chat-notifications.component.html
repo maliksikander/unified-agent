@@ -1,0 +1,21 @@
+<div class="main-notification-area">
+  <div class="notification-area">
+    <div class="row main-panel">
+      <mat-card class="notification-panel mat-card">
+        <mat-card-content [ngClass]="{'identified' : identified == true,'un-identified' : identified == false}" class="mat-card-content">
+          <div class="chat-request">
+            <p class="channel-icon"><img [src]="channelImageSrc"></p>
+          </div>
+          <div class="requested-name">
+            <p>{{customerName != null ? customerName : 'UNIDENTIFIED CUSTOMER' }}</p>
+          </div>
+          <div class="notification-trigger">
+            <button (click)="getTopicSubscription()" class="mat-flat-button" mat-button>Accept</button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+  </div>
+
+</div>

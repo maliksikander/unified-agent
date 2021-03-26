@@ -1,0 +1,50 @@
+<div *ngIf="" class="loading-area">
+  <mat-spinner></mat-spinner>
+</div>
+<div class="container-fluid auth-section">
+  <div class="row">
+    <div class="main-inner-section login-area form-section valign-wrapper col-md-6">
+      <div class="login-inner">
+        <div class="login-heading">
+          <h3>LOGIN</h3>
+          <span>Please provide a valid username and password to login to your account.</span>
+        </div>
+        <form [formGroup]="loginForm">
+          <div class="form-group">
+            <label class="text-left">Username</label>
+            <input formControlName="username" id="username" type="text" class="form-control" name="agentId">
+          </div>
+          <div class="form-group">
+            <label class="text-left">Password</label>
+            <input formControlName="password" id="password" type="password" class="form-control" name="password">
+          </div>
+          <!-- <div class="form-group">
+            <label class="text-left">Extension</label>
+            <input formControlName="extention" id="extension" type="text" class="form-control"  name="extension">
+          </div> -->
+          <div class="clearfix"></div>
+          <!-- <div class="input-field radio-field">
+          <mat-checkbox >Keep me logged in</mat-checkbox>
+      </div> -->
+          <div class="form-group login-trigger">
+            <button [disabled]="!loginForm.valid" (click)="login()" class="button flip-in-ver-right form-control">LOGIN</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+    <div class="main-inner-section logo-area col-md-6">
+      <div class="main-area-right">
+        <img src="assets/images/chat-logo.png" alt="Agent Gadget">
+        <div class="heading-area">
+          <h2>AGENT CHAT GADGET</h2>
+          <p>Some good marketing text at least in two lines to complement the heading.</p>
+        </div>
+
+      </div>
+    </div>
+    <div class="brand-logo col-md-6 offset-md-6">
+      <img src="assets/images/ef-logo.svg" alt="ExpertFlow">
+    </div>
+  </div>
+</div>

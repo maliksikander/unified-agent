@@ -1,0 +1,140 @@
+//dialog
+.dialog-header {
+  background: #ECF7FB;
+  position: relative;
+  padding: 2px 15px;
+
+  h4 {
+    color: #1D9AC0;
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  button {
+    position: absolute;
+    right: 15px;
+    color: #A4A4A4;
+    border: 1px solid #A4A4A4;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    top: 7px;
+    padding: 0 !important;
+    margin: 0 !important;
+    i{
+      font-size: 14px;
+      line-height: 15px;
+      top: -2px;
+      position: relative;
+    }
+  }
+}
+
+
+
+.new-announcement-form {
+  padding: 10px 15px;
+
+  .mat-form-field{
+    width: 100%;
+
+    textarea{
+      height: 70px;
+    }
+  }
+  label {
+    color: #5B5B5B;
+    font-size: 13px;
+  }
+
+}
+
+.announcement-trigger{
+  padding-bottom: 12px;
+  text-align: right;
+  .announcement-action {
+    margin: 0 5px;
+    color: #fff;
+    background: #919191;
+
+    &.send-announcement{
+      background: #CBE9F4;
+      color: #464646;
+    }
+
+    &[disabled][disabled]{
+      background: #e3e3e3 !important;
+      color: #aeaaaa !important;
+    }
+  }
+}
+
+
+.confirmation-header {
+  background: #e35151;
+  height: 36px;
+  line-height: 36px;
+
+  h3 {
+    font-size: 14px;
+    margin: 0;
+    color: #ffffff;
+    text-align: center;
+    line-height: 36px;
+    height: 36px;
+    text-transform: uppercase;
+  }
+
+}
+.confirmation-content {
+  padding: 15px 10px;
+  text-align: center;
+
+  p {
+    margin: 0;
+    padding: 15px;
+    text-align: center;
+    color: #707070;
+    font-size: 14px;
+  }
+}
+.confirmation-action {
+  button {
+    font-size: 14px;
+    margin: 0 5px;
+    padding: 0 14px;
+    background: #919191;
+    color: #fff;
+    min-width: 70px;
+    text-transform: capitalize;
+
+    &.confirm-btn{
+      background: #e35151;
+    }
+  }
+}
+
+.load-more-announcement {
+  background: #25AFCB;
+  margin: 2em auto 0;
+  width: 100%;
+  display: block;
+  max-width: 200px;
+  color: #fff;
+  opacity: .8;
+  transition: all .3s;
+
+  &:hover{
+    opacity: 1;
+    transition: all .3s;
+  }
+
+}
+
+.message-field {
+  mat-hint {
+    margin-right: -10px;
+    color: #505050;
+    font-size: 11px;
+  }
+}
