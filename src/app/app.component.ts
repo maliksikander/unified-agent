@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { appConfigService } from './services/appConfig.service';
 import { sharedService } from './services/shared.service';
 import { socketService } from './services/socket.service';
+import {MatDialog} from '@angular/material';
 
 
 @Component({
@@ -18,7 +19,7 @@ export class AppComponent implements OnInit {
 
   currentRoute: string;
 
-  constructor(private _router: Router, private _sharedService: sharedService) {
+  constructor(private dialog: MatDialog ,private _router: Router, private _sharedService: sharedService) {
 
     this._sharedService.serviceCurrentMessage.subscribe((e) => {
 
@@ -37,6 +38,7 @@ export class AppComponent implements OnInit {
           this.currentRoute = event.url;
         }
       });
+
   }
 
   requestHeaderEvents(topicId) {
@@ -49,6 +51,8 @@ export class AppComponent implements OnInit {
     let index = this._sharedService.getIndexFromTopicId(topicId, this.requests);
     this._sharedService.spliceArray(index, this.requests);
   }
+
+
 
 }
 

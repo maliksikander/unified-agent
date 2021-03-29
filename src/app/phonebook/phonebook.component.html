@@ -91,20 +91,20 @@
 
           </span>
           <span class="sorting-icons">
-            <span class="k-icon k-i-sort-desc-sm" [ngClass]="{'color': sortArrowDown && sortField == col.field}"
-                  (click)="onSort(col.field, 'desc')"></span>
-            <span class="k-icon k-i-sort-asc-sm" [ngClass]="{'color': sortArrowUp && sortField == col.field}"
-                  (click)="onSort(col.field, 'asc')"></span>
+            <span class="k-icon k-i-sort-desc-sm"
+                 ></span>
+            <span class="k-icon k-i-sort-asc-sm"
+                  ></span>
           </span>
 
           <div *ngIf="filterOnOff && filterActiveField == col.field" class="customer-search">
 
             <div *ngIf="col.type == 'date_time'">
-              <input class="filter" type="text" [(ngModel)]="filterValue" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1"
-                     (keyup.enter)="Cfilter($event.target.value, col.field, col.filterMatchMode)">
+              <input class="filter" type="text" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1"
+                     >
               <owl-date-time #dt1></owl-date-time>
               <div class="close-filter">
-                <mat-icon (click)="cancelFilter()" class="closeIcon">cancel</mat-icon>
+                <mat-icon  class="closeIcon">cancel</mat-icon>
               </div>
             </div>
 
@@ -120,19 +120,19 @@
 
 
             <div *ngIf="col.type == 'date'">
-              <input class="filter" type="text" [(ngModel)]="filterValue" (click)="picker.open()"
+              <input class="filter" type="text"  (click)="picker.open()"
                      [matDatepicker]="picker"
-                     (keyup.enter)="Cfilter($event.target.value, col.field, col.filterMatchMode)">
+                    >
               <mat-datepicker #picker></mat-datepicker>
-              <mat-icon (click)="cancelFilter()" class="closeIcon">cancel</mat-icon>
+              <mat-icon  class="closeIcon">cancel</mat-icon>
             </div>
 
 
             <div *ngIf="col.type != 'time' && col.type != 'date_time' && col.type != 'date'">
-              <input class="filter" type="text" [(ngModel)]="filterValue"
-                     (keyup.enter)="filter($event.target.value, col.field, col.filterMatchMode)">
+              <input class="filter" type="text"
+                     >
               <div class="close-filter">
-                <mat-icon (click)="cancelFilter()" class="closeIcon">cancel</mat-icon>
+                <mat-icon class="closeIcon">cancel</mat-icon>
               </div>
             </div>
 
@@ -153,7 +153,7 @@
 
     <ng-template let-expanded="expanded" pTemplate="body" let-rowData let-columns="columns">
       <tr class="slide-in-left main-row" style="cursor: pointer">
-        <td (click)="onRowClick(rowData._id,null,col.type)" *ngFor="let col of columns" class="ui-resizable-column">
+        <td  *ngFor="let col of columns" class="ui-resizable-column">
           {{rowData[col.field]}}
           <!--          <span *ngIf="col.type == 'date_time'">{{rowData[col.field] | date:'M/d/yyyy, h:mm a' }}</span>-->
           <!--          <span *ngIf="col.type == 'time'">{{rowData[col.field] | date:'shortTime' }}</span>-->
@@ -175,17 +175,17 @@
         </td>
 
         <div class="action-trigger">
-          <button (click)="gotoInteractions(rowData._id)" class="cstmBtn">
+          <button class="cstmBtn">
             <mat-icon>account_circle</mat-icon>
             <span
               class="spa">test</span>
           </button>
-          <button (click)="populateUserNumbers(rowData)" class="call-menu" [matMenuTriggerFor]="menu">
+          <button class="call-menu" [matMenuTriggerFor]="menu">
             <mat-icon>call</mat-icon>
             <span class="spa">test</span>
           </button>
           <mat-menu #menu="matMenu">
-            <button *ngFor="let number of selectedUserNumbers" mat-menu-item>{{number}}</button>
+            <button></button>
           </mat-menu>
           <button class="cstmBtn">
             <mat-icon>sms</mat-icon>

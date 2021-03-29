@@ -17,12 +17,12 @@
       <span (click)="showMeta(label._id)" class="more-vert"><mat-icon>more_vert</mat-icon></span>
       <div (mouseleave)="showMetaDIv = false" *ngIf="showMetaDIv && metaDivId == label._id" class="meta">
         <div *ngIf="label.created_by">Created by: {{label.created_by}}</div>
-        <div>Date Create: {{label.createdAt | date :'shortDate'}}</div>
+        <div>Date Create: {{label.createdAt }}</div>
         <!--    <div *ngIf="label.updated_by">UP_BY : {{label.updated_by}}</div>-->
         <!--    <div *ngIf="label.updated_by">UP_AT : {{label.updatedAt | date :'shortDate'}}</div>-->
         <div (click)="createUpdate(label,'update')" style="height: 20px;" class="meta-btns">Edit</div>
         <hr class="hr">
-        <div (click)="delete(label._id)" class="meta-btns">Delete</div>
+        <div (click)="delete()" class="meta-btns">Delete</div>
       </div>
       </div>
     </div>

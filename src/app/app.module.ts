@@ -21,6 +21,7 @@ import {CreateCustomerComponent} from './create-customer/create-customer.compone
 import { AgentAnnouncementsComponent } from './announcement/agent-announcements/agent-announcements.component';
 import {CreateLabelDiagComponent} from './new-components/create-label/create-label-diag/create-label-diag.component';
 import {CreateLabelComponent} from './new-components/create-label/create-label.component';
+import { ConfirmationDialogComponent } from './new-components/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {CreateLabelComponent} from './new-components/create-label/create-label.c
     CreateCustomerComponent,
     AgentAnnouncementsComponent,
     CreateLabelDiagComponent,
-    CreateLabelComponent
+    CreateLabelComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +49,8 @@ import {CreateLabelComponent} from './new-components/create-label/create-label.c
   ],
   entryComponents: [
     AnnouncementDialogComponent,
-    CreateLabelDiagComponent
+    CreateLabelDiagComponent,
+    ConfirmationDialogComponent
   ],
   providers: [appConfigService, MessageService, ConfirmationService,
     {

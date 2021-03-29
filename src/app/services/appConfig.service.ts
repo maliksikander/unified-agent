@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 
 export class appConfigService {
 
-    configUrl = "../../assets/config.json";
+    configUrl = "../../../assets/config.json";
     public config = { GAT_URL: "", SOCKET_URL: "" }
 
     constructor(private _httpClient: HttpClient) { }

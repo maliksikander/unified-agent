@@ -17,6 +17,9 @@
         <button routerLink="/customers/phonebook"  routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
           <span>Customer List View</span>
         </button>
+        <button routerLink="/label"  routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
+          <span>Customer Labels</span>
+        </button>
       </mat-menu>
 
       <img src="assets/images/expertflow-logo.png">
@@ -158,9 +161,9 @@
     </div>
   </div>
 
-  <mat-sidenav-container (backdropClick)="close()"  hasBackdrop="true"  class="right-canned-message-list announcement-tab"
+  <mat-sidenav-container  hasBackdrop="true"  class="right-canned-message-list announcement-tab"
                          [ngClass]="{'mat-drawer-opened': sidenav?.opened}">
-    <mat-sidenav #sidenav position="end"  (keydown.escape)="close()" mode="over" disableClose mode="over">
+    <mat-sidenav #sidenav position="end"  mode="over" disableClose mode="over">
 
 
       <div class="announcement-tab-header">
