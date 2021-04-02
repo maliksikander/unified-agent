@@ -16,7 +16,28 @@ export class PhonebookComponent implements OnInit {
   showLblTooltip: boolean = false;
   LblTooltipId;
   lblSearch: boolean = false;
-
+  labels = [
+    {
+      "createdAt": "2021-03-30T12:09:52.497Z",
+      "__v": 0,
+      "name": "dummy",
+      "updated_by": "",
+      "_id": "606315109b5372a7aaf57e04",
+      "created_by": "admin",
+      "color_code": "#3cb44b",
+      "updatedAt": "2021-03-30T12:09:52.497Z"
+    },
+    {
+      "createdAt": "2021-03-30T12:11:20.124Z",
+      "__v": 0,
+      "name": "assasian",
+      "updated_by": "admin",
+      "_id": "606315689b53723ed3f57e06",
+      "created_by": "admin",
+      "color_code": "#a9a9a9",
+      "updatedAt": "2021-03-30T12:12:05.258Z"
+    }
+  ];
   rows = [
     {
       "phone2": "",

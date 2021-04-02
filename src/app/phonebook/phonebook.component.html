@@ -155,6 +155,8 @@
       <tr class="slide-in-left main-row" style="cursor: pointer">
         <td  *ngFor="let col of columns" class="ui-resizable-column">
           {{rowData[col.field]}}
+
+          <ul class="customer-labels" *ngIf="col.field == 'first_name'"><li matTooltip="Marketing" style="background: #32b67a;" ></li><li matTooltip="Corporate" style="background: #f34f1b;" ></li><li matTooltip="Product Support" style="background: #536ce8;" ></li></ul>
           <!--          <span *ngIf="col.type == 'date_time'">{{rowData[col.field] | date:'M/d/yyyy, h:mm a' }}</span>-->
           <!--          <span *ngIf="col.type == 'time'">{{rowData[col.field] | date:'shortTime' }}</span>-->
           <!--          <span *ngIf="col.type == 'date'">{{rowData[col.field] | date:'M/d/yyyy' }}</span>-->
