@@ -45,12 +45,13 @@ import { ConfirmationDialogComponent } from './new-components/confirmation-dialo
     AppRoutingModule,
     CommonModule,
     BrowserAnimationsModule,
-    SharedModule
-  ],
+    SharedModule,
+],
   entryComponents: [
     AnnouncementDialogComponent,
     CreateLabelDiagComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    CreateCustomerComponent
   ],
   providers: [appConfigService, MessageService, ConfirmationService,
     {

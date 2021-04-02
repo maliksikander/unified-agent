@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatAutocompleteModule,
@@ -37,6 +37,7 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
 import {SearchPipe} from './pipes/search.pipe';
 import {NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule} from 'ngx-mat-datetime-picker';
+import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown';
 
 
 @NgModule({
@@ -83,7 +84,8 @@ import {NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModu
     OwlNativeDateTimeModule,
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
-    NgxMatNativeDateModule
+    NgxMatNativeDateModule,
+    AngularMultiSelectModule
   ], exports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
     MatDrawer, MatCheckboxModule,
@@ -118,7 +120,10 @@ import {NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModu
     SearchPipe,
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
-    NgxMatNativeDateModule
-  ]
+    NgxMatNativeDateModule,
+    AngularMultiSelectModule
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+
 })
 export class SharedModule { }

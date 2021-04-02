@@ -12,7 +12,7 @@
         </span>
       </h3>
       <h5 class="customer-name" [matTooltip]="messages.title">{{messages[0].title | slice :0 :50}}
-        <span class="chat-timer">( 11:32 )</span>
+        <span class="chat-timer"><ul class="customer-labels"><li matTooltip="Marketing" style="background: #32b67a;" ></li><li matTooltip="Corporate" style="background: #f34f1b;" ></li><li matTooltip="Product Support" style="background: #f6bf26;" ></li></ul>( 11:32 )</span>
 
       </h5>
     </div>
@@ -59,11 +59,6 @@
       </span>
 <!--Call controls-->
       <ul *ngIf="callControls" class="list-group list-group-horizontal agent-controls call-controls">
-        <li class="list-group-item">
-          <button mat-fab>
-            <mat-icon>textsms</mat-icon>
-          </button>
-        </li>
         <li class="list-group-item">
           <button mat-fab>
             <mat-icon>phone_forwarded</mat-icon>

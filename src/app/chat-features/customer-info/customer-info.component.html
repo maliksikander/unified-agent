@@ -294,11 +294,7 @@
                     <div class="channel-icon-area">
                       <span class="channel-icon web"><img src="/assets/images/web.svg"></span>
                       <label>Web Chat</label>
-                      <button mat-button [matMenuTriggerFor]="rerouteMenu" class="re-route-session">Move</button>
-                      <mat-menu #rerouteMenu="matMenu">
-                        <button class="re-route-trigger" (click)="reRouteDialog(reRouteSessionConfirmation, 're-route', $event)" mat-menu-item>Re-route Session</button>
-                        <button class="re-route-trigger" (click)="reRouteDialog(reRouteSessionConfirmation, 're-assign', $event)" mat-menu-item>Re-assign to self</button>
-                      </mat-menu>
+                      <button mat-button (click)="reRouteDialog(reRouteSessionConfirmation, $event)" class="re-route-session">Move</button>
                     </div>
                   </mat-expansion-panel-header>
                   <div class="channel-inner-content">
@@ -520,10 +516,10 @@
 <ng-template #reRouteSessionConfirmation>
   <div class="confirmation-dialog">
     <div class="confirmation-header">
-      <h3>{{reRouteText}} Chat Session</h3>
+      <h3>Re-route Chat Session</h3>
     </div>
     <div class="confirmation-content">
-      <p>{{reRouteText == 're-assign' ? 'Are you sure You want re-assign chat session to your self?' : 'Are you sure You want re-route Whatsapp chat session to another agent?'}}</p>
+      <p>Are you sure You want re-route Whatsapp chat session to another agent?</p>
       <div class="confirmation-action">
         <button mat-raised-button class="close-btn" mat-dialog-close>Cancel</button>
         <button mat-raised-button class="confirm-btn" >Confirm</button>

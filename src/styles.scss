@@ -1972,11 +1972,11 @@ ngx-mat-datetime-content, .time-container {
 //Add customer trigger
 button.add-customer {
   position: absolute;
-  top: 12px;
+  top: 10px;
   width: 35px;
   height: 35px;
   line-height: 0;
-  left: 18px;
+  left: 12px;
   background: #F5F5F5 !important;
   color: #393939 !important;
   box-shadow: none !important;
@@ -2063,6 +2063,338 @@ button.add-customer {
     .mat-form-field-infix{
       padding: 10px 0;
       border: 0;
+    }
+  }
+}
+
+
+
+//Multiple dropdown selection for create customer
+
+.drop {
+
+  .dropdown-list {
+    padding-top: 5px !important;
+    z-index: 99999 !important;
+    right: -7px !important;
+    position: initial !important;
+  }
+
+  .dropdown-list ul li {
+    padding: 4px 0px 4px 7px !important;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .list-filter {
+    height: 26px !important;
+    margin-left: -6px !important;
+  }
+
+  .list-filter .c-search {
+    position: absolute;
+    top: 2px !important;
+    left: 15px;
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  label {
+    color: #717171 !important;
+    bottom: 4px;
+    position: relative;
+  }
+
+  .c-btn {
+    background: #999;
+    border: 1px solid #CCC;
+    color: #999;
+
+    display: table !important;
+    border-width: 1px;
+    line-height: 24px !important;
+    border-radius: 4px !important;
+    font-size: .85rem;
+    /* padding: 5px 10px; */
+    cursor: pointer;
+    align-items: center;
+    padding: 2px 0px !important;
+    min-height: 29px !important;
+    height: 29px !important;
+    /* min-height: 30px; */
+
+    &:focus {
+      outline: none !important;
+    }
+  }
+
+  .selected-list {
+    .c-list {
+      float: left;
+      padding: 0;
+      margin: 0;
+      padding-left: 3px !important;
+      width: calc(100% - 20px);
+      padding-top: 1px !important;
+      padding-bottom: 1px !important;
+
+      .c-token {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        line-height: 0;
+
+        .c-label {
+          color: #676767 !important;
+          border: 1px solid #cccccc;
+          line-height: 0;
+          border-radius: 16px;
+          padding: 2px 17px 2px 3px;
+          margin-right: 5px;
+        }
+
+        .c-remove {
+          position: absolute;
+          top: 12px;
+          right: 11px;
+          -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+          width: 8px;
+
+          svg {
+            fill: #676767 !important;
+          }
+        }
+
+      }
+    }
+
+    .c-angle-down,
+    .c-angle-up {
+
+      top: 35% !important;
+
+      svg {
+        fill: #888;
+      }
+    }
+  }
+
+  .dropdown-list {
+    ul {
+      li:hover {
+        background: #f1f1f1;
+      }
+    }
+  }
+
+  .arrow-up,
+  .arrow-down {
+    border-bottom: 15px solid #fff;
+    display: none;
+  }
+
+  .arrow-2 {
+    border-bottom: 15px solid #ccc;
+  }
+
+  .list-area {
+    border: 1px solid #ccc;
+    background: #fff;
+    box-shadow: 0px 1px 5px #CCC;
+  }
+
+  .select-all {
+    border-bottom: 1px solid #ccc;
+  }
+
+  .list-filter {
+    input {
+      color: #696969 !important;
+    }
+
+    border-bottom: 1px solid #ccc;
+
+    .c-search {
+      svg {
+        fill: #888;
+      }
+    }
+
+    .c-clear {
+
+      position: absolute;
+      top: 3px;
+      right: 10px;
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+
+      svg {
+        fill: #888;
+      }
+    }
+  }
+
+  .pure-checkbox {
+
+    input[type="checkbox"]:focus+label:before,
+    input[type="checkbox"]:hover+label:before {
+      color: #2b9ed1 !important;
+      border: 1px solid #CCC !important;
+    }
+
+    input[type="checkbox"]+label {
+      color: #696969;
+    }
+
+    input[type="checkbox"]+label:before {
+      color: #F1F1F1;
+      border: 1px solid #CCC;
+    }
+
+    input[type="checkbox"]+label:after {
+      background-color: #F1F1F1;
+    }
+
+    input[type="checkbox"]:disabled+label:before {
+      border-color: #cccccc;
+    }
+
+    input[type="checkbox"]:disabled:checked+label:before {
+      background-color: #cccccc;
+    }
+
+    input[type="checkbox"]+label:after {
+      border-color: gray;
+    }
+
+    input[type="radio"]:checked+label:before {
+      background-color: gray;
+    }
+
+    input[type="checkbox"]:checked+label:before {
+      background: #F1F1F1;
+    }
+  }
+
+  .single-select-mode .pure-checkbox {
+
+    input[type="checkbox"]:focus+label:before,
+    input[type="checkbox"]:hover+label:before {
+      border-color: #F1F1F1;
+      background-color: gray !important;
+    }
+
+    input[type="checkbox"]+label {
+      color: #666;
+    }
+
+    input[type="checkbox"]+label:before {
+      color: black !important;
+      border: 0px solid #CCC;
+    }
+
+    input[type="checkbox"]+label:after {
+      background-color: transparent !important;
+    }
+
+    input[type="checkbox"]:disabled+label:before {
+      border-color: #cccccc;
+    }
+
+    input[type="checkbox"]:disabled:checked+label:before {
+      background-color: #cccccc;
+    }
+
+    input[type="checkbox"]+label:after {
+      border-color: #CCC;
+    }
+
+    input[type="radio"]:checked+label:before {
+      background-color: gray;
+    }
+
+    input[type="checkbox"]:checked+label:before {
+      background: none !important;
+    }
+  }
+
+  .selected-item {
+    background: transparent !important;
+  }
+
+  .btn-iceblue {
+    border: transparent !important;
+    color: #fff;
+    background: #2b9ed1;
+    color: #fff;
+    text-align: center;
+    margin-left: 47%;
+    margin-top: 36px;
+    width: 54px;
+  }
+
+  .nodata-label {
+    position: absolute;
+    padding: 0 !important;
+    bottom: 47px !important;
+  }
+
+  .clear-all {
+    display: none !important;
+  }
+}
+
+
+.selected-list {
+  .c-list {
+    float: left;
+    padding: 0;
+    margin: 0;
+    padding-left: 3px !important;
+    width: calc(100% - 20px);
+    padding-top: 1px !important;
+    padding-bottom: 1px !important;
+
+    .c-token {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      line-height: 0;
+
+      .c-label {
+        color: #676767 !important;
+        border: 1px solid #cccccc;
+        line-height: 0;
+        border-radius: 16px;
+        padding: 2px 17px 2px 3px;
+        margin-right: 5px;
+      }
+
+      .c-remove {
+        position: absolute;
+        top: 12px;
+        right: 11px;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        width: 8px;
+
+        svg {
+          fill: #676767 !important;
+        }
+      }
+
+    }
+  }
+
+  .c-angle-down,
+  .c-angle-up {
+
+    top: 35% !important;
+
+    svg {
+      fill: #999;
     }
   }
 }

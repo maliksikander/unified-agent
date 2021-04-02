@@ -1,6 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA, MatSnackBar, MatDialogRef } from '@angular/material';
-import { FormControl, Validators, AbstractControl } from '@angular/forms';
+import {Component, OnInit, Inject} from '@angular/core';
+import {MatDialog, MAT_DIALOG_DATA, MatSnackBar, MatDialogRef} from '@angular/material';
+import {FormControl, Validators, AbstractControl} from '@angular/forms';
 
 @Component({
   selector: 'app-create-label-diag',
@@ -10,17 +10,18 @@ import { FormControl, Validators, AbstractControl } from '@angular/forms';
 export class CreateLabelDiagComponent implements OnInit {
 
   constructor(private dialog: MatDialog, public snackBar: MatSnackBar, public dialogRef: MatDialogRef<CreateLabelDiagComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+              @Inject(MAT_DIALOG_DATA) public data: any) {
+  }
 
-  name = new FormControl ('' , [Validators.required, Validators.maxLength(100)] , this.ValidateNameDuplication.bind(this));
+  name = new FormControl('', [Validators.required, Validators.maxLength(100)], this.ValidateNameDuplication.bind(this));
   open: boolean = false;
   nameToBeMatched;
   currentColor = '#a9a9a9';
-  labelColorCode = ['#f34f1b','#f58231','#bfef45','#3cb44b','#42d4f4','#039be6','#7c87ce','#f032e6','#f6bf26','#9A6324','#a9a9a9','#000000b5'];
+  labelColorCode = ['#f34f1b', '#f58231', '#bfef45', '#3cb44b', '#42d4f4', '#039be6', '#7c87ce', '#f032e6', '#f6bf26', '#9A6324', '#a9a9a9', '#000000b5'];
 
   ngOnInit() {
 
-    if (this.data.action == 'update' ) {
+    if (this.data.action == 'update') {
       this.currentColor = this.data.label.color_code;
       this.nameToBeMatched = this.data.label.name;
       this.name.patchValue(this.data.label.name);
@@ -31,12 +32,12 @@ export class CreateLabelDiagComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  makeObject(){
+  makeObject() {
 
-}
+  }
 
-ValidateNameDuplication(control: AbstractControl) {
+  ValidateNameDuplication(control: AbstractControl) {
 
-}
+  }
 
 }
