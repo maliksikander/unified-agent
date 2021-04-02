@@ -1,5 +1,5 @@
 <div class="header">
-  <div class="headerName">.CREATE_CUSTOMER_CLASS.CREATE_CUSTOMER}}</div>
+  <div class="headerName">Create New Customer</div>
   <mat-icon (click)="onNoClick()" class="closeBtn">close</mat-icon>
 </div>
 
@@ -207,8 +207,8 @@
 <mat-dialog-actions>
 
   <div class="footer-buttons">
-    <button (click)="onNoClick()" class="cancel-btn">.CANCEL}}</button>
-    <button *ngIf="myGroup.valid" (click)="saveData(myGroup.value)"
-            class="save-btn">.SAVE}}</button>
+    <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
+    <button *ngIf="myGroup.valid"
+            class="save-btn">Create Contact</button>
   </div>
 </mat-dialog-actions>

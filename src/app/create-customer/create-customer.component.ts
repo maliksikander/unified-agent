@@ -161,12 +161,12 @@ export class CreateCustomerComponent implements OnInit {
   labelSettings = {
     singleSelection: false,
     text: "",
-    filterSelectAllText: 'filterSelectAllText',
-    filterUnSelectAllText: 'this._callService.translationsObj.UNSLT_ALL_FLRT',
-    searchPlaceholderText: 'this._callService.translationsObj.SEARCH',
-    selectAllText: 'this._callService.translationsObj.SLT_ALL',
-    unSelectAllText: 'this._callService.translationsObj.UN_SLT_ALL',
-    noDataLabel: 'this._callService.translationsObj.NO_DATA',
+    filterSelectAllText: 'Select all',
+    filterUnSelectAllText: 'Unselect all',
+    searchPlaceholderText: 'Search',
+    selectAllText: 'Select all',
+    unSelectAllText: 'Unselect all',
+    noDataLabel: 'No Data',
     enableSearchFilter: true,
     addNewItemOnFilter: true,
     primaryKey: '_id'

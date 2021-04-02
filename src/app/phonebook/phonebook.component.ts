@@ -624,11 +624,7 @@ cols = [
 
   createCustomer() {
     const dialogRef = this.dialog.open(CreateCustomerComponent, {
-      panelClass: 'inline-editing',
-      maxWidth: '848px',
-      maxHeight: '88vh',
-      width: '848px',
-      height: '88vh',
+      panelClass: 'create-customer-dialog',
 
     });
   }

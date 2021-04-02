@@ -2087,41 +2087,37 @@ button.add-customer {
   }
 
   .list-filter {
-    height: 26px !important;
-    margin-left: -6px !important;
-  }
+    height: 30px !important;
 
-  .list-filter .c-search {
-    position: absolute;
-    top: 2px !important;
-    left: 15px;
-    width: 13px !important;
-    height: 13px !important;
+    .c-search {
+      position: absolute;
+      top: 2px !important;
+      left: 15px;
+      width: 13px !important;
+      height: 13px !important;
+    }
   }
 
   label {
-    color: #717171 !important;
-    bottom: 4px;
+    color: #858585 !important;
     position: relative;
+    font-size: 12px;
+    margin: 5px 8px;
+    text-transform: capitalize;
   }
 
   .c-btn {
-    background: #999;
+    //background: #999;
     border: 1px solid #CCC;
     color: #999;
-
     display: table !important;
-    border-width: 1px;
     line-height: 24px !important;
     border-radius: 4px !important;
     font-size: .85rem;
-    /* padding: 5px 10px; */
     cursor: pointer;
     align-items: center;
-    padding: 2px 0px !important;
-    min-height: 29px !important;
-    height: 29px !important;
-    /* min-height: 30px; */
+    padding: 2px 0 !important;
+    min-height: 43px !important;
 
     &:focus {
       outline: none !important;
@@ -2206,18 +2202,24 @@ button.add-customer {
 
   .select-all {
     border-bottom: 1px solid #ccc;
+    bottom: 0;
   }
 
   .list-filter {
     input {
       color: #696969 !important;
+
+      &::placeholder{
+        font-size: 12px;
+        color: #c5c5c5;
+      }
     }
 
     border-bottom: 1px solid #ccc;
 
     .c-search {
       svg {
-        fill: #888;
+        fill: #c5c5c5;
       }
     }
 
@@ -2396,5 +2398,15 @@ button.add-customer {
     svg {
       fill: #999;
     }
+  }
+}
+.create-customer-dialog{
+  .mat-dialog-actions{
+    margin: 0 !important;
+  }
+
+  .mat-form-field-infix {
+    border: 0 !important;
+    padding: 14px 5px !important;
   }
 }
