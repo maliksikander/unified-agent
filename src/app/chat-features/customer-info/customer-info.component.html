@@ -333,10 +333,10 @@
                     </li>
                   </ul>
                   <ul class="requested-channel-content"
-                    *ngFor="let obj of channelSession.channelData.additionalAttribute | convertToFormData">
+                    *ngFor="let attr of channelSession.channelData.additionalAttribute">
                     <li>
-                      <label>{{obj.key | sentenceCase}}</label>
-                      {{obj.value}}
+                      <label>{{attr.key | sentenceCase}}</label>
+                      {{attr.value}}
                     </li>
                   </ul>
                 </mat-expansion-panel>

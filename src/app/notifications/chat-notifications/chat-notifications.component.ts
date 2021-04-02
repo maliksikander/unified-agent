@@ -2,6 +2,7 @@ import { Component, OnInit, Inject, Input } from "@angular/core";
 import { cacheService } from "src/app/services/cache.service";
 import { socketService } from "src/app/services/socket.service";
 import { Output, EventEmitter } from "@angular/core";
+import { TopicParticipant } from '../../models/User/Interfaces'
 
 @Component({
   selector: "app-chat-notifications",
@@ -16,7 +17,7 @@ export class ChatNotificationsComponent implements OnInit {
   channelImageSrc: string;
   @Output() closeRequestHeaderEvent = new EventEmitter<boolean>();
 
-  constructor(private _socketService: socketService, private _cacheService: cacheService) {}
+  constructor(private _socketService: socketService, private _cacheService: cacheService) { }
 
   ngOnInit() {
     console.log("this is data ", this.data);
@@ -29,7 +30,11 @@ export class ChatNotificationsComponent implements OnInit {
   }
 
   getTopicSubscription() {
-    this._socketService.emit("topicSubscription", { agentId: this._cacheService.agent.id, topicId: this.data.topicId });
+    this._socketService.emit("topicSubscription", {
+      topicParticipant: new TopicParticipant('AGENT', this._cacheService.agent,
+        this.data.topicId, 'PRIMARY'), agentId: this._cacheService.agent.id, topicId: this.data.topicId
+    });
     this.closeRequestHeaderEvent.emit(this.data.topicId);
   }
 }
+ 
