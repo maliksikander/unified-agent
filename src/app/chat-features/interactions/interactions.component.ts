@@ -6,6 +6,7 @@ import { MatDialog } from "@angular/material";
 import { PerfectScrollbarConfigInterface } from "ngx-perfect-scrollbar";
 import { CimEvent } from "../../models/Event/cimEvent";
 import { v4 as uuidv4 } from "uuid";
+import { TopicParticipant } from "../../models/User/Interfaces";
 
 declare var EmojiPicker: any;
 @Component({
@@ -19,7 +20,7 @@ export class InteractionsComponent implements OnInit {
   @Input() dummy: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
   public config: PerfectScrollbarConfigInterface = {};
-  @ViewChild('replyInput' , {static: true}) elementView: ElementRef;
+  @ViewChild("replyInput", { static: true }) elementView: ElementRef;
   isBarOPened = false;
   activeSessions = [];
 
@@ -102,7 +103,7 @@ export class InteractionsComponent implements OnInit {
     private _cacheService: cacheService,
     private _socketService: socketService,
     private dialog: MatDialog
-  ) { }
+  ) {}
   ngOnInit() {
     //  console.log("i am called hello")
     this.convers = this.conversation.messages;
@@ -111,24 +112,22 @@ export class InteractionsComponent implements OnInit {
     }, 500);
   }
 
-  emoji() { }
+  emoji() {}
 
   onSend(text) {
     let message = JSON.parse(JSON.stringify(this.conversation.messages[this.conversation.messages.length - 1]));
     message.id = uuidv4();
     message.header.timestamp = new Date().toISOString();
-    message.header.sender.type = "AGENT";
-    message.header.sender.role = "AGENT";
-    message.header.sender.participant = {};
-    message.header.sender.participant.keycloakUser = this._cacheService.agent;
-    message.header.sender.participant.routingAttributes = [];
+    message.header.sender = {};
+
+    message.header.sender = new TopicParticipant("AGENT", this._cacheService.agent, message.header.channelSession.topicId, "PRIMARY");
+
     message.body.markdownText = text;
     delete message["botSuggestions"];
     delete message["showBotSuggestions"];
 
     this._socketService.emit("publishCimEvent", new CimEvent("AGENT_MESSAGE", "MESSAGE", message));
   }
-
 
   openDialog(templateRef, e): void {
     this.popTitle = e;

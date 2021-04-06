@@ -53,9 +53,8 @@ export class socketService {
 
     this.listen("onCimEvent").subscribe((res: any) => {
       console.log("onCimEvent", res);
-       this.onCimEventHandler(JSON.parse(res.cimEvent), res.topicId);
-    //  this.onCimEventHandler(res.cimEvent, res.topicId);
-
+      this.onCimEventHandler(JSON.parse(res.cimEvent), res.topicId);
+      //  this.onCimEventHandler(res.cimEvent, res.topicId);
     });
 
     this.listen("onOldCimEvents").subscribe((res: any) => {
