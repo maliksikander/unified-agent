@@ -61,6 +61,7 @@ import { getFirstTwoLettersPipe } from "./pipes/getFirstTwoLetters.pipe";
 import { PerfectScrollbarModule } from "ngx-perfect-scrollbar";
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from "ngx-mat-datetime-picker";
 
+
 @NgModule({
   declarations: [RemoveUnderscorePipe, ibsformatPipe, getSenderNamePipe, SearchPipe, sentenceCasePipe, convertToFormDataPipe, getFirstTwoLettersPipe],
   imports: [
@@ -127,7 +128,7 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
     ConfirmDialogModule,
     InputTextareaModule,
     OwlDateTimeModule,
-    OwlNativeDateTimeModule
+    OwlNativeDateTimeModule,
   ],
   exports: [
     MatIconModule,
@@ -195,7 +196,7 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
     getSenderNamePipe,
     sentenceCasePipe,
     convertToFormDataPipe,
-    getFirstTwoLettersPipe
+    getFirstTwoLettersPipe,
   ]
 })
 export class SharedModule {}

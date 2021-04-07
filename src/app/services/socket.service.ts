@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import * as io from "socket.io-client";
+import { io } from "socket.io-client";
 import { BehaviorSubject, Observable } from "rxjs";
 import { appConfigService } from "./appConfig.service";
 import { cacheService } from "./cache.service";
@@ -18,23 +18,33 @@ export class socketService {
 
   public readonly conversationsListener: Observable<any> = this._conversationsListener.asObservable();
 
-  constructor(private _appConfigService: appConfigService, private _cacheService: cacheService, private _sharedService: sharedService) {}
+  constructor(private _appConfigService: appConfigService, private _cacheService: cacheService, private _sharedService: sharedService) { }
 
   connectToSocket() {
     this.uri = this._appConfigService.config.SOCKET_URL;
 
     console.log("username------ " + this._cacheService.agent.username);
 
-    this.socket = io
-      .connect(this.uri, {
-        query: {
-          //  token: this._cacheService.agent.details.access_token,
+    this.socket = io(this.uri, {
+      auth: {
+        //  token: this._cacheService.agent.details.access_token,
           agent: JSON.stringify(this._cacheService.agent)
-        }
-      })
-      .on("error", function (err) {
-        console.error(err);
-      });
+        //agent: ""
+
+      }
+    })
+
+    this.socket.on("connect_error", (err) => {
+      console.error("socket connect_error " + err); 
+    });
+
+    this.socket.on("connect", (e) => {
+      console.log("socket connect " + e); 
+    });
+
+    this.socket.on("disconnect", (e) => {
+      console.error("socket disconnect " + e); 
+    });
 
     this.listen("agentPresence").subscribe((res: any) => {
       console.log(res);
@@ -66,6 +76,7 @@ export class socketService {
       console.log("topicUnsubscription", res);
       this.removeConversation(res.topicId);
     });
+
   }
 
   listen(eventName: string) {
@@ -128,7 +139,7 @@ export class socketService {
     let lookup = {};
     let activeChannelSessions = [];
 
-    for (let message, i = 0; (message = messages[i++]); ) {
+    for (let message, i = 0; (message = messages[i++]);) {
       if (message.header.sender.type.toLowerCase() == "customer") {
         let id = message.header.channelSession.id;
 

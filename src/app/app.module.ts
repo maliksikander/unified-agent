@@ -17,6 +17,14 @@ import { DashboardComponent } from "./supervisor/dashboard/supervisor-dashboard.
 import { AnnouncementDialogComponent } from "./supervisor/announcement-dialog/announcement-dialog.component";
 import { PhonebookComponent } from "./phonebook/phonebook.component";
 import { CreateCustomerComponent } from "./create-customer/create-customer.component";
+import { NgxUiLoaderModule, NgxUiLoaderHttpModule, NgxUiLoaderConfig, POSITION, SPINNER, PB_DIRECTION } from 'ngx-ui-loader';
+
+const ngxUiLoaderConfig: NgxUiLoaderConfig = {
+
+  bgsType: SPINNER.chasingDots,
+  bgsPosition: POSITION.centerCenter,
+
+};
 
 @NgModule({
   declarations: [
@@ -30,7 +38,8 @@ import { CreateCustomerComponent } from "./create-customer/create-customer.compo
     PhonebookComponent,
     CreateCustomerComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, CommonModule, BrowserAnimationsModule, SharedModule],
+  imports: [BrowserModule, AppRoutingModule, CommonModule, BrowserAnimationsModule, SharedModule, NgxUiLoaderHttpModule,
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),],
   entryComponents: [AnnouncementDialogComponent, CreateCustomerComponent],
   providers: [
     appConfigService,
@@ -46,4 +55,4 @@ import { CreateCustomerComponent } from "./create-customer/create-customer.compo
   exports: [BrowserModule, CommonModule, BrowserAnimationsModule],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
