@@ -238,7 +238,7 @@ export class CreateCustomerComponent implements OnInit {
   }
 
 
-  // onAddItem(data) {
+   onAddItem(data) {
   //
   //   this._callService.getLabels().subscribe((e) => {
   //     let duplicate : boolean = false;
@@ -267,9 +267,9 @@ export class CreateCustomerComponent implements OnInit {
   //       });
   //     }
   //   });
-  // }
+   }
 
-  save() {
+  save(a) {
   }
   onItemSelect(item: any) {
 
