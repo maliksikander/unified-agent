@@ -43,7 +43,8 @@
     "socket.io-client": "4.0.1",
     "tslib": "^1.10.0",
     "uuid": "^8.3.2",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.9.1",
+    "angular2-multiselect-dropdown": "4.6.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.23",

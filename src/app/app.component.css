@@ -11,3 +11,8 @@
   position: absolute;
   top: 100px;
 }
+
+.main-app-area {
+  border: 5px solid #E2E2E2;
+  min-height: calc(100% - 42px);
+}

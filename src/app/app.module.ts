@@ -18,6 +18,11 @@ import { AnnouncementDialogComponent } from "./supervisor/announcement-dialog/an
 import { PhonebookComponent } from "./phonebook/phonebook.component";
 import { CreateCustomerComponent } from "./create-customer/create-customer.component";
 import { NgxUiLoaderModule, NgxUiLoaderHttpModule, NgxUiLoaderConfig, POSITION, SPINNER, PB_DIRECTION } from 'ngx-ui-loader';
+import { AgentAnnouncementsComponent } from './announcement/agent-announcements/agent-announcements.component';
+import { AnnouncementComponent } from './announcement/announcement.component';
+import { CreateLabelDiagComponent } from './new-components/create-label/create-label-diag/create-label-diag.component';
+import { CreateLabelComponent } from './new-components/create-label/create-label.component';
+import { ConfirmationDialogComponent } from './new-components/confirmation-dialog/confirmation-dialog.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -36,11 +41,21 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     DashboardComponent,
     AnnouncementDialogComponent,
     PhonebookComponent,
-    CreateCustomerComponent
+    CreateCustomerComponent,
+    AgentAnnouncementsComponent,
+    CreateLabelDiagComponent,
+    CreateLabelComponent,
+    ConfirmationDialogComponent,
+    AnnouncementComponent
   ],
   imports: [BrowserModule, AppRoutingModule, CommonModule, BrowserAnimationsModule, SharedModule, NgxUiLoaderHttpModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),],
-  entryComponents: [AnnouncementDialogComponent, CreateCustomerComponent],
+  entryComponents: [
+    CreateCustomerComponent,
+    AnnouncementDialogComponent,
+    CreateLabelDiagComponent,
+    ConfirmationDialogComponent,
+  ],
   providers: [
     appConfigService,
     MessageService,

@@ -60,6 +60,7 @@ import { convertToFormDataPipe } from "./pipes/convertToFormData.pipe";
 import { getFirstTwoLettersPipe } from "./pipes/getFirstTwoLetters.pipe";
 import { PerfectScrollbarModule } from "ngx-perfect-scrollbar";
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from "ngx-mat-datetime-picker";
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 
 
 @NgModule({
@@ -129,6 +130,7 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
     InputTextareaModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
+    AngularMultiSelectModule
   ],
   exports: [
     MatIconModule,
@@ -197,6 +199,7 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
     sentenceCasePipe,
     convertToFormDataPipe,
     getFirstTwoLettersPipe,
+    AngularMultiSelectModule
   ]
 })
-export class SharedModule {}
+export class SharedModule { }
