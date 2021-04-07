@@ -610,17 +610,31 @@
     </div>
     <div class="chat-footer">
       <span class="selected-channel">Selected Channel: <label>Web</label></span>
+      <div class="whisper-selection">
+        <button (click)="whisper = false" [ngClass]="{'customer-select': !whisper}" class="customer-mode message-mode" mat-button>Adam</button>
+        <button (click)="whisper = true"  [ngClass]="{'whisper-select': whisper}" class="whisper-mode message-mode" mat-button>Whisper</button>
+      </div>
       <div class="message-composer">
-        <form class="reply-form">
+        <form class="reply-form" [ngClass]="{'whisper-mode': whisper}">
           <label class="count-reply">{{replyInput.value.length}}/200</label>
           <div class="mat-form-field chat-area"  [ngClass]="{'expand-area-height':expanedHeight > 50}">
-            <textarea [perfectScrollbar] (click)="onTextAreaClick()" data-emoji-picker="true"  [(ngModel)]="message" (keyup)="onKey($event)"
+            <textarea  [formControl]="myControl" [perfectScrollbar] (click)="onTextAreaClick()" data-emoji-picker="true"  [(ngModel)]="message" (keyup)="onKey($event)"
                       name="message"  (change)="textChanged($event)" [matAutocomplete]="auto"  matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea"
               class="resize-none" #replyInput name="message" placeholder="Type a message here..."></textarea>
 
-            <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete">
+            <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete {{whisper}}" [ngClass]="{'user-list': whisper}">
+
+              <div class="suggested-content" *ngIf="whisper && displayUserList" [perfectScrollbar] style="max-height: 220px">
+                <mat-option *ngFor="let option of userList  | LockFilter: message" [value]="option.name">
+                  {{option.name}} <small *ngIf="option.team">({{option.team}})</small><span *ngIf="option.activeCount">({{option.activeCount}})</span>
+                  <small class="user-roll">{{option.role}}</small>
+                </mat-option>
+              </div>
+
+
               <div class="suggested-content" #mainScreen [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}" >
-                <mat-tab-group animationDuration="0ms" *ngIf="!displaySuggestionsArea && cannedTabOpen">
+
+                <mat-tab-group animationDuration="0ms" *ngIf="!displaySuggestionsArea && !whisper && cannedTabOpen">
                   <!--<mat-tab label="Suggested Answer" *ngIf="actions.length > 0">-->
                   <!--<div class="suggested-tab" *ngIf="actions.length > 0">-->
                   <!--<mat-option *ngFor="let action of actions | LockFilter: message" [value]="action?.message || action?.name"-->

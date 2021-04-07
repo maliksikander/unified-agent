@@ -14,6 +14,7 @@ export class SearchPipe implements PipeTransform {
 
         args = args.toLowerCase();
         args = args.replace('/', '');
+        args = args.replace('@', '');
 
 
         return value.filter(function(item) {

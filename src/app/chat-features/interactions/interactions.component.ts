@@ -4,8 +4,14 @@ import { sharedService } from 'src/app/services/shared.service';
 import { socketService } from 'src/app/services/socket.service';
 import {MatAccordion, MatDialog} from '@angular/material';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import {Observable} from 'rxjs';
+import {FormControl} from '@angular/forms';
+import {map, startWith} from 'rxjs/operators';
 
 declare var EmojiPicker: any;
+export interface User {
+  name: string;
+}
 @Component({
   selector: 'app-interactions',
   templateUrl: './interactions.component.html',
@@ -24,11 +30,57 @@ export class InteractionsComponent implements OnInit , AfterViewInit{
   @ViewChild('replyInput' , {static: true}) elementView: ElementRef;
   expanedHeight = 0;
 
-
+  myControl = new FormControl();
   channelUrl = 'assets/images/web.svg';
+  userList = [
+    {
+      name: 'Technical Support',
+      activeCount: '12'
+
+    }, {
+      name: 'Marketing Support',
+      activeCount: '08'
+
+    }, {
+      name: 'Customer Support',
+      activeCount: '12'
+
+    }, {
+      name: 'Ev Gayforth',
+      role: 'supervisor',
+      team: 'technical'
+
+    }, {
+      name: 'Doy Ortelt',
+      role: 'supervisor',
+      team: 'marketing'
+
+    }, {
+      name: 'stanler',
+      role: 'supervisor',
+      team: 'customer support'
+
+    }, {
+      name: 'Ev Gayforth',
+      role: 'supervisor',
+      team: 'technical'
+
+    }, {
+      name: 'Ortelt',
+      role: 'supervisor',
+      team: 'marketing'
+
+    }, {
+      name: 'Joe Stanler',
+      role: 'supervisor',
+      team: 'customer support'
+
+    },
+  ];
   options: string[] = ['Glenn Helgass', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', 'Glenn Helgass', ' Ev Gayforth'];
   categories: string[] = ['Fayina Addinall', 'Doy Ortelt', ' Ev Gayforth', 'Adam Joe Stanler'];
-
+  whisper = false;
+  displayUserList = false;
   customer: any = {
     type: 'Customer',
     info: {
@@ -99,6 +151,8 @@ export class InteractionsComponent implements OnInit , AfterViewInit{
 
   }
 
+
+
   onSend(text) {
     // let message = JSON.parse(JSON.stringify(this.conversation.messages[this.conversation.messages.length - 1]));
 
@@ -132,13 +186,13 @@ export class InteractionsComponent implements OnInit , AfterViewInit{
     this.expanedHeight = this.elementView.nativeElement.offsetHeight
     console.log(this.expanedHeight);
     this.message = event.target.value;
-    if (this.message === "" && event.keyCode === 40) {
-      // alert('up key Click Event!');
-      this.isSuggestion = true;
-    } else if (this.message === "" && event.keyCode === 38) {
-      this.isSuggestion = false;
-
-    }
+    // if (this.message === "" && event.keyCode === 40) {
+    //   // alert('up key Click Event!');
+    //   this.isSuggestion = true;
+    // } else if (this.message === "" && event.keyCode === 38) {
+    //   this.isSuggestion = false;
+    //
+    // }
     console.log("onKey: ", this.message);
     if (this.message[0] === '/' || this.message[0] === ' ') {
       this.displaySuggestionsArea = false;
@@ -161,6 +215,14 @@ export class InteractionsComponent implements OnInit , AfterViewInit{
     //     console.log('value is 0')
     //     this.isTemplateOpen = false;
     // }
+
+    if (this.message[0] === '@') {
+
+      this.displayUserList = true;
+
+    } else {
+      this.displayUserList = false;
+    }
   }
 
 
