@@ -12,9 +12,9 @@ import { AnnouncementComponent } from "./announcement/announcement.component";
 export const appRoutes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "customers/phonebook", component: PhonebookComponent },
-  { path: 'label', component: CreateLabelComponent },
+  { path: "label", component: CreateLabelComponent },
   { path: "supervisor/dashboard", component: DashboardComponent },
-  { path: 'supervisor/announcement', component: AnnouncementComponent },
+  { path: "supervisor/announcement", component: AnnouncementComponent },
   { path: "", redirectTo: "/login", pathMatch: "full" },
   { path: "customers", data: { preload: true }, loadChildren: "./chat-features/chat.module#ChatModule" },
   { path: "**", component: NoRouteFoundComponent }
