@@ -273,7 +273,7 @@ snack-bar-container.err-class {
   text-align: center;
 }
 
-snack-bar-container.succ-class {
+snack-bar-container.success-snackbar {
   background: green;
   color: white;
   text-align: center;
@@ -1725,9 +1725,9 @@ padding: 0 !important;
     width: 100px;
     padding: 0;
     background: transparent !important;
-    display: inline-block;
+    //display: inline-block;
     right: 0;
-    float: right;
+    //float: right;
     height: 20px;
     line-height: 20px;
     top: 0;
@@ -2457,3 +2457,36 @@ ul.customer-labels {
     margin-left: -6px;
   }
 }
+
+
+//Chat Transfer Snackbar
+.chat-success-snackbar {
+  background: rgba(10, 188, 2, .8);
+  min-width: 340px;
+  padding: 10px ​16px;
+
+
+  button {
+    background: #fff;
+    color: #2E2E2E;
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+  }
+  simple-snack-bar{
+color: #fff;
+    &:before {
+      content: 'check';
+      font-family: 'Material Icons';
+      font-weight: 900;
+      background: rgb(0 0 0 / 42%);
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      border-radius: 100%;
+      margin-right: 8px;
+    }
+
+  }
+  }

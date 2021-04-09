@@ -1,33 +1,36 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import { cacheService } from 'src/app/services/cache.service';
-import { sharedService } from 'src/app/services/shared.service';
-import { socketService } from 'src/app/services/socket.service';
-import {MatAccordion, MatDialog} from '@angular/material';
-import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import {cacheService} from 'src/app/services/cache.service';
+import {sharedService} from 'src/app/services/shared.service';
+import {socketService} from 'src/app/services/socket.service';
+import {MatAccordion, MatDialog, MatSnackBar} from '@angular/material';
+import {PerfectScrollbarConfigInterface} from 'ngx-perfect-scrollbar';
 import {Observable} from 'rxjs';
 import {FormControl} from '@angular/forms';
 import {map, startWith} from 'rxjs/operators';
+import {snackbarService} from '../../services/snackbar.service';
 
 declare var EmojiPicker: any;
+
 export interface User {
   name: string;
 }
+
 @Component({
   selector: 'app-interactions',
   templateUrl: './interactions.component.html',
   styleUrls: ['./interactions.component.scss']
 })
-export class InteractionsComponent implements OnInit , AfterViewInit{
+export class InteractionsComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:no-input-rename
   @Input('conversation') conversation: any;
   unidentified = true;
   isConnected = true;
-  popTitle = "Notes";
+  popTitle = 'Notes';
   @Input('messages') messages: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
   isBarOPened = false;
   public config: PerfectScrollbarConfigInterface = {};
-  @ViewChild('replyInput' , {static: true}) elementView: ElementRef;
+  @ViewChild('replyInput', {static: true}) elementView: ElementRef;
   expanedHeight = 0;
 
   myControl = new FormControl();
@@ -96,61 +99,63 @@ export class InteractionsComponent implements OnInit , AfterViewInit{
       url: 'http://localhost:4200/',
     }
   };
-  message = "";
+  message = '';
+  transferSearch = '';
   convers: any[];
   ringing = false;
   callControls = true;
   cannedMessages = [
-      {
-        "category": "marketing",
-        "messages": [
-          "Hi, how are you",
-          "How may I help you?"
-        ]
-      },
-      {
-        "category": "information",
-        "messages": [
-          "Info message 1",
-          "Info message 2"
-        ]
-      }
-    ];
-  actions =  [
-      {
-        "name": "If a customer submits a support ticket, they deserve 1. confirmation that you received the ticket, and 2. affirmation that you are working on it.",
-      },
     {
-        "name": "If possible, personalize this response relative to the issue. If a customer filled out a form with drop-down category, this is easy. Additionally, you can train your reps to know which response to use.",
-      },
+      'category': 'marketing',
+      'messages': [
+        'Hi, how are you',
+        'How may I help you?'
+      ]
+    },
     {
-      "name": "To help ameliorate this tendency, make sure you proactively follow-up with them letting them know you're still working hard to reach a resolution, and that you will let them know when there are updates. This shows you care.",
+      'category': 'information',
+      'messages': [
+        'Info message 1',
+        'Info message 2'
+      ]
     }
-    ];
+  ];
+  actions = [
+    {
+      'name': 'If a customer submits a support ticket, they deserve 1. confirmation that you received the ticket, and 2. affirmation that you are working on it.',
+    },
+    {
+      'name': 'If possible, personalize this response relative to the issue. If a customer filled out a form with drop-down category, this is easy. Additionally, you can train your reps to know which response to use.',
+    },
+    {
+      'name': 'To help ameliorate this tendency, make sure you proactively follow-up with them letting them know you\'re still working hard to reach a resolution, and that you will let them know when there are updates. This shows you care.',
+    }
+  ];
   isSuggestion = false;
   displaySuggestionsArea = false;
   cannedTabOpen = false;
   quickReplies = true;
   viewHeight = '180px';
+  chatTransferTo;
 
-  constructor( private _sharedService: sharedService, private _cacheService: cacheService, private _socketService: socketService, private dialog: MatDialog) {
+  constructor(private snackBar: MatSnackBar, private _cacheService: cacheService, private _socketService: socketService, private dialog: MatDialog) {
 
   }
 
   ngOnInit() {
     //  console.log("i am called hello")
     this.convers = this.messages;
-    console.log('hello', this.messages)
+    console.log('hello', this.messages);
     setTimeout(() => {
       new EmojiPicker();
-    },500);
+    }, 500);
 
 
   }
+
   ngAfterViewInit() {
 
   }
-
 
 
   onSend(text) {
@@ -165,6 +170,7 @@ export class InteractionsComponent implements OnInit , AfterViewInit{
     // this._socketService.emit('sendMessage', message);
 
   }
+
   openDialog(templateRef, e): void {
     this.popTitle = e;
 
@@ -173,8 +179,41 @@ export class InteractionsComponent implements OnInit , AfterViewInit{
     });
   }
 
+  chatTransfer(templateRef, e): void {
+    this.chatTransferTo = e;
+
+    const dialogRef = this.dialog.open(templateRef, {
+      panelClass: 'wrap-dialog',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  transferRequest(message: string, action: string, templateRef, e) {
+    setTimeout(() => {
+      this.snackBar.open('Chat transferred successfully to ' + message, action, {
+        duration: 2000,
+        panelClass: 'chat-success-snackbar',
+        horizontalPosition: 'right',
+        verticalPosition: 'bottom'
+      });
+    }, 2000);
+
+    setTimeout(() => {
+      this.popTitle = e;
+      this.dialog.open(templateRef, {
+        panelClass: 'wrap-dialog',
+      });
+
+    }, 3000);
+
+
+  }
+
   onTextAreaClick() {
- //   this.conversation.unReadCount = 0;
+    //   this.conversation.unReadCount = 0;
   }
 
   textChanged(event) {
@@ -183,7 +222,7 @@ export class InteractionsComponent implements OnInit , AfterViewInit{
   }
 
   onKey(event) {
-    this.expanedHeight = this.elementView.nativeElement.offsetHeight
+    this.expanedHeight = this.elementView.nativeElement.offsetHeight;
     console.log(this.expanedHeight);
     this.message = event.target.value;
     // if (this.message === "" && event.keyCode === 40) {
@@ -193,7 +232,7 @@ export class InteractionsComponent implements OnInit , AfterViewInit{
     //   this.isSuggestion = false;
     //
     // }
-    console.log("onKey: ", this.message);
+    console.log('onKey: ', this.message);
     if (this.message[0] === '/' || this.message[0] === ' ') {
       this.displaySuggestionsArea = false;
       this.quickReplies = false;
@@ -204,7 +243,7 @@ export class InteractionsComponent implements OnInit , AfterViewInit{
       //   this.scrollToBottom();
       // }, 500);
 
-      console.log('value is 0')
+      console.log('value is 0');
       this.cannedTabOpen = true;
     } else {
       this.cannedTabOpen = false;

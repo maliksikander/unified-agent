@@ -1,7 +1,7 @@
 
 <div class="interaction-main" [ngClass]="{'customer-bar-opened': isBarOPened}">
 <div class="interaction-inner">
-<div class="container-fluid main-chat-bar">
+<div class="container-fluid main-chat-bar" [ngClass]="{'whisper-mode': whisper}">
   <div class="row">
     <div class="col-md-4 customer-showcase">
       <h3 matTooltipPosition="right" class="customer-highlight">
@@ -29,7 +29,7 @@
           </button>
         </li>
         <li class="list-group-item">
-          <button mat-fab>
+          <button mat-fab [matMenuTriggerFor]="transferChat" aria-label="Transfer Chat">
             <mat-icon>chat_bubble</mat-icon>
             <i class="material-icons arrow-red arrow-gray">arrow_forward</i>
           </button>
@@ -50,6 +50,23 @@
           </button>
         </li>
       </ul>
+
+      <mat-menu #transferChat="matMenu">
+        <div class="chat-transfer-main">
+          <span class="transfer-heading">Transfer Chat</span>
+          <div class="search-wrapper">
+            <input type="text" placeholder="search..." (click)="$event.stopPropagation()" [(ngModel)]="transferSearch">
+            <mat-icon>search</mat-icon>
+          </div>
+          <button mat-menu-item *ngFor="let option of userList | LockFilter:transferSearch" [ngClass]="{'last-team': option.activeCount}" (click)="chatTransfer(chatTransferTemplate, option)">
+            {{option.name}} <small *ngIf="option.team">({{option.team}})</small><span
+            *ngIf="option.activeCount">({{option.activeCount}})</span>
+            <small class="user-roll">{{option.role}}</small>
+            <span class="transfer-selection">Transfer</span>
+
+          </button>
+        </div>
+      </mat-menu>
 
       <!-- Ringing controls-->
       <span *ngIf="ringing" class="ringing-controls"> Calling <strong>'+4444858988'</strong> Mobile
@@ -815,3 +832,37 @@
   <app-customer-info (expandCustomerInfo)="eventFromChild($event)"></app-customer-info>
 </div>
 </div>
+
+<ng-template #chatTransferTemplate>
+  <div class="note-dialog-main transfer-dialog">
+    <div class="dialog-header">
+      <h4 mat-dialog-title>Transfer Chat
+        <button mat-button mat-dialog-close>
+          <mat-icon>close</mat-icon>
+        </button>
+      </h4>
+    </div>
+    <div class="dialog-main-content">
+      <div class="row m-0">
+        <div class="transfer-to text-center col">
+          <div class="support-showcase">
+            <img src="/assets/images/technical-support.svg">
+          </div>
+          <h3>{{chatTransferTo.name}}</h3>
+          <p *ngIf="chatTransferTo.activeCount">Available Agents {{chatTransferTo.activeCount}}</p>
+        </div>
+        <div class="note-area col-md-12">
+          <h4>Message</h4>
+          <textarea rows="5"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-trigger text-right">
+      <button mat-button mat-dialog-close class="close-btn">Cancel</button>
+      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial
+              (click)="transferRequest(chatTransferTo.name, 'Dismiss', noteTemplate, 'Chat Transfer Notes:')">Transfer Chat
+      </button>
+    </div>
+  </div>
+</ng-template>
