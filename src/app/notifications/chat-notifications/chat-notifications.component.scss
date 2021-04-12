@@ -1,3 +1,5 @@
+@import "src/app/shared/globalVariables";
+
 .main-notification-area {
   position: fixed;
   z-index: 9999;
@@ -79,7 +81,7 @@
   }
 }
 .identified{
-  background: #25CB8D;
+  background: $green-color;
 
 }
 .un-identified{

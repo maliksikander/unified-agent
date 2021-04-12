@@ -19,6 +19,12 @@
     <div class="col-md-8 agent-actions">
       <ul class="list-group list-group-horizontal agent-controls">
         <li class="list-group-item">
+          <button mat-fab class="barge-in">
+            <mat-icon>chat_bubble</mat-icon>
+            <mat-icon>transit_enterexit</mat-icon>
+          </button>
+        </li>
+        <li class="list-group-item">
           <button mat-fab>
             <mat-icon>timer_off</mat-icon>
           </button>
@@ -32,11 +38,6 @@
           <button mat-fab [matMenuTriggerFor]="transferChat" aria-label="Transfer Chat">
             <mat-icon>chat_bubble</mat-icon>
             <i class="material-icons arrow-red arrow-gray">arrow_forward</i>
-          </button>
-        </li>
-        <li class="list-group-item">
-          <button mat-fab>
-            <mat-icon>person_add</mat-icon>
           </button>
         </li>
         <li class="list-group-item">

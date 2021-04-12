@@ -26,11 +26,9 @@
     </div>
     <div class="col-md-8 right-profile-area">
       <div class="info">
-        <!--      <div (click)="openOutboundMsgDialog()" *ngIf="config._EnableOutboundSms" class="message-trigger-area">-->
-        <!--        <button mat-button class="chat-message-trigger" >-->
-        <!--          <span class="material-icons">textsms</span>-->
-        <!--        </button>-->
-        <!--      </div>-->
+              <div  class="back-to-interaction">
+                <span  routerLink="/customers/chats" class="material-icons">question_answer</span>
+              </div>
 
         <!--      <h3 class="supervisor-heading" *ngIf="supervisor">Supervisor</h3>-->
         <div class="avatar ready {{_cacheService.agent.presence.agentState | lowercase}}" id="avatar">

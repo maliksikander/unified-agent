@@ -1,3 +1,5 @@
+@import "src/app/shared/globalVariables";
+
 .profile-detail {
   //position: fixed;
   //top: 0;
@@ -136,10 +138,10 @@
       background: #999 !important;
     }
     &.ready {
-      background: #25CB8D;
+      background: $green-color;
     }
     &.active {
-      background: #25CB8D;
+      background: $green-color;
     }
     &.not_ready {
       background: #fdb635;
@@ -180,15 +182,15 @@
     }
   }
   &.ready {
-    border: 1px solid #25CB8D;
+    border: 1px solid $green-color;
     mat-icon{
-      color: #25CB8D !important;
+      color: $green-color !important;
     }
   }
   &.active {
     @extend .ready;
     mat-icon{
-      color: #25CB8D !important;
+      color: $green-color !important;
     }
   }
   &.not_ready {
@@ -390,7 +392,7 @@ button.main-menu-item{
 //      }
 //      &.ready{
 //        &:before {
-//        background: #25CB8D;
+//        background: $green-color;
 //      }
 //      }
 //
@@ -530,7 +532,7 @@ button.main-menu-item{
       position: relative;
       top: 2px;
       &.ready,&.active {
-        color:  #25CB8D;
+        color:  $green-color;
       }
 
       &.not_ready,&.pending_not_ready {
@@ -610,12 +612,12 @@ button.main-menu-item{
       }
 
       &.ready {
-        background: #25CB8D;
-        border-color: #25CB8D;
+        background: $green-color;
+        border-color: $green-color;
       }
       &.active {
-        background: #25CB8D;
-        border-color: #25CB8D;
+        background: $green-color;
+        border-color: $green-color;
       }
       &.pending_not_ready {
         background: #fdb635;
@@ -823,31 +825,18 @@ button.main-menu-item{
   color: #D4D4D4;
 }
 
-.message-trigger-area{
+.back-to-interaction{
   margin-right: 10px;
-  border-right: 1px solid #f1f1f1;
-
-  button.chat-message-trigger.mat-button {
-    background: #a3a3a3 !important;
-    min-width: 24px;
-    height: 24px;
-    line-height: 17px;
-    padding: 0 !important;
-    max-width: 20px !important;
-    border-radius: 100%;
-    transition: all .2s;
-    margin-right: 10px;
     span{
-      font-size: 15px;
-      color: #fff;
-    }
+      font-size: 22px;
+      color: $green-color;
+      transition: all 0.2s;
+      margin-right: 10px;
+      vertical-align: bottom;
+      cursor: pointer;
     &:hover{
       transition: all .2s;
-      background: #D4F5FB !important;
-
-      span{
-        color: #25AFCB;
-      }
+        color: darken($green-color, 10%);
     }
   }
 }
