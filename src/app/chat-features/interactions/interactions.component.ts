@@ -103,7 +103,7 @@ export class InteractionsComponent implements OnInit {
     private _cacheService: cacheService,
     private _socketService: socketService,
     private dialog: MatDialog
-  ) {}
+  ) { }
   ngOnInit() {
     //  console.log("i am called hello")
     this.convers = this.conversation.messages;
@@ -112,7 +112,7 @@ export class InteractionsComponent implements OnInit {
     }, 500);
   }
 
-  emoji() {}
+  emoji() { }
 
   onSend(text) {
     let message = JSON.parse(JSON.stringify(this.conversation.messages[this.conversation.messages.length - 1]));
@@ -120,13 +120,13 @@ export class InteractionsComponent implements OnInit {
     message.header.timestamp = new Date().toISOString();
     message.header.sender = {};
 
-    message.header.sender = new TopicParticipant("AGENT", this._cacheService.agent, message.header.channelSession.topicId, "PRIMARY");
+    message.header.sender = new TopicParticipant("AGENT", this._cacheService.agent, this.conversation.topicId, "PRIMARY");
 
     message.body.markdownText = text;
     delete message["botSuggestions"];
     delete message["showBotSuggestions"];
 
-    this._socketService.emit("publishCimEvent", new CimEvent("AGENT_MESSAGE", "MESSAGE", message));
+    this._socketService.emit("publishCimEvent", { cimEvent: new CimEvent("AGENT_MESSAGE", "MESSAGE", message), agentId: this._cacheService.agent.id, topicId: this.conversation.topicId });
   }
 
   openDialog(templateRef, e): void {

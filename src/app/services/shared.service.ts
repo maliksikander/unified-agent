@@ -1,12 +1,13 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
 import { snackbarService } from "./snackbar.service";
+import { cacheService } from "./cache.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class sharedService {
-  constructor(private _snackbarService: snackbarService) {}
+  constructor(private _snackbarService: snackbarService, private _cacheService: cacheService) { }
 
   private serviceMessageSource = new BehaviorSubject({ msg: null, data: null });
   serviceCurrentMessage = this.serviceMessageSource.asObservable();
@@ -25,6 +26,7 @@ export class sharedService {
     array.splice(index, 1);
   }
 
+  
   Interceptor(e, res) {
     if (res == "err") {
       if (e.statusCode == 401) {

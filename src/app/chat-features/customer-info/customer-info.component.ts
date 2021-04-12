@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChil
 import { MatDialog, MatSidenav } from "@angular/material";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { socketService } from "src/app/services/socket.service";
-import { sharedService } from "src/app/services/shared.service";
 
 @Component({
   selector: "app-customer-info",
@@ -64,9 +63,9 @@ export class CustomerInfoComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
   }
-  constructor(public _socketService: socketService, private dialog: MatDialog) {}
+  constructor(public _socketService: socketService, private dialog: MatDialog) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   close() {
     this.sidenav.close();
@@ -121,4 +120,9 @@ export class CustomerInfoComponent implements OnInit {
   moveSession(event) {
     event.stopPropagation();
   }
+
+  linkCustomer(customerId) {
+    this._socketService.linkCustomerWithInteraction(customerId, this.message.header.sender.topicId)
+  }
+
 }

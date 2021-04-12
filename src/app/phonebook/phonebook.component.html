@@ -21,6 +21,8 @@
         <mat-option value="linked">Linked</mat-option>
       </mat-select>
     </mat-form-field>
+    <span class="notifs" *ngIf="rowDefaultClick == 'linking'">Select a customer for linking</span>
+    <span class="notifs" *ngIf="rowDefaultClick != 'linking'">Select a customer for editing</span>
   </div>
 
   <div class="col-md-6 right-actions text-right">
@@ -153,7 +155,7 @@
 
     <ng-template let-expanded="expanded" pTemplate="body" let-rowData let-columns="columns">
       <tr class="slide-in-left main-row" style="cursor: pointer">
-        <td  *ngFor="let col of columns" class="ui-resizable-column">
+        <td (click)="onRowClick(rowData._id)" *ngFor="let col of columns" class="ui-resizable-column">
           {{rowData[col.field]}}
 
           <ul class="customer-labels" *ngIf="col.field == 'first_name'"><li matTooltip="Marketing" style="background: #32b67a;" ></li><li matTooltip="Corporate" style="background: #f34f1b;" ></li><li matTooltip="Product Support" style="background: #536ce8;" ></li></ul>
@@ -203,7 +205,7 @@
                   >
             <mat-icon>edit</mat-icon>
           </button>
-          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning link-btn"
+          <button (click)="linkCustomer(rowData._id)" *ngIf="rowDefaultClick == 'linking'" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning link-btn"
                  >
             <mat-icon>link</mat-icon>
           </button>

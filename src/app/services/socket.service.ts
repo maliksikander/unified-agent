@@ -4,7 +4,8 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { appConfigService } from "./appConfig.service";
 import { cacheService } from "./cache.service";
 import { sharedService } from "./shared.service";
-import { promise } from "protractor";
+import { CimEvent } from "../models/Event/cimEvent";
+import { snackbarService } from "./snackbar.service";
 
 @Injectable({
   providedIn: "root"
@@ -18,7 +19,7 @@ export class socketService {
 
   public readonly conversationsListener: Observable<any> = this._conversationsListener.asObservable();
 
-  constructor(private _appConfigService: appConfigService, private _cacheService: cacheService, private _sharedService: sharedService) {}
+  constructor(private _snackbarService: snackbarService, private _appConfigService: appConfigService, private _cacheService: cacheService, private _sharedService: sharedService) { }
 
   connectToSocket() {
     this.uri = this._appConfigService.config.SOCKET_URL;
@@ -137,7 +138,7 @@ export class socketService {
     let lookup = {};
     let activeChannelSessions = [];
 
-    for (let message, i = 0; (message = messages[i++]); ) {
+    for (let message, i = 0; (message = messages[i++]);) {
       if (message.header.sender.type.toLowerCase() == "customer") {
         let id = message.header.channelSession.id;
 
@@ -171,4 +172,10 @@ export class socketService {
       this._conversationsListener.next(this.conversations);
     }
   }
+
+  linkCustomerWithInteraction(customerId, topicId) {
+    this.emit("publishCimEvent", { cimEvent: new CimEvent("ASSOCIATED_CUSTOMER_CHANGED", "NOTIFICATION", { "Id": customerId }), agentId: this._cacheService.agent.id, topicId: topicId });
+    this._snackbarService.open("CUSTOMER LINKED SUCCESSFULLY", "succ");
+  }
+
 }

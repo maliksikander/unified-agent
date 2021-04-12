@@ -3,6 +3,8 @@ import { ConfirmationService } from "primeng/api";
 import { MessageService } from "primeng/api";
 import { MatDialog } from "@angular/material";
 import { CreateCustomerComponent } from "../create-customer/create-customer.component";
+import { ActivatedRoute, Router } from "@angular/router";
+import { socketService } from "../services/socket.service";
 
 @Component({
   selector: "app-phonebook",
@@ -560,9 +562,20 @@ export class PhonebookComponent implements OnInit {
   filterOnOff: boolean = false;
   filterActiveField;
   removable = true;
-  constructor(private dialog: MatDialog) {}
+  paramSubscriber: any;
+  rowDefaultClick = 'open';
+  topicId = null;
+  constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router, private _socketService: socketService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.paramSubscriber = this.route
+      .queryParams
+      .subscribe(params => {
+        this.rowDefaultClick = params['q'];
+        this.topicId = params['topicId'];
+        console.log("rowDefaultClick " + this.rowDefaultClick + " topicId " + this.topicId);
+      });
+  }
   setFilter(event: Event, col) {
     this.filterOnOff = !this.filterOnOff;
     event.stopPropagation();
@@ -582,4 +595,18 @@ export class PhonebookComponent implements OnInit {
       panelClass: "create-customer-dialog"
     });
   }
+  ngOnDestroy() {
+    this.paramSubscriber.unsubscribe();
+  }
+
+  linkCustomer(customerId) {
+    this._socketService.linkCustomerWithInteraction(customerId, this.topicId);
+  }
+
+  onRowClick(customerId) {
+    if (this.rowDefaultClick == "linking") {
+      this.linkCustomer(customerId);
+    }
+  }
+
 }
