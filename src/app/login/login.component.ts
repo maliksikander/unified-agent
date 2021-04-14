@@ -29,24 +29,25 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   login() {
-    this._httpService.login(this.loginForm.value).subscribe(
-      (e) => {
-        console.log("this is login resp ", e.data);
-        this._cacheService.agent = e.data;
+    // this._httpService.login(this.loginForm.value).subscribe(
+    //   (e) => {
+    //     console.log("this is login resp ", e.data);
+    //     this._cacheService.agent = e.data;
 
-        this._socketService.connectToSocket();
-        this._router.navigate(["customers"]);
-      },
-      (error) => {
-        this._sharedService.Interceptor(error.error, "err");
-      }
-    );
-    // this._cacheService.agentDetails.agent = {id:'nabeel',username:'nabeel'};
+    //     this._socketService.connectToSocket();
+    //     this._router.navigate(["customers"]);
+    //   },
+    //   (error) => {
+    //     this._sharedService.Interceptor(error.error, "err");
+    //   }
+    // );
 
-    //   this._socketService.connectToSocket();
-    //   this._router.navigate(['customers']);
+    // only for mock development
+    this._cacheService.agent = { id: '8d42617c-0603-4fbe-9863-2507c0fff9fd', username: 'nabeel', firstName: 'nabeel', lastName: 'ahmed', roles: [] };
+    this._socketService.connectToSocket();
+    this._router.navigate(['customers']);
   }
 }

@@ -1,9 +1,8 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from "@angular/core";
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, SimpleChanges, ViewChild } from "@angular/core";
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
 import { MatDialog } from "@angular/material";
-import { PerfectScrollbarConfigInterface } from "ngx-perfect-scrollbar";
 import { CimEvent } from "../../models/Event/cimEvent";
 import { v4 as uuidv4 } from "uuid";
 import { TopicParticipant } from "../../models/User/Interfaces";
@@ -15,12 +14,31 @@ declare var EmojiPicker: any;
   styleUrls: ["./interactions.component.scss"]
 })
 export class InteractionsComponent implements OnInit {
-  // tslint:disable-next-line:no-input-rename
+
   @Input() conversation: any;
+  @Input() currentTabIndex: any;
+  @Input() changeDetecter: any;
   @Input() dummy: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
-  public config: PerfectScrollbarConfigInterface = {};
   @ViewChild("replyInput", { static: true }) elementView: ElementRef;
+
+
+  setScrollPosition(scrolle) {
+    let scroller = scrolle.target;
+    let height = scroller.clientHeight;
+    let scrollHeight = scroller.scrollHeight - height;
+    let scrollTop = scroller.scrollTop;
+    let percent = Math.floor(scrollTop / scrollHeight * 100);
+    this.currentScrollPosition = percent;
+    if (percent > 80) {
+      this.showNewMessageNotif = false;
+    }
+  }
+
+  showNewMessageNotif: boolean = false;
+  currentScrollPosition: number = 100;
+  lastMsgFromAgent: boolean = false;
+
   isBarOPened = false;
   activeSessions = [];
 
@@ -96,7 +114,7 @@ export class InteractionsComponent implements OnInit {
   displaySuggestionsArea = false;
   cannedTabOpen = false;
   quickReplies = true;
-  viewHeight = "180px";
+  viewHeight = "162px";
 
   constructor(
     private _sharedService: sharedService,
@@ -127,6 +145,7 @@ export class InteractionsComponent implements OnInit {
     delete message["showBotSuggestions"];
 
     this._socketService.emit("publishCimEvent", { cimEvent: new CimEvent("AGENT_MESSAGE", "MESSAGE", message), agentId: this._cacheService.agent.id, topicId: this.conversation.topicId });
+    this.lastMsgFromAgent = true;
   }
 
   openDialog(templateRef, e): void {
@@ -181,5 +200,34 @@ export class InteractionsComponent implements OnInit {
   topicUnsub() {
     console.log("going to unsub from topic " + this.conversation.topicId);
     this._socketService.emit("topicUnsubscription", { topicId: this.conversation.topicId, agentId: this._cacheService.agent.id });
+  }
+
+  downTheScrollAfterMilliSecs(milliseconds, behavior) {
+    setTimeout(() => {
+      document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior });
+    }, milliseconds);
+    // if (this.componentRef && this.componentRef.directiveRef) {
+    //   this.componentRef.directiveRef.scrollToBottom();
+    // }
+
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+ 
+    if (changes.changeDetecter && changes.changeDetecter.currentValue && this.conversation.index == this._sharedService.matCurrentTabIndex) {
+      if (this.lastMsgFromAgent) {
+        this.downTheScrollAfterMilliSecs(50, 'smooth');
+      } else {
+        if (this.currentScrollPosition < 95) {
+          this.showNewMessageNotif = true;
+        } else {
+          this.downTheScrollAfterMilliSecs(50, 'smooth');
+
+        }
+      }
+    }
+    if (changes.currentTabIndex) {
+      this.downTheScrollAfterMilliSecs(500, 'auto')
+    }
+    this.lastMsgFromAgent = false;
   }
 }

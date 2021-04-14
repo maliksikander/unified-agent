@@ -106,7 +106,7 @@
     <!--Interactions Area Start -->
     <div id="chat-content" class="container-fluid main-chat-area">
       <div class="row">
-        <div class="chat-messages-main" [perfectScrollbar]
+        <div (scroll)="setScrollPosition($event)" class="chat-messages-main"
           [style.height]="replyInput?.offsetHeight > 80 ? 'calc(100% - ' + (replyInput?.offsetHeight+100)+'px)' : 'calc(100% - '+ viewHeight+')'">
 
           <!-- voice message chat area -->
@@ -118,7 +118,7 @@
             <div class="int-date"><span>Mon<b>09</b></span></div>
             <div *ngFor="let message of conversation.messages">
               <div class="chat-message"
-                [ngClass]="((message.header.sender.type | lowercase) == 'customer') ?'user-message':'agent-message'">
+                [ngClass]="((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message slide-in-bck-bl'">
                 <div class="profile-pic">
                   <div
                     class="active-channel channel-icon {{message.header.channelSession.channel.channelConnector.type.name | lowercase}}">
@@ -159,23 +159,33 @@
 
               </div>
             </div>
-          </div>
-        </div>
+            <div id="chat-area-end"></div>
 
+          </div>
+
+        </div>
       </div>
 
     </div>
+
     <div class="chat-footer">
+      <div class="slide-in-bottom" *ngIf="showNewMessageNotif" (click)="downTheScrollAfterMilliSecs(0,'smooth')" class="new-msg-notif">New
+        Message
+        <span class="material-icons">
+          arrow_drop_down
+        </span>
+      </div>
       <span class="selected-channel">Selected Channel: <label>{{conversation.messages[conversation.messages.length
           -1].header.channelSession.channel.channelConnector.type.name | titlecase}}</label></span>
+
       <div class="message-composer">
         <form class="reply-form">
           <label class="count-reply">{{replyInput.value.length}}/200</label>
           <div class="mat-form-field chat-area" [ngClass]="{'expand-area-height':expanedHeight > 50}">
-            <textarea [perfectScrollbar] (click)="onTextAreaClick()" data-emoji-picker="true" [(ngModel)]="message"
-              (keyup)="onKey($event)" name="message" (change)="textChanged($event)" [matAutocomplete]="auto" matInput
-              cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none"
-              #replyInput name="message"
+            <textarea (keyup.enter)="onSend(replyInput.value); replyInput.value = null" (click)="onTextAreaClick()" data-emoji-picker="true" [(ngModel)]="message" (keyup)="onKey($event)"
+              name="message" (change)="textChanged($event)" [matAutocomplete]="auto" matInput cdkTextareaAutosize
+              cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none" #replyInput
+              name="message"
               placeholder="{{conversation.messages[conversation.messages.length -1]?.botSuggestions ? 'Bot suggestions are available type / for viewing' :'Type a message here...'}}"></textarea>
             <!-- [ngClass]="{'animate-content': displaySuggestionsAnimation}" -->
 
@@ -274,20 +284,20 @@
           </div>
 
           <div class="chat-composer-trigger">
-            <button class="video-call composer-trigger" (click)="emoji()" mat-icon-button>
+            <!-- <button class="video-call composer-trigger" (click)="emoji()" mat-icon-button>
               <mat-icon>voice_chat</mat-icon>
-            </button>
+            </button> -->
             <button (click)="onSend(replyInput.value); replyInput.value = null " *ngIf="replyInput.value.length > 0"
               class="send-btn composer-trigger" mat-icon-button>
               <mat-icon>send</mat-icon>
             </button>
 
-            <button class="send-btn attachment-btn composer-trigger" mat-icon-button
+            <!-- <button class="send-btn attachment-btn composer-trigger" mat-icon-button
               *ngIf="replyInput.value.length < 1">
               <input #myFileInput type="file" name="ef_chatbox_chat_file_upload" id="uploadFileBtn"
                 class="file-upload-input">
               <mat-icon>attach_file</mat-icon>
-            </button>
+            </button> -->
 
             <!--            <span class="attachment-btn" >-->
             <!--            <input #myFileInput *ngIf="replyInput.value.length < 1" (change)="uploadFile($event.target.files)" type="file" [disabled]="chatServerDown || conversation.state =='ended'"-->

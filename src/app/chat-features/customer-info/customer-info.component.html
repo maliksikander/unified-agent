@@ -9,7 +9,7 @@
 
 <!--Right sidebar-->
 <mat-sidenav-container class="right-side-bar-main" (backdropClick)="close()">
-  <mat-sidenav #sidenav (keydown.escape)="close()" disableClose position="end" [perfectScrollbar]>
+  <mat-sidenav #sidenav (keydown.escape)="close()" disableClose position="end">
     <div class="bar-content">
 
       <mat-accordion class="right-drag-accordion" cdkDropList (cdkDropListDropped)="drop($event)">

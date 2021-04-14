@@ -1,14 +1,14 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
 import { snackbarService } from "./snackbar.service";
-import { cacheService } from "./cache.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class sharedService {
-  constructor(private _snackbarService: snackbarService, private _cacheService: cacheService) { }
+  constructor(private _snackbarService: snackbarService) { }
 
+  matCurrentTabIndex = 0;
   private serviceMessageSource = new BehaviorSubject({ msg: null, data: null });
   serviceCurrentMessage = this.serviceMessageSource.asObservable();
   serviceChangeMessage(data: any) {

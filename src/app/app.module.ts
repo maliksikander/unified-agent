@@ -70,4 +70,4 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   exports: [BrowserModule, CommonModule, BrowserAnimationsModule],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

@@ -14,6 +14,7 @@ export class socketService {
   socket: any;
   uri: string;
   conversations: any = [];
+  conversationIndex = -1;
 
   private _conversationsListener: BehaviorSubject<any> = new BehaviorSubject([]);
 
@@ -113,7 +114,8 @@ export class socketService {
           topicId: topicId,
           messages: [cimEvent.data],
           activeChannelSessions: [cimEvent.data.header.channelSession],
-          unReadCount: undefined
+          unReadCount: undefined,
+          index: ++this.conversationIndex
         });
       }
       this._conversationsListener.next(this.conversations);
@@ -130,7 +132,7 @@ export class socketService {
       }
     });
     let activeChannelSessions = this.getActiveChannelSessions(oldTopicMessages);
-    this.conversations.push({ topicId: topicId, messages: oldTopicMessages, activeChannelSessions: activeChannelSessions, unReadCount: undefined });
+    this.conversations.push({ topicId: topicId, messages: oldTopicMessages, activeChannelSessions: activeChannelSessions, unReadCount: undefined, index: ++this.conversationIndex });
     this._conversationsListener.next(this.conversations);
   }
 
@@ -152,9 +154,23 @@ export class socketService {
   }
 
   removeConversation(topicId) {
-    this.conversations = this.conversations.filter((e) => {
-      return e.topicId != topicId;
+
+    // fetching the whole conversation which needs to be removed
+    const removedConversation = this.conversations.find((conversation) => { return conversation.topicId == topicId });
+
+    // remove the conversation from array
+    this.conversations = this.conversations.filter((conversation) => {
+      return conversation.topicId != topicId;
     });
+
+    // alter the rest of the conversation's indexes whose indexes are greater than the index of removed conversation
+    // in order to remap the conversation indexex along with the indexes of the map tabs 
+    this.conversations.map((conversation) => {
+      if (conversation.index > removedConversation.index) {
+        conversation.index = --conversation.index;
+      }
+    });
+
     this._conversationsListener.next(this.conversations);
   }
 
