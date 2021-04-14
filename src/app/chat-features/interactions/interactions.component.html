@@ -118,7 +118,7 @@
             <div class="int-date"><span>Mon<b>09</b></span></div>
             <div *ngFor="let message of conversation.messages">
               <div class="chat-message"
-                [ngClass]="((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message slide-in-bck-bl'">
+                [ngClass]="((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message slide-in-right'">
                 <div class="profile-pic">
                   <div
                     class="active-channel channel-icon {{message.header.channelSession.channel.channelConnector.type.name | lowercase}}">

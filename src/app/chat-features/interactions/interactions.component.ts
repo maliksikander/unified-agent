@@ -22,6 +22,7 @@ export class InteractionsComponent implements OnInit {
   @Output() expandCustomerInfo = new EventEmitter<any>();
   @ViewChild("replyInput", { static: true }) elementView: ElementRef;
 
+  @HostListener("scroll", ['$event'])
 
   setScrollPosition(scrolle) {
     let scroller = scrolle.target;
@@ -206,11 +207,8 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior });
     }, milliseconds);
-    // if (this.componentRef && this.componentRef.directiveRef) {
-    //   this.componentRef.directiveRef.scrollToBottom();
-    // }
-
   }
+  
   ngOnChanges(changes: SimpleChanges): void {
  
     if (changes.changeDetecter && changes.changeDetecter.currentValue && this.conversation.index == this._sharedService.matCurrentTabIndex) {

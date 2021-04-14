@@ -211,12 +211,8 @@
     height: calc(100% - 132px);
     width: calc(100% - 0px);
     position: absolute;
-    overflow: auto;
+    overflow-x: hidden;
     padding: 0 20px;
-
-    //left: 0;
-
-    //  message-bubble
 
     .chat-message {
       margin-bottom: 12px;
