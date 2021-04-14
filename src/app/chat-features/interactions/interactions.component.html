@@ -106,11 +106,11 @@
     <!--Interactions Area Start -->
     <div id="chat-content" class="container-fluid main-chat-area">
       <div class="row">
-        <div (scroll)="setScrollPosition($event)" class="chat-messages-main"
+
+        <ng-scrollbar class="chat-messages-main my-scrollbar"
           [style.height]="replyInput?.offsetHeight > 80 ? 'calc(100% - ' + (replyInput?.offsetHeight+100)+'px)' : 'calc(100% - '+ viewHeight+')'">
-
           <!-- voice message chat area -->
-
+          
 
           <!-- simple chat area -->
 
@@ -162,14 +162,14 @@
             <div id="chat-area-end"></div>
 
           </div>
-
-        </div>
+          </ng-scrollbar>
       </div>
 
     </div>
 
     <div class="chat-footer">
-      <div class="slide-in-bottom" *ngIf="showNewMessageNotif" (click)="downTheScrollAfterMilliSecs(0,'smooth')" class="new-msg-notif">New
+      <div class="slide-in-bottom" *ngIf="showNewMessageNotif" (click)="downTheScrollAfterMilliSecs(0,'smooth')"
+        class="new-msg-notif">New
         Message
         <span class="material-icons">
           arrow_drop_down
@@ -182,8 +182,9 @@
         <form class="reply-form">
           <label class="count-reply">{{replyInput.value.length}}/200</label>
           <div class="mat-form-field chat-area" [ngClass]="{'expand-area-height':expanedHeight > 50}">
-            <textarea (keyup.enter)="onSend(replyInput.value); replyInput.value = null" (click)="onTextAreaClick()" data-emoji-picker="true" [(ngModel)]="message" (keyup)="onKey($event)"
-              name="message" (change)="textChanged($event)" [matAutocomplete]="auto" matInput cdkTextareaAutosize
+            <textarea (keyup.enter)="onSend(replyInput.value); replyInput.value = null" (click)="onTextAreaClick()"
+              data-emoji-picker="true" [(ngModel)]="message" (keyup)="onKey($event)" name="message"
+              (change)="textChanged($event)" [matAutocomplete]="auto" matInput cdkTextareaAutosize
               cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none" #replyInput
               name="message"
               placeholder="{{conversation.messages[conversation.messages.length -1]?.botSuggestions ? 'Bot suggestions are available type / for viewing' :'Type a message here...'}}"></textarea>

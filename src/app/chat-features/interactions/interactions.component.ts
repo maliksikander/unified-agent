@@ -6,6 +6,7 @@ import { MatDialog } from "@angular/material";
 import { CimEvent } from "../../models/Event/cimEvent";
 import { v4 as uuidv4 } from "uuid";
 import { TopicParticipant } from "../../models/User/Interfaces";
+import { NgScrollbar } from 'ngx-scrollbar';
 
 declare var EmojiPicker: any;
 @Component({
@@ -22,18 +23,21 @@ export class InteractionsComponent implements OnInit {
   @Output() expandCustomerInfo = new EventEmitter<any>();
   @ViewChild("replyInput", { static: true }) elementView: ElementRef;
 
-  @HostListener("scroll", ['$event'])
+  @ViewChild(NgScrollbar, { static: true }) scrollbarRef: NgScrollbar;
 
-  setScrollPosition(scrolle) {
-    let scroller = scrolle.target;
-    let height = scroller.clientHeight;
-    let scrollHeight = scroller.scrollHeight - height;
-    let scrollTop = scroller.scrollTop;
-    let percent = Math.floor(scrollTop / scrollHeight * 100);
-    this.currentScrollPosition = percent;
-    if (percent > 80) {
-      this.showNewMessageNotif = false;
+  ngAfterViewInit() {
+    this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
+      let scroller = scrolle.target;
+      let height = scroller.clientHeight;
+      let scrollHeight = scroller.scrollHeight - height;
+      let scrollTop = scroller.scrollTop;
+      let percent = Math.floor(scrollTop / scrollHeight * 100);
+      this.currentScrollPosition = percent;
+      if (percent > 80) {
+        this.showNewMessageNotif = false;
+      }
     }
+    );
   }
 
   showNewMessageNotif: boolean = false;
@@ -208,9 +212,9 @@ export class InteractionsComponent implements OnInit {
       document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior });
     }, milliseconds);
   }
-  
+
   ngOnChanges(changes: SimpleChanges): void {
- 
+
     if (changes.changeDetecter && changes.changeDetecter.currentValue && this.conversation.index == this._sharedService.matCurrentTabIndex) {
       if (this.lastMsgFromAgent) {
         this.downTheScrollAfterMilliSecs(50, 'smooth');
