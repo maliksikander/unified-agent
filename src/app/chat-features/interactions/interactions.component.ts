@@ -14,6 +14,10 @@ declare var EmojiPicker: any;
 export interface User {
   name: string;
 }
+interface Search {
+  value: string;
+  viewValue: string;
+}
 
 @Component({
   selector: 'app-interactions',
@@ -80,7 +84,14 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
 
     },
   ];
-  options: string[] = ['Glenn Helgass', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', 'Glenn Helgass', ' Ev Gayforth'];
+
+  search: Search[] = [
+    {value: 'all', viewValue: 'All'},
+    {value: 'web', viewValue: 'Web'},
+    {value: 'Whatsapp', viewValue: 'Whatsapp'}
+  ];
+  selectedSearch = this.search[0].value;
+  options: string[] = ['Glenn Helgass', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt'];
   categories: string[] = ['Fayina Addinall', 'Doy Ortelt', ' Ev Gayforth', 'Adam Joe Stanler'];
   whisper = false;
   displayUserList = false;
@@ -137,7 +148,8 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   quickReplies = true;
   viewHeight = '180px';
   chatTransferTo;
-
+  @Input() max: any;
+  today = new Date();
   constructor(private snackBar: MatSnackBar, private _cacheService: cacheService, private _socketService: socketService, private dialog: MatDialog) {
 
   }
@@ -194,7 +206,7 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   transferRequest(message: string, action: string, templateRef, e) {
     setTimeout(() => {
       this.snackBar.open('Chat transferred successfully to ' + message, action, {
-        duration: 2000,
+        duration: 5000,
         panelClass: 'chat-success-snackbar',
         horizontalPosition: 'right',
         verticalPosition: 'bottom'

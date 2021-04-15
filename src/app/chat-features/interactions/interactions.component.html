@@ -17,6 +17,33 @@
       </h5>
     </div>
     <div class="col-md-8 agent-actions">
+
+      <ul class="list-group list-group-horizontal agent-controls main-search">
+        <li class="list-group-item">
+          <mat-form-field class="calendar-select" appearance="fill">
+            <input matInput [matDatepicker]="picker" [max]="today">
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <button mat-fab aria-label="Select Date" (click)="picker.open()">
+            <mat-icon>today</mat-icon>
+          </button>
+        </li>
+        <li class="list-group-item">
+          <button mat-fab aria-label="Transfer Chat">
+            <mat-icon>search</mat-icon>
+          </button>
+        </li>
+        <li class="list-group-item selection-trigger channel-search">
+          <mat-form-field appearance="outline">
+            <mat-select [(value)]="selectedSearch">
+              <mat-option [value]="option.value" *ngFor="let option of search">{{ option.viewValue }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </li>
+
+</ul>
+
+
       <ul class="list-group list-group-horizontal agent-controls">
         <li class="list-group-item">
           <button mat-fab class="barge-in">
@@ -640,8 +667,7 @@
                       name="message"  (change)="textChanged($event)" [matAutocomplete]="auto"  matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea"
               class="resize-none" #replyInput name="message" placeholder="Type a message here..."></textarea>
 
-            <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete {{whisper}}" [ngClass]="{'user-list': whisper}">
-
+            <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete {{whisper}} {{isBarOPened ? 'user-bar-opened': ''}}" [ngClass]="{'user-list': whisper}">
               <div class="suggested-content" *ngIf="whisper && displayUserList" [perfectScrollbar] style="max-height: 220px">
                 <mat-option *ngFor="let option of userList  | LockFilter: message" [value]="option.name">
                   {{option.name}} <small *ngIf="option.team">({{option.team}})</small><span *ngIf="option.activeCount">({{option.activeCount}})</span>

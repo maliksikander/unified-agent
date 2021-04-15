@@ -1267,20 +1267,20 @@ padding: 0 !important;
     right: 285px !important;
   }
 }
-.suggested-answer {
-  position: fixed !important;
-  display: block !important;
-  max-width: calc(100% - 130px) !important;
+.suggested-answer.answer-autocomplete {
+  position: fixed;
+  display: block;
+  max-width: calc(100% - 75px);
   opacity: 1;
-  left: 70px !important;
+  left: 70px;
   bottom: 87px;
-  background: #fff !important;
-  z-index: 999999 !important;
-  height: auto !important;
+  background: #fff;
+  z-index: 999;
+  height: auto;
   padding: 0 15px;
   width: 100%;
   overflow: hidden;
-  -webkit-box-shadow: none !important;
+  -webkit-box-shadow: none;
   max-height: 315px;
   box-shadow: 0px -2px 4px -1px rgba(0, 0, 0, 0.2), 0px -2px 5px 0px rgba(0, 0, 0, 0.14), 0px -10px 10px 0px rgba(0, 0, 0, 0.12) !important;
   border-radius: 0 !important;
@@ -1291,9 +1291,9 @@ padding: 0 !important;
   }
 
   &.true {
-    width: auto;
+    width: auto !important;
     min-width: 240px;
-    background: #FDFAEF !important;
+    background: #FDFAEF;
     padding: 0 5px;
     overflow: hidden;
 
@@ -1318,6 +1318,11 @@ padding: 0 !important;
       }
     }
   }
+  //Canned message if user-profile bar opened
+  &.user-bar-opened{
+    width: calc(100% - 360px);
+  }
+
 
   .mat-tab-header {
     padding: 0;
@@ -1546,27 +1551,6 @@ padding: 0 !important;
   transform: scale(1) !important;
 }
 
-//.suggested-answer .suggested-content mat-option.mat-option {
-//  padding: 6px 5px !important;
-//  line-height: 20px !important;
-//  height: auto !important;
-//}
-
-//.suggested-answer .suggested-tabs-update mat-option {
-//  float: left;
-//  margin: 0 10px !important;
-//  height: 50px;
-//  place-self: flex-end;
-//  transition: all .2s;
-//  position: relative;
-//  z-index: 99;
-//  flex: 1;
-//  min-height: 51px;
-//  border: 2px solid #c8e8ff;
-//  padding: 10px;
-//  background: #FBFBFB !important;
-//
-//}
 .suggested-answer .suggested-tabs-update {
   position: relative;
   display: flex;
@@ -1750,6 +1734,31 @@ padding: 0 !important;
 
 //Announcement Selection Trigger
 .selection-trigger {
+  //top: 1px;
+  min-width: 80px;
+  font-size: 12px;
+  font-weight: 600;
+  &.channel-search{
+    .mat-form-field-infix{
+      padding: 1px 0;
+      border-top-width: 8px !important;
+      height: 30px;
+      line-height: 15px;
+    }
+    .mat-form-field-flex{
+      background: #fff;
+      border-radius: 20px;
+      margin: 0;
+    }
+    .mat-form-field{
+      width: 100%;
+    }
+    .mat-form-field-outline{
+      div{
+        border: 0 !important;
+      }
+    }
+  }
   .mat-form-field-infix {
     padding: 1px 0;
     border-top-width: 10px !important;

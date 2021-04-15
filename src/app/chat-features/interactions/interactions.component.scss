@@ -64,7 +64,14 @@
   }
 }
 
-
+//Calendar Selection
+.calendar-select {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  position: absolute;
+  opacity: 0;
+}
 .agent-actions {
   display: inline-flex;
   justify-content: flex-end;
