@@ -2499,3 +2499,38 @@ color: #fff;
 
   }
   }
+
+//Customer Schema
+.schema-box.schema-detail-check {
+  margin: 0 !important;
+  border-radius: 5px 5px 0 0 !important;
+  background: #e1f8ff !important;
+}
+.create-attr{
+  .mat-form-field-infix {
+    border-top: 3px solid transparent !important;
+  }
+  .mat-form-field-subscript-wrapper {
+    padding: 0;
+    top: 30px;
+  }
+
+  .mat-checkbox-label {
+    font-size: 12px;
+  }
+  .mat-checkbox-frame{
+    border: 1px solid rgba(0,0,0,.12);
+  }
+  .mat-checkbox-layout {
+    color: rgb(119, 119, 119);
+  }
+  .mat-checkbox-inner-container {
+    width: 31px;
+    height: 31px;
+  }
+  .check-box{
+    label{
+      align-items: center;
+    }
+  }
+}

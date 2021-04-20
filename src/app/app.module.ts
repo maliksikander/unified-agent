@@ -22,6 +22,9 @@ import { AgentAnnouncementsComponent } from './announcement/agent-announcements/
 import {CreateLabelDiagComponent} from './new-components/create-label/create-label-diag/create-label-diag.component';
 import {CreateLabelComponent} from './new-components/create-label/create-label.component';
 import { ConfirmationDialogComponent } from './new-components/confirmation-dialog/confirmation-dialog.component';
+import {SchemaSettingsComponent} from './new-components/schema-settings/schema-settings.component';
+import {CreateAttributeComponent} from './new-components/create-attribute/create-attribute.component';
+import {InlineEditorModule} from '@qontu/ngx-inline-editor';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,9 @@ import { ConfirmationDialogComponent } from './new-components/confirmation-dialo
     AgentAnnouncementsComponent,
     CreateLabelDiagComponent,
     CreateLabelComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    SchemaSettingsComponent,
+    CreateAttributeComponent
   ],
   imports: [
     BrowserModule,
@@ -46,12 +51,14 @@ import { ConfirmationDialogComponent } from './new-components/confirmation-dialo
     CommonModule,
     BrowserAnimationsModule,
     SharedModule,
+    InlineEditorModule
 ],
   entryComponents: [
     AnnouncementDialogComponent,
     CreateLabelDiagComponent,
     ConfirmationDialogComponent,
-    CreateCustomerComponent
+    CreateCustomerComponent,
+    CreateAttributeComponent
   ],
   providers: [appConfigService, MessageService, ConfirmationService,
     {

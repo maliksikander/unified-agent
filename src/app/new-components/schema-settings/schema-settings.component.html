@@ -1,0 +1,150 @@
+<div  class="label-main row m-0">
+  <div  class="customer-heading col-md-6"><h4 >Customer Attributes</h4></div>
+</div>
+
+
+<div class="main-content">
+  <div cdkDropListGroup>
+    <div class="schema-container">
+      <div cdkDropList [cdkDropListData]="schema2" class="schema-list" (cdkDropListDropped)="drop($event)">
+        <div *ngFor="let item of schema2; let i = index;">
+          <div (click)="openDetails(item._id)" class="schema-box" cdkDrag>
+            <span class="n">{{i + 1}}</span>
+            <mat-icon class="shadow">more_vert</mat-icon>
+            <span class="heading">{{item.label}}</span><span
+            class="steric" *ngIf="item.is_required">*</span>
+            <mat-icon *ngIf="item.is_deletable != false" matTooltip=DLT
+                      (click)="delete($event,item._id)" class="delete-btn">close
+            </mat-icon>
+          </div>
+          <div class="schema-details" *ngIf="showDetails && divId == item._id">
+            <div class="row m-0">
+<!--              <div class="input-editor">-->
+                <div class="input-align col-md-6 pr-0">
+                  <strong> Label </strong> : <span class="un-edit">{{item.label}}</span>
+
+                </div>
+<!--              </div>-->
+<!--              <div class="input-editor">-->
+                <div class="input-align col-md-6 pr-0">
+                  <strong> Type </strong> : <span class="un-edit"> {{ item.type}}</span>
+                </div>
+                <div *ngIf="item.type == 'string' || item.type == 'url' " class="input-align col-md-6 pr-0">
+                  <strong> Range </strong>
+                  :
+                  <inline-editor [ngClass]="{'uneditable': item.is_deletable == false || item.type == 'url' }"
+                                 [disabled]="item.is_deletable == false || item.type == 'url'"
+                                 pattern="^([1-9][0-9]{0,2}|1000)$"
+                                 class="cover-spaces" type="text" [(ngModel)]="item.characters"
+                                 (onSave)="saveEditable($event, item._id,'schema2')" name="characters"
+                                 (onError)="myHandleError($event,'char')"></inline-editor>
+                </div>
+<!--              </div>-->
+<!--              <div class="input-editor">-->
+                <div class="input-align col-md-6 pr-0">
+                  <strong> Mandatory </strong>
+
+                  :
+                  <inline-editor [ngClass]="{'uneditable': item.is_deletable == false }"
+                                 [disabled]='item.is_deletable == false' class="cover-spaces" type="select"
+                                 [(ngModel)]="item.is_required" (onSave)="saveEditable($event, item._id,'schema2')"
+                                 name="is_required" [options]="editableSelectOptions" (onError)="myHandleError($event)">
+                  </inline-editor>
+
+                </div>
+<!--              </div>-->
+
+<!--              <div class="input-editor">-->
+                <div class="input-align col-md-6 pr-0">
+                  <strong> Description </strong>
+
+                  :
+                  <inline-editor [ngClass]="{'uneditable': item.is_deletable == false }"
+                                 [disabled]='item.is_deletable == false' min="1" max="100" class="cover-spaces"
+                                 type="textarea" [(ngModel)]="item.desc"
+                                 (onSave)="saveEditable($event, item._id,'schema2')"
+                                 name="desc" (onError)="myHandleError($event,'desc')"></inline-editor>
+
+
+                </div>
+<!--              </div>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="schema-container">
+      <div cdkDropList [cdkDropListData]="schema1" class="schema-list" (cdkDropListDropped)="drop($event)">
+        <div *ngFor="let item of schema1; let i = index">
+          <div [ngClass]="{'schema-detail-check': showDetails && divId == item._id}" (click)="openDetails(item._id)" class="schema-box" cdkDrag>
+            <span class="n">{{i + 1 + schema2.length}}</span>
+            <mat-icon class="shadow">more_vert</mat-icon>
+            <span class="heading">{{item.label}}</span><span
+            class="steric" *ngIf="item.is_required">*</span>
+            <mat-icon *ngIf="item.is_deletable != false" matTooltip=.DLT}}
+                      (click)="delete($event,item._id)" class="delete-btn">close
+            </mat-icon>
+          </div>
+          <div class="schema-details" *ngIf="showDetails && divId == item._id">
+            <div class="row m-0">
+<!--              <div class="input-editor">-->
+                <div class="input-align col-md-6 pr-0">
+                  <strong> Label </strong> : <span class="un-edit">{{item.label}}</span>
+
+                </div>
+<!--              </div>-->
+<!--              <div class="input-editor">-->
+                <div class="input-align col-md-6 pr-0">
+                  <strong> Type </strong> : <span class="un-edit"> {{ item.type}}</span>
+                </div>
+                <div *ngIf="item.type == 'string' || item.type == 'url'" class="input-align col-md-6 pr-0">
+                  <strong> Range </strong>
+                  :
+                  <inline-editor [ngClass]="{'uneditable': item.is_deletable == false || item.type == 'url' }"
+                                 [disabled]="item.is_deletable == false || item.type == 'url' "
+                                 pattern="^([1-9][0-9]{0,2}|1000)$"
+                                 class="cover-spaces" type="text" [(ngModel)]="item.characters"
+                                 (onSave)="saveEditable($event, item._id,'schema1')" name="characters"
+                                 (onError)="myHandleError($event,'char')"></inline-editor>
+                </div>
+<!--              </div>-->
+<!--              <div class="input-editor">-->
+                <div class="input-align col-md-6 pr-0">
+                  <strong> Mandatory </strong>
+
+                  :
+                  <inline-editor [ngClass]="{'uneditable': item.is_deletable == false }"
+                                 [disabled]='item.is_deletable == false' class="cover-spaces" type="select"
+                                 [(ngModel)]="item.is_required" (onSave)="saveEditable($event, item._id,'schema1')"
+                                 name="is_required" [options]="editableSelectOptions"
+                                 (onError)="myHandleError()"></inline-editor>
+
+                </div>
+<!--              </div>-->
+
+<!--              <div class="input-editor">-->
+                <div class="input-align col-md-6 pr-0">
+                  <strong> Description </strong>
+
+                  :
+                  <inline-editor [ngClass]="{'uneditable': item.is_deletable == false }"
+                                 [disabled]='item.is_deletable == false' min="1" max="100" class="cover-spaces"
+                                 type="textarea" [(ngModel)]="item.desc"
+                                 (onSave)="saveEditable($event, item._id,'schema1')"
+                                 name="desc" (onError)="myHandleError($event,'desc')"></inline-editor>
+
+
+                </div>
+<!--              </div>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="schema1" (click)="addAttr()" class="add-attr">Create Attribute</div>
+  <button class="add-attr fixed-save" (click)="onClick()">Save</button>
+
+</div>
+

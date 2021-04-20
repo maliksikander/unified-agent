@@ -83,6 +83,7 @@ import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown';
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     NgxMatDatetimePickerModule,
+    NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
     AngularMultiSelectModule
