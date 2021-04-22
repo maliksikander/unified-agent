@@ -8,7 +8,7 @@
   }
   h4{
     font-size: 16px;
-    color: #25afcb;
+    color: #999;
     margin: 0;
     display: inline-block;
     line-height: 30px;
@@ -31,10 +31,10 @@
   padding: 0px 6px;
 
   .shadow {
-    text-shadow: 5px 0 0 #1f9ec2;
+    text-shadow: 5px 0 0 #999;
     margin-right: 5px;
     cursor: move;
-    color: #1f9ec2;
+    color: #999;
     font-size: 18px;
     padding-top: 4px;
     box-shadow: none !important;
@@ -115,20 +115,6 @@
     display: inline-block;
   }
 }
-.fixed-save {
-  outline: none !important;
-    width: 125px !important;
-    height: 35px !important;
-    border: none !important;
-    border-radius: 4px !important;
-    color: #565454 !important;
-    font-weight: 500 !important;
-    cursor: pointer !important;
-    background: #bde9fb !important;
-    box-shadow: none !important;
-    float: right !important;
-    right: 7px !important;
-}
 
 .h6 {
 
@@ -171,28 +157,6 @@
   margin-left: 5px;
 }
 
-.add-attr {
-
-  position: relative;
-    border-radius: 8px;
-    float: left;
-    cursor: pointer;
-    height: 32px;
-    padding: 7px;
-    padding-left: 10px;
-    padding-right: 10px;
-    font-size: 13px;
-    justify-content: center;
-    min-width: 32px;
-    margin-top: 9px;
-    margin-left: 9px;
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
-    width: fit-content;
-    background-color: white;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 1px 2px rgba(0, 0, 0, 0.23);
-    color: #189eaf;
-}
 
 .n{
   background: #26a2c899;
@@ -209,4 +173,29 @@
 .steric{
   position: relative;
   left: -36px;
+}
+
+.create-attribute {
+  padding: 15px 0;
+  text-align: left;
+
+  p{
+    display: inline-block;
+    margin: 0;
+    color: #4c4c4c;
+    font-size: 13px;
+    span{
+      color: #6EC3DD;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+  }
+  button {
+    float: right;
+    background: #6EC3DD;
+    color: #fff;
+    font-size: 12px;
+    height: 30px;
+    line-height: 30px;
+  }
 }

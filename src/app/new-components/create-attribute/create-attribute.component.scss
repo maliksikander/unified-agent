@@ -18,9 +18,8 @@
 
 .header {
   color: #1f9ec2;
-  background: #cdf1ff;
-  width: 100%;
-  height: 13%;
+  background: #f3f6f8;
+  position: relative;
 
   .headerName {
     padding: 8px 12px;
@@ -51,8 +50,7 @@
     height: 1px;
     overflow: visible;
     width: 94%;
-    color: #bcbdbc;
-    background: #c1c1c1;
+    background: #efefef;
     border: none;
 }
   label{
@@ -61,18 +59,26 @@
     margin: 0;
   }
 
-.footer{
-  padding-top: 0;
-}
-
 .check-box{
-  padding:  20px 0 0 0;
-  margin: 0;
+  padding: 20px 0 0 0;
+  margin: 0 0 0 15px;
   align-self: center;
+
+  &.channel-identifier {
+    text-align: left;
+    padding: 0;
+    position: relative;
+    margin-right: 15px;
+    top: 3px;
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+  }
 }
 
 .check-box2{
-  padding: 20px 0px 0px 27px;
+  padding: 20px 0 0 27px;
   max-width: 190px;
 }
 .channel-selection {
@@ -91,45 +97,45 @@
     font-size: 13px;
   }
 
-
-
 }
 }
 
-.save-btn{
-  outline: none;
-  width: auto;
-  min-width: 70px;
-  padding: 0px 35px 0px 35px;
-  height: 34px;
-  border: none;
-  border-radius: 4px;
-  color: #565454;
-  font-weight: 500;
-  cursor: pointer;
-  margin: 0 0 0 12px;
-  background: #bde9fb;
-}
-
-.cancel-btn{
-  height: 34px;
-  width: auto;
-  min-width: 70px;
-  padding: 0px 20px 0px 20px;
-  outline: none;
-  background: #a9a9a9;
-  border: none;
-  border-radius: 4px;
-  font-weight: 500;
-  cursor: pointer;
-  color: white;
-}
-
-.btns{
-  text-align: right;
-  padding: 0 22px;
-}
 .characters-length{
   padding-right: 28px;
   padding-left: 0;
+}
+
+.footer{
+  padding-top: 0;
+
+  .footer-actions{
+    text-align: right;
+    padding: 0 22px;
+    position: relative;
+    .action-right {
+      position: absolute;
+      right: 22px;
+      top: 30px;
+    }
+
+    button{
+      height: 32px;
+      width: auto;
+      padding: 0 15px;
+      outline: none;
+      background: #767676;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      color: white;
+      font-size: 12px;
+      font-weight: 500;
+
+      &.save-btn{
+        color: #565454;
+        background: #bde9fb;
+        margin-left: 10px;
+      }
+    }
+  }
 }

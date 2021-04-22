@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { moveItemInArray, CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import {CreateAttributeComponent} from '../create-attribute/create-attribute.component';
+import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-schema-settings',
@@ -216,18 +217,30 @@ export class SchemaSettingsComponent implements OnInit {
 
   loadSchemas() {
     // this._callService.getContactSchema().subscribe((e) => {
-    //
-    this.schema2 = this.schema1;
 
-      // this.schema1 = null;
-      // this.schema2 = null;
-      // this.schema1 = this.schema2.sort((a, b) => { return a.sort_order - b.sort_order });
+
+      this.schema1 = this.schema1.sort((a, b) => { return a.sort_order - b.sort_order });
       let n = (this.schema1.length) / 2;
-    //
-       this.schema1.splice(0, n);
-    //
+
+      this.schema2 = this.schema1.splice(0, n);
+
     // });
   }
+
+  // loadSchemas() {
+  //   // this._callService.getContactSchema().subscribe((e) => {
+  //   //
+  //   this.schema2 = this.schema1;
+  //
+  //     // this.schema1 = null;
+  //     // this.schema2 = null;
+  //     // this.schema1 = this.schema2.sort((a, b) => { return a.sort_order - b.sort_order });
+  //     let n = (this.schema1.length) / 2;
+  //   //
+  //      this.schema1.splice(0, n);
+  //   //
+  //   // });
+  // }
 
   onClick() {
 
@@ -294,27 +307,17 @@ export class SchemaSettingsComponent implements OnInit {
 
   }
 
-  delete(event, id) {
+  delete(e, id) {
 
-    event.stopPropagation();
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '490px',
+      panelClass: 'confirm-dialog',
+      data: { header: 'delete Attribute', message: 'Are you sure you want to delete "'  + e + '" Attribute?'  }
 
-    // const dialogRef = this.dialog.open(ConfirmationMsgsComponent, {
-    //   maxWidth: '848px',
-    //   maxHeight: '218px',
-    //   width: '848px',
-    //   height: '218px',
-    //   data: { msg: this._callService.translationsObj.GENERAL_DLT }
-    // });
+    });
+    dialogRef.afterClosed().subscribe(result => {
 
-    // dialogRef.afterClosed().subscribe((result: any) => {
-    //   if (result && result.event == 'delete') {
-    //     this._callService.deleteAttribute(id).subscribe((e) => {
-    //       this._callService.Interceptor("deleted",'succ');
-    //       this.loadSchemas();
-    //     }, (error) => { this._callService.Interceptor(error,'err') })
-    //
-    //   }
-    // });
+    });
   }
 
   openSnackBar(msg) {
@@ -327,10 +330,8 @@ export class SchemaSettingsComponent implements OnInit {
 
   addAttr() {
     const dialogRef = this.dialog.open(CreateAttributeComponent, {
-      maxWidth: '815px',
-      maxHeight: '283px',
       width: '815px',
-      height: '283px',
+      height: '325px',
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -1,5 +1,5 @@
 <div class="header">
-  <div class="headerName">Create Attributes</div>
+  <div class="headerName">Create Attribute</div>
   <mat-icon (click)="onNoClick()" class="closeBtn">close</mat-icon>
 </div>
 
@@ -66,7 +66,10 @@
       </div>
 
       <div class="check-box form-group">
-        <mat-checkbox [(ngModel)]="mandatory">Mandatory Attribute</mat-checkbox>
+        <mat-checkbox [(ngModel)]="mandatory" color="primary">Mandatory Attribute</mat-checkbox>
+      </div>
+      <div class="check-box form-group">
+        <mat-checkbox  color="primary">Personal Identifiable Information</mat-checkbox>
       </div>
 
 
@@ -79,9 +82,32 @@
   <div class="footer">
 
 
-    <div class="btns">
-      <button (click)="onNoClick()" class="cancel-btn">CANCEL</button>
-      <button (click)="makeObject()" class="save-btn">SAVE</button>
+    <div class="footer-actions row m-0">
+      <div class="check-box channel-identifier form-group">
+        <label>Channel Identifier</label>
+        <mat-checkbox color="primary">Yes</mat-checkbox>
+      </div>
+
+      <div class="form-group label-name select-channel pr-2">
+        <label class="text-left">Select Channel</label>
+        <div class="select-list">
+          <mat-form-field appearance="outline">
+            <select matNativeControl>
+              <option value="web" selected>Web</option>
+              <option value="whatsapp">Whatsapp</option>
+              <option value="facebook">Facebook</option>
+              <option value="viber" >Viber</option>
+            </select>
+          </mat-form-field>
+        </div>
+      </div>
+
+
+<div class="action-right">
+
+      <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
+      <button (click)="makeObject()" class="save-btn">Add Attribute</button>
+</div>
     </div>
 
   </div>
