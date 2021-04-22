@@ -1,863 +1,863 @@
 
 <div class="interaction-main" [ngClass]="{'customer-bar-opened': isBarOPened}">
-<div class="interaction-inner">
-<div class="container-fluid main-chat-bar" [ngClass]="{'whisper-mode': whisper}">
-  <div class="row">
-    <div class="col-md-4 customer-showcase">
-      <h3 matTooltipPosition="right" class="customer-highlight">
-        {{messages[0].title | slice :0 :2 |uppercase}}
+  <div class="interaction-inner">
+    <div class="container-fluid main-chat-bar" [ngClass]="{'whisper-mode': whisper}">
+      <div class="row">
+        <div class="col-md-4 customer-showcase">
+          <h3 matTooltipPosition="right" class="customer-highlight">
+            {{messages[0].title | slice :0 :2 }}
 
-        <span class="channel-icon {{customer.info.channel}}">
+            <span class="channel-icon {{customer.info.channel}}">
           <img *ngIf="channelUrl" src="{{channelUrl}}">
         </span>
-      </h3>
-      <h5 class="customer-name" [matTooltip]="messages.title">{{messages[0].title | slice :0 :50}}
-        <span class="chat-timer"><ul class="customer-labels"><li matTooltip="Marketing" style="background: #32b67a;" ></li><li matTooltip="Corporate" style="background: #f34f1b;" ></li><li matTooltip="Product Support" style="background: #f6bf26;" ></li></ul>( 11:32 )</span>
+          </h3>
+          <h5 class="customer-name" [matTooltip]="messages.title">{{messages[0].title | slice :0 :50}}
+            <span class="chat-timer"><ul class="customer-labels"><li matTooltip="Marketing" style="background: #32b67a;" ></li><li matTooltip="Corporate" style="background: #f34f1b;" ></li><li matTooltip="Product Support" style="background: #f6bf26;" ></li></ul>( 11:32 )</span>
 
-      </h5>
-    </div>
-    <div class="col-md-8 agent-actions">
-
-      <ul class="list-group list-group-horizontal agent-controls main-search">
-        <li class="list-group-item">
-          <mat-form-field class="calendar-select" appearance="fill">
-            <input matInput [matDatepicker]="picker" [max]="today">
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-          <button mat-fab aria-label="Select Date" (click)="picker.open()">
-            <mat-icon>today</mat-icon>
-          </button>
-        </li>
-        <li class="list-group-item">
-          <button mat-fab aria-label="Transfer Chat">
-            <mat-icon>search</mat-icon>
-          </button>
-        </li>
-        <li class="list-group-item selection-trigger channel-search">
-          <mat-form-field appearance="outline">
-            <mat-select [(value)]="selectedSearch">
-              <mat-option [value]="option.value" *ngFor="let option of search">{{ option.viewValue }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </li>
-
-</ul>
-
-
-      <ul class="list-group list-group-horizontal agent-controls">
-        <li class="list-group-item">
-          <button mat-fab class="barge-in">
-            <mat-icon>chat_bubble</mat-icon>
-            <mat-icon>transit_enterexit</mat-icon>
-          </button>
-        </li>
-        <li class="list-group-item">
-          <button mat-fab>
-            <mat-icon>timer_off</mat-icon>
-          </button>
-        </li>
-        <li class="list-group-item">
-          <button mat-fab>
-            <mat-icon>group</mat-icon>
-          </button>
-        </li>
-        <li class="list-group-item">
-          <button mat-fab [matMenuTriggerFor]="transferChat" aria-label="Transfer Chat">
-            <mat-icon>chat_bubble</mat-icon>
-            <i class="material-icons arrow-red arrow-gray">arrow_forward</i>
-          </button>
-        </li>
-<!--        <li class="list-group-item">-->
-<!--          <button mat-fab>-->
-<!--            <mat-icon>pan_tool</mat-icon>-->
-<!--          </button>-->
-<!--        </li>-->
-        <li class="list-group-item">
-          <button mat-fab>
-            <mat-icon>close</mat-icon>
-          </button>
-        </li>
-      </ul>
-
-      <mat-menu #transferChat="matMenu">
-        <div class="chat-transfer-main">
-          <span class="transfer-heading">Transfer Chat</span>
-          <div class="search-wrapper">
-            <input type="text" placeholder="search..." (click)="$event.stopPropagation()" [(ngModel)]="transferSearch">
-            <mat-icon>search</mat-icon>
-          </div>
-          <button mat-menu-item *ngFor="let option of userList | LockFilter:transferSearch" [ngClass]="{'last-team': option.activeCount}" (click)="chatTransfer(chatTransferTemplate, option)">
-            {{option.name}} <small *ngIf="option.team">({{option.team}})</small><span
-            *ngIf="option.activeCount">({{option.activeCount}})</span>
-            <small class="user-roll">{{option.role}}</small>
-            <span class="transfer-selection">Transfer</span>
-
-          </button>
+          </h5>
         </div>
-      </mat-menu>
+        <div class="col-md-8 agent-actions">
 
-      <!-- Ringing controls-->
-      <span *ngIf="ringing" class="ringing-controls"> Calling <strong>'+4444858988'</strong> Mobile
+          <ul class="list-group list-group-horizontal agent-controls main-search">
+            <li class="list-group-item">
+              <mat-form-field class="calendar-select" appearance="fill">
+                <input matInput [matDatepicker]="picker" [max]="today">
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              <button mat-fab aria-label="Select Date" (click)="picker.open()">
+                <mat-icon>today</mat-icon>
+              </button>
+            </li>
+            <li class="list-group-item">
+              <button mat-fab aria-label="Transfer Chat">
+                <mat-icon>search</mat-icon>
+              </button>
+            </li>
+            <li class="list-group-item selection-trigger channel-search">
+              <mat-form-field appearance="outline">
+                <mat-select [(value)]="selectedSearch">
+                  <mat-option [value]="option.value" *ngFor="let option of search">{{ option.viewValue }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </li>
+
+          </ul>
+
+
+          <ul class="list-group list-group-horizontal agent-controls">
+            <li class="list-group-item">
+              <button mat-fab class="barge-in">
+                <mat-icon>chat_bubble</mat-icon>
+                <mat-icon>transit_enterexit</mat-icon>
+              </button>
+            </li>
+            <li class="list-group-item">
+              <button mat-fab>
+                <mat-icon>timer_off</mat-icon>
+              </button>
+            </li>
+            <li class="list-group-item">
+              <button mat-fab>
+                <mat-icon>group</mat-icon>
+              </button>
+            </li>
+            <li class="list-group-item">
+              <button mat-fab [matMenuTriggerFor]="transferChat" aria-label="Transfer Chat">
+                <mat-icon>chat_bubble</mat-icon>
+                <i class="material-icons arrow-red arrow-gray">arrow_forward</i>
+              </button>
+            </li>
+<!--            <li class="list-group-item">-->
+<!--              <button mat-fab>-->
+<!--                <mat-icon>pan_tool</mat-icon>-->
+<!--              </button>-->
+<!--            </li>-->
+            <li class="list-group-item">
+              <button mat-fab>
+                <mat-icon>close</mat-icon>
+              </button>
+            </li>
+          </ul>
+
+          <mat-menu #transferChat="matMenu">
+            <div class="chat-transfer-main">
+              <span class="transfer-heading">Transfer Chat</span>
+              <div class="search-wrapper">
+                <input type="text" placeholder="search..." (click)="$event.stopPropagation()" [(ngModel)]="transferSearch">
+                <mat-icon>search</mat-icon>
+              </div>
+              <button mat-menu-item *ngFor="let option of userList | LockFilter:transferSearch" [ngClass]="{'last-team': option.activeCount}" (click)="chatTransfer(chatTransferTemplate, option)">
+                {{option.name}} <small *ngIf="option.team">({{option.team}})</small><span
+                *ngIf="option.activeCount">({{option.activeCount}})</span>
+                <small class="user-roll">{{option.role}}</small>
+                <span class="transfer-selection">Transfer</span>
+
+              </button>
+            </div>
+          </mat-menu>
+
+          <!-- Ringing controls-->
+          <span *ngIf="ringing" class="ringing-controls"> Calling <strong>'+4444858988'</strong> Mobile
         <button mat-fab>
             <mat-icon>call_end</mat-icon>
           </button>
       </span>
-<!--Call controls-->
-      <ul *ngIf="callControls" class="list-group list-group-horizontal agent-controls call-controls">
-<!--        <li class="list-group-item">-->
-<!--          <button mat-fab>-->
-<!--            <mat-icon>phone_forwarded</mat-icon>-->
-<!--          </button>-->
-<!--        </li>-->
-<!--        <li class="list-group-item">-->
-<!--          <button mat-fab>-->
-<!--            <mat-icon>mic</mat-icon>-->
-<!--          </button>-->
-<!--        </li>-->
-        <li class="list-group-item">
-          <button mat-fab>
-            <mat-icon>volume_off</mat-icon>
-          </button>
-        </li>
-        <li class="list-group-item">
-          <button mat-fab>
-            <mat-icon>pause</mat-icon>
-          </button>
-        </li>
-        <li class="list-group-item call-end">
-          <button mat-fab>
-            <mat-icon>call_end</mat-icon>
-          </button>
-        </li>
-      </ul>
+          <!--Call controls-->
+          <ul *ngIf="callControls" class="list-group list-group-horizontal agent-controls call-controls">
+<!--            <li class="list-group-item">-->
+<!--              <button mat-fab>-->
+<!--                <mat-icon>phone_forwarded</mat-icon>-->
+<!--              </button>-->
+<!--            </li>-->
+<!--            <li class="list-group-item">-->
+<!--              <button mat-fab>-->
+<!--                <mat-icon>mic</mat-icon>-->
+<!--              </button>-->
+<!--            </li>-->
+            <li class="list-group-item">
+              <button mat-fab>
+                <mat-icon>volume_off</mat-icon>
+              </button>
+            </li>
+            <li class="list-group-item">
+              <button mat-fab>
+                <mat-icon>pause</mat-icon>
+              </button>
+            </li>
+            <li class="list-group-item call-end">
+              <button mat-fab>
+                <mat-icon>call_end</mat-icon>
+              </button>
+            </li>
+          </ul>
+
+        </div>
+
+      </div>
 
     </div>
+    <!--/Top bar-->
+    <!--Interactions Area Start -->
+    <div id="chat-content" class="container-fluid main-chat-area">
+      <div class="row">
+        <div class="chat-messages-main" [perfectScrollbar]  [style.height]="replyInput?.offsetHeight > 80 ? 'calc(100% - ' + (replyInput?.offsetHeight+100)+'px)' : 'calc(100% - '+ viewHeight+')'">
 
-  </div>
+          <!-- voice message chat area -->
+          <div class="instruction-main">
+            <div class="instruction-inner">
 
-</div>
-<!--/Top bar-->
-<!--Interactions Area Start -->
-<div id="chat-content" class="container-fluid main-chat-area">
-  <div class="row">
-    <div class="chat-messages-main" [perfectScrollbar]  [style.height]="replyInput?.offsetHeight > 80 ? 'calc(100% - ' + (replyInput?.offsetHeight+100)+'px)' : 'calc(100% - '+ viewHeight+')'">
-
-      <!-- voice message chat area -->
-       <div class="instruction-main">
-      <div class="instruction-inner">
-
-        <mat-accordion>
-          <div class="instruction-content">
-            <div class="int-date">
-              <span>Fri<b>07</b></span>
-            </div>
-            <div class="panel-divider">
-              <div class="line-info">
-              </div>
-              <mat-expansion-panel>
-                <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
-                  <mat-panel-title>
-                    <div class="panel-header">
-                      <ul>
-                        <li>
-                          <time>11:45 AM</time>
-                        </li>
-                        <li class="agent-pic">
-                          <span><img src="assets/images/ag1.png"> </span>
-                          <span><img src="assets/images/cs1.png"> </span>
-                          <span><img src="assets/images/bot1.png"> </span>
-                        </li>
-                        <li class="social-logo">
-                          <span><img src="assets/images/web.svg"> </span>
-                          <span><img src="assets/images/facebook.svg"> </span>
-                        </li>
-                        <li class="section-duration">
-                          <time>02min 20sec</time>
-                        </li>
-                        <li class="section-tags">
-                          <span>Tag A</span>
-                          <span>Tag B</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-
-
-                some detail text
-
-              </mat-expansion-panel>
-            </div>
-
-            <div class="panel-divider">
-              <div class="line-info">
-              </div>
-              <mat-expansion-panel>
-
-                <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
-                  <mat-panel-title>
-                    <div class="panel-header">
-                      <ul>
-                        <li>
-                          <time>11:45 AM</time>
-                        </li>
-                        <li class="agent-pic">
-                          <span><img src="assets/images/ag1.png"> </span>
-                        </li>
-                        <li class="agent-pic call-notify">
-                          <span><img src="assets/images/incoming-call.svg"> </span>
-                        </li>
-                        <li class="agent-pic">
-                          <span><img src="assets/images/cs1.png"> </span>
-                        </li>
-                        <li class="section-duration">
-                          <time>02min 20sec</time>
-                        </li>
-                        <li class="section-tags">
-                          <span>Tag A</span>
-                          <span>Tag B</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-
-                <div class="panel-header call-history-panel inner-detail">
-                  <div class="history-time">
-                    <time>11:45 AM</time>
+              <mat-accordion>
+                <div class="instruction-content">
+                  <div class="int-date">
+                    <span>Fri<b>07</b></span>
                   </div>
-                  <div class="history-detail inner-detail-history">
+                  <div class="panel-divider">
+                    <div class="line-info">
+                    </div>
                     <mat-expansion-panel>
-
-                      <mat-expansion-panel-header [collapsedHeight]="'40px'"
-                                                  [expandedHeight]="'40px'">
+                      <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
                         <mat-panel-title>
                           <div class="panel-header">
                             <ul>
-                              <li><span class="phone-number">12345678</span></li>
-                              <li class="agent-pic call-notify">
-                                <span><img src="assets/images/incoming-call.svg"> </span>
+                              <li>
+                                <time>11:45 AM</time>
                               </li>
-                              <li class="agent-pic call-services">
-                                <p><span><img src="assets/images/cs1.png"></span> Customer
-                                  Services</p>
+                              <li class="agent-pic">
+                                <span><img src="assets/images/ag1.png"> </span>
+                                <span><img src="assets/images/cs1.png"> </span>
+                                <span><img src="assets/images/bot1.png"> </span>
+                              </li>
+                              <li class="social-logo">
+                                <span><img src="assets/images/web.svg"> </span>
+                                <span><img src="assets/images/facebook.svg"> </span>
                               </li>
                               <li class="section-duration">
                                 <time>02min 20sec</time>
                               </li>
-                              <li class="agent-pic call-notify">
-                                <span><img src="assets/images/call-transfer.svg"> </span>
-                              </li>
                               <li class="section-tags">
                                 <span>Tag A</span>
                                 <span>Tag B</span>
-                              </li>
-                              <li class="agent-pic">
-                                <span><img src="assets/images/call-record.svg"> </span>
                               </li>
                             </ul>
                           </div>
                         </mat-panel-title>
                       </mat-expansion-panel-header>
 
-                      <div class="summary-detail">
-                        <ul>
-                          <li><label>Agent ID </label>:<span>Name</span></li>
-                          <li><label>CSQ </label>:<span>CSQ</span></li>
-                          <li><label>Call Duration</label>:<span>02 mins</span></li>
-                          <li><label>Form UR</label>:<span>not Submitted</span></li>
 
-                          <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>
-                          <li><label>Time</label>:<span>14min 50sec</span></li>
-                          <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>
-                          <li><label>Recording URL</label>:<span>https://rec_url</span></li>
-                        </ul>
-                      </div>
+                      some detail text
+
                     </mat-expansion-panel>
-
-
                   </div>
-                </div>
-                <div class="panel-header call-history-panel inner-detail">
-                  <div class="history-time">
-                    <time>11:45 AM</time>
-                  </div>
-                  <div class="history-detail inner-detail-history">
+
+                  <div class="panel-divider">
+                    <div class="line-info">
+                    </div>
                     <mat-expansion-panel>
 
-                      <mat-expansion-panel-header [collapsedHeight]="'40px'"
-                                                  [expandedHeight]="'40px'">
+                      <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
                         <mat-panel-title>
                           <div class="panel-header">
                             <ul>
+                              <li>
+                                <time>11:45 AM</time>
+                              </li>
+                              <li class="agent-pic">
+                                <span><img src="assets/images/ag1.png"> </span>
+                              </li>
                               <li class="agent-pic call-notify">
                                 <span><img src="assets/images/incoming-call.svg"> </span>
                               </li>
-                              <li class="agent-pic call-services">
-                                <p><span><img src="assets/images/ag1.png"></span>Tech
-                                  Support</p>
+                              <li class="agent-pic">
+                                <span><img src="assets/images/cs1.png"> </span>
                               </li>
                               <li class="section-duration">
                                 <time>02min 20sec</time>
-                              </li>
-                              <li class="agent-pic call-notify">
-                                <span><img src="assets/images/call-end.svg"> </span>
                               </li>
                               <li class="section-tags">
                                 <span>Tag A</span>
                                 <span>Tag B</span>
                               </li>
+                            </ul>
+                          </div>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+
+                      <div class="panel-header call-history-panel inner-detail">
+                        <div class="history-time">
+                          <time>11:45 AM</time>
+                        </div>
+                        <div class="history-detail inner-detail-history">
+                          <mat-expansion-panel>
+
+                            <mat-expansion-panel-header [collapsedHeight]="'40px'"
+                                                        [expandedHeight]="'40px'">
+                              <mat-panel-title>
+                                <div class="panel-header">
+                                  <ul>
+                                    <li><span class="phone-number">12345678</span></li>
+                                    <li class="agent-pic call-notify">
+                                      <span><img src="assets/images/incoming-call.svg"> </span>
+                                    </li>
+                                    <li class="agent-pic call-services">
+                                      <p><span><img src="assets/images/cs1.png"></span> Customer
+                                        Services</p>
+                                    </li>
+                                    <li class="section-duration">
+                                      <time>02min 20sec</time>
+                                    </li>
+                                    <li class="agent-pic call-notify">
+                                      <span><img src="assets/images/call-transfer.svg"> </span>
+                                    </li>
+                                    <li class="section-tags">
+                                      <span>Tag A</span>
+                                      <span>Tag B</span>
+                                    </li>
+                                    <li class="agent-pic">
+                                      <span><img src="assets/images/call-record.svg"> </span>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <div class="summary-detail">
+                              <ul>
+                                <li><label>Agent ID </label>:<span>Name</span></li>
+                                <li><label>CSQ </label>:<span>CSQ</span></li>
+                                <li><label>Call Duration</label>:<span>02 mins</span></li>
+                                <li><label>Form UR</label>:<span>not Submitted</span></li>
+
+                                <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>
+                                <li><label>Time</label>:<span>14min 50sec</span></li>
+                                <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>
+                                <li><label>Recording URL</label>:<span>https://rec_url</span></li>
+                              </ul>
+                            </div>
+                          </mat-expansion-panel>
+
+
+                        </div>
+                      </div>
+                      <div class="panel-header call-history-panel inner-detail">
+                        <div class="history-time">
+                          <time>11:45 AM</time>
+                        </div>
+                        <div class="history-detail inner-detail-history">
+                          <mat-expansion-panel>
+
+                            <mat-expansion-panel-header [collapsedHeight]="'40px'"
+                                                        [expandedHeight]="'40px'">
+                              <mat-panel-title>
+                                <div class="panel-header">
+                                  <ul>
+                                    <li class="agent-pic call-notify">
+                                      <span><img src="assets/images/incoming-call.svg"> </span>
+                                    </li>
+                                    <li class="agent-pic call-services">
+                                      <p><span><img src="assets/images/ag1.png"></span>Tech
+                                        Support</p>
+                                    </li>
+                                    <li class="section-duration">
+                                      <time>02min 20sec</time>
+                                    </li>
+                                    <li class="agent-pic call-notify">
+                                      <span><img src="assets/images/call-end.svg"> </span>
+                                    </li>
+                                    <li class="section-tags">
+                                      <span>Tag A</span>
+                                      <span>Tag B</span>
+                                    </li>
+                                    <li class="agent-pic">
+                                      <span><img src="assets/images/call-record.svg"> </span>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="summary-detail">
+                              <ul>
+                                <li><label>Agent ID </label>:<span>Name</span></li>
+                                <li><label>CSQ </label>:<span>CSQ</span></li>
+                                <li><label>Call Duration</label>:<span>02 mins</span></li>
+                                <li><label>Form UR</label>:<span>not Submitted</span></li>
+
+                                <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>
+                                <li><label>Time</label>:<span>14min 50sec</span></li>
+                                <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>
+                                <li><label>Recording URL</label>:<span>https://rec_url</span></li>
+
+                              </ul>
+                            </div>
+                          </mat-expansion-panel>
+
+                        </div>
+                      </div>
+
+                    </mat-expansion-panel>
+                  </div>
+                </div>
+
+                <div class="instruction-content">
+                  <div class="int-date">
+                    <span>Sun<b>08</b></span>
+                  </div>
+                  <div class="panel-divider">
+                    <div class="line-info">
+                    </div>
+                    <mat-expansion-panel>
+                      <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
+                        <mat-panel-title>
+                          <div class="panel-header">
+                            <ul>
+                              <li>
+                                <time>11:45 AM</time>
+                              </li>
                               <li class="agent-pic">
-                                <span><img src="assets/images/call-record.svg"> </span>
+                                <span><img src="assets/images/ag1.png"> </span>
+                                <span><img src="assets/images/cs1.png"> </span>
+                                <span><img src="assets/images/bot1.png"> </span>
+                              </li>
+                              <li class="social-logo">
+                                <span><img src="assets/images/web.svg"> </span>
+                                <span><img src="assets/images/facebook.svg"> </span>
+                              </li>
+                              <li class="section-duration">
+                                <time>02min 20sec</time>
+                              </li>
+                              <li class="section-tags">
+                                <span>Tag A</span>
+                                <span>Tag B</span>
                               </li>
                             </ul>
                           </div>
                         </mat-panel-title>
                       </mat-expansion-panel-header>
-                      <div class="summary-detail">
-                        <ul>
-                          <li><label>Agent ID </label>:<span>Name</span></li>
-                          <li><label>CSQ </label>:<span>CSQ</span></li>
-                          <li><label>Call Duration</label>:<span>02 mins</span></li>
-                          <li><label>Form UR</label>:<span>not Submitted</span></li>
 
-                          <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>
-                          <li><label>Time</label>:<span>14min 50sec</span></li>
-                          <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>
-                          <li><label>Recording URL</label>:<span>https://rec_url</span></li>
 
-                        </ul>
+                      some detail text
+
+                    </mat-expansion-panel>
+                  </div>
+
+                  <div class="panel-divider">
+                    <div class="line-info">
+                    </div>
+                    <mat-expansion-panel>
+
+                      <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
+                        <mat-panel-title>
+                          <div class="panel-header">
+                            <ul>
+                              <li>
+                                <time>11:45 AM</time>
+                              </li>
+                              <li class="agent-pic">
+                                <span><img src="assets/images/ag1.png"> </span>
+                              </li>
+                              <li class="agent-pic call-notify">
+                                <span><img src="assets/images/incoming-call.svg"> </span>
+                              </li>
+                              <li class="agent-pic">
+                                <span><img src="assets/images/cs1.png"> </span>
+                              </li>
+                              <li class="section-duration">
+                                <time>02min 20sec</time>
+                              </li>
+                              <li class="section-tags">
+                                <span>Tag A</span>
+                                <span>Tag B</span>
+                              </li>
+                            </ul>
+                          </div>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+
+                      <div class="panel-header call-history-panel inner-detail">
+                        <div class="history-time">
+                          <time>11:45 AM</time>
+                        </div>
+                        <div class="history-detail inner-detail-history">
+                          <mat-expansion-panel>
+
+                            <mat-expansion-panel-header [collapsedHeight]="'40px'"
+                                                        [expandedHeight]="'40px'">
+                              <mat-panel-title>
+                                <div class="panel-header">
+                                  <ul>
+                                    <li><span class="phone-number">12345678</span></li>
+                                    <li class="agent-pic call-notify">
+                                      <span><img src="assets/images/incoming-call.svg"> </span>
+                                    </li>
+                                    <li class="agent-pic call-services">
+                                      <p><span><img src="assets/images/cs1.png"></span> Customer
+                                        Services</p>
+                                    </li>
+                                    <li class="section-duration">
+                                      <time>02min 20sec</time>
+                                    </li>
+                                    <li class="agent-pic call-notify">
+                                      <span><img src="assets/images/call-transfer.svg"> </span>
+                                    </li>
+                                    <li class="section-tags">
+                                      <span>Tag A</span>
+                                      <span>Tag B</span>
+                                    </li>
+                                    <li class="agent-pic">
+                                      <span><img src="assets/images/call-record.svg"> </span>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <div class="summary-detail">
+                              <ul>
+                                <li><label>Agent ID </label>:<span>Name</span></li>
+                                <li><label>CSQ </label>:<span>CSQ</span></li>
+                                <li><label>Call Duration</label>:<span>02 mins</span></li>
+                                <li><label>Form UR</label>:<span>not Submitted</span></li>
+
+                                <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>
+                                <li><label>Time</label>:<span>14min 50sec</span></li>
+                                <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>
+                                <li><label>Recording URL</label>:<span>https://rec_url</span></li>
+
+                              </ul>
+                            </div>
+                          </mat-expansion-panel>
+
+
+                        </div>
+                      </div>
+                      <div class="panel-header call-history-panel inner-detail">
+                        <div class="history-time">
+                          <time>11:45 AM</time>
+                        </div>
+                        <div class="history-detail inner-detail-history">
+                          <mat-expansion-panel>
+
+                            <mat-expansion-panel-header [collapsedHeight]="'40px'"
+                                                        [expandedHeight]="'40px'">
+                              <mat-panel-title>
+                                <div class="panel-header">
+                                  <ul>
+                                    <li class="agent-pic call-notify">
+                                      <span><img src="assets/images/incoming-call.svg"> </span>
+                                    </li>
+                                    <li class="agent-pic call-services">
+                                      <p><span><img src="assets/images/ag1.png"></span>Tech
+                                        Support</p>
+                                    </li>
+                                    <li class="section-duration">
+                                      <time>02min 20sec</time>
+                                    </li>
+                                    <li class="agent-pic call-notify">
+                                      <span><img src="assets/images/call-end.svg"> </span>
+                                    </li>
+                                    <li class="section-tags">
+                                      <span>Tag A</span>
+                                      <span>Tag B</span>
+                                    </li>
+                                    <li class="agent-pic">
+                                      <span><img src="assets/images/call-record.svg"> </span>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="summary-detail">
+                              <ul>
+                                <li><label>Agent ID </label>:<span>Name</span></li>
+                                <li><label>CSQ </label>:<span>CSQ</span></li>
+                                <li><label>Call Duration</label>:<span>02 mins</span></li>
+                                <li><label>Form UR</label>:<span>not Submitted</span></li>
+
+                                <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>
+                                <li><label>Time</label>:<span>14min 50sec</span></li>
+                                <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>
+                                <li><label>Recording URL</label>:<span>https://rec_url</span></li>
+
+                              </ul>
+                            </div>
+                          </mat-expansion-panel>
+
+
+                        </div>
+                      </div>
+                      <div class="wrap-notes">
+                        <button mat-icon-button [matMenuTriggerFor]="WrapMenu" aria-label="icon-button with a menu">
+                          <mat-icon>more_horiz</mat-icon>
+                        </button>
+                        <mat-menu backdropClass="menu-wraper"  #WrapMenu="matMenu" yPosition="above" xPosition="before">
+                          <button class="wrap-trigger" (click)="openDialog(noteTemplate, 'Note')" mat-menu-item>
+                            <span class="icon-trigger"><img src="assets/images/note.svg" alt="Note"></span>
+                            <span>Note</span>
+                          </button>
+                          <button class="wrap-trigger" (click)="openDialog(noteTemplate, 'Chat Wrap-up')" mat-menu-item>
+                            <span class="icon-trigger"><img src="assets/images/wrap.svg" alt="Wrap"></span>
+                            <span>Wrap-Up</span>
+                          </button>
+                        </mat-menu>
                       </div>
                     </mat-expansion-panel>
-
                   </div>
                 </div>
-
-              </mat-expansion-panel>
+              </mat-accordion>
             </div>
           </div>
 
-          <div class="instruction-content">
-            <div class="int-date">
-              <span>Sun<b>08</b></span>
-            </div>
-            <div class="panel-divider">
-              <div class="line-info">
-              </div>
-              <mat-expansion-panel>
-                <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
-                  <mat-panel-title>
-                    <div class="panel-header">
-                      <ul>
-                        <li>
-                          <time>11:45 AM</time>
-                        </li>
-                        <li class="agent-pic">
-                          <span><img src="assets/images/ag1.png"> </span>
-                          <span><img src="assets/images/cs1.png"> </span>
-                          <span><img src="assets/images/bot1.png"> </span>
-                        </li>
-                        <li class="social-logo">
-                          <span><img src="assets/images/web.svg"> </span>
-                          <span><img src="assets/images/facebook.svg"> </span>
-                        </li>
-                        <li class="section-duration">
-                          <time>02min 20sec</time>
-                        </li>
-                        <li class="section-tags">
-                          <span>Tag A</span>
-                          <span>Tag B</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
 
+          <!-- simple chat area -->
 
-                some detail text
-
-              </mat-expansion-panel>
-            </div>
-
-            <div class="panel-divider">
-              <div class="line-info">
-              </div>
-              <mat-expansion-panel>
-
-                <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
-                  <mat-panel-title>
-                    <div class="panel-header">
-                      <ul>
-                        <li>
-                          <time>11:45 AM</time>
-                        </li>
-                        <li class="agent-pic">
-                          <span><img src="assets/images/ag1.png"> </span>
-                        </li>
-                        <li class="agent-pic call-notify">
-                          <span><img src="assets/images/incoming-call.svg"> </span>
-                        </li>
-                        <li class="agent-pic">
-                          <span><img src="assets/images/cs1.png"> </span>
-                        </li>
-                        <li class="section-duration">
-                          <time>02min 20sec</time>
-                        </li>
-                        <li class="section-tags">
-                          <span>Tag A</span>
-                          <span>Tag B</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-
-                <div class="panel-header call-history-panel inner-detail">
-                  <div class="history-time">
-                    <time>11:45 AM</time>
-                  </div>
-                  <div class="history-detail inner-detail-history">
-                    <mat-expansion-panel>
-
-                      <mat-expansion-panel-header [collapsedHeight]="'40px'"
-                                                  [expandedHeight]="'40px'">
-                        <mat-panel-title>
-                          <div class="panel-header">
-                            <ul>
-                              <li><span class="phone-number">12345678</span></li>
-                              <li class="agent-pic call-notify">
-                                <span><img src="assets/images/incoming-call.svg"> </span>
-                              </li>
-                              <li class="agent-pic call-services">
-                                <p><span><img src="assets/images/cs1.png"></span> Customer
-                                  Services</p>
-                              </li>
-                              <li class="section-duration">
-                                <time>02min 20sec</time>
-                              </li>
-                              <li class="agent-pic call-notify">
-                                <span><img src="assets/images/call-transfer.svg"> </span>
-                              </li>
-                              <li class="section-tags">
-                                <span>Tag A</span>
-                                <span>Tag B</span>
-                              </li>
-                              <li class="agent-pic">
-                                <span><img src="assets/images/call-record.svg"> </span>
-                              </li>
-                            </ul>
-                          </div>
-                        </mat-panel-title>
-                      </mat-expansion-panel-header>
-
-                      <div class="summary-detail">
-                        <ul>
-                          <li><label>Agent ID </label>:<span>Name</span></li>
-                          <li><label>CSQ </label>:<span>CSQ</span></li>
-                          <li><label>Call Duration</label>:<span>02 mins</span></li>
-                          <li><label>Form UR</label>:<span>not Submitted</span></li>
-
-                          <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>
-                          <li><label>Time</label>:<span>14min 50sec</span></li>
-                          <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>
-                          <li><label>Recording URL</label>:<span>https://rec_url</span></li>
-
-                        </ul>
-                      </div>
-                    </mat-expansion-panel>
-
-
-                  </div>
+          <div class="instruction-content chat-session-main">
+            <div class="int-date"><span>Mon<b>09</b></span></div>
+            <div *ngFor="let con of convers">
+              <div class="chat-message" [ngClass]="{'agent-message': con.title == 'raza'}">
+                <div class="profile-pic">
+                  <div class="active-channel channel-icon {{customer.info.channel}}"><img width="20" src="assets/images/web.svg"></div>
+                  <div class="profile-pic-area user-img">{{con.title | slice :0 :2 }}</div>
                 </div>
-                <div class="panel-header call-history-panel inner-detail">
-                  <div class="history-time">
-                    <time>11:45 AM</time>
-                  </div>
-                  <div class="history-detail inner-detail-history">
-                    <mat-expansion-panel>
-
-                      <mat-expansion-panel-header [collapsedHeight]="'40px'"
-                                                  [expandedHeight]="'40px'">
-                        <mat-panel-title>
-                          <div class="panel-header">
-                            <ul>
-                              <li class="agent-pic call-notify">
-                                <span><img src="assets/images/incoming-call.svg"> </span>
-                              </li>
-                              <li class="agent-pic call-services">
-                                <p><span><img src="assets/images/ag1.png"></span>Tech
-                                  Support</p>
-                              </li>
-                              <li class="section-duration">
-                                <time>02min 20sec</time>
-                              </li>
-                              <li class="agent-pic call-notify">
-                                <span><img src="assets/images/call-end.svg"> </span>
-                              </li>
-                              <li class="section-tags">
-                                <span>Tag A</span>
-                                <span>Tag B</span>
-                              </li>
-                              <li class="agent-pic">
-                                <span><img src="assets/images/call-record.svg"> </span>
-                              </li>
-                            </ul>
-                          </div>
-                        </mat-panel-title>
-                      </mat-expansion-panel-header>
-                      <div class="summary-detail">
-                        <ul>
-                          <li><label>Agent ID </label>:<span>Name</span></li>
-                          <li><label>CSQ </label>:<span>CSQ</span></li>
-                          <li><label>Call Duration</label>:<span>02 mins</span></li>
-                          <li><label>Form UR</label>:<span>not Submitted</span></li>
-
-                          <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>
-                          <li><label>Time</label>:<span>14min 50sec</span></li>
-                          <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>
-                          <li><label>Recording URL</label>:<span>https://rec_url</span></li>
-
-                        </ul>
-                      </div>
-                    </mat-expansion-panel>
-
-
-                  </div>
-                </div>
-                <div class="wrap-notes">
-                  <button mat-icon-button [matMenuTriggerFor]="WrapMenu" aria-label="icon-button with a menu">
-                    <mat-icon>more_horiz</mat-icon>
+                <div class="chat-message-content ">
+                  <p>{{con.message}}</p>
+                  <button mat-icon-button class="user_settings" *ngIf="con.title === 'farhan'"
+                          (click)="con.showIntent=!con.showIntent">
                   </button>
-                  <mat-menu backdropClass="menu-wraper"  #WrapMenu="matMenu" yPosition="above" xPosition="before">
-                    <button class="wrap-trigger" (click)="openDialog(noteTemplate, 'Note')" mat-menu-item>
-                      <span class="icon-trigger"><img src="assets/images/note.svg" alt="Note"></span>
-                      <span>Note</span>
-                    </button>
-                    <button class="wrap-trigger" (click)="openDialog(noteTemplate, 'Chat Wrap-up')" mat-menu-item>
-                      <span class="icon-trigger"><img src="assets/images/wrap.svg" alt="Wrap"></span>
-                      <span>Wrap-Up</span>
-                    </button>
-                  </mat-menu>
+
                 </div>
+                <span class="chat-time">16:15:45</span>
+                <span class="material-icons delivery-status" *ngIf="con.title === 'raza'">done_all</span>
+
+                <div class="chat-intents" *ngIf="con.intents && con.showIntent==true">
+                  <div class="intents-inner">
+                    <p *ngFor="let intent of con.intents"
+                    >
+                      {{intent}}
+                      <!--              <b>{{intent.confidence.toFixed(2)}}</b>-->
+                      <button mat-mini-fab class="canned-trigger edit-trigger"
+                      >
+                        <i class="material-icons">
+                          edit
+                        </i>
+                      </button>
+                      <button mat-mini-fab class="canned-trigger send-suggestion" >
+                        <i class="material-icons">
+                          send
+                        </i>
+                      </button>
+                    </p>
+                    <!--<div class="clearfix clear"></div>-->
+                    <!--            <ul class="suggested-content intents-content">-->
+                    <!--              <li *ngFor="let action of con.selectedIntent?.actions"-->
+                    <!--                  (click)="isTemplateOpen=!isTemplateOpen ; tran(action.message || action.name); message.showIntent=!message.showIntent">-->
+                    <!--                                <span *ngIf="action.confidence>botThresholds.t1.minScore" class="confidence-level" style="color:#25CB8D">-->
+                    <!--                                    {{action.confidence * 100 | number:'1.0-0'}}%-->
+                    <!--                                </span>-->
+                    <!--                <span *ngIf="action.confidence>botThresholds.t2.minScore && action.confidence<botThresholds.t1.minScore" class="confidence-level"-->
+                    <!--                      style="color:#FFB300">-->
+                    <!--                                    {{action.confidence * 100 | number:'1.0-0'}}%-->
+                    <!--                                </span>-->
+                    <!--                <span *ngIf="action.confidence<botThresholds.t2.minScore" class="confidence-level" style="color:#CB0808">-->
+                    <!--                                    {{action.confidence * 100 | number:'1.0-0'}}%-->
+                    <!--                                </span>-->
+                    <!--                {{action.message || action.name}}-->
+                    <!--                <button mat-mini-fab class="canned-trigger edit-trigger"-->
+                    <!--                        (click)="tran(action.message || action.name); message.showIntent=!message.showIntent">-->
+                    <!--                  <i class="material-icons">-->
+                    <!--                    edit-->
+                    <!--                  </i>-->
+                    <!--                </button>-->
+                    <!--              </li>-->
+                    <!--            </ul>-->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="tags-data panel-divider">
+              <mat-expansion-panel>
+                <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
+                  <mat-panel-title>
+                    <div class="panel-header tags-panel-header">
+                      <ul>
+                        <li><span class="visited"><mat-icon>language</mat-icon> https://www.expertflow.com/chat/</span></li> <li>Customer submitted 'Product Information' form</li>
+                      </ul>
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+
+                some detail text
+
               </mat-expansion-panel>
             </div>
-          </div>
-        </mat-accordion>
-      </div>
-    </div>
 
-
-      <!-- simple chat area -->
-
-    <div class="instruction-content chat-session-main">
-      <div class="int-date"><span>Mon<b>09</b></span></div>
-      <div *ngFor="let con of convers">
-      <div class="chat-message" [ngClass]="{'agent-message': con.title == 'raza'}">
-        <div class="profile-pic">
-          <div class="active-channel channel-icon {{customer.info.channel}}"><img width="20" src="assets/images/web.svg"></div>
-          <div class="profile-pic-area user-img">{{con.title | slice :0 :2 |uppercase}}</div>
-        </div>
-        <div class="chat-message-content ">
-          <p>{{con.message}}</p>
-          <button mat-icon-button class="user_settings" *ngIf="con.title === 'farhan'"
-                  (click)="con.showIntent=!con.showIntent">
-          </button>
-
-        </div>
-        <span class="chat-time">16:15:45</span>
-        <span class="material-icons delivery-status" *ngIf="con.title === 'raza'">done_all</span>
-
-        <div class="chat-intents" *ngIf="con.intents && con.showIntent==true">
-          <div class="intents-inner">
-            <p *ngFor="let intent of con.intents"
-               [ngClass]="{'selected_intent': intent.name == message.selectedIntent?.intentName}">
-              {{intent}}
-<!--              <b>{{intent.confidence.toFixed(2)}}</b>-->
-              <button mat-mini-fab class="canned-trigger edit-trigger"
-                      (click)="message=action.message || action.name">
-                <i class="material-icons">
-                  edit
-                </i>
-              </button>
-              <button mat-mini-fab class="canned-trigger send-suggestion" (click)="message=action.message || action.name" >
-                <i class="material-icons">
-                  send
-                </i>
-              </button>
-            </p>
-            <!--<div class="clearfix clear"></div>-->
-<!--            <ul class="suggested-content intents-content">-->
-<!--              <li *ngFor="let action of con.selectedIntent?.actions"-->
-<!--                  (click)="isTemplateOpen=!isTemplateOpen ; tran(action.message || action.name); message.showIntent=!message.showIntent">-->
-<!--                                <span *ngIf="action.confidence>botThresholds.t1.minScore" class="confidence-level" style="color:#25CB8D">-->
-<!--                                    {{action.confidence * 100 | number:'1.0-0'}}%-->
-<!--                                </span>-->
-<!--                <span *ngIf="action.confidence>botThresholds.t2.minScore && action.confidence<botThresholds.t1.minScore" class="confidence-level"-->
-<!--                      style="color:#FFB300">-->
-<!--                                    {{action.confidence * 100 | number:'1.0-0'}}%-->
-<!--                                </span>-->
-<!--                <span *ngIf="action.confidence<botThresholds.t2.minScore" class="confidence-level" style="color:#CB0808">-->
-<!--                                    {{action.confidence * 100 | number:'1.0-0'}}%-->
-<!--                                </span>-->
-<!--                {{action.message || action.name}}-->
-<!--                <button mat-mini-fab class="canned-trigger edit-trigger"-->
-<!--                        (click)="tran(action.message || action.name); message.showIntent=!message.showIntent">-->
-<!--                  <i class="material-icons">-->
-<!--                    edit-->
-<!--                  </i>-->
-<!--                </button>-->
-<!--              </li>-->
-<!--            </ul>-->
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-      <div class="tags-data panel-divider">
-        <mat-expansion-panel>
-          <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
-            <mat-panel-title>
-              <div class="panel-header tags-panel-header">
-               <ul>
-                 <li><span class="visited"><mat-icon>language</mat-icon> https://www.expertflow.com/chat/</span></li> <li>Customer submitted 'Product Information' form</li>
-               </ul>
+            <!-- <div class="chat-message agent-message">
+              <div class="profile-pic">
+                <div class="active-channel channel-icon web"><img width="20" src="../assets/images/web.svg"></div>
+                <div class="profile-pic-area user-img"> FA</div>
               </div>
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-
-
-          some detail text
-
-        </mat-expansion-panel>
-      </div>
-
-      <!-- <div class="chat-message agent-message">
-        <div class="profile-pic">
-          <div class="active-channel channel-icon web"><img width="20" src="../assets/images/web.svg"></div>
-          <div class="profile-pic-area user-img"> FA</div>
-        </div>
-        <div class="chat-message-content ">
-          <p>hello</p>
-        </div>
-        <span class="chat-time">16:16:06 </span>
-      </div>
-      <div class="chat-message agent-message ">
-        <div class="profile-pic">
-          <div class="active-channel channel-icon web"><img width="20" src="../assets/images/web.svg"></div>
-          <div class="profile-pic-area user-img"> FA</div>
-        </div>
-        <div class="chat-message-content ">
-          <p style="white-space: pre-line">how are you today</p>
-        </div>
-        <span class="chat-time">16:16:13 </span>
-      </div> -->
-    </div>
-    <div class="chat-footer">
-      <span class="selected-channel">Selected Channel: <label>Web</label></span>
-      <div class="whisper-selection">
-        <button (click)="whisper = false" [ngClass]="{'customer-select': !whisper}" class="customer-mode message-mode" mat-button>Adam</button>
-        <button (click)="whisper = true"  [ngClass]="{'whisper-select': whisper}" class="whisper-mode message-mode" mat-button>Whisper</button>
-      </div>
-      <div class="message-composer">
-        <form class="reply-form" [ngClass]="{'whisper-mode': whisper}">
-          <label class="count-reply">{{replyInput.value.length}}/200</label>
-          <div class="mat-form-field chat-area"  [ngClass]="{'expand-area-height':expanedHeight > 50}">
+              <div class="chat-message-content ">
+                <p>hello</p>
+              </div>
+              <span class="chat-time">16:16:06 </span>
+            </div>
+            <div class="chat-message agent-message ">
+              <div class="profile-pic">
+                <div class="active-channel channel-icon web"><img width="20" src="../assets/images/web.svg"></div>
+                <div class="profile-pic-area user-img"> FA</div>
+              </div>
+              <div class="chat-message-content ">
+                <p style="white-space: pre-line">how are you today</p>
+              </div>
+              <span class="chat-time">16:16:13 </span>
+            </div> -->
+          </div>
+          <div class="chat-footer">
+            <span class="selected-channel">Selected Channel: <label>Web</label></span>
+            <div class="whisper-selection">
+              <button (click)="whisper = false" [ngClass]="{'customer-select': !whisper}" class="customer-mode message-mode" mat-button>Adam</button>
+              <button (click)="whisper = true"  [ngClass]="{'whisper-select': whisper}" class="whisper-mode message-mode" mat-button>Whisper</button>
+            </div>
+            <div class="message-composer">
+              <form class="reply-form" [ngClass]="{'whisper-mode': whisper}">
+                <label class="count-reply">{{replyInput.value.length}}/200</label>
+                <div class="mat-form-field chat-area"  [ngClass]="{'expand-area-height':expanedHeight > 50}">
             <textarea  [formControl]="myControl" [perfectScrollbar] (click)="onTextAreaClick()" data-emoji-picker="true"  [(ngModel)]="message" (keyup)="onKey($event)"
-                      name="message"  (change)="textChanged($event)" [matAutocomplete]="auto"  matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea"
-              class="resize-none" #replyInput name="message" placeholder="Type a message here..."></textarea>
+                       name="message"  (change)="textChanged($event)" [matAutocomplete]="auto"  matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea"
+                       class="resize-none" #replyInput name="message" placeholder="Type a message here..."></textarea>
 
-            <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete {{whisper}} {{isBarOPened ? 'user-bar-opened': ''}}" [ngClass]="{'user-list': whisper}">
-              <div class="suggested-content" *ngIf="whisper && displayUserList" [perfectScrollbar] style="max-height: 220px">
-                <mat-option *ngFor="let option of userList  | LockFilter: message" [value]="option.name">
-                  {{option.name}} <small *ngIf="option.team">({{option.team}})</small><span *ngIf="option.activeCount">({{option.activeCount}})</span>
-                  <small class="user-roll">{{option.role}}</small>
-                </mat-option>
-              </div>
+                  <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete {{whisper}} {{isBarOPened ? 'user-bar-opened': ''}}" [ngClass]="{'user-list': whisper}">
+                    <div class="suggested-content" *ngIf="whisper && displayUserList" [perfectScrollbar] style="max-height: 220px">
+                      <mat-option *ngFor="let option of userList  | LockFilter: message" [value]="option.name">
+                        {{option.name}} <small *ngIf="option.team">({{option.team}})</small><span *ngIf="option.activeCount">({{option.activeCount}})</span>
+                        <small class="user-roll">{{option.role}}</small>
+                      </mat-option>
+                    </div>
 
 
-              <div class="suggested-content" #mainScreen [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}" >
+                    <div class="suggested-content" #mainScreen [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}" >
 
-                <mat-tab-group animationDuration="0ms" *ngIf="!displaySuggestionsArea && !whisper && cannedTabOpen">
-                  <!--<mat-tab label="Suggested Answer" *ngIf="actions.length > 0">-->
-                  <!--<div class="suggested-tab" *ngIf="actions.length > 0">-->
-                  <!--<mat-option *ngFor="let action of actions | LockFilter: message" [value]="action?.message || action?.name"-->
-                  <!--(click)="message=action.message || action.name">-->
-                  <!--{{action.message || action.name}}-->
-                  <!--</mat-option>-->
-                  <!--</div>-->
-                  <!--</mat-tab>-->
-
-                  <mat-tab label="Canned Messages">
-                    <div  class="right-canned-message-list main-canned-message-area">
-<!--                      <strong>Canned Messages</strong>-->
-                      <div class="bar-content">
-                        <!--<mat-tab-group mat-align-tabs="center">-->
-                        <!--<mat-tab label="{{'chatdetail.cannedMessages'|translate}}">-->
-                        <!--<div class="canned-search-area search-area">-->
-                        <!--<mat-form-field appearance="outline">-->
-                        <!--<input matInput placeholder="Search" autocomplete="off" [(ngModel)]="canned">-->
-                        <!--<mat-icon matSuffix>search</mat-icon>-->
-                        <!--</mat-form-field>-->
+                      <mat-tab-group animationDuration="0ms" *ngIf="!displaySuggestionsArea && !whisper && cannedTabOpen">
+                        <!--<mat-tab label="Suggested Answer" *ngIf="actions.length > 0">-->
+                        <!--<div class="suggested-tab" *ngIf="actions.length > 0">-->
+                        <!--<mat-option *ngFor="let action of actions | LockFilter: message" [value]="action?.message || action?.name"-->
+                        <!--(click)="message=action.message || action.name">-->
+                        <!--{{action.message || action.name}}-->
+                        <!--</mat-option>-->
                         <!--</div>-->
-
-                        <mat-tab-group class="inner-tabs" animationDuration="0ms">
-                          <ng-container *ngFor="let msg of cannedMessages; let i = index">
-                            <mat-tab *ngIf="i<3" label="{{msg.category}}">
-                              <mat-option class="custom-tab-area"
-                                          [value]="cMsg"
-                                          *ngFor="let cMsg of msg.messages | LockFilter: message">
-                                {{cMsg}}
-                                {{cMsg.count}}
-
-                                <button mat-mini-fab color="primary" class="canned-trigger edit-trigger"
-                                        (click)="message=action.message || action.name">
-                                  <i class="material-icons">
-                                    edit
-                                  </i>
-                                </button>
-                                <button mat-mini-fab color="primary" class="canned-trigger send-suggestion"
-                                        (click)="sendAutoMsg(action.message || action.name)">
-                                  <i class="material-icons">
-                                    send
-                                  </i>
-                                </button>
-                              </mat-option>
-
-                            </mat-tab>
-                          </ng-container>
-                        </mat-tab-group>
                         <!--</mat-tab>-->
 
+                        <mat-tab label="Canned Messages">
+                          <div  class="right-canned-message-list main-canned-message-area">
+                            <!--                      <strong>Canned Messages</strong>-->
+                            <div class="bar-content">
+                              <!--<mat-tab-group mat-align-tabs="center">-->
+                              <!--<mat-tab label="{{'chatdetail.cannedMessages'|translate}}">-->
+                              <!--<div class="canned-search-area search-area">-->
+                              <!--<mat-form-field appearance="outline">-->
+                              <!--<input matInput placeholder="Search" autocomplete="off" [(ngModel)]="canned">-->
+                              <!--<mat-icon matSuffix>search</mat-icon>-->
+                              <!--</mat-form-field>-->
+                              <!--</div>-->
 
-                        <!---->
-                        <!--</mat-tab-group>-->
-                      </div>
+                              <mat-tab-group class="inner-tabs" animationDuration="0ms">
+                                <ng-container *ngFor="let msg of cannedMessages; let i = index">
+                                  <mat-tab *ngIf="i<3" label="{{msg.category}}">
+                                    <mat-option class="custom-tab-area"
+                                                [value]="cMsg"
+                                                *ngFor="let cMsg of msg.messages | LockFilter: message">
+                                      {{cMsg}}
+                                      {{cMsg.count}}
+
+                                      <button mat-mini-fab color="primary" class="canned-trigger edit-trigger"
+                                      >
+                                        <i class="material-icons">
+                                          edit
+                                        </i>
+                                      </button>
+                                      <button mat-mini-fab color="primary" class="canned-trigger send-suggestion"
+                                      >
+                                        <i class="material-icons">
+                                          send
+                                        </i>
+                                      </button>
+                                    </mat-option>
+
+                                  </mat-tab>
+                                </ng-container>
+                              </mat-tab-group>
+                              <!--</mat-tab>-->
+
+
+                              <!---->
+                              <!--</mat-tab-group>-->
+                            </div>
+                          </div>
+                        </mat-tab>
+
+                        <mat-tab label="Bot Suggestions">
+                          <ng-container *ngFor="let action of actions | LockFilter: message">
+                            <mat-option [value]="action?.message || action?.name" (click)="message=action?.message || action?.name" *ngIf="action.message != undefined || action.name != undefined">
+                              {{action.message || action.name}}
+                              <button mat-mini-fab class="canned-trigger edit-trigger" (click)="message=action.message || action.name">
+                                <i class="material-icons">
+                                  edit
+                                </i>
+                              </button>
+                              <button mat-mini-fab class="canned-trigger send-suggestion"  >
+                                <i class="material-icons">
+                                  send
+                                </i>
+                              </button>
+                            </mat-option>
+                          </ng-container>
+
+                        </mat-tab>
+                      </mat-tab-group>
+
                     </div>
-                  </mat-tab>
-
-                  <mat-tab label="Bot Suggestions">
-                    <ng-container *ngFor="let action of actions | LockFilter: message">
-                      <mat-option [value]="action?.message || action?.name" (click)="message=action?.message || action?.name" *ngIf="action.message != undefined || action.name != undefined">
-                        {{action.message || action.name}}
-                        <button mat-mini-fab class="canned-trigger edit-trigger" (click)="message=action.message || action.name">
-                          <i class="material-icons">
-                            edit
-                          </i>
-                        </button>
-                        <button mat-mini-fab class="canned-trigger send-suggestion" (click)="sendAutoMsg(action.message || action.name)" >
-                          <i class="material-icons">
-                            send
-                          </i>
-                        </button>
-                      </mat-option>
-                    </ng-container>
-
-                  </mat-tab>
-                </mat-tab-group>
-
-              </div>
-            </mat-autocomplete>
+                  </mat-autocomplete>
 
 
 
+                </div>
+                <div class="chat-composer-trigger">
+                  <button class="video-call composer-trigger" mat-icon-button>
+                    <mat-icon>voice_chat</mat-icon>
+                  </button>
+                  <button (click)="onSend(replyInput.value); replyInput.value = null " *ngIf="replyInput.value.length > 0" class="send-btn composer-trigger"
+                          mat-icon-button>
+                    <mat-icon>send</mat-icon>
+                  </button>
+
+                  <button class="send-btn attachment-btn composer-trigger"  mat-icon-button *ngIf="replyInput.value.length < 1">
+                    <input #myFileInput  type="file"
+                           name="ef_chatbox_chat_file_upload" id="uploadFileBtn" class="file-upload-input">
+                    <mat-icon>attach_file</mat-icon>
+                  </button>
+
+                  <!--            <span class="attachment-btn" >-->
+                  <!--            <input #myFileInput *ngIf="replyInput.value.length < 1" (change)="uploadFile($event.target.files)" type="file" [disabled]="chatServerDown || conversation.state =='ended'"-->
+                  <!--                   name="ef_chatbox_chat_file_upload" id="uploadFileBtn" class="file-upload-input">-->
+                  <!--            <i class="material-icons" *ngIf="replyInput.value.length < 1">-->
+                  <!--                attach_file-->
+                  <!--            </i>-->
+                  <!--        </span>-->
+
+                </div>
+              </form>
+            </div>
           </div>
-          <div class="chat-composer-trigger">
-            <button class="video-call composer-trigger" (click)="emoji()" mat-icon-button>
-              <mat-icon>voice_chat</mat-icon>
-            </button>
-            <button (click)="onSend(replyInput.value); replyInput.value = null " *ngIf="replyInput.value.length > 0" class="send-btn composer-trigger"
-              mat-icon-button>
-              <mat-icon>send</mat-icon>
-            </button>
 
-            <button class="send-btn attachment-btn composer-trigger"  mat-icon-button *ngIf="replyInput.value.length < 1">
-              <input #myFileInput  type="file"
-                     name="ef_chatbox_chat_file_upload" id="uploadFileBtn" class="file-upload-input">
-              <mat-icon>attach_file</mat-icon>
-            </button>
-
-<!--            <span class="attachment-btn" >-->
-<!--            <input #myFileInput *ngIf="replyInput.value.length < 1" (change)="uploadFile($event.target.files)" type="file" [disabled]="chatServerDown || conversation.state =='ended'"-->
-<!--                   name="ef_chatbox_chat_file_upload" id="uploadFileBtn" class="file-upload-input">-->
-<!--            <i class="material-icons" *ngIf="replyInput.value.length < 1">-->
-<!--                attach_file-->
-<!--            </i>-->
-<!--        </span>-->
-
-          </div>
-        </form>
+        </div>
       </div>
-    </div>
 
-  </div>
-</div>
+      <ng-template #noteTemplate>
+        <div class="note-dialog-main">
+          <div class="dialog-header">
+            <h4 mat-dialog-title>{{popTitle}}       <button mat-button mat-dialog-close><mat-icon>close</mat-icon></button></h4>
+          </div>
+          <div class="dialog-main-content">
+            <div class="row m-0">
+              <div class="col-md-4">
+                <div class="categories-area divider-content">
+                  <h4>Categories</h4>
+                  <div class="selected-area">
+                    <div class="select-categories">
+                      <mat-chip-list>
+                        <mat-chip>Doy Ortelt <mat-icon>close</mat-icon></mat-chip>
+                      </mat-chip-list>
+                    </div>
+                  </div>
+                  <div class="categories-label">
+                    <ul>
+                      <li *ngFor="let option of categories">
+                        {{option}}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="wrap-up-area divider-content">
+                  <h4>Wrap-Up Codes</h4>
+                  <div class="selected-area">
+                    <div class="select-categories">
+                      <mat-chip-list>
+                        <mat-chip>Doy Ortelt <mat-icon>close</mat-icon></mat-chip>
+                      </mat-chip-list>
+                    </div>
+                  </div>
+                  <div class="categories-label">
+                    <ul>
+                      <li *ngFor="let option of categories">
+                        {{option}}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
 
-<ng-template #noteTemplate>
-  <div class="note-dialog-main">
-    <div class="dialog-header">
-      <h4 mat-dialog-title>{{popTitle}}       <button mat-button mat-dialog-close><mat-icon>close</mat-icon></button></h4>
-    </div>
-    <div class="dialog-main-content">
-      <div class="row m-0">
-        <div class="col-md-4">
-          <div class="categories-area divider-content">
-            <h4>Categories</h4>
-            <div class="selected-area">
-              <div class="select-categories">
-                  <mat-chip-list>
-                    <mat-chip>Doy Ortelt <mat-icon>close</mat-icon></mat-chip>
-                  </mat-chip-list>
+              <div class="note-area col-md-12">
+                <h4>Notes</h4>
+                <textarea></textarea>
               </div>
             </div>
-            <div class="categories-label">
-              <ul>
-                <li *ngFor="let option of categories">
-                  {{option}}
-                </li>
-              </ul>
           </div>
+
+          <div class="action-trigger text-right">
+            <button mat-button mat-dialog-close class="close-btn">Cancel</button>
+            <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial>Apply</button>
           </div>
         </div>
-        <div class="col-md-8">
-          <div class="wrap-up-area divider-content">
-            <h4>Wrap-Up Codes</h4>
-            <div class="selected-area">
-              <div class="select-categories">
-                <mat-chip-list>
-                  <mat-chip>Doy Ortelt <mat-icon>close</mat-icon></mat-chip>
-                </mat-chip-list>
-              </div>
-            </div>
-            <div class="categories-label">
-              <ul>
-                <li *ngFor="let option of categories">
-                  {{option}}
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-          <div class="note-area col-md-12">
-            <h4>Notes</h4>
-            <textarea></textarea>
-          </div>
-      </div>
-    </div>
-
-    <div class="action-trigger text-right">
-      <button mat-button mat-dialog-close class="close-btn">Cancel</button>
-      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial>Apply</button>
+      </ng-template>
     </div>
   </div>
-</ng-template>
-</div>
-</div>
 
-<div class="customer-info-main">
-  <app-customer-info (expandCustomerInfo)="eventFromChild($event)"></app-customer-info>
-</div>
+  <div class="customer-info-main">
+    <app-customer-info (expandCustomerInfo)="eventFromChild($event)"></app-customer-info>
+  </div>
 </div>
 
 <ng-template #chatTransferTemplate>

@@ -28,34 +28,34 @@
               </div>
               <div *ngIf="item.type == 'string' || item.type == 'url' " class="input-align col-md-6 pr-0">
                 <strong> Range </strong>:
-                <inline-editor [ngClass]="{'uneditable': item.is_deletable == false || item.type == 'url' }"
-                               [disabled]="item.is_deletable == false || item.type == 'url'"
-                               pattern="^([1-9][0-9]{0,2}|1000)$"
-                               class="cover-spaces" type="text" [(ngModel)]="item.characters"
-                               (onSave)="saveEditable($event, item._id,'schema2')" name="characters"
-                               (onError)="myHandleError($event,'char')">
+                <!--                <inline-editor [ngClass]="{'uneditable': item.is_deletable == false || item.type == 'url' }"-->
+                <!--                               [disabled]="item.is_deletable == false || item.type == 'url'"-->
+                <!--                               pattern="^([1-9][0-9]{0,2}|1000)$"-->
+                <!--                               class="cover-spaces" type="text" [(ngModel)]="item.characters"-->
+                <!--                               (onSave)="saveEditable($event, item._id,'schema2')" name="characters"-->
+                <!--                               (onError)="myHandleError($event,'char')">-->
 
-                </inline-editor>
+                <!--                </inline-editor>-->
               </div>
               <div class="input-align col-md-6 pr-0">
                 <strong> Mandatory </strong>:
-                <inline-editor [ngClass]="{'uneditable': item.is_deletable == false }"
-                               [disabled]='item.is_deletable == false' class="cover-spaces" type="select"
-                               [(ngModel)]="item.is_required" (onSave)="saveEditable($event, item._id,'schema2')"
-                               name="is_required" [options]="editableSelectOptions" (onError)="myHandleError($event)">
-                </inline-editor>
+                <!--                <inline-editor [ngClass]="{'uneditable': item.is_deletable == false }"-->
+                <!--                               [disabled]='item.is_deletable == false' class="cover-spaces" type="select"-->
+                <!--                               [(ngModel)]="item.is_required"-->
+                <!--                               name="is_required" [options]="editableSelectOptions">-->
+                <!--                </inline-editor>-->
 
               </div>
 
               <div class="input-align col-md-6 pr-0">
                 <strong> Description </strong>:
-                <inline-editor [ngClass]="{'uneditable': item.is_deletable == false }"
-                               [disabled]='item.is_deletable == false' min="1" max="100" class="cover-spaces"
-                               type="textarea" [(ngModel)]="item.desc"
-                               (onSave)="saveEditable($event, item._id,'schema2')"
-                               name="desc" (onError)="myHandleError($event,'desc')">
+                <!--                <inline-editor [ngClass]="{'uneditable': item.is_deletable == false }"-->
+                <!--                               [disabled]='item.is_deletable == false' min="1" max="100" class="cover-spaces"-->
+                <!--                               type="textarea" [(ngModel)]="item.desc"-->
+                <!--                               (onSave)="saveEditable($event, item._id,'schema2')"-->
+                <!--                               name="desc" (onError)="myHandleError($event,'desc')">-->
 
-                </inline-editor>
+                <!--                </inline-editor>-->
 
 
               </div>
@@ -90,36 +90,36 @@
               </div>
               <div *ngIf="item.type == 'string' || item.type == 'url'" class="input-align col-md-6 pr-0">
                 <strong> Range </strong>:
-                <inline-editor [ngClass]="{'uneditable': item.is_deletable == false || item.type == 'url' }"
-                               [disabled]="item.is_deletable == false || item.type == 'url' "
-                               pattern="^([1-9][0-9]{0,2}|1000)$"
-                               class="cover-spaces" type="text" [(ngModel)]="item.characters"
-                               (onSave)="saveEditable($event, item._id,'schema1')" name="characters"
-                               (onError)="myHandleError($event,'char')">
+                <!--                <inline-editor [ngClass]="{'uneditable': item.is_deletable == false || item.type == 'url' }"-->
+                <!--                               [disabled]="item.is_deletable == false || item.type == 'url' "-->
+                <!--                               pattern="^([1-9][0-9]{0,2}|1000)$"-->
+                <!--                               class="cover-spaces" type="text" [(ngModel)]="item.characters"-->
+                <!--                               (onSave)="saveEditable($event, item._id,'schema1')" name="characters"-->
+                <!--                               (onError)="myHandleError($event,'char')">-->
 
-                </inline-editor>
+                <!--                </inline-editor>-->
               </div>
 
               <div class="input-align col-md-6 pr-0">
                 <strong> Mandatory </strong>:
-                <inline-editor [ngClass]="{'uneditable': item.is_deletable == false }"
-                               [disabled]='item.is_deletable == false' class="cover-spaces" type="select"
-                               [(ngModel)]="item.is_required" (onSave)="saveEditable($event, item._id,'schema1')"
-                               name="is_required" [options]="editableSelectOptions"
-                               (onError)="myHandleError()">
+                <!--                <inline-editor [ngClass]="{'uneditable': item.is_deletable == false }"-->
+                <!--                               [disabled]='item.is_deletable == false' class="cover-spaces" type="select"-->
+                <!--                               [(ngModel)]="item.is_required"-->
+                <!--                               name="is_required" [options]="editableSelectOptions"-->
+                <!--                               >-->
 
-                </inline-editor>
+                <!--                </inline-editor>-->
 
               </div>
               <div class="input-align col-md-6 pr-0">
                 <strong> Description </strong>:
-                <inline-editor [ngClass]="{'uneditable': item.is_deletable == false }"
-                               [disabled]='item.is_deletable == false' min="1" max="100" class="cover-spaces"
-                               type="textarea" [(ngModel)]="item.desc"
-                               (onSave)="saveEditable($event, item._id,'schema1')"
-                               name="desc" (onError)="myHandleError($event,'desc')">
+                <!--                <inline-editor [ngClass]="{'uneditable': item.is_deletable == false }"-->
+                <!--                               [disabled]='item.is_deletable == false' min="1" max="100" class="cover-spaces"-->
+                <!--                               type="textarea" [(ngModel)]="item.desc"-->
 
-                </inline-editor>
+                <!--                               name="desc" >-->
+
+                <!--                </inline-editor>-->
 
               </div>
             </div>

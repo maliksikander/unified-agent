@@ -11,9 +11,9 @@
           <label>Message</label>
           <mat-form-field appearance="outline">
             <textarea #messageAnnouncement matInput [formControl]="announcementMessage" maxlength="250" ></textarea>
-<!--            <mat-error *ngIf="announcementMessage.hasError('required')">-->
-<!--              {{'announcements.type-message' | translate}}-->
-<!--            </mat-error>-->
+            <!--            <mat-error *ngIf="announcementMessage.hasError('required')">-->
+            <!--              {{'announcements.type-message' | translate}}-->
+            <!--            </mat-error>-->
             <mat-hint align="end">{{messageAnnouncement.value.length}} / 250 characters</mat-hint>
           </mat-form-field>
           <!--<span class="right-align character-limit">250 characters</span>-->
@@ -22,7 +22,7 @@
           <label>Select Team</label>
           <mat-form-field appearance="outline">
             <mat-select [formControl]="teamList" multiple>
-              <mat-option  *ngFor="let team of Teams" [value]="team"  (click)="onTeam()">  {{team}} </mat-option>
+              <mat-option  *ngFor="let team of Teams" [value]="team" >  {{team}} </mat-option>
             </mat-select>
             <mat-error *ngIf="teamList.hasError('required')">
               Selecet Team
@@ -56,7 +56,7 @@
 
         <div class="announcement-trigger right-align">
           <button mat-raised-button type="button" class="discard-btn announcement-action" (click)="onClose()">Discard</button>
-          <button mat-raised-button type="button" class="send-announcement announcement-action" (click)="onCreate_UpdateAnnouncement()"[disabled]="!announcementMessage.valid || !teamList.valid || !announceDate.valid || !expireDate.valid">Create Announcement</button>
+          <button mat-raised-button type="button" class="send-announcement announcement-action" [disabled]="!announcementMessage.valid || !teamList.valid || !announceDate.valid || !expireDate.valid">Create Announcement</button>
 
         </div>
       </div>

@@ -5,7 +5,7 @@
 
 <mat-dialog-content *ngIf="dataReady" class="main-content-create-customer" style="box-shadow: 0px 2px 0px #ececec">
 
-  <form [formGroup]="myGroup" (submit)="save(myGroup.value)">
+  <form [formGroup]="myGroup" (submit)="save()">
 
     <div class="row">
 
@@ -50,7 +50,7 @@
             <div class="drop">
               <angular2-multiselect [data]="labels" [(ngModel)]="customerLabels" [settings]="labelSettings"
                                     (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
-                                    (onDeSelectAll)="onDeSelectAll($event)" (onAddFilterNewItem)="onAddItem($event)" [formControlName]="schemaAttribute.key">
+                                    (onDeSelectAll)="onDeSelectAll($event)"  [formControlName]="schemaAttribute.key">
 
                 <c-badge>
                   <ng-template let-item="item">
