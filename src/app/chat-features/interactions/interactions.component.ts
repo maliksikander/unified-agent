@@ -112,6 +112,7 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   };
   message = '';
   transferSearch = '';
+  searchInteraction = '';
   convers: any[];
   ringing = false;
   callControls = true;
@@ -150,6 +151,7 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   chatTransferTo;
   @Input() max: any;
   today = new Date();
+  interactionSearch = false;
   constructor(private snackBar: MatSnackBar, private _cacheService: cacheService, private _socketService: socketService, private dialog: MatDialog) {
 
   }

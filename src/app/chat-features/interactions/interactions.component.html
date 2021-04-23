@@ -16,6 +16,12 @@
 
           </h5>
         </div>
+        <div class="instruction-search" *ngIf="interactionSearch">
+          <input placeholder="Search Interactions" type="text" [(ngModel)]="searchInteraction">
+          <button mat-button (click)="interactionSearch = false">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
         <div class="col-md-8 agent-actions">
 
           <ul class="list-group list-group-horizontal agent-controls main-search">
@@ -29,7 +35,7 @@
               </button>
             </li>
             <li class="list-group-item">
-              <button mat-fab aria-label="Transfer Chat">
+              <button mat-fab aria-label="Transfer Chat" (click)="interactionSearch = true">
                 <mat-icon>search</mat-icon>
               </button>
             </li>
@@ -48,7 +54,6 @@
             <li class="list-group-item">
               <button mat-fab class="barge-in">
                 <mat-icon>chat_bubble</mat-icon>
-                <mat-icon>transit_enterexit</mat-icon>
               </button>
             </li>
             <li class="list-group-item">
@@ -551,7 +556,7 @@
 
           <div class="instruction-content chat-session-main">
             <div class="int-date"><span>Mon<b>09</b></span></div>
-            <div *ngFor="let con of convers">
+            <div *ngFor="let con of convers | LockFilter:searchInteraction">
               <div class="chat-message" [ngClass]="{'agent-message': con.title == 'raza'}">
                 <div class="profile-pic">
                   <div class="active-channel channel-icon {{customer.info.channel}}"><img width="20" src="assets/images/web.svg"></div>
