@@ -110,6 +110,16 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
       url: 'http://localhost:4200/',
     }
   };
+  channelFlag = 'all';
+  channelName = 'All';
+  channelCode = 'all';
+  channels = [
+    { code: 'all', name: 'All', flag: 'whatsapp.svg' },
+    { code: 'whatsapp', name: 'Whatsapp', flag: 'whatsapp.svg' },
+    { code: 'web', name: 'Web Chat', flag: 'web.svg' },
+    { code: 'facebook', name: 'Facebook', flag: 'facebook.svg' },
+    { code: 'viber', name: 'Viber', flag: 'viber.svg' }
+  ];
   message = '';
   transferSearch = '';
   searchInteraction = '';
@@ -281,5 +291,15 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
 
   eventFromChild(data) {
     this.isBarOPened = data;
+  }
+
+  searchChannel(channel) {
+
+    const selectedChannel = this.channels.find(r => r.code === channel);
+    if (selectedChannel !== undefined) {
+      this.channelName = selectedChannel.name;
+      this.channelFlag = selectedChannel.flag;
+      this.channelCode = selectedChannel.code;
+    }
   }
 }

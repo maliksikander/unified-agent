@@ -1739,40 +1739,43 @@ padding: 0 !important;
   font-size: 12px;
   font-weight: 600;
   &.channel-search{
-    .mat-form-field-infix{
-      padding: 1px 0;
-      border-top-width: 8px !important;
-      height: 30px;
-      line-height: 15px;
-    }
-    .mat-form-field-flex{
-      background: #fff;
-      border-radius: 20px;
-      margin: 0;
-    }
-    .mat-form-field{
-      width: 100%;
-    }
-    .mat-form-field-outline{
-      div{
-        border: 0 !important;
-      }
-    }
-  }
-  .mat-form-field-infix {
-    padding: 1px 0;
-    border-top-width: 10px !important;
-    height: 35px;
-    line-height: 16px;
-  }
-  .mat-form-field-wrapper{
-    margin: 0 !important;
-    padding: 0 !important;
+    button{
 
-    .mat-select-arrow-wrapper {
-      transform: translateY(0%);
     }
+    //.mat-form-field-infix{
+    //  padding: 1px 0;
+    //  border-top-width: 8px !important;
+    //  height: 30px;
+    //  line-height: 15px;
+    //}
+    //.mat-form-field-flex{
+    //  background: #fff;
+    //  border-radius: 20px;
+    //  margin: 0;
+    //}
+    //.mat-form-field{
+    //  width: 100%;
+    //}
+    //.mat-form-field-outline{
+    //  div{
+    //    border: 0 !important;
+    //  }
+    //}
   }
+  //.mat-form-field-infix {
+  //  padding: 1px 0;
+  //  border-top-width: 10px !important;
+  //  height: 35px;
+  //  line-height: 16px;
+  //}
+  //.mat-form-field-wrapper{
+  //  margin: 0 !important;
+  //  padding: 0 !important;
+  //
+  //  .mat-select-arrow-wrapper {
+  //    transform: translateY(0%);
+  //  }
+  //}
 }
 
 
@@ -2552,3 +2555,46 @@ margin: 0;
 tspan{
   text-transform: uppercase;
 }
+
+//Channel search selection list
+
+.channel-selection-list {
+  height: 30px !important;
+  line-height: 30px !important;
+  padding: 0 22px 0 8px !important;
+  font-size: 12px;
+  color: #666;
+  i {
+    position: absolute;
+    right: 5px;
+    font-size: 12px;
+    line-height: 30px;
+  }
+
+.channel-list{
+    width: 20px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 100%;
+    height: 20px;
+    position: relative;
+    margin-right: 5px;
+    line-height: 20px;
+    img{
+      width: 11px;
+      max-height: 12px;
+      position: relative;
+      top: -1px;
+    }
+  }
+}
+
+.channel-search-trigger {
+  .material-icons {
+    position: absolute;
+    right: 0;
+    top: 3px;
+  }
+}
+
+

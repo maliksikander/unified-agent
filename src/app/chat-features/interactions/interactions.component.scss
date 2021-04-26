@@ -3,6 +3,7 @@
 .main-chat-bar {
   background: $header-gray-color;
   height: 50px;
+  position: relative;
 
   .customer-showcase {
     height: 50px;
@@ -1423,4 +1424,58 @@ button.send-btn.attachment-btn {
       line-height: 22px;
     }
   }
+}
+
+
+// Channel search selection
+
+.channel-search{
+  display: inline-block;
+  min-width: 110px;
+  width: auto !important;
+  &.all{
+    min-width: 75px;
+  }
+
+  .channel-search-trigger{
+    position: relative;
+    text-align: left !important;
+    margin: 0;
+    color: #707070;
+    font-weight: 500;
+    font-size: 11px;
+    background: #ECF7FB;
+    border-radius: 15px !important;
+    width: 100% !important;
+    padding:0 25px 0 7px !important;
+
+  }
+  img{
+    width: 11px !important;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    max-height: 12px;
+  }
+  //i{
+  //  width: 13px;
+  //  text-align: center;
+  //  position: absolute;
+  //  right: 10px;
+  //  display: block;
+  //  top: 3px;
+  //  max-height: 13px;
+  //}
+}
+
+.channel-selected {
+  width: 20px;
+  display: inline-block;
+  text-align: center;
+  border-radius: 100%;
+  height: 20px;
+  position: relative;
+  margin-right: 5px;
+  line-height: 20px;
+
 }
