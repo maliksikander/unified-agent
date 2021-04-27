@@ -110,7 +110,7 @@
         <ng-scrollbar class="chat-messages-main my-scrollbar"
           [style.height]="replyInput?.offsetHeight > 80 ? 'calc(100% - ' + (replyInput?.offsetHeight+100)+'px)' : 'calc(100% - '+ viewHeight+')'">
           <!-- voice message chat area -->
-          
+
 
           <!-- simple chat area -->
 
@@ -162,12 +162,12 @@
             <div id="chat-area-end"></div>
 
           </div>
-          </ng-scrollbar>
+        </ng-scrollbar>
       </div>
 
     </div>
 
-    <div class="chat-footer">
+    <div class="chat-footer" [ngClass]="{'textarea-disable': conversation.activeChannelSessions.length == 0}">
       <div class="slide-in-bottom" *ngIf="showNewMessageNotif" (click)="downTheScrollAfterMilliSecs(0,'smooth')"
         class="new-msg-notif">New
         Message
@@ -175,18 +175,25 @@
           arrow_drop_down
         </span>
       </div>
-      <span class="selected-channel">Selected Channel: <label>{{conversation.messages[conversation.messages.length
-          -1].header.channelSession.channel.channelConnector.type.name | titlecase}}</label></span>
+      <span class="selected-channel">Selected Channel:
+        <label
+          *ngIf="conversation.activeChannelSessions.length > 0">{{conversation.activeChannelSessions[conversation.activeChannelSessions.length
+          -1]?.channel.channelConnector.type.name| titlecase}}</label>
+        <label *ngIf="conversation.activeChannelSessions.length == 0" style="color:grey;">
+          None
+        </label>
+      </span>
 
       <div class="message-composer">
         <form class="reply-form">
           <label class="count-reply">{{replyInput.value.length}}/200</label>
           <div class="mat-form-field chat-area" [ngClass]="{'expand-area-height':expanedHeight > 50}">
-            <textarea (keyup.enter)="onSend(replyInput.value); replyInput.value = null" (click)="onTextAreaClick()"
-              data-emoji-picker="true" [(ngModel)]="message" (keyup)="onKey($event)" name="message"
-              (change)="textChanged($event)" [matAutocomplete]="auto" matInput cdkTextareaAutosize
-              cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none" #replyInput
-              name="message"
+            <textarea [disabled]="conversation.activeChannelSessions.length == 0"
+              (keyup.enter)="onSend(replyInput.value); replyInput.value = null" (click)="onTextAreaClick()"
+              [attr.data-emoji-picker]="conversation.activeChannelSessions.length > 0 ? true : false" [(ngModel)]="message"
+              (keyup)="onKey($event)" name="message" (change)="textChanged($event)" [matAutocomplete]="auto" matInput
+              cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none"
+              #replyInput name="message"
               placeholder="{{conversation.messages[conversation.messages.length -1]?.botSuggestions ? 'Bot suggestions are available type / for viewing' :'Type a message here...'}}"></textarea>
             <!-- [ngClass]="{'animate-content': displaySuggestionsAnimation}" -->
 
@@ -288,7 +295,7 @@
             <!-- <button class="video-call composer-trigger" (click)="emoji()" mat-icon-button>
               <mat-icon>voice_chat</mat-icon>
             </button> -->
-            <button (click)="onSend(replyInput.value); replyInput.value = null " *ngIf="replyInput.value.length > 0"
+            <button (click)="onSend(replyInput.value); replyInput.value = null " *ngIf="replyInput.value.length > 0 && conversation.activeChannelSessions.length > 0"
               class="send-btn composer-trigger" mat-icon-button>
               <mat-icon>send</mat-icon>
             </button>

@@ -144,6 +144,7 @@ export class InteractionsComponent implements OnInit {
     message.header.sender = {};
 
     message.header.sender = new TopicParticipant("AGENT", this._cacheService.agent, this.conversation.topicId, "PRIMARY");
+    message.header.channelSession = this.conversation.activeChannelSessions[this.conversation.activeChannelSessions.length - 1];
 
     message.body.markdownText = text;
     delete message["botSuggestions"];

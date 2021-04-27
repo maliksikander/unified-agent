@@ -129,7 +129,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     AngularMultiSelectModule,
-    NgScrollbarModule,
+    NgScrollbarModule
   ],
   exports: [
     MatIconModule,
