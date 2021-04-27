@@ -102,13 +102,14 @@ export class socketService {
 
     if (cimEvent.type.toLowerCase() == "message") {
       if (sameTopicConversation) {
-        sameTopicConversation.messages.push(cimEvent.data);
-        sameTopicConversation.unReadCount ? undefined : (sameTopicConversation.unReadCount = 0);
         if (cimEvent.data.header.sender.type.toLowerCase() == "customer") {
-          sameTopicConversation["activeChannelSessions"] = this.getActiveChannelSessions(sameTopicConversation.messages);
 
+          this.processActiveChannelSessions(sameTopicConversation, cimEvent.data.header.channelSession);
           ++sameTopicConversation.unReadCount;
         }
+        sameTopicConversation.messages.push(cimEvent.data);
+        sameTopicConversation.unReadCount ? undefined : (sameTopicConversation.unReadCount = 0);
+
       } else {
         this.conversations.push({
           topicId: topicId,
@@ -169,6 +170,31 @@ export class socketService {
       }
     }
     return activeChannelSessions;
+  }
+
+  processActiveChannelSessions(conversation, incomingChannelSession) {
+
+    let matched: boolean = false;
+    let index = null;
+
+    conversation.activeChannelSessions.forEach((activeChannelSession, i) => {
+      if (activeChannelSession.id === incomingChannelSession.id) {
+        matched = true;
+        index = i;
+        return;
+      }
+    });
+
+    if (matched) {
+
+      // if matched push that channel session to the last in array
+      // thats why first removing it from the array for removing duplicate entry
+      conversation.activeChannelSessions.splice(index, 1);
+    }
+
+    // pusing the incoming channel to the last in array
+    conversation.activeChannelSessions.push(incomingChannelSession);
+
   }
 
   removeConversation(topicId) {
