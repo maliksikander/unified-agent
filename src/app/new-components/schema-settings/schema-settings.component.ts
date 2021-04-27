@@ -308,7 +308,6 @@ export class SchemaSettingsComponent implements OnInit {
   }
 
   delete(e, id) {
-
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '490px',
       panelClass: 'confirm-dialog',
@@ -328,10 +327,14 @@ export class SchemaSettingsComponent implements OnInit {
     // });
   }
 
-  addAttr() {
+  displayMenu(e){
+    e.stopPropagation();
+  }
+  addAttr(e) {
     const dialogRef = this.dialog.open(CreateAttributeComponent, {
       width: '815px',
       height: '325px',
+      data: e,
     });
 
     dialogRef.afterClosed().subscribe(result => {

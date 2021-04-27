@@ -9,13 +9,25 @@
       <div cdkDropList [cdkDropListData]="schema2" class="schema-list" (cdkDropListDropped)="drop($event)">
         <div *ngFor="let item of schema2; let i = index;">
           <div  [ngClass]="{'schema-detail-check': showDetails && divId == item._id}" (click)="openDetails(item._id)" class="schema-box" cdkDrag>
-            <span class="n">{{i + 1}}</span>
+<!--            <span class="n">{{i + 1}}</span>-->
             <mat-icon class="shadow">more_vert</mat-icon>
             <span class="heading">{{item.label}}</span><span
             class="steric" *ngIf="item.is_required">*</span>
-            <mat-icon *ngIf="item.is_deletable != false" matTooltip=Delete
-                      (click)="delete(item.label,item._id)" class="delete-btn">close
+            <mat-icon *ngIf="item.is_deletable != false" matTooltip="Options"
+                       class="delete-btn box-options" [matMenuTriggerFor]="boxOptions" (click)="displayMenu($event)">more_vert
             </mat-icon>
+
+            <mat-menu #boxOptions="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
+              <button mat-menu-item class="channel-selection-list" (click)="addAttr(item)">
+                Edit
+              </button>
+              <button mat-menu-item class="channel-selection-list" (click)="delete(item.label,item._id)">
+                Delete
+              </button>
+
+            </mat-menu>
+
+
           </div>
           <div class="schema-details" *ngIf="showDetails && divId == item._id">
             <div class="row m-0">
@@ -70,13 +82,24 @@
         <div *ngFor="let item of schema1; let i = index">
           <div [ngClass]="{'schema-detail-check': showDetails && divId == item._id}" (click)="openDetails(item._id)"
                class="schema-box" cdkDrag>
-            <span class="n">{{i + 1 + schema2.length}}</span>
+<!--            <span class="n">{{i + 1 + schema2.length}}</span>-->
             <mat-icon class="shadow">more_vert</mat-icon>
             <span class="heading">{{item.label}}</span><span
             class="steric" *ngIf="item.is_required">*</span>
-            <mat-icon *ngIf="item.is_deletable != false" matTooltip=.DLT}}
-                      (click)="delete($event,item._id)" class="delete-btn">close
+            <mat-icon *ngIf="item.is_deletable != false" matTooltip="option"
+                       class="delete-btn box-options"  [matMenuTriggerFor]="searchChannelSelection" (click)="displayMenu($event)">more_vert
             </mat-icon>
+
+            <mat-menu #searchChannelSelection="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
+              <button mat-menu-item class="channel-selection-list" (click)="addAttr(item)">
+                Edit
+              </button>
+              <button mat-menu-item class="channel-selection-list" (click)="delete(item.label,item._id)">
+                Delete
+              </button>
+
+            </mat-menu>
+
           </div>
           <div class="schema-details" *ngIf="showDetails && divId == item._id">
             <div class="row m-0">

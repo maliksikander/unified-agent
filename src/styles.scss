@@ -2596,5 +2596,16 @@ tspan{
     top: 3px;
   }
 }
-
+.selected-channels{
+  span{
+    @extend .channel-options;
+  }
+  .mat-select-arrow-wrapper {
+    transform: translateY(10%) !important;
+  }
+}
+.channel-options {
+  color: #666 !important;
+  font-size: 13px !important;
+}
 

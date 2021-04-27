@@ -1,5 +1,5 @@
 <div class="header">
-  <div class="headerName">Create Attribute</div>
+  <div class="headerName">{{attributesData.label ? 'Edit Attribute - ' + attributesData.label : 'Create Attribute'}}</div>
   <mat-icon (click)="onNoClick()" class="closeBtn">close</mat-icon>
 </div>
 
@@ -92,13 +92,13 @@
         <label class="text-left">Select Channel</label>
         <div class="select-list">
           <mat-form-field appearance="outline">
-            <select matNativeControl>
-              <option value="web" selected>Web</option>
-              <option value="whatsapp">Whatsapp</option>
-              <option value="facebook">Facebook</option>
-              <option value="viber" >Viber</option>
-            </select>
+            <mat-select [formControl]="selectChannel" multiple class="selected-channels">
+              <mat-option class="channel-options" *ngFor="let channel of channelList" [value]="channel">{{channel}}</mat-option>
+            </mat-select>
           </mat-form-field>
+
+
+
         </div>
       </div>
 
