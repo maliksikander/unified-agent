@@ -121,17 +121,35 @@ export class socketService {
       this._conversationsListener.next(this.conversations);
     } else if (cimEvent.type.toLowerCase() == "suggestion") {
       this.mergeBotSuggestions(sameTopicConversation, cimEvent.data);
+    } else if (cimEvent.name.toLowerCase() == "channel_session_ended") {
+      this.removeChannelSession(cimEvent, topicId);
     }
   }
 
   onOldCimEventsHandler(cimEvents, topicId) {
     let oldTopicMessages = [];
+    let endedChannelSessions = [];
+
+    // pushed CIM messages
     cimEvents.forEach((cimEvent) => {
       if (cimEvent.type.toLowerCase() == "message") {
         oldTopicMessages.push(cimEvent.data);
       }
+      if (cimEvent.nane.toLowerCase() == "channel_session_ended") {
+        endedChannelSessions.push(cimEvent.data);
+      }
     });
+
+    // get active channel sessions
     let activeChannelSessions = this.getActiveChannelSessions(oldTopicMessages);
+
+    // remove ended channel sessions
+    endedChannelSessions.forEach((endedChannelSession) => {
+      let index = activeChannelSessions.findIndex((activeChannelSession) => { activeChannelSession.id === endedChannelSession.id });
+      activeChannelSessions.splice(index, 1);
+    })
+
+    // push the conversation in conversation array
     this.conversations.push({ topicId: topicId, messages: oldTopicMessages, activeChannelSessions: activeChannelSessions, unReadCount: undefined, index: ++this.conversationIndex });
     this._conversationsListener.next(this.conversations);
   }
@@ -192,6 +210,20 @@ export class socketService {
   linkCustomerWithInteraction(customerId, topicId) {
     this.emit("publishCimEvent", { cimEvent: new CimEvent("ASSOCIATED_CUSTOMER_CHANGED", "NOTIFICATION", { "Id": customerId }), agentId: this._cacheService.agent.id, topicId: topicId });
     this._snackbarService.open("CUSTOMER LINKED SUCCESSFULLY", "succ");
+  }
+
+
+  removeChannelSession(cimEvent, topicId) {
+
+    let conversation = this.conversations.find((e) => {
+      return e.topicId == topicId;
+    });
+
+    let index = conversation.activeChannelSessions.findIndex((channelSession) => {
+      return channelSession.id === cimEvent.data.id;
+    });
+
+    conversation.activeChannelSessions.splice(index, 1);
   }
 
 }
