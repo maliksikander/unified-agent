@@ -127,33 +127,78 @@ export class socketService {
     }
   }
 
-  onOldCimEventsHandler(cimEvents, topicId) {
-    let oldTopicMessages = [];
-    let endedChannelSessions = [];
+  // onOldCimEventsHandler_depricate(cimEvents, topicId) {
+  //   let oldTopicMessages = [];
+  //   let endedChannelSessions = [];
 
-    // pushed CIM messages
-    cimEvents.forEach((cimEvent) => {
+  //   // pushed CIM messages
+  //   cimEvents.forEach((cimEvent) => {
+  //     if (cimEvent.type.toLowerCase() == "message") {
+  //       oldTopicMessages.push(cimEvent.data);
+  //     }
+  //     if (cimEvent.nane.toLowerCase() == "channel_session_ended") {
+  //       endedChannelSessions.push(cimEvent.data);
+  //     }
+  //   });
+
+  //   // get active channel sessions
+  //   let activeChannelSessions = this.getActiveChannelSessions(oldTopicMessages);
+
+  //   // remove ended channel sessions
+  //   endedChannelSessions.forEach((endedChannelSession) => {
+  //     let index = activeChannelSessions.findIndex((activeChannelSession) => { activeChannelSession.id === endedChannelSession.id });
+  //     activeChannelSessions.splice(index, 1);
+  //   })
+
+  //   // push the conversation in conversation array
+  //   this.conversations.push({ topicId: topicId, messages: oldTopicMessages, activeChannelSessions: activeChannelSessions, unReadCount: undefined, index: ++this.conversationIndex });
+  //   this._conversationsListener.next(this.conversations);
+  // }
+
+
+  onOldCimEventsHandler(cimEvents, topicId) {
+
+    let conversation = { topicId: topicId, messages: [], activeChannelSessions: [], unReadCount: undefined, index: ++this.conversationIndex }
+
+    cimEvents.forEach((cimEvent, i) => {
+
       if (cimEvent.type.toLowerCase() == "message") {
-        oldTopicMessages.push(cimEvent.data);
+
+
+        // for the first message, feed the conversation with message and active channel session 
+        if (i == 0) {
+          conversation.messages.push(cimEvent.data);
+          conversation.activeChannelSessions.push(cimEvent.data.header.channelSession);
+        }
+
+        // for other messages rather than 1st, of type customer, process the active channel sessions
+        if (cimEvent.data.header.sender.type.toLowerCase() == "customer") {
+
+          this.processActiveChannelSessions(conversation, cimEvent.data.header.channelSession);
+          conversation.messages.push(cimEvent.data)
+        }
       }
-      if (cimEvent.nane.toLowerCase() == "channel_session_ended") {
-        endedChannelSessions.push(cimEvent.data);
+
+      // if there is an event of channel session ended, then process that event and remove that channel from
+      // active channel sessions
+      if (cimEvent.name.toLowerCase() == "channel_session_ended") {
+
+        // find the index of channel session which needs to be removed
+        let index = conversation.activeChannelSessions.findIndex((channelSession) => { return channelSession.id === cimEvent.data.id });
+
+        if (index != -1) { 
+          conversation.activeChannelSessions.splice(index, 1);
+        }
       }
+
+
     });
 
-    // get active channel sessions
-    let activeChannelSessions = this.getActiveChannelSessions(oldTopicMessages);
-
-    // remove ended channel sessions
-    endedChannelSessions.forEach((endedChannelSession) => {
-      let index = activeChannelSessions.findIndex((activeChannelSession) => { activeChannelSession.id === endedChannelSession.id });
-      activeChannelSessions.splice(index, 1);
-    })
-
-    // push the conversation in conversation array
-    this.conversations.push({ topicId: topicId, messages: oldTopicMessages, activeChannelSessions: activeChannelSessions, unReadCount: undefined, index: ++this.conversationIndex });
+    this.conversations.push(conversation);
     this._conversationsListener.next(this.conversations);
+
   }
+
 
   getActiveChannelSessions(messages) {
     let lookup = {};
