@@ -77,6 +77,11 @@ export class socketService {
       console.log("topicUnsubscription", res);
       this.removeConversation(res.topicId);
     });
+
+    this.listen("topicClosed").subscribe((res: any) => {
+      console.log("topicClosed", res);
+      this.changeTopicStateToClose(res.topicId);
+    });
   }
 
   listen(eventName: string) {
@@ -116,7 +121,8 @@ export class socketService {
           messages: [cimEvent.data],
           activeChannelSessions: [cimEvent.data.header.channelSession],
           unReadCount: undefined,
-          index: ++this.conversationIndex
+          index: ++this.conversationIndex,
+          state: "ACTIVE"
         });
       }
       this._conversationsListener.next(this.conversations);
@@ -158,7 +164,7 @@ export class socketService {
 
   onOldCimEventsHandler(cimEvents, topicId) {
 
-    let conversation = { topicId: topicId, messages: [], activeChannelSessions: [], unReadCount: undefined, index: ++this.conversationIndex }
+    let conversation = { topicId: topicId, messages: [], activeChannelSessions: [], unReadCount: undefined, index: ++this.conversationIndex, state: "ACTIVE" }
 
     cimEvents.forEach((cimEvent, i) => {
 
@@ -186,7 +192,7 @@ export class socketService {
         // find the index of channel session which needs to be removed
         let index = conversation.activeChannelSessions.findIndex((channelSession) => { return channelSession.id === cimEvent.data.id });
 
-        if (index != -1) { 
+        if (index != -1) {
           conversation.activeChannelSessions.splice(index, 1);
         }
       }
@@ -200,22 +206,22 @@ export class socketService {
   }
 
 
-  getActiveChannelSessions(messages) {
-    let lookup = {};
-    let activeChannelSessions = [];
+  // getActiveChannelSessions(messages) {
+  //   let lookup = {};
+  //   let activeChannelSessions = [];
 
-    for (let message, i = 0; (message = messages[i++]);) {
-      if (message.header.sender.type.toLowerCase() == "customer") {
-        let id = message.header.channelSession.id;
+  //   for (let message, i = 0; (message = messages[i++]);) {
+  //     if (message.header.sender.type.toLowerCase() == "customer") {
+  //       let id = message.header.channelSession.id;
 
-        if (!(id in lookup)) {
-          lookup[id] = 1;
-          activeChannelSessions.push(message.header.channelSession);
-        }
-      }
-    }
-    return activeChannelSessions;
-  }
+  //       if (!(id in lookup)) {
+  //         lookup[id] = 1;
+  //         activeChannelSessions.push(message.header.channelSession);
+  //       }
+  //     }
+  //   }
+  //   return activeChannelSessions;
+  // }
 
   processActiveChannelSessions(conversation, incomingChannelSession) {
 
@@ -295,6 +301,15 @@ export class socketService {
     });
 
     conversation.activeChannelSessions.splice(index, 1);
+  }
+
+  changeTopicStateToClose(topicId) {
+    // find the conversation
+    let conversation = this.conversations.find((e) => {
+      return e.topicId == topicId;
+    });
+    // change the conversation state to "CLOSED"
+    conversation.state = "CLOSED"
   }
 
 }
