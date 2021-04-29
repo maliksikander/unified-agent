@@ -51,9 +51,13 @@
   border: 1px solid #e3e3e3;
   height: 34px;
   border-radius: 4px;
-  width: 58px;
+  width: 60px;
   text-align: center;
   padding: 3px 0;
+  display: inline-block;
+  position: relative;
+  top: 7px;
+  margin-left: 18px;
 
   .dot {
     height: 21px;
@@ -78,8 +82,8 @@
   border-radius: 4px;
   z-index: 2;
   background: white;
-  padding: 6px 0px 0px 4px;
-  box-shadow: 1px 1px 10px 0px grey;
+  padding: 6px 0 0 4px;
+  box-shadow: 1px 1px 10px 0 grey;
   right: 13px;
 }
 
@@ -93,7 +97,11 @@
   position: relative;
 
   .label-name {
-    width: calc(100% - 80px);
+    width: 100%;
+
+    mat-form-field{
+      width: calc(100% - 80px) !important;
+    }
   }
 
   .lbl {
@@ -110,6 +118,7 @@
 .btns {
   text-align: right;
   width: 100%;
+  padding: 0 0 15px 0;
 
   button {
     height: 32px;
@@ -122,7 +131,8 @@
     border-radius: 4px;
     cursor: pointer;
     color: #fff;
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: 500;
 
     &.save-btn {
       background: #1D9AC0;
@@ -166,4 +176,8 @@
     -webkit-transform: scale(1);
     transform: scale(1);
   }
+}
+
+.label-expire{
+  align-self: flex-end;
 }

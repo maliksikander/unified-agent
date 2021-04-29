@@ -1,11 +1,11 @@
 @import "src/app/shared/globalVariables";
 
-.label-main{
-  background: #F3F6F8;
-  margin-bottom: 15px !important;
-  min-height: 50px;
-  position: relative;
-}
+//.label-main{
+//  background: #F3F6F8;
+//  margin-bottom: 15px !important;
+//  min-height: 50px;
+//  position: relative;
+//}
 .create-label {
   padding-right: 0;
   text-align: right;
@@ -28,17 +28,17 @@
   }
 }
 
-.customer-heading{
-  align-self: center;
-
-  h4{
-    font-size: 16px;
-    color: #999;
-    margin: 0;
-    display: inline-block;
-    line-height: 30px;
-  }
-}
+//.customer-heading{
+//  align-self: center;
+//
+//  h4{
+//    font-size: 16px;
+//    color: #999;
+//    margin: 0;
+//    display: inline-block;
+//    line-height: 30px;
+//  }
+//}
 .add-icon {
   float: right;
   background: #11b2c7;

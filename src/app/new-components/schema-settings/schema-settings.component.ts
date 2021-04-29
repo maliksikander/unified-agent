@@ -330,11 +330,10 @@ export class SchemaSettingsComponent implements OnInit {
   displayMenu(e){
     e.stopPropagation();
   }
-  addAttr(e) {
+  addAttr() {
     const dialogRef = this.dialog.open(CreateAttributeComponent, {
       width: '815px',
       height: '325px',
-      data: e,
     });
 
     dialogRef.afterClosed().subscribe(result => {

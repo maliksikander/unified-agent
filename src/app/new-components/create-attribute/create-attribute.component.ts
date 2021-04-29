@@ -27,12 +27,12 @@ export class CreateAttributeComponent implements OnInit {
   selectChannel = new FormControl();
   channelList: string[] = ['Web Chat', 'Facebook', 'Whatsapp', 'Viber', 'SMS', 'Landline'];
 
-  constructor(private dialog: MatDialog, public snackBar: MatSnackBar, public dialogRef: MatDialogRef<CreateAttributeComponent>,
+  constructor( public snackBar: MatSnackBar, public dialogRef: MatDialogRef<CreateAttributeComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
+
     this.attributesData = this.data;
-console.log(this.data, 'data display in create attributes')
   }
 
   onNoClick(): void {

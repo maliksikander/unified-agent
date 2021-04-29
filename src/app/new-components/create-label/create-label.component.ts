@@ -85,9 +85,7 @@ export class CreateLabelComponent implements OnInit {
   createUpdate(label, action) {
     const dialogRef = this.dialog.open(CreateLabelDiagComponent, {
       maxWidth: '568px',
-      maxHeight: '184px',
       width: '568px',
-      height: '184px',
     });
 
     dialogRef.afterClosed().subscribe(result => {

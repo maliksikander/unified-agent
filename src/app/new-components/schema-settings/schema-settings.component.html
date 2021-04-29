@@ -1,5 +1,5 @@
-<div class="label-main row m-0">
-  <div class="customer-heading col-md-6"><h4>Customer Attributes</h4></div>
+<div class="label-main page-header row m-0">
+  <div class="customer-heading page-heading col-md-6"><h4>Customer Attributes</h4></div>
 </div>
 
 
@@ -18,7 +18,7 @@
             </mat-icon>
 
             <mat-menu #boxOptions="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
-              <button mat-menu-item class="channel-selection-list" (click)="addAttr(item)">
+              <button mat-menu-item class="channel-selection-list" (click)="addAttr()">
                 Edit
               </button>
               <button mat-menu-item class="channel-selection-list" (click)="delete(item.label,item._id)">

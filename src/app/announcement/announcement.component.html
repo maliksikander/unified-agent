@@ -1,21 +1,23 @@
+<div class="row m-0 page-header">
+  <div class="col-md-6 announcement-heading page-heading">
+    <h4>Team Announcement</h4>
+  </div>
+  <div class="col-md-6 announcement-selection-area">
+    <mat-form-field appearance="outline" class="selection-trigger">
+      <mat-select [(value)]="FilterSelected">
+        <mat-option value="all" > All Announcements</mat-option>
+        <mat-option value="active" >Active Announcements</mat-option>
+        <mat-option value="expired">Expired Announcements</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-button class="new-announcement" (click)="onCreateAnnouncement()"><span
+      class="announcement-icon"><img src="assets/images/promotion.svg"> </span>New Announcement
+    </button>
+  </div>
+</div>
 <div class="table-area announcement-table-area container-fluid ">
   <div class="row m-0">
-    <div class="col-md-6 announcement-heading p-0">
-      <h4>Team Announcement</h4>
-    </div>
-    <div class="col-md-6 announcement-selection-area">
-      <mat-form-field appearance="outline" class="selection-trigger">
-        <mat-select [(value)]="FilterSelected">
-          <mat-option value="all" > All Announcements</mat-option>
-          <mat-option value="active" >Active Announcements</mat-option>
-          <mat-option value="expired">Expired Announcements</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <button mat-button class="new-announcement" (click)="onCreateAnnouncement()"><span
-        class="announcement-icon"><img src="assets/images/promotion.svg"> </span>New Announcement
-      </button>
-    </div>
     <div class="table-container manage-dashboard">
       <div class="manage-dashboard">
         <table class="table">

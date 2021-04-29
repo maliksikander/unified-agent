@@ -18,6 +18,7 @@ export class CreateLabelDiagComponent implements OnInit {
   nameToBeMatched;
   currentColor = '#a9a9a9';
   labelColorCode = ['#f34f1b', '#f58231', '#bfef45', '#3cb44b', '#42d4f4', '#039be6', '#7c87ce', '#f032e6', '#f6bf26', '#9A6324', '#a9a9a9', '#000000b5'];
+  expiry = new FormControl('', [Validators.pattern("^[0-9]*$"), Validators.required, Validators.min(1), Validators.max(99)]);
 
   ngOnInit() {
 

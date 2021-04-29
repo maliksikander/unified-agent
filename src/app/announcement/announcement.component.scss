@@ -2,14 +2,6 @@
 //  border: 5px solid #E2E2E2;
 //  height: calc(100% - 42px);
 //}
-.table-area {
-
-  h4 {
-    font-size: 13px;
-    color: #000;
-    margin: 20px 0;
-  }
-}
 
 .manage-dashboard {
   width: 100%;
@@ -146,7 +138,7 @@ tbody {
 
 .announcement-selection-area {
   text-align: right;
-  padding: 12px 0;
+  padding: 12px;
 
   mat-form-field {
     top: 1px;
