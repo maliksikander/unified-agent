@@ -6,7 +6,7 @@ import { snackbarService } from "./snackbar.service";
   providedIn: "root"
 })
 export class sharedService {
-  constructor(private _snackbarService: snackbarService) { }
+  constructor(private _snackbarService: snackbarService) {}
 
   matCurrentTabIndex = 0;
   private serviceMessageSource = new BehaviorSubject({ msg: null, data: null });
@@ -26,7 +26,6 @@ export class sharedService {
     array.splice(index, 1);
   }
 
-  
   Interceptor(e, res) {
     if (res == "err") {
       if (e.statusCode == 401) {

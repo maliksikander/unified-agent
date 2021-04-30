@@ -563,18 +563,16 @@ export class PhonebookComponent implements OnInit {
   filterActiveField;
   removable = true;
   paramSubscriber: any;
-  rowDefaultClick = 'open';
+  rowDefaultClick = "open";
   topicId = null;
-  constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router, private _socketService: socketService) { }
+  constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router, private _socketService: socketService) {}
 
   ngOnInit() {
-    this.paramSubscriber = this.route
-      .queryParams
-      .subscribe(params => {
-        this.rowDefaultClick = params['q'];
-        this.topicId = params['topicId'];
-        console.log("rowDefaultClick " + this.rowDefaultClick + " topicId " + this.topicId);
-      });
+    this.paramSubscriber = this.route.queryParams.subscribe((params) => {
+      this.rowDefaultClick = params["q"];
+      this.topicId = params["topicId"];
+      console.log("rowDefaultClick " + this.rowDefaultClick + " topicId " + this.topicId);
+    });
   }
   setFilter(event: Event, col) {
     this.filterOnOff = !this.filterOnOff;
@@ -608,5 +606,4 @@ export class PhonebookComponent implements OnInit {
       this.linkCustomer(customerId);
     }
   }
-
 }

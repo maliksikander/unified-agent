@@ -53,7 +53,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     BrowserAnimationsModule,
     SharedModule,
     NgxUiLoaderHttpModule,
-    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
   ],
   entryComponents: [CreateCustomerComponent, AnnouncementDialogComponent, CreateLabelDiagComponent, ConfirmationDialogComponent],
   providers: [
@@ -70,4 +70,4 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   exports: [BrowserModule, CommonModule, BrowserAnimationsModule],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

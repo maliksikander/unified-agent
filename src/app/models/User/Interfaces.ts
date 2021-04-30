@@ -47,8 +47,9 @@ export class TopicParticipant {
   role: string;
   // state: string;
   userCredentials: string;
+  state: string;
 
-  constructor(type: string, agent: IKeycloakUser, topicId: string, role: string) {
+  constructor(type: string, agent: IKeycloakUser, topicId: string, role: string, state: string) {
     this.id = uuidv4();
     this.type = type;
     this.participant = { id: agent.id, participantType: "CCUser", keycloakUser: agent, associatedRoutingAttributes: [] };
@@ -58,5 +59,6 @@ export class TopicParticipant {
     this.role = role;
     // this.state = null;
     this.userCredentials = null;
+    this.state = state;
   }
 }

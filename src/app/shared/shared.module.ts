@@ -60,7 +60,7 @@ import { convertToFormDataPipe } from "./pipes/convertToFormData.pipe";
 import { getFirstTwoLettersPipe } from "./pipes/getFirstTwoLetters.pipe";
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from "ngx-mat-datetime-picker";
 import { AngularMultiSelectModule } from "angular2-multiselect-dropdown";
-import { NgScrollbarModule } from 'ngx-scrollbar';
+import { NgScrollbarModule } from "ngx-scrollbar";
 
 @NgModule({
   declarations: [RemoveUnderscorePipe, ibsformatPipe, getSenderNamePipe, SearchPipe, sentenceCasePipe, convertToFormDataPipe, getFirstTwoLettersPipe],
@@ -198,7 +198,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
     convertToFormDataPipe,
     getFirstTwoLettersPipe,
     AngularMultiSelectModule,
-    NgScrollbarModule,
+    NgScrollbarModule
   ]
 })
-export class SharedModule { }
+export class SharedModule {}

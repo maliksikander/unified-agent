@@ -6,7 +6,7 @@ import { MatDialog } from "@angular/material";
 import { CimEvent } from "../../models/Event/cimEvent";
 import { v4 as uuidv4 } from "uuid";
 import { TopicParticipant } from "../../models/User/Interfaces";
-import { NgScrollbar } from 'ngx-scrollbar';
+import { NgScrollbar } from "ngx-scrollbar";
 
 declare var EmojiPicker: any;
 @Component({
@@ -15,7 +15,6 @@ declare var EmojiPicker: any;
   styleUrls: ["./interactions.component.scss"]
 })
 export class InteractionsComponent implements OnInit {
-
   @Input() conversation: any;
   @Input() currentTabIndex: any;
   @Input() changeDetecter: any;
@@ -31,13 +30,12 @@ export class InteractionsComponent implements OnInit {
       let height = scroller.clientHeight;
       let scrollHeight = scroller.scrollHeight - height;
       let scrollTop = scroller.scrollTop;
-      let percent = Math.floor(scrollTop / scrollHeight * 100);
+      let percent = Math.floor((scrollTop / scrollHeight) * 100);
       this.currentScrollPosition = percent;
       if (percent > 80) {
         this.showNewMessageNotif = false;
       }
-    }
-    );
+    });
   }
 
   showNewMessageNotif: boolean = false;
@@ -126,7 +124,7 @@ export class InteractionsComponent implements OnInit {
     private _cacheService: cacheService,
     private _socketService: socketService,
     private dialog: MatDialog
-  ) { }
+  ) {}
   ngOnInit() {
     //  console.log("i am called hello")
     this.convers = this.conversation.messages;
@@ -135,7 +133,7 @@ export class InteractionsComponent implements OnInit {
     }, 500);
   }
 
-  emoji() { }
+  emoji() {}
 
   onSend(text) {
     let message = JSON.parse(JSON.stringify(this.conversation.messages[this.conversation.messages.length - 1]));
@@ -143,14 +141,18 @@ export class InteractionsComponent implements OnInit {
     message.header.timestamp = new Date().toISOString();
     message.header.sender = {};
 
-    message.header.sender = new TopicParticipant("AGENT", this._cacheService.agent, this.conversation.topicId, "PRIMARY");
+    message.header.sender = new TopicParticipant("AGENT", this._cacheService.agent, this.conversation.topicId, "PRIMARY", "SUBSCRIBED");
     message.header.channelSession = this.conversation.activeChannelSessions[this.conversation.activeChannelSessions.length - 1];
 
     message.body.markdownText = text;
     delete message["botSuggestions"];
     delete message["showBotSuggestions"];
 
-    this._socketService.emit("publishCimEvent", { cimEvent: new CimEvent("AGENT_MESSAGE", "MESSAGE", message), agentId: this._cacheService.agent.id, topicId: this.conversation.topicId });
+    this._socketService.emit("publishCimEvent", {
+      cimEvent: new CimEvent("AGENT_MESSAGE", "MESSAGE", message),
+      agentId: this._cacheService.agent.id,
+      topicId: this.conversation.topicId
+    });
     this.lastMsgFromAgent = true;
   }
 
@@ -207,7 +209,11 @@ export class InteractionsComponent implements OnInit {
     console.log("going to unsub from topic " + this.conversation.topicId);
     if (this.conversation.state === "ACTIVE") {
       // if the topic state is 'ACTIVE' then agent needs to request the agent manager for unsubscribe
-      this._socketService.emit("topicUnsubscription", { topicId: this.conversation.topicId, agentId: this._cacheService.agent.id });
+      this._socketService.emit("topicUnsubscription", {
+        topicId: this.conversation.topicId,
+        agentId: this._cacheService.agent.id,
+        topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, this.conversation.topicId, "PRIMARY", "UNSUBSCRIBED")
+      });
     }
     if (this.conversation.state === "CLOSED") {
       // if the topic state is 'CLOSED' it means agent is already unsubscribed by the agent manager
@@ -223,21 +229,19 @@ export class InteractionsComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-
     if (changes.changeDetecter && changes.changeDetecter.currentValue && this.conversation.index == this._sharedService.matCurrentTabIndex) {
       if (this.lastMsgFromAgent) {
-        this.downTheScrollAfterMilliSecs(50, 'smooth');
+        this.downTheScrollAfterMilliSecs(50, "smooth");
       } else {
         if (this.currentScrollPosition < 95) {
           this.showNewMessageNotif = true;
         } else {
-          this.downTheScrollAfterMilliSecs(50, 'smooth');
-
+          this.downTheScrollAfterMilliSecs(50, "smooth");
         }
       }
     }
     if (changes.currentTabIndex) {
-      this.downTheScrollAfterMilliSecs(500, 'auto')
+      this.downTheScrollAfterMilliSecs(500, "auto");
     }
     this.lastMsgFromAgent = false;
   }

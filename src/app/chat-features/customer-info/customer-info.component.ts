@@ -63,9 +63,9 @@ export class CustomerInfoComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
   }
-  constructor(public _socketService: socketService, private dialog: MatDialog) { }
+  constructor(public _socketService: socketService, private dialog: MatDialog) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   close() {
     this.sidenav.close();
@@ -122,7 +122,6 @@ export class CustomerInfoComponent implements OnInit {
   }
 
   linkCustomer(customerId) {
-    this._socketService.linkCustomerWithInteraction(customerId, this.message.header.sender.topicId)
+    this._socketService.linkCustomerWithInteraction(customerId, this.message.header.sender.topicId);
   }
-
 }

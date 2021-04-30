@@ -20,7 +20,12 @@ export class socketService {
 
   public readonly conversationsListener: Observable<any> = this._conversationsListener.asObservable();
 
-  constructor(private _snackbarService: snackbarService, private _appConfigService: appConfigService, private _cacheService: cacheService, private _sharedService: sharedService) { }
+  constructor(
+    private _snackbarService: snackbarService,
+    private _appConfigService: appConfigService,
+    private _cacheService: cacheService,
+    private _sharedService: sharedService
+  ) {}
 
   connectToSocket() {
     this.uri = this._appConfigService.config.SOCKET_URL;
@@ -108,13 +113,11 @@ export class socketService {
     if (cimEvent.type.toLowerCase() == "message") {
       if (sameTopicConversation) {
         if (cimEvent.data.header.sender.type.toLowerCase() == "customer") {
-
           this.processActiveChannelSessions(sameTopicConversation, cimEvent.data.header.channelSession);
           ++sameTopicConversation.unReadCount;
         }
         sameTopicConversation.messages.push(cimEvent.data);
         sameTopicConversation.unReadCount ? undefined : (sameTopicConversation.unReadCount = 0);
-
       } else {
         this.conversations.push({
           topicId: topicId,
@@ -161,17 +164,19 @@ export class socketService {
   //   this._conversationsListener.next(this.conversations);
   // }
 
-
   onOldCimEventsHandler(cimEvents, topicId) {
-
-    let conversation = { topicId: topicId, messages: [], activeChannelSessions: [], unReadCount: undefined, index: ++this.conversationIndex, state: "ACTIVE" }
+    let conversation = {
+      topicId: topicId,
+      messages: [],
+      activeChannelSessions: [],
+      unReadCount: undefined,
+      index: ++this.conversationIndex,
+      state: "ACTIVE"
+    };
 
     cimEvents.forEach((cimEvent, i) => {
-
       if (cimEvent.type.toLowerCase() == "message") {
-
-
-        // for the first message, feed the conversation with message and active channel session 
+        // for the first message, feed the conversation with message and active channel session
         if (i == 0) {
           conversation.messages.push(cimEvent.data);
           conversation.activeChannelSessions.push(cimEvent.data.header.channelSession);
@@ -179,32 +184,28 @@ export class socketService {
 
         // for other messages rather than 1st, of type customer, process the active channel sessions
         if (cimEvent.data.header.sender.type.toLowerCase() == "customer") {
-
           this.processActiveChannelSessions(conversation, cimEvent.data.header.channelSession);
-          conversation.messages.push(cimEvent.data)
+          conversation.messages.push(cimEvent.data);
         }
       }
 
       // if there is an event of channel session ended, then process that event and remove that channel from
       // active channel sessions
       if (cimEvent.name.toLowerCase() == "channel_session_ended") {
-
         // find the index of channel session which needs to be removed
-        let index = conversation.activeChannelSessions.findIndex((channelSession) => { return channelSession.id === cimEvent.data.id });
+        let index = conversation.activeChannelSessions.findIndex((channelSession) => {
+          return channelSession.id === cimEvent.data.id;
+        });
 
         if (index != -1) {
           conversation.activeChannelSessions.splice(index, 1);
         }
       }
-
-
     });
 
     this.conversations.push(conversation);
     this._conversationsListener.next(this.conversations);
-
   }
-
 
   // getActiveChannelSessions(messages) {
   //   let lookup = {};
@@ -224,7 +225,6 @@ export class socketService {
   // }
 
   processActiveChannelSessions(conversation, incomingChannelSession) {
-
     let matched: boolean = false;
     let index = null;
 
@@ -237,7 +237,6 @@ export class socketService {
     });
 
     if (matched) {
-
       // if matched push that channel session to the last in array
       // thats why first removing it from the array for removing duplicate entry
       conversation.activeChannelSessions.splice(index, 1);
@@ -245,13 +244,13 @@ export class socketService {
 
     // pusing the incoming channel to the last in array
     conversation.activeChannelSessions.push(incomingChannelSession);
-
   }
 
   removeConversation(topicId) {
-
     // fetching the whole conversation which needs to be removed
-    const removedConversation = this.conversations.find((conversation) => { return conversation.topicId == topicId });
+    const removedConversation = this.conversations.find((conversation) => {
+      return conversation.topicId == topicId;
+    });
 
     // remove the conversation from array
     this.conversations = this.conversations.filter((conversation) => {
@@ -259,7 +258,7 @@ export class socketService {
     });
 
     // alter the rest of the conversation's indexes whose indexes are greater than the index of removed conversation
-    // in order to remap the conversation indexex along with the indexes of the map tabs 
+    // in order to remap the conversation indexex along with the indexes of the map tabs
     this.conversations.map((conversation) => {
       if (conversation.index > removedConversation.index) {
         conversation.index = --conversation.index;
@@ -285,13 +284,15 @@ export class socketService {
   }
 
   linkCustomerWithInteraction(customerId, topicId) {
-    this.emit("publishCimEvent", { cimEvent: new CimEvent("ASSOCIATED_CUSTOMER_CHANGED", "NOTIFICATION", { "Id": customerId }), agentId: this._cacheService.agent.id, topicId: topicId });
+    this.emit("publishCimEvent", {
+      cimEvent: new CimEvent("ASSOCIATED_CUSTOMER_CHANGED", "NOTIFICATION", { Id: customerId }),
+      agentId: this._cacheService.agent.id,
+      topicId: topicId
+    });
     this._snackbarService.open("CUSTOMER LINKED SUCCESSFULLY", "succ");
   }
 
-
   removeChannelSession(cimEvent, topicId) {
-
     let conversation = this.conversations.find((e) => {
       return e.topicId == topicId;
     });
@@ -309,7 +310,6 @@ export class socketService {
       return e.topicId == topicId;
     });
     // change the conversation state to "CLOSED"
-    conversation.state = "CLOSED"
+    conversation.state = "CLOSED";
   }
-
 }
