@@ -320,9 +320,9 @@
                 <mat-expansion-panel *ngFor="let channelSession of activeChannelSessions">
                   <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                     <div class="channel-icon-area">
-                      <span class="channel-icon {{channelSession.channel.channelConnector.type.name | lowercase}}"><img
-                          src="/assets/images/{{channelSession.channel.channelConnector.type.name | lowercase}}.svg"></span>
-                      <label>{{channelSession.channel.channelConnector.type.name | titlecase}} Channel</label>
+                      <span class="channel-icon {{channelSession.channel.channelConnector.channelType.typeName | lowercase}}"><img
+                          src="/assets/images/{{channelSession.channel.channelConnector.channelType.typeName | lowercase}}.svg"></span>
+                      <label>{{channelSession.channel.channelConnector.channelType.typeName | titlecase}} Channel</label>
 
                       <button (click)="moveSession($event)" mat-button [matMenuTriggerFor]="rerouteMenu"
                         class="re-route-session">Move</button>

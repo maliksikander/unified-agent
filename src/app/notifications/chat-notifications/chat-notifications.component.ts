@@ -25,7 +25,7 @@ export class ChatNotificationsComponent implements OnInit {
       this.customerName = this.data.channelSession.linkedCustomer.associatedCustomer.firstName;
       this.identified = true;
     }
-    this.channel = this.data.channelSession.channel.channelConnector.type.name;
+    this.channel = this.data.channelSession.channel.channelConnector.channelType.typeName;
     this.channelImageSrc = "assets/images/" + this.channel.toLowerCase() + ".svg";
   }
 

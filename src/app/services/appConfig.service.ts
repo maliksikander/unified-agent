@@ -5,7 +5,7 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class appConfigService {
   configUrl = "../../assets/config.json";
-  public config = { GAT_URL: "", SOCKET_URL: "" };
+  public config = { GAT_URL: "", SOCKET_URL: "", ENV: "" };
 
   constructor(private _httpClient: HttpClient) {}
 
@@ -16,6 +16,7 @@ export class appConfigService {
       .then((e: any) => {
         this.config.GAT_URL = e.GAT_URL;
         this.config.SOCKET_URL = e.SOCKET_URL;
+        this.config.ENV = e.ENV;
       });
   }
 }

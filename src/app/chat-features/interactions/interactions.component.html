@@ -9,9 +9,9 @@
             {{conversation.messages[conversation.messages.length
             -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | getFirstTwoLetters}}
             <span
-              class="channel-icon {{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.type.name | lowercase}}">
+              class="channel-icon {{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.channelType.typeName | lowercase}}">
               <img
-                src="../assets/images/{{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.type.name | lowercase}}.svg">
+                src="../assets/images/{{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.channelType.typeName | lowercase}}.svg">
             </span>
           </h3>
           <h5 class="customer-name"
@@ -121,9 +121,9 @@
                 [ngClass]="((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message slide-in-right'">
                 <div class="profile-pic">
                   <div
-                    class="active-channel channel-icon {{message.header.channelSession.channel.channelConnector.type.name | lowercase}}">
+                    class="active-channel channel-icon {{message.header.channelSession.channel.channelConnector.channelType.typeName | lowercase}}">
                     <img width="20"
-                      src="../assets/images/{{message.header.channelSession.channel.channelConnector.type.name | lowercase}}.svg">
+                      src="../assets/images/{{message.header.channelSession.channel.channelConnector.channelType.typeName | lowercase}}.svg">
                   </div>
                   <div *ngIf="(message.header.sender.type | lowercase) != 'bot'" class="profile-pic-area user-img">
                     {{message.header.sender | getSenderName:true}}</div>
@@ -179,7 +179,7 @@
       <span class="selected-channel">Selected Channel:
         <label
           *ngIf="conversation.activeChannelSessions.length > 0">{{conversation.activeChannelSessions[conversation.activeChannelSessions.length
-          -1]?.channel.channelConnector.type.name| titlecase}}</label>
+          -1]?.channel.channelConnector.channelType.typeName| titlecase}}</label>
         <label *ngIf="conversation.activeChannelSessions.length == 0" style="color:grey;">
           None
         </label>
