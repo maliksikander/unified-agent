@@ -674,7 +674,29 @@
             </div> -->
           </div>
           <div class="chat-footer">
-            <span class="selected-channel">Selected Channel: <label>Web</label></span>
+            <span class="selected-channel"><span>Selected Channel:</span>
+               <button mat-button [matMenuTriggerFor]="channelSwitching" class="channel-switching-trigger">
+                <span class="channel-selected channel-icon {{isSelectedChannelCode}}">
+                  <img src="assets/images/{{isSelectedChannelFlag}}" width="20" onError="this.src='assets/flags/generic.png';">
+                </span>
+                 {{isSelectedChannel}} <i class="material-icons">
+              arrow_drop_down
+            </i></button>
+              </span>
+
+            <mat-menu #channelSwitching="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
+              <button mat-menu-item class="channel-selection-list" (click)="searchChannel(channel.code)"
+                      *ngFor="let channel of channelSwitch">
+                  <span class="channel-list channel-icon {{channel.code}}"><img src="assets/images/{{channel.flag}}" width="20"
+                                                                                                               onError="this.src='assets/flags/generic.png';"></span>{{channel.name}}
+
+                <i class="material-icons" *ngIf="isSelectedChannelCode == channel.code">
+                  check
+                </i>
+              </button>
+
+            </mat-menu>
+
             <div class="whisper-selection">
               <button (click)="whisper = false" [ngClass]="{'customer-select': !whisper}" class="customer-mode message-mode" mat-button>Adam</button>
               <button (click)="whisper = true"  [ngClass]="{'whisper-select': whisper}" class="whisper-mode message-mode" mat-button>Whisper</button>

@@ -113,8 +113,17 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   channelFlag = 'all';
   channelName = 'All';
   channelCode = 'all';
+  isSelectedChannel = 'Web Chat';
+  isSelectedChannelFlag = 'web.svg';
+  isSelectedChannelCode = 'web';
   channels = [
     { code: 'all', name: 'All', flag: 'whatsapp.svg' },
+    { code: 'whatsapp', name: 'Whatsapp', flag: 'whatsapp.svg' },
+    { code: 'web', name: 'Web Chat', flag: 'web.svg' },
+    { code: 'facebook', name: 'Facebook', flag: 'facebook.svg' },
+    { code: 'viber', name: 'Viber', flag: 'viber.svg' }
+  ];
+  channelSwitch = [
     { code: 'whatsapp', name: 'Whatsapp', flag: 'whatsapp.svg' },
     { code: 'web', name: 'Web Chat', flag: 'web.svg' },
     { code: 'facebook', name: 'Facebook', flag: 'facebook.svg' },

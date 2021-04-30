@@ -729,21 +729,53 @@
   padding: 0;
   //box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 
+  .channel-switching-trigger{
+    color: #7c7c7c;
+    font-size: 10px;
+    background: transparent;
+    width: auto;
+    padding: 0 22px 0 2px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    height: 20px;
+    line-height: 18px;
+    min-width: 78px;
+    font-weight: 400;
+    text-align: left;
+    margin-left: 2px;
+
+    i {
+      position: absolute;
+      right: 0;
+      height: 20px;
+      line-height: 18px;
+    }
+    .channel-selected{
+      top: -1px;
+      width: 16px;
+      height: 16px;
+      margin-right: 2px;
+    }
+
+    img{
+      width: 8px;
+      position: absolute;
+      left: 4px;
+      top: 4px;
+      max-height: 10px;
+    }
+  }
+
   span.selected-channel {
     position: absolute;
     left: 0;
-    top: -26px;
+    top: -36px;
     font-size: 10px;
     margin-left: 5px;
     color: #9D9D9D;
     background: #fff;
     padding: 5px;
     border-radius: 0 12px 12px 0;
-
-    label {
-      margin: 0;
-      color: $blue-text-color;
-    }
   }
 
   .reply-form {
