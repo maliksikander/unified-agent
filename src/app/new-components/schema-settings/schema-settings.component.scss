@@ -176,26 +176,32 @@
 }
 
 .create-attribute {
-  padding: 15px 0;
+  padding: 15px 5px;
   text-align: left;
 
-  p{
-    display: inline-block;
-    margin: 0;
-    color: #4c4c4c;
-    font-size: 13px;
-    span{
-      color: #6EC3DD;
-      margin-left: 15px;
-      cursor: pointer;
-    }
-  }
+  //p{
+  //  display: inline-block;
+  //  margin: 0;
+  //  color: #4c4c4c;
+  //  font-size: 13px;
+  //  span{
+  //    color: #6EC3DD;
+  //    margin-left: 15px;
+  //    cursor: pointer;
+  //  }
+  //}
   button {
-    float: right;
+    //float: right;
     background: #6EC3DD;
     color: #fff;
     font-size: 12px;
     height: 30px;
-    line-height: 30px;
+    line-height: 22px;
+    border: 1px solid #6EC3DD;
+
+    &.create-new-attribute{
+      background: #fff;
+      color: #6EC3DD;
+    }
   }
 }

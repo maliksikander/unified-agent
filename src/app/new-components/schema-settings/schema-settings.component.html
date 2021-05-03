@@ -91,7 +91,7 @@
             </mat-icon>
 
             <mat-menu #searchChannelSelection="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
-              <button mat-menu-item class="channel-selection-list" (click)="addAttr(item)">
+              <button mat-menu-item class="channel-selection-list" (click)="addAttr()">
                 Edit
               </button>
               <button mat-menu-item class="channel-selection-list" (click)="delete(item.label,item._id)">
@@ -151,8 +151,9 @@
       </div>
     </div>
   </div>
-  <div *ngIf="schema1" class="create-attribute">  <p>Don't see the attributes you're looking for? <span (click)="addAttr()">Add Attributes</span></p>
-    <button mat-button (click)="onClick()">Save Order</button>
+  <div *ngIf="schema1" class="create-attribute">
+    <button mat-button (click)="addAttr()" class="create-new-attribute">Create new Attribute</button>
+    <button mat-button (click)="onClick()" class="float-right">Save Order</button>
   </div>
 
 </div>

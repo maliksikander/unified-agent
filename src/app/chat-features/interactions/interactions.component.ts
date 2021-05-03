@@ -311,4 +311,13 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
       this.channelCode = selectedChannel.code;
     }
   }
+  selectChannel(channel) {
+
+    const selectedChannel = this.channels.find(r => r.code === channel);
+    if (selectedChannel !== undefined) {
+      this.channelName = selectedChannel.name;
+      this.channelFlag = selectedChannel.flag;
+      this.channelCode = selectedChannel.code;
+    }
+  }
 }

@@ -174,3 +174,41 @@ span.sorting-icons {
 tr.slide-in-left:hover {
   background: #f9f9f9 !important;
 }
+
+.lbl-filter-search.custom-dropdown {
+  display: inline-block;
+  min-width: 206px;
+  position: relative;
+  height: 30px;
+  border-radius: 5px;
+  line-height: 30px;
+  width: auto;
+  vertical-align: middle;
+  background: #fff;
+
+  .dot-in-filter {
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    position: relative;
+    display: inline-block;
+    margin-right: 5px;
+    bottom: -5px;
+    margin-left: 4px;
+  }
+
+  .lbl-search-lbl {
+    background: transparent;
+    font-size: 13px;
+    color: #656565;
+    cursor: pointer;
+    border-radius: 4px;
+    text-align: left;
+    overflow: hidden;
+    white-space: pre;
+    position: absolute;
+    font-weight: 500;
+    padding: 0 10px;
+    left: 0;
+  }
+}

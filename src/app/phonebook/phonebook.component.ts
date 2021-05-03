@@ -3,6 +3,7 @@ import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import {MatDialog} from '@angular/material';
 import {CreateCustomerComponent} from '../create-customer/create-customer.component';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-phonebook',
@@ -16,6 +17,16 @@ export class PhonebookComponent implements OnInit {
   showLblTooltip: boolean = false;
   LblTooltipId;
   lblSearch: boolean = false;
+  labelsForFilter = new FormControl('');
+  labelSettings = {
+    singleSelection: false,
+    text: "",
+    searchPlaceholderText: 'Search',
+    selectAllText: 'Select All',
+    unSelectAllText: 'UnSelect All',
+    enableSearchFilter: true,
+    primaryKey: "_id"
+  };
   labels = [
     {
       "createdAt": "2021-03-30T12:09:52.497Z",

@@ -208,6 +208,10 @@
           color: lighten($dark-gray-color, 60%);
           background: transparent !important;
         }
+        img{
+          position: relative;
+          top: -1px;
+        }
       }
     }
   }
