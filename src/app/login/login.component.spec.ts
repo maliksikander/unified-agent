@@ -10,6 +10,7 @@ describe("LoginComponent", () => {
   let routerMock: any;
   let sharedServiceMock: any;
   let appConfigService: any;
+  let snackbarService: any;
 
   beforeEach(() => {
     formBuilderMock = new FormBuilder();
@@ -20,7 +21,8 @@ describe("LoginComponent", () => {
       formBuilderMock,
       sharedServiceMock,
       appConfigService,
-      socketServiceMock
+      socketServiceMock,
+      snackbarService
     );
   });
 

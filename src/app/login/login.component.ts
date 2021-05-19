@@ -7,6 +7,7 @@ import { sharedService } from "../services/shared.service";
 import { cacheService } from "../services/cache.service";
 import { socketService } from "../services/socket.service";
 import { appConfigService } from "../services/appConfig.service";
+import { snackbarService } from "../services/snackbar.service";
 
 @Component({
   selector: "app-login",
@@ -23,7 +24,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private _appConfigService: appConfigService,
     private _httpService: httpService,
-    private _sharedService: sharedService
+    private _sharedService: sharedService,
+    private _snackbarService: snackbarService
   ) {
     this.loginForm = this.fb.group({
       password: ["", [Validators.required]],
@@ -31,7 +33,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   login() {
     if (this._appConfigService.config.ENV == "development") {
@@ -48,9 +50,14 @@ export class LoginComponent implements OnInit {
       this._httpService.login(this.loginForm.value).subscribe(
         (e) => {
           console.log("this is login resp ", e.data);
-          this._cacheService.agent = e.data;
-          this._socketService.connectToSocket();
-          this._router.navigate(["customers"]);
+          if (e.licStatus) {
+            this._snackbarService.open("license is "+e.licStatus, "err");
+
+          } else {
+            this._cacheService.agent = e.data;
+            this._socketService.connectToSocket();
+            this._router.navigate(["customers"]);
+          }
         },
         (error) => {
           this._sharedService.Interceptor(error.error, "err");
