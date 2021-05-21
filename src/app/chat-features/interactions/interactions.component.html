@@ -584,14 +584,15 @@
                   <div class="profile-pic-area user-img">{{con.title | slice :0 :2 }}</div>
                 </div>
                 <div class="chat-message-content ">
-                  <p>{{con.message}}</p>
+                  <p>{{con.message}} <span class="message-stamp">
+                     <span class="chat-time">16:15:45</span>
+                <span class="material-icons delivery-status" *ngIf="con.title === 'raza'">done_all</span>
+                  </span></p>
                   <button mat-icon-button class="user_settings" *ngIf="con.title === 'farhan'"
                           (click)="con.showIntent=!con.showIntent">
                   </button>
 
                 </div>
-                <span class="chat-time">16:15:45</span>
-                <span class="material-icons delivery-status" *ngIf="con.title === 'raza'">done_all</span>
 
                 <div class="chat-intents" *ngIf="con.intents && con.showIntent==true">
                   <div class="intents-inner">
@@ -691,7 +692,7 @@
               </span>
 
             <mat-menu #channelSwitching="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
-              <button mat-menu-item class="channel-selection-list" (click)="searchChannel(channel.code)"
+              <button mat-menu-item class="channel-selection-list" (click)="selectChannel(channel.code)"
                       *ngFor="let channel of channelSwitch">
                   <span class="channel-list channel-icon {{channel.code}}"><img src="assets/images/{{channel.flag}}" width="20"
                                                                                                                onError="this.src='assets/flags/generic.png';"></span>{{channel.name}}
@@ -859,9 +860,12 @@
                     </div>
                   </div>
                   <div class="categories-label">
+                    <div class="categories-search">
+                      <input  type="text" [(ngModel)]="inputCategoryName">
+                    </div>
                     <ul>
-                      <li *ngFor="let option of categories">
-                        {{option}}
+                      <li *ngFor="let note of notes | NoteFilter:inputCategoryName:'categoryName'">
+                        {{note.categoryName}}
                       </li>
                     </ul>
                   </div>
@@ -878,11 +882,43 @@
                     </div>
                   </div>
                   <div class="categories-label">
-                    <ul>
-                      <li *ngFor="let option of categories">
-                        {{option}}
-                      </li>
-                    </ul>
+                    <div class="categories-search">
+                      <input  type="text" [(ngModel)]="inputWrapup">
+                    </div>
+                    <div class="wrap-code-area">
+
+                    <mat-accordion class="note-accordion">
+
+                      <mat-expansion-panel>
+                        <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'"
+                                                    style="border-radius: 0;border-bottom: 0;">
+                          <mat-panel-title>
+                            <span>Payments</span>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+
+                        <p>This is the primary content of the panel.</p>
+                      </mat-expansion-panel>
+
+                      <mat-expansion-panel>
+                        <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'"
+                                                    style="border-radius: 0;border-bottom: 0;">
+                          <mat-panel-title>
+                            <span>Services</span>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+
+                        <p>I'm visible because I am open</p>
+                      </mat-expansion-panel>
+                    </mat-accordion>
+<!--                    <ul>-->
+<!--                      <li *ngFor="let wrapup of notes |  LockFilter:inputWrapup:'wrapups'">-->
+<!--                        {{wrapup}}-->
+<!--                      </li>-->
+<!--                    </ul>-->
+                    </div>
                   </div>
                 </div>
               </div>

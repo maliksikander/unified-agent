@@ -92,7 +92,6 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   ];
   selectedSearch = this.search[0].value;
   options: string[] = ['Glenn Helgass', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt'];
-  categories: string[] = ['Fayina Addinall', 'Doy Ortelt', ' Ev Gayforth', 'Adam Joe Stanler'];
   whisper = false;
   displayUserList = false;
   customer: any = {
@@ -132,9 +131,26 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   message = '';
   transferSearch = '';
   searchInteraction = '';
+  inputCategoryName = '';
+  inputWrapup = '';
   convers: any[];
   ringing = false;
   callControls = true;
+  displayCategories: any = [];
+  notes: any = [
+    {
+      'categoryName': 'payments',
+      'wrapups': [
+        'Glenn Helgass', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt'
+      ]
+    },
+    {
+      'categoryName': 'services',
+      'wrapups': [
+        'Glenn Helgass', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt'
+      ]
+    }
+  ];
   cannedMessages = [
     {
       'category': 'marketing',
@@ -163,6 +179,7 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
     }
   ];
   isSuggestion = false;
+  selectCategories;
   displaySuggestionsArea = false;
   cannedTabOpen = false;
   quickReplies = true;
@@ -313,11 +330,11 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   }
   selectChannel(channel) {
 
-    const selectedChannel = this.channels.find(r => r.code === channel);
+    const selectedChannel = this.channelSwitch.find(r => r.code === channel);
     if (selectedChannel !== undefined) {
-      this.channelName = selectedChannel.name;
-      this.channelFlag = selectedChannel.flag;
-      this.channelCode = selectedChannel.code;
+      this.isSelectedChannel = selectedChannel.name;
+      this.isSelectedChannelFlag = selectedChannel.flag;
+      this.isSelectedChannelCode = selectedChannel.code;
     }
   }
 }

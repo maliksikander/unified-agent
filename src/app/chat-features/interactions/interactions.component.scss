@@ -208,10 +208,10 @@
           color: lighten($dark-gray-color, 60%);
           background: transparent !important;
         }
-        img{
-          position: relative;
-          top: -1px;
-        }
+        //img{
+        //  position: relative;
+        //  top: -1px;
+        //}
       }
     }
   }
@@ -354,9 +354,12 @@
           line-height: 15px;
           word-break: break-word;
           clear: both;
-          padding-right: 3em;
+          padding-right: 2.5em;
           white-space: pre-line;
           margin: 0;
+        }
+        .message-stamp {
+          position: relative;
         }
       }
 
@@ -397,6 +400,13 @@
             border-top-left-radius: 50px;
             right: -10px;
             left: inherit;
+          }
+
+          p{
+            padding-right: 0;
+            .message-stamp{
+              padding-left: 10px;
+            }
           }
         }
 
@@ -989,13 +999,56 @@
 }
 
 .categories-label {
-  padding: 0;
+  padding: 3px;
   height: 100%;
   max-height: 200px;
   overflow: auto;
   border: 1px solid #D4D4D4;
   border-top: 0;
   border-radius: 0 0 3px 3px;
+
+
+  .categories-search{
+    position: relative;
+    &:before {
+      content: 'search';
+      font-family: 'Material Icons';
+      color: #989898;
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      font-size: 17px;
+      font-weight: normal;
+      font-style: normal;
+      display: inline-block;
+      line-height: 1;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      -moz-osx-font-smoothing: grayscale;
+      font-feature-settings: 'liga';
+    }
+
+    input{
+      background: #f3f6f9;
+      height: 25px;
+      line-height: 25px;
+      border-radius: 5px;
+      width: 100%;
+      padding: 0 15px 0 5px;
+      font-size: 12px;
+      color: #555;
+      outline: none !important;
+      border: 1px solid transparent;
+      &:focus{
+        border-color: #ccc !important;
+      }
+    }
+  }
 
   ul {
     padding: 0;
@@ -1207,9 +1260,10 @@
 //Delivery Status
 .material-icons.delivery-status {
   font-size: 16px;
-  line-height: 30px;
-  margin-right: 10px;
+  line-height: 10px;
   color: #41b1ca;
+  position: relative;
+  top: 3px;
 }
 
 

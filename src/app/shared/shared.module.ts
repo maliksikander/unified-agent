@@ -38,10 +38,11 @@ import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
 import {SearchPipe} from './pipes/search.pipe';
 import {NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule} from 'ngx-mat-datetime-picker';
 import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown';
+import {NoteSearchPipe} from './pipes/noteSearch.pipe';
 
 
 @NgModule({
-  declarations: [RemoveUnderscorePipe, ibsformatPipe, SearchPipe],
+  declarations: [RemoveUnderscorePipe, ibsformatPipe, SearchPipe, NoteSearchPipe],
   imports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
     MatCheckboxModule, MatButtonModule,
@@ -122,7 +123,8 @@ import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown';
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
-    AngularMultiSelectModule
+    AngularMultiSelectModule,
+    NoteSearchPipe
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 

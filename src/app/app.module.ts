@@ -25,6 +25,7 @@ import { ConfirmationDialogComponent } from './new-components/confirmation-dialo
 import {SchemaSettingsComponent} from './new-components/schema-settings/schema-settings.component';
 import {CreateAttributeComponent} from './new-components/create-attribute/create-attribute.component';
 import {InlineEditorModule} from '@qontu/ngx-inline-editor';
+import {fetchLabelsPipe} from './shared/pipes/fetch-labels.pipe';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import {InlineEditorModule} from '@qontu/ngx-inline-editor';
     CreateLabelComponent,
     ConfirmationDialogComponent,
     SchemaSettingsComponent,
-    CreateAttributeComponent
+    CreateAttributeComponent,
+    fetchLabelsPipe
   ],
   imports: [
     BrowserModule,
