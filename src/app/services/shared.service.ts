@@ -32,7 +32,7 @@ export class sharedService {
         this._snackbarService.open("UNAUTHORIZED USER", "err");
       } else if (e.statusCode == 400) {
         this._snackbarService.open("Bad Request", "err");
-      }else if (e.statusCode == 412) {
+      } else if (e.statusCode == 412) {
         this._snackbarService.open("unable to fetch license status", "err");
       } else {
         this._snackbarService.open("Something went wrong", "err");

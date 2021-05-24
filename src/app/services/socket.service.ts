@@ -173,7 +173,6 @@ export class socketService {
       index: ++this.conversationIndex,
       state: "ACTIVE"
     };
-
     cimEvents.forEach((cimEvent, i) => {
       if (cimEvent.type.toLowerCase() == "message") {
         // for the first message, feed the conversation with message and active channel session
@@ -185,6 +184,8 @@ export class socketService {
         // for other messages rather than 1st, of type customer, process the active channel sessions
         if (cimEvent.data.header.sender.type.toLowerCase() == "customer") {
           this.processActiveChannelSessions(conversation, cimEvent.data.header.channelSession);
+        }
+        if (i != 0) {
           conversation.messages.push(cimEvent.data);
         }
       }

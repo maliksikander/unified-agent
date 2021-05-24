@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   login() {
     if (this._appConfigService.config.ENV == "development") {
@@ -51,8 +51,7 @@ export class LoginComponent implements OnInit {
         (e) => {
           console.log("this is login resp ", e.data);
           if (e.licStatus) {
-            this._snackbarService.open("license is "+e.licStatus, "err");
-
+            this._snackbarService.open("license is " + e.licStatus, "err");
           } else {
             this._cacheService.agent = e.data;
             this._socketService.connectToSocket();
