@@ -211,8 +211,7 @@ export class InteractionsComponent implements OnInit {
       // if the topic state is 'ACTIVE' then agent needs to request the agent manager for unsubscribe
       this._socketService.emit("topicUnsubscription", {
         topicId: this.conversation.topicId,
-        agentId: this._cacheService.agent.id,
-        topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, this.conversation.topicId, "PRIMARY", "UNSUBSCRIBED")
+        agentId: this._cacheService.agent.id
       });
     }
     if (this.conversation.state === "CLOSED") {
