@@ -652,10 +652,7 @@
                     </div>
                   </mat-panel-title>
                 </mat-expansion-panel-header>
-
-
-                some detail text
-
+                some information
               </mat-expansion-panel>
             </div>
 
@@ -855,7 +852,7 @@
                   <div class="selected-area">
                     <div class="select-categories">
                       <mat-chip-list>
-                        <mat-chip>Doy Ortelt <mat-icon>close</mat-icon></mat-chip>
+                        <mat-chip *ngFor="let category of categoriesList">{{category.categoryName}} <mat-icon (click)="removeWrapupCategories(category, false)">close</mat-icon></mat-chip>
                       </mat-chip-list>
                     </div>
                   </div>
@@ -864,7 +861,7 @@
                       <input  type="text" [(ngModel)]="inputCategoryName">
                     </div>
                     <ul>
-                      <li *ngFor="let note of notes | NoteFilter:inputCategoryName:'categoryName'">
+                      <li *ngFor="let note of notes | NoteFilter:inputCategoryName:'categoryName'; let i = index" (click)="selectWrapupCategories(notes[i], true)">
                         {{note.categoryName}}
                       </li>
                     </ul>
@@ -877,7 +874,7 @@
                   <div class="selected-area">
                     <div class="select-categories">
                       <mat-chip-list>
-                        <mat-chip>Doy Ortelt <mat-icon>close</mat-icon></mat-chip>
+                        <mat-chip *ngFor="let wrapCode of wrapupLabels">{{wrapCode}} <mat-icon (click)="removeWrapupLabels(wrapCode, false)">close</mat-icon></mat-chip>
                       </mat-chip-list>
                     </div>
                   </div>
@@ -889,29 +886,29 @@
 
                     <mat-accordion class="note-accordion">
 
-                      <mat-expansion-panel>
+                      <mat-expansion-panel *ngFor="let selectedCategory of wrapupList">
                         <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'"
                                                     style="border-radius: 0;border-bottom: 0;">
                           <mat-panel-title>
-                            <span>Payments</span>
+                            <span>{{selectedCategory.categoryName}}</span>
                           </mat-panel-title>
                         </mat-expansion-panel-header>
 
-
-                        <p>This is the primary content of the panel.</p>
+                      <div class="categories-label-area">
+                        <mat-chip-list
+                          class="example-chip"
+                          cdkDropList
+                          cdkDropListOrientation="horizontal">
+                          <mat-chip
+                            class="example-box"
+                            cdkDrag
+                            *ngFor="let wrap of selectedCategory.wrapups | NoteFilter:inputCategoryName" (click)="selectWrapup(wrap, true)">
+                            {{wrap}}
+                          </mat-chip>
+                        </mat-chip-list>
+                      </div>
                       </mat-expansion-panel>
 
-                      <mat-expansion-panel>
-                        <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'"
-                                                    style="border-radius: 0;border-bottom: 0;">
-                          <mat-panel-title>
-                            <span>Services</span>
-                          </mat-panel-title>
-                        </mat-expansion-panel-header>
-
-
-                        <p>I'm visible because I am open</p>
-                      </mat-expansion-panel>
                     </mat-accordion>
 <!--                    <ul>-->
 <!--                      <li *ngFor="let wrapup of notes |  LockFilter:inputWrapup:'wrapups'">-->

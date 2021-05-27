@@ -39,6 +39,13 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
 
   myControl = new FormControl();
   channelUrl = 'assets/images/web.svg';
+  wrapupList:any = [];
+  categoriesList: any = [];
+
+  wrapupLabels:any = [];
+  categoriesLabels: any = [];
+
+  isfrmChecked:any;
   userList = [
     {
       name: 'Technical Support',
@@ -91,7 +98,6 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
     {value: 'Whatsapp', viewValue: 'Whatsapp'}
   ];
   selectedSearch = this.search[0].value;
-  options: string[] = ['Glenn Helgass', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt'];
   whisper = false;
   displayUserList = false;
   customer: any = {
@@ -136,18 +142,17 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   convers: any[];
   ringing = false;
   callControls = true;
-  displayCategories: any = [];
   notes: any = [
     {
       'categoryName': 'payments',
       'wrapups': [
-        'Glenn Helgass', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt'
+        'Payments', 'Late Payment', 'Payment Details', 'Payment Due Date', 'Last payment'
       ]
     },
     {
       'categoryName': 'services',
       'wrapups': [
-        'Glenn Helgass', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt', 'Donnie Makiver', 'Verne West-Frimley', ' Ev Gayforth', 'Adam Joe Stanler', 'Fayina Addinall', 'Doy Ortelt'
+        'services1', 'services2', 'services3', 'services4', 'services5', 'services5', 'services6'
       ]
     }
   ];
@@ -337,4 +342,40 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
       this.isSelectedChannelCode = selectedChannel.code;
     }
   }
+
+
+  selectWrapupCategories(e: any, isChecked: boolean) {
+    if (isChecked) {
+      this.categoriesList.push(e);
+      this.wrapupList.push(e);
+    } else {
+      const index = this.categoriesList.indexOf(e);
+      this.categoriesList.splice(index, 1);
+    }
+    console.log(this.categoriesList, 'categoriesList')
+  }
+  removeWrapupCategories(e: any, isChecked: boolean) {
+    const index = this.categoriesList.indexOf(e);
+    this.categoriesList.splice(index, 1);
+    this.wrapupList.splice(index, 1);
+    this.wrapupLabels.splice(index);
+
+  }
+
+  selectWrapup(e: any, isChecked: boolean) {
+    if (isChecked) {
+      this.wrapupLabels.push(e);
+    } else {
+      const index = this.wrapupList.indexOf(e);
+      this.wrapupList.splice(index, 1);
+    }
+    console.log(this.wrapupList, 'wraplist')
+  }
+
+  removeWrapupLabels(e: any, isChecked: boolean) {
+
+      const index = this.wrapupLabels.indexOf(e);
+      this.wrapupLabels.splice(index, 1);
+  }
+
 }
