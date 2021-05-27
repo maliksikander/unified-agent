@@ -1,11 +1,13 @@
 import { Injectable } from "@angular/core";
 import { io } from "socket.io-client";
 import { BehaviorSubject, Observable } from "rxjs";
+import { Router } from "@angular/router";
 import { appConfigService } from "./appConfig.service";
 import { cacheService } from "./cache.service";
 import { sharedService } from "./shared.service";
 import { CimEvent } from "../models/Event/cimEvent";
 import { snackbarService } from "./snackbar.service";
+import { error } from "console";
 
 @Injectable({
   providedIn: "root"
@@ -24,7 +26,8 @@ export class socketService {
     private _snackbarService: snackbarService,
     private _appConfigService: appConfigService,
     private _cacheService: cacheService,
-    private _sharedService: sharedService
+    private _sharedService: sharedService,
+    private _router: Router,
   ) {}
 
   connectToSocket() {
@@ -70,7 +73,6 @@ export class socketService {
     this.listen("onCimEvent").subscribe((res: any) => {
       console.log("onCimEvent", res);
       this.onCimEventHandler(JSON.parse(res.cimEvent), res.topicId);
-      //  this.onCimEventHandler(res.cimEvent, res.topicId);
     });
 
     this.listen("onOldCimEvents").subscribe((res: any) => {
@@ -86,6 +88,11 @@ export class socketService {
     this.listen("topicClosed").subscribe((res: any) => {
       console.log("topicClosed", res);
       this.changeTopicStateToClose(res.topicId);
+    });
+
+    this.listen("socketSessionRemoved").subscribe((res: any) => {
+      console.log("socketSessionRemoved", res);
+      this.onSocketSessionRemoved();
     });
   }
 
@@ -163,6 +170,13 @@ export class socketService {
   //   this.conversations.push({ topicId: topicId, messages: oldTopicMessages, activeChannelSessions: activeChannelSessions, unReadCount: undefined, index: ++this.conversationIndex });
   //   this._conversationsListener.next(this.conversations);
   // }
+  onSocketSessionRemoved(){
+    this._snackbarService.open("you are logged In from another session","err");
+
+    this._router.navigate(["login"]).then(() => {
+      window.location.reload();
+    });
+  }
 
   onOldCimEventsHandler(cimEvents, topicId) {
     let conversation = {
