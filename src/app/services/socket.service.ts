@@ -28,7 +28,7 @@ export class socketService {
     private _cacheService: cacheService,
     private _sharedService: sharedService,
     private _router: Router,
-  ) {}
+  ) { }
 
   connectToSocket() {
     this.uri = this._appConfigService.config.SOCKET_URL;
@@ -68,6 +68,11 @@ export class socketService {
     this.listen("taskRequest").subscribe((res: any) => {
       console.log("taskRequest ", res);
       this.triggerNewChatRequest(res);
+    });
+
+    this.listen("revokeTask").subscribe((res: any) => {
+      console.log("revokeTask ", res);
+      this.revokeChatRequest(res);
     });
 
     this.listen("onCimEvent").subscribe((res: any) => {
@@ -112,6 +117,11 @@ export class socketService {
     this._sharedService.serviceChangeMessage({ msg: "openRequestHeader", data: data });
   }
 
+
+  revokeChatRequest(data) {
+    this._sharedService.serviceChangeMessage({ msg: "closeRequestHeader", data: data });
+  }
+
   onCimEventHandler(cimEvent, topicId) {
     let sameTopicConversation = this.conversations.find((e) => {
       return e.topicId == topicId;
@@ -143,35 +153,8 @@ export class socketService {
     }
   }
 
-  // onOldCimEventsHandler_depricate(cimEvents, topicId) {
-  //   let oldTopicMessages = [];
-  //   let endedChannelSessions = [];
-
-  //   // pushed CIM messages
-  //   cimEvents.forEach((cimEvent) => {
-  //     if (cimEvent.type.toLowerCase() == "message") {
-  //       oldTopicMessages.push(cimEvent.data);
-  //     }
-  //     if (cimEvent.nane.toLowerCase() == "channel_session_ended") {
-  //       endedChannelSessions.push(cimEvent.data);
-  //     }
-  //   });
-
-  //   // get active channel sessions
-  //   let activeChannelSessions = this.getActiveChannelSessions(oldTopicMessages);
-
-  //   // remove ended channel sessions
-  //   endedChannelSessions.forEach((endedChannelSession) => {
-  //     let index = activeChannelSessions.findIndex((activeChannelSession) => { activeChannelSession.id === endedChannelSession.id });
-  //     activeChannelSessions.splice(index, 1);
-  //   })
-
-  //   // push the conversation in conversation array
-  //   this.conversations.push({ topicId: topicId, messages: oldTopicMessages, activeChannelSessions: activeChannelSessions, unReadCount: undefined, index: ++this.conversationIndex });
-  //   this._conversationsListener.next(this.conversations);
-  // }
-  onSocketSessionRemoved(){
-    this._snackbarService.open("you are logged In from another session","err");
+  onSocketSessionRemoved() {
+    this._snackbarService.open("you are logged In from another session", "err");
 
     this._router.navigate(["login"]).then(() => {
       window.location.reload();
