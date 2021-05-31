@@ -299,15 +299,22 @@ export class socketService {
       return channelSession.id === cimEvent.data.id;
     });
 
-    conversation.activeChannelSessions.splice(index, 1);
+    if (index != -1) {
+      conversation.activeChannelSessions.splice(index, 1);
+      console.log("channel session removed");
+    } else {
+      console.log("channelSessionId not found");
+    }
   }
 
   changeTopicStateToClose(topicId) {
-    // find the conversation
-    let conversation = this.conversations.find((e) => {
-      return e.topicId == topicId;
-    });
-    // change the conversation state to "CLOSED"
-    conversation.state = "CLOSED";
+    // // find the conversation
+    // let conversation = this.conversations.find((e) => {
+    //   return e.topicId == topicId;
+    // });
+    // // change the conversation state to "CLOSED"
+    // conversation.state = "CLOSED";
+    this._snackbarService.open("A conversation is removed", "err");
+    this.removeConversation(topicId);
   }
 }
