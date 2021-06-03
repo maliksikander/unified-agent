@@ -85,6 +85,8 @@ mat-tab-group.chat-tab-area {
     width: 60px;
     background: $white-color;
     margin-top: 45px;
+    height: calc(100% - 5px);
+
     .mat-ink-bar{
       display: none !important;
     }
@@ -2023,6 +2025,34 @@ button.add-customer {
   box-shadow: none !important;
   z-index: 2;
 
+  .start-con{
+    display: none;
+    padding-left: 2px;
+    text-align: left;
+    text-transform: capitalize;
+    color: #5D5D5D;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre;
+    max-width: 200px;
+    font-weight: 400;
+  }
+
+  &.expand-button {
+    width: 270px;
+    margin: 0 auto;
+    left: 5px;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+    text-align: left;
+    padding-left: 10px;
+
+    .start-con{
+      display: inline-block;
+    }
+  }
+
   .mat-button-wrapper{
     padding: 0 !important;
   }
@@ -2143,8 +2173,11 @@ button.add-customer {
     color: #858585 !important;
     position: relative;
     font-size: 12px;
-    margin: 5px 8px;
+    margin: 0 5px !important;
     text-transform: capitalize;
+    padding: 0;
+    line-height: 1;
+    top: -3px;
   }
 
   .c-btn {
@@ -2172,8 +2205,8 @@ button.add-customer {
       margin: 0;
       padding-left: 3px !important;
       width: calc(100% - 20px);
-      padding-top: 1px !important;
-      padding-bottom: 1px !important;
+      padding-top: 8px !important;
+      padding-bottom: 8px !important;
 
       .c-token {
         list-style: none;
@@ -2929,7 +2962,7 @@ tspan{
 }
 
 
-.channel-list{
+.media-embed{
   width: 20px;
   display: inline-block !important;
   text-align: center;

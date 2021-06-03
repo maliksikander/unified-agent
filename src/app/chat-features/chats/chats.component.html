@@ -67,7 +67,7 @@
         </mat-tab>
 
       </mat-tab-group>
-      <button class="add-customer" mat-fab routerLink="/customers/phonebook"><mat-icon>add</mat-icon></button>
+      <button class="add-customer mat-fab mat-button-base mat-accent {{barExpand ? 'expand-button' : 'collapse-button'}}" mat-fab routerLink="/customers/phonebook"><mat-icon>add</mat-icon><span  class="start-con">Start New Conversation</span></button>
       <button color="primary" class="left-bar-trigger {{barExpand ? 'arrow_left' : 'arrow_right'}}" (click)="barExpand = !barExpand" ><img src="assets/images/arrow-rounded.svg"></button>
 
 

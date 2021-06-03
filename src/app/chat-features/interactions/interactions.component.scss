@@ -917,7 +917,7 @@
   li {
     font-size: 12px;
     color: #707070;
-    padding: 0 !important;
+    padding: 0 5px !important;
     display: inline-flex !important;
     border: 0 !important;
 
@@ -1072,13 +1072,14 @@
 .selected-area {
   border: 1px solid #D4D4D4;
   padding: 5px;
-  min-height: 25px;
+  min-height: 55px;
   border-radius: 3px 3px 0 0;
   max-height: 60px;
   overflow: auto;
 
   mat-chip {
     min-height: 20px;
+    line-height: 20px;
     font-size: 12px;
     position: relative;
     padding-right: 24px;
@@ -1086,6 +1087,7 @@
     font-weight: 400;
     background: $blue-text-color;
     color: lighten($blue-text-color, 100%);
+    margin: 3px;
 
     mat-icon {
       font-size: 12px;
