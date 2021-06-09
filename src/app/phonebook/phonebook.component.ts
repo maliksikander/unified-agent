@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import {MatDialog} from '@angular/material';
 import {CreateCustomerComponent} from '../create-customer/create-customer.component';
 import {FormControl} from '@angular/forms';
+import {ColumnPreferencesComponent} from '../new-components/column-preferences/column-preferences.component';
 
 @Component({
   selector: 'app-phonebook',
@@ -659,7 +660,15 @@ cols = [
 
     });
   }
+  actions() {
+    const dialogRef = this.dialog.open(ColumnPreferencesComponent, {
+      maxWidth: '818px',
+      maxHeight: '88vh',
+      width: '818px',
+      height: '88vh',
 
+    });
+  }
   onItemSelect(item: any) {
 
   }

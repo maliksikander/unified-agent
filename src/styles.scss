@@ -52,7 +52,14 @@ $white-color: #fff;
 button{
   outline: none !important;
 }
+//Checkbox default ripple and selected color
+.mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate,.mat-checkbox-checked.mat-primary .mat-checkbox-background, .mat-checkbox-indeterminate.mat-primary .mat-checkbox-background {
+  background-color: #269ec2;
+}
 
+.mat-checkbox-checked:not(.mat-checkbox-disabled).mat-primary .mat-ripple-element, .mat-checkbox:active:not(.mat-checkbox-disabled).mat-primary .mat-ripple-element {
+  background: #269ec2;
+}
 //Loading Area
 .loading-area {
   position: fixed;
@@ -2998,5 +3005,25 @@ tspan{
     padding: 2px 5px;
     font-size: 12px;
     color: #2e2e2e;
+  }
+}
+
+
+
+//Column Preferences
+.scrollable-main{
+
+  .mat-form-field-infix {
+    padding: 0 0 10px 0 !important;
+    border-top-width: 10px !important;
+
+    .mat-input-element{
+      font-size: 12px;
+    }
+  }
+  .mat-checkbox-label {
+    line-height: 24px;
+    font-size: 14px;
+    color: #6e6e6e;
   }
 }

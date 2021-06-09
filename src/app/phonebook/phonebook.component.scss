@@ -71,25 +71,6 @@
       &:hover{
         background: lighten(#707070, 50%);
       }
-
-      &.btn-action{
-     padding-right: 35px;
-        position: relative;
-
-        &:after{
-          border-style: solid;
-          border-width: 0 1px 1px 0;
-          content: "";
-          display: inline-block;
-          padding: 3.5px;
-          transform: rotate(45deg);
-          vertical-align: middle;
-          border-color: #706e6e;
-          position: absolute;
-          right: 10px;
-          top: 10px;
-        }
-      }
     }
   }
 }

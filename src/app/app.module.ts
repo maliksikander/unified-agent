@@ -26,6 +26,7 @@ import {SchemaSettingsComponent} from './new-components/schema-settings/schema-s
 import {CreateAttributeComponent} from './new-components/create-attribute/create-attribute.component';
 import {InlineEditorModule} from '@qontu/ngx-inline-editor';
 import {fetchLabelsPipe} from './shared/pipes/fetch-labels.pipe';
+import { ColumnPreferencesComponent } from './new-components/column-preferences/column-preferences.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import {fetchLabelsPipe} from './shared/pipes/fetch-labels.pipe';
     ConfirmationDialogComponent,
     SchemaSettingsComponent,
     CreateAttributeComponent,
-    fetchLabelsPipe
+    fetchLabelsPipe,
+    ColumnPreferencesComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +62,8 @@ import {fetchLabelsPipe} from './shared/pipes/fetch-labels.pipe';
     CreateLabelDiagComponent,
     ConfirmationDialogComponent,
     CreateCustomerComponent,
-    CreateAttributeComponent
+    CreateAttributeComponent,
+    ColumnPreferencesComponent
   ],
   providers: [appConfigService, MessageService, ConfirmationService,
     {
