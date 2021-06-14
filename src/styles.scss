@@ -3027,3 +3027,11 @@ tspan{
     color: #6e6e6e;
   }
 }
+
+
+.logout-reason-inner{
+  label, .mat-checkbox-label{
+    margin: 0;
+    width: 100%;
+  }
+}

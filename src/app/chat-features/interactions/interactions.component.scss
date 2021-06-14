@@ -975,17 +975,6 @@
   }
 }
 
-::ng-deep.mat-menu-panel:after {
-  content: '';
-  padding: 5px;
-  background: #f1f1f1;
-  position: absolute;
-  right: 6px;
-  transform: rotate(43deg);
-  bottom: -5px;
-  box-shadow: 1px 1px 1px rgb(0 0 0 / 22%);
-}
-
 
 //Wrap-up/categories style
 .dialog-main-content {

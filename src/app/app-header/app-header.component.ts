@@ -21,11 +21,28 @@ export class AppHeaderComponent implements OnInit {
   languageName = 'English';
   languages = [
     { code: 'en', name: 'English', flag: 'en.png' },
-    { code: 'fr', name: 'French', flag: 'fr.png' }
+    { code: 'fr', name: 'French', flag: 'fr.png' },
+    { code: 'zh', name: 'Chinese', flag: 'zh.png' },
+    { code: 'de', name: 'German', flag: 'de.png' },
+  ];
+  logoutReasons = [
+    'Done for the day',
+    'Vacation',
+    'Work Travel',
+    'Attend a Meeting',
+    'System Issue',
+    'Training',
+    'Not Feeling Well',
+    'Shift Ended',
+    'Done for the day',
+    'Vacation'
   ];
 
+  changeLanguage = false;
+  logoutReasonList = false;
   startTime: Date;
   stopTime: Date;
+  changeLanguageCode = 'en';
   active: boolean = false
   get display() { return (this.startTime && this.stopTime) ? +this.stopTime - +this.startTime : 0 }
 
@@ -77,8 +94,17 @@ export class AppHeaderComponent implements OnInit {
     if (selectedLanguage !== undefined) {
       this.languageName = selectedLanguage.name;
       this.languageFlag = selectedLanguage.flag;
+
+      this.changeLanguageCode = lang;
     }
   }
 
+  updateLanguage(){
+    this.changeLanguage = true;
+  }
+logout(){
+  this.logoutReasonList = true;
+
+}
 
 }
