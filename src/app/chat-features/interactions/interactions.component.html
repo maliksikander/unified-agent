@@ -647,13 +647,29 @@
                   <mat-panel-title>
                     <div class="panel-header tags-panel-header">
                       <ul>
-                        <li><span class="visited"><mat-icon>language</mat-icon> https://www.expertflow.com/chat/</span></li> <li>Customer submitted 'Product Information' form</li>
+                        <li><span class="media-embed facebook"><img onerror="this.src='assets/flags/generic.png';"width="20" src="assets/images/facebook.svg"></span>
+                          Facebook Post & comments
+                        </li>
                       </ul>
                     </div>
                   </mat-panel-title>
                 </mat-expansion-panel-header>
-                some information
+{{postUrl}}
+
+                <iframe
+                  [src]="postUrl | safe"
+                  width="500" height="158" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+                  allowfullscreen="true"
+                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                <div class="clearfix"></div>
+<!--                <iframe-->
+<!--                  src="https://www.facebook.com/plugins/comment_embed.php?href=https://www.facebook.com/zuck/posts/10102735452532991?comment_id=1070233703036185&width=560&include_parent=false"-->
+<!--                  width="500" height="200" style="border:none;overflow:auto" scrolling="auto" frameborder="0"-->
+<!--                  allowfullscreen="true"-->
+<!--                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>-->
               </mat-expansion-panel>
+
+
             </div>
 
             <!-- <div class="chat-message agent-message">
@@ -810,17 +826,14 @@
                 </div>
                 <div class="chat-composer-trigger">
                   <button class="video-call composer-trigger" mat-icon-button>
-                    <mat-icon>voice_chat</mat-icon>
                   </button>
                   <button (click)="onSend(replyInput.value); replyInput.value = null " *ngIf="replyInput.value.length > 0" class="send-btn composer-trigger"
                           mat-icon-button>
-                    <mat-icon>send</mat-icon>
                   </button>
 
-                  <button class="send-btn attachment-btn composer-trigger"  mat-icon-button *ngIf="replyInput.value.length < 1">
+                  <button class="attachment-btn composer-trigger"  mat-icon-button *ngIf="replyInput.value.length < 1">
                     <input #myFileInput  type="file"
                            name="ef_chatbox_chat_file_upload" id="uploadFileBtn" class="file-upload-input">
-                    <mat-icon>attach_file</mat-icon>
                   </button>
 
                   <!--            <span class="attachment-btn" >-->

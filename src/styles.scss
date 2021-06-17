@@ -91,7 +91,7 @@ mat-tab-group.chat-tab-area {
   .mat-tab-header {
     width: 60px;
     background: $white-color;
-    margin-top: 45px;
+    margin-top: 46px;
     height: calc(100% - 50px);
 
     .mat-ink-bar{
@@ -2008,14 +2008,14 @@ ngx-mat-datetime-content, .time-container {
   overflow: hidden;
   top: 60% !important;
   transform: rotateZ(2deg) translate(0, -32%);
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 20px;
+  width: 20px;
+  background-image: url('assets/images/happiness.svg');
 
   i.material-icons {
-    color: #707070;
-    font-size: 19px;
-    position: relative;
-    top: -1px;
-    max-width: 20px;
-    text-align: center;
+    display: none;
   }
 }
 
@@ -3034,4 +3034,45 @@ tspan{
     margin: 0;
     width: 100%;
   }
+}
+
+
+//MRD state Change
+.select-state{
+  &.active{
+
+    .mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar{
+      background: $green-color;
+    }
+  }
+
+  .mat-slide-toggle-bar{
+    background: #B4B4B4;
+    position: relative;
+    width: 36px;
+    height: 20px;
+    flex-shrink: 0;
+    border-radius: 16px;
+  }
+  .mat-slide-toggle-thumb-container {
+    top: 3.2px;
+    left: 4px;
+  }
+  .mat-slide-toggle-thumb {
+    height: 13px;
+    width: 13px;
+    border-radius: 100%;
+    background-color: #fff !important;
+  }
+
+  .mat-slide-toggle .mat-slide-toggle-ripple{
+    height: 35px;
+    width: 35px;
+  }
+}
+
+//Custom User Menu Position
+.custom-user-menu {
+  right: -45px;
+  position: relative;
 }

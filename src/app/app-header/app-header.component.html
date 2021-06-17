@@ -67,15 +67,27 @@
           <mat-menu #agentState="matMenu" yPosition="below" [xPosition]="'before'" panelClass="custom" [overlapTrigger]="false">
             <button (click)="$event.stopPropagation() ;changeState(1)" mat-menu-item class="state-trigger">
 
-              <mat-icon style="color: limegreen;font-size: 20px">radio_button_checked
+              <mat-icon style="color: limegreen">lens
               </mat-icon>
-              READY
+              Ready
             </button>
             <button (click)="$event.stopPropagation(); changeState(0)" mat-menu-item class="state-trigger">
-              <mat-icon style="color:orange; font-size: 20px">
-                radio_button_checked
+              <mat-icon style="color:orange">
+                lens
               </mat-icon>
-              NOT READY
+              Not Ready
+            </button>
+            <button (click)="$event.stopPropagation(); changeState(0)" mat-menu-item class="state-trigger">
+              <mat-icon>
+                lens
+              </mat-icon>
+              Out of Office
+            </button>
+            <button (click)="$event.stopPropagation(); changeState(0)" mat-menu-item class="state-trigger">
+              <mat-icon>
+                lens
+              </mat-icon>
+              Lunch Break
             </button>
           </mat-menu>
         </div>
@@ -84,10 +96,13 @@
         <div class="vert-dropdown">
           <button mat-button [matMenuTriggerFor]="menu" class="vert-button">
             <div class="agent-showcase-mini">
+              <mat-icon class="active">lens</mat-icon>
               <img src="assets/images/agent-avatar.png" alt="Agent">
             </div>
           </button>
-          <mat-menu class="matMenu" (click)="$event.stopPropagation()" #menu="matMenu" backdropClass="main-menu-list" [xPosition]="'before'">
+          <span class="agent-time">(04:31:44)</span>
+
+          <mat-menu class="matMenu" (click)="$event.stopPropagation()" #menu="matMenu"   class="custom-user-menu"  xPosition="after">
             <div class="menu-list-content" (click)="$event.stopPropagation()">
               <div class="main-showcase">
               <div class="agent-showcase">
@@ -98,7 +113,7 @@
               </div>
 
               <p class="menu-trigger-custom state-trigger">
-                <span class="inner-btn">STATE</span>
+                <span class="inner-btn">State</span>
 
 <!--                <button mat-menu-item class="{{_cacheService.agent.presence.agentState | lowercase}} mat-menu-item-submenu-trigger"-->
 <!--                  [matMenuTriggerFor]="agentState">-->
@@ -114,13 +129,13 @@
 
               <div class="mrd-states" (click)="$event.stopPropagation()">
                 <span class="mrd-text">Change MRD State</span>
-                <p class="menu-trigger-custom select-state"><span class="inner-btn ">Voice Call</span>
+                <p class="menu-trigger-custom select-state active"><span class="inner-btn ">Voice Call</span>
                   <mat-slide-toggle color="primary"></mat-slide-toggle>
                 </p>
-                <p class="menu-trigger-custom select-state"><span class="inner-btn ">Chat <small>(3)</small></span>
+                <p class="menu-trigger-custom select-state active"><span class="inner-btn ">Chat <small>(3)</small></span>
                   <mat-slide-toggle color="primary"></mat-slide-toggle>
                 </p>
-                <p class="menu-trigger-custom select-state"><span class="inner-btn ">Email <small>(4)</small></span>
+                <p class="menu-trigger-custom select-state active"><span class="inner-btn ">Email <small>(4)</small></span>
                   <mat-slide-toggle color="primary"></mat-slide-toggle>
                 </p>
               </div>

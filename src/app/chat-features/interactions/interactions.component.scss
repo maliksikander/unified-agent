@@ -814,11 +814,20 @@
 
     .mat-icon-button {
       //padding-top: 15px;
-      color: purple;
-      width: 27px;
-      font-size: 11px;
       margin: 0;
+      background-position: center;
+      background-repeat: no-repeat;
 
+      &.video-call{
+        background-image: url("../../../assets/images/video-chat.svg");
+
+      }
+      &.attachment-btn{
+        background-image: url("../../../assets/images/paperclip.svg");
+      }
+      &.send-btn{
+        background-image: url("../../../assets/images/send.svg");
+      }
     }
 
     .mat-icon-button:focus {
@@ -1323,7 +1332,7 @@
 }
 
 
-button.send-btn.attachment-btn {
+button.attachment-btn {
   position: relative;
   cursor: pointer;
   overflow: hidden;

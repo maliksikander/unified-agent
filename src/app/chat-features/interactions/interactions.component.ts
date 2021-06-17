@@ -193,6 +193,10 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   @Input() max: any;
   today = new Date();
   interactionSearch = false;
+  fbId = '309172437354807';
+  postId = '101064781498908';
+
+  postUrl = '';
   constructor(private snackBar: MatSnackBar, private _cacheService: cacheService, private _socketService: socketService, private dialog: MatDialog) {
 
   }
@@ -204,9 +208,10 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       new EmojiPicker();
     }, 500);
-
+this.postUrl = "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fweb.facebook.com%2Fpermalink.php%3Fstory_fbid%3D"+this.fbId+"%26id%3D"+this.postId+"&show_text=true&width=500"
 
   }
+
 
   ngAfterViewInit() {
 

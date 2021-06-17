@@ -24,7 +24,6 @@ import {CreateLabelComponent} from './new-components/create-label/create-label.c
 import { ConfirmationDialogComponent } from './new-components/confirmation-dialog/confirmation-dialog.component';
 import {SchemaSettingsComponent} from './new-components/schema-settings/schema-settings.component';
 import {CreateAttributeComponent} from './new-components/create-attribute/create-attribute.component';
-import {InlineEditorModule} from '@qontu/ngx-inline-editor';
 import {fetchLabelsPipe} from './shared/pipes/fetch-labels.pipe';
 import { ColumnPreferencesComponent } from './new-components/column-preferences/column-preferences.component';
 
@@ -47,16 +46,15 @@ import { ColumnPreferencesComponent } from './new-components/column-preferences/
     SchemaSettingsComponent,
     CreateAttributeComponent,
     fetchLabelsPipe,
-    ColumnPreferencesComponent
+    ColumnPreferencesComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     CommonModule,
     BrowserAnimationsModule,
-    SharedModule,
-    InlineEditorModule
-],
+    SharedModule
+  ],
   entryComponents: [
     AnnouncementDialogComponent,
     CreateLabelDiagComponent,

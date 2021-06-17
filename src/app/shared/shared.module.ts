@@ -39,10 +39,11 @@ import {SearchPipe} from './pipes/search.pipe';
 import {NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule} from 'ngx-mat-datetime-picker';
 import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown';
 import {NoteSearchPipe} from './pipes/noteSearch.pipe';
+import { SafePipe } from './pipes/safe.pipe';
 
 
 @NgModule({
-  declarations: [RemoveUnderscorePipe, ibsformatPipe, SearchPipe, NoteSearchPipe],
+  declarations: [RemoveUnderscorePipe, ibsformatPipe, SearchPipe, NoteSearchPipe, SafePipe],
   imports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
     MatCheckboxModule, MatButtonModule,
@@ -98,7 +99,7 @@ import {NoteSearchPipe} from './pipes/noteSearch.pipe';
     MatTabsModule, MatSelectModule, MatTooltipModule, FormsModule, MatExpansionModule,
     MatMenuModule, MatSlideToggleModule, MatAutocompleteModule, MatDialogModule, MatTabsModule,
     MatDatepickerModule, MatNativeDateModule, DragDropModule, CommonModule, NgCircleProgressModule, HttpClientModule,
-    RemoveUnderscorePipe, NgxLinkifyjsModule, ibsformatPipe,  TableModule,
+    RemoveUnderscorePipe, NgxLinkifyjsModule, ibsformatPipe, TableModule,
     CalendarModule,
     SliderModule,
     DialogModule,
@@ -124,7 +125,7 @@ import {NoteSearchPipe} from './pipes/noteSearch.pipe';
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
     AngularMultiSelectModule,
-    NoteSearchPipe
+    NoteSearchPipe, SafePipe
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
