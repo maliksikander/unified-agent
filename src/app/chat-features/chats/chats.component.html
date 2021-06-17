@@ -14,16 +14,16 @@
                 <span class="get-events">
                   <div class="user-badge">
                     <circle-progress class="laft-bar-data" [percent]="100" [radius]="15" [outerStrokeWidth]="2"
-                      [innerStrokeWidth]="2" [outerStrokeColor]="conversation.activeChannelSessions.length > 0 ? '#3f51b5' : 'grey'"
+                      [innerStrokeWidth]="2"
+                      [outerStrokeColor]="conversation.activeChannelSessions.length > 0 ? '#3f51b5' : 'grey'"
                       [innerStrokeColor]="conversation.state == 'ACTIVE' ? '#F3F6F8' : 'grey'" [space]=-1
                       [animation]="conversation.animation" [animationDuration]="600"
-                      [title]="conversation.messages[conversation.messages.length -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | getFirstTwoLetters"
-                      [titleFontSize]="10" [showSubtitle]="false" [showUnits]="false" [renderOnClick]="false">
+                      [title]="conversation.associatedCustomer.firstName | getFirstTwoLetters" [titleFontSize]="10"
+                      [showSubtitle]="false" [showUnits]="false" [renderOnClick]="false">
                     </circle-progress>
                     <span class="badge1" [hidden]="conversation.unReadCount == 0">{{conversation.unReadCount}}</span>
                   </div>
-                  <span class="user-name">{{conversation.messages[conversation.messages.length
-                    -1].header.channelSession.linkedCustomer.associatedCustomer.firstName}}</span>
+                  <span class="user-name">{{conversation.associatedCustomer.firstName}}</span>
                 </span>
               </ng-template>
             </div>

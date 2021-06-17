@@ -18,7 +18,6 @@ export class InteractionsComponent implements OnInit {
   @Input() conversation: any;
   @Input() currentTabIndex: any;
   @Input() changeDetecter: any;
-  @Input() dummy: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
   @ViewChild("replyInput", { static: true }) elementView: ElementRef;
 
@@ -141,7 +140,7 @@ export class InteractionsComponent implements OnInit {
     message.header.timestamp = new Date().toISOString();
     message.header.sender = {};
 
-    message.header.sender = new TopicParticipant("AGENT", this._cacheService.agent, this.conversation.topicId, "PRIMARY", "SUBSCRIBED");
+    message.header.sender = this.conversation.topicParticipant;
     message.header.channelSession = this.conversation.activeChannelSessions[this.conversation.activeChannelSessions.length - 1];
 
     message.body.markdownText = text;

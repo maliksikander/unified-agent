@@ -1,5 +1,4 @@
 <!--Right Sidebar trigger area-->
-<!-- there is {{message.header.channelSession.linkedCustomer.associatedCustomer.firstName}} -->
 <div class="right-info-bar">
   <button mat-raised-button (click)="sidenav.toggle(); customerInfoToggle()">
     <mat-icon>{{barOpened ? 'navigate_next' : 'navigate_before'}}</mat-icon>
@@ -113,9 +112,9 @@
             <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
               <mat-panel-title><span class="material-icons drag-icon">more_vert</span>
                 <div class="profile-area">
-                  <h3>{{message.header.channelSession.linkedCustomer.associatedCustomer.firstName | getFirstTwoLetters}}
+                  <h3>{{associatedCustomer.firstName | getFirstTwoLetters}}
                   </h3>
-                  <h5 class="user-name">{{message.header.channelSession.linkedCustomer.associatedCustomer.firstName}}
+                  <h5 class="user-name">{{associatedCustomer.firstName}}
                     <!--                    <p class="user-from">London, United Kingdom</p>-->
                   </h5>
                 </div>
@@ -151,7 +150,7 @@
                 <button mat-raised-button>
                   <a routerLink="/customers/phonebook" routerLinkActive="active"
                     [routerLinkActiveOptions]="{exact:true}"
-                    [queryParams]="{ 'q': 'linking', 'topicId':message.header.sender.topicId }">Re-link Customer
+                    [queryParams]="{ 'q': 'linking', 'topicId':topicId }">Re-link Customer
                     Profile</a>
                 </button>
                 <button *ngIf="false" mat-raised-button>link CRM</button>
@@ -271,18 +270,17 @@
           </mat-expansion-panel>
 
           <!-- customer Suggestions Tab start-->
-          <mat-expansion-panel class="drag-expansion-panel"
-            *ngIf="message.header.channelSession.customerSuggestions.length != 0" cdkDrag>
+          <mat-expansion-panel class="drag-expansion-panel" *ngIf="customerSuggestions.length != 0" cdkDrag>
             <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
               <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Link Profile
               </mat-panel-title>
             </mat-expansion-panel-header>
 
             <div class="linked-area">
-              <h5>{{message.header.channelSession.customerSuggestions.length}} profiles matches this
+              <h5>{{customerSuggestions.length}} profiles matches this
                 customer data.</h5>
               <ul class="match-content">
-                <li *ngFor="let customer of message.header.channelSession.customerSuggestions">
+                <li *ngFor="let customer of customerSuggestions">
                   {{customer.firstName}}
                   <button (click)="linkCustomer(customer.id)" mat-icon-button class="waves-effect">
                     <mat-icon>insert_link</mat-icon>
@@ -295,8 +293,8 @@
 
                 <button mat-raised-button>
                   <a routerLink="/customers/phonebook" routerLinkActive="active"
-                    [routerLinkActiveOptions]="{exact:true}"
-                    [queryParams]="{ 'q': 'linking','topicId':message.header.sender.topicId }">View all contacts</a>
+                    [routerLinkActiveOptions]="{exact:true}" [queryParams]="{ 'q': 'linking','topicId':topicId }">View
+                    all contacts</a>
                 </button>
                 <button mat-raised-button>Create New Customer</button>
 
@@ -320,9 +318,11 @@
                 <mat-expansion-panel *ngFor="let channelSession of activeChannelSessions">
                   <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                     <div class="channel-icon-area">
-                      <span class="channel-icon {{channelSession.channel.channelConnector.channelType.typeName | lowercase}}"><img
+                      <span
+                        class="channel-icon {{channelSession.channel.channelConnector.channelType.typeName | lowercase}}"><img
                           src="/assets/images/{{channelSession.channel.channelConnector.channelType.typeName | lowercase}}.svg"></span>
-                      <label>{{channelSession.channel.channelConnector.channelType.typeName | titlecase}} Channel</label>
+                      <label>{{channelSession.channel.channelConnector.channelType.typeName | titlecase}}
+                        Channel</label>
 
                       <button (click)="moveSession($event)" mat-button [matMenuTriggerFor]="rerouteMenu"
                         class="re-route-session">Move</button>

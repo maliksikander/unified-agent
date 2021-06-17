@@ -1,23 +1,19 @@
 <div class="interaction-main" [ngClass]="{'customer-bar-opened': isBarOPened}">
   <div class="interaction-inner">
-    <div
-      [ngClass]="{'unidentified-customer':conversation.messages[conversation.messages.length -1].header.channelSession.linkedCustomer.isAnonymous}"
+    <div [ngClass]="{'unidentified-customer':conversation.associatedCustomer.isAnonymous}"
       class="container-fluid main-chat-bar">
       <div class="row">
         <div class="col-md-4 customer-showcase">
           <h3 matTooltipPosition="right" class="customer-highlight">
-            {{conversation.messages[conversation.messages.length
-            -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | getFirstTwoLetters}}
+            {{conversation.associatedCustomer.firstName | getFirstTwoLetters}}
             <span
               class="channel-icon {{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.channelType.typeName | lowercase}}">
               <img
                 src="../assets/images/{{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.channelType.typeName | lowercase}}.svg">
             </span>
           </h3>
-          <h5 class="customer-name"
-            [matTooltip]="conversation.messages[conversation.messages.length -1].header.channelSession.linkedCustomer.associatedCustomer.firstName">
-            {{conversation.messages[conversation.messages.length
-            -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | slice :0 :50}}
+          <h5 class="customer-name" [matTooltip]="conversation.associatedCustomer.firstName">
+            {{conversation.associatedCustomer.firstName | slice :0 :50}}
             <span class="chat-timer">( 11:32 )</span>
 
           </h5>
@@ -126,7 +122,7 @@
                       src="../assets/images/{{message.header.channelSession.channel.channelConnector.channelType.typeName | lowercase}}.svg">
                   </div>
                   <div *ngIf="(message.header.sender.type | lowercase) != 'bot'" class="profile-pic-area user-img">
-                    {{message.header.sender | getSenderName:true}}</div>
+                    {{message.header.sender | getSenderName:conversation.associatedCustomer:true}}</div>
                   <div *ngIf="(message.header.sender.type | lowercase) == 'bot'"><img src="../assets/images/robot.png">
                   </div>
                 </div>
@@ -143,12 +139,14 @@
                   <div class="intents-inner">
                     <p *ngFor="let botSuggestion of message.botSuggestions">
                       {{botSuggestion.messageBody.markdownText}}
-                      <button mat-mini-fab class="canned-trigger edit-trigger" (click)="replyInput.value=botSuggestion.messageBody.markdownText">
+                      <button mat-mini-fab class="canned-trigger edit-trigger"
+                        (click)="replyInput.value=botSuggestion.messageBody.markdownText">
                         <i class="material-icons">
                           edit
                         </i>
                       </button>
-                      <button mat-mini-fab class="canned-trigger send-suggestion" (click)="onSend(botSuggestion.messageBody.markdownText); replyInput.value = null">
+                      <button mat-mini-fab class="canned-trigger send-suggestion"
+                        (click)="onSend(botSuggestion.messageBody.markdownText); replyInput.value = null">
                         <i class="material-icons">
                           send
                         </i>
@@ -167,8 +165,7 @@
 
     </div>
 
-    <div class="chat-footer"
-      [ngClass]="{'textarea-disable': conversation.activeChannelSessions.length == 0}">
+    <div class="chat-footer" [ngClass]="{'textarea-disable': conversation.activeChannelSessions.length == 0}">
       <div class="slide-in-bottom" *ngIf="showNewMessageNotif" (click)="downTheScrollAfterMilliSecs(0,'smooth')"
         class="new-msg-notif">New
         Message
@@ -276,8 +273,8 @@
                               edit
                             </i>
                           </button>
-                          <button (click)="onSend(botSuggestion.messageBody.markdownText)"
-                            mat-mini-fab class="canned-trigger send-suggestion">
+                          <button (click)="onSend(botSuggestion.messageBody.markdownText)" mat-mini-fab
+                            class="canned-trigger send-suggestion">
                             <i class="material-icons">
                               send
                             </i>
@@ -390,7 +387,8 @@
 
   <div class="customer-info-main">
     <app-customer-info [activeChannelSessions]="conversation.activeChannelSessions"
-      [message]="conversation.messages[conversation.messages.length - 1]" (expandCustomerInfo)="eventFromChild($event)">
+      [associatedCustomer]="conversation.associatedCustomer" [customerSuggestions]="conversation.customerSuggestions"
+      [topicId]="conversation.topicId" (expandCustomerInfo)="eventFromChild($event)">
     </app-customer-info>
   </div>
 </div>

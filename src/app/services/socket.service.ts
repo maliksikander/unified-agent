@@ -80,9 +80,9 @@ export class socketService {
       this.onCimEventHandler(JSON.parse(res.cimEvent), res.topicId);
     });
 
-    this.listen("onOldCimEvents").subscribe((res: any) => {
-      console.log("onOldCimEvents", res);
-      this.onOldCimEventsHandler(res.cimEvents, res.topicId);
+    this.listen("onTopicData").subscribe((res: any) => {
+      console.log("onTopicData", res);
+      this.onTopicData(res.topicData, res.topicId);
     });
 
     this.listen("topicUnsubscription").subscribe((res: any) => {
@@ -148,8 +148,12 @@ export class socketService {
       this._conversationsListener.next(this.conversations);
     } else if (cimEvent.type.toLowerCase() == "suggestion") {
       this.mergeBotSuggestions(sameTopicConversation, cimEvent.data);
+    } else if (cimEvent.name.toLowerCase() == "channel_session_started") {
+      this.addChannelSession(cimEvent, topicId);
     } else if (cimEvent.name.toLowerCase() == "channel_session_ended") {
       this.removeChannelSession(cimEvent, topicId);
+    } else if (cimEvent.name.toLowerCase() == "associated_customer_changed") {
+      this.changeTopicCustomer(cimEvent, topicId);
     }
   }
 
@@ -161,44 +165,36 @@ export class socketService {
     });
   }
 
-  onOldCimEventsHandler(cimEvents, topicId) {
+  onTopicData(topicData, topicId) {
+
     let conversation = {
       topicId: topicId,
       messages: [],
       activeChannelSessions: [],
       unReadCount: undefined,
       index: ++this.conversationIndex,
-      state: "ACTIVE"
+      state: "ACTIVE",
+      associatedCustomer: topicData.associatedCustomer,
+      customerSuggestions: topicData.customerSuggestions,
+      topicParticipant: topicData.topicParticipant
     };
-    cimEvents.forEach((cimEvent, i) => {
+
+    // feed the conversation with type "messages"
+    topicData.cimEvents.forEach((cimEvent, i) => {
+
       if (cimEvent.type.toLowerCase() == "message") {
-        // for the first message, feed the conversation with message and active channel session
-        if (i == 0) {
-          conversation.messages.push(cimEvent.data);
-          conversation.activeChannelSessions.push(cimEvent.data.header.channelSession);
-        }
+        conversation.messages.push(cimEvent.data);
+      }
+    });
 
-        // for other messages rather than 1st, of type customer, process the active channel sessions
-        if (cimEvent.data.header.sender.type.toLowerCase() == "customer") {
-          this.processActiveChannelSessions(conversation, cimEvent.data.header.channelSession);
-        }
-        if (i != 0) {
-          conversation.messages.push(cimEvent.data);
-        }
+
+    // feed the active channel sessions
+    topicData.participants.forEach(e => {
+
+      if (e.type.toLowerCase() == "customer") {
+        conversation.activeChannelSessions.push(e.participant);
       }
 
-      // if there is an event of channel session ended, then process that event and remove that channel from
-      // active channel sessions
-      if (cimEvent.name.toLowerCase() == "channel_session_ended") {
-        // find the index of channel session which needs to be removed
-        let index = conversation.activeChannelSessions.findIndex((channelSession) => {
-          return channelSession.id === cimEvent.data.id;
-        });
-
-        if (index != -1) {
-          conversation.activeChannelSessions.splice(index, 1);
-        }
-      }
     });
 
     this.conversations.push(conversation);
@@ -238,10 +234,20 @@ export class socketService {
       // if matched push that channel session to the last in array
       // thats why first removing it from the array for removing duplicate entry
       conversation.activeChannelSessions.splice(index, 1);
+
+      // pusing the incoming channel to the last in array
+      conversation.activeChannelSessions.push(incomingChannelSession);
     }
 
-    // pusing the incoming channel to the last in array
-    conversation.activeChannelSessions.push(incomingChannelSession);
+  }
+
+  changeTopicCustomer(cimEvent, topicId) {
+
+    let conversation = this.conversations.find((e) => {
+      return e.topicId == topicId;
+    });
+
+    conversation.associatedCustomer = cimEvent.data;
   }
 
   removeConversation(topicId) {
@@ -305,6 +311,14 @@ export class socketService {
     } else {
       console.log("channelSessionId not found");
     }
+  }
+
+  addChannelSession(cimEvent, topicId) {
+    let conversation = this.conversations.find((e) => {
+      return e.topicId == topicId;
+    });
+
+    conversation.activeChannelSessions.push(cimEvent.data);
   }
 
   changeTopicStateToClose(topicId) {
