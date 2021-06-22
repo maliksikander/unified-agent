@@ -133,7 +133,7 @@
                   <mat-slide-toggle color="primary"></mat-slide-toggle>
                 </p>
                 <p class="menu-trigger-custom select-state active"><span class="inner-btn ">Chat <small>(3)</small></span>
-                  <mat-slide-toggle color="primary"></mat-slide-toggle>
+                  <mat-slide-toggle color="primary" labelPosition="before">Ready</mat-slide-toggle>
                 </p>
                 <p class="menu-trigger-custom select-state active"><span class="inner-btn ">Email <small>(4)</small></span>
                   <mat-slide-toggle color="primary"></mat-slide-toggle>
@@ -175,7 +175,7 @@
               </div>
 
               <div *ngIf="logoutReasonList" class="language-change-list" (click)="$event.stopPropagation()">
-                <p>Select language
+                <p>Logout Reason
                   <mat-icon (click)="logoutReasonList = false">close</mat-icon>
                 </p>
                 <span *ngFor="let reason of logoutReasons" class="logout-reason-inner"><mat-checkbox color="primary"
