@@ -11,7 +11,7 @@ export class cacheService {
   constructor() {
     this.agent = { id: "", firstName: "", lastName: "", roles: [] };
     this.agentPresence = {
-      agent: { id: " ", keycloakUser: { id: " ", firstName: "", lastName: "", roles: [] } },
+      agent: { id: "", keycloakUser: { id: "", firstName: "", lastName: "", roles: [] } },
       state: { name: null, reasonCode: null },
       stateChangeTime: ""
     };

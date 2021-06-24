@@ -17,6 +17,7 @@ export class AppHeaderComponent implements OnInit {
     extension: 1126
   };
   selectedReasonCode;
+  selected;
   stateChangedSubscription;
   isConnected = true;
   changeLanguageCode = "en";

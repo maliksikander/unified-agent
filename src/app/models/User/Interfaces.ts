@@ -30,7 +30,7 @@ export interface ICCUser {
 
 export interface IAgentPresence {
   agent: ICCUser;
-  state: { name: ""; reasonCode: {} };
+  state: { name: string; reasonCode?: { id: string; name: string; type: string } };
   statusMessage?: string;
   agentMrdStates?: [];
   stateChangeTime: string;
