@@ -26,6 +26,8 @@ import {SchemaSettingsComponent} from './new-components/schema-settings/schema-s
 import {CreateAttributeComponent} from './new-components/create-attribute/create-attribute.component';
 import {fetchLabelsPipe} from './shared/pipes/fetch-labels.pipe';
 import { ColumnPreferencesComponent } from './new-components/column-preferences/column-preferences.component';
+import { ActiveChatsComponent } from './supervisor/active-chats/active-chats.component';
+import { QueueChatsComponent } from './supervisor/queue-chats/queue-chats.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { ColumnPreferencesComponent } from './new-components/column-preferences/
     CreateAttributeComponent,
     fetchLabelsPipe,
     ColumnPreferencesComponent,
+    ActiveChatsComponent,
+    QueueChatsComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,13 +1,14 @@
-<div class="page-header row m-0">
+<div class="page-header row m-0" [ngClass]="{'summary-view' : mainSummaryView}">
+  <button *ngIf="mainSummaryView == false" mat-button class="back-to-chat" (click)="queueView = false; activeChatView = false; mainSummaryView = true"></button>
   <div class="page-heading col-md-6">
     <h4>Supervisor Dashboard</h4>
   </div>
 </div>
 
 <div class="container-fluid main-supervisor-area">
-  <div class="supervisor row">
+  <div *ngIf="mainSummaryView" class="supervisor row">
     <div class="supervisor-table active-chat col-md-12">
-      <h4>Active Chat</h4>
+      <h4>Active Chat  <span (click)="queueView = false; activeChatView = true; mainSummaryView = false">View All</span></h4>
 
       <div class="main-table supervisor-table-search">
         <mat-form-field class="col search-field" appearance="outline">
@@ -69,7 +70,7 @@
             <div class="expand-area" [ngClass]="{'info-expanded': queueStatsInfo}">
               <h4>Queue Stats <span class="info-icon"
                                     (click)="infoBar('queueStats')"><img
-                src="assets/images/information-button.svg"></span>
+                src="assets/images/information-button.svg"></span>  <span (click)="queueView = true; activeChatView = false; mainSummaryView = false">View All</span>
               </h4>
               <div class="supervisor-info-panel" *ngIf="queueStatsInfo">
                     <span class="info-panel-close" (click)="infoBar('queueStats')">
@@ -158,5 +159,17 @@
       </div>
 
     </div>
+  </div>
+
+
+
+<!--Active chat  -->
+  <div *ngIf="activeChatView" class="active-chat-area  list-view-area">
+    <app-active-chats></app-active-chats>
+  </div>
+
+  <!--Queue chat  -->
+  <div *ngIf="queueView" class="active-chat-area  list-view-area">
+    <app-queue-chats></app-queue-chats>
   </div>
 </div>

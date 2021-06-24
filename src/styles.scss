@@ -1807,7 +1807,34 @@ padding: 0 !important;
   background: inherit !important;
   }
   }
-.announcement-selection-area, .right-actions {
+.queue-transfer-to .mat-form-field{
+  width: 100%;
+
+  .mat-form-field-infix {
+    width: 100%;
+    padding-top: 7px;
+
+    .mat-select-arrow-wrapper {
+      transform: translateY(0);
+    }
+  }
+}
+.active-chat-list-area .mat-form-field{
+
+  .mat-form-field-infix {
+    padding: 0 5px !important;
+    background: #fff;
+    height: 25px;
+    line-height: 25px;
+    width: auto;
+    min-width: 145px;
+
+    .mat-select-arrow-wrapper {
+      transform: translateY(0);
+    }
+  }
+}
+.announcement-selection-area, .right-actions, .active-chat-list-area {
 
   .mat-form-field-flex{
     padding: 0 !important;

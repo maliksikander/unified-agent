@@ -1,0 +1,87 @@
+<div class="table-container manage-dashboard">
+  <div class="active-chat-list-area">
+    <div class="table-heading row m-0">
+      <div class="col-md-6">
+        <h4>Software Queue</h4>
+      </div>
+      <div class="col-md-6 text-right">
+        <mat-form-field appearance="outline" class="selection-trigger">
+          <mat-select [(value)]="FilterSelected">
+            <mat-option value="all">All Queues</mat-option>
+            <mat-option value="software">Software Queue</mat-option>
+            <mat-option value="marketing">Marketing Queue</mat-option>
+            <mat-option value="sales">Sales Queue</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Customer</th>
+        <th scope="col">Waiting Since</th>
+        <th scope="col">Queue</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr *ngFor="let chat of activeChatList">
+        <td><span class="channel-icon {{chat.channel}}"><img
+          src="assets/images/{{chat.flag}}"></span> {{chat.customerName}}    <ul class="customer-labels"><li matTooltip="Marketing" style="background: #32b67a;" ></li><li matTooltip="Corporate" style="background: #f34f1b;" ></li><li matTooltip="Product Support" style="background: #536ce8;" ></li></ul>
+        </td>
+        <td><small>less than</small> {{chat.activeTime}}</td>
+        <td>{{chat.queue}}</td>
+        <span class="table-trigger">
+          <button mat-mini-fab class="chat-btn" matTooltip="Chat"><img src="assets/images/chat1.svg"
+                                                                                              alt="Chat"></button>
+          <button mat-mini-fab class="transfer-btn" matTooltip="Transfer" (click)="reQueue(reQueueTemplate)"><img src="assets/images/transfer.svg"
+                                                                              alt="Transfer"></button>
+          <button mat-mini-fab class="close-btn" matTooltip="Close" (click)="closeChat()"><img src="assets/images/close.svg"
+                                                                                               alt="Close"></button>
+      </span>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+
+
+<ng-template #reQueueTemplate>
+  <div class="note-dialog-main transfer-dialog">
+    <div class="dialog-header">
+      <h4 mat-dialog-title>Re-Queue
+        <button mat-button mat-dialog-close>
+          <mat-icon>close</mat-icon>
+        </button>
+      </h4>
+    </div>
+    <div class="dialog-main-content">
+      <div class="row m-0">
+        <div class="form-group queue-transfer-to col-md-12">
+          <label>Select queue to re-queue chat</label>
+          <mat-form-field appearance="outline" class="selection-trigger">
+            <mat-select [(value)]="FilterSelected">
+              <mat-option value="all">All Queues</mat-option>
+              <mat-option value="software">Software Queue</mat-option>
+              <mat-option value="marketing">Marketing Queue</mat-option>
+              <mat-option value="sales">Sales Queue</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-12">
+          <label>Notes</label>
+          <textarea rows="3"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-trigger text-right">
+      <button mat-button mat-dialog-close class="close-btn">Cancel</button>
+      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial >Done
+      </button>
+    </div>
+  </div>
+</ng-template>

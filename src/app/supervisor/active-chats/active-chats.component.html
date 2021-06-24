@@ -1,0 +1,46 @@
+<div class="table-container manage-dashboard">
+  <div class="active-chat-list-area">
+    <div class="table-heading row m-0">
+      <div class="col-md-6">
+        <h4>Answered by {{FilterSelected | titlecase}}</h4>
+      </div>
+      <div class="col-md-6 text-right">
+        <mat-form-field appearance="outline" class="selection-trigger">
+          <mat-select [(value)]="FilterSelected">
+            <mat-option value="agents">Answered by Agents</mat-option>
+            <mat-option value="bot">Answered by Bot</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Customer</th>
+        <th scope="col">Active Since</th>
+        <th scope="col">Queue</th>
+        <th scope="col">{{FilterSelected | titlecase}}</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr *ngFor="let chat of activeChatList">
+        <td><span class="channel-icon {{chat.channel}}"><img
+          src="assets/images/{{chat.flag}}"></span> {{chat.customerName}}</td>
+        <td><small>less than</small> {{chat.activeTime}}</td>
+        <td>{{chat.queue}}</td>
+        <td>{{chat.agent}}</td>
+        <span class="table-trigger">
+          <button mat-mini-fab class="silent-monitor-btn" matTooltip="Silent Monitoring"><img src="assets/images/eye.svg"
+                                                                                              alt="Silent Monitoring"></button>
+          <button mat-mini-fab class="barge-in-btn" matTooltip="Bargein"><img src="assets/images/bargein.svg"
+                                                                              alt="Bargein"></button>
+          <button mat-mini-fab class="close-btn" matTooltip="Close" (click)="closeChat()"><img src="assets/images/close.svg"
+                                                                                               alt="Close"></button>
+      </span>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

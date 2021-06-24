@@ -1,34 +1,69 @@
+@import "src/app/shared/globalVariables";
+
 //.main-supervisor-area {
 //  border: 5px solid #E2E2E2;
 //  height: calc(100% - 42px);
 //}
 
+.page-header{
+padding-left: 50px;
+  &.summary-view{
+    padding-left: 0;
+  }
+  .back-to-chat{
+    background: lighten($blue-text-color, 40%);
+    height: 50px;
+    width: 50px !important;
+    position: absolute;
+    left: 0;
+    border-radius: 0;
+    min-width: inherit;
+    padding: 0;
+    text-align: center;
+    &:after {
+      content: "";
+      width: 18px;
+      height: 18px;
+      position: absolute;
+      left: 22px;
+      top: 16px;
+      transform: rotate(45deg);
+      border-left: 2px solid $blue-text-color;
+      border-bottom: 2px solid $blue-text-color;
+    }
+  }
+}
 //Handraise icon
 .hand-icon {
   font-size: 10px;
 }
 
 .blink {
-  animation: blink 3s steps(50, end) infinite;
-  -webkit-animation: blink 3s steps(50, end) infinite;
+  box-shadow: 0 0 0 rgba(203,37,37,0.4);
+  animation: pulse 2s infinite;
 
 }
 
-@keyframes blink {
-  from {
-    opacity: 0;
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(203,37,37, 0.4);
   }
-  to {
-    opacity: 1;
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(203,37,37, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(203,37,37, 0);
   }
 }
-
-@-webkit-keyframes blink {
-  from {
-    opacity: 0;
+@keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(203,37,37, 0.4);
   }
-  to {
-    opacity: 1;
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(203,37,37, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(203,37,37, 0);
   }
 }
 
@@ -49,6 +84,13 @@
     color: #000;
     font-weight: 600;
     margin: 12px 10px;
+
+    span:last-child {
+    color: #9c9c9c;
+    font-size: 10px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
   }
 
   .main-table {
@@ -71,14 +113,15 @@
   //line-height: 25px;
 
   .hand-icon {
-    font-size: 10px;
+    font-size: 9px;
     background: #CB2525;
     border-radius: 100%;
     text-align: center;
     color: #ffffff;
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    letter-spacing: 1px;
 
   }
 }

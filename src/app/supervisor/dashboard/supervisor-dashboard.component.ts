@@ -77,6 +77,9 @@ export class DashboardComponent implements OnInit {
   ];
   @ViewChild(MatAccordion, {static: true}) accordion: MatAccordion;
   isAllExpanded = false;
+  mainSummaryView = true;
+  queueView = false;
+  activeChatView = false;
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
