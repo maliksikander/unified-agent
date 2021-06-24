@@ -65,9 +65,9 @@ export class CustomerInfoComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
   }
-  constructor(public _socketService: socketService, private dialog: MatDialog) { }
+  constructor(public _socketService: socketService, private dialog: MatDialog) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   close() {
     this.sidenav.close();
@@ -100,12 +100,10 @@ export class CustomerInfoComponent implements OnInit {
       this.associatedCustomer = null;
       this.associatedCustomer = changes.associatedCustomer.currentValue;
       this.customerProfileFormData = this.getProfileFormData(this.associatedCustomer);
-    }
-    else if (changes.activeChannelSessions && changes.activeChannelSessions.currentValue != undefined) {
+    } else if (changes.activeChannelSessions && changes.activeChannelSessions.currentValue != undefined) {
       this.activeChannelSessions = null;
       this.activeChannelSessions = changes.activeChannelSessions.currentValue;
-    }
-    else if (changes.customerSuggestions && changes.customerSuggestions.currentValue != undefined) {
+    } else if (changes.customerSuggestions && changes.customerSuggestions.currentValue != undefined) {
       this.customerSuggestions = null;
       this.customerSuggestions = changes.activeChannelSessions.currentValue;
     }

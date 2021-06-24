@@ -123,7 +123,7 @@ export class InteractionsComponent implements OnInit {
     private _cacheService: cacheService,
     private _socketService: socketService,
     private dialog: MatDialog
-  ) { }
+  ) {}
   ngOnInit() {
     //  console.log("i am called hello")
     this.convers = this.conversation.messages;
@@ -132,12 +132,12 @@ export class InteractionsComponent implements OnInit {
     }, 500);
   }
 
-  emoji() { }
+  emoji() {}
 
   onSend(text) {
     let message = JSON.parse(JSON.stringify(this.conversation.messages[this.conversation.messages.length - 1]));
     message.id = uuidv4();
-    message.header.timestamp = new Date().toISOString();
+    message.header.timestamp = Date.now();
     message.header.sender = {};
 
     message.header.sender = this.conversation.topicParticipant;

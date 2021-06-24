@@ -40,6 +40,6 @@ export class AppComponent implements OnInit {
 
   removeRequestFromRequestArray(topicId) {
     let index = this._sharedService.getIndexFromTopicId(topicId, this.requests);
-      this._sharedService.spliceArray(index, this.requests);
+    this._sharedService.spliceArray(index, this.requests);
   }
 }

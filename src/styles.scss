@@ -3013,12 +3013,36 @@ tspan{
 
 //MRD state Change
 .select-state{
-  &.active{
-
-    .mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar{
+  &.not_ready{
+    .mat-slide-toggle.mat-primary .mat-slide-toggle-bar ,.mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar{
+      background: #b4b4b4;
+    }
+  }&.ready{
+    .mat-slide-toggle.mat-primary .mat-slide-toggle-bar,.mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar{
       background: $green-color;
     }
+  }&.interrupted{
+    .mat-slide-toggle.mat-primary .mat-slide-toggle-bar,.mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar{
+      background: #CB2525;
+    }
+  }&.active{
+    .mat-slide-toggle.mat-primary .mat-slide-toggle-bar,.mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar{
+      background: #fdb635;
+    }
+  }&.busy{
+    .mat-slide-toggle.mat-primary .mat-slide-toggle-bar,.mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar{
+      background: #CB2525;
+    }
+  }&.unknown{
+    .mat-slide-toggle.mat-primary .mat-slide-toggle-bar,.mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar{
+      background: #CB2525;
+    }
+  }&.pending_not_ready{
+    .mat-slide-toggle.mat-primary .mat-slide-toggle-bar,.mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar{
+      background: purple;
+    }
   }
+ 
 
   .mat-slide-toggle-bar{
     background: #B4B4B4;
@@ -3049,6 +3073,7 @@ tspan{
 .custom-user-menu {
   right: -45px;
   position: relative;
+  overflow-y: auto !important;
 }
 
 

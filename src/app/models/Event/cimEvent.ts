@@ -4,14 +4,14 @@ export class CimEvent {
   id: string;
   name: string;
   type: string;
-  timestamp: string;
+  timestamp: any;
   data: {};
 
   constructor(name: string, type: string, data: {}) {
     this.id = uuidv4();
     this.name = name;
     this.type = type;
-    this.timestamp = new Date().toISOString();
+    this.timestamp = Date.now();
     this.data = data;
   }
 }

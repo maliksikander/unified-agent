@@ -38,7 +38,7 @@
         <!--      </div>-->
 
         <!--      <h3 class="supervisor-heading" *ngIf="supervisor">Supervisor</h3>-->
-        <div class="avatar {{_cacheService.agentPresence.state.name | lowercase}}" id="avatar">
+        <!-- <div class="avatar {{_cacheService.agentPresence.state.name | lowercase}}" id="avatar">
           <mat-icon>person</mat-icon>
         </div>
         <h3 class="agent_name">
@@ -46,9 +46,9 @@
           <span>
             (Ext: {{agent.extension}})
           </span>
-        </h3>
+        </h3> -->
 
-        <div class="agent-state">
+        <!-- <div class="agent-state">
           <span class="state">State</span>
 
           <div class="agent-current-state">
@@ -60,22 +60,12 @@
               </i>
             </button>
 
-            <mat-menu class="matMenu" #state="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
-              <button (click)="changeState(1)" mat-menu-item class="state-trigger-main">
-                <mat-icon style="color: limegreen;font-size: 18px">radio_button_checked</mat-icon>
-                READY
-              </button>
-
-              <button (click)="changeState(0)" mat-menu-item class="state-trigger-main">
-                <mat-icon style="color:orange; font-size: 18px" *ngIf="isConnected">radio_button_checked</mat-icon>
-                NOT READY
-              </button>
-            </mat-menu>
+            
           </div>
 
           <span class="time_state">{{display | date :"HH:mm:ss":'UTC'}}</span>
 
-        </div>
+        </div> -->
         <!-- <div class="announcement-trigger-area" >
           <span class="notification-hint">2</span>
           <button mat-icon-button class="announcement-trigger"
@@ -84,7 +74,7 @@
 
         </div> -->
 
-        <div class="multi-language">
+        <!-- <div class="multi-language">
           <button mat-button [matMenuTriggerFor]="languageSelection" class="language-trigger">
             <img src="assets/flags/{{languageFlag}}" width="20" onError="this.src='assets/flags/generic.png';">
             {{languageName}} <i class="material-icons">
@@ -100,26 +90,13 @@
 
           </mat-menu>
 
-          <mat-menu #agentState="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
-            <button (click)="changeState(1)" mat-menu-item class="state-trigger">
-
-              <mat-icon style="color: limegreen;font-size: 20px">radio_button_checked
-              </mat-icon>
-              READY
-            </button>
-            <button (click)="changeState(0)" mat-menu-item class="state-trigger">
-              <mat-icon style="color:orange; font-size: 20px">
-                radio_button_checked
-              </mat-icon>
-              NOT READY
-            </button>
-          </mat-menu>
-        </div>
+          
+        </div> -->
 
         <div class="vert-dropdown">
           <button mat-button [matMenuTriggerFor]="menu" class="vert-button">
             <div class="agent-showcase-mini">
-              <mat-icon class="active">lens</mat-icon>
+              <mat-icon class="material-icons {{_cacheService.agentPresence.state.name | lowercase}}">lens</mat-icon>
               <img src="assets/images/dummy-user.svg" alt="Agent">
             </div>
           </button>
@@ -139,14 +116,11 @@
               <p class="menu-trigger-custom state-trigger">
                 <span class="inner-btn">State</span>
 
-                <!--                <button mat-menu-item class="{{_cacheService.agent.presence.agentState | lowercase}} mat-menu-item-submenu-trigger"-->
-                <!--                  [matMenuTriggerFor]="agentState">-->
-                <!--                  <span>{{ _cacheService.agent.presence.agentState | removeUnderscore }}</span>-->
-
-                <!--                </button>-->
                 <button mat-button [matMenuTriggerFor]="agentState" (click)="$event.stopPropagation()"
                   class="ready {{_cacheService.agentPresence.state.name | lowercase}} mat-menu-item-submenu-trigger">
-                  <span>{{_cacheService.agentPresence.state.name | removeUnderscore }}</span>
+                  <span>{{(_cacheService.agentPresence.state.name | removeUnderscore) +
+                    (_cacheService.agentPresence.state.reasonCode != null ?' - '+ _cacheService.agentPresence.state.reasonCode.name :
+                    '') }}</span>
                 </button>
               </p>
               <p class="menu-trigger-custom logged-time ">{{display | date :"HH:mm:ss":'UTC'}}
@@ -155,9 +129,11 @@
               <div class="mrd-states" (click)="$event.stopPropagation()">
                 <span class="mrd-text">Change MRD State</span>
                 <div *ngFor="let agentMrdState of _cacheService.agentPresence.agentMrdStates">
-                  <p class="menu-trigger-custom select-state active">
-                    <span class="inner-btn ">{{agentMrdState.mrd.name}}<small>({{agentMrdState.state.name}})</small></span>
-                    <mat-slide-toggle (change)="changeMRD($event,agentMrdState)" [checked]="(agentMrdState.state.name | lowercase) == 'ready' ? true : false" color="primary"></mat-slide-toggle>
+                  <p class="menu-trigger-custom select-state {{agentMrdState.state | lowercase}}">
+                    <span
+                      class="inner-btn ">{{agentMrdState.mrd.name}}<small>({{agentMrdState.state}})</small></span>
+                    <mat-slide-toggle (change)="changeMRD($event,agentMrdState)"
+                      [checked]="agentMrdState.state | getmrdswitches" color="primary"></mat-slide-toggle>
                   </p>
                 </div>
               </div>
@@ -179,7 +155,7 @@
 
 
               <p class="menu-trigger-custom logged-out-trigger">
-                <button mat-menu-item (click)="logout()">
+                <button mat-menu-item (click)="logoutReasonList = true">
                   Logout
                   <mat-icon style="color: gray;font-size: 20px;">exit_to_app</mat-icon>
                 </button>
@@ -199,19 +175,41 @@
               </div>
 
               <div *ngIf="logoutReasonList" class="language-change-list" (click)="$event.stopPropagation()">
-                <p>Select language
-                  <mat-icon (click)="logoutReasonList = false">close</mat-icon>
+                <p>Select Reason
+                  <mat-icon (click)="logoutReasonList = false;">close</mat-icon>
                 </p>
-                <span *ngFor="let reason of logoutReasons" class="logout-reason-inner">
-                  <mat-checkbox color="primary" labelPosition="after">{{reason}}</mat-checkbox>
-                </span>
-                <button mat-button class="main-logout">Logout</button>
+                <div *ngFor="let reason of reasonCodes; let i = index">
+                  <span *ngIf="(reason.type | lowercase ) == 'logout'" class="logout-reason-inner">
+                    <mat-checkbox [checked]="selected === i" (change)="selected = i; onChange(reason)" color="primary"
+                      labelPosition="after">{{reason.name}}</mat-checkbox>
+                  </span>
+                </div>
+                <button (click)="logout()" mat-button class="main-logout">Logout</button>
               </div>
 
+            </div>
+          </mat-menu>
+          <mat-menu #agentState="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
+            <button (click)="changeState(1)" mat-menu-item class="state-trigger">
 
-
-
-
+              <mat-icon style="color: limegreen;">lens
+              </mat-icon>
+              READY
+            </button>
+            <button (click)="changeState(0)" mat-menu-item class="state-trigger">
+              <mat-icon style="color:#b4b4b4;">
+                lens
+              </mat-icon>
+              NOT READY
+            </button>
+            <div *ngFor="let reason of reasonCodes">
+              <button *ngIf="(reason.type | lowercase) == 'not_ready'" (click)="changeState(reason)" mat-menu-item
+                class="state-trigger">
+                <mat-icon style="color:#b4b4b4;">
+                  lens
+                </mat-icon>
+                {{reason.name}}
+              </button>
             </div>
           </mat-menu>
         </div>

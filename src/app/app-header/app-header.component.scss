@@ -130,8 +130,26 @@
     transform: rotate(5deg);
     color: #ccc;
     text-shadow: 0 0 5px rgb(0, 0, 0, .3);
-    &.active{
+    &.ready {
       color: $green-color;
+    }
+    &.active {
+      color: #fdb635;
+    }
+    &.not_ready {
+      color: #b4b4b4;
+    }
+    &.pending_not_ready {
+      color: purple;
+    }
+    &.interrupted {
+      color: #CB2525;
+    }
+    &.busy {
+      color: #CB2525;
+    }
+    &.unknown {
+      color: #CB2525
     }
   }
   img{
@@ -151,7 +169,6 @@
     height: 64px;
     overflow: hidden;
     margin: 0 auto 5px;
-    // box-shadow: 0 0 0 2px $blue-text-color;
     border-radius: 100%;
 
     img{
@@ -201,24 +218,21 @@
       background: $green-color;
     }
     &.active {
-      background: $green-color;
+      background: #fdb635;
     }
     &.not_ready {
-      background: #fdb635;
-    }
-    &.pending_not_ready {
-      background: #fdb635;
+      background: #b4b4b4;
     }
 
 
     &.interrupted {
-      background: #448aff;
+      background: #CB2525;
     }
     &.busy {
       background: #CB2525;
     }
     &.unknown {
-      background: #000
+      background: #CB2525
     }
 
     i{
@@ -257,26 +271,26 @@
     }
   }
   &.not_ready {
-    border: 1px solid #fdb635;
+    border: 1px solid #b4b4b4;
     mat-icon{
-      color: #fdb635 !important;
+      color: #b4b4b4 !important;
     }
   }
   &.pending_not_ready {
     @extend .not_ready;
     mat-icon{
-    color: #fdb635 !important;
+    color: purple !important;
   }
   }
 
   &.interrupted {
-    border: 1px solid #448aff;
+    border: 1px solid #CB2525;
   }
   &.busy {
     border: 1px solid #CB2525;
   }
   &.unknown {
-    border: 1px solid #000
+    border: 1px solid #CB2525
   }
 
   .false {
@@ -347,13 +361,13 @@
 
 .mat-menu-item {
   line-height: 25px !important;
-  height: 29px !important;
-  padding: 0px 11px !important;
-  color: #171717;
-  font-size: 11px;
-  background: #fdfdfd !important;
-  position: relative;
-  padding-left: 31px !important;
+    height: 29px !important;
+    padding: 0 11px !important;
+    color: #535353;
+    font-size: 11px;
+    background: #fdfdfd !important;
+    position: relative;
+    padding-left: 26px !important;
 
   &.state-trigger {
     min-width: 160px;
@@ -630,22 +644,22 @@ button.main-menu-item{
         border-color: $green-color;
       }
       &.active {
-        background: $green-color;
-        border-color: $green-color;
+        background: #fdb635;
+        border-color: #fdb635;
       }
       &.pending_not_ready {
-        background: #fdb635;
-        border-color: #fdb635;
+        background: purple;
+        border-color: purple;
       }
       &.not_ready {
-        background: #fdb635;
-        border-color: #fdb635;
+        background: #b4b4b4;
+        border-color: #b4b4b4;
       }
 
 
       &.interrupted {
-        background: #448aff;
-        border-color: #448aff;
+        background: #CB2525;
+        border-color: #CB2525;
       }
 
       &.busy {

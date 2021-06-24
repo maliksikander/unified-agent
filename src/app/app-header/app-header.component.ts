@@ -3,6 +3,7 @@ import { cacheService } from "../services/cache.service";
 import { sharedService } from "../services/shared.service";
 import { socketService } from "../services/socket.service";
 import { MatSidenav } from "@angular/material";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-header",
@@ -15,77 +16,43 @@ export class AppHeaderComponent implements OnInit {
     name: "Bryan Miller",
     extension: 1126
   };
+  selectedReasonCode;
+  stateChangedSubscription;
   isConnected = true;
-  changeLanguageCode = 'en';
+  changeLanguageCode = "en";
   languageFlag = "en.png";
   languageName = "English";
   languages = [
     { code: "en", name: "English", flag: "en.png" },
     { code: "fr", name: "French", flag: "fr.png" }
   ];
-  logoutReasons = [
-    'Done for the day',
-    'Vacation',
-    'Work Travel',
-    'Attend a Meeting',
-    'System Issue',
-    'Training',
-    'Not Feeling Well',
-    'Shift Ended',
-    'Done for the day',
-    'Vacation'
+  reasonCodes = [
+    {
+      id: "ef172d24-7b35-4c6d-ada5-41827034d306",
+      name: "out of office",
+      type: "LOGOUT"
+    },
+    {
+      id: "ef172d24-7b35-4c6d-ada5-41827034d307",
+      name: "enf of shift",
+      type: "LOGOUT"
+    },
+    {
+      id: "ef172d24-7b35-4c6d-ada5-41827034d308",
+      name: "lunch break",
+      type: "NOT_READY"
+    },
+    {
+      id: "ef172d24-7b35-4c6d-ada5-41827034d309",
+      name: "short break",
+      type: "NOT_READY"
+    },
+    {
+      id: "ef172d24-7b35-4c6d-ada5-41827034d301",
+      name: "out of office",
+      type: "NOT_READY"
+    }
   ];
-
-
-  llp = {
-    "agent": {
-      "participantType": "CCUser",
-      "id": "8d42617c-0603-4fbe-9863-2507c0fff9fd",
-      "keycloakUser": {
-        "id": "8d42617c-0603-4fbe-9863-2507c0fff9fd",
-        "firstName": "Nabeel",
-        "lastName": "Ahmad",
-        "username": "nabeel",
-        "permittedResources": {
-          "Resources": [
-            {
-              "rsid": "e6c56b53-e53e-41b1-8d85-1101172f3029",
-              "rsname": "Default Resource"
-            }
-          ]
-        },
-        "roles": [
-          "agent",
-          "customer-manager",
-          "offline_access",
-          "uma_authorization"
-        ],
-        "realm": "university"
-      },
-      "associatedRoutingAttributes": [
-
-      ]
-    },
-    "state": {
-      "name": "READY",
-      "reasonCode": "NONE"
-    },
-    "stateChangeTime": 1623892004029,
-    "agentMrdStates": [
-      {
-        "mrd": {
-          "id": "124564313",
-          "name": "CHAT"
-        },
-        "state": {
-          "name": "LOGOUT",
-          "reasonCode": "NONE"
-        },
-        "stateChangeTime": 1623892003737
-      }
-    ]
-  }
-
 
   changeLanguage = false;
   logoutReasonList = false;
@@ -105,12 +72,24 @@ export class AppHeaderComponent implements OnInit {
     }
   }
 
-  constructor(public _cacheService: cacheService, private _socketService: socketService, private _sharedService: sharedService) { }
+  constructor(
+    private _router: Router,
+    public _cacheService: cacheService,
+    private _socketService: socketService,
+    private _sharedService: sharedService
+  ) {}
 
   ngOnInit() {
-    this._sharedService.serviceCurrentMessage.subscribe((e) => {
+    this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e) => {
       if (e.msg == "stateChanged") {
-        this.reStartTimer();
+        if (e.data.state.name.toLowerCase() == "logout") {
+          this.moveToLogin();
+        } else if (this._cacheService.agentPresence.state.name == null) {
+          this.reStartTimer();
+        } else if (this._cacheService.agentPresence.stateChangeTime != e.data.stateChangeTime) {
+          this.reStartTimer();
+        }
+        this._cacheService.agentPresence = e.data;
       }
     });
   }
@@ -124,11 +103,23 @@ export class AppHeaderComponent implements OnInit {
 
   changeState(state) {
     if (state == 0) {
-      this._socketService.emit("changeAgentState", { agentId: this._cacheService.agent.id, action: "agentState", state: { name: "NOT_READY", reasonCode: "" } });
-    }
-
-    if (state == 1) {
-      this._socketService.emit("changeAgentState", { agentId: this._cacheService.agent.id, action: "agentState", state: { name: "READY", reasonCode: "" } });
+      this._socketService.emit("changeAgentState", {
+        agentId: this._cacheService.agent.id,
+        action: "agentState",
+        state: { name: "NOT_READY", reasonCode: null }
+      });
+    } else if (state == 1) {
+      this._socketService.emit("changeAgentState", {
+        agentId: this._cacheService.agent.id,
+        action: "agentState",
+        state: { name: "READY", reasonCode: null }
+      });
+    } else {
+      this._socketService.emit("changeAgentState", {
+        agentId: this._cacheService.agent.id,
+        action: "agentState",
+        state: { name: "NOT_READY", reasonCode: state }
+      });
     }
   }
 
@@ -145,15 +136,36 @@ export class AppHeaderComponent implements OnInit {
     this.changeLanguage = true;
   }
   logout() {
-    this.logoutReasonList = true;
-
+    this._socketService.emit("changeAgentState", {
+      agentId: this._cacheService.agent.id,
+      action: "agentState",
+      state: { name: "LOGOUT", reasonCode: this.selectedReasonCode }
+    });
   }
 
   changeMRD(event, agentMrdState) {
-
-    this._socketService.emit("changeAgentState", { agentId: this._cacheService.agent.id, action: "agentMRDState", state: event.checked == true ? 'READY' : 'NOT_READY', mrdId: agentMrdState.mrd.id });
-
+    this._socketService.emit("changeAgentState", {
+      agentId: this._cacheService.agent.id,
+      action: "agentMRDState",
+      state: event.checked == true ? "READY" : "NOT_READY",
+      mrdId: agentMrdState.mrd.id
+    });
   }
 
-  close() { }
+  close() {}
+
+  onChange(reason) {
+    this.selectedReasonCode = reason;
+  }
+
+  moveToLogin() {
+    localStorage.clear();
+    this._router.navigate(["login"]).then(() => {
+      window.location.reload();
+    });
+  }
+
+  ngOnDestroy() {
+    this.stateChangedSubscription.unsubscribe();
+  }
 }

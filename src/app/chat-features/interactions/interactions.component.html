@@ -110,9 +110,9 @@
 
           <!-- simple chat area -->
 
-          <div class="instruction-content chat-session-main">
-            <div class="int-date"><span>Mon<b>09</b></span></div>
-            <div *ngFor="let message of conversation.messages">
+          <div class="instruction-content chat-session-main">     
+            <div *ngFor="let message of conversation.messages; let index = index">
+              <div *ngIf="(index == 0) || (message.header.timestamp | date: 'dd MMMM yyyy') != (conversation.messages[index-1].header.timestamp | date: 'dd MMMM yyyy')" class="int-date"><span>{{message.header.timestamp | date: 'MMM'}}<b>{{message.header.timestamp | date: 'dd'}}</b></span></div>
               <div class="chat-message"
                 [ngClass]="((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message slide-in-right'">
                 <div class="profile-pic">
@@ -133,8 +133,7 @@
                     (click)="message.showBotSuggestions =! message.showBotSuggestions ">
                   </button>
                 </div>
-                <span class="chat-time">{{message.header.timeStamp | date:'h:mm:ss'}}</span>
-                <!-- <span class="material-icons delivery-status" *ngIf="con.title === 'raza'">done_all</span> -->
+                <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
                 <div class="chat-intents" *ngIf="message.showBotSuggestions">
                   <div class="intents-inner">
                     <p *ngFor="let botSuggestion of message.botSuggestions">
