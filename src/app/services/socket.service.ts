@@ -171,7 +171,7 @@ export class socketService {
       unReadCount: undefined,
       index: ++this.conversationIndex,
       state: "ACTIVE",
-      associatedCustomer: topicData.associatedCustomer,
+      customer: topicData.customer,
       customerSuggestions: topicData.customerSuggestions,
       topicParticipant: topicData.topicParticipant
     };
@@ -238,7 +238,7 @@ export class socketService {
       return e.topicId == topicId;
     });
 
-    conversation.associatedCustomer = cimEvent.data;
+    conversation.customer = cimEvent.data;
   }
 
   removeConversation(topicId) {
