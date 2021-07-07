@@ -8,11 +8,6 @@ COPY config.json.template .
 
 COPY docker-entrypoint.sh .
 
-<<<<<<< HEAD
-#COPY environment_variables.env .
-
-=======
->>>>>>> CIM-764_task_assign_handling
 RUN chmod +x docker-entrypoint.sh
 
 ENTRYPOINT ["sh","./docker-entrypoint.sh"]
