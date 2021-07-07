@@ -8,6 +8,7 @@ import { DashboardComponent } from "./supervisor/dashboard/supervisor-dashboard.
 import { PhonebookComponent } from "./phonebook/phonebook.component";
 import { CreateLabelComponent } from "./new-components/create-label/create-label.component";
 import { AnnouncementComponent } from "./announcement/announcement.component";
+import { SchemaSettingsComponent } from "./customer-schema/schema-settings/schema-settings.component";
 
 export const appRoutes: Routes = [
   { path: "login", component: LoginComponent },
@@ -15,6 +16,7 @@ export const appRoutes: Routes = [
   { path: "label", component: CreateLabelComponent },
   { path: "supervisor/dashboard", component: DashboardComponent },
   { path: "supervisor/announcement", component: AnnouncementComponent },
+  { path: 'customer-schema', component: SchemaSettingsComponent },
   { path: "", redirectTo: "/login", pathMatch: "full" },
   { path: "customers", data: { preload: true }, loadChildren: "./chat-features/chat.module#ChatModule" },
   { path: "**", component: NoRouteFoundComponent }

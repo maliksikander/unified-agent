@@ -27,8 +27,8 @@ export class socketService {
     private _appConfigService: appConfigService,
     private _cacheService: cacheService,
     private _sharedService: sharedService,
-    private _router: Router,
-  ) { }
+    private _router: Router
+  ) {}
 
   connectToSocket() {
     this.uri = this._appConfigService.config.SOCKET_URL;
@@ -57,8 +57,7 @@ export class socketService {
 
     this.listen("agentPresence").subscribe((res: any) => {
       console.log(res);
-      this._cacheService.agentPresence = res;
-      this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: null });
+      this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: res });
     });
 
     this.listen("errors").subscribe((res: any) => {
@@ -117,7 +116,6 @@ export class socketService {
     this._sharedService.serviceChangeMessage({ msg: "openRequestHeader", data: data });
   }
 
-
   revokeChatRequest(data) {
     this._sharedService.serviceChangeMessage({ msg: "closeRequestHeader", data: data });
   }
@@ -159,14 +157,13 @@ export class socketService {
 
   onSocketSessionRemoved() {
     this._snackbarService.open("you are logged In from another session", "err");
-
+    localStorage.clear();
     this._router.navigate(["login"]).then(() => {
       window.location.reload();
     });
   }
 
   onTopicData(topicData, topicId) {
-
     let conversation = {
       topicId: topicId,
       messages: [],
@@ -174,27 +171,23 @@ export class socketService {
       unReadCount: undefined,
       index: ++this.conversationIndex,
       state: "ACTIVE",
-      associatedCustomer: topicData.associatedCustomer,
+      customer: topicData.customer,
       customerSuggestions: topicData.customerSuggestions,
       topicParticipant: topicData.topicParticipant
     };
 
     // feed the conversation with type "messages"
     topicData.cimEvents.forEach((cimEvent, i) => {
-
       if (cimEvent.type.toLowerCase() == "message") {
         conversation.messages.push(cimEvent.data);
       }
     });
 
-
     // feed the active channel sessions
-    topicData.participants.forEach(e => {
-
+    topicData.participants.forEach((e) => {
       if (e.type.toLowerCase() == "customer") {
         conversation.activeChannelSessions.push(e.participant);
       }
-
     });
 
     this.conversations.push(conversation);
@@ -230,24 +223,22 @@ export class socketService {
       }
     });
 
-    if (matched) {
-      // if matched push that channel session to the last in array
+    if (matched && conversation.activeChannelSessions.length - 1 != index) {
+      // if matched and session is not at the last of the array then push that channel session to the last in array
       // thats why first removing it from the array for removing duplicate entry
       conversation.activeChannelSessions.splice(index, 1);
 
       // pusing the incoming channel to the last in array
       conversation.activeChannelSessions.push(incomingChannelSession);
     }
-
   }
 
   changeTopicCustomer(cimEvent, topicId) {
-
     let conversation = this.conversations.find((e) => {
       return e.topicId == topicId;
     });
 
-    conversation.associatedCustomer = cimEvent.data;
+    conversation.customer = cimEvent.data;
   }
 
   removeConversation(topicId) {

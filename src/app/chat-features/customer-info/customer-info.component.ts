@@ -11,7 +11,7 @@ import { socketService } from "src/app/services/socket.service";
 export class CustomerInfoComponent implements OnInit {
   @ViewChild("sidenav", { static: true }) sidenav: MatSidenav;
   // tslint:disable-next-line:no-input-rename
-  @Input() associatedCustomer: any;
+  @Input() customer: any;
   @Input() customerSuggestions: any;
   @Input() activeChannelSessions: any;
   @Input() topicId: any;
@@ -24,21 +24,6 @@ export class CustomerInfoComponent implements OnInit {
     "active_sessions",
     "link_profile"
   ];
-  customer: any = {
-    type: "Customer",
-    info: {
-      channel: "web",
-      email: "farhan.maqbool@expertflow.com",
-      firstName: "farhan",
-      id: "",
-      language: "en",
-      lastName: "maqbool",
-      name: "farhan ",
-      phone: "5555",
-      refId: "5555",
-      url: "http://localhost:4200/"
-    }
-  };
   displayCustomerChannels = false;
   displayProfile = true;
   barOpened = false;
@@ -65,9 +50,9 @@ export class CustomerInfoComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
   }
-  constructor(public _socketService: socketService, private dialog: MatDialog) { }
+  constructor(public _socketService: socketService, private dialog: MatDialog) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   close() {
     this.sidenav.close();
@@ -96,16 +81,14 @@ export class CustomerInfoComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log("changes ", changes);
-    if (changes.associatedCustomer && changes.associatedCustomer.currentValue != undefined) {
-      this.associatedCustomer = null;
-      this.associatedCustomer = changes.associatedCustomer.currentValue;
-      this.customerProfileFormData = this.getProfileFormData(this.associatedCustomer);
-    }
-    else if (changes.activeChannelSessions && changes.activeChannelSessions.currentValue != undefined) {
+    if (changes.customer && changes.customer.currentValue != undefined) {
+      this.customer = null;
+      this.customer = changes.customer.currentValue;
+      this.customerProfileFormData = this.getProfileFormData(this.customer);
+    } else if (changes.activeChannelSessions && changes.activeChannelSessions.currentValue != undefined) {
       this.activeChannelSessions = null;
       this.activeChannelSessions = changes.activeChannelSessions.currentValue;
-    }
-    else if (changes.customerSuggestions && changes.customerSuggestions.currentValue != undefined) {
+    } else if (changes.customerSuggestions && changes.customerSuggestions.currentValue != undefined) {
       this.customerSuggestions = null;
       this.customerSuggestions = changes.activeChannelSessions.currentValue;
     }

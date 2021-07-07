@@ -5,7 +5,6 @@ import { socketService } from "src/app/services/socket.service";
 import { MatDialog } from "@angular/material";
 import { CimEvent } from "../../models/Event/cimEvent";
 import { v4 as uuidv4 } from "uuid";
-import { TopicParticipant } from "../../models/User/Interfaces";
 import { NgScrollbar } from "ngx-scrollbar";
 
 declare var EmojiPicker: any;
@@ -20,7 +19,6 @@ export class InteractionsComponent implements OnInit {
   @Input() changeDetecter: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
   @ViewChild("replyInput", { static: true }) elementView: ElementRef;
-
   @ViewChild(NgScrollbar, { static: true }) scrollbarRef: NgScrollbar;
 
   ngAfterViewInit() {
@@ -31,6 +29,12 @@ export class InteractionsComponent implements OnInit {
       let scrollTop = scroller.scrollTop;
       let percent = Math.floor((scrollTop / scrollHeight) * 100);
       this.currentScrollPosition = percent;
+      //   let di : any = document.getElementById('datestamp').getBoundingClientRect();
+      //  console.log("bounding "+di.y);
+      //  if(di.y < 93){
+      //    console.log("need to change class")
+      //  }
+
       if (percent > 80) {
         this.showNewMessageNotif = false;
       }
@@ -123,7 +127,7 @@ export class InteractionsComponent implements OnInit {
     private _cacheService: cacheService,
     private _socketService: socketService,
     private dialog: MatDialog
-  ) { }
+  ) {}
   ngOnInit() {
     //  console.log("i am called hello")
     this.convers = this.conversation.messages;
@@ -132,12 +136,12 @@ export class InteractionsComponent implements OnInit {
     }, 500);
   }
 
-  emoji() { }
+  emoji() {}
 
   onSend(text) {
     let message = JSON.parse(JSON.stringify(this.conversation.messages[this.conversation.messages.length - 1]));
     message.id = uuidv4();
-    message.header.timestamp = new Date().toISOString();
+    message.header.timestamp = Date.now();
     message.header.sender = {};
 
     message.header.sender = this.conversation.topicParticipant;

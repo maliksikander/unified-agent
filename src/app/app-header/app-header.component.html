@@ -5,20 +5,28 @@
         <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #mainMenu="matMenu">
-        <button routerLink="/supervisor/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"  mat-menu-item class="main-menu-item">
+        <button routerLink="/supervisor/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+          mat-menu-item class="main-menu-item">
           <span>Dashboard</span>
         </button>
-        <button routerLink="/supervisor/announcement"  routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
+        <button routerLink="/supervisor/announcement" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+          mat-menu-item class="main-menu-item">
           <span>Team Announcements </span>
         </button>
-        <button routerLink="/customers/chats"  routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
+        <button routerLink="/customers/chats" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+          mat-menu-item class="main-menu-item">
           <span>Customer Conversation View</span>
         </button>
-        <button routerLink="/customers/phonebook"  routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
+        <button routerLink="/customers/phonebook" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+          mat-menu-item class="main-menu-item">
           <span>Customer List View</span>
         </button>
-        <button routerLink="/label"  routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
+        <button routerLink="/label" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item
+          class="main-menu-item">
           <span>Customer Labels</span>
+        </button>
+        <button routerLink="/customer-schema"  routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
+          <span>Customer Schema</span>
         </button>
       </mat-menu>
 
@@ -33,7 +41,7 @@
         <!--      </div>-->
 
         <!--      <h3 class="supervisor-heading" *ngIf="supervisor">Supervisor</h3>-->
-        <div class="avatar {{_cacheService.agentPresence.state | lowercase}}" id="avatar">
+        <!-- <div class="avatar {{_cacheService.agentPresence.state.name | lowercase}}" id="avatar">
           <mat-icon>person</mat-icon>
         </div>
         <h3 class="agent_name">
@@ -41,41 +49,26 @@
           <span>
             (Ext: {{agent.extension}})
           </span>
-        </h3>
-        <div class="agent-state-small">
-          <span class="agent-state-icon {{_cacheService.agentPresence.state | lowercase}} material-icons">
-            radio_button_checked
-          </span>
-        </div>
+        </h3> -->
 
-        <div class="agent-state">
+        <!-- <div class="agent-state">
           <span class="state">State</span>
 
           <div class="agent-current-state">
-            <button mat-button [matMenuTriggerFor]="state" class="{{_cacheService.agentPresence.state | lowercase}}">
-              <span>{{_cacheService.agentPresence.state | removeUnderscore }}</span>
+            <button mat-button [matMenuTriggerFor]="state" class="{{_cacheService.agentPresence.state.name | lowercase}}">
+              <span>{{_cacheService.agentPresence.state.name | removeUnderscore }}</span>
 
               <i class="material-icons">
                 arrow_drop_down
               </i>
             </button>
 
-            <mat-menu class="matMenu" #state="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
-              <button (click)="changeState(1)" mat-menu-item class="state-trigger-main">
-                <mat-icon style="color: limegreen;font-size: 20px">radio_button_checked</mat-icon>
-                READY
-              </button>
-
-              <button (click)="changeState(0)" mat-menu-item class="state-trigger-main">
-                <mat-icon style="color:orange; font-size: 20px" *ngIf="isConnected">radio_button_checked</mat-icon>
-                NOT READY
-              </button>
-            </mat-menu>
+            
           </div>
 
           <span class="time_state">{{display | date :"HH:mm:ss":'UTC'}}</span>
 
-        </div>
+        </div> -->
         <!-- <div class="announcement-trigger-area" >
           <span class="notification-hint">2</span>
           <button mat-icon-button class="announcement-trigger"
@@ -84,7 +77,7 @@
 
         </div> -->
 
-        <div class="multi-language">
+        <!-- <div class="multi-language">
           <button mat-button [matMenuTriggerFor]="languageSelection" class="language-trigger">
             <img src="assets/flags/{{languageFlag}}" width="20" onError="this.src='assets/flags/generic.png';">
             {{languageName}} <i class="material-icons">
@@ -100,70 +93,139 @@
 
           </mat-menu>
 
-          <mat-menu #agentState="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
-            <button (click)="changeState(1)" mat-menu-item class="state-trigger">
-
-              <mat-icon style="color: limegreen;font-size: 20px">radio_button_checked
-              </mat-icon>
-              READY
-            </button>
-            <button (click)="changeState(0)" mat-menu-item class="state-trigger">
-              <mat-icon style="color:orange; font-size: 20px">
-                radio_button_checked
-              </mat-icon>
-              NOT READY
-            </button>
-          </mat-menu>
-        </div>
-
+          
+        </div> -->
 
         <div class="vert-dropdown">
           <button mat-button [matMenuTriggerFor]="menu" class="vert-button">
-            <i class="material-icons">
-              more_vert
-            </i>
+            <div class="agent-showcase-mini">
+              <mat-icon class="material-icons {{_cacheService.agentPresence.state.name | lowercase}}">lens</mat-icon>
+              <img src="assets/images/dummy-user.svg" alt="Agent">
+            </div>
           </button>
-          <mat-menu class="matMenu" #menu="matMenu" backdropClass="main-menu-list" [xPosition]="'before'">
-            <div class="menu-list-content">
+          <span class="agent-time">{{display | date :"HH:mm:ss":'UTC'}}</span>
+
+          <mat-menu class="matMenu" (click)="$event.stopPropagation()" #menu="matMenu" class="custom-user-menu"
+            xPosition="after">
+            <div class="menu-list-content" (click)="$event.stopPropagation()">
+              <div class="main-showcase">
+                <div class="agent-showcase">
+                  <img src="assets/images/dummy-user.svg" alt="Agent">
+                </div>
+                <h4 [matTooltip]="agent.name">{{_cacheService.agent.username}}</h4>
+                <span>(Ext: {{agent.extension}})</span>
+              </div>
 
               <p class="menu-trigger-custom state-trigger">
-                <span class="inner-btn">STATE</span>
+                <span class="inner-btn">State</span>
 
-                <button mat-menu-item class="{{_cacheService.agentPresence.state | lowercase}} mat-menu-item-submenu-trigger"
-                  [matMenuTriggerFor]="agentState">
-                  <span>{{ _cacheService.agentPresence.state | removeUnderscore }}</span>
-
+                <button mat-button [matMenuTriggerFor]="agentState" (click)="$event.stopPropagation()"
+                  class="ready {{_cacheService.agentPresence.state.name | lowercase}} mat-menu-item-submenu-trigger">
+                  <span>{{(_cacheService.agentPresence.state.name | removeUnderscore) +
+                    (_cacheService.agentPresence.state.reasonCode != null ?' - '+ _cacheService.agentPresence.state.reasonCode.name :
+                    '') }}</span>
                 </button>
               </p>
               <p class="menu-trigger-custom logged-time ">{{display | date :"HH:mm:ss":'UTC'}}
-                <span class="time_state">11:12</span>
               </p>
 
-              <p class="menu-trigger-custom select-language">
-                <span class="inner-btn ">Language</span>
+              <div class="mrd-states" (click)="$event.stopPropagation()">
+                <span class="mrd-text">Change MRD State</span>
+                <div *ngFor="let agentMrdState of _cacheService.agentPresence.agentMrdStates">
+                  <p class="menu-trigger-custom select-state {{agentMrdState.state | lowercase}}">
+                    <span
+                      class="inner-btn ">{{agentMrdState.mrd.name}}<small>({{agentMrdState.state}})</small></span>
+                    <mat-slide-toggle (change)="changeMRD($event,agentMrdState)"
+                      [checked]="agentMrdState.state | getmrdswitches" color="primary"></mat-slide-toggle>
+                  </p>
+                </div>
+              </div>
 
-                <button mat-menu-item [matMenuTriggerFor]="languageSelection" class="language-trigger">
-                  <img src="assets/flags/{{languageFlag}}" width="20"
-                    onError="this.src='assets/flags/generic.png';">{{languageName}} </button>
+              <p class="menu-trigger-custom select-language">
+                <span class="inner-btn">Selected Language</span>
+
+                <!--                <button mat-menu-item [matMenuTriggerFor]="languageSelection" class="language-trigger">-->
+                <!--                  <img src="assets/flags/{{languageFlag}}" width="20"-->
+                <!--                    onError="this.src='assets/flags/generic.png';">{{languageName}} </button>-->
+
+
+
+                <button (click)="$event.stopPropagation(); updateLanguage()" mat-button class="language-trigger">
+                  <img src="assets/flags/{{languageFlag}}" width="20" onError="this.src='assets/flags/generic.png';">
+                  {{languageName}} <mat-icon>keyboard_arrow_right</mat-icon>
+                </button>
               </p>
 
 
               <p class="menu-trigger-custom logged-out-trigger">
-                <button mat-menu-item>
+                <button mat-menu-item (click)="logoutReasonList = true">
                   Logout
                   <mat-icon style="color: gray;font-size: 20px;">exit_to_app</mat-icon>
                 </button>
               </p>
+
+
+              <!-- Language list -->
+              <div *ngIf="changeLanguage" class="language-change-list" (click)="$event.stopPropagation()">
+                <p>Select language <mat-icon (click)="changeLanguage = false">close</mat-icon>
+                </p>
+                <button mat-menu-item class="language-selection"
+                  [ngClass]="{'selected-language': language.code == changeLanguageCode}"
+                  *ngFor="let language of languages" (click)="lang(language.code)">
+                  <img src="assets/flags/{{language.flag}}" width="20"
+                    onError="this.src='assets/flags/generic.png';">{{language.name}}
+                </button>
+              </div>
+
+              <div *ngIf="logoutReasonList" class="language-change-list" (click)="$event.stopPropagation()">
+                <p>Select Reason
+                  <mat-icon (click)="logoutReasonList = false;">close</mat-icon>
+                </p>
+                <div *ngFor="let reason of reasonCodes; let i = index">
+                  <span *ngIf="(reason.type | lowercase ) == 'logout'" class="logout-reason-inner">
+                    <mat-checkbox [checked]="selected === i" (change)="selected = i; onChange(reason)" color="primary"
+                      labelPosition="after">{{reason.name}}</mat-checkbox>
+                  </span>
+                </div>
+                <button (click)="logout()" mat-button class="main-logout">Logout</button>
+              </div>
+
+            </div>
+          </mat-menu>
+          <mat-menu #agentState="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
+            <button (click)="changeState(1)" mat-menu-item class="state-trigger">
+
+              <mat-icon style="color: limegreen;">lens
+              </mat-icon>
+              READY
+            </button>
+            <button (click)="changeState(0)" mat-menu-item class="state-trigger">
+              <mat-icon style="color:#b4b4b4;">
+                lens
+              </mat-icon>
+              NOT READY
+            </button>
+            <div *ngFor="let reason of reasonCodes">
+              <button *ngIf="(reason.type | lowercase) == 'not_ready'" (click)="changeState(reason)" mat-menu-item
+                class="state-trigger">
+                <mat-icon style="color:#b4b4b4;">
+                  lens
+                </mat-icon>
+                {{reason.name}}
+              </button>
             </div>
           </mat-menu>
         </div>
+
       </div>
     </div>
   </div>
 
-  <mat-sidenav-container (backdropClick)="close()"  hasBackdrop="true"  class="right-canned-message-list announcement-tab"
-                         [ngClass]="{'mat-drawer-opened': sidenav?.opened}">
-    <mat-sidenav #sidenav position="end"  (keydown.escape)="close()" mode="over" disableClose mode="over">
+
+
+  <mat-sidenav-container (backdropClick)="close()" hasBackdrop="true" class="right-canned-message-list announcement-tab"
+    [ngClass]="{'mat-drawer-opened': sidenav?.opened}">
+    <mat-sidenav #sidenav position="end" (keydown.escape)="close()" mode="over" disableClose mode="over">
 
 
       <div class="announcement-tab-header">

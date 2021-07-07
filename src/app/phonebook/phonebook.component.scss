@@ -7,9 +7,9 @@
   background: #F3F6F8;
   margin-bottom: 15px !important;
   min-height: 50px;
-  //padding-right: 10px;
+  padding-right: 10px;
   position: relative;
-  //padding-left: 50px;
+  padding-left: 50px;
   .back-to-chat{
     background: lighten($blue-text-color, 40%);
     height: 50px;
@@ -37,7 +37,7 @@
 
     h4{
       font-size: 16px;
-      color: $blue-text-color;
+      color: #999;
       margin: 0;
       display: inline-block;
       line-height: 30px;
@@ -67,6 +67,7 @@
       height: 32px;
       line-height: 32px;
       margin-left: 5px;
+      margin-right: 5px;
       &:hover{
         background: lighten(#707070, 50%);
       }
@@ -168,14 +169,6 @@ span.sorting-icons {
   }
 }
 
-.selection-trigger{
-  //top: 1px;
-  width: 150px;
-  font-size: 12px;
-  font-weight: 600;
-
-}
-
 .categorize-selection{
   min-width: 320px;
 }
@@ -183,9 +176,52 @@ tr.slide-in-left:hover {
   background: #f9f9f9 !important;
 }
 
+.lbl-filter-search.custom-dropdown {
+  display: inline-block;
+  min-width: 206px;
+  position: relative;
+  height: 30px;
+  border-radius: 5px;
+  line-height: 30px;
+  width: auto;
+  vertical-align: middle;
+  background: #fff;
 
-.notifs{
-  margin-left: 2%;
-    font-size: 12px;
-    color: coral;
+  .dot-in-filter {
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    position: relative;
+    display: inline-block;
+    margin-right: 5px;
+    bottom: -5px;
+    margin-left: 4px;
+  }
+
+  .lbl-search-lbl {
+    background: transparent;
+    font-size: 13px;
+    color: #656565;
+    cursor: pointer;
+    border-radius: 4px;
+    text-align: left;
+    overflow: hidden;
+    white-space: pre;
+    position: absolute;
+    font-weight: 500;
+    padding: 0 10px;
+    left: 0;
+  }
+}
+
+
+.check-menu {
+  width: 280px;
+
+  .col-list {
+    float: left;
+    width: 48%;
+    overflow: hidden;
+    margin: 2px;
+  }
 }

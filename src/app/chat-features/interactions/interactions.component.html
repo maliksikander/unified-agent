@@ -1,19 +1,19 @@
 <div class="interaction-main" [ngClass]="{'customer-bar-opened': isBarOPened}">
   <div class="interaction-inner">
-    <div [ngClass]="{'unidentified-customer':conversation.associatedCustomer.isAnonymous}"
+    <div [ngClass]="{'unidentified-customer':conversation.customer.isAnonymous}"
       class="container-fluid main-chat-bar">
       <div class="row">
         <div class="col-md-4 customer-showcase">
           <h3 matTooltipPosition="right" class="customer-highlight">
-            {{conversation.associatedCustomer.firstName | getFirstTwoLetters}}
+            {{conversation.customer.firstName | getFirstTwoLetters}}
             <span
               class="channel-icon {{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.channelType.typeName | lowercase}}">
               <img
                 src="../assets/images/{{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.channelType.typeName | lowercase}}.svg">
             </span>
           </h3>
-          <h5 class="customer-name" [matTooltip]="conversation.associatedCustomer.firstName">
-            {{conversation.associatedCustomer.firstName | slice :0 :50}}
+          <h5 class="customer-name" [matTooltip]="conversation.customer.firstName">
+            {{conversation.customer.firstName | slice :0 :50}}
             <span class="chat-timer">( 11:32 )</span>
 
           </h5>
@@ -110,9 +110,9 @@
 
           <!-- simple chat area -->
 
-          <div class="instruction-content chat-session-main">
-            <div class="int-date"><span>Mon<b>09</b></span></div>
-            <div *ngFor="let message of conversation.messages">
+          <div class="instruction-content chat-session-main">     
+            <div *ngFor="let message of conversation.messages; let index = index">
+              <div id="datestamp" class="int-date" *ngIf="(index == 0) || (message.header.timestamp | date: 'dd MMMM yyyy') != (conversation.messages[index-1].header.timestamp | date: 'dd MMMM yyyy')"><span>{{message.header.timestamp | date: 'MMM'}}<b>{{message.header.timestamp | date: 'dd'}}</b></span></div>
               <div class="chat-message"
                 [ngClass]="((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message slide-in-right'">
                 <div class="profile-pic">
@@ -122,7 +122,7 @@
                       src="../assets/images/{{message.header.channelSession.channel.channelConnector.channelType.typeName | lowercase}}.svg">
                   </div>
                   <div *ngIf="(message.header.sender.type | lowercase) != 'bot'" class="profile-pic-area user-img">
-                    {{message.header.sender | getSenderName:conversation.associatedCustomer:true}}</div>
+                    {{message.header.sender | getSenderName:conversation.customer:true}}</div>
                   <div *ngIf="(message.header.sender.type | lowercase) == 'bot'"><img src="../assets/images/robot.png">
                   </div>
                 </div>
@@ -133,8 +133,7 @@
                     (click)="message.showBotSuggestions =! message.showBotSuggestions ">
                   </button>
                 </div>
-                <span class="chat-time">{{message.header.timeStamp | date:'h:mm:ss'}}</span>
-                <!-- <span class="material-icons delivery-status" *ngIf="con.title === 'raza'">done_all</span> -->
+                <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
                 <div class="chat-intents" *ngIf="message.showBotSuggestions">
                   <div class="intents-inner">
                     <p *ngFor="let botSuggestion of message.botSuggestions">
@@ -387,7 +386,7 @@
 
   <div class="customer-info-main">
     <app-customer-info [activeChannelSessions]="conversation.activeChannelSessions"
-      [associatedCustomer]="conversation.associatedCustomer" [customerSuggestions]="conversation.customerSuggestions"
+      [customer]="conversation.customer" [customerSuggestions]="conversation.customerSuggestions"
       [topicId]="conversation.topicId" (expandCustomerInfo)="eventFromChild($event)">
     </app-customer-info>
   </div>
