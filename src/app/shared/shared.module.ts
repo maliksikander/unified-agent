@@ -58,8 +58,9 @@ import { SearchPipe } from "./pipes/search.pipe";
 import { sentenceCasePipe } from "./pipes/sentenceCase.pipe";
 import { convertToFormDataPipe } from "./pipes/convertToFormData.pipe";
 import { getFirstTwoLettersPipe } from "./pipes/getFirstTwoLetters.pipe";
-import { PerfectScrollbarModule } from "ngx-perfect-scrollbar";
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from "ngx-mat-datetime-picker";
+import { AngularMultiSelectModule } from "angular2-multiselect-dropdown";
+import { NgScrollbarModule } from "ngx-scrollbar";
 
 @NgModule({
   declarations: [RemoveUnderscorePipe, ibsformatPipe, getSenderNamePipe, SearchPipe, sentenceCasePipe, convertToFormDataPipe, getFirstTwoLettersPipe],
@@ -93,7 +94,6 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
     MatDatepickerModule,
     MatNativeDateModule,
     CommonModule,
-    PerfectScrollbarModule,
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
     NgxMatTimepickerModule,
@@ -127,7 +127,9 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
     ConfirmDialogModule,
     InputTextareaModule,
     OwlDateTimeModule,
-    OwlNativeDateTimeModule
+    OwlNativeDateTimeModule,
+    AngularMultiSelectModule,
+    NgScrollbarModule
   ],
   exports: [
     MatIconModule,
@@ -187,7 +189,6 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
     InputTextareaModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    PerfectScrollbarModule,
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
     NgxMatTimepickerModule,
@@ -195,7 +196,9 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
     getSenderNamePipe,
     sentenceCasePipe,
     convertToFormDataPipe,
-    getFirstTwoLettersPipe
+    getFirstTwoLettersPipe,
+    AngularMultiSelectModule,
+    NgScrollbarModule
   ]
 })
 export class SharedModule {}

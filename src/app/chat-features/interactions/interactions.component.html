@@ -1,23 +1,19 @@
 <div class="interaction-main" [ngClass]="{'customer-bar-opened': isBarOPened}">
   <div class="interaction-inner">
-    <div
-      [ngClass]="{'unidentified-customer':conversation.messages[conversation.messages.length -1].header.channelSession.linkedCustomer.isAnonymous}"
+    <div [ngClass]="{'unidentified-customer':conversation.associatedCustomer.isAnonymous}"
       class="container-fluid main-chat-bar">
       <div class="row">
         <div class="col-md-4 customer-showcase">
           <h3 matTooltipPosition="right" class="customer-highlight">
-            {{conversation.messages[conversation.messages.length
-            -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | getFirstTwoLetters}}
+            {{conversation.associatedCustomer.firstName | getFirstTwoLetters}}
             <span
-              class="channel-icon {{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.type.name | lowercase}}">
+              class="channel-icon {{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.channelType.typeName | lowercase}}">
               <img
-                src="../assets/images/{{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.type.name | lowercase}}.svg">
+                src="../assets/images/{{conversation.messages[conversation.messages.length -1].header.channelSession.channel.channelConnector.channelType.typeName | lowercase}}.svg">
             </span>
           </h3>
-          <h5 class="customer-name"
-            [matTooltip]="conversation.messages[conversation.messages.length -1].header.channelSession.linkedCustomer.associatedCustomer.firstName">
-            {{conversation.messages[conversation.messages.length
-            -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | slice :0 :50}}
+          <h5 class="customer-name" [matTooltip]="conversation.associatedCustomer.firstName">
+            {{conversation.associatedCustomer.firstName | slice :0 :50}}
             <span class="chat-timer">( 11:32 )</span>
 
           </h5>
@@ -106,9 +102,9 @@
     <!--Interactions Area Start -->
     <div id="chat-content" class="container-fluid main-chat-area">
       <div class="row">
-        <div class="chat-messages-main" [perfectScrollbar]
-          [style.height]="replyInput?.offsetHeight > 80 ? 'calc(100% - ' + (replyInput?.offsetHeight+100)+'px)' : 'calc(100% - '+ viewHeight+')'">
 
+        <ng-scrollbar class="chat-messages-main my-scrollbar"
+          [style.height]="replyInput?.offsetHeight > 80 ? 'calc(100% - ' + (replyInput?.offsetHeight+100)+'px)' : 'calc(100% - '+ viewHeight+')'">
           <!-- voice message chat area -->
 
 
@@ -118,15 +114,15 @@
             <div class="int-date"><span>Mon<b>09</b></span></div>
             <div *ngFor="let message of conversation.messages">
               <div class="chat-message"
-                [ngClass]="((message.header.sender.type | lowercase) == 'customer') ?'user-message':'agent-message'">
+                [ngClass]="((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message slide-in-right'">
                 <div class="profile-pic">
                   <div
-                    class="active-channel channel-icon {{message.header.channelSession.channel.channelConnector.type.name | lowercase}}">
+                    class="active-channel channel-icon {{message.header.channelSession.channel.channelConnector.channelType.typeName | lowercase}}">
                     <img width="20"
-                      src="../assets/images/{{message.header.channelSession.channel.channelConnector.type.name | lowercase}}.svg">
+                      src="../assets/images/{{message.header.channelSession.channel.channelConnector.channelType.typeName | lowercase}}.svg">
                   </div>
                   <div *ngIf="(message.header.sender.type | lowercase) != 'bot'" class="profile-pic-area user-img">
-                    {{message.header.sender | getSenderName:true}}</div>
+                    {{message.header.sender | getSenderName:conversation.associatedCustomer:true}}</div>
                   <div *ngIf="(message.header.sender.type | lowercase) == 'bot'"><img src="../assets/images/robot.png">
                   </div>
                 </div>
@@ -143,12 +139,14 @@
                   <div class="intents-inner">
                     <p *ngFor="let botSuggestion of message.botSuggestions">
                       {{botSuggestion.messageBody.markdownText}}
-                      <button mat-mini-fab class="canned-trigger edit-trigger">     
+                      <button mat-mini-fab class="canned-trigger edit-trigger"
+                        (click)="replyInput.value=botSuggestion.messageBody.markdownText">
                         <i class="material-icons">
                           edit
                         </i>
                       </button>
-                      <button mat-mini-fab class="canned-trigger send-suggestion">
+                      <button mat-mini-fab class="canned-trigger send-suggestion"
+                        (click)="onSend(botSuggestion.messageBody.markdownText); replyInput.value = null">
                         <i class="material-icons">
                           send
                         </i>
@@ -159,29 +157,48 @@
 
               </div>
             </div>
-          </div>
-        </div>
+            <div id="chat-area-end"></div>
 
+          </div>
+        </ng-scrollbar>
       </div>
 
     </div>
-    <div class="chat-footer">
-      <span class="selected-channel">Selected Channel: <label>{{conversation.messages[conversation.messages.length
-          -1].header.channelSession.channel.channelConnector.type.name | titlecase}}</label></span>
+
+    <div class="chat-footer" [ngClass]="{'textarea-disable': conversation.activeChannelSessions.length == 0}">
+      <div class="slide-in-bottom" *ngIf="showNewMessageNotif" (click)="downTheScrollAfterMilliSecs(0,'smooth')"
+        class="new-msg-notif">New
+        Message
+        <span class="material-icons">
+          arrow_drop_down
+        </span>
+      </div>
+      <span class="selected-channel">Selected Channel:
+        <label
+          *ngIf="conversation.activeChannelSessions.length > 0">{{conversation.activeChannelSessions[conversation.activeChannelSessions.length
+          -1]?.channel.channelConnector.channelType.typeName| titlecase}}</label>
+        <label *ngIf="conversation.activeChannelSessions.length == 0" style="color:grey;">
+          None
+        </label>
+      </span>
+
       <div class="message-composer">
         <form class="reply-form">
           <label class="count-reply">{{replyInput.value.length}}/200</label>
-          <div class="mat-form-field chat-area" [ngClass]="{'expand-area-height':replyInput?.offsetHeight > 50}">
-            <textarea [perfectScrollbar] (click)="onTextAreaClick()" data-emoji-picker="true" [(ngModel)]="message"
-              (keyup)="onKey($event)" name="message" (change)="textChanged($event)" [matAutocomplete]="auto" matInput
-              cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none"
-              #replyInput name="message" placeholder="Type a message here..."></textarea>
-              <!-- [ngClass]="{'animate-content': displaySuggestionsAnimation}" -->
+          <div class="mat-form-field chat-area" [ngClass]="{'expand-area-height':expanedHeight > 50}">
+            <textarea [disabled]="conversation.activeChannelSessions.length == 0"
+              (keyup.enter)="onSend(replyInput.value); replyInput.value = null" (click)="onTextAreaClick()"
+              [attr.data-emoji-picker]="conversation.activeChannelSessions.length > 0 ? true : false"
+              [(ngModel)]="message" (keyup)="onKey($event)" name="message" (change)="textChanged($event)"
+              [matAutocomplete]="auto" matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
+              id="messageTextarea" class="resize-none" #replyInput name="message"
+              placeholder="{{conversation.messages[conversation.messages.length -1]?.botSuggestions ? 'Bot suggestions are available type / for viewing' :'Type a message here...'}}"></textarea>
+            <!-- [ngClass]="{'animate-content': displaySuggestionsAnimation}" -->
 
             <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete">
               <div class="suggested-content" #mainScreen
                 [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}">
-                <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies"
+                <!-- <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies"
                   >
                   <ng-container
                     *ngFor="let botSuggestion of conversation.messages[conversation.messages.length -1]?.botSuggestions | LockFilter: message">
@@ -205,7 +222,7 @@
                       </mat-option>
                     </ng-container>
                   </ng-container>
-                </div>
+                </div> -->
 
 
                 <mat-tab-group animationDuration="0ms" *ngIf="!displaySuggestionsArea && cannedTabOpen">
@@ -238,11 +255,6 @@
                             </mat-tab>
                           </ng-container>
                         </mat-tab-group>
-                        <!--</mat-tab>-->
-
-
-                        <!---->
-                        <!--</mat-tab-group>-->
                       </div>
                     </div>
                   </mat-tab>
@@ -261,8 +273,8 @@
                               edit
                             </i>
                           </button>
-                          <button (click)="onSend(botSuggestion.messageBody.markdownText); replyInput.value = null"
-                            mat-mini-fab class="canned-trigger send-suggestion">
+                          <button (click)="onSend(botSuggestion.messageBody.markdownText)" mat-mini-fab
+                            class="canned-trigger send-suggestion">
                             <i class="material-icons">
                               send
                             </i>
@@ -278,20 +290,21 @@
           </div>
 
           <div class="chat-composer-trigger">
-            <button class="video-call composer-trigger" (click)="emoji()" mat-icon-button>
+            <!-- <button class="video-call composer-trigger" (click)="emoji()" mat-icon-button>
               <mat-icon>voice_chat</mat-icon>
-            </button>
-            <button (click)="onSend(replyInput.value); replyInput.value = null " *ngIf="replyInput.value.length > 0"
+            </button> -->
+            <button (click)="onSend(replyInput.value); replyInput.value = null "
+              *ngIf="replyInput.value.length > 0 && conversation.activeChannelSessions.length > 0"
               class="send-btn composer-trigger" mat-icon-button>
               <mat-icon>send</mat-icon>
             </button>
 
-            <button class="send-btn attachment-btn composer-trigger" mat-icon-button
+            <!-- <button class="send-btn attachment-btn composer-trigger" mat-icon-button
               *ngIf="replyInput.value.length < 1">
               <input #myFileInput type="file" name="ef_chatbox_chat_file_upload" id="uploadFileBtn"
                 class="file-upload-input">
               <mat-icon>attach_file</mat-icon>
-            </button>
+            </button> -->
 
             <!--            <span class="attachment-btn" >-->
             <!--            <input #myFileInput *ngIf="replyInput.value.length < 1" (change)="uploadFile($event.target.files)" type="file" [disabled]="chatServerDown || conversation.state =='ended'"-->
@@ -374,7 +387,8 @@
 
   <div class="customer-info-main">
     <app-customer-info [activeChannelSessions]="conversation.activeChannelSessions"
-      [message]="conversation.messages[conversation.messages.length - 1]" (expandCustomerInfo)="eventFromChild($event)">
+      [associatedCustomer]="conversation.associatedCustomer" [customerSuggestions]="conversation.customerSuggestions"
+      [topicId]="conversation.topicId" (expandCustomerInfo)="eventFromChild($event)">
     </app-customer-info>
   </div>
 </div>

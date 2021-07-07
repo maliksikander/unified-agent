@@ -1,5 +1,9 @@
 @import "src/app/shared/globalVariables";
 
+.unidentified-customer{
+  background: #ffecec !important;
+ }
+
 .main-chat-bar {
   background: $header-gray-color;
   height: 50px;
@@ -207,11 +211,8 @@
     height: calc(100% - 132px);
     width: calc(100% - 0px);
     position: absolute;
-    overflow: auto;
-    padding: 0 20px;
-    //left: 0;
-
-    //  message-bubble
+    overflow-x: hidden;
+    padding: 0 0 0 20px;
 
     .chat-message {
       margin-bottom: 12px;
@@ -733,7 +734,7 @@
       padding-right: 10px;
 
       mat-icon {
-        color: #707070;
+        color: #19a2be;
         font-size: 18px;
       }
     }
@@ -1185,4 +1186,30 @@ button.send-btn.attachment-btn {
     left: 0;
     top: 0;
   }
+}
+
+.new-msg-notif{
+  position: absolute;
+  z-index: 1000000 !important;
+  left: 44%;
+  bottom: 83px;
+  color: white;
+  border-radius: 12px;
+  padding: 0px 10px 2px 10px;
+  box-shadow: 0px 0px 2px 0px #ff4500;
+  cursor: pointer;
+  height: 22px;
+  font-size: 15px;
+  background: #ff4500;
+    span{
+      border: 2px solid;
+    border-radius: 49px;
+    font-size: 10px;
+    }
+}
+
+
+.textarea-disable{
+  border-top: 1px solid #c0bebe !important;
+  background: #efefef !important;
 }

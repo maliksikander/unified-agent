@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from "@angular/core";
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, SimpleChanges, ViewChild } from "@angular/core";
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
 import { MatDialog } from "@angular/material";
-import { PerfectScrollbarConfigInterface } from "ngx-perfect-scrollbar";
 import { CimEvent } from "../../models/Event/cimEvent";
 import { v4 as uuidv4 } from "uuid";
+import { TopicParticipant } from "../../models/User/Interfaces";
+import { NgScrollbar } from "ngx-scrollbar";
 
 declare var EmojiPicker: any;
 @Component({
@@ -14,17 +15,39 @@ declare var EmojiPicker: any;
   styleUrls: ["./interactions.component.scss"]
 })
 export class InteractionsComponent implements OnInit {
-  // tslint:disable-next-line:no-input-rename
   @Input() conversation: any;
-  @Input() dummy: any;
+  @Input() currentTabIndex: any;
+  @Input() changeDetecter: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
-  public config: PerfectScrollbarConfigInterface = {};
+  @ViewChild("replyInput", { static: true }) elementView: ElementRef;
+
+  @ViewChild(NgScrollbar, { static: true }) scrollbarRef: NgScrollbar;
+
+  ngAfterViewInit() {
+    this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
+      let scroller = scrolle.target;
+      let height = scroller.clientHeight;
+      let scrollHeight = scroller.scrollHeight - height;
+      let scrollTop = scroller.scrollTop;
+      let percent = Math.floor((scrollTop / scrollHeight) * 100);
+      this.currentScrollPosition = percent;
+      if (percent > 80) {
+        this.showNewMessageNotif = false;
+      }
+    });
+  }
+
+  showNewMessageNotif: boolean = false;
+  currentScrollPosition: number = 100;
+  lastMsgFromAgent: boolean = false;
+
   isBarOPened = false;
   activeSessions = [];
 
   unidentified = true;
   isConnected = true;
   popTitle = "Notes";
+  expanedHeight = 0;
 
   channelUrl = "assets/images/web.svg";
   options: string[] = [
@@ -93,14 +116,14 @@ export class InteractionsComponent implements OnInit {
   displaySuggestionsArea = false;
   cannedTabOpen = false;
   quickReplies = true;
-  viewHeight = "180px";
+  viewHeight = "162px";
 
   constructor(
     private _sharedService: sharedService,
     private _cacheService: cacheService,
     private _socketService: socketService,
     private dialog: MatDialog
-  ) {}
+  ) { }
   ngOnInit() {
     //  console.log("i am called hello")
     this.convers = this.conversation.messages;
@@ -109,22 +132,32 @@ export class InteractionsComponent implements OnInit {
     }, 500);
   }
 
-  emoji() {}
+  emoji() { }
+
   onSend(text) {
     let message = JSON.parse(JSON.stringify(this.conversation.messages[this.conversation.messages.length - 1]));
     message.id = uuidv4();
     message.header.timestamp = new Date().toISOString();
-    message.header.sender.type = "AGENT";
-    message.header.sender.role = "AGENT";
-    message.header.sender.participant = {};
-    message.header.sender.participant.keyCloakUser = this._cacheService.agent;
-    message.header.sender.participant.routingAttributes = [];
+    message.header.sender = {};
+
+    message.header.sender = this.conversation.topicParticipant;
+    message.header.channelSession = this.conversation.activeChannelSessions[this.conversation.activeChannelSessions.length - 1];
+
     message.body.markdownText = text;
     delete message["botSuggestions"];
     delete message["showBotSuggestions"];
 
-    this._socketService.emit("publishCimEvent", new CimEvent("AGENT_MESSAGE", "MESSAGE", message));
+    this._socketService.emit("publishCimEvent", {
+      cimEvent: new CimEvent("AGENT_MESSAGE", "MESSAGE", message),
+      agentId: this._cacheService.agent.id,
+      topicId: this.conversation.topicId
+    });
+    this.lastMsgFromAgent = true;
+    setTimeout(() => {
+      this.message = "";
+    }, 40);
   }
+
   openDialog(templateRef, e): void {
     this.popTitle = e;
 
@@ -143,12 +176,12 @@ export class InteractionsComponent implements OnInit {
 
   onKey(event) {
     this.message = event.target.value;
-    if (this.message === "" && event.keyCode === 40) {
-      // alert('up key Click Event!');
-      this.isSuggestion = true;
-    } else if (this.message === "" && event.keyCode === 38) {
-      this.isSuggestion = false;
-    }
+    this.expanedHeight = this.elementView.nativeElement.offsetHeight;
+    // if (this.message === "" && event.keyCode === 40) {
+    //   this.isSuggestion = true;
+    // } else if (this.message === "" && event.keyCode === 38) {
+    //   this.isSuggestion = false;
+    // }
     if (this.message[0] === "/" || this.message[0] === " ") {
       this.displaySuggestionsArea = false;
       this.quickReplies = false;
@@ -176,6 +209,41 @@ export class InteractionsComponent implements OnInit {
 
   topicUnsub() {
     console.log("going to unsub from topic " + this.conversation.topicId);
-    this._socketService.emit("topicUnsubscription", { topicId: this.conversation.topicId, agentId: this._cacheService.agent.id });
+    if (this.conversation.state === "ACTIVE") {
+      // if the topic state is 'ACTIVE' then agent needs to request the agent manager for unsubscribe
+      this._socketService.emit("topicUnsubscription", {
+        topicId: this.conversation.topicId,
+        agentId: this._cacheService.agent.id
+      });
+    }
+    if (this.conversation.state === "CLOSED") {
+      // if the topic state is 'CLOSED' it means agent is already unsubscribed by the agent manager
+      // now it only needs to clear the conversation from conversations array
+      this._socketService.removeConversation(this.conversation.topicId);
+    }
+  }
+
+  downTheScrollAfterMilliSecs(milliseconds, behavior) {
+    setTimeout(() => {
+      document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior });
+    }, milliseconds);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.changeDetecter && changes.changeDetecter.currentValue && this.conversation.index == this._sharedService.matCurrentTabIndex) {
+      if (this.lastMsgFromAgent) {
+        this.downTheScrollAfterMilliSecs(50, "smooth");
+      } else {
+        if (this.currentScrollPosition < 95) {
+          this.showNewMessageNotif = true;
+        } else {
+          this.downTheScrollAfterMilliSecs(50, "smooth");
+        }
+      }
+    }
+    if (changes.currentTabIndex) {
+      this.downTheScrollAfterMilliSecs(500, "auto");
+    }
+    this.lastMsgFromAgent = false;
   }
 }

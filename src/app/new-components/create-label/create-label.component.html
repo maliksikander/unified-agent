@@ -1,0 +1,30 @@
+<div class="label-main row m-0">
+  <div class="customer-heading col-md-6">
+    <h4>CUSTOMER LABELS</h4>
+  </div>
+  <div class="create-label col-md-6">
+    <button mat-button (click)="createUpdate('','new')" class="add-new"><mat-icon>add</mat-icon></button>
+  </div>
+</div>
+
+
+<div *ngIf="labels" class="container">
+  <div class="row">
+    <div class="col-md-4" *ngFor="let label of labels">
+      <div class="bar">
+      <span class="dot" [ngStyle]="{'background-color': label.color_code}"></span>
+      <span matTooltip="{{label.name}}" class="name">{{label.name}}</span>
+      <span (click)="showMeta(label._id)" class="more-vert"><mat-icon>more_vert</mat-icon></span>
+      <div (mouseleave)="showMetaDIv = false" *ngIf="showMetaDIv && metaDivId == label._id" class="meta">
+        <div *ngIf="label.created_by">Created by: {{label.created_by}}</div>
+        <div>Date Create: {{label.createdAt }}</div>
+        <!--    <div *ngIf="label.updated_by">UP_BY : {{label.updated_by}}</div>-->
+        <!--    <div *ngIf="label.updated_by">UP_AT : {{label.updatedAt | date :'shortDate'}}</div>-->
+        <div (click)="createUpdate(label,'update')" style="height: 20px;" class="meta-btns">Edit</div>
+        <hr class="hr">
+        <div (click)="delete()" class="meta-btns">Delete</div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>

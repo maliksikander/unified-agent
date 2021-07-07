@@ -9,10 +9,21 @@ describe("LoginComponent", () => {
   let formBuilderMock: FormBuilder;
   let routerMock: any;
   let sharedServiceMock: any;
+  let appConfigService: any;
+  let snackbarService: any;
 
   beforeEach(() => {
     formBuilderMock = new FormBuilder();
-    fixture = new LoginComponent(socketServiceMock, cacheServiceMock, httpServiceMock, routerMock, formBuilderMock, sharedServiceMock);
+    fixture = new LoginComponent(
+      cacheServiceMock,
+      httpServiceMock,
+      routerMock,
+      formBuilderMock,
+      sharedServiceMock,
+      appConfigService,
+      socketServiceMock,
+      snackbarService
+    );
   });
 
   describe("Test: Login Form", () => {

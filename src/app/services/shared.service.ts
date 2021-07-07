@@ -8,6 +8,7 @@ import { snackbarService } from "./snackbar.service";
 export class sharedService {
   constructor(private _snackbarService: snackbarService) {}
 
+  matCurrentTabIndex = 0;
   private serviceMessageSource = new BehaviorSubject({ msg: null, data: null });
   serviceCurrentMessage = this.serviceMessageSource.asObservable();
   serviceChangeMessage(data: any) {
@@ -31,6 +32,8 @@ export class sharedService {
         this._snackbarService.open("UNAUTHORIZED USER", "err");
       } else if (e.statusCode == 400) {
         this._snackbarService.open("Bad Request", "err");
+      } else if (e.statusCode == 412) {
+        this._snackbarService.open("unable to fetch license status", "err");
       } else {
         this._snackbarService.open("Something went wrong", "err");
       }

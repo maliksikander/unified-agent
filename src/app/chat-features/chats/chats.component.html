@@ -3,7 +3,8 @@
 
     <div id="main-content" class="h-100">
       <!--      <button color="primary" class="left-bar-trigger" (click)="barExpand = !barExpand" ><mat-icon>{{barExpand ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}</mat-icon></button>-->
-      <mat-tab-group [ngClass]="{'bar-expand' : barExpand}" class="chat-tab-area h-100">
+      <mat-tab-group (selectedTabChange)="tabChanged($event)" [ngClass]="{'bar-expand' : barExpand}"
+        class="chat-tab-area h-100">
 
         <mat-tab class="main-chat-tab h-100"
           *ngFor="let conversation of (_socketService.conversationsListener | async)">
@@ -13,21 +14,24 @@
                 <span class="get-events">
                   <div class="user-badge">
                     <circle-progress class="laft-bar-data" [percent]="100" [radius]="15" [outerStrokeWidth]="2"
-                      [innerStrokeWidth]="2" [outerStrokeColor]="'#3f51b5'" [innerStrokeColor]="'#F3F6F8'" [space]=-1
+                      [innerStrokeWidth]="2"
+                      [outerStrokeColor]="conversation.activeChannelSessions.length > 0 ? '#3f51b5' : 'grey'"
+                      [innerStrokeColor]="conversation.state == 'ACTIVE' ? '#F3F6F8' : 'grey'" [space]=-1
                       [animation]="conversation.animation" [animationDuration]="600"
-                      [title]="conversation.messages[conversation.messages.length -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | getFirstTwoLetters"
-                      [titleFontSize]="10" [showSubtitle]="false" [showUnits]="false" [renderOnClick]="false">
+                      [title]="conversation.associatedCustomer.firstName | getFirstTwoLetters" [titleFontSize]="10"
+                      [showSubtitle]="false" [showUnits]="false" [renderOnClick]="false">
                     </circle-progress>
                     <span class="badge1" [hidden]="conversation.unReadCount == 0">{{conversation.unReadCount}}</span>
                   </div>
-                  <span class="user-name">{{conversation.messages[conversation.messages.length
-                    -1].header.channelSession.linkedCustomer.associatedCustomer.firstName}}</span>
+                  <span class="user-name">{{conversation.associatedCustomer.firstName}}</span>
                 </span>
               </ng-template>
             </div>
             <div class="chat-contents">
               <div class="main-tab-content">
-                <app-interactions [conversation]="conversation"></app-interactions>
+                <app-interactions [currentTabIndex]="currentTabIndex"
+                  [changeDetecter]="conversation.messages[conversation.messages.length - 1]"
+                  [conversation]="conversation"></app-interactions>
               </div>
             </div>
 

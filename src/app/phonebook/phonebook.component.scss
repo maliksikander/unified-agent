@@ -1,11 +1,15 @@
 @import "src/app/shared/globalVariables";
+//.phonebook-main-area {
+//  border: 5px solid #E2E2E2;
+//  height: calc(100% - 42px);
+//}
 .phonebook-main {
-  background: #F2F2F2;
+  background: #F3F6F8;
   margin-bottom: 15px !important;
   min-height: 50px;
-  padding-right: 10px;
+  //padding-right: 10px;
   position: relative;
-  padding-left: 50px;
+  //padding-left: 50px;
   .back-to-chat{
     background: lighten($blue-text-color, 40%);
     height: 50px;
@@ -57,20 +61,15 @@
 
     button{
       font-size: 13px;
-      background: #1D9AC0;
-      color: #ffffff;
-      border: 0;
-      &:hover{
-        background: darken(#1D9AC0, 10%);
-      }
-    &.btn-action{
-      background: #EEF9DE;
+      background: #fff;
       color: #707070;
-      margin-right: 5px;
+      border: 0;
+      height: 32px;
+      line-height: 32px;
+      margin-left: 5px;
       &:hover{
-        background: darken(#EEF9DE, 10%);
+        background: lighten(#707070, 50%);
       }
-    }
     }
   }
 }
@@ -117,7 +116,7 @@ span.sorting-icons {
   float: left;
   text-shadow: -5px 0 0 #C5C5C5;
   color: #C5C5C5;
-  font-size: 20px !important;
+  font-size: 16px !important;
   text-align: center;
   width: 18px !important;
   line-height: 20px !important;
@@ -169,3 +168,24 @@ span.sorting-icons {
   }
 }
 
+.selection-trigger{
+  //top: 1px;
+  width: 150px;
+  font-size: 12px;
+  font-weight: 600;
+
+}
+
+.categorize-selection{
+  min-width: 320px;
+}
+tr.slide-in-left:hover {
+  background: #f9f9f9 !important;
+}
+
+
+.notifs{
+  margin-left: 2%;
+    font-size: 12px;
+    color: coral;
+}

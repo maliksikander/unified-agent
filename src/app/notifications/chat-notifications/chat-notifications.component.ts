@@ -2,6 +2,7 @@ import { Component, OnInit, Inject, Input } from "@angular/core";
 import { cacheService } from "src/app/services/cache.service";
 import { socketService } from "src/app/services/socket.service";
 import { Output, EventEmitter } from "@angular/core";
+import { TopicParticipant } from "../../models/User/Interfaces";
 
 @Component({
   selector: "app-chat-notifications",
@@ -20,16 +21,21 @@ export class ChatNotificationsComponent implements OnInit {
 
   ngOnInit() {
     console.log("this is data ", this.data);
-    if (!this.data.channelSession.linkedCustomer.isAnonymous) {
-      this.customerName = this.data.channelSession.linkedCustomer.associatedCustomer.firstName;
+    if (!this.data.channelSession.associatedCustomer.isAnonymous) {
+      this.customerName = this.data.channelSession.associatedCustomer.firstName;
       this.identified = true;
     }
-    this.channel = this.data.channelSession.channel.channelConnector.type.name;
+    this.channel = this.data.channelSession.channel.channelConnector.channelType.typeName;
     this.channelImageSrc = "assets/images/" + this.channel.toLowerCase() + ".svg";
   }
 
   getTopicSubscription() {
-    this._socketService.emit("topicSubscription", { agentId: this._cacheService.agent.id, topicId: this.data.topicId });
+    this._socketService.emit("topicSubscription", {
+      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, this.data.topicId, "PRIMARY", "SUBSCRIBED"),
+      agentId: this._cacheService.agent.id,
+      topicId: this.data.topicId,
+      taskId : this.data.taskId
+    });
     this.closeRequestHeaderEvent.emit(this.data.topicId);
   }
 }

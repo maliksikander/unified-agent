@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChil
 import { MatDialog, MatSidenav } from "@angular/material";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { socketService } from "src/app/services/socket.service";
-import { sharedService } from "src/app/services/shared.service";
 
 @Component({
   selector: "app-customer-info",
@@ -12,8 +11,10 @@ import { sharedService } from "src/app/services/shared.service";
 export class CustomerInfoComponent implements OnInit {
   @ViewChild("sidenav", { static: true }) sidenav: MatSidenav;
   // tslint:disable-next-line:no-input-rename
-  @Input() message: any;
+  @Input() associatedCustomer: any;
+  @Input() customerSuggestions: any;
   @Input() activeChannelSessions: any;
+  @Input() topicId: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
   customerProfileFormData: any;
 
@@ -64,9 +65,9 @@ export class CustomerInfoComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
   }
-  constructor(public _socketService: socketService, private dialog: MatDialog) {}
+  constructor(public _socketService: socketService, private dialog: MatDialog) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   close() {
     this.sidenav.close();
@@ -95,14 +96,18 @@ export class CustomerInfoComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log("changes ", changes);
-    if (changes.message && changes.message.currentValue != undefined) {
-      this.message = null;
-      this.message = changes.message.currentValue;
-      this.customerProfileFormData = this.getProfileFormData(this.message.header.channelSession.linkedCustomer.associatedCustomer);
+    if (changes.associatedCustomer && changes.associatedCustomer.currentValue != undefined) {
+      this.associatedCustomer = null;
+      this.associatedCustomer = changes.associatedCustomer.currentValue;
+      this.customerProfileFormData = this.getProfileFormData(this.associatedCustomer);
     }
-    if (changes.activeChannelSessions && changes.activeChannelSessions.currentValue != undefined) {
+    else if (changes.activeChannelSessions && changes.activeChannelSessions.currentValue != undefined) {
       this.activeChannelSessions = null;
       this.activeChannelSessions = changes.activeChannelSessions.currentValue;
+    }
+    else if (changes.customerSuggestions && changes.customerSuggestions.currentValue != undefined) {
+      this.customerSuggestions = null;
+      this.customerSuggestions = changes.activeChannelSessions.currentValue;
     }
   }
 
@@ -120,5 +125,9 @@ export class CustomerInfoComponent implements OnInit {
 
   moveSession(event) {
     event.stopPropagation();
+  }
+
+  linkCustomer(customerId) {
+    this._socketService.linkCustomerWithInteraction(customerId, this.topicId);
   }
 }

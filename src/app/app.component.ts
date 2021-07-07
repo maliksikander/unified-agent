@@ -20,6 +20,9 @@ export class AppComponent implements OnInit {
       if (e.msg == "openRequestHeader") {
         this.requests.push(e.data);
       }
+      if (e.msg == "closeRequestHeader") {
+        this.removeRequestFromRequestArray(e.data.topicId);
+      }
     });
   }
 
@@ -37,6 +40,6 @@ export class AppComponent implements OnInit {
 
   removeRequestFromRequestArray(topicId) {
     let index = this._sharedService.getIndexFromTopicId(topicId, this.requests);
-    this._sharedService.spliceArray(index, this.requests);
+      this._sharedService.spliceArray(index, this.requests);
   }
 }

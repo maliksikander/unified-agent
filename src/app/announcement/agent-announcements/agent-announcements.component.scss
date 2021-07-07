@@ -1,0 +1,35 @@
+.announcement-tab-content {
+  padding: 0 5px 5px;
+  overflow: auto;
+
+  .announcement-content {
+    background: #ECF7FB;
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid #f1f1f1;
+    margin: 5px auto;
+
+    &:first-child{
+      margin-top: 0;
+    }
+
+    &.read-announcement, &:hover{
+      background: #ffffff;
+    }
+    p{
+      font-size: 12px;
+      color: #464646;
+      margin: 0;
+      cursor: pointer;
+    }
+    time {
+      display: block;
+      color: #929292;
+      font-size: 9px;
+      margin: 4px 0 0;
+    }
+
+  }
+
+
+}

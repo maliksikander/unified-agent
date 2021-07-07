@@ -2,13 +2,13 @@ import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({ name: "getSenderName", pure: true })
 export class getSenderNamePipe implements PipeTransform {
-  transform(sender: any, onlyFirstTwoLetters?: boolean): any {
+  transform(sender: any, associatedCustomer: any, onlyFirstTwoLetters?: boolean): any {
     let name;
 
     if (sender.type.toLowerCase() == "customer") {
-      name = sender.participant.linkedCustomer.associatedCustomer.firstName;
+      name = associatedCustomer.firstName;
     } else if (sender.type.toLowerCase() == "agent") {
-      name = sender.participant.keyCloakUser.username;
+      name = sender.participant.keycloakUser.username;
     } else if (sender.type.toLowerCase() == "bot") {
       name = "bot";
     } else {

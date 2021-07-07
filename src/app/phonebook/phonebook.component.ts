@@ -3,6 +3,8 @@ import { ConfirmationService } from "primeng/api";
 import { MessageService } from "primeng/api";
 import { MatDialog } from "@angular/material";
 import { CreateCustomerComponent } from "../create-customer/create-customer.component";
+import { ActivatedRoute, Router } from "@angular/router";
+import { socketService } from "../services/socket.service";
 
 @Component({
   selector: "app-phonebook",
@@ -11,11 +13,33 @@ import { CreateCustomerComponent } from "../create-customer/create-customer.comp
 })
 export class PhonebookComponent implements OnInit {
   customers;
-
+  FilterSelected = "action";
+  selectedTeam = "us-corporate";
   showLblTooltip: boolean = false;
   LblTooltipId;
   lblSearch: boolean = false;
-
+  labels = [
+    {
+      createdAt: "2021-03-30T12:09:52.497Z",
+      __v: 0,
+      name: "dummy",
+      updated_by: "",
+      _id: "606315109b5372a7aaf57e04",
+      created_by: "admin",
+      color_code: "#3cb44b",
+      updatedAt: "2021-03-30T12:09:52.497Z"
+    },
+    {
+      createdAt: "2021-03-30T12:11:20.124Z",
+      __v: 0,
+      name: "assasian",
+      updated_by: "admin",
+      _id: "606315689b53723ed3f57e06",
+      created_by: "admin",
+      color_code: "#a9a9a9",
+      updatedAt: "2021-03-30T12:12:05.258Z"
+    }
+  ];
   rows = [
     {
       phone2: "",
@@ -538,9 +562,18 @@ export class PhonebookComponent implements OnInit {
   filterOnOff: boolean = false;
   filterActiveField;
   removable = true;
-  constructor(private dialog: MatDialog) {}
+  paramSubscriber: any;
+  rowDefaultClick = "open";
+  topicId = null;
+  constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router, private _socketService: socketService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.paramSubscriber = this.route.queryParams.subscribe((params) => {
+      this.rowDefaultClick = params["q"];
+      this.topicId = params["topicId"];
+      console.log("rowDefaultClick " + this.rowDefaultClick + " topicId " + this.topicId);
+    });
+  }
   setFilter(event: Event, col) {
     this.filterOnOff = !this.filterOnOff;
     event.stopPropagation();
@@ -557,11 +590,20 @@ export class PhonebookComponent implements OnInit {
 
   createCustomer() {
     const dialogRef = this.dialog.open(CreateCustomerComponent, {
-      panelClass: "inline-editing",
-      maxWidth: "848px",
-      maxHeight: "88vh",
-      width: "848px",
-      height: "88vh"
+      panelClass: "create-customer-dialog"
     });
+  }
+  ngOnDestroy() {
+    this.paramSubscriber.unsubscribe();
+  }
+
+  linkCustomer(customerId) {
+    this._socketService.linkCustomerWithInteraction(customerId, this.topicId);
+  }
+
+  onRowClick(customerId) {
+    if (this.rowDefaultClick == "linking") {
+      this.linkCustomer(customerId);
+    }
   }
 }
