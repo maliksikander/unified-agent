@@ -1,0 +1,123 @@
+<div class="label-main page-header row m-0">
+    <div class="customer-heading page-heading col-md-6">
+        <h4>Customer Attributes</h4>
+    </div>
+</div>
+
+
+<div class="main-content">
+    <div cdkDropListGroup>
+        <div class="schema-container">
+            <div cdkDropList [cdkDropListData]="schema2" class="schema-list" (cdkDropListDropped)="drop($event)">
+                <div *ngFor="let item of schema2; let i = index;">
+                    <div [ngClass]="{'schema-detail-check': showDetails && divId == item._id}"
+                        (click)="openDetails(item._id)" class="schema-box" cdkDrag>
+                        <span class="n">{{i + 1}}</span>
+                        <mat-icon class="shadow">more_vert</mat-icon>
+                        <span class="heading">{{item.label}}</span><span class="steric"
+                            *ngIf="item.is_required">*</span>
+                        <mat-icon matTooltip="Options" class="delete-btn box-options" [matMenuTriggerFor]="boxOptions"
+                            (click)="displayMenu($event)">more_vert
+                        </mat-icon>
+
+                        <mat-menu #boxOptions="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
+                            <button mat-menu-item class="channel-selection-list" (click)="edit(item)">
+                                Edit
+                            </button>
+                            <button mat-menu-item class="channel-selection-list" (click)="delete(item.label,item._id)">
+                                Delete
+                            </button>
+
+                        </mat-menu>
+
+
+                    </div>
+                    <div class="schema-details" *ngIf="showDetails && divId == item._id">
+                        <div class="row m-0">
+                            <div class="input-align col-md-6 pr-0">
+                                <strong> Label </strong> : <span class="un-edit">{{item.label}}</span>
+
+                            </div>
+                            <div class="input-align col-md-6 pr-0">
+                                <strong> Type </strong> : <span class="un-edit"> {{ item.type}}</span>
+                            </div>
+                            <div *ngIf="item.type == 'string' || item.type == 'url' " class="input-align col-md-6 pr-0">
+                                <strong> Range </strong>:<span class="un-edit"> {{item.characters}}</span>
+                            </div>
+                            <div class="input-align col-md-6 pr-0">
+                                <strong> Mandatory </strong>:<span class="un-edit">{{item.is_required}}</span>
+                            </div>
+                            <div class="input-align col-md-6 pr-0">
+                                <strong> Channel Identifier </strong>:<span
+                                    class="un-edit">{{item.is_channel_identifier}}</span>
+                            </div>
+                            <div class="input-align col-md-6 pr-0">
+                                <strong> Description </strong>:<span class="un-edit">{{item.desc}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="schema-container">
+            <div cdkDropList [cdkDropListData]="schema1" class="schema-list" (cdkDropListDropped)="drop($event)">
+                <div *ngFor="let item of schema1; let i = index">
+                    <div [ngClass]="{'schema-detail-check': showDetails && divId == item._id}"
+                        (click)="openDetails(item._id)" class="schema-box" cdkDrag>
+                        <span class="n">{{i + 1 + schema2.length}}</span>
+                        <mat-icon class="shadow">more_vert</mat-icon>
+                        <span class="heading">{{item.label}}</span><span class="steric"
+                            *ngIf="item.is_required">*</span>
+                        <mat-icon matTooltip="option" class="delete-btn box-options"
+                            [matMenuTriggerFor]="searchChannelSelection" (click)="displayMenu($event)">more_vert
+                        </mat-icon>
+
+                        <mat-menu #searchChannelSelection="matMenu" yPosition="below" panelClass="custom"
+                            [overlapTrigger]="false">
+                            <button mat-menu-item class="channel-selection-list" (click)="edit(item)">
+                                Edit
+                            </button>
+                            <button mat-menu-item class="channel-selection-list" (click)="delete(item.label,item._id)">
+                                Delete
+                            </button>
+
+                        </mat-menu>
+
+                    </div>
+                    <div class="schema-details" *ngIf="showDetails && divId == item._id">
+                        <div class="row m-0">
+                            <div class="input-align col-md-6 pr-0">
+                                <strong> Label </strong> : <span class="un-edit">{{item.label}}</span>
+
+                            </div>
+
+                            <div class="input-align col-md-6 pr-0">
+                                <strong> Type </strong> : <span class="un-edit"> {{ item.type}}</span>
+                            </div>
+                            <div *ngIf="item.type == 'string' || item.type == 'url'" class="input-align col-md-6 pr-0">
+                                <strong> Range </strong>:<span class="un-edit">{{ item.characters}}</span>
+                            </div>
+
+                            <div class="input-align col-md-6 pr-0">
+                                <strong> Mandatory </strong>:<span class="un-edit">{{item.is_required}}</span>
+                            </div>
+                            <div class="input-align col-md-6 pr-0">
+                                <strong> Channel Identifier </strong>:<span class="un-edit">{{
+                                    item.is_channel_identifier}}</span>
+                            </div>
+                            <div class="input-align col-md-6 pr-0">
+                                <strong> Description </strong>:<span class="un-edit">{{item.desc}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="schema1" class="create-attribute">
+        <button mat-button (click)="addAttr()" class="create-new-attribute">Create new Attribute</button>
+        <button mat-button (click)="onClick()" class="float-right">Save Order</button>
+    </div>
+
+</div>

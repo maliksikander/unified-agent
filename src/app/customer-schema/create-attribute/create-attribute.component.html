@@ -1,0 +1,114 @@
+<div class="header">
+    <div class="headerName">Create Attribute</div>
+    <mat-icon (click)="onNoClick()" class="closeBtn">close</mat-icon>
+  </div>
+  
+  <div class="create-attr">
+  
+    <div class="create-attr-dialog-body label-create-area">
+  
+      <div class="left-area row m-0">
+        <div class="form-group label-name col-md-6">
+          <label class="text-left">Label</label>
+          <mat-form-field appearance="outline">
+            <input [formControl]="label" matInput>
+            <mat-error *ngIf="label.hasError('required')">
+              field is mandatory
+            </mat-error>
+            <mat-error *ngIf="label.hasError('minlength') || label.hasError('maxlength')">
+              Range Should Be 1 - 50
+            </mat-error>
+            <mat-error *ngIf="label.hasError('validName')">
+              That name Already Exists
+            </mat-error>
+          </mat-form-field>
+        </div>
+  
+        <div class="form-group label-name col-md-6">
+          <label class="text-left">Description</label>
+          <mat-form-field appearance="outline">
+            <input [formControl]="desc" matInput>
+            <mat-error *ngIf="desc.hasError('maxlength')">
+              Range Should be 1 - 100
+            </mat-error>
+          </mat-form-field>
+        </div>
+  
+      </div>
+  
+      <div class="left-area row m-0">
+  
+        <div class="form-group label-name col-md-4 pr-2">
+          <label class="text-left">Field Type</label>
+          <div class="select-list">
+            <mat-form-field appearance="outline">
+              <select (ngModelChange)="onTypeChange($event)" matNativeControl [(ngModel)]="columnTypeControllar">
+                <option *ngFor="let type of columnTypes" [value]="type">{{type | uppercase}}</option>
+              </select>
+            </mat-form-field>
+          </div>
+        </div>
+  
+        <div *ngIf="columnTypeControllar == 'string'" class="form-group label-name col-md-2 characters-length">
+          <label class="text-left">Characters Length</label>
+          <mat-form-field appearance="outline">
+            <input matInput [formControl]="textLength">
+            <mat-error *ngIf="textLength.hasError('required')">
+              field is mandatory
+            </mat-error>
+            <mat-error *ngIf="textLength.hasError('min') || textLength.hasError('max')">
+              Range should be 1 - 1000
+            </mat-error>
+            <mat-error *ngIf="textLength.hasError('pattern')">
+              Must Enter a Numeric Value
+            </mat-error>
+          </mat-form-field>
+        </div>
+  
+        <div class="check-box form-group">
+          <mat-checkbox [(ngModel)]="mandatory" color="primary">Mandatory Attribute</mat-checkbox>
+        </div>
+        <div class="check-box form-group">
+          <mat-checkbox  color="primary">Personal Identifiable Information</mat-checkbox>
+        </div>
+  
+  
+      </div>
+  
+    </div>
+  
+    <hr>
+  
+    <div class="footer">
+  
+  
+      <div class="footer-actions row m-0">
+        <div class="check-box channel-identifier form-group">
+          <label>Channel Identifier</label>
+          <mat-checkbox [(ngModel)]="channelIden" color="primary">Yes</mat-checkbox>
+        </div>
+  
+        <div *ngIf="channelIden" class="form-group label-name select-channel pr-2">
+          <label class="text-left">Select Channel</label>
+          <div class="select-list">
+            <mat-form-field appearance="outline">
+              <mat-select [formControl]="selectChannel" multiple class="selected-channels">
+                <mat-option  class="channel-options" *ngFor="let channel of channelList" [value]="channel">{{channel}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+  
+  
+  <div class="action-right">
+  
+        <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
+        <button *ngIf="desc.valid && label.valid && textLength.valid" (click)="makeObject()" class="save-btn">Add Attribute</button>
+  </div>
+      </div>
+  
+    </div>
+  
+  
+  </div>
+  

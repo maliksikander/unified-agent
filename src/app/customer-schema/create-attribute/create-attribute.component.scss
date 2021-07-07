@@ -1,0 +1,124 @@
+//.p-0{
+//  padding-left: 0 !important;
+//  padding-right: 0 !important;
+//}
+//
+//::ng-deep .mat-dialog-container {
+//  box-shadow: 0 11px 15px -7px rgba(0, 0, 0, .2), 0 24px 38px 3px rgba(0, 0, 0, .14), 0 9px 46px 8px rgba(0, 0, 0, .12);
+//  display: block;
+//  padding: 24px;
+//  // border-radius: 8px;
+//  box-sizing: border-box;
+//  overflow: hidden;
+//  outline: 0;
+//  width: 100%;
+//  height: 100%;
+//  padding: 0px;
+//}
+
+.header {
+    color: #1f9ec2;
+    background: #f3f6f8;
+    position: relative;
+  
+    .headerName {
+      padding: 8px 12px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  
+    .closeBtn {
+      cursor: pointer;
+      right: 16px;
+      font-size: 18px;
+      padding: 1px;
+      color: #aeb7bb;
+      border: 2px solid;
+      border-radius: 15px;
+      position: absolute;
+      top: 8px;
+      text-align: center;
+      line-height: 20px;
+    }
+  }
+  
+  .create-attr{
+  
+    hr {
+      -webkit-box-sizing: content-box;
+      box-sizing: content-box;
+      height: 1px;
+      overflow: visible;
+      width: 94%;
+      background: #efefef;
+      border: none;
+  }
+    label{
+      font-size: 12px;
+      color: rgb(119, 119, 119);
+      margin: 0;
+    }
+  
+  .check-box2{
+    padding: 20px 0 0 27px;
+    max-width: 190px;
+  }
+  .channel-selection {
+    max-width: 210px;
+  }
+  
+    .lbl{
+      color: #808080;
+      font-size: 13px;
+      font-weight: 500;
+    }
+  .create-attr-dialog-body{
+  
+    .optional{
+      color: #808080;
+      font-size: 13px;
+    }
+  
+  }
+  }
+  
+  .characters-length{
+    padding-right: 28px;
+    padding-left: 0;
+  }
+  
+  .footer{
+    padding-top: 0;
+  
+    .footer-actions{
+      text-align: right;
+      padding: 0 22px;
+      position: relative;
+      .action-right {
+        position: absolute;
+        right: 22px;
+        top: 30px;
+      }
+  
+      button{
+        height: 32px;
+        width: auto;
+        padding: 0 15px;
+        outline: none;
+        background: #767676;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        color: white;
+        font-size: 12px;
+        font-weight: 500;
+  
+        &.save-btn{
+          color: #565454;
+          background: #bde9fb;
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+  

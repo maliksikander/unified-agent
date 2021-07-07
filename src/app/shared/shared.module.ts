@@ -62,6 +62,8 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
 import { AngularMultiSelectModule } from "angular2-multiselect-dropdown";
 import { NgScrollbarModule } from "ngx-scrollbar";
 import { getMRDSwitchesPipe } from "./pipes/getMRDSwitchs.pipe";
+import { fetchLabelsPipe } from "./pipes/fetchLabels.pipe";
+
 
 @NgModule({
   declarations: [
@@ -72,7 +74,8 @@ import { getMRDSwitchesPipe } from "./pipes/getMRDSwitchs.pipe";
     SearchPipe,
     sentenceCasePipe,
     convertToFormDataPipe,
-    getFirstTwoLettersPipe
+    getFirstTwoLettersPipe,
+    fetchLabelsPipe
   ],
   imports: [
     MatIconModule,
@@ -209,7 +212,8 @@ import { getMRDSwitchesPipe } from "./pipes/getMRDSwitchs.pipe";
     getFirstTwoLettersPipe,
     AngularMultiSelectModule,
     NgScrollbarModule,
-    getMRDSwitchesPipe
+    getMRDSwitchesPipe,
+    fetchLabelsPipe
   ]
 })
 export class SharedModule {}
