@@ -64,7 +64,6 @@ import { NgScrollbarModule } from "ngx-scrollbar";
 import { getMRDSwitchesPipe } from "./pipes/getMRDSwitchs.pipe";
 import { fetchLabelsPipe } from "./pipes/fetchLabels.pipe";
 
-
 @NgModule({
   declarations: [
     getMRDSwitchesPipe,

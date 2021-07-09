@@ -34,11 +34,14 @@ export class sharedService {
         this._snackbarService.open("Bad Request", "err");
       } else if (e.statusCode == 412) {
         this._snackbarService.open("unable to fetch license status", "err");
+      } else if (e.statusCode == 500) {
+        this._snackbarService.open("Internal Server Error", "err");
       } else {
         this._snackbarService.open("Something went wrong", "err");
       }
     }
     if (res == "succ") {
+      this._snackbarService.open(e, "succ");
     }
   }
 }

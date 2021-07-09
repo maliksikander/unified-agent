@@ -43,7 +43,7 @@
           <div class="select-list">
             <mat-form-field appearance="outline">
               <select (ngModelChange)="onTypeChange($event)" matNativeControl [(ngModel)]="columnTypeControllar">
-                <option *ngFor="let type of columnTypes" [value]="type">{{type | uppercase}}</option>
+                <option *ngFor="let type of columnTypes" [value]="type">{{type | titlecase}}</option>
               </select>
             </mat-form-field>
           </div>

@@ -16,7 +16,7 @@ export const appRoutes: Routes = [
   { path: "label", component: CreateLabelComponent },
   { path: "supervisor/dashboard", component: DashboardComponent },
   { path: "supervisor/announcement", component: AnnouncementComponent },
-  { path: 'customer-schema', component: SchemaSettingsComponent },
+  { path: "customer-schema", component: SchemaSettingsComponent },
   { path: "", redirectTo: "/login", pathMatch: "full" },
   { path: "customers", data: { preload: true }, loadChildren: "./chat-features/chat.module#ChatModule" },
   { path: "**", component: NoRouteFoundComponent }

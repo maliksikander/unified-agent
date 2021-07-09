@@ -23,10 +23,10 @@ import { AnnouncementComponent } from "./announcement/announcement.component";
 import { CreateLabelDiagComponent } from "./new-components/create-label/create-label-diag/create-label-diag.component";
 import { CreateLabelComponent } from "./new-components/create-label/create-label.component";
 import { ConfirmationDialogComponent } from "./new-components/confirmation-dialog/confirmation-dialog.component";
-import { SchemaSettingsComponent } from './customer-schema/schema-settings/schema-settings.component';
-import { CreateAttributeComponent } from './customer-schema/create-attribute/create-attribute.component';
-import { CustomerActionsComponent } from './customer-actions/customer-actions.component';
-import { EditAttributeComponent } from './customer-schema/edit-attribute/edit-attribute.component';
+import { SchemaSettingsComponent } from "./customer-schema/schema-settings/schema-settings.component";
+import { CreateAttributeComponent } from "./customer-schema/create-attribute/create-attribute.component";
+import { CustomerActionsComponent } from "./customer-actions/customer-actions.component";
+import { EditAttributeComponent } from "./customer-schema/edit-attribute/edit-attribute.component";
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsType: SPINNER.chasingDots,
@@ -63,7 +63,15 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     NgxUiLoaderHttpModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
   ],
-  entryComponents: [EditAttributeComponent, CustomerActionsComponent, CreateAttributeComponent,CreateCustomerComponent, AnnouncementDialogComponent, CreateLabelDiagComponent, ConfirmationDialogComponent],
+  entryComponents: [
+    EditAttributeComponent,
+    CustomerActionsComponent,
+    CreateAttributeComponent,
+    CreateCustomerComponent,
+    AnnouncementDialogComponent,
+    CreateLabelDiagComponent,
+    ConfirmationDialogComponent
+  ],
   providers: [
     appConfigService,
     MessageService,

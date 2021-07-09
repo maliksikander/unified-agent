@@ -177,9 +177,9 @@ export class socketService {
     };
 
     // feed the conversation with type "messages"
-    topicData.cimEvents.forEach((cimEvent, i) => {
-      if (cimEvent.type.toLowerCase() == "message") {
-        conversation.messages.push(cimEvent.data);
+    topicData.topicEvents.forEach((event, i) => {
+      if (event.type.toLowerCase() == "message") {
+        conversation.messages.push(event.data);
       }
     });
 

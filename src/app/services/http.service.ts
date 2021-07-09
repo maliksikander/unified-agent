@@ -14,7 +14,7 @@ export class httpService {
       login: "/api/v1/agent/login",
       customerSchema: "/api/v1/agent/customer-schema",
       customers: "/api/v1/agent/customer",
-      labels: "/api/v1/agent/labels",
+      labels: "/api/v1/agent/labels"
     };
   }
 
@@ -28,6 +28,38 @@ export class httpService {
 
   getCustomerSchema(): Observable<any> {
     return this._httpClient.get<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.customerSchema, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+  addCustomerSchema(obj): Observable<any> {
+    return this._httpClient.post<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.customerSchema, obj, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+  updateCustomerSchema(obj): Observable<any> {
+    return this._httpClient.put<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.customerSchema, obj, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+  deleteCustomerSchema(id): Observable<any> {
+    return this._httpClient.delete<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.customerSchema + "?_id=" + id, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+  changeCustomerSchemaOrder(schema): Observable<any> {
+    return this._httpClient.put<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.customerSchema + "/order", schema, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
@@ -51,11 +83,10 @@ export class httpService {
   }
 
   getCustomerById(): Observable<any> {
-    return this._httpClient.get<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.customers+'?id=s60d5239c48f4c2323b04df42', {
+    return this._httpClient.get<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.customers + "?id=s60d5239c48f4c2323b04df42", {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
     });
   }
-
 }

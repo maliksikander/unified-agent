@@ -1,19 +1,28 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatDialog, DateAdapter } from '@angular/material';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { DateTimeAdapter } from 'ng-pick-datetime';
-import { httpService } from '../services/http.service';
+import { Component, OnInit, Inject } from "@angular/core";
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatDialog, DateAdapter } from "@angular/material";
+import { FormControl, Validators, FormGroup } from "@angular/forms";
+import { Router } from "@angular/router";
+import { DateTimeAdapter } from "ng-pick-datetime";
+import { httpService } from "../services/http.service";
 
 @Component({
-  selector: 'app-customer-actions',
-  templateUrl: './customer-actions.component.html',
-  styleUrls: ['./customer-actions.component.scss']
+  selector: "app-customer-actions",
+  templateUrl: "./customer-actions.component.html",
+  styleUrls: ["./customer-actions.component.scss"]
 })
 export class CustomerActionsComponent implements OnInit {
-
-  constructor(private _httpService : httpService, private dateTimeAdapter: DateTimeAdapter<any>, private dateAdapter: DateAdapter<any>, private dialog: MatDialog, private _router: Router, public snackBar: MatSnackBar, public dialogRef: MatDialogRef<CustomerActionsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { dialogRef.disableClose = true; }
+  constructor(
+    private _httpService: httpService,
+    private dateTimeAdapter: DateTimeAdapter<any>,
+    private dateAdapter: DateAdapter<any>,
+    private dialog: MatDialog,
+    private _router: Router,
+    public snackBar: MatSnackBar,
+    public dialogRef: MatDialogRef<CustomerActionsComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    dialogRef.disableClose = true;
+  }
 
   userInfo;
   schemaAttributes;
@@ -24,8 +33,8 @@ export class CustomerActionsComponent implements OnInit {
   smsTab: boolean = false;
   editActiveMode: boolean = true;
   selectedUserNumbers = [];
-  phoneControl = new FormControl('', [Validators.required]);
-  smsControl = new FormControl('', [Validators.required]);
+  phoneControl = new FormControl("", [Validators.required]);
+  smsControl = new FormControl("", [Validators.required]);
 
   customerLabels = [];
   labels = [];
@@ -40,31 +49,25 @@ export class CustomerActionsComponent implements OnInit {
     noDataLabel: "this._callService.translationsObj.NO_DATA",
     enableSearchFilter: true,
     addNewItemOnFilter: true,
-    primaryKey: '_id',
+    primaryKey: "_id"
   };
 
-
-
   ngOnInit() {
-
-    
-
     const formGroup = {};
 
     this.myGroup = new FormGroup({});
 
-    let query = { 'field': "_id", 'value': this.data.id };
+    let query = { field: "_id", value: this.data.id };
 
     this._httpService.getCustomerById().subscribe((e) => {
-      console.log("userid ",e)
+      console.log("userid ", e);
       this.userInfo = e.data;
       this.userIni = true;
 
-
-
       this._httpService.getCustomerSchema().subscribe((ee) => {
-
-        this.schemaAttributes = ee.data.sort((a, b) => { return a.sort_order - b.sort_order });
+        this.schemaAttributes = ee.data.sort((a, b) => {
+          return a.sort_order - b.sort_order;
+        });
 
         this.schemaIni = true;
         let urlReg = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/;
@@ -72,13 +75,18 @@ export class CustomerActionsComponent implements OnInit {
         this._httpService.getLabels().subscribe((e) => {
           this.labels = e.data;
           this.fetchCustomerLabels();
-        })
+        });
 
         ee.data.filter((a) => {
-
-          formGroup[a.key] = new FormControl({ value: this.userInfo[a.key], disabled: true }, [a.is_required ? Validators.required : Validators.maxLength(2083), a.characters ? Validators.maxLength(a.characters) : Validators.maxLength(2083), a.type == 'email' ? Validators.email : Validators.maxLength(2083), a.type == 'phone' ? Validators.pattern("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$") : Validators.maxLength(2083), a.type == 'phone' ? Validators.maxLength(20) : Validators.maxLength(2083), a.type == 'url' ? Validators.pattern(urlReg) : Validators.maxLength(2083)]);
-
-        })
+          formGroup[a.key] = new FormControl({ value: this.userInfo[a.key], disabled: true }, [
+            a.is_required ? Validators.required : Validators.maxLength(2083),
+            a.characters ? Validators.maxLength(a.characters) : Validators.maxLength(2083),
+            a.type == "email" ? Validators.email : Validators.maxLength(2083),
+            a.type == "phone" ? Validators.pattern("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$") : Validators.maxLength(2083),
+            a.type == "phone" ? Validators.maxLength(20) : Validators.maxLength(2083),
+            a.type == "url" ? Validators.pattern(urlReg) : Validators.maxLength(2083)
+          ]);
+        });
 
         this.myGroup = new FormGroup(formGroup);
 
@@ -99,28 +107,21 @@ export class CustomerActionsComponent implements OnInit {
             });
           }
         }
-
       });
-
     });
   }
 
   fetchCustomerLabels() {
-
     this.userInfo.labels.filter((id) => {
       this.labels.filter((label) => {
-
         if (label._id == id) {
-          this.customerLabels.push(label)
+          this.customerLabels.push(label);
         }
-
-      })
+      });
     });
 
-    this.myGroup.get('labels').patchValue(this.customerLabels);
-
+    this.myGroup.get("labels").patchValue(this.customerLabels);
   }
-
 
   getLatestPhoneOfCustomer() {
     // this._callService.getContactById(this.data.id).subscribe((e) => {
@@ -131,9 +132,7 @@ export class CustomerActionsComponent implements OnInit {
 
   saveData(customerObj) {
     // customerObj = this.fetchTheIdsOfLabels(customerObj);
-
     // customerObj['updated_by'] = this._callService.userDetails.username;
-
     // this._callService.updateContactById(this.data.id, customerObj).subscribe((e) => {
     //   this.dialogRef.close({ event: 'refresh', updatedUser: e });
     //   if (this._callService.callActive == true) {
@@ -147,8 +146,10 @@ export class CustomerActionsComponent implements OnInit {
 
   fetchTheIdsOfLabels(obj) {
     let ids = [];
-    if(obj.labels[0]){
-    obj.labels.filter((e) => { ids.push(e._id) });
+    if (obj.labels[0]) {
+      obj.labels.filter((e) => {
+        ids.push(e._id);
+      });
     }
     obj.labels = ids;
     return obj;
@@ -183,19 +184,16 @@ export class CustomerActionsComponent implements OnInit {
   }
 
   checkType(label) {
-
     if (label == "Label12") {
-      return "textarea"
+      return "textarea";
     } else {
-      return "text"
+      return "text";
     }
   }
 
   populateUserNumbers() {
-
     // this._callService.callCustomerId = this.userInfo._id;
     // this.selectedUserNumbers = [];
-
     // this.schemaAttributes.filter((a) => {
     //   if (a.type == 'phone') {
     //     if (this.userInfo[a.key]) {
@@ -205,23 +203,19 @@ export class CustomerActionsComponent implements OnInit {
     // })
   }
 
-
-
   gotoInteractions() {
     this.onNoClick();
-    let obj = { 'base': 'interactions', 'id': this.userInfo._id };
-    sessionStorage.setItem('url', JSON.stringify(obj));
-    this._router.navigate(['interactions', this.userInfo._id]);
+    let obj = { base: "interactions", id: this.userInfo._id };
+    sessionStorage.setItem("url", JSON.stringify(obj));
+    this._router.navigate(["interactions", this.userInfo._id]);
   }
 
   deleteCUstomer() {
-
     // const dialogRef = this.dialog.open(ConfirmationMsgsComponent, {
     //   maxWidth: '848px',
     //   maxHeight: '218px',
     //   data: { msg: this._callService.translationsObj.DELETE_CUSTOMER }
     // });
-
     // dialogRef.afterClosed().subscribe((result: any) => {
     //   if (result && result.event == 'delete') {
     //     this._callService.deleteCustomer(this.userInfo._id).subscribe((e) => {
@@ -231,7 +225,6 @@ export class CustomerActionsComponent implements OnInit {
     //       this._callService.Interceptor(error, 'err');
     //     })
     //   }
-
     // });
   }
 
@@ -243,69 +236,56 @@ export class CustomerActionsComponent implements OnInit {
   }
 
   makeCall(number) {
-    window.parent.postMessage(number, '*');
+    window.parent.postMessage(number, "*");
   }
-
-
 
   sendSmsFun() {
-
-  //   this._callService.readConfig().subscribe((configData)=>{
-
-  //   let msgId = '_' + Math.random().toString(36).substr(2, 9);
-  //   let smsObj = { 'To': this.phoneControl.value, 'Body': encodeURIComponent(this.smsControl.value), 'From': this._callService.userDetails.username, 'channel': configData.SMS_CHANNEL, "messageId":msgId };
-
-  //   this._callService.sendSms(smsObj).subscribe((e) => {
-
-  //     // this._callService.Interceptor('msg-send', 'succ');
-  //     // this.dialogRef.close({ event: 'sms-sent' });
-  //     if (e.msgId && e.msgId != null) {
-  //       let obj = {
-  //         "activity": {
-  //           "type": "sms",
-  //           "message_id": e.msgId,
-  //           "agent_id": this._callService.userDetails.username,
-  //           "direction": 'outbound',
-  //           "sent_time": new Date,
-  //           "status": "Sent",
-  //           "text": encodeURIComponent(this.smsControl.value),
-  //           // "sender_name":this._callService.userDetails.username
-
-  //         },
-  //         "customer_identifier": this.phoneControl.value,
-  //         "session_id": e.msgId,
-  //         "customer_id": this.userInfo._id,
-  //         "interaction_type": 'sms',
-  //         "created_by": this._callService.userDetails.username,
-  //         "updated_by": null,
-  //         "request_id": 0
-  //       }
-
-  //       this._callService.saveInteractions(obj).subscribe((e) => {
-  //         this._callService.Interceptor('msg-send', 'succ');
-  //         this.dialogRef.close({ event: 'sms-sent' });
-  //       }, (error) => {
-  //         this._callService.Interceptor(error, 'err');
-  //       })
-  //     }
-
-  //   }, (error) => {
-  //     this._callService.Interceptor(error, 'err');
-  //   });
-
-  // });
-
+    //   this._callService.readConfig().subscribe((configData)=>{
+    //   let msgId = '_' + Math.random().toString(36).substr(2, 9);
+    //   let smsObj = { 'To': this.phoneControl.value, 'Body': encodeURIComponent(this.smsControl.value), 'From': this._callService.userDetails.username, 'channel': configData.SMS_CHANNEL, "messageId":msgId };
+    //   this._callService.sendSms(smsObj).subscribe((e) => {
+    //     // this._callService.Interceptor('msg-send', 'succ');
+    //     // this.dialogRef.close({ event: 'sms-sent' });
+    //     if (e.msgId && e.msgId != null) {
+    //       let obj = {
+    //         "activity": {
+    //           "type": "sms",
+    //           "message_id": e.msgId,
+    //           "agent_id": this._callService.userDetails.username,
+    //           "direction": 'outbound',
+    //           "sent_time": new Date,
+    //           "status": "Sent",
+    //           "text": encodeURIComponent(this.smsControl.value),
+    //           // "sender_name":this._callService.userDetails.username
+    //         },
+    //         "customer_identifier": this.phoneControl.value,
+    //         "session_id": e.msgId,
+    //         "customer_id": this.userInfo._id,
+    //         "interaction_type": 'sms',
+    //         "created_by": this._callService.userDetails.username,
+    //         "updated_by": null,
+    //         "request_id": 0
+    //       }
+    //       this._callService.saveInteractions(obj).subscribe((e) => {
+    //         this._callService.Interceptor('msg-send', 'succ');
+    //         this.dialogRef.close({ event: 'sms-sent' });
+    //       }, (error) => {
+    //         this._callService.Interceptor(error, 'err');
+    //       })
+    //     }
+    //   }, (error) => {
+    //     this._callService.Interceptor(error, 'err');
+    //   });
+    // });
   }
 
-
   gotoLink(eam, key, value) {
-    if (eam && key == 'url') {
+    if (eam && key == "url") {
       window.open(value, "_blank");
     }
   }
 
   onAddItem(data) {
-
     // this._callService.getLabels().subscribe((e) => {
     //   let duplicate: boolean = false;
     //   e.find((label) => {
@@ -313,7 +293,6 @@ export class CustomerActionsComponent implements OnInit {
     //       duplicate = true;
     //     }
     //   });
-
     //   if (duplicate) {
     //     this._callService.openSnackBar(this._callService.translationsObj.ALRDY, 'red-snack');
     //   }
@@ -327,33 +306,22 @@ export class CustomerActionsComponent implements OnInit {
     //       "color_code": '#a9a9a9',
     //     }
     //     this._callService.createLabel(obj).subscribe((e) => {
-
     //       this._callService.getLabels().subscribe((ee) => {
     //         this.labels = ee;
     //         this.customerLabels.push(e);
     //         this.myGroup.get('labels').patchValue(this.customerLabels);
     //         this._callService.serviceChangeMessage("update-labels");
     //       });
-
     //     }, (error) => {
     //       this._callService.Interceptor(error, 'err');
     //     });
     //   }
     // });
-
   }
 
-  save(a) {
-  }
-  onItemSelect(item: any) {
-
-  }
-  OnItemDeSelect(item: any) {
-
-  }
-  onSelectAll(items: any) {
-  }
-  onDeSelectAll(items: any) {
-  }
-
+  save(a) {}
+  onItemSelect(item: any) {}
+  OnItemDeSelect(item: any) {}
+  onSelectAll(items: any) {}
+  onDeSelectAll(items: any) {}
 }
