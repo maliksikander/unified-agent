@@ -25,6 +25,8 @@ stages:
 #   script:
 #   only:
 #     - /^CIM-.*$/
+#     - /^.+_b-.+$/
+#     - /^.+_f-.+$/
 #     - merge_requests
 #   allow_failure: false
 #+==================Runs on Every Commit and merge requests========================+
@@ -36,6 +38,8 @@ stages:
 #   script:
 #   only:
 #     - /^CIM-.*$/
+#     - /^.+_b-.+$/
+#     - /^.+_f-.+$/
 #     - merge_requests
 #   allow_failure: false
 #   cache:
@@ -52,6 +56,8 @@ node-modules-generate:
   only:
      refs:
        - /^CIM-.*$/
+       - /^.+_b-.+$/
+       - /^.+_f-.+$/
        - merge_requests
        - /^durable.*$/
      changes:
@@ -76,6 +82,8 @@ node-test:
     - npm run coverage
   only:
     - /^CIM-.*$/
+    - /^.+_b-.+$/
+    - /^.+_f-.+$/
     - merge_requests
   allow_failure: false
   cache:
@@ -103,6 +111,8 @@ node-format:
 #           - node_modules
    only:
      - /^CIM-.*$/
+     - /^.+_b-.+$/
+     - /^.+_f-.+$/
      - merge_requests
      - /^durable.*$/
    cache:
@@ -137,6 +147,8 @@ node-format:
 #   allow_failure: false
 #   only:
 #       - /^CIM-.*$/
+#       - /^.+_b-.+$/
+#       - /^.+_f-.+$/
 #       - merge_requests
 #=================New Code Quality for NodeJS and TS============
 sonarqube-test:
@@ -192,6 +204,8 @@ node_artifacts:
        policy: pull
    only:
    - /^CIM-.*$/
+   - /^.+_b-.+$/
+   - /^.+_f-.+$/
    - /^durable.*$/
 
 #+==================Runs on merge requests only========================+
@@ -294,7 +308,9 @@ build_image_in_branch:
    - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" "$IMAGE_NAME_BRANCH"
    - docker push "$IMAGE_NAME_BRANCH"
  only:
-   - /^CIM-.*$/  
+   - /^CIM-.*$/
+   - /^.+_b-.+$/
+   - /^.+_f-.+$/
    - /^durable.*$/
  allow_failure: false
 
@@ -341,6 +357,8 @@ anchore_scan_branch:
     #- image-packages.txt
   only:
     - /^durable.*$/
+    - /^.+_b-.+$/
+    - /^.+_f-.+$/
     - /^CIM-.*$/
 #+==================Runs on merge requests only========================+
 anchore_scan_merge:
@@ -442,5 +460,7 @@ container_publish_in_branch:
   only:
 
     - /^CIM-.*$/
+    - /^.+_b-.+$/
+    - /^.+_f-.+$/
     - /^durable.*$/
 
