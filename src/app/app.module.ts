@@ -27,6 +27,7 @@ import { SchemaSettingsComponent } from "./customer-schema/schema-settings/schem
 import { CreateAttributeComponent } from "./customer-schema/create-attribute/create-attribute.component";
 import { CustomerActionsComponent } from "./customer-actions/customer-actions.component";
 import { EditAttributeComponent } from "./customer-schema/edit-attribute/edit-attribute.component";
+import { columnPreferences } from "./column-preferences/column-preferences.component";
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsType: SPINNER.chasingDots,
@@ -52,7 +53,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     SchemaSettingsComponent,
     CreateAttributeComponent,
     CustomerActionsComponent,
-    EditAttributeComponent
+    EditAttributeComponent,
+    columnPreferences
   ],
   imports: [
     BrowserModule,
@@ -70,7 +72,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     CreateCustomerComponent,
     AnnouncementDialogComponent,
     CreateLabelDiagComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    columnPreferences
   ],
   providers: [
     appConfigService,

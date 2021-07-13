@@ -1,0 +1,34 @@
+<div class="header">
+    <div class="headerName">Column Preferences</div>
+    <mat-icon (click)="onNoClick()" class="closeBtn">close</mat-icon>
+  </div>
+  
+  <div class="scrollable-main col m6 s6">
+    <h4>Columns ({{columns?.length}})</h4>
+    <mat-form-field class="column-search" appearance="outline" floatLabel="always">
+      <input [(ngModel)]="searchItem" matInput placeholder="Search Columns">
+      <mat-icon class="slide-in-top" matSuffix>search</mat-icon>
+    </mat-form-field>
+    <div class="cols-pref-check-box scrollable-area-left">
+      <section>
+        <div class="slide-in-left" *ngFor="let column of columns | columnsFilterPipe : searchItem ">
+            <mat-checkbox [disabled]="column.key == 'labels'" [checked]="loadChecked(column.key)" (change)="onChange($event,column)" [value]="column">{{column.label}}</mat-checkbox>
+          </div>
+      </section>
+    </div>
+  </div>
+  <div class="scrollable-main col m6 s6" style="float: right;">
+    <h4>Selected Columns ({{checkedColumns.length}})</h4>
+    <div class="scrollable-area-right right-area" cdkDropList (cdkDropListDropped)="drop($event)">
+      <div *ngIf="columns[0]" class="drag-list" >
+        <div class="drag-box" *ngFor="let col of checkedColumns" cdkDrag><mat-icon>more_vert</mat-icon>
+          <span>{{col.header}}</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="button-area">
+    <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
+    <button (click)="save()" *ngIf="this.checkedColumns.length > 0"  cdkFocusInitial class="save-btn">Save</button>
+  </div>
+  
+  

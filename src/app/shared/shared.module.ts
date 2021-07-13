@@ -63,6 +63,7 @@ import { AngularMultiSelectModule } from "angular2-multiselect-dropdown";
 import { NgScrollbarModule } from "ngx-scrollbar";
 import { getMRDSwitchesPipe } from "./pipes/getMRDSwitchs.pipe";
 import { fetchLabelsPipe } from "./pipes/fetchLabels.pipe";
+import { columnsFilterClass } from "./pipes/columnsFilter.pipe";
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { fetchLabelsPipe } from "./pipes/fetchLabels.pipe";
     sentenceCasePipe,
     convertToFormDataPipe,
     getFirstTwoLettersPipe,
-    fetchLabelsPipe
+    fetchLabelsPipe,
+    columnsFilterClass
   ],
   imports: [
     MatIconModule,
@@ -212,7 +214,8 @@ import { fetchLabelsPipe } from "./pipes/fetchLabels.pipe";
     AngularMultiSelectModule,
     NgScrollbarModule,
     getMRDSwitchesPipe,
-    fetchLabelsPipe
+    fetchLabelsPipe,
+    columnsFilterClass
   ]
 })
 export class SharedModule {}

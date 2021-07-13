@@ -3235,3 +3235,7 @@ tspan{
   --scroll-view-margin: 0;
   --scroll-view-color: transparent;
 }
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: #1D9AC0;
+}
