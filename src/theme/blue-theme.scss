@@ -3,11 +3,20 @@
 $white-color: #ffffff;
 $header-gray-color: #F3F6F8;
 $light-gray-color: #F5F5F5;
-$blue-text-color: #25AFCB;
+$blue-text-color: #1A50A3;
 $dark-gray-color: #000000;
 $red-color: #E03636;
 $green-color: #25CB8D;
 $text-color: #707070;
+
+//color theme variable
+$main-color: #4773B5;
+$fill-color: #F3F6FA;
+$main-color-background: #EFF2F7;
+$highlight-color: #F6BF2C;
+$composer-color: #e7edf6;
+$bubble-background: #E7EDF6;
+
 
 //Multi Channel colors
 $web-color: #3FABF3;
@@ -16,6 +25,3 @@ $whatsapp-color: #25d366;
 $sms-color: #ffa200;
 $viber-color: #8e24aa;
 $call-color: #F50000;
-
-
-@import "src/theme/blue-theme";

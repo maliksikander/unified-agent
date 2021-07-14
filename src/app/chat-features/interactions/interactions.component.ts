@@ -141,7 +141,7 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   inputWrapup = '';
   convers: any[];
   ringing = false;
-  callControls = true;
+  callControls = false;
   notes: any = [
     {
       'categoryName': 'payments',

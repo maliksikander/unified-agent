@@ -84,7 +84,7 @@ mat-tab-group.chat-tab-area {
 
   .mat-tab-body-wrapper {
     width: calc(100% - 60px);
-    border-left: 5px solid #E2E2E2;
+    border-left: 5px solid $fill-color;
     margin: 5px 0;
   }
 
@@ -114,8 +114,8 @@ mat-tab-group.chat-tab-area {
         border-radius: 5px;
 
         &.mat-tab-label-active{
-          background: #C4E9F6 !important;
-          box-shadow: inset 1.5px 0 0 #3FABF3, inset 0 1.5px 0 #3FABF3, inset 0 -1.5px 0 #3FABF3, inset -1.5px 0 0 #3FABF3;
+          background: $bubble-background !important;
+          box-shadow: inset 1.5px 0 0 lighten($main-color, 15%), inset 0 1.5px 0 lighten($main-color, 15%), inset 0 -1.5px 0 lighten($main-color, 15%), inset -1.5px 0 0 lighten($main-color, 15%);
 
           svg circle:nth-child(3) {
             fill: white;
@@ -270,7 +270,7 @@ mat-sidenav.mat-drawer.mat-sidenav {
 .panel-divider {
   mat-expansion-panel {
     box-shadow: none !important;
-    border: 1px solid #F1F1F1;
+    border: 1px solid $bubble-background;
   }
   .mat-expansion-panel-header{
     padding: 0 10px 0 0;
@@ -2052,8 +2052,8 @@ button.add-customer {
   height: 35px;
   line-height: 0;
   left: 12px;
-  background: #F5F5F5 !important;
-  color: #393939 !important;
+  background: lighten($blue-text-color, 60%) !important;
+  color: lighten($blue-text-color, 20%) !important;
   box-shadow: none !important;
   z-index: 2;
 

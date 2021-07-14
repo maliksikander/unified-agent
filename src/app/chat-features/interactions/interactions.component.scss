@@ -1,9 +1,10 @@
 @import "src/app/shared/globalVariables";
 
 .main-chat-bar {
-  background: $header-gray-color;
+  background: $white-color;
   height: 50px;
   position: relative;
+  border-bottom: 1px solid $highlight-color;
 
   .customer-showcase {
     height: 50px;
@@ -17,7 +18,7 @@
     color: $blue-text-color;
     width: 32px;
     height: 32px;
-    border: 2px solid lighten($blue-text-color, 10%);
+    border: 2px solid $bubble-background;
     border-radius: 100%;
     line-height: 30px;
     text-align: center;
@@ -167,16 +168,15 @@
         height: 30px;
         line-height: 30px !important;
         text-align: center;
-        background: transparent;
         border-radius: 100%;
         box-shadow: none;
-        background: $white-color;
+        background: $main-color-background;
         display: block;
         margin: 0 auto;
 
         .arrow-gray {
           right: 4px;
-          color: lighten($dark-gray-color, 60%);
+          color: $main-color;
           top: 10px;
           transform: rotate(0deg);
           position: absolute;
@@ -188,7 +188,7 @@
           z-index: 23;
 
           &:after {
-            background: #ffffff;
+            background: $main-color-background;
             width: 11px;
             height: 8px;
             box-shadow: none;
@@ -205,8 +205,8 @@
         mat-icon {
           @extend button;
           font-size: 18px;
-          color: lighten($dark-gray-color, 60%);
-          background: transparent !important;
+          color: $main-color;
+          background: $main-color-background !important;
         }
         //img{
         //  position: relative;
@@ -496,7 +496,7 @@
     display: block;
     padding-left: 25px;
     position: relative;
-    border-left: 1px solid #D4F5FB;
+    border-left: 1px solid $highlight-color;
   }
 
   .int-date {
@@ -509,7 +509,7 @@
     line-height: 18px;
 
     span {
-      color: #BEBEBE;
+      color: #8d9192;
       font-size: 12px;
 
       b {
@@ -798,7 +798,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    background: #F3F6F8;
+    background: $composer-color;
 
     label.count-reply {
       position: absolute;
@@ -1363,20 +1363,21 @@ button.attachment-btn {
   padding: 0;
 
   button {
-    background: #F3F6F8;
+    background: $composer-color;
     margin-left: 5px;
     height: 28px;
     line-height: 28px;
     font-size: 12px;
     min-width: 80px;
     border-radius: 5px 5px 0 0;
+    color: lighten($dark-gray-color, 15%);
 
     &.customer-select,  &.whisper-select {
       height: 30px;
     }
 
     &.whisper-mode{
-      background: #FFFAE6;
+      background: $highlight-color !important;
     }
   }
 }
@@ -1557,7 +1558,7 @@ button.attachment-btn {
     position: relative;
     text-align: left !important;
     margin: 0;
-    color: #707070;
+    color: $main-color;
     font-weight: 500;
     font-size: 11px;
     background: #ECF7FB;
