@@ -22,7 +22,7 @@
     right: 0;
     top: 50%;
     transform: translate(0, -50%);
-    box-shadow: 0 0 5px #ccc;
+    box-shadow: -3px 0 3px #ccc !important;
     border-radius: 5px 0 0 5px;
   }
 }
@@ -38,8 +38,8 @@
   }
   .right-drag-content {
     .material-icons.drag-icon {
-      text-shadow: -6px 0px 0px lighten($dark-gray-color, 70%);
-      color: lighten($dark-gray-color, 70%);
+      text-shadow: -5px 0px 0px lighten($main-color, 20%);
+      color: lighten($main-color, 20%);
       font-size: 16px;
       margin-right: 5px;
 
@@ -47,6 +47,22 @@
     ul{
       padding: 0 5px;
       clear: both;
+    }
+    .customer-info-panel {
+      mat-expansion-panel-header {
+        background: $white-color !important;
+        border-bottom: 1px solid $highlight-color;
+
+        .material-icons.drag-icon {
+          text-shadow: -5px 0px 0px $highlight-color;
+          color: $highlight-color;
+
+        }
+
+        h3{
+          background: $main-color-background;
+        }
+      }
     }
     mat-expansion-panel-header {
       background: $header-gray-color !important;
@@ -203,17 +219,18 @@
   h3 {
     text-align: center;
     margin: 0;
-    font-size: 14px;
+    font-size: 13px;
     width: 30px;
     height: 30px;
-    background: #fff;
+    background: $white-color;
     color: $blue-text-color;
-    line-height: 30px;
+    line-height: 32px;
     border-radius: 100%;
     float: left;
     top: 2px;
     position: relative;
     text-transform: uppercase;
+    font-weight: bold;
   }
 
   .user-name {
@@ -273,7 +290,7 @@
     border-radius: 3px;
     padding: 5px 8px;
     &:hover{
-      background: #F3F6F8;
+      background: $main-color-background;;
       .channel-list-action{
         display: block;
         transition: all .2s;

@@ -955,14 +955,14 @@ button.main-menu-item{
 .back-to-interaction{
     span{
       font-size: 22px;
-      color: $green-color;
+      color: $theme-green;
       transition: all 0.2s;
       margin-right: 3px;
       vertical-align: bottom;
       cursor: pointer;
     &:hover{
       transition: all .2s;
-        color: darken($green-color, 10%);
+        color: darken($theme-green, 10%);
     }
   }
 }

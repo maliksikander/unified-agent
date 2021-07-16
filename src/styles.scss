@@ -83,16 +83,17 @@ mat-tab-group.chat-tab-area {
   }
 
   .mat-tab-body-wrapper {
-    width: calc(100% - 60px);
-    border-left: 5px solid $fill-color;
-    margin: 5px 0;
+    width: calc(100% - 70px);
+    border-left: 10px solid $fill-color;
+    margin: 10px 0;
   }
 
   .mat-tab-header {
     width: 60px;
     background: $white-color;
-    margin-top: 46px;
-    height: calc(100% - 50px);
+    margin-top: 55px;
+    height: calc(100% - 65px);
+    border: 0;
 
     .mat-ink-bar{
       display: none !important;
@@ -198,11 +199,11 @@ mat-tab-group.chat-tab-area {
 
 // Right Tabs
 .mat-drawer-container.mat-sidenav-container.mat-drawer-container-has-open {
-  width: 280px;
+  width: 315px;
   //display: inherit;
   transition: all .3s;
   transform: none !important;
-  min-width: 280px;
+  min-width: 315px;
 }
 .mat-drawer-container.mat-sidenav-container {
   //width: 0;
@@ -297,7 +298,7 @@ snack-bar-container.success-snackbar {
 //Expansion panel
 .instruction-content {
   mat-expansion-panel-header.mat-expanded {
-    background: #F5F5F5 !important;
+    background: $main-color-background !important;
     border-radius: 0;
     margin-bottom: 10px;
   }
@@ -1273,7 +1274,7 @@ padding: 0 !important;
   }
 
   .right-info-bar button {
-    right: 285px !important;
+    right: 315px !important;
   }
 }
 .suggested-answer.answer-autocomplete {
@@ -2043,11 +2044,10 @@ ngx-mat-datetime-content, .time-container {
     display: none;
   }
 }
-
 //Add customer trigger
 button.add-customer {
   position: absolute;
-  top: 10px;
+  top: 15px;
   width: 35px;
   height: 35px;
   line-height: 0;
@@ -2063,7 +2063,7 @@ button.add-customer {
     text-align: left;
     text-transform: capitalize;
     color: #5D5D5D;
-    font-size: 14px;
+    font-size: 12px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: pre;
@@ -2076,7 +2076,7 @@ button.add-customer {
     margin: 0 auto;
     left: 5px;
     border-radius: 5px;
-    border: 2px solid #ccc;
+    border: 2px solid #7d9ccc;
     text-align: left;
     padding-left: 10px;
 
