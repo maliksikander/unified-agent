@@ -191,7 +191,7 @@
                               <li class="agent-pic">
                                 <span><img src="assets/images/ag1.png"> </span>
                                 <span><img src="assets/images/cs1.png"> </span>
-                                <span><img src="assets/images/bot1.png"> </span>
+                                <span class="robot-pic"><img src="assets/images/robot-dark.svg"> </span>
                               </li>
                               <li class="social-logo">
                                 <span class="channel-icon web"><img src="assets/images/web.svg"> </span>
@@ -210,7 +210,39 @@
                       </mat-expansion-panel-header>
 
 
-                      some detail text
+                      <div class="chat-message agent-message">
+                        <div class="profile-pic">
+                          <div class="active-channel channel-icon {{customer.info.channel}}"><img width="20" src="assets/images/web.svg"></div>
+                          <div class="profile-pic-area user-img">RA</div>
+                        </div>
+                        <div class="chat-message-content ">
+                          <p [innerHTML]="'Dear Customer,\n'+
+'\n'+
+'                            You may contact our 24/7 available support team via E-mail or Call.\n'+
+'\n'+
+'\n'+
+'\n'+
+'\n'+
+'                            Customer Support\n'+
+'                            Email:support@abctelecom.com\n'+
+'\n'+
+'                            Customer Support\n'+
+'                            Voice:+4489858785, +4444787485\n'+
+'\n'+
+'                            Thank you,'">
+
+                            <span class="message-stamp">
+                     <span class="chat-time">16:15:45</span>
+                <span class="material-icons delivery-status">done_all</span>
+                  </span></p>
+
+
+                        </div>
+
+                      </div>
+
+
+
 
                     </mat-expansion-panel>
                   </div>
@@ -381,7 +413,7 @@
                               <li class="agent-pic">
                                 <span><img src="assets/images/ag1.png"> </span>
                                 <span><img src="assets/images/cs1.png"> </span>
-                                <span><img src="assets/images/bot1.png"> </span>
+                                <span class="robot-pic"><img src="assets/images/robot-dark.svg"> </span>
                               </li>
                               <li class="social-logo">
                                 <span class="channel-icon web"><img src="assets/images/web.svg"> </span>

@@ -307,13 +307,13 @@
         .profile-pic-area {
           width: 32px;
           height: 32px;
-          background: #F5F5F5;
+          background: $customer-bubble;
           text-align: center;
           font-size: 11px;
           font-weight: 600;
           line-height: 35px;
           border-radius: 100%;
-          color: #5f5f5f;
+          color: #000;
           text-transform: uppercase;
         }
       }
@@ -321,7 +321,7 @@
       .chat-message-content {
         position: relative;
         z-index: 2;
-        background: #F5F5F5;
+        background: $customer-bubble;
         padding: 8px 10px;
         display: table;
         border-radius: 3px;
@@ -332,7 +332,7 @@
           position: absolute;
           top: 0;
           border: 15px solid transparent;
-          border-top-color: #F5F5F5;
+          border-top-color: $customer-bubble;
           border-bottom: 0;
           border-left: 0;
           border-radius: -12px;
@@ -371,7 +371,7 @@
       }
 
       .chat-time {
-        color: #AAAAAA;
+        color: #646464;
         margin-left: 5px;
         vertical-align: middle;
         align-self: center;
@@ -388,18 +388,18 @@
           margin-right: inherit;
 
           .profile-pic-area {
-            background: #ECF7FB;
+            background: $bubble-background;
           }
         }
 
         .chat-message-content {
-          background: #ECF7FB;
+          background: $bubble-background;
 
           &:before {
             left: inherit;
             right: -8px;
             transform: rotate(0);
-            border-top-color: #ECF7FB;
+            border-top-color: $bubble-background;
           }
 
           &:after {
@@ -545,10 +545,9 @@
         &:last-child {
           border-right: 0;
         }
-
-        span, p {
+        span,p {
           font-size: 12px;
-          color: #707070;
+          color: #212121;
           margin-top: 0;
           margin-bottom: 0;
         }
@@ -566,6 +565,16 @@
           height: 21px;
           margin: 0 3px;
           border-radius: 100%;
+
+          &.robot-pic{
+            background: $main-color;
+
+            img{
+              filter: brightness(10);
+              width: 13px;
+              margin: auto;
+            }
+          }
 
           img {
             width: 21px;
@@ -610,14 +619,14 @@
 
   .section-tags {
     span {
-      background: #f7f7f7;
       margin: 0 3px;
       padding: 3px 8px;
       border-radius: 15px;
       font-size: 10px !important;
       position: relative;
       top: -2px;
-      color: #707070;
+      border: 1px solid lighten($main-color, 30%);
+      background: #fff;
 
     }
   }
@@ -804,7 +813,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    background: $composer-color;
+    background: $bubble-background;
 
     label.count-reply {
       position: absolute;
@@ -1162,7 +1171,7 @@
   position: absolute;
   right: 10px;
   width: 15px;
-  background-image: url("../../../assets/images/arrow-round.png");
+  background-image: url("../../../assets/images/arrow-round.svg");
   background-size: 100%;
   background-color: transparent;
   background-position: center;
@@ -1293,7 +1302,7 @@
 .material-icons.delivery-status {
   font-size: 16px;
   line-height: 10px;
-  color: #41b1ca;
+  color: $blue-text-color;
   position: relative;
   top: 3px;
 }
@@ -1369,7 +1378,7 @@ button.attachment-btn {
   padding: 0;
 
   button {
-    background: $composer-color;
+    background: $bubble-background;
     margin-left: 5px;
     height: 28px;
     line-height: 28px;

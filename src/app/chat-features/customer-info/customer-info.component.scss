@@ -36,7 +36,7 @@
     box-shadow: none !important;
     border-radius: 0 !important;
   }
-  .right-drag-content {
+  //.right-drag-content {
     .material-icons.drag-icon {
       text-shadow: -5px 0px 0px lighten($main-color, 20%);
       color: lighten($main-color, 20%);
@@ -76,7 +76,7 @@
         align-items: center;
       }
     }
-  }
+  //}
   .multi-channel-area{
     mat-expansion-panel {
       margin: 5px -5px !important;
@@ -290,7 +290,7 @@
     border-radius: 3px;
     padding: 5px 8px;
     &:hover{
-      background: $main-color-background;;
+      background: $main-color-background;
       .channel-list-action{
         display: block;
         transition: all .2s;

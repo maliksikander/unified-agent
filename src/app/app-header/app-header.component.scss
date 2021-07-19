@@ -885,27 +885,35 @@ button.main-menu-item{
   width: 40px;
 
   button{
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
-    background: #f1f1f1;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    background: transparent;
     overflow: hidden;
-    transition: all .2s;
+    transition: all 0.2s;
 
-    img{
-      position: relative;
-      top: -11px;
-      width: 12px;
-      transition: all .2s;
+    //img{
+    //  position: relative;
+    //  top: -11px;
+    //  width: 12px;
+    //  transition: all .2s;
+    //}
+    mat-icon{
+      color: $highlight-color;
+      font-size: 24px;
     }
 
     &:hover, &.announcement-tab-opened{
-      background: #D4F5FB;
+      //background: #D4F5FB;
       transition: all .2s;
-      img{
-        top: 5px;
-        transition: all .2s;
+      mat-icon{
+        color: darken($highlight-color, 20%);
       }
+
+      //img{
+      //  top: 5px;
+      //  transition: all .2s;
+      //}
     }
   }
 
@@ -920,8 +928,8 @@ button.main-menu-item{
     color: #fff;
     line-height: 13px;
     text-align: center;
-    right: 4px;
-    top: -4px;
+    right: 5px;
+    top: -2px;
     font-weight: 600;
     border-radius: 100%;
   }

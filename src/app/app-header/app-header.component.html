@@ -49,7 +49,10 @@
           <span class="notification-hint">2</span>
           <button mat-icon-button class="announcement-trigger"
                   [ngClass]="{'announcement-tab-opened': sidenav.opened}"
-                  (click)="sidenav.toggle()"> <img src="assets/images/announcement.svg"></button>
+                  (click)="sidenav.toggle()">
+<!--            <img src="assets/images/announcement.svg">-->
+          <mat-icon>notifications</mat-icon>
+          </button>
 
         </div>
 

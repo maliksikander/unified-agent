@@ -237,7 +237,7 @@ mat-sidenav.mat-drawer.mat-sidenav {
 }
 
 //right-bar
-.right-drag-content {
+.right-drag-accordion {
   .mat-expansion-panel-body {
     padding: 0;
     border-top-width: 0 !important;
@@ -2120,7 +2120,7 @@ button.add-customer {
         .section-tags {
           span {
             background: #fff !important;
-            color: #707070 !important;
+            color: #212121 !important;
 
           }
         }
