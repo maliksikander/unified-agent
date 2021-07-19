@@ -12,7 +12,7 @@
     "coverage": "jest -i --coverage",
     "format:check": "prettier --check **/*.ts",
     "format:fix": "prettier --write **/*.ts",
-    "sonar":  "node sonar-project.js"
+    "sonar": "node sonar-project.js"
   },
   "private": true,
   "dependencies": {
@@ -40,7 +40,7 @@
     "ngx-scrollbar": "^4.2.0",
     "ngx-ui-loader": "^8.0.0",
     "primeicons": "^1.0.0",
-    "primeng": "^8.1.1",
+    "primeng": "^12.0.0",
     "rxjs": "~6.4.0",
     "socket.io-client": "4.0.1",
     "tslib": "^1.10.0",

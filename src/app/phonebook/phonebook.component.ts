@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from "@angular/core";
 import { MatDialog } from "@angular/material";
 import { CreateCustomerComponent } from "../create-customer/create-customer.component";
 import { FormControl } from "@angular/forms";
-import { LazyLoadEvent } from "primeng/primeng";
 import { httpService } from "../services/http.service";
 import { CustomerActionsComponent } from "../customer-actions/customer-actions.component";
 import { cacheService } from "../services/cache.service";
@@ -15,6 +14,7 @@ import { columnPreferences } from "../column-preferences/column-preferences.comp
 })
 export class PhonebookComponent implements OnInit {
   customers;
+  totalRecords:number;
   FilterSelected = "action";
   selectedTeam = "us-corporate";
   showLblTooltip: boolean = false;
@@ -77,11 +77,10 @@ export class PhonebookComponent implements OnInit {
       this.cols = e.data.docs[0].columns;
       this._httpService.getCustomer().subscribe((e) => {
         this.rows = e.data.docs;
+        this.totalRecords = e.data.total;
       });
     });
   }
-
-  onLazyLoad(event: LazyLoadEvent) {}
 
   remove(filter: string): void {
     const index = this.filterQuery.indexOf(filter);
