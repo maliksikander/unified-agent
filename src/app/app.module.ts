@@ -28,6 +28,8 @@ import {fetchLabelsPipe} from './shared/pipes/fetch-labels.pipe';
 import { ColumnPreferencesComponent } from './new-components/column-preferences/column-preferences.component';
 import { ActiveChatsComponent } from './supervisor/active-chats/active-chats.component';
 import { QueueChatsComponent } from './supervisor/queue-chats/queue-chats.component';
+import { SubscribedListComponent } from './new-components/pull-mode/subscribed-list/subscribed-list.component';
+import { SubscribedListPreviewComponent } from './new-components/pull-mode/subscribed-list-preview/subscribed-list-preview.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,8 @@ import { QueueChatsComponent } from './supervisor/queue-chats/queue-chats.compon
     ColumnPreferencesComponent,
     ActiveChatsComponent,
     QueueChatsComponent,
+    SubscribedListComponent,
+    SubscribedListPreviewComponent,
   ],
   imports: [
     BrowserModule,

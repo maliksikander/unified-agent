@@ -121,7 +121,7 @@
     .list-group-item {
       position: relative;
       border-radius: 100% !important;
-      display: block;
+      display: inline-block;
       padding: 0;
       border: 0 !important;
       width: 30px;
@@ -213,7 +213,7 @@
           @extend button;
           font-size: 18px;
           color: $main-color;
-          background: $main-color-background !important;
+          //background: $main-color-background !important;
         }
         //img{
         //  position: relative;

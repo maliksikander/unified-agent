@@ -9,11 +9,15 @@ import {DashboardComponent} from './supervisor/dashboard/supervisor-dashboard.co
 import {PhonebookComponent} from './phonebook/phonebook.component';
 import {CreateLabelComponent} from './new-components/create-label/create-label.component';
 import {SchemaSettingsComponent} from './new-components/schema-settings/schema-settings.component';
+import {SubscribedListComponent} from './new-components/pull-mode/subscribed-list/subscribed-list.component';
+import {SubscribedListPreviewComponent} from './new-components/pull-mode/subscribed-list-preview/subscribed-list-preview.component';
 
 export const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'customers/phonebook', component: PhonebookComponent },
     { path: 'label', component: CreateLabelComponent },
+    { path: 'subscribed-list', component: SubscribedListComponent },
+    { path: 'subscribed-list-view', component: SubscribedListPreviewComponent },
     { path: 'supervisor/dashboard', component: DashboardComponent },
     { path: 'supervisor/announcement', component: AnnouncementComponent },
     { path: 'customer-schema', component: SchemaSettingsComponent },

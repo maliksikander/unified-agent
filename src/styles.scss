@@ -175,7 +175,7 @@ mat-tab-group.chat-tab-area {
     }
 
     .mat-tab-body-wrapper {
-      width: calc(100% - 280px);
+      width: calc(100% - 290px);
     }
     .user-badge {
       text-align: left;
@@ -185,11 +185,11 @@ mat-tab-group.chat-tab-area {
     }
 
     .chat-footer {
-      width: calc(100% - 295px) !important;
-      left: 290px !important;
+      width: calc(100% - 310px) !important;
+      left: 300px !important;
     }
     .customer-bar-opened .chat-footer{
-      width: calc(100% - 580px) !important;
+      width: calc(100% - 635px) !important;
     }
 
   }
