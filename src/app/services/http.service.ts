@@ -83,8 +83,23 @@ export class httpService {
     });
   }
 
-  getCustomer(): Observable<any> {
-    return this._httpClient.get<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.customers, {
+  getCustomers(limit, offset, sort, query): Observable<any> {
+    return this._httpClient.get<any>(
+      this._appConfigService.config.GAT_URL +
+        this.apiEndpoints.customers +
+        `?limit=${limit}&offset=${offset}&sort=${sort.field ? sort.field + ":" + sort.order : ""}&query=${
+          query.field ? query.field + ":" + query.value : ""
+        }`,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }
+    );
+  }
+
+  createCustomer(cutomer): Observable<any> {
+    return this._httpClient.post<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.customers, cutomer, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
@@ -99,8 +114,24 @@ export class httpService {
     });
   }
 
-  getCustomerById(): Observable<any> {
-    return this._httpClient.get<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.customers + "?id=s60d5239c48f4c2323b04df42", {
+  getCustomerById(id): Observable<any> {
+    return this._httpClient.get<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.customers + "?id=" + id, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+  updateCustomerById(id, obj): Observable<any> {
+    return this._httpClient.put<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.customers + "?id=" + id, obj, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+  deleteCustomerById(id): Observable<any> {
+    return this._httpClient.delete<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.customers + "?id=" + id, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })

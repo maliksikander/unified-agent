@@ -2,8 +2,10 @@ import { Component, OnInit, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatDialog, DateAdapter } from "@angular/material";
 import { FormControl, Validators, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
-import { DateTimeAdapter } from "ng-pick-datetime";
 import { httpService } from "../services/http.service";
+import { cacheService } from "../services/cache.service";
+import { sharedService } from "../services/shared.service";
+import { ConfirmationDialogComponent } from "../new-components/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: "app-customer-actions",
@@ -13,15 +15,17 @@ import { httpService } from "../services/http.service";
 export class CustomerActionsComponent implements OnInit {
   constructor(
     private _httpService: httpService,
-    private dateTimeAdapter: DateTimeAdapter<any>,
     private dateAdapter: DateAdapter<any>,
     private dialog: MatDialog,
+    private _cacheService: cacheService,
     private _router: Router,
     public snackBar: MatSnackBar,
+    private _sharedService: sharedService,
     public dialogRef: MatDialogRef<CustomerActionsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     dialogRef.disableClose = true;
+    this.dateAdapter.setLocale("en-GB");
   }
 
   userInfo;
@@ -30,7 +34,6 @@ export class CustomerActionsComponent implements OnInit {
   userIni: boolean = false;
   schemaIni: boolean = false;
   editTab: boolean = false;
-  smsTab: boolean = false;
   editActiveMode: boolean = true;
   selectedUserNumbers = [];
   phoneControl = new FormControl("", [Validators.required]);
@@ -59,7 +62,7 @@ export class CustomerActionsComponent implements OnInit {
 
     let query = { field: "_id", value: this.data.id };
 
-    this._httpService.getCustomerById().subscribe((e) => {
+    this._httpService.getCustomerById(this.data.id).subscribe((e) => {
       console.log("userid ", e);
       this.userInfo = e.data;
       this.userIni = true;
@@ -72,18 +75,23 @@ export class CustomerActionsComponent implements OnInit {
         this.schemaIni = true;
         let urlReg = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/;
 
-        this._httpService.getLabels().subscribe((e) => {
-          this.labels = e.data;
-          this.fetchCustomerLabels();
-        });
+        // this._httpService.getLabels().subscribe((e) => {
+        //   this.labels = e.data;
+        //   this.fetchCustomerLabels();
+        // });
 
-        ee.data.filter((a) => {
+        this.schemaAttributes.filter((a) => {
           formGroup[a.key] = new FormControl({ value: this.userInfo[a.key], disabled: true }, [
             a.is_required ? Validators.required : Validators.maxLength(2083),
             a.characters ? Validators.maxLength(a.characters) : Validators.maxLength(2083),
             a.type == "email" ? Validators.email : Validators.maxLength(2083),
             a.type == "phone" ? Validators.pattern("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$") : Validators.maxLength(2083),
-            a.type == "phone" ? Validators.maxLength(20) : Validators.maxLength(2083),
+            a.type == "number" ? Validators.pattern("^[0-9]*$") : Validators.maxLength(2083),
+            a.type == "alphanumeric" ? Validators.pattern("^[a-zA-Z0-9- _]*$") : Validators.maxLength(2083),
+            a.type == "alphanumeric_special_character"
+              ? Validators.pattern("^[a-zA-Z0-9,  _ @ . : = * % ; $ # ! + / & -]*$")
+              : Validators.maxLength(2083),
+            a.type == "decimal" ? Validators.pattern("^[+-]?([0-9]+.?[0-9]*|.[0-9]+)$") : Validators.maxLength(2083),
             a.type == "url" ? Validators.pattern(urlReg) : Validators.maxLength(2083)
           ]);
         });
@@ -93,17 +101,13 @@ export class CustomerActionsComponent implements OnInit {
         if (this.data.tab == null) {
           this.editTab = true;
         } else {
-          if (this.data.tab == "sms") {
-            this.smsTab = true;
-            this.populateUserNumbers();
-          }
           if (this.data.tab == "edit") {
             this.editTab = true;
             this.editActiveMode = false;
             this.schemaAttributes.filter((e) => {
-              //  if (e.key != "created_by" && e.key != "updated_by") {
+              //  if (e.key != "createdBy" && e.key != "updatedBy") {
               this.myGroup.get(e.key).enable();
-              //  }
+              // }
             });
           }
         }
@@ -111,17 +115,17 @@ export class CustomerActionsComponent implements OnInit {
     });
   }
 
-  fetchCustomerLabels() {
-    this.userInfo.labels.filter((id) => {
-      this.labels.filter((label) => {
-        if (label._id == id) {
-          this.customerLabels.push(label);
-        }
-      });
-    });
+  // fetchCustomerLabels() {
+  //   this.userInfo.labels.filter((id) => {
+  //     this.labels.filter((label) => {
+  //       if (label._id == id) {
+  //         this.customerLabels.push(label);
+  //       }
+  //     });
+  //   });
 
-    this.myGroup.get("labels").patchValue(this.customerLabels);
-  }
+  //   this.myGroup.get("labels").patchValue(this.customerLabels);
+  // }
 
   getLatestPhoneOfCustomer() {
     // this._callService.getContactById(this.data.id).subscribe((e) => {
@@ -132,16 +136,17 @@ export class CustomerActionsComponent implements OnInit {
 
   saveData(customerObj) {
     // customerObj = this.fetchTheIdsOfLabels(customerObj);
-    // customerObj['updated_by'] = this._callService.userDetails.username;
-    // this._callService.updateContactById(this.data.id, customerObj).subscribe((e) => {
-    //   this.dialogRef.close({ event: 'refresh', updatedUser: e });
-    //   if (this._callService.callActive == true) {
-    //     this._callService.callCustomerName = e.first_name + " " + e.last_name;
-    //   }
-    //   this._callService.Interceptor("customer-updated", 'succ');
-    // }, (error) => {
-    //   this._callService.Interceptor(error, 'err');
-    // });
+    customerObj["updatedBy"] = this._cacheService.agent.username;
+    console.log("customerObj ", customerObj);
+    this._httpService.updateCustomerById(this.data.id, customerObj).subscribe(
+      (e) => {
+        this.dialogRef.close({ event: "refresh" });
+        this._sharedService.Interceptor("Customer updated!", "succ");
+      },
+      (error) => {
+        this._sharedService.Interceptor(error.error, "err");
+      }
+    );
   }
 
   fetchTheIdsOfLabels(obj) {
@@ -159,21 +164,14 @@ export class CustomerActionsComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  smsClick() {
-    this.smsTab = true;
-    this.editTab = false;
-    this.editActiveMode = true;
-    this.populateUserNumbers();
-  }
   editClick() {
-    this.smsTab = false;
     this.editTab = true;
     this.editActiveMode = !this.editActiveMode;
     if (!this.editActiveMode) {
       this.schemaAttributes.filter((e) => {
-        //    if (e.key != "created_by" && e.key != "updated_by") {
+        // if (e.key != "createdBy" && e.key != "updatedBy") {
         this.myGroup.get(e.key).enable();
-        //   }
+        // }
       });
     }
     if (this.editActiveMode) {
@@ -211,21 +209,24 @@ export class CustomerActionsComponent implements OnInit {
   }
 
   deleteCUstomer() {
-    // const dialogRef = this.dialog.open(ConfirmationMsgsComponent, {
-    //   maxWidth: '848px',
-    //   maxHeight: '218px',
-    //   data: { msg: this._callService.translationsObj.DELETE_CUSTOMER }
-    // });
-    // dialogRef.afterClosed().subscribe((result: any) => {
-    //   if (result && result.event == 'delete') {
-    //     this._callService.deleteCustomer(this.userInfo._id).subscribe((e) => {
-    //       this._callService.Interceptor('deleted', 'succ');
-    //       this.dialogRef.close({ event: 'delete' });
-    //     }, (error) => {
-    //       this._callService.Interceptor(error, 'err');
-    //     })
-    //   }
-    // });
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: "490px",
+      panelClass: "confirm-dialog",
+      data: { header: "delete customer", message: `Are you sure you want to delete?` }
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result && result.event == "confirm") {
+        this._httpService.deleteCustomerById(this.data.id).subscribe(
+          (e) => {
+            this._sharedService.Interceptor("deleted!", "succ");
+            this.dialogRef.close({ event: "delete" });
+          },
+          (error) => {
+            this._sharedService.Interceptor(error, "err");
+          }
+        );
+      }
+    });
   }
 
   validateForm() {

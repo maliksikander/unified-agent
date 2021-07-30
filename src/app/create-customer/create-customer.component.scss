@@ -81,7 +81,7 @@
 
 .lbl {
   color: #737373;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
 }
 
@@ -123,5 +123,18 @@
   border-radius: 100%;
   position: relative;
   display: inline-block;
-  top: 2px;
+  top: 1px;
+}
+
+.validater{
+  color: coral;
+  font-size: 9px;
+  border: 1px solid;
+  padding: 2px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.check-box{
+  margin-top: 2px;
 }

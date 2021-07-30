@@ -121,7 +121,7 @@ export class socketService {
   }
 
   onCimEventHandler(cimEvent, topicId) {
-    console.log("cim event ",cimEvent)
+    console.log("cim event ", cimEvent);
     let sameTopicConversation = this.conversations.find((e) => {
       return e.topicId == topicId;
     });

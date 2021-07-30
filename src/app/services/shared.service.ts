@@ -28,10 +28,11 @@ export class sharedService {
 
   Interceptor(e, res) {
     if (res == "err") {
+      console.log("e", e);
       if (e.statusCode == 401) {
         this._snackbarService.open("UNAUTHORIZED USER", "err");
       } else if (e.statusCode == 400) {
-        this._snackbarService.open("Bad Request", "err");
+        this._snackbarService.open(e.msg.error.attribute ? e.msg.error.attribute + " is " + e.msg.error.validation : "Bad Request", "err");
       } else if (e.statusCode == 412) {
         this._snackbarService.open("unable to fetch license status", "err");
       } else if (e.statusCode == 500) {

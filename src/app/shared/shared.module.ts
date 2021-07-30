@@ -215,7 +215,7 @@ import { columnsFilterClass } from "./pipes/columnsFilter.pipe";
     NgScrollbarModule,
     getMRDSwitchesPipe,
     fetchLabelsPipe,
-    columnsFilterClass,
+    columnsFilterClass
   ]
 })
 export class SharedModule {}

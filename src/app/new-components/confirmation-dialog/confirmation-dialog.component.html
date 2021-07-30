@@ -5,8 +5,8 @@
   <div class="confirmation-content">
     <p [innerHTML]="messageText"></p>
     <div class="confirmation-action">
-      <button mat-raised-button class="close-btn" mat-dialog-close>Cancel</button>
-      <button mat-raised-button class="confirm-btn" mat-dialog-close>Confirm</button>
+      <button mat-raised-button class="close-btn" mat-dialog-close (click)="cancel()">Cancel</button>
+      <button mat-raised-button class="confirm-btn" mat-dialog-close (click)="confirm()">Confirm</button>
     </div>
   </div>
 </div>

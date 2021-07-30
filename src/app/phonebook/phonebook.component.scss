@@ -85,7 +85,7 @@
   display: none !important;
 }
 .hover{
-  color: darken(#c5c5c5, 20%);
+  color: coral;
   transition: all .3s;
 }
 span.filter-icon {
@@ -106,9 +106,6 @@ span.sorting-icons {
   transition: all .3s;
   cursor: pointer;
   margin-right: 3px;
-  &:hover{
-    @extend .hover;
-  }
   span {
     width: 7px;
   }
@@ -127,8 +124,7 @@ span.sorting-icons {
   margin-bottom: 8px;
   margin-left: 5px;
   &:hover{
-    @extend .hover;
-    text-shadow: -5px 0 0 darken(#c5c5c5, 20%);
+    cursor:grabbing;
   }
 }
 
@@ -136,15 +132,14 @@ span.sorting-icons {
 .customer-search{
   padding: 5px;
   position: relative;
-  background: #F2F2F2;
-  border-top: 1px solid #efefef;
-
   input{
     width: 100%;
     border: 1px solid #efefef;
     border-radius: 3px;
     height: 25px;
     line-height: 25px;
+    color: gray;
+    padding: 0 19px 0 5px;
   }
 
   .close-filter {
@@ -152,7 +147,7 @@ span.sorting-icons {
     height: 15px;
     position: absolute;
     right: 8px;
-    top: 12px;
+    top: 14px;
     cursor: pointer;
 
     mat-icon{
@@ -224,4 +219,16 @@ tr.slide-in-left:hover {
     overflow: hidden;
     margin: 2px;
   }
+}
+
+.color {
+  color: #179ead !important;
+}
+
+.k-i-sort-desc-sm:hover{
+  color: coral;
+}
+
+.k-i-sort-asc-sm:hover{
+  color: coral;
 }

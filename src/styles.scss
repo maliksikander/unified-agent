@@ -4,6 +4,11 @@
 @import '~primeng/resources/themes/nova-light/theme.css';
 @import '~primeng/resources/primeng.min.css';
 @import '~@progress/kendo-theme-default/dist/all.css';
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+
+@import "primeicons/primeicons.css";
+@import "primeng/resources/primeng.min.css";
+@import "primeng/resources/themes/nova-dark/theme.css";
 textarea, #EmojiLink a{
   font-family: "Roboto", sans-serif, "Segoe UI", "Segoe UI Emoji", "Apple Color Emoji" !important;
 }
@@ -53,11 +58,11 @@ button{
 }
 //Checkbox default ripple and selected color
 .mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate,.mat-checkbox-checked.mat-primary .mat-checkbox-background, .mat-checkbox-indeterminate.mat-primary .mat-checkbox-background {
-  background-color: #269ec2;
+  background-color: #269ec2 !important;
 }
 
 .mat-checkbox-checked:not(.mat-checkbox-disabled).mat-primary .mat-ripple-element, .mat-checkbox:active:not(.mat-checkbox-disabled).mat-primary .mat-ripple-element {
-  background: #269ec2;
+  background: #269ec2 !important;
 }
 //Loading Area
 .loading-area {
@@ -2163,7 +2168,7 @@ button.add-customer {
 
   .c-btn {
     //background: #999;
-    border: 1px solid #CCC;
+    border: 1px solid #cfcfcf;
     color: #999;
     display: table !important;
     line-height: 24px !important;
@@ -2172,7 +2177,7 @@ button.add-customer {
     cursor: pointer;
     align-items: center;
     padding: 2px 0 !important;
-    min-height: 43px !important;
+    min-height: 36px !important;
 
     &:focus {
       outline: none !important;
@@ -2186,8 +2191,8 @@ button.add-customer {
       margin: 0;
       padding-left: 3px !important;
       width: calc(100% - 20px);
-      padding-top: 8px !important;
-      padding-bottom: 8px !important;
+      position: relative;
+    top: 2px;
 
       .c-token {
         list-style: none;
@@ -2197,7 +2202,7 @@ button.add-customer {
 
         .c-label {
           color: #676767 !important;
-          border: 1px solid #cccccc;
+          border: 1px solid #cfcfcf;
           line-height: 0;
           border-radius: 16px;
           padding: 2px 17px 2px 3px;
@@ -2539,24 +2544,29 @@ color: #fff;
   .mat-checkbox-label {
     font-size: 12px;
   }
-  .mat-checkbox-frame{
-    border: 1px solid rgba(0,0,0,.12);
-  }
-  .mat-checkbox-layout {
-    color: rgb(119, 119, 119);
-  }
-  .mat-checkbox-inner-container {
-    width: 25px;
-    height: 25px;
-  }
-  .check-box{
+ 
+  .schema-check-box{
     label{
       align-items: center;
     }
   }
+  .mat-checkbox-inner-container {
+    width: 25px !important;
+    height: 25px !important;
+  }
 }
 
-.check-box{
+.mat-checkbox-layout {
+  color: rgb(119, 119, 119) !important;
+}
+.mat-checkbox-inner-container {
+  width: 30px !important;
+  height: 30px !important;
+}
+.mat-checkbox-frame{
+  border: 1px solid rgba(0,0,0,.12) !important;
+}
+.schema-check-box{
   padding: 20px 0 0 0;
   margin: 0 0 0 15px;
   align-self: center;
@@ -2580,14 +2590,7 @@ color: #fff;
   .mat-checkbox-frame{
     border: 1px solid rgba(0,0,0,.12);
   }
-  .mat-checkbox-layout {
-    color: rgb(119, 119, 119);
-  }
-  .mat-checkbox-inner-container {
-    width: 25px;
-    height: 25px;
-  }
-  .check-box{
+  .schema-check-box{
     label{
       align-items: center;
     }
@@ -3238,4 +3241,87 @@ tspan{
 
 .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
   background-color: #1D9AC0;
+}
+
+body .ui-paginator .ui-dropdown {
+  margin-left: 0.5em;
+  height: auto !important;
+  min-width: auto;
+}
+
+body {
+  .ui-table {
+      .ui-table-tbody {
+          > tr {
+              background: #ffffff !important;
+          }
+
+          > tr:nth-child(even) {
+              background-color: #fcfcfc !important;
+          }
+      }
+  }
+}
+
+.read-view {
+  top: -6px;
+  position: relative;
+
+  .mat-input-element {
+    //  font-weight: bolder !important;
+    color: #6e6d71 !important;
+    opacity: 1 !important;
+  }
+
+  .mat-form-field-infix {
+    border: 0 !important
+  }
+
+  textarea {
+    position: relative;
+    resize: none !important;
+    display: table;
+    margin-bottom: 31px !important;
+  }
+}
+
+.main-content-create-customer{
+  .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: 0;
+  }
+  .mat-form-field-infix {
+    border: 0 !important;
+    padding: 11px 0px !important;
+}
+}
+
+.mat-form-field-appearance-outline{
+  .mat-form-field-outline-thick {
+    color: rgb(184 184 184);
+  }
+&.mat-focused{
+.mat-form-field-outline-thick{
+color: #1D9AC0;
+}
+
+}
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-end, .mat-form-field-appearance-outline .mat-form-field-outline-start {
+  border: 1px solid #cfcfcf;
+  min-width: 5px;
+}
+
+.read-view{
+ .mat-form-field-outline-end, .mat-form-field-outline-start {
+  opacity: .8;
+}.mat-form-field-wrapper {
+  padding-bottom: 7px;
+}
+}
+
+.main-content-action{
+ .mat-form-field-subscript-wrapper{
+   margin-top: 0 !important;
+ }
 }
