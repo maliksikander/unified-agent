@@ -41,8 +41,8 @@
       <div class="form-group label-name col-md-4 pr-2">
         <label class="text-left">Field Type</label>
         <div class="select-list">
-          <mat-form-field  appearance="outline">
-            <select disabled (ngModelChange)="onTypeChange($event)" matNativeControl [(ngModel)]="columnTypeControllar">
+          <mat-form-field appearance="outline">
+            <select disabled matNativeControl [(ngModel)]="columnTypeControllar">
               <option *ngFor="let type of columnTypes" [value]="type">{{type | titlecase}}</option>
             </select>
           </mat-form-field>
@@ -69,7 +69,7 @@
         <mat-checkbox [(ngModel)]="mandatory" color="primary">Mandatory Attribute</mat-checkbox>
       </div>
       <div class="schema-check-box form-group">
-        <mat-checkbox  color="primary">Personal Identifiable Information</mat-checkbox>
+        <mat-checkbox color="primary">Personal Identifiable Information</mat-checkbox>
       </div>
 
 
@@ -93,18 +93,19 @@
         <div class="select-list">
           <mat-form-field appearance="outline">
             <mat-select [formControl]="selectChannel" multiple class="selected-channels">
-              <mat-option  class="channel-options" *ngFor="let channel of channelList" [value]="channel">{{channel}}</mat-option>
+              <mat-option class="channel-options" *ngFor="let channel of channelList" [value]="channel">{{channel}}
+              </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
       </div>
 
 
-<div class="action-right">
+      <div class="action-right">
 
-      <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
-      <button *ngIf="desc.valid && textLength.valid" (click)="makeObject()" class="save-btn">Save</button>
-</div>
+        <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
+        <button *ngIf="desc.valid && textLength.valid" (click)="makeObject()" class="save-btn">Save</button>
+      </div>
     </div>
 
   </div>
