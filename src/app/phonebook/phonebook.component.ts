@@ -97,14 +97,14 @@ export class PhonebookComponent implements OnInit {
     });
   }
 
-  filter(value, field) {
+  filter(value, field, v) {
     this.query = { field: field, value: encodeURIComponent(this.filterValue) };
     this.filterQuery = [];
     this.filterQuery.push(field + ":" + this.filterValue);
     this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
   }
 
-  Cfilter(value, field) {
+  Cfilter(value, field, v) {
     let b = moment.utc(this.filterValue).utcOffset(-5).toISOString();
     this.filterQuery = [];
     this.filterQuery.push(field + ":" + b);
@@ -175,7 +175,7 @@ export class PhonebookComponent implements OnInit {
       data: { id: id, tab: tab }
     });
     dialogRef.afterClosed().subscribe((result: any) => {
-      if ((result && result.event == "refresh") || result.event == "delete") {
+      if ((result && result.event && result.event == "refresh") || (result && result.event && result.event == "delete")) {
         this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
       }
     });

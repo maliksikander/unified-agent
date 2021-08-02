@@ -28,11 +28,7 @@ export class EditAttributeComponent implements OnInit {
   channelIden: boolean = this.data.attribute.is_channel_identifier;
 
   textLength = new FormControl(this.data.attribute.characters, []);
-  label = new FormControl({ value: this.data.attribute.label, disabled: true }, [
-    Validators.required,
-    Validators.maxLength(50),
-    Validators.minLength(1)
-  ]);
+  label = new FormControl({ value: this.data.attribute.label, disabled: true });
   desc = new FormControl(this.data.attribute.desc, [Validators.maxLength(100)]);
   selectChannel = new FormControl(this.data.attribute.channels);
   channelList: string[] = ["WEB", "FACEBOOK", "WHATSAPP", "VIBER", "SMS", "GENERIC"];

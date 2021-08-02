@@ -1,7 +1,8 @@
 <div style="background: #cdf1ff">
   <mat-icon (click)="onNoClick()" class="closeBtn">close</mat-icon>
   <div class="row-trigger" mat-dialog-title>
-    <h3 (click)="validateForm()" class="header" *ngIf="userIni && schemaIni">{{userInfo.firstName}}</h3>
+    <h3 class="header" *ngIf="userIni && schemaIni">{{userInfo.firstName}} <span *ngIf="!editActiveMode"
+        class="validater" (click)="validateForm()">Validate</span></h3>
     <button (click)="editClick()"
       [ngClass]="{'borderClass' : editActiveMode != true ,  'whiteClass' : editTab == true , 'greyClass' : editTab != true}"
       class="cstmBtn slide-in-left">
@@ -17,15 +18,16 @@
 
       <div class="row">
 
-        <div *ngFor="let schemaAttribute of schemaAttributes" [ngClass]="[ schemaAttribute.type=='label' || schemaAttribute.characters >= 116 ? 'col-md-12':  'col-md-4' ]">
 
-          <div
+        <div class="main-col" *ngFor="let schemaAttribute of schemaAttributes">
+
+          <div class="main-col"
             [ngClass]="{'hidden-class': !editActiveMode && (schemaAttribute.key == 'createdBy' || schemaAttribute.key == 'updatedBy') }">
 
-            <div class="input-field"
-              
-              *ngIf="(myGroup.get(schemaAttribute.key).value != undefined && myGroup.get(schemaAttribute.key).value != null && myGroup.get(schemaAttribute.key).value != '' && myGroup.get(schemaAttribute.key).value[0] != '')
-              || !editActiveMode || schemaAttribute.type == 'bool'">
+            <div
+              [ngClass]="[ schemaAttribute.type=='label' || schemaAttribute.characters >= 116 ? 'col-md-12':  'col-md-4' ]"
+              class="input-field" *ngIf="(myGroup.get(schemaAttribute.key).value != undefined && myGroup.get(schemaAttribute.key).value != null && myGroup.get(schemaAttribute.key).value != '' && myGroup.get(schemaAttribute.key).value[0] != '')
+            || !editActiveMode || schemaAttribute.type == 'bool'">
 
 
               <div *ngIf="schemaAttribute.type == 'url'" [ngClass]="{'url-area': editActiveMode}">
@@ -43,7 +45,7 @@
                       Invalid email
                     </div>
                     <div *ngIf="myGroup.get(schemaAttribute.key).hasError('maxlength')">
-                      {{schemaAttribute.characters}} are alowed
+                      only {{schemaAttribute.characters}} characters are alowed
                     </div>
                     <div *ngIf="myGroup.get(schemaAttribute.key).hasError('pattern')">
                       Invalid pattern
@@ -105,7 +107,7 @@
                       Invalid email
                     </div>
                     <div *ngIf="myGroup.get(schemaAttribute.key).hasError('maxlength')">
-                      {{schemaAttribute.characters}} are alowed
+                      only {{schemaAttribute.characters}} characters are alowed
                     </div>
                     <div *ngIf="myGroup.get(schemaAttribute.key).hasError('pattern')">
                       Invalid pattern
@@ -119,7 +121,7 @@
               <div *ngIf="schemaAttribute.type == 'string' && schemaAttribute.characters >= 116">
                 <div [ngClass]="{'header-padding': editActiveMode}" class="lbl">{{schemaAttribute.label}}<span
                     class="red-clr" *ngIf="!editActiveMode && schemaAttribute.is_required">*</span></div>
-                <mat-form-field *ngIf="!editActiveMode" appearance="outline">
+                <mat-form-field appearance="outline">
                   <textarea [required]="schemaAttribute.is_required" [formControlName]="schemaAttribute.key"
                     matInput></textarea>
                   <mat-error>
@@ -130,15 +132,16 @@
                       Invalid email
                     </div>
                     <div *ngIf="myGroup.get(schemaAttribute.key).hasError('maxlength')">
+                      only {{schemaAttribute.characters}} characters are alowed
                     </div>
                     <div *ngIf="myGroup.get(schemaAttribute.key).hasError('pattern')">
                       Invalid pattern
                     </div>
                   </mat-error>
                 </mat-form-field>
-                <div class="text-area-text" *ngIf="editActiveMode">
+                <!-- <div class="text-area-text" *ngIf="editActiveMode">
                   {{myGroup.get(schemaAttribute.key).value}}
-                </div>
+                </div> -->
               </div>
 
 
@@ -204,6 +207,7 @@
           </div>
 
         </div>
+
       </div>
 
     </form>

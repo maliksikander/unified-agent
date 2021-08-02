@@ -229,13 +229,6 @@ export class CustomerActionsComponent implements OnInit {
     });
   }
 
-  validateForm() {
-    let a = this.myGroup.controls;
-    for (let key in a) {
-      this.myGroup.get(key).markAsTouched();
-    }
-  }
-
   makeCall(number) {
     window.parent.postMessage(number, "*");
   }
@@ -318,6 +311,14 @@ export class CustomerActionsComponent implements OnInit {
     //     });
     //   }
     // });
+  }
+
+  validateForm() {
+    let a = this.myGroup.controls;
+    for (let key in a) {
+      this.myGroup.get(key).markAsTouched();
+    }
+    console.log(this.myGroup);
   }
 
   save(a) {}
