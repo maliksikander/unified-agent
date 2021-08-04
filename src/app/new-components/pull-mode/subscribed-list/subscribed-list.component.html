@@ -1,4 +1,4 @@
-<div class="page-header row m-0 summary-view">
+<div class="page-header row m-0" *ngIf="!listPreview">
   <div class="page-heading col-md-6">
     <h4>Subscribed Lists</h4>
   </div>
@@ -7,7 +7,7 @@
   </div>
 </div>
 
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="!listPreview">
 
 
 <!---->
@@ -21,7 +21,7 @@
         </thead>
         <tbody>
 
-        <tr *ngFor="let list of subscribedList">
+        <tr (click)="listPreview = true; " *ngFor="let list of subscribedList">
           <td>{{list}}</td>
         </tr>
         </tbody>
@@ -30,7 +30,7 @@
     </div>
   </div>
 
-
+</div>
 
   <ng-template #updateList>
     <div class="note-dialog-main transfer-dialog">
@@ -76,4 +76,7 @@
     </div>
   </ng-template>
 
-</div>
+<!--Queue chat  -->
+  <div *ngIf="listPreview" class="active-chat-area  list-view-area">
+    <app-subscribed-list-preview (expandCustomerInfo)="eventFromChild($event)"></app-subscribed-list-preview>
+  </div>

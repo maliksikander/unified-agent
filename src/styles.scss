@@ -1820,7 +1820,14 @@ padding: 0 !important;
     }
   }
 }
-.active-chat-list-area .mat-form-field{
+.create-label .mat-form-field{
+
+  .mat-form-field-infix {
+    height: 28px !important;
+    line-height: 28px !important;
+  }
+}
+.active-chat-list-area .mat-form-field, .create-label .mat-form-field{
 
   .mat-form-field-infix {
     padding: 0 5px !important;
@@ -1835,7 +1842,7 @@ padding: 0 !important;
     }
   }
 }
-.announcement-selection-area, .right-actions, .active-chat-list-area {
+.announcement-selection-area, .right-actions, .active-chat-list-area, .create-label {
 
   .mat-form-field-flex{
     padding: 0 !important;
@@ -2032,8 +2039,8 @@ ngx-mat-datetime-content, .time-container {
 .emoji-trigger {
   display: block;
   overflow: hidden;
-  top: 60% !important;
-  transform: rotateZ(2deg) translate(0, -32%);
+  top: 50% !important;
+  transform: rotateZ(2deg) translate(0, -50%);
   background-position: center;
   background-repeat: no-repeat;
   height: 20px;

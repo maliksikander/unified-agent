@@ -3,30 +3,11 @@
 .page-header{
   display: flex;
   align-content: center;
-
-  .back-to-chat{
-    background: $main-color-background;
-    height: 50px;
-    width: 50px !important;
-    position: absolute;
-    left: 0;
-    border-radius: 0;
-    min-width: inherit;
-    padding: 0;
-    text-align: center;
-    &:after {
-      content: "";
-      width: 18px;
-      height: 18px;
-      position: absolute;
-      left: 22px;
-      top: 16px;
-      transform: rotate(45deg);
-      border-left: 2px solid $blue-text-color;
-      border-bottom: 2px solid $blue-text-color;
-    }
-  }
+  padding-left: 0;
 }
+
+
+
 
 .create-label {
   text-align: right;
@@ -66,7 +47,8 @@
 
     tr {
       position: relative;
-      cursor: default;
+      cursor: pointer;
+
       &:nth-of-type(even){
         background: #F7F7F7;
       }

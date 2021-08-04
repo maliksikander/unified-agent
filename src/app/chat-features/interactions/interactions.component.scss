@@ -750,7 +750,7 @@
   bottom: 10px;
   width: calc(100% - 90px);
   left: 80px;
-  min-height: 80px;
+  min-height: 50px;
   max-height: 460px;
   background-color: white;
   color: rgba(0, 0, 0, 0.87);
@@ -808,7 +808,7 @@
   }
 
   .reply-form {
-    min-height: 80px;
+    min-height: 50px;
     vertical-align: middle;
     display: flex;
     align-items: center;

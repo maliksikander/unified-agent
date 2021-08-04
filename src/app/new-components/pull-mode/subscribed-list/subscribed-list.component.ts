@@ -22,7 +22,7 @@ export class SubscribedListComponent implements OnInit {
     {id: 10, listName: 'Customer General Help'},
   ];
   updateListData = [];
-
+  listPreview = false;
   toggle(item, event: MatCheckboxChange) {
     if (event.checked) {
       this.updateListData.push(item);
@@ -78,5 +78,9 @@ export class SubscribedListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
+  }
+
+  eventFromChild(data) {
+    this.listPreview = data;
   }
 }
