@@ -37,8 +37,7 @@
         </span>
         <angular2-multiselect [data]="labels" [settings]="labelSettings" (onSelect)="onItemSelect($event)"
           (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
-          (onDeSelectAll)="onDeSelectAll($event)" [formControl]="labelsForFilter"
-          (onAddFilterNewItem)="onAddItem($event)">
+          (onDeSelectAll)="onDeSelectAll($event)" [formControl]="labelsForFilter">
 
           <c-item>
             <ng-template let-item="item">
