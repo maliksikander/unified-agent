@@ -188,7 +188,7 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   displaySuggestionsArea = false;
   cannedTabOpen = false;
   quickReplies = true;
-  viewHeight = '180px';
+  viewHeight = '130px';
   chatTransferTo;
   @Input() max: any;
   today = new Date();

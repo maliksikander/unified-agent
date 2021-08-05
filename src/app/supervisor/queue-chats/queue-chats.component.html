@@ -19,7 +19,7 @@
       <thead>
       <tr>
         <th scope="col">Customer</th>
-        <th scope="col">Waiting Since</th>
+        <th scope="col"><mat-icon>keyboard_backspace</mat-icon>Waiting Since</th>
         <th scope="col">Queue</th>
       </tr>
       </thead>
@@ -32,7 +32,7 @@
         <td><small>less than</small> {{chat.activeTime}}</td>
         <td>{{chat.queue}}</td>
         <span class="table-trigger">
-          <button mat-mini-fab class="chat-btn" matTooltip="Chat"><img src="assets/images/chat1.svg"
+          <button mat-mini-fab class="chat-btn" matTooltip="Chat"><img src="assets/images/joinchat.svg"
                                                                                               alt="Chat"></button>
           <button mat-mini-fab class="transfer-btn" matTooltip="Transfer" (click)="reQueue(reQueueTemplate)"><img src="assets/images/transfer.svg"
                                                                               alt="Transfer"></button>
