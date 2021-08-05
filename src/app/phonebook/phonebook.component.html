@@ -185,9 +185,9 @@
             <!--          <span *ngIf="col.type == 'time'">{{rowData[col.field] | date:'shortTime' }}</span>-->
             <!--          <span *ngIf="col.type == 'date'">{{rowData[col.field] | date:'M/d/yyyy' }}</span>-->
             <!--          <span-->
-            <!--            *ngIf="col.field != 'first_name' && col.type != 'date' && col.type != 'date_time' && col.type != 'time' ">{{rowData[col.field]}}</span>-->
+            <!--            *ngIf="col.field != 'firstName' && col.type != 'date' && col.type != 'date_time' && col.type != 'time' ">{{rowData[col.field]}}</span>-->
             <!--
-               <span *ngIf="col.field == 'first_name'"><span>{{rowData[col.field]}}</span>-->
+               <span *ngIf="col.field == 'firstName'"><span>{{rowData[col.field]}}</span>-->
             <!--            <span *ngIf="labels" (mouseleave)="showLblTooltip = false"-->
             <!--                  (mouseenter)="showLblTooltip = true ; LblTooltipId = rowData._id" class="lblswithname">-->
             <!--              <span *ngFor="let lbl of labels | fetchLabels : rowData.labels" [ngStyle]="{'background-color':lbl.color_code}" class="dot"></span>-->
@@ -206,18 +206,18 @@
             <span *ngIf="col.type == 'time'">{{rowData[col.field] | date:'shortTime' }}</span>
             <span *ngIf="col.type == 'date'">{{rowData[col.field] | date:'M/d/yyyy' }}</span>
             <span
-              *ngIf="col.field != 'first_name' && col.type != 'date' && col.type != 'date_time' && col.type != 'time' ">{{rowData[col.field]}}</span>
-            <span *ngIf="col.field == 'first_name'"><span>{{rowData[col.field]}}</span>
-              <!-- <span *ngIf="labels" (mouseleave)="showLblTooltip = false"
+              *ngIf="col.field != 'firstName' && col.type != 'date' && col.type != 'date_time' && col.type != 'time' ">{{rowData[col.field]}}</span>
+            <span *ngIf="col.field == 'firstName'"><span>{{rowData[col.field]}}</span>
+              <span *ngIf="labels" (mouseleave)="showLblTooltip = false"
                 (mouseenter)="showLblTooltip = true ; LblTooltipId = rowData._id" class="lblswithname">
                 <span *ngFor="let lbl of labels | fetchLabels : rowData.labels" [ngStyle]="{'background-color':lbl.color_code}" class="dot"></span>
-              </span> -->
+              </span>
             </span>
-            <!-- <div class="lbl-tooltip" *ngIf="showLblTooltip && LblTooltipId == rowData._id">
+            <div class="lbl-tooltip" *ngIf="showLblTooltip && LblTooltipId == rowData._id">
               <div *ngFor="let lbl of labels | fetchLabels : rowData.labels">
                 <span [ngStyle]="{'background-color':lbl.color_code}" class="dot-in-tool"></span><span>{{lbl.name}}</span>
               </div>
-            </div> -->
+            </div>
           </td>
 
           <div class="action-trigger">

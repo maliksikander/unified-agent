@@ -45,4 +45,8 @@ export class sharedService {
       this._snackbarService.open(e, "succ");
     }
   }
+
+  snackErrorMessage(msg) {
+    this._snackbarService.open(msg, "err");
+  }
 }

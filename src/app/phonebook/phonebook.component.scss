@@ -232,3 +232,73 @@ tr.slide-in-left:hover {
 .k-i-sort-asc-sm:hover{
   color: coral;
 }
+
+
+.lblswithname {
+
+  .dot {
+    height: 13px;
+    width: 13px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 1px solid #fff;
+  }
+}
+
+.lblswithname {
+  top: 9px;
+  position: absolute;
+  left: 62%;
+  direction: rtl;
+
+  span:nth-child(odd) {
+    position: relative;
+    left: 5px;
+    margin-left: -10px;
+  }
+
+  span:nth-child(even) {
+    position: relative;
+    margin-left: 0;
+  }
+}
+
+.dot-in-tool {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  top: 2px;
+  margin-right: 2px;
+}
+
+.lbl-tooltip {
+  position: fixed;
+  z-index: 1;
+  top: 3px;
+  left: 162px;
+  background: #ffffff;
+  padding: 2px 3px 2px 3px;
+  border: 1px solid #ccc;
+  width: auto;
+  border-radius: 2px;
+  min-width: max-content;
+
+  div {
+    display: inline-block;
+    padding: 0px 3px;
+  }
+}
+
+
+.dot-in-filter {
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  position: relative;
+  display: inline-block;
+  margin-right: 5px;
+  bottom: -5px;
+  margin-left: 4px;
+}

@@ -114,6 +114,30 @@ export class httpService {
     });
   }
 
+  createLabel(label): Observable<any> {
+    return this._httpClient.post<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.labels, label, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+  updateLabel(id, label): Observable<any> {
+    return this._httpClient.put<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.labels + "?id=" + id, label, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+  deleteLabel(id): Observable<any> {
+    return this._httpClient.delete<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.labels + "?id=" + id, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
   getCustomerById(id): Observable<any> {
     return this._httpClient.get<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.customers + "?id=" + id, {
       headers: new HttpHeaders({

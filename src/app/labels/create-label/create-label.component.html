@@ -8,7 +8,16 @@
   <div class="form-group label-name">
     <label class="text-left">Label</label>
     <mat-form-field class="field" appearance="outline">
-      <input matInput>
+      <input matInput [formControl]="name">
+      <mat-error class="mrg-top" *ngIf="name.hasError('required')">
+        field is mandatory
+      </mat-error>
+      <mat-error class="mrg-top" *ngIf="name.hasError('max')">
+        Range should be 1 - 1000
+      </mat-error>
+      <mat-error class="mrg-top" *ngIf="name.hasError('validName')">
+        That name Already Exists
+      </mat-error>
     </mat-form-field>
   </div>
 
@@ -28,8 +37,7 @@
 
   <div class="btns">
     <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
-    <button (click)="makeObject()" class="save-btn">Create</button>
+    <button *ngIf="name.valid" (click)="makeObject()" class="save-btn">Create</button>
   </div>
 
 </div>
-

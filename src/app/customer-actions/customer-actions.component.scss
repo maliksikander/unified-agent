@@ -467,13 +467,14 @@
 
 
 .brd{
-  border: 1px solid #cccccc5e;
-  margin-right: 5px;
-  border-radius: 11px;
-  padding: 1px 4px 3px 2px;
-  margin-bottom: 4px;
-  line-height: 0px;
-  display: inline-block;
+  border: 1px solid #c9c9c95e;
+    margin-right: 5px;
+    border-radius: 11px;
+    padding: 2px 2px 2px 2px;
+    margin-bottom: 4px;
+    line-height: 0px;
+    height: fit-content;
+    display: inline-block;
 
     .lbl-txt{
       font-size: 12px;
@@ -482,19 +483,18 @@
       position: relative;
     }
     .dot1 {
-      height: 15px;
-    width: 15px;
+      height: 13px;
+    width: 13px;
     border-radius: 50%;
     display: inline-block;
-    top: 1px;
     position: relative;
     margin-right: 3px;
     }
 }
 
 .dot {
-  height: 17px;
-    width: 17px;
+  height: 15px;
+    width: 15px;
     border-radius: 50%;
     position: relative;
     display: inline-block;

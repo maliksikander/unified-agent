@@ -34,28 +34,7 @@ export class CreateCustomerComponent implements OnInit {
   myGroup: FormGroup;
   nos;
   customerLabels = [];
-  labels = [
-    {
-      createdAt: "2021-03-30T12:09:52.497Z",
-      __v: 0,
-      name: "dummy",
-      updated_by: "",
-      _id: "606315109b5372a7aaf57e04",
-      created_by: "admin",
-      color_code: "#3cb44b",
-      updatedAt: "2021-03-30T12:09:52.497Z"
-    },
-    {
-      createdAt: "2021-03-30T12:11:20.124Z",
-      __v: 0,
-      name: "assasian",
-      updated_by: "admin",
-      _id: "606315689b53723ed3f57e06",
-      created_by: "admin",
-      color_code: "#a9a9a9",
-      updatedAt: "2021-03-30T12:12:05.258Z"
-    }
-  ];
+  labels = [];
   labelSettings = {
     singleSelection: false,
     text: "",
@@ -64,7 +43,7 @@ export class CreateCustomerComponent implements OnInit {
     searchPlaceholderText: "Search",
     selectAllText: "Select all",
     unSelectAllText: "Unselect all",
-    noDataLabel: "No Data",
+    noDataLabel: "No Data Available",
     enableSearchFilter: true,
     addNewItemOnFilter: true,
     primaryKey: "_id"
@@ -80,9 +59,9 @@ export class CreateCustomerComponent implements OnInit {
         return a.sort_order - b.sort_order;
       });
       let urlReg = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/;
-      // this._callService.getLabels().subscribe((e) => {
-      //   this.labels = e;
-      // })
+      this._httpService.getLabels().subscribe((e) => {
+        this.labels = e.data;
+      });
 
       let indexOfCreatedBy = this.schemaAttributes.findIndex((e) => {
         return e.key === "createdBy";
@@ -120,37 +99,6 @@ export class CreateCustomerComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  // validateForm() {
-  //   let a = this.myGroup.controls;
-  //   for (let key in a) {
-  //     this.myGroup.get(key).markAsTouched();
-  //   }
-  // }
-
-  // saveData(customerObj) {
-  //   console.log("i am called");
-  //
-  //   customerObj = this.fetchTheIdsOfLabels(customerObj);
-  //
-  //
-  //
-  //   this._callService.createCustomer(customerObj).subscribe((e) => {
-  //
-  //     this.dialogRef.close({ event: 'refresh' });
-  //
-  //     if (this._callService.callActive == true) {
-  //       this._callService.callCustomerName = e.first_name + " " + e.last_name;
-  //       this._callService.callCustomerId = e._id;
-  //       this._router.navigate(['interactions', e._id])
-  //     }
-  //
-  //     this._callService.Interceptor("Customer-Created", 'succ');
-  //
-  //   }, (error) => {
-  //     this._callService.Interceptor(error, 'err');
-  //   });
-  // }
-
   fetchTheIdsOfLabels(obj) {
     let ids = [];
     obj.labels.filter((e) => {
@@ -161,34 +109,38 @@ export class CreateCustomerComponent implements OnInit {
   }
 
   onAddItem(data) {
-    //
-    //   this._callService.getLabels().subscribe((e) => {
-    //     let duplicate : boolean = false;
-    //     e.find((label) => {
-    //       if (label.name == data) {
-    //         duplicate = true;
-    //       }
-    //     });
-    //
-    //     if (duplicate) {
-    //       this._callService.openSnackBar(this._callService.translationsObj.ALRDY, 'red-snack');
-    //     }
-    //     else if (data.length > 100) {
-    //       this._callService.openSnackBar(this._callService.translationsObj.LBLS.MAX_LEN, 'red-snack');
-    //     }
-    //     else {
-    //       let obj = {
-    //         "name": data,
-    //         "created_by": this._callService.userDetails.username,
-    //         "color_code": '#a9a9a9',
-    //       }
-    //       this._callService.createLabel(obj).subscribe((e) => {
-    //         this.customerLabels.push(e);
-    //       }, (error) => {
-    //         this._callService.Interceptor(error, 'err');
-    //       });
-    //     }
-    //   });
+    this._httpService.getLabels().subscribe((e) => {
+      let duplicate: boolean = false;
+      e.data.find((label) => {
+        if (label.name == data) {
+          duplicate = true;
+        }
+      });
+
+      if (duplicate) {
+        this._sharedService.snackErrorMessage("Name already exists");
+      } else if (data.length > 100) {
+        this._sharedService.snackErrorMessage("Max 100 characters are allowed");
+      } else {
+        let obj = {
+          name: data,
+          created_by: this._cacheService.agent.username,
+          color_code: "#a9a9a9"
+        };
+        this._httpService.createLabel(obj).subscribe(
+          (e) => {
+            this._httpService.getLabels().subscribe((ee) => {
+              this.labels = ee.data;
+              this.customerLabels.push(e.data);
+              this.myGroup.get("labels").patchValue(this.customerLabels);
+            });
+          },
+          (error) => {
+            this._sharedService.Interceptor(error.error, "err");
+          }
+        );
+      }
+    });
   }
 
   save(a) {}
@@ -206,6 +158,7 @@ export class CreateCustomerComponent implements OnInit {
   }
 
   saveData(customerObj) {
+    customerObj = this.fetchTheIdsOfLabels(customerObj);
     customerObj["createdBy"] = this._cacheService.agent.username;
     customerObj["updatedBy"] = "";
     console.log(customerObj);

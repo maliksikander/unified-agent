@@ -20,14 +20,14 @@ import { CreateCustomerComponent } from "./create-customer/create-customer.compo
 import { NgxUiLoaderModule, NgxUiLoaderHttpModule, NgxUiLoaderConfig, POSITION, SPINNER, PB_DIRECTION } from "ngx-ui-loader";
 import { AgentAnnouncementsComponent } from "./announcement/agent-announcements/agent-announcements.component";
 import { AnnouncementComponent } from "./announcement/announcement.component";
-import { CreateLabelDiagComponent } from "./new-components/create-label/create-label-diag/create-label-diag.component";
-import { CreateLabelComponent } from "./new-components/create-label/create-label.component";
 import { ConfirmationDialogComponent } from "./new-components/confirmation-dialog/confirmation-dialog.component";
 import { SchemaSettingsComponent } from "./customer-schema/schema-settings/schema-settings.component";
 import { CreateAttributeComponent } from "./customer-schema/create-attribute/create-attribute.component";
 import { CustomerActionsComponent } from "./customer-actions/customer-actions.component";
 import { EditAttributeComponent } from "./customer-schema/edit-attribute/edit-attribute.component";
 import { columnPreferences } from "./column-preferences/column-preferences.component";
+import { LabelsListComponent } from "./labels/labels-list/labels-list.component";
+import { CreateLabelComponent } from "./labels/create-label/create-label.component";
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsType: SPINNER.chasingDots,
@@ -46,15 +46,15 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     PhonebookComponent,
     CreateCustomerComponent,
     AgentAnnouncementsComponent,
-    CreateLabelDiagComponent,
-    CreateLabelComponent,
     ConfirmationDialogComponent,
     AnnouncementComponent,
     SchemaSettingsComponent,
     CreateAttributeComponent,
     CustomerActionsComponent,
     EditAttributeComponent,
-    columnPreferences
+    columnPreferences,
+    LabelsListComponent,
+    CreateLabelComponent
   ],
   imports: [
     BrowserModule,
@@ -71,9 +71,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     CreateAttributeComponent,
     CreateCustomerComponent,
     AnnouncementDialogComponent,
-    CreateLabelDiagComponent,
     ConfirmationDialogComponent,
-    columnPreferences
+    columnPreferences,
+    CreateLabelComponent
   ],
   providers: [
     appConfigService,

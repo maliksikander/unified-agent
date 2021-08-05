@@ -16,6 +16,7 @@ import * as moment from "moment";
 })
 export class PhonebookComponent implements OnInit {
   customers;
+  stateChangedSubscription;
   totalRecords: number;
   FilterSelected = "action";
   selectedTeam = "us-corporate";
@@ -32,28 +33,7 @@ export class PhonebookComponent implements OnInit {
     enableSearchFilter: true,
     primaryKey: "_id"
   };
-  labels = [
-    {
-      createdAt: "2021-03-30T12:09:52.497Z",
-      __v: 0,
-      name: "dummy",
-      updated_by: "",
-      _id: "606315109b5372a7aaf57e04",
-      created_by: "admin",
-      color_code: "#3cb44b",
-      updatedAt: "2021-03-30T12:09:52.497Z"
-    },
-    {
-      createdAt: "2021-03-30T12:11:20.124Z",
-      __v: 0,
-      name: "assasian",
-      updated_by: "admin",
-      _id: "606315689b53723ed3f57e06",
-      created_by: "admin",
-      color_code: "#a9a9a9",
-      updatedAt: "2021-03-30T12:12:05.258Z"
-    }
-  ];
+  labels = [];
   rows = [];
   cols = [];
   limit = 25;
@@ -79,11 +59,23 @@ export class PhonebookComponent implements OnInit {
 
   ngOnInit() {
     this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+    this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e) => {
+      if (e.msg == "update-labels") {
+        this.loadLabels();
+      }
+    });
   }
   setFilter(event: Event, col) {
     this.filterOnOff = !this.filterOnOff;
     event.stopPropagation();
     this.filterActiveField = col.field;
+  }
+
+  loadLabels() {
+    this.labels = [];
+    this._httpService.getLabels().subscribe((e) => {
+      this.labels = e.data;
+    });
   }
 
   loadCustomers(limit, offSet, sort, query) {
@@ -93,6 +85,7 @@ export class PhonebookComponent implements OnInit {
       this._httpService.getCustomers(limit, offSet, sort, query).subscribe((e) => {
         this.rows = e.data.docs;
         this.totalRecords = e.data.total;
+        this.loadLabels();
       });
     });
   }
@@ -159,11 +152,33 @@ export class PhonebookComponent implements OnInit {
       }
     });
   }
-  onItemSelect(item: any) {}
-  OnItemDeSelect(item: any) {}
+
+  onItemSelect(item: any) {
+    let id = [];
+    this.labelsForFilter.value.filter((e) => {
+      id.push(e._id);
+    });
+    let ids = id.toString();
+    this.query = { field: "labels", value: ids };
+    this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+  }
+  OnItemDeSelect(item: any) {
+    let id = [];
+    this.labelsForFilter.value.filter((e) => {
+      id.push(e._id);
+    });
+    if (id[0] == null) {
+      this.cancelFilter();
+    } else {
+      let ids = id.toString();
+      this.query = { field: "labels", value: ids };
+      this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+    }
+  }
   onSelectAll(items: any) {}
-  onDeSelectAll(items: any) {}
-  onAddItem(items: any) {}
+  onDeSelectAll(items: any) {
+    this.cancelFilter();
+  }
 
   onRowClick(id, tab, col) {
     const dialogRef = this.dialog.open(CustomerActionsComponent, {
@@ -217,5 +232,9 @@ export class PhonebookComponent implements OnInit {
     }
     this.sort = { field: field, order: sortOrder };
     this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+  }
+
+  ngOnDestroy() {
+    this.stateChangedSubscription.unsubscribe();
   }
 }
