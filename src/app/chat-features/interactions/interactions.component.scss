@@ -1072,7 +1072,7 @@
     li {
       font-size: 12px;
       margin: 5px 0;
-      color: #919191;
+      color: $dark-gray-color;
       padding: 0 5px;
       cursor: pointer;
       text-transform: capitalize;
@@ -1099,7 +1099,7 @@
     padding-right: 24px;
     padding-left: 6px;
     font-weight: 400;
-    background: $blue-text-color;
+    background: $main-color;
     color: lighten($blue-text-color, 100%);
     margin: 3px;
 
@@ -1110,15 +1110,17 @@
       line-height: 14px;
       right: 4px;
       width: 15px;
-      border: 1px solid lighten($blue-text-color, 90%);;
+      border: 1px solid $white-color;
       border-radius: 100%;
       text-align: center;
-      color: lighten($blue-text-color, 90%);
+      color: $white-color;
       cursor: pointer;
+      opacity: .6;
 
       &:hover{
         color: $blue-text-color;
         background: lighten($blue-text-color, 90%);
+        opacity: .8;
       }
     }
   }
@@ -1185,7 +1187,7 @@
   width: 100%;
 
   .intents-inner {
-    background: #FBFBFB;
+    background: $main-color-background;
     left: 38px;
     padding: 0 10px;
     border: 1px dashed #ECF7FB;

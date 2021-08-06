@@ -3,6 +3,7 @@ import {MatDialog, MatSidenav} from '@angular/material';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { socketService } from 'src/app/services/socket.service';
 import { sharedService } from 'src/app/services/shared.service';
+import {ConfirmationDialogComponent} from '../../new-components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-customer-info',
@@ -87,11 +88,21 @@ export class CustomerInfoComponent implements OnInit, OnChanges {
     });
   }
 
-  reRouteDialog(templateRef, event): void {
+  reRouteDialog(event): void {
     event.stopPropagation();
-    this.dialog.open(templateRef, {
-      panelClass: 're-route-dialog',
-      minWidth: '450px'
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '490px',
+      panelClass: 'confirm-dialog-perform',
+      data: { header: 'Re-Route Chat Session', message: `Do you want to re-route Web chat session to another agent?` }
+
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.dialog.open(ConfirmationDialogComponent, {
+        width: '490px',
+        panelClass: 'confirm-dialog-success',
+        data: { header: 'Chat Session Re-Routed Successfully', message: `The WhatsApp chat session has been re-routed successfully.`, dismissBtn: 'Dismiss' }
+
+      });
     });
   }
   customerInfoToggle() {

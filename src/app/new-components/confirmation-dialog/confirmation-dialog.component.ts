@@ -10,6 +10,7 @@ export class ConfirmationDialogComponent implements OnInit {
 
   headerText = 'Delete';
   messageText = 'Are You Sure You want to delete?';
+  dismissBtn = 'Cancel';
 
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }
@@ -17,6 +18,7 @@ export class ConfirmationDialogComponent implements OnInit {
   ngOnInit() {
     this.messageText = this.data.message;
     this.headerText = this.data.header;
+    this.dismissBtn = this.data.dismissBtn;
 
   }
 

@@ -151,7 +151,7 @@
     height: 64px;
     overflow: hidden;
     margin: 0 auto 5px;
-    box-shadow: 0 0 0 2px $blue-text-color;
+    box-shadow: 0 0 0 2px #8EDAE9;
     border-radius: 100%;
 
     img{
@@ -166,7 +166,7 @@
   }
   span{
     font-size: 11px;
-    color: #929292;
+    color: $dark-gray-color;
   }
 
 }
@@ -700,7 +700,7 @@ button.main-menu-item{
 
 //MRD states
 .mrd-states {
-  background: #F3F6F8;
+  background: $fill-color;
 
   .mrd-text {
     display: block;
@@ -716,7 +716,7 @@ button.main-menu-item{
 
   .select-state {
     margin: 0 10px;
-    border-bottom: 1px solid #EBEBEB;
+    border-bottom: 1px solid $white-color;
     font-size: 11px;
     color: #171717;
     padding: 5px 0;
@@ -829,7 +829,7 @@ button.main-menu-item{
           -webkit-font-feature-settings: "liga";
           -webkit-font-smoothing: antialiased;
           position: absolute;
-          color: #25CB8D !important;
+          color: $theme-green !important;
           right: 10px;
           top: 0;
         }

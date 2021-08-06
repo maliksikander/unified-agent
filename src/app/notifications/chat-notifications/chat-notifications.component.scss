@@ -26,9 +26,10 @@
       display: flex !important;
       height: 100%;
       border-radius: 3px;
+      border: 1px solid rgba(0 ,0 ,0 ,.1);
 
       .chat-request {
-        width: 50px;
+        width: 40px;
         border-right: 1px solid #ccc;
         display: inline-flex;
         justify-content: center;
@@ -37,17 +38,18 @@
         p {
           text-align: center;
           margin: auto;
-          width: 30px;
-          height: 30px;
-          background: rgba(0,0,0,.5);
+          width: 25px;
+          height: 25px;
+          background: rgba(0,0,0,.4);
           border-radius: 100%;
           display: inline-flex;
           justify-content: center;
 
           img{
-            max-height: 30px;
+            max-height: 15px;
             width: 100%;
-            max-width: 15px;
+            max-width: 13px;
+            align-self: center;
           }
         }
       }
@@ -64,15 +66,15 @@
         }
       }
       .notification-trigger {
-        margin-right: 10px;
+        margin-right: 0;
         align-self: center;
         button{
-          background: #5D6367;
+          background: #343434;
           font-size: 11px;
           color: #fff;
-          height: 30px;
+          height: 23px;
           width: 75px;
-          line-height: 30px;
+          line-height: 23px;
           margin: 5px;
         }
       }
@@ -81,7 +83,7 @@
   }
 }
 .identified{
-  background: $green-color;
+  background: $theme-green;
 
 }
 .un-identified{
