@@ -64,6 +64,41 @@ button{
 .mat-checkbox-checked:not(.mat-checkbox-disabled).mat-primary .mat-ripple-element, .mat-checkbox:active:not(.mat-checkbox-disabled).mat-primary .mat-ripple-element {
   background: #269ec2;
 }
+
+//Custom Calendar
+.mat-calendar{
+  .mat-calendar-header{
+    padding: 0;
+    background: $bubble-background;
+  }
+  .mat-calendar-period-button{
+    color: $main-color;
+    .mat-calendar-arrow{
+      border-top-color: $main-color;
+    }
+  }
+  .mat-calendar-content{
+    padding: 0;
+  }
+  .mat-calendar-controls{
+    margin: 0;
+  }
+  .mat-calendar-table-header-divider{
+    &:after{
+      display: none;
+    }
+
+  }
+  .mat-calendar-table-header{
+    background: $main-color-background !important;
+    height: 32px;
+    th{
+    padding: 0;
+      color: #000;
+    }
+  }
+
+}
 //Loading Area
 .loading-area {
   position: fixed;
