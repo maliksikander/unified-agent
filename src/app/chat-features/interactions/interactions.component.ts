@@ -2,12 +2,13 @@ import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Outpu
 import {cacheService} from 'src/app/services/cache.service';
 import {sharedService} from 'src/app/services/shared.service';
 import {socketService} from 'src/app/services/socket.service';
-import {MatAccordion, MatDialog, MatSnackBar} from '@angular/material';
+import {MatAccordion, MatAutocompleteSelectedEvent, MatChipInputEvent, MatDialog, MatSnackBar} from '@angular/material';
 import {PerfectScrollbarConfigInterface} from 'ngx-perfect-scrollbar';
 import {Observable} from 'rxjs';
 import {FormControl} from '@angular/forms';
 import {map, startWith} from 'rxjs/operators';
 import {snackbarService} from '../../services/snackbar.service';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
 
 declare var EmojiPicker: any;
 
@@ -25,6 +26,17 @@ interface Search {
   styleUrls: ['./interactions.component.scss']
 })
 export class InteractionsComponent implements OnInit, AfterViewInit {
+
+  selectable = true;
+  removable = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  wrapCtrl = new FormControl();
+  filteredWrapUp: Observable<string[]>;
+  @ViewChild('wrapUpInput', null) wrapUpInput: ElementRef<HTMLInputElement>;
+
+
+
+
   // tslint:disable-next-line:no-input-rename
   @Input('conversation') conversation: any;
   unidentified = true;
@@ -39,13 +51,10 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
 
   myControl = new FormControl();
   channelUrl = 'assets/images/web.svg';
-  wrapupList:any = [];
   categoriesList: any = [];
 
   wrapupLabels:any = [];
-  categoriesLabels: any = [];
 
-  isfrmChecked:any;
   userList = [
     {
       name: 'Technical Support',
@@ -142,6 +151,8 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   convers: any[];
   ringing = false;
   callControls = false;
+  allWrapUps: string[] = ['Payments', 'Late Payment', 'Payment Details', 'Payment Due Date', 'Last payment', 'services1', 'services2', 'services3', 'services4', 'services5', 'services5', 'services6'];
+
   notes: any = [
     {
       'categoryName': 'payments',
@@ -197,8 +208,10 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   postId = '101064781498908';
 
   postUrl = '';
-  constructor(private snackBar: MatSnackBar, private _cacheService: cacheService, private _socketService: socketService, private dialog: MatDialog) {
-
+  constructor(private snackBar: MatSnackBar, private _cacheService: cacheService, private _socketService: socketService, private dialog: MatDialog,) {
+    this.filteredWrapUp = this.wrapCtrl.valueChanges.pipe(
+      startWith(null),
+      map((wrapCode: string | null) => wrapCode ? this._filter(wrapCode) : this.allWrapUps.slice()));
   }
 
   ngOnInit() {
@@ -352,7 +365,6 @@ this.postUrl = "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fweb
   selectWrapupCategories(e: any, isChecked: boolean) {
     if (isChecked) {
       this.categoriesList.push(e);
-      this.wrapupList.push(e);
     } else {
       const index = this.categoriesList.indexOf(e);
       this.categoriesList.splice(index, 1);
@@ -362,20 +374,10 @@ this.postUrl = "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fweb
   removeWrapupCategories(e: any, isChecked: boolean) {
     const index = this.categoriesList.indexOf(e);
     this.categoriesList.splice(index, 1);
-    this.wrapupList.splice(index, 1);
     this.wrapupLabels.splice(index);
 
   }
 
-  selectWrapup(e: any, isChecked: boolean) {
-    if (isChecked) {
-      this.wrapupLabels.push(e);
-    } else {
-      const index = this.wrapupList.indexOf(e);
-      this.wrapupList.splice(index, 1);
-    }
-    console.log(this.wrapupList, 'wraplist')
-  }
 
   removeWrapupLabels(e: any, isChecked: boolean) {
 
@@ -383,4 +385,61 @@ this.postUrl = "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fweb
       this.wrapupLabels.splice(index, 1);
   }
 
+
+
+
+
+//
+
+  add(event: any): void {
+    const value = (event.value || '').trim();
+    // Add our wrapCode
+    if (value) {
+      if (this.allWrapUps.indexOf(value) !== -1) {
+        const index = this.wrapupLabels.indexOf(value);
+        if (index === -1) {
+          this.wrapupLabels.push(value);
+        }
+        if (this.wrapupLabels.length === 0) {
+          this.wrapupLabels.push(value);
+        }
+      }
+    }
+
+    // Clear the input value
+    this.wrapUpInput.nativeElement.value = '';
+    this.wrapCtrl.setValue(null);
+  }
+
+  remove(wrapCode: string): void {
+    const index = this.wrapupLabels.indexOf(wrapCode);
+    if (index >= 0) {
+      this.wrapupLabels.splice(index, 1);
+    }
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    const index = this.wrapupLabels.indexOf(event.option.viewValue);
+    if (index === -1) {
+      this.wrapupLabels.push(event.option.viewValue);
+    }
+    if (this.wrapupLabels.length === 0) {
+      this.wrapupLabels.push(event.option.viewValue);
+    }
+
+    this.wrapUpInput.nativeElement.value = '';
+    this.wrapCtrl.setValue(null);
+  }
+  selectWrapup(e: any, isChecked: boolean) {
+    const index = this.wrapupLabels.indexOf(e);
+    if (index === -1) this.wrapupLabels.push(e);
+    if (this.wrapupLabels.length === 0) {
+      this.wrapupLabels.push(e);
+    }
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.allWrapUps.filter(wrapCode => wrapCode.toLowerCase().includes(filterValue));
+  }
 }

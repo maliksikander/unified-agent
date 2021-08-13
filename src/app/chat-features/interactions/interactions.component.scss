@@ -1051,18 +1051,18 @@
     }
 
     input{
-      background: #f3f6f9;
+      //background: #f3f6f9;
       height: 25px;
       line-height: 25px;
       border-radius: 5px;
       width: 100%;
-      padding: 0 15px 0 5px;
+      //padding: 0 15px 0 5px;
       font-size: 12px;
       color: #555;
       outline: none !important;
-      border: 1px solid transparent;
+      //border: 1px solid transparent;
       &:focus{
-        border-color: #ccc !important;
+        //border-color: #ccc !important;
       }
     }
   }
@@ -1614,5 +1614,17 @@ button.attachment-btn {
   position: relative;
   margin-right: 5px;
   line-height: 20px;
+
+}
+//Wrap-up Preview
+
+.wrap-up-content{
+  .wrap-icon {
+    width: 30px;
+    height: 30px;
+    background: #F1F1F1;
+    text-align: center;
+    border-radius: 100%;
+  }
 
 }
