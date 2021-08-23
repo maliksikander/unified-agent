@@ -671,30 +671,43 @@
                 </div>
               </div>
 
-              <!--Wrap-up View-->
-              <div class="wrap-up-main">
+            </div>
+            <!--Wrap-up View-->
+            <div class="wrap-up-main panel-divider">
+
+              <mat-expansion-panel>
                 <div class="wrap-icon">
                   <img matTooltip="Wrap Up" src="assets/images/wrap-up.svg" width="20" alt="Wrap Up">
                 </div>
-                <div class="wrap-up-content">
-                  <div class="wrap-time">
-                    <span>03:22 PM</span>
-                  </div>
+                <mat-expansion-panel-header [collapsedHeight]="'32px'"
+                                            [expandedHeight]="'32px'">
+                  <mat-panel-description>
+                    <div class="wrap-up-header">
+                      <div class="wrap-time">
+                        <span>03:22 PM</span>
+                      </div>
+                      <ul>
+                        <li>Last payment</li>
+                        <li>payment Detail</li>
+                        <li>payment Due date</li>
+                        <li>Late payment</li>
+                      </ul>
+                    </div>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="wrap-content">
+                  <p>The customer requested for online as well on door service to resolve issues. The request was communicated to the under ticket number <span>29365</span></p>
 
-                  <div class="wrap-content">
-                    <p>The customer requested for online as well on door service to resolve issues. The request was communicated to the under ticket number <span>29365</span></p>
-                    <ul>
-                      <li>Last payment</li>
-                      <li>payment Detail</li>
-                      <li>payment Due date</li>
-                      <li>Late payment</li>
-                    </ul>
-                  </div>
                 </div>
-              </div>
-              <!--./end Wrap-up View-->
+              </mat-expansion-panel>
 
+
+
+              <!--                <div class="wrap-icon">-->
+              <!--                  <img matTooltip="Wrap Up" src="assets/images/wrap-up.svg" width="20" alt="Wrap Up">-->
+              <!--                </div>-->
             </div>
+            <!--./end Wrap-up View-->
 
 
             <div class="tags-data panel-divider">
@@ -747,6 +760,7 @@
               </div>
               <span class="chat-time">16:16:13 </span>
             </div> -->
+
           </div>
           <div class="chat-footer">
             <span class="selected-channel"><span>Selected Channel:</span>
@@ -970,8 +984,8 @@
                             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                             (matChipInputTokenEnd)="add($event)">
                         </mat-chip-list>
-                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                          <mat-option *ngFor="let selectWrapUps of filteredWrapUp | async" [value]="selectWrapUps">
+                        <mat-autocomplete class="wrap-selections" #auto="matAutocomplete" (optionSelected)="selected($event)">
+                          <mat-option class="wrap-options" *ngFor="let selectWrapUps of filteredWrapUp | async" [value]="selectWrapUps">
                             {{selectWrapUps}}
                           </mat-option>
                         </mat-autocomplete>
