@@ -2454,5 +2454,23 @@ tspan{
 .categories-search{
   .mat-form-field-appearance-fill .mat-form-field-flex{
     padding: 0;
+    background: transparent;
+  }
+}
+
+.wrap-up-main{
+
+  .mat-expansion-panel-header-description {
+    width: 100%;
+  }
+}
+
+
+.categories-search.selected-area {
+  .mat-form-field-infix{
+    padding: 0;
+  }
+  .mat-form-field-underline {
+    display: none;
   }
 }
