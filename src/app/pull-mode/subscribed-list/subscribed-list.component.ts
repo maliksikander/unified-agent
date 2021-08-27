@@ -17,7 +17,7 @@ export class SubscribedListComponent implements OnInit {
   pullModeList = [];
   listPreview = false;
 
-  constructor(private _socketService: socketService, private _cacheService: cacheService, private dialog: MatDialog, private _httpService: httpService, private _sharedService: sharedService, private _pullModeservice: pullModeService) {
+  constructor(private _socketService: socketService, private _cacheService: cacheService, private dialog: MatDialog, private _httpService: httpService, private _sharedService: sharedService, public _pullModeservice: pullModeService) {
   }
 
   ngOnInit() {

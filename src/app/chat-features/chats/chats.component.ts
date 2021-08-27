@@ -21,18 +21,6 @@ export class ChatsComponent implements OnInit {
     private _appConfigService: appConfigService
   ) {}
   ngOnInit() {
-    if (this._appConfigService.config.ENV == "development") {
-      if (this._cacheService.agent.username == null) {
-        this._cacheService.agent = {
-          id: "8d42617c-0603-4fbe-9863-2507c0fff9fd",
-          username: "nabeel",
-          firstName: "nabeel",
-          lastName: "ahmed",
-          roles: []
-        };
-        this._socketService.connectToSocket();
-      }
-    }
   }
 
   currentTabIndex;

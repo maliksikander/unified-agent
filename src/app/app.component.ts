@@ -1,8 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { appConfigService } from "./services/appConfig.service";
+import { isLoggedInService } from "./services/isLoggedIn.service";
 import { sharedService } from "./services/shared.service";
-import { socketService } from "./services/socket.service";
 
 @Component({
   selector: "app-root",
@@ -15,7 +14,7 @@ export class AppComponent implements OnInit {
 
   currentRoute: string;
 
-  constructor(private _router: Router, private _sharedService: sharedService) {
+  constructor(private _isLoggedInService: isLoggedInService, private _router: Router, private _sharedService: sharedService) {
     this._sharedService.serviceCurrentMessage.subscribe((e) => {
       if (e.msg == "openRequestHeader") {
         this.requests.push(e.data);

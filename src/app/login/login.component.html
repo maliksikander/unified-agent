@@ -30,6 +30,8 @@
             <button [disabled]="!loginForm.valid" (click)="login()" class="button flip-in-ver-right form-control">LOGIN</button>
           </div>
         </form>
+        <!-- <button *ngIf="_appConfigService.config.ENV == 'development'" (click)="bypassLogin()">bypass Login</button> -->
+
       </div>
 
     </div>

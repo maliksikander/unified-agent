@@ -161,6 +161,8 @@ export class AppHeaderComponent implements OnInit {
 
   moveToLogin() {
     localStorage.clear();
+    this._cacheService.agentPresence = null;
+    this._cacheService.agent = null;
     this._router.navigate(["login"]).then(() => {
       window.location.reload();
     });
