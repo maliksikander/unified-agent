@@ -48,6 +48,7 @@ export class LoginComponent implements OnInit {
         } else {
           this._cacheService.agent = e.data;
           localStorage.setItem('ccUser', JSON.stringify(e.data));
+          this._socketService.disConnectSocket();
           this._socketService.connectToSocket();
           this._router.navigate(["customers"]);
         }

@@ -10,17 +10,18 @@ import { AnnouncementComponent } from "./announcement/announcement.component";
 import { SchemaSettingsComponent } from "./customer-schema/schema-settings/schema-settings.component";
 import { LabelsListComponent } from "./labels/labels-list/labels-list.component";
 import { SubscribedListComponent } from "./pull-mode/subscribed-list/subscribed-list.component";
+import { IsLoggedInGuard } from "./is-logged-in.guard";
 
 export const appRoutes: Routes = [
   { path: "login", component: LoginComponent },
-  { path: "customers/phonebook", component: PhonebookComponent },
-  { path: "label", component: LabelsListComponent },
-  { path: 'subscribed-list', component: SubscribedListComponent },
-  { path: "supervisor/dashboard", component: DashboardComponent },
-  { path: "supervisor/announcement", component: AnnouncementComponent },
-  { path: "customer-schema", component: SchemaSettingsComponent },
+  { path: "customers/phonebook", component: PhonebookComponent, canActivate: [IsLoggedInGuard] },
+  { path: "label", component: LabelsListComponent, canActivate: [IsLoggedInGuard] },
+  { path: 'subscribed-list', component: SubscribedListComponent, canActivate: [IsLoggedInGuard] },
+  { path: "supervisor/dashboard", component: DashboardComponent, canActivate: [IsLoggedInGuard] },
+  { path: "supervisor/announcement", component: AnnouncementComponent, canActivate: [IsLoggedInGuard] },
+  { path: "customer-schema", component: SchemaSettingsComponent, canActivate: [IsLoggedInGuard] },
   { path: "", redirectTo: "/login", pathMatch: "full" },
-  { path: "customers", data: { preload: true }, loadChildren: "./chat-features/chat.module#ChatModule" },
+  { path: "customers", data: { preload: true }, loadChildren: "./chat-features/chat.module#ChatModule", canActivate: [IsLoggedInGuard] },
   { path: "**", component: NoRouteFoundComponent }
 ];
 
@@ -28,4 +29,4 @@ export const appRoutes: Routes = [
   imports: [RouterModule.forRoot(appRoutes, { preloadingStrategy: preloadingService })],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

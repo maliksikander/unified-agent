@@ -107,6 +107,12 @@ export class socketService {
     });
   }
 
+  disConnectSocket() {
+    try {
+      this.socket.disconnect();
+    } catch (err) { }
+  }
+
   listen(eventName: string) {
     return new Observable((res) => {
       this.socket.on(eventName, (data) => {

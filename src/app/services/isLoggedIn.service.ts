@@ -9,6 +9,8 @@ import { socketService } from "./socket.service";
 })
 export class isLoggedInService {
 
+    currentRoute;
+
     constructor(private _router: Router, private _appConfigService: appConfigService, private _socketService: socketService, private _cacheService: cacheService,) {
 
         if (this._appConfigService.config.ENV == "development") {
@@ -22,15 +24,19 @@ export class isLoggedInService {
             this._socketService.connectToSocket();
         } else {
 
-            let ccUser: any = localStorage.getItem('ccUser');
-            ccUser = JSON.parse(ccUser);
+            if (this.currentRoute != "/login") {
 
-            if (ccUser && ccUser.id != null && ccUser.id != undefined && ccUser.id != "") {
-                this._cacheService.agent = ccUser;
-                this._socketService.connectToSocket();
-            } else {
-                this._router.navigate(["login"]);
+                let ccUser: any = localStorage.getItem('ccUser');
+                ccUser = JSON.parse(ccUser);
+
+                if (ccUser && ccUser.id != null && ccUser.id != undefined && ccUser.id != "") {
+                    this._cacheService.agent = ccUser;
+                    this._socketService.connectToSocket();
+                } else {
+                    this._router.navigate(["login"]);
+                }
             }
+
         }
     }
 

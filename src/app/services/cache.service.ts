@@ -9,6 +9,10 @@ export class cacheService {
   agentPresence: IAgentPresence;
 
   constructor() {
+    this.resetCache();
+  }
+
+  resetCache() {
     this.agent = { id: "", firstName: "", lastName: "", roles: [] };
     this.agentPresence = {
       agent: { id: "", keycloakUser: { id: "", firstName: "", lastName: "", roles: [] } },
@@ -16,4 +20,5 @@ export class cacheService {
       stateChangeTime: ""
     };
   }
+
 }
