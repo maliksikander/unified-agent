@@ -1,0 +1,250 @@
+@import "src/app/shared/globalVariables";
+
+.page-header{
+  display: flex;
+  align-content: center;
+  padding-left: 50px;
+
+  .back-to-chat{
+    background: lighten($blue-text-color, 40%);
+    height: 50px;
+    width: 50px !important;
+    position: absolute;
+    left: 0;
+    border-radius: 0;
+    min-width: inherit;
+    padding: 0;
+    text-align: center;
+    z-index: 2;
+    &:after {
+      content: "";
+      width: 18px;
+      height: 18px;
+      position: absolute;
+      left: 22px;
+      top: 16px;
+      transform: rotate(45deg);
+      border-left: 2px solid $blue-text-color;
+      border-bottom: 2px solid $blue-text-color;
+    }
+  }
+}
+
+.active-chat-list-area{
+  .channel-icon{
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    border-radius: 100%;
+    margin-right: 6px;
+
+    cursor: default;
+    max-width: 100%;
+    display: inline-block;
+    white-space: normal;
+    line-height: 19px;
+
+    img{
+      width: 10px;
+      max-height: 12px;
+    }
+  }
+}
+
+.manage-dashboard {
+  width: 100%;
+
+  .table {
+    background: #ffffff;
+    box-shadow: 0 0 4px rgb(0 0 0 / 12%);
+
+    tr {
+      position: relative;
+      cursor: default;
+      &:nth-of-type(even){
+        background: #F7F7F7;
+      }
+    }
+
+    thead {
+
+      th {
+        color: #434343;
+        height: 38px;
+        line-height: 38px;
+        padding: 0 15px;
+        font-size: 13px;
+        background: #F7F7F7 !important;
+        border: 0;
+      }
+    }
+  }
+
+  td {
+    font-size: 13px;
+    color: #434343;
+    height: 38px;
+    line-height: 38px;
+    padding: 0 15px;
+    white-space: pre;
+    border: 0;
+    text-transform: capitalize;
+    small {
+      text-transform: lowercase;
+      color: #888;
+      font-size: 11px;
+      margin-right: 3px;
+    }
+
+    .dashboard-name {
+      font-weight: normal;
+      font-size: 13px;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+    }
+
+    &:first-child {
+      //width: 50% !important;
+
+      span {
+        cursor: default;
+        max-width: 100%;
+        display: inline-block;
+        white-space: normal;
+        line-height: 19px;
+      }
+    }
+
+    //&:nth-child(2){
+    //  width: 20% !important;
+    //}
+    //
+    //&:nth-child(3),  &:nth-child(4) {
+    //  width: 20% !important;
+    //}
+  }
+  tbody {
+
+    .table-trigger{
+      opacity: 0;
+      visibility: hidden;
+      transition: all .3s;
+      position: absolute;
+      right: 15px;
+      z-index: 2;
+      top: 6px;
+      background: #eaeaea;
+      button{
+        height: 24px;
+        margin: 0 5px;
+        width: 75px;
+        line-height: 22px;
+        background: #939393;
+        border: 1px solid #848484;
+        color: #fff;
+        font-size: 12px;
+
+
+
+        &.chat-btn{
+          background:#31CB73 ;
+          border-color:darken(#31CB73, 10%) ;;
+          &:hover{
+            background:darken(#31CB73, 10%) ;
+          }
+        }
+        &.close-btn{
+          &:hover {
+            background: #848484;
+          }
+        }
+      }
+    }
+    tr {
+      &:hover {
+        background: #EAEAEA !important;
+
+        .table-trigger {
+          display: inline-block;
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+    }
+  }
+
+}
+
+
+
+//Dialog Style
+.dialog-main-content {
+  padding: 15px 0;
+  label {
+    display: block;
+    font-size: 13px;
+    margin:  0;
+    color: #434343;
+  }
+
+  textarea{
+    width: 100%;
+    border: 1px solid #C2C2C2;
+    border-radius: 5px;
+  }
+}
+
+.action-trigger {
+  padding: 15px 10px;
+  button{
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 12px;
+    min-width: 90px;
+    background: #919191;
+    color: #fff;
+
+    &.success-btn{
+      background: #25AFCB;
+      margin-left: 12px;
+    }
+  }
+
+}
+.last-message{
+  color: #7E7E7E;
+}
+.status-data {
+  width: 100px;
+  text-align: center;
+
+  .status-icon {
+    width: 10px;
+    height: 10px;
+    background: #ccc;
+    border-radius: 100%;
+    transform: rotate(
+        45deg
+    );
+  }
+}
+
+.add-new{
+  cursor: pointer;
+  font-size: 12px;
+  min-width: 25px;
+  background-color: lighten($blue-text-color, 55%);
+  color: #1D1D1D;
+  text-align: center;
+  margin-right: 5px;
+  height: 28px;
+  line-height: 28px;
+  border: 1px solid #C3D8F7;
+  top: 1px;
+
+  &:hover{
+    background: lighten($blue-text-color, 45%);
+  }
+}

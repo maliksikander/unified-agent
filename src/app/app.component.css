@@ -12,7 +12,8 @@
   top: 100px;
 }
 
+
 .main-app-area {
-  border: 5px solid #E2E2E2;
-  min-height: calc(100% - 42px);
+  border: 10px solid #F3F6FA;
+  min-height: calc(100% - 40px);
 }

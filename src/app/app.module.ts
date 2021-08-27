@@ -28,6 +28,8 @@ import { EditAttributeComponent } from "./customer-schema/edit-attribute/edit-at
 import { columnPreferences } from "./column-preferences/column-preferences.component";
 import { LabelsListComponent } from "./labels/labels-list/labels-list.component";
 import { CreateLabelComponent } from "./labels/create-label/create-label.component";
+import { SubscribedListComponent } from './pull-mode/subscribed-list/subscribed-list.component';
+import { SubscribedListPreviewComponent } from './pull-mode/subscribed-list-preview/subscribed-list-preview.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsType: SPINNER.chasingDots,
@@ -54,7 +56,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     EditAttributeComponent,
     columnPreferences,
     LabelsListComponent,
-    CreateLabelComponent
+    CreateLabelComponent,
+    SubscribedListComponent,
+    SubscribedListPreviewComponent
   ],
   imports: [
     BrowserModule,

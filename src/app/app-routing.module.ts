@@ -9,11 +9,13 @@ import { PhonebookComponent } from "./phonebook/phonebook.component";
 import { AnnouncementComponent } from "./announcement/announcement.component";
 import { SchemaSettingsComponent } from "./customer-schema/schema-settings/schema-settings.component";
 import { LabelsListComponent } from "./labels/labels-list/labels-list.component";
+import { SubscribedListComponent } from "./pull-mode/subscribed-list/subscribed-list.component";
 
 export const appRoutes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "customers/phonebook", component: PhonebookComponent },
   { path: "label", component: LabelsListComponent },
+  { path: 'subscribed-list', component: SubscribedListComponent },
   { path: "supervisor/dashboard", component: DashboardComponent },
   { path: "supervisor/announcement", component: AnnouncementComponent },
   { path: "customer-schema", component: SchemaSettingsComponent },

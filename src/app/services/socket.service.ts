@@ -8,6 +8,7 @@ import { sharedService } from "./shared.service";
 import { CimEvent } from "../models/Event/cimEvent";
 import { snackbarService } from "./snackbar.service";
 import { error } from "console";
+import { pullModeService } from "./pullMode.service";
 
 @Injectable({
   providedIn: "root"
@@ -27,8 +28,9 @@ export class socketService {
     private _appConfigService: appConfigService,
     private _cacheService: cacheService,
     private _sharedService: sharedService,
+    private _pullModeService: pullModeService,
     private _router: Router
-  ) {}
+  ) { }
 
   connectToSocket() {
     this.uri = this._appConfigService.config.SOCKET_URL;
@@ -97,6 +99,11 @@ export class socketService {
     this.listen("socketSessionRemoved").subscribe((res: any) => {
       console.log("socketSessionRemoved", res);
       this.onSocketSessionRemoved();
+    });
+
+    this.listen("onPullModeSubscribedList").subscribe((res: any) => {
+      console.log("onPullModeSubscribedList", res);
+      this._pullModeService.updateSubscribedList(res);
     });
   }
 

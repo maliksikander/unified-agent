@@ -25,7 +25,12 @@
           class="main-menu-item">
           <span>Customer Labels</span>
         </button>
-        <button routerLink="/customer-schema"  routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
+        <button routerLink="/subscribed-list" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+          mat-menu-item class="main-menu-item">
+          <span>Subscribed Lists</span>
+        </button>
+        <button routerLink="/customer-schema" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+          mat-menu-item class="main-menu-item">
           <span>Customer Schema</span>
         </button>
       </mat-menu>
@@ -122,7 +127,8 @@
                 <button mat-button [matMenuTriggerFor]="agentState" (click)="$event.stopPropagation()"
                   class="ready {{_cacheService.agentPresence.state.name | lowercase}} mat-menu-item-submenu-trigger">
                   <span>{{(_cacheService.agentPresence.state.name | removeUnderscore) +
-                    (_cacheService.agentPresence.state.reasonCode != null ?' - '+ _cacheService.agentPresence.state.reasonCode.name :
+                    (_cacheService.agentPresence.state.reasonCode != null ?' - '+
+                    _cacheService.agentPresence.state.reasonCode.name :
                     '') }}</span>
                 </button>
               </p>
@@ -133,8 +139,7 @@
                 <span class="mrd-text">Change MRD State</span>
                 <div *ngFor="let agentMrdState of _cacheService.agentPresence.agentMrdStates">
                   <p class="menu-trigger-custom select-state {{agentMrdState.state | lowercase}}">
-                    <span
-                      class="inner-btn ">{{agentMrdState.mrd.name}}<small>({{agentMrdState.state}})</small></span>
+                    <span class="inner-btn ">{{agentMrdState.mrd.name}}<small>({{agentMrdState.state}})</small></span>
                     <mat-slide-toggle (change)="changeMRD($event,agentMrdState)"
                       [checked]="agentMrdState.state | getmrdswitches" color="primary"></mat-slide-toggle>
                   </p>
