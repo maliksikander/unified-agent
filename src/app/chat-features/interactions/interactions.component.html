@@ -628,12 +628,10 @@
 
                 <div class="chat-intents" *ngIf="con.intents && con.showIntent==true">
                   <div class="intents-inner">
-                    <p *ngFor="let intent of con.intents"
-                    >
+                    <p *ngFor="let intent of con.intents">
                       {{intent}}
                       <!--              <b>{{intent.confidence.toFixed(2)}}</b>-->
-                      <button mat-mini-fab class="canned-trigger edit-trigger"
-                      >
+                      <button mat-mini-fab class="canned-trigger edit-trigger">
                         <i class="material-icons">
                           edit
                         </i>
@@ -644,29 +642,6 @@
                         </i>
                       </button>
                     </p>
-                    <!--<div class="clearfix clear"></div>-->
-                    <!--            <ul class="suggested-content intents-content">-->
-                    <!--              <li *ngFor="let action of con.selectedIntent?.actions"-->
-                    <!--                  (click)="isTemplateOpen=!isTemplateOpen ; tran(action.message || action.name); message.showIntent=!message.showIntent">-->
-                    <!--                                <span *ngIf="action.confidence>botThresholds.t1.minScore" class="confidence-level" style="color:#25CB8D">-->
-                    <!--                                    {{action.confidence * 100 | number:'1.0-0'}}%-->
-                    <!--                                </span>-->
-                    <!--                <span *ngIf="action.confidence>botThresholds.t2.minScore && action.confidence<botThresholds.t1.minScore" class="confidence-level"-->
-                    <!--                      style="color:#FFB300">-->
-                    <!--                                    {{action.confidence * 100 | number:'1.0-0'}}%-->
-                    <!--                                </span>-->
-                    <!--                <span *ngIf="action.confidence<botThresholds.t2.minScore" class="confidence-level" style="color:#CB0808">-->
-                    <!--                                    {{action.confidence * 100 | number:'1.0-0'}}%-->
-                    <!--                                </span>-->
-                    <!--                {{action.message || action.name}}-->
-                    <!--                <button mat-mini-fab class="canned-trigger edit-trigger"-->
-                    <!--                        (click)="tran(action.message || action.name); message.showIntent=!message.showIntent">-->
-                    <!--                  <i class="material-icons">-->
-                    <!--                    edit-->
-                    <!--                  </i>-->
-                    <!--                </button>-->
-                    <!--              </li>-->
-                    <!--            </ul>-->
                   </div>
                 </div>
               </div>
@@ -677,7 +652,7 @@
               <div class="wrap-icon">
                 <img matTooltip="Wrap Up" src="assets/images/wrap-up.svg" width="20" alt="Wrap Up">
               </div>
-              <mat-expansion-panel>
+              <mat-expansion-panel (closed)="wrapCount = 5" (opened)="wrapCount = 100" class="{{selectedWrap.code.length > 0 && selectedWrap.note ? 'dual-wrap' : 'single-wrap'}}">
                 <mat-expansion-panel-header [collapsedHeight]="'32px'"
                                             [expandedHeight]="'32px'">
                   <mat-panel-description>
@@ -689,25 +664,83 @@
                         <img matTooltip="Agent" src="assets/images/ag1.png" width="20" alt="Agent">
                       </div>
                       <ul>
-                        <li>Last payment</li>
-                        <li>payment Detail</li>
-                        <li>payment Due date</li>
-                        <li>Late payment</li>
+                        <li *ngFor="let wrapCode of selectedWrap.code"  matTooltip="Payment > {{wrapCode}}"  matTooltipClass="wrap-tooltip">
+                          {{wrapCode}}
+                         </li>
                       </ul>
+                      <span class="note-icon"><mat-icon matTooltip="Wrap-up Notes"  matTooltipClass="wrap-tooltip">description</mat-icon></span>
                     </div>
                   </mat-panel-description>
                 </mat-expansion-panel-header>
                 <div class="wrap-content">
-                  <p>The customer requested for online as well on door service to resolve issues. The request was communicated to the under ticket number <span>29365</span></p>
+                  <p>{{selectedWrap.note}}</p>
 
                 </div>
               </mat-expansion-panel>
+            </div>
 
+            <div class="wrap-up-main panel-divider">
+              <div class="wrap-icon">
+                <img matTooltip="Wrap Up" src="assets/images/wrap-up.svg" width="20" alt="Wrap Up">
+              </div>
+              <mat-expansion-panel [ngClass]="{'single-wrap': selectedWrap1.code.length > 0 && selectedWrap1!.note || selectedWrap1.code.length <= 0 && selectedWrap1.note}">
+                <mat-expansion-panel-header [collapsedHeight]="'32px'"
+                                            [expandedHeight]="'32px'">
+                  <mat-panel-description>
+                    <div class="wrap-up-header">
+                      <div class="wrap-time">
+                        <span>03:22 PM</span>
+                      </div>
+                      <div class="wrap-icon agent-profile-showcase">
+                        <img matTooltip="Agent" src="assets/images/ag1.png" width="20" alt="Agent">
+                      </div>
+                      <ul *ngIf="selectedWrap1.code.length > 0">
+                        <li *ngFor="let wrapCode of selectedWrap1.code"  matTooltip="Payment > {{wrapCode}}"  matTooltipClass="wrap-tooltip">
+                          {{wrapCode}}
+                        </li>
+                      </ul>
+                      <p *ngIf="selectedWrap1.code.length <= 0">{{selectedWrap1.note}}</p>
+                      <span *ngIf="selectedWrap1.code.length > 0 && selectedWrap1.note" class="note-icon"><mat-icon matTooltip="Wrap-up Notes"  matTooltipClass="wrap-tooltip">description</mat-icon></span>
+                    </div>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="wrap-content">
+                  <p>{{selectedWrap1.note}}</p>
 
+                </div>
+              </mat-expansion-panel>
+            </div>
 
-              <!--                <div class="wrap-icon">-->
-              <!--                  <img matTooltip="Wrap Up" src="assets/images/wrap-up.svg" width="20" alt="Wrap Up">-->
-              <!--                </div>-->
+            <div class="wrap-up-main panel-divider">
+              <div class="wrap-icon">
+                <img matTooltip="Wrap Up" src="assets/images/wrap-up.svg" width="20" alt="Wrap Up">
+              </div>
+              <mat-expansion-panel [ngClass]="{'single-wrap': selectedWrap1.code.length > 0 && selectedWrap1!.note || selectedWrap1.code.length <= 0 && selectedWrap1.note}">
+                <mat-expansion-panel-header [collapsedHeight]="'32px'"
+                                            [expandedHeight]="'32px'">
+                  <mat-panel-description>
+                    <div class="wrap-up-header">
+                      <div class="wrap-time">
+                        <span>03:22 PM</span>
+                      </div>
+                      <div class="wrap-icon agent-profile-showcase">
+                        <img matTooltip="Agent" src="assets/images/ag1.png" width="20" alt="Agent">
+                      </div>
+                      <ul *ngIf="selectedWrap3.code.length > 0">
+                        <li *ngFor="let wrapCode of selectedWrap3.code"  matTooltip="Payment > {{wrapCode}}"  matTooltipClass="wrap-tooltip">
+                          {{wrapCode}}
+                        </li>
+                      </ul>
+                      <p *ngIf="selectedWrap3.code.length <= 0">{{selectedWrap3.note}}</p>
+                      <span *ngIf="selectedWrap3.code.length > 0 && selectedWrap3.note" class="note-icon"><mat-icon matTooltip="Wrap-up Notes"  matTooltipClass="wrap-tooltip">description</mat-icon></span>
+                    </div>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="wrap-content">
+                  <p>{{selectedWrap3.note}}</p>
+
+                </div>
+              </mat-expansion-panel>
             </div>
             <!--./end Wrap-up View-->
 

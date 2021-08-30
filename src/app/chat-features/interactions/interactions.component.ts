@@ -147,11 +147,27 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   transferSearch = '';
   searchInteraction = '';
   inputCategoryName = '';
+  wrapCount = 5;
   inputWrapup = '';
   convers: any[];
   ringing = false;
   callControls = false;
   allWrapUps: string[] = ['Payments', 'Late Payment', 'Payment Details', 'Payment Due Date', 'Last payment', 'services1', 'services2', 'services3', 'services4', 'services5', 'services5', 'services6'];
+
+  selectedWrapCodes: any = ['Late Payment', 'Payment Details', 'Payment Due Date', 'Last payment', 'Late Payment', 'Payment Details', 'Payment Due Date', 'Last payment', 'Late Payment', 'Payment Details', 'Payment Due Date', 'Last payment'];
+  selectedWrap = {
+    code: ['Late Payment', 'Payment Details', 'Payment Due Date', 'Last payment','Late Payment', 'Payment Details', 'Payment Due Date', 'Last payment','Late Payment', 'Payment Details', 'Payment Due Date', 'Last payment'],
+    note: 'The customer requested for online as well on door service to resolve issues. The request was communicated to the under ticket number 29365'
+  };
+  selectedWrap1 = {
+    code: [],
+    note: 'The customer requested for online as well on door service to resolve issues. The request was communicated to the under ticket number 29365, The customer requested for online as well on door service to resolve issues. The request was communicated to the under ticket number 29365 '
+  };
+  selectedWrap3 = {
+    code: ['Late Payment', 'Payment Details', 'Payment Due Date', 'Last payment', 'Late Payment', 'Payment Details', 'Payment Due Date', 'Last payment', 'Late Payment', 'Payment Details', 'Payment Due Date', 'Last payment'],
+    note: ''
+  };
+  wrapNotes = 'The customer requested for online as well on door service to resolve issues. The request was communicated to the under ticket number 29365'
 
   notes: any = [
     {
@@ -296,7 +312,7 @@ this.postUrl = "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fweb
 
   onKey(event) {
     this.expanedHeight = this.elementView.nativeElement.offsetHeight;
-    console.log(this.expanedHeight);
+    // console.log(this.expanedHeight);
     this.message = event.target.value;
     // if (this.message === "" && event.keyCode === 40) {
     //   // alert('up key Click Event!');
@@ -329,9 +345,7 @@ this.postUrl = "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fweb
     // }
 
     if (this.message[0] === '@') {
-
       this.displayUserList = true;
-
     } else {
       this.displayUserList = false;
     }
