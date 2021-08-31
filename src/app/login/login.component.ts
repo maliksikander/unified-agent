@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
     private _httpService: httpService,
     private _sharedService: sharedService,
     private _snackbarService: snackbarService,
-    private _appConfigService: appConfigService,
+    private _appConfigService: appConfigService
   ) {
     this.loginForm = this.fb.group({
       password: ["", [Validators.required]],
@@ -32,14 +32,13 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit() { 
+  ngOnInit() {
     // if (this._appConfigService.config.ENV == "development") {
     //   this._router.navigate(["customers"]);
     // }
   }
 
   login() {
-
     this._httpService.login(this.loginForm.value).subscribe(
       (e) => {
         console.log("this is login resp ", e.data);
@@ -47,7 +46,7 @@ export class LoginComponent implements OnInit {
           this._snackbarService.open("license is " + e.licStatus, "err");
         } else {
           this._cacheService.agent = e.data;
-          localStorage.setItem('ccUser', JSON.stringify(e.data));
+          localStorage.setItem("ccUser", JSON.stringify(e.data));
           this._socketService.disConnectSocket();
           this._socketService.connectToSocket();
           this._router.navigate(["customers"]);
@@ -57,7 +56,6 @@ export class LoginComponent implements OnInit {
         this._sharedService.Interceptor(error.error, "err");
       }
     );
-
   }
 
   // bypassLogin(){
@@ -70,5 +68,4 @@ export class LoginComponent implements OnInit {
   // };
   // this._router.navigate(["customers"]);
   // }
-
 }

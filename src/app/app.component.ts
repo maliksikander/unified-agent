@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
     this._router.events.subscribe((event: any) => {
       if (event.url) {
         this.currentRoute = event.url;
-        this._isLoggedInService.currentRoute = event.url;;
+        this._isLoggedInService.currentRoute = event.url;
       }
     });
   }

@@ -248,3 +248,28 @@
     background: lighten($blue-text-color, 45%);
   }
 }
+
+.lblswithname {
+  position: inherit;
+    direction: rtl;
+    padding: 0px 8px 0px 8px;
+
+  span:nth-child(odd) {
+    position: relative;
+    left: 5px;
+    margin-left: -10px;
+  }
+
+  span:nth-child(even) {
+    position: relative;
+    margin-left: 0;
+  }
+  .dot {
+    height: 13px;
+    width: 13px;
+    top: 2px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 1px solid #fff;
+  }
+}

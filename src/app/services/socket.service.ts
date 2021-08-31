@@ -30,7 +30,7 @@ export class socketService {
     private _sharedService: sharedService,
     private _pullModeService: pullModeService,
     private _router: Router
-  ) { }
+  ) {}
 
   connectToSocket() {
     this.uri = this._appConfigService.config.SOCKET_URL;
@@ -105,12 +105,32 @@ export class socketService {
       console.log("onPullModeSubscribedList", res);
       this._pullModeService.updateSubscribedList(res);
     });
+
+    this.listen("onPullModeSubscribedListRequest").subscribe((res: any) => {
+      console.log("onPullModeSubscribedListRequest", res);
+      this._pullModeService.updateSubscribedListRequests(JSON.parse(res.PullModeEvent));
+    });
+
+    this.listen("PullModeSubscribedListRequests").subscribe((res: any) => {
+      console.log("PullModeSubscribedListRequests", res);
+      this._pullModeService.initializedSubscribedListRequests(res);
+    });
+
+    this.listen("addPullModeSubscribedListRequests").subscribe((res: any) => {
+      console.log("addPullModeSubscribedListRequests", res);
+      this._pullModeService.addPullModeSubscribedListRequests(res);
+    });
+
+    this.listen("removePullModeSubscribedListRequests").subscribe((res: any) => {
+      console.log("removePullModeSubscribedListRequests", res);
+      this._pullModeService.removePullModeSubscribedListRequests(res);
+    });
   }
 
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) { }
+    } catch (err) {}
   }
 
   listen(eventName: string) {

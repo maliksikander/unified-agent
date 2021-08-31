@@ -4,15 +4,20 @@
         <h4>Inbox</h4>
     </div>
     <div class="create-label col-md-6 text-right">
-        <button class="add-new" mat-button>Active</button>
-        <button class="add-new" mat-button>Inactive</button>
-        <button class="add-new" mat-button>Unread</button>
+        <button [style.backgroundColor]="filterStatus == 'all' ? '#9abcef' : '' " (click)="filterStatus = 'all'"
+            class="add-new" mat-button>All</button>
+        <button [style.backgroundColor]="filterStatus == 'active' ? '#9abcef' : '' " (click)="filterStatus = 'active'"
+            class="add-new" mat-button>Active</button>
+        <button [style.backgroundColor]="filterStatus == 'inactive' ? '#9abcef' : '' "
+            (click)="filterStatus = 'inactive'" class="add-new" mat-button>Inactive</button>
+        <button [style.backgroundColor]="filterStatus == 'unread' ? '#9abcef' : ''" (click)="filterStatus = 'unread'"
+            class="add-new" mat-button>Unread</button>
         <mat-form-field appearance="outline" class="selection-trigger">
-            <mat-select [(value)]="FilterSelected">
-                <mat-option value="all">All Queues</mat-option>
-                <mat-option value="software">Software Queue</mat-option>
-                <mat-option value="marketing">Marketing Queue</mat-option>
-                <mat-option value="sales">Sales Queue</mat-option>
+            <mat-select [(ngModel)]="filterListName">
+                <mat-option value='all'>All Queues</mat-option>
+                <mat-option *ngFor="let list of (_pullModeservice.subscribedListListener | async)"
+                    value="{{list.name}}">
+                    {{list.name}}</mat-option>
             </mat-select>
         </mat-form-field>
     </div>
@@ -32,21 +37,30 @@
                 </thead>
                 <tbody>
 
-                    <tr *ngFor="let chat of activeChatList">
-                        <td class="status-data"><span class="status-icon"
-                                [style.backgroundColor]="chat.status_color"></span></td>
-                        <td #customerCell><span class="channel-icon {{chat.channel}}"><img
-                                    src="assets/images/{{chat.flag}}"></span> {{chat.customerName}} <small
-                                class="customer_identy">({{chat.identy}})</small>
-                            <ul class="customer-labels">
+                    <tr
+                        *ngFor="let request of _pullModeservice.subscribedListRequests | filterPullModeRequests:filterStatus:filterListName">
+                        <td class="status-data"><span class="status-icon" matTooltip="{{request.status | uppercase }}"
+                                [style.backgroundColor]="request.status == 'active' ? '#29C671' : (request.status == 'inactive' ? 'orange' : '#ccc')"></span>
+                        </td>
+                        <td #customerCell><span
+                                class="channel-icon {{request.channelSession.channel.channelConnector.channelType.typeName | lowercase}}"><img
+                                    src="assets/images/{{request.channelSession.channel.channelConnector.channelType.typeName | lowercase}}.svg"></span>
+                            {{request.channelSession.customer.firstName}} <small
+                                class="customer_identy">({{request.channelSession.channelData.channelCustomerIdentifier}})</small>
+                            <!-- <ul class="customer-labels">
                                 <li matTooltip="Marketing" style="background: #32b67a;"></li>
                                 <li matTooltip="Corporate" style="background: #f34f1b;"></li>
                                 <li matTooltip="Product Support" style="background: #536ce8;"></li>
-                            </ul>
-                            <span class="last-message">{{chat.last_message}}</span>
+                            </ul> -->
+                            <span *ngIf="_pullModeservice.labels" class="lblswithname">
+                                <span
+                                    *ngFor="let lbl of _pullModeservice.labels | fetchLabels : request.channelSession.customer?.labels"
+                                    [ngStyle]="{'background-color':lbl.color_code}" class="dot"></span>
+                            </span>
+                            <span class="last-message">{{request.message.markdownText}}</span>
                         </td>
-                        <td><small>less than</small> {{chat.activeTime}} min</td>
-                        <td>{{chat.queue}}</td>
+                        <td>{{request.time | amTimeAgo:true}}<small> ago</small></td>
+                        <td>{{request.listName}}</td>
                         <span class="table-trigger">
                             <button mat-button class="chat-btn" matTooltip="Chat">Join</button>
                             <button mat-button class="close-btn" (click)="closeChat()" matTooltip="Close">Close</button>

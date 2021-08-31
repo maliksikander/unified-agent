@@ -64,6 +64,8 @@ import { NgScrollbarModule } from "ngx-scrollbar";
 import { getMRDSwitchesPipe } from "./pipes/getMRDSwitchs.pipe";
 import { fetchLabelsPipe } from "./pipes/fetchLabels.pipe";
 import { columnsFilterClass } from "./pipes/columnsFilter.pipe";
+import { MomentModule } from "ngx-moment";
+import { filterPullModeRequestsPipe } from "./pipes/filterPullModeReqsts.pipe";
 
 @NgModule({
   declarations: [
@@ -76,7 +78,8 @@ import { columnsFilterClass } from "./pipes/columnsFilter.pipe";
     convertToFormDataPipe,
     getFirstTwoLettersPipe,
     fetchLabelsPipe,
-    columnsFilterClass
+    columnsFilterClass,
+    filterPullModeRequestsPipe
   ],
   imports: [
     MatIconModule,
@@ -111,6 +114,7 @@ import { columnsFilterClass } from "./pipes/columnsFilter.pipe";
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
     NgxMatTimepickerModule,
+    MomentModule,
     NgCircleProgressModule.forRoot({
       radius: 100,
       outerStrokeWidth: 16,
@@ -180,6 +184,7 @@ import { columnsFilterClass } from "./pipes/columnsFilter.pipe";
     NgCircleProgressModule,
     HttpClientModule,
     RemoveUnderscorePipe,
+    filterPullModeRequestsPipe,
     NgxLinkifyjsModule,
     ibsformatPipe,
     TableModule,
@@ -215,7 +220,8 @@ import { columnsFilterClass } from "./pipes/columnsFilter.pipe";
     NgScrollbarModule,
     getMRDSwitchesPipe,
     fetchLabelsPipe,
-    columnsFilterClass
+    columnsFilterClass,
+    MomentModule
   ]
 })
 export class SharedModule {}

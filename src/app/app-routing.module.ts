@@ -16,7 +16,7 @@ export const appRoutes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "customers/phonebook", component: PhonebookComponent, canActivate: [IsLoggedInGuard] },
   { path: "label", component: LabelsListComponent, canActivate: [IsLoggedInGuard] },
-  { path: 'subscribed-list', component: SubscribedListComponent, canActivate: [IsLoggedInGuard] },
+  { path: "subscribed-list", component: SubscribedListComponent, canActivate: [IsLoggedInGuard] },
   { path: "supervisor/dashboard", component: DashboardComponent, canActivate: [IsLoggedInGuard] },
   { path: "supervisor/announcement", component: AnnouncementComponent, canActivate: [IsLoggedInGuard] },
   { path: "customer-schema", component: SchemaSettingsComponent, canActivate: [IsLoggedInGuard] },
@@ -29,4 +29,4 @@ export const appRoutes: Routes = [
   imports: [RouterModule.forRoot(appRoutes, { preloadingStrategy: preloadingService })],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -20,8 +20,7 @@ export class ChatsComponent implements OnInit {
     private _sharedService: sharedService,
     private _appConfigService: appConfigService
   ) {}
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   currentTabIndex;
   tabChanged(event: MatTabChangeEvent) {
