@@ -30,6 +30,7 @@ import { ActiveChatsComponent } from './supervisor/active-chats/active-chats.com
 import { QueueChatsComponent } from './supervisor/queue-chats/queue-chats.component';
 import { SubscribedListComponent } from './new-components/pull-mode/subscribed-list/subscribed-list.component';
 import { SubscribedListPreviewComponent } from './new-components/pull-mode/subscribed-list-preview/subscribed-list-preview.component';
+import { WrapUpFormComponent } from './new-components/wrap-up-form/wrap-up-form.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { SubscribedListPreviewComponent } from './new-components/pull-mode/subsc
     QueueChatsComponent,
     SubscribedListComponent,
     SubscribedListPreviewComponent,
+    WrapUpFormComponent
   ],
   imports: [
     BrowserModule,
@@ -69,7 +71,8 @@ import { SubscribedListPreviewComponent } from './new-components/pull-mode/subsc
     ConfirmationDialogComponent,
     CreateCustomerComponent,
     CreateAttributeComponent,
-    ColumnPreferencesComponent
+    ColumnPreferencesComponent,
+    WrapUpFormComponent
   ],
   providers: [appConfigService, MessageService, ConfirmationService,
     {

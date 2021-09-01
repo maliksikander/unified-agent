@@ -63,13 +63,11 @@
             </li>
 
             <li class="list-group-item">
-              <button mat-fab aria-label="Transfer Chat" (click)="openDialog(noteTemplate, 'Note')">
+              <button mat-fab aria-label="Transfer Chat" (click)="openWrapUpDialog('Wrap-up')">
                 <img alt="Note" src="assets/images/note.svg">
               </button>
             </li>
-
           </ul>
-
 
           <ul class="list-group list-group-horizontal agent-controls">
             <li class="list-group-item">
@@ -587,11 +585,11 @@
                           <mat-icon>more_horiz</mat-icon>
                         </button>
                         <mat-menu backdropClass="menu-wraper"  #WrapMenu="matMenu" yPosition="above" xPosition="before">
-                          <button class="wrap-trigger" (click)="openDialog(noteTemplate, 'Note')" mat-menu-item>
+                          <button class="wrap-trigger" (click)="openWrapUpDialog('Chat Note')" mat-menu-item>
                             <span class="icon-trigger"><img src="assets/images/note.svg" alt="Note"></span>
                             <span>Note</span>
                           </button>
-                          <button class="wrap-trigger" (click)="openDialog(noteTemplate, 'Chat Wrap-up')" mat-menu-item>
+                          <button class="wrap-trigger" (click)="openWrapUpDialog('Chat Wrap-up')" mat-menu-item>
                             <span class="icon-trigger"><img src="assets/images/wrap.svg" alt="Wrap"></span>
                             <span>Wrap-Up</span>
                           </button>
@@ -775,27 +773,6 @@
 
             </div>
 
-            <!-- <div class="chat-message agent-message">
-              <div class="profile-pic">
-                <div class="active-channel channel-icon web"><img width="20" src="../assets/images/web.svg"></div>
-                <div class="profile-pic-area user-img"> FA</div>
-              </div>
-              <div class="chat-message-content ">
-                <p>hello</p>
-              </div>
-              <span class="chat-time">16:16:06 </span>
-            </div>
-            <div class="chat-message agent-message ">
-              <div class="profile-pic">
-                <div class="active-channel channel-icon web"><img width="20" src="../assets/images/web.svg"></div>
-                <div class="profile-pic-area user-img"> FA</div>
-              </div>
-              <div class="chat-message-content ">
-                <p style="white-space: pre-line">how are you today</p>
-              </div>
-              <span class="chat-time">16:16:13 </span>
-            </div> -->
-
           </div>
           <div class="chat-footer">
             <span class="selected-channel"><span>Selected Channel:</span>
@@ -845,27 +822,12 @@
                     <div class="suggested-content" #mainScreen [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}" >
 
                       <mat-tab-group animationDuration="0ms" *ngIf="!displaySuggestionsArea && !whisper && cannedTabOpen">
-                        <!--<mat-tab label="Suggested Answer" *ngIf="actions.length > 0">-->
-                        <!--<div class="suggested-tab" *ngIf="actions.length > 0">-->
-                        <!--<mat-option *ngFor="let action of actions | LockFilter: message" [value]="action?.message || action?.name"-->
-                        <!--(click)="message=action.message || action.name">-->
-                        <!--{{action.message || action.name}}-->
-                        <!--</mat-option>-->
-                        <!--</div>-->
-                        <!--</mat-tab>-->
 
                         <mat-tab label="Canned Messages">
                           <div  class="right-canned-message-list main-canned-message-area">
                             <!--                      <strong>Canned Messages</strong>-->
                             <div class="bar-content">
-                              <!--<mat-tab-group mat-align-tabs="center">-->
-                              <!--<mat-tab label="{{'chatdetail.cannedMessages'|translate}}">-->
-                              <!--<div class="canned-search-area search-area">-->
-                              <!--<mat-form-field appearance="outline">-->
-                              <!--<input matInput placeholder="Search" autocomplete="off" [(ngModel)]="canned">-->
-                              <!--<mat-icon matSuffix>search</mat-icon>-->
-                              <!--</mat-form-field>-->
-                              <!--</div>-->
+
 
                               <mat-tab-group class="inner-tabs" animationDuration="0ms">
                                 <ng-container *ngFor="let msg of cannedMessages; let i = index">
@@ -940,14 +902,6 @@
                            name="ef_chatbox_chat_file_upload" id="uploadFileBtn" class="file-upload-input">
                   </button>
 
-                  <!--            <span class="attachment-btn" >-->
-                  <!--            <input #myFileInput *ngIf="replyInput.value.length < 1" (change)="uploadFile($event.target.files)" type="file" [disabled]="chatServerDown || conversation.state =='ended'"-->
-                  <!--                   name="ef_chatbox_chat_file_upload" id="uploadFileBtn" class="file-upload-input">-->
-                  <!--            <i class="material-icons" *ngIf="replyInput.value.length < 1">-->
-                  <!--                attach_file-->
-                  <!--            </i>-->
-                  <!--        </span>-->
-
                 </div>
               </form>
             </div>
@@ -956,134 +910,6 @@
         </div>
       </div>
 
-      <ng-template #noteTemplate>
-        <div class="note-dialog-main">
-          <div class="dialog-header">
-            <h4 mat-dialog-title>{{popTitle}}       <button mat-button mat-dialog-close><mat-icon>close</mat-icon></button></h4>
-          </div>
-          <div class="dialog-main-content">
-            <div class="row m-0">
-<!--              <div class="col-md-4">-->
-<!--                <div class="categories-area divider-content">-->
-<!--                  <h4>Categories</h4>-->
-<!--                  <div class="selected-area">-->
-<!--                    <div class="select-categories">-->
-<!--                      <mat-chip-list>-->
-<!--                        <mat-chip *ngFor="let category of categoriesList">{{category.categoryName}} <mat-icon (click)="removeWrapupCategories(category, false)">close</mat-icon></mat-chip>-->
-<!--                      </mat-chip-list>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                  <div class="categories-label">-->
-<!--                    <div class="categories-search">-->
-<!--                      <input  type="text" [(ngModel)]="inputCategoryName">-->
-<!--                    </div>-->
-<!--                    <ul>-->
-<!--                      <li *ngFor="let note of notes | NoteFilter:inputCategoryName:'categoryName'; let i = index" (click)="selectWrapupCategories(notes[i], true)">-->
-<!--                        {{note.categoryName}}-->
-<!--                      </li>-->
-<!--                    </ul>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-              <div class="col-md-12">
-                <div class="wrap-up-area divider-content">
-                  <div class="row">
-                    <div class="col-md-6 selected-wrap-code">
-                      <h4>Wrap-Up Codes</h4>
-                    </div>
-                    <div class="col-md-6 selected-wrap-code text-right">
-                      <span>Selected <strong>1 - 5</strong> </span>
-                    </div>
-                  </div>
-
-<!--                  <div class="selected-area">-->
-<!--                    <div class="select-categories">-->
-<!--                      <mat-chip-list>-->
-<!--                        <mat-chip *ngFor="let wrapCode of wrapupLabels">{{wrapCode}} <mat-icon (click)="removeWrapupLabels(wrapCode, false)">close</mat-icon></mat-chip>-->
-<!--                      </mat-chip-list>-->
-<!--                    </div>-->
-<!--                  </div>-->
-                  <div class="categories-label">
-                    <div class="categories-search selected-area">
-  <!--                      <input  type="text" [(ngModel)]="inputWrapup">-->
-
-                      <mat-form-field class="w-100" appearance="fill">
-                        <mat-chip-list #chipList aria-label="Wrap-up selection">
-                          <mat-chip
-                            *ngFor="let selectedWrapUps of wrapupLabels"
-                            [selectable]="selectable"
-                            [removable]="removable"
-                            (removed)="remove(selectedWrapUps)">
-                            {{selectedWrapUps}}
-                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-                          </mat-chip>
-                          <input
-                            placeholder="New Wrap-up..."
-                            #wrapUpInput
-                            [formControl]="wrapCtrl"
-                            [(ngModel)]="inputWrapup"
-                          [matAutocomplete]="auto"
-                            [matChipInputFor]="chipList"
-                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                            (matChipInputTokenEnd)="add($event)">
-                        </mat-chip-list>
-                        <mat-autocomplete class="wrap-selections" #auto="matAutocomplete" (optionSelected)="selected($event)">
-                          <mat-option class="wrap-options" *ngFor="let selectWrapUps of filteredWrapUp | async" [value]="selectWrapUps">
-                            {{selectWrapUps}}
-                          </mat-option>
-                        </mat-autocomplete>
-                      </mat-form-field>
-                    </div>
-                    <div class="wrap-code-area">
-                    <mat-accordion class="note-accordion" multi="true">
-
-                      <mat-expansion-panel expanded="true" *ngFor="let selectedCategory of notes">
-                        <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'"
-                                                    style="border-radius: 0;border-bottom: 0;">
-                          <mat-panel-title>
-                            <span>{{selectedCategory.categoryName}}</span>
-                          </mat-panel-title>
-                        </mat-expansion-panel-header>
-
-                      <div class="categories-label-area">
-                        <mat-chip-list
-                          class="example-chip"
-                          cdkDropList
-                          cdkDropListOrientation="horizontal">
-                          <mat-chip
-                            class="example-box"
-                            cdkDrag
-                            *ngFor="let wrap of selectedCategory.wrapups | LockFilter:inputWrapup" (click)="selectWrapup(wrap, true);">
-                            {{wrap}}
-                          </mat-chip>
-                        </mat-chip-list>
-                      </div>
-                      </mat-expansion-panel>
-
-                    </mat-accordion>
-<!--                    <ul>-->
-<!--                      <li *ngFor="let wrapup of notes |  LockFilter:inputWrapup:'wrapups'">-->
-<!--                        {{wrapup}}-->
-<!--                      </li>-->
-<!--                    </ul>-->
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="note-area col-md-12">
-                <h4>Notes</h4>
-                <textarea></textarea>
-              </div>
-            </div>
-          </div>
-
-          <div class="action-trigger text-right">
-            <button mat-button mat-dialog-close class="close-btn">Cancel</button>
-            <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial>Apply</button>
-          </div>
-        </div>
-      </ng-template>
     </div>
   </div>
 
@@ -1120,7 +946,7 @@
     <div class="action-trigger text-right">
       <button mat-button mat-dialog-close class="close-btn">Cancel</button>
       <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial
-              (click)="transferRequest(chatTransferTo.name, 'Dismiss', noteTemplate, 'Chat Transfer Notes:')">Transfer Chat
+              (click)="transferRequest(chatTransferTo.name, 'Dismiss')">Transfer Chat
       </button>
     </div>
   </div>

@@ -1,0 +1,92 @@
+<div class="note-dialog-main">
+  <div class="dialog-header">
+    <h4 mat-dialog-title>{{wrapUpData.header}}      <button mat-button mat-dialog-close><mat-icon>close</mat-icon></button></h4>
+  </div>
+  <div class="dialog-main-content">
+    <div class="row m-0">
+      <div class="col-md-12">
+        <div class="wrap-up-area divider-content">
+          <div class="row">
+            <div class="col-md-6 selected-wrap-code">
+              <h4>Wrap-Up Codes</h4>
+            </div>
+            <div class="col-md-6 selected-wrap-code text-right">
+              <span>Selected <strong>1 - 5</strong> </span>
+            </div>
+          </div>
+
+          <div class="categories-label">
+            <div class="categories-search selected-area">
+
+              <mat-form-field class="w-100" appearance="fill">
+                <mat-chip-list #chipList aria-label="Wrap-up selection">
+                  <mat-chip
+                    *ngFor="let selectedWrapUps of wrapupLabels"
+                    [selectable]="selectable"
+                    [removable]="removable"
+                    (removed)="remove(selectedWrapUps)">
+                    {{selectedWrapUps}}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                  </mat-chip>
+                  <input
+                    placeholder="New Wrap-up..."
+                    #wrapUpInput
+                    [formControl]="wrapCtrl"
+                    [(ngModel)]="inputWrapup"
+                    [matAutocomplete]="auto"
+                    [matChipInputFor]="chipList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    (matChipInputTokenEnd)="add($event)">
+                </mat-chip-list>
+                <mat-autocomplete class="wrap-selections" #auto="matAutocomplete" (optionSelected)="selected($event)">
+                  <mat-option class="wrap-options" *ngFor="let selectWrapUps of filteredWrapUp | async" [value]="selectWrapUps">
+                    {{selectWrapUps}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+            <div class="wrap-code-area">
+              <mat-accordion class="note-accordion" multi="true">
+
+                <mat-expansion-panel expanded="true" *ngFor="let selectedCategory of notes">
+                  <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'"
+                                              style="border-radius: 0;border-bottom: 0;">
+                    <mat-panel-title>
+                      <span>{{selectedCategory.categoryName}}</span>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+
+                  <div class="categories-label-area">
+                    <mat-chip-list
+                      class="example-chip"
+                      cdkDropList
+                      cdkDropListOrientation="horizontal">
+                      <mat-chip
+                        class="example-box"
+                        cdkDrag
+                        *ngFor="let wrap of selectedCategory.wrapups | LockFilter:inputWrapup" (click)="selectWrapup(wrap, true);">
+                        {{wrap}}
+                      </mat-chip>
+                    </mat-chip-list>
+                  </div>
+                </mat-expansion-panel>
+
+              </mat-accordion>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="note-area col-md-12">
+        <h4>Notes</h4>
+        <textarea></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-trigger text-right">
+    <button mat-button mat-dialog-close class="close-btn">Cancel</button>
+    <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial>Apply</button>
+  </div>
+</div>
