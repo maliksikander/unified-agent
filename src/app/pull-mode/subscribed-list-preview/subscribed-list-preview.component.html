@@ -13,10 +13,10 @@
         <button [style.backgroundColor]="filterStatus == 'unread' ? '#9abcef' : ''" (click)="filterStatus = 'unread'"
             class="add-new" mat-button>Unread</button>
         <mat-form-field appearance="outline" class="selection-trigger">
-            <mat-select [(ngModel)]="filterListName">
+            <mat-select [(ngModel)]="filterListId">
                 <mat-option value='all'>All Queues</mat-option>
                 <mat-option *ngFor="let list of (_pullModeservice.subscribedListListener | async)"
-                    value="{{list.name}}">
+                    value="{{list.id}}">
                     {{list.name}}</mat-option>
             </mat-select>
         </mat-form-field>
@@ -38,9 +38,9 @@
                 <tbody>
 
                     <tr
-                        *ngFor="let request of _pullModeservice.subscribedListRequests | filterPullModeRequests:filterStatus:filterListName">
+                        *ngFor="let request of _pullModeservice.subscribedListRequests | filterPullModeRequests:filterStatus:filterListId">
                         <td class="status-data"><span class="status-icon" matTooltip="{{request.status | uppercase }}"
-                                [style.backgroundColor]="request.status == 'active' ? '#29C671' : (request.status == 'inactive' ? 'orange' : '#ccc')"></span>
+                                [style.backgroundColor]="(request.status | lowercase) == 'active' ? '#29C671' : ((request.status | lowercase) == 'inactive' ? 'orange' : '#ccc')"></span>
                         </td>
                         <td #customerCell><span
                                 class="channel-icon {{request.channelSession.channel.channelConnector.channelType.typeName | lowercase}}"><img
@@ -57,10 +57,10 @@
                                     *ngFor="let lbl of _pullModeservice.labels | fetchLabels : request.channelSession.customer?.labels"
                                     [ngStyle]="{'background-color':lbl.color_code}" class="dot"></span>
                             </span>
-                            <span class="last-message">{{request.message.markdownText}}</span>
+                            <!-- <span class="last-message">{{request.message.markdownText}}</span> -->
                         </td>
                         <td>{{request.time | amTimeAgo:true}}<small> ago</small></td>
-                        <td>{{request.listName}}</td>
+                        <td>{{_pullModeservice.listNames[request.listId]}}</td>
                         <span class="table-trigger">
                             <button mat-button class="chat-btn" matTooltip="Chat">Join</button>
                             <button mat-button class="close-btn" (click)="closeChat()" matTooltip="Close">Close</button>

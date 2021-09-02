@@ -21,7 +21,7 @@
                 </thead>
                 <tbody>
 
-                    <tr (click)="listPreview = true; listName=list.name " *ngFor="let list of (_pullModeservice.subscribedListListener | async)">
+                    <tr (click)="listPreview = true; listId=list.id " *ngFor="let list of (_pullModeservice.subscribedListListener | async)">
                         <td>{{list.name}}</td>
                     </tr>
                 </tbody>
@@ -78,5 +78,5 @@
 
 <!--Queue chat  -->
 <div *ngIf="listPreview" class="active-chat-area  list-view-area">
-    <app-subscribed-list-preview [filterListName]="listName" (expandCustomerInfo)="eventFromChild($event)"></app-subscribed-list-preview>
+    <app-subscribed-list-preview [filterListId]="listId" (expandCustomerInfo)="eventFromChild($event)"></app-subscribed-list-preview>
 </div>

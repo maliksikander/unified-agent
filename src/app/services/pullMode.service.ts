@@ -9,6 +9,7 @@ export class pullModeService {
   subscribedList: any = [];
   subscribedListRequests: any = [];
   labels: any = [];
+  listNames: any;
 
   private _subscribedListListener: BehaviorSubject<any> = new BehaviorSubject([]);
 
@@ -65,12 +66,12 @@ export class pullModeService {
     });
   }
 
-  removePullModeSubscribedListRequests(listName) {
+  removePullModeSubscribedListRequests(id) {
     let indexesOfItemsToBeremoved = [];
 
     // fetch the indexes of the items to be removed
     this.subscribedListRequests.forEach((e, i) => {
-      if (e.listName == listName) {
+      if (e.listId == id) {
         indexesOfItemsToBeremoved.push(i);
       }
     });

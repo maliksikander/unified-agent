@@ -8,7 +8,7 @@ import { socketService } from "./socket.service";
   providedIn: "root"
 })
 export class isLoggedInService {
-  currentRoute;
+  routeSubscriber: any;
 
   constructor(
     private _router: Router,
@@ -26,21 +26,41 @@ export class isLoggedInService {
       };
       this._socketService.connectToSocket();
 
-      if (this.currentRoute == "/login") {
-        this._router.navigate(["customers"]);
-      }
+      // if (this.currentRoute == "/login") {
+      //   this._router.navigate(["customers"]);
+      // }
     } else {
-      if (this.currentRoute != "/login") {
-        let ccUser: any = localStorage.getItem("ccUser");
-        ccUser = JSON.parse(ccUser);
+      this.routeSubscriber = this._router.events.subscribe((event: any) => {
 
-        if (ccUser && ccUser.id != null && ccUser.id != undefined && ccUser.id != "") {
-          this._cacheService.agent = ccUser;
-          this._socketService.connectToSocket();
-        } else {
-          this._router.navigate(["login"]);
+        // we need to observe the route only on window load, thats why we unsubscibe it
+        this.routeSubscriber.unsubscribe();
+
+        // if the user opens login page then dont need to auto login
+        if (event.url) {
+
+          if (event.url != "/login") {
+            this.autoLogin();
+          }
+
         }
-      }
+      });
     }
   }
+
+
+  autoLogin() {
+
+    let ccUser: any = localStorage.getItem("ccUser");
+    ccUser = JSON.parse(ccUser);
+
+    if (ccUser && ccUser.id != null && ccUser.id != undefined && ccUser.id != "") {
+      this._cacheService.agent = ccUser;
+      this._socketService.connectToSocket();
+    } else {
+      this._router.navigate(["login"]);
+    }
+
+
+  }
+
 }

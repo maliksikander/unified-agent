@@ -10,7 +10,7 @@ import { ConfirmationDialogComponent } from "../../new-components/confirmation-d
 })
 export class SubscribedListPreviewComponent implements OnInit {
   @Output() expandCustomerInfo = new EventEmitter<any>();
-  @Input() filterListName: any;
+  @Input() filterListId: any;
 
   listPreview = true;
   filterStatus = "all";

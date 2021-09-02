@@ -20,7 +20,7 @@ export const appRoutes: Routes = [
   { path: "supervisor/dashboard", component: DashboardComponent, canActivate: [IsLoggedInGuard] },
   { path: "supervisor/announcement", component: AnnouncementComponent, canActivate: [IsLoggedInGuard] },
   { path: "customer-schema", component: SchemaSettingsComponent, canActivate: [IsLoggedInGuard] },
-  { path: "", redirectTo: "/login", pathMatch: "full" },
+  { path: "", redirectTo: "/customers/chats", pathMatch: "full" },
   { path: "customers", data: { preload: true }, loadChildren: "./chat-features/chat.module#ChatModule", canActivate: [IsLoggedInGuard] },
   { path: "**", component: NoRouteFoundComponent }
 ];

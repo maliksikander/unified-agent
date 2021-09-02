@@ -15,7 +15,7 @@ import { socketService } from "src/app/services/socket.service";
 export class SubscribedListComponent implements OnInit {
   pullModeList = [];
   listPreview = false;
-  listName;
+  listId;
 
   constructor(
     private _socketService: socketService,
@@ -24,7 +24,7 @@ export class SubscribedListComponent implements OnInit {
     private _httpService: httpService,
     private _sharedService: sharedService,
     public _pullModeservice: pullModeService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getPullModeList();
@@ -35,11 +35,21 @@ export class SubscribedListComponent implements OnInit {
       (e) => {
         this.pullModeList = [];
         this.pullModeList = e.data;
+        this.setListNames(e.data);
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
       }
     );
+  }
+
+  setListNames(list) {
+    let obj = {};
+    list.forEach((e) => {
+      obj[e.id] = e.name;
+    });
+    this._pullModeservice.listNames = obj;
+    console.log("obj ", obj)
   }
 
   updateSubscribeList(templateRef): void {

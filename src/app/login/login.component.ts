@@ -33,9 +33,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    // if (this._appConfigService.config.ENV == "development") {
-    //   this._router.navigate(["customers"]);
-    // }
+    if (this._appConfigService.config.ENV == "development") {
+      this._router.navigate(["customers"]);
+    }
   }
 
   login() {
