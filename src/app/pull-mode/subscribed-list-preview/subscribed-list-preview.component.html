@@ -40,7 +40,7 @@
                     <tr
                         *ngFor="let request of _pullModeservice.subscribedListRequests | filterPullModeRequests:filterStatus:filterListId">
                         <td class="status-data"><span class="status-icon" matTooltip="{{request.status | uppercase }}"
-                                [style.backgroundColor]="(request.status | lowercase) == 'active' ? '#29C671' : ((request.status | lowercase) == 'inactive' ? 'orange' : '#ccc')"></span>
+                                [style.backgroundColor]="(request.status | lowercase) == 'active' ? '#29C671' : ((request.status | lowercase) == 'inactive' ? '#ccc' : 'red')"></span>
                         </td>
                         <td #customerCell><span
                                 class="channel-icon {{request.channelSession.channel.channelConnector.channelType.typeName | lowercase}}"><img
@@ -57,12 +57,12 @@
                                     *ngFor="let lbl of _pullModeservice.labels | fetchLabels : request.channelSession.customer?.labels"
                                     [ngStyle]="{'background-color':lbl.color_code}" class="dot"></span>
                             </span>
-                            <!-- <span class="last-message">{{request.message.markdownText}}</span> -->
+                            <span *ngIf="isAlreadySubscribed(request.id)" class="joined">JOINED</span>
                         </td>
                         <td>{{request.time | amTimeAgo:true}}<small> ago</small></td>
                         <td>{{_pullModeservice.listNames[request.listId]}}</td>
                         <span class="table-trigger">
-                            <button mat-button class="chat-btn" matTooltip="Chat">Join</button>
+                            <button mat-button *ngIf="!isAlreadySubscribed(request.id)" (click)="joinChat(request)" class="chat-btn" matTooltip="Chat">Join</button>
                             <button mat-button class="close-btn" (click)="closeChat()" matTooltip="Close">Close</button>
                         </span>
                     </tr>

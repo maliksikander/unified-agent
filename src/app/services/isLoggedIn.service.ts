@@ -31,25 +31,20 @@ export class isLoggedInService {
       // }
     } else {
       this.routeSubscriber = this._router.events.subscribe((event: any) => {
-
         // we need to observe the route only on window load, thats why we unsubscibe it
         this.routeSubscriber.unsubscribe();
 
         // if the user opens login page then dont need to auto login
         if (event.url) {
-
           if (event.url != "/login") {
             this.autoLogin();
           }
-
         }
       });
     }
   }
 
-
   autoLogin() {
-
     let ccUser: any = localStorage.getItem("ccUser");
     ccUser = JSON.parse(ccUser);
 
@@ -59,8 +54,5 @@ export class isLoggedInService {
     } else {
       this._router.navigate(["login"]);
     }
-
-
   }
-
 }

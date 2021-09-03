@@ -6,8 +6,9 @@ import { httpService } from "./http.service";
   providedIn: "root"
 })
 export class pullModeService {
-  subscribedList: any = [];
-  subscribedListRequests: any = [];
+  subscribedList: any = []; // contains the list which are subscribed by the agent
+  subscribedListRequests: any = []; // contains the requests of those subscribed list
+  subscribedListJoinedRequests: any = []; // contains the Ids of subscribed list's subscribed requests
   labels: any = [];
   listNames: any;
 
@@ -80,5 +81,9 @@ export class pullModeService {
     this.subscribedListRequests = this.subscribedListRequests.filter(function (value, index) {
       return indexesOfItemsToBeremoved.indexOf(index) == -1;
     });
+  }
+
+  updatePullModeJoinedRequestIds(reqs) {
+    this.subscribedListJoinedRequests = reqs;
   }
 }

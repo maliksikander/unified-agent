@@ -107,15 +107,15 @@ export class socketService {
     });
 
     this.listen("onPullModeSubscribedListRequest").subscribe((res: any) => {
-      try{
-      console.log("onPullModeSubscribedListRequest", res);
-      this._pullModeService.updateSubscribedListRequests(JSON.parse(res.pullModeEvent));
-      if(res.type == "new"){
-        this._snackbarService.open("A new request is arrived", "succ");
+      try {
+        console.log("onPullModeSubscribedListRequest", res);
+        this._pullModeService.updateSubscribedListRequests(JSON.parse(res.pullModeEvent));
+        if (res.type == "new") {
+          this._snackbarService.open("A new request is arrived", "succ");
+        }
+      } catch (err) {
+        console.error(err);
       }
-    }catch(err){
-      console.error(err);
-    }
     });
 
     this.listen("PullModeSubscribedListRequests").subscribe((res: any) => {
@@ -131,6 +131,11 @@ export class socketService {
     this.listen("removePullModeSubscribedListRequests").subscribe((res: any) => {
       console.log("removePullModeSubscribedListRequests", res);
       this._pullModeService.removePullModeSubscribedListRequests(res);
+    });
+
+    this.listen("onUpdatePullModeJoinedRequestIds").subscribe((res: any) => {
+      console.log("onUpdatePullModeJoinedRequestIds", res);
+      this._pullModeService.updatePullModeJoinedRequestIds(res);
     });
   }
 

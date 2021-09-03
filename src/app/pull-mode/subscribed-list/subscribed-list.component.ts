@@ -24,7 +24,7 @@ export class SubscribedListComponent implements OnInit {
     private _httpService: httpService,
     private _sharedService: sharedService,
     public _pullModeservice: pullModeService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getPullModeList();
@@ -49,7 +49,7 @@ export class SubscribedListComponent implements OnInit {
       obj[e.id] = e.name;
     });
     this._pullModeservice.listNames = obj;
-    console.log("obj ", obj)
+    console.log("obj ", obj);
   }
 
   updateSubscribeList(templateRef): void {
