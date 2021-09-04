@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { MatDialog } from "@angular/material";
+import { Router } from "@angular/router";
 import { TopicParticipant } from "src/app/models/User/Interfaces";
 import { cacheService } from "src/app/services/cache.service";
 import { pullModeService } from "src/app/services/pullMode.service";
@@ -17,15 +18,27 @@ export class SubscribedListPreviewComponent implements OnInit {
 
   listPreview = true;
   filterStatus = "all";
+  subscribedListRequests = [];
+  listenerSubscription;
 
   constructor(
     private dialog: MatDialog,
     public _pullModeservice: pullModeService,
     private _cacheService: cacheService,
-    private _socketService: socketService
-  ) {}
+    private _socketService: socketService,
+    private _router: Router
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+    this.listenerSubscription = this._pullModeservice.subscribedListRequestsListener.subscribe((reqs) => {
+
+      this.subscribedListRequests = reqs;
+    });
+
+    this.subscribedListRequests = this._pullModeservice.subscribedListRequests;
+
+  }
   listPreviewToggle() {
     this.expandCustomerInfo.emit((this.listPreview = false));
   }
@@ -36,7 +49,7 @@ export class SubscribedListPreviewComponent implements OnInit {
       panelClass: "confirm-dialog",
       data: { header: "Close Chat", message: `Are you sure you want to close this Chat?` }
     });
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe((result) => { });
   }
 
   joinChat(request) {
@@ -47,9 +60,15 @@ export class SubscribedListPreviewComponent implements OnInit {
       requestId: request.id
     };
     this._socketService.emit("joinPullModeRequest", obj);
+    this._router.navigate(["customers"]);
   }
 
   isAlreadySubscribed(requestId) {
     return this._pullModeservice.subscribedListJoinedRequests.includes(requestId);
+
   }
+  ngOnDestroy() {
+    this.listenerSubscription.unsubscribe();
+  }
+
 }

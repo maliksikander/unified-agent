@@ -213,14 +213,12 @@ export class InteractionsComponent implements OnInit {
 
   topicUnsub() {
     console.log("going to unsub from topic " + this.conversation.topicId);
-    console.log("type ", this.conversation.activeChannelSessions[this.conversation.activeChannelSessions.length - 1]);
+    
     if (this.conversation.state === "ACTIVE") {
       // if the topic state is 'ACTIVE' then agent needs to request the agent manager for unsubscribe
       this._socketService.emit("topicUnsubscription", {
         topicId: this.conversation.topicId,
         agentId: this._cacheService.agent.id,
-        type: this.conversation.activeChannelSessions[this.conversation.activeChannelSessions.length - 1].channel.channelConfig.routingPolicy
-          .routingMode
       });
     } else if (this.conversation.state === "CLOSED") {
       // if the topic state is 'CLOSED' it means agent is already unsubscribed by the agent manager

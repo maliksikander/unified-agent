@@ -38,7 +38,7 @@
                 <tbody>
 
                     <tr
-                        *ngFor="let request of _pullModeservice.subscribedListRequests | filterPullModeRequests:filterStatus:filterListId">
+                        *ngFor="let request of subscribedListRequests | filterPullModeRequests:filterStatus:filterListId">
                         <td class="status-data"><span class="status-icon" matTooltip="{{request.status | uppercase }}"
                                 [style.backgroundColor]="(request.status | lowercase) == 'active' ? '#29C671' : ((request.status | lowercase) == 'inactive' ? '#ccc' : 'red')"></span>
                         </td>

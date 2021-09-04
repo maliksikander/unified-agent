@@ -16,6 +16,11 @@ export class pullModeService {
 
   public readonly subscribedListListener: Observable<any> = this._subscribedListListener.asObservable();
 
+  private _subscribedListRequestsListener: BehaviorSubject<any> = new BehaviorSubject([]);
+
+  public readonly subscribedListRequestsListener: Observable<any> = this._subscribedListRequestsListener.asObservable();
+
+
   constructor(private _httpService: httpService) {
     this.loadLabels();
   }
@@ -45,7 +50,7 @@ export class pullModeService {
       this.subscribedListRequests.push(event);
     }
 
-    //  this._subscribedListListener.next(this.subscribedListRequests);
+    this._subscribedListRequestsListener.next(this.subscribedListRequests);
   }
 
   loadLabels() {
@@ -65,6 +70,8 @@ export class pullModeService {
         this.subscribedListRequests.push(req);
       }
     });
+    this._subscribedListRequestsListener.next(this.subscribedListRequests);
+
   }
 
   removePullModeSubscribedListRequests(id) {
@@ -81,6 +88,9 @@ export class pullModeService {
     this.subscribedListRequests = this.subscribedListRequests.filter(function (value, index) {
       return indexesOfItemsToBeremoved.indexOf(index) == -1;
     });
+
+    this._subscribedListRequestsListener.next(this.subscribedListRequests);
+
   }
 
   updatePullModeJoinedRequestIds(reqs) {
