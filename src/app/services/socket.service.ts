@@ -118,8 +118,8 @@ export class socketService {
       }
     });
 
-    this.listen("PullModeSubscribedListRequests").subscribe((res: any) => {
-      console.log("PullModeSubscribedListRequests", res);
+    this.listen("pullModeSubscribedListRequests").subscribe((res: any) => {
+      console.log("pullModeSubscribedListRequests", res);
       this._pullModeService.initializedSubscribedListRequests(res);
     });
 

@@ -69,13 +69,13 @@ export class SubscribedListComponent implements OnInit {
     const obj = {
       topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, item.id, "PRIMARY", "SUBSCRIBED"),
       agentId: this._cacheService.agent.id,
-      topicId: item.id,
-      topic: item
+      listId: item.id,
+      list: item
     };
     if (event.checked) {
-      this._socketService.emit("subscribePullModeTopic", obj);
+      this._socketService.emit("subscribePullModeList", obj);
     } else {
-      this._socketService.emit("unsubscribePullModeTopic", obj);
+      this._socketService.emit("unsubscribePullModeList", obj);
     }
   }
 
