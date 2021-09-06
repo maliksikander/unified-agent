@@ -27,17 +27,14 @@ export class SubscribedListPreviewComponent implements OnInit {
     private _cacheService: cacheService,
     private _socketService: socketService,
     private _router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
-
     this.listenerSubscription = this._pullModeservice.subscribedListRequestsListener.subscribe((reqs) => {
-
       this.subscribedListRequests = reqs;
     });
 
     this.subscribedListRequests = this._pullModeservice.subscribedListRequests;
-
   }
   listPreviewToggle() {
     this.expandCustomerInfo.emit((this.listPreview = false));
@@ -49,7 +46,7 @@ export class SubscribedListPreviewComponent implements OnInit {
       panelClass: "confirm-dialog",
       data: { header: "Close Chat", message: `Are you sure you want to close this Chat?` }
     });
-    dialogRef.afterClosed().subscribe((result) => { });
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 
   joinChat(request) {
@@ -65,10 +62,8 @@ export class SubscribedListPreviewComponent implements OnInit {
 
   isAlreadySubscribed(requestId) {
     return this._pullModeservice.subscribedListJoinedRequests.includes(requestId);
-
   }
   ngOnDestroy() {
     this.listenerSubscription.unsubscribe();
   }
-
 }

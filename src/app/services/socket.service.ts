@@ -110,7 +110,7 @@ export class socketService {
       try {
         console.log("onPullModeSubscribedListRequest", res);
         this._pullModeService.updateSubscribedListRequests(JSON.parse(res.pullModeEvent));
-        if (res.type == "new") {
+        if (res.type.toUpperCase() == "PULL_MODE_LIST_REQUEST_RECEIVED") {
           this._snackbarService.open("A new request is arrived", "succ");
         }
       } catch (err) {

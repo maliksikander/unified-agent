@@ -20,7 +20,6 @@ export class pullModeService {
 
   public readonly subscribedListRequestsListener: Observable<any> = this._subscribedListRequestsListener.asObservable();
 
-
   constructor(private _httpService: httpService) {
     this.loadLabels();
   }
@@ -71,7 +70,6 @@ export class pullModeService {
       }
     });
     this._subscribedListRequestsListener.next(this.subscribedListRequests);
-
   }
 
   removePullModeSubscribedListRequests(id) {
@@ -90,7 +88,6 @@ export class pullModeService {
     });
 
     this._subscribedListRequestsListener.next(this.subscribedListRequests);
-
   }
 
   updatePullModeJoinedRequestIds(reqs) {
