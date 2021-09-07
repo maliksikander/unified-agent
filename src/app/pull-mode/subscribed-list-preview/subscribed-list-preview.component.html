@@ -10,8 +10,8 @@
             class="add-new" mat-button>Active</button>
         <button [style.backgroundColor]="filterStatus == 'inactive' ? '#9abcef' : '' "
             (click)="filterStatus = 'inactive'" class="add-new" mat-button>Inactive</button>
-        <button [style.backgroundColor]="filterStatus == 'unread' ? '#9abcef' : ''" (click)="filterStatus = 'unread'"
-            class="add-new" mat-button>Unread</button>
+        <button [style.backgroundColor]="filterStatus == 'unread' ? '#9abcef' : ''" (click)="filterStatus = 'created'"
+            class="add-new" mat-button>Created</button>
         <mat-form-field appearance="outline" class="selection-trigger">
             <mat-select [(ngModel)]="filterListId">
                 <mat-option value='all'>All Queues</mat-option>

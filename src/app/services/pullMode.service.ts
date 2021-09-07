@@ -31,9 +31,13 @@ export class pullModeService {
 
     if (type.toUpperCase() == "PULL_MODE_LIST_REQUEST_RECEIVED") {
       this._snackbarService.open("A new request on " + this.listNames[incomingRequest.listId] + " is arrived", "succ");
-    } else if (type.toUpperCase() == "PULL_MODE_LIST_REQUEST_DELETED") {
-      this.deleteRequestById(incomingRequest.id);
-      return;
+    } else {
+
+      if (incomingRequest.status.toLowerCase() == "closing") {
+        this.deleteRequestById(incomingRequest.id);
+        return;
+      }
+
     }
 
     let index: number = -1;

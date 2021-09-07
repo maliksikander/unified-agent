@@ -1,5 +1,5 @@
 {
-    "GAT_URL": "http://localhost:3000",
-    "SOCKET_URL": "ws://localhost:3000",
-    "ENV": "development"
+    "GAT_URL": "http://192.168.2.50:3000",
+    "SOCKET_URL": "ws://192.168.2.50:3000",
+    "ENV": "prod"
 }
