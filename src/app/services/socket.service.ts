@@ -109,10 +109,7 @@ export class socketService {
     this.listen("onPullModeSubscribedListRequest").subscribe((res: any) => {
       try {
         console.log("onPullModeSubscribedListRequest", res);
-        this._pullModeService.updateSubscribedListRequests(JSON.parse(res.pullModeEvent));
-        if (res.type.toUpperCase() == "PULL_MODE_LIST_REQUEST_RECEIVED") {
-          this._snackbarService.open("A new request is arrived", "succ");
-        }
+        this._pullModeService.updateSubscribedListRequests(JSON.parse(res.pullModeEvent), res.type);
       } catch (err) {
         console.error(err);
       }
@@ -367,5 +364,8 @@ export class socketService {
     // conversation.state = "CLOSED";
     this._snackbarService.open("A conversation is removed", "err");
     this.removeConversation(topicId);
+
+    // // in case of pull mode request, the topicId is the id of that request
+    // this._pullModeService.deleteRequestByRequestId(topicId);
   }
 }

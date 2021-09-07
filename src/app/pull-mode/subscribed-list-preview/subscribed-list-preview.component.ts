@@ -18,8 +18,6 @@ export class SubscribedListPreviewComponent implements OnInit {
 
   listPreview = true;
   filterStatus = "all";
-  subscribedListRequests = [];
-  listenerSubscription;
 
   constructor(
     private dialog: MatDialog,
@@ -27,26 +25,29 @@ export class SubscribedListPreviewComponent implements OnInit {
     private _cacheService: cacheService,
     private _socketService: socketService,
     private _router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.listenerSubscription = this._pullModeservice.subscribedListRequestsListener.subscribe((reqs) => {
-      this.subscribedListRequests = reqs;
-    });
-
-    this.subscribedListRequests = this._pullModeservice.subscribedListRequests;
   }
+
   listPreviewToggle() {
     this.expandCustomerInfo.emit((this.listPreview = false));
   }
 
-  closeChat() {
+  closeChat(request) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: "490px",
       panelClass: "confirm-dialog",
       data: { header: "Close Chat", message: `Are you sure you want to close this Chat?` }
     });
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe((result) => {
+
+      if (result && result.event == "confirm") {
+
+        this._socketService.emit('deletePullModeRequest', request.id);
+      }
+
+    });
   }
 
   joinChat(request) {
@@ -64,6 +65,5 @@ export class SubscribedListPreviewComponent implements OnInit {
     return this._pullModeservice.subscribedListJoinedRequests.includes(requestId);
   }
   ngOnDestroy() {
-    this.listenerSubscription.unsubscribe();
   }
 }

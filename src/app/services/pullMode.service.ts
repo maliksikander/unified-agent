@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 import { httpService } from "./http.service";
+import { snackbarService } from "./snackbar.service";
 
 @Injectable({
   providedIn: "root"
@@ -16,11 +17,8 @@ export class pullModeService {
 
   public readonly subscribedListListener: Observable<any> = this._subscribedListListener.asObservable();
 
-  private _subscribedListRequestsListener: BehaviorSubject<any> = new BehaviorSubject([]);
 
-  public readonly subscribedListRequestsListener: Observable<any> = this._subscribedListRequestsListener.asObservable();
-
-  constructor(private _httpService: httpService) {
+  constructor(private _httpService: httpService, private _snackbarService: snackbarService) {
     this.loadLabels();
   }
 
@@ -29,27 +27,37 @@ export class pullModeService {
     this._subscribedListListener.next(this.subscribedList);
   }
 
-  updateSubscribedListRequests(event) {
+  updateSubscribedListRequests(incomingRequest, type) {
+
+    if (type.toUpperCase() == "PULL_MODE_LIST_REQUEST_RECEIVED") {
+      this._snackbarService.open("A new request on " + this.listNames[incomingRequest.listId] + " is arrived", "succ");
+    } else if (type.toUpperCase() == "PULL_MODE_LIST_REQUEST_DELETED") {
+      this.deleteRequestById(incomingRequest.id);
+      return;
+    }
+
     let index: number = -1;
     let found: boolean = false;
 
     // check if the request is already present here
-    this.subscribedListRequests.forEach((e, i) => {
+    this.subscribedListRequests.forEach((request, i) => {
       // if yes, then get the index of request
-      if (e.id == event.id) {
+      if (request.id == incomingRequest.id) {
         index = i;
         found = true;
         return;
       }
     });
-
+    // if the request already in it, update the request
     if (found) {
-      this.subscribedListRequests[index] = event;
+      this.subscribedListRequests[index] = incomingRequest;
     } else {
-      this.subscribedListRequests.push(event);
+      // else, add a new entry   
+      this.subscribedListRequests.push(incomingRequest);
     }
 
-    this._subscribedListRequestsListener.next(this.subscribedListRequests);
+    this.updateRequestArrayRef(this.subscribedListRequests);
+
   }
 
   loadLabels() {
@@ -69,15 +77,15 @@ export class pullModeService {
         this.subscribedListRequests.push(req);
       }
     });
-    this._subscribedListRequestsListener.next(this.subscribedListRequests);
+    this.updateRequestArrayRef(this.subscribedListRequests);
   }
 
-  removePullModeSubscribedListRequests(id) {
+  removePullModeSubscribedListRequests(listId) {
     let indexesOfItemsToBeremoved = [];
 
     // fetch the indexes of the items to be removed
     this.subscribedListRequests.forEach((e, i) => {
-      if (e.listId == id) {
+      if (e.listId == listId) {
         indexesOfItemsToBeremoved.push(i);
       }
     });
@@ -86,11 +94,31 @@ export class pullModeService {
     this.subscribedListRequests = this.subscribedListRequests.filter(function (value, index) {
       return indexesOfItemsToBeremoved.indexOf(index) == -1;
     });
+    this.updateRequestArrayRef(this.subscribedListRequests);
 
-    this._subscribedListRequestsListener.next(this.subscribedListRequests);
   }
 
   updatePullModeJoinedRequestIds(reqs) {
+
     this.subscribedListJoinedRequests = reqs;
   }
+
+
+  deleteRequestById(reqId) {
+
+    this.subscribedListRequests = this.subscribedListRequests.filter((req) => {
+      return req.id != reqId;
+    });
+    console.log("this.subscribedListRequests after deleted ", this.subscribedListRequests);
+    this.updateRequestArrayRef(this.subscribedListRequests);
+
+  }
+
+  updateRequestArrayRef(requests) {
+    // we are using impure pipe with this data, as impure pipe does not changes with the same array reference so we need to change
+    // the reference of that array
+    this.subscribedListRequests = [];
+    this.subscribedListRequests = this.subscribedListRequests.concat(requests);
+  }
+
 }
