@@ -30,7 +30,7 @@ export class socketService {
     private _sharedService: sharedService,
     private _pullModeService: pullModeService,
     private _router: Router
-  ) {}
+  ) { }
 
   connectToSocket() {
     this.uri = this._appConfigService.config.SOCKET_URL;
@@ -64,6 +64,7 @@ export class socketService {
 
     this.listen("errors").subscribe((res: any) => {
       console.log("socket errors ", res);
+      this.onSocketErrors(res);
     });
 
     this.listen("taskRequest").subscribe((res: any) => {
@@ -139,7 +140,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) {}
+    } catch (err) { }
   }
 
   listen(eventName: string) {
@@ -367,5 +368,9 @@ export class socketService {
 
     // // in case of pull mode request, the topicId is the id of that request
     // this._pullModeService.deleteRequestByRequestId(topicId);
+  }
+
+  onSocketErrors(res) {
+    this._snackbarService.open("on " + res.task + " " + res.msg, "err");
   }
 }

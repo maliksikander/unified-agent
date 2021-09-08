@@ -127,7 +127,7 @@ export class InteractionsComponent implements OnInit {
     private _cacheService: cacheService,
     private _socketService: socketService,
     private dialog: MatDialog
-  ) {}
+  ) { }
   ngOnInit() {
     //  console.log("i am called hello")
     this.convers = this.conversation.messages;
@@ -136,7 +136,7 @@ export class InteractionsComponent implements OnInit {
     }, 500);
   }
 
-  emoji() {}
+  emoji() { }
 
   onSend(text) {
     let message = JSON.parse(JSON.stringify(this.conversation.messages[this.conversation.messages.length - 1]));
@@ -228,9 +228,13 @@ export class InteractionsComponent implements OnInit {
   }
 
   downTheScrollAfterMilliSecs(milliseconds, behavior) {
+
     setTimeout(() => {
-      document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior });
+      try {
+        document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior });
+      } catch (err) { }
     }, milliseconds);
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
