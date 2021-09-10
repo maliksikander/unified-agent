@@ -422,6 +422,7 @@ padding: 0 !important;
     mat-icon{
       line-height: 20px;
       font-size: 18px;
+      color: $white-color;
     }
   }
 }
@@ -1914,9 +1915,6 @@ color: #fff;
   .mat-checkbox-frame{
     border: 1px solid rgba(0,0,0,.12);
   }
-  .mat-checkbox-layout {
-    color: rgb(119, 119, 119);
-  }
   .mat-checkbox-inner-container {
     width: 25px;
     height: 25px;
@@ -1924,6 +1922,7 @@ color: #fff;
   .check-box{
     label{
       align-items: center;
+      color: #000;
     }
   }
 }
@@ -1938,10 +1937,9 @@ color: #fff;
     padding: 0;
     position: relative;
     margin-right: 15px;
-    top: 3px;
     label {
       display: block;
-      margin-bottom: 10px;
+      margin-bottom: 10px !important;
     }
   }
 
@@ -1958,11 +1956,6 @@ color: #fff;
   .mat-checkbox-inner-container {
     width: 25px;
     height: 25px;
-  }
-  .check-box{
-    label{
-      align-items: center;
-    }
   }
 }
 .select-channel {
@@ -2031,6 +2024,7 @@ tspan{
 .channel-options {
   color: #666 !important;
   font-size: 13px !important;
+  text-transform: capitalize;
 }
 
 //Page Header
@@ -2536,4 +2530,23 @@ tspan{
   font-size: 10px;
   padding: 3px 10px !important;
   margin-top: 8px !important;
+}
+
+.cdk-drop-list-dragging {
+  .schema-box.cdk-drag-placeholder {
+    background: rgba(0,0,0,.1) !important;
+  }
+}
+.schema-box.cdk-drag.cdk-drag-dragging , .schema-box.cdk-drag.cdk-drag-preview {
+  box-shadow: 0 0 10px darken($main-color-background, 50%);
+
+  mat-icon{
+    text-shadow: 5px 0 0 #a4b5d2 !important;
+    margin-right: 5px;
+    cursor: move;
+    color: #a4b5d2 !important;
+    font-size: 18px;
+    padding-top: 4px;
+    box-shadow: none !important;
+  }
 }

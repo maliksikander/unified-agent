@@ -1233,11 +1233,11 @@ button.attachment-btn {
   height: 30px;
 
   input{
-    width: 20px;
+    width: 35px;
     position: absolute;
     opacity: 0;
     cursor: pointer !important;
-    left: 0;
+    left: 2px;
     top: 0;
     z-index: 2;
   }
@@ -1641,4 +1641,12 @@ span.note-icon {
     left: 0;
     top: 3px;
     }
+}
+
+//Composer Preview File
+.preview-file{
+  img{
+    max-height: 100px;
+    max-width: 100px;
+  }
 }

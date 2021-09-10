@@ -1,6 +1,8 @@
-<div class="header">
-  <div class="header-name">Create Attribute</div>
-  <mat-icon (click)="onNoClick()" class="closeBtn">close</mat-icon>
+  <div class="dialog-header">
+    <h4>Create Attribute</h4>
+  <button (click)="onNoClick()" mat-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
 </div>
 
 <div class="create-attr">
@@ -9,7 +11,7 @@
 
     <div class="left-area row m-0">
       <div class="form-group label-name col-md-6">
-        <label class="text-left">Label</label>
+        <label class="text-left">Label <span class="mandatory-steric">*</span></label>
         <mat-form-field appearance="outline">
           <input [formControl]="label" matInput>
           <mat-error *ngIf="label.hasError('required')">
@@ -25,7 +27,7 @@
       </div>
 
       <div class="form-group label-name col-md-6">
-        <label class="text-left">Description</label>
+        <label class="text-left">Description <small>(optional)</small></label>
         <mat-form-field appearance="outline">
           <input [formControl]="desc" matInput>
           <mat-error *ngIf="desc.hasError('maxlength')">
@@ -42,15 +44,20 @@
         <label class="text-left">Field Type</label>
         <div class="select-list">
           <mat-form-field appearance="outline">
-            <select matNativeControl [(ngModel)]="columnTypeControllar">
-              <option *ngFor="let type of columnTypes" [value]="type">{{type}}</option>
-            </select>
+<!--            <select matNativeControl [(ngModel)]="columnTypeControllar">-->
+<!--              <option *ngFor="let type of columnTypes" [value]="type">{{type}}</option>-->
+<!--            </select>-->
+            <mat-select class="selected-channels ">
+              <mat-option class="channel-options" *ngFor="let type of columnTypes" [value]="type">
+                {{type}}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
       </div>
 
       <div class="form-group label-name col-md-2 characters-length">
-        <label class="text-left">Characters Length</label>
+        <label class="text-left">Number of Characters</label>
         <mat-form-field appearance="outline">
           <input matInput [formControl]="textLength">
           <mat-error *ngIf="textLength.hasError('required')">
@@ -65,14 +72,33 @@
         </mat-form-field>
       </div>
 
-      <div class="check-box form-group">
+    </div>
+    <div class="left-area row m-0">
+    <div class="check-box form-group col-md-3 mandatory-attribute">
         <mat-checkbox [(ngModel)]="mandatory" color="primary">Mandatory Attribute</mat-checkbox>
       </div>
-      <div class="check-box form-group">
-        <mat-checkbox  color="primary">Personal Identifiable Information</mat-checkbox>
+
+        <div class="form-group label-name  default-value" [hidden]="!mandatory">
+          <label class="text-left">Default Value <span class="mandatory-steric">*</span></label>
+          <mat-form-field appearance="outline">
+            <input [formControl]="defaultValue" matInput>
+            <mat-error *ngIf="defaultValue.hasError('required')">
+              field is mandatory
+            </mat-error>
+            <mat-error *ngIf="defaultValue.hasError('minlength') || defaultValue.hasError('maxlength')">
+              Range Should Be 1 - 50
+            </mat-error>
+            <mat-error *ngIf="defaultValue.hasError('validName')">
+              That name Already Exists
+            </mat-error>
+          </mat-form-field>
+          <small>(Please specify a default value, if attribute is mandatory) </small>
       </div>
-
-
+    </div>
+    <div class="left-area row m-0">
+    <div class="check-box form-group pii-info">
+      <mat-checkbox  color="primary">Is it a PII?</mat-checkbox> <a href="">(More information about PII)</a>
+    </div>
     </div>
 
   </div>
@@ -93,7 +119,7 @@
         <div class="select-list">
           <mat-form-field appearance="outline">
             <mat-select [formControl]="selectChannel" multiple class="selected-channels">
-              <mat-option class="channel-options" *ngFor="let channel of channelList" [value]="channel">{{channel}}</mat-option>
+              <mat-option class="channel-options" *ngFor="let channel of channelList" value="{{channel.channel_name}}"><img src="{{channel.channel_icon}}"> {{channel.channel_name}}</mat-option>
             </mat-select>
           </mat-form-field>
 

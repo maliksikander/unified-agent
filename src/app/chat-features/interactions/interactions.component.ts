@@ -6,6 +6,7 @@ import {PerfectScrollbarConfigInterface} from 'ngx-perfect-scrollbar';
 import {FormControl} from '@angular/forms';
 
 import {WrapUpFormComponent} from '../../new-components/wrap-up-form/wrap-up-form.component';
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 
 declare var EmojiPicker: any;
 interface Search {
@@ -27,7 +28,8 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   public config: PerfectScrollbarConfigInterface = {};
   @ViewChild('replyInput', {static: true}) elementView: ElementRef;
   expanedHeight = 0;
-
+  urlMap = new Map();
+  fileUrl: SafeUrl;
   myControl = new FormControl();
   channelUrl = 'assets/images/web.svg';
   userList = [
@@ -176,7 +178,7 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   postId = '101064781498908';
 
   postUrl = '';
-  constructor(private snackBar: MatSnackBar, private _cacheService: cacheService, private _socketService: socketService, private dialog: MatDialog,) {
+  constructor(private snackBar: MatSnackBar, private _cacheService: cacheService, private _socketService: socketService, private dialog: MatDialog, private santizer:DomSanitizer) {
    }
 
   ngOnInit() {
@@ -321,5 +323,23 @@ this.postUrl = "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fweb
       this.isSelectedChannelFlag = selectedChannel.flag;
       this.isSelectedChannelCode = selectedChannel.code;
     }
+  }
+
+  uploadFile(e) {
+    const file = e.target.files[0];
+    const files = e.target.files;
+
+
+    for (let i = 0; i < files.length; i++) {
+
+      console.log(files.item(i), file.name, i);
+      this.urlMap.set(files[i].name, files.item(i));
+
+      // alert(file.name);
+    }
+    const url = URL.createObjectURL(file);
+
+    this.fileUrl = this.santizer.bypassSecurityTrustUrl(url);
+    console.log(this.urlMap.size);
   }
 }

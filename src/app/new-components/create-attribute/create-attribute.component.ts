@@ -15,20 +15,40 @@ export class CreateAttributeComponent implements OnInit {
   columnTypes = ['Text', 'Phone', 'Email', 'Date', 'Date Time', 'Time', 'URL', 'Bool'];
   channels = ['Landline', 'Mobile'];
   columnTypeControllar = 'Text';
-  mandatory: boolean = false;
-  channelIden: boolean = false;
-  selectedChannel = "Landline";
+  mandatory = false;
+  channelIden = false;
+  selectedChannel = 'Landline';
   attributesData;
 
-  textLength = new FormControl('50', [Validators.pattern("^[0-9]*$"), Validators.required, Validators.min(1), Validators.max(1000)]);
+  textLength = new FormControl('50', [Validators.pattern('^[0-9]*$'), Validators.required, Validators.min(1), Validators.max(1000)]);
   label = new FormControl('', [Validators.required, Validators.maxLength(50), Validators.minLength(1)]
+  , this.ValidateNameDuplication.bind(this));
+  defaultValue = new FormControl('', [Validators.required, Validators.maxLength(50), Validators.minLength(1)]
   , this.ValidateNameDuplication.bind(this));
   desc = new FormControl('', [Validators.maxLength(100)]);
   selectChannel = new FormControl();
-  channelList: string[] = ['Web Chat', 'Facebook', 'Whatsapp', 'Viber', 'SMS', 'Landline'];
+  channelList: any[] = [{
+    channel_name: 'whatsapp',
+    channel_icon: 'assets/images/whatsapp-colored.svg'
+  }, {
+    channel_name: 'facebook',
+    channel_icon: 'assets/images/facebook-colored.svg'
+  }, {
+    channel_name: 'email',
+    channel_icon: 'assets/images/envelope-colored.svg'
+  }, {
+    channel_name: 'skype',
+    channel_icon: 'assets/images/skype-colored.svg'
+  }, {
+    channel_name: 'landline',
+    channel_icon: 'assets/images/landline-phone-colored.svg'
+  }, {
+    channel_name: 'phone',
+    channel_icon: 'assets/images/phone-colored.svg'
+  }];
 
   constructor( public snackBar: MatSnackBar, public dialogRef: MatDialogRef<CreateAttributeComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+               @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
 
@@ -42,7 +62,7 @@ export class CreateAttributeComponent implements OnInit {
   makeObject() {
     let txtLength = this.textLength.value;
     let slctdChnl = this.selectedChannel;
-    let trimmedlbl = this.label.value.trim();
+    const trimmedlbl = this.label.value.trim();
 
 
     if (this.columnTypeControllar == 'URL') {
@@ -63,11 +83,11 @@ export class CreateAttributeComponent implements OnInit {
       slctdChnl = slctdChnl.replace(/\s+/g, '_').toLowerCase();
     }
 
-    let obj = {
-      'label': trimmedlbl, 'key': trimmedlbl.replace(/\s+/g, '_').toLowerCase(),
-      'type': this.columnTypeControllar.replace(/\s+/g, '_').toLowerCase(), 'is_required': this.mandatory, 'desc': this.desc.value,
-      'characters': txtLength, 'channel': slctdChnl
-    }
+    const obj = {
+      label: trimmedlbl, key: trimmedlbl.replace(/\s+/g, '_').toLowerCase(),
+      type: this.columnTypeControllar.replace(/\s+/g, '_').toLowerCase(), is_required: this.mandatory, desc: this.desc.value,
+      characters: txtLength, channel: slctdChnl
+    };
 
     // this._callService.createSchemaAttribute(obj).subscribe((e) => {
     //   this._callService.Interceptor("Attribute-Created",'succ');
@@ -90,7 +110,7 @@ export class CreateAttributeComponent implements OnInit {
 
   }
 
-  ValidateNameDuplication(control: AbstractControl){
+  ValidateNameDuplication(control: AbstractControl) {
     // return this._callService.getContactSchema().pipe(map(
     //   e => {
     //     const schema = e;

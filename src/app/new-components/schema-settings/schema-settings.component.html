@@ -3,16 +3,24 @@
 </div>
 
 
-<div class="main-content">
+<div class="main-content container">
   <div cdkDropListGroup>
     <div class="schema-container">
       <div cdkDropList [cdkDropListData]="schema2" class="schema-list" (cdkDropListDropped)="drop($event)">
         <div *ngFor="let item of schema2; let i = index;">
           <div  [ngClass]="{'schema-detail-check': showDetails && divId == item._id}" (click)="openDetails(item._id)" class="schema-box" cdkDrag>
-<!--            <span class="n">{{i + 1}}</span>-->
+<!--            <span class="list-count">{{i + 1}}</span>-->
             <mat-icon class="shadow">more_vert</mat-icon>
             <span class="heading">{{item.label}}</span><span
             class="steric" *ngIf="item.is_required">*</span>
+            <span class="field-type">({{ item.type == 'string' ? 'Text' :  item.type}})</span>
+            <ul class="available-channel-list" *ngIf="item.type == 'phone'">
+              <li matTooltip="phone"><img src="assets/images/phone-colored.svg" alt="phone"> </li>
+              <li matTooltip="whatsapp"><img src="assets/images/whatsapp-colored.svg" alt="whatsapp"> </li>
+              <li matTooltip="facebook"><img src="assets/images/facebook-colored.svg" alt="facebook"> </li>
+              <li matTooltip="skype"><img src="assets/images/skype-colored.svg" alt="viber"> </li>
+            </ul>
+
             <mat-icon *ngIf="item.is_deletable != false" matTooltip="Options"
                        class="delete-btn box-options" [matMenuTriggerFor]="boxOptions" (click)="displayMenu($event)">more_vert
             </mat-icon>
@@ -82,10 +90,19 @@
         <div *ngFor="let item of schema1; let i = index">
           <div [ngClass]="{'schema-detail-check': showDetails && divId == item._id}" (click)="openDetails(item._id)"
                class="schema-box" cdkDrag>
-<!--            <span class="n">{{i + 1 + schema2.length}}</span>-->
+<!--            <span class="list-count">{{i + 1 + schema2.length}}</span>-->
             <mat-icon class="shadow">more_vert</mat-icon>
-            <span class="heading">{{item.label}}</span><span
-            class="steric" *ngIf="item.is_required">*</span>
+            <span class="heading">{{item.label}}</span>
+
+            <span class="steric" *ngIf="item.is_required">*</span>
+            <span class="field-type">({{ item.type == 'string' ? 'Text' :  item.type}})</span>
+
+            <ul class="available-channel-list" *ngIf="item.type == 'phone'">
+              <li matTooltip="phone"><img src="assets/images/phone-colored.svg" alt="phone"> </li>
+              <li matTooltip="whatsapp"><img src="assets/images/whatsapp-colored.svg" alt="whatsapp"> </li>
+              <li matTooltip="facebook"><img src="assets/images/facebook-colored.svg" alt="facebook"> </li>
+              <li matTooltip="skype"><img src="assets/images/skype-colored.svg" alt="viber"> </li>
+            </ul>
             <mat-icon *ngIf="item.is_deletable != false" matTooltip="option"
                        class="delete-btn box-options"  [matMenuTriggerFor]="searchChannelSelection" (click)="displayMenu($event)">more_vert
             </mat-icon>

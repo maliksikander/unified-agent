@@ -1,19 +1,4 @@
-//.label-main{
-//  background: #f3f6f8;
-//  margin-bottom: 15px!important;
-//  min-height: 50px;
-//  position: relative;
-//  .customer-heading {
-//    align-self: center;
-//  }
-//  h4{
-//    font-size: 16px;
-//    color: #999;
-//    margin: 0;
-//    display: inline-block;
-//    line-height: 30px;
-//  }
-//}
+@import "src/app/shared/globalVariables";
 
 .schema-container {
   width: 50%;
@@ -31,10 +16,10 @@
   padding: 0 6px;
 
   .shadow {
-    text-shadow: 5px 0 0 #BFBFBF;
+    text-shadow: 5px 0 0 darken($main-color-background, 22%);
     margin-right: 5px;
     cursor: move;
-    color: #BFBFBF;
+    color: darken($main-color-background, 22%);
     font-size: 18px;
     padding-top: 4px;
     box-shadow: none !important;
@@ -44,63 +29,69 @@
 
 
 .schema-box {
-  color: rgba(0, 0, 0, 0.87);
+  //color: rgba(0, 0, 0, 0.87);
     display: flex;
     border-radius: 5px;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     flex-direction: row;
     align-items: center;
     box-sizing: border-box;
     cursor: pointer;
-    background: #F3F6F8;
-    height: 38px;
-    padding: 5px 0px 5px 2px;
+    background: $main-color-background;
+    height: 40px;
+    padding: 0 3px;
     font-size: 12px;
     width: 100%;
     position: relative;
 
     .box-options {
       font-size: 20px;
-      color: #BFBFBF;
+      color: darken($main-color-background, 22%);
       padding: 1px 0 1px 0;
       border-radius: 16px;
-      width: 19px;
+      width: 20px;
       position: absolute;
-      right: 13px;
+      right: 2px;
     }
 
+  .steric {
+    color: $red-color;
+  }
+  span.field-type {
+    font-size: 11px;
+    margin-left: 5px;
+    color:  #9FACBF;
+    text-transform: capitalize;
+  }
 }
 
-.cdk-drag-preview {
-  box-sizing: border-box;
-  border-radius: 4px;
-  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12);
-}
-
-.cdk-drag-placeholder {
-  opacity: 0;
-}
-
-.cdk-drag-animating {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
+//.cdk-drag-preview {
+//  box-sizing: border-box;
+//  border-radius: 4px;
+//  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+//    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+//    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+//}
+//
+//.cdk-drag-placeholder {
+//  opacity: 0;
+//}
+//
+//.cdk-drag-animating {
+//  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+//}
 
 // .schema-box:last-child {
 //   border: 1px solid #48b0d157;
 // }
 
-.schema-list.cdk-drop-list-dragging .schema-box:not(.cdk-drag-placeholder) {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
+//.schema-list.cdk-drop-list-dragging .schema-box:not(.cdk-drag-placeholder) {
+//  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+//}
 
 .main-content {
   overflow: auto;
   height: 100%;
-  width: calc(100% - 393px);
-  text-align: center;
-  margin: 0 auto;
   padding: 2em 0 1em 0;
 
   //.col {
@@ -143,13 +134,13 @@
 }
 
 .heading {
-  color: #5B5B5B;
+  color: #000;
   white-space: nowrap;
-  overflow: auto;
-  margin-right: 40px;
+  margin-right: 2px;
   width: auto;
   text-align: left;
   font-size: 13px;
+  text-transform: capitalize;
 }
 
 .un-edit {
@@ -158,7 +149,7 @@
 }
 
 
-.n{
+.list-count{
   background: #26a2c899;
     color: white;
     width: 19px;
@@ -170,26 +161,11 @@
     margin-left: 7px;
 }
 
-.steric{
-  position: relative;
-  left: -36px;
-}
 
 .create-attribute {
   padding: 15px 5px;
   text-align: left;
 
-  //p{
-  //  display: inline-block;
-  //  margin: 0;
-  //  color: #4c4c4c;
-  //  font-size: 13px;
-  //  span{
-  //    color: #6EC3DD;
-  //    margin-left: 15px;
-  //    cursor: pointer;
-  //  }
-  //}
   button {
     //float: right;
     background: #6EC3DD;
@@ -202,6 +178,25 @@
     &.create-new-attribute{
       background: #fff;
       color: #6EC3DD;
+    }
+  }
+}
+
+//channel list
+ul.available-channel-list {
+  padding: 0;
+  display: inline-block;
+  margin: 0;
+  position: absolute;
+  right: 24px;
+
+  li{
+    display: inline-block;
+    margin: 0 1px;
+
+    img {
+      max-width: 18px;
+      max-height: 18px;
     }
   }
 }

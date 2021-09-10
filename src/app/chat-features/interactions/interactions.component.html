@@ -806,6 +806,9 @@
               <form class="reply-form" [ngClass]="{'whisper-mode': whisper}">
 <!--                <label class="count-reply">{{replyInput.value.length}}/200</label>-->
                 <div class="mat-form-field chat-area"  [ngClass]="{'expand-area-height':expanedHeight > 50}">
+                  <div *ngIf="fileUrl" class="preview-file">
+                    <img [attr.src]="fileUrl" />
+                  </div>
             <textarea  [formControl]="myControl" [perfectScrollbar] (click)="onTextAreaClick()" data-emoji-picker="true"  [(ngModel)]="message" (keyup)="onKey($event)"
                        name="message"  (change)="textChanged($event)" [matAutocomplete]="auto"  matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea"
                        class="resize-none" #replyInput name="message" placeholder="Type a message here..."></textarea>
@@ -898,8 +901,8 @@
                   </button>
 
                   <button class="attachment-btn composer-trigger"  mat-icon-button *ngIf="replyInput.value.length < 1">
-                    <input #myFileInput  type="file"
-                           name="ef_chatbox_chat_file_upload" id="uploadFileBtn" class="file-upload-input">
+                    <input #myFileInput  type="file" (change)="uploadFile($event)" multiple
+                           name="ef_chatbox_chat_file_upload" id="uploadFileBtn" class="file-upload-input1">
                   </button>
 
                 </div>
