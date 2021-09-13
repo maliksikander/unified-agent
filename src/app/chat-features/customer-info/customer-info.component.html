@@ -167,17 +167,41 @@
                   <small>Landline Business</small>
                 </p>
               </li>
+              <li class="multi-channel-list">
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
+                    <div class="channel-icon-area web-channel-inner">
+                      <img src="assets/images/phone-colored.svg"/>
+                      <p>
+                        <strong>+446698988</strong>
+                        <small>Mobile Personal</small>
+                      </p>
+                    </div>
+                  </mat-expansion-panel-header>
+            <ul>
               <li>
-                <img src="assets/images/phone-colored.svg"/>
+                <img src="assets/images/mobile-action.svg"/>
                 <p>
-                  <strong>+446698988</strong>
-                  <small>Mobile Personal</small>
+                  <small>Call & SMS</small>
                   <span class="channel-list-action">
                     <button mat-icon-button (click)="openDialog(callingTemplate, '+446698988')"><mat-icon>call</mat-icon></button>
                     <button mat-icon-button><mat-icon>message</mat-icon></button>
-                    <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
-                  </span>
+                    </span>
                 </p>
+              </li>
+              <li>
+                <img src="assets/images/whatsapp-colored.svg"/>
+                <p>
+                  <small>Whatsapp</small>
+                  <span class="channel-list-action">
+                    <button mat-icon-button><mat-icon>call</mat-icon></button>
+                    <button mat-icon-button><mat-icon>message</mat-icon></button>
+                    </span>
+                </p>
+              </li>
+            </ul>
+                </mat-expansion-panel>
+
               </li>
               <li>
                 <img src="assets/images/whatsapp-colored.svg"/>
