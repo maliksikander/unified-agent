@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, DateAdapter } from '@angular/material';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import {FormGroup, FormBuilder, Validators, FormControl, FormArray, AbstractControl} from '@angular/forms';
 import { Router } from '@angular/router';
 import { DateTimeAdapter } from 'ng-pick-datetime';
 
@@ -11,9 +11,17 @@ import { DateTimeAdapter } from 'ng-pick-datetime';
 })
 export class CreateCustomerComponent implements OnInit {
 
+  userForm: FormGroup;
 
   constructor(private dateTimeAdapter: DateTimeAdapter<any>, private dateAdapter: DateAdapter<any>, private _router: Router, public snackBar: MatSnackBar, public dialogRef: MatDialogRef<CreateCustomerComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder) { dialogRef.disableClose = true;}
+              @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder) { dialogRef.disableClose = true;
+    this.userForm = this.fb.group({
+      name: [],
+      phones: this.fb.array([
+        this.fb.control(null)
+      ])
+    })
+  }
 
   schemaAttributes = [
     {
@@ -280,6 +288,20 @@ export class CreateCustomerComponent implements OnInit {
   onSelectAll(items: any) {
   }
   onDeSelectAll(items: any) {
+  }
+
+  addPhone(): void {
+    (this.userForm.get('phones') as FormArray).push(
+      this.fb.control(null)
+    );
+  }
+
+  removePhone(index) {
+    (this.userForm.get('phones') as FormArray).removeAt(index);
+  }
+
+  getPhonesFormControls(): AbstractControl[] {
+    return (<FormArray> this.userForm.get('phones')).controls
   }
 
 }

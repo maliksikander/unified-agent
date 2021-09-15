@@ -52,6 +52,11 @@
 }
 
 .input-field {
+  .field-set{
+    padding-right: 35px;
+    position: relative;
+  }
+
   .mat-form-field {
     width: 100%;
   }
@@ -67,10 +72,10 @@
   }
 }
 
-.lbl {
+.field-label {
   color: #737373;
   font-size: 13px;
-  font-weight: 500;
+  margin: 0;
 }
 
 .main-content-create-customer {
@@ -112,4 +117,28 @@
   position: relative;
   display: inline-block;
   top: 1px;
+}
+.duplicate-field{
+
+  button.duplicate-action {
+    top: 10px;
+  }
+}
+
+button.duplicate-action {
+  position: absolute;
+  right: 2px;
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  top: 33px;
+  background: $main-color-background;
+  box-shadow: none;
+
+  mat-icon {
+    font-size: 16px;
+    line-height: 26px;
+    height: 26px;
+    color: #8E8E8E;
+  }
 }

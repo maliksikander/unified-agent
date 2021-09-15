@@ -127,12 +127,12 @@
 <!--                <p class="user-from">London, United Kingdom</p>-->
 <!--              </h5>-->
 <!--            </div>-->
-<div class="custom-tab-area">
-  <ul>
-    <li (click)="displayProfile = true; displayCustomerChannels = false" [ngClass]="{'tab-active' : displayProfile}">Customer Profile</li>
-    <li (click)="displayProfile = false; displayCustomerChannels = true" [ngClass]="{'tab-active' : displayCustomerChannels}">Media Channels</li>
-  </ul>
-</div>
+                  <div class="custom-tab-area">
+                    <ul>
+                      <li (click)="displayProfile = true; displayCustomerChannels = false" [ngClass]="{'tab-active' : displayProfile}">Customer Profile</li>
+                      <li (click)="displayProfile = false; displayCustomerChannels = true" [ngClass]="{'tab-active' : displayCustomerChannels}">Media Channels</li>
+                    </ul>
+                  </div>
             <div class="user-pre-detail" *ngIf="displayProfile">
               <div class="user-detail-area">
                 <label>Email</label>
