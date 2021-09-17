@@ -10,7 +10,6 @@ import { DateTimeAdapter } from 'ng-pick-datetime';
   styleUrls: ['./create-customer.component.scss']
 })
 export class CreateCustomerComponent implements OnInit {
-
   userForm: FormGroup;
 
   constructor(private dateTimeAdapter: DateTimeAdapter<any>, private dateAdapter: DateAdapter<any>, private _router: Router, public snackBar: MatSnackBar, public dialogRef: MatDialogRef<CreateCustomerComponent>,
@@ -18,9 +17,9 @@ export class CreateCustomerComponent implements OnInit {
     this.userForm = this.fb.group({
       name: [],
       phones: this.fb.array([
-        this.fb.control(null)
+        // this.fb.control(null)
       ])
-    })
+    });
   }
 
   schemaAttributes = [
@@ -54,7 +53,9 @@ export class CreateCustomerComponent implements OnInit {
       "type": "email",
       "sort_order": 3,
       "key": "email",
-      "desc": ""
+      "desc": "",
+      'channelIcon': ['envelope-colored']
+
     },
     {
       "is_required": true,
@@ -64,7 +65,9 @@ export class CreateCustomerComponent implements OnInit {
       "type": "phone",
       "sort_order": 4,
       "key": "phone1",
-      "desc": ""
+      "desc": "",
+      'channelIcon': ['envelope-colored', 'phone-colored', 'whatsapp-colored']
+
     },
     {
       "is_required": false,
@@ -74,7 +77,9 @@ export class CreateCustomerComponent implements OnInit {
       "type": "phone",
       "sort_order": 5,
       "key": "phone2",
-      "desc": ""
+      "desc": "",
+      'channelIcon': ['envelope-colored', 'phone-colored', 'facebook-colored']
+
     },
     {
       "is_required": false,
@@ -84,7 +89,9 @@ export class CreateCustomerComponent implements OnInit {
       "type": "phone",
       "sort_order": 6,
       "key": "phone3",
-      "desc": ""
+      "desc": "",
+      'channelIcon': ['envelope-colored', 'phone-colored']
+
     },
     {
       "is_required": false,
@@ -94,7 +101,8 @@ export class CreateCustomerComponent implements OnInit {
       "type": "phone",
       "sort_order": 7,
       "key": "phone4",
-      "desc": ""
+      "desc": "",
+      'channelIcon': ['envelope-colored', 'phone-colored', 'whatsapp-colored', 'facebook-colored']
     },
     {
       "is_required": false,
@@ -104,7 +112,8 @@ export class CreateCustomerComponent implements OnInit {
       "type": "phone",
       "sort_order": 8,
       "key": "phone5",
-      "desc": ""
+      "desc": "",
+      'channelIcon': ['envelope-colored', 'phone-colored', 'facebook-colored']
     },
     {
       "is_required": false,
@@ -166,6 +175,7 @@ export class CreateCustomerComponent implements OnInit {
       "updatedAt": "2021-03-30T12:12:05.258Z"
     }
   ];
+  form: FormGroup;
   labelSettings = {
     singleSelection: false,
     text: "",
@@ -303,5 +313,6 @@ export class CreateCustomerComponent implements OnInit {
   getPhonesFormControls(): AbstractControl[] {
     return (<FormArray> this.userForm.get('phones')).controls
   }
+
 
 }

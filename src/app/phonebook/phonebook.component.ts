@@ -334,7 +334,9 @@ cols = [
   {
     "field": "phone1",
     "header": "Phone1",
-    "type": "phone"
+    "type": "phone",
+    'channelIcon': ['envelope-colored', 'phone-colored', 'facebook-colored']
+
   },
   {
     "field": "email",
@@ -344,7 +346,9 @@ cols = [
   {
     "field": "phone2",
     "header": "Phone2",
-    "type": "phone"
+    "type": "phone",
+    'channelIcon': ['envelope-colored', 'phone-colored', 'whatsapp-colored']
+
   },
   {
     "field": "created_by",

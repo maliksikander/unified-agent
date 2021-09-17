@@ -18,7 +18,7 @@
           <div class="field-set"
             *ngIf="schemaAttribute.type == 'url' || (schemaAttribute.type == 'string' && !schemaAttribute.characters) || (schemaAttribute.type == 'string' && schemaAttribute.characters <= 115) || schemaAttribute.type == 'number' || schemaAttribute.type == 'email' || schemaAttribute.type == 'phone' ">
             <label class="field-label">{{schemaAttribute.label}}<span class="red-clr" *ngIf="schemaAttribute.is_required">*</span>
-            </label>
+            </label> <span class="field-channel"><img *ngFor="let channelLogo of schemaAttribute.channelIcon" src="assets/images/{{channelLogo}}.svg"></span>
             <mat-form-field class="field" appearance="outline">
               <input [required]="schemaAttribute.is_required" [formControlName]="schemaAttribute.key" matInput>
               <mat-error>
@@ -44,15 +44,17 @@
 
             <button type="button" *ngIf="schemaAttribute.type == 'email' || schemaAttribute.type == 'phone'" (click)="addPhone()" class="duplicate-action add-field" mat-mini-fab><mat-icon>add</mat-icon></button>
           </div>
+          <div *ngIf="schemaAttribute.type == 'email' || schemaAttribute.type == 'phone'">
+            <div class="duplicate-field field-set" *ngFor="let phone of getPhonesFormControls(); let i = index">
+              <mat-form-field class="field" appearance="outline">
+                <input [formControl]="phone" matInput>
+              </mat-form-field>
+              <button class="duplicate-action remove-field" (click)="removePhone(i)" mat-mini-fab>
+                <mat-icon>close</mat-icon>
+              </button>
 
-          <div class="duplicate-field field-set" *ngFor="let phone of getPhonesFormControls(); let i = index">
-            <mat-form-field class="field" appearance="outline" >
-              <input [formControl]="phone"  matInput>
-            </mat-form-field>
-            <button class="duplicate-action remove-field" (click)="removePhone(i)" mat-mini-fab><mat-icon>close</mat-icon></button>
-
+            </div>
           </div>
-
 
           <div  class="field-set" *ngIf="schemaAttribute.type == 'label'">
             <label class="field-label">{{schemaAttribute.label}}<span class="red-clr" *ngIf="schemaAttribute.is_required">*</span>

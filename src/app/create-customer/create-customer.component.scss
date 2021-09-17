@@ -135,10 +135,25 @@ button.duplicate-action {
   background: $main-color-background;
   box-shadow: none;
 
+  &.remove-field{
+    background: transparent;
+    mat-icon{
+      color: $red-color;
+    }
+  }
+
   mat-icon {
     font-size: 16px;
     line-height: 26px;
     height: 26px;
     color: #8E8E8E;
   }
+}
+span.field-channel {
+  margin-left: 10px;
+  img{
+    margin: 0 2px 1px 0;
+    max-height: 15px;
+  }
+
 }
