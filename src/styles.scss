@@ -2418,7 +2418,7 @@ tspan{
 
 //Custom User Menu Position
 .custom-user-menu {
-  right: -45px;
+  right: 0;
   position: relative;
 }
 
@@ -2551,7 +2551,7 @@ tspan{
   }
 }
 
-.duplicate-action {
+.duplicate-action, .ringing-controls {
   span.mat-button-wrapper {
     padding: 0;
   }

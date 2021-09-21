@@ -124,8 +124,8 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   searchInteraction = '';
   wrapCount = 5;
   convers: any[];
-  ringing = false;
-  callControls = false;
+  ringing = true;
+  callControls = true;
 
   selectedWrap = {
     code: ['Late Payment', 'Payment Details', 'Payment Due Date', 'Last payment','Late Payment', 'Payment Details', 'Payment Due Date', 'Last payment','Late Payment', 'Payment Details', 'Payment Due Date', 'Last payment'],

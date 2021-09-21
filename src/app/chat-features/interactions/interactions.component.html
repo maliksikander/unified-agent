@@ -35,7 +35,7 @@
               </button>
             </li>
             <li class="list-group-item">
-              <button mat-fab aria-label="Transfer Chat" (click)="interactionSearch = true">
+              <button mat-fab aria-label="search" (click)="interactionSearch = true">
                 <mat-icon>search</mat-icon>
               </button>
             </li>
@@ -63,7 +63,7 @@
             </li>
 
             <li class="list-group-item">
-              <button mat-fab aria-label="Transfer Chat" (click)="openWrapUpDialog('Wrap-up')">
+              <button mat-fab matTooltip="Note" aria-label="Note" (click)="openWrapUpDialog('Wrap-up')">
                 <img alt="Note" src="assets/images/note.svg">
               </button>
             </li>
@@ -71,22 +71,22 @@
 
           <ul class="list-group list-group-horizontal agent-controls">
             <li class="list-group-item">
-              <button mat-fab class="barge-in">
+              <button mat-fab class="barge-in" matTooltip="Barge-in">
                 <mat-icon>chat_bubble</mat-icon>
               </button>
             </li>
             <li class="list-group-item">
-              <button mat-fab>
+              <button mat-fab matTooltip="stop timer">
                 <mat-icon>timer_off</mat-icon>
               </button>
             </li>
             <li class="list-group-item">
-              <button mat-fab>
+              <button mat-fab matTooltip="participant">
                 <mat-icon>group</mat-icon>
               </button>
             </li>
             <li class="list-group-item">
-              <button mat-fab [matMenuTriggerFor]="transferChat" aria-label="Transfer Chat">
+              <button mat-fab [matMenuTriggerFor]="transferChat" matTooltip="Transfer Chat" aria-label="Transfer Chat">
                 <mat-icon>chat_bubble</mat-icon>
                 <i class="material-icons arrow-red arrow-gray">arrow_forward</i>
               </button>
@@ -97,13 +97,13 @@
 <!--              </button>-->
 <!--            </li>-->
             <li class="list-group-item">
-              <button mat-fab>
+              <button mat-fab matTooltip="close chat">
                 <mat-icon>close</mat-icon>
               </button>
             </li>
           </ul>
 
-          <mat-menu #transferChat="matMenu">
+          <mat-menu #transferChat="matMenu" xPosition="before">
             <div class="chat-transfer-main">
               <span class="transfer-heading">Transfer Chat</span>
               <div class="search-wrapper">
@@ -122,7 +122,7 @@
 
           <!-- Ringing controls-->
           <span *ngIf="ringing" class="ringing-controls"> Calling <strong>'+4444858988'</strong> Mobile
-        <button mat-fab>
+        <button mat-fab matTooltip="end call">
             <mat-icon>call_end</mat-icon>
           </button>
       </span>
@@ -795,7 +795,6 @@
                   check
                 </i>
               </button>
-
             </mat-menu>
 
             <div class="whisper-selection">
