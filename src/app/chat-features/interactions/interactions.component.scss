@@ -236,6 +236,7 @@
     position: relative;
     height: 30px;
     line-height: 30px;
+    min-width: 235px;
 
     strong{
       color: $red-color;
@@ -755,9 +756,9 @@
 .chat-footer {
   position: fixed;
   z-index: 3;
-  bottom: 10px;
-  width: calc(100% - 90px);
-  left: 80px;
+  bottom: 5px;
+  width: calc(100% - 74px);
+  left: 69px;
   min-height: 50px;
   max-height: 460px;
   background-color: white;
@@ -1213,21 +1214,21 @@
 //Expand view 3rd party bar
 .customer-bar-opened {
   .customer-info-main {
-    width: 325px;
-    border-left: 10px solid $fill-color;
+    width: 320px;
+    border-left: 5px solid $fill-color;
   }
     .interaction-inner {
-    width: calc(100% - 325px) !important;
+    width: calc(100% - 320px) !important;
     //border-left: 5px solid #e2e2e2;
   }
 
   .main-chat-area, .chat-messages-main {
-    width: calc(100% - 325px) !important;
+    width: calc(100% - 320px) !important;
     display: inline-block;
   }
 
   .chat-footer {
-    width: calc(100% - 415px) !important;
+    width: calc(100% - 394px) !important;
   }
 }
 
@@ -1654,5 +1655,20 @@ span.note-icon {
   img{
     max-height: 100px;
     max-width: 100px;
+  }
+}
+
+
+//Calling animation
+
+.ringing-controls {
+  position: relative;
+  button{
+    animation:shine 3s linear infinite;
+  }
+}
+@keyframes shine {
+  to {
+    background: lighten(#f00, 20%);
   }
 }

@@ -42,7 +42,7 @@ export class SchemaSettingsComponent implements OnInit {
     "desc": ""
   }, {
     "is_required": true,
-    "is_deletable": false,
+    "is_deletable": true,
     "_id": "6063119afd3f6f3f18be4464",
     "label": "Phone1",
     "type": "phone",
@@ -51,7 +51,7 @@ export class SchemaSettingsComponent implements OnInit {
     "desc": ""
   }, {
     "is_required": false,
-    "is_deletable": false,
+    "is_deletable": true,
     "_id": "6063119afd3f6f3f18be4465",
     "label": "Phone2",
     "type": "phone",
@@ -60,7 +60,7 @@ export class SchemaSettingsComponent implements OnInit {
     "desc": ""
   }, {
     "is_required": false,
-    "is_deletable": false,
+    "is_deletable": true,
     "_id": "6063119afd3f6f3f18be4466",
     "label": "Phone3",
     "type": "phone",
@@ -69,7 +69,7 @@ export class SchemaSettingsComponent implements OnInit {
     "desc": ""
   }, {
     "is_required": false,
-    "is_deletable": false,
+    "is_deletable": true,
     "_id": "6063119afd3f6f3f18be4467",
     "label": "Phone4",
     "type": "phone",
@@ -78,7 +78,7 @@ export class SchemaSettingsComponent implements OnInit {
     "desc": ""
   }, {
     "is_required": false,
-    "is_deletable": false,
+    "is_deletable": true,
     "_id": "6063119afd3f6f3f18be4468",
     "label": "Phone5",
     "type": "phone",
@@ -191,6 +191,7 @@ export class SchemaSettingsComponent implements OnInit {
   divId;
   editableSelectOptions = [{ value: true, text: 'true' },
   { value: false, text: 'false' },];
+  positionChanged = false;
 
   constructor(private dialog: MatDialog, public snackBar: MatSnackBar) {
 
@@ -212,6 +213,9 @@ export class SchemaSettingsComponent implements OnInit {
         event.container.data,
         event.previousIndex,
         event.currentIndex);
+    }
+    if (event.previousIndex !== event.currentIndex) {
+      this.positionChanged = true;
     }
   }
 
@@ -269,7 +273,7 @@ export class SchemaSettingsComponent implements OnInit {
     //     (error) => { this._callService.Interceptor(error,'err')
     // });
 
-
+    this.positionChanged = false;
   }
 
 

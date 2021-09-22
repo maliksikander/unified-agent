@@ -24,6 +24,7 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   @Input('conversation') conversation: any;
   @Input('messages') messages: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
+  @Output() customerCalling = new EventEmitter<any>();
   isBarOPened = false;
   public config: PerfectScrollbarConfigInterface = {};
   @ViewChild('replyInput', {static: true}) elementView: ElementRef;
@@ -124,8 +125,8 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   searchInteraction = '';
   wrapCount = 5;
   convers: any[];
-  ringing = true;
-  callControls = true;
+  ringing = false;
+  callControls = false;
 
   selectedWrap = {
     code: ['Late Payment', 'Payment Details', 'Payment Due Date', 'Last payment','Late Payment', 'Payment Details', 'Payment Due Date', 'Last payment','Late Payment', 'Payment Details', 'Payment Due Date', 'Last payment'],
@@ -304,6 +305,26 @@ this.postUrl = "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fweb
 
   eventFromChild(data) {
     this.isBarOPened = data;
+  }
+
+  cancelCall() {
+    this.ringing = false;
+    this.callControls = false;
+  }
+
+  displayCallControll(data) {
+    if (data === true) {
+      this.ringing = true;
+        setTimeout(() => {
+          if (this.ringing) {
+            this.ringing = false;
+            this.callControls = true;
+          }
+        }, 5000);
+    }
+    console.log('intrection component', data);
+
+
   }
 
   searchChannel(channel) {

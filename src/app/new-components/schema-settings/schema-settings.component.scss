@@ -1,5 +1,19 @@
 @import "src/app/shared/globalVariables";
 
+.page-header{
+  .create-new-attribute{
+    cursor: pointer;
+    font-size: 13px;
+    min-width: 25px;
+    background-color: lighten($blue-text-color, 55%);
+    color: $main-color;
+    text-align: center;
+
+    &:hover{
+      background: lighten($blue-text-color, 45%);
+    }
+  }
+}
 .schema-container {
   width: 50%;
     max-width: 100%;
@@ -168,16 +182,14 @@
 
   button {
     //float: right;
-    background: #6EC3DD;
+    background: $main-color;
     color: #fff;
     font-size: 12px;
     height: 30px;
     line-height: 22px;
-    border: 1px solid #6EC3DD;
 
-    &.create-new-attribute{
-      background: #fff;
-      color: #6EC3DD;
+    &:disabled{
+      background: rgba(0, 0, 0, .26);
     }
   }
 }

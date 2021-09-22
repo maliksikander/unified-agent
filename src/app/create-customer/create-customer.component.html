@@ -1,6 +1,14 @@
-<div class="header">
-  <div class="header-name">Create New Customer</div>
-  <mat-icon (click)="onNoClick()" class="closeBtn">close</mat-icon>
+<!--<div class="header">-->
+<!--  <div class="header-name">Create New Customer</div>-->
+<!--  <mat-icon (click)="onNoClick()" class="closeBtn">close</mat-icon>-->
+<!--</div>-->
+
+<div class="dialog-header">
+  <h4 mat-dialog-title>Create New Customer
+    <button mat-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </h4>
 </div>
 
 <mat-dialog-content *ngIf="dataReady" class="main-content-create-customer" style="box-shadow: 0px 2px 0px #ececec">

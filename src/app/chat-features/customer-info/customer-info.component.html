@@ -518,7 +518,7 @@
     </div>
 
     <div class="call-trigger">
-      <button mat-button [mat-dialog-close]="true" class="call-btn" cdkFocusInitial>Call</button>
+      <button mat-button (click)="customerCallingToggle()" [mat-dialog-close]="true" class="call-btn" cdkFocusInitial>Call</button>
       <button mat-button mat-dialog-close class="cancel-call">Cancel</button>
     </div>
   </div>

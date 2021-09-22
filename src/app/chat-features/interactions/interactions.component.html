@@ -121,8 +121,8 @@
           </mat-menu>
 
           <!-- Ringing controls-->
-          <span *ngIf="ringing" class="ringing-controls"> Calling <strong>'+4444858988'</strong> Mobile
-        <button mat-fab matTooltip="end call">
+          <span *ngIf="ringing" class="ringing-controls in"> Calling <strong>'+4444858988'</strong> Mobile
+        <button mat-fab matTooltip="end call" (click)="cancelCall()">
             <mat-icon>call_end</mat-icon>
           </button>
       </span>
@@ -138,18 +138,18 @@
 <!--                <mat-icon>mic</mat-icon>-->
 <!--              </button>-->
 <!--            </li>-->
-            <li class="list-group-item">
+            <li class="list-group-item" matTooltip="off speaker">
               <button mat-fab>
                 <mat-icon>volume_off</mat-icon>
               </button>
             </li>
-            <li class="list-group-item">
+            <li class="list-group-item" matTooltip="pause call">
               <button mat-fab>
                 <mat-icon>pause</mat-icon>
               </button>
             </li>
             <li class="list-group-item call-end">
-              <button mat-fab>
+              <button mat-fab (click)="cancelCall()" matTooltip="end call">
                 <mat-icon>call_end</mat-icon>
               </button>
             </li>
@@ -916,7 +916,7 @@
   </div>
 
   <div class="customer-info-main">
-    <app-customer-info (expandCustomerInfo)="eventFromChild($event)"></app-customer-info>
+    <app-customer-info (expandCustomerInfo)="eventFromChild($event)"(customerCalling)="displayCallControll($event)"></app-customer-info>
   </div>
 </div>
 

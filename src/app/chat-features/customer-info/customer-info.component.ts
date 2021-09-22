@@ -16,6 +16,8 @@ export class CustomerInfoComponent implements OnInit, OnChanges {
   @Input() currentTabIndex: any;
   @Input('conversation') conversation: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
+  @Output() customerCalling = new EventEmitter<any>();
+  isCalling = false;
 
   message;
   customArray = [
@@ -108,5 +110,9 @@ export class CustomerInfoComponent implements OnInit, OnChanges {
   customerInfoToggle() {
     this.barOpened = !this.barOpened;
     this.expandCustomerInfo.emit(this.barOpened);
+  }
+  customerCallingToggle() {
+    this.isCalling = !this.isCalling;
+    this.customerCalling.emit(this.barOpened);
   }
 }

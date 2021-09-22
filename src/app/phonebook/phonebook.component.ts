@@ -61,7 +61,7 @@ export class PhonebookComponent implements OnInit {
       "labels": [
         "5eeb3455de812695676383d2"
       ],
-      "phone1": "0000",
+      "phone1": "+447700 900113, +447700 900113, +447700 900113, +447700 900113",
       "createdAt": "2020-12-05T07:51:33.560Z",
       "updated_by": "",
       "_id": "5fcb3c057ac040dfa6527e84",
@@ -684,6 +684,9 @@ cols = [
   onDeSelectAll(items: any) {
   }
   onAddItem(items: any) {
+  }
+  closeFilter(){
+    this.filterOnOff = !this.filterOnOff;
   }
 
 }
