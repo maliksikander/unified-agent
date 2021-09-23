@@ -11,12 +11,11 @@
         <button [style.backgroundColor]="filterStatus == 'inactive' ? '#9abcef' : '' "
             (click)="filterStatus = 'inactive'" class="add-new" mat-button>Inactive</button>
         <button [style.backgroundColor]="filterStatus == 'unread' ? '#9abcef' : ''" (click)="filterStatus = 'created'"
-            class="add-new" mat-button>Created</button>
+            class="add-new" mat-button>Unread</button>
         <mat-form-field appearance="outline" class="selection-trigger">
             <mat-select [(ngModel)]="filterListId">
                 <mat-option value='all'>All Queues</mat-option>
-                <mat-option *ngFor="let list of (_pullModeservice.subscribedListListener | async)"
-                    value="{{list.id}}">
+                <mat-option *ngFor="let list of (_pullModeservice.subscribedListListener | async)" value="{{list.id}}">
                     {{list.name}}</mat-option>
             </mat-select>
         </mat-form-field>
@@ -39,7 +38,8 @@
 
                     <tr
                         *ngFor="let request of _pullModeservice.subscribedListRequests | filterPullModeRequests:filterStatus:filterListId">
-                        <td class="status-data"><span class="status-icon" matTooltip="{{request.status | uppercase }}"
+                        <td class="status-data"><span class="status-icon"
+                                matTooltip="{{(request.status | lowercase) == 'created' ? 'UNREAD' : (request.status | uppercase) }}"
                                 [style.backgroundColor]="(request.status | lowercase) == 'active' ? '#29C671' : ((request.status | lowercase) == 'inactive' ? '#ccc' : 'red')"></span>
                         </td>
                         <td #customerCell><span
@@ -62,8 +62,10 @@
                         <td>{{request.time | amTimeAgo:true}}<small> ago</small></td>
                         <td>{{_pullModeservice.listNames[request.listId]}}</td>
                         <span class="table-trigger">
-                            <button mat-button *ngIf="!isAlreadySubscribed(request.id)" (click)="joinChat(request)" class="chat-btn" matTooltip="Chat">Join</button>
-                            <button mat-button class="close-btn" (click)="closeChat(request)" matTooltip="Close">Close</button>
+                            <button mat-button *ngIf="!isAlreadySubscribed(request.id)" (click)="joinChat(request)"
+                                class="chat-btn" matTooltip="Chat">Join</button>
+                            <button mat-button class="close-btn" (click)="closeChat(request)"
+                                matTooltip="Close">Close</button>
                         </span>
                     </tr>
                 </tbody>
