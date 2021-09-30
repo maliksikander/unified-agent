@@ -165,7 +165,9 @@
     <div id="chat-content" class="container-fluid main-chat-area">
       <div class="row">
         <div class="chat-messages-main" [perfectScrollbar]  [style.height]="replyInput?.offsetHeight > 50 ? 'calc(100% - ' + (replyInput?.offsetHeight+100)+'px)' : 'calc(100% - '+ viewHeight+')'">
-
+<!--          <agm-map [zoom]="zoom" [latitude]="lat" [longitude]="lng">-->
+<!--            <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>-->
+<!--          </agm-map>-->
           <!-- voice message chat area -->
           <div class="instruction-main">
             <div class="instruction-inner">
@@ -608,19 +610,77 @@
           <div class="instruction-content chat-session-main">
             <div class="int-date"><span>Mon<b>09</b></span></div>
             <div *ngFor="let con of convers | LockFilter:searchInteraction">
-              <div class="chat-message" [ngClass]="{'agent-message': con.title == 'raza'}">
+              <div class="chat-message" [ngClass]="{'agent-message': con.title == 'raza' || con.title == 'bot'}">
                 <div class="profile-pic">
                   <div class="active-channel channel-icon {{customer.info.channel}}"><img width="20" src="assets/images/web.svg"></div>
-                  <div class="profile-pic-area user-img">{{con.title | slice :0 :2 }}</div>
+                  <div  class="profile-pic-area user-img">
+                    <span *ngIf="con.title !== 'bot'">{{con.title | slice :0 :2 }}</span>
+                    <img src="assets/images/robot-dark.svg" *ngIf="con.title == 'bot'">
+                  </div>
                 </div>
-                <div class="chat-message-content ">
-                  <p>{{con.message}} <span class="message-stamp">
-                     <span class="chat-time">16:15:45</span>
-                <span class="material-icons delivery-status" *ngIf="con.title === 'raza'">done_all</span>
-                  </span></p>
-                  <button mat-icon-button class="user_settings" *ngIf="con.title === 'farhan'"
-                          (click)="con.showIntent=!con.showIntent">
-                  </button>
+                <div class="chat-message-content"
+                     [ngClass]="{'quoted-message-area': con.type === 'quotedMessage' , 'file-type-message' : con.type === 'file' || con.type === 'url' || con.type === 'contact'}">
+                  <div *ngIf="con.type === 'quotedMessage' || con.type === 'message'|| con.type === 'structuredMessage' ">
+                    <p [ngClass]="{'quoted-message': con.type === 'quotedMessage'}"
+                       *ngIf="con.heading || con.type == 'quotedMessage'" style="display: block"
+                       innerHtml="{{con?.heading | ibsformat}} {{con?.quoteMessage | ibsformat}} ">
+                    </p>
+
+                    <p>
+                      <span [innerHTML]="con.message | ibsformat"></span>
+                      <span class="message-stamp">
+                       <span class="chat-time">16:15:45</span>
+                       <span class="material-icons delivery-status" *ngIf="con.title === 'raza' || con.title === 'bot'">done_all</span>
+                        </span></p>
+                        <ul class="structured-actions" *ngIf="con.title == 'bot' && con.actions">
+                      <li *ngFor="let action of con.actions">{{action}}</li>
+                    </ul>
+                    <button mat-icon-button class="user_settings"
+                            *ngIf="con.title === 'farhan' &&  con.type !== 'quotedMessage'"
+                            (click)="con.showIntent=!con.showIntent">
+                    </button>
+                  </div>
+
+<!--Message is file type-->
+
+                  <div *ngIf="con.type === 'file'" class="file-type-content">
+                    <span class="display-file">
+                    <img src="{{con.fileUrl}}">
+                    </span>
+                    <span class="display-file-name">{{con.fileName}}
+                      <span class="file-size">3.82MB</span>
+                     <a *ngIf="con.title !== 'bot'" class="file-download">Download</a>
+                    </span>
+                    <span class="chat-time"><span> 16:15:45</span></span>
+                  </div>
+
+                  <!--Message is url type-->
+                  <div *ngIf="con.type === 'url'" class="file-type-content url-content">
+                     <a class="display-file url-image" href="{{con.urlLink}}" target="_blank">
+                      <img src="{{con.urlImage}}">
+                      </a>
+                    <div class="shared-url shared-card-content">
+                      <span class="url-title card-title">{{con.urlTitle}}</span>
+                      <span class="url-description card-description">{{con.urlDescription}}</span>
+                      <a class="url-link  card-action" href="{{con.urlLink}}" target="_blank">{{con.urlLink}}</a>
+                    </div>
+                    <span class="chat-time">16:15:45</span>
+                  </div>
+
+              <!--Message is Contact-->
+
+                  <div *ngIf="con.type === 'contact'" class="file-type-content contact-type">
+                    <span class="display-file contact-logo">
+                    <img src="assets/images/{{con.title === 'bot' ? 'contacts-logo-bot.svg' : 'contacts-logo.svg'}}">
+                    </span>
+                    <div class="shared-url shared-card-content">
+                    <span class="contact-name card-title">{{con.name}}</span>
+                    <span class="contact-number card-description">{{con.number}}</span>
+                     <a *ngIf="con.title !== 'bot'" class="file-download card-action">Save Contact</a>
+                    </div>
+                    <span class="chat-time"><span> 16:15:45</span></span>
+                  </div>
+
 
                 </div>
 

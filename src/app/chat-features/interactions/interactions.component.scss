@@ -345,7 +345,7 @@
           border-radius: -12px;
           z-index: -1;
           right: inherit;
-          left: -8px;
+          left: -9px;
           transform: rotate(90deg);
         }
 
@@ -361,6 +361,26 @@
           left: -10px;
         }
 
+        &.quoted-message-area{
+          padding-left: 0;
+          padding-top: 0;
+          padding-right: 0;
+
+          &:before {
+            border-top-color: $theme-green;
+          }
+
+          p {
+            padding: 8px 10px 0 8px;
+            &.quoted-message {
+              border-left: 3px solid $theme-green;
+              background: #CEDDB9;
+              border-radius: 0 3px 0 0;
+              padding: 8px 20px 8px 5px;
+            }
+          }
+        }
+
         p {
           color: #000;
           font-size: 13px;
@@ -370,10 +390,106 @@
           clear: both;
           padding-right: 2.5em;
           white-space: pre-line;
-          margin: 0;
         }
         .message-stamp {
           position: relative;
+        }
+        .file-type-content{
+          display: flex;
+
+          .shared-card-content{
+            background: $customer-bubble;
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+            padding: 10px;
+            min-width: 200px;
+            position: relative;
+
+            .card-title {
+              font-weight: 600;
+              font-size: 14px;
+              margin: 0;
+            }
+            .card-description {
+              font-size: 11px;
+              margin: 5px 0;
+            }
+            .card-action {
+              font-size: 14px;
+              color: #0093FF;
+              cursor: pointer;
+            }
+          }
+          &.contact-type{
+            .card-description {
+              font-size: 14px;
+            }
+            .card-action {
+              color: $theme-green;
+            }
+          }
+        }
+
+        &.file-type-message{
+          padding: 0 !important;
+          border: 1px solid invert($customer-bubble, 10%);
+          margin: -.5px 0;
+          background: #fff;
+
+          &:before,&:after{
+            display: none !important;
+          }
+          .display-file, .shared-card-content {
+            background: invert($customer-bubble, 10%);
+            padding: 8px;
+            position: relative;
+            display: inline-flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            min-width: 86px;
+            min-height: 100px;
+            justify-content: center;
+
+            img {
+              max-width: 55px;
+            }
+            &.url-image{
+              padding: 2px;
+
+              img{
+                max-width: 80px;
+              }
+
+            }
+
+
+          }
+          .display-file-name{
+            padding: 10px;
+            color: #000;
+            font-size: 14px;
+            background: $customer-bubble;
+            position: relative;
+          }
+          .chat-time{
+            padding: 0 15px;
+            margin: 0;
+          }
+          a.file-download {
+            position: absolute;
+            right: 12px;
+            bottom: 5px;
+            text-decoration: underline;
+            color: $theme-green;
+            cursor: pointer;
+          }
+          span.file-size {
+            position: absolute;
+            left: 12px;
+            bottom: 5px;
+          }
+
         }
       }
 
@@ -386,6 +502,7 @@
         font-size: 10px;
       }
 
+
       //Agent Chat Message Right align
       &.agent-message {
         flex-direction: row-reverse;
@@ -396,6 +513,11 @@
 
           .profile-pic-area {
             background: $bubble-background;
+            img {
+              width: 20px;
+              position: relative;
+              top: -3px;
+            }
           }
         }
 
@@ -422,6 +544,35 @@
               padding-left: 10px;
             }
           }
+
+          .structured-actions {
+            padding: 0;
+            list-style: none;
+            margin: 8px 0 0;
+
+            li {
+              font-size: 12px;
+              margin: 2px;
+              display: inline-block;
+              background: darken($main-color-background, 15%);
+              padding: 5px;
+              border-radius: 5px;
+              cursor: default;
+            }
+          }
+
+          &.file-type-message{
+            border: 1px solid invert($main-color-background, 10%);
+            background: #fff;
+
+            .display-file {
+              background: invert($main-color-background, 10%);
+            }
+            .display-file-name,  .shared-card-content{
+              background: $main-color-background;
+            }
+
+          }
         }
 
         .chat-time {
@@ -434,6 +585,7 @@
           right: -6px;
         }
       }
+
     }
   }
 
@@ -1671,4 +1823,9 @@ span.note-icon {
   to {
     background: lighten(#f00, 20%);
   }
+}
+
+
+agm-map{
+  height: 300px;
 }

@@ -19,7 +19,8 @@ export class ChatsComponent implements OnInit {
           'Share number where I can call in emergency situations.',
           'Share number where I can call in emergency situations.',
           'Share number where I can call in emergency situations.',
-      ]
+      ],
+        type: 'message',
       },
       {
         title: 'farhan',
@@ -29,7 +30,8 @@ export class ChatsComponent implements OnInit {
           'Share number where I can call in emergency situations.',
           'Share number where I can call in emergency situations.',
           'Share number where I can call in emergency situations.'
-        ]
+        ],
+        type: 'message',
       },
       {
         title: 'farhan',
@@ -39,15 +41,103 @@ export class ChatsComponent implements OnInit {
           'Share number where I can call in emergency situations.',
           'Share number where I can call in emergency situations.',
           'Share number where I can call in emergency situations.'
-        ]
+        ],
+        type: 'message',
+      },
+      {
+        title: 'bot',
+        type: 'structuredMessage',
+        actions: [
+          'Complaint Registration', 'PTCL Service / Shop', 'New Service', 'Service Information', 'Billing Info'
+        ],
+        heading: '*Welcome to ExpertFlow Self-Service Channel*',
+        message: 'Please select an option from the self service menu below. Our automated system will help you register your \n' +
+          'complaint efficiently.',
+      },
+      {
+        title: 'farhan',
+        type: 'quotedMessage',
+        heading: '',
+        quoteMessage: 'Please select an option from the self service menu below. Our automated system will help you register your \n' +
+          'complaint efficiently.',
+        message: 'Complaint Registration',
+      },
+      {
+        title: 'bot',
+        type: 'structuredMessage',
+        message: 'Please select your service from the menu below',
+        actions: [
+          'Landline', 'Broadband', 'Smart TV', 'Value Added Services', 'Billing', 'V-fone', 'Evo or charji', 'GPON'
+        ],
+      },
+      {
+        title: 'farhan',
+        type: 'quotedMessage',
+        heading: '',
+        quoteMessage: 'Please select your service from the menu below',
+        message: 'Broadband',
+      },
+      {
+        title: 'farhan',
+        type: 'file',
+        fileType: 'ppt',
+        fileName: 'Expertflow-Corporate-Presentation',
+        fileUrl: 'assets/images/type-ppt.svg',
+      },
+      {
+        title: 'bot',
+        type: 'file',
+        fileType: 'ppt',
+        fileName: 'Expertflow-Corporate-Presentation',
+        fileUrl: 'assets/images/type-ppt.svg',
+
+      },
+      {
+        title: 'farhan',
+        type: 'file',
+        fileType: 'xls',
+        fileName: 'Expertflow-Corporate-Presentation',
+        fileUrl: 'assets/images/type-xls.svg',
+
+      },
+      {
+        title: 'bot',
+        type: 'contact',
+        number: '41526321789',
+        name: 'Stacy Staler'
+      },
+      {
+        title: 'farhan',
+        type: 'contact',
+        number: '41526321789',
+        name: 'Stacy Staler'
+
+      },
+      {
+        title: 'farhan',
+        type: 'url',
+        urlTitle: 'Expertflow New Hybrid Chat Solution',
+        urlDescription: 'www.expertflow.com',
+        urlLink: 'http://www.expertflow.com',
+        urlImage: 'assets/images/url-image.jpg',
+
+      },
+      {
+        title: 'bot',
+        type: 'file',
+        fileType: 'ppt',
+        fileName: 'Expertflow-Corporate-Presentation',
+        fileUrl: 'assets/images/type-ppt.svg',
       },
       {
         title: 'raza',
-        message: 'hello'
+        message: 'hello',
+        type: 'message',
       },
       {
         title: 'raza',
-        message: 'how are you'
+        message: 'how are you',
+        type: 'message',
       }
     ]
   },
@@ -55,19 +145,23 @@ export class ChatsComponent implements OnInit {
     messages: [
       {
         title: 'raza',
-        message: 'Share number where I can call in emergency situations.'
+        message: 'Share number where I can call in emergency situations.',
+        type: 'message',
       },
       {
         title: 'raza',
-        message: 'Hi. Please share the email ID for support team.'
+        message: 'Hi. Please share the email ID for support team.',
+        type: 'message',
       },
       {
         title: 'raza',
-        message: 'hello 12'
+        message: 'hello 12',
+        type: 'message',
       },
       {
         title: 'raza',
-        message: 'how are you 12'
+        message: 'how are you 12',
+        type: 'message',
       }
     ]
   }

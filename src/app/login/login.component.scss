@@ -10,6 +10,30 @@
   z-index: 9;
   left: 0;
 
+  &:before {
+    content: '';
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    animation: back-change 4s;
+  }
+  @keyframes back-change {
+    0% {
+      opacity: 1;
+      background: rgba(0, 103, 135, 0.9);
+    }
+    50% {
+      opacity: .7;
+      background: rgba(0, 103, 135, 0.50);
+    }
+    100% {
+      opacity: 0;
+      background: rgba(0, 103, 135, 0);}
+  }
+
   .row {
     height: 100%;
     margin: 0 !important;
@@ -26,6 +50,7 @@
       position: absolute;
       right: 0 !important;
       padding-left: 4em !important;
+      z-index: 2;
     }
   }
 
@@ -53,6 +78,7 @@
         padding: 10px;
         transform: translateY(-50%) translatex(-50%);
         left: 50%;
+        z-index: 2;
       }
     }
 
@@ -135,6 +161,7 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+    z-index: 2;
     img{
       height: 55px;
       display: block;
@@ -276,3 +303,4 @@
     }
   }
 }
+
