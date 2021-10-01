@@ -1,4 +1,3 @@
-
 <div class="interaction-main" [ngClass]="{'customer-bar-opened': isBarOPened}">
   <div class="interaction-inner">
     <div class="container-fluid main-chat-bar" [ngClass]="{'whisper-mode': whisper}">
@@ -165,9 +164,6 @@
     <div id="chat-content" class="container-fluid main-chat-area">
       <div class="row">
         <div class="chat-messages-main" [perfectScrollbar]  [style.height]="replyInput?.offsetHeight > 50 ? 'calc(100% - ' + (replyInput?.offsetHeight+100)+'px)' : 'calc(100% - '+ viewHeight+')'">
-<!--          <agm-map [zoom]="zoom" [latitude]="lat" [longitude]="lng">-->
-<!--            <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>-->
-<!--          </agm-map>-->
           <!-- voice message chat area -->
           <div class="instruction-main">
             <div class="instruction-inner">
@@ -619,7 +615,7 @@
                   </div>
                 </div>
                 <div class="chat-message-content"
-                     [ngClass]="{'quoted-message-area': con.type === 'quotedMessage' , 'file-type-message' : con.type === 'file' || con.type === 'url' || con.type === 'contact'}">
+                     [ngClass]="{'quoted-message-area': con.type === 'quotedMessage' , 'file-type-message' : con.type === 'file' || con.type === 'url' || con.type === 'contact'|| con.type === 'location'}">
                   <div *ngIf="con.type === 'quotedMessage' || con.type === 'message'|| con.type === 'structuredMessage' ">
                     <p [ngClass]="{'quoted-message': con.type === 'quotedMessage'}"
                        *ngIf="con.heading || con.type == 'quotedMessage'" style="display: block"
@@ -677,6 +673,19 @@
                     <span class="contact-name card-title">{{con.name}}</span>
                     <span class="contact-number card-description">{{con.number}}</span>
                      <a *ngIf="con.title !== 'bot'" class="file-download card-action">Save Contact</a>
+                    </div>
+                    <span class="chat-time"><span> 16:15:45</span></span>
+                  </div>
+
+                  <!--Message is location-->
+                  <div *ngIf="con.type === 'location'" class="file-type-content location-type">
+                    <span class="display-file location-logo"  (click)="fullLocation(con.lat, con.lng)">
+                    <img src="assets/images/{{con.title === 'bot' ? 'map-marker-bot.svg' :  'map-marker.svg'}}">
+                    </span>
+                    <div class="shared-url shared-card-content location-map" >
+                      <agm-map [zoom]="con.zoom" [latitude]="con.lat" [longitude]="con.lng" controlSize="20">
+                        <agm-marker [latitude]="con.lat" [longitude]="con.lng"></agm-marker>
+                      </agm-map>
                     </div>
                     <span class="chat-time"><span> 16:15:45</span></span>
                   </div>
@@ -928,9 +937,35 @@
 
                         <mat-tab label="Bot Suggestions">
                           <ng-container *ngFor="let action of actions | LockFilter: message">
-                            <mat-option [value]="action?.message || action?.name" (click)="message=action?.message || action?.name" *ngIf="action.message != undefined || action.name != undefined">
-                              {{action.message || action.name}}
-                              <button mat-mini-fab class="canned-trigger edit-trigger" (click)="message=action.message || action.name">
+                            <mat-option [value]="action?.message" >
+                              <div class="bot-suggestion-content" *ngIf="action.type === 'message'">
+                              <span>{{action.message}}</span>
+                              </div>
+
+                              <!--Message is location-->
+                              <div class="bot-suggestion-content attachment-type" *ngIf="action.type === 'location'">
+                    <span class="display-file location-logo" (click)="fullLocation(action.lat, action.lng)">
+                    <img src="assets/images/map-marker-bot.svg">
+                    </span>
+                                <div class="shared-url shared-card-content location-map">
+                                  <agm-map [zoom]="8" [latitude]="action.lat" [longitude]="action.lng" controlSize="20">
+                                    <agm-marker [latitude]="action.lat" [longitude]="action.lng"></agm-marker>
+                                  </agm-map>
+                                </div>
+                              </div>
+
+                              <!--Message is file-->
+                              <div class="bot-suggestion-content attachment-type" *ngIf="action.type === 'file'">
+                    <span class="display-file location-logo" >
+                    <img src="{{action.fileUrl}}">
+                    </span>
+                                <div class="shared-url shared-card-content">
+                                  <span class="card-title">{{action.fileName}}</span>
+                                  <span class="file-size">3.82MB</span>
+
+                                </div>
+                              </div>
+                              <button mat-mini-fab class="canned-trigger edit-trigger" (click)="message=action.message">
                                 <i class="material-icons">
                                   edit
                                 </i>
@@ -940,6 +975,7 @@
                                   send
                                 </i>
                               </button>
+
                             </mat-option>
                           </ng-container>
 

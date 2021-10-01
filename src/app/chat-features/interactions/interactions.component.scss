@@ -403,8 +403,12 @@
             flex-flow: column;
             justify-content: center;
             padding: 10px;
-            min-width: 200px;
+            width: 200px;
             position: relative;
+
+            &.location-map{
+              padding: 0;
+            }
 
             .card-title {
               font-weight: 600;
@@ -423,10 +427,11 @@
           }
           &.contact-type{
             .card-description {
-              font-size: 14px;
+              font-size: 14px !important;
+              margin-top: 0 !important;
             }
             .card-action {
-              color: $theme-green;
+              color: $theme-green !important;
             }
           }
         }
@@ -441,7 +446,7 @@
             display: none !important;
           }
           .display-file, .shared-card-content {
-            background: invert($customer-bubble, 10%);
+            background: invert($customer-bubble, 8%);
             padding: 8px;
             position: relative;
             display: inline-flex;
@@ -453,6 +458,9 @@
 
             img {
               max-width: 55px;
+            }
+            &.location-logo{
+              cursor: pointer;
             }
             &.url-image{
               padding: 2px;
@@ -471,6 +479,7 @@
             font-size: 14px;
             background: $customer-bubble;
             position: relative;
+            width: 200px;
           }
           .chat-time{
             padding: 0 15px;
@@ -566,7 +575,7 @@
             background: #fff;
 
             .display-file {
-              background: invert($main-color-background, 10%);
+              background: invert($main-color-background, 8%);
             }
             .display-file-name,  .shared-card-content{
               background: $main-color-background;
@@ -1827,5 +1836,59 @@ span.note-icon {
 
 
 agm-map{
-  height: 300px;
+  height: 120px;
+  width: 200px;
+}
+
+.attachment-type{
+  display: inline-flex;
+  position: relative;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid invert($bubble-background, 10%);
+
+  .location-logo{
+      background: invert($bubble-background, 8%);
+      padding: 8px;
+      position: relative;
+      display: inline-flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      min-width: 86px;
+      height: 82px;
+      justify-content: center;
+
+    img{
+      width: 35px;
+    }
+  }
+  .shared-card-content{
+    padding: 10px;
+    color: #000;
+    font-size: 14px;
+    background: $bubble-background;
+    position: relative;
+    width: 200px;
+
+    &.location-map{
+      padding: 0;
+      width: 210px;
+    }
+  }
+  agm-map{
+    height: 82px !important;
+    width: 210px;
+  }
+  .card-title{
+    font-size: 14px;
+    color: #000;
+    white-space: pre-wrap;
+  }
+  .file-size{
+    font-size: 12px;
+    color: #000;
+    position: absolute;
+    left: 12px;
+    bottom: 5px;
+  }
 }

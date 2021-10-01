@@ -4,7 +4,6 @@ import {socketService} from 'src/app/services/socket.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {PerfectScrollbarConfigInterface} from 'ngx-perfect-scrollbar';
 import {FormControl} from '@angular/forms';
-
 import {WrapUpFormComponent} from '../../new-components/wrap-up-form/wrap-up-form.component';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 
@@ -158,14 +157,26 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   ];
   actions = [
     {
-      'name': 'If a customer submits a support ticket, they deserve 1. confirmation that you received the ticket, and 2. affirmation that you are working on it.',
+      type: 'message',
+      message: 'If a customer submits a support ticket, they deserve 1. confirmation that you received the ticket, and 2. affirmation that you are working on it.',
+    },
+
+    {
+      type: 'location',
+      lat: 31.4805,
+      lng: 74.3239,
+      zoom: 8
     },
     {
-      'name': 'If possible, personalize this response relative to the issue. If a customer filled out a form with drop-down category, this is easy. Additionally, you can train your reps to know which response to use.',
+      type: 'file',
+      fileType: 'pdf',
+      fileName: 'Expertflow-Corporate-Presentation',
+      fileUrl: 'assets/images/type-ppt.svg',
     },
     {
-      'name': 'To help ameliorate this tendency, make sure you proactively follow-up with them letting them know you\'re still working hard to reach a resolution, and that you will let them know when there are updates. This shows you care.',
-    }
+      type: 'message',
+      message: 'To help ameliorate this tendency, make sure you proactively follow-up with them letting them know you\'re still working hard to reach a resolution, and that you will let them know when there are updates. This shows you care.',
+    },
   ];
   displaySuggestionsArea = false;
   cannedTabOpen = false;
@@ -362,5 +373,11 @@ this.postUrl = "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fweb
 
     this.fileUrl = this.santizer.bypassSecurityTrustUrl(url);
     console.log(this.urlMap.size);
+  }
+
+  fullLocation(lat, lng){
+    const locationUrl = `http://maps.google.com/maps?q=${lat}, ${lng}`;
+    window.open(locationUrl, '_blank');
+    // http://maps.google.com/maps?q=210+Louise+Ave,+Nashville,+TN+37203
   }
 }

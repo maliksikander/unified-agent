@@ -8,6 +8,7 @@ import { InteractionsComponent } from './interactions/interactions.component';
 import { CustomerInfoComponent } from './customer-info/customer-info.component';
 import {MatDialogModule} from '@angular/material';
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
+import {AgmCoreModule} from '@agm/core';
 
 
 @NgModule({
@@ -20,7 +21,10 @@ import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
     SharedModule,
     ChatRoutingModule,
     MatDialogModule,
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyA_dm2C9FEp26nXSEjfN9G76juYi-CtiLE'
+    })
   ],
 })
 export class ChatModule { }

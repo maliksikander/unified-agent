@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
 
   currentRoute: string;
 
-  constructor(private dialog: MatDialog ,private _router: Router, private _sharedService: sharedService) {
+  constructor( private dialog: MatDialog ,private _router: Router, private _sharedService: sharedService) {
 
     this._sharedService.serviceCurrentMessage.subscribe((e) => {
 

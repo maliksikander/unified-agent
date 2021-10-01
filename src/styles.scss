@@ -234,8 +234,6 @@ mat-tab-group.chat-tab-area {
   }
 }
 
-
-
 // Right Tabs
 .mat-drawer-container.mat-sidenav-container.mat-drawer-container-has-open {
   width: 315px;
@@ -775,6 +773,11 @@ padding: 0 !important;
     //width: 100%;
     //padding: 12px;
 
+    .mat-tab-body-content {
+      max-height: 250px;
+      overflow: auto !important;
+    }
+
     li, mat-option {
       margin: 5px 0;
       cursor: pointer;
@@ -847,15 +850,16 @@ padding: 0 !important;
   button.canned-trigger {
     position: absolute;
     right: 20px;
-    top: 4px;
     width: 25px;
     height: 25px;
     line-height: 25px;
-    background: #ffffff !important;
+    background: $blue-text-color !important;
     opacity: 1 !important;
     display: none;
     box-shadow: none;
     overflow: hidden;
+    top: 50%;
+    transform: translate(0, -50%);
 
     .mat-button-wrapper {
       line-height: 6px;
@@ -864,7 +868,7 @@ padding: 0 !important;
 
 
     .material-icons {
-      color: #25afcb;
+      color: #fff;
       font-size: 16px;
       position: relative;
       top: -2px;

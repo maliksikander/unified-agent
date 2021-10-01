@@ -123,6 +123,20 @@ export class ChatsComponent implements OnInit {
 
       },
       {
+        title: 'farhan',
+        type: 'location',
+        lat: 31.4805,
+        lng: 74.3239,
+        zoom: 8
+      },
+      {
+        title: 'bot',
+        type: 'location',
+        lat: 31.4805,
+        lng: 74.3239,
+        zoom: 8
+      },
+      {
         title: 'bot',
         type: 'file',
         fileType: 'ppt',

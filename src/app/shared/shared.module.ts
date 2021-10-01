@@ -41,7 +41,6 @@ import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown';
 import {NoteSearchPipe} from './pipes/noteSearch.pipe';
 import { SafePipe } from './pipes/safe.pipe';
 
-
 @NgModule({
   declarations: [RemoveUnderscorePipe, ibsformatPipe, SearchPipe, NoteSearchPipe, SafePipe],
   imports: [
@@ -88,7 +87,7 @@ import { SafePipe } from './pipes/safe.pipe';
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
-    AngularMultiSelectModule
+    AngularMultiSelectModule,
   ], exports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
     MatDrawer, MatCheckboxModule,
