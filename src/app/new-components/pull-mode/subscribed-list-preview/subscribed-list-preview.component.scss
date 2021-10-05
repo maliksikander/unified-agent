@@ -140,8 +140,8 @@
         margin: 0 5px;
         width: 75px;
         line-height: 22px;
-        background: #939393;
-        border: 1px solid #848484;
+        background: #E60303;
+        border: 1px solid #BE0D18;
         color: #fff;
         font-size: 12px;
 
@@ -195,26 +195,8 @@
   }
 }
 
-.action-trigger {
-  padding: 15px 10px;
-  button{
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
-    font-size: 12px;
-    min-width: 90px;
-    background: #919191;
-    color: #fff;
-
-    &.success-btn{
-      background: #25AFCB;
-      margin-left: 12px;
-    }
-  }
-
-}
-.last-message{
-  color: #7E7E7E;
+.joined{
+  color: #1AB456;
 }
 .status-data {
   width: 100px;
@@ -230,21 +212,7 @@
     );
   }
 }
-
-.add-new{
-  cursor: pointer;
-  font-size: 12px;
-  min-width: 25px;
-  background-color: lighten($blue-text-color, 55%);
-  color: #1D1D1D;
-  text-align: center;
-  margin-right: 5px;
-  height: 28px;
-  line-height: 28px;
-  border: 1px solid #C3D8F7;
-  top: 1px;
-
-  &:hover{
-    background: lighten($blue-text-color, 45%);
-  }
+.chat-selection{
+  margin-right: 10px;
 }
+

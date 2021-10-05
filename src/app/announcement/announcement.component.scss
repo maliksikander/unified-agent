@@ -1,3 +1,5 @@
+@import "src/app/shared/globalVariables";
+
 //.announcement-table-area{
 //  border: 5px solid #E2E2E2;
 //  height: calc(100% - 42px);
@@ -153,7 +155,7 @@ tbody {
 
 
   .new-announcement {
-    background: #25AFCB;
+    background: $main-color;
     padding-left: 45px;
     height: 35px;
     line-height: 35px;

@@ -1,6 +1,6 @@
 <div class="main-notification-area" *ngIf="displayNotification">
   <div class="notification-area">
-    <div class="row main-panel">
+    <div class="row main-panel m-0">
       <mat-card class="notification-panel mat-card">
         <mat-card-content [ngClass]="{'identified' : identified == true,'un-identified' : identified == false}" class="mat-card-content">
           <div class="chat-request">
@@ -16,6 +16,33 @@
       </mat-card>
 
     </div>
+  </div>
+
+<!--  Pull mode notifications-->
+  <div class="pull-notification-main" *ngIf="pullRequestNotification !== null " [ngClass]="{'notification-area-main': notificationArea}">
+  <div class="notification-area pull-request-notifications" *ngFor="let notification of pullRequestNotification">
+    <div class="row main-panel m-0">
+      <mat-card class="notification-panel mat-card">
+        <mat-card-content class="mat-card-content identified">
+          <div class="chat-request">
+            <p class="channel-icon"><img [src]="channelImageSrc"></p>
+          </div>
+          <div class="requested-name">
+            <p>New Chat message from {{notification.customerName}} in '{{notification.queueName}}'</p>
+          </div>
+          <div class="notification-trigger">
+
+            <button mat-icon-button (click)="displayNotification = false; getTopicSubscription()" class="mat-flat-button" mat-button><mat-icon>close</mat-icon></button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+  </div>
+    <button *ngIf="pullRequestNotification !== null " (mouseenter)="notificationArea = true" (mouseleave)="notificationArea = false"  (click)="pullRequestNotification = null; "
+            class="dismiss-notifications mat-flat-button" mat-button>Dismiss all
+    </button>
+
   </div>
 
 </div>

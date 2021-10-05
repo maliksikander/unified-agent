@@ -23,7 +23,7 @@
     border-radius: 0;
 
     &:hover{
-      background: #eeeeee;
+      background: darken($main-color, 10%);;
     }
   }
 }

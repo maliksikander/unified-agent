@@ -395,7 +395,7 @@ padding: 0 !important;
   max-width: 800px !important;
 }
 .dialog-header {
- background: $main-color;
+ background: $blue-text-color;
   height: 38px;
   padding: 0 10px;
   position: relative;
@@ -1175,7 +1175,7 @@ padding: 0 !important;
   .mat-form-field-infix {
     padding: 10px !important;
     border: 0;
-    background: #EFEFEF;
+    background: #fff;
     border-radius: 3px;
     //max-width: 140px;
   }
@@ -2564,5 +2564,57 @@ tspan{
 .duplicate-action, .ringing-controls {
   span.mat-button-wrapper {
     padding: 0;
+  }
+}
+
+
+
+.action-trigger {
+  padding: 15px 10px;
+  button{
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 12px;
+    min-width: 90px;
+    background: #919191;
+    color: $white-color;
+
+    &.success-btn{
+      background: $blue-text-color;
+      margin-left: 12px;
+    }
+  }
+
+}
+
+.chat-selection-option{
+  position: relative;
+
+  &:before{
+    content: 'fiber_manual_record';
+    font-family: 'Material Icons';
+    font-weight: 900;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: left;
+    color: #B1B1B1;
+  }
+  &.all-chats{
+    &:before {
+      color: $main-color;
+    }
+    }
+  &.active-chats{
+    &:before{
+      color: #29C671;
+    }
+
+  }
+  &.unread-chats{
+    &:before{
+      color: #F51F1F;
+    }
   }
 }

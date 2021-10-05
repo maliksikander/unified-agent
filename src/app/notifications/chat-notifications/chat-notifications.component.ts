@@ -16,13 +16,26 @@ export class ChatNotificationsComponent implements OnInit {
   identified = true;
   channelImageSrc: string;
   displayNotification = false;
+  notificationArea = false;
+  pullRequestNotification = [
+    {
+      queueName: 'Customer Queries',
+      channel: 'web',
+      customerName: 'Chisca Markez'
+    },
+    {
+      queueName: 'Customer Queries',
+      channel: 'web',
+      customerName: 'Chisca Markez'
+    }
+  ]
+
   @Output() closeRequestHeaderEvent = new EventEmitter<boolean>();
 
   constructor(private _socketService: socketService, private _cacheService: cacheService) { }
 
   ngOnInit() {
     this.customerName = 'Stacy Miller';
-
     this.channelImageSrc = 'assets/images/web.svg';
     console.log("this is data ", this.data)
     if (this.data.channelSession.associatedCustomer.firstName) {
@@ -38,5 +51,4 @@ export class ChatNotificationsComponent implements OnInit {
     this._socketService.emit('topicSubscription', { agentId: this._cacheService.agent.details.username, topicId: this.data.topicId });
     this.closeRequestHeaderEvent.emit(this.data.topicId);
   }
-
 }

@@ -5,12 +5,12 @@
     cursor: pointer;
     font-size: 13px;
     min-width: 25px;
-    background-color: lighten($blue-text-color, 55%);
-    color: $main-color;
+    background-color:$main-color;
+    color:#fff ;
     text-align: center;
 
     &:hover{
-      background: lighten($blue-text-color, 45%);
+      background: lighten($blue-text-color, 20%);
     }
   }
 }
