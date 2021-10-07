@@ -12,12 +12,12 @@ export class SubscribedListPreviewComponent implements OnInit {
   @Output() expandCustomerInfo = new EventEmitter<any>();
 
   activeChatList = [
-    {customerName: 'Glenn Helgass', identy: 'Glenn Helgass', queue: 'marketing', activeTime: 6 , channel: 'web', flag: 'web.svg', selfJoined: true, status:  'active', status_color: '#29C671'},
-    {customerName: 'Ev Gayforth', identy: 'victoria_romero', queue: 'services', activeTime: 8, channel: 'facebook', flag: 'facebook.svg', status:  'active', status_color: '#29C671'},
-    {customerName: 'Adam Stanler', identy: '+0015487412360', queue: 'sales', activeTime: 5 , channel: 'whatsapp', flag: 'whatsapp.svg', status:  'active', status_color: '#29C671'},
+      {customerName: 'Glenn Helgass', identy: 'Glenn Helgass', queue: 'marketing', activeWith:  'Fayina', activeTime: 6 , channel: 'web', flag: 'web.svg', selfJoined: true, status:  'active', status_color: '#29C671'},
+    {customerName: 'Ev Gayforth', identy: 'victoria_romero', queue: 'services', activeWith: 'Sandie',  activeTime: 8, channel: 'facebook', flag: 'facebook.svg', status:  'active', status_color: '#29C671'},
+    {customerName: 'Adam Stanler', identy: '+0015487412360', queue: 'sales', activeTime: 5, activeWith: 'Ev Gayforth', channel: 'whatsapp', flag: 'whatsapp.svg', status:  'active', status_color: '#29C671'},
     {customerName: 'Fayina Addinall', identy: '+0015487412360', queue: 'products', activeTime: 15 , channel: 'viber', flag: 'viber.svg', status:  'disconnect', status_color: '#F51F1F'},
-    {customerName: 'Addinall Helgass', identy: '+00154785213654', queue: 'services', activeTime: 11 , channel: 'sms', flag: 'sms.svg',  selfJoined: true, status:  'active', status_color: '#29C671'},
-    {customerName: 'Ev Gayforth', identy: 'victoria_romero', queue: 'services', activeTime: 12 , channel: 'facebook', flag: 'facebook.svg',  status:  'in_active', status_color: '#B1B1B1'},
+    {customerName: 'Addinall Helgass', identy: '+00154785213654', queue: 'services', activeTime: 11 ,  activeWith: 'Ev Sandie', channel: 'sms', flag: 'sms.svg',  selfJoined: true, status:  'active', status_color: '#29C671'},
+    {customerName: 'Ev Gayforth', identy: 'victoria_romero', queue: 'services', activeTime: 12 ,  activeWith: 'Ev Gayforth', channel: 'facebook', flag: 'facebook.svg',  status:  'in_active', status_color: '#B1B1B1'},
     {customerName: 'Glenn Helgass', identy: 'Sandie Friedank', queue: 'marketing', activeTime: 6 , channel: 'web', flag: 'web.svg',  status:  'active', status_color: '#29C671'},
     {customerName: 'Ev Gayforth', identy: 'victoria_romero', queue: 'services', activeTime: 10 , channel: 'facebook', flag: 'facebook.svg',  status:  'busy', status_color: '#B1B1B1'},
     {customerName: 'Adam Stanler', identy: '+0015487412360', queue: 'sales', activeTime: 5 , channel: 'whatsapp', flag: 'whatsapp.svg',  status:  'in_active', status_color: '#B1B1B1'},

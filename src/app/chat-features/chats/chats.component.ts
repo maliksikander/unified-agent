@@ -54,6 +54,11 @@ export class ChatsComponent implements OnInit {
         message: 'Please select an option from the self service menu below. Our automated system will help you register your \n' +
           'complaint efficiently.',
       },
+
+      {
+        notificationType: 'assistNotification',
+        notificationMessage: '‘John Miller’ joined as assistant'
+      },
       {
         title: 'farhan',
         type: 'quotedMessage',
@@ -76,6 +81,10 @@ export class ChatsComponent implements OnInit {
         heading: '',
         quoteMessage: 'Please select your service from the menu below',
         message: 'Broadband',
+      },
+      {
+        notificationType: 'joinNotification',
+        notificationMessage: '‘John Miller’ joined as agent in chat'
       },
       {
         title: 'farhan',

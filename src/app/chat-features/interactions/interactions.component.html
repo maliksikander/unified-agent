@@ -606,7 +606,12 @@
           <div class="instruction-content chat-session-main">
             <div class="int-date"><span>Mon<b>09</b></span></div>
             <div *ngFor="let con of convers | LockFilter:searchInteraction">
-              <div class="chat-message" [ngClass]="{'agent-message': con.title == 'raza' || con.title == 'bot'}">
+
+              <div *ngIf="con.notificationMessage" class="topic-notification">
+                <p [ngClass]="{'join-agent': con.notificationType === 'joinNotification'}" >{{con.notificationMessage}} | <span class="chat-time">16:15:45</span></p>
+              </div>
+
+              <div *ngIf="con.title" class="chat-message" [ngClass]="{'agent-message': con.title == 'raza' || con.title == 'bot'}">
                 <div class="profile-pic">
                   <div class="active-channel channel-icon {{customer.info.channel}}"><img width="20" src="assets/images/web.svg"></div>
                   <div  class="profile-pic-area user-img">
@@ -844,6 +849,14 @@
 
           </div>
           <div class="chat-footer">
+            <span class="selected-channel bot-suggestions-trigger" *ngIf="botSuggestions">
+               <button mat-button class="channel-switching-trigger">
+                <span class="channel-icon">
+                  <span class="bot-suggestion-logo"><img src="assets/images/bot-suggestions.svg" width="20" alt="Bot Suggestion"></span>
+                  BOT Suggestions
+                </span>
+               </button>
+              </span>
             <span class="selected-channel"><span>Selected Channel:</span>
                <button mat-button [matMenuTriggerFor]="channelSwitching" class="channel-switching-trigger">
                 <span class="channel-selected channel-icon {{isSelectedChannelCode}}">

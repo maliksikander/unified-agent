@@ -24,6 +24,7 @@
   </div>
 
   <div class="col-md-6 right-actions text-right">
+    <button mat-button class="btn-action " (click)="actions()">Import <img src="assets/images/upload-file.svg"></button>
     <button mat-button class="btn-action " (click)="actions()">Action</button>
     <mat-menu #columnMenu="matMenu" >
       <div class="check-menu" (click)="$event.stopPropagation();">

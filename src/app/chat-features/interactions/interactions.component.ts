@@ -85,6 +85,7 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
   ];
   whisper = false;
   displayUserList = false;
+  botSuggestions = false;
   customer: any = {
     type: 'Customer',
     info: {

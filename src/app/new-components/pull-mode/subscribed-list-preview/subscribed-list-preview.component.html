@@ -32,6 +32,7 @@
       <tr>
         <th class="status-data" scope="col">Status</th>
         <th scope="col">Customer</th>
+        <th scope="col">Active With</th>
         <th scope="col">Time</th>
         <th scope="col">List</th>
       </tr>
@@ -44,6 +45,7 @@
           src="assets/images/{{chat.flag}}"></span> {{chat.customerName}} <small class="customer_identy">({{chat.identy}})</small>    <ul class="customer-labels"><li matTooltip="Marketing" style="background: #32b67a;" ></li><li matTooltip="Corporate" style="background: #f34f1b;" ></li><li matTooltip="Product Support" style="background: #536ce8;" ></li></ul>
 <span *ngIf="chat.selfJoined" class="joined">(Joined)</span>
         </td>
+        <td>{{chat.activeWith}}</td>
         <td>{{chat.activeTime}} min <small>ago</small></td>
         <td>{{chat.queue}}</td>
         <span class="table-trigger" *ngIf="!chat.selfJoined">
