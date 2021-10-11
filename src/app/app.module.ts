@@ -31,6 +31,8 @@ import { QueueChatsComponent } from './supervisor/queue-chats/queue-chats.compon
 import { SubscribedListComponent } from './new-components/pull-mode/subscribed-list/subscribed-list.component';
 import { SubscribedListPreviewComponent } from './new-components/pull-mode/subscribed-list-preview/subscribed-list-preview.component';
 import { WrapUpFormComponent } from './new-components/wrap-up-form/wrap-up-form.component';
+import {VgCoreModule} from 'videogular2/compiled/src/core/core';
+import {VgControlsModule} from 'videogular2/compiled/src/controls/controls';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import { WrapUpFormComponent } from './new-components/wrap-up-form/wrap-up-form.
     AppRoutingModule,
     CommonModule,
     BrowserAnimationsModule,
-    SharedModule
+    SharedModule,
+    VgCoreModule,
+    VgControlsModule
   ],
   entryComponents: [
     AnnouncementDialogComponent,

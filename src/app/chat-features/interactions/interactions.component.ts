@@ -12,7 +12,9 @@ interface Search {
   value: string;
   viewValue: string;
 }
-
+interface VideoElement extends HTMLVideoElement {
+  requestPictureInPicture(): any;
+}
 @Component({
   selector: 'app-interactions',
   templateUrl: './interactions.component.html',
@@ -20,10 +22,13 @@ interface Search {
 })
 export class InteractionsComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:no-input-rename
+
   @Input('conversation') conversation: any;
   @Input('messages') messages: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
   @Output() customerCalling = new EventEmitter<any>();
+  @ViewChild('media', {static: false}) media: ElementRef;
+dispayVideoPIP = true;
   isBarOPened = false;
   public config: PerfectScrollbarConfigInterface = {};
   @ViewChild('replyInput', {static: true}) elementView: ElementRef;
@@ -196,14 +201,16 @@ export class InteractionsComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     //  console.log("i am called hello")
+    if(navigator.userAgent.indexOf("Firefox") != -1 ) {
+      this.dispayVideoPIP = false;
+    }
     this.convers = this.messages;
     console.log('hello', this.messages);
     setTimeout(() => {
       new EmojiPicker();
     }, 500);
 this.postUrl = "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fweb.facebook.com%2Fpermalink.php%3Fstory_fbid%3D"+this.fbId+"%26id%3D"+this.postId+"&show_text=true&width=500"
-
-  }
+    }
 
 
   ngAfterViewInit() {
@@ -381,4 +388,22 @@ this.postUrl = "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fweb
     window.open(locationUrl, '_blank');
     // http://maps.google.com/maps?q=210+Louise+Ave,+Nashville,+TN+37203
   }
+
+
+  videoPIP() {
+    const video: VideoElement = this.media.nativeElement;
+    // video.addEventListener('play', async (e) => {
+    //   await video.requestPictureInPicture();
+    // });
+    // console.log('hello', video.requestPictureInPicture());
+    //
+
+
+
+    video.requestPictureInPicture()
+      .then(pictureInPictureWindow => {
+        pictureInPictureWindow.addEventListener("resize", () => false);
+      });
+  }
+
 }

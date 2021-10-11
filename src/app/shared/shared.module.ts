@@ -87,7 +87,7 @@ import { SafePipe } from './pipes/safe.pipe';
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
-    AngularMultiSelectModule,
+    AngularMultiSelectModule
   ], exports: [
     MatIconModule, MatToolbarModule, MatSidenavModule,
     MatDrawer, MatCheckboxModule,

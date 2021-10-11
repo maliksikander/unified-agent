@@ -968,7 +968,7 @@
   span.selected-channel {
     position: absolute;
     left: 0;
-    top: -36px;
+    top: -31px;
     font-size: 10px;
     margin-left: 10px;
     color: #9D9D9D;
@@ -1897,6 +1897,10 @@ agm-map{
       padding: 0;
       width: 210px;
     }
+
+    &.video-player{
+      min-height: 112px;
+    }
   }
   agm-map{
     height: 82px !important;
@@ -1932,5 +1936,59 @@ agm-map{
     &.join-agent{
       color: $main-color;
     }
+  }
+}
+//Video player Styles
+vg-player{
+  &:hover {
+    vg-controls {
+      opacity: .9;
+      transition: opacity .3s;
+    }
+  }
+}
+
+vg-time-display{
+  font-size: 12px;
+}
+vg-controls {
+  height: 45px !important;
+  align-items: center !important;
+  justify-content: space-between;
+  opacity: 0;
+  transition: opacity 1s;
+
+  vg-scrub-bar {
+    position: absolute;
+    bottom: 0;
+    height: 10px;
+    margin: 0;
+    padding: 0 5px;
+  }
+  vg-time-display{
+    justify-content: flex-start;
+    line-height: 45px !important;
+    height: 45px;
+
+  }
+
+  vg-play-pause {
+    height: 30px;
+    width: 35px;
+    line-height: 30px;
+  }
+  vg-scrub-bar-buffering-time {
+    background: #ffffff54;
+  }
+  mat-icon{
+    position: absolute;
+    right: 0;
+    bottom: 45px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #fff;
+  }
+  vg-fullscreen{
+    width: 30px !important;
   }
 }

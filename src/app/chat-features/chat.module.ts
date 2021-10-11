@@ -9,6 +9,8 @@ import { CustomerInfoComponent } from './customer-info/customer-info.component';
 import {MatDialogModule} from '@angular/material';
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {AgmCoreModule} from '@agm/core';
+import {VgCoreModule} from 'videogular2/compiled/src/core/core';
+import {VgControlsModule} from 'videogular2/compiled/src/controls/controls';
 
 
 @NgModule({
@@ -24,7 +26,9 @@ import {AgmCoreModule} from '@agm/core';
     PerfectScrollbarModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyA_dm2C9FEp26nXSEjfN9G76juYi-CtiLE'
-    })
+    }),
+    VgCoreModule,
+    VgControlsModule,
   ],
 })
 export class ChatModule { }

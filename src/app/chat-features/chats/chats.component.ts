@@ -89,9 +89,9 @@ export class ChatsComponent implements OnInit {
       {
         title: 'farhan',
         type: 'file',
-        fileType: 'ppt',
+        fileType: 'xls',
         fileName: 'Expertflow-Corporate-Presentation',
-        fileUrl: 'assets/images/type-ppt.svg',
+        fileUrl: 'assets/images/type-xls.svg',
       },
       {
         title: 'bot',
@@ -103,10 +103,8 @@ export class ChatsComponent implements OnInit {
       },
       {
         title: 'farhan',
-        type: 'file',
-        fileType: 'xls',
-        fileName: 'Expertflow-Corporate-Presentation',
-        fileUrl: 'assets/images/type-xls.svg',
+        type: 'video',
+        videoUrl: 'http://static.videogular.com/assets/videos/videogular.mp4',
 
       },
       {
