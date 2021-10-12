@@ -120,6 +120,14 @@ export class ChatsComponent implements OnInit {
         name: 'Stacy Staler'
 
       },
+
+      {
+        title: 'farhan',
+        type: 'audio',
+        audioUrl: 'https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3',
+        formatType: 'audio/mp3',
+
+      },
       {
         title: 'farhan',
         type: 'url',

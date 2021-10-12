@@ -458,6 +458,7 @@
 
             img {
               max-width: 55px;
+              min-width: 50px;
             }
             &.location-logo{
               cursor: pointer;
@@ -1943,7 +1944,7 @@ vg-player{
   &:hover {
     vg-controls {
       opacity: .9;
-      transition: opacity .3s;
+      transition: all .5s;
     }
   }
 }
@@ -1955,8 +1956,8 @@ vg-controls {
   height: 45px !important;
   align-items: center !important;
   justify-content: space-between;
-  opacity: 0;
-  transition: opacity 1s;
+  //opacity: 0;
+  transition: all .5s;
 
   vg-scrub-bar {
     position: absolute;
@@ -1990,5 +1991,11 @@ vg-controls {
   }
   vg-fullscreen{
     width: 30px !important;
+  }
+}
+
+.audio-player{
+  vg-player{
+    background: $theme-green;
   }
 }

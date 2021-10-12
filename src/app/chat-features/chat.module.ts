@@ -11,6 +11,7 @@ import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {AgmCoreModule} from '@agm/core';
 import {VgCoreModule} from 'videogular2/compiled/src/core/core';
 import {VgControlsModule} from 'videogular2/compiled/src/controls/controls';
+import {VgOverlayPlayModule} from 'videogular2/compiled/src/overlay-play/overlay-play';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import {VgControlsModule} from 'videogular2/compiled/src/controls/controls';
     }),
     VgCoreModule,
     VgControlsModule,
+    VgOverlayPlayModule,
   ],
 })
 export class ChatModule { }
