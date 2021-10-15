@@ -2628,6 +2628,7 @@ vg-mute div {
   vg-scrub-bar-current-time .background {
     background-color: $theme-green;
     position: relative;
+    border: 0;
     &:after{
       content: '';
       padding: 5px;
@@ -2644,5 +2645,22 @@ vg-mute div {
 
   vg-scrub-bar-buffering-time{
     background: lighten($theme-green, 30%);
+  }
+  vg-play-pause{
+    .icon {
+      pointer-events: none;
+      border: 2px solid $theme-green;
+      border-radius: 100%;
+      width: 28px;
+      height: 28px;
+
+      &:before{
+        color: $theme-green;
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+        font-size: 20px;
+      }
+    }
   }
 }

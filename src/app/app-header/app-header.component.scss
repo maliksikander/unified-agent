@@ -1,4 +1,4 @@
-@import "src/app/shared/globalVariables";
+@import "src/theme/blue-theme";
 
 .profile-detail {
   //position: fixed;
@@ -972,6 +972,35 @@ button.main-menu-item{
       transition: all .2s;
         color: darken($theme-green, 10%);
     }
+  }
+}
+.pull-mode-action {
+  position: relative;
+  .pull-mode-trigger{
+    color: $blue-text-color;
+    margin-right: 15px;
+
+    &:hover{
+      transition: all .2s;
+      color: lighten($blue-text-color, 20%);
+    }
+  }
+
+  .notification-hint{
+    position: absolute !important;
+    background: red;
+    width: 13px !important;
+    height: 13px !important;
+    display: block;
+    z-index: 9;
+    font-size: 9px !important;
+    color: #fff !important;
+    line-height: 13px;
+    text-align: center;
+    right: 5px;
+    top: -2px;
+    font-weight: 600;
+    border-radius: 100%;
   }
 }
 

@@ -405,5 +405,4 @@ this.postUrl = "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fweb
         pictureInPictureWindow.addEventListener("resize", () => false);
       });
   }
-
 }

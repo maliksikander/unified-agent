@@ -620,7 +620,7 @@
                   </div>
                 </div>
                 <div class="chat-message-content"
-                     [ngClass]="{'quoted-message-area': con.type === 'quotedMessage' , 'file-type-message' : con.type === 'file' || con.type === 'url' || con.type === 'contact'|| con.type === 'location' || con.type === 'audio' || con.type === 'video'}">
+                     [ngClass]="{'quoted-message-area': con.type === 'quotedMessage' , 'file-type-message' : con.type === 'file' || con.type === 'url' || con.type === 'contact'|| con.type === 'location' || con.type === 'video'}">
                   <div *ngIf="con.type === 'quotedMessage' || con.type === 'message'|| con.type === 'structuredMessage' ">
                     <p [ngClass]="{'quoted-message': con.type === 'quotedMessage'}"
                        *ngIf="con.heading || con.type == 'quotedMessage'" style="display: block"
@@ -683,7 +683,6 @@
                             <vg-mute></vg-mute>
                             <vg-fullscreen></vg-fullscreen>
                             <mat-icon *ngIf="dispayVideoPIP"  (click)="videoPIP()">picture_in_picture_alt</mat-icon>
-                            <div class="clearfix clear"></div>
                             <vg-scrub-bar>
                               <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
                               <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
@@ -698,23 +697,19 @@
                     <span class="chat-time">16:15:45</span>
                   </div>
 
-                  <!--Message is Video type-->
-                  <div *ngIf="con.type === 'audio'" class="file-type-content">
-                    <a class="display-file" href="{{con.audioUrl}}" target="_blank">
-                      <img src="assets/images/audiotrack.svg">
-                    </a>
+                  <!--Message is audio type-->
+                  <div *ngIf="con.type === 'audio'" class="file-type-content audio-file">
                     <div class="shared-url shared-card-content audio-player video-player p-0">
                       <div class="media-main" style="max-width: 300px">
                         <vg-player style="height: 50px;">
                           <vg-controls>
                             <vg-play-pause></vg-play-pause>
-                            <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
-                            <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
                             <vg-scrub-bar>
                               <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
                               <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
                             </vg-scrub-bar>
-                            <vg-mute></vg-mute>
+                            <div class="clearfix clear"></div>
+                            <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
                           </vg-controls>
 
                           <audio #audio [vgMedia]="audio" id="myAudio" preload="auto">
@@ -722,8 +717,9 @@
                           </audio>
                         </vg-player>
                       </div>
+                      <span class="chat-time">16:15:45</span>
+
                     </div>
-                    <span class="chat-time">16:15:45</span>
                   </div>
               <!--Message is Contact-->
 
