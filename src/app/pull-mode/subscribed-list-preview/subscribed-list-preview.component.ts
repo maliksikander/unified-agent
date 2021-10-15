@@ -25,10 +25,9 @@ export class SubscribedListPreviewComponent implements OnInit {
     private _cacheService: cacheService,
     private _socketService: socketService,
     private _router: Router
-  ) { }
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   listPreviewToggle() {
     this.expandCustomerInfo.emit((this.listPreview = false));
@@ -41,12 +40,9 @@ export class SubscribedListPreviewComponent implements OnInit {
       data: { header: "Close Chat", message: `Are you sure you want to close this Chat?` }
     });
     dialogRef.afterClosed().subscribe((result) => {
-
       if (result && result.event == "confirm") {
-
-        this._socketService.emit('deletePullModeRequest', request.id);
+        this._socketService.emit("deletePullModeRequest", request.id);
       }
-
     });
   }
 
@@ -64,6 +60,5 @@ export class SubscribedListPreviewComponent implements OnInit {
   isAlreadySubscribed(requestId) {
     return this._pullModeservice.subscribedListJoinedRequests.includes(requestId);
   }
-  ngOnDestroy() {
-  }
+  ngOnDestroy() {}
 }

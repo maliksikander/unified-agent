@@ -15,7 +15,7 @@ textarea, #EmojiLink a{
 @font-face {
   font-family: 'Roboto';
   src: local('Roboto Light'), local('Roboto-light'),
-  url('./assets/fonts/roboto/Roboto-Light.woff') format('woff');
+  url('assets/fonts/roboto/Roboto-Light.woff') format('woff');
   font-weight: 300;
   font-style: normal;
 
@@ -24,7 +24,7 @@ textarea, #EmojiLink a{
 @font-face {
   font-family: 'Roboto';
   src: local('Roboto Regular'), local('Roboto-Regular'),
-  url('./assets/fonts/roboto/Roboto-Regular.woff') format('woff');
+  url('assets/fonts/roboto/Roboto-Regular.woff') format('woff');
   font-weight: 500;
   font-style: normal;
 
@@ -33,7 +33,7 @@ textarea, #EmojiLink a{
 @font-face {
   font-family: 'Roboto';
   src: local('Roboto Medium'), local('Roboto-Medium'),
-  url('./assets/fonts/roboto/Roboto-Medium.woff') format('woff');
+  url('assets/fonts/roboto/Roboto-Medium.woff') format('woff');
   font-weight: 600;
   font-style: normal;
 }
@@ -41,7 +41,7 @@ textarea, #EmojiLink a{
 @font-face {
   font-family: 'Roboto';
   src: local('Roboto Bold'), local('Roboto-Bold'),
-  url('./assets/fonts/roboto/Roboto-Bold.woff') format('woff');
+  url('assets/fonts/roboto/Roboto-Bold.woff') format('woff');
   font-weight: 800;
   font-style: normal;
 }

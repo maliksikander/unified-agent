@@ -30,7 +30,7 @@ export class socketService {
     private _sharedService: sharedService,
     private _pullModeService: pullModeService,
     private _router: Router
-  ) { }
+  ) {}
 
   connectToSocket() {
     this.uri = this._appConfigService.config.SOCKET_URL;
@@ -38,6 +38,7 @@ export class socketService {
     console.log("username------ " + this._cacheService.agent.username);
 
     this.socket = io(this.uri, {
+      path: this.uri.includes("localhost") ? "" : "/agent-manager/socket.io",
       auth: {
         //  token: this._cacheService.agent.details.access_token,
         agent: JSON.stringify(this._cacheService.agent)
@@ -47,6 +48,7 @@ export class socketService {
 
     this.socket.on("connect_error", (err) => {
       console.error("socket connect_error " + err);
+      this._snackbarService.open("Socket connection error", "err");
     });
 
     this.socket.on("connect", (e) => {
@@ -140,7 +142,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) { }
+    } catch (err) {}
   }
 
   listen(eventName: string) {

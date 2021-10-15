@@ -17,7 +17,6 @@ export class pullModeService {
 
   public readonly subscribedListListener: Observable<any> = this._subscribedListListener.asObservable();
 
-
   constructor(private _httpService: httpService, private _snackbarService: snackbarService) {
     this.loadLabels();
   }
@@ -28,16 +27,13 @@ export class pullModeService {
   }
 
   updateSubscribedListRequests(incomingRequest, type) {
-
     if (type.toUpperCase() == "PULL_MODE_LIST_REQUEST_RECEIVED") {
       this._snackbarService.open("A new request on " + this.listNames[incomingRequest.listId] + " is arrived", "succ");
     } else {
-
       if (incomingRequest.status.toLowerCase() == "closing") {
         this.deleteRequestById(incomingRequest.id);
         return;
       }
-
     }
 
     let index: number = -1;
@@ -56,12 +52,11 @@ export class pullModeService {
     if (found) {
       this.subscribedListRequests[index] = incomingRequest;
     } else {
-      // else, add a new entry   
+      // else, add a new entry
       this.subscribedListRequests.push(incomingRequest);
     }
 
     this.updateRequestArrayRef(this.subscribedListRequests);
-
   }
 
   loadLabels() {
@@ -99,23 +94,18 @@ export class pullModeService {
       return indexesOfItemsToBeremoved.indexOf(index) == -1;
     });
     this.updateRequestArrayRef(this.subscribedListRequests);
-
   }
 
   updatePullModeJoinedRequestIds(reqs) {
-
     this.subscribedListJoinedRequests = reqs;
   }
 
-
   deleteRequestById(reqId) {
-
     this.subscribedListRequests = this.subscribedListRequests.filter((req) => {
       return req.id != reqId;
     });
     console.log("this.subscribedListRequests after deleted ", this.subscribedListRequests);
     this.updateRequestArrayRef(this.subscribedListRequests);
-
   }
 
   updateRequestArrayRef(requests) {
@@ -124,5 +114,4 @@ export class pullModeService {
     this.subscribedListRequests = [];
     this.subscribedListRequests = this.subscribedListRequests.concat(requests);
   }
-
 }

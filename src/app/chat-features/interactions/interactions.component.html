@@ -8,7 +8,7 @@
             <span
               class="channel-icon {{conversation.activeChannelSessions[conversation.activeChannelSessions.length-1]?.channel.channelConnector.channelType.typeName | lowercase}}">
               <img
-                src="../assets/images/{{conversation.activeChannelSessions[conversation.activeChannelSessions.length-1]?.channel.channelConnector.channelType.typeName | lowercase}}.svg">
+                src="assets/images/{{conversation.activeChannelSessions[conversation.activeChannelSessions.length-1]?.channel.channelConnector.channelType.typeName | lowercase}}.svg">
             </span>
           </h3>
           <h5 class="customer-name" [matTooltip]="conversation.customer.firstName">
@@ -121,11 +121,11 @@
                   <div
                     class="active-channel channel-icon {{message.header.channelSession.channel.channelConnector.channelType.typeName | lowercase}}">
                     <img width="20"
-                      src="../assets/images/{{message.header.channelSession.channel.channelConnector.channelType.typeName | lowercase}}.svg">
+                      src="assets/images/{{message.header.channelSession.channel.channelConnector.channelType.typeName | lowercase}}.svg">
                   </div>
                   <div *ngIf="(message.header.sender.type | lowercase) != 'bot'" class="profile-pic-area user-img">
                     {{message.header.sender | getSenderName:conversation.customer:true}}</div>
-                  <div *ngIf="(message.header.sender.type | lowercase) == 'bot'"><img src="../assets/images/robot.png">
+                  <div *ngIf="(message.header.sender.type | lowercase) == 'bot'"><img src="assets/images/robot.png">
                   </div>
                 </div>
                 <div class="chat-message-content ">

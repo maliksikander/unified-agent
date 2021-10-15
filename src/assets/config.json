@@ -1,5 +1,5 @@
 {
-    "GAT_URL": "http://localhost:9000",
-    "SOCKET_URL": "ws://localhost:9000",
+    "GAT_URL": "https://cim.expertflow.com/agent-manager",
+    "SOCKET_URL": "https://cim.expertflow.com",
     "ENV": "prod"
-}
+} 
