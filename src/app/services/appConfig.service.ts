@@ -5,9 +5,9 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class appConfigService {
   configUrl = "../../assets/config.json";
-  public config = { GAT_URL: "", SOCKET_URL: "", ENV: "" };
+  public config = { GAT_URL: "", SOCKET_URL: "", ENV: "", FILE_SERVER_URL: "" };
 
-  constructor(private _httpClient: HttpClient) {}
+  constructor(private _httpClient: HttpClient) { }
 
   loadConfig() {
     return this._httpClient
@@ -17,6 +17,7 @@ export class appConfigService {
         this.config.GAT_URL = e.GAT_URL;
         this.config.SOCKET_URL = e.SOCKET_URL;
         this.config.ENV = e.ENV;
+        this.config.FILE_SERVER_URL = e.FILE_SERVER_URL;
       });
   }
 }

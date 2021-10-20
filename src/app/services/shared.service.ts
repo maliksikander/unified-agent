@@ -1,14 +1,18 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
+import { httpService } from "./http.service";
 import { snackbarService } from "./snackbar.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class sharedService {
-  constructor(private _snackbarService: snackbarService) {}
+  constructor(private _snackbarService: snackbarService, private _httpService: httpService) { }
 
   matCurrentTabIndex = 0;
+
+  channelLogoMapper = new Map();
+
   private serviceMessageSource = new BehaviorSubject({ msg: null, data: null });
   serviceCurrentMessage = this.serviceMessageSource.asObservable();
   serviceChangeMessage(data: any) {
@@ -24,6 +28,22 @@ export class sharedService {
 
   spliceArray(index, array) {
     array.splice(index, 1);
+  }
+
+  setChannelIcons(channels) {
+
+    channels.forEach((channel) => {
+
+      this._httpService.getChannelLogo(channel.channelConnector.channelType.channelLogo).subscribe((file) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+          // caching the channel logos
+          this.channelLogoMapper.set(channel.channelConnector.channelType.channelLogo, reader.result);
+        }
+      });
+
+    });
   }
 
   Interceptor(e, res) {

@@ -16,7 +16,8 @@ export class httpService {
       customers: "/api/v1/agent/customer",
       labels: "/api/v1/agent/labels",
       userPreference: "/api/v1/agent/userPreference",
-      pullModeList: "/api/v1/agent/pull-mode-list"
+      pullModeList: "/api/v1/agent/pull-mode-list",
+      fileServer: "/file-engine/api/downloadFileStream?filename="
     };
   }
 
@@ -87,10 +88,9 @@ export class httpService {
   getCustomers(limit, offset, sort, query): Observable<any> {
     return this._httpClient.get<any>(
       this._appConfigService.config.GAT_URL +
-        this.apiEndpoints.customers +
-        `?limit=${limit}&offset=${offset}&sort=${sort.field ? sort.field + ":" + sort.order : ""}&query=${
-          query.field ? query.field + ":" + query.value : ""
-        }`,
+      this.apiEndpoints.customers +
+      `?limit=${limit}&offset=${offset}&sort=${sort.field ? sort.field + ":" + sort.order : ""}&query=${query.field ? query.field + ":" + query.value : ""
+      }`,
       {
         headers: new HttpHeaders({
           "Content-Type": "application/json"
@@ -170,4 +170,10 @@ export class httpService {
       })
     });
   }
+
+
+  getChannelLogo(id: string): Observable<Blob> {
+    return this._httpClient.get(this._appConfigService.config.FILE_SERVER_URL + this.apiEndpoints.fileServer + id, { responseType: 'blob' });
+  }
+
 }

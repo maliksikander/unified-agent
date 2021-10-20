@@ -4,7 +4,7 @@
       <mat-card class="notification-panel mat-card">
         <mat-card-content [ngClass]="{'identified' : identified == true,'un-identified' : identified == false}" class="mat-card-content">
           <div class="chat-request">
-            <p class="channel-icon"><img [src]="channelImageSrc"></p>
+            <p class="channel-icon"><img src="{{data.channelSession.channel.channelConnector.channelType.channelLogo | channelLogo | async}}"></p>
           </div>
           <div class="requested-name">
             <p>{{customerName != null ? customerName : 'UNIDENTIFIED CUSTOMER' }}</p>

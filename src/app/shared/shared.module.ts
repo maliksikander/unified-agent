@@ -66,6 +66,7 @@ import { fetchLabelsPipe } from "./pipes/fetchLabels.pipe";
 import { columnsFilterClass } from "./pipes/columnsFilter.pipe";
 import { MomentModule } from "ngx-moment";
 import { filterPullModeRequestsPipe } from "./pipes/filterPullModeReqsts.pipe";
+import { channelLogoPipe } from "./pipes/getChannelLogo.pipe";
 
 @NgModule({
   declarations: [
@@ -79,7 +80,8 @@ import { filterPullModeRequestsPipe } from "./pipes/filterPullModeReqsts.pipe";
     getFirstTwoLettersPipe,
     fetchLabelsPipe,
     columnsFilterClass,
-    filterPullModeRequestsPipe
+    filterPullModeRequestsPipe,
+    channelLogoPipe
   ],
   imports: [
     MatIconModule,
@@ -221,7 +223,8 @@ import { filterPullModeRequestsPipe } from "./pipes/filterPullModeReqsts.pipe";
     getMRDSwitchesPipe,
     fetchLabelsPipe,
     columnsFilterClass,
-    MomentModule
+    MomentModule,
+    channelLogoPipe
   ]
 })
-export class SharedModule {}
+export class SharedModule { }

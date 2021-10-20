@@ -11,6 +11,7 @@ import { Router } from "@angular/router";
   styleUrls: ["./app-header.component.scss"]
 })
 export class AppHeaderComponent implements OnInit {
+
   agent = {
     state: "ready",
     name: "Bryan Miller",

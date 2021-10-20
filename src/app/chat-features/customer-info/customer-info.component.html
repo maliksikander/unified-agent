@@ -319,8 +319,8 @@
                   <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                     <div class="channel-icon-area">
                       <span
-                        class="channel-icon {{channelSession.channel.channelConnector.channelType.typeName | lowercase}}"><img
-                          src="assets/images/{{channelSession.channel.channelConnector.channelType.typeName | lowercase}}.svg"></span>
+                        class="channel-icon"><img
+                          src="assets/images/{{channelSession.channel.channelConnector.channelType.channelLogo | channelLogo | async}}"></span>
                       <label>{{channelSession.channel.channelConnector.channelType.typeName | titlecase}}
                         Channel</label>
 
@@ -341,14 +341,18 @@
                       <label>Customer Identifier</label>
                       {{channelSession.channelData.channelCustomerIdentifier}}
                     </li>
+                    <li>
+                      <label>Service Identifier</label>
+                      {{channelSession.channelData.serviceIdentifier}}
+                    </li>
                   </ul>
-                  <ul class="requested-channel-content"
+                  <!-- <ul class="requested-channel-content"
                     *ngFor="let attr of channelSession.channelData.additionalAttributes">
                     <li>
                       <label>{{attr.key | sentenceCase}}</label>
                       {{attr.value}}
                     </li>
-                  </ul>
+                  </ul> -->
                 </mat-expansion-panel>
 
               </mat-accordion>

@@ -30,15 +30,16 @@ export class socketService {
     private _sharedService: sharedService,
     private _pullModeService: pullModeService,
     private _router: Router
-  ) {}
+  ) { }
 
   connectToSocket() {
     this.uri = this._appConfigService.config.SOCKET_URL;
-
+    let origin = new URL(this.uri).origin;
+    let path = new URL(this.uri).pathname;
     console.log("username------ " + this._cacheService.agent.username);
 
-    this.socket = io(this.uri, {
-      path: this.uri.includes("localhost") ? "" : "/agent-manager/socket.io",
+    this.socket = io(origin, {
+      path: path == "/" ? "" : path + "/socket.io",
       auth: {
         //  token: this._cacheService.agent.details.access_token,
         agent: JSON.stringify(this._cacheService.agent)
@@ -80,11 +81,11 @@ export class socketService {
     });
 
     this.listen("onCimEvent").subscribe((res: any) => {
-      try{
-      console.log("onCimEvent", res);
-      this.onCimEventHandler(JSON.parse(res.cimEvent), res.topicId);
-      }catch(err){
-        console.error("error on onCimEvent ",err)
+      try {
+        console.log("onCimEvent", res);
+        this.onCimEventHandler(JSON.parse(res.cimEvent), res.topicId);
+      } catch (err) {
+        console.error("error on onCimEvent ", err)
       }
     });
 
@@ -141,12 +142,17 @@ export class socketService {
       console.log("onUpdatePullModeJoinedRequestIds", res);
       this._pullModeService.updatePullModeJoinedRequestIds(res);
     });
+
+    this.listen("onChannels").subscribe((res: any) => {
+      console.log("onChannels", res);
+      this._sharedService.setChannelIcons(res);
+    });
   }
 
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) {}
+    } catch (err) { }
   }
 
   listen(eventName: string) {

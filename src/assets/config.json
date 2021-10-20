@@ -1,5 +1,6 @@
 {
-    "GAT_URL": "http://localhost:3000",
+    "GAT_URL": "https://localhost:3000",
     "SOCKET_URL": "http://localhost:3000",
+    "FILE_SERVER_URL": "https://cim.expertflow.com",
     "ENV": "prod"
-} 
+}

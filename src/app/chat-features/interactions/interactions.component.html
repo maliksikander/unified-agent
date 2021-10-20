@@ -6,9 +6,9 @@
           <h3 matTooltipPosition="right" class="customer-highlight">
             {{conversation.customer.firstName | getFirstTwoLetters}}
             <span
-              class="channel-icon {{conversation.activeChannelSessions[conversation.activeChannelSessions.length-1]?.channel.channelConnector.channelType.typeName | lowercase}}">
+              class="channel-icon">
               <img
-                src="assets/images/{{conversation.activeChannelSessions[conversation.activeChannelSessions.length-1]?.channel.channelConnector.channelType.typeName | lowercase}}.svg">
+                src="assets/images/{{conversation.activeChannelSessions[conversation.activeChannelSessions.length-1]?.channel.channelConnector.channelType.channelLogo | channelLogo | async}}">
             </span>
           </h3>
           <h5 class="customer-name" [matTooltip]="conversation.customer.firstName">
@@ -119,9 +119,9 @@
                 [ngClass]="((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message slide-in-right'">
                 <div class="profile-pic">
                   <div
-                    class="active-channel channel-icon {{message.header.channelSession.channel.channelConnector.channelType.typeName | lowercase}}">
+                    class="active-channel channel-icon">
                     <img width="20"
-                      src="assets/images/{{message.header.channelSession.channel.channelConnector.channelType.typeName | lowercase}}.svg">
+                      src="assets/images/{{message.header.channelSession.channel.channelConnector.channelType.channelLogo | channelLogo | async}}">
                   </div>
                   <div *ngIf="(message.header.sender.type | lowercase) != 'bot'" class="profile-pic-area user-img">
                     {{message.header.sender | getSenderName:conversation.customer:true}}</div>
