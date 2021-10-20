@@ -80,8 +80,12 @@ export class socketService {
     });
 
     this.listen("onCimEvent").subscribe((res: any) => {
+      try{
       console.log("onCimEvent", res);
       this.onCimEventHandler(JSON.parse(res.cimEvent), res.topicId);
+      }catch(err){
+        console.error("error on onCimEvent ",err)
+      }
     });
 
     this.listen("onTopicData").subscribe((res: any) => {
