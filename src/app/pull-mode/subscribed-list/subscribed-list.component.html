@@ -21,7 +21,7 @@
                 </thead>
                 <tbody>
 
-                    <tr (click)="listPreview = true; listId=list.id " *ngFor="let list of (_pullModeservice.subscribedListListener | async)">
+                    <tr (click)="listPreview = true; listId=list.id " *ngFor="let list of _pullModeservice.subscribedList">
                         <td>{{list.name}}</td>
                     </tr>
                 </tbody>

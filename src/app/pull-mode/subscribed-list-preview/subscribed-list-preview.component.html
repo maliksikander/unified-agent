@@ -15,7 +15,7 @@
         <mat-form-field appearance="outline" class="selection-trigger">
             <mat-select [(ngModel)]="filterListId">
                 <mat-option value='all'>All Queues</mat-option>
-                <mat-option *ngFor="let list of (_pullModeservice.subscribedListListener | async)" value="{{list.id}}">
+                <mat-option *ngFor="let list of _pullModeservice.subscribedList" value="{{list.id}}">
                     {{list.name}}</mat-option>
             </mat-select>
         </mat-form-field>
@@ -42,8 +42,7 @@
                                 matTooltip="{{(request.status | lowercase) == 'created' ? 'UNREAD' : (request.status | uppercase) }}"
                                 [style.backgroundColor]="(request.status | lowercase) == 'active' ? '#29C671' : ((request.status | lowercase) == 'inactive' ? '#ccc' : 'red')"></span>
                         </td>
-                        <td #customerCell><span
-                                class="channel-icon"><img
+                        <td #customerCell><span class="channel-icon"><img
                                     src="{{request.channelSession.channel.channelConnector.channelType.channelLogo | channelLogo | async}}"></span>
                             {{request.channelSession.customer.firstName}} <small
                                 class="customer_identy">({{request.channelSession.channelData.channelCustomerIdentifier}})</small>

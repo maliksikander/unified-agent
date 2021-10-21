@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
+import { Subject } from "rxjs";
 import { httpService } from "./http.service";
 import { snackbarService } from "./snackbar.service";
 
@@ -13,9 +13,7 @@ export class pullModeService {
   labels: any = [];
   listNames: any;
 
-  private _subscribedListListener: BehaviorSubject<any> = new BehaviorSubject([]);
-
-  public readonly subscribedListListener: Observable<any> = this._subscribedListListener.asObservable();
+  private subscribedListListener = new Subject<any>()
 
   constructor(private _httpService: httpService, private _snackbarService: snackbarService) {
     this.loadLabels();
@@ -23,7 +21,7 @@ export class pullModeService {
 
   updateSubscribedList(list) {
     this.subscribedList = list;
-    this._subscribedListListener.next(this.subscribedList);
+    // this.subscribedListListener.next(this.subscribedList);
   }
 
   updateSubscribedListRequests(incomingRequest, type) {
@@ -56,7 +54,7 @@ export class pullModeService {
       this.subscribedListRequests.push(incomingRequest);
     }
 
-    this.updateRequestArrayRef(this.subscribedListRequests);
+    this.updateRequestArrayRef();
   }
 
   loadLabels() {
@@ -76,7 +74,7 @@ export class pullModeService {
         this.subscribedListRequests.push(req);
       }
     });
-    this.updateRequestArrayRef(this.subscribedListRequests);
+    this.updateRequestArrayRef();
   }
 
   removePullModeSubscribedListRequests(listId) {
@@ -93,7 +91,7 @@ export class pullModeService {
     this.subscribedListRequests = this.subscribedListRequests.filter(function (value, index) {
       return indexesOfItemsToBeremoved.indexOf(index) == -1;
     });
-    this.updateRequestArrayRef(this.subscribedListRequests);
+    this.updateRequestArrayRef();
   }
 
   updatePullModeJoinedRequestIds(reqs) {
@@ -105,13 +103,12 @@ export class pullModeService {
       return req.id != reqId;
     });
     console.log("this.subscribedListRequests after deleted ", this.subscribedListRequests);
-    this.updateRequestArrayRef(this.subscribedListRequests);
+    this.updateRequestArrayRef();
   }
 
-  updateRequestArrayRef(requests) {
+  updateRequestArrayRef() {
     // we are using impure pipe with this data, as impure pipe does not changes with the same array reference so we need to change
     // the reference of that array
-    this.subscribedListRequests = [];
-    this.subscribedListRequests = this.subscribedListRequests.concat(requests);
+    this.subscribedListRequests = this.subscribedListRequests.concat([]);
   }
 }
