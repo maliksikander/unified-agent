@@ -44,7 +44,7 @@
                         </td>
                         <td #customerCell><span
                                 class="channel-icon"><img
-                                    src="assets/images/{{request.channelSession.channel.channelConnector.channelType.channelLogo | channelLogo | async}}"></span>
+                                    src="{{request.channelSession.channel.channelConnector.channelType.channelLogo | channelLogo | async}}"></span>
                             {{request.channelSession.customer.firstName}} <small
                                 class="customer_identy">({{request.channelSession.channelData.channelCustomerIdentifier}})</small>
                             <!-- <ul class="customer-labels">

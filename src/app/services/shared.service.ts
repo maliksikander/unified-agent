@@ -57,6 +57,8 @@ export class sharedService {
         this._snackbarService.open("unable to fetch license status", "err");
       } else if (e.statusCode == 500) {
         this._snackbarService.open("Internal Server Error", "err");
+      } else if (e.statusCode == 408) {
+        this._snackbarService.open(e.msg, "err");
       } else {
         this._snackbarService.open("Something went wrong", "err");
       }

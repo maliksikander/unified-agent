@@ -31,23 +31,20 @@
     span {
       background: #f1f1f1;
       display: block;
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       position: absolute;
       right: -5px;
       top: -9px;
       border-radius: 100%;
-      box-shadow: -2px 1px 4px rgba(0, 0, 0, 0.6);
 
       img {
         position: absolute;
-        top: 4px;
-        width: 10px;
-        max-height: 15px;
+        max-width: 20px;
+        max-height: 20px;
         left: 0;
         right: 0;
         margin: 0 auto;
-        height: 10px;
       }
     }
   }
@@ -230,8 +227,8 @@
           position: absolute;
           left: -7px;
           top: -5px;
-          width: 20px;
-          height: 20px;
+          width: 22px;
+          height: 22px;
           border-radius: 100%;
           border: 2px solid #fff;
           text-align: center;
@@ -240,8 +237,8 @@
           align-items: center;
 
           img {
-            max-height: 10px;
-            max-width: 9px;
+            max-height: 22px;
+            max-width: 22px;
           }
         }
 
