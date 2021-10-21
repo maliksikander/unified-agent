@@ -82,7 +82,6 @@ export class socketService {
 
     this.listen("onCimEvent").subscribe((res: any) => {
       try {
-        console.log("onCimEvent", res);
         this.onCimEventHandler(JSON.parse(res.cimEvent), res.topicId);
       } catch (err) {
         console.error("error on onCimEvent ", err)
@@ -181,7 +180,7 @@ export class socketService {
       return e.topicId == topicId;
     });
 
-    if (cimEvent.type.toLowerCase() == "message") {
+    if (cimEvent.name.toLowerCase() == "agent_message" || cimEvent.name.toLowerCase() == "bot_message" || cimEvent.name.toLowerCase() == "customer_message") {
       if (sameTopicConversation) {
         if (cimEvent.data.header.sender.type.toLowerCase() == "customer") {
           this.processActiveChannelSessions(sameTopicConversation, cimEvent.data.header.channelSession);
@@ -234,7 +233,7 @@ export class socketService {
 
     // feed the conversation with type "messages"
     topicData.topicEvents.forEach((event, i) => {
-      if (event.type.toLowerCase() == "message") {
+      if (event.name.toLowerCase() == "agent_message" || event.name.toLowerCase() == "bot_message" || event.name.toLowerCase() == "customer_message") {
         conversation.messages.push(event.data);
       }
     });
@@ -307,6 +306,8 @@ export class socketService {
     this.conversations = this.conversations.filter((conversation) => {
       return conversation.topicId != topicId;
     });
+
+    --this.conversationIndex;
 
     // alter the rest of the conversation's indexes whose indexes are greater than the index of removed conversation
     // in order to remap the conversation indexex along with the indexes of the map tabs

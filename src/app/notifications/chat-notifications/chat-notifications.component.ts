@@ -3,6 +3,7 @@ import { cacheService } from "src/app/services/cache.service";
 import { socketService } from "src/app/services/socket.service";
 import { Output, EventEmitter } from "@angular/core";
 import { TopicParticipant } from "../../models/User/Interfaces";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-chat-notifications",
@@ -17,7 +18,7 @@ export class ChatNotificationsComponent implements OnInit {
   channelImageSrc: string;
   @Output() closeRequestHeaderEvent = new EventEmitter<boolean>();
 
-  constructor(private _socketService: socketService, private _cacheService: cacheService) {}
+  constructor(private _socketService: socketService, private _cacheService: cacheService, private _router: Router) { }
 
   ngOnInit() {
     console.log("this is data ", this.data);
@@ -37,5 +38,6 @@ export class ChatNotificationsComponent implements OnInit {
       taskId: this.data.taskId
     });
     this.closeRequestHeaderEvent.emit(this.data.topicId);
+    this._router.navigate(["customers"]);
   }
 }

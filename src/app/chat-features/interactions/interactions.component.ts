@@ -21,19 +21,17 @@ export class InteractionsComponent implements OnInit {
   @ViewChild("replyInput", { static: true }) elementView: ElementRef;
   @ViewChild(NgScrollbar, { static: true }) scrollbarRef: NgScrollbar;
 
+  scrollSubscriber;
+
   ngAfterViewInit() {
-    this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
+    console.log("I am called ngononit")
+    this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
       let scroller = scrolle.target;
       let height = scroller.clientHeight;
       let scrollHeight = scroller.scrollHeight - height;
       let scrollTop = scroller.scrollTop;
       let percent = Math.floor((scrollTop / scrollHeight) * 100);
       this.currentScrollPosition = percent;
-      //   let di : any = document.getElementById('datestamp').getBoundingClientRect();
-      //  console.log("bounding "+di.y);
-      //  if(di.y < 93){
-      //    console.log("need to change class")
-      //  }
 
       if (percent > 80) {
         this.showNewMessageNotif = false;
@@ -127,7 +125,7 @@ export class InteractionsComponent implements OnInit {
     private _cacheService: cacheService,
     private _socketService: socketService,
     private dialog: MatDialog
-  ) {}
+  ) { }
   ngOnInit() {
     //  console.log("i am called hello")
     this.convers = this.conversation.messages;
@@ -136,7 +134,7 @@ export class InteractionsComponent implements OnInit {
     }, 500);
   }
 
-  emoji() {}
+  emoji() { }
 
   onSend(text) {
     let message = JSON.parse(JSON.stringify(this.conversation.messages[this.conversation.messages.length - 1]));
@@ -231,11 +229,12 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+
     if (changes.changeDetecter && changes.changeDetecter.currentValue && this.conversation.index == this._sharedService.matCurrentTabIndex) {
       if (this.lastMsgFromAgent) {
         this.downTheScrollAfterMilliSecs(50, "smooth");
@@ -243,6 +242,7 @@ export class InteractionsComponent implements OnInit {
         if (this.currentScrollPosition < 95) {
           this.showNewMessageNotif = true;
         } else {
+
           this.downTheScrollAfterMilliSecs(50, "smooth");
         }
       }
@@ -252,4 +252,9 @@ export class InteractionsComponent implements OnInit {
     }
     this.lastMsgFromAgent = false;
   }
+
+  ngOnDestroy() {
+    this.scrollSubscriber.unsubscribe();
+  }
+
 }
