@@ -276,9 +276,23 @@ mat-sidenav.mat-drawer.mat-sidenav {
 //right-bar
 .right-drag-accordion {
   .mat-expansion-panel-body {
-    padding: 0;
+    padding: 0 5px;
     border-top-width: 0 !important;
     border: 1px solid $header-gray-color;
+
+    .multi-channel-area {
+      mat-expansion-panel-header {
+        &.mat-expanded {
+          background: #ecf7fd !important;
+          border-bottom: 1px solid #c0ecf9;
+        }
+      }
+
+    }
+
+    .mat-expansion-panel-body {
+      border: 0;
+    }
   }
 }
 
@@ -2662,5 +2676,16 @@ vg-mute div {
         font-size: 20px;
       }
     }
+  }
+}
+
+//Chat channel
+.chat-channel-area {
+  span.mat-content {
+    align-content: center;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0;
   }
 }

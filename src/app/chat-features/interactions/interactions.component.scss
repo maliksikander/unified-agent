@@ -1765,6 +1765,7 @@ button.attachment-btn {
       top: 0;
       align-self: center;
       margin-right: 5px;
+      line-height: 25px;
       img{
         width: 25px;
         height: 25px;
@@ -2033,5 +2034,27 @@ vg-controls {
     align-self: flex-end !important;
     padding-right: 5px !important;
     margin-top: -12px !important;
+  }
+}
+
+.user-data-detail {
+  padding-top: 10px;
+  .data-detail {
+    padding: 10px;
+    background: #F7F8FB;
+
+    li{
+      flex: 0 0 50% !important;
+      max-width: 50%;
+      margin: 0;
+      color: #a4a4a4;
+
+      label{
+        color: #a4a4a4;
+      }
+      span{
+        color: #333;
+      }
+    }
   }
 }

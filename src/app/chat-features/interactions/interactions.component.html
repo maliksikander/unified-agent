@@ -670,9 +670,9 @@
 
                   <!--Message is Video type-->
                   <div *ngIf="con.type === 'video'" class="file-type-content">
-                     <a class="display-file" href="{{con.videoUrl}}" target="_blank">
-                       <img src="assets/images/play.svg">
-                      </a>
+<!--                     <a class="display-file" href="{{con.videoUrl}}" target="_blank">-->
+<!--                       <img src="assets/images/play.svg">-->
+<!--                      </a>-->
                     <div class="shared-url shared-card-content video-player p-0">
                       <div class="media-main" style="max-width: 300px">
                         <vg-player>
@@ -694,9 +694,11 @@
                         </vg-player>
                       </div>
                     </div>
+                    <span class="display-file-name">Expertflow-Corporate-Presentation
+                        <span class="file-size">3.82MB</span>
+                    </span>
                     <span class="chat-time">16:15:45</span>
                   </div>
-
                   <!--Message is audio type-->
                   <div *ngIf="con.type === 'audio'" class="file-type-content audio-file">
                     <div class="shared-url shared-card-content audio-player video-player p-0">
@@ -772,6 +774,44 @@
               </div>
 
             </div>
+            <!--User-data View-->
+  <div class="wrap-up-main panel-divider user-data">
+              <div class="wrap-icon ">
+                <img matTooltip="Wrap Up" src="assets/images/user-notes.svg" width="20" alt="Wrap Up">
+              </div>
+              <mat-expansion-panel (closed)="wrapCount = 5" (opened)="wrapCount = 100" class="{{selectedWrap.code.length > 0 && selectedWrap.note ? 'dual-wrap' : 'single-wrap'}}">
+                <mat-expansion-panel-header [collapsedHeight]="'32px'"
+                                            [expandedHeight]="'32px'">
+                  <mat-panel-description>
+                    <div class="wrap-up-header">
+                      <div class="wrap-time">
+                        <span>03:22 PM</span>
+                      </div>
+                      <div class="wrap-icon agent-profile-showcase">
+                        <img matTooltip="Agent" src="assets/images/ag1.png" width="20" alt="Agent">
+                      </div>
+                     </div>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="wrap-content user-data-detail">
+                  <div class="data-detail summary-detail row m-0">
+                    <ul>
+                      <li class="col-md-6"><label>First Name </label>:<span>Adam</span></li>
+                      <li class="col-md-6"><label>Last Name </label>:<span>Miller</span></li>
+                      <li class="col-md-6"><label>Email ID</label>:<span>a.miller@site.com</span></li>
+                      <li class="col-md-6"><label>Mobile Number</label>:<span>+4412587956</span></li>
+
+                      <li class="col-md-6"><label>Business Address</label>:<span>39, Birmingham street, North District, London UK  </span></li>
+                      <li class="col-md-6"><label>Suitable Time to call</label>:<span>9AM-6PM</span></li>
+                      <li class="col-md-6"><label>Existing Customer</label>:<span>Yes</span></li>
+                      <li class="col-md-6"><label>Service Request</label>:<span>Broadband update</span></li>
+                    </ul>
+                  </div>
+
+                </div>
+              </mat-expansion-panel>
+            </div>
+
             <!--Wrap-up View-->
             <div class="wrap-up-main panel-divider">
               <div class="wrap-icon">
@@ -891,11 +931,6 @@
                   allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
                 <div class="clearfix"></div>
               </mat-expansion-panel>
-<!--              <vg-player>-->
-<!--                <video [vgMedia]="media" #media id="singleVideo" preload="auto" controls>-->
-<!--                  <source src="https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4" type="video/mp4">-->
-<!--                </video>-->
-<!--              </vg-player>-->
 
             </div>
 

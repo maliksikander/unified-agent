@@ -82,25 +82,28 @@
       margin: 5px -5px !important;
       box-shadow: none !important;
       border-radius: 0;
+      border: 1px solid #c0ecf9;
       &.chat-channel-area {
-        //border: 1px solid #c0ecf9;
-        background: lighten($dark-gray-color, 60%);
+        border: 1px solid #c0ecf9;
 
         mat-expansion-panel-header{
-          border-top: 0 !important;
-          border-left: 0;
-          border-right: 0;
+          //border-top: 0 !important;
+          //border-left: 0;
+          //border-right: 0;
         }
       }
 
       mat-expansion-panel-header{
-        background: #ecf7fd !important;
-        border: 1px solid #c0ecf9;
+        //background: #ecf7fd !important;
+        //border: 1px solid #c0ecf9;
         padding: 0 15px;
         position: relative;
       }
       .mat-expansion-panel-body{
         border: none !important;
+      }
+      mat-expansion-panel{
+        border: 0;
       }
     }
 
@@ -109,11 +112,12 @@
         background: $blue-text-color;
         width: 22px;
         height: 22px;
-        line-height: 22px;
         border-radius: 100%;
         text-align: center;
-        display: inline-block;
+        display: inline-flex;
         margin-right: 8px;
+        align-items: center;
+        justify-content: center;
       }
       .call-time {
         background: #fff !important;
@@ -150,6 +154,8 @@
       img{
         width: 12px;
         height: 12px;
+        align-self: center;
+        justify-content: center;
       }
 
       i {
@@ -175,6 +181,7 @@
       mat-expansion-panel{
         margin: 0 !important;
         border-radius: 0 !important;
+        padding: 0 5px;
 
         mat-expansion-panel-header{
           background: #fff !important;
@@ -184,6 +191,7 @@
           &.mat-expanded {
             label {
               color: $blue-text-color;
+              font-weight: 500;
             }
           }
         }
@@ -200,6 +208,7 @@
         line-height: 15px;
         padding: 10px 0;
         border-bottom: 1px dotted #ccc;
+        list-style: none;
         label{
           display: block;
           font-size: 10px;
@@ -674,6 +683,32 @@ button.re-route-trigger {
 
     &.confirm-btn {
       background: $blue-text-color;;
+    }
+  }
+}
+
+ul.channel-info-list {
+  margin: 0 10px 0 0;
+  li {
+    display: inline-flex;
+    font-size: 10px;
+    font-weight: 500;
+    margin: 0 0 0 10px;
+    vertical-align: middle !important;
+    text-align: center;
+
+    mat-icon{
+      font-size: 15px;
+      line-height: 30px;
+      height: 30px;
+      width: auto;
+      color: $blue-text-color;
+    }
+    img{
+      vertical-align: middle;
+      border-style: none;
+      max-height: 16px;
+      max-width: 16px;
     }
   }
 }

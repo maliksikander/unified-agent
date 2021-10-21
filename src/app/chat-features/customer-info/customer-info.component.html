@@ -300,20 +300,25 @@
 
                 <!--Web chat channel accordion-->
                 <mat-expansion-panel class="chat-channel-area">
-                  <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'"
-                                              style="border-radius: 0;border-bottom: 0;">
+                  <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                     <div class="channel-icon-area">
                       <span class="channel-icon web"><img src="assets/images/web.svg"></span>
                       <label>Web Chat</label>
                       <button mat-button (click)="reRouteDialog($event)" class="re-route-session">Move</button>
                     </div>
+                    <ul class="channel-info-list">
+                      <li><mat-icon>desktop_mac</mat-icon></li>
+                      <li><img src="assets/images/safari-colored.svg" alt="browser"> </li>
+                      <li><img src="assets/flags/en.png" alt="lanuage"> </li>
+                      <li>GMT+1</li>
+                    </ul>
                   </mat-expansion-panel-header>
                   <div class="channel-inner-content">
                     <!--Web chat desktop channel accordion-->
                     <mat-expansion-panel>
                       <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                         <div class="channel-icon-area web-channel-inner">
-                          <label>Desktop Chat</label>
+                          <label>Form Data</label>
                         </div>
                       </mat-expansion-panel-header>
 
@@ -329,42 +334,6 @@
                         <li>
                           <label>Phone Number</label>
                           +44 85878478
-                        </li>
-                        <li>
-                          <label>Browser</label>
-                          Google Chrome
-                        </li>
-                        <li>
-                          <label>IP Address</label>
-                          41.78.244.244
-                        </li>
-                      </ul>
-                    </mat-expansion-panel>
-
-                    <!--Web chat desktop channel accordion-->
-                    <mat-expansion-panel>
-                      <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
-                        <div class="channel-icon-area web-channel-inner">
-                          <label>Mobile Chat</label>
-                        </div>
-                      </mat-expansion-panel-header>
-
-                      <ul class="requested-channel-content">
-                        <li>
-                          <label>Name</label>
-                          Adam Stanler
-                        </li>
-                        <li>
-                          <label>Email</label>
-                          astanler@gmail.com
-                        </li>
-                        <li>
-                          <label>Phone Number</label>
-                          +44 85878478
-                        </li>
-                        <li>
-                          <label>Mobile Type</label>
-                          Android
                         </li>
                         <li>
                           <label>Browser</label>
