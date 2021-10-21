@@ -171,5 +171,5 @@ export class AppHeaderComponent implements OnInit {
 
   ngOnDestroy() {
     this.stateChangedSubscription.unsubscribe();
-  }
+  } 
 }
