@@ -59,7 +59,7 @@ export class PhonebookComponent implements OnInit {
 
   ngOnInit() {
     this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
-    this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e) => {
+    this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       if (e.msg == "update-labels") {
         this.loadLabels();
       }
@@ -175,7 +175,7 @@ export class PhonebookComponent implements OnInit {
       this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
     }
   }
-  onSelectAll(items: any) {}
+  onSelectAll(items: any) { }
   onDeSelectAll(items: any) {
     this.cancelFilter();
   }

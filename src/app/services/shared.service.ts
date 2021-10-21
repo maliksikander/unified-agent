@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Subject } from "rxjs";
 import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
 import { httpService } from "./http.service";
 import { snackbarService } from "./snackbar.service";
@@ -13,10 +14,9 @@ export class sharedService {
 
   channelLogoMapper = new Map();
 
-  private serviceMessageSource = new BehaviorSubject({ msg: null, data: null });
-  serviceCurrentMessage = this.serviceMessageSource.asObservable();
+  serviceCurrentMessage = new Subject();
   serviceChangeMessage(data: any) {
-    this.serviceMessageSource.next(data);
+    this.serviceCurrentMessage.next(data);
   }
 
   getIndexFromTopicId(topicId, array) {

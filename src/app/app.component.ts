@@ -14,8 +14,8 @@ export class AppComponent implements OnInit {
 
   currentRoute: string;
 
-  constructor(private _isLoggedInService: isLoggedInService, private _router: Router, private _sharedService: sharedService) {
-    this._sharedService.serviceCurrentMessage.subscribe((e) => {
+  constructor(private _router: Router, private _sharedService: sharedService, private _isLoggedInservice: isLoggedInService) {
+    this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       if (e.msg == "openRequestHeader") {
         this.requests.push(e.data);
       }

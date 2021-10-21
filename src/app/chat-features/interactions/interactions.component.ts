@@ -24,7 +24,6 @@ export class InteractionsComponent implements OnInit {
   scrollSubscriber;
 
   ngAfterViewInit() {
-    console.log("I am called ngononit")
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
       let scroller = scrolle.target;
       let height = scroller.clientHeight;

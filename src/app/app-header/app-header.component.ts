@@ -79,10 +79,10 @@ export class AppHeaderComponent implements OnInit {
     public _cacheService: cacheService,
     private _socketService: socketService,
     private _sharedService: sharedService
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e) => {
+    this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       if (e.msg == "stateChanged") {
         if (e.data.state.name.toLowerCase() == "logout") {
           this.moveToLogin();
@@ -100,7 +100,7 @@ export class AppHeaderComponent implements OnInit {
     this.startTime = new Date();
     this.stopTime = this.stopTime;
     this.active = true;
-    this.timer();
+    this.timer(); 
   }
 
   changeState(state) {
@@ -154,7 +154,7 @@ export class AppHeaderComponent implements OnInit {
     });
   }
 
-  close() {}
+  close() { }
 
   onChange(reason) {
     this.selectedReasonCode = reason;
@@ -163,6 +163,7 @@ export class AppHeaderComponent implements OnInit {
   moveToLogin() {
     localStorage.clear();
     this._cacheService.resetCache();
+    this._socketService.socket.disconnect();
     this._router.navigate(["login"]).then(() => {
       window.location.reload();
     });
