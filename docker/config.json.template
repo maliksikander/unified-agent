@@ -1,5 +1,6 @@
 {
     "GAT_URL" : "${GAT_URL}",
     "SOCKET_URL" : "${SOCKET_URL}",
+    "FILE_SERVER_URL" : "${FILE_SERVER_URL}",
     "ENV" : "${ENV}"
 }
