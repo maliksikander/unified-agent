@@ -10,19 +10,12 @@ import { sharedService } from "./services/shared.service";
 })
 export class AppComponent implements OnInit {
   title = "unified-agent-gadget";
-  requests = [];
+
 
   currentRoute: string;
 
-  constructor(private _router: Router, private _sharedService: sharedService, private _isLoggedInservice: isLoggedInService) {
-    this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
-      if (e.msg == "openRequestHeader") {
-        this.requests.push(e.data);
-      }
-      if (e.msg == "closeRequestHeader") {
-        this.removeRequestFromRequestArray(e.data.topicId);
-      }
-    });
+  constructor(private _router: Router, private _isLoggedInservice: isLoggedInService) {
+
   }
 
   ngOnInit() {
@@ -33,12 +26,5 @@ export class AppComponent implements OnInit {
     });
   }
 
-  requestHeaderEvents(topicId) {
-    this.removeRequestFromRequestArray(topicId);
-  }
 
-  removeRequestFromRequestArray(topicId) {
-    let index = this._sharedService.getIndexFromTopicId(topicId, this.requests);
-    this._sharedService.spliceArray(index, this.requests);
-  }
 }

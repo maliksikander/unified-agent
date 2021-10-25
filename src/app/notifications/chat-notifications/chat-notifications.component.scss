@@ -85,3 +85,60 @@
   background: #ff3e3e;
 
 }
+
+
+.pull-notification-main {
+  position: relative;
+  margin-top: 25px;
+  padding: 4px;
+  &.notification-area-main{
+    background: rgba(0,0,0,.2);
+  }
+
+
+  .notification-area.pull-request-notifications {
+    .mat-card-content {
+      background: #EAF3FA;
+
+      p {
+        color: #333 !important;
+
+      }
+    }
+    button{
+      width: 23px !important;
+      background: transparent !important;
+      height: 23px !important;
+      mat-icon{
+        font-size: 14px;
+        color: #A5BAC9;
+        line-height: 23px;
+        padding: 0;
+        width: 23px;
+        height: 23px;
+        border: 1px solid #A5BAC9;
+        border-radius: 50%;
+        margin-top: -1px;
+      }
+    }
+  }
+  .dismiss-notifications{
+    float: right;
+    background: #4B4B4B;
+    color: #fff;
+    border-radius: 18px;
+    font-size: 11px;
+    height: 30px;
+    line-height: 30px;
+    font-weight: 400;
+
+    &:hover{
+      background: #FF1C1C;
+    }
+  }
+}
+
+.notify-inner {
+  max-height: 200px;
+  overflow: auto;
+}

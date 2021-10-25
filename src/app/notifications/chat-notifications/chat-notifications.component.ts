@@ -4,6 +4,7 @@ import { socketService } from "src/app/services/socket.service";
 import { Output, EventEmitter } from "@angular/core";
 import { TopicParticipant } from "../../models/User/Interfaces";
 import { Router } from "@angular/router";
+import { sharedService } from "src/app/services/shared.service";
 
 @Component({
   selector: "app-chat-notifications",
@@ -11,33 +12,57 @@ import { Router } from "@angular/router";
   styleUrls: ["./chat-notifications.component.scss"]
 })
 export class ChatNotificationsComponent implements OnInit {
-  @Input() data: any;
-  customerName: string = null;
-  channel: string;
-  identified: boolean = false;
-  channelImageSrc: string;
-  @Output() closeRequestHeaderEvent = new EventEmitter<boolean>();
 
-  constructor(private _socketService: socketService, private _cacheService: cacheService, private _router: Router) { }
+  pushModeRequests = [];
+  pullModeRequests = [];
 
-  ngOnInit() {
-    console.log("this is data ", this.data);
-    if (!this.data.channelSession.customer.isAnonymous) {
-      this.customerName = this.data.channelSession.customer.firstName;
-      this.identified = true;
-    }
-    this.channel = this.data.channelSession.channel.channelConnector.channelType.typeName;
-    this.channelImageSrc = "assets/images/" + this.channel.toLowerCase() + ".svg";
+  constructor(private _sharedService: sharedService, private _socketService: socketService, private _cacheService: cacheService, private _router: Router) {
+    this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
+      if (e.msg == "openRequestHeader") {
+        // if request is push mode then push it in the pushmode list
+        if (e.data.channelSession.channel.channelConfig.routingPolicy.routingMode == 'PUSH') {
+          this.pushModeRequests.push(e.data);
+        } else {
+          // else push it in pull mode
+          this.pullModeRequests.push(e.data);
+        }
+
+      }
+      if (e.msg == "closeRequestHeader") {
+        this.removeRequestFromRequestArray(e.data.topicId);
+      }
+    });
   }
 
-  getTopicSubscription() {
+  ngOnInit() {
+
+  }
+
+  getTopicSubscription(topicId, taskId) {
     this._socketService.emit("topicSubscription", {
-      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, this.data.topicId, "PRIMARY", "SUBSCRIBED"),
+      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, topicId, "PRIMARY", "SUBSCRIBED"),
       agentId: this._cacheService.agent.id,
-      topicId: this.data.topicId,
-      taskId: this.data.taskId
+      topicId: topicId,
+      taskId: taskId
     });
-    this.closeRequestHeaderEvent.emit(this.data.topicId);
+    this.removeRequestFromRequestArray(topicId);
     this._router.navigate(["customers"]);
+  }
+
+  removeRequestFromRequestArray(topicId) {
+    // when request comes for revoke task first it checks in pushmode list 
+    let index = -1;
+    index = this._sharedService.getIndexFromTopicId(topicId, this.pushModeRequests);
+    if (index != -1) {
+      // if found then removes from pushmode list
+      this._sharedService.spliceArray(index, this.pushModeRequests);
+    } else {
+      // if not then checks in pull mode list
+      index = this._sharedService.getIndexFromTopicId(topicId, this.pullModeRequests);
+      if (index != -1) {
+        this._sharedService.spliceArray(index, this.pullModeRequests);
+      }
+    }
+
   }
 }

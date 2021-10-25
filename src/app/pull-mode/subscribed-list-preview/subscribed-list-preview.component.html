@@ -43,7 +43,7 @@
                                 [style.backgroundColor]="(request.status | lowercase) == 'active' ? '#29C671' : ((request.status | lowercase) == 'inactive' ? '#ccc' : 'red')"></span>
                         </td>
                         <td #customerCell><span class="channel-icon"><img
-                                    src="{{request.channelSession.channel.channelConnector.channelType.channelLogo | channelLogo | async}}"></span>
+                                    src="{{request.channelSession.channel.channelType.channelLogo | channelLogo | async}}"></span>
                             {{request.channelSession.customer.firstName}} <small
                                 class="customer_identy">({{request.channelSession.channelData.channelCustomerIdentifier}})</small>
                             <!-- <ul class="customer-labels">

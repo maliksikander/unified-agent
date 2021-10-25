@@ -1,21 +1,59 @@
 <div class="main-notification-area">
-  <div class="notification-area">
+
+<!--  Push mode notifications-->
+  <div class="notification-area" *ngFor="let request of pushModeRequests">
     <div class="row main-panel">
       <mat-card class="notification-panel mat-card">
-        <mat-card-content [ngClass]="{'identified' : identified == true,'un-identified' : identified == false}" class="mat-card-content">
+        <mat-card-content
+          [ngClass]="request.channelSession.customer.isAnonymous == true ? 'un-identified' : 'identified'"
+          class="mat-card-content">
           <div class="chat-request">
-            <p class="channel-icon"><img src="{{data.channelSession.channel.channelConnector.channelType.channelLogo | channelLogo | async}}"></p>
+            <p class="channel-icon"><img
+                src="{{request.channelSession.channel.channelType.channelLogo | channelLogo | async}}">
+            </p>
           </div>
           <div class="requested-name">
-            <p>{{customerName != null ? customerName : 'UNIDENTIFIED CUSTOMER' }}</p>
+            <p>{{request.channelSession.customer.firstName ? request.channelSession.customer.firstName : 'UNIDENTIFIED
+              CUSTOMER' }}</p>
           </div>
           <div class="notification-trigger">
-            <button (click)="getTopicSubscription()" class="mat-flat-button" mat-button>Accept</button>
+            <button (click)="getTopicSubscription(request.topicId,request.taskId)" class="mat-flat-button"
+              mat-button>Accept</button>
           </div>
         </mat-card-content>
       </mat-card>
 
     </div>
   </div>
+
+
+  <!--  Pull mode notifications-->
+  <div class="pull-notification-main" [ngClass]="{'notification-area-main': notificationArea}">
+    <div class="notify-inner">
+      <div class="notification-area pull-request-notifications" *ngFor="let notification of pullModeRequests">
+      <div class="row main-panel m-0">
+        <mat-card class="notification-panel mat-card">
+          <mat-card-content class="mat-card-content identified">
+            <div class="chat-request">
+              <p class="channel-icon"><img [src]="channelImageSrc"></p>
+            </div>
+            <div class="requested-name">
+              <!-- <p>New Chat message from {{notification.customerName}} in '{{notification.queueName}}'</p> -->
+            </div>
+            <div class="notification-trigger">
+  
+              <button mat-icon-button class="mat-flat-button" mat-button><mat-icon>close</mat-icon></button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+  
+      </div>
+    </div>
+    </div>
+      <button *ngIf="pullModeRequests.length > 0" (mouseenter)="notificationArea = true" (mouseleave)="notificationArea = false"  (click)="pullRequestNotification = null; "
+              class="dismiss-notifications mat-flat-button" mat-button>Dismiss all
+      </button>
+  
+    </div>
 
 </div>

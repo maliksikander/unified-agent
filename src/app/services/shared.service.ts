@@ -34,12 +34,12 @@ export class sharedService {
 
     channels.forEach((channel) => {
 
-      this._httpService.getChannelLogo(channel.channelConnector.channelType.channelLogo).subscribe((file) => {
+      this._httpService.getChannelLogo(channel.channelType.channelLogo).subscribe((file) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
           // caching the channel logos
-          this.channelLogoMapper.set(channel.channelConnector.channelType.channelLogo, reader.result);
+          this.channelLogoMapper.set(channel.channelType.channelLogo, reader.result);
         }
       });
 
