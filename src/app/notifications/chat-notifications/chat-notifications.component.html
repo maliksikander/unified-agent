@@ -20,7 +20,8 @@
 
 <!--  Pull mode notifications-->
   <div class="pull-notification-main" *ngIf="pullRequestNotification !== null " [ngClass]="{'notification-area-main': notificationArea}">
-  <div class="notification-area pull-request-notifications" *ngFor="let notification of pullRequestNotification">
+  <div class="notify-inner">
+    <div class="notification-area pull-request-notifications" *ngFor="let notification of pullRequestNotification">
     <div class="row main-panel m-0">
       <mat-card class="notification-panel mat-card">
         <mat-card-content class="mat-card-content identified">
@@ -38,6 +39,7 @@
       </mat-card>
 
     </div>
+  </div>
   </div>
     <button *ngIf="pullRequestNotification !== null " (mouseenter)="notificationArea = true" (mouseleave)="notificationArea = false"  (click)="pullRequestNotification = null; "
             class="dismiss-notifications mat-flat-button" mat-button>Dismiss all

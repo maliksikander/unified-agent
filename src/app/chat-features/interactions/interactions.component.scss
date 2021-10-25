@@ -1752,6 +1752,7 @@ button.attachment-btn {
     float: left;
     top: 3px;
     position: relative;
+    line-height: 28px;
 
     img {
       width: 15px;
@@ -2048,6 +2049,7 @@ vg-controls {
       max-width: 50%;
       margin: 0;
       color: #a4a4a4;
+      font-weight: 500;
 
       label{
         color: #a4a4a4;

@@ -777,7 +777,7 @@
             <!--User-data View-->
   <div class="wrap-up-main panel-divider user-data">
               <div class="wrap-icon ">
-                <img matTooltip="Wrap Up" src="assets/images/user-notes.svg" width="20" alt="Wrap Up">
+                <img matTooltip="User Notes" src="assets/images/user-notes.svg" width="20" alt="User notes">
               </div>
               <mat-expansion-panel (closed)="wrapCount = 5" (opened)="wrapCount = 100" class="{{selectedWrap.code.length > 0 && selectedWrap.note ? 'dual-wrap' : 'single-wrap'}}">
                 <mat-expansion-panel-header [collapsedHeight]="'32px'"
@@ -795,7 +795,7 @@
                 </mat-expansion-panel-header>
                 <div class="wrap-content user-data-detail">
                   <div class="data-detail summary-detail row m-0">
-                    <ul>
+                    <ul class="m-0">
                       <li class="col-md-6"><label>First Name </label>:<span>Adam</span></li>
                       <li class="col-md-6"><label>Last Name </label>:<span>Miller</span></li>
                       <li class="col-md-6"><label>Email ID</label>:<span>a.miller@site.com</span></li>
