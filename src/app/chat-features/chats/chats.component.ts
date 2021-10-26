@@ -103,6 +103,14 @@ export class ChatsComponent implements OnInit {
       },
       {
         title: 'farhan',
+        type: 'sticker',
+        fileType: 'sticker',
+        fileName: 'Expertflow-Corporate-Presentation',
+        fileUrl: 'assets/images/thank-you.png',
+
+      },
+      {
+        title: 'farhan',
         type: 'video',
         videoUrl: 'http://static.videogular.com/assets/videos/videogular.mp4',
 

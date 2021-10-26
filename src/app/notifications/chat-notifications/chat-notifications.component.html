@@ -1,6 +1,6 @@
 <div class="main-notification-area" *ngIf="displayNotification">
   <div class="notification-area">
-    <div class="row main-panel m-0">
+    <div class="row main-panel m-0" *ngFor="let request of requests">
       <mat-card class="notification-panel mat-card">
         <mat-card-content [ngClass]="{'identified' : identified == true,'un-identified' : identified == false}" class="mat-card-content">
           <div class="chat-request">

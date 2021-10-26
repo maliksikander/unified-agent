@@ -405,6 +405,10 @@
             padding: 10px;
             width: 200px;
             position: relative;
+            &.video-player{
+              width: 100%;
+              max-width: 500px;
+            }
 
             &.location-map{
               padding: 0;
@@ -500,6 +504,13 @@
             bottom: 5px;
           }
 
+          &.file-type-video{
+            border: 0;
+
+            .chat-time{
+              align-self: flex-end;
+            }
+          }
         }
       }
 
@@ -593,6 +604,27 @@
         .active-channel {
           left: inherit !important;
           right: -6px;
+        }
+      }
+
+      &.sticker{
+
+        .chat-message-content {
+          border: 0;
+
+          .display-file {
+            background: transparent;
+
+            img {
+              width: 100%;
+              max-width: 120px;
+              max-height: 200px;
+            }
+          }
+
+        }
+        .profile-pic {
+          align-self: center;
         }
       }
 
@@ -1996,6 +2028,7 @@ vg-controls {
   }
   vg-fullscreen{
     width: 30px !important;
+    margin-left: auto;
   }
 }
 .audio-file {

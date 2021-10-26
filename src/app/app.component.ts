@@ -15,7 +15,9 @@ export class AppComponent implements OnInit {
 
   title = 'unified-agent-gadget';
   requests = [{name:"farhan",
-  channel: 'web'}];
+  channel: 'web'},
+    {name:"raza",
+    channel: 'web'}];
 
   currentRoute: string;
 

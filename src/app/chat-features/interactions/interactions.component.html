@@ -611,7 +611,7 @@
                 <p [ngClass]="{'join-agent': con.notificationType === 'joinNotification'}" >{{con.notificationMessage}} | <span class="chat-time">16:15:45</span></p>
               </div>
 
-              <div *ngIf="con.title" class="chat-message" [ngClass]="{'agent-message': con.title == 'raza' || con.title == 'bot'}">
+              <div *ngIf="con.title" class="chat-message {{con.type}}" [ngClass]="{'agent-message': con.title == 'raza' || con.title == 'bot'}">
                 <div class="profile-pic">
                   <div class="active-channel channel-icon {{customer.info.channel}}"><img width="20" src="assets/images/web.svg"></div>
                   <div  class="profile-pic-area user-img">
@@ -619,8 +619,8 @@
                     <img src="assets/images/robot-dark.svg" *ngIf="con.title == 'bot'">
                   </div>
                 </div>
-                <div class="chat-message-content"
-                     [ngClass]="{'quoted-message-area': con.type === 'quotedMessage' , 'file-type-message' : con.type === 'file' || con.type === 'url' || con.type === 'contact'|| con.type === 'location' || con.type === 'video'}">
+                <div class="chat-message-content "
+                     [ngClass]="{'quoted-message-area': con.type === 'quotedMessage' , 'file-type-message' : con.type === 'file' || con.type === 'url' || con.type === 'contact'|| con.type === 'location' || con.type === 'video' || con.type === 'video' || con.type === 'sticker', 'file-type-video' : con.type === 'video', 'file-type-sticker' : con.type === 'sticker' }">
                   <div *ngIf="con.type === 'quotedMessage' || con.type === 'message'|| con.type === 'structuredMessage' ">
                     <p [ngClass]="{'quoted-message': con.type === 'quotedMessage'}"
                        *ngIf="con.heading || con.type == 'quotedMessage'" style="display: block"
@@ -655,6 +655,15 @@
                     <span class="chat-time"><span> 16:15:45</span></span>
                   </div>
 
+                  <!--Message is file type Sticker-->
+
+                  <div *ngIf="con.type === 'sticker'" class="file-type-content">
+                    <span class="display-file">
+                    <img src="{{con.fileUrl}}">
+                    </span>
+                    <span class="chat-time"><span> 16:15:45</span></span>
+                  </div>
+
                   <!--Message is url type-->
                   <div *ngIf="con.type === 'url'" class="file-type-content url-content">
                      <a class="display-file url-image" href="{{con.urlLink}}" target="_blank">
@@ -674,12 +683,13 @@
 <!--                       <img src="assets/images/play.svg">-->
 <!--                      </a>-->
                     <div class="shared-url shared-card-content video-player p-0">
-                      <div class="media-main" style="max-width: 300px">
+                      <div class="media-main">
                         <vg-player>
                           <vg-overlay-play></vg-overlay-play>
                           <vg-controls [vgAutohide]="true" [vgAutohideTime]="3">
                             <vg-play-pause></vg-play-pause>
                             <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+                            <vg-volume></vg-volume>
                             <vg-mute></vg-mute>
                             <vg-fullscreen></vg-fullscreen>
                             <mat-icon *ngIf="dispayVideoPIP"  (click)="videoPIP()">picture_in_picture_alt</mat-icon>
@@ -694,9 +704,9 @@
                         </vg-player>
                       </div>
                     </div>
-                    <span class="display-file-name">Expertflow-Corporate-Presentation
-                        <span class="file-size">3.82MB</span>
-                    </span>
+<!--                    <span class="display-file-name">Expertflow-Corporate-Presentation-->
+<!--                        <span class="file-size">3.82MB</span>-->
+<!--                    </span>-->
                     <span class="chat-time">16:15:45</span>
                   </div>
                   <!--Message is audio type-->
