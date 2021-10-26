@@ -11,12 +11,9 @@ import { sharedService } from "./services/shared.service";
 export class AppComponent implements OnInit {
   title = "unified-agent-gadget";
 
-
   currentRoute: string;
 
-  constructor(private _router: Router, private _isLoggedInservice: isLoggedInService) {
-
-  }
+  constructor(private _router: Router, private _isLoggedInservice: isLoggedInService) {}
 
   ngOnInit() {
     this._router.events.subscribe((event: any) => {
@@ -25,6 +22,4 @@ export class AppComponent implements OnInit {
       }
     });
   }
-
-
 }

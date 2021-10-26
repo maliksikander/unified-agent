@@ -227,4 +227,4 @@ import { channelLogoPipe } from "./pipes/getChannelLogo.pipe";
     channelLogoPipe
   ]
 })
-export class SharedModule { }
+export class SharedModule {}

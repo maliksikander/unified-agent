@@ -7,7 +7,7 @@ export class appConfigService {
   configUrl = "../../assets/config.json";
   public config = { GAT_URL: "", SOCKET_URL: "", ENV: "", FILE_SERVER_URL: "" };
 
-  constructor(private _httpClient: HttpClient) { }
+  constructor(private _httpClient: HttpClient) {}
 
   loadConfig() {
     return this._httpClient

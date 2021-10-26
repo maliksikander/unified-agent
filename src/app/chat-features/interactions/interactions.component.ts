@@ -124,7 +124,7 @@ export class InteractionsComponent implements OnInit {
     private _cacheService: cacheService,
     private _socketService: socketService,
     private dialog: MatDialog
-  ) { }
+  ) {}
   ngOnInit() {
     //  console.log("i am called hello")
     this.convers = this.conversation.messages;
@@ -133,7 +133,7 @@ export class InteractionsComponent implements OnInit {
     }, 500);
   }
 
-  emoji() { }
+  emoji() {}
 
   onSend(text) {
     let message = JSON.parse(JSON.stringify(this.conversation.messages[this.conversation.messages.length - 1]));
@@ -228,12 +228,11 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-
     if (changes.changeDetecter && changes.changeDetecter.currentValue && this.conversation.index == this._sharedService.matCurrentTabIndex) {
       if (this.lastMsgFromAgent) {
         this.downTheScrollAfterMilliSecs(50, "smooth");
@@ -241,7 +240,6 @@ export class InteractionsComponent implements OnInit {
         if (this.currentScrollPosition < 95) {
           this.showNewMessageNotif = true;
         } else {
-
           this.downTheScrollAfterMilliSecs(50, "smooth");
         }
       }
@@ -255,5 +253,4 @@ export class InteractionsComponent implements OnInit {
   ngOnDestroy() {
     this.scrollSubscriber.unsubscribe();
   }
-
 }

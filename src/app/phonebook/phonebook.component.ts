@@ -175,7 +175,7 @@ export class PhonebookComponent implements OnInit {
       this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
     }
   }
-  onSelectAll(items: any) { }
+  onSelectAll(items: any) {}
   onDeSelectAll(items: any) {
     this.cancelFilter();
   }

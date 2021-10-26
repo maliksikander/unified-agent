@@ -11,7 +11,6 @@ import { Router } from "@angular/router";
   styleUrls: ["./app-header.component.scss"]
 })
 export class AppHeaderComponent implements OnInit {
-
   agent = {
     state: "ready",
     name: "Bryan Miller",
@@ -79,7 +78,7 @@ export class AppHeaderComponent implements OnInit {
     public _cacheService: cacheService,
     private _socketService: socketService,
     private _sharedService: sharedService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
@@ -100,7 +99,7 @@ export class AppHeaderComponent implements OnInit {
     this.startTime = new Date();
     this.stopTime = this.stopTime;
     this.active = true;
-    this.timer(); 
+    this.timer();
   }
 
   changeState(state) {
@@ -154,7 +153,7 @@ export class AppHeaderComponent implements OnInit {
     });
   }
 
-  close() { }
+  close() {}
 
   onChange(reason) {
     this.selectedReasonCode = reason;
@@ -171,5 +170,5 @@ export class AppHeaderComponent implements OnInit {
 
   ngOnDestroy() {
     this.stateChangedSubscription.unsubscribe();
-  } 
+  }
 }

@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { TopicParticipant } from "src/app/models/User/Interfaces";
 import { cacheService } from "src/app/services/cache.service";
 import { pullModeService } from "src/app/services/pullMode.service";
+import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
 import { ConfirmationDialogComponent } from "../../new-components/confirmation-dialog/confirmation-dialog.component";
 
@@ -20,6 +21,7 @@ export class SubscribedListPreviewComponent implements OnInit {
   filterStatus = "all";
 
   constructor(
+    private _sharedService: sharedService,
     private dialog: MatDialog,
     public _pullModeservice: pullModeService,
     private _cacheService: cacheService,
@@ -54,6 +56,7 @@ export class SubscribedListPreviewComponent implements OnInit {
       requestId: request.id
     };
     this._socketService.emit("joinPullModeRequest", obj);
+    this._sharedService.serviceChangeMessage({ msg: "closePullModeRequestHeader", data: request.id });
     this._router.navigate(["customers"]);
   }
 

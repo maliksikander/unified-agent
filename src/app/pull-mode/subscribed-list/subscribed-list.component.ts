@@ -21,35 +21,10 @@ export class SubscribedListComponent implements OnInit {
     private _socketService: socketService,
     private _cacheService: cacheService,
     private dialog: MatDialog,
-    private _httpService: httpService,
-    private _sharedService: sharedService,
     public _pullModeservice: pullModeService
   ) {}
 
-  ngOnInit() {
-    this.getPullModeList();
-  }
-
-  getPullModeList() {
-    this._httpService.getPullModeList().subscribe(
-      (e) => {
-        this.pullModeList = [];
-        this.pullModeList = e.data;
-        this.setListNames(e.data);
-      },
-      (error) => {
-        this._sharedService.Interceptor(error.error, "err");
-      }
-    );
-  }
-
-  setListNames(list) {
-    let obj = {};
-    list.forEach((e) => {
-      obj[e.id] = e.name;
-    });
-    this._pullModeservice.listNames = obj;
-  }
+  ngOnInit() {}
 
   updateSubscribeList(templateRef): void {
     const dialogRef = this.dialog.open(templateRef, {

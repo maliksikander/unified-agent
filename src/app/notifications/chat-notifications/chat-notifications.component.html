@@ -1,6 +1,6 @@
 <div class="main-notification-area">
 
-<!--  Push mode notifications-->
+  <!--  Push mode notifications-->
   <div class="notification-area" *ngFor="let request of pushModeRequests">
     <div class="row main-panel">
       <mat-card class="notification-panel mat-card">
@@ -28,32 +28,40 @@
 
 
   <!--  Pull mode notifications-->
-  <div class="pull-notification-main" [ngClass]="{'notification-area-main': notificationArea}">
+  <div *ngIf="pullModeRequests.length > 0" class="pull-notification-main"
+    [ngClass]="{'notification-area-main': notificationArea}">
     <div class="notify-inner">
-      <div class="notification-area pull-request-notifications" *ngFor="let notification of pullModeRequests">
-      <div class="row main-panel m-0">
-        <mat-card class="notification-panel mat-card">
-          <mat-card-content class="mat-card-content identified">
-            <div class="chat-request">
-              <p class="channel-icon"><img [src]="channelImageSrc"></p>
-            </div>
-            <div class="requested-name">
-              <!-- <p>New Chat message from {{notification.customerName}} in '{{notification.queueName}}'</p> -->
-            </div>
-            <div class="notification-trigger">
-  
-              <button mat-icon-button class="mat-flat-button" mat-button><mat-icon>close</mat-icon></button>
-            </div>
-          </mat-card-content>
-        </mat-card>
-  
+      <div class="notification-area pull-request-notifications" *ngFor="let request of pullModeRequests">
+        <div class="row main-panel m-0">
+          <mat-card class="notification-panel mat-card">
+            <mat-card-content class="mat-card-content identified">
+              <div class="chat-request">
+                <p class="channel-icon"><img
+                    [src]="request.channelSession.channel.channelType.channelLogo | channelLogo | async"></p>
+              </div>
+              <div class="requested-name">
+                <p>New Chat message from {{request.channelSession.customer.firstName}} in
+                  '{{_pullModeservice.listNames[request.listId] ? _pullModeservice.listNames[request.listId] : '-'}}'
+                </p>
+              </div>
+              <div class="notification-trigger">
+
+                <button (click)="removePullModeRequestFromRequestArray(request.id)" mat-icon-button
+                  class="mat-flat-button" mat-button>
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+        </div>
       </div>
     </div>
-    </div>
-      <button *ngIf="pullModeRequests.length > 0" (mouseenter)="notificationArea = true" (mouseleave)="notificationArea = false"  (click)="pullRequestNotification = null; "
-              class="dismiss-notifications mat-flat-button" mat-button>Dismiss all
-      </button>
-  
-    </div>
+    <button *ngIf="pullModeRequests.length > 0" (mouseenter)="notificationArea = true"
+      (mouseleave)="notificationArea = false" (click)="pullModeRequests = []; "
+      class="dismiss-notifications mat-flat-button" mat-button>Dismiss all
+    </button>
+
+  </div>
 
 </div>

@@ -3,7 +3,7 @@
         <h4>Subscribed Lists</h4>
     </div>
     <div class="create-label col-md-6">
-        <button (click)="updateSubscribeList(updateList)" mat-button class="add-new">Subscribe / Unsubscribe</button>
+        <button (click)="updateSubscribeList(updateList)" mat-button class="add-new">Manage Subscriptions</button>
     </div>
 </div>
 
@@ -54,7 +54,7 @@
                         </mat-checkbox> -->
                     </div>
                     <div class="row">
-                        <div class="col-md-6 subscribe-list-check-box" *ngFor="let item of pullModeList">
+                        <div class="col-md-6 subscribe-list-check-box" *ngFor="let item of _pullModeservice.pullModeList">
                             <mat-checkbox (click)="$event.stopPropagation()" [checked]="isChecked(item.id)" color="primary"
                                 (change)="toggle(item, $event)">
                                 {{ item.name }}

@@ -5,6 +5,7 @@ import { Output, EventEmitter } from "@angular/core";
 import { TopicParticipant } from "../../models/User/Interfaces";
 import { Router } from "@angular/router";
 import { sharedService } from "src/app/services/shared.service";
+import { pullModeService } from "src/app/services/pullMode.service";
 
 @Component({
   selector: "app-chat-notifications",
@@ -12,31 +13,30 @@ import { sharedService } from "src/app/services/shared.service";
   styleUrls: ["./chat-notifications.component.scss"]
 })
 export class ChatNotificationsComponent implements OnInit {
-
   pushModeRequests = [];
   pullModeRequests = [];
 
-  constructor(private _sharedService: sharedService, private _socketService: socketService, private _cacheService: cacheService, private _router: Router) {
+  constructor(
+    public _pullModeservice: pullModeService,
+    private _sharedService: sharedService,
+    private _socketService: socketService,
+    private _cacheService: cacheService,
+    private _router: Router
+  ) {
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
-      if (e.msg == "openRequestHeader") {
-        // if request is push mode then push it in the pushmode list
-        if (e.data.channelSession.channel.channelConfig.routingPolicy.routingMode == 'PUSH') {
-          this.pushModeRequests.push(e.data);
-        } else {
-          // else push it in pull mode
-          this.pullModeRequests.push(e.data);
-        }
-
-      }
-      if (e.msg == "closeRequestHeader") {
-        this.removeRequestFromRequestArray(e.data.topicId);
+      if (e.msg == "openPushModeRequestHeader") {
+        this.pushModeRequests.push(e.data);
+      } else if (e.msg == "closePushModeRequestHeader") {
+        this.removePushModeRequestFromRequestArray(e.data.topicId);
+      } else if (e.msg == "openPullModeRequestHeader") {
+        this.pullModeRequests.push(e.data);
+      } else if (e.msg == "closePullModeRequestHeader") {
+        this.removePullModeRequestFromRequestArray(e.data);
       }
     });
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   getTopicSubscription(topicId, taskId) {
     this._socketService.emit("topicSubscription", {
@@ -45,24 +45,20 @@ export class ChatNotificationsComponent implements OnInit {
       topicId: topicId,
       taskId: taskId
     });
-    this.removeRequestFromRequestArray(topicId);
+    this.removePushModeRequestFromRequestArray(topicId);
     this._router.navigate(["customers"]);
   }
 
-  removeRequestFromRequestArray(topicId) {
-    // when request comes for revoke task first it checks in pushmode list 
-    let index = -1;
-    index = this._sharedService.getIndexFromTopicId(topicId, this.pushModeRequests);
+  removePushModeRequestFromRequestArray(topicId) {
+    let index = this._sharedService.getIndexFromTopicId(topicId, this.pushModeRequests);
     if (index != -1) {
-      // if found then removes from pushmode list
       this._sharedService.spliceArray(index, this.pushModeRequests);
-    } else {
-      // if not then checks in pull mode list
-      index = this._sharedService.getIndexFromTopicId(topicId, this.pullModeRequests);
-      if (index != -1) {
-        this._sharedService.spliceArray(index, this.pullModeRequests);
-      }
     }
+  }
 
+  removePullModeRequestFromRequestArray(reqId) {
+    this.pullModeRequests = this.pullModeRequests.filter((req) => {
+      return req.id != reqId;
+    });
   }
 }

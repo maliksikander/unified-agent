@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
 import { httpService } from "./http.service";
+import { sharedService } from "./shared.service";
 import { snackbarService } from "./snackbar.service";
 
 @Injectable({
@@ -11,22 +11,42 @@ export class pullModeService {
   subscribedListRequests: any = []; // contains the requests of those subscribed list
   subscribedListJoinedRequests: any = []; // contains the Ids of subscribed list's subscribed requests
   labels: any = [];
+  pullModeList = [];
   listNames: any;
 
-  private subscribedListListener = new Subject<any>()
-
-  constructor(private _httpService: httpService, private _snackbarService: snackbarService) {
+  constructor(private _sharedService: sharedService, private _httpService: httpService, private _snackbarService: snackbarService) {
     this.loadLabels();
+    this.getPullModeList();
+  }
+
+  getPullModeList() {
+    this._httpService.getPullModeList().subscribe(
+      (e) => {
+        this.pullModeList = [];
+        this.pullModeList = e.data;
+        this.setListNames(e.data);
+      },
+      (error) => {
+        this._sharedService.Interceptor(error.error, "err");
+      }
+    );
+  }
+
+  setListNames(list) {
+    let obj = {};
+    list.forEach((e) => {
+      obj[e.id] = e.name;
+    });
+    this.listNames = obj;
   }
 
   updateSubscribedList(list) {
     this.subscribedList = list;
-    // this.subscribedListListener.next(this.subscribedList);
   }
 
   updateSubscribedListRequests(incomingRequest, type) {
     if (type.toUpperCase() == "PULL_MODE_LIST_REQUEST_RECEIVED") {
-      this._snackbarService.open("A new request on " + this.listNames[incomingRequest.listId] + " is arrived", "succ");
+      //  this._snackbarService.open("A new request on " + this.listNames[incomingRequest.listId] + " is arrived", "succ");
     } else {
       if (incomingRequest.status.toLowerCase() == "closing") {
         this.deleteRequestById(incomingRequest.id);
@@ -52,6 +72,9 @@ export class pullModeService {
     } else {
       // else, add a new entry
       this.subscribedListRequests.push(incomingRequest);
+
+      // this will also show the request header on screen area
+      this._sharedService.serviceChangeMessage({ msg: "openPullModeRequestHeader", data: incomingRequest });
     }
 
     this.updateRequestArrayRef();
@@ -102,6 +125,8 @@ export class pullModeService {
     this.subscribedListRequests = this.subscribedListRequests.filter((req) => {
       return req.id != reqId;
     });
+    // this will close the notification header from main screen
+    this._sharedService.serviceChangeMessage({ msg: "closePullModeRequestHeader", data: reqId });
     console.log("this.subscribedListRequests after deleted ", this.subscribedListRequests);
     this.updateRequestArrayRef();
   }

@@ -7,11 +7,11 @@
         <button [style.backgroundColor]="filterStatus == 'all' ? '#9abcef' : '' " (click)="filterStatus = 'all'"
             class="add-new" mat-button>All</button>
         <button [style.backgroundColor]="filterStatus == 'active' ? '#9abcef' : '' " (click)="filterStatus = 'active'"
-            class="add-new" mat-button>Active</button>
+            class="add-new" mat-button><span [style.backgroundColor]="'#29C671'" class="ddot"></span>Active</button>
         <button [style.backgroundColor]="filterStatus == 'inactive' ? '#9abcef' : '' "
-            (click)="filterStatus = 'inactive'" class="add-new" mat-button>Inactive</button>
+            (click)="filterStatus = 'inactive'" class="add-new" mat-button><span [style.backgroundColor]="'#ccc'" class="ddot"></span>Inactive</button>
         <button [style.backgroundColor]="filterStatus == 'unread' ? '#9abcef' : ''" (click)="filterStatus = 'created'"
-            class="add-new" mat-button>Unread</button>
+            class="add-new" mat-button><span [style.backgroundColor]="'red'" class="ddot"></span>Unread</button>
         <mat-form-field appearance="outline" class="selection-trigger">
             <mat-select [(ngModel)]="filterListId">
                 <mat-option value='all'>All Queues</mat-option>
@@ -56,10 +56,10 @@
                                     *ngFor="let lbl of _pullModeservice.labels | fetchLabels : request.channelSession.customer?.labels"
                                     [ngStyle]="{'background-color':lbl.color_code}" class="dot"></span>
                             </span>
-                            <span *ngIf="isAlreadySubscribed(request.id)" class="joined">JOINED</span>
+                            <span *ngIf="isAlreadySubscribed(request.id)" class="joined">(JOINED)</span>
                         </td>
                         <td>{{request.time | amTimeAgo:true}}<small> ago</small></td>
-                        <td>{{_pullModeservice.listNames[request.listId]}}</td>
+                        <td>{{_pullModeservice.listNames[request.listId] ? _pullModeservice.listNames[request.listId] : '-'}}</td>
                         <span class="table-trigger">
                             <button mat-button *ngIf="!isAlreadySubscribed(request.id)" (click)="joinChat(request)"
                                 class="chat-btn" matTooltip="Chat">Join</button>

@@ -8,7 +8,7 @@ import { snackbarService } from "./snackbar.service";
   providedIn: "root"
 })
 export class sharedService {
-  constructor(private _snackbarService: snackbarService, private _httpService: httpService) { }
+  constructor(private _snackbarService: snackbarService, private _httpService: httpService) {}
 
   matCurrentTabIndex = 0;
 
@@ -31,18 +31,15 @@ export class sharedService {
   }
 
   setChannelIcons(channels) {
-
     channels.forEach((channel) => {
-
       this._httpService.getChannelLogo(channel.channelType.channelLogo).subscribe((file) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
           // caching the channel logos
           this.channelLogoMapper.set(channel.channelType.channelLogo, reader.result);
-        }
+        };
       });
-
     });
   }
 

@@ -30,7 +30,7 @@ export class socketService {
     private _sharedService: sharedService,
     private _pullModeService: pullModeService,
     private _router: Router
-  ) { }
+  ) {}
 
   connectToSocket() {
     this.uri = this._appConfigService.config.SOCKET_URL;
@@ -84,7 +84,7 @@ export class socketService {
       try {
         this.onCimEventHandler(JSON.parse(res.cimEvent), res.topicId);
       } catch (err) {
-        console.error("error on onCimEvent ", err)
+        console.error("error on onCimEvent ", err);
       }
     });
 
@@ -151,7 +151,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) { }
+    } catch (err) {}
   }
 
   listen(eventName: string) {
@@ -167,11 +167,11 @@ export class socketService {
   }
 
   triggerNewChatRequest(data) {
-    this._sharedService.serviceChangeMessage({ msg: "openRequestHeader", data: data });
+    this._sharedService.serviceChangeMessage({ msg: "openPushModeRequestHeader", data: data });
   }
 
   revokeChatRequest(data) {
-    this._sharedService.serviceChangeMessage({ msg: "closeRequestHeader", data: data });
+    this._sharedService.serviceChangeMessage({ msg: "closePushModeRequestHeader", data: data });
   }
 
   onCimEventHandler(cimEvent, topicId) {
@@ -180,7 +180,11 @@ export class socketService {
       return e.topicId == topicId;
     });
 
-    if (cimEvent.name.toLowerCase() == "agent_message" || cimEvent.name.toLowerCase() == "bot_message" || cimEvent.name.toLowerCase() == "customer_message") {
+    if (
+      cimEvent.name.toLowerCase() == "agent_message" ||
+      cimEvent.name.toLowerCase() == "bot_message" ||
+      cimEvent.name.toLowerCase() == "customer_message"
+    ) {
       if (sameTopicConversation) {
         if (cimEvent.data.header.sender.type.toLowerCase() == "customer") {
           this.processActiveChannelSessions(sameTopicConversation, cimEvent.data.header.channelSession);
@@ -235,7 +239,11 @@ export class socketService {
 
     // feed the conversation with type "messages"
     topicData.topicEvents.forEach((event, i) => {
-      if (event.name.toLowerCase() == "agent_message" || event.name.toLowerCase() == "bot_message" || event.name.toLowerCase() == "customer_message") {
+      if (
+        event.name.toLowerCase() == "agent_message" ||
+        event.name.toLowerCase() == "bot_message" ||
+        event.name.toLowerCase() == "customer_message"
+      ) {
         conversation.messages.push(event.data);
       }
     });
