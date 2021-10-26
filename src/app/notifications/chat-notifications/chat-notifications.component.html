@@ -57,7 +57,8 @@
         </div>
       </div>
     </div>
-    <button *ngIf="pullModeRequests.length > 0" (click)="pullModeRequests = []; "
+    <button *ngIf="pullModeRequests.length > 0" (mouseenter)="notificationArea = true"
+      (mouseleave)="notificationArea = false" (click)="pullModeRequests = []; "
       class="dismiss-notifications mat-flat-button" mat-button>Dismiss all
     </button>
 

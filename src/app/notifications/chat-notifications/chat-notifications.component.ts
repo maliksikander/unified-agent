@@ -15,6 +15,7 @@ import { pullModeService } from "src/app/services/pullMode.service";
 export class ChatNotificationsComponent implements OnInit {
   pushModeRequests = [];
   pullModeRequests = [];
+  notificationArea: boolean = false;
 
   constructor(
     public _pullModeservice: pullModeService,
@@ -36,7 +37,7 @@ export class ChatNotificationsComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   getTopicSubscription(topicId, taskId) {
     this._socketService.emit("topicSubscription", {
