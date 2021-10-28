@@ -45,7 +45,7 @@ export class isLoggedInService {
   }
 
   autoLogin() {
-    let ccUser: any = localStorage.getItem("ccUser");
+    let ccUser: any = sessionStorage.getItem("ccUser");
     ccUser = JSON.parse(ccUser);
 
     if (ccUser && ccUser.id != null && ccUser.id != undefined && ccUser.id != "") {

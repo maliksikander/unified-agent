@@ -217,6 +217,7 @@ export class socketService {
   onSocketSessionRemoved() {
     this._snackbarService.open("you are logged In from another session", "err");
     localStorage.clear();
+    sessionStorage.clear();
     this.socket.disconnect();
     alert("you are logged In from another session");
     this._router.navigate(["login"]).then(() => {

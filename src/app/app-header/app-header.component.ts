@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { cacheService } from "../services/cache.service";
 import { sharedService } from "../services/shared.service";
 import { socketService } from "../services/socket.service";
-import { MatSidenav } from "@angular/material";
 import { Router } from "@angular/router";
 
 @Component({
@@ -137,6 +136,8 @@ export class AppHeaderComponent implements OnInit {
     this.changeLanguage = true;
   }
   logout() {
+    sessionStorage.clear();
+    localStorage.clear();
     this._socketService.emit("changeAgentState", {
       agentId: this._cacheService.agent.id,
       action: "agentState",
@@ -161,6 +162,7 @@ export class AppHeaderComponent implements OnInit {
 
   moveToLogin() {
     localStorage.clear();
+    sessionStorage.clear();
     this._cacheService.resetCache();
     this._socketService.socket.disconnect();
     this._router.navigate(["login"]).then(() => {
