@@ -17,6 +17,10 @@ export class ChatNotificationsComponent implements OnInit {
   channelImageSrc: string;
   displayNotification = false;
   notificationArea = false;
+  requests = [{name:"farhan",
+    channel: 'web'},
+    {name:"raza",
+      channel: 'web'}];
   pullRequestNotification = [
     {
       queueName: 'Customer Queries',

@@ -26,6 +26,65 @@ export class CustomerInfoComponent implements OnInit, OnChanges {
     'active_sessions',
     'link_profile'
   ];
+
+  mediaChannelData = [
+    {
+      fieldType: 'tel',
+      value: '+4466985845',
+      label: 'Landline Business'
+    },
+    {
+      fieldType: 'tel',
+      value: '+4466985845',
+      label: 'Mobile Personal',
+      channelList: [
+        {
+          label: 'Call & SMS',
+          channelType: 'mobile',
+          channelIdenty: '+4466985845'
+        },
+        {
+          label: 'Whatsapp',
+          channelType: 'whatsapp'
+        }
+      ]
+    },
+    {
+      fieldType: 'email',
+      value: 'a.stanler@skytechinc.com',
+      label: 'Email Business',
+      channelList: [
+        {
+          label: 'email',
+          channelType: 'email',
+          channelIdenty: 'a.stanler@skytechinc.com'
+        },
+        {
+          label: 'facebook',
+          channelType: 'facebook'
+        },
+        {
+          label: 'Skype',
+          channelType: 'skype',
+          channelIdenty: 'SkytechInc'
+
+        }
+      ]
+    },
+    {
+      fieldType: 'text',
+      value: 'SkytechInc',
+      label: 'Facebook Business',
+      channelList: [
+        {
+          label: 'Facebook',
+          channelType: 'facebook',
+          channelIdenty: 'SkytechInc'
+        }
+      ]
+    }
+
+  ];
   customer: any = {
     type: 'Customer',
     info: {
