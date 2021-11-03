@@ -30,10 +30,11 @@ export class CreateAttributeComponent implements OnInit {
   channelIden: boolean = false;
   selectedChannel;
   attributesData;
-
   textLength = new FormControl("50", [Validators.pattern("^[0-9]*$"), Validators.required, Validators.min(1), Validators.max(1000)]);
   label = new FormControl("", [Validators.required, Validators.maxLength(50), Validators.minLength(1)], this.ValidateNameDuplication.bind(this));
   desc = new FormControl("", [Validators.maxLength(100)]);
+  defaultValue = new FormControl('', [Validators.required, Validators.maxLength(50), Validators.minLength(1)]
+    , this.ValidateNameDuplication.bind(this));
   selectChannel = new FormControl();
   channelList: string[] = ["WEB", "FACEBOOK", "WHATSAPP", "VIBER", "SMS", "GENERIC"];
 

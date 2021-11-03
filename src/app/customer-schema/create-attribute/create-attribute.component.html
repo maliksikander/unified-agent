@@ -1,12 +1,14 @@
-<div class="header">
-    <div class="headerName">Create Attribute</div>
-    <mat-icon (click)="onNoClick()" class="closeBtn">close</mat-icon>
-  </div>
-  
+<div class="dialog-header">
+  <h4>Create Attribute</h4>
+  <button (click)="onNoClick()" mat-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
   <div class="create-attr">
-  
+
     <div class="create-attr-dialog-body label-create-area">
-  
+
       <div class="left-area row m-0">
         <div class="form-group label-name col-md-6">
           <label class="text-left">Label</label>
@@ -23,7 +25,7 @@
             </mat-error>
           </mat-form-field>
         </div>
-  
+
         <div class="form-group label-name col-md-6">
           <label class="text-left">Description</label>
           <mat-form-field appearance="outline">
@@ -33,11 +35,11 @@
             </mat-error>
           </mat-form-field>
         </div>
-  
+
       </div>
-  
+
       <div class="left-area row m-0">
-  
+
         <div class="form-group label-name col-md-4 pr-2">
           <label class="text-left">Field Type</label>
           <div class="select-list">
@@ -48,9 +50,9 @@
             </mat-form-field>
           </div>
         </div>
-  
+
         <div *ngIf="columnTypeControllar == 'string'" class="form-group label-name col-md-2 characters-length">
-          <label class="text-left">Characters Length</label>
+          <label class="text-left">Number of Characters</label>
           <mat-form-field appearance="outline">
             <input matInput [formControl]="textLength">
             <mat-error *ngIf="textLength.hasError('required')">
@@ -64,30 +66,53 @@
             </mat-error>
           </mat-form-field>
         </div>
-  
-        <div class="schema-check-box form-group">
+      </div>
+
+      <div class="left-area row m-0">
+        <div class="check-box form-group col-md-3 mandatory-attribute">
           <mat-checkbox [(ngModel)]="mandatory" color="primary">Mandatory Attribute</mat-checkbox>
         </div>
-        <div class="schema-check-box form-group">
-          <mat-checkbox  color="primary">Personal Identifiable Information</mat-checkbox>
+        <div class="form-group label-name  default-value" [hidden]="!mandatory">
+          <label class="text-left">Default Value <span class="mandatory-steric">*</span></label>
+          <mat-form-field appearance="outline">
+            <input [formControl]="defaultValue" matInput>
+            <mat-error *ngIf="defaultValue.hasError('required')">
+              field is mandatory
+            </mat-error>
+            <mat-error *ngIf="defaultValue.hasError('minlength') || defaultValue.hasError('maxlength')">
+              Range Should Be 1 - 50
+            </mat-error>
+            <mat-error *ngIf="defaultValue.hasError('validName')">
+              That name Already Exists
+            </mat-error>
+          </mat-form-field>
+          <small>(Please specify a default value) </small>
         </div>
-  
-  
+<!--        <div class="schema-check-box form-group">-->
+<!--          <mat-checkbox  color="primary">Personal Identifiable Information</mat-checkbox>-->
+<!--        </div>-->
+
+
       </div>
-  
+      <div class="left-area row m-0">
+        <div class="check-box form-group pii-info">
+          <mat-checkbox  color="primary">PII</mat-checkbox> <a href="">(More information about PII)</a>
+        </div>
+      </div>
+
     </div>
-  
+
     <hr>
-  
+
     <div class="footer">
-  
-  
+
+
       <div class="footer-actions row m-0">
-        <div class="schema-check-box channel-identifier form-group">
+        <div class="check-box channel-identifier form-group">
           <label>Channel Identifier</label>
           <mat-checkbox [(ngModel)]="channelIden" color="primary">Yes</mat-checkbox>
         </div>
-  
+
         <div *ngIf="channelIden" class="form-group label-name select-channel pr-2">
           <label class="text-left">Select Channel</label>
           <div class="select-list">
@@ -98,17 +123,16 @@
             </mat-form-field>
           </div>
         </div>
-  
-  
+
+
   <div class="action-right">
-  
+
         <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
         <button *ngIf="desc.valid && label.valid && textLength.valid" (click)="makeObject()" class="save-btn">Add Attribute</button>
   </div>
       </div>
-  
+
     </div>
-  
-  
+
+
   </div>
-  

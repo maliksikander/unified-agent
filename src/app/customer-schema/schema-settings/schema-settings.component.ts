@@ -113,8 +113,8 @@ export class SchemaSettingsComponent implements OnInit {
 
   addAttr() {
     const dialogRef = this.dialog.open(CreateAttributeComponent, {
-      width: "815px",
-      height: "325px"
+      width: '815px',
+      minHeight: '225px'
     });
 
     dialogRef.afterClosed().subscribe((result) => {

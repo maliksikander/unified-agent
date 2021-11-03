@@ -5,10 +5,6 @@
   align-content: center;
   padding-left: 0;
 }
-
-
-
-
 .create-label {
   text-align: right;
 
@@ -16,12 +12,12 @@
     cursor: pointer;
     font-size: 13px;
     min-width: 25px;
-    background-color: lighten($blue-text-color, 55%);
-    color: $main-color;
+    background-color: $main-color;
+    color: #fff;
     text-align: center;
 
     &:hover{
-      background: lighten($blue-text-color, 45%);
+      background: darken($main-color, 10%);
     }
   }
 }
@@ -165,21 +161,3 @@ mat-checkbox{
   font-size: 13px;
 }
 
-.action-trigger {
-  padding: 15px 10px;
-  button{
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
-    font-size: 12px;
-    min-width: 90px;
-    background: #919191;
-    color: #fff;
-
-    &.success-btn{
-      background: #25AFCB;
-      margin-left: 12px;
-    }
-  }
-
-}
