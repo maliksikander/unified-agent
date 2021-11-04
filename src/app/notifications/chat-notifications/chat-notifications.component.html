@@ -9,7 +9,7 @@
           class="mat-card-content">
           <div class="chat-request">
             <p class="channel-icon"><img
-                src="{{request.channelSession.channel.channelType.channelLogo | channelLogo | async}}">
+                [src]="request.channelSession.channel.channelType.channelLogo | channelLogo | async">
             </p>
           </div>
           <div class="requested-name">

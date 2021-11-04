@@ -6,9 +6,9 @@
 @import '~@progress/kendo-theme-default/dist/all.css';
 @import "~ng-pick-datetime/assets/style/picker.min.css";
 
-@import "primeicons/primeicons.css";
-@import "primeng/resources/primeng.min.css";
-@import "primeng/resources/themes/nova-dark/theme.css";
+//@import "primeicons/primeicons.css";
+//@import "primeng/resources/primeng.min.css";
+//@import "primeng/resources/themes/nova-dark/theme.css";
 textarea, #EmojiLink a{
   font-family: "Roboto", sans-serif, "Segoe UI", "Segoe UI Emoji", "Apple Color Emoji" !important;
 }
@@ -499,6 +499,16 @@ padding: 0 !important;
           border-bottom: .5px solid #efefef !important;
           line-height: 24px;
           border-top: .5px solid #efefef !important;
+
+          &.ui-resizable-column {
+
+            span {
+              margin-left: 3px;
+              &:first-child {
+                margin-left: 0;
+              }
+            }
+          }
         }
       }
     }
@@ -2684,3 +2694,8 @@ color: $main-color;
   }
 }
 
+.check-box-field {
+  .mat-checkbox-layout{
+    margin: 0;
+  }
+}
