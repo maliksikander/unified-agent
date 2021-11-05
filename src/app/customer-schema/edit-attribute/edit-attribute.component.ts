@@ -31,7 +31,30 @@ export class EditAttributeComponent implements OnInit {
   label = new FormControl({ value: this.data.attribute.label, disabled: true });
   desc = new FormControl(this.data.attribute.desc, [Validators.maxLength(100)]);
   selectChannel = new FormControl(this.data.attribute.channels);
-  channelList: string[] = ["WEB", "FACEBOOK", "WHATSAPP", "VIBER", "SMS", "GENERIC"];
+  // channelList: string[] = ["WEB", "FACEBOOK", "WHATSAPP", "VIBER", "SMS", "GENERIC"];
+  channelList: any[] = [{
+    channel_name: 'WHATSAPP',
+    channel_icon: 'assets/images/whatsapp-colored.svg'
+  }, {
+    channel_name: 'FACEBOOK',
+    channel_icon: 'assets/images/facebook-colored.svg'
+  }, {
+    channel_name: 'SMS',
+    channel_icon: 'assets/images/envelope-colored.svg'
+  }, {
+    channel_name: 'VIBER',
+    channel_icon: 'assets/images/skype-colored.svg'
+  }, {
+    channel_name: 'WEB',
+    channel_icon: 'assets/images/envelope-colored.svg'
+  }, {
+    channel_name: 'GENERIC',
+    channel_icon: 'assets/images/envelope-colored.svg'
+  }];
+
+
+  defaultValue = new FormControl('', [Validators.required, Validators.maxLength(50), Validators.minLength(1)]
+    );
 
   constructor(
     private _sharedService: sharedService,

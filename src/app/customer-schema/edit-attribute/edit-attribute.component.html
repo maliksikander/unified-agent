@@ -1,6 +1,8 @@
-<div class="header">
-  <div class="headerName">Edit Attribute</div>
-  <mat-icon (click)="onNoClick()" class="closeBtn">close</mat-icon>
+<div class="dialog-header">
+  <h4>Edit Attribute</h4>
+  <button (click)="onNoClick()" mat-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
 </div>
 
 <div class="create-attr">
@@ -64,16 +66,38 @@
           </mat-error>
         </mat-form-field>
       </div>
-
-      <div class="schema-check-box form-group">
-        <mat-checkbox [(ngModel)]="mandatory" color="primary">Mandatory Attribute</mat-checkbox>
-      </div>
-      <div class="schema-check-box form-group">
-        <mat-checkbox color="primary">Personal Identifiable Information</mat-checkbox>
-      </div>
-
-
     </div>
+
+<!--      <div class="schema-check-box form-group">-->
+<!--        <mat-checkbox [(ngModel)]="mandatory" color="primary">Mandatory Attribute</mat-checkbox>-->
+<!--      </div>-->
+      <div class="left-area row m-0">
+        <div class="check-box form-group col-md-3 mandatory-attribute">
+          <mat-checkbox [(ngModel)]="mandatory" color="primary">Mandatory</mat-checkbox>
+        </div>
+
+        <div class="form-group label-name  default-value" [hidden]="!mandatory">
+          <label class="text-left">Default Value <span class="mandatory-steric">*</span></label>
+          <mat-form-field appearance="outline">
+            <input [formControl]="defaultValue" matInput>
+            <mat-error *ngIf="defaultValue.hasError('required')">
+              field is mandatory
+            </mat-error>
+            <mat-error *ngIf="defaultValue.hasError('minlength') || defaultValue.hasError('maxlength')">
+              Range Should Be 1 - 50
+            </mat-error>
+            <mat-error *ngIf="defaultValue.hasError('validName')">
+              That name Already Exists
+            </mat-error>
+          </mat-form-field>
+          <small>(Please specify a default value) </small>
+        </div>
+      </div>
+      <div class="left-area row m-0">
+        <div class="check-box form-group pii-info">
+          <mat-checkbox  color="primary">PII</mat-checkbox> <a href="">(More information about PII)</a>
+        </div>
+      </div>
 
   </div>
 
@@ -83,18 +107,20 @@
 
 
     <div class="footer-actions row m-0">
-      <div class="schema-check-box channel-identifier form-group">
+      <div class="check-box channel-identifier form-group">
         <label>Channel Identifier</label>
         <mat-checkbox [(ngModel)]="channelIden" color="primary">Yes</mat-checkbox>
       </div>
 
       <div *ngIf="channelIden" class="form-group label-name select-channel pr-2">
-        <label class="text-left">Select Channel</label>
+        <label class="text-left">Channel Type</label>
         <div class="select-list">
           <mat-form-field appearance="outline">
             <mat-select [formControl]="selectChannel" multiple class="selected-channels">
-              <mat-option class="channel-options" *ngFor="let channel of channelList" [value]="channel">{{channel}}
-              </mat-option>
+<!--              <mat-option class="channel-options" *ngFor="let channel of channelList" [value]="channel">{{channel}}-->
+<!--              </mat-option>-->
+              <mat-option class="channel-options" *ngFor="let channel of channelList" [value]="channel.channel_name"><img src="{{channel.channel_icon}}"> {{channel.channel_name}}</mat-option>
+
             </mat-select>
           </mat-form-field>
         </div>

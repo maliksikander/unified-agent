@@ -77,8 +77,8 @@ export class SchemaSettingsComponent implements OnInit {
   edit(attribute) {
     console.log("attr ", attribute);
     const dialogRef = this.dialog.open(EditAttributeComponent, {
-      width: "815px",
-      height: "325px",
+      width: '815px',
+      minHeight: '225px',
       data: {
         attribute
       }

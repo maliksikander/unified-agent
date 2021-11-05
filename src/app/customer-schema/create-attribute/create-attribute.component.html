@@ -11,7 +11,7 @@
 
       <div class="left-area row m-0">
         <div class="form-group label-name col-md-6">
-          <label class="text-left">Label</label>
+          <label class="text-left">Label <span class="mandatory-steric">*</span></label>
           <mat-form-field appearance="outline">
             <input [formControl]="label" matInput>
             <mat-error *ngIf="label.hasError('required')">
@@ -118,7 +118,8 @@
           <div class="select-list">
             <mat-form-field appearance="outline">
               <mat-select [formControl]="selectChannel" multiple class="selected-channels">
-                <mat-option  class="channel-options" *ngFor="let channel of channelList" [value]="channel">{{channel}}</mat-option>
+<!--                <mat-option  class="channel-options" *ngFor="let channel of channelList" [value]="channel">{{channel}}</mat-option>-->
+                <mat-option class="channel-options" *ngFor="let channel of channelList" [value]="channel.channel_name"><img src="{{channel.channel_icon}}"> {{channel.channel_name}}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>

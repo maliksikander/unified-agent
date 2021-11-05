@@ -36,7 +36,26 @@ export class CreateAttributeComponent implements OnInit {
   defaultValue = new FormControl('', [Validators.required, Validators.maxLength(50), Validators.minLength(1)]
     , this.ValidateNameDuplication.bind(this));
   selectChannel = new FormControl();
-  channelList: string[] = ["WEB", "FACEBOOK", "WHATSAPP", "VIBER", "SMS", "GENERIC"];
+  // channelList: string[] = ["WEB", "FACEBOOK", "WHATSAPP", "VIBER", "SMS", "GENERIC"];
+  channelList: any[] = [{
+    channel_name: 'WHATSAPP',
+    channel_icon: 'assets/images/whatsapp-colored.svg'
+  }, {
+    channel_name: 'FACEBOOK',
+    channel_icon: 'assets/images/facebook-colored.svg'
+  }, {
+    channel_name: 'SMS',
+    channel_icon: 'assets/images/envelope-colored.svg'
+  }, {
+    channel_name: 'VIBER',
+    channel_icon: 'assets/images/skype-colored.svg'
+  }, {
+    channel_name: 'WEB',
+    channel_icon: 'assets/images/envelope-colored.svg'
+  }, {
+    channel_name: 'GENERIC',
+    channel_icon: 'assets/images/envelope-colored.svg'
+  }];
 
   constructor(
     private _sharedService: sharedService,
