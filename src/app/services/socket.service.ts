@@ -1460,7 +1460,7 @@ topicData = {
 
     this.listen("agentPresence").subscribe((res: any) => {
       console.log(res);
-      this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: res });
+      this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: res.agentPresence });
     });
 
     this.listen("errors").subscribe((res: any) => {
@@ -1725,17 +1725,21 @@ topicData = {
   }
 
   mergeBotSuggestions(conversation, suggestionMessage) {
-    let message = conversation.messages.find((e) => {
-      if (e.header.sender.type.toLowerCase() == "customer") {
-        return e.id == suggestionMessage.requestedMessage.id;
-      }
-    });
 
-    if (message) {
-      message["botSuggestions"] = suggestionMessage.suggestions;
-      message["showBotSuggestions"] = false;
-      console.log("bot suggestion founded ", message);
-      this._conversationsListener.next(this.conversations);
+    if (suggestionMessage && suggestionMessage.requestedMessage && suggestionMessage.requestedMessage.id) {
+
+      let message = conversation.messages.find((e) => {
+        if (e.header.sender.type.toLowerCase() == "customer") {
+          return e.id == suggestionMessage.requestedMessage.id;
+        }
+      });
+
+      if (message) {
+        message["botSuggestions"] = suggestionMessage.suggestions;
+        message["showBotSuggestions"] = false;
+        console.log("bot suggestion founded ", message);
+        this._conversationsListener.next(this.conversations);
+      }
     }
   }
 
