@@ -19,1400 +19,1546 @@ export class socketService {
   conversations: any = [];
   conversationIndex = -1;
 topicData = {
-  "id": "15584d31-df86-4052-818f-d2bfdba5b92b",
-  "customer": {
-    "_id": "67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
-    "firstName": "John",
-    "lastName": null,
-    "email": null,
-    "phone1": null,
-    "phone2": null,
-    "viberId": null,
-    "facebookId": null,
-    "webId": null,
-    "createdBy": null,
-    "updatedBy": null,
-    "createdAt": null,
-    "updatedAt": null,
-    "isAnonymous": false,
-    "__v": 0
+  "id":"15584d31-df86-4052-818f-d2bfdba5b92b",
+  "customer":{
+    "_id":"67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
+    "firstName":"John",
+    "lastName":null,
+    "email":null,
+    "phone1":null,
+    "phone2":null,
+    "viberId":null,
+    "facebookId":null,
+    "webId":null,
+    "createdBy":null,
+    "updatedBy":null,
+    "createdAt":null,
+    "updatedAt":null,
+    "isAnonymous":false,
+    "__v":0
   },
-  "participants": [
+  "participants":[
     {
-      "type": "BOT",
-      "role": "PRIMARY",
-      "participant": {
-        "participantType": "TopicMonitor",
-        "id": "2d8e6049-ee1b-482a-8013-4c758f893d60",
-        "displayName": "Topic Monitor: 2d8e6049-ee1b-482a-8013-4c758f893d60"
+      "type":"BOT",
+      "role":"PRIMARY",
+      "participant":{
+        "participantType":"TopicMonitor",
+        "id":"2d8e6049-ee1b-482a-8013-4c758f893d60",
+        "displayName":"Topic Monitor: 2d8e6049-ee1b-482a-8013-4c758f893d60"
       },
-      "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
-      "joiningTime": "2021-11-08T08:37:25.775+00:00",
-      "token": null,
-      "topicId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-      "isActive": true,
-      "userCredentials": {},
-      "state": "SUBSCRIBED",
-      "stateChangedOn": "2021-11-08T08:37:25.775+00:00"
+      "id":"cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
+      "joiningTime":"2021-11-08T08:37:25.775+00:00",
+      "token":null,
+      "topicId":"15584d31-df86-4052-818f-d2bfdba5b92b",
+      "isActive":true,
+      "userCredentials":{
+
+      },
+      "state":"SUBSCRIBED",
+      "stateChangedOn":"2021-11-08T08:37:25.775+00:00"
     },
     {
-      "type": "CUSTOMER",
-      "role": "CUSTOMER",
-      "participant": {
-        "participantType": "ChannelSession",
-        "id": "94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
-        "channel": {
-          "id": "6185267a7ffc8449d4c3c1ce",
-          "name": "web",
-          "serviceIdentifier": "+921218",
-          "tenant": {
-            "id": "30f0726d-ef48-4013-8eeb-74bc2c35625f",
-            "name": null
+      "type":"CUSTOMER",
+      "role":"CUSTOMER",
+      "participant":{
+        "participantType":"ChannelSession",
+        "id":"94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
+        "channel":{
+          "id":"6185267a7ffc8449d4c3c1ce",
+          "name":"web",
+          "serviceIdentifier":"+921218",
+          "tenant":{
+            "id":"30f0726d-ef48-4013-8eeb-74bc2c35625f",
+            "name":null
           },
-          "channelConfig": {
-            "id": "348b6c36-5dbf-47df-8ba4-8625f00a1785",
-            "channelMode": "HYBRID",
-            "conversationBot": "",
-            "responseSla": 20,
-            "customerActivityTimeout": 20,
-            "customerIdentificationCriteria": {
-              "value": null
+          "channelConfig":{
+            "id":"348b6c36-5dbf-47df-8ba4-8625f00a1785",
+            "channelMode":"HYBRID",
+            "conversationBot":"",
+            "responseSla":20,
+            "customerActivityTimeout":20,
+            "customerIdentificationCriteria":{
+              "value":null
             },
-            "routingPolicy": {
-              "agentSelectionPolicy": "LONGEST_AVAILABLE",
-              "routeToLastAgent": true,
-              "routingMode": "PUSH",
-              "routingObjectId": "6172426726c3762d4f5f68fe",
-              "agentRequestTtl": 20
+            "routingPolicy":{
+              "agentSelectionPolicy":"LONGEST_AVAILABLE",
+              "routeToLastAgent":true,
+              "routingMode":"PUSH",
+              "routingObjectId":"6172426726c3762d4f5f68fe",
+              "agentRequestTtl":20
             },
-            "botId": "8b43ef12-f30b-48ce-aa03-c60d450fc042"
+            "botId":"8b43ef12-f30b-48ce-aa03-c60d450fc042"
           },
-          "channelConnector": {
-            "id": "6178062f39b2a10f979a9499",
-            "name": "web connector",
-            "channelProviderInterface": {
-              "id": "61769ad86959682449337620",
-              "name": "Web Provider",
-              "supportedChannelTypes": [
+          "channelConnector":{
+            "id":"6178062f39b2a10f979a9499",
+            "name":"web connector",
+            "channelProviderInterface":{
+              "id":"61769ad86959682449337620",
+              "name":"Web Provider",
+              "supportedChannelTypes":[
                 {
-                  "id": "6176bfde6e67cc29d93be907",
-                  "name": "Web",
-                  "channelLogo": "84458_4485687.png",
-                  "isInteractive": true,
-                  "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+                  "id":"6176bfde6e67cc29d93be907",
+                  "name":"Web",
+                  "channelLogo":"84458_4485687.png",
+                  "isInteractive":true,
+                  "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
                 }
               ],
-              "providerWebhook": "http://192.168.50.25:7000/message/receive",
-              "channelProviderConfigSchema": []
+              "providerWebhook":"http://192.168.50.25:7000/message/receive",
+              "channelProviderConfigSchema":[
+
+              ]
             },
-            "channelProviderConfigs": [],
-            "tenant": {
-              "id": "8773b513-6441-42bf-99d4-e243afbb3a07",
-              "name": null
+            "channelProviderConfigs":[
+
+            ],
+            "tenant":{
+              "id":"8773b513-6441-42bf-99d4-e243afbb3a07",
+              "name":null
             }
           },
-          "channelType": {
-            "id": "6176bfde6e67cc29d93be907",
-            "name": "Web",
-            "channelLogo": "84458_4485687.png",
-            "isInteractive": true,
-            "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+          "channelType":{
+            "id":"6176bfde6e67cc29d93be907",
+            "name":"Web",
+            "channelLogo":"84458_4485687.png",
+            "isInteractive":true,
+            "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
           }
         },
-        "customer": {
-          "_id": "67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
-          "firstName": "John",
-          "lastName": null,
-          "email": null,
-          "phone1": null,
-          "phone2": null,
-          "viberId": null,
-          "facebookId": null,
-          "webId": null,
-          "createdBy": null,
-          "updatedBy": null,
-          "createdAt": null,
-          "updatedAt": null,
-          "isAnonymous": false,
-          "__v": 0
+        "customer":{
+          "_id":"67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
+          "firstName":"John",
+          "lastName":null,
+          "email":null,
+          "phone1":null,
+          "phone2":null,
+          "viberId":null,
+          "facebookId":null,
+          "webId":null,
+          "createdBy":null,
+          "updatedBy":null,
+          "createdAt":null,
+          "updatedAt":null,
+          "isAnonymous":false,
+          "__v":0
         },
-        "customerSuggestions": [],
-        "channelData": {
-          "channelCustomerIdentifier": "97962945",
-          "serviceIdentifier": "+921218",
-          "requestPriority": 0,
-          "channelTypeCode": "webChannel",
-          "additionalAttributes": []
+        "customerSuggestions":[
+
+        ],
+        "channelData":{
+          "channelCustomerIdentifier":"97962945",
+          "serviceIdentifier":"+921218",
+          "requestPriority":0,
+          "channelTypeCode":"webChannel",
+          "additionalAttributes":[
+
+          ]
         },
-        "latestIntent": null,
-        "customerPresence": {
-          "value": null
+        "latestIntent":null,
+        "customerPresence":{
+          "value":null
         },
-        "isActive": true,
-        "topicId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "state": "STARTED",
-        "active": true
+        "isActive":true,
+        "topicId":"15584d31-df86-4052-818f-d2bfdba5b92b",
+        "state":"STARTED",
+        "active":true
       },
-      "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
-      "joiningTime": "2021-11-08T08:37:26.203+00:00",
-      "token": null,
-      "topicId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-      "isActive": true,
-      "userCredentials": {},
-      "state": null,
-      "stateChangedOn": null
+      "id":"61cf275e-f736-48c9-bc56-d5f46a9dcf86",
+      "joiningTime":"2021-11-08T08:37:26.203+00:00",
+      "token":null,
+      "topicId":"15584d31-df86-4052-818f-d2bfdba5b92b",
+      "isActive":true,
+      "userCredentials":{
+
+      },
+      "state":null,
+      "stateChangedOn":null
     }
   ],
-  "state": "CREATED",
-  "topicEvents": [
+  "state":"CREATED",
+  "topicEvents":[
     {
-      "id": "941e40c8-a318-4b04-bb51-d901759217b2",
-      "name": "CHANNEL_SESSION_STARTED",
-      "type": "NOTIFICATION",
-      "timestamp": "2021-11-08T08:37:26.521+00:00",
-      "data": {
-        "participantType": "ChannelSession",
-        "id": "94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
-        "channel": {
-          "id": "6185267a7ffc8449d4c3c1ce",
-          "name": "web",
-          "serviceIdentifier": "+921218",
-          "tenant": {
-            "id": "30f0726d-ef48-4013-8eeb-74bc2c35625f",
-            "name": null
+      "id":"941e40c8-a318-4b04-bb51-d901759217b2",
+      "name":"CHANNEL_SESSION_STARTED",
+      "type":"NOTIFICATION",
+      "timestamp":"2021-11-08T08:37:26.521+00:00",
+      "data":{
+        "participantType":"ChannelSession",
+        "id":"94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
+        "channel":{
+          "id":"6185267a7ffc8449d4c3c1ce",
+          "name":"web",
+          "serviceIdentifier":"+921218",
+          "tenant":{
+            "id":"30f0726d-ef48-4013-8eeb-74bc2c35625f",
+            "name":null
           },
-          "channelConfig": {
-            "id": "348b6c36-5dbf-47df-8ba4-8625f00a1785",
-            "channelMode": "HYBRID",
-            "conversationBot": "",
-            "responseSla": 20,
-            "customerActivityTimeout": 20,
-            "customerIdentificationCriteria": {
-              "value": null
+          "channelConfig":{
+            "id":"348b6c36-5dbf-47df-8ba4-8625f00a1785",
+            "channelMode":"HYBRID",
+            "conversationBot":"",
+            "responseSla":20,
+            "customerActivityTimeout":20,
+            "customerIdentificationCriteria":{
+              "value":null
             },
-            "routingPolicy": {
-              "agentSelectionPolicy": "LONGEST_AVAILABLE",
-              "routeToLastAgent": true,
-              "routingMode": "PUSH",
-              "routingObjectId": "6172426726c3762d4f5f68fe",
-              "agentRequestTtl": 20
+            "routingPolicy":{
+              "agentSelectionPolicy":"LONGEST_AVAILABLE",
+              "routeToLastAgent":true,
+              "routingMode":"PUSH",
+              "routingObjectId":"6172426726c3762d4f5f68fe",
+              "agentRequestTtl":20
             },
-            "botId": "8b43ef12-f30b-48ce-aa03-c60d450fc042"
+            "botId":"8b43ef12-f30b-48ce-aa03-c60d450fc042"
           },
-          "channelConnector": {
-            "id": "6178062f39b2a10f979a9499",
-            "name": "web connector",
-            "channelProviderInterface": {
-              "id": "61769ad86959682449337620",
-              "name": "Web Provider",
-              "supportedChannelTypes": [
+          "channelConnector":{
+            "id":"6178062f39b2a10f979a9499",
+            "name":"web connector",
+            "channelProviderInterface":{
+              "id":"61769ad86959682449337620",
+              "name":"Web Provider",
+              "supportedChannelTypes":[
                 {
-                  "id": "6176bfde6e67cc29d93be907",
-                  "name": "Web",
-                  "channelLogo": "84458_4485687.png",
-                  "isInteractive": true,
-                  "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+                  "id":"6176bfde6e67cc29d93be907",
+                  "name":"Web",
+                  "channelLogo":"84458_4485687.png",
+                  "isInteractive":true,
+                  "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
                 }
               ],
-              "providerWebhook": "http://192.168.50.25:7000/message/receive",
-              "channelProviderConfigSchema": []
+              "providerWebhook":"http://192.168.50.25:7000/message/receive",
+              "channelProviderConfigSchema":[
+
+              ]
             },
-            "channelProviderConfigs": [],
-            "tenant": {
-              "id": "8773b513-6441-42bf-99d4-e243afbb3a07",
-              "name": null
+            "channelProviderConfigs":[
+
+            ],
+            "tenant":{
+              "id":"8773b513-6441-42bf-99d4-e243afbb3a07",
+              "name":null
             }
           },
-          "channelType": {
-            "id": "6176bfde6e67cc29d93be907",
-            "name": "Web",
-            "channelLogo": "84458_4485687.png",
-            "isInteractive": true,
-            "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+          "channelType":{
+            "id":"6176bfde6e67cc29d93be907",
+            "name":"Web",
+            "channelLogo":"84458_4485687.png",
+            "isInteractive":true,
+            "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
           }
         },
-        "customer": {
-          "_id": "67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
-          "firstName": "John",
-          "lastName": null,
-          "email": null,
-          "phone1": null,
-          "phone2": null,
-          "viberId": null,
-          "facebookId": null,
-          "webId": null,
-          "createdBy": null,
-          "updatedBy": null,
-          "createdAt": null,
-          "updatedAt": null,
-          "isAnonymous": false,
-          "__v": 0
+        "customer":{
+          "_id":"67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
+          "firstName":"John",
+          "lastName":null,
+          "email":null,
+          "phone1":null,
+          "phone2":null,
+          "viberId":null,
+          "facebookId":null,
+          "webId":null,
+          "createdBy":null,
+          "updatedBy":null,
+          "createdAt":null,
+          "updatedAt":null,
+          "isAnonymous":false,
+          "__v":0
         },
-        "customerSuggestions": [],
-        "channelData": {
-          "channelCustomerIdentifier": "97962945",
-          "serviceIdentifier": "+921218",
-          "requestPriority": 0,
-          "channelTypeCode": "webChannel",
-          "additionalAttributes": []
+        "customerSuggestions":[
+
+        ],
+        "channelData":{
+          "channelCustomerIdentifier":"97962945",
+          "serviceIdentifier":"+921218",
+          "requestPriority":0,
+          "channelTypeCode":"webChannel",
+          "additionalAttributes":[
+
+          ]
         },
-        "latestIntent": null,
-        "customerPresence": {
-          "value": null
+        "latestIntent":null,
+        "customerPresence":{
+          "value":null
         },
-        "isActive": true,
-        "topicId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "state": "STARTED",
-        "active": true
+        "isActive":true,
+        "topicId":"15584d31-df86-4052-818f-d2bfdba5b92b",
+        "state":"STARTED",
+        "active":true
       }
     },
     {
-      "id": "23a43ff2-b674-463d-9d66-01f4c73201c3",
-      "name": "BOT_MESSAGE",
-      "type": "MESSAGE",
-      "timestamp": "2021-11-08T08:37:27.013+00:00",
-      "data": {
-        "id": "7a1120f8-3235-4191-9502-8884f8558ae0",
-        "header": {
-          "sender": {
-            "type": "BOT",
-            "role": "PRIMARY",
-            "participant": {
-              "participantType": "TopicMonitor",
-              "id": "2d8e6049-ee1b-482a-8013-4c758f893d60",
-              "displayName": "Topic Monitor: 2d8e6049-ee1b-482a-8013-4c758f893d60"
+      "id":"23a43ff2-b674-463d-9d66-01f4c73201c3",
+      "name":"BOT_MESSAGE",
+      "type":"MESSAGE",
+      "timestamp":"2021-11-08T08:37:27.013+00:00",
+      "data":{
+        "id":"7a1120f8-3235-4191-9502-8884f8558ae0",
+        "header":{
+          "sender":{
+            "type":"BOT",
+            "role":"PRIMARY",
+            "participant":{
+              "participantType":"TopicMonitor",
+              "id":"2d8e6049-ee1b-482a-8013-4c758f893d60",
+              "displayName":"Topic Monitor: 2d8e6049-ee1b-482a-8013-4c758f893d60"
             },
-            "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
-            "joiningTime": 1636360645775,
-            "token": null,
-            "topicId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-            "isActive": true,
-            "userCredentials": {},
-            "state": "SUBSCRIBED",
-            "stateChangedOn": 1636360645775
+            "id":"cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
+            "joiningTime":1636360645775,
+            "token":null,
+            "topicId":"15584d31-df86-4052-818f-d2bfdba5b92b",
+            "isActive":true,
+            "userCredentials":{
+
+            },
+            "state":"SUBSCRIBED",
+            "stateChangedOn":1636360645775
           },
-          "channelData": null,
-          "language": null,
-          "timestamp": 1636360646969,
-          "securityInfo": null,
-          "stamps": null,
-          "intent": null,
-          "entities": null,
-          "channelSession": {
-            "participantType": "ChannelSession",
-            "id": "94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
-            "channel": {
-              "id": "6185267a7ffc8449d4c3c1ce",
-              "name": "web",
-              "serviceIdentifier": "+921218",
-              "tenant": {
-                "id": "30f0726d-ef48-4013-8eeb-74bc2c35625f",
-                "name": null
+          "channelData":null,
+          "language":null,
+          "timestamp":1636360646969,
+          "securityInfo":null,
+          "stamps":null,
+          "intent":null,
+          "entities":null,
+          "channelSession":{
+            "participantType":"ChannelSession",
+            "id":"94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
+            "channel":{
+              "id":"6185267a7ffc8449d4c3c1ce",
+              "name":"web",
+              "serviceIdentifier":"+921218",
+              "tenant":{
+                "id":"30f0726d-ef48-4013-8eeb-74bc2c35625f",
+                "name":null
               },
-              "channelConfig": {
-                "id": "348b6c36-5dbf-47df-8ba4-8625f00a1785",
-                "channelMode": "HYBRID",
-                "conversationBot": "",
-                "responseSla": 20,
-                "customerActivityTimeout": 20,
-                "customerIdentificationCriteria": {
-                  "value": null
+              "channelConfig":{
+                "id":"348b6c36-5dbf-47df-8ba4-8625f00a1785",
+                "channelMode":"HYBRID",
+                "conversationBot":"",
+                "responseSla":20,
+                "customerActivityTimeout":20,
+                "customerIdentificationCriteria":{
+                  "value":null
                 },
-                "routingPolicy": {
-                  "agentSelectionPolicy": "LONGEST_AVAILABLE",
-                  "routeToLastAgent": true,
-                  "routingMode": "PUSH",
-                  "routingObjectId": "6172426726c3762d4f5f68fe",
-                  "agentRequestTtl": 20
+                "routingPolicy":{
+                  "agentSelectionPolicy":"LONGEST_AVAILABLE",
+                  "routeToLastAgent":true,
+                  "routingMode":"PUSH",
+                  "routingObjectId":"6172426726c3762d4f5f68fe",
+                  "agentRequestTtl":20
                 },
-                "botId": "8b43ef12-f30b-48ce-aa03-c60d450fc042"
+                "botId":"8b43ef12-f30b-48ce-aa03-c60d450fc042"
               },
-              "channelConnector": {
-                "id": "6178062f39b2a10f979a9499",
-                "name": "web connector",
-                "channelProviderInterface": {
-                  "id": "61769ad86959682449337620",
-                  "name": "Web Provider",
-                  "supportedChannelTypes": [
+              "channelConnector":{
+                "id":"6178062f39b2a10f979a9499",
+                "name":"web connector",
+                "channelProviderInterface":{
+                  "id":"61769ad86959682449337620",
+                  "name":"Web Provider",
+                  "supportedChannelTypes":[
                     {
-                      "id": "6176bfde6e67cc29d93be907",
-                      "name": "Web",
-                      "channelLogo": "84458_4485687.png",
-                      "isInteractive": true,
-                      "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+                      "id":"6176bfde6e67cc29d93be907",
+                      "name":"Web",
+                      "channelLogo":"84458_4485687.png",
+                      "isInteractive":true,
+                      "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
                     }
                   ],
-                  "providerWebhook": "http://192.168.50.25:7000/message/receive",
-                  "channelProviderConfigSchema": []
+                  "providerWebhook":"http://192.168.50.25:7000/message/receive",
+                  "channelProviderConfigSchema":[
+
+                  ]
                 },
-                "channelProviderConfigs": [],
-                "tenant": {
-                  "id": "8773b513-6441-42bf-99d4-e243afbb3a07",
-                  "name": null
+                "channelProviderConfigs":[
+
+                ],
+                "tenant":{
+                  "id":"8773b513-6441-42bf-99d4-e243afbb3a07",
+                  "name":null
                 }
               },
-              "channelType": {
-                "id": "6176bfde6e67cc29d93be907",
-                "name": "Web",
-                "channelLogo": "84458_4485687.png",
-                "isInteractive": true,
-                "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+              "channelType":{
+                "id":"6176bfde6e67cc29d93be907",
+                "name":"Web",
+                "channelLogo":"84458_4485687.png",
+                "isInteractive":true,
+                "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
               }
             },
-            "customer": {
-              "_id": "67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
-              "firstName": "John",
-              "lastName": null,
-              "email": null,
-              "phone1": null,
-              "phone2": null,
-              "viberId": null,
-              "facebookId": null,
-              "webId": null,
-              "createdBy": null,
-              "updatedBy": null,
-              "createdAt": null,
-              "updatedAt": null,
-              "isAnonymous": false,
-              "__v": 0
+            "customer":{
+              "_id":"67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
+              "firstName":"John",
+              "lastName":null,
+              "email":null,
+              "phone1":null,
+              "phone2":null,
+              "viberId":null,
+              "facebookId":null,
+              "webId":null,
+              "createdBy":null,
+              "updatedBy":null,
+              "createdAt":null,
+              "updatedAt":null,
+              "isAnonymous":false,
+              "__v":0
             },
-            "customerSuggestions": [],
-            "channelData": {
-              "channelCustomerIdentifier": "97962945",
-              "serviceIdentifier": "+921218",
-              "requestPriority": 0,
-              "channelTypeCode": "webChannel",
-              "additionalAttributes": []
+            "customerSuggestions":[
+
+            ],
+            "channelData":{
+              "channelCustomerIdentifier":"97962945",
+              "serviceIdentifier":"+921218",
+              "requestPriority":0,
+              "channelTypeCode":"webChannel",
+              "additionalAttributes":[
+
+              ]
             },
-            "latestIntent": null,
-            "customerPresence": {
-              "value": null
+            "latestIntent":null,
+            "customerPresence":{
+              "value":null
             },
-            "isActive": true,
-            "topicId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-            "state": "STARTED",
-            "active": true
+            "isActive":true,
+            "topicId":"15584d31-df86-4052-818f-d2bfdba5b92b",
+            "state":"STARTED",
+            "active":true
           }
         },
-        "body": {
-          "type": "PLAIN",
-          "markdownText": "Welcome to Expertflow Hybrid Chat solution"
+        "body":{
+          "type":"PLAIN",
+          "markdownText":"Welcome to Expertflow Hybrid Chat solution"
         }
       }
     },
     {
-      "id": "068d2ca0-bff6-4318-a617-adcb7288ddd8",
-      "name": "CUSTOMER_MESSAGE",
-      "type": "MESSAGE",
-      "timestamp": "2021-11-08T08:37:30.572+00:00",
-      "data": {
-        "id": "4515b200-406f-11ec-b464-a55184008c6c",
-        "header": {
-          "sender": {
-            "type": "CUSTOMER",
-            "role": "CUSTOMER",
-            "participant": {
-              "participantType": "ChannelSession",
-              "id": "94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
-              "channel": {
-                "id": "6185267a7ffc8449d4c3c1ce",
-                "name": "web",
-                "serviceIdentifier": "+921218",
-                "tenant": {
-                  "id": "30f0726d-ef48-4013-8eeb-74bc2c35625f",
-                  "name": null
+      "id":"068d2ca0-bff6-4318-a617-adcb7288ddd8",
+      "name":"CUSTOMER_MESSAGE",
+      "type":"MESSAGE",
+      "timestamp":"2021-11-08T08:37:30.572+00:00",
+      "data":{
+        "id":"4515b200-406f-11ec-b464-a55184008c6c",
+        "header":{
+          "sender":{
+            "type":"CUSTOMER",
+            "role":"CUSTOMER",
+            "participant":{
+              "participantType":"ChannelSession",
+              "id":"94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
+              "channel":{
+                "id":"6185267a7ffc8449d4c3c1ce",
+                "name":"web",
+                "serviceIdentifier":"+921218",
+                "tenant":{
+                  "id":"30f0726d-ef48-4013-8eeb-74bc2c35625f",
+                  "name":null
                 },
-                "channelConfig": {
-                  "id": "348b6c36-5dbf-47df-8ba4-8625f00a1785",
-                  "channelMode": "HYBRID",
-                  "conversationBot": "",
-                  "responseSla": 20,
-                  "customerActivityTimeout": 20,
-                  "customerIdentificationCriteria": {
-                    "value": null
+                "channelConfig":{
+                  "id":"348b6c36-5dbf-47df-8ba4-8625f00a1785",
+                  "channelMode":"HYBRID",
+                  "conversationBot":"",
+                  "responseSla":20,
+                  "customerActivityTimeout":20,
+                  "customerIdentificationCriteria":{
+                    "value":null
                   },
-                  "routingPolicy": {
-                    "agentSelectionPolicy": "LONGEST_AVAILABLE",
-                    "routeToLastAgent": true,
-                    "routingMode": "PUSH",
-                    "routingObjectId": "6172426726c3762d4f5f68fe",
-                    "agentRequestTtl": 20
+                  "routingPolicy":{
+                    "agentSelectionPolicy":"LONGEST_AVAILABLE",
+                    "routeToLastAgent":true,
+                    "routingMode":"PUSH",
+                    "routingObjectId":"6172426726c3762d4f5f68fe",
+                    "agentRequestTtl":20
                   },
-                  "botId": "8b43ef12-f30b-48ce-aa03-c60d450fc042"
+                  "botId":"8b43ef12-f30b-48ce-aa03-c60d450fc042"
                 },
-                "channelConnector": {
-                  "id": "6178062f39b2a10f979a9499",
-                  "name": "web connector",
-                  "channelProviderInterface": {
-                    "id": "61769ad86959682449337620",
-                    "name": "Web Provider",
-                    "supportedChannelTypes": [
+                "channelConnector":{
+                  "id":"6178062f39b2a10f979a9499",
+                  "name":"web connector",
+                  "channelProviderInterface":{
+                    "id":"61769ad86959682449337620",
+                    "name":"Web Provider",
+                    "supportedChannelTypes":[
                       {
-                        "id": "6176bfde6e67cc29d93be907",
-                        "name": "Web",
-                        "channelLogo": "84458_4485687.png",
-                        "isInteractive": true,
-                        "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+                        "id":"6176bfde6e67cc29d93be907",
+                        "name":"Web",
+                        "channelLogo":"84458_4485687.png",
+                        "isInteractive":true,
+                        "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
                       }
                     ],
-                    "providerWebhook": "http://192.168.50.25:7000/message/receive",
-                    "channelProviderConfigSchema": []
+                    "providerWebhook":"http://192.168.50.25:7000/message/receive",
+                    "channelProviderConfigSchema":[
+
+                    ]
                   },
-                  "channelProviderConfigs": [],
-                  "tenant": {
-                    "id": "8773b513-6441-42bf-99d4-e243afbb3a07",
-                    "name": null
+                  "channelProviderConfigs":[
+
+                  ],
+                  "tenant":{
+                    "id":"8773b513-6441-42bf-99d4-e243afbb3a07",
+                    "name":null
                   }
                 },
-                "channelType": {
-                  "id": "6176bfde6e67cc29d93be907",
-                  "name": "Web",
-                  "channelLogo": "84458_4485687.png",
-                  "isInteractive": true,
-                  "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+                "channelType":{
+                  "id":"6176bfde6e67cc29d93be907",
+                  "name":"Web",
+                  "channelLogo":"84458_4485687.png",
+                  "isInteractive":true,
+                  "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
                 }
               },
-              "customer": {
-                "_id": "67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
-                "firstName": "John",
-                "lastName": null,
-                "email": null,
-                "phone1": null,
-                "phone2": null,
-                "viberId": null,
-                "facebookId": null,
-                "webId": null,
-                "createdBy": null,
-                "updatedBy": null,
-                "createdAt": null,
-                "updatedAt": null,
-                "isAnonymous": false,
-                "__v": 0
+              "customer":{
+                "_id":"67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
+                "firstName":"John",
+                "lastName":null,
+                "email":null,
+                "phone1":null,
+                "phone2":null,
+                "viberId":null,
+                "facebookId":null,
+                "webId":null,
+                "createdBy":null,
+                "updatedBy":null,
+                "createdAt":null,
+                "updatedAt":null,
+                "isAnonymous":false,
+                "__v":0
               },
-              "customerSuggestions": [],
-              "channelData": {
-                "channelCustomerIdentifier": "97962945",
-                "serviceIdentifier": "+921218",
-                "requestPriority": 0,
-                "channelTypeCode": "webChannel",
-                "additionalAttributes": []
+              "customerSuggestions":[
+
+              ],
+              "channelData":{
+                "channelCustomerIdentifier":"97962945",
+                "serviceIdentifier":"+921218",
+                "requestPriority":0,
+                "channelTypeCode":"webChannel",
+                "additionalAttributes":[
+
+                ]
               },
-              "latestIntent": null,
-              "customerPresence": {
-                "value": null
+              "latestIntent":null,
+              "customerPresence":{
+                "value":null
               },
-              "isActive": true,
-              "topicId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-              "state": "STARTED",
-              "active": true
+              "isActive":true,
+              "topicId":"15584d31-df86-4052-818f-d2bfdba5b92b",
+              "state":"STARTED",
+              "active":true
             },
-            "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
-            "joiningTime": 1636360646203,
-            "token": null,
-            "topicId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-            "isActive": true,
-            "userCredentials": {},
-            "state": "SUBSCRIBED",
-            "stateChangedOn": null
+            "id":"61cf275e-f736-48c9-bc56-d5f46a9dcf86",
+            "joiningTime":1636360646203,
+            "token":null,
+            "topicId":"15584d31-df86-4052-818f-d2bfdba5b92b",
+            "isActive":true,
+            "userCredentials":{
+
+            },
+            "state":"SUBSCRIBED",
+            "stateChangedOn":null
           },
-          "channelData": {
-            "channelCustomerIdentifier": "97962945",
-            "serviceIdentifier": "+921218",
-            "requestPriority": 0,
-            "channelTypeCode": "webChannel",
-            "additionalAttributes": []
+          "channelData":{
+            "channelCustomerIdentifier":"97962945",
+            "serviceIdentifier":"+921218",
+            "requestPriority":0,
+            "channelTypeCode":"webChannel",
+            "additionalAttributes":[
+
+            ]
           },
-          "language": {},
-          "timestamp": 1636360718624,
-          "securityInfo": {},
-          "stamps": [],
-          "intent": null,
-          "entities": {},
-          "channelSession": {
-            "participantType": "ChannelSession",
-            "id": "94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
-            "channel": {
-              "id": "6185267a7ffc8449d4c3c1ce",
-              "name": "web",
-              "serviceIdentifier": "+921218",
-              "tenant": {
-                "id": "30f0726d-ef48-4013-8eeb-74bc2c35625f",
-                "name": null
+          "language":{
+
+          },
+          "timestamp":1636360718624,
+          "securityInfo":{
+
+          },
+          "stamps":[
+
+          ],
+          "intent":null,
+          "entities":{
+
+          },
+          "channelSession":{
+            "participantType":"ChannelSession",
+            "id":"94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
+            "channel":{
+              "id":"6185267a7ffc8449d4c3c1ce",
+              "name":"web",
+              "serviceIdentifier":"+921218",
+              "tenant":{
+                "id":"30f0726d-ef48-4013-8eeb-74bc2c35625f",
+                "name":null
               },
-              "channelConfig": {
-                "id": "348b6c36-5dbf-47df-8ba4-8625f00a1785",
-                "channelMode": "HYBRID",
-                "conversationBot": "",
-                "responseSla": 20,
-                "customerActivityTimeout": 20,
-                "customerIdentificationCriteria": {
-                  "value": null
+              "channelConfig":{
+                "id":"348b6c36-5dbf-47df-8ba4-8625f00a1785",
+                "channelMode":"HYBRID",
+                "conversationBot":"",
+                "responseSla":20,
+                "customerActivityTimeout":20,
+                "customerIdentificationCriteria":{
+                  "value":null
                 },
-                "routingPolicy": {
-                  "agentSelectionPolicy": "LONGEST_AVAILABLE",
-                  "routeToLastAgent": true,
-                  "routingMode": "PUSH",
-                  "routingObjectId": "6172426726c3762d4f5f68fe",
-                  "agentRequestTtl": 20
+                "routingPolicy":{
+                  "agentSelectionPolicy":"LONGEST_AVAILABLE",
+                  "routeToLastAgent":true,
+                  "routingMode":"PUSH",
+                  "routingObjectId":"6172426726c3762d4f5f68fe",
+                  "agentRequestTtl":20
                 },
-                "botId": "8b43ef12-f30b-48ce-aa03-c60d450fc042"
+                "botId":"8b43ef12-f30b-48ce-aa03-c60d450fc042"
               },
-              "channelConnector": {
-                "id": "6178062f39b2a10f979a9499",
-                "name": "web connector",
-                "channelProviderInterface": {
-                  "id": "61769ad86959682449337620",
-                  "name": "Web Provider",
-                  "supportedChannelTypes": [
+              "channelConnector":{
+                "id":"6178062f39b2a10f979a9499",
+                "name":"web connector",
+                "channelProviderInterface":{
+                  "id":"61769ad86959682449337620",
+                  "name":"Web Provider",
+                  "supportedChannelTypes":[
                     {
-                      "id": "6176bfde6e67cc29d93be907",
-                      "name": "Web",
-                      "channelLogo": "84458_4485687.png",
-                      "isInteractive": true,
-                      "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+                      "id":"6176bfde6e67cc29d93be907",
+                      "name":"Web",
+                      "channelLogo":"84458_4485687.png",
+                      "isInteractive":true,
+                      "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
                     }
                   ],
-                  "providerWebhook": "http://192.168.50.25:7000/message/receive",
-                  "channelProviderConfigSchema": []
+                  "providerWebhook":"http://192.168.50.25:7000/message/receive",
+                  "channelProviderConfigSchema":[
+
+                  ]
                 },
-                "channelProviderConfigs": [],
-                "tenant": {
-                  "id": "8773b513-6441-42bf-99d4-e243afbb3a07",
-                  "name": null
+                "channelProviderConfigs":[
+
+                ],
+                "tenant":{
+                  "id":"8773b513-6441-42bf-99d4-e243afbb3a07",
+                  "name":null
                 }
               },
-              "channelType": {
-                "id": "6176bfde6e67cc29d93be907",
-                "name": "Web",
-                "channelLogo": "84458_4485687.png",
-                "isInteractive": true,
-                "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+              "channelType":{
+                "id":"6176bfde6e67cc29d93be907",
+                "name":"Web",
+                "channelLogo":"84458_4485687.png",
+                "isInteractive":true,
+                "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
               }
             },
-            "customer": {
-              "_id": "67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
-              "firstName": "John",
-              "lastName": null,
-              "email": null,
-              "phone1": null,
-              "phone2": null,
-              "viberId": null,
-              "facebookId": null,
-              "webId": null,
-              "createdBy": null,
-              "updatedBy": null,
-              "createdAt": null,
-              "updatedAt": null,
-              "isAnonymous": false,
-              "__v": 0
+            "customer":{
+              "_id":"67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
+              "firstName":"John",
+              "lastName":null,
+              "email":null,
+              "phone1":null,
+              "phone2":null,
+              "viberId":null,
+              "facebookId":null,
+              "webId":null,
+              "createdBy":null,
+              "updatedBy":null,
+              "createdAt":null,
+              "updatedAt":null,
+              "isAnonymous":false,
+              "__v":0
             },
-            "customerSuggestions": [],
-            "channelData": {
-              "channelCustomerIdentifier": "97962945",
-              "serviceIdentifier": "+921218",
-              "requestPriority": 0,
-              "channelTypeCode": "webChannel",
-              "additionalAttributes": []
+            "customerSuggestions":[
+
+            ],
+            "channelData":{
+              "channelCustomerIdentifier":"97962945",
+              "serviceIdentifier":"+921218",
+              "requestPriority":0,
+              "channelTypeCode":"webChannel",
+              "additionalAttributes":[
+
+              ]
             },
-            "latestIntent": null,
-            "customerPresence": {
-              "value": null
+            "latestIntent":null,
+            "customerPresence":{
+              "value":null
             },
-            "isActive": true,
-            "topicId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-            "state": "STARTED",
-            "active": true
+            "isActive":true,
+            "topicId":"15584d31-df86-4052-818f-d2bfdba5b92b",
+            "state":"STARTED",
+            "active":true
           }
         },
-        "body": {
-          "type": "PLAIN",
-          "markdownText": "hello"
+        "body":{
+          "type":"PLAIN",
+          "markdownText":"hello"
         }
       }
     },
     {
-      "id": "429e2d26-7a38-4459-8096-23f8f9ef282f",
-      "name": "BOT_MESSAGE",
-      "type": "MESSAGE",
-      "timestamp": "2021-11-08T08:37:31.334+00:00",
-      "data": {
-        "id": "888336aa-f021-4103-bbfd-01bf913e941f",
-        "header": {
-          "sender": {
-            "type": "BOT",
-            "role": "PRIMARY",
-            "participant": {
-              "participantType": "TopicMonitor",
-              "id": "2d8e6049-ee1b-482a-8013-4c758f893d60",
-              "displayName": "Topic Monitor: 2d8e6049-ee1b-482a-8013-4c758f893d60"
+      "id":"429e2d26-7a38-4459-8096-23f8f9ef282f",
+      "name":"BOT_MESSAGE",
+      "type":"MESSAGE",
+      "timestamp":"2021-11-08T08:37:31.334+00:00",
+      "data":{
+        "id":"888336aa-f021-4103-bbfd-01bf913e941f",
+        "header":{
+          "sender":{
+            "type":"BOT",
+            "role":"PRIMARY",
+            "participant":{
+              "participantType":"TopicMonitor",
+              "id":"2d8e6049-ee1b-482a-8013-4c758f893d60",
+              "displayName":"Topic Monitor: 2d8e6049-ee1b-482a-8013-4c758f893d60"
             },
-            "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
-            "joiningTime": 1636360645775,
-            "token": null,
-            "topicId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-            "isActive": true,
-            "userCredentials": {},
-            "state": "SUBSCRIBED",
-            "stateChangedOn": 1636360645775
+            "id":"cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
+            "joiningTime":1636360645775,
+            "token":null,
+            "topicId":"15584d31-df86-4052-818f-d2bfdba5b92b",
+            "isActive":true,
+            "userCredentials":{
+
+            },
+            "state":"SUBSCRIBED",
+            "stateChangedOn":1636360645775
           },
-          "channelData": {
-            "channelCustomerIdentifier": "97962945",
-            "serviceIdentifier": "+921218",
-            "requestPriority": 0,
-            "channelTypeCode": "webChannel",
-            "additionalAttributes": []
+          "channelData":{
+            "channelCustomerIdentifier":"97962945",
+            "serviceIdentifier":"+921218",
+            "requestPriority":0,
+            "channelTypeCode":"webChannel",
+            "additionalAttributes":[
+
+            ]
           },
-          "language": {},
-          "timestamp": 1636360718624,
-          "securityInfo": {},
-          "stamps": [],
-          "intent": null,
-          "entities": {},
-          "channelSession": {
-            "participantType": "ChannelSession",
-            "id": "94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
-            "channel": {
-              "id": "6185267a7ffc8449d4c3c1ce",
-              "name": "web",
-              "serviceIdentifier": "+921218",
-              "tenant": {
-                "id": "30f0726d-ef48-4013-8eeb-74bc2c35625f",
-                "name": null
+          "language":{
+
+          },
+          "timestamp":1636360718624,
+          "securityInfo":{
+
+          },
+          "stamps":[
+
+          ],
+          "intent":null,
+          "entities":{
+
+          },
+          "channelSession":{
+            "participantType":"ChannelSession",
+            "id":"94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
+            "channel":{
+              "id":"6185267a7ffc8449d4c3c1ce",
+              "name":"web",
+              "serviceIdentifier":"+921218",
+              "tenant":{
+                "id":"30f0726d-ef48-4013-8eeb-74bc2c35625f",
+                "name":null
               },
-              "channelConfig": {
-                "id": "348b6c36-5dbf-47df-8ba4-8625f00a1785",
-                "channelMode": "HYBRID",
-                "conversationBot": "",
-                "responseSla": 20,
-                "customerActivityTimeout": 20,
-                "customerIdentificationCriteria": {
-                  "value": null
+              "channelConfig":{
+                "id":"348b6c36-5dbf-47df-8ba4-8625f00a1785",
+                "channelMode":"HYBRID",
+                "conversationBot":"",
+                "responseSla":20,
+                "customerActivityTimeout":20,
+                "customerIdentificationCriteria":{
+                  "value":null
                 },
-                "routingPolicy": {
-                  "agentSelectionPolicy": "LONGEST_AVAILABLE",
-                  "routeToLastAgent": true,
-                  "routingMode": "PUSH",
-                  "routingObjectId": "6172426726c3762d4f5f68fe",
-                  "agentRequestTtl": 20
+                "routingPolicy":{
+                  "agentSelectionPolicy":"LONGEST_AVAILABLE",
+                  "routeToLastAgent":true,
+                  "routingMode":"PUSH",
+                  "routingObjectId":"6172426726c3762d4f5f68fe",
+                  "agentRequestTtl":20
                 },
-                "botId": "8b43ef12-f30b-48ce-aa03-c60d450fc042"
+                "botId":"8b43ef12-f30b-48ce-aa03-c60d450fc042"
               },
-              "channelConnector": {
-                "id": "6178062f39b2a10f979a9499",
-                "name": "web connector",
-                "channelProviderInterface": {
-                  "id": "61769ad86959682449337620",
-                  "name": "Web Provider",
-                  "supportedChannelTypes": [
+              "channelConnector":{
+                "id":"6178062f39b2a10f979a9499",
+                "name":"web connector",
+                "channelProviderInterface":{
+                  "id":"61769ad86959682449337620",
+                  "name":"Web Provider",
+                  "supportedChannelTypes":[
                     {
-                      "id": "6176bfde6e67cc29d93be907",
-                      "name": "Web",
-                      "channelLogo": "84458_4485687.png",
-                      "isInteractive": true,
-                      "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+                      "id":"6176bfde6e67cc29d93be907",
+                      "name":"Web",
+                      "channelLogo":"84458_4485687.png",
+                      "isInteractive":true,
+                      "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
                     }
                   ],
-                  "providerWebhook": "http://192.168.50.25:7000/message/receive",
-                  "channelProviderConfigSchema": []
+                  "providerWebhook":"http://192.168.50.25:7000/message/receive",
+                  "channelProviderConfigSchema":[
+
+                  ]
                 },
-                "channelProviderConfigs": [],
-                "tenant": {
-                  "id": "8773b513-6441-42bf-99d4-e243afbb3a07",
-                  "name": null
+                "channelProviderConfigs":[
+
+                ],
+                "tenant":{
+                  "id":"8773b513-6441-42bf-99d4-e243afbb3a07",
+                  "name":null
                 }
               },
-              "channelType": {
-                "id": "6176bfde6e67cc29d93be907",
-                "name": "Web",
-                "channelLogo": "84458_4485687.png",
-                "isInteractive": true,
-                "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+              "channelType":{
+                "id":"6176bfde6e67cc29d93be907",
+                "name":"Web",
+                "channelLogo":"84458_4485687.png",
+                "isInteractive":true,
+                "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
               }
             },
-            "customer": {
-              "_id": "67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
-              "firstName": "John",
-              "lastName": null,
-              "email": null,
-              "phone1": null,
-              "phone2": null,
-              "viberId": null,
-              "facebookId": null,
-              "webId": null,
-              "createdBy": null,
-              "updatedBy": null,
-              "createdAt": null,
-              "updatedAt": null,
-              "isAnonymous": false,
-              "__v": 0
+            "customer":{
+              "_id":"67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
+              "firstName":"John",
+              "lastName":null,
+              "email":null,
+              "phone1":null,
+              "phone2":null,
+              "viberId":null,
+              "facebookId":null,
+              "webId":null,
+              "createdBy":null,
+              "updatedBy":null,
+              "createdAt":null,
+              "updatedAt":null,
+              "isAnonymous":false,
+              "__v":0
             },
-            "customerSuggestions": [],
-            "channelData": {
-              "channelCustomerIdentifier": "97962945",
-              "serviceIdentifier": "+921218",
-              "requestPriority": 0,
-              "channelTypeCode": "webChannel",
-              "additionalAttributes": []
+            "customerSuggestions":[
+
+            ],
+            "channelData":{
+              "channelCustomerIdentifier":"97962945",
+              "serviceIdentifier":"+921218",
+              "requestPriority":0,
+              "channelTypeCode":"webChannel",
+              "additionalAttributes":[
+
+              ]
             },
-            "latestIntent": null,
-            "customerPresence": {
-              "value": null
+            "latestIntent":null,
+            "customerPresence":{
+              "value":null
             },
-            "isActive": true,
-            "topicId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-            "state": "STARTED",
-            "active": true
+            "isActive":true,
+            "topicId":"15584d31-df86-4052-818f-d2bfdba5b92b",
+            "state":"STARTED",
+            "active":true
           }
         },
-        "body": {
-          "type": "PLAIN",
-          "markdownText": "Reply Y if you are ok to answer 6 questions, reply N if you want to chat with Expertflow representative. If you don't reply within 20 seconds, your chat will be automatically handed over to the Expertflow representative."
+        "body":{
+          "type":"PLAIN",
+          "markdownText":"Reply Y if you are ok to answer 6 questions, reply N if you want to chat with Expertflow representative. If you don't reply within 20 seconds, your chat will be automatically handed over to the Expertflow representative."
         }
       }
     },
     {
-      "id": "1ed1c1af-4f8f-417c-be0a-5e3d804b518f",
-      "name": "CUSTOMER_MESSAGE",
-      "type": "MESSAGE",
-      "timestamp": "2021-11-08T08:37:33.219+00:00",
-      "data": {
-        "id": "46a26c80-406f-11ec-b464-a55184008c6c",
-        "header": {
-          "sender": {
-            "type": "CUSTOMER",
-            "role": "CUSTOMER",
-            "participant": {
-              "participantType": "ChannelSession",
-              "id": "94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
-              "channel": {
-                "id": "6185267a7ffc8449d4c3c1ce",
-                "name": "web",
-                "serviceIdentifier": "+921218",
-                "tenant": {
-                  "id": "30f0726d-ef48-4013-8eeb-74bc2c35625f",
-                  "name": null
+      "id":"1ed1c1af-4f8f-417c-be0a-5e3d804b518f",
+      "name":"CUSTOMER_MESSAGE",
+      "type":"MESSAGE",
+      "timestamp":"2021-11-08T08:37:33.219+00:00",
+      "data":{
+        "id":"46a26c80-406f-11ec-b464-a55184008c6c",
+        "header":{
+          "sender":{
+            "type":"CUSTOMER",
+            "role":"CUSTOMER",
+            "participant":{
+              "participantType":"ChannelSession",
+              "id":"94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
+              "channel":{
+                "id":"6185267a7ffc8449d4c3c1ce",
+                "name":"web",
+                "serviceIdentifier":"+921218",
+                "tenant":{
+                  "id":"30f0726d-ef48-4013-8eeb-74bc2c35625f",
+                  "name":null
                 },
-                "channelConfig": {
-                  "id": "348b6c36-5dbf-47df-8ba4-8625f00a1785",
-                  "channelMode": "HYBRID",
-                  "conversationBot": "",
-                  "responseSla": 20,
-                  "customerActivityTimeout": 20,
-                  "customerIdentificationCriteria": {
-                    "value": null
+                "channelConfig":{
+                  "id":"348b6c36-5dbf-47df-8ba4-8625f00a1785",
+                  "channelMode":"HYBRID",
+                  "conversationBot":"",
+                  "responseSla":20,
+                  "customerActivityTimeout":20,
+                  "customerIdentificationCriteria":{
+                    "value":null
                   },
-                  "routingPolicy": {
-                    "agentSelectionPolicy": "LONGEST_AVAILABLE",
-                    "routeToLastAgent": true,
-                    "routingMode": "PUSH",
-                    "routingObjectId": "6172426726c3762d4f5f68fe",
-                    "agentRequestTtl": 20
+                  "routingPolicy":{
+                    "agentSelectionPolicy":"LONGEST_AVAILABLE",
+                    "routeToLastAgent":true,
+                    "routingMode":"PUSH",
+                    "routingObjectId":"6172426726c3762d4f5f68fe",
+                    "agentRequestTtl":20
                   },
-                  "botId": "8b43ef12-f30b-48ce-aa03-c60d450fc042"
+                  "botId":"8b43ef12-f30b-48ce-aa03-c60d450fc042"
                 },
-                "channelConnector": {
-                  "id": "6178062f39b2a10f979a9499",
-                  "name": "web connector",
-                  "channelProviderInterface": {
-                    "id": "61769ad86959682449337620",
-                    "name": "Web Provider",
-                    "supportedChannelTypes": [
+                "channelConnector":{
+                  "id":"6178062f39b2a10f979a9499",
+                  "name":"web connector",
+                  "channelProviderInterface":{
+                    "id":"61769ad86959682449337620",
+                    "name":"Web Provider",
+                    "supportedChannelTypes":[
                       {
-                        "id": "6176bfde6e67cc29d93be907",
-                        "name": "Web",
-                        "channelLogo": "84458_4485687.png",
-                        "isInteractive": true,
-                        "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+                        "id":"6176bfde6e67cc29d93be907",
+                        "name":"Web",
+                        "channelLogo":"84458_4485687.png",
+                        "isInteractive":true,
+                        "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
                       }
                     ],
-                    "providerWebhook": "http://192.168.50.25:7000/message/receive",
-                    "channelProviderConfigSchema": []
+                    "providerWebhook":"http://192.168.50.25:7000/message/receive",
+                    "channelProviderConfigSchema":[
+
+                    ]
                   },
-                  "channelProviderConfigs": [],
-                  "tenant": {
-                    "id": "8773b513-6441-42bf-99d4-e243afbb3a07",
-                    "name": null
+                  "channelProviderConfigs":[
+
+                  ],
+                  "tenant":{
+                    "id":"8773b513-6441-42bf-99d4-e243afbb3a07",
+                    "name":null
                   }
                 },
-                "channelType": {
-                  "id": "6176bfde6e67cc29d93be907",
-                  "name": "Web",
-                  "channelLogo": "84458_4485687.png",
-                  "isInteractive": true,
-                  "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+                "channelType":{
+                  "id":"6176bfde6e67cc29d93be907",
+                  "name":"Web",
+                  "channelLogo":"84458_4485687.png",
+                  "isInteractive":true,
+                  "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
                 }
               },
-              "customer": {
-                "_id": "67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
-                "firstName": "John",
-                "lastName": null,
-                "email": null,
-                "phone1": null,
-                "phone2": null,
-                "viberId": null,
-                "facebookId": null,
-                "webId": null,
-                "createdBy": null,
-                "updatedBy": null,
-                "createdAt": null,
-                "updatedAt": null,
-                "isAnonymous": false,
-                "__v": 0
+              "customer":{
+                "_id":"67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
+                "firstName":"John",
+                "lastName":null,
+                "email":null,
+                "phone1":null,
+                "phone2":null,
+                "viberId":null,
+                "facebookId":null,
+                "webId":null,
+                "createdBy":null,
+                "updatedBy":null,
+                "createdAt":null,
+                "updatedAt":null,
+                "isAnonymous":false,
+                "__v":0
               },
-              "customerSuggestions": [],
-              "channelData": {
-                "channelCustomerIdentifier": "97962945",
-                "serviceIdentifier": "+921218",
-                "requestPriority": 0,
-                "channelTypeCode": "webChannel",
-                "additionalAttributes": []
+              "customerSuggestions":[
+
+              ],
+              "channelData":{
+                "channelCustomerIdentifier":"97962945",
+                "serviceIdentifier":"+921218",
+                "requestPriority":0,
+                "channelTypeCode":"webChannel",
+                "additionalAttributes":[
+
+                ]
               },
-              "latestIntent": null,
-              "customerPresence": {
-                "value": null
+              "latestIntent":null,
+              "customerPresence":{
+                "value":null
               },
-              "isActive": true,
-              "topicId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-              "state": "STARTED",
-              "active": true
+              "isActive":true,
+              "topicId":"15584d31-df86-4052-818f-d2bfdba5b92b",
+              "state":"STARTED",
+              "active":true
             },
-            "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
-            "joiningTime": 1636360646203,
-            "token": null,
-            "topicId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-            "isActive": true,
-            "userCredentials": {},
-            "state": "SUBSCRIBED",
-            "stateChangedOn": null
+            "id":"61cf275e-f736-48c9-bc56-d5f46a9dcf86",
+            "joiningTime":1636360646203,
+            "token":null,
+            "topicId":"15584d31-df86-4052-818f-d2bfdba5b92b",
+            "isActive":true,
+            "userCredentials":{
+
+            },
+            "state":"SUBSCRIBED",
+            "stateChangedOn":null
           },
-          "channelData": {
-            "channelCustomerIdentifier": "97962945",
-            "serviceIdentifier": "+921218",
-            "requestPriority": 0,
-            "channelTypeCode": "webChannel",
-            "additionalAttributes": []
+          "channelData":{
+            "channelCustomerIdentifier":"97962945",
+            "serviceIdentifier":"+921218",
+            "requestPriority":0,
+            "channelTypeCode":"webChannel",
+            "additionalAttributes":[
+
+            ]
           },
-          "language": {},
-          "timestamp": 1636360721224,
-          "securityInfo": {},
-          "stamps": [],
-          "intent": null,
-          "entities": {},
-          "channelSession": {
-            "participantType": "ChannelSession",
-            "id": "94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
-            "channel": {
-              "id": "6185267a7ffc8449d4c3c1ce",
-              "name": "web",
-              "serviceIdentifier": "+921218",
-              "tenant": {
-                "id": "30f0726d-ef48-4013-8eeb-74bc2c35625f",
-                "name": null
+          "language":{
+
+          },
+          "timestamp":1636360721224,
+          "securityInfo":{
+
+          },
+          "stamps":[
+
+          ],
+          "intent":null,
+          "entities":{
+
+          },
+          "channelSession":{
+            "participantType":"ChannelSession",
+            "id":"94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
+            "channel":{
+              "id":"6185267a7ffc8449d4c3c1ce",
+              "name":"web",
+              "serviceIdentifier":"+921218",
+              "tenant":{
+                "id":"30f0726d-ef48-4013-8eeb-74bc2c35625f",
+                "name":null
               },
-              "channelConfig": {
-                "id": "348b6c36-5dbf-47df-8ba4-8625f00a1785",
-                "channelMode": "HYBRID",
-                "conversationBot": "",
-                "responseSla": 20,
-                "customerActivityTimeout": 20,
-                "customerIdentificationCriteria": {
-                  "value": null
+              "channelConfig":{
+                "id":"348b6c36-5dbf-47df-8ba4-8625f00a1785",
+                "channelMode":"HYBRID",
+                "conversationBot":"",
+                "responseSla":20,
+                "customerActivityTimeout":20,
+                "customerIdentificationCriteria":{
+                  "value":null
                 },
-                "routingPolicy": {
-                  "agentSelectionPolicy": "LONGEST_AVAILABLE",
-                  "routeToLastAgent": true,
-                  "routingMode": "PUSH",
-                  "routingObjectId": "6172426726c3762d4f5f68fe",
-                  "agentRequestTtl": 20
+                "routingPolicy":{
+                  "agentSelectionPolicy":"LONGEST_AVAILABLE",
+                  "routeToLastAgent":true,
+                  "routingMode":"PUSH",
+                  "routingObjectId":"6172426726c3762d4f5f68fe",
+                  "agentRequestTtl":20
                 },
-                "botId": "8b43ef12-f30b-48ce-aa03-c60d450fc042"
+                "botId":"8b43ef12-f30b-48ce-aa03-c60d450fc042"
               },
-              "channelConnector": {
-                "id": "6178062f39b2a10f979a9499",
-                "name": "web connector",
-                "channelProviderInterface": {
-                  "id": "61769ad86959682449337620",
-                  "name": "Web Provider",
-                  "supportedChannelTypes": [
+              "channelConnector":{
+                "id":"6178062f39b2a10f979a9499",
+                "name":"web connector",
+                "channelProviderInterface":{
+                  "id":"61769ad86959682449337620",
+                  "name":"Web Provider",
+                  "supportedChannelTypes":[
                     {
-                      "id": "6176bfde6e67cc29d93be907",
-                      "name": "Web",
-                      "channelLogo": "84458_4485687.png",
-                      "isInteractive": true,
-                      "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+                      "id":"6176bfde6e67cc29d93be907",
+                      "name":"Web",
+                      "channelLogo":"84458_4485687.png",
+                      "isInteractive":true,
+                      "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
                     }
                   ],
-                  "providerWebhook": "http://192.168.50.25:7000/message/receive",
-                  "channelProviderConfigSchema": []
+                  "providerWebhook":"http://192.168.50.25:7000/message/receive",
+                  "channelProviderConfigSchema":[
+
+                  ]
                 },
-                "channelProviderConfigs": [],
-                "tenant": {
-                  "id": "8773b513-6441-42bf-99d4-e243afbb3a07",
-                  "name": null
+                "channelProviderConfigs":[
+
+                ],
+                "tenant":{
+                  "id":"8773b513-6441-42bf-99d4-e243afbb3a07",
+                  "name":null
                 }
               },
-              "channelType": {
-                "id": "6176bfde6e67cc29d93be907",
-                "name": "Web",
-                "channelLogo": "84458_4485687.png",
-                "isInteractive": true,
-                "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+              "channelType":{
+                "id":"6176bfde6e67cc29d93be907",
+                "name":"Web",
+                "channelLogo":"84458_4485687.png",
+                "isInteractive":true,
+                "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
               }
             },
-            "customer": {
-              "_id": "67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
-              "firstName": "John",
-              "lastName": null,
-              "email": null,
-              "phone1": null,
-              "phone2": null,
-              "viberId": null,
-              "facebookId": null,
-              "webId": null,
-              "createdBy": null,
-              "updatedBy": null,
-              "createdAt": null,
-              "updatedAt": null,
-              "isAnonymous": false,
-              "__v": 0
+            "customer":{
+              "_id":"67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
+              "firstName":"John",
+              "lastName":null,
+              "email":null,
+              "phone1":null,
+              "phone2":null,
+              "viberId":null,
+              "facebookId":null,
+              "webId":null,
+              "createdBy":null,
+              "updatedBy":null,
+              "createdAt":null,
+              "updatedAt":null,
+              "isAnonymous":false,
+              "__v":0
             },
-            "customerSuggestions": [],
-            "channelData": {
-              "channelCustomerIdentifier": "97962945",
-              "serviceIdentifier": "+921218",
-              "requestPriority": 0,
-              "channelTypeCode": "webChannel",
-              "additionalAttributes": []
+            "customerSuggestions":[
+
+            ],
+            "channelData":{
+              "channelCustomerIdentifier":"97962945",
+              "serviceIdentifier":"+921218",
+              "requestPriority":0,
+              "channelTypeCode":"webChannel",
+              "additionalAttributes":[
+
+              ]
             },
-            "latestIntent": null,
-            "customerPresence": {
-              "value": null
+            "latestIntent":null,
+            "customerPresence":{
+              "value":null
             },
-            "isActive": true,
-            "topicId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-            "state": "STARTED",
-            "active": true
+            "isActive":true,
+            "topicId":"15584d31-df86-4052-818f-d2bfdba5b92b",
+            "state":"STARTED",
+            "active":true
           }
         },
-        "body": {
-          "type": "PLAIN",
-          "markdownText": "no"
+        "body":{
+          "type":"PLAIN",
+          "markdownText":"no"
         }
       }
     },
     {
-      "id": "bb0d85fe-fb70-4803-86f1-87369e9726df",
-      "name": "BOT_MESSAGE",
-      "type": "MESSAGE",
-      "timestamp": "2021-11-08T08:37:33.740+00:00",
-      "data": {
-        "id": "06e8cea0-8b06-4a12-9b93-89ebc36f009b",
-        "header": {
-          "sender": {
-            "type": "BOT",
-            "role": "PRIMARY",
-            "participant": {
-              "participantType": "TopicMonitor",
-              "id": "2d8e6049-ee1b-482a-8013-4c758f893d60",
-              "displayName": "Topic Monitor: 2d8e6049-ee1b-482a-8013-4c758f893d60"
+      "id":"bb0d85fe-fb70-4803-86f1-87369e9726df",
+      "name":"BOT_MESSAGE",
+      "type":"MESSAGE",
+      "timestamp":"2021-11-08T08:37:33.740+00:00",
+      "data":{
+        "id":"06e8cea0-8b06-4a12-9b93-89ebc36f009b",
+        "header":{
+          "sender":{
+            "type":"BOT",
+            "role":"PRIMARY",
+            "participant":{
+              "participantType":"TopicMonitor",
+              "id":"2d8e6049-ee1b-482a-8013-4c758f893d60",
+              "displayName":"Topic Monitor: 2d8e6049-ee1b-482a-8013-4c758f893d60"
             },
-            "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
-            "joiningTime": 1636360645775,
-            "token": null,
-            "topicId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-            "isActive": true,
-            "userCredentials": {},
-            "state": "SUBSCRIBED",
-            "stateChangedOn": 1636360645775
+            "id":"cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
+            "joiningTime":1636360645775,
+            "token":null,
+            "topicId":"15584d31-df86-4052-818f-d2bfdba5b92b",
+            "isActive":true,
+            "userCredentials":{
+
+            },
+            "state":"SUBSCRIBED",
+            "stateChangedOn":1636360645775
           },
-          "channelData": {
-            "channelCustomerIdentifier": "97962945",
-            "serviceIdentifier": "+921218",
-            "requestPriority": 0,
-            "channelTypeCode": "webChannel",
-            "additionalAttributes": []
+          "channelData":{
+            "channelCustomerIdentifier":"97962945",
+            "serviceIdentifier":"+921218",
+            "requestPriority":0,
+            "channelTypeCode":"webChannel",
+            "additionalAttributes":[
+
+            ]
           },
-          "language": {},
-          "timestamp": 1636360721224,
-          "securityInfo": {},
-          "stamps": [],
-          "intent": null,
-          "entities": {},
-          "channelSession": {
-            "participantType": "ChannelSession",
-            "id": "94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
-            "channel": {
-              "id": "6185267a7ffc8449d4c3c1ce",
-              "name": "web",
-              "serviceIdentifier": "+921218",
-              "tenant": {
-                "id": "30f0726d-ef48-4013-8eeb-74bc2c35625f",
-                "name": null
+          "language":{
+
+          },
+          "timestamp":1636360721224,
+          "securityInfo":{
+
+          },
+          "stamps":[
+
+          ],
+          "intent":null,
+          "entities":{
+
+          },
+          "channelSession":{
+            "participantType":"ChannelSession",
+            "id":"94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
+            "channel":{
+              "id":"6185267a7ffc8449d4c3c1ce",
+              "name":"web",
+              "serviceIdentifier":"+921218",
+              "tenant":{
+                "id":"30f0726d-ef48-4013-8eeb-74bc2c35625f",
+                "name":null
               },
-              "channelConfig": {
-                "id": "348b6c36-5dbf-47df-8ba4-8625f00a1785",
-                "channelMode": "HYBRID",
-                "conversationBot": "",
-                "responseSla": 20,
-                "customerActivityTimeout": 20,
-                "customerIdentificationCriteria": {
-                  "value": null
+              "channelConfig":{
+                "id":"348b6c36-5dbf-47df-8ba4-8625f00a1785",
+                "channelMode":"HYBRID",
+                "conversationBot":"",
+                "responseSla":20,
+                "customerActivityTimeout":20,
+                "customerIdentificationCriteria":{
+                  "value":null
                 },
-                "routingPolicy": {
-                  "agentSelectionPolicy": "LONGEST_AVAILABLE",
-                  "routeToLastAgent": true,
-                  "routingMode": "PUSH",
-                  "routingObjectId": "6172426726c3762d4f5f68fe",
-                  "agentRequestTtl": 20
+                "routingPolicy":{
+                  "agentSelectionPolicy":"LONGEST_AVAILABLE",
+                  "routeToLastAgent":true,
+                  "routingMode":"PUSH",
+                  "routingObjectId":"6172426726c3762d4f5f68fe",
+                  "agentRequestTtl":20
                 },
-                "botId": "8b43ef12-f30b-48ce-aa03-c60d450fc042"
+                "botId":"8b43ef12-f30b-48ce-aa03-c60d450fc042"
               },
-              "channelConnector": {
-                "id": "6178062f39b2a10f979a9499",
-                "name": "web connector",
-                "channelProviderInterface": {
-                  "id": "61769ad86959682449337620",
-                  "name": "Web Provider",
-                  "supportedChannelTypes": [
+              "channelConnector":{
+                "id":"6178062f39b2a10f979a9499",
+                "name":"web connector",
+                "channelProviderInterface":{
+                  "id":"61769ad86959682449337620",
+                  "name":"Web Provider",
+                  "supportedChannelTypes":[
                     {
-                      "id": "6176bfde6e67cc29d93be907",
-                      "name": "Web",
-                      "channelLogo": "84458_4485687.png",
-                      "isInteractive": true,
-                      "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+                      "id":"6176bfde6e67cc29d93be907",
+                      "name":"Web",
+                      "channelLogo":"84458_4485687.png",
+                      "isInteractive":true,
+                      "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
                     }
                   ],
-                  "providerWebhook": "http://192.168.50.25:7000/message/receive",
-                  "channelProviderConfigSchema": []
+                  "providerWebhook":"http://192.168.50.25:7000/message/receive",
+                  "channelProviderConfigSchema":[
+
+                  ]
                 },
-                "channelProviderConfigs": [],
-                "tenant": {
-                  "id": "8773b513-6441-42bf-99d4-e243afbb3a07",
-                  "name": null
+                "channelProviderConfigs":[
+
+                ],
+                "tenant":{
+                  "id":"8773b513-6441-42bf-99d4-e243afbb3a07",
+                  "name":null
                 }
               },
-              "channelType": {
-                "id": "6176bfde6e67cc29d93be907",
-                "name": "Web",
-                "channelLogo": "84458_4485687.png",
-                "isInteractive": true,
-                "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+              "channelType":{
+                "id":"6176bfde6e67cc29d93be907",
+                "name":"Web",
+                "channelLogo":"84458_4485687.png",
+                "isInteractive":true,
+                "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
               }
             },
-            "customer": {
-              "_id": "67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
-              "firstName": "John",
-              "lastName": null,
-              "email": null,
-              "phone1": null,
-              "phone2": null,
-              "viberId": null,
-              "facebookId": null,
-              "webId": null,
-              "createdBy": null,
-              "updatedBy": null,
-              "createdAt": null,
-              "updatedAt": null,
-              "isAnonymous": false,
-              "__v": 0
+            "customer":{
+              "_id":"67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
+              "firstName":"John",
+              "lastName":null,
+              "email":null,
+              "phone1":null,
+              "phone2":null,
+              "viberId":null,
+              "facebookId":null,
+              "webId":null,
+              "createdBy":null,
+              "updatedBy":null,
+              "createdAt":null,
+              "updatedAt":null,
+              "isAnonymous":false,
+              "__v":0
             },
-            "customerSuggestions": [],
-            "channelData": {
-              "channelCustomerIdentifier": "97962945",
-              "serviceIdentifier": "+921218",
-              "requestPriority": 0,
-              "channelTypeCode": "webChannel",
-              "additionalAttributes": []
+            "customerSuggestions":[
+
+            ],
+            "channelData":{
+              "channelCustomerIdentifier":"97962945",
+              "serviceIdentifier":"+921218",
+              "requestPriority":0,
+              "channelTypeCode":"webChannel",
+              "additionalAttributes":[
+
+              ]
             },
-            "latestIntent": null,
-            "customerPresence": {
-              "value": null
+            "latestIntent":null,
+            "customerPresence":{
+              "value":null
             },
-            "isActive": true,
-            "topicId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-            "state": "STARTED",
-            "active": true
+            "isActive":true,
+            "topicId":"15584d31-df86-4052-818f-d2bfdba5b92b",
+            "state":"STARTED",
+            "active":true
           }
         },
-        "body": {
-          "type": "PLAIN",
-          "markdownText": "Thank you a Crisis Supporter will be with you shortly."
+        "body":{
+          "type":"PLAIN",
+          "markdownText":"Thank you a Crisis Supporter will be with you shortly."
         }
       }
     },
     {
-      "id": "c478ff39-5049-4800-97ab-e1f86a32e373",
-      "name": "TASK_STATE_CHANGED",
-      "type": "NOTIFICATION",
-      "timestamp": "2021-11-08T08:37:34.078+00:00",
-      "data": {
-        "id": "2cb9dc30-1017-4095-869f-2a4e3e291d39",
-        "channelSession": {
-          "participantType": "ChannelSession",
-          "id": "94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
-          "channel": {
-            "id": "6185267a7ffc8449d4c3c1ce",
-            "name": "web",
-            "serviceIdentifier": "+921218",
-            "tenant": {
-              "id": "30f0726d-ef48-4013-8eeb-74bc2c35625f",
-              "name": null
+      "id":"c478ff39-5049-4800-97ab-e1f86a32e373",
+      "name":"TASK_STATE_CHANGED",
+      "type":"NOTIFICATION",
+      "timestamp":"2021-11-08T08:37:34.078+00:00",
+      "data":{
+        "id":"2cb9dc30-1017-4095-869f-2a4e3e291d39",
+        "channelSession":{
+          "participantType":"ChannelSession",
+          "id":"94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
+          "channel":{
+            "id":"6185267a7ffc8449d4c3c1ce",
+            "name":"web",
+            "serviceIdentifier":"+921218",
+            "tenant":{
+              "id":"30f0726d-ef48-4013-8eeb-74bc2c35625f",
+              "name":null
             },
-            "channelConfig": {
-              "id": "348b6c36-5dbf-47df-8ba4-8625f00a1785",
-              "channelMode": "HYBRID",
-              "conversationBot": "",
-              "responseSla": 20,
-              "customerActivityTimeout": 20,
-              "customerIdentificationCriteria": {
-                "value": null
+            "channelConfig":{
+              "id":"348b6c36-5dbf-47df-8ba4-8625f00a1785",
+              "channelMode":"HYBRID",
+              "conversationBot":"",
+              "responseSla":20,
+              "customerActivityTimeout":20,
+              "customerIdentificationCriteria":{
+                "value":null
               },
-              "routingPolicy": {
-                "agentSelectionPolicy": "LONGEST_AVAILABLE",
-                "routeToLastAgent": true,
-                "routingMode": "PUSH",
-                "routingObjectId": "6172426726c3762d4f5f68fe",
-                "agentRequestTtl": 20
+              "routingPolicy":{
+                "agentSelectionPolicy":"LONGEST_AVAILABLE",
+                "routeToLastAgent":true,
+                "routingMode":"PUSH",
+                "routingObjectId":"6172426726c3762d4f5f68fe",
+                "agentRequestTtl":20
               },
-              "botId": "8b43ef12-f30b-48ce-aa03-c60d450fc042"
+              "botId":"8b43ef12-f30b-48ce-aa03-c60d450fc042"
             },
-            "channelConnector": {
-              "id": "6178062f39b2a10f979a9499",
-              "name": "web connector",
-              "channelProviderInterface": {
-                "id": "61769ad86959682449337620",
-                "name": "Web Provider",
-                "supportedChannelTypes": [
+            "channelConnector":{
+              "id":"6178062f39b2a10f979a9499",
+              "name":"web connector",
+              "channelProviderInterface":{
+                "id":"61769ad86959682449337620",
+                "name":"Web Provider",
+                "supportedChannelTypes":[
                   {
-                    "id": "6176bfde6e67cc29d93be907",
-                    "name": "Web",
-                    "channelLogo": "84458_4485687.png",
-                    "isInteractive": true,
-                    "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+                    "id":"6176bfde6e67cc29d93be907",
+                    "name":"Web",
+                    "channelLogo":"84458_4485687.png",
+                    "isInteractive":true,
+                    "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
                   }
                 ],
-                "providerWebhook": "http://192.168.50.25:7000/message/receive",
-                "channelProviderConfigSchema": []
+                "providerWebhook":"http://192.168.50.25:7000/message/receive",
+                "channelProviderConfigSchema":[
+
+                ]
               },
-              "channelProviderConfigs": [],
-              "tenant": {
-                "id": "8773b513-6441-42bf-99d4-e243afbb3a07",
-                "name": null
+              "channelProviderConfigs":[
+
+              ],
+              "tenant":{
+                "id":"8773b513-6441-42bf-99d4-e243afbb3a07",
+                "name":null
               }
             },
-            "channelType": {
-              "id": "6176bfde6e67cc29d93be907",
-              "name": "Web",
-              "channelLogo": "84458_4485687.png",
-              "isInteractive": true,
-              "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+            "channelType":{
+              "id":"6176bfde6e67cc29d93be907",
+              "name":"Web",
+              "channelLogo":"84458_4485687.png",
+              "isInteractive":true,
+              "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
             }
           },
-          "customer": {
-            "_id": "67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
-            "firstName": "John",
-            "lastName": null,
-            "email": null,
-            "phone1": null,
-            "phone2": null,
-            "viberId": null,
-            "facebookId": null,
-            "webId": null,
-            "createdBy": null,
-            "updatedBy": null,
-            "createdAt": null,
-            "updatedAt": null,
-            "isAnonymous": false,
-            "__v": 0
+          "customer":{
+            "_id":"67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
+            "firstName":"John",
+            "lastName":null,
+            "email":null,
+            "phone1":null,
+            "phone2":null,
+            "viberId":null,
+            "facebookId":null,
+            "webId":null,
+            "createdBy":null,
+            "updatedBy":null,
+            "createdAt":null,
+            "updatedAt":null,
+            "isAnonymous":false,
+            "__v":0
           },
-          "customerSuggestions": [],
-          "channelData": {
-            "channelCustomerIdentifier": "97962945",
-            "serviceIdentifier": "+921218",
-            "requestPriority": 0,
-            "channelTypeCode": "webChannel",
-            "additionalAttributes": []
+          "customerSuggestions":[
+
+          ],
+          "channelData":{
+            "channelCustomerIdentifier":"97962945",
+            "serviceIdentifier":"+921218",
+            "requestPriority":0,
+            "channelTypeCode":"webChannel",
+            "additionalAttributes":[
+
+            ]
           },
-          "latestIntent": null,
-          "customerPresence": {
-            "value": null
+          "latestIntent":null,
+          "customerPresence":{
+            "value":null
           },
-          "isActive": true,
-          "topicId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-          "state": "STARTED",
-          "active": true
+          "isActive":true,
+          "topicId":"15584d31-df86-4052-818f-d2bfdba5b92b",
+          "state":"STARTED",
+          "active":true
         },
-        "mrd": {
-          "id": "6172421126c3762d4f5f68fc",
-          "name": "chat-mrd",
-          "description": "handles all chat requests",
-          "interruptible": true,
-          "maxRequests": 5
+        "mrd":{
+          "id":"6172421126c3762d4f5f68fc",
+          "name":"chat-mrd",
+          "description":"handles all chat requests",
+          "interruptible":true,
+          "maxRequests":5
         },
-        "queue": "6172426726c3762d4f5f68fe",
-        "priority": 1,
-        "state": {
-          "name": "QUEUED",
-          "reasonCode": null
+        "queue":"6172426726c3762d4f5f68fe",
+        "priority":1,
+        "state":{
+          "name":"QUEUED",
+          "reasonCode":null
         },
-        "assignedTo": null,
-        "enqueueTime": 1636360654050
+        "assignedTo":null,
+        "enqueueTime":1636360654050
       }
     },
     {
-      "id": "112b92b8-1230-45d8-97f4-d89f2691ac07",
-      "name": "TASK_STATE_CHANGED",
-      "type": "NOTIFICATION",
-      "timestamp": "2021-11-08T08:37:34.692+00:00",
-      "data": {
-        "id": "2cb9dc30-1017-4095-869f-2a4e3e291d39",
-        "channelSession": {
-          "participantType": "ChannelSession",
-          "id": "94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
-          "channel": {
-            "id": "6185267a7ffc8449d4c3c1ce",
-            "name": "web",
-            "serviceIdentifier": "+921218",
-            "tenant": {
-              "id": "30f0726d-ef48-4013-8eeb-74bc2c35625f",
-              "name": null
+      "id":"112b92b8-1230-45d8-97f4-d89f2691ac07",
+      "name":"TASK_STATE_CHANGED",
+      "type":"NOTIFICATION",
+      "timestamp":"2021-11-08T08:37:34.692+00:00",
+      "data":{
+        "id":"2cb9dc30-1017-4095-869f-2a4e3e291d39",
+        "channelSession":{
+          "participantType":"ChannelSession",
+          "id":"94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
+          "channel":{
+            "id":"6185267a7ffc8449d4c3c1ce",
+            "name":"web",
+            "serviceIdentifier":"+921218",
+            "tenant":{
+              "id":"30f0726d-ef48-4013-8eeb-74bc2c35625f",
+              "name":null
             },
-            "channelConfig": {
-              "id": "348b6c36-5dbf-47df-8ba4-8625f00a1785",
-              "channelMode": "HYBRID",
-              "conversationBot": "",
-              "responseSla": 20,
-              "customerActivityTimeout": 20,
-              "customerIdentificationCriteria": {
-                "value": null
+            "channelConfig":{
+              "id":"348b6c36-5dbf-47df-8ba4-8625f00a1785",
+              "channelMode":"HYBRID",
+              "conversationBot":"",
+              "responseSla":20,
+              "customerActivityTimeout":20,
+              "customerIdentificationCriteria":{
+                "value":null
               },
-              "routingPolicy": {
-                "agentSelectionPolicy": "LONGEST_AVAILABLE",
-                "routeToLastAgent": true,
-                "routingMode": "PUSH",
-                "routingObjectId": "6172426726c3762d4f5f68fe",
-                "agentRequestTtl": 20
+              "routingPolicy":{
+                "agentSelectionPolicy":"LONGEST_AVAILABLE",
+                "routeToLastAgent":true,
+                "routingMode":"PUSH",
+                "routingObjectId":"6172426726c3762d4f5f68fe",
+                "agentRequestTtl":20
               },
-              "botId": "8b43ef12-f30b-48ce-aa03-c60d450fc042"
+              "botId":"8b43ef12-f30b-48ce-aa03-c60d450fc042"
             },
-            "channelConnector": {
-              "id": "6178062f39b2a10f979a9499",
-              "name": "web connector",
-              "channelProviderInterface": {
-                "id": "61769ad86959682449337620",
-                "name": "Web Provider",
-                "supportedChannelTypes": [
+            "channelConnector":{
+              "id":"6178062f39b2a10f979a9499",
+              "name":"web connector",
+              "channelProviderInterface":{
+                "id":"61769ad86959682449337620",
+                "name":"Web Provider",
+                "supportedChannelTypes":[
                   {
-                    "id": "6176bfde6e67cc29d93be907",
-                    "name": "Web",
-                    "channelLogo": "84458_4485687.png",
-                    "isInteractive": true,
-                    "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+                    "id":"6176bfde6e67cc29d93be907",
+                    "name":"Web",
+                    "channelLogo":"84458_4485687.png",
+                    "isInteractive":true,
+                    "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
                   }
                 ],
-                "providerWebhook": "http://192.168.50.25:7000/message/receive",
-                "channelProviderConfigSchema": []
+                "providerWebhook":"http://192.168.50.25:7000/message/receive",
+                "channelProviderConfigSchema":[
+
+                ]
               },
-              "channelProviderConfigs": [],
-              "tenant": {
-                "id": "8773b513-6441-42bf-99d4-e243afbb3a07",
-                "name": null
+              "channelProviderConfigs":[
+
+              ],
+              "tenant":{
+                "id":"8773b513-6441-42bf-99d4-e243afbb3a07",
+                "name":null
               }
             },
-            "channelType": {
-              "id": "6176bfde6e67cc29d93be907",
-              "name": "Web",
-              "channelLogo": "84458_4485687.png",
-              "isInteractive": true,
-              "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+            "channelType":{
+              "id":"6176bfde6e67cc29d93be907",
+              "name":"Web",
+              "channelLogo":"84458_4485687.png",
+              "isInteractive":true,
+              "mediaRoutingDomain":"6172421126c3762d4f5f68fc"
             }
           },
-          "customer": {
-            "_id": "67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
-            "firstName": "John",
-            "lastName": null,
-            "email": null,
-            "phone1": null,
-            "phone2": null,
-            "viberId": null,
-            "facebookId": null,
-            "webId": null,
-            "createdBy": null,
-            "updatedBy": null,
-            "createdAt": null,
-            "updatedAt": null,
-            "isAnonymous": false,
-            "__v": 0
+          "customer":{
+            "_id":"67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
+            "firstName":"John",
+            "lastName":null,
+            "email":null,
+            "phone1":null,
+            "phone2":null,
+            "viberId":null,
+            "facebookId":null,
+            "webId":null,
+            "createdBy":null,
+            "updatedBy":null,
+            "createdAt":null,
+            "updatedAt":null,
+            "isAnonymous":false,
+            "__v":0
           },
-          "customerSuggestions": [],
-          "channelData": {
-            "channelCustomerIdentifier": "97962945",
-            "serviceIdentifier": "+921218",
-            "requestPriority": 0,
-            "channelTypeCode": "webChannel",
-            "additionalAttributes": []
+          "customerSuggestions":[
+
+          ],
+          "channelData":{
+            "channelCustomerIdentifier":"97962945",
+            "serviceIdentifier":"+921218",
+            "requestPriority":0,
+            "channelTypeCode":"webChannel",
+            "additionalAttributes":[
+
+            ]
           },
-          "latestIntent": null,
-          "customerPresence": {
-            "value": null
+          "latestIntent":null,
+          "customerPresence":{
+            "value":null
           },
-          "isActive": true,
-          "topicId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-          "state": "STARTED",
-          "active": true
+          "isActive":true,
+          "topicId":"15584d31-df86-4052-818f-d2bfdba5b92b",
+          "state":"STARTED",
+          "active":true
         },
-        "mrd": {
-          "id": "6172421126c3762d4f5f68fc",
-          "name": "chat-mrd",
-          "description": "handles all chat requests",
-          "interruptible": true,
-          "maxRequests": 5
+        "mrd":{
+          "id":"6172421126c3762d4f5f68fc",
+          "name":"chat-mrd",
+          "description":"handles all chat requests",
+          "interruptible":true,
+          "maxRequests":5
         },
-        "queue": "6172426726c3762d4f5f68fe",
-        "priority": 1,
-        "state": {
-          "name": "RESERVED",
-          "reasonCode": null
+        "queue":"6172426726c3762d4f5f68fe",
+        "priority":1,
+        "state":{
+          "name":"RESERVED",
+          "reasonCode":null
         },
-        "assignedTo": "4b1395a9-2d47-409f-982c-d99c06a13125",
-        "enqueueTime": 1636360654050
+        "assignedTo":"4b1395a9-2d47-409f-982c-d99c06a13125",
+        "enqueueTime":1636360654050
       }
     }
   ],
-  "customerSuggestions": [],
-  "topicParticipant": {
-    "id": "4882e15c-fc90-458a-8545-689e4b1ab66d",
-    "type": "AGENT",
-    "participant": {
-      "id": "4b1395a9-2d47-409f-982c-d99c06a13125",
-      "participantType": "CCUser",
-      "keycloakUser": {
-        "id": "4b1395a9-2d47-409f-982c-d99c06a13125",
-        "firstName": "Bashir",
-        "lastName": "Joya",
-        "username": "bashir",
-        "permittedResources": {
-          "Resources": [
+  "customerSuggestions":[
+
+  ],
+  "topicParticipant":{
+    "id":"4882e15c-fc90-458a-8545-689e4b1ab66d",
+    "type":"AGENT",
+    "participant":{
+      "id":"4b1395a9-2d47-409f-982c-d99c06a13125",
+      "participantType":"CCUser",
+      "keycloakUser":{
+        "id":"4b1395a9-2d47-409f-982c-d99c06a13125",
+        "firstName":"Bashir",
+        "lastName":"Joya",
+        "username":"bashir",
+        "permittedResources":{
+          "Resources":[
             {
-              "rsid": "e6c56b53-e53e-41b1-8d85-1101172f3029",
-              "rsname": "Default Resource"
+              "rsid":"e6c56b53-e53e-41b1-8d85-1101172f3029",
+              "rsname":"Default Resource"
             }
           ]
         },
-        "roles": [
+        "roles":[
           "agent",
           "offline_access",
           "uma_authorization"
         ],
-        "realm": "university"
+        "realm":"university"
       },
-      "associatedRoutingAttributes": []
+      "associatedRoutingAttributes":[
+
+      ]
     },
-    "token": null,
-    "topicId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-    "role": "PRIMARY",
-    "userCredentials": null,
-    "state": "SUBSCRIBED"
+    "token":null,
+    "topicId":"15584d31-df86-4052-818f-d2bfdba5b92b",
+    "role":"PRIMARY",
+    "userCredentials":null,
+    "state":"SUBSCRIBED"
   }
 };
   private _conversationsListener: BehaviorSubject<any> = new BehaviorSubject([]);
