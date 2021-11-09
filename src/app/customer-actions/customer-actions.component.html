@@ -1,15 +1,19 @@
-<div style="background: #cdf1ff">
-  <mat-icon (click)="onNoClick()" class="closeBtn">close</mat-icon>
-  <div class="row-trigger" mat-dialog-title>
-    <h3 class="header" *ngIf="userIni && schemaIni">{{userInfo.firstName}} <span *ngIf="!editActiveMode"
-        class="validater" (click)="validateForm()">Validate</span></h3>
+<div class="dialog-header">
+    <h4 *ngIf="userIni && schemaIni">{{userInfo.firstName}} <span *ngIf="!editActiveMode"
+        class="validater" (click)="validateForm()">Validate</span></h4>
     <button (click)="editClick()"
-      [ngClass]="{'borderClass' : editActiveMode != true ,  'whiteClass' : editTab == true , 'greyClass' : editTab != true}"
+      [ngClass]="{'btn-active' : editActiveMode != true ,  'whiteClass' : editTab == true , 'greyClass' : editTab != true}"
       class="cstmBtn slide-in-left">
-      <mat-icon>edit</mat-icon><span class="spa">EDIT PROFILE</span>
+      <mat-icon>edit</mat-icon> EDIT PROFILE
     </button>
-  </div>
+  <button (click)="onNoClick()" mat-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
 </div>
+
+
+
+
 <mat-dialog-content class="main-content main-content-action main-action-form">
 
   <div *ngIf="userIni && schemaIni && editTab" class="main-content-create-customer">
@@ -58,7 +62,7 @@
               <div *ngIf="schemaAttribute.type == 'label'">
                 <div [ngClass]="{'header-padding': editActiveMode}" class="lbl">{{schemaAttribute.label}}<span
                     class="red-clr" *ngIf="!editActiveMode && schemaAttribute.is_required">*</span></div>
-                <div *ngIf="!editActiveMode" class="drop">
+                <div *ngIf="!editActiveMode" class="drop multi-select-label">
                   <angular2-multiselect [data]="labels" [settings]="labelSettings" (onSelect)="onItemSelect($event)"
                     (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
                     (onDeSelectAll)="onDeSelectAll($event)" (onAddFilterNewItem)="onAddItem($event)"

@@ -198,20 +198,20 @@
             </div>
           </mat-menu>
           <mat-menu #agentState="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
-            <button (click)="changeState(1)" mat-menu-item class="state-trigger">
+            <button (click)="changeState(1); $event.stopPropagation()" mat-menu-item class="state-trigger">
 
               <mat-icon style="color: limegreen;">lens
               </mat-icon>
               READY
             </button>
-            <button (click)="changeState(0)" mat-menu-item class="state-trigger">
+            <button (click)="changeState(0); $event.stopPropagation()" mat-menu-item class="state-trigger">
               <mat-icon style="color:#b4b4b4;">
                 lens
               </mat-icon>
               NOT READY
             </button>
             <div *ngFor="let reason of reasonCodes">
-              <button *ngIf="(reason.type | lowercase) == 'not_ready'" (click)="changeState(reason)" mat-menu-item
+              <button *ngIf="(reason.type | lowercase) == 'not_ready'" (click)="changeState(reason); $event.stopPropagation()" mat-menu-item
                 class="state-trigger">
                 <mat-icon style="color:#b4b4b4;">
                   lens

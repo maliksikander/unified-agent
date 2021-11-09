@@ -1517,12 +1517,12 @@ button.add-customer {
   .selected-list {
     .c-list {
       float: left;
-      padding: 0;
+      //padding: 0;
       margin: 0;
       padding-left: 3px !important;
       width: calc(100% - 20px);
-      position: relative;
-    top: 2px;
+      padding-top: 3px !important;
+      padding-bottom: 3px !important;
 
       .c-token {
         list-style: none;
@@ -1532,17 +1532,16 @@ button.add-customer {
 
         .c-label {
           color: #676767 !important;
-    border: 1px solid #cfcfcf;
-    line-height: 0;
-    border-radius: 16px;
-    padding: 2px 17px 1px 3px;
-    margin-right: 5px;
-    margin-bottom: 2px;
+          border: 1px solid #cccccc;
+          line-height: 0;
+          border-radius: 16px;
+          padding: 2px 17px 2px 3px;
+          margin-right: 5px;
         }
 
         .c-remove {
           position: absolute;
-          top: 11px;
+          top: 12px;
           right: 11px;
           -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
@@ -2227,6 +2226,11 @@ tspan{
   }
 }
 
+.multi-select-label {
+  .c-btn {
+    min-height: 34px !important;
+  }
+}
 
 
 //Wrapup/Note categories selection
