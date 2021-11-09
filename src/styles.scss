@@ -103,8 +103,8 @@ mat-tab-group.chat-tab-area {
   .mat-tab-header {
     width: 60px;
     background: $white-color;
-    margin-top: 55px;
-    height: calc(100% - 65px);
+    margin-top: 0;
+    height: calc(100% - 5px);
     border: 0;
 
     .mat-ink-bar{

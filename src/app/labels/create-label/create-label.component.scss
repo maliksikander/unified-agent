@@ -23,7 +23,7 @@
 
 .header {
   color: $white-color;
-  background: $main-color;
+  background: $blue-text-color;
   padding: 0 10px;
   height: 40px;
   border-radius: 4px 4px 0 0;
@@ -92,11 +92,11 @@
 
 .label-create-area {
   padding: 15px 15px 0 15px;
-  display: flex;
-  width: 100%;
+  //display: flex;
+  //width: 100%;
   justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+  //align-items: center;
+  //flex-wrap: wrap;
   position: relative;
 
   .label-name {

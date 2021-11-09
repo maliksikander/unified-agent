@@ -137,55 +137,55 @@
 }
 
 
-  .save-btn {
-    outline: none;
-    width: auto;
-    min-width: 70px;
-    padding: 0px 20px 3px 29px;
-    height: 34px;
-    border: none;
-    border-radius: 4px;
-    color: #565454;
-    font-weight: 500;
-    cursor: pointer;
-    background: #bde9fb;
-    float: right;
-    margin: -33px 10px 0 0;
-    mat-icon{
-      position: relative;
-    top: 4px;
-    font-size: 19px;
-    margin-left: 2px;
-    }
-  }
+  //.save-btn {
+  //  outline: none;
+  //  width: auto;
+  //  min-width: 70px;
+  //  padding: 0px 20px 3px 29px;
+  //  height: 34px;
+  //  border: none;
+  //  border-radius: 4px;
+  //  color: #565454;
+  //  font-weight: 500;
+  //  cursor: pointer;
+  //  background: #bde9fb;
+  //  float: right;
+  //  margin: -33px 10px 0 0;
+  //  mat-icon{
+  //    position: relative;
+  //  top: 4px;
+  //  font-size: 19px;
+  //  margin-left: 2px;
+  //  }
+  //}
 
-  .cancel-btn {
-    height: 34px;
-    width: auto;
-    min-width: 70px;
-    padding: 0px 20px 0px 20px;
-    background: #717171;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    color: white;
-    font-size: 13px;
-    float: right;
-    margin: -34px 10px 0 0;
-  }
-
-  .submit-btn {
-    width: 98px;
-    height: 34px;
-    border: none;
-    border-radius: 4px;
-    color: #565454;
-    cursor: pointer;
-    background: #ade2f8;
-    font-size: 13px;
-    float: right;
-    margin: -33px 10px 0 0;
-  }
+  //.cancel-btn {
+  //  height: 34px;
+  //  width: auto;
+  //  min-width: 70px;
+  //  padding: 0px 20px 0px 20px;
+  //  background: #717171;
+  //  border: none;
+  //  border-radius: 4px;
+  //  cursor: pointer;
+  //  color: white;
+  //  font-size: 13px;
+  //  float: right;
+  //  margin: -34px 10px 0 0;
+  //}
+  //
+  //.submit-btn {
+  //  width: 98px;
+  //  height: 34px;
+  //  border: none;
+  //  border-radius: 4px;
+  //  color: #565454;
+  //  cursor: pointer;
+  //  background: #ade2f8;
+  //  font-size: 13px;
+  //  float: right;
+  //  margin: -33px 10px 0 0;
+  //}
 
   .validater{
     color: coral;
@@ -320,6 +320,7 @@
   font-size: 11px;
   margin-top: 4px;
   font-weight: bold;
+  text-transform: capitalize;
 }
 
 .main-content-create-customer {
@@ -338,80 +339,6 @@
     font-size: 11px;
     color: #655e5c;
   }
-}
-
-.sticky-buttons {
-  position: relative;
-  width: 100%;
-  bottom: 9px;
-  margin-left: 10px;
-  display: inline-flex;
-
-  .action-btns{
-    display: inline-table;
-    position: absolute;
-    right: -2px;
-    top: 43px;
-  }
-
-  .delete-btn {
-    align-items: center;
-    border-radius: 8px;
-    cursor: pointer;
-    height: 32px;
-    margin-left: 9px;
-    padding: 7px;
-    padding-left: 10px;
-    padding-right: 10px;
-    font-size: 13px;
-    justify-content: center;
-    min-width: 32px;
-    margin-top: 9px;
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
-    width: fit-content;
-    background-color: white;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 1px 2px rgba(0, 0, 0, 0.23);
-    color: #ff00008c;
-
-    .dlt-icon{
-      color: #ff000085;
-    height: 0;
-    line-height: 18px;
-    font-size: 23px;
-    left: -6px;
-    position: relative;
-    width: 18px;
-    top: 1px;
-    }
-
-    .dlt-text{
-      position: relative;
-      bottom: 6px;
-      color: gray;
-    }
-  }
-
-  .interactions-btn {
-    align-items: center;
-    border-radius: 8px;
-    cursor: pointer;
-    height: 32px;
-    padding: 7px;
-    padding-left: 10px;
-    padding-right: 10px;
-    font-size: 13px;
-    justify-content: center;
-    min-width: 32px;
-    margin-top: 9px;
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
-    width: fit-content;
-    background-color: white;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 1px 2px rgba(0, 0, 0, 0.23);
-    color: #189eaf;
-}
-
 }
 
 .red-clr{
@@ -434,7 +361,8 @@
     color: #6e6d71;
 }
 .check-box{
-  margin-top: 6px;
+  margin: 5px 0;
+  padding-top: 0;
 }
 
 // .hover-class{
@@ -556,4 +484,47 @@
 .main-col{
   width: inherit;
     display: contents;
+}
+
+.footer-buttons {
+  text-align: right;
+  width: 100%;
+  padding: 0 30px;
+
+  button {
+    height: 30px;
+    width: auto;
+    padding: 0 15px;
+    background: #919191;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 12px;
+    margin-left: 5px;
+
+    &.delete-btn{
+      float: left;
+      background: #e35151;
+      line-height: 33px;
+      padding: 0 10px;
+      margin: 0;
+      mat-icon{
+        float: left;
+        margin-top: 3px;
+        font-size: 18px;
+        line-height: 24px;
+      }
+    }
+    &.save-btn {
+      background: #1A50A3;
+      margin-left: 10px;
+    }
+  }
+
+
+}
+
+mat-dialog-actions{
+  margin: 0;
+  min-height: inherit;
 }

@@ -185,8 +185,7 @@ export class PhonebookComponent implements OnInit {
       panelClass: "inline-editing",
       maxWidth: "848px",
       maxHeight: "88vh",
-      width: "848px",
-      height: "88vh",
+      minHeight: "25vh",
       data: { id: id, tab: tab }
     });
     dialogRef.afterClosed().subscribe((result: any) => {

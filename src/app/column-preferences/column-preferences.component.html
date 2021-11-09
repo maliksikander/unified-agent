@@ -14,7 +14,7 @@
     <div class="cols-pref-check-box scrollable-area-left">
       <section>
         <div class="slide-in-left col-pref-checkbox" *ngFor="let column of columns | columnsFilterPipe : searchItem ">
-            <mat-checkbox [disabled]="column.key == 'labels'" [checked]="loadChecked(column.key)" (change)="onChange($event,column)" [value]="column">{{column.label}}</mat-checkbox>
+            <mat-checkbox color="primary" [disabled]="column.key == 'labels'" [checked]="loadChecked(column.key)" (change)="onChange($event,column)" [value]="column">{{column.label}}</mat-checkbox>
           </div>
       </section>
     </div>

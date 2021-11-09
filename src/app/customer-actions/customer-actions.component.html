@@ -222,18 +222,30 @@
 </mat-dialog-content>
 <mat-dialog-actions>
 
-  <div class="sticky-buttons">
-    <div class="delete-btn" (click)="deleteCUstomer()">
-      <mat-icon class="dlt-icon">delete</mat-icon>
-      <span class="dlt-text">DELETE CUSTOMER</span>
-    </div>
+<!--  <div class="sticky-buttons">-->
+<!--    <div class="delete-btn" (click)="deleteCUstomer()">-->
+<!--      <mat-icon class="dlt-icon">delete</mat-icon>-->
+<!--      <span class="dlt-text">DELETE CUSTOMER</span>-->
+<!--    </div>-->
 
-    <div class="action-btns" *ngIf="editTab && !editActiveMode">
+<!--    <div class="action-btns" *ngIf="editTab && !editActiveMode">-->
 
-      <button *ngIf="myGroup.valid" (click)="saveData(myGroup.value)" class="submit-btn">SAVE</button>
-      <button (click)="onNoClick()" class="cancel-btn">CANCEL</button>
+<!--      <button *ngIf="myGroup.valid" (click)="saveData(myGroup.value)" class="submit-btn">SAVE</button>-->
+<!--      <button (click)="onNoClick()" class="cancel-btn">CANCEL</button>-->
 
-    </div>
+<!--    </div>-->
 
+<!--  </div>-->
+
+  <div class="footer-buttons">
+    <button (click)="deleteCUstomer()" class="delete-btn"> <mat-icon class="dlt-icon">delete</mat-icon> DELETE CUSTOMER</button>
+    <!--    <button (click)="onNoClick()" class="cancel-btn">Cancel</button>-->
+<!--    <button *ngIf="myGroup.valid" (click)="saveData(myGroup.value)"-->
+<!--            class="save-btn">Create Contact</button>-->
+
+    <span class="action-btns" *ngIf="editTab && !editActiveMode">
+    <button (click)="onNoClick()" class="cancel-btn">CANCEL</button>
+    <button *ngIf="myGroup.valid" (click)="saveData(myGroup.value)" class="save-btn">SAVE</button>
+    </span>
   </div>
 </mat-dialog-actions>
