@@ -141,6 +141,9 @@ export class InteractionsComponent implements OnInit {
     let message: any = { id: "", header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} }, body: { markdownText: "", type: "PLAIN" } };
     let lastActiveChannelSession = this.conversation.activeChannelSessions[this.conversation.activeChannelSessions.length - 1];
     if (lastActiveChannelSession) {
+      lastActiveChannelSession = JSON.parse(JSON.stringify(lastActiveChannelSession));
+      delete lastActiveChannelSession["webChannelData"];
+
       message.id = uuidv4();
       message.header.timestamp = Date.now();
 

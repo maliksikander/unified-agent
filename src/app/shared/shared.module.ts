@@ -68,6 +68,7 @@ import { MomentModule } from "ngx-moment";
 import { filterPullModeRequestsPipe } from "./pipes/filterPullModeReqsts.pipe";
 import { channelLogoPipe } from "./pipes/getChannelLogo.pipe";
 import { isAlreadyJoinedPipe } from "./pipes/isAlreadyJoined.pipe";
+import { webChannelDataPipe } from "./pipes/webChannelData.pipe";
 
 @NgModule({
   declarations: [
@@ -83,7 +84,8 @@ import { isAlreadyJoinedPipe } from "./pipes/isAlreadyJoined.pipe";
     fetchLabelsPipe,
     columnsFilterClass,
     filterPullModeRequestsPipe,
-    channelLogoPipe
+    channelLogoPipe,
+    webChannelDataPipe
   ],
   imports: [
     MatIconModule,
@@ -227,7 +229,8 @@ import { isAlreadyJoinedPipe } from "./pipes/isAlreadyJoined.pipe";
     columnsFilterClass,
     MomentModule,
     channelLogoPipe,
-    isAlreadyJoinedPipe
+    isAlreadyJoinedPipe,
+    webChannelDataPipe
   ]
 })
 export class SharedModule {}

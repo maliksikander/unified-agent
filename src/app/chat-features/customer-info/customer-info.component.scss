@@ -86,11 +86,11 @@
       &.chat-channel-area {
         border: 1px solid #c0ecf9;
 
-        mat-expansion-panel-header{
+       // mat-expansion-panel-header{
           //border-top: 0 !important;
           //border-left: 0;
           //border-right: 0;
-        }
+        //}
       }
 
       mat-expansion-panel-header{
@@ -108,6 +108,8 @@
     }
 
     .channel-icon-area {
+      white-space: nowrap;
+      cursor: pointer;
       span {
         //background: $blue-text-color;
         width: 22px;
@@ -716,4 +718,11 @@ ul.channel-info-list {
 }
 a{
   color: white;
+}
+
+
+.lang-bar{
+  font-weight: 700 !important;
+    font-size: 13px !important;
+    color: #4773B5;
 }

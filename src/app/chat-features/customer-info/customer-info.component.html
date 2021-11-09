@@ -318,9 +318,8 @@
                 <mat-expansion-panel class="chat-channel-area" *ngFor="let channelSession of activeChannelSessions">
                   <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                     <div class="channel-icon-area">
-                      <span
-                        class="channel-icon"><img
-                        [src]="channelSession.channel.channelType.channelLogo | channelLogo | async"></span>
+                      <span class="channel-icon"><img
+                          [src]="channelSession.channel.channelType.channelLogo | channelLogo | async"></span>
                       <label>{{channelSession.channel.channelType.name | titlecase}}
                         Channel</label>
 
@@ -335,11 +334,21 @@
                       </mat-menu> -->
 
                     </div>
-                    <ul class="channel-info-list">
-                      <li matTooltip="Desktop"><mat-icon>desktop_mac</mat-icon></li>
-                      <li matTooltip="Safari 13.1.2"><img src="assets/images/safari-colored.svg" alt="browser"> </li>
-                      <li matTooltip="English(UK)"><img src="assets/flags/en.png" alt="language"> </li>
-                      <li matTooltip="GMT+1">GMT+1</li>
+                    <ul class="channel-info-list" *ngIf="channelSession.webChannelData">
+                      <li matTooltip="Device: {{channelSession.webChannelData.browserDeviceInfo.deviceType ? channelSession.webChannelData.browserDeviceInfo.deviceType : 'UNKNOWN'}}">
+                        <mat-icon>{{channelSession.webChannelData.browserDeviceInfo.deviceType |
+                          webChannelData:'deviceType'}}</mat-icon>
+                      </li>
+                      <li matTooltip="Browser: {{channelSession.webChannelData.browserDeviceInfo.browserName ? channelSession.webChannelData.browserDeviceInfo.browserName : 'UNKNOWN'}}">
+                        <img
+                         src="assets/browser-icons/{{channelSession.webChannelData.browserDeviceInfo.browserName |
+                            webChannelData:'browser'}}.svg" alt="browser"> </li>
+                      <li matTooltip="Country: {{channelSession.webChannelData.locale.country ? channelSession.webChannelData.locale.country : 'UNKNOWN'}}">
+                        <img
+                          src="assets/flags/{{channelSession.webChannelData.locale.country | webChannelData:'country'}}.svg"
+                          alt="country"> </li>
+                      <li class="lang-bar" matTooltip="Language: {{channelSession.webChannelData.locale.language ? channelSession.webChannelData.locale.language : 'UNKNOWN'}}">
+                        {{(channelSession.webChannelData.locale.language ? channelSession.webChannelData.locale.language : 'NA') | getFirstTwoLetters}} </li>
                     </ul>
                   </mat-expansion-panel-header>
                   <ul class="requested-channel-content">
@@ -352,46 +361,26 @@
                       {{channelSession.channelData.serviceIdentifier}}
                     </li>
                   </ul>
-                  <div class="channel-inner-content">
+                  <div class="channel-inner-content"
+                    *ngFor="let additionalAttribute of channelSession.channelData.additionalAttributes">
                     <!--Web chat desktop channel accordion-->
-                    <mat-expansion-panel>
+                    <mat-expansion-panel *ngIf="(additionalAttribute.type | lowercase) == 'webchanneldata'">
                       <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                         <div class="channel-icon-area web-channel-inner">
                           <label>Form Data</label>
                         </div>
                       </mat-expansion-panel-header>
 
-                      <ul class="requested-channel-content">
+                      <ul class="requested-channel-content"
+                        *ngFor="let attr of additionalAttribute.value.formData.attributes">
                         <li>
-                          <label>Name</label>
-                          Adam Stanler
-                        </li>
-                        <li>
-                          <label>Email</label>
-                          astanler@gmail.com
-                        </li>
-                        <li>
-                          <label>Phone Number</label>
-                          +44 85878478
-                        </li>
-                        <li>
-                          <label>Browser</label>
-                          Google Chrome
-                        </li>
-                        <li>
-                          <label>IP Address</label>
-                          41.78.244.244
+                          <label>{{attr.key | sentenceCase}}</label>
+                          {{attr.value}}
                         </li>
                       </ul>
                     </mat-expansion-panel>
                   </div>
-                  <!-- <ul class="requested-channel-content"
-                    *ngFor="let attr of channelSession.channelData.additionalAttributes">
-                    <li>
-                      <label>{{attr.key | sentenceCase}}</label>
-                      {{attr.value}}
-                    </li>
-                  </ul> -->
+
                 </mat-expansion-panel>
 
               </mat-accordion>
@@ -442,7 +431,8 @@
       <h3>{{reRouteText}} Chat Session</h3>
     </div>
     <div class="confirmation-content">
-      <p>{{reRouteText == 're-assign' ? 'Are you sure You want re-assign chat session to your self?' : 'Are you sure You want re-route Whatsapp chat session to another agent?'}}</p>
+      <p>{{reRouteText == 're-assign' ? 'Are you sure You want re-assign chat session to your self?' : 'Are you sure You
+        want re-route Whatsapp chat session to another agent?'}}</p>
       <div class="confirmation-action">
         <button mat-raised-button class="close-btn" mat-dialog-close>Cancel</button>
         <button mat-raised-button class="confirm-btn">Confirm</button>
