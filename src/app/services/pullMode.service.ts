@@ -9,7 +9,6 @@ import { snackbarService } from "./snackbar.service";
 export class pullModeService {
   subscribedList: any = []; // contains the list which are subscribed by the agent
   subscribedListRequests: any = []; // contains the requests of those subscribed list
-  subscribedListJoinedRequests: any = []; // contains the Ids of subscribed list's subscribed requests
   labels: any = [];
   pullModeList = [];
   listNames: any;
@@ -115,10 +114,6 @@ export class pullModeService {
       return indexesOfItemsToBeremoved.indexOf(index) == -1;
     });
     this.updateRequestArrayRef();
-  }
-
-  updatePullModeJoinedRequestIds(reqs) {
-    this.subscribedListJoinedRequests = reqs;
   }
 
   deleteRequestById(reqId) {

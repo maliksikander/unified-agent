@@ -67,11 +67,13 @@ import { columnsFilterClass } from "./pipes/columnsFilter.pipe";
 import { MomentModule } from "ngx-moment";
 import { filterPullModeRequestsPipe } from "./pipes/filterPullModeReqsts.pipe";
 import { channelLogoPipe } from "./pipes/getChannelLogo.pipe";
+import { isAlreadyJoinedPipe } from "./pipes/isAlreadyJoined.pipe";
 
 @NgModule({
   declarations: [
     getMRDSwitchesPipe,
     RemoveUnderscorePipe,
+    isAlreadyJoinedPipe,
     ibsformatPipe,
     getSenderNamePipe,
     SearchPipe,
@@ -224,7 +226,8 @@ import { channelLogoPipe } from "./pipes/getChannelLogo.pipe";
     fetchLabelsPipe,
     columnsFilterClass,
     MomentModule,
-    channelLogoPipe
+    channelLogoPipe,
+    isAlreadyJoinedPipe
   ]
 })
 export class SharedModule {}

@@ -1535,11 +1535,6 @@ topicData = {
       this._pullModeService.removePullModeSubscribedListRequests(res);
     });
 
-    this.listen("onUpdatePullModeJoinedRequestIds").subscribe((res: any) => {
-      console.log("onUpdatePullModeJoinedRequestIds", res);
-      this._pullModeService.updatePullModeJoinedRequestIds(res);
-    });
-
     this.listen("onChannels").subscribe((res: any) => {
       console.log("onChannels", res);
       this._sharedService.setChannelIcons(res);

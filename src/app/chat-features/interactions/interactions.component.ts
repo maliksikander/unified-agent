@@ -6,6 +6,7 @@ import { MatDialog } from "@angular/material";
 import { CimEvent } from "../../models/Event/cimEvent";
 import { v4 as uuidv4 } from "uuid";
 import { NgScrollbar } from "ngx-scrollbar";
+import { snackbarService } from "src/app/services/snackbar.service";
 
 declare var EmojiPicker: any;
 @Component({
@@ -123,8 +124,9 @@ export class InteractionsComponent implements OnInit {
     private _sharedService: sharedService,
     private _cacheService: cacheService,
     private _socketService: socketService,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+    private _snackbarService: snackbarService,
+  ) { }
   ngOnInit() {
     //  console.log("i am called hello")
     this.convers = this.conversation.messages;
@@ -133,30 +135,33 @@ export class InteractionsComponent implements OnInit {
     }, 500);
   }
 
-  emoji() {}
+  emoji() { }
 
   onSend(text) {
-    let message = JSON.parse(JSON.stringify(this.conversation.messages[this.conversation.messages.length - 1]));
-    message.id = uuidv4();
-    message.header.timestamp = Date.now();
-    message.header.sender = {};
+    let message: any = { id: "", header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} }, body: { markdownText: "", type: "PLAIN" } };
+    let lastActiveChannelSession = this.conversation.activeChannelSessions[this.conversation.activeChannelSessions.length - 1];
+    if (lastActiveChannelSession) {
+      message.id = uuidv4();
+      message.header.timestamp = Date.now();
 
-    message.header.sender = this.conversation.topicParticipant;
-    message.header.channelSession = this.conversation.activeChannelSessions[this.conversation.activeChannelSessions.length - 1];
+      message.header.sender = this.conversation.topicParticipant;
+      message.header.channelSession = lastActiveChannelSession;
+      message.header.channelData = lastActiveChannelSession.channelData;
 
-    message.body.markdownText = text;
-    delete message["botSuggestions"];
-    delete message["showBotSuggestions"];
+      message.body.markdownText = text;
 
-    this._socketService.emit("publishCimEvent", {
-      cimEvent: new CimEvent("AGENT_MESSAGE", "MESSAGE", message),
-      agentId: this._cacheService.agent.id,
-      topicId: this.conversation.topicId
-    });
-    this.lastMsgFromAgent = true;
-    setTimeout(() => {
-      this.message = "";
-    }, 40);
+      this._socketService.emit("publishCimEvent", {
+        cimEvent: new CimEvent("AGENT_MESSAGE", "MESSAGE", message),
+        agentId: this._cacheService.agent.id,
+        topicId: this.conversation.topicId
+      });
+      this.lastMsgFromAgent = true;
+      setTimeout(() => {
+        this.message = "";
+      }, 40);
+    } else {
+      this._snackbarService.open("No active channel session available", "err");
+    }
   }
 
   openDialog(templateRef, e): void {
@@ -228,7 +233,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 

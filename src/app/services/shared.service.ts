@@ -30,14 +30,14 @@ export class sharedService {
     array.splice(index, 1);
   }
 
-  setChannelIcons(channels) {
-    channels.forEach((channel) => {
-      this._httpService.getChannelLogo(channel.channelType.channelLogo).subscribe((file) => {
+  setChannelIcons(channelTypes) {
+    channelTypes.forEach((channelType) => {
+      this._httpService.getChannelLogo(channelType.channelLogo).subscribe((file) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
           // caching the channel logos
-          this.channelLogoMapper.set(channel.channelType.channelLogo, reader.result);
+          this.channelLogoMapper.set(channelType.channelLogo, reader.result);
         };
       });
     });
