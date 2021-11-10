@@ -9,6 +9,7 @@ import { CimEvent } from "../models/Event/cimEvent";
 import { snackbarService } from "./snackbar.service";
 import { error } from "console";
 import { pullModeService } from "./pullMode.service";
+import { soundService } from "./sounds.service";
 
 @Injectable({
   providedIn: "root"
@@ -158,14 +159,14 @@ export class socketService {
                   "browserDeviceInfo": {
                     "browserId": "123456",
                     "browserIdExpiryTime": "9999",
-                    "browserName": "chrome",
-                    "deviceType": "desktop"
+                    "browserName": "",
+                    "deviceType": ""
                   },
                   "queue": "",
                   "locale": {
                     "timezone": "asia/karachi",
-                    "language": "english",
-                    "country": "pakistan"
+                    "language": "",
+                    "country": ""
                   },
                   "formData": {
                     "id": 0.7396124387664471,
@@ -1718,7 +1719,8 @@ export class socketService {
     private _cacheService: cacheService,
     private _sharedService: sharedService,
     private _pullModeService: pullModeService,
-    private _router: Router
+    private _router: Router,
+    private _soundService: soundService
   ) {
     this.onTopicData(this.topicData, "15584d31-df86-4052-818f-d2bfdba5b92b")
   }
@@ -1871,6 +1873,11 @@ export class socketService {
       cimEvent.name.toLowerCase() == "bot_message" ||
       cimEvent.name.toLowerCase() == "customer_message"
     ) {
+
+      if (cimEvent.name.toLowerCase() != "agent_message") {
+        this.playSoundAndBrowserNotification(sameTopicConversation, cimEvent);
+      }
+
       if (sameTopicConversation) {
         if (cimEvent.data.header.sender.type.toLowerCase() == "customer") {
           this.processActiveChannelSessions(sameTopicConversation, cimEvent.data.header.channelSession);
@@ -1912,6 +1919,9 @@ export class socketService {
   }
 
   onTopicData(topicData, topicId) {
+
+    this._soundService.playBeep();
+
     let conversation = {
       topicId: topicId,
       messages: [],
@@ -2043,6 +2053,7 @@ export class socketService {
     }
   }
 
+
   linkCustomerWithInteraction(customerId, topicId) {
     this.emit("publishCimEvent", {
       cimEvent: new CimEvent("ASSOCIATED_CUSTOMER_CHANGED", "NOTIFICATION", { Id: customerId }),
@@ -2094,4 +2105,41 @@ export class socketService {
   onSocketErrors(res) {
     this._snackbarService.open("on " + res.task + " " + res.msg, "err");
   }
+
+  playSoundAndBrowserNotification(conversation, cimEvent) {
+
+    if (document.hidden) {
+
+      this.showOnBrowserNoticication(conversation, cimEvent);
+
+    } else {
+      if (this._router.url !== '/customers/chats') {
+
+        this.showOnBrowserNoticication(conversation, cimEvent);
+
+      }
+    }
+    this._soundService.playBeep();
+
+  }
+
+  showOnBrowserNoticication(conversation, cimEvent) {
+
+    if (cimEvent.name.toLowerCase() == "customer_message") {
+
+      if (cimEvent.data.body.type.toLowerCase() == "plain") {
+
+        this._soundService.openBrowserNotification(conversation.customer.firstName, cimEvent.data.body.markdownText);
+
+      }
+    } else if (cimEvent.name.toLowerCase() == "bot_message") {
+
+      if (cimEvent.data.body.type.toLowerCase() == "plain") {
+
+        this._soundService.openBrowserNotification('BOT', cimEvent.data.body.markdownText);
+
+      }
+    }
+  }
+
 }
