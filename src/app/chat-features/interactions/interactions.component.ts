@@ -248,7 +248,7 @@ export class InteractionsComponent implements OnInit {
         if (this.currentScrollPosition < 95) {
           this.showNewMessageNotif = true;
         } else {
-          this.downTheScrollAfterMilliSecs(50, "smooth");
+          this.downTheScrollAfterMilliSecs(50, "smooth"); 
         }
       }
     }
