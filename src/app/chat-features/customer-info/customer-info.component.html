@@ -336,8 +336,12 @@
                     </div>
                     <ul class="channel-info-list" *ngIf="channelSession.webChannelData">
                       <li matTooltip="Device: {{channelSession.webChannelData.browserDeviceInfo.deviceType ? channelSession.webChannelData.browserDeviceInfo.deviceType : 'UNKNOWN'}}">
-                        <mat-icon>{{channelSession.webChannelData.browserDeviceInfo.deviceType |
-                          webChannelData:'deviceType'}}</mat-icon>
+<!--                        <mat-icon>{{channelSession.webChannelData.browserDeviceInfo.deviceType |-->
+<!--                          webChannelData:'deviceType'}}</mat-icon>-->
+
+                        <img
+                          src="assets/device-icons/{{channelSession.webChannelData.browserDeviceInfo.deviceType |
+                          webChannelData:'deviceType'}}.svg" alt="device">
                       </li>
                       <li matTooltip="Browser: {{channelSession.webChannelData.browserDeviceInfo.browserName ? channelSession.webChannelData.browserDeviceInfo.browserName : 'UNKNOWN'}}">
                         <img

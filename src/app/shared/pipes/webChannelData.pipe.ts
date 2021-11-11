@@ -6,11 +6,11 @@ export class webChannelDataPipe implements PipeTransform {
         if (img == "deviceType") {
 
             if (value.toLowerCase() == "desktop") {
-                return 'desktop_mac';
+                return 'desktop';
             } else if (value.toLowerCase() == "mobile") {
-                return 'phone_iphone';
+                return 'smartphone';
             } else {
-                return 'desktop_mac';
+                return 'unknown';
             }
 
         } else if (img == "country") {
