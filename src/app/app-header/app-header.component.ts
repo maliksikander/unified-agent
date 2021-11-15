@@ -173,10 +173,5 @@ export class AppHeaderComponent implements OnInit {
   ngOnDestroy() {
     this.stateChangedSubscription.unsubscribe();
   }
-  closeStateMenu(state) {
-    setTimeout(() => {
-      state.closeMenu();
 
-    }, 100)
-  }
 }
