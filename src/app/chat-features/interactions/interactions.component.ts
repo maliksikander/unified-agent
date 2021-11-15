@@ -118,7 +118,7 @@ export class InteractionsComponent implements OnInit {
   displaySuggestionsArea = false;
   cannedTabOpen = false;
   quickReplies = true;
-  viewHeight = "162px";
+  viewHeight = "120px";
 
   constructor(
     private _sharedService: sharedService,
@@ -130,9 +130,9 @@ export class InteractionsComponent implements OnInit {
   ngOnInit() {
     //  console.log("i am called hello")
     this.convers = this.conversation.messages;
-    setTimeout(() => {
-      new EmojiPicker();
-    }, 500);
+    // setTimeout(() => {
+    //   new EmojiPicker();
+    // }, 500);
   }
 
   emoji() { }
@@ -248,7 +248,7 @@ export class InteractionsComponent implements OnInit {
         if (this.currentScrollPosition < 95) {
           this.showNewMessageNotif = true;
         } else {
-          this.downTheScrollAfterMilliSecs(50, "smooth"); 
+          this.downTheScrollAfterMilliSecs(50, "smooth");
         }
       }
     }

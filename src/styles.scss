@@ -2001,6 +2001,9 @@ tspan{
   .mat-select-arrow-wrapper {
     transform: translateY(10%) !important;
   }
+  label{
+    color: $main-color;
+  }
 }
 .channel-options {
   color: #666 !important;

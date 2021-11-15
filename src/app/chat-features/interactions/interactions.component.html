@@ -176,7 +176,7 @@
       </div>
       <span class="selected-channel">Selected Channel:
         <label
-          *ngIf="conversation.activeChannelSessions.length > 0">{{conversation.activeChannelSessions[conversation.activeChannelSessions.length
+          *ngIf="conversation.activeChannelSessions.length > 0" style="color:#1a50a3;">{{conversation.activeChannelSessions[conversation.activeChannelSessions.length
           -1]?.channel.channelType.name| titlecase}}</label>
         <label *ngIf="conversation.activeChannelSessions.length == 0" style="color:grey;">
           None
@@ -297,7 +297,7 @@
             <button (click)="onSend(replyInput.value); replyInput.value = null "
               *ngIf="replyInput.value.length > 0 && conversation.activeChannelSessions.length > 0"
               class="send-btn composer-trigger" mat-icon-button>
-              <mat-icon>send</mat-icon>
+<!--              <mat-icon>send</mat-icon>-->
             </button>
 
             <!-- <button class="send-btn attachment-btn composer-trigger" mat-icon-button
