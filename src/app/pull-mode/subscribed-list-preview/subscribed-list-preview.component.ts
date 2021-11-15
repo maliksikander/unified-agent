@@ -59,6 +59,6 @@ export class SubscribedListPreviewComponent implements OnInit {
     this._sharedService.serviceChangeMessage({ msg: "closePullModeRequestHeader", data: request.id });
     this._router.navigate(["customers"]);
   }
-  
+
   ngOnDestroy() {}
 }

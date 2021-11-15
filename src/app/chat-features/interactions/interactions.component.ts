@@ -125,8 +125,8 @@ export class InteractionsComponent implements OnInit {
     private _cacheService: cacheService,
     private _socketService: socketService,
     private dialog: MatDialog,
-    private _snackbarService: snackbarService,
-  ) { }
+    private _snackbarService: snackbarService
+  ) {}
   ngOnInit() {
     //  console.log("i am called hello")
     this.convers = this.conversation.messages;
@@ -135,10 +135,14 @@ export class InteractionsComponent implements OnInit {
     // }, 500);
   }
 
-  emoji() { }
+  emoji() {}
 
   onSend(text) {
-    let message: any = { id: "", header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} }, body: { markdownText: "", type: "PLAIN" } };
+    let message: any = {
+      id: "",
+      header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
+      body: { markdownText: "", type: "PLAIN" }
+    };
     let lastActiveChannelSession = this.conversation.activeChannelSessions[this.conversation.activeChannelSessions.length - 1];
     if (lastActiveChannelSession) {
       lastActiveChannelSession = JSON.parse(JSON.stringify(lastActiveChannelSession));
@@ -236,7 +240,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 

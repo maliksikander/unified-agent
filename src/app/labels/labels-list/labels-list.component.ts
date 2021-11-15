@@ -34,8 +34,8 @@ export class LabelsListComponent implements OnInit {
 
   createUpdate(label, action) {
     const dialogRef = this.dialog.open(CreateLabelComponent, {
-      maxWidth: '568px',
-      width: '568px',
+      maxWidth: "568px",
+      width: "568px",
       data: { label: label, action: action }
     });
 

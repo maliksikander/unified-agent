@@ -82,7 +82,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   providers: [
     {
       provide: LocationStrategy,
-      useClass: HashLocationStrategy,
+      useClass: HashLocationStrategy
     },
     appConfigService,
     MessageService,

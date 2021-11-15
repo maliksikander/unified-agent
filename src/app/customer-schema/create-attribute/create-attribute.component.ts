@@ -33,29 +33,39 @@ export class CreateAttributeComponent implements OnInit {
   textLength = new FormControl("50", [Validators.pattern("^[0-9]*$"), Validators.required, Validators.min(1), Validators.max(1000)]);
   label = new FormControl("", [Validators.required, Validators.maxLength(50), Validators.minLength(1)], this.ValidateNameDuplication.bind(this));
   desc = new FormControl("", [Validators.maxLength(100)]);
-  defaultValue = new FormControl('', [Validators.required, Validators.maxLength(50), Validators.minLength(1)]
-    , this.ValidateNameDuplication.bind(this));
+  defaultValue = new FormControl(
+    "",
+    [Validators.required, Validators.maxLength(50), Validators.minLength(1)],
+    this.ValidateNameDuplication.bind(this)
+  );
   selectChannel = new FormControl();
   // channelList: string[] = ["WEB", "FACEBOOK", "WHATSAPP", "VIBER", "SMS", "GENERIC"];
-  channelList: any[] = [{
-    channel_name: 'WHATSAPP',
-    channel_icon: 'assets/images/whatsapp-colored.svg'
-  }, {
-    channel_name: 'FACEBOOK',
-    channel_icon: 'assets/images/facebook-colored.svg'
-  }, {
-    channel_name: 'SMS',
-    channel_icon: 'assets/images/envelope-colored.svg'
-  }, {
-    channel_name: 'VIBER',
-    channel_icon: 'assets/images/skype-colored.svg'
-  }, {
-    channel_name: 'WEB',
-    channel_icon: 'assets/images/envelope-colored.svg'
-  }, {
-    channel_name: 'GENERIC',
-    channel_icon: 'assets/images/envelope-colored.svg'
-  }];
+  channelList: any[] = [
+    {
+      channel_name: "WHATSAPP",
+      channel_icon: "assets/images/whatsapp-colored.svg"
+    },
+    {
+      channel_name: "FACEBOOK",
+      channel_icon: "assets/images/facebook-colored.svg"
+    },
+    {
+      channel_name: "SMS",
+      channel_icon: "assets/images/envelope-colored.svg"
+    },
+    {
+      channel_name: "VIBER",
+      channel_icon: "assets/images/skype-colored.svg"
+    },
+    {
+      channel_name: "WEB",
+      channel_icon: "assets/images/envelope-colored.svg"
+    },
+    {
+      channel_name: "GENERIC",
+      channel_icon: "assets/images/envelope-colored.svg"
+    }
+  ];
 
   constructor(
     private _sharedService: sharedService,

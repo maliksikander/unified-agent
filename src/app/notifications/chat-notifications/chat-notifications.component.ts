@@ -28,32 +28,28 @@ export class ChatNotificationsComponent implements OnInit {
   ) {
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       if (e.msg == "openPushModeRequestHeader") {
-
         this.pushModeRequests.push(e.data);
         this._soundService.playRing();
-        this._soundService.openBrowserNotification('CHAT REQUESTED', 'Incoming chat request on push mode on ' +
-          e.data.channelSession.channel.channelType.name);
-
+        this._soundService.openBrowserNotification(
+          "CHAT REQUESTED",
+          "Incoming chat request on push mode on " + e.data.channelSession.channel.channelType.name
+        );
       } else if (e.msg == "closePushModeRequestHeader") {
-
         this.removePushModeRequestFromRequestArray(e.data.topicId);
-
       } else if (e.msg == "openPullModeRequestHeader") {
-
         this.pullModeRequests.push(e.data);
         this._soundService.playRing();
-        this._soundService.openBrowserNotification('CHAT REQUESTED', 'Incoming chat request on pull mode on ' +
-          this._pullModeservice.listNames[e.data.listId]);
-
+        this._soundService.openBrowserNotification(
+          "CHAT REQUESTED",
+          "Incoming chat request on pull mode on " + this._pullModeservice.listNames[e.data.listId]
+        );
       } else if (e.msg == "closePullModeRequestHeader") {
-
         this.removePullModeRequestFromRequestArray(e.data);
-
       }
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   getTopicSubscription(topicId, taskId) {
     this._socketService.emit("topicSubscription", {

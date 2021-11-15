@@ -1,8 +1,7 @@
 import { Pipe, PipeTransform } from "@angular/core";
 import { httpService } from "src/app/services/http.service";
 import { sharedService } from "src/app/services/shared.service";
-import { DomSanitizer } from '@angular/platform-browser';
-
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Pipe({ name: "channelLogo" })
 export class channelLogoPipe implements PipeTransform {
@@ -22,16 +21,16 @@ export class channelLogoPipe implements PipeTransform {
               reader.onloadend = () => {
                 // saving that file for the next time
                 this._sharedService.channelLogoMapper.set(filename, reader.result);
-                resolve(this.domSanitizer.bypassSecurityTrustUrl((reader.result).toString()));
+                resolve(this.domSanitizer.bypassSecurityTrustUrl(reader.result.toString()));
               };
             },
             (err) => {
-              resolve('assets/flags/generic.png');
+              resolve("assets/flags/generic.png");
             }
           );
         }
       } else {
-        resolve('assets/flags/generic.png');
+        resolve("assets/flags/generic.png");
       }
     });
   }

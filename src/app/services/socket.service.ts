@@ -31,8 +31,7 @@ export class socketService {
     private _pullModeService: pullModeService,
     private _router: Router,
     private _soundService: soundService
-  ) {
-  }
+  ) {}
 
   connectToSocket() {
     this.uri = this._appConfigService.config.SOCKET_URL;
@@ -161,11 +160,10 @@ export class socketService {
     });
   }
 
-
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) { }
+    } catch (err) {}
   }
 
   listen(eventName: string) {
@@ -199,7 +197,6 @@ export class socketService {
       cimEvent.name.toLowerCase() == "bot_message" ||
       cimEvent.name.toLowerCase() == "customer_message"
     ) {
-
       if (cimEvent.name.toLowerCase() != "agent_message") {
         this.playSoundAndBrowserNotification(sameTopicConversation, cimEvent);
       }
@@ -239,7 +236,6 @@ export class socketService {
   }
 
   onTopicData(topicData, topicId) {
-
     this._soundService.playBeep();
 
     let conversation = {
@@ -271,9 +267,11 @@ export class socketService {
         let participant = e.participant;
 
         // seprate the webChanneldata in channel session if found in additionalAttributes
-        let webChannelData = participant.channelData.additionalAttributes.find((e) => { return e.type.toLowerCase() == "webchanneldata" });
+        let webChannelData = participant.channelData.additionalAttributes.find((e) => {
+          return e.type.toLowerCase() == "webchanneldata";
+        });
         if (webChannelData) {
-          participant['webChannelData'] = webChannelData.value;
+          participant["webChannelData"] = webChannelData.value;
         }
         conversation.activeChannelSessions.push(participant);
       }
@@ -337,7 +335,9 @@ export class socketService {
     });
 
     // remove the conversation from array
-    let index = this.conversations.findIndex((conversation) => { return conversation.topicId == topicId; });
+    let index = this.conversations.findIndex((conversation) => {
+      return conversation.topicId == topicId;
+    });
 
     if (index != -1) {
       this._sharedService.spliceArray(index, this.conversations);
@@ -356,9 +356,7 @@ export class socketService {
   }
 
   mergeBotSuggestions(conversation, suggestionMessage) {
-
     if (suggestionMessage && suggestionMessage.requestedMessage && suggestionMessage.requestedMessage.id) {
-
       let message = conversation.messages.find((e) => {
         if (e.header.sender.type.toLowerCase() == "customer") {
           return e.id == suggestionMessage.requestedMessage.id;
@@ -373,7 +371,6 @@ export class socketService {
       }
     }
   }
-
 
   linkCustomerWithInteraction(customerId, topicId) {
     this.emit("publishCimEvent", {
@@ -434,37 +431,24 @@ export class socketService {
   }
 
   playSoundAndBrowserNotification(conversation, cimEvent) {
-
     if (document.hidden) {
-
       this.showOnBrowserNoticication(conversation, cimEvent);
-
     } else {
-      if (this._router.url !== '/customers/chats') {
-
+      if (this._router.url !== "/customers/chats") {
         this.showOnBrowserNoticication(conversation, cimEvent);
-
       }
     }
     this._soundService.playBeep();
-
   }
 
   showOnBrowserNoticication(conversation, cimEvent) {
-
     if (cimEvent.name.toLowerCase() == "customer_message") {
-
       if (cimEvent.data.body.type.toLowerCase() == "plain") {
-
         this._soundService.openBrowserNotification(conversation.customer.firstName, cimEvent.data.body.markdownText);
-
       }
     } else if (cimEvent.name.toLowerCase() == "bot_message") {
-
       if (cimEvent.data.body.type.toLowerCase() == "plain") {
-
-        this._soundService.openBrowserNotification('BOT', cimEvent.data.body.markdownText);
-
+        this._soundService.openBrowserNotification("BOT", cimEvent.data.body.markdownText);
       }
     }
   }
@@ -475,5 +459,4 @@ export class socketService {
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
-
 }
