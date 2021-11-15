@@ -14,7 +14,7 @@
             class="add-new" mat-button><span [style.backgroundColor]="'red'" class="ddot"></span>Unread</button>
         <mat-form-field appearance="outline" class="selection-trigger">
             <mat-select [(ngModel)]="filterListId">
-                <mat-option value='all'>All Queues</mat-option>
+                <mat-option value='all'>All Lists</mat-option>
                 <mat-option *ngFor="let list of _pullModeservice.subscribedList" value="{{list.id}}">
                     {{list.name}}</mat-option>
             </mat-select>

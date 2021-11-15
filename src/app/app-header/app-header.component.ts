@@ -34,7 +34,7 @@ export class AppHeaderComponent implements OnInit {
     },
     {
       id: "ef172d24-7b35-4c6d-ada5-41827034d307",
-      name: "enf of shift",
+      name: "end of shift",
       type: "LOGOUT"
     },
     {
