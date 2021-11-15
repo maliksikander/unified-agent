@@ -10,6 +10,7 @@ import { Router } from "@angular/router";
   styleUrls: ["./app-header.component.scss"]
 })
 export class AppHeaderComponent implements OnInit {
+  @ViewChild('stateTrigger', {static: false}) stateTrigger: any;
   agent = {
     state: "ready",
     name: "Bryan Miller",
@@ -53,7 +54,6 @@ export class AppHeaderComponent implements OnInit {
       type: "NOT_READY"
     }
   ];
-
   changeLanguage = false;
   logoutReasonList = false;
   stateView = true;
@@ -174,5 +174,10 @@ export class AppHeaderComponent implements OnInit {
 
   ngOnDestroy() {
     this.stateChangedSubscription.unsubscribe();
+  }
+  closeStateMenu(e) {
+    setTimeout(() => {
+      this.stateTrigger.closeMenu();
+    }, 200);
   }
 }
