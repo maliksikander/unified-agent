@@ -31,7 +31,7 @@ export class channelLogoPipe implements PipeTransform {
           );
         }
       } else {
-        resolve(null);
+        resolve('assets/flags/generic.png');
       }
     });
   }
