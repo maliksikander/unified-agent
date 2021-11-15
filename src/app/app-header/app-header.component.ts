@@ -56,6 +56,7 @@ export class AppHeaderComponent implements OnInit {
 
   changeLanguage = false;
   logoutReasonList = false;
+  stateView = true;
   startTime: Date;
   stopTime: Date;
   active: boolean = false;
@@ -134,6 +135,7 @@ export class AppHeaderComponent implements OnInit {
 
   updateLanguage() {
     this.changeLanguage = true;
+    this.stateView = false;
   }
   logout() {
     sessionStorage.clear();

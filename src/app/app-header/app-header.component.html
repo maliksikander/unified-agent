@@ -113,7 +113,7 @@
           <mat-menu  (click)="$event.stopPropagation()" #menu="matMenu" class="custom-user-menu matMenu"
             xPosition="after">
             <div class="menu-list-content" (click)="$event.stopPropagation()">
-              <div *ngIf="logoutReasonList == false || changeLanguage == false">
+              <div *ngIf="stateView">
               <div class="main-showcase">
                 <div class="agent-showcase">
                   <img src="assets/images/dummy-user.svg" alt="Agent">
@@ -164,7 +164,7 @@
 
 
               <p class="menu-trigger-custom logged-out-trigger">
-                <button mat-menu-item (click)="logoutReasonList = true">
+                <button mat-menu-item (click)="logoutReasonList = true; stateView = false;">
                   Logout
                   <mat-icon style="color: gray;font-size: 20px;">exit_to_app</mat-icon>
                 </button>
@@ -173,7 +173,7 @@
 
               <!-- Language list -->
               <div *ngIf="changeLanguage" class="language-change-list" (click)="$event.stopPropagation()">
-                <p>Select language <mat-icon (click)="changeLanguage = false">close</mat-icon>
+                <p>Select language <mat-icon (click)="changeLanguage = false; stateView = true">close</mat-icon>
                 </p>
                 <button mat-menu-item class="language-selection"
                   [ngClass]="{'selected-language': language.code == changeLanguageCode}"
@@ -185,7 +185,7 @@
 
               <div *ngIf="logoutReasonList" class="language-change-list" (click)="$event.stopPropagation()">
                 <p>Select Reason
-                  <mat-icon (click)="logoutReasonList = false;">close</mat-icon>
+                  <mat-icon (click)="logoutReasonList = false; stateView = true">close</mat-icon>
                 </p>
                 <div *ngFor="let reason of reasonCodes; let i = index">
                   <span *ngIf="(reason.type | lowercase ) == 'logout'" class="logout-reason-inner">

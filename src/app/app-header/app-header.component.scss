@@ -773,7 +773,7 @@ button.main-menu-item{
   min-width: 275px !important;
 
   .language-change-list {
-    position: absolute;
+    position: relative;
     right: 0;
     top: 0;
     width: 100%;
@@ -821,6 +821,8 @@ button.main-menu-item{
       width: calc(100% - 20px);
       color: #C41A1A;
       font-size: 14px;
+      position: sticky;
+      bottom: 0;
     }
 
     .language-selection{
