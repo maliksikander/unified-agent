@@ -103,7 +103,7 @@
       <div class="row">
 
         <ng-scrollbar class="chat-messages-main my-scrollbar"
-          [style.height]="replyInput?.offsetHeight > 80 ? 'calc(100% - ' + (replyInput?.offsetHeight+100)+'px)' : 'calc(100% - '+ viewHeight+')'">
+          [style.height]="replyInput?.offsetHeight > 80 ? 'calc(100% - ' + (replyInput?.offsetHeight+80)+'px)' : 'calc(100% - '+ viewHeight+')'">
           <!-- voice message chat area -->
 
 
@@ -125,7 +125,7 @@
                   </div>
                   <div *ngIf="(message.header.sender.type | lowercase) != 'bot'" class="profile-pic-area user-img">
                     {{message.header.sender | getSenderName:conversation.customer:true}}</div>
-                  <div *ngIf="(message.header.sender.type | lowercase) == 'bot'"><img src="assets/images/robot.png">
+                  <div *ngIf="(message.header.sender.type | lowercase) == 'bot'" class="profile-pic-area user-img"><img src="assets/images/robot-dark.svg">
                   </div>
                 </div>
                 <div class="chat-message-content ">
@@ -190,7 +190,7 @@
             <textarea [disabled]="conversation.activeChannelSessions.length == 0"
               (keyup.enter)="onSend(replyInput.value); replyInput.value = null" (click)="onTextAreaClick()"
               [attr.data-emoji-picker]="conversation.activeChannelSessions.length > 0 ? true : false"
-              [(ngModel)]="message" (keyup)="onKey($event)" name="message" (change)="textChanged($event)"
+              [(ngModel)]="message" (keyup)="onKey($event)" name="message"
               [matAutocomplete]="auto" matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
               id="messageTextarea" class="resize-none" #replyInput name="message"
               placeholder="{{conversation.messages[conversation.messages.length -1]?.botSuggestions ? 'Bot suggestions are available type / for viewing' :'Type a message here...'}}"></textarea>

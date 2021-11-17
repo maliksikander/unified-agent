@@ -107,6 +107,11 @@ mat-tab-group.chat-tab-area {
     height: calc(100% - 5px);
     border: 0;
 
+    .mat-tab-label-container{
+      overflow: auto;
+      max-height: calc(100% - 60px);
+    }
+
     .mat-ink-bar{
       display: none !important;
     }

@@ -275,6 +275,7 @@
     position: absolute;
     overflow: auto;
     padding: 0 0 0 18px;
+    overflow: hidden;
 
     //left: 0;
 
@@ -1529,27 +1530,32 @@ button.attachment-btn {
 }
 
 .new-msg-notif{
-  position: absolute;
   z-index: 1000000 !important;
-  left: 44%;
-  bottom: 83px;
   color: white;
   border-radius: 12px;
-  padding: 0px 10px 2px 10px;
-  box-shadow: 0px 0px 2px 0px #ff4500;
+  padding: 0 10px;
+  box-shadow: 0 0 2px 0px #5377ac;
   cursor: pointer;
   height: 22px;
-  font-size: 15px;
-  background: #ff4500;
+  font-size: 13px;
+  background: #4773b5;
+  margin:-22px auto 0 auto;
+  width: fit-content;
+  min-width: 120px;
+  font-weight: 400;
+  text-align: center;
+  line-height: 22px;
+  align-items: center;
+  display: flex;
     span{
-      border: 2px solid;
-    border-radius: 49px;
-    font-size: 10px;
+    font-size: 24px;
     }
 }
 
 
-.textarea-disable{
-  border-top: 1px solid #c0bebe !important;
-  background: #efefef !important;
+.textarea-disable {
+  .reply-form {
+    border-top: 1px solid #c0bebe !important;
+    background: #efefef !important;
+  }
 }

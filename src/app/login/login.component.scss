@@ -196,11 +196,12 @@
   .auth-section{
     padding: 0;
     &:before {
-      background: rgba(29, 154, 192, 0.9) !important;
+      background: rgba(70, 70, 70, 0.9) !important;
       position: fixed;
       height: 100%;
       width: 100%;
       content: '';
+      animation: none;
     }
     &:after {
       content: '';
@@ -219,6 +220,7 @@
       flex-wrap: wrap;
       background: transparent !important;
       min-height: 550px;
+      z-index: 2;
 
       .brand-logo{
         bottom: 5px;

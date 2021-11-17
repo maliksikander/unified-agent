@@ -182,10 +182,10 @@ export class InteractionsComponent implements OnInit {
   onTextAreaClick() {
     this.conversation.unReadCount = 0;
   }
-  textChanged(event) {
-    const el: any = document.getElementById("messageTextarea");
-    this.message = el.value;
-  }
+  // textChanged(event) {
+  //   const el: any = document.getElementById("messageTextarea");
+  //   this.message = el.value;
+  // }
 
   onKey(event) {
     this.message = event.target.value;
@@ -215,6 +215,10 @@ export class InteractionsComponent implements OnInit {
     //     console.log('value is 0')
     //     this.isTemplateOpen = false;
     // }
+    if (this.expanedHeight > 50) {
+      this.adjustHeightOnComposerResize();
+    }
+
   }
   eventFromChild(data) {
     this.isBarOPened = data;
@@ -264,5 +268,11 @@ export class InteractionsComponent implements OnInit {
 
   ngOnDestroy() {
     this.scrollSubscriber.unsubscribe();
+  }
+
+  adjustHeightOnComposerResize() {
+    if (this.currentScrollPosition > 95) {
+      this.downTheScrollAfterMilliSecs(30, 'smooth');
+    }
   }
 }
