@@ -7,9 +7,9 @@ import { cacheService } from "./cache.service";
 import { sharedService } from "./shared.service";
 import { CimEvent } from "../models/Event/cimEvent";
 import { snackbarService } from "./snackbar.service";
-import { error } from "console";
 import { pullModeService } from "./pullMode.service";
 import { soundService } from "./sounds.service";
+const mockTopicData: any = require('../mocks/topicData.json');
 
 @Injectable({
   providedIn: "root"
@@ -30,8 +30,12 @@ export class socketService {
     private _sharedService: sharedService,
     private _pullModeService: pullModeService,
     private _router: Router,
-    private _soundService: soundService
-  ) {}
+    private _soundService: soundService,
+  ) {
+      this.onTopicData(mockTopicData, "12345");
+    
+    
+  }
 
   connectToSocket() {
     this.uri = this._appConfigService.config.SOCKET_URL;
@@ -163,7 +167,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) {}
+    } catch (err) { }
   }
 
   listen(eventName: string) {
@@ -231,6 +235,9 @@ export class socketService {
   }
 
   onSocketSessionRemoved() {
+    localStorage.clear();
+        sessionStorage.clear();
+        this._cacheService.resetCache();
     this._snackbarService.open("you are logged In from another session", "err");
     alert("you are logged in from another session");
   }

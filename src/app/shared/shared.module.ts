@@ -69,6 +69,11 @@ import { filterPullModeRequestsPipe } from "./pipes/filterPullModeReqsts.pipe";
 import { channelLogoPipe } from "./pipes/getChannelLogo.pipe";
 import { isAlreadyJoinedPipe } from "./pipes/isAlreadyJoined.pipe";
 import { webChannelDataPipe } from "./pipes/webChannelData.pipe";
+import { getFileNamePipe } from "./pipes/getFileName.pipe";
+import { NgxDocViewerModule } from "ngx-doc-viewer";
+import { sanitizePipe } from "./pipes/sanitize.pipe";
+import { DownloadDirective } from "../download.directive";
+
 
 @NgModule({
   declarations: [
@@ -85,9 +90,13 @@ import { webChannelDataPipe } from "./pipes/webChannelData.pipe";
     columnsFilterClass,
     filterPullModeRequestsPipe,
     channelLogoPipe,
-    webChannelDataPipe
+    webChannelDataPipe,
+    getFileNamePipe,
+    sanitizePipe,
+    DownloadDirective
   ],
   imports: [
+    NgxDocViewerModule,
     MatIconModule,
     MatToolbarModule,
     MatSidenavModule,
@@ -230,7 +239,11 @@ import { webChannelDataPipe } from "./pipes/webChannelData.pipe";
     MomentModule,
     channelLogoPipe,
     isAlreadyJoinedPipe,
-    webChannelDataPipe
+    webChannelDataPipe,
+    getFileNamePipe,
+    sanitizePipe,
+    NgxDocViewerModule,
+    DownloadDirective
   ]
 })
-export class SharedModule {}
+export class SharedModule { }

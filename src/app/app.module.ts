@@ -1,5 +1,5 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule, APP_INITIALIZER } from "@angular/core";
+import { NgModule, APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { CommonModule, HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
@@ -30,6 +30,7 @@ import { LabelsListComponent } from "./labels/labels-list/labels-list.component"
 import { CreateLabelComponent } from "./labels/create-label/create-label.component";
 import { SubscribedListComponent } from "./pull-mode/subscribed-list/subscribed-list.component";
 import { SubscribedListPreviewComponent } from "./pull-mode/subscribed-list-preview/subscribed-list-preview.component";
+import { FilePreviewComponent } from './file-preview/file-preview.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsType: SPINNER.chasingDots,
@@ -37,6 +38,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 };
 
 @NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
     AppComponent,
     LoginComponent,
@@ -58,7 +60,10 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     LabelsListComponent,
     CreateLabelComponent,
     SubscribedListComponent,
-    SubscribedListPreviewComponent
+    SubscribedListPreviewComponent,
+    FilePreviewComponent,
+    FilePreviewComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -77,7 +82,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AnnouncementDialogComponent,
     ConfirmationDialogComponent,
     columnPreferences,
-    CreateLabelComponent
+    CreateLabelComponent,
+    FilePreviewComponent
   ],
   providers: [
     {
@@ -97,4 +103,4 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   exports: [BrowserModule, CommonModule, BrowserAnimationsModule],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

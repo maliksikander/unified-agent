@@ -29,7 +29,8 @@
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/nova-light/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/@progress/kendo-theme-default/dist/all.css"
+              "node_modules/@progress/kendo-theme-default/dist/all.css",
+              "node_modules/videogular2/fonts/videogular.css"
             ],
             "scripts": [
               "src/assets/vanilla-emoji-picker/emojiPicker.js"
@@ -101,7 +102,8 @@
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/nova-light/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/@progress/kendo-theme-default/dist/all.css"
+              "node_modules/@progress/kendo-theme-default/dist/all.css",
+              "node_modules/videogular2/fonts/videogular.css"
             ],
             "scripts": [
               "src/assets/vanilla-emoji-picker/emojiPicker.js"

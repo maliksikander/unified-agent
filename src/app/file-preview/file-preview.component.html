@@ -1,0 +1,14 @@
+<div class="main">
+    <div class="file-name">{{data.fileName}}<span class="close-btn">
+            <mat-icon (click)="close()">close</mat-icon>
+        </span></div>
+
+    <div class="view">
+        <div style="height: 97vh;" *ngIf="data.type == 'file'">
+            <ngx-doc-viewer [url]="data.url" viewer="google" style="width:100%;height:100%;"></ngx-doc-viewer>
+        </div>
+        <div style="height: 97vh;" *ngIf="data.type == 'image'">
+            <img [src]="data.url">
+        </div>
+    </div>
+</div>

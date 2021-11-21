@@ -7,8 +7,11 @@ import { CimEvent } from "../../models/Event/cimEvent";
 import { v4 as uuidv4 } from "uuid";
 import { NgScrollbar } from "ngx-scrollbar";
 import { snackbarService } from "src/app/services/snackbar.service";
+import { FilePreviewComponent } from "src/app/file-preview/file-preview.component";
+import { appConfigService } from "src/app/services/appConfig.service";
 
 declare var EmojiPicker: any;
+
 @Component({
   selector: "app-interactions",
   templateUrl: "./interactions.component.html",
@@ -21,6 +24,7 @@ export class InteractionsComponent implements OnInit {
   @Output() expandCustomerInfo = new EventEmitter<any>();
   @ViewChild("replyInput", { static: true }) elementView: ElementRef;
   @ViewChild(NgScrollbar, { static: true }) scrollbarRef: NgScrollbar;
+  @ViewChild('media', { static: false }) media: ElementRef;
 
   scrollSubscriber;
 
@@ -125,8 +129,9 @@ export class InteractionsComponent implements OnInit {
     private _cacheService: cacheService,
     private _socketService: socketService,
     private dialog: MatDialog,
-    private _snackbarService: snackbarService
-  ) {}
+    private _snackbarService: snackbarService,
+    public _appConfigService: appConfigService,
+  ) { }
   ngOnInit() {
     //  console.log("i am called hello")
     this.convers = this.conversation.messages;
@@ -135,7 +140,7 @@ export class InteractionsComponent implements OnInit {
     // }, 500);
   }
 
-  emoji() {}
+  emoji() { }
 
   onSend(text) {
     let message: any = {
@@ -244,7 +249,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -275,4 +280,38 @@ export class InteractionsComponent implements OnInit {
       this.downTheScrollAfterMilliSecs(30, 'smooth');
     }
   }
+
+  videoPIP(id) {
+
+    try {
+      const video: any = document.getElementById(id);
+      video.requestPictureInPicture()
+        .then(pictureInPictureWindow => {
+          pictureInPictureWindow.addEventListener("resize", () => false);
+        });
+    } catch (err) {
+      this._snackbarService.open("PIP not supported in this browser", "succ");
+      console.error(err);
+    }
+  }
+
+  fullLocation(lat, lng) {
+    const locationUrl = `http://maps.google.com/maps?q=${lat}, ${lng}`;
+    window.open(locationUrl, '_blank');
+  }
+
+  filePreviewOpener(url, fileName, type) {
+
+    url = this._appConfigService.config.FILE_SERVER_URL + "/file-engine/api/downloadFileStream" + new URL(url).search;
+
+    const dialogRef = this.dialog.open(FilePreviewComponent, {
+      height: '100vh',
+      width: '100%',
+      data: { fileName: fileName, url: url, type: type }
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+
+    });
+  }
+
 }

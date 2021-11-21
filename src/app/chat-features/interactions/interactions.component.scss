@@ -442,7 +442,6 @@
             }
           }
         }
-
         &.file-type-message{
           padding: 0 !important;
           border: 1px solid invert($customer-bubble, 10%);
@@ -1557,5 +1556,223 @@ button.attachment-btn {
   .reply-form {
     border-top: 1px solid #c0bebe !important;
     background: #efefef !important;
+  }
+}
+
+agm-map{
+  height: 120px;
+  width: 200px;
+}
+
+.attachment-type{
+  display: inline-flex;
+  position: relative;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid invert($bubble-background, 10%);
+
+  .location-logo{
+      background: invert($bubble-background, 8%);
+      padding: 8px;
+      position: relative;
+      display: inline-flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      min-width: 86px;
+      height: 82px;
+      justify-content: center;
+
+    img{
+      width: 35px;
+    }
+  }
+  .shared-card-content{
+    padding: 10px;
+    color: #000;
+    font-size: 14px;
+    background: $bubble-background;
+    position: relative;
+    width: 200px;
+
+    &.location-map{
+      padding: 0;
+      width: 210px;
+    }
+
+    &.video-player{
+      min-height: 112px;
+    }
+  }
+  agm-map{
+    height: 82px !important;
+    width: 210px;
+  }
+  .card-title{
+    font-size: 14px;
+    color: #000;
+    white-space: pre-wrap;
+  }
+  .file-size{
+    font-size: 12px;
+    color: #000;
+    position: absolute;
+    left: 12px;
+    bottom: 5px;
+  }
+}
+
+.topic-notification {
+  text-align: center;
+  margin: 15px 0;
+
+  p {
+    margin: 0;
+    display: inline-block;
+    padding: 5px 15px;
+    border: 1px solid #ebebeb;
+    border-radius: 40px;
+    color: #9D9D9D;
+    font-size: 12px;
+
+    &.join-agent{
+      color: $main-color;
+    }
+  }
+}
+//Video player Styles
+vg-player{
+  &:hover {
+    vg-controls {
+      opacity: .9;
+      transition: all .5s;
+    }
+  }
+}
+
+vg-time-display{
+  font-size: 12px;
+}
+vg-controls {
+  height: 45px !important;
+  align-items: center !important;
+  justify-content: space-between;
+  //opacity: 0;
+  transition: all .5s;
+
+  vg-scrub-bar {
+    position: absolute;
+    bottom: 0;
+    height: 10px;
+    margin: 0;
+    padding: 0 5px;
+  }
+  vg-time-display{
+    justify-content: flex-start;
+    line-height: 45px !important;
+    height: 45px;
+
+  }
+
+  vg-play-pause {
+    height: 30px;
+    width: 35px;
+    line-height: 30px;
+  }
+  vg-scrub-bar-buffering-time {
+    background: #ffffff54;
+  }
+  mat-icon{
+    position: absolute;
+    right: 0;
+    bottom: 45px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #fff;
+  }
+  vg-fullscreen{
+    width: 30px !important;
+    margin-left: auto;
+  }
+}
+.audio-file {
+  .audio-player {
+    min-height: 35px !important;
+    min-width: 268px;
+
+    vg-player {
+      background: transparent;
+      height: 35px !important;
+
+      vg-controls{
+        height: 35px !important;
+        background: transparent;
+        vg-scrub-bar{
+          position: static;
+          padding: 0 10px 0 5px;
+
+          vg-scrub-bar-buffering-time{
+            height: 2px;
+          }
+          vg-scrub-bar-current-time{
+            height: 2px;
+          }
+        }
+      }
+    }
+    vg-time-display{
+      position: absolute;
+      left: 37px;
+      top: 6px;
+      color: #646464;
+      font-size: 10px;
+    }
+  }
+  .chat-time{
+    align-self: flex-end !important;
+    padding-right: 5px !important;
+    margin-top: -12px !important;
+  }
+}
+
+.user-data-detail {
+  padding-top: 10px;
+  .data-detail {
+    padding: 10px;
+    background: #F7F8FB;
+
+    li{
+      flex: 0 0 50% !important;
+      max-width: 50%;
+      margin: 0;
+      color: #a4a4a4;
+      font-weight: 500;
+
+      label{
+        color: #a4a4a4;
+      }
+      span{
+        color: #333;
+      }
+    }
+  }
+}
+
+vg-controls.hide {
+  bottom: -50px;
+}
+
+.structured-actions {
+  padding: 0;
+  list-style: none;
+  margin: 8px 0 0;
+
+  li {
+    font-size: 12px;
+    margin: 2px;
+    display: inline-block;
+    background: darken($main-color-background, 15%);
+    padding: 5px;
+    border-radius: 5px;
+    cursor: default;
   }
 }
