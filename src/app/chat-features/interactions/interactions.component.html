@@ -176,7 +176,7 @@
                   <!-- --------------------sticker--------------------- -->
                   <div *ngIf="(message.body.type | lowercase) == 'sticker'" class="file-type-content ">
                     <span class="display-file">
-                      <img [src]="message.body.mediaUrl | getFileName">
+                      <img [src]="message.body.mediaUrl | getFileUrl">
                     </span>
                     <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
                   </div>
@@ -185,7 +185,7 @@
 
                     <div *ngIf="(message.body.type | lowercase) == 'image'" class="file-type-content image-content">
                     <a style="cursor: pointer;" (click)="filePreviewOpener(message.body.attachment.mediaUrl, message.body.caption,'image' )" class="display-file display-image">
-                      <img [src]="message.body.attachment.mediaUrl | getFileName">
+                      <img [src]="message.body.attachment.mediaUrl | getFileUrl">
                     </a>
                     <div class="shared-url shared-card-content">
                       <span class="url-title card-title">{{message.body.caption}}</span>
@@ -202,12 +202,12 @@
                     (click)="filePreviewOpener(message.body.attachment.mediaUrl, message.body.additionalDetails.filename,'file' )"
                     *ngIf="(message.body.type | lowercase) == 'file'" class="file-type-content">
                     <span class="display-file">
-                      <img src="assets/file-types/{{message.body.attachment.type}}.svg">
+                      <img src="assets/file-types/{{message.body.attachment.mediaUrl | getFileExt}}.svg">
                     </span>
                     <span class="display-file-name">{{message.body.additionalDetails.filename}}
-                      <span class="file-size">{{message.body.attachment.size / 1000}}MB</span>
+                      <span class="file-size">{{message.body.attachment.size | getFormattedBytes}}</span>
                       <a (click)="$event.stopPropagation();" class="file-download"
-                        href="{{message.body.attachment.mediaUrl | getFileName}}"
+                        href="{{message.body.attachment.mediaUrl | getFileUrl}}"
                         [download]="message.body.additionalDetails.filename" [attr.disabled]="dwld.busy"
                         #dwld="wmDownload">
                         Download
@@ -493,9 +493,9 @@
               <!--              <mat-icon>send</mat-icon>-->
             </button>
 
-             <button class="send-btn attachment-btn composer-trigger" mat-icon-button
-              *ngIf="replyInput.value.length < 1">
-              <input #myFileInput type="file" name="ef_chatbox_chat_file_upload" id="uploadFileBtn"
+             <button style="cursor: pointer;" class="send-btn attachment-btn composer-trigger" mat-icon-button
+              *ngIf="replyInput.value.length < 1 && conversation.activeChannelSessions.length > 0">
+              <input accept=".txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx,.svg" multiple #myFileInput type="file" (change)="uploadFile($event.target.files)" name="ef_chatbox_chat_file_upload" id="uploadFileBtn"
                 class="file-upload-input">
             </button>
 

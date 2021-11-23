@@ -1199,11 +1199,11 @@
           "markdownText": "",
           "caption": "Hello",
           "attachment": {
-              "mediaUrl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-              "type": "",
-              "size": 60184
+            "mediaUrl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+            "mimeType": "",
+            "size": 60184
           }
-      }
+        }
       }
     },
     {
@@ -2044,7 +2044,7 @@
           "caption": "Hello",
           "attachment": {
             "mediaUrl": "https://cim.expertflow.com/file-engine/api/downloadFileStream?filename=12345_download.jpg",
-            "type": "",
+            "mimeType": "",
             "size": 60184
           }
         }
@@ -2280,7 +2280,7 @@
           "caption": "Hello",
           "attachment": {
             "mediaUrl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-            "type": "",
+            "mimeType": "",
             "size": 60184
           }
         }
@@ -2516,7 +2516,7 @@
           "caption": "Hello",
           "attachment": {
             "mediaUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-            "type": "",
+            "mimeType": "",
             "size": 60184
           }
         }
@@ -2752,7 +2752,7 @@
           "caption": "Hello",
           "attachment": {
             "mediaUrl": "https://cim.expertflow.com/file-engine/api/downloadFileStream?filename=123456_Quote_.Word.pdf",
-            "type": "ppt",
+            "mimeType": "application/ppt",
             "size": 60184
           },
           "additionalDetails": {
@@ -2894,14 +2894,14 @@
           "markdownText": "",
           "caption": "Hello",
           "attachment": {
-              "mediaUrl": "https://cim.expertflow.com/file-engine/api/downloadFileStream?filename=123456_sample.ppt",
-              "type": "xls",
-              "size": 60184
+            "mediaUrl": "https://cim.expertflow.com/file-engine/api/downloadFileStream?filename=123456_sample.ppt",
+            "mimeType": "application/xls",
+            "size": 60184
           },
           "additionalDetails": {
-              "filename": "Expertflow xlxs"
+            "filename": "Expertflow xlxs"
           }
-      }
+        }
       }
     },
     {

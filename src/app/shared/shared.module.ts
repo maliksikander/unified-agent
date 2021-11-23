@@ -69,14 +69,17 @@ import { filterPullModeRequestsPipe } from "./pipes/filterPullModeReqsts.pipe";
 import { channelLogoPipe } from "./pipes/getChannelLogo.pipe";
 import { isAlreadyJoinedPipe } from "./pipes/isAlreadyJoined.pipe";
 import { webChannelDataPipe } from "./pipes/webChannelData.pipe";
-import { getFileNamePipe } from "./pipes/getFileName.pipe";
+import { getFileUrlPipe } from "./pipes/getFileUrl.pipe";
 import { NgxDocViewerModule } from "ngx-doc-viewer";
 import { sanitizePipe } from "./pipes/sanitize.pipe";
 import { DownloadDirective } from "../download.directive";
+import { getFileExtPipe } from "./pipes/getFileExt.pipe";
+import { getFormattedBytesPipe } from "./pipes/formatBytes.pipe";
 
 
 @NgModule({
   declarations: [
+    getFormattedBytesPipe,
     getMRDSwitchesPipe,
     RemoveUnderscorePipe,
     isAlreadyJoinedPipe,
@@ -91,9 +94,10 @@ import { DownloadDirective } from "../download.directive";
     filterPullModeRequestsPipe,
     channelLogoPipe,
     webChannelDataPipe,
-    getFileNamePipe,
+    getFileUrlPipe,
     sanitizePipe,
-    DownloadDirective
+    DownloadDirective,
+    getFileExtPipe
   ],
   imports: [
     NgxDocViewerModule,
@@ -240,10 +244,12 @@ import { DownloadDirective } from "../download.directive";
     channelLogoPipe,
     isAlreadyJoinedPipe,
     webChannelDataPipe,
-    getFileNamePipe,
+    getFileUrlPipe,
     sanitizePipe,
     NgxDocViewerModule,
-    DownloadDirective
+    DownloadDirective,
+    getFileExtPipe,
+    getFormattedBytesPipe
   ]
 })
 export class SharedModule { }

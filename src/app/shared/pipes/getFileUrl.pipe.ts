@@ -2,8 +2,8 @@ import { Pipe, PipeTransform } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 import { appConfigService } from "src/app/services/appConfig.service";
 
-@Pipe({ name: "getFileName", pure: true })
-export class getFileNamePipe implements PipeTransform {
+@Pipe({ name: "getFileUrl", pure: true })
+export class getFileUrlPipe implements PipeTransform {
     constructor(public _appConfigService: appConfigService, private domSanitizer: DomSanitizer) { }
     transform(url: any, args?: any): any {
         if (url) {

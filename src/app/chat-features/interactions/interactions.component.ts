@@ -9,6 +9,7 @@ import { NgScrollbar } from "ngx-scrollbar";
 import { snackbarService } from "src/app/services/snackbar.service";
 import { FilePreviewComponent } from "src/app/file-preview/file-preview.component";
 import { appConfigService } from "src/app/services/appConfig.service";
+import { httpService } from "src/app/services/http.service";
 
 declare var EmojiPicker: any;
 
@@ -131,6 +132,7 @@ export class InteractionsComponent implements OnInit {
     private dialog: MatDialog,
     private _snackbarService: snackbarService,
     public _appConfigService: appConfigService,
+    private _httpService: httpService
   ) { }
   ngOnInit() {
     //  console.log("i am called hello")
@@ -143,37 +145,7 @@ export class InteractionsComponent implements OnInit {
   emoji() { }
 
   onSend(text) {
-    let message: any = {
-      id: "",
-      header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
-      body: { markdownText: "", type: "PLAIN" }
-    };
-    let lastActiveChannelSession = this.conversation.activeChannelSessions[this.conversation.activeChannelSessions.length - 1];
-    if (lastActiveChannelSession) {
-      lastActiveChannelSession = JSON.parse(JSON.stringify(lastActiveChannelSession));
-      delete lastActiveChannelSession["webChannelData"];
-
-      message.id = uuidv4();
-      message.header.timestamp = Date.now();
-
-      message.header.sender = this.conversation.topicParticipant;
-      message.header.channelSession = lastActiveChannelSession;
-      message.header.channelData = lastActiveChannelSession.channelData;
-
-      message.body.markdownText = text;
-
-      this._socketService.emit("publishCimEvent", {
-        cimEvent: new CimEvent("AGENT_MESSAGE", "MESSAGE", message),
-        agentId: this._cacheService.agent.id,
-        topicId: this.conversation.topicId
-      });
-      this.lastMsgFromAgent = true;
-      setTimeout(() => {
-        this.message = "";
-      }, 40);
-    } else {
-      this._snackbarService.open("No active channel session available", "err");
-    }
+    this.constructAndSendCimEvent("plain", "", "", "", text);
   }
 
   openDialog(templateRef, e): void {
@@ -314,6 +286,111 @@ export class InteractionsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {
 
     });
+  }
+
+  uploadFile(files) {
+    let availableExtentions: any = ['txt', 'png', 'jpg', 'jpeg', 'pdf', 'ppt', 'xlsx', 'xls', 'doc', 'docx', 'svg'];
+    let ln = files.length;
+    if (ln > 0) {
+      for (var i = 0; i < ln; i++) {
+
+        const fileSize = files[i].size;
+        const fileMimeType = files[i].name.split('.').pop()
+
+        if (fileSize < 1000000) {
+          if (availableExtentions.includes(fileMimeType)) {
+
+            let fd = new FormData();
+            fd.append("file", files[i]);
+            fd.append("conversationId", `${Math.floor(Math.random() * 90000) + 10000}`);
+            this._httpService.uploadToFileEngine(fd).subscribe((e) => {
+
+              this.constructAndSendCimEvent(e.type.split('/')[0], e.type, e.name, e.size);
+
+            }, (error) => {
+              this._snackbarService.open(error, "err");
+            });
+
+
+          } else {
+            this._snackbarService.open(files[i].name + " unsupported type", "err");
+          }
+        } else {
+          this._snackbarService.open(files[i].name + " File size should be less than 5MB", "err");
+        }
+
+      }
+    }
+  }
+
+
+  constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?) {
+
+    let message: any = {
+      id: "",
+      header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
+      body: { markdownText: "", type: "" }
+    };
+    let lastActiveChannelSession = this.conversation.activeChannelSessions[this.conversation.activeChannelSessions.length - 1];
+    if (lastActiveChannelSession) {
+      let sendingActiveChannelSession = JSON.parse(JSON.stringify(lastActiveChannelSession));
+      delete sendingActiveChannelSession["webChannelData"];
+
+      message.id = uuidv4();
+      message.header.timestamp = Date.now();
+
+      message.header.sender = this.conversation.topicParticipant;
+      message.header.channelSession = sendingActiveChannelSession;
+      message.header.channelData = sendingActiveChannelSession.channelData;
+
+
+      if (msgType.toLowerCase() == "plain") {
+
+        message.body.type = "PLAIN";
+        message.body.markdownText = text;
+
+      } else if (msgType.toLowerCase() == "application" || msgType.toLowerCase() == "text") {
+
+        message.body.type = "FILE";
+        message.body['caption'] = "";
+        message.body['attachment'] = {
+          'mediaUrl': this._appConfigService.config.FILE_SERVER_URL + "/file-engine/api/downloadFileStream?filename=" + fileName,
+          'mimeType': fileMimeType,
+          'size': fileSize
+        }
+        message.body['additionalDetails'] = { 'filename': fileName };
+
+      } else if (msgType.toLowerCase() == "image") {
+
+        message.body.type = "IMAGE";
+        message.body['caption'] = fileName;
+        message.body['attachment'] = {
+          'mediaUrl': this._appConfigService.config.FILE_SERVER_URL + "/file-engine/api/downloadFileStream?filename=" + fileName,
+          'mimeType': fileMimeType,
+          'size': fileSize
+        }
+      }else{
+        this._snackbarService.open("unable to process the file", "err");
+        return;
+      }
+
+
+      // this._socketService.emit("publishCimEvent", {
+      //   cimEvent: new CimEvent("AGENT_MESSAGE", "MESSAGE", message),
+      //   agentId: this._cacheService.agent.id,
+      //   topicId: this.conversation.topicId
+      // });
+      this._socketService.onCimEventHandler(new CimEvent("AGENT_MESSAGE", "MESSAGE", message), "12345");
+      this.lastMsgFromAgent = true;
+
+      setTimeout(() => {
+        this.message = "";
+      }, 40);
+
+    } else {
+      this._snackbarService.open("No active channel session available", "err");
+    }
+
   }
 
 }
