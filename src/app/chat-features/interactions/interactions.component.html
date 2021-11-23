@@ -129,11 +129,21 @@
                 </div>
 
                 <div class="chat-message-content"
-                  [ngClass]="{'quoted-message-area': (message.body.type | lowercase) === 'reply' , 'file-type-message' : (message.body.type | lowercase) === 'file' || (message.body.type | lowercase) === 'url' || (message.body.type | lowercase) === 'contact'|| (message.body.type | lowercase) === 'location' || (message.body.type | lowercase) === 'video' || (message.body.type | lowercase) === 'sticker', 'file-type-video' : (message.body.type | lowercase) === 'video', 'file-type-sticker' : (message.body.type | lowercase) === 'sticker' }">
+                  [ngClass]="{'quoted-message-area': (message.body.type | lowercase) === 'reply' , 'file-type-message' : (message.body.type | lowercase) === 'image'||  (message.body.type | lowercase) === 'file' || (message.body.type | lowercase) === 'url' || (message.body.type | lowercase) === 'contact'|| (message.body.type | lowercase) === 'location' || (message.body.type | lowercase) === 'video' || (message.body.type | lowercase) === 'sticker', 'file-type-video' : (message.body.type | lowercase) === 'video', 'file-type-sticker' : (message.body.type | lowercase) === 'sticker' }">
                   <!-- ---------------plain---------------------- -->
                   <div *ngIf="(message.body.type | lowercase) == 'plain'">
-                    <p [innerHTML]="message.body.markdownText | linkify | ibsformat"></p>
-                    <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
+                    <p>
+                      <span [innerHTML]="message.body.markdownText | linkify | ibsformat"></span>
+                      <span class="message-stamp">
+                         <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
+                      </span>
+                    </p>
+
+
+
+
+<!--                    <p [innerHTML]="message.body.markdownText | linkify | ibsformat"></p>-->
+<!--                    <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
 
                     <button mat-icon-button class="user_settings"
                       *ngIf="((message.header.sender.type | lowercase) == 'customer') && message.botSuggestions"
@@ -143,8 +153,17 @@
 
                   <!-- ---------------button---------------------- -->
                   <div *ngIf="(message.body.type | lowercase) == 'button'">
-                    <p [innerHTML]="message.body.markdownText | linkify | ibsformat"></p>
-                    <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
+<!--                    <p [innerHTML]="message.body.markdownText | linkify | ibsformat"></p>-->
+<!--                    <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
+
+                    <p>
+                      <span [innerHTML]="message.body.markdownText | linkify | ibsformat"></span>
+                      <span class="message-stamp">
+                         <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
+                      </span>
+                    </p>
+
+
                     <ul class="structured-actions">
                       <li *ngFor="let button of message.body.buttons">{{button.title}}</li>
                     </ul>
@@ -155,7 +174,7 @@
                   </div>
 
                   <!-- --------------------sticker--------------------- -->
-                  <div *ngIf="(message.body.type | lowercase) == 'sticker'" class="file-type-content">
+                  <div *ngIf="(message.body.type | lowercase) == 'sticker'" class="file-type-content ">
                     <span class="display-file">
                       <img [src]="message.body.mediaUrl | getFileName">
                     </span>
@@ -163,9 +182,9 @@
                   </div>
 
                   <!-- --------------------image--------------------- -->
-             
-                  <div *ngIf="(message.body.type | lowercase) == 'image'" class="file-type-content url-content">
-                    <a style="cursor: pointer;" (click)="filePreviewOpener(message.body.attachment.mediaUrl, message.body.caption,'image' )" class="display-file url-image">
+
+                    <div *ngIf="(message.body.type | lowercase) == 'image'" class="file-type-content image-content">
+                    <a style="cursor: pointer;" (click)="filePreviewOpener(message.body.attachment.mediaUrl, message.body.caption,'image' )" class="display-file display-image">
                       <img [src]="message.body.attachment.mediaUrl | getFileName">
                     </a>
                     <div class="shared-url shared-card-content">
@@ -244,7 +263,7 @@
                             </vg-scrub-bar>
                             <div class="clearfix clear"></div>
                             <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
-                            <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+                            <vg-time-display class="total-time" vgProperty="total" vgFormat="mm:ss"></vg-time-display>
                           </vg-controls>
 
                           <audio #audio [vgMedia]="audio" id="myAudio" preload="auto">
@@ -471,12 +490,11 @@
               <!--              <mat-icon>send</mat-icon>-->
             </button>
 
-            <!-- <button class="send-btn attachment-btn composer-trigger" mat-icon-button
+             <button class="send-btn attachment-btn composer-trigger" mat-icon-button
               *ngIf="replyInput.value.length < 1">
               <input #myFileInput type="file" name="ef_chatbox_chat_file_upload" id="uploadFileBtn"
                 class="file-upload-input">
-              <mat-icon>attach_file</mat-icon>
-            </button> -->
+            </button>
 
             <!--            <span class="attachment-btn" >-->
             <!--            <input #myFileInput *ngIf="replyInput.value.length < 1" (change)="uploadFile($event.target.files)" type="file" [disabled]="chatServerDown || conversation.state =='ended'"-->

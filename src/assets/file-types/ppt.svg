@@ -8,14 +8,12 @@
       <feComposite in="SourceGraphic"/>
     </filter>
   </defs>
-  <g id="Group_5897" data-name="Group 5897" transform="translate(0 0.5)">
-    <g id="Group_5896" data-name="Group 5896">
-      <g transform="matrix(1, 0, 0, 1, 0, -0.5)" filter="url(#Path_65)">
-        <path id="Path_65-2" data-name="Path 65" d="M100.7,0A4.873,4.873,0,0,0,96,5V75a4.873,4.873,0,0,0,4.7,5H147.75a4.873,4.873,0,0,0,4.7-5V20L133.637,0Z" transform="translate(-86.59 0.5)" fill="#fff"/>
-      </g>
-      <path id="Path_67" data-name="Path 67" d="M398.114,142.114,384,128h14.114Z" transform="translate(-332.25 -109.727)" fill="#f4f4f5"/>
-      <path id="Path_66" data-name="Path 66" d="M356.7,18.818h14.114L352,0V14.114A4.718,4.718,0,0,0,356.7,18.818Z" transform="translate(-304.954)" fill="#cbcbcb"/>
+  <g id="ppt" transform="translate(0 0.5)">
+    <g transform="matrix(1, 0, 0, 1, 0, -0.5)" filter="url(#Path_65)">
+      <path id="Path_65-2" data-name="Path 65" d="M100.7,0A4.873,4.873,0,0,0,96,5V75a4.873,4.873,0,0,0,4.7,5H147.75a4.873,4.873,0,0,0,4.7-5V20L133.637,0Z" transform="translate(-86.59 0.5)" fill="#fff"/>
     </g>
+    <path id="Path_67" data-name="Path 67" d="M398.114,142.114,384,128h14.114Z" transform="translate(-332.25 -109.727)" fill="#f4f4f5"/>
+    <path id="Path_66" data-name="Path 66" d="M356.7,18.818h14.114L352,0V14.114A4.718,4.718,0,0,0,356.7,18.818Z" transform="translate(-304.954)" fill="#cbcbcb"/>
     <path id="Path_72" data-name="Path 72" d="M140.693,418.352H96V420.7h44.693a2.359,2.359,0,0,0,2.352-2.352V416A2.359,2.359,0,0,1,140.693,418.352Z" transform="translate(-86.591 -351.114)" fill="#cad1d8"/>
     <path id="Path_68" data-name="Path 68" d="M88.455,265.875a2.359,2.359,0,0,1-2.352,2.352H34.352A2.359,2.359,0,0,1,32,265.875V242.352A2.359,2.359,0,0,1,34.352,240H86.1a2.359,2.359,0,0,1,2.352,2.352Z" transform="translate(-32 -201.171)" fill="#f15642"/>
     <g id="Group_9" data-name="Group 9" transform="translate(10.799 46.569)">

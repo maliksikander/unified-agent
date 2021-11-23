@@ -2781,3 +2781,35 @@ color: $main-color;
     top: 0;
   }
 }
+
+.agent-message {
+  .audio-file {
+    vg-scrub-bar-buffering-time {
+      background: darken($bubble-background, 10%);
+    }
+    .background{
+      background-color: darken($bubble-background, 20%);
+
+      &:after{
+        background: darken($bubble-background, 25%) ;
+      }
+    }
+
+    vg-play-pause {
+      .icon {
+        border: 2px solid darken($bubble-background, 20%);
+
+        &:before {
+          color: darken($bubble-background, 20%);
+        }
+      }
+    }
+
+    vg-scrub-bar-buffering-time{
+      .background{
+        background: transparent !important;
+      }
+    }
+
+  }
+}

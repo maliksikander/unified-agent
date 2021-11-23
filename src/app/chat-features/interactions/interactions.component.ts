@@ -305,8 +305,10 @@ export class InteractionsComponent implements OnInit {
     url = this._appConfigService.config.FILE_SERVER_URL + "/file-engine/api/downloadFileStream" + new URL(url).search;
 
     const dialogRef = this.dialog.open(FilePreviewComponent, {
-      height: '100vh',
-      width: '100%',
+      maxHeight: '100vh',
+      maxWidth: '100%',
+      height: 'auto',
+      width: 'auto',
       data: { fileName: fileName, url: url, type: type }
     });
     dialogRef.afterClosed().subscribe((result: any) => {
