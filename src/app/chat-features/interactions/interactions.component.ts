@@ -26,7 +26,7 @@ export class InteractionsComponent implements OnInit {
   @ViewChild("replyInput", { static: true }) elementView: ElementRef;
   @ViewChild(NgScrollbar, { static: true }) scrollbarRef: NgScrollbar;
   @ViewChild('media', { static: false }) media: ElementRef;
-
+  dispayVideoPIP = true;
   scrollSubscriber;
 
   ngAfterViewInit() {
@@ -136,6 +136,9 @@ export class InteractionsComponent implements OnInit {
   ) { }
   ngOnInit() {
     //  console.log("i am called hello")
+    if(navigator.userAgent.indexOf("Firefox") != -1 ) {
+      this.dispayVideoPIP = false;
+    }
     this.convers = this.conversation.messages;
     // setTimeout(() => {
     //   new EmojiPicker();
@@ -297,7 +300,7 @@ export class InteractionsComponent implements OnInit {
         const fileSize = files[i].size;
         const fileMimeType = files[i].name.split('.').pop()
 
-        if (fileSize < 1000000) {
+        if (fileSize <= 5000000) {
           if (availableExtentions.includes(fileMimeType)) {
 
             let fd = new FormData();
@@ -347,7 +350,7 @@ export class InteractionsComponent implements OnInit {
       if (msgType.toLowerCase() == "plain") {
 
         message.body.type = "PLAIN";
-        message.body.markdownText = text;
+        message.body.markdownText = text.trim();
 
       } else if (msgType.toLowerCase() == "application" || msgType.toLowerCase() == "text") {
 

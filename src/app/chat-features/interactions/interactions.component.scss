@@ -440,6 +440,17 @@
             .card-action {
               color: $theme-green !important;
             }
+
+            .contact-inner {
+              display: grid;
+              border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+              margin-bottom: 5px;
+
+              &:last-child{
+                border: 0;
+                margin: 0;
+              }
+            }
           }
 
           .display-image{
@@ -698,6 +709,7 @@
     transform: translate(-21px, 0);
     top: 0;
     margin-left: -51px;
+    background: #fff;
 
 
     span {

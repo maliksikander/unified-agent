@@ -109,7 +109,7 @@
           <!-- simple chat area -->
 
           <div class="instruction-content chat-session-main">
-            <div *ngFor="let message of conversation.messages; let index = index">
+            <div style="display: unset;" *ngFor="let message of conversation.messages; let index = index">
               <div id="datestamp" class="int-date"
                 *ngIf="(index == 0) || (message.header.timestamp | date: 'dd MMMM yyyy') != (conversation.messages[index-1].header.timestamp | date: 'dd MMMM yyyy')">
                 <span>{{message.header.timestamp | date: 'MMM'}}<b>{{message.header.timestamp | date: 'dd'}}</b></span>
@@ -137,7 +137,6 @@
                       <span class="message-stamp">
                          <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
                       </span>
-                    </p>
 
 
 
@@ -225,12 +224,12 @@
                       <img src="assets/images/{{message.header.sender.type == 'CUSTOMER' ? 'contacts-logo.svg' :  'contacts-logo-bot.svg'}}">
 
                     </span>
-                    <div *ngFor="let contact of message.body.contacts"
+                    <div
                       class="contact-space shared-url shared-card-content">
-
+                      <div  class="contact-inner" *ngFor="let contact of message.body.contacts">
                       <span class="contact-name card-title">{{contact.name.formattedName}}</span>
                       <span class="contact-number card-description">{{contact.phones[0].phone}}</span>
-
+                      </div>
                     </div>
                     <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
                   </div>
@@ -291,7 +290,7 @@
                             <vg-volume></vg-volume>
                             <vg-mute></vg-mute>
                             <vg-fullscreen></vg-fullscreen>
-                            <mat-icon (click)="videoPIP(message.id)">picture_in_picture_alt</mat-icon>
+                            <mat-icon  *ngIf="dispayVideoPIP"  (click)="videoPIP(message.id)">picture_in_picture_alt</mat-icon>
                             <vg-scrub-bar>
                               <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
                               <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
