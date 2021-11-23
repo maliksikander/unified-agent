@@ -114,7 +114,7 @@
                 *ngIf="(index == 0) || (message.header.timestamp | date: 'dd MMMM yyyy') != (conversation.messages[index-1].header.timestamp | date: 'dd MMMM yyyy')">
                 <span>{{message.header.timestamp | date: 'MMM'}}<b>{{message.header.timestamp | date: 'dd'}}</b></span>
               </div>
-              <div class="chat-message"
+              <div class="chat-message {{message.body.type | lowercase}}"
                 [ngClass]="((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message slide-in-right'">
                 <div class="profile-pic">
                   <div class="active-channel channel-icon">
@@ -221,7 +221,9 @@
 
                   <div *ngIf="(message.body.type | lowercase) == 'contact'" class="file-type-content contact-type">
                     <span class="display-file contact-logo">
-                      <img src="assets/images/contacts-logo.svg">
+<!--                      <img src="assets/images/contacts-logo.svg">-->
+                      <img src="assets/images/{{message.header.sender.type == 'CUSTOMER' ? 'contacts-logo.svg' :  'contacts-logo-bot.svg'}}">
+
                     </span>
                     <div *ngFor="let contact of message.body.contacts"
                       class="contact-space shared-url shared-card-content">
@@ -229,7 +231,6 @@
                       <span class="contact-name card-title">{{contact.name.formattedName}}</span>
                       <span class="contact-number card-description">{{contact.phones[0].phone}}</span>
 
-                      <!-- <a *ngIf="con.title !== 'bot'" class="file-download card-action">Save Contact</a> -->
                     </div>
                     <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
                   </div>
@@ -312,7 +313,9 @@
                   <div *ngIf="(message.body.type | lowercase) == 'location'" class="file-type-content location-type">
                     <span class="display-file location-logo"
                       (click)="fullLocation(message.body.location.latitude, message.body.location.longitude)">
-                      <img src="assets/images/map-marker.svg">
+<!--                      <img src="assets/images/map-marker.svg">-->
+                          <img src="assets/images/{{message.header.sender.type == 'CUSTOMER' ? 'map-marker.svg' :  'map-marker-bot.svg'}}">
+
                     </span>
                     <div class="shared-url shared-card-content location-map">
                       <agm-map [zoom]="8" [latitude]="message.body.location.latitude"
