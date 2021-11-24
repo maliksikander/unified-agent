@@ -114,8 +114,8 @@
                 *ngIf="(index == 0) || (message.header.timestamp | date: 'dd MMMM yyyy') != (conversation.messages[index-1].header.timestamp | date: 'dd MMMM yyyy')">
                 <span>{{message.header.timestamp | date: 'MMM'}}<b>{{message.header.timestamp | date: 'dd'}}</b></span>
               </div>
-              <div class="chat-message {{message.body.type | lowercase}}"
-                [ngClass]="((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message slide-in-right'">
+              <div class="chat-message {{message.body.type | lowercase}} {{  message.header.replyToMessageId != null  ? 'quoted-message-main' : ''}}"
+                [ngClass]=" ((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message slide-in-right' ">
                 <div class="profile-pic">
                   <div class="active-channel channel-icon">
                     <img width="20"
@@ -127,20 +127,20 @@
                       src="assets/images/robot-dark.svg">
                   </div>
                 </div>
-
+<div class="combined-area">
                 <!-- -----------------------referred reply message---------------- -->
-                
-                <div *ngIf="message.header.replyToMessageId != null">
-                  <div   *ngFor="let referredMessage of message.header.replyToMessageId | getReferredMsg:conversation.messages">
-                  <div class="chat-message-content referred-message-content"
+
+                <div class="chat-message-content referred-message-content" *ngIf="message.header.replyToMessageId != null">
+                  <div  class="main-quoted-reply" *ngFor="let referredMessage of message.header.replyToMessageId | getReferredMsg:conversation.messages">
+                  <div
                   [ngClass]="{'file-type-message' : (referredMessage.body.type | lowercase) === 'image'||  (referredMessage.body.type | lowercase) === 'file' || (referredMessage.body.type | lowercase) === 'url' || (referredMessage.body.type | lowercase) === 'contact'|| (referredMessage.body.type | lowercase) === 'location' || (referredMessage.body.type | lowercase) === 'video' || (referredMessage.body.type | lowercase) === 'sticker', 'file-type-video' : (referredMessage.body.type | lowercase) === 'video', 'file-type-sticker' : (referredMessage.body.type | lowercase) === 'sticker' }">
                   <!-- ---------------plain---------------------- -->
                   <div *ngIf="(referredMessage.body.type | lowercase) == 'plain'">
                     <p>
                       <span [innerHTML]="referredMessage.body.markdownText | linkify | ibsformat"></span>
-                      <span class="message-stamp">
-                         <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
-                      </span>
+<!--                      <span class="message-stamp">-->
+<!--                         <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
+<!--                      </span>-->
 
                   </div>
 
@@ -151,9 +151,9 @@
 
                     <p>
                       <span [innerHTML]="referredMessage.body.markdownText | linkify | ibsformat"></span>
-                      <span class="message-stamp">
-                         <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
-                      </span>
+<!--                      <span class="message-stamp">-->
+<!--                         <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
+<!--                      </span>-->
                     </p>
 
 
@@ -171,7 +171,7 @@
                     <span class="display-file">
                       <img [src]="referredMessage.body.mediaUrl | getFileUrl">
                     </span>
-                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
+<!--                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
                   </div>
 
                   <!-- --------------------image--------------------- -->
@@ -186,7 +186,7 @@
                       <a class="url-link  card-action"  [matTooltip]="referredMessage.body.markdownText"
                         >{{referredMessage.body.markdownText}}</a>
                     </div>
-                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
+<!--                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
                   </div>
 
                   <!-- ---------------------file-------------------------------- -->
@@ -209,7 +209,7 @@
                       </a>
 
                     </span>
-                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
+<!--                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
                   </div>
 
                   <!-- -----------------------contact---------------------------- -->
@@ -227,7 +227,7 @@
                       <span class="contact-number card-description">{{contact.phones[0].phone}}</span>
                       </div>
                     </div>
-                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
+<!--                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
                   </div>
 
                   <!-- ------------------------------url------------------------------- -->
@@ -242,7 +242,7 @@
                       <a class="url-link  card-action" [matTooltip]="referredMessage.body.mediaUrl" href="{{referredMessage.body.mediaUrl}}"
                         target="_blank">{{referredMessage.body.mediaUrl}}</a>
                     </div>
-                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
+<!--                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
                   </div>
 
                   <!-- -----------------------------audio--------------------------------------- -->
@@ -267,7 +267,7 @@
                           </audio>
                         </vg-player>
                       </div>
-                      <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
+<!--                      <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
                     </div>
                   </div>
 
@@ -300,7 +300,7 @@
                       </div>
                     </div>
 
-                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
+<!--                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
                   </div>
 
                   <!-- ---------------------location------------------------------- -->
@@ -319,12 +319,13 @@
                           [longitude]="referredMessage.body.location.longitude"></agm-marker>
                       </agm-map>
                     </div>
-                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
+<!--                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
                   </div>
 
                 </div>
               </div>
                 </div>
+                <div *ngIf="message.header.replyToMessageId != null" class="clear clearfix"></div>
                 <!-- -----------------------referred reply message end---------------- -->
 
                 <div class="chat-message-content"
@@ -528,6 +529,7 @@
                   </div>
 
                 </div>
+</div>
 
                 <div class="chat-intents" *ngIf="message.showBotSuggestions">
                   <div class="intents-inner">

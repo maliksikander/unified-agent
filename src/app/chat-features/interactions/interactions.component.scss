@@ -285,6 +285,9 @@
       margin-bottom: 12px;
       display: flex;
       flex-wrap: wrap;
+      .combined-area {
+        max-width: calc(100% - 112px);
+      }
 
       .profile-pic {
         float: left;
@@ -335,7 +338,7 @@
         padding: 8px 10px;
         display: table;
         border-radius: 3px;
-        max-width: calc(100% - 112px);
+        //max-width: calc(100% - 112px);
 
         &:before {
           content: '';
@@ -1863,5 +1866,41 @@ vg-controls.hide {
     li {
       background: invert($customer-bubble, 15%);
     }
+  }
+}
+
+
+//Quoted message
+.quoted-message-main{
+  .combined-area {
+    display: table;
+    width: fit-content;
+  }
+  .referred-message-content{
+    max-width: 100% !important;
+    padding: 0 !important;
+    display: block !important;
+
+    &:before{
+      border-top-color: #79a31d !important;
+    }
+  }
+  .replied-message{
+    border-radius: 0 0 3px 3px !important;
+    border: 0 !important;
+    max-width: 100% !important;
+    background: #E8F5D6 !important;
+    width: 100% !important;
+    &:before, &:after{
+      display: none !important;
+    }
+  }
+  .main-quoted-reply {
+    border-left: 7px solid #79a31d;
+    padding: 10px;
+    background: #ceddb9;
+  }
+  .clearfix{
+    width: 100%;
   }
 }
