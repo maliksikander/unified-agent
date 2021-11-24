@@ -187,9 +187,9 @@
                       <img [src]="message.body.attachment.mediaUrl | getFileUrl">
                     </a>
                     <div class="shared-url shared-card-content">
-                      <span class="url-title card-title">{{message.body.caption}}</span>
+                      <span class="url-title card-title" [matTooltip]="message.body.caption">{{message.body.caption}}</span>
                       <span class="url-description card-description"></span>
-                      <a class="url-link  card-action"
+                      <a class="url-link  card-action"  [matTooltip]="message.body.markdownText"
                         >{{message.body.markdownText}}</a>
                     </div>
                     <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
@@ -203,7 +203,9 @@
                     <span class="display-file">
                       <img src="assets/file-types/{{message.body.attachment.mediaUrl | getFileExt}}.svg">
                     </span>
-                    <span class="display-file-name">{{message.body.additionalDetails.filename}}
+                    <span class="display-file-name">
+
+                      <span class="show-file-name" [matTooltip]="message.body.additionalDetails.filename">{{message.body.additionalDetails.filename}}</span>
                       <span class="file-size">{{message.body.attachment.size | getFormattedBytes}}</span>
                       <a (click)="$event.stopPropagation();" class="file-download"
                         href="{{message.body.attachment.mediaUrl | getFileUrl}}"
@@ -227,7 +229,7 @@
                     <div
                       class="contact-space shared-url shared-card-content">
                       <div  class="contact-inner" *ngFor="let contact of message.body.contacts">
-                      <span class="contact-name card-title">{{contact.name.formattedName}}</span>
+                      <span class="contact-name card-title" [matTooltip]="contact.name.formattedName">{{contact.name.formattedName}}</span>
                       <span class="contact-number card-description">{{contact.phones[0].phone}}</span>
                       </div>
                     </div>
@@ -241,9 +243,9 @@
                       <img src="assets/images/url.png">
                     </a>
                     <div class="shared-url shared-card-content">
-                      <span class="url-title card-title">{{message.body.markdownText}}</span>
+                      <span class="url-title card-title" [matTooltip]="message.body.markdownText">{{message.body.markdownText}}</span>
                       <span class="url-description card-description"></span>
-                      <a class="url-link  card-action" href="{{message.body.mediaUrl}}"
+                      <a class="url-link  card-action" [matTooltip]="message.body.mediaUrl" href="{{message.body.mediaUrl}}"
                         target="_blank">{{message.body.mediaUrl}}</a>
                     </div>
                     <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>

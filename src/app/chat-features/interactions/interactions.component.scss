@@ -421,6 +421,9 @@
               font-weight: 600;
               font-size: 14px;
               margin: 0;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
             }
             .card-description {
               font-size: 11px;
@@ -430,6 +433,9 @@
               font-size: 14px;
               color: #0093FF;
               cursor: pointer;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
             }
           }
           &.contact-type{
@@ -510,6 +516,13 @@
             background: $customer-bubble;
             position: relative;
             width: 200px;
+            .show-file-name{
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+            }
           }
           .chat-time{
             padding: 0 15px;
@@ -1568,13 +1581,14 @@ button.attachment-btn {
   height: 30px;
 
   input{
-    width: 35px;
+    width: 122px;
     position: absolute;
     opacity: 0;
     cursor: pointer !important;
-    left: 2px;
+    left: 14px;
     top: 0;
     z-index: 2;
+    direction: rtl;
   }
   mat-icon{
     position: absolute;
