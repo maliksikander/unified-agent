@@ -32,7 +32,7 @@ export class socketService {
     private _router: Router,
     private _soundService: soundService,
   ) {
-      this.onTopicData(mockTopicData, "12345");
+     // this.onTopicData(mockTopicData, "12345");
     
     
   }

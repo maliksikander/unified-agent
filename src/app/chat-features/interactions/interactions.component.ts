@@ -378,12 +378,12 @@ export class InteractionsComponent implements OnInit {
       }
 
 
-      // this._socketService.emit("publishCimEvent", {
-      //   cimEvent: new CimEvent("AGENT_MESSAGE", "MESSAGE", message),
-      //   agentId: this._cacheService.agent.id,
-      //   topicId: this.conversation.topicId
-      // });
-      this._socketService.onCimEventHandler(new CimEvent("AGENT_MESSAGE", "MESSAGE", message), "12345");
+      this._socketService.emit("publishCimEvent", {
+        cimEvent: new CimEvent("AGENT_MESSAGE", "MESSAGE", message),
+        agentId: this._cacheService.agent.id,
+        topicId: this.conversation.topicId
+      });
+      // this._socketService.onCimEventHandler(new CimEvent("AGENT_MESSAGE", "MESSAGE", message), "12345");
       this.lastMsgFromAgent = true;
 
       setTimeout(() => {
