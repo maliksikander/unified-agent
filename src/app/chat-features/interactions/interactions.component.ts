@@ -44,6 +44,8 @@ export class InteractionsComponent implements OnInit {
     });
   }
 
+  categories: string[] = ["Fayina Addinall", "Doy Ortelt", " Ev Gayforth", "Adam Joe Stanler"];
+
   showNewMessageNotif: boolean = false;
   currentScrollPosition: number = 100;
   lastMsgFromAgent: boolean = false;
