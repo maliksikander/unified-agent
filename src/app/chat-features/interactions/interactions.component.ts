@@ -56,69 +56,11 @@ export class InteractionsComponent implements OnInit {
   popTitle = "Notes";
   expanedHeight = 0;
 
-  channelUrl = "assets/images/web.svg";
-  options: string[] = [
-    "Glenn Helgass",
-    " Ev Gayforth",
-    "Adam Joe Stanler",
-    "Fayina Addinall",
-    "Doy Ortelt",
-    "Donnie Makiver",
-    "Verne West-Frimley",
-    " Ev Gayforth",
-    "Adam Joe Stanler",
-    "Fayina Addinall",
-    "Doy Ortelt",
-    "Donnie Makiver",
-    "Verne West-Frimley",
-    "Glenn Helgass",
-    " Ev Gayforth"
-  ];
-  categories: string[] = ["Fayina Addinall", "Doy Ortelt", " Ev Gayforth", "Adam Joe Stanler"];
-
-  customer: any = {
-    type: "Customer",
-    info: {
-      channel: "web",
-      email: "farhan.maqbool@expertflow.com",
-      firstName: "farhan",
-      id: "",
-      language: "en",
-      lastName: "maqbool",
-      name: "farhan ",
-      phone: "5555",
-      refId: "5555",
-      url: "http://localhost:4200/"
-    }
-  };
   message = "";
   convers: any[];
   ringing = false;
   callControls = true;
-  cannedMessages = [
-    {
-      category: "marketing",
-      messages: ["Hi, how are you", "How may I help you?"]
-    },
-    {
-      category: "information",
-      messages: ["Info message 1", "Info message 2"]
-    }
-  ];
-  actions = [
-    {
-      name:
-        "If a customer submits a support ticket, they deserve 1. confirmation that you received the ticket, and 2. affirmation that you are working on it."
-    },
-    {
-      name:
-        "If possible, personalize this response relative to the issue. If a customer filled out a form with drop-down category, this is easy. Additionally, you can train your reps to know which response to use."
-    },
-    {
-      name:
-        "To help ameliorate this tendency, make sure you proactively follow-up with them letting them know you're still working hard to reach a resolution, and that you will let them know when there are updates. This shows you care."
-    }
-  ];
+ 
   isSuggestion = false;
   displaySuggestionsArea = false;
   cannedTabOpen = false;

@@ -32,9 +32,9 @@ export class socketService {
     private _router: Router,
     private _soundService: soundService,
   ) {
-     // this.onTopicData(mockTopicData, "12345");
-    
-    
+    // this.onTopicData(mockTopicData, "12345");
+
+
   }
 
   connectToSocket() {
@@ -62,8 +62,13 @@ export class socketService {
 
     this.socket.on("connect", (e) => {
       console.log("socket connect " + e);
+      this.subscribeToSocketEvents();
     });
 
+  }
+
+  subscribeToSocketEvents() {
+    
     this.socket.on("disconnect", (reason) => {
       console.error("socket disconnect " + reason);
 
@@ -78,89 +83,91 @@ export class socketService {
       }
     });
 
-    this.listen("agentPresence").subscribe((res: any) => {
-      console.log(res.data);
-      this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: res.data.agentPresence });
+    this.socket.on("agentPresence", (res: any) => {
+      console.log(res);
+      this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: res.agentPresence });
     });
 
-    this.listen("errors").subscribe((res: any) => {
-      console.log("socket errors ", res.data);
-      this.onSocketErrors(res.data);
+    this.socket.on("errors", (res: any) => {
+      console.log("socket errors ", res);
+      this.onSocketErrors(res);
     });
 
-    this.listen("taskRequest").subscribe((res: any) => {
-      console.log("taskRequest ", res.data);
-      this.triggerNewChatRequest(res.data);
+    this.socket.on("taskRequest", (res: any) => {
+      console.log("taskRequest ", res);
+      this.triggerNewChatRequest(res);
     });
 
-    this.listen("revokeTask").subscribe((res: any) => {
-      console.log("revokeTask ", res.data);
-      this.revokeChatRequest(res.data);
+    this.socket.on("revokeTask", (res: any) => {
+      console.log("revokeTask ", res);
+      this.revokeChatRequest(res);
     });
 
-    this.listen("onCimEvent").subscribe((res: any) => {
+    this.socket.on("onCimEvent", (res: any) => {
       try {
-        this.onCimEventHandler(JSON.parse(res.data.cimEvent), res.data.topicId);
+        this.onCimEventHandler(JSON.parse(res.cimEvent), res.topicId);
       } catch (err) {
         console.error("error on onCimEvent ", err);
       }
     });
 
-    this.listen("onTopicData").subscribe((res: any) => {
-      console.log("onTopicData", res.data);
-      this.onTopicData(res.data.topicData, res.data.topicId);
-      res.callback({
-        status: "ok"
-      });
+    this.socket.on("onTopicData", (res: any, callback: any) => {
+      try {
+        console.log("onTopicData", res);
+        this.onTopicData(res.topicData, res.topicId);
+        callback({ status: "ok" });
+      } catch (err) {
+        console.error("error on onTopicData ", err);
+      }
     });
 
-    this.listen("topicUnsubscription").subscribe((res: any) => {
-      console.log("topicUnsubscription", res.data);
-      this.removeConversation(res.data.topicId);
+    this.socket.on("topicUnsubscription", (res: any) => {
+      console.log("topicUnsubscription", res);
+      this.removeConversation(res.topicId);
     });
 
-    this.listen("topicClosed").subscribe((res: any) => {
-      console.log("topicClosed", res.data);
-      this.changeTopicStateToClose(res.data.topicId);
+    this.socket.on("topicClosed", (res: any) => {
+      console.log("topicClosed", res);
+      this.changeTopicStateToClose(res.topicId);
     });
 
-    this.listen("socketSessionRemoved").subscribe((res: any) => {
-      console.log("socketSessionRemoved", res.data);
+    this.socket.on("socketSessionRemoved", (res: any) => {
+      console.log("socketSessionRemoved", res);
       this.onSocketSessionRemoved();
     });
 
-    this.listen("onPullModeSubscribedList").subscribe((res: any) => {
-      console.log("onPullModeSubscribedList", res.data);
-      this._pullModeService.updateSubscribedList(res.data);
+    this.socket.on("onPullModeSubscribedList", (res: any) => {
+      console.log("onPullModeSubscribedList", res);
+      this._pullModeService.updateSubscribedList(res);
     });
 
-    this.listen("onPullModeSubscribedListRequest").subscribe((res: any) => {
+    this.socket.on("onPullModeSubscribedListRequest", (res: any) => {
       try {
-        console.log("onPullModeSubscribedListRequest", res.data);
-        this._pullModeService.updateSubscribedListRequests(JSON.parse(res.data.pullModeEvent), res.data.type);
+        console.log("onPullModeSubscribedListRequest", res);
+        this._pullModeService.updateSubscribedListRequests(JSON.parse(res.pullModeEvent), res.type);
       } catch (err) {
         console.error(err);
       }
     });
 
-    this.listen("pullModeSubscribedListRequests").subscribe((res: any) => {
-      console.log("pullModeSubscribedListRequests", res.data);
-      this._pullModeService.initializedSubscribedListRequests(res.data);
+    this.socket.on("pullModeSubscribedListRequests", (res: any) => {
+      console.log("pullModeSubscribedListRequests", res);
+      this._pullModeService.initializedSubscribedListRequests(res);
     });
 
-    this.listen("addPullModeSubscribedListRequests").subscribe((res: any) => {
-      console.log("addPullModeSubscribedListRequests", res.data);
-      this._pullModeService.addPullModeSubscribedListRequests(res.data);
+    this.socket.on("addPullModeSubscribedListRequests", (res: any) => {
+      console.log("addPullModeSubscribedListRequests", res);
+      this._pullModeService.addPullModeSubscribedListRequests(res);
     });
 
-    this.listen("removePullModeSubscribedListRequests").subscribe((res: any) => {
-      console.log("removePullModeSubscribedListRequests", res.data);
-      this._pullModeService.removePullModeSubscribedListRequests(res.data);
+    this.socket.on("removePullModeSubscribedListRequests", (res: any) => {
+      console.log("removePullModeSubscribedListRequests", res);
+      this._pullModeService.removePullModeSubscribedListRequests(res);
     });
 
-    this.listen("onChannelTypes").subscribe((res: any) => {
-      console.log("onChannelTypes", res.data);
-      this._sharedService.setChannelIcons(res.data);
+    this.socket.on("onChannelTypes", (res: any) => {
+      console.log("onChannelTypes", res);
+      this._sharedService.setChannelIcons(res);
     });
   }
 
@@ -236,8 +243,8 @@ export class socketService {
 
   onSocketSessionRemoved() {
     localStorage.clear();
-        sessionStorage.clear();
-        this._cacheService.resetCache();
+    sessionStorage.clear();
+    this._cacheService.resetCache();
     this._snackbarService.open("you are logged In from another session", "err");
     alert("you are logged in from another session");
   }
