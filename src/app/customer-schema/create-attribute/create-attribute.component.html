@@ -55,9 +55,8 @@
             </mat-form-field>
           </div>
         </div>
-
         <div
-          *ngIf="createAttributeForm.value.attributeType != 'Boolean' && createAttributeForm.value.attributeType != 'Password' && createAttributeForm.value.attributeType != 'IP'"
+          *ngIf="createAttributeForm.value.type != 'Boolean' && createAttributeForm.value.type != 'Password' && createAttributeForm.value.type != 'IP'"
           class="form-group label-name col-md-2 characters-length">
           <label class="text-left">Number of Characters</label>
           <mat-form-field appearance="outline">
@@ -132,8 +131,8 @@
           <div class="select-list">
             <mat-form-field appearance="outline">
               <mat-select formControlName="channelTypes" multiple class="selected-channels">
-                <mat-option class="channel-options" *ngFor="let channel of channelTypeList"
-                  [value]="channel.name"><img [src]="getFileURL(channel?.channelLogo)"> {{channel.name}}
+                <mat-option class="channel-options" *ngFor="let channel of channelTypeList" [value]="channel.name"><img
+                    [src]="getFileURL(channel?.channelLogo)"> {{channel.name}}
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="createAttributeForm.get('channelTypes')?.errors?.required">
