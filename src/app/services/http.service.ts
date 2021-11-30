@@ -12,7 +12,8 @@ export class httpService {
   constructor(public _appConfigService: appConfigService, private _httpClient: HttpClient) {
     this.apiEndpoints = {
       login: "/agent/login",
-      customerSchema: "/agent/customer-schema",
+      customerSchema: "/cim/customerSchema",
+      schemaTypes: "/cim/attributeTypes",
       customers: "/agent/customer",
       labels: "/agent/labels",
       userPreference: "/agent/userPreference",
@@ -30,8 +31,32 @@ export class httpService {
     });
   }
 
+  getChannelTypes(): Observable<any> {
+    return this._httpClient.get<any>(this._appConfigService.config.CCM_URL + "/channel-types", {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+  getSchemaTypes(): Observable<any> {
+    return this._httpClient.get<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.schemaTypes}`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+  getSchemaMaxOrder(): Observable<any> {
+    return this._httpClient.get<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.customerSchema}?checkMaxOrder=true`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
   getCustomerSchema(): Observable<any> {
-    return this._httpClient.get<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.customerSchema, {
+    return this._httpClient.get<any>(this._appConfigService.config.CIM_CUSTOMER_URL + this.apiEndpoints.customerSchema, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
@@ -39,7 +64,7 @@ export class httpService {
   }
 
   addCustomerSchema(obj): Observable<any> {
-    return this._httpClient.post<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.customerSchema, obj, {
+    return this._httpClient.post<any>(this._appConfigService.config.CIM_CUSTOMER_URL + this.apiEndpoints.customerSchema, obj, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
@@ -47,7 +72,7 @@ export class httpService {
   }
 
   updateCustomerSchema(obj): Observable<any> {
-    return this._httpClient.put<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.customerSchema, obj, {
+    return this._httpClient.put<any>(this._appConfigService.config.CIM_CUSTOMER_URL + this.apiEndpoints.customerSchema, obj, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
@@ -55,7 +80,7 @@ export class httpService {
   }
 
   deleteCustomerSchema(id): Observable<any> {
-    return this._httpClient.delete<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.customerSchema + "?_id=" + id, {
+    return this._httpClient.delete<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.customerSchema}/${id}`, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
@@ -63,7 +88,7 @@ export class httpService {
   }
 
   changeCustomerSchemaOrder(schema): Observable<any> {
-    return this._httpClient.put<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.customerSchema + "/order", schema, {
+    return this._httpClient.put<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.customerSchema}Order`, schema, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
@@ -89,9 +114,10 @@ export class httpService {
   getCustomers(limit, offset, sort, query): Observable<any> {
     return this._httpClient.get<any>(
       this._appConfigService.config.GAT_URL +
-      this.apiEndpoints.customers +
-      `?limit=${limit}&offset=${offset}&sort=${sort.field ? sort.field + ":" + sort.order : ""}&query=${query.field ? query.field + ":" + query.value : ""
-      }`,
+        this.apiEndpoints.customers +
+        `?limit=${limit}&offset=${offset}&sort=${sort.field ? sort.field + ":" + sort.order : ""}&query=${
+          query.field ? query.field + ":" + query.value : ""
+        }`,
       {
         headers: new HttpHeaders({
           "Content-Type": "application/json"
@@ -177,12 +203,8 @@ export class httpService {
   }
 
   uploadToFileEngine(data): Observable<any> {
-    return this._httpClient
-      .post<any>(
-        `${this._appConfigService.config.FILE_SERVER_URL}${this.apiEndpoints.uploadFile}`, data,
-        {
-          headers: new HttpHeaders({}),
-        }
-      )
+    return this._httpClient.post<any>(`${this._appConfigService.config.FILE_SERVER_URL}${this.apiEndpoints.uploadFile}`, data, {
+      headers: new HttpHeaders({})
+    });
   }
 }

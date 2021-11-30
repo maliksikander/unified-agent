@@ -12,7 +12,7 @@ export class snackbarService {
     config.duration = 3000;
     config.panelClass = status == "err" ? ["err-class"] : ["success-snackbar"];
     config.verticalPosition = "top";
-    this.snackBar.open(message + "!", null, config);
+    this.snackBar.open(message, null, config);
   }
 
   close() {
