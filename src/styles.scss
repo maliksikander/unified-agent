@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "src/app/shared/globalVariables";
+@import "src/assets/styles/compact-view";
 @import '~material-design-icons/iconfont/material-icons.css';
 @import '~primeng/resources/themes/nova-light/theme.css';
 @import '~primeng/resources/primeng.min.css';
@@ -103,8 +104,8 @@ mat-tab-group.chat-tab-area {
   .mat-tab-header {
     width: 60px;
     background: $white-color;
-    margin-top: 0;
-    height: calc(100% - 5px);
+    margin-top: 5px;
+    height: calc(100% - 10px);
     border: 0;
 
     .mat-tab-label-container{
@@ -2813,3 +2814,4 @@ color: $main-color;
 
   }
 }
+
