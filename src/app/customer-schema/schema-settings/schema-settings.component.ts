@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { moveItemInArray, CdkDragDrop, transferArrayItem } from "@angular/cdk/drag-drop";
 import { MatSnackBar, MatDialog } from "@angular/material";
 import { httpService } from "src/app/services/http.service";
@@ -18,8 +18,14 @@ export class SchemaSettingsComponent implements OnInit {
   showDetails: boolean = false;
   divId;
 
-  constructor(private _sharedService: sharedService, private _httpService: httpService, private dialog: MatDialog, public snackBar: snackbarService) {
-    this.loadSchemas();
+  constructor(
+    private _sharedService: sharedService,
+    private _httpService: httpService,
+    private dialog: MatDialog,
+    public snackBar: snackbarService,
+    private cd: ChangeDetectorRef
+  ) {
+    this.loadSchemas(null);
   }
 
   ngOnInit() {}
@@ -34,7 +40,7 @@ export class SchemaSettingsComponent implements OnInit {
   }
 
   // to get customer schema attribute list
-  loadSchemas() {
+  loadSchemas(orderChangeCheck) {
     this._httpService.getCustomerSchema().subscribe(
       (res) => {
         this.schema1 = res.sort((a, b) => {
@@ -43,6 +49,8 @@ export class SchemaSettingsComponent implements OnInit {
         let n = this.schema1.length / 2;
 
         this.schema2 = this.schema1.splice(0, n);
+
+        if (orderChangeCheck == "delete") this.changeOrder();
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -71,7 +79,7 @@ export class SchemaSettingsComponent implements OnInit {
     this._httpService.changeCustomerSchemaOrder(finalSchema).subscribe(
       (e) => {
         this._sharedService.Interceptor("SORT ORDER UPDATED SUCCESSFULLY", "succ");
-        this.loadSchemas();
+        this.loadSchemas(null);
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -80,18 +88,16 @@ export class SchemaSettingsComponent implements OnInit {
   }
 
   edit(attribute) {
-    console.log("attr ", attribute);
+    // console.log("attr ", attribute);
     const dialogRef = this.dialog.open(EditAttributeComponent, {
       width: "815px",
       minHeight: "225px",
-      data: {
-        attribute
-      }
+      data: attribute
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.event == "refresh") {
-        this.loadSchemas();
+        this.loadSchemas(null);
       }
     });
   }
@@ -109,7 +115,8 @@ export class SchemaSettingsComponent implements OnInit {
     } else {
       this._httpService.deleteCustomerSchema(item._id).subscribe(
         (e) => {
-          this.loadSchemas();
+          this.loadSchemas("delete");
+          // this.changeOrder();
         },
         (error) => {
           this._sharedService.Interceptor(error.error, "err");
@@ -130,8 +137,9 @@ export class SchemaSettingsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.event == "refresh") {
-        this.loadSchemas();
+        this.loadSchemas(null);
       }
     });
+    this.cd.detectChanges();
   }
 }

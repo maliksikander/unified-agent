@@ -92,39 +92,19 @@ export class CreateAttributeComponent implements OnInit {
     let temp = await this._httpService.getSchemaMaxOrder().toPromise();
     let sort = temp[0].sortOrder ? temp[0].sortOrder + 1 : 0;
     data.sort = sort;
-    // console.log("sort==>", sort);
-    console.log("data==>", data);
-    // let obj = {
-    //   label: trimmedlbl,
-    //   key: this.camelize(trimmedlbl),
-    //   type: this.columnTypeControllar,
-    //   is_required: this.mandatory,
-    //   desc: this.desc.value,
-    //   characters: txtLength,
-    //   channels: this.selectChannel.value ? this.selectChannel.value : [],
-    //   is_channel_identifier: this.channelIden
-    // };
-    // console.log("obj==>", obj);
-    // this._httpService.addCustomerSchema(obj).subscribe(
-    //   (e) => {
-    //     this.dialogRef.close({ event: "refresh" });
-    //   },
-    //   (error) => {
-    //     this._sharedService.Interceptor(error.error, "err");
-    //   }
-    // );
+    this.createNewAttribute(data);
   }
 
-  // camelize(str) {
-  //   return str
-  //     .replace(/\s(.)/g, function ($1) {
-  //       return $1.toUpperCase();
-  //     })
-  //     .replace(/\s/g, "")
-  //     .replace(/^(.)/, function ($1) {
-  //       return $1.toLowerCase();
-  //     });
-  // }
+  createNewAttribute(data) {
+    this._httpService.addCustomerSchema(data).subscribe(
+      (e) => {
+        this.dialogRef.close({ event: "refresh" });
+      },
+      (error) => {
+        this._sharedService.Interceptor(error.error, "err");
+      }
+    );
+  }
 
   onTypeChange(e) {
     let schemaObj = this.createAttributeForm.value;
@@ -153,6 +133,7 @@ export class CreateAttributeComponent implements OnInit {
       this.onTypeChange(typeValue);
     } else {
       this.createAttributeForm.controls["defaultValue"].setValidators(null);
+      this.createAttributeForm.controls["defaultValue"].reset();
     }
     this.cd.detectChanges();
   }
@@ -162,6 +143,7 @@ export class CreateAttributeComponent implements OnInit {
       this.createAttributeForm.controls["channelTypes"].setValidators([Validators.required]);
     } else {
       this.createAttributeForm.controls["channelTypes"].setValidators(null);
+      this.createAttributeForm.controls["channelTypes"].setValue([]);
     }
     this.cd.detectChanges();
   }
@@ -185,8 +167,4 @@ export class CreateAttributeComponent implements OnInit {
 
     return null;
   }
-
-  // this.schema1 = res.sort((a, b) => {
-  //   return a.sortOrder - b.sortOrder;
-  // })
 }

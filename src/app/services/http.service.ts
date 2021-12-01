@@ -71,8 +71,8 @@ export class httpService {
     });
   }
 
-  updateCustomerSchema(obj): Observable<any> {
-    return this._httpClient.put<any>(this._appConfigService.config.CIM_CUSTOMER_URL + this.apiEndpoints.customerSchema, obj, {
+  updateCustomerSchema(data,id): Observable<any> {
+    return this._httpClient.put<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.customerSchema}/${id}`, data, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
