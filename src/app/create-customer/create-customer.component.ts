@@ -232,7 +232,7 @@ export class CreateCustomerComponent implements OnInit {
     // );
   }
 
-  removePhone(index) {
+  removePhone() {
     // (this.userForm.get('phones') as FormArray).removeAt(index);
   }
 
