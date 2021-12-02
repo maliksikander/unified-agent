@@ -58,7 +58,7 @@ export class PhonebookComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+    // this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
     this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       if (e.msg == "update-labels") {
         this.loadLabels();
@@ -82,6 +82,7 @@ export class PhonebookComponent implements OnInit {
     this.rows = null;
     this._httpService.getUserPreference(this._cacheService.agent.id).subscribe((e) => {
       this.cols = e.data.docs[0].columns;
+      console.log("col==>",this.cols)
       this._httpService.getCustomers(limit, offSet, sort, query).subscribe((e) => {
         this.rows = e.data.docs;
         this.totalRecords = e.data.total;
