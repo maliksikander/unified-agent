@@ -1,10 +1,11 @@
-import { Component, OnInit, Inject } from "@angular/core";
+import { Component, OnInit, Inject, ChangeDetectorRef } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, DateAdapter } from "@angular/material";
-import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl } from "@angular/forms";
 import { Router } from "@angular/router";
 import { httpService } from "../services/http.service";
 import { cacheService } from "../services/cache.service";
 import { sharedService } from "../services/shared.service";
+import { appConfigService } from "../services/appConfig.service";
 
 @Component({
   selector: "app-create-customer",
@@ -12,6 +13,10 @@ import { sharedService } from "../services/shared.service";
   styleUrls: ["./create-customer.component.scss"]
 })
 export class CreateCustomerComponent implements OnInit {
+  formValidation = {};
+  attributeTypes: any[] = [];
+  channelTypeList: any[] = [];
+
   constructor(
     private dateAdapter: DateAdapter<any>,
     private _router: Router,
@@ -21,7 +26,9 @@ export class CreateCustomerComponent implements OnInit {
     private fb: FormBuilder,
     private _httpService: httpService,
     private _cacheService: cacheService,
-    private _sharedService: sharedService
+    private _sharedService: sharedService,
+    private cd: ChangeDetectorRef,
+    private _appConfigService: appConfigService
   ) {
     dialogRef.disableClose = true;
     this.dateAdapter.setLocale("en-GB");
@@ -31,7 +38,7 @@ export class CreateCustomerComponent implements OnInit {
 
   fieldArray = [];
   dataReady: boolean = false;
-  myGroup: FormGroup;
+  customerForm: FormGroup;
   nos;
   customerLabels = [];
   labels = [];
@@ -50,127 +57,186 @@ export class CreateCustomerComponent implements OnInit {
   };
 
   ngOnInit() {
-    const formGroup = {};
+    // const formGroup = {};
 
-    this.myGroup = new FormGroup({});
+    this.customerForm = new FormGroup({});
 
     this._httpService.getCustomerSchema().subscribe((e) => {
-      this.schemaAttributes = e.data.sort((a, b) => {
-        return a.sort_order - b.sort_order;
-      });
-      let urlReg = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/;
-      this._httpService.getLabels().subscribe((e) => {
-        this.labels = e.data;
+      this.schemaAttributes = e.sort((a, b) => {
+        return a.sortOrder - b.sortOrder;
       });
 
-      let indexOfCreatedBy = this.schemaAttributes.findIndex((e) => {
-        return e.key === "createdBy";
-      });
-      this.schemaAttributes.splice(indexOfCreatedBy, 1);
-
-      let indexOfUpdatedBy = this.schemaAttributes.findIndex((e) => {
-        return e.key === "updatedBy";
-      });
-      this.schemaAttributes.splice(indexOfUpdatedBy, 1);
-
-      this.schemaAttributes.filter((a) => {
-        formGroup[a.key] = new FormControl(a.type == "bool" ? false : "", [
-          a.is_required ? Validators.required : Validators.maxLength(2083),
-          a.characters ? Validators.maxLength(a.characters) : Validators.maxLength(2083),
-          a.type == "email" ? Validators.email : Validators.maxLength(2083),
-          a.type == "phone" ? Validators.pattern("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$") : Validators.maxLength(2083),
-          a.type == "number" ? Validators.pattern("^[0-9]*$") : Validators.maxLength(2083),
-          a.type == "alphanumeric" ? Validators.pattern("^[a-zA-Z0-9- _]*$") : Validators.maxLength(2083),
-          a.type == "alphanumeric_special_character"
-            ? Validators.pattern("^[a-zA-Z0-9,  _ @ . : = * % ; $ # ! + / & -]*$")
-            : Validators.maxLength(2083),
-          a.type == "decimal" ? Validators.pattern("^[+-]?([0-9]+.?[0-9]*|.[0-9]+)$") : Validators.maxLength(2083),
-          a.type == "url" ? Validators.pattern(urlReg) : Validators.maxLength(2083)
-        ]);
-      });
-
-      this.myGroup = new FormGroup(formGroup);
-
-      this.dataReady = true;
+      this.channelTypeList = this._sharedService.channelTypeList;
+      this.getAttributeTypes();
     });
+    this.cd.detectChanges();
+  }
+
+  // adding forms controls to existing form group using attributes in from schema as `attrSchema` parameter
+  addFormControls(attrSchema: Array<any>) {
+    try {
+      attrSchema.forEach((item) => {
+        let validatorArray: any = this.addFormValidations(item);
+        this.customerForm.addControl(item.key, new FormControl(item.defaultValue ? item.defaultValue : "", validatorArray));
+        if (item.type == "Boolean" && item.defaultValue == "") {
+          this.customerForm.controls[item.key].setValue(item.defaultValue);
+        }
+      });
+      // console.log("control==>", this.customerForm.controls);
+    } catch (e) {
+      console.error("Error in add form control :", e);
+    }
+  }
+
+  // creating validation definitions for form controls, using provider schema attribute as parameter
+  addFormValidations(item) {
+    try {
+      let temp = [];
+      let maxVal = 2147483647;
+      let minVal = -2147483647;
+      if (item.isRequired) temp.push(Validators.required);
+      temp.push(Validators.pattern(this.formValidation[item.type].regex));
+      if (item.valueType == "Number") {
+        temp.push(Validators.max(maxVal));
+        temp.push(Validators.min(minVal));
+      }
+      return temp;
+    } catch (e) {
+      console.error("Error in add validion method :", e);
+    }
   }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  fetchTheIdsOfLabels(obj) {
-    let ids = [];
-    obj.labels.filter((e) => {
-      ids.push(e._id);
-    });
-    obj.labels = ids;
-    return obj;
-  }
-
-  onAddItem(data) {
-    this._httpService.getLabels().subscribe((e) => {
-      let duplicate: boolean = false;
-      e.data.find((label) => {
-        if (label.name == data) {
-          duplicate = true;
-        }
-      });
-
-      if (duplicate) {
-        this._sharedService.snackErrorMessage("Name already exists");
-      } else if (data.length > 100) {
-        this._sharedService.snackErrorMessage("Max 100 characters are allowed");
-      } else {
-        let obj = {
-          name: data,
-          created_by: this._cacheService.agent.username,
-          color_code: "#a9a9a9"
-        };
-        this._httpService.createLabel(obj).subscribe(
-          (e) => {
-            this._httpService.getLabels().subscribe((ee) => {
-              this.labels = ee.data;
-              this.customerLabels.push(e.data);
-              this.myGroup.get("labels").patchValue(this.customerLabels);
-            });
-          },
-          (error) => {
-            this._sharedService.Interceptor(error.error, "err");
-          }
-        );
-      }
-    });
-  }
-
-  save(a) {}
-  onItemSelect(item: any) {}
-  OnItemDeSelect(item: any) {}
-  onSelectAll(items: any) {}
-  onDeSelectAll(items: any) {}
-
-  validateForm() {
-    let a = this.myGroup.controls;
-    for (let key in a) {
-      this.myGroup.get(key).markAsTouched();
-    }
-    console.log(this.myGroup);
-  }
-
-  saveData(customerObj) {
-    customerObj = this.fetchTheIdsOfLabels(customerObj);
-    customerObj["createdBy"] = this._cacheService.agent.username;
-    customerObj["updatedBy"] = "";
-    console.log(customerObj);
-
-    this._httpService.createCustomer(customerObj).subscribe(
-      (e) => {
-        this.dialogRef.close({ event: "refresh" });
-        this._sharedService.Interceptor("Customer added!", "succ");
+  // to get attribute type list
+  getAttributeTypes() {
+    this._httpService.getSchemaTypes().subscribe(
+      (res) => {
+        this.attributeTypes = res;
+        this.formValidation = this.convertArrayToObject(this.attributeTypes, "type");
+        this.addFormControls(this.schemaAttributes);
+        this.dataReady = true;
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
       }
     );
   }
+
+
+  getChannelTypeLogo(typeName) {
+    let typeIndex = this.channelTypeList.findIndex((item) => item.name === typeName);
+    if (typeIndex == -1) return null;
+    let channelType = this.channelTypeList[typeIndex];
+    let filename = channelType.channelLogo;
+    return `${this._appConfigService.config.FILE_SERVER_URL}/file-engine/api/downloadFileStream?filename=${filename}`;
+  }
+
+  // to convert an array of objects to an object of objects
+  convertArrayToObject(array, key) {
+    try {
+      const initialValue = {};
+      return array.reduce((obj, item) => {
+        return {
+          ...obj,
+          [item[key]]: item
+        };
+      }, initialValue);
+    } catch (e) {
+      console.error("Error in converting array to object method :", e);
+    }
+  }
+
+  onSave() {}
+
+  validateForm() {
+    let a = this.customerForm.controls;
+    for (let key in a) {
+      this.customerForm.get(key).markAsTouched();
+    }
+    console.log("valdiate result==>", this.customerForm);
+  }
+
+  saveData() {
+    let data = this.customerForm.value;
+    console.log("save result==>", data);
+    // customerObj = this.fetchTheIdsOfLabels(customerObj);
+    // customerObj["createdBy"] = this._cacheService.agent.username;
+    // customerObj["updatedBy"] = "";
+    // console.log(customerObj);
+
+    // this._httpService.createCustomer(customerObj).subscribe(
+    //   (e) => {
+    //     this.dialogRef.close({ event: "refresh" });
+    //     this._sharedService.Interceptor("Customer added!", "succ");
+    //   },
+    //   (error) => {
+    //     this._sharedService.Interceptor(error.error, "err");
+    //   }
+    // );
+  }
+
+  // fetchTheIdsOfLabels(obj) {
+  //   let ids = [];
+  //   obj.labels.filter((e) => {
+  //     ids.push(e._id);
+  //   });
+  //   obj.labels = ids;
+  //   return obj;
+  // }
+
+  // onAddItem(data) {
+  //   //   this._httpService.getLabels().subscribe((e) => {
+  //   //     let duplicate: boolean = false;
+  //   //     e.data.find((label) => {
+  //   //       if (label.name == data) {
+  //   //         duplicate = true;
+  //   //       }
+  //   //     });
+  //   //     if (duplicate) {
+  //   //       this._sharedService.snackErrorMessage("Name already exists");
+  //   //     } else if (data.length > 100) {
+  //   //       this._sharedService.snackErrorMessage("Max 100 characters are allowed");
+  //   //     } else {
+  //   //       let obj = {
+  //   //         name: data,
+  //   //         created_by: this._cacheService.agent.username,
+  //   //         color_code: "#a9a9a9"
+  //   //       };
+  //   //       this._httpService.createLabel(obj).subscribe(
+  //   //         (e) => {
+  //   //           this._httpService.getLabels().subscribe((ee) => {
+  //   //             this.labels = ee.data;
+  //   //             this.customerLabels.push(e.data);
+  //   //             this.myGroup.get("labels").patchValue(this.customerLabels);
+  //   //           });
+  //   //         },
+  //   //         (error) => {
+  //   //           this._sharedService.Interceptor(error.error, "err");
+  //   //         }
+  //   //       );
+  //   //     }
+  //   //   });
+  // }
+
+  // onItemSelect(item: any) {}
+  // OnItemDeSelect(item: any) {}
+  // onSelectAll(items: any) {}
+  // onDeSelectAll(items: any) {}
+
+  addPhone(): void {
+    // (this.userForm.get('phones') as FormArray).push(
+    //   this.fb.control(null)
+    // );
+  }
+
+  removePhone(index) {
+    // (this.userForm.get('phones') as FormArray).removeAt(index);
+  }
+
+  // getPhonesFormControls(): AbstractControl {
+  // return (<FormArray> this.userForm.get('phones')).controls
+  // }
 }

@@ -5,23 +5,24 @@
   </button>
 </div>
 
-  <div class="create-attr">
-
+<div class="create-attr">
+  <form [formGroup]="createAttributeForm">
     <div class="create-attr-dialog-body label-create-area">
 
       <div class="left-area row m-0">
         <div class="form-group label-name col-md-6">
           <label class="text-left">Label <span class="mandatory-steric">*</span></label>
           <mat-form-field appearance="outline">
-            <input [formControl]="label" matInput>
-            <mat-error *ngIf="label.hasError('required')">
-              field is mandatory
+            <input (keyup)="attrKeyGenerator(createAttributeForm?.value?.label)" formControlName="label" matInput>
+            <mat-error *ngIf="createAttributeForm.get('label')?.errors?.required">
+              *Field is required
             </mat-error>
-            <mat-error *ngIf="label.hasError('minlength') || label.hasError('maxlength')">
-              Range Should Be 1 - 50
+            <mat-error
+              *ngIf="createAttributeForm.get('label')?.errors?.minlength || createAttributeForm.get('label')?.errors?.maxlength">
+              *Length should be between 1 - 50 characters
             </mat-error>
-            <mat-error *ngIf="label.hasError('validName')">
-              That name Already Exists
+            <mat-error *ngIf="createAttributeForm.get('label')?.errors?.validName">
+              *Label already exists
             </mat-error>
           </mat-form-field>
         </div>
@@ -29,9 +30,9 @@
         <div class="form-group label-name col-md-6">
           <label class="text-left">Description</label>
           <mat-form-field appearance="outline">
-            <input [formControl]="desc" matInput>
-            <mat-error *ngIf="desc.hasError('maxlength')">
-              Range Should be 1 - 100
+            <input formControlName="description" matInput>
+            <mat-error *ngIf="createAttributeForm.get('description')?.errors?.maxlength">
+              *Length should be between 1 - 100 characters
             </mat-error>
           </mat-form-field>
         </div>
@@ -44,25 +45,31 @@
           <label class="text-left">Field Type</label>
           <div class="select-list">
             <mat-form-field appearance="outline">
-              <select (ngModelChange)="onTypeChange($event)" matNativeControl [(ngModel)]="columnTypeControllar">
-                <option *ngFor="let type of columnTypes" [value]="type">{{type | titlecase}}</option>
-              </select>
+              <mat-select formControlName="type" (selectionChange)="onTypeChange($event)">
+                <mat-option *ngFor="let attributeType of attributeTypes" [value]="attributeType.type">
+                  {{attributeType.type}}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="createAttributeForm.get('type')?.errors?.required">
+                *Field is required
+              </mat-error>
             </mat-form-field>
           </div>
         </div>
-
-        <div *ngIf="columnTypeControllar == 'string'" class="form-group label-name col-md-2 characters-length">
+        <div
+          *ngIf="createAttributeForm.value.type != 'Boolean' && createAttributeForm.value.type != 'Password' && createAttributeForm.value.type != 'IP'"
+          class="form-group label-name col-md-2 characters-length">
           <label class="text-left">Number of Characters</label>
           <mat-form-field appearance="outline">
-            <input matInput [formControl]="textLength">
-            <mat-error *ngIf="textLength.hasError('required')">
-              field is mandatory
+            <input matInput formControlName="length">
+            <mat-error *ngIf="createAttributeForm.get('length')?.errors?.required">
+              *Field is required
             </mat-error>
-            <mat-error *ngIf="textLength.hasError('min') || textLength.hasError('max')">
-              Range should be 1 - 1000
+            <mat-error
+              *ngIf="createAttributeForm.get('length')?.errors?.min || createAttributeForm.get('length')?.errors?.max">
+              *Length should be between 1 - 1000
             </mat-error>
-            <mat-error *ngIf="textLength.hasError('pattern')">
-              Must Enter a Numeric Value
+            <mat-error *ngIf="createAttributeForm.get('length')?.errors?.pattern">
+              *Must Enter a Numeric Value
             </mat-error>
           </mat-form-field>
         </div>
@@ -70,33 +77,39 @@
 
       <div class="left-area row m-0">
         <div class="check-box form-group col-md-3 mandatory-attribute">
-          <mat-checkbox [(ngModel)]="mandatory" color="primary">Mandatory Attribute</mat-checkbox>
+          <mat-checkbox formControlName="isRequired" (change)="onRequiredValueChange($event)" color="primary">Mandatory
+            Attribute</mat-checkbox>
         </div>
-        <div class="form-group label-name  default-value" [hidden]="!mandatory">
+        <div class="form-group label-name  default-value" *ngIf="createAttributeForm.value.isRequired">
           <label class="text-left">Default Value <span class="mandatory-steric">*</span></label>
           <mat-form-field appearance="outline">
-            <input [formControl]="defaultValue" matInput>
-            <mat-error *ngIf="defaultValue.hasError('required')">
-              field is mandatory
+            <input formControlName="defaultValue" matInput>
+            <mat-error *ngIf="createAttributeForm.get('defaultValue')?.errors?.required">
+              *Field is mandatory
             </mat-error>
-            <mat-error *ngIf="defaultValue.hasError('minlength') || defaultValue.hasError('maxlength')">
-              Range Should Be 1 - 50
+            <mat-error
+              *ngIf="createAttributeForm.get('defaultValue')?.errors?.minLength || createAttributeForm.get('defaultValue')?.errors?.maxLength">
+              *Length should be according to the given length
             </mat-error>
-            <mat-error *ngIf="defaultValue.hasError('validName')">
-              That name Already Exists
+            <mat-error *ngIf="createAttributeForm.get('defaultValue')?.errors?.pattern">
+              *Value does not match the selected type format
+            </mat-error>
+            <mat-error *ngIf="createAttributeForm.get('defaultValue')?.errors?.validName">
+              *That name Already Exists
             </mat-error>
           </mat-form-field>
           <small>(Please specify a default value) </small>
         </div>
-<!--        <div class="schema-check-box form-group">-->
-<!--          <mat-checkbox  color="primary">Personal Identifiable Information</mat-checkbox>-->
-<!--        </div>-->
+        <!--        <div class="schema-check-box form-group">-->
+        <!--          <mat-checkbox  color="primary">Personal Identifiable Information</mat-checkbox>-->
+        <!--        </div>-->
 
 
       </div>
       <div class="left-area row m-0">
         <div class="check-box form-group pii-info">
-          <mat-checkbox  color="primary">PII</mat-checkbox> <a href="">(More information about PII)</a>
+          <mat-checkbox formControlName="isPii" color="primary">PII</mat-checkbox> <a href="">(More information about
+            PII)</a>
         </div>
       </div>
 
@@ -106,34 +119,39 @@
 
     <div class="footer">
 
-
       <div class="footer-actions row m-0">
         <div class="check-box channel-identifier form-group">
           <label>Channel Identifier</label>
-          <mat-checkbox [(ngModel)]="channelIden" color="primary">Yes</mat-checkbox>
+          <mat-checkbox (change)="onChannelIdentifierChange($event)" formControlName="isChannelIdentifier"
+            color="primary">Yes</mat-checkbox>
         </div>
 
-        <div *ngIf="channelIden" class="form-group label-name select-channel pr-2">
+        <div *ngIf="createAttributeForm.value.isChannelIdentifier" class="form-group label-name select-channel pr-2">
           <label class="text-left">Select Channel</label>
           <div class="select-list">
             <mat-form-field appearance="outline">
-              <mat-select [formControl]="selectChannel" multiple class="selected-channels">
-<!--                <mat-option  class="channel-options" *ngFor="let channel of channelList" [value]="channel">{{channel}}</mat-option>-->
-                <mat-option class="channel-options" *ngFor="let channel of channelList" [value]="channel.channel_name"><img src="{{channel.channel_icon}}"> {{channel.channel_name}}</mat-option>
+              <mat-select formControlName="channelTypes" multiple class="selected-channels">
+                <mat-option class="channel-options" *ngFor="let channel of channelTypeList" [value]="channel.name"><img
+                    [src]="getFileURL(channel?.channelLogo)"> {{channel.name}}
+                </mat-option>
               </mat-select>
+              <mat-error *ngIf="createAttributeForm.get('channelTypes')?.errors?.required">
+                *Field is required
+              </mat-error>
             </mat-form-field>
           </div>
         </div>
 
 
-  <div class="action-right">
+        <div class="action-right">
 
-        <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
-        <button *ngIf="desc.valid && label.valid && textLength.valid" (click)="makeObject()" class="save-btn">Add Attribute</button>
-  </div>
+          <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
+          <button *ngIf="createAttributeForm.valid" (click)="onSave()" class="save-btn">Add
+            Attribute</button>
+        </div>
       </div>
 
     </div>
 
-
-  </div>
+  </form>
+</div>

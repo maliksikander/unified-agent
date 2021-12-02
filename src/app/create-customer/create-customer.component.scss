@@ -25,6 +25,7 @@
 .input-field {
   .field-set{
     position: relative;
+    padding-right: 35px;
   }
 
   .mat-form-field {
@@ -102,7 +103,7 @@ button.duplicate-action {
   width: 26px;
   height: 26px;
   line-height: 26px;
-  top: 33px;
+  top: 28px;
   background: $main-color-background;
   box-shadow: none;
 
@@ -115,7 +116,7 @@ button.duplicate-action {
 
   mat-icon {
     font-size: 16px;
-    line-height: 26px;
+    line-height: 10px;
     height: 26px;
     color: #8E8E8E;
   }

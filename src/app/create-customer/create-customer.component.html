@@ -1,4 +1,3 @@
-
 <div class="dialog-header">
   <h4 mat-dialog-title>Create New Customer <span class="validater" (click)="validateForm()">Validate</span>
     <button mat-button mat-dialog-close>
@@ -9,52 +8,153 @@
 
 <mat-dialog-content *ngIf="dataReady" class="main-content-create-customer">
 
-  <form [formGroup]="myGroup" (submit)="save(myGroup.value)">
-
+  <form [formGroup]="customerForm">
     <div class="row">
+      <ng-container *ngFor="let schemaAttribute of schemaAttributes">
+        <div [ngClass]="[schemaAttribute.length >= 116 ? 'col-md-12':  'col-md-6' ]"
+          [class.check-box-field]="schemaAttribute.type == 'Boolean'">
 
-      <div  *ngFor="let schemaAttribute of schemaAttributes" [ngClass]="[schemaAttribute.type=='label' || schemaAttribute.characters >= 116 ? 'col-md-12':  'col-md-4' ]" [class.check-box-field]="schemaAttribute.type == 'bool'">
+          <div class="input-field">
+
+            <!-- AlphaNumeric | URL | Number | PhoneNumber | Email | String | Password | IP | Name -->
+
+            <!-- For Character length less than equal to 115  -->
+            <div class="field-set" *ngIf="schemaAttribute.type != 'Boolean'">
+              <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
+                  *ngIf="schemaAttribute.isRequired">*</span>
+                <span *ngIf="schemaAttribute.isChannelIdentifier == true" class="field-channel"><img
+                    *ngFor="let channelType of schemaAttribute.channelTypes"
+                    [src]="getChannelTypeLogo(channelType)"></span>
+              </label>
+              <mat-form-field class="field" appearance="outline">
+                <input formControlName="{{schemaAttribute.key}}" matInput>
+                <mat-error>
+                  <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.required">
+                    *Field is required
+                  </div>
+                  <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.pattern">
+                    *Invalid Pattern
+                  </div>
+                  <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.maxLength">
+                    *{{schemaAttribute.length}} are allowed
+                  </div>
+                </mat-error>
+              </mat-form-field>
+              <ng-container *ngIf="schemaAttribute.isChannelIdentifier == true">
+                <button type="button"  class="duplicate-action add-field" mat-mini-fab>
+                  <mat-icon>add</mat-icon>
+                </button>
+                <button class="duplicate-action remove-field"  mat-mini-fab>
+                  <mat-icon>close</mat-icon>
+                </button>
+              </ng-container>
+            </div>
+
+            <!-- For type 'String' and character length greater than equal to 116  -->
+            <div class="field-set" *ngIf=" schemaAttribute.type == 'String'  && schemaAttribute.length >= 116">
+              <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
+                  *ngIf="schemaAttribute.isRequired">*</span>
+              </label>
+              <mat-form-field appearance="outline">
+                <textarea formControlName="{{schemaAttribute.key}}" matInput></textarea>
+                <mat-error>
+                  <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.required">
+                    *Field is required
+                  </div>
+                  <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.maxLength">
+                    *{{schemaAttribute.length}} are allowed
+                  </div>
+                  <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.pattern">
+                    *Invalid Pattern
+                  </div>
+                </mat-error>
+              </mat-form-field>
 
 
-        <div class="input-field">
+            </div>
 
+            <!-- Boolean -->
 
-          <div class="field-set"
-            *ngIf="schemaAttribute.type == 'alphanumeric' || schemaAttribute.type == 'alphanumeric_special_character' || schemaAttribute.type == 'decimal' ||schemaAttribute.type == 'url' || (schemaAttribute.type == 'string' && !schemaAttribute.characters) || (schemaAttribute.type == 'string' && schemaAttribute.characters <= 115) || schemaAttribute.type == 'number' || schemaAttribute.type == 'email' || schemaAttribute.type == 'phone' ">
-            <label class="field-label">{{schemaAttribute.label}}<span class="red-clr" *ngIf="schemaAttribute.is_required">*</span>
+            <div class="field-set" *ngIf="schemaAttribute.type == 'Boolean'" class="check-box">
+              <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
+                  *ngIf="schemaAttribute.isRequired">*</span></label>
+              <mat-checkbox color="primary" formControlName="{{schemaAttribute.key}}" matInput></mat-checkbox>
+            </div>
+
+            <!-- Date -->
+            <!-- <div class="field-set" *ngIf="schemaAttribute.type == 'date'">
+            <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
+                *ngIf="schemaAttribute.isRequired">*</span>
             </label>
             <mat-form-field class="field" appearance="outline">
-              <input [required]="schemaAttribute.is_required" [formControlName]="schemaAttribute.key" matInput>
+              <input [required]="schemaAttribute.isRequired" formControlName="{{schemaAttribute.key}}" matInput
+                [matDatepicker]="picker" (click)="picker.open()">
+              <mat-datepicker #picker></mat-datepicker>
               <mat-error>
-                <div *ngIf="myGroup.get(schemaAttribute.key).hasError('required')">
+                <div *ngIf="customerForm.get(schemaAttribute.key).hasError('required')">
                   Field is required
                 </div>
-                <div *ngIf="myGroup.get(schemaAttribute.key).hasError('email')">
+                <div *ngIf="customerForm.get(schemaAttribute.key).hasError('email')">
                   Invalid Email
                 </div>
-                <div *ngIf="myGroup.get(schemaAttribute.key).hasError('maxlength')">
+                <div *ngIf="customerForm.get(schemaAttribute.key).hasError('maxlength')">
                   <div *ngIf="schemaAttribute.type == 'phone'">
-                    20 characters are allowed
-                  </div>
-                  <div *ngIf="schemaAttribute.type != 'phone'">
                     {{schemaAttribute.characters}} are alowed
                   </div>
+                  <div *ngIf="schemaAttribute.type != 'phone'">
+                    {{schemaAttribute.characters}} are alowed }}
+                  </div>
                 </div>
-                <div *ngIf="myGroup.get(schemaAttribute.key).hasError('pattern')">
+                <div *ngIf="customerForm.get(schemaAttribute.key).hasError('pattern')">
                   Invalid pattern
                 </div>
               </mat-error>
             </mat-form-field>
-          </div>
+          </div> -->
 
+            <!-- Date Time -->
+            <!-- <div class="field-set" *ngIf="schemaAttribute.type == 'date_time'">
+            <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
+                *ngIf="schemaAttribute.isRequired">*</span>
+            </label>
+            <mat-form-field class="field" appearance="outline">
+              <input [required]="schemaAttribute.isRequired" formControlName="{{schemaAttribute.key}}" matInput
+                [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1">
 
-          <div class="field-set" *ngIf="schemaAttribute.type == 'label'">
-            <label class="field-label">{{schemaAttribute.label}}<span class="red-clr" *ngIf="schemaAttribute.is_required">*</span>
+              <owl-date-time #dt1></owl-date-time>
+
+              <mat-error>
+                <div *ngIf="customerForm.get(schemaAttribute.key).hasError('required')">
+                  Field is required
+                </div>
+                <div *ngIf="customerForm.get(schemaAttribute.key).hasError('email')">
+                  Invalid Email
+                </div>
+                <div *ngIf="customerForm.get(schemaAttribute.key).hasError('maxlength')">
+                  <div *ngIf="schemaAttribute.type == 'PhoneNumber'">
+                    "20"+" "{{schemaAttribute.characters}} are alowed
+                  </div>
+                  <div *ngIf="schemaAttribute.type != 'PhoneNumber'">
+                    {{schemaAttribute.characters}} are alowed }}
+                  </div>
+                </div>
+                <div *ngIf="customerForm.get(schemaAttribute.key).hasError('pattern')">
+                  Invalid pattern
+                </div>
+              </mat-error>
+            </mat-form-field>
+          </div> -->
+
+            <!-- Label   -->
+            <!-- <div class="field-set" *ngIf="schemaAttribute.type == 'label'">
+            <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
+                *ngIf="schemaAttribute.is_required">*</span>
             </label>
             <div class="drop">
               <angular2-multiselect [data]="labels" [(ngModel)]="customerLabels" [settings]="labelSettings"
-                                    (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
-                                    (onDeSelectAll)="onDeSelectAll($event)" (onAddFilterNewItem)="onAddItem($event)" [formControlName]="schemaAttribute.key">
+                (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
+                (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
+                (onAddFilterNewItem)="onAddItem($event)" formControlName="{{schemaAttribute.key}}">
 
                 <c-badge>
                   <ng-template let-item="item">
@@ -72,110 +172,12 @@
                 </c-item>
               </angular2-multiselect>
             </div>
+          </div> -->
+
           </div>
-
-
-
-          <div  class="field-set"  *ngIf="schemaAttribute.type == 'string' && schemaAttribute.characters >= 116">
-            <label class="field-label">{{schemaAttribute.label}}<span class="red-clr" *ngIf="schemaAttribute.is_required">*</span>
-            </label>
-            <mat-form-field appearance="outline">
-              <textarea [required]="schemaAttribute.is_required" [formControlName]="schemaAttribute.key"
-                        matInput></textarea>
-              <mat-error>
-                <div *ngIf="myGroup.get(schemaAttribute.key).hasError('required')">
-                  Field is required
-                </div>
-                <div *ngIf="myGroup.get(schemaAttribute.key).hasError('email')">
-                  Invalid Email
-                </div>
-                <div *ngIf="myGroup.get(schemaAttribute.key).hasError('maxlength')">
-                  <div *ngIf="schemaAttribute.type == 'phone'">
-                    20 characters are allowed
-                  </div>
-                  <div *ngIf="schemaAttribute.type != 'phone'">
-                    {{schemaAttribute.characters}} are alowed
-                  </div>
-                </div>
-                <div *ngIf="myGroup.get(schemaAttribute.key).hasError('pattern')">
-                  Invalid pattern
-                </div>
-              </mat-error>
-            </mat-form-field>
-          </div>
-
-
-          <div class="field-set" *ngIf="schemaAttribute.type == 'date'">
-            <label class="field-label">{{schemaAttribute.label}}<span class="red-clr" *ngIf="schemaAttribute.is_required">*</span>
-            </label>
-            <mat-form-field class="field" appearance="outline">
-              <input [required]="schemaAttribute.is_required" [formControlName]="schemaAttribute.key" matInput
-                     [matDatepicker]="picker" (click)="picker.open()">
-              <mat-datepicker #picker></mat-datepicker>
-              <mat-error>
-                <div *ngIf="myGroup.get(schemaAttribute.key).hasError('required')">
-                  Field is required
-                </div>
-                <div *ngIf="myGroup.get(schemaAttribute.key).hasError('email')">
-                  Invalid Email
-                </div>
-                <div *ngIf="myGroup.get(schemaAttribute.key).hasError('maxlength')">
-                  <div *ngIf="schemaAttribute.type == 'phone'">
-                    {{schemaAttribute.characters}} are alowed
-                  </div>
-                  <div *ngIf="schemaAttribute.type != 'phone'">
-                    {{schemaAttribute.characters}} are alowed }}
-                  </div>
-                </div>
-                <div *ngIf="myGroup.get(schemaAttribute.key).hasError('pattern')">
-                  Invalid pattern
-                </div>
-              </mat-error>
-            </mat-form-field>
-          </div>
-
-          <div class="field-set" *ngIf="schemaAttribute.type == 'date_time'">
-            <label class="field-label">{{schemaAttribute.label}}<span class="red-clr" *ngIf="schemaAttribute.is_required">*</span>
-            </label>
-            <mat-form-field class="field" appearance="outline">
-              <input [required]="schemaAttribute.is_required" [formControlName]="schemaAttribute.key" matInput
-                     [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1">
-
-              <owl-date-time #dt1></owl-date-time>
-
-              <mat-error>
-                <div *ngIf="myGroup.get(schemaAttribute.key).hasError('required')">
-                  Field is required
-                </div>
-                <div *ngIf="myGroup.get(schemaAttribute.key).hasError('email')">
-                  Invalid Email
-                </div>
-                <div *ngIf="myGroup.get(schemaAttribute.key).hasError('maxlength')">
-                  <div *ngIf="schemaAttribute.type == 'phone'">
-                    "20"+" "{{schemaAttribute.characters}} are alowed
-                  </div>
-                  <div *ngIf="schemaAttribute.type != 'phone'">
-                    {{schemaAttribute.characters}} are alowed }}
-                  </div>
-                </div>
-                <div *ngIf="myGroup.get(schemaAttribute.key).hasError('pattern')">
-                  Invalid pattern
-                </div>
-              </mat-error>
-            </mat-form-field>
-          </div>
-
-          <div class="field-set" *ngIf="schemaAttribute.type == 'bool'" class="check-box">
-            <label class="field-label">{{schemaAttribute.label}}</label>
-            <mat-checkbox color="primary" [formControlName]="schemaAttribute.key" matInput></mat-checkbox>
-          </div>
-
         </div>
-
-
-      </div>
+      </ng-container>
     </div>
-
   </form>
 
 </mat-dialog-content>
@@ -184,7 +186,6 @@
 
   <div class="footer-buttons">
     <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
-    <button *ngIf="myGroup.valid" (click)="saveData(myGroup.value)"
-            class="save-btn">Create Contact</button>
+    <button *ngIf="customerForm.valid" (click)="onSave()" class="save-btn">Create</button>
   </div>
 </mat-dialog-actions>

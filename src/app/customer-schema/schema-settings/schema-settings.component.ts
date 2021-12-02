@@ -1,10 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { moveItemInArray, CdkDragDrop, transferArrayItem } from "@angular/cdk/drag-drop";
 import { MatSnackBar, MatDialog } from "@angular/material";
 import { httpService } from "src/app/services/http.service";
 import { CreateAttributeComponent } from "../create-attribute/create-attribute.component";
 import { EditAttributeComponent } from "../edit-attribute/edit-attribute.component";
 import { sharedService } from "src/app/services/shared.service";
+import { snackbarService } from "src/app/services/snackbar.service";
 
 @Component({
   selector: "app-schema-settings",
@@ -17,12 +18,19 @@ export class SchemaSettingsComponent implements OnInit {
   showDetails: boolean = false;
   divId;
 
-  constructor(private _sharedService: sharedService, private _httpService: httpService, private dialog: MatDialog, public snackBar: MatSnackBar) {
-    this.loadSchemas();
+  constructor(
+    private _sharedService: sharedService,
+    private _httpService: httpService,
+    private dialog: MatDialog,
+    public snackBar: snackbarService,
+    private cd: ChangeDetectorRef
+  ) {
+    this.loadSchemas(null);
   }
 
   ngOnInit() {}
 
+  // angular drag & drop method
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -31,15 +39,18 @@ export class SchemaSettingsComponent implements OnInit {
     }
   }
 
-  loadSchemas() {
+  // to get customer schema attribute list
+  loadSchemas(orderChangeCheck) {
     this._httpService.getCustomerSchema().subscribe(
-      (e) => {
-        this.schema1 = e.data.sort((a, b) => {
-          return a.sort_order - b.sort_order;
+      (res) => {
+        this.schema1 = res.sort((a, b) => {
+          return a.sortOrder - b.sortOrder;
         });
         let n = this.schema1.length / 2;
 
         this.schema2 = this.schema1.splice(0, n);
+
+        if (orderChangeCheck == "delete") this.changeOrder();
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -47,26 +58,28 @@ export class SchemaSettingsComponent implements OnInit {
     );
   }
 
+  // to save the updated the attribute schema order
   changeOrder() {
     let finalSchema = [];
     let i = 1;
 
-    this.schema2.filter((e) => {
+    this.schema2.forEach((e) => {
       finalSchema.push(e);
     });
 
-    this.schema1.filter((e) => {
+    this.schema1.forEach((e) => {
       finalSchema.push(e);
     });
 
-    finalSchema.filter((e) => {
-      e["sort_order"] = i++;
+    finalSchema.forEach((item) => {
+      item["sortOrder"] = i++;
+      delete item._id;
     });
 
     this._httpService.changeCustomerSchemaOrder(finalSchema).subscribe(
       (e) => {
         this._sharedService.Interceptor("SORT ORDER UPDATED SUCCESSFULLY", "succ");
-        this.loadSchemas();
+        this.loadSchemas(null);
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -75,18 +88,16 @@ export class SchemaSettingsComponent implements OnInit {
   }
 
   edit(attribute) {
-    console.log("attr ", attribute);
+    // console.log("attr ", attribute);
     const dialogRef = this.dialog.open(EditAttributeComponent, {
       width: "815px",
       minHeight: "225px",
-      data: {
-        attribute
-      }
+      data: attribute
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.event == "refresh") {
-        this.loadSchemas();
+        this.loadSchemas(null);
       }
     });
   }
@@ -96,15 +107,22 @@ export class SchemaSettingsComponent implements OnInit {
     this.divId = id;
   }
 
-  delete(e, id) {
-    this._httpService.deleteCustomerSchema(id).subscribe(
-      (e) => {
-        this.loadSchemas();
-      },
-      (error) => {
-        this._sharedService.Interceptor(error.error, "err");
-      }
-    );
+  // to delete attribute, it expects the attribute schema object
+  deleteAttribute(item) {
+    if (item.isDeletable == false) {
+      // to check if attribute is deleteable or not
+      this.snackBar.open("CANNOT_DELETE_DEFAULT_ATTRIBUTE", "err");
+    } else {
+      this._httpService.deleteCustomerSchema(item._id).subscribe(
+        (e) => {
+          this.loadSchemas("delete");
+          // this.changeOrder();
+        },
+        (error) => {
+          this._sharedService.Interceptor(error.error, "err");
+        }
+      );
+    }
   }
 
   displayMenu(e) {
@@ -119,8 +137,9 @@ export class SchemaSettingsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.event == "refresh") {
-        this.loadSchemas();
+        this.loadSchemas(null);
       }
     });
+    this.cd.detectChanges();
   }
 }
