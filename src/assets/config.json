@@ -3,6 +3,5 @@
     "SOCKET_URL": "http://cim.expertflow.com",
     "FILE_SERVER_URL": "https://cim.expertflow.com",
     "CIM_CUSTOMER_URL": "http://localhost:8083",
-    "CCM_URL": "https://cim.expertflow.com/ccm",
     "ENV": "prod"
 }
