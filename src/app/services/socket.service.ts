@@ -9,6 +9,8 @@ import { CimEvent } from "../models/Event/cimEvent";
 import { snackbarService } from "./snackbar.service";
 import { pullModeService } from "./pullMode.service";
 import { soundService } from "./sounds.service";
+import { NgxUiLoaderService } from "ngx-ui-loader";
+
 const mockTopicData: any = require('../mocks/topicData.json');
 
 @Injectable({
@@ -31,6 +33,7 @@ export class socketService {
     private _pullModeService: pullModeService,
     private _router: Router,
     private _soundService: soundService,
+    private ngxService: NgxUiLoaderService
   ) {
     // this.onTopicData(mockTopicData, "12345");
 
@@ -38,6 +41,7 @@ export class socketService {
   }
 
   connectToSocket() {
+    this.ngxService.start();
     this.uri = this._appConfigService.config.SOCKET_URL;
     let origin = new URL(this.uri).origin;
     let path = new URL(this.uri).pathname;
@@ -53,22 +57,31 @@ export class socketService {
     });
 
     this.socket.on("connect_error", (err) => {
-      console.error("socket connect_error " + err.message);
-      this._snackbarService.open("'Socket error': " + err.message, "err");
-      if (err.message == "not valid agent") {
+      this.ngxService.stop();
+      console.error("socket connect_error " , err.data.content);
+      this._snackbarService.open(err.data.content, "err");
+      if (err.message == "login-failed") {
+        localStorage.clear();
+        sessionStorage.clear();
+        this._cacheService.resetCache();
+        this.socket.disconnect();
         this.moveToLogin();
       }
     });
 
     this.socket.on("connect", (e) => {
+      this.ngxService.stop();
       console.log("socket connect " + e);
-      this.subscribeToSocketEvents();
+      if (this._router.url == "/login") {
+        this._router.navigate(["customers"]);
+      }
     });
 
+    this.subscribeToSocketEvents();
   }
 
   subscribeToSocketEvents() {
-    
+
     this.socket.on("disconnect", (reason) => {
       console.error("socket disconnect " + reason);
 
@@ -77,6 +90,7 @@ export class socketService {
         localStorage.clear();
         sessionStorage.clear();
         this._cacheService.resetCache();
+        this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
           window.location.reload();
         });
@@ -252,6 +266,8 @@ export class socketService {
   onTopicData(topicData, topicId) {
     this._soundService.playBeep();
 
+    this.removeConversation(topicId);
+
     let conversation = {
       topicId: topicId,
       messages: [],
@@ -356,15 +372,17 @@ export class socketService {
     if (index != -1) {
       this._sharedService.spliceArray(index, this.conversations);
       --this.conversationIndex;
-    }
 
-    // alter the rest of the conversation's indexes whose indexes are greater than the index of removed conversation
-    // in order to remap the conversation indexex along with the indexes of the map tabs
-    this.conversations.map((conversation) => {
-      if (conversation.index > removedConversation.index) {
-        conversation.index = --conversation.index;
-      }
-    });
+
+      // alter the rest of the conversation's indexes whose indexes are greater than the index of removed conversation
+      // in order to remap the conversation indexex along with the indexes of the map tabs
+      this.conversations.map((conversation) => {
+        if (conversation.index > removedConversation.index) {
+          conversation.index = --conversation.index;
+        }
+      });
+
+    }
 
     this._conversationsListener.next(this.conversations);
   }

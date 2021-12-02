@@ -5,44 +5,45 @@ import { appConfigService } from "src/app/services/appConfig.service";
 @Pipe({ name: "getFileExt", pure: true })
 export class getFileExtPipe implements PipeTransform {
     constructor(public _appConfigService: appConfigService, private domSanitizer: DomSanitizer) { }
-    transform(fileName: any, args?: any): any {
-        if (fileName) {
+    transform(mimeType: any, args?: any): any {
+        if (mimeType) {
 
-            let ext = fileName.split('.').pop();
-
-            if (ext.includes('doc')) {
-                return 'doc';
-            } else if (ext.includes('pdf')) {
+            if (mimeType.includes('excel')) {
+                return 'xls';
+            } else if (mimeType.includes('octet-stream')) {
+                return 'genaric';
+            }
+            else if (mimeType.includes('pdf')) {
                 return 'pdf';
             }
-            else if (ext.includes('ppt')) {
+            else if (mimeType.includes('ppt')) {
                 return 'ppt';
             }
-            else if (ext.includes('txt')) {
+            else if (mimeType.includes('txt')) {
                 return 'txt';
             }
-            // else if (ext.includes('plain')) {
-            //     return 'txt';
-            // }
-            // else if (ext.includes('msword')) {
-            //     return 'doc';
-            // }
-            // else if (ext.includes('powerpoint')) {
-            //     return 'ppt';
-            // }
-            // else if (ext.includes('officedocument')) {
-            //     return 'doc';
-            // }
-            // else if (ext.includes('sheet')) {
-            //     return 'xls';
-            // }
-            // else if (ext.includes('excel')) {
-            //     return 'xls';
-            // }
-            else if (ext.includes('docx')) {
+            else if (mimeType.includes('plain')) {
+                return 'txt';
+            }
+            else if (mimeType.includes('msword')) {
                 return 'doc';
             }
-            else if (ext.includes('xls')) {
+            else if (mimeType.includes('powerpoint')) {
+                return 'ppt';
+            }
+            else if (mimeType.includes('wordprocessing')) {
+                return 'doc';
+            }
+            else if (mimeType.includes('sheet')) {
+                return 'xls';
+            }
+            else if (mimeType.includes('doc')) {
+                return 'doc';
+            }
+            else if (mimeType.includes('docx')) {
+                return 'doc';
+            }
+            else if (mimeType.includes('xls')) {
                 return 'xls';
             } else {
                 return 'genaric';

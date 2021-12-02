@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
           sessionStorage.setItem("ccUser", JSON.stringify(e.data));
           this._socketService.disConnectSocket();
           this._socketService.connectToSocket();
-          this._router.navigate(["customers"]);
+          // this._router.navigate(["customers"]);
         }
       },
       (error) => {

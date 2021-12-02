@@ -199,19 +199,19 @@
                         <!-- ---------------------file-------------------------------- -->
 
                         <div style="cursor: pointer;"
-                          (click)="filePreviewOpener(referredMessage.body.attachment.mediaUrl, referredMessage.body.additionalDetails.filename,'file' )"
+                          (click)="filePreviewOpener(referredMessage.body.attachment.mediaUrl, referredMessage.body.additionalDetails.fileName,'file' )"
                           *ngIf="(referredMessage.body.type | lowercase) == 'file'" class="file-type-content">
                           <span class="display-file">
-                            <img src="assets/file-types/{{referredMessage.body.attachment.mediaUrl | getFileExt}}.svg">
+                            <img src="assets/file-types/{{referredMessage.body.attachment.mimeType | getFileExt}}.svg">
                           </span>
                           <span class="display-file-name">
 
                             <span class="show-file-name"
-                              [matTooltip]="referredMessage.body.additionalDetails.filename">{{referredMessage.body.additionalDetails.filename}}</span>
+                              [matTooltip]="referredMessage.body.additionalDetails.fileName">{{referredMessage.body.additionalDetails.fileName}}</span>
                             <span class="file-size">{{referredMessage.body.attachment.size | getFormattedBytes}}</span>
                             <a (click)="$event.stopPropagation();" class="file-download"
                               href="{{referredMessage.body.attachment.mediaUrl | getFileUrl}}"
-                              [download]="referredMessage.body.additionalDetails.filename" [attr.disabled]="dwld.busy"
+                              [download]="referredMessage.body.additionalDetails.fileName" [attr.disabled]="dwld.busy"
                               #dwld="wmDownload">
                               Download
                             </a>
@@ -278,7 +278,7 @@
                                 </vg-controls>
 
                                 <audio #audio [vgMedia]="audio" id="myAudio" preload="auto">
-                                  <source [src]="referredMessage.body.attachment.mediaUrl">
+                                  <source [src]="referredMessage.body.attachment.mediaUrl | getFileUrl">
                                 </audio>
                               </vg-player>
                             </div>
@@ -310,7 +310,7 @@
                                   <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
                                 </vg-controls>
                                 <video #media [vgMedia]="media" id="{{referredMessage.id}}" preload="auto">
-                                  <source [src]="referredMessage.body.attachment.mediaUrl">
+                                  <source [src]="referredMessage.body.attachment.mediaUrl | getFileUrl">
                                 </video>
                               </vg-player>
                             </div>
@@ -419,19 +419,19 @@
                     <!-- ---------------------file-------------------------------- -->
 
                     <div style="cursor: pointer;"
-                      (click)="filePreviewOpener(message.body.attachment.mediaUrl, message.body.additionalDetails.filename,'file' )"
+                      (click)="filePreviewOpener(message.body.attachment.mediaUrl, message.body.additionalDetails.fileName,'file' )"
                       *ngIf="(message.body.type | lowercase) == 'file'" class="file-type-content">
                       <span class="display-file">
-                        <img src="assets/file-types/{{message.body.attachment.mediaUrl | getFileExt}}.svg">
+                        <img src="assets/file-types/{{message.body.attachment.mimeType | getFileExt}}.svg">
                       </span>
                       <span class="display-file-name">
 
                         <span class="show-file-name"
-                          [matTooltip]="message.body.additionalDetails.filename">{{message.body.additionalDetails.filename}}</span>
+                          [matTooltip]="message.body.additionalDetails.fileName">{{message.body.additionalDetails.fileName}}</span>
                         <span class="file-size">{{message.body.attachment.size | getFormattedBytes}}</span>
                         <a (click)="$event.stopPropagation();" class="file-download"
                           href="{{message.body.attachment.mediaUrl | getFileUrl}}"
-                          [download]="message.body.additionalDetails.filename" [attr.disabled]="dwld.busy"
+                          [download]="message.body.additionalDetails.fileName" [attr.disabled]="dwld.busy"
                           #dwld="wmDownload">
                           Download
                         </a>
@@ -493,7 +493,7 @@
                             </vg-controls>
 
                             <audio #audio [vgMedia]="audio" id="myAudio" preload="auto">
-                              <source [src]="message.body.attachment.mediaUrl">
+                              <source [src]="message.body.attachment.mediaUrl | getFileUrl">
                             </audio>
                           </vg-player>
                         </div>
@@ -525,7 +525,7 @@
                               <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
                             </vg-controls>
                             <video #media [vgMedia]="media" id="{{message.id}}" preload="auto">
-                              <source [src]="message.body.attachment.mediaUrl">
+                              <source [src]="message.body.attachment.mediaUrl | getFileUrl">
                             </video>
                           </vg-player>
                         </div>
@@ -722,7 +722,7 @@
 
             <button style="cursor: pointer;" class="send-btn attachment-btn composer-trigger" mat-icon-button
               *ngIf="replyInput.value.length < 1 && conversation.activeChannelSessions.length > 0">
-              <input accept=".txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx,.svg" multiple #myFileInput
+              <input accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx" multiple #myFileInput
                 type="file" (change)="uploadFile($event.target.files)" name="ef_chatbox_chat_file_upload"
                 id="uploadFileBtn" class="file-upload-input">
             </button>

@@ -62,7 +62,7 @@ export class InteractionsComponent implements OnInit {
   convers: any[];
   ringing = false;
   callControls = true;
- 
+
   isSuggestion = false;
   displaySuggestionsArea = false;
   cannedTabOpen = false;
@@ -236,7 +236,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   uploadFile(files) {
-    let availableExtentions: any = ['txt', 'png', 'jpg', 'jpeg', 'pdf', 'ppt', 'xlsx', 'xls', 'doc', 'docx', 'svg'];
+    let availableExtentions: any = ['txt', 'png', 'jpg', 'jpeg', 'pdf', 'ppt', 'xlsx', 'xls', 'doc', 'docx','rtf'];
     let ln = files.length;
     if (ln > 0) {
       for (var i = 0; i < ln; i++) {
@@ -245,7 +245,7 @@ export class InteractionsComponent implements OnInit {
         const fileMimeType = files[i].name.split('.').pop()
 
         if (fileSize <= 5000000) {
-          if (availableExtentions.includes(fileMimeType)) {
+          if (availableExtentions.includes(fileMimeType.toLowerCase())) {
 
             let fd = new FormData();
             fd.append("file", files[i]);
@@ -300,21 +300,23 @@ export class InteractionsComponent implements OnInit {
 
         message.body.type = "FILE";
         message.body['caption'] = "";
+        message.body['additionalDetails'] = { 'fileName': fileName };
         message.body['attachment'] = {
           'mediaUrl': this._appConfigService.config.FILE_SERVER_URL + "/file-engine/api/downloadFileStream?filename=" + fileName,
           'mimeType': fileMimeType,
           'size': fileSize
         }
-        message.body['additionalDetails'] = { 'filename': fileName };
 
       } else if (msgType.toLowerCase() == "image") {
 
         message.body.type = "IMAGE";
         message.body['caption'] = fileName;
+        message.body['additionalDetails'] = {};
         message.body['attachment'] = {
           'mediaUrl': this._appConfigService.config.FILE_SERVER_URL + "/file-engine/api/downloadFileStream?filename=" + fileName,
           'mimeType': fileMimeType,
-          'size': fileSize
+          'size': fileSize,
+          'thumbnail':""
         }
       }else{
         this._snackbarService.open("unable to process the file", "err");

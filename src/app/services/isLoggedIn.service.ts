@@ -14,8 +14,9 @@ export class isLoggedInService {
     private _router: Router,
     private _appConfigService: appConfigService,
     private _socketService: socketService,
-    private _cacheService: cacheService
+    private _cacheService: cacheService,
   ) {
+
     if (this._appConfigService.config.ENV == "development") {
       this._cacheService.agent = {
         id: "8d42617c-0603-4fbe-9863-2507c0fff9fd",
