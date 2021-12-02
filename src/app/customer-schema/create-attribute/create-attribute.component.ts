@@ -48,8 +48,9 @@ export class CreateAttributeComponent implements OnInit {
       channelTypes: []
     });
 
+    this.channelTypeList = this._sharedService.channelTypeList;
     this.getAttributeTypes();
-    this.getChannelTypes();
+    // this.getChannelTypes();
   }
 
   // to get attribute type list
@@ -57,18 +58,6 @@ export class CreateAttributeComponent implements OnInit {
     this._httpService.getSchemaTypes().subscribe(
       (res) => {
         this.attributeTypes = res;
-      },
-      (error) => {
-        this._sharedService.Interceptor(error.error, "err");
-      }
-    );
-  }
-
-  // to get channel type list
-  getChannelTypes() {
-    this._httpService.getChannelTypes().subscribe(
-      (res) => {
-        this.channelTypeList = res;
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");

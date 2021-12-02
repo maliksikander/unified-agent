@@ -68,7 +68,7 @@ export class socketService {
   }
 
   subscribeToSocketEvents() {
-    
+
     this.socket.on("disconnect", (reason) => {
       console.error("socket disconnect " + reason);
 
@@ -167,6 +167,7 @@ export class socketService {
 
     this.socket.on("onChannelTypes", (res: any) => {
       console.log("onChannelTypes", res);
+      this._sharedService.channelTypeList = res;
       this._sharedService.setChannelIcons(res);
     });
   }

@@ -54,6 +54,7 @@ export class EditAttributeComponent implements OnInit {
     });
 
     // console.log("data==>", this.data);
+    this.channelTypeList = this._sharedService.channelTypeList;
     this.getAttributeTypes();
   }
 
@@ -88,19 +89,6 @@ export class EditAttributeComponent implements OnInit {
     this._httpService.getSchemaTypes().subscribe(
       (res) => {
         this.attributeTypes = res;
-        this.getChannelTypes();
-      },
-      (error) => {
-        this._sharedService.Interceptor(error.error, "err");
-      }
-    );
-  }
-
-  // to get channel type list
-  getChannelTypes() {
-    this._httpService.getChannelTypes().subscribe(
-      (res) => {
-        this.channelTypeList = res;
         if (this.data) this.patchFormValues();
       },
       (error) => {

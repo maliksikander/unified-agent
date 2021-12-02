@@ -1,10 +1,11 @@
 import { Component, OnInit, Inject, ChangeDetectorRef } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, DateAdapter } from "@angular/material";
-import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl } from "@angular/forms";
 import { Router } from "@angular/router";
 import { httpService } from "../services/http.service";
 import { cacheService } from "../services/cache.service";
 import { sharedService } from "../services/shared.service";
+import { appConfigService } from "../services/appConfig.service";
 
 @Component({
   selector: "app-create-customer",
@@ -14,6 +15,7 @@ import { sharedService } from "../services/shared.service";
 export class CreateCustomerComponent implements OnInit {
   formValidation = {};
   attributeTypes: any[] = [];
+  channelTypeList: any[] = [];
 
   constructor(
     private dateAdapter: DateAdapter<any>,
@@ -25,7 +27,8 @@ export class CreateCustomerComponent implements OnInit {
     private _httpService: httpService,
     private _cacheService: cacheService,
     private _sharedService: sharedService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private _appConfigService: appConfigService
   ) {
     dialogRef.disableClose = true;
     this.dateAdapter.setLocale("en-GB");
@@ -63,6 +66,7 @@ export class CreateCustomerComponent implements OnInit {
         return a.sortOrder - b.sortOrder;
       });
 
+      this.channelTypeList = this._sharedService.channelTypeList;
       this.getAttributeTypes();
     });
     this.cd.detectChanges();
@@ -74,11 +78,11 @@ export class CreateCustomerComponent implements OnInit {
       attrSchema.forEach((item) => {
         let validatorArray: any = this.addFormValidations(item);
         this.customerForm.addControl(item.key, new FormControl(item.defaultValue ? item.defaultValue : "", validatorArray));
-        if (item.type == 'Boolean' && item.defaultValue == "") {
-        this.customerForm.controls[item.key].setValue(false);
+        if (item.type == "Boolean" && item.defaultValue == "") {
+          this.customerForm.controls[item.key].setValue(item.defaultValue);
         }
       });
-      console.log("control==>", this.customerForm.controls);
+      // console.log("control==>", this.customerForm.controls);
     } catch (e) {
       console.error("Error in add form control :", e);
     }
@@ -119,6 +123,15 @@ export class CreateCustomerComponent implements OnInit {
         this._sharedService.Interceptor(error.error, "err");
       }
     );
+  }
+
+
+  getChannelTypeLogo(typeName) {
+    let typeIndex = this.channelTypeList.findIndex((item) => item.name === typeName);
+    if (typeIndex == -1) return null;
+    let channelType = this.channelTypeList[typeIndex];
+    let filename = channelType.channelLogo;
+    return `${this._appConfigService.config.FILE_SERVER_URL}/file-engine/api/downloadFileStream?filename=${filename}`;
   }
 
   // to convert an array of objects to an object of objects
@@ -212,4 +225,18 @@ export class CreateCustomerComponent implements OnInit {
   // OnItemDeSelect(item: any) {}
   // onSelectAll(items: any) {}
   // onDeSelectAll(items: any) {}
+
+  addPhone(): void {
+    // (this.userForm.get('phones') as FormArray).push(
+    //   this.fb.control(null)
+    // );
+  }
+
+  removePhone(index) {
+    // (this.userForm.get('phones') as FormArray).removeAt(index);
+  }
+
+  // getPhonesFormControls(): AbstractControl {
+  // return (<FormArray> this.userForm.get('phones')).controls
+  // }
 }

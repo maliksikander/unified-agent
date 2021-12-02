@@ -31,14 +31,6 @@ export class httpService {
     });
   }
 
-  getChannelTypes(): Observable<any> {
-    return this._httpClient.get<any>(this._appConfigService.config.CCM_URL + "/channel-types", {
-      headers: new HttpHeaders({
-        "Content-Type": "application/json"
-      })
-    });
-  }
-
   ///////////////////////// Customer Schema CRUD /////////////////
 
   getSchemaTypes(): Observable<any> {

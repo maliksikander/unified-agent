@@ -11,7 +11,7 @@
   <form [formGroup]="customerForm">
     <div class="row">
       <ng-container *ngFor="let schemaAttribute of schemaAttributes">
-        <div [ngClass]="[schemaAttribute.length >= 116 ? 'col-md-12':  'col-md-4' ]"
+        <div [ngClass]="[schemaAttribute.length >= 116 ? 'col-md-12':  'col-md-6' ]"
           [class.check-box-field]="schemaAttribute.type == 'Boolean'">
 
           <div class="input-field">
@@ -22,6 +22,9 @@
             <div class="field-set" *ngIf="schemaAttribute.type != 'Boolean'">
               <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
                   *ngIf="schemaAttribute.isRequired">*</span>
+                <span *ngIf="schemaAttribute.isChannelIdentifier == true" class="field-channel"><img
+                    *ngFor="let channelType of schemaAttribute.channelTypes"
+                    [src]="getChannelTypeLogo(channelType)"></span>
               </label>
               <mat-form-field class="field" appearance="outline">
                 <input formControlName="{{schemaAttribute.key}}" matInput>
@@ -37,6 +40,14 @@
                   </div>
                 </mat-error>
               </mat-form-field>
+              <ng-container *ngIf="schemaAttribute.isChannelIdentifier == true">
+                <button type="button" (click)="addPhone()" class="duplicate-action add-field" mat-mini-fab>
+                  <mat-icon>add</mat-icon>
+                </button>
+                <button class="duplicate-action remove-field" (click)="removePhone()" mat-mini-fab>
+                  <mat-icon>close</mat-icon>
+                </button>
+              </ng-container>
             </div>
 
             <!-- For type 'String' and character length greater than equal to 116  -->
@@ -58,6 +69,8 @@
                   </div>
                 </mat-error>
               </mat-form-field>
+
+
             </div>
 
             <!-- Boolean -->
