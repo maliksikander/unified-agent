@@ -1,6 +1,6 @@
 {
-    "GAT_URL": "http://cim.expertflow.com",
-    "SOCKET_URL": "http://cim.expertflow.com",
+    "GAT_URL": "https://cim.expertflow.com/agent-manager",
+    "SOCKET_URL": "https://cim.expertflow.com/agent-manager",
     "FILE_SERVER_URL": "https://cim.expertflow.com",
     "CIM_CUSTOMER_URL": "http://localhost:8083",
     "ENV": "prod"
