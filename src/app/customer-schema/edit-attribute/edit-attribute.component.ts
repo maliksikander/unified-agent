@@ -97,26 +97,13 @@ export class EditAttributeComponent implements OnInit {
     );
   }
 
-  // to get file asset
-  getFileURL(filename) {
-    return `${this._appConfigService.config.FILE_SERVER_URL}/file-engine/api/downloadFileStream?filename=${filename}`;
-  }
-
   onTypeChange(e) {
     let schemaObj = this.editAttributeForm.value;
     let length = schemaObj.length ? schemaObj.length : 50;
-    let typeDef;
-    for (let i = 0; i <= this.attributeTypes.length; i++) {
-      if (e.value == this.attributeTypes[i].type) {
-        typeDef = this.attributeTypes[i];
-        break;
-      }
-    }
-    this.editAttributeForm.controls["defaultValue"].setValidators([
-      Validators.required,
-      Validators.maxLength(length),
-      Validators.pattern(typeDef.regex)
-    ]);
+    let typeDef = this.attributeTypes.find((item) => item.type == e.value);
+    let validatorArray: Array<any> = [Validators.required, Validators.pattern(typeDef.regex), Validators.maxLength(length)];
+    if (e.value != "String") validatorArray.pop();
+    this.editAttributeForm.controls["defaultValue"].setValidators(validatorArray);
 
     this.cd.detectChanges();
   }

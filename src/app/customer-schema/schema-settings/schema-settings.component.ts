@@ -50,7 +50,7 @@ export class SchemaSettingsComponent implements OnInit {
 
         this.schema2 = this.schema1.splice(0, n);
 
-        if (orderChangeCheck == "delete") this.changeOrder();
+        if (orderChangeCheck == "delete") this.changeOrder(orderChangeCheck);
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -59,7 +59,7 @@ export class SchemaSettingsComponent implements OnInit {
   }
 
   // to save the updated the attribute schema order
-  changeOrder() {
+  changeOrder(orderChangeCheck) {
     let finalSchema = [];
     let i = 1;
 
@@ -78,7 +78,7 @@ export class SchemaSettingsComponent implements OnInit {
 
     this._httpService.changeCustomerSchemaOrder(finalSchema).subscribe(
       (e) => {
-        this._sharedService.Interceptor("SORT ORDER UPDATED SUCCESSFULLY", "succ");
+        if (orderChangeCheck != "delete") this._sharedService.Interceptor("SORT ORDER UPDATED SUCCESSFULLY", "succ");
         this.loadSchemas(null);
       },
       (error) => {
@@ -116,7 +116,6 @@ export class SchemaSettingsComponent implements OnInit {
       this._httpService.deleteCustomerSchema(item._id).subscribe(
         (e) => {
           this.loadSchemas("delete");
-          // this.changeOrder();
         },
         (error) => {
           this._sharedService.Interceptor(error.error, "err");

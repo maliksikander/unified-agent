@@ -13,7 +13,7 @@
         <div class="form-group label-name col-md-6">
           <label class="text-left">Label <span class="mandatory-steric">*</span></label>
           <mat-form-field appearance="outline">
-            <input (keyup)="attrKeyGenerator(createAttributeForm?.value?.label)" formControlName="label" matInput>
+            <input formControlName="label" matInput>
             <mat-error *ngIf="createAttributeForm.get('label')?.errors?.required">
               *Field is required
             </mat-error>
@@ -55,8 +55,7 @@
             </mat-form-field>
           </div>
         </div>
-        <div
-          *ngIf="createAttributeForm.value.type != 'Boolean' && createAttributeForm.value.type != 'Password' && createAttributeForm.value.type != 'IP'"
+        <div *ngIf="createAttributeForm.value.type == 'String'"
           class="form-group label-name col-md-2 characters-length">
           <label class="text-left">Number of Characters</label>
           <mat-form-field appearance="outline">
@@ -132,7 +131,7 @@
             <mat-form-field appearance="outline">
               <mat-select formControlName="channelTypes" multiple class="selected-channels">
                 <mat-option class="channel-options" *ngFor="let channel of channelTypeList" [value]="channel.name"><img
-                    [src]="getFileURL(channel?.channelLogo)"> {{channel.name}}
+                    [src]="channel?.channelLogo | channelLogo | async"> {{channel.name}}
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="createAttributeForm.get('channelTypes')?.errors?.required">

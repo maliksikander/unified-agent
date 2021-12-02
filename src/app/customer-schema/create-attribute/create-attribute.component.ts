@@ -36,7 +36,7 @@ export class CreateAttributeComponent implements OnInit {
 
   ngOnInit() {
     this.createAttributeForm = this.formBuilder.group({
-      key: ["", [Validators.required]],
+      key: [""],
       label: ["", [Validators.required, Validators.maxLength(50), Validators.minLength(1)], this.ValidateNameDuplication.bind(this)],
       description: ["", [Validators.maxLength(100)]],
       type: ["", [Validators.required]],
@@ -58,16 +58,12 @@ export class CreateAttributeComponent implements OnInit {
     this._httpService.getSchemaTypes().subscribe(
       (res) => {
         this.attributeTypes = res;
+        this.createAttributeForm.controls["type"].setValue("String");
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
       }
     );
-  }
-
-  // to get file asset
-  getFileURL(filename) {
-    return `${this._appConfigService.config.FILE_SERVER_URL}/file-engine/api/downloadFileStream?filename=${filename}`;
   }
 
   onNoClick(): void {
@@ -76,12 +72,21 @@ export class CreateAttributeComponent implements OnInit {
 
   async onSave() {
     let data = this.createAttributeForm.value;
+    data.key = this.camelize(data.label);
     data.isDeletable = true;
     data.channelTypes = data.isChannelIdentifier == true ? data.channelTypes : [];
-    let temp = await this._httpService.getSchemaMaxOrder().toPromise();
-    let sort = temp[0].sortOrder ? temp[0].sortOrder + 1 : 0;
-    data.sort = sort;
     this.createNewAttribute(data);
+  }
+
+  camelize(str) {
+    return str
+      .replace(/\s(.)/g, function ($1) {
+        return $1.toUpperCase();
+      })
+      .replace(/\s/g, "")
+      .replace(/^(.)/, function ($1) {
+        return $1.toLowerCase();
+      });
   }
 
   createNewAttribute(data) {
@@ -98,18 +103,11 @@ export class CreateAttributeComponent implements OnInit {
   onTypeChange(e) {
     let schemaObj = this.createAttributeForm.value;
     let length = schemaObj.length ? schemaObj.length : 50;
-    let typeDef;
-    for (let i = 0; i <= this.attributeTypes.length; i++) {
-      if (e.value == this.attributeTypes[i].type) {
-        typeDef = this.attributeTypes[i];
-        break;
-      }
-    }
-    this.createAttributeForm.controls["defaultValue"].setValidators([
-      Validators.required,
-      Validators.maxLength(length),
-      Validators.pattern(typeDef.regex)
-    ]);
+    let typeDef = this.attributeTypes.find((item) => item.type == e.value);
+    if(typeDef == 'URL') typeDef.regex = new RegExp(typeDef.regex)
+    let validatorArray: Array<any> = [Validators.required, Validators.pattern(typeDef.regex), Validators.maxLength(length)];
+    if (e.value != "String") validatorArray.pop();
+    this.createAttributeForm.controls["defaultValue"].setValidators(validatorArray);
 
     this.cd.detectChanges();
   }
@@ -137,11 +135,11 @@ export class CreateAttributeComponent implements OnInit {
     this.cd.detectChanges();
   }
 
-  // generate key using user typed attribute label
-  attrKeyGenerator(label: string) {
-    let key = label.replace(" ", "_");
-    this.createAttributeForm.controls["key"].setValue(key);
-  }
+  // // generate key using user typed attribute label
+  // attrKeyGenerator(label: string) {
+  //   let key = label.replace(" ", "_");
+  //   this.createAttributeForm.controls["key"].setValue(key);
+  // }
 
   ValidateNameDuplication(control: AbstractControl) {
     return this._httpService.getCustomerSchema().pipe(

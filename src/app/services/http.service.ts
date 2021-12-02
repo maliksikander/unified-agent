@@ -41,14 +41,6 @@ export class httpService {
     });
   }
 
-  getSchemaMaxOrder(): Observable<any> {
-    return this._httpClient.get<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.customerSchema}?checkMaxOrder=true`, {
-      headers: new HttpHeaders({
-        "Content-Type": "application/json"
-      })
-    });
-  }
-
   getCustomerSchema(): Observable<any> {
     return this._httpClient.get<any>(this._appConfigService.config.CIM_CUSTOMER_URL + this.apiEndpoints.customerSchema, {
       headers: new HttpHeaders({
