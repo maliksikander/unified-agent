@@ -58,7 +58,7 @@ export class socketService {
 
     this.socket.on("connect_error", (err) => {
       this.ngxService.stop();
-      console.error("socket connect_error " , err.data.content);
+      console.error("socket connect_error ", err.data.content);
       this._snackbarService.open(err.data.content, "err");
       if (err.message == "login-failed") {
         localStorage.clear();
@@ -477,10 +477,14 @@ export class socketService {
     if (cimEvent.name.toLowerCase() == "customer_message") {
       if (cimEvent.data.body.type.toLowerCase() == "plain") {
         this._soundService.openBrowserNotification(conversation.customer.firstName, cimEvent.data.body.markdownText);
+      } else {
+        this._soundService.openBrowserNotification(conversation.customer.firstName, "sent a " + cimEvent.data.body.type + " message");
       }
     } else if (cimEvent.name.toLowerCase() == "bot_message") {
       if (cimEvent.data.body.type.toLowerCase() == "plain") {
         this._soundService.openBrowserNotification("BOT", cimEvent.data.body.markdownText);
+      } else {
+        this._soundService.openBrowserNotification("BOT", "sent a " + cimEvent.data.body.type + " message");
       }
     }
   }
