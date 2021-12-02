@@ -1,6 +1,6 @@
 {
-    "GAT_URL": "http://localhost:3000",
-    "SOCKET_URL": "http://localhost:3000",
+    "GAT_URL": "http://cim.expertflow.com",
+    "SOCKET_URL": "http://cim.expertflow.com",
     "FILE_SERVER_URL": "https://cim.expertflow.com",
     "CIM_CUSTOMER_URL": "http://localhost:8083",
     "CCM_URL": "https://cim.expertflow.com/ccm",
