@@ -1,8 +1,11 @@
 <app-header *ngIf="currentRoute != '/login'"></app-header>
 <div class="parent-notification">
-    <div class="child-notification" *ngFor="let request of requests">
-        <app-chat-notifications (closeRequestHeaderEvent)="requestHeaderEvents($event)" [data]="request"></app-chat-notifications>
+    <div class="child-notification">
+        <app-chat-notifications>
+        </app-chat-notifications>
     </div>
 </div>
 <ngx-ui-loader></ngx-ui-loader>
-<router-outlet></router-outlet>
+<div class="main-app-area">
+    <router-outlet></router-outlet>
+</div>

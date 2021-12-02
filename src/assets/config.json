@@ -1,5 +1,8 @@
 {
     "GAT_URL": "http://localhost:3000",
-    "SOCKET_URL": "ws://localhost:3000",
-    "ENV": "development"
+    "SOCKET_URL": "http://localhost:3000",
+    "FILE_SERVER_URL": "https://cim.expertflow.com",
+    "CIM_CUSTOMER_URL": "http://localhost:8083",
+    "CCM_URL": "https://cim.expertflow.com/ccm",
+    "ENV": "prod"
 }

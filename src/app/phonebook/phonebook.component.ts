@@ -1,10 +1,13 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { ConfirmationService } from "primeng/api";
-import { MessageService } from "primeng/api";
-import { MatDialog } from "@angular/material";
+import { DateAdapter, MatDialog } from "@angular/material";
 import { CreateCustomerComponent } from "../create-customer/create-customer.component";
-import { ActivatedRoute, Router } from "@angular/router";
-import { socketService } from "../services/socket.service";
+import { FormControl } from "@angular/forms";
+import { httpService } from "../services/http.service";
+import { CustomerActionsComponent } from "../customer-actions/customer-actions.component";
+import { cacheService } from "../services/cache.service";
+import { columnPreferences } from "../column-preferences/column-preferences.component";
+import { sharedService } from "../services/shared.service";
+import * as moment from "moment";
 
 @Component({
   selector: "app-phonebook",
@@ -13,565 +16,53 @@ import { socketService } from "../services/socket.service";
 })
 export class PhonebookComponent implements OnInit {
   customers;
+  stateChangedSubscription;
+  totalRecords: number;
   FilterSelected = "action";
   selectedTeam = "us-corporate";
   showLblTooltip: boolean = false;
   LblTooltipId;
   lblSearch: boolean = false;
-  labels = [
-    {
-      createdAt: "2021-03-30T12:09:52.497Z",
-      __v: 0,
-      name: "dummy",
-      updated_by: "",
-      _id: "606315109b5372a7aaf57e04",
-      created_by: "admin",
-      color_code: "#3cb44b",
-      updatedAt: "2021-03-30T12:09:52.497Z"
-    },
-    {
-      createdAt: "2021-03-30T12:11:20.124Z",
-      __v: 0,
-      name: "assasian",
-      updated_by: "admin",
-      _id: "606315689b53723ed3f57e06",
-      created_by: "admin",
-      color_code: "#a9a9a9",
-      updatedAt: "2021-03-30T12:12:05.258Z"
-    }
-  ];
-  rows = [
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb3455de812695676383d2"],
-      phone1: "0000",
-      createdAt: "2020-12-05T07:51:33.560Z",
-      updated_by: "",
-      _id: "5fcb3c057ac040dfa6527e84",
-      first_name: "Gold",
-      email: "",
-      updatedAt: "2020-12-05T07:51:33.560Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb3460de8126013d6383d3"],
-      phone1: "2323",
-      createdAt: "2020-12-05T06:12:35.055Z",
-      updated_by: "",
-      _id: "5fcb24d37ac040be71527e83",
-      first_name: "HC Test 2",
-      email: "",
-      updatedAt: "2020-12-05T06:12:35.055Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb3460de8126013d6383d3"],
-      phone1: "2121",
-      createdAt: "2020-12-04T11:56:54.740Z",
-
-      updated_by: "",
-      _id: "5fca24067ac040705d527e82",
-      first_name: "TestHC",
-      email: "",
-      updatedAt: "2020-12-04T11:56:54.740Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb3460de8126013d6383d3"],
-      phone1: "+923360110708",
-      createdAt: "2020-11-18T11:47:08.128Z",
-
-      updated_by: "admin",
-      _id: "5fb509bc7ac040b80d527e81",
-      first_name: "Alex",
-      email: "",
-      updatedAt: "2020-11-18T12:25:41.763Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5fb3b6d37ac04007e5527e7f"],
-      phone1: "1234567",
-      createdAt: "2020-11-17T11:41:31.471Z",
-
-      updated_by: "admin",
-      _id: "5fb3b6eb7ac0406ac0527e80",
-      first_name: "bronze",
-      email: "",
-      updatedAt: "2020-11-17T11:41:51.932Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5f7b11de6ecd9f4396b9be0c"],
-      phone1: "123456",
-      createdAt: "2020-11-17T11:32:59.708Z",
-
-      updated_by: "",
-      _id: "5fb3b4eb7ac0403c82527e7e",
-      first_name: "expertflow",
-      email: "",
-      updatedAt: "2020-11-17T11:32:59.708Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb34a7de8126ea486383d6"],
-      phone1: "12345",
-      createdAt: "2020-11-17T11:30:55.404Z",
-
-      updated_by: "",
-      _id: "5fb3b46f7ac040aa4c527e7d",
-      first_name: "support",
-      email: "",
-      updatedAt: "2020-11-17T11:30:55.404Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb348dde81262a576383d4"],
-      phone1: "1122",
-      createdAt: "2020-11-17T08:11:38.573Z",
-
-      updated_by: "",
-      _id: "5fb385ba7ac0407ad2527e7c",
-      first_name: "customer",
-      email: "",
-      updatedAt: "2020-11-17T08:11:38.573Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb3455de812695676383d2"],
-      phone1: "1234",
-      createdAt: "2020-11-17T07:02:57.196Z",
-
-      updated_by: "",
-      _id: "5fb375a17ac040df5f527e7b",
-      first_name: "umar",
-      email: "",
-      updatedAt: "2020-11-17T07:02:57.196Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb3460de8126013d6383d3", "5eeb3455de812695676383d2"],
-      phone1: "43517",
-      createdAt: "2020-06-18T09:34:34.994Z",
-
-      updated_by: "admin",
-      _id: "5eeb352ade812662716383dc",
-      first_name: "mixed",
-      email: "",
-      updatedAt: "2020-11-17T06:57:17.041Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb348dde81262a576383d4"],
-      phone1: "43516",
-      createdAt: "2020-06-18T09:34:06.803Z",
-
-      updated_by: "admin",
-      _id: "5eeb350ede812602d46383db",
-      first_name: "Platinum",
-      email: "",
-      updatedAt: "2020-11-17T08:46:27.399Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb34a7de8126ea486383d6"],
-      phone1: "4444",
-      createdAt: "2020-06-18T09:33:48.508Z",
-
-      updated_by: "",
-      _id: "5eeb34fcde81265b7f6383da",
-      first_name: "vvip",
-      email: "",
-      updatedAt: "2020-06-18T09:33:48.508Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb3499de8126f6b26383d5", "5eeb3460de8126013d6383d3", "5eeb348dde81262a576383d4"],
-      phone1: "3333",
-      createdAt: "2020-06-18T09:33:29.191Z",
-
-      updated_by: "admin",
-      _id: "5eeb34e9de8126962b6383d9",
-      first_name: "Vip",
-      email: "",
-      updatedAt: "2020-11-17T12:03:33.721Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb3460de8126013d6383d3", "5eeb3499de8126f6b26383d5"],
-      phone1: "1111",
-      createdAt: "2020-06-18T09:33:09.748Z",
-
-      updated_by: "admin",
-      _id: "5eeb34d5de812690996383d8",
-      first_name: "Silver",
-      email: "",
-      updatedAt: "2020-11-17T08:50:34.070Z"
-    }
-  ];
-  cols = [
-    {
-      field: "first_name",
-      header: "First Name",
-      type: "string"
-    },
-    {
-      field: "last_name",
-      header: "Last Name",
-      type: "string"
-    },
-    {
-      field: "phone1",
-      header: "Phone1",
-      type: "phone"
-    },
-    {
-      field: "email",
-      header: "Email",
-      type: "email"
-    },
-    {
-      field: "phone2",
-      header: "Phone2",
-      type: "phone"
-    },
-    {
-      field: "created_by",
-      header: "Created By",
-      type: "string"
-    },
-    {
-      field: "updated_by",
-      header: "Updated By",
-      type: "string"
-    }
-  ];
-  columns = [
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb3455de812695676383d2"],
-      phone1: "0000",
-      createdAt: "2020-12-05T07:51:33.560Z",
-      __v: 0,
-      updated_by: "",
-      _id: "5fcb3c057ac040dfa6527e84",
-      first_name: "Gold",
-      email: "",
-      updatedAt: "2020-12-05T07:51:33.560Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb3460de8126013d6383d3"],
-      phone1: "2323",
-      createdAt: "2020-12-05T06:12:35.055Z",
-      __v: 0,
-      updated_by: "",
-      _id: "5fcb24d37ac040be71527e83",
-      first_name: "HC Test 2",
-      email: "",
-      updatedAt: "2020-12-05T06:12:35.055Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb3460de8126013d6383d3"],
-      phone1: "2121",
-      createdAt: "2020-12-04T11:56:54.740Z",
-      __v: 0,
-      updated_by: "",
-      _id: "5fca24067ac040705d527e82",
-      first_name: "TestHC",
-      email: "",
-      updatedAt: "2020-12-04T11:56:54.740Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb3460de8126013d6383d3"],
-      phone1: "+923360110708",
-      createdAt: "2020-11-18T11:47:08.128Z",
-      __v: 0,
-      updated_by: "admin",
-      _id: "5fb509bc7ac040b80d527e81",
-      first_name: "Alex",
-      email: "",
-      updatedAt: "2020-11-18T12:25:41.763Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5fb3b6d37ac04007e5527e7f"],
-      phone1: "1234567",
-      createdAt: "2020-11-17T11:41:31.471Z",
-      __v: 0,
-      updated_by: "admin",
-      _id: "5fb3b6eb7ac0406ac0527e80",
-      first_name: "bronze",
-      email: "",
-      updatedAt: "2020-11-17T11:41:51.932Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5f7b11de6ecd9f4396b9be0c"],
-      phone1: "123456",
-      createdAt: "2020-11-17T11:32:59.708Z",
-      __v: 0,
-      updated_by: "",
-      _id: "5fb3b4eb7ac0403c82527e7e",
-      first_name: "expertflow",
-      email: "",
-      updatedAt: "2020-11-17T11:32:59.708Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb34a7de8126ea486383d6"],
-      phone1: "12345",
-      createdAt: "2020-11-17T11:30:55.404Z",
-      __v: 0,
-      updated_by: "",
-      _id: "5fb3b46f7ac040aa4c527e7d",
-      first_name: "support",
-      email: "",
-      updatedAt: "2020-11-17T11:30:55.404Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb348dde81262a576383d4"],
-      phone1: "1122",
-      createdAt: "2020-11-17T08:11:38.573Z",
-      __v: 0,
-      updated_by: "",
-      _id: "5fb385ba7ac0407ad2527e7c",
-      first_name: "customer",
-      email: "",
-      updatedAt: "2020-11-17T08:11:38.573Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb3455de812695676383d2"],
-      phone1: "1234",
-      createdAt: "2020-11-17T07:02:57.196Z",
-      __v: 0,
-      updated_by: "",
-      _id: "5fb375a17ac040df5f527e7b",
-      first_name: "umar",
-      email: "",
-      updatedAt: "2020-11-17T07:02:57.196Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb3460de8126013d6383d3", "5eeb3455de812695676383d2"],
-      phone1: "43517",
-      createdAt: "2020-06-18T09:34:34.994Z",
-      __v: 0,
-      updated_by: "admin",
-      _id: "5eeb352ade812662716383dc",
-      first_name: "mixed",
-      email: "",
-      updatedAt: "2020-11-17T06:57:17.041Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb348dde81262a576383d4"],
-      phone1: "43516",
-      createdAt: "2020-06-18T09:34:06.803Z",
-      __v: 0,
-      updated_by: "admin",
-      _id: "5eeb350ede812602d46383db",
-      first_name: "Platinum",
-      email: "",
-      updatedAt: "2020-11-17T08:46:27.399Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb34a7de8126ea486383d6"],
-      phone1: "4444",
-      createdAt: "2020-06-18T09:33:48.508Z",
-      __v: 0,
-      updated_by: "",
-      _id: "5eeb34fcde81265b7f6383da",
-      first_name: "vvip",
-      email: "",
-      updatedAt: "2020-06-18T09:33:48.508Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb3499de8126f6b26383d5", "5eeb3460de8126013d6383d3", "5eeb348dde81262a576383d4"],
-      phone1: "3333",
-      createdAt: "2020-06-18T09:33:29.191Z",
-      __v: 0,
-      updated_by: "admin",
-      _id: "5eeb34e9de8126962b6383d9",
-      first_name: "Vip",
-      email: "",
-      updatedAt: "2020-11-17T12:03:33.721Z"
-    },
-    {
-      phone2: "",
-      last_name: "",
-      phone3: "",
-      phone4: "",
-      phone5: "",
-      created_by: "admin",
-      labels: ["5eeb3460de8126013d6383d3", "5eeb3499de8126f6b26383d5"],
-      phone1: "1111",
-      createdAt: "2020-06-18T09:33:09.748Z",
-      __v: 0,
-      updated_by: "admin",
-      _id: "5eeb34d5de812690996383d8",
-      first_name: "Silver",
-      email: "",
-      updatedAt: "2020-11-17T08:50:34.070Z"
-    }
-  ];
-
-  filterQuery: string[] = ["Mobile Phone", "Email", "Name", "Business Phone"];
+  labelsForFilter = new FormControl("");
+  labelSettings = {
+    singleSelection: false,
+    text: "",
+    searchPlaceholderText: "Search",
+    selectAllText: "Select All",
+    unSelectAllText: "UnSelect All",
+    enableSearchFilter: true,
+    primaryKey: "_id"
+  };
+  labels = [];
+  rows = [];
+  cols = [];
+  limit = 25;
+  filterValue;
+  offSet = 0;
+  sort = {};
+  query = {};
+  filterQuery: string[] = [];
 
   submitted: boolean;
   filterOnOff: boolean = false;
   filterActiveField;
   removable = true;
-  paramSubscriber: any;
-  rowDefaultClick = "open";
-  topicId = null;
-  constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router, private _socketService: socketService) {}
+  constructor(
+    private dateAdapter: DateAdapter<any>,
+    private _sharedService: sharedService,
+    private _cacheService: cacheService,
+    private _httpService: httpService,
+    private dialog: MatDialog
+  ) {
+    this.dateAdapter.setLocale("en-GB");
+  }
 
   ngOnInit() {
-    this.paramSubscriber = this.route.queryParams.subscribe((params) => {
-      this.rowDefaultClick = params["q"];
-      this.topicId = params["topicId"];
-      console.log("rowDefaultClick " + this.rowDefaultClick + " topicId " + this.topicId);
+    this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+    this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
+      if (e.msg == "update-labels") {
+        this.loadLabels();
+      }
     });
   }
   setFilter(event: Event, col) {
@@ -580,30 +71,170 @@ export class PhonebookComponent implements OnInit {
     this.filterActiveField = col.field;
   }
 
-  remove(filter: string): void {
-    const index = this.filterQuery.indexOf(filter);
+  loadLabels() {
+    this.labels = [];
+    this._httpService.getLabels().subscribe((e) => {
+      this.labels = e.data;
+    });
+  }
 
-    if (index >= 0) {
-      this.filterQuery.splice(index, 1);
-    }
+  loadCustomers(limit, offSet, sort, query) {
+    this.rows = null;
+    this._httpService.getUserPreference(this._cacheService.agent.id).subscribe((e) => {
+      this.cols = e.data.docs[0].columns;
+      console.log("col==>",this.cols)
+      this._httpService.getCustomers(limit, offSet, sort, query).subscribe((e) => {
+        this.rows = e.data.docs;
+        this.totalRecords = e.data.total;
+        this.loadLabels();
+      });
+    });
+  }
+
+  filter(value, field, v) {
+    this.query = { field: field, value: encodeURIComponent(this.filterValue) };
+    this.filterQuery = [];
+    this.filterQuery.push(field + ":" + this.filterValue);
+    this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+  }
+
+  Cfilter(value, field, v) {
+    let b = moment.utc(this.filterValue).utcOffset(-5).toISOString();
+    this.filterQuery = [];
+    this.filterQuery.push(field + ":" + b);
+    this.query = { field: field, value: b };
+    this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+  }
+
+  cancelFilter() {
+    this.query = {};
+    this.limit = 25;
+    this.offSet = 0;
+    this.sort = {};
+    this.rows = null;
+    this.filterValue = null;
+    this.sortArrowDown = false;
+    this.sortArrowUp = false;
+    this.filterQuery = [];
+    this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+  }
+
+  onPage(event) {
+    console.log(event);
+    this.offSet = event.first;
+    this.limit = this.offSet + event.rows;
+    this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
   }
 
   createCustomer() {
     const dialogRef = this.dialog.open(CreateCustomerComponent, {
-      panelClass: "create-customer-dialog"
+      panelClass: "create-customer-dialog",
+      maxWidth: "58vw",
+      height: "79vh",
+      maxHeight: "79vh"
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result && result.event == "refresh") {
+        this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+      }
     });
   }
-  ngOnDestroy() {
-    this.paramSubscriber.unsubscribe();
+
+  actions() {
+    const dialogRef = this.dialog.open(columnPreferences, {
+      maxWidth: "818px",
+      maxHeight: "88vh",
+      width: "818px",
+      height: "88vh"
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result && result.event == "refresh") {
+        this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+      }
+    });
   }
 
-  linkCustomer(customerId) {
-    this._socketService.linkCustomerWithInteraction(customerId, this.topicId);
+  onItemSelect(item: any) {
+    let id = [];
+    this.labelsForFilter.value.filter((e) => {
+      id.push(e._id);
+    });
+    let ids = id.toString();
+    this.query = { field: "labels", value: ids };
+    this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
   }
-
-  onRowClick(customerId) {
-    if (this.rowDefaultClick == "linking") {
-      this.linkCustomer(customerId);
+  OnItemDeSelect(item: any) {
+    let id = [];
+    this.labelsForFilter.value.filter((e) => {
+      id.push(e._id);
+    });
+    if (id[0] == null) {
+      this.cancelFilter();
+    } else {
+      let ids = id.toString();
+      this.query = { field: "labels", value: ids };
+      this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
     }
+  }
+  onSelectAll(items: any) {}
+  onDeSelectAll(items: any) {
+    this.cancelFilter();
+  }
+
+  onRowClick(id, tab, col) {
+    const dialogRef = this.dialog.open(CustomerActionsComponent, {
+      panelClass: "inline-editing",
+      maxWidth: "848px",
+      maxHeight: "88vh",
+      minHeight: "25vh",
+      data: { id: id, tab: tab }
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if ((result && result.event && result.event == "refresh") || (result && result.event && result.event == "delete")) {
+        this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+      }
+    });
+  }
+
+  onColReorder(event) {
+    let prefObj = {
+      user_Id: this._cacheService.agent.id,
+      pageSize: null,
+      columns: event.columns,
+      sortOption: [
+        {
+          field: "",
+          sortOption: ""
+        }
+      ]
+    };
+    this._httpService.changeUserPreference(prefObj).subscribe(
+      (e) => {
+        this._sharedService.Interceptor("Preference Updated!", "succ");
+      },
+      (error) => {
+        this._sharedService.Interceptor(error, "err");
+      }
+    );
+  }
+
+  sortArrowUp: boolean = false;
+  sortArrowDown: boolean = false;
+  sortField;
+  onSort(field, sortOrder) {
+    this.sortField = field;
+    if (sortOrder == "asc") {
+      this.sortArrowUp = true;
+      this.sortArrowDown = false;
+    } else {
+      this.sortArrowUp = false;
+      this.sortArrowDown = true;
+    }
+    this.sort = { field: field, order: sortOrder };
+    this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+  }
+
+  ngOnDestroy() {
+    this.stateChangedSubscription.unsubscribe();
   }
 }

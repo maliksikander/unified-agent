@@ -61,10 +61,48 @@ import { getFirstTwoLettersPipe } from "./pipes/getFirstTwoLetters.pipe";
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from "ngx-mat-datetime-picker";
 import { AngularMultiSelectModule } from "angular2-multiselect-dropdown";
 import { NgScrollbarModule } from "ngx-scrollbar";
+import { getMRDSwitchesPipe } from "./pipes/getMRDSwitchs.pipe";
+import { fetchLabelsPipe } from "./pipes/fetchLabels.pipe";
+import { columnsFilterClass } from "./pipes/columnsFilter.pipe";
+import { MomentModule } from "ngx-moment";
+import { filterPullModeRequestsPipe } from "./pipes/filterPullModeReqsts.pipe";
+import { channelLogoPipe } from "./pipes/getChannelLogo.pipe";
+import { isAlreadyJoinedPipe } from "./pipes/isAlreadyJoined.pipe";
+import { webChannelDataPipe } from "./pipes/webChannelData.pipe";
+import { getFileUrlPipe } from "./pipes/getFileUrl.pipe";
+import { NgxDocViewerModule } from "ngx-doc-viewer";
+import { sanitizePipe } from "./pipes/sanitize.pipe";
+import { DownloadDirective } from "../download.directive";
+import { getFileExtPipe } from "./pipes/getFileExt.pipe";
+import { getFormattedBytesPipe } from "./pipes/formatBytes.pipe";
+import { getReferredMessagePipe } from "./pipes/getReferredMsg.pipe";
+
 
 @NgModule({
-  declarations: [RemoveUnderscorePipe, ibsformatPipe, getSenderNamePipe, SearchPipe, sentenceCasePipe, convertToFormDataPipe, getFirstTwoLettersPipe],
+  declarations: [
+    getFormattedBytesPipe,
+    getMRDSwitchesPipe,
+    RemoveUnderscorePipe,
+    isAlreadyJoinedPipe,
+    ibsformatPipe,
+    getSenderNamePipe,
+    SearchPipe,
+    sentenceCasePipe,
+    convertToFormDataPipe,
+    getFirstTwoLettersPipe,
+    fetchLabelsPipe,
+    columnsFilterClass,
+    filterPullModeRequestsPipe,
+    channelLogoPipe,
+    webChannelDataPipe,
+    getFileUrlPipe,
+    sanitizePipe,
+    DownloadDirective,
+    getFileExtPipe,
+    getReferredMessagePipe
+  ],
   imports: [
+    NgxDocViewerModule,
     MatIconModule,
     MatToolbarModule,
     MatSidenavModule,
@@ -97,6 +135,7 @@ import { NgScrollbarModule } from "ngx-scrollbar";
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
     NgxMatTimepickerModule,
+    MomentModule,
     NgCircleProgressModule.forRoot({
       radius: 100,
       outerStrokeWidth: 16,
@@ -166,6 +205,7 @@ import { NgScrollbarModule } from "ngx-scrollbar";
     NgCircleProgressModule,
     HttpClientModule,
     RemoveUnderscorePipe,
+    filterPullModeRequestsPipe,
     NgxLinkifyjsModule,
     ibsformatPipe,
     TableModule,
@@ -198,7 +238,21 @@ import { NgScrollbarModule } from "ngx-scrollbar";
     convertToFormDataPipe,
     getFirstTwoLettersPipe,
     AngularMultiSelectModule,
-    NgScrollbarModule
+    NgScrollbarModule,
+    getMRDSwitchesPipe,
+    fetchLabelsPipe,
+    columnsFilterClass,
+    MomentModule,
+    channelLogoPipe,
+    isAlreadyJoinedPipe,
+    webChannelDataPipe,
+    getFileUrlPipe,
+    sanitizePipe,
+    NgxDocViewerModule,
+    DownloadDirective,
+    getFileExtPipe,
+    getFormattedBytesPipe,
+    getReferredMessagePipe
   ]
 })
-export class SharedModule {}
+export class SharedModule { }

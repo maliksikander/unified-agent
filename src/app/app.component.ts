@@ -1,8 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { appConfigService } from "./services/appConfig.service";
+import { isLoggedInService } from "./services/isLoggedIn.service";
 import { sharedService } from "./services/shared.service";
-import { socketService } from "./services/socket.service";
 
 @Component({
   selector: "app-root",
@@ -11,20 +10,10 @@ import { socketService } from "./services/socket.service";
 })
 export class AppComponent implements OnInit {
   title = "unified-agent-gadget";
-  requests = [];
 
   currentRoute: string;
 
-  constructor(private _router: Router, private _sharedService: sharedService) {
-    this._sharedService.serviceCurrentMessage.subscribe((e) => {
-      if (e.msg == "openRequestHeader") {
-        this.requests.push(e.data);
-      }
-      if (e.msg == "closeRequestHeader") {
-        this.removeRequestFromRequestArray(e.data.topicId);
-      }
-    });
-  }
+  constructor(private _router: Router, private _isLoggedInservice: isLoggedInService) {}
 
   ngOnInit() {
     this._router.events.subscribe((event: any) => {
@@ -32,14 +21,5 @@ export class AppComponent implements OnInit {
         this.currentRoute = event.url;
       }
     });
-  }
-
-  requestHeaderEvents(topicId) {
-    this.removeRequestFromRequestArray(topicId);
-  }
-
-  removeRequestFromRequestArray(topicId) {
-    let index = this._sharedService.getIndexFromTopicId(topicId, this.requests);
-      this._sharedService.spliceArray(index, this.requests);
   }
 }

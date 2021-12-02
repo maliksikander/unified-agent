@@ -1,218 +1,211 @@
 <div class="phonebook-main-area">
-<div class="phonebook-main row m-0">
-<!--  <button mat-button routerLink="../chats" class="back-to-chat"></button>-->
-  <div class="customer-heading col-md-6">
-<!--    <h4>Customer List</h4>-->
-<!--    <div class="filter-selection">-->
-<!--      <mat-chip-list #chipList aria-label="Filter selection">-->
-<!--        <mat-chip-->
-<!--          *ngFor="let filter of filterQuery"-->
-<!--          [removable]="removable"-->
-<!--          (removed)="remove(filter)">-->
-<!--          {{filter}}-->
-<!--          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>-->
-<!--        </mat-chip>-->
-<!--      </mat-chip-list>-->
-<!--    </div>-->
-    <mat-form-field appearance="outline" class="selection-trigger categorize-selection">
-      <mat-select [(value)]="selectedTeam">
-        <mat-option value="us-corporate">US Corporate Customers</mat-option>
-        <mat-option value="new">New Customers</mat-option>
-        <mat-option value="linked">Linked</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <span class="notifs" *ngIf="rowDefaultClick == 'linking'">Select a customer for linking</span>
-    <span class="notifs" *ngIf="rowDefaultClick != 'linking'">Select a customer for editing</span>
+  <div class="phonebook-main row m-0">
+    <button mat-button routerLink="../chats" class="back-to-chat"></button>
+    <div class="customer-heading col-md-6">
+      <!--    <h4>Customer List</h4>-->
+      <div class="filter-selection">
+        <mat-chip-list #chipList aria-label="Filter selection">
+          <mat-chip *ngFor="let filter of filterQuery" [removable]="removable" (removed)="cancelFilter()">
+            {{filter}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+      <!--    <mat-form-field appearance="outline" class="selection-trigger categorize-selection">-->
+      <!--      <mat-select [(value)]="selectedTeam">-->
+      <!--        <mat-option value="us-corporate">US Corporate Customers</mat-option>-->
+      <!--        <mat-option value="new">New Customers</mat-option>-->
+      <!--        <mat-option value="linked">Linked</mat-option>-->
+      <!--      </mat-select>-->
+      <!--    </mat-form-field>-->
+    </div>
+
+    <div class="col-md-6 right-actions text-right">
+
+      <button mat-button class="btn-action " (click)="actions()">Action</button>
+
+      <mat-menu #columnMenu="matMenu">
+        <div class="check-menu" (click)="$event.stopPropagation();">
+          <p class="col-list" *ngFor="let col of cols">
+            <mat-checkbox color="primary">{{col.header}}</mat-checkbox>
+          </p>
+        </div>
+      </mat-menu>
+
+
+      <!-- <div *ngIf="labels" class="lbl-filter-search custom-dropdown">
+        <span (click)="lblSearch = !lblSearch" class="lbl-search-lbl">
+          Filter Across Labels
+        </span>
+        <angular2-multiselect [data]="labels" [settings]="labelSettings" (onSelect)="onItemSelect($event)"
+          (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+          (onDeSelectAll)="onDeSelectAll($event)" [formControl]="labelsForFilter">
+
+          <c-item>
+            <ng-template let-item="item">
+              <div class="dot-in-filter" [ngStyle]="{'background-color':item.color_code}"></div>
+
+              <label style="color: #333;min-width: 150px;">{{item.name}}</label>
+            </ng-template>
+          </c-item>
+        </angular2-multiselect>
+      </div> -->
+
+
+      <button (click)="createCustomer()" mat-button class="btn-create">Create New Customer</button>
+
+    </div>
   </div>
 
-  <div class="col-md-6 right-actions text-right">
-
-    <!--    <div *ngIf="labels" class="lbl-filter-search custom-dropdown">-->
-    <!--      <div (click)="lblSearch = !lblSearch" class="lbl-search-lbl">-->
-    <!--        .SRH_LB-->
-    <!--      </div>-->
-    <!--      <angular2-multiselect [data]="labels"  [settings]="labelSettings"-->
-    <!--                            (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"-->
-    <!--                            (onDeSelectAll)="onDeSelectAll($event)" [formControl]="labelsForFilter" (onAddFilterNewItem)="onAddItem($event)">-->
-
-    <!--        <c-item>-->
-    <!--          <ng-template let-item="item">-->
-    <!--            <div class="dot-in-filter" [ngStyle]="{'background-color':item.color_code}"></div>-->
-
-    <!--            <label style="color: #333;min-width: 150px;">{{item.name}}</label>-->
-    <!--          </ng-template>-->
-    <!--        </c-item>-->
-    <!--      </angular2-multiselect>-->
-    <!--    </div>-->
 
 
-    <mat-form-field appearance="outline" class="selection-trigger">
-      <mat-select [(value)]="FilterSelected">
-        <mat-option value="action"> All Customers</mat-option>
-        <mat-option value="new">New Customers</mat-option>
-        <mat-option value="linked">Linked</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <button (click)="createCustomer()" mat-button class="btn-create">Create New Customer</button>
-        <button mat-button class="btn-action">Close</button>
-  </div>
-</div>
+  <div class="main-table">
+    <p-table #dt [value]="rows" (onColReorder)="onColReorder($event)" [rowsPerPageOptions]=[25,50] [rows]="25" [paginator]="true" [style]="{width:'auto'}" scrollHeight="100%"
+    [rowHover]="true" dataKey="id" (onPage)="onPage($event)" [totalRecords]="totalRecords" [columns]="cols"
+    [showCurrentPageReport]="true" [lazy]="true" [reorderableColumns]="true" [resizableColumns]="true"
+    styleClass="sticky-table" currentPageReportTemplate="Showing {{offSet}} to {{limit}} of {{totalRecords}} entries">
 
+      <ng-template pTemplate="header" let-columns>
 
-<!--<p-table styleClass="sticky-table" [columns]="cols" [value]="rows" [resizableColumns]="true">-->
-<!--  <ng-template pTemplate="header" let-columns>-->
-<!--    <tr>-->
-<!--      <th *ngFor="let col of columns" pResizableColumn>-->
-<!--        {{col.header}}-->
-<!--      </th>-->
-<!--    </tr>-->
-<!--  </ng-template>-->
-<!--  <ng-template pTemplate="body" let-rowData let-columns="columns">-->
-<!--    <tr>-->
-<!--      <td *ngFor="let col of columns" class="ui-resizable-column">-->
-<!--        {{rowData[col.field]}}-->
-<!--      </td>-->
-<!--    </tr>-->
-<!--  </ng-template>-->
-<!--</p-table>-->
-<div class="main-table">
-  <p-table #dt [value]="rows" [rowsPerPageOptions]=[10,20] [rows]="15" [paginator]="false"
-           [rowHover]="true" dataKey="id" [totalRecords]="14" [columns]="cols"
-           [showCurrentPageReport]="true" [reorderableColumns]="true" [resizableColumns]="true"
-           styleClass="sticky-table">
+        <tr>
+          <th class="tracking-in-expand" *ngFor="let col of columns" pResizableColumn pReorderableColumn>
+            <!--          {{col.header}}-->
+            <mat-icon matTooltip="Drag the column" class="drag-icon">more_vert</mat-icon>
+            <span class="table-head" matTooltip="{{col.header}}">{{col.header}}</span>
 
-    <ng-template pTemplate="header" let-columns>
+            <span matTooltip="Filter" *ngIf="col.type != 'time'" class="filter-icon k-icon k-i-filter-sm" (click)="setFilter($event,col)">
 
-      <tr>
-        <th class="tracking-in-expand" *ngFor="let col of columns" pResizableColumn pReorderableColumn>
-          <!--          {{col.header}}-->
-          <mat-icon class="drag-icon">more_vert</mat-icon>
-          <span class="table-head" matTooltip="{{col.header}}">{{col.header}}</span>
+            </span>
+            <span class="sorting-icons">
+              <span matTooltip="Decending" class="k-icon k-i-sort-desc-sm" [ngClass]="{'color': sortArrowDown && sortField == col.field}"
+                (click)="onSort(col.field, 'desc')"></span>
+              <span matTooltip="Ascending" class="k-icon k-i-sort-asc-sm" [ngClass]="{'color': sortArrowUp && sortField == col.field}"
+                (click)="onSort(col.field, 'asc')"></span>
+            </span>
 
-          <span *ngIf="col.type != 'time'" class="filter-icon k-icon k-i-filter-sm" (click)="setFilter($event,col)">
+            <div *ngIf="filterOnOff && filterActiveField == col.field" class="customer-search">
 
-          </span>
-          <span class="sorting-icons">
-            <span class="k-icon k-i-sort-desc-sm"
-                 ></span>
-            <span class="k-icon k-i-sort-asc-sm"
-                  ></span>
-          </span>
-
-          <div *ngIf="filterOnOff && filterActiveField == col.field" class="customer-search">
-
-            <div *ngIf="col.type == 'date_time'">
-              <input class="filter" type="text" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1"
-                     >
-              <owl-date-time #dt1></owl-date-time>
-              <div class="close-filter">
-                <mat-icon  class="closeIcon">cancel</mat-icon>
+              <div *ngIf="col.type == 'date_time'">
+                <input class="filter" [(ngModel)]="filterValue" (keyup.enter)="Cfilter($event.target.value, col.field, col.filterMatchMode)" type="text" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1">
+                <owl-date-time #dt1></owl-date-time>
+                <div class="close-filter">
+                  <mat-icon (click)="cancelFilter()" class="closeIcon">cancel</mat-icon>
+                </div>
               </div>
-            </div>
 
-
-            <!-- <div *ngIf="col.type == 'time'">
-              <input class="filter" type="text" [(ngModel)]="filterValue" [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2"
-                (keyup.enter)="Cfilter($event.target.value, col.field, col.filterMatchMode)">
-              <owl-date-time [pickerType]="'timer'" #dt2></owl-date-time>
-              <div class="close-filter">
+              <div *ngIf="col.type == 'date'">
+                <input class="filter" type="text" [(ngModel)]="filterValue"
+                 (keyup.enter)="Cfilter($event.target.value, col.field, col.filterMatchMode)" (click)="picker.open()" [matDatepicker]="picker">
+                <mat-datepicker #picker></mat-datepicker>
                 <mat-icon (click)="cancelFilter()" class="closeIcon">cancel</mat-icon>
               </div>
-            </div> -->
 
 
-            <div *ngIf="col.type == 'date'">
-              <input class="filter" type="text"  (click)="picker.open()"
-                     [matDatepicker]="picker"
-                    >
-              <mat-datepicker #picker></mat-datepicker>
-              <mat-icon  class="closeIcon">cancel</mat-icon>
+              <div *ngIf="col.type != 'date_time' && col.type != 'date'">
+                <input class="filter" type="text" [(ngModel)]="filterValue"
+                (keyup.enter)="filter($event.target.value, col.field, col.filterMatchMode)">
+                <div class="close-filter">
+                  <mat-icon (click)="cancelFilter()" class="closeIcon">cancel</mat-icon>
+                </div>
+              </div>
+
             </div>
 
 
-            <div *ngIf="col.type != 'time' && col.type != 'date_time' && col.type != 'date'">
-              <input class="filter" type="text"
-                     >
-              <div class="close-filter">
-                <mat-icon class="closeIcon">cancel</mat-icon>
+          </th>
+
+        </tr>
+
+      </ng-template>
+
+      <!--    <ng-template pTemplate="colgroup" let-columns>-->
+      <!--      <colgroup>-->
+      <!--        <col *ngFor="let col of columns" style="width:200px">-->
+      <!--      </colgroup>-->
+      <!--    </ng-template>-->
+
+      <ng-template let-expanded="expanded" pTemplate="body" let-rowData let-columns="columns">
+        <tr class="slide-in-left main-row" style="cursor: pointer">
+          <!-- <td *ngFor="let col of columns" class="ui-resizable-column">
+            {{rowData[col.field]}}
+
+            <ul class="customer-labels" *ngIf="col.field == 'firstName'">
+              <li matTooltip="Marketing" style="background: #32b67a;"></li>
+              <li matTooltip="Corporate" style="background: #f34f1b;"></li>
+              <li matTooltip="Product Support" style="background: #536ce8;"></li>
+            </ul>
+                      <span *ngIf="col.type == 'date_time'">{{rowData[col.field] | date:'M/d/yyyy, h:mm a' }}</span>-->
+            <!--          <span *ngIf="col.type == 'time'">{{rowData[col.field] | date:'shortTime' }}</span>-->
+            <!--          <span *ngIf="col.type == 'date'">{{rowData[col.field] | date:'M/d/yyyy' }}</span>-->
+            <!--          <span-->
+            <!--            *ngIf="col.field != 'firstName' && col.type != 'date' && col.type != 'date_time' && col.type != 'time' ">{{rowData[col.field]}}</span>-->
+            <!--
+               <span *ngIf="col.field == 'firstName'"><span>{{rowData[col.field]}}</span>-->
+            <!--            <span *ngIf="labels" (mouseleave)="showLblTooltip = false"-->
+            <!--                  (mouseenter)="showLblTooltip = true ; LblTooltipId = rowData._id" class="lblswithname">-->
+            <!--              <span *ngFor="let lbl of labels | fetchLabels : rowData.labels" [ngStyle]="{'background-color':lbl.color_code}" class="dot"></span>-->
+            <!--            </span>-->
+            <!--          </span>-->
+            <!--          <div class="lbl-tooltip" *ngIf="showLblTooltip && LblTooltipId == rowData._id">-->
+            <!--            <div *ngFor="let lbl of labels | fetchLabels : rowData.labels">-->
+            <!--              <span [ngStyle]="{'background-color':lbl.color_code}" class="dot-in-tool"></span><span>{{lbl.name}}</span>-->
+            <!--            </div>-->
+            <!--          </div>
+          </td> -->
+
+
+          <td (click)="onRowClick(rowData._id,null,col.type)" *ngFor="let col of columns" class="ui-resizable-column">
+            <span *ngIf="col.type == 'date_time'">{{rowData[col.field] | date:'M/d/yyyy, h:mm a' }}</span>
+            <span *ngIf="col.type == 'time'">{{rowData[col.field] | date:'shortTime' }}</span>
+            <span *ngIf="col.type == 'date'">{{rowData[col.field] | date:'M/d/yyyy' }}</span>
+            <span
+              *ngIf="col.field != 'firstName' && col.type != 'date' && col.type != 'date_time' && col.type != 'time' ">{{rowData[col.field]}}</span>
+            <span *ngIf="col.field == 'firstName'"><span>{{rowData[col.field]}}</span>
+              <span *ngIf="labels" (mouseleave)="showLblTooltip = false"
+                (mouseenter)="showLblTooltip = true ; LblTooltipId = rowData._id" class="lblswithname">
+                <span *ngFor="let lbl of labels | fetchLabels : rowData.labels" [ngStyle]="{'background-color':lbl.color_code}" class="dot"></span>
+              </span>
+            </span>
+            <div class="lbl-tooltip" *ngIf="showLblTooltip && LblTooltipId == rowData._id">
+              <div *ngFor="let lbl of labels | fetchLabels : rowData.labels">
+                <span [ngStyle]="{'background-color':lbl.color_code}" class="dot-in-tool"></span><span>{{lbl.name}}</span>
               </div>
             </div>
+          </td>
 
+          <div class="action-trigger">
+            <button class="cstmBtn">
+              <mat-icon>account_circle</mat-icon>
+              <span class="spa">test</span>
+            </button>
+            <button class="call-menu" [matMenuTriggerFor]="menu">
+              <mat-icon>call</mat-icon>
+              <span class="spa">test</span>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button></button>
+            </mat-menu>
+            <button class="cstmBtn">
+              <mat-icon>sms</mat-icon>
+              <span class="spa">test</span>
+            </button>
+            <button class="cstmBtn">
+              <mat-icon>edit</mat-icon>
+              <span class="spa">test</span>
+            </button>
           </div>
+          <td>
+            <button (click)="onRowClick('ok',null,null)" pButton pRipple icon="pi pi-pencil"
+              class="p-button-rounded p-button-success p-mr-2">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning link-btn">
+              <mat-icon>link</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </ng-template>
 
-
-        </th>
-
-      </tr>
-
-    </ng-template>
-
-    <!--    <ng-template pTemplate="colgroup" let-columns>-->
-    <!--      <colgroup>-->
-    <!--        <col *ngFor="let col of columns" style="width:200px">-->
-    <!--      </colgroup>-->
-    <!--    </ng-template>-->
-
-    <ng-template let-expanded="expanded" pTemplate="body" let-rowData let-columns="columns">
-      <tr class="slide-in-left main-row" style="cursor: pointer">
-        <td (click)="onRowClick(rowData._id)" *ngFor="let col of columns" class="ui-resizable-column">
-          {{rowData[col.field]}}
-
-          <ul class="customer-labels" *ngIf="col.field == 'first_name'"><li matTooltip="Marketing" style="background: #32b67a;" ></li><li matTooltip="Corporate" style="background: #f34f1b;" ></li><li matTooltip="Product Support" style="background: #536ce8;" ></li></ul>
-          <!--          <span *ngIf="col.type == 'date_time'">{{rowData[col.field] | date:'M/d/yyyy, h:mm a' }}</span>-->
-          <!--          <span *ngIf="col.type == 'time'">{{rowData[col.field] | date:'shortTime' }}</span>-->
-          <!--          <span *ngIf="col.type == 'date'">{{rowData[col.field] | date:'M/d/yyyy' }}</span>-->
-          <!--          <span-->
-          <!--            *ngIf="col.field != 'first_name' && col.type != 'date' && col.type != 'date_time' && col.type != 'time' ">{{rowData[col.field]}}</span>-->
-          <!--
-             <span *ngIf="col.field == 'first_name'"><span>{{rowData[col.field]}}</span>-->
-          <!--            <span *ngIf="labels" (mouseleave)="showLblTooltip = false"-->
-          <!--                  (mouseenter)="showLblTooltip = true ; LblTooltipId = rowData._id" class="lblswithname">-->
-          <!--              <span *ngFor="let lbl of labels | fetchLabels : rowData.labels" [ngStyle]="{'background-color':lbl.color_code}" class="dot"></span>-->
-          <!--            </span>-->
-          <!--          </span>-->
-          <!--          <div class="lbl-tooltip" *ngIf="showLblTooltip && LblTooltipId == rowData._id">-->
-          <!--            <div *ngFor="let lbl of labels | fetchLabels : rowData.labels">-->
-          <!--              <span [ngStyle]="{'background-color':lbl.color_code}" class="dot-in-tool"></span><span>{{lbl.name}}</span>-->
-          <!--            </div>-->
-          <!--          </div>-->
-        </td>
-
-        <div class="action-trigger">
-          <button class="cstmBtn">
-            <mat-icon>account_circle</mat-icon>
-            <span
-              class="spa">test</span>
-          </button>
-          <button class="call-menu" [matMenuTriggerFor]="menu">
-            <mat-icon>call</mat-icon>
-            <span class="spa">test</span>
-          </button>
-          <mat-menu #menu="matMenu">
-            <button></button>
-          </mat-menu>
-          <button class="cstmBtn">
-            <mat-icon>sms</mat-icon>
-            <span class="spa">test</span>
-          </button>
-          <button class="cstmBtn">
-            <mat-icon>edit</mat-icon>
-            <span class="spa">test</span>
-          </button>
-        </div>
-        <td>
-          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
-                  >
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button (click)="linkCustomer(rowData._id)" *ngIf="rowDefaultClick == 'linking'" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning link-btn"
-                 >
-            <mat-icon>link</mat-icon>
-          </button>
-        </td>
-      </tr>
-    </ng-template>
-
-  </p-table>
-</div>
+    </p-table>
+  </div>
 </div>

@@ -85,6 +85,8 @@ node-test:
     - /^.+_b-.+$/
     - /^.+_f-.+$/
     - merge_requests
+
+
   allow_failure: false
   cache:
     key: unified-agent-cache
@@ -95,6 +97,7 @@ node-test:
 #    paths:
 #        - coverage
 #        - node_modules/
+
 
 #+==================Runs on Every Commit and merge requests========================+
 
@@ -463,4 +466,3 @@ container_publish_in_branch:
     - /^.+_b-.+$/
     - /^.+_f-.+$/
     - /^durable.*$/
-

@@ -4,8 +4,8 @@ import { Injectable } from "@angular/core";
 
 @Injectable()
 export class appConfigService {
-  configUrl = "../../assets/config.json";
-  public config = { GAT_URL: "", SOCKET_URL: "", ENV: "" };
+  configUrl = "assets/config.json";
+  public config = { GAT_URL: "", SOCKET_URL: "", ENV: "", FILE_SERVER_URL: "", CIM_CUSTOMER_URL: "", CCM_URL: "" };
 
   constructor(private _httpClient: HttpClient) {}
 
@@ -17,6 +17,9 @@ export class appConfigService {
         this.config.GAT_URL = e.GAT_URL;
         this.config.SOCKET_URL = e.SOCKET_URL;
         this.config.ENV = e.ENV;
+        this.config.FILE_SERVER_URL = e.FILE_SERVER_URL;
+        this.config.CIM_CUSTOMER_URL = e.CIM_CUSTOMER_URL;
+        this.config.CCM_URL = e.CCM_URL;
       });
   }
 }

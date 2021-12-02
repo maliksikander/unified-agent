@@ -7,7 +7,11 @@ import { cacheService } from "./cache.service";
 import { sharedService } from "./shared.service";
 import { CimEvent } from "../models/Event/cimEvent";
 import { snackbarService } from "./snackbar.service";
-import { error } from "console";
+import { pullModeService } from "./pullMode.service";
+import { soundService } from "./sounds.service";
+import { NgxUiLoaderService } from "ngx-ui-loader";
+
+const mockTopicData: any = require('../mocks/topicData.json');
 
 @Injectable({
   providedIn: "root"
@@ -17,7 +21,6 @@ export class socketService {
   uri: string;
   conversations: any = [];
   conversationIndex = -1;
-
   private _conversationsListener: BehaviorSubject<any> = new BehaviorSubject([]);
 
   public readonly conversationsListener: Observable<any> = this._conversationsListener.asObservable();
@@ -27,15 +30,25 @@ export class socketService {
     private _appConfigService: appConfigService,
     private _cacheService: cacheService,
     private _sharedService: sharedService,
+    private _pullModeService: pullModeService,
     private _router: Router,
-  ) { }
+    private _soundService: soundService,
+    private ngxService: NgxUiLoaderService
+  ) {
+    // this.onTopicData(mockTopicData, "12345");
+
+
+  }
 
   connectToSocket() {
+    this.ngxService.start();
     this.uri = this._appConfigService.config.SOCKET_URL;
-
+    let origin = new URL(this.uri).origin;
+    let path = new URL(this.uri).pathname;
     console.log("username------ " + this._cacheService.agent.username);
 
-    this.socket = io(this.uri, {
+    this.socket = io(origin, {
+      path: path == "/" ? "" : path + "/socket.io",
       auth: {
         //  token: this._cacheService.agent.details.access_token,
         agent: JSON.stringify(this._cacheService.agent)
@@ -44,67 +57,145 @@ export class socketService {
     });
 
     this.socket.on("connect_error", (err) => {
-      console.error("socket connect_error " + err);
+      this.ngxService.stop();
+      console.error("socket connect_error ", err.data.content);
+      this._snackbarService.open(err.data.content, "err");
+      if (err.message == "login-failed") {
+        localStorage.clear();
+        sessionStorage.clear();
+        this._cacheService.resetCache();
+        this.socket.disconnect();
+        this.moveToLogin();
+      }
     });
 
     this.socket.on("connect", (e) => {
+      this.ngxService.stop();
       console.log("socket connect " + e);
+      if (this._router.url == "/login") {
+        this._router.navigate(["customers"]);
+      }
     });
 
-    this.socket.on("disconnect", (e) => {
-      console.error("socket disconnect " + e);
+    this.subscribeToSocketEvents();
+  }
+
+  subscribeToSocketEvents() {
+
+    this.socket.on("disconnect", (reason) => {
+      console.error("socket disconnect " + reason);
+
+      // this means that server forcefully disconnects the socket connection
+      if (reason == "io server disconnect") {
+        localStorage.clear();
+        sessionStorage.clear();
+        this._cacheService.resetCache();
+        this.socket.disconnect();
+        this._router.navigate(["login"]).then(() => {
+          window.location.reload();
+        });
+      }
     });
 
-    this.listen("agentPresence").subscribe((res: any) => {
+    this.socket.on("agentPresence", (res: any) => {
       console.log(res);
-      this._cacheService.agentPresence = res;
-      this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: null });
+      this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: res.agentPresence });
     });
 
-    this.listen("errors").subscribe((res: any) => {
+    this.socket.on("errors", (res: any) => {
       console.log("socket errors ", res);
+      this.onSocketErrors(res);
     });
 
-    this.listen("taskRequest").subscribe((res: any) => {
+    this.socket.on("taskRequest", (res: any) => {
       console.log("taskRequest ", res);
       this.triggerNewChatRequest(res);
     });
 
-    this.listen("revokeTask").subscribe((res: any) => {
+    this.socket.on("revokeTask", (res: any) => {
       console.log("revokeTask ", res);
       this.revokeChatRequest(res);
     });
 
-    this.listen("onCimEvent").subscribe((res: any) => {
-      console.log("onCimEvent", res);
-      this.onCimEventHandler(JSON.parse(res.cimEvent), res.topicId);
+    this.socket.on("onCimEvent", (res: any) => {
+      try {
+        this.onCimEventHandler(JSON.parse(res.cimEvent), res.topicId);
+      } catch (err) {
+        console.error("error on onCimEvent ", err);
+      }
     });
 
-    this.listen("onTopicData").subscribe((res: any) => {
-      console.log("onTopicData", res);
-      this.onTopicData(res.topicData, res.topicId);
+    this.socket.on("onTopicData", (res: any, callback: any) => {
+      try {
+        console.log("onTopicData", res);
+        this.onTopicData(res.topicData, res.topicId);
+        callback({ status: "ok" });
+      } catch (err) {
+        console.error("error on onTopicData ", err);
+      }
     });
 
-    this.listen("topicUnsubscription").subscribe((res: any) => {
+    this.socket.on("topicUnsubscription", (res: any) => {
       console.log("topicUnsubscription", res);
       this.removeConversation(res.topicId);
     });
 
-    this.listen("topicClosed").subscribe((res: any) => {
+    this.socket.on("topicClosed", (res: any) => {
       console.log("topicClosed", res);
       this.changeTopicStateToClose(res.topicId);
     });
 
-    this.listen("socketSessionRemoved").subscribe((res: any) => {
+    this.socket.on("socketSessionRemoved", (res: any) => {
       console.log("socketSessionRemoved", res);
       this.onSocketSessionRemoved();
     });
+
+    this.socket.on("onPullModeSubscribedList", (res: any) => {
+      console.log("onPullModeSubscribedList", res);
+      this._pullModeService.updateSubscribedList(res);
+    });
+
+    this.socket.on("onPullModeSubscribedListRequest", (res: any) => {
+      try {
+        console.log("onPullModeSubscribedListRequest", res);
+        this._pullModeService.updateSubscribedListRequests(JSON.parse(res.pullModeEvent), res.type);
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
+    this.socket.on("pullModeSubscribedListRequests", (res: any) => {
+      console.log("pullModeSubscribedListRequests", res);
+      this._pullModeService.initializedSubscribedListRequests(res);
+    });
+
+    this.socket.on("addPullModeSubscribedListRequests", (res: any) => {
+      console.log("addPullModeSubscribedListRequests", res);
+      this._pullModeService.addPullModeSubscribedListRequests(res);
+    });
+
+    this.socket.on("removePullModeSubscribedListRequests", (res: any) => {
+      console.log("removePullModeSubscribedListRequests", res);
+      this._pullModeService.removePullModeSubscribedListRequests(res);
+    });
+
+    this.socket.on("onChannelTypes", (res: any) => {
+      console.log("onChannelTypes", res);
+      this._sharedService.channelTypeList = res;
+      this._sharedService.setChannelIcons(res);
+    });
+  }
+
+  disConnectSocket() {
+    try {
+      this.socket.disconnect();
+    } catch (err) { }
   }
 
   listen(eventName: string) {
     return new Observable((res) => {
-      this.socket.on(eventName, (data) => {
-        res.next(data);
+      this.socket.on(eventName, function (data, callback) {
+        res.next({ data: data, callback: callback });
       });
     });
   }
@@ -114,20 +205,28 @@ export class socketService {
   }
 
   triggerNewChatRequest(data) {
-    this._sharedService.serviceChangeMessage({ msg: "openRequestHeader", data: data });
+    this._sharedService.serviceChangeMessage({ msg: "openPushModeRequestHeader", data: data });
   }
 
-
   revokeChatRequest(data) {
-    this._sharedService.serviceChangeMessage({ msg: "closeRequestHeader", data: data });
+    this._sharedService.serviceChangeMessage({ msg: "closePushModeRequestHeader", data: data });
   }
 
   onCimEventHandler(cimEvent, topicId) {
+    console.log("cim event ", cimEvent);
     let sameTopicConversation = this.conversations.find((e) => {
       return e.topicId == topicId;
     });
 
-    if (cimEvent.type.toLowerCase() == "message") {
+    if (
+      cimEvent.name.toLowerCase() == "agent_message" ||
+      cimEvent.name.toLowerCase() == "bot_message" ||
+      cimEvent.name.toLowerCase() == "customer_message"
+    ) {
+      if (cimEvent.name.toLowerCase() != "agent_message") {
+        this.playSoundAndBrowserNotification(sameTopicConversation, cimEvent);
+      }
+
       if (sameTopicConversation) {
         if (cimEvent.data.header.sender.type.toLowerCase() == "customer") {
           this.processActiveChannelSessions(sameTopicConversation, cimEvent.data.header.channelSession);
@@ -158,14 +257,17 @@ export class socketService {
   }
 
   onSocketSessionRemoved() {
+    localStorage.clear();
+    sessionStorage.clear();
+    this._cacheService.resetCache();
     this._snackbarService.open("you are logged In from another session", "err");
-
-    this._router.navigate(["login"]).then(() => {
-      window.location.reload();
-    });
+    alert("you are logged in from another session");
   }
 
   onTopicData(topicData, topicId) {
+    this._soundService.playBeep();
+
+    this.removeConversation(topicId);
 
     let conversation = {
       topicId: topicId,
@@ -174,27 +276,36 @@ export class socketService {
       unReadCount: undefined,
       index: ++this.conversationIndex,
       state: "ACTIVE",
-      associatedCustomer: topicData.associatedCustomer,
+      customer: topicData.customer,
       customerSuggestions: topicData.customerSuggestions,
       topicParticipant: topicData.topicParticipant
     };
 
     // feed the conversation with type "messages"
-    topicData.cimEvents.forEach((cimEvent, i) => {
-
-      if (cimEvent.type.toLowerCase() == "message") {
-        conversation.messages.push(cimEvent.data);
+    topicData.topicEvents.forEach((event, i) => {
+      if (
+        event.name.toLowerCase() == "agent_message" ||
+        event.name.toLowerCase() == "bot_message" ||
+        event.name.toLowerCase() == "customer_message"
+      ) {
+        conversation.messages.push(event.data);
       }
     });
 
-
     // feed the active channel sessions
-    topicData.participants.forEach(e => {
-
+    topicData.participants.forEach((e) => {
       if (e.type.toLowerCase() == "customer") {
-        conversation.activeChannelSessions.push(e.participant);
-      }
+        let participant = e.participant;
 
+        // seprate the webChanneldata in channel session if found in additionalAttributes
+        let webChannelData = participant.channelData.additionalAttributes.find((e) => {
+          return e.type.toLowerCase() == "webchanneldata";
+        });
+        if (webChannelData) {
+          participant["webChannelData"] = webChannelData.value;
+        }
+        conversation.activeChannelSessions.push(participant);
+      }
     });
 
     this.conversations.push(conversation);
@@ -230,24 +341,22 @@ export class socketService {
       }
     });
 
-    if (matched) {
-      // if matched push that channel session to the last in array
+    if (matched && conversation.activeChannelSessions.length - 1 != index) {
+      // if matched and session is not at the last of the array then push that channel session to the last in array
       // thats why first removing it from the array for removing duplicate entry
       conversation.activeChannelSessions.splice(index, 1);
 
       // pusing the incoming channel to the last in array
       conversation.activeChannelSessions.push(incomingChannelSession);
     }
-
   }
 
   changeTopicCustomer(cimEvent, topicId) {
-
     let conversation = this.conversations.find((e) => {
       return e.topicId == topicId;
     });
 
-    conversation.associatedCustomer = cimEvent.data;
+    conversation.customer = cimEvent.data;
   }
 
   removeConversation(topicId) {
@@ -257,33 +366,42 @@ export class socketService {
     });
 
     // remove the conversation from array
-    this.conversations = this.conversations.filter((conversation) => {
-      return conversation.topicId != topicId;
+    let index = this.conversations.findIndex((conversation) => {
+      return conversation.topicId == topicId;
     });
 
-    // alter the rest of the conversation's indexes whose indexes are greater than the index of removed conversation
-    // in order to remap the conversation indexex along with the indexes of the map tabs
-    this.conversations.map((conversation) => {
-      if (conversation.index > removedConversation.index) {
-        conversation.index = --conversation.index;
-      }
-    });
+    if (index != -1) {
+      this._sharedService.spliceArray(index, this.conversations);
+      --this.conversationIndex;
+
+
+      // alter the rest of the conversation's indexes whose indexes are greater than the index of removed conversation
+      // in order to remap the conversation indexex along with the indexes of the map tabs
+      this.conversations.map((conversation) => {
+        if (conversation.index > removedConversation.index) {
+          conversation.index = --conversation.index;
+        }
+      });
+
+    }
 
     this._conversationsListener.next(this.conversations);
   }
 
   mergeBotSuggestions(conversation, suggestionMessage) {
-    let message = conversation.messages.find((e) => {
-      if (e.header.sender.type.toLowerCase() == "customer") {
-        return e.id == suggestionMessage.requestedMessage.id;
-      }
-    });
+    if (suggestionMessage && suggestionMessage.requestedMessage && suggestionMessage.requestedMessage.id) {
+      let message = conversation.messages.find((e) => {
+        if (e.header.sender.type.toLowerCase() == "customer") {
+          return e.id == suggestionMessage.requestedMessage.id;
+        }
+      });
 
-    if (message) {
-      message["botSuggestions"] = suggestionMessage.suggestions;
-      message["showBotSuggestions"] = false;
-      console.log("bot suggestion founded ", message);
-      this._conversationsListener.next(this.conversations);
+      if (message) {
+        message["botSuggestions"] = suggestionMessage.suggestions;
+        message["showBotSuggestions"] = false;
+        console.log("bot suggestion founded ", message);
+        this._conversationsListener.next(this.conversations);
+      }
     }
   }
 
@@ -301,15 +419,17 @@ export class socketService {
       return e.topicId == topicId;
     });
 
-    let index = conversation.activeChannelSessions.findIndex((channelSession) => {
-      return channelSession.id === cimEvent.data.id;
-    });
+    if (conversation) {
+      let index = conversation.activeChannelSessions.findIndex((channelSession) => {
+        return channelSession.id === cimEvent.data.id;
+      });
 
-    if (index != -1) {
-      conversation.activeChannelSessions.splice(index, 1);
-      console.log("channel session removed");
-    } else {
-      console.log("channelSessionId not found");
+      if (index != -1) {
+        conversation.activeChannelSessions.splice(index, 1);
+        console.log("channel session removed");
+      } else {
+        console.error("channelSessionId not found to removed");
+      }
     }
   }
 
@@ -318,7 +438,11 @@ export class socketService {
       return e.topicId == topicId;
     });
 
-    conversation.activeChannelSessions.push(cimEvent.data);
+    if (conversation) {
+      conversation.activeChannelSessions.push(cimEvent.data);
+    } else {
+      console.error("channelSessionId not found to added");
+    }
   }
 
   changeTopicStateToClose(topicId) {
@@ -330,5 +454,46 @@ export class socketService {
     // conversation.state = "CLOSED";
     this._snackbarService.open("A conversation is removed", "err");
     this.removeConversation(topicId);
+
+    // // in case of pull mode request, the topicId is the id of that request
+    // this._pullModeService.deleteRequestByRequestId(topicId);
+  }
+
+  onSocketErrors(res) {
+    this._snackbarService.open("on " + res.task + " " + res.msg, "err");
+  }
+
+  playSoundAndBrowserNotification(conversation, cimEvent) {
+    if (document.hidden) {
+      this.showOnBrowserNoticication(conversation, cimEvent);
+    } else {
+      if (this._router.url !== "/customers/chats") {
+        this.showOnBrowserNoticication(conversation, cimEvent);
+      }
+    }
+    this._soundService.playBeep();
+  }
+
+  showOnBrowserNoticication(conversation, cimEvent) {
+    if (cimEvent.name.toLowerCase() == "customer_message") {
+      if (cimEvent.data.body.type.toLowerCase() == "plain") {
+        this._soundService.openBrowserNotification(conversation.customer.firstName, cimEvent.data.body.markdownText);
+      } else {
+        this._soundService.openBrowserNotification(conversation.customer.firstName, "sent a " + cimEvent.data.body.type + " message");
+      }
+    } else if (cimEvent.name.toLowerCase() == "bot_message") {
+      if (cimEvent.data.body.type.toLowerCase() == "plain") {
+        this._soundService.openBrowserNotification("BOT", cimEvent.data.body.markdownText);
+      } else {
+        this._soundService.openBrowserNotification("BOT", "sent a " + cimEvent.data.body.type + " message");
+      }
+    }
+  }
+
+  moveToLogin() {
+    localStorage.clear();
+    sessionStorage.clear();
+    this._cacheService.resetCache();
+    this._router.navigate(["login"]);
   }
 }

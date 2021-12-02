@@ -1,0 +1,77 @@
+<div class="page-header row m-0">
+    <button mat-button class="back-to-chat" (click)="listPreviewToggle()"></button>
+    <div class="page-heading col-md-6">
+        <h4>Inbox</h4>
+    </div>
+    <div class="create-label col-md-6 text-right">
+        <button [style.backgroundColor]="filterStatus == 'all' ? '#9abcef' : '' " (click)="filterStatus = 'all'"
+            class="add-new" mat-button>All</button>
+        <button [style.backgroundColor]="filterStatus == 'active' ? '#9abcef' : '' " (click)="filterStatus = 'active'"
+            class="add-new" mat-button><span [style.backgroundColor]="'#29C671'" class="ddot"></span>Active</button>
+        <button [style.backgroundColor]="filterStatus == 'inactive' ? '#9abcef' : '' "
+            (click)="filterStatus = 'inactive'" class="add-new" mat-button><span [style.backgroundColor]="'#ccc'" class="ddot"></span>Inactive</button>
+        <button [style.backgroundColor]="filterStatus == 'unread' ? '#9abcef' : ''" (click)="filterStatus = 'created'"
+            class="add-new" mat-button><span [style.backgroundColor]="'red'" class="ddot"></span>Unread</button>
+        <mat-form-field appearance="outline" class="selection-trigger">
+            <mat-select [(ngModel)]="filterListId">
+                <mat-option value='all'>All Lists</mat-option>
+                <mat-option *ngFor="let list of _pullModeservice.subscribedList" value="{{list.id}}">
+                    {{list.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+<div class="container-fluid">
+
+    <div class="table-container manage-dashboard">
+        <div class="active-chat-list-area">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="status-data" scope="col">Status</th>
+                        <th scope="col">Customer</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">List</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr
+                        *ngFor="let request of _pullModeservice.subscribedListRequests | filterPullModeRequests:filterStatus:filterListId">
+                        <td class="status-data"><span class="status-icon"
+                                matTooltip="{{(request.status | lowercase) == 'created' ? 'UNREAD' : (request.status | uppercase) }}"
+                                [style.backgroundColor]="(request.status | lowercase) == 'active' ? '#29C671' : ((request.status | lowercase) == 'inactive' ? '#ccc' : 'red')"></span>
+                        </td>
+                        <td #customerCell><span class="channel-icon"><img
+                                    [src]="request.channelSession.channel.channelType.channelLogo | channelLogo | async"></span>
+                            {{request.channelSession.customer.firstName}} <small
+                                class="customer_identy">({{request.channelSession.channelData.channelCustomerIdentifier}})</small>
+                            <!-- <ul class="customer-labels">
+                                <li matTooltip="Marketing" style="background: #32b67a;"></li>
+                                <li matTooltip="Corporate" style="background: #f34f1b;"></li>
+                                <li matTooltip="Product Support" style="background: #536ce8;"></li>
+                            </ul> -->
+                            <span *ngIf="_pullModeservice.labels" class="lblswithname">
+                                <span
+                                    *ngFor="let lbl of _pullModeservice.labels | fetchLabels : request.channelSession.customer?.labels"
+                                    [ngStyle]="{'background-color':lbl.color_code}" class="dot"></span>
+                            </span>
+                            <span *ngIf="request.id | isAlreadyJoined" class="joined">(JOINED)</span>
+                        </td>
+                        <td>{{request.time | amTimeAgo:true}}<small> ago</small></td>
+                        <td>{{_pullModeservice.listNames[request.listId] ? _pullModeservice.listNames[request.listId] : '-'}}</td>
+                        <span class="table-trigger">
+                            <button mat-button *ngIf="!(request.id | isAlreadyJoined)" (click)="joinChat(request)"
+                                class="chat-btn" matTooltip="Chat">Join</button>
+                            <button mat-button class="close-btn" (click)="closeChat(request)"
+                                matTooltip="Close">Close</button>
+                        </span>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+</div>

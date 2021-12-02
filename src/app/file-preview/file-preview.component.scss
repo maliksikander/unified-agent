@@ -1,0 +1,58 @@
+.close-btn{
+  float: right;
+  cursor: pointer;
+  width: 32px;
+  height: 28px;
+  text-align: center;
+}
+
+.view{
+    width: 100%;
+    height: 100%;
+}
+.file-name{
+  text-align: center;
+  color: #fff;
+  background: #1A50A3;
+  height: 28px;
+  line-height: 28px;
+  box-shadow: 0 0 20px #727272;
+}
+.main{
+    overflow: hidden;
+    //height: 100vh;
+}
+
+.file-preview-area{
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &.file-preview{
+    height: 90vh;
+    width: 90vw;
+    text-align: center;
+
+    ngx-doc-viewer{
+      height: 90vh;
+      width: 90vw;
+    }
+  }
+  &.image-preview{
+    height: 90vh;
+    width: 90vw;
+    text-align: center;
+
+    img{
+      max-height: 90vh;
+      max-width: 90vw;
+    }
+    .preview-image-data{
+      background-size: auto;
+      min-width: 50vw;
+      min-height: 50vh;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+}

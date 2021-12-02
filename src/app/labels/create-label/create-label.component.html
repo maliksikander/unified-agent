@@ -1,0 +1,117 @@
+<div class="header">
+  <h3 class="header-name">Add label</h3>
+<!--  <mat-icon (click)="onNoClick()" class="closeBtn">close</mat-icon>-->
+</div>
+
+
+<div class="label-create-area">
+  <div class="row m-0">
+  <div class="form-group label-name">
+    <label class="text-left">Label</label>
+    <mat-form-field class="field" appearance="outline">
+      <input matInput [formControl]="name">
+      <mat-error class="mrg-top" *ngIf="name.hasError('required')">
+        field is mandatory
+      </mat-error>
+      <mat-error class="mrg-top" *ngIf="name.hasError('max')">
+        Range should be 1 - 1000
+      </mat-error>
+      <mat-error class="mrg-top" *ngIf="name.hasError('validName')">
+        That name Already Exists
+      </mat-error>
+    </mat-form-field>
+
+    <span (click)="open = true" class="opener">
+    <span [ngStyle]="{'background-color':currentColor}" class="dot">
+    </span>
+    <span>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </span>
+  </span>
+    <span *ngIf="open" class="clr-pkr scale-up-center">
+    <span (click)="currentColor = colorCode; open = false" [ngStyle]="{'background-color': colorCode}"
+          *ngFor="let colorCode of labelColorCode" class="dots">
+    </span>
+  </span>
+  </div>
+
+<!--    <div class="form-group col-md-2 pl-0">-->
+<!--      <label class="text-left">Expiry</label>-->
+<!--      <mat-form-field class="field" appearance="outline">-->
+<!--        <input matInput>-->
+<!--      </mat-form-field>-->
+<!--    </div>-->
+<!--    <div class="form-group col-md-3 expiry-selection p-0">-->
+<!--      <mat-form-field appearance="outline" class="selection-trigger">-->
+<!--        <mat-select>-->
+<!--          <mat-option value="hour" >Hour</mat-option>-->
+<!--          <mat-option value="day" >Day</mat-option>-->
+<!--          <mat-option value="week">Week</mat-option>-->
+<!--          <mat-option value="month">Month</mat-option>-->
+<!--          <mat-option value="year">Year</mat-option>-->
+<!--        </mat-select>-->
+<!--      </mat-form-field>-->
+<!--    </div>-->
+<!--    <div class="form-group label-expire col-md-3 p-0">-->
+<!--      <div class="check-box form-group">-->
+<!--        <mat-checkbox  color="primary">Label Never Expires</mat-checkbox>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+  <div class="btns">
+    <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
+    <button *ngIf="name.valid" (click)="makeObject()" class="save-btn">Create</button>
+  </div>
+
+</div>
+
+<!---->
+<!--<div class="label-create-area">-->
+<!--  <div class="row m-0">-->
+<!--    <div class="form-group label-name">-->
+<!--      <label class="text-left">Label</label>-->
+<!--      <mat-form-field class="field" appearance="outline">-->
+<!--        <input matInput>-->
+<!--      </mat-form-field>-->
+
+<!--      <span (click)="open = true" class="opener">-->
+<!--    <span [ngStyle]="{'background-color':currentColor}" class="dot">-->
+<!--    </span>-->
+<!--    <span>-->
+<!--      <mat-icon>arrow_drop_down</mat-icon>-->
+<!--    </span>-->
+<!--  </span>-->
+<!--      <span *ngIf="open" class="clr-pkr scale-up-center">-->
+<!--    <span (click)="currentColor = colorCode; open = false" [ngStyle]="{'background-color': colorCode}"-->
+<!--          *ngFor="let colorCode of labelColorCode" class="dots">-->
+<!--    </span>-->
+<!--  </span>-->
+<!--    </div>-->
+
+<!--    <div class="form-group col-md-2 pl-0">-->
+<!--      <label class="text-left">Expiry</label>-->
+<!--      <mat-form-field class="field" appearance="outline">-->
+<!--        <input matInput [formControl]="expiry">-->
+<!--      </mat-form-field>-->
+<!--    </div>-->
+<!--    <div class="form-group col-md-3 expiry-selection p-0">-->
+<!--      <mat-form-field appearance="outline" class="selection-trigger">-->
+<!--        <mat-select>-->
+<!--          <mat-option value="hour" >Hour</mat-option>-->
+<!--          <mat-option value="day" >Day</mat-option>-->
+<!--          <mat-option value="week">Week</mat-option>-->
+<!--          <mat-option value="month">Month</mat-option>-->
+<!--          <mat-option value="year">Year</mat-option>-->
+<!--        </mat-select>-->
+<!--      </mat-form-field>-->
+<!--    </div>-->
+<!--    <div class="form-group label-expire col-md-3 p-0">-->
+<!--      <div class="check-box form-group">-->
+<!--        <mat-checkbox  color="primary">Label Never Expires</mat-checkbox>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  -->
+<!--</div>-->
+

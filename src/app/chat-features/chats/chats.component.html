@@ -18,12 +18,12 @@
                       [outerStrokeColor]="conversation.activeChannelSessions.length > 0 ? '#3f51b5' : 'grey'"
                       [innerStrokeColor]="conversation.state == 'ACTIVE' ? '#F3F6F8' : 'grey'" [space]=-1
                       [animation]="conversation.animation" [animationDuration]="600"
-                      [title]="conversation.associatedCustomer.firstName | getFirstTwoLetters" [titleFontSize]="10"
+                      [title]="conversation.customer.firstName | getFirstTwoLetters" [titleFontSize]="10"
                       [showSubtitle]="false" [showUnits]="false" [renderOnClick]="false">
                     </circle-progress>
                     <span class="badge1" [hidden]="conversation.unReadCount == 0">{{conversation.unReadCount}}</span>
                   </div>
-                  <span class="user-name">{{conversation.associatedCustomer.firstName}}</span>
+                  <span class="user-name">{{conversation.customer.firstName}}</span>
                 </span>
               </ng-template>
             </div>
@@ -43,7 +43,7 @@
         <mat-icon>add</mat-icon>
       </button> -->
       <button color="primary" class="left-bar-trigger {{barExpand ? 'arrow_left' : 'arrow_right'}}"
-        (click)="barExpand = !barExpand"><img src="assets/images/arrow-rounded.svg"></button>
+        (click)="barExpand = !barExpand"></button>
     </div>
   </div>
 </div>

@@ -1,0 +1,169 @@
+@import "src/app/shared/globalVariables";
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+//.header {
+//  color: #fff;
+//  background: $blue-text-color;
+//  position: relative;
+//
+//  .header-name {
+//    padding: 8px 12px;
+//    font-size: 14px;
+//    font-weight: 500;
+//  }
+//
+//  .closeBtn {
+//    cursor: pointer;
+//    right: 16px;
+//    font-size: 18px;
+//    padding: 1px;
+//    color: #aeb7bb;
+//    border: 2px solid;
+//    border-radius: 15px;
+//    position: absolute;
+//    top: 8px;
+//    text-align: center;
+//    line-height: 20px;
+//  }
+//}
+
+.create-attr{
+  padding: 15px 0;
+
+  hr {
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    height: 1px;
+    overflow: visible;
+    width: 94%;
+    background: #efefef;
+    border: none;
+  }
+  label{
+    font-size: 12px;
+    color: #000;
+    margin: 0;
+    small{
+      color: rgba(0,0,0,.5);
+    }
+  }
+
+  .check-box2{
+    padding: 20px 0 0 27px;
+    max-width: 190px;
+  }
+  .channel-selection {
+    max-width: 210px;
+  }
+
+  .lbl{
+    color: #808080;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .create-attr-dialog-body{
+
+    .optional{
+      color: #808080;
+      font-size: 13px;
+    }
+
+  }
+}
+
+.characters-length{
+  //padding-right: 28px;
+  padding-left: 0;
+}
+
+.footer{
+  padding-top: 0;
+
+  .footer-actions{
+    text-align: right;
+    padding: 0 22px;
+    position: relative;
+    .action-right {
+      position: absolute;
+      right: 22px;
+      top: 30px;
+    }
+
+    button{
+      height: 30px;
+      width: auto;
+      padding: 0 15px;
+      outline: none;
+      background: #919191;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      color: white;
+      font-size: 12px;
+
+      &.save-btn{
+        color: #fff;
+        background: $blue-text-color;
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+
+.channel-options{
+  img {
+    position: relative;
+    max-width: 18px;
+    max-height: 18px;
+    vertical-align: middle;
+    left: 0;
+    top: -.5px;
+  }
+}
+.mandatory-attribute{
+  min-height: 40px;
+  padding: 0;
+  line-height: 45px;
+}
+.default-value {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  max-width: 570px;
+  margin: 0;
+
+  mat-form-field {
+    display: inline-block;
+    max-width: 300px !important;
+    margin: 0 8px;
+  }
+  label{
+    min-width: 90px;
+  }
+  small{
+    color: #959595;
+    font-size: 11px;
+  };
+}
+.mandatory-steric{
+  color: $red-color;
+}
+.pii-info{
+  a{
+    font-size: 11px;
+    position: relative;
+    top: -4px;
+    margin-left: 10px;
+    color: #0089FF;
+  }
+}

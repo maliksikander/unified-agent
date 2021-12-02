@@ -1,6 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule, APP_INITIALIZER } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { NgModule, APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { CommonModule, HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -20,9 +20,17 @@ import { CreateCustomerComponent } from "./create-customer/create-customer.compo
 import { NgxUiLoaderModule, NgxUiLoaderHttpModule, NgxUiLoaderConfig, POSITION, SPINNER, PB_DIRECTION } from "ngx-ui-loader";
 import { AgentAnnouncementsComponent } from "./announcement/agent-announcements/agent-announcements.component";
 import { AnnouncementComponent } from "./announcement/announcement.component";
-import { CreateLabelDiagComponent } from "./new-components/create-label/create-label-diag/create-label-diag.component";
-import { CreateLabelComponent } from "./new-components/create-label/create-label.component";
 import { ConfirmationDialogComponent } from "./new-components/confirmation-dialog/confirmation-dialog.component";
+import { SchemaSettingsComponent } from "./customer-schema/schema-settings/schema-settings.component";
+import { CreateAttributeComponent } from "./customer-schema/create-attribute/create-attribute.component";
+import { CustomerActionsComponent } from "./customer-actions/customer-actions.component";
+import { EditAttributeComponent } from "./customer-schema/edit-attribute/edit-attribute.component";
+import { columnPreferences } from "./column-preferences/column-preferences.component";
+import { LabelsListComponent } from "./labels/labels-list/labels-list.component";
+import { CreateLabelComponent } from "./labels/create-label/create-label.component";
+import { SubscribedListComponent } from "./pull-mode/subscribed-list/subscribed-list.component";
+import { SubscribedListPreviewComponent } from "./pull-mode/subscribed-list-preview/subscribed-list-preview.component";
+import { FilePreviewComponent } from './file-preview/file-preview.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsType: SPINNER.chasingDots,
@@ -30,6 +38,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 };
 
 @NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
     AppComponent,
     LoginComponent,
@@ -41,10 +50,20 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     PhonebookComponent,
     CreateCustomerComponent,
     AgentAnnouncementsComponent,
-    CreateLabelDiagComponent,
-    CreateLabelComponent,
     ConfirmationDialogComponent,
-    AnnouncementComponent
+    AnnouncementComponent,
+    SchemaSettingsComponent,
+    CreateAttributeComponent,
+    CustomerActionsComponent,
+    EditAttributeComponent,
+    columnPreferences,
+    LabelsListComponent,
+    CreateLabelComponent,
+    SubscribedListComponent,
+    SubscribedListPreviewComponent,
+    FilePreviewComponent,
+    FilePreviewComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -55,8 +74,22 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     NgxUiLoaderHttpModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
   ],
-  entryComponents: [CreateCustomerComponent, AnnouncementDialogComponent, CreateLabelDiagComponent, ConfirmationDialogComponent],
+  entryComponents: [
+    EditAttributeComponent,
+    CustomerActionsComponent,
+    CreateAttributeComponent,
+    CreateCustomerComponent,
+    AnnouncementDialogComponent,
+    ConfirmationDialogComponent,
+    columnPreferences,
+    CreateLabelComponent,
+    FilePreviewComponent
+  ],
   providers: [
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy
+    },
     appConfigService,
     MessageService,
     ConfirmationService,
@@ -70,4 +103,4 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   exports: [BrowserModule, CommonModule, BrowserAnimationsModule],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,0 +1,15 @@
+<div class="main">
+    <div class="file-name">{{data.fileName}}<span class="close-btn">
+            <mat-icon (click)="close()">close</mat-icon>
+        </span></div>
+
+    <div class="view">
+        <div class="file-preview-area file-preview"  *ngIf="data.type == 'file'">
+            <ngx-doc-viewer [url]="data.url" viewer="google"></ngx-doc-viewer>
+        </div>
+        <div class="file-preview-area image-preview" *ngIf="data.type == 'image'">
+            <img [src]="data.url">
+<!--          <div class="preview-image-data" [ngStyle]="{'background-image': 'url(' + data.url + ')'}"></div>-->
+        </div>
+    </div>
+</div>

@@ -108,13 +108,13 @@
           <!--            </ul>-->
           <!--          </mat-expansion-panel>-->
 
-          <mat-expansion-panel class="drag-expansion-panel" cdkDrag>
-            <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
+          <mat-expansion-panel class="drag-expansion-panel customer-info-panel" cdkDrag>
+            <mat-expansion-panel-header [collapsedHeight]="'45px'" [expandedHeight]="'45px'">
               <mat-panel-title><span class="material-icons drag-icon">more_vert</span>
                 <div class="profile-area">
-                  <h3>{{associatedCustomer.firstName | getFirstTwoLetters}}
+                  <h3>{{customer.firstName | getFirstTwoLetters}}
                   </h3>
-                  <h5 class="user-name">{{associatedCustomer.firstName}}
+                  <h5 class="user-name">{{customer.firstName}}
                     <!--                    <p class="user-from">London, United Kingdom</p>-->
                   </h5>
                 </div>
@@ -315,16 +315,14 @@
             <div class="profile-area multi-channel-area">
               <mat-accordion>
 
-                <mat-expansion-panel *ngFor="let channelSession of activeChannelSessions">
+                <mat-expansion-panel class="chat-channel-area" *ngFor="let channelSession of activeChannelSessions">
                   <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                     <div class="channel-icon-area">
-                      <span
-                        class="channel-icon {{channelSession.channel.channelConnector.channelType.typeName | lowercase}}"><img
-                          src="/assets/images/{{channelSession.channel.channelConnector.channelType.typeName | lowercase}}.svg"></span>
-                      <label>{{channelSession.channel.channelConnector.channelType.typeName | titlecase}}
-                        Channel</label>
+                      <span class="channel-icon"><img
+                          [src]="channelSession.channel.channelType.channelLogo | channelLogo | async"></span>
+                      <label>{{channelSession.channel.channelType.name | titlecase}}</label>
 
-                      <button (click)="moveSession($event)" mat-button [matMenuTriggerFor]="rerouteMenu"
+                      <!-- <button (click)="moveSession($event)" mat-button [matMenuTriggerFor]="rerouteMenu"
                         class="re-route-session">Move</button>
                       <mat-menu #rerouteMenu="matMenu">
                         <button class="re-route-trigger" (click)="reRouteDialog(reRouteSessionConfirmation, 're-route')"
@@ -332,23 +330,60 @@
                         <button class="re-route-trigger"
                           (click)="reRouteDialog(reRouteSessionConfirmation, 're-assign')" mat-menu-item>Re-assign to
                           self</button>
-                      </mat-menu>
+                      </mat-menu> -->
 
                     </div>
+                    <ul class="channel-info-list" *ngIf="channelSession.webChannelData">
+                      <li matTooltip="Device: {{channelSession.webChannelData.browserDeviceInfo.deviceType ? channelSession.webChannelData.browserDeviceInfo.deviceType : 'UNKNOWN'}}">
+<!--                        <mat-icon>{{channelSession.webChannelData.browserDeviceInfo.deviceType |-->
+<!--                          webChannelData:'deviceType'}}</mat-icon>-->
+
+                        <img
+                          src="assets/device-icons/{{channelSession.webChannelData.browserDeviceInfo.deviceType |
+                          webChannelData:'deviceType'}}.svg" alt="device">
+                      </li>
+                      <li matTooltip="Browser: {{channelSession.webChannelData.browserDeviceInfo.browserName ? channelSession.webChannelData.browserDeviceInfo.browserName : 'UNKNOWN'}}">
+                        <img
+                         src="assets/browser-icons/{{channelSession.webChannelData.browserDeviceInfo.browserName |
+                            webChannelData:'browser'}}.svg" alt="browser"> </li>
+                      <li matTooltip="Country: {{channelSession.webChannelData.locale.country ? channelSession.webChannelData.locale.country : 'UNKNOWN'}}">
+                        <img
+                          src="assets/flags/{{channelSession.webChannelData.locale.country | webChannelData:'country'}}.svg"
+                          alt="country"> </li>
+                      <li class="lang-bar" matTooltip="Language: {{channelSession.webChannelData.locale.language ? channelSession.webChannelData.locale.language : 'UNKNOWN'}}">
+                        {{(channelSession.webChannelData.locale.language ? channelSession.webChannelData.locale.language : 'A') | getFirstTwoLetters}} </li>
+                    </ul>
                   </mat-expansion-panel-header>
                   <ul class="requested-channel-content">
                     <li>
                       <label>Customer Identifier</label>
                       {{channelSession.channelData.channelCustomerIdentifier}}
                     </li>
-                  </ul>
-                  <ul class="requested-channel-content"
-                    *ngFor="let attr of channelSession.channelData.additionalAttributes">
                     <li>
-                      <label>{{attr.key | sentenceCase}}</label>
-                      {{attr.value}}
+                      <label>Service Identifier</label>
+                      {{channelSession.channelData.serviceIdentifier}}
                     </li>
                   </ul>
+                  <div class="channel-inner-content"
+                    *ngFor="let additionalAttribute of channelSession.channelData.additionalAttributes">
+                    <!--Web chat desktop channel accordion-->
+                    <mat-expansion-panel *ngIf="(additionalAttribute.type | lowercase) == 'webchanneldata'">
+                      <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
+                        <div class="channel-icon-area web-channel-inner">
+                          <label>Form Data</label>
+                        </div>
+                      </mat-expansion-panel-header>
+
+                      <ul class="requested-channel-content"
+                        *ngFor="let attr of additionalAttribute.value.formData.attributes">
+                        <li>
+                          <label>{{attr.key | sentenceCase}}</label>
+                          {{attr.value}}
+                        </li>
+                      </ul>
+                    </mat-expansion-panel>
+                  </div>
+
                 </mat-expansion-panel>
 
               </mat-accordion>

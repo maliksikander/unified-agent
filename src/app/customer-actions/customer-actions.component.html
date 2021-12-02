@@ -1,0 +1,251 @@
+<div class="dialog-header">
+    <h4 *ngIf="userIni && schemaIni">{{userInfo.firstName}} <span *ngIf="!editActiveMode"
+        class="validater" (click)="validateForm()">Validate</span></h4>
+    <button (click)="editClick()"
+      [ngClass]="{'btn-active' : editActiveMode != true ,  'whiteClass' : editTab == true , 'greyClass' : editTab != true}"
+      class="cstmBtn slide-in-left">
+      <mat-icon>edit</mat-icon> EDIT PROFILE
+    </button>
+  <button (click)="onNoClick()" mat-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+
+
+
+<mat-dialog-content class="main-content main-content-action main-action-form">
+
+  <div *ngIf="userIni && schemaIni && editTab" class="main-content-create-customer">
+
+    <form [formGroup]="myGroup" (submit)="save(myGroup.value)">
+
+      <div class="row">
+
+
+        <div class="main-col" *ngFor="let schemaAttribute of schemaAttributes">
+
+          <div class="main-col"
+            [ngClass]="{'hidden-class': !editActiveMode && (schemaAttribute.key == 'createdBy' || schemaAttribute.key == 'updatedBy') }">
+
+            <div
+              [ngClass]="[ schemaAttribute.type=='label' || schemaAttribute.characters >= 116 ? 'col-md-12':  'col-md-4' ]"
+              class="input-field" *ngIf="(myGroup.get(schemaAttribute.key).value != undefined && myGroup.get(schemaAttribute.key).value != null && myGroup.get(schemaAttribute.key).value != '' && myGroup.get(schemaAttribute.key).value[0] != '')
+            || !editActiveMode || schemaAttribute.type == 'bool'">
+
+
+              <div *ngIf="schemaAttribute.type == 'url'" [ngClass]="{'url-area': editActiveMode}">
+                <div [ngClass]="{'header-padding': editActiveMode}" class="lbl">{{schemaAttribute.label}}<span
+                    class="red-clr" *ngIf="!editActiveMode && schemaAttribute.is_required">*</span></div>
+                <mat-form-field [matTooltip]="editActiveMode ? 'goto '+ myGroup.get(schemaAttribute.key).value: '' "
+                  (click)="gotoLink(editActiveMode,schemaAttribute.type, myGroup.get(schemaAttribute.key).value)"
+                  [ngClass]="{'read-view' : editActiveMode }" class="field hover-class" appearance="outline">
+                  <input [required]="schemaAttribute.is_required" [formControlName]="schemaAttribute.key" matInput>
+                  <mat-error>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('required')">
+                      Field is required
+                    </div>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('email')">
+                      Invalid email
+                    </div>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('maxlength')">
+                      only {{schemaAttribute.characters}} characters are alowed
+                    </div>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('pattern')">
+                      Invalid pattern
+                    </div>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <!-- ------------------------- -->
+
+              <div *ngIf="schemaAttribute.type == 'label'">
+                <div [ngClass]="{'header-padding': editActiveMode}" class="lbl">{{schemaAttribute.label}}<span
+                    class="red-clr" *ngIf="!editActiveMode && schemaAttribute.is_required">*</span></div>
+                <div *ngIf="!editActiveMode" class="drop multi-select-label">
+                  <angular2-multiselect [data]="labels" [settings]="labelSettings" (onSelect)="onItemSelect($event)"
+                    (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                    (onDeSelectAll)="onDeSelectAll($event)" (onAddFilterNewItem)="onAddItem($event)"
+                    [formControlName]="schemaAttribute.key">
+
+                    <c-badge>
+                      <ng-template let-item="item">
+                        <div class="dot" [ngStyle]="{'background-color':item.color_code}"></div>
+
+                        <label style="margin: 0px;">{{item.name}}</label>
+                      </ng-template>
+                    </c-badge>
+                    <c-item>
+                      <ng-template let-item="item">
+                        <div class="dot" [ngStyle]="{'background-color':item.color_code}"></div>
+
+                        <label style="color: #333;min-width: 150px;">{{item.name}}</label>
+                      </ng-template>
+                    </c-item>
+                  </angular2-multiselect>
+                </div>
+                <div *ngIf="editActiveMode && customerLabels" class="lbl-area slide-in-left">
+                  <span *ngFor="let label of customerLabels">
+                    <span class="brd">
+                      <span [ngStyle]="{'background-color':label.color_code}" class="dot1">
+
+                      </span><span class="lbl-txt">{{label.name}}</span>
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <!-- ----------------- -->
+              <div
+                *ngIf="(schemaAttribute.type == 'string' && !schemaAttribute.characters) || (schemaAttribute.type == 'string' && schemaAttribute.characters <= 115) || schemaAttribute.type == 'number' || schemaAttribute.type == 'email' || schemaAttribute.type == 'phone' || schemaAttribute.type == 'alphanumeric' || schemaAttribute.type == 'alphanumeric_special_character' || schemaAttribute.type == 'decimal'">
+                <div [ngClass]="{'header-padding': editActiveMode}" class="lbl">{{schemaAttribute.label}}<span
+                    class="red-clr" *ngIf="!editActiveMode && schemaAttribute.is_required">*</span></div>
+                <mat-form-field [ngClass]="{'read-view' : editActiveMode }" class="field" appearance="outline">
+                  <input [readonly]="schemaAttribute.key == 'createdBy' || schemaAttribute.key == 'updatedBy'"
+                    [required]="schemaAttribute.is_required" [formControlName]="schemaAttribute.key" matInput>
+                  <mat-error>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('required')">
+                      Field is required
+                    </div>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('email')">
+                      Invalid email
+                    </div>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('maxlength')">
+                      only {{schemaAttribute.characters}} characters are alowed
+                    </div>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('pattern')">
+                      Invalid pattern
+                    </div>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <!-- --------------------------- -->
+
+
+              <div *ngIf="schemaAttribute.type == 'string' && schemaAttribute.characters >= 116">
+                <div [ngClass]="{'header-padding': editActiveMode}" class="lbl">{{schemaAttribute.label}}<span
+                    class="red-clr" *ngIf="!editActiveMode && schemaAttribute.is_required">*</span></div>
+                <mat-form-field appearance="outline">
+                  <textarea [required]="schemaAttribute.is_required" [formControlName]="schemaAttribute.key"
+                    matInput></textarea>
+                  <mat-error>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('required')">
+                      Field is required
+                    </div>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('email')">
+                      Invalid email
+                    </div>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('maxlength')">
+                      only {{schemaAttribute.characters}} characters are alowed
+                    </div>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('pattern')">
+                      Invalid pattern
+                    </div>
+                  </mat-error>
+                </mat-form-field>
+                <!-- <div class="text-area-text" *ngIf="editActiveMode">
+                  {{myGroup.get(schemaAttribute.key).value}}
+                </div> -->
+              </div>
+
+
+              <div *ngIf="schemaAttribute.type == 'date'">
+                <div [ngClass]="{'header-padding': editActiveMode}" class="lbl">{{schemaAttribute.label}}<span
+                    class="red-clr" *ngIf="!editActiveMode && schemaAttribute.is_required">*</span></div>
+                <mat-form-field [ngClass]="{'read-view' : editActiveMode }" class="field" appearance="outline">
+                  <input [required]="schemaAttribute.is_required" [formControlName]="schemaAttribute.key" matInput
+                    [matDatepicker]="picker" (click)="picker.open()">
+                  <mat-datepicker #picker></mat-datepicker>
+                  <mat-error>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('required')">
+                      Field is required
+                    </div>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('email')">
+                      Invalid email
+                    </div>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('maxlength')">
+                    </div>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('pattern')">
+                      Invalid pattern
+                    </div>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+
+              <div *ngIf="schemaAttribute.type == 'date_time'">
+                <div [ngClass]="{'header-padding': editActiveMode}" class="lbl">{{schemaAttribute.label}}<span
+                    class="red-clr" *ngIf="!editActiveMode && schemaAttribute.is_required">*</span></div>
+                <mat-form-field [ngClass]="{'read-view' : editActiveMode }" class="field" appearance="outline">
+                  <input [required]="schemaAttribute.is_required" [formControlName]="schemaAttribute.key" matInput
+                    [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1">
+                  <owl-date-time #dt1></owl-date-time>
+
+                  <mat-error>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('required')">
+                      Field is required
+                    </div>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('email')">
+                      Invalid email
+                    </div>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('maxlength')">
+                    </div>
+                    <div *ngIf="myGroup.get(schemaAttribute.key).hasError('pattern')">
+                      Invalid pattern
+                    </div>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div *ngIf="schemaAttribute.type == 'bool'" class="check-box">
+                <div [ngClass]="{'header-padding': editActiveMode}" class="lbl">{{schemaAttribute.label}}</div>
+                <mat-checkbox *ngIf="!editActiveMode" [ngClass]="{'margin-left' : editActiveMode}"
+                  [formControlName]="schemaAttribute.key" matInput></mat-checkbox>
+                <div class="check-box-readview" *ngIf="editActiveMode">
+                  {{myGroup.get(schemaAttribute.key).value == true ? 'TRUE' : 'FALSE'}}
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </form>
+
+  </div>
+
+
+</mat-dialog-content>
+<mat-dialog-actions>
+
+<!--  <div class="sticky-buttons">-->
+<!--    <div class="delete-btn" (click)="deleteCUstomer()">-->
+<!--      <mat-icon class="dlt-icon">delete</mat-icon>-->
+<!--      <span class="dlt-text">DELETE CUSTOMER</span>-->
+<!--    </div>-->
+
+<!--    <div class="action-btns" *ngIf="editTab && !editActiveMode">-->
+
+<!--      <button *ngIf="myGroup.valid" (click)="saveData(myGroup.value)" class="submit-btn">SAVE</button>-->
+<!--      <button (click)="onNoClick()" class="cancel-btn">CANCEL</button>-->
+
+<!--    </div>-->
+
+<!--  </div>-->
+
+  <div class="footer-buttons">
+    <button (click)="deleteCUstomer()" class="delete-btn"> <mat-icon class="dlt-icon">delete</mat-icon> DELETE CUSTOMER</button>
+    <!--    <button (click)="onNoClick()" class="cancel-btn">Cancel</button>-->
+<!--    <button *ngIf="myGroup.valid" (click)="saveData(myGroup.value)"-->
+<!--            class="save-btn">Create Contact</button>-->
+
+    <span class="action-btns" *ngIf="editTab && !editActiveMode">
+    <button (click)="onNoClick()" class="cancel-btn">CANCEL</button>
+    <button *ngIf="myGroup.valid" (click)="saveData(myGroup.value)" class="save-btn">SAVE</button>
+    </span>
+  </div>
+</mat-dialog-actions>

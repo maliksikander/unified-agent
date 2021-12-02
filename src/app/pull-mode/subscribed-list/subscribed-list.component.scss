@@ -1,0 +1,163 @@
+@import "src/app/shared/globalVariables";
+
+.page-header{
+  display: flex;
+  align-content: center;
+  padding-left: 0;
+}
+.create-label {
+  text-align: right;
+
+  .add-new{
+    cursor: pointer;
+    font-size: 13px;
+    min-width: 25px;
+    background-color: $main-color;
+    color: #fff;
+    text-align: center;
+
+    &:hover{
+      background: darken($main-color, 10%);
+    }
+  }
+}
+
+.manage-dashboard {
+  width: 100%;
+  .table-heading {
+    background: #E6E6E6;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 10px;
+
+    h4{
+      font-size: 12px;
+      color: #464646;
+      line-height: 36px;
+    }
+  }
+
+  .table {
+    background: #ffffff;
+    box-shadow: 0 0 4px rgb(0 0 0 / 12%);
+
+    tr {
+      position: relative;
+      cursor: pointer;
+
+      &:nth-of-type(even){
+        background: #F7F7F7;
+      }
+    }
+
+    thead {
+
+      th {
+        color: #434343;
+        height: 38px;
+        line-height: 38px;
+        padding: 0 15px;
+        font-size: 13px;
+        background: #F7F7F7 !important;
+        border: 0;
+      }
+    }
+  }
+
+  td {
+    font-size: 13px;
+    color: #434343;
+    height: 38px;
+    line-height: 38px;
+    padding: 0 15px;
+    white-space: pre;
+    border: 0;
+    text-transform: capitalize;
+    small {
+      text-transform: lowercase;
+      color: #888;
+      font-size: 11px;
+      margin-right: 3px;
+    }
+
+    .dashboard-name {
+      font-weight: normal;
+      font-size: 13px;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+    }
+
+    &:first-child {
+      //width: 50% !important;
+
+      span {
+        cursor: default;
+        max-width: 100%;
+        display: inline-block;
+        white-space: normal;
+        line-height: 19px;
+      }
+    }
+
+    //&:nth-child(2){
+    //  width: 20% !important;
+    //}
+    //
+    //&:nth-child(3),  &:nth-child(4) {
+    //  width: 20% !important;
+    //}
+  }
+  tbody {
+
+    .table-trigger{
+      opacity: 0;
+      visibility: hidden;
+      transition: all .3s;
+      position: absolute;
+      right: 15px;
+      z-index: 2;
+      top: 4px;
+
+    }
+    tr {
+      &:hover {
+        background: #EAEAEA !important;
+
+        .table-trigger {
+          display: inline-block;
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+    }
+  }
+
+}
+
+
+
+//Dialog Style
+.dialog-main-content {
+  padding: 15px 0;
+  label {
+    display: block;
+    font-size: 13px;
+    margin:  0;
+    color: #1D1D1D;
+    padding-bottom: 5px;
+  }
+
+  textarea{
+    width: 100%;
+    border: 1px solid #C2C2C2;
+    border-radius: 5px;
+  }
+}
+.subscribe-list-area{
+  padding-top: 10px;
+}
+mat-checkbox{
+  font-size: 13px;
+}
+
