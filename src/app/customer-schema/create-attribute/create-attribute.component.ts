@@ -104,7 +104,6 @@ export class CreateAttributeComponent implements OnInit {
     let schemaObj = this.createAttributeForm.value;
     let length = schemaObj.length ? schemaObj.length : 50;
     let typeDef = this.attributeTypes.find((item) => item.type == e.value);
-    if(typeDef == 'URL') typeDef.regex = new RegExp(typeDef.regex)
     let validatorArray: Array<any> = [Validators.required, Validators.pattern(typeDef.regex), Validators.maxLength(length)];
     if (e.value != "String") validatorArray.pop();
     this.createAttributeForm.controls["defaultValue"].setValidators(validatorArray);
@@ -134,12 +133,6 @@ export class CreateAttributeComponent implements OnInit {
     }
     this.cd.detectChanges();
   }
-
-  // // generate key using user typed attribute label
-  // attrKeyGenerator(label: string) {
-  //   let key = label.replace(" ", "_");
-  //   this.createAttributeForm.controls["key"].setValue(key);
-  // }
 
   ValidateNameDuplication(control: AbstractControl) {
     return this._httpService.getCustomerSchema().pipe(
