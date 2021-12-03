@@ -147,4 +147,13 @@ export class CreateAttributeComponent implements OnInit {
 
     return null;
   }
+
+  onLengthChange() {
+    let value = this.createAttributeForm.value.length;
+    if (value && value != null) {
+      this.onTypeChange({ value: "String" });
+      let def = this.createAttributeForm.value.defaultValue;
+      this.createAttributeForm.get("defaultValue").setValue(def);
+    }
+  }
 }

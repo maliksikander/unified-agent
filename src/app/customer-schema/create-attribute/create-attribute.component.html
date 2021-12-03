@@ -59,7 +59,7 @@
           class="form-group label-name col-md-2 characters-length">
           <label class="text-left">Number of Characters</label>
           <mat-form-field appearance="outline">
-            <input matInput formControlName="length">
+            <input (keyup)="onLengthChange()" type="number" matInput formControlName="length">
             <mat-error *ngIf="createAttributeForm.get('length')?.errors?.required">
               *Field is required
             </mat-error>

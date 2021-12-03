@@ -131,22 +131,14 @@ export class EditAttributeComponent implements OnInit {
     this.cd.detectChanges();
   }
 
-  // onLengthChange(e) {
-  //   // console.log("event==>", e);
-  //   console.log("value==>", this.editAttributeForm.value.length);
-  //   let len = this.editAttributeForm.value.length;
-  //   let typeIndex = this.attributeTypes.findIndex((item) => this.editAttributeForm.value.type == item.type);
-  //   console.log("index==>", typeIndex);
-  //   let type = this.attributeTypes[typeIndex];
-  //   console.log("ind==>", type);
-  //   if (len && len <= 1000) {
-  //     this.editAttributeForm.controls["defaultValue"].setValidators([
-  //       Validators.required,
-  //       Validators.maxLength(length),
-  //       Validators.pattern(type.regex)
-  //     ]);
-  //   }
-  // }
+  onLengthChange() {
+    let value = this.editAttributeForm.value.length;
+    if (value && value != null) {
+      this.onTypeChange({ value: "String" });
+      let def = this.editAttributeForm.value.defaultValue;
+      this.editAttributeForm.get("defaultValue").setValue(def);
+    }
+  }
 
   onSave() {
     let editedData = this.editAttributeForm.value;
