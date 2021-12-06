@@ -11,8 +11,8 @@ import { sharedService } from "../services/shared.service";
   styleUrls: ["./column-preferences.component.scss"]
 })
 export class columnPreferences implements OnInit {
-  columns = [];
-  checkedColumns = [];
+  columns: Array<any> = [];
+  checkedColumns: Array<any> = [];
   searchItem;
 
   constructor(
@@ -25,26 +25,27 @@ export class columnPreferences implements OnInit {
   ) {}
 
   ngOnInit() {
-    this._httpService.getCustomerSchema().subscribe((ea) => {
-      delete ea.labels;
-      this.columns = ea.data.sort((a, b) => {
-        return a.sort_order - b.sort_order;
-      });
-      this._httpService.getUserPreference(this._cacheService.agent.id).subscribe((e) => {
-        if (e.data.docs[0].columns != null) {
-          let arr = e.data.docs[0].columns;
-          let index = arr.findIndex((r) => r.type == "label");
-          if (index != -1) {
-            arr.splice(index, 1);
-          }
-          this.checkedColumns = arr;
-        }
-      });
-    });
+    this.getCustomerSchema();
   }
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  getCustomerSchema() {
+    this._httpService.getCustomerSchema().subscribe((res) => {
+      this.columns = res.sort((a, b) => {
+        return a.sortOrder - b.sortOrder;
+      });
+
+      this._httpService.getUserPreference(this._cacheService.agent.id).subscribe((preferenceRes) => {
+        if (preferenceRes.docs.length > 0 && preferenceRes.docs[0].columns != null) {
+          let arr = preferenceRes.docs[0].columns;
+          this.checkedColumns = arr;
+          // console.log("checked columns==>", this.checkedColumns);
+        }
+      });
+    });
   }
 
   onChange(event, item) {
@@ -76,19 +77,25 @@ export class columnPreferences implements OnInit {
           }
         ]
       };
-      this._httpService.changeUserPreference(prefObj).subscribe(
-        (e) => {
-          this.dialogRef.close({ event: "refresh" });
-          this._sharedService.Interceptor("Preference Updated!", "succ");
-        },
-        (error) => {
-          this._sharedService.Interceptor(error, "err");
-        }
-      );
+      // console.log("check==>", prefObj);
+      this.createPeference(prefObj);
     }
   }
 
+  createPeference(obj) {
+    this._httpService.changeUserPreference(obj).subscribe(
+      (e) => {
+        this.dialogRef.close({ event: "refresh" });
+        this._sharedService.Interceptor("Preference Updated!", "succ");
+      },
+      (error) => {
+        this._sharedService.Interceptor(error, "err");
+      }
+    );
+  }
+
   loadChecked(value) {
+    // console.log("Value==>",value)
     if (this.checkedColumns) {
       let x: boolean;
       this.checkedColumns.filter((e) => {

@@ -34,11 +34,11 @@ export class PhonebookComponent implements OnInit {
     primaryKey: "_id"
   };
   labels = [];
-  rows = [];
-  cols = [];
+  rows: Array<any> = [];
+  cols: Array<any> = [];
   limit = 25;
   filterValue;
-  offSet = 0;
+  offSet = 1;
   sort = {};
   query = {};
   filterQuery: string[] = [];
@@ -80,13 +80,18 @@ export class PhonebookComponent implements OnInit {
 
   loadCustomers(limit, offSet, sort, query) {
     this.rows = null;
-    this._httpService.getUserPreference(this._cacheService.agent.id).subscribe((e) => {
-      this.cols = e.data.docs[0].columns;
-      console.log("col==>",this.cols)
+    this.getUserPreference(limit, offSet, sort, query);
+  }
+
+  getUserPreference(limit, offSet, sort, query) {
+    this._httpService.getUserPreference(this._cacheService.agent.id).subscribe((res) => {
+      if (res.docs.length > 0) this.cols = res.docs[0].columns;
+      console.log("col==>", this.cols);
       this._httpService.getCustomers(limit, offSet, sort, query).subscribe((e) => {
-        this.rows = e.data.docs;
-        this.totalRecords = e.data.total;
-        this.loadLabels();
+        this.rows = e.docs;
+        this.totalRecords = e.totalDocs;
+        // console.log("dssds==",this.totalRecords)
+        // this.loadLabels();
       });
     });
   }
