@@ -3943,7 +3943,7 @@
             "size": 60184
           },
           "additionalDetails": {
-            "filename": "Expertflow doc"
+            "fileName": "Expertflow doc"
           }
         }
       }
@@ -4086,7 +4086,7 @@
             "size": 60184
           },
           "additionalDetails": {
-            "filename": "Expertflow xlxs"
+            "fileName": "Expertflow xlxs"
           }
         }
       }

@@ -576,8 +576,12 @@
                     </p>
                   </div>
                 </div>
-
+                <span class="msg-status" *ngIf="(message.header.sender.type | lowercase) == 'agent' && message.header.status=='sent' &&
+                message.header.sender.participant.keycloakUser.id == _cacheService.agent.id ">
+                  <mat-icon>done</mat-icon>
+                </span>
               </div>
+
             </div>
             <div id="chat-area-end"></div>
 

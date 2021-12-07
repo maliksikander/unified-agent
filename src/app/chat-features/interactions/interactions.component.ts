@@ -48,8 +48,7 @@ export class InteractionsComponent implements OnInit {
 
   showNewMessageNotif: boolean = false;
   currentScrollPosition: number = 100;
-  lastMsgFromAgent: boolean = false;
-
+ 
   isBarOPened = false;
   activeSessions = [];
 
@@ -71,7 +70,7 @@ export class InteractionsComponent implements OnInit {
 
   constructor(
     private _sharedService: sharedService,
-    private _cacheService: cacheService,
+    public _cacheService: cacheService,
     private _socketService: socketService,
     private dialog: MatDialog,
     private _snackbarService: snackbarService,
@@ -80,7 +79,7 @@ export class InteractionsComponent implements OnInit {
   ) { }
   ngOnInit() {
     //  console.log("i am called hello")
-    if(navigator.userAgent.indexOf("Firefox") != -1 ) {
+    if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
     }
     this.convers = this.conversation.messages;
@@ -173,8 +172,10 @@ export class InteractionsComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+ 
     if (changes.changeDetecter && changes.changeDetecter.currentValue && this.conversation.index == this._sharedService.matCurrentTabIndex) {
-      if (this.lastMsgFromAgent) {
+      if (changes.changeDetecter.currentValue.header.sender.type.toLowerCase() == 'agent' &&
+        changes.changeDetecter.currentValue.header.sender.participant.keycloakUser.id == this._cacheService.agent.id) {
         this.downTheScrollAfterMilliSecs(50, "smooth");
       } else {
         if (this.currentScrollPosition < 95) {
@@ -187,7 +188,6 @@ export class InteractionsComponent implements OnInit {
     if (changes.currentTabIndex) {
       this.downTheScrollAfterMilliSecs(500, "auto");
     }
-    this.lastMsgFromAgent = false;
   }
 
   ngOnDestroy() {
@@ -236,7 +236,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   uploadFile(files) {
-    let availableExtentions: any = ['txt', 'png', 'jpg', 'jpeg', 'pdf', 'ppt', 'xlsx', 'xls', 'doc', 'docx','rtf'];
+    let availableExtentions: any = ['txt', 'png', 'jpg', 'jpeg', 'pdf', 'ppt', 'xlsx', 'xls', 'doc', 'docx', 'rtf'];
     let ln = files.length;
     if (ln > 0) {
       for (var i = 0; i < ln; i++) {
@@ -316,21 +316,27 @@ export class InteractionsComponent implements OnInit {
           'mediaUrl': this._appConfigService.config.FILE_SERVER_URL + "/file-engine/api/downloadFileStream?filename=" + fileName,
           'mimeType': fileMimeType,
           'size': fileSize,
-          'thumbnail':""
+          'thumbnail': ""
         }
-      }else{
+      } else {
         this._snackbarService.open("unable to process the file", "err");
         return;
       }
 
-
+      let event: any = new CimEvent("AGENT_MESSAGE", "MESSAGE", message);
       this._socketService.emit("publishCimEvent", {
         cimEvent: new CimEvent("AGENT_MESSAGE", "MESSAGE", message),
         agentId: this._cacheService.agent.id,
         topicId: this.conversation.topicId
       });
-      // this._socketService.onCimEventHandler(new CimEvent("AGENT_MESSAGE", "MESSAGE", message), "12345");
-      this.lastMsgFromAgent = true;
+      // setTimeout(() => {
+      //   this._socketService.onCimEventHandler(event, "12345");
+
+      // }, 5000);
+
+      event.data.header['status'] = 'sending';
+      this.conversation.messages.push(event.data);
+     // this.downTheScrollAfterMilliSecs(50, "smooth");
 
       setTimeout(() => {
         this.message = "";

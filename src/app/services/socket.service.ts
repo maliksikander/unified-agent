@@ -231,7 +231,24 @@ export class socketService {
           this.processActiveChannelSessions(sameTopicConversation, cimEvent.data.header.channelSession);
           ++sameTopicConversation.unReadCount;
         }
-        sameTopicConversation.messages.push(cimEvent.data);
+
+        // for agent type message change the status of message
+        if (cimEvent.name.toLowerCase() == "agent_message") {
+
+          // find the message is already located in the conversation
+          let cimMessage = sameTopicConversation.messages.find((message) => { return message.id == cimEvent.data.id });
+          // if yes, only update the staus
+          if (cimMessage) {
+            cimMessage.header['status'] = 'sent';
+          } else {
+            // if no, marked staus as sent and push in the conversation
+            cimEvent.data.header['status'] = 'sent';
+            sameTopicConversation.messages.push(cimEvent.data);
+          }
+        } else {
+          sameTopicConversation.messages.push(cimEvent.data);
+        }
+
         sameTopicConversation.unReadCount ? undefined : (sameTopicConversation.unReadCount = 0);
       } else {
         this.conversations.push({
@@ -287,6 +304,7 @@ export class socketService {
         event.name.toLowerCase() == "bot_message" ||
         event.name.toLowerCase() == "customer_message"
       ) {
+        event.data.header['status'] = 'sent';
         conversation.messages.push(event.data);
       }
     });

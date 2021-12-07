@@ -1904,3 +1904,18 @@ vg-controls.hide {
     width: 100%;
   }
 }
+
+.msg-status{
+  position: relative;
+  height: auto;
+  mat-icon{
+    font-size: 15px;
+    color: #6e6e6e;
+    position: absolute;
+    bottom: -14px;
+    width: 15px;
+    height: 15px;
+    margin: 0 0px 15px -17px;
+  }
+}
+
