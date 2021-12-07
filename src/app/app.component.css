@@ -16,4 +16,5 @@
 .main-app-area {
   border: 5px solid #F3F6FA;
   min-height: calc(100% - 40px);
+  background: #fff;
 }

@@ -3700,9 +3700,9 @@
         "body": {
           "type": "AUDIO",
           "markdownText": "",
-          "caption": "Hello",
+          "caption": "Hello World",
           "attachment": {
-            "mediaUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+            "mediaUrl": "https://file-examples-com.github.io/uploads/2017/11/file_example_OOG_1MG.ogg",
             "mimeType": "",
             "size": 60184
           }
@@ -3712,6 +3712,7 @@
     {
       "id": "1ed1c1af-4f8f-417c-be0a-5e3d804b518f",
       "name": "CUSTOMER_MESSAGE",
+
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:33.219+00:00",
       "data": {

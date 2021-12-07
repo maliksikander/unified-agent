@@ -61,6 +61,10 @@
     font-weight: 500;
   }
   .create-attr-dialog-body{
+    overflow: auto;
+    height: 100%;
+    max-height: 55vh;
+    padding: 0 10px;
 
     .optional{
       color: #808080;
@@ -69,6 +73,7 @@
 
   }
 }
+
 
 .characters-length{
   //padding-right: 28px;

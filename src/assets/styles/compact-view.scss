@@ -1,0 +1,84 @@
+//Media Queries/Compact view style only
+//
+@media(max-width: 1019px) {
+  .ef_container {
+    #main-content {
+
+      .chat-tab-area {
+
+        .chat-messages-main{
+          padding: 0 !important;
+
+          .chat-session-main {
+            padding: 0 15px;
+
+            .int-date {
+              padding-right: 8px !important;
+              margin-left: -20px;
+
+              @media(max-width: 769px){
+                padding-right: 8px !important;
+                float: none;
+                width: 100px;
+                margin: 0 auto;
+                border-radius: 20px;
+                z-index: 99;
+                border: 0;
+
+                b{
+                  display: inline-block;
+                  font-size: 11px;
+                  margin-left: 2px;
+                }
+              }
+            }
+          }
+        }
+
+        &.bar-expand {
+
+          .mat-tab-header {
+            width: 220px;
+          }
+
+          .mat-tab-body-wrapper {
+            width: calc(100% - 220px);
+          }
+
+          .chat-footer {
+            width: calc(100% - 235px) !important;
+            left: 230px !important;
+          }
+
+          .customer-bar-opened{
+            .chat-footer {
+              width: calc(100% - 235px) !important;
+              left: 230px !important;
+            }
+          }
+        }
+
+        .customer-bar-opened {
+          .interaction-inner, .main-chat-area, .chat-messages-main{
+            width: 100% !important;
+
+          }
+          .customer-info-main{
+            border-left: 0;
+            z-index: 9;
+            box-shadow: -2px 0 5px #dde0e4;
+            width: 315px;
+          }
+        }
+
+        .chat-footer {
+          width: calc(100% - 75px) !important;
+          left: 70px !important;
+        }
+      }
+
+
+    }
+
+  }
+}

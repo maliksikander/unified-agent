@@ -2,7 +2,7 @@
   <div class="interaction-inner">
     <div [ngClass]="{'unidentified-customer':conversation.customer.isAnonymous}" class="container-fluid main-chat-bar">
       <div class="row">
-        <div class="col-md-4 customer-showcase">
+        <div class="col-md-4 col-sm-4 customer-showcase">
           <h3 matTooltipPosition="right" class="customer-highlight">
             {{conversation.customer.firstName | getFirstTwoLetters}}
             <span class="channel-icon">
@@ -16,7 +16,7 @@
 
           </h5>
         </div>
-        <div class="col-md-8 agent-actions">
+        <div class="col-md-8 col-sm-8 agent-actions">
           <ul class="list-group list-group-horizontal agent-controls">
             <li class="list-group-item">
               <button mat-icon-button>

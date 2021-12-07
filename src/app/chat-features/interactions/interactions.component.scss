@@ -30,6 +30,7 @@
     position: relative;
     background: #fff;
     text-transform: uppercase;
+    min-width: 32px;
 
     span {
       background: #f1f1f1;
@@ -195,7 +196,7 @@
           height: 9px;
           line-height: 8px !important;
           border-radius: 2px;
-          z-index: 23;
+          z-index: 2;
 
           &:after {
             background: $main-color-background;
@@ -1563,12 +1564,13 @@
   }
     .interaction-inner {
     width: calc(100% - 320px) !important;
-    //border-left: 5px solid #e2e2e2;
+    //border-left: 5px solid #e2e2e2;/
   }
 
   .main-chat-area, .chat-messages-main {
     width: calc(100% - 320px) !important;
-    display: inline-block;
+    display: block;
+    left: 0;
   }
 
   .chat-footer {

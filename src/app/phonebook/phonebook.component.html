@@ -1,7 +1,7 @@
 <div class="phonebook-main-area">
   <div class="phonebook-main row m-0">
     <button mat-button routerLink="../chats" class="back-to-chat"></button>
-    <div class="customer-heading col-md-6">
+    <div class="customer-heading col-md-6" [ngClass]="filterQuery.length > 0 ? 'col-sm-12': 'col-sm-1'">
       <!--    <h4>Customer List</h4>-->
       <div class="filter-selection">
         <mat-chip-list #chipList aria-label="Filter selection">
@@ -20,7 +20,7 @@
       <!--    </mat-form-field>-->
     </div>
 
-    <div class="col-md-6 right-actions text-right">
+    <div class="col-md-6 right-actions text-right" [ngClass]="filterQuery.length > 0 ? 'col-sm-12': 'col-sm-11'">
       <button mat-button class="btn-action " (click)="actions()">Action</button>
       <mat-menu #columnMenu="matMenu">
         <div class="check-menu" (click)="$event.stopPropagation();">
