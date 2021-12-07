@@ -135,7 +135,7 @@
                   [ngClass]="{'tab-active' : displayCustomerChannels}">Media Channels</li>
               </ul>
             </div>
-            <div class="user-pre-detail">
+            <div class="user-pre-detail" *ngIf="displayProfile">
               <div *ngFor="let data of customerProfileFormData">
 
                 <div class="user-detail-area">
@@ -157,120 +157,38 @@
               </div>
             </div>
             <ul class="channel-list" *ngIf="displayCustomerChannels">
-              <li>
-                <img src="assets/images/landline-phone-colored.svg" />
-                <p>
-                  <strong>+4466985845</strong>
-                  <small>Landline Business</small>
-                </p>
-              </li>
-              <li>
-                <img src="assets/images/phone-colored.svg" />
-                <p>
-                  <strong>+446698988</strong>
-                  <small>Mobile Personal</small>
-                  <span class="channel-list-action">
-                    <button mat-icon-button (click)="openDialog(callingTemplate, '+446698988')">
-                      <mat-icon>call</mat-icon>
-                    </button>
-                    <button mat-icon-button>
-                      <mat-icon>message</mat-icon>
-                    </button>
-                    <button mat-icon-button>
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                  </span>
-                </p>
-              </li>
-              <li>
-                <img src="assets/images/whatsapp-colored.svg" />
-                <p>
-                  <strong>+446698985</strong>
-                  <small>Whatsapp Personal</small>
-                  <span class="channel-list-action">
-                    <button mat-icon-button>
-                      <mat-icon>call</mat-icon>
-                    </button>
-                    <button mat-icon-button>
-                      <mat-icon>message</mat-icon>
-                    </button>
-                    <!--<button mat-icon-button><mat-icon>mail</mat-icon></button>-->
-                    <button mat-icon-button>
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                  </span>
-                </p>
-              </li>
-              <li>
-                <img src="assets/images/envelope-colored.svg" />
-                <p>
-                  <strong>a.stanler@skytechinc.com</strong>
-                  <small>Email Business</small>
-                  <span class="channel-list-action">
-                    <button mat-icon-button>
-                      <mat-icon>mail</mat-icon>
-                    </button>
-                    <button mat-icon-button>
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                  </span>
-                </p>
-              </li>
-              <li>
-                <img src="assets/images/facebook-colored.svg" />
-                <p>
-                  <strong>Skytech Inc.</strong>
-                  <small>Facebook Business</small>
-                  <span class="channel-list-action">
-                    <button mat-icon-button>
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                  </span>
-                </p>
-              </li>
-              <li>
-                <img src="assets/images/skype-colored.svg" />
-                <p>
-                  <strong>adam.reedsuk</strong>
-                  <small>Landline Residence</small>
-                  <span class="channel-list-action">
-                    <button mat-icon-button>
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                  </span>
-                </p>
-              </li>
-              <li>
-                <img src="assets/images/safari-colored.svg" />
-                <p>
-                  <strong>Desktop Browser 1</strong>
-                  <small>Landline Residence</small>
-                  <span class="channel-list-action">
-                    <button mat-icon-button>
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                  </span>
-                </p>
-              </li>
-              <li>
-                <img src="assets/images/chrome-colored.svg" />
-                <p>
-                  <strong>Desktop Browser 2</strong>
-                  <small>Landline Residence</small>
-                  <span class="channel-list-action">
-                    <button mat-icon-button>
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                  </span>
-                </p>
+              <li class="multi-channel-list" *ngFor="let channel of mediaChannelData">
+                <mat-expansion-panel [hideToggle]="!channel.channelList">
+                  <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
+                    <div class="channel-icon-area web-channel-inner">
+                      <img src="assets/attr-types/{{channel.fieldType === 'tel' ? 'phone-colored': channel.fieldType === 'email' ? 'envelope-colored' : channel.fieldType === 'text' ? 'text-colored': 'mobile-action' }}.svg"/>
+                      <p>
+                        <strong>{{channel.value}}</strong>
+                        <small>{{channel.label}}</small>
+                      </p>
+                    </div>
+                  </mat-expansion-panel-header>
+                  <ul *ngIf="channel.channelList">
+                    <li *ngFor="let activeChannel of channel.channelList">
+                      <img src="assets/images/{{activeChannel.channelType === 'whatsapp' ? 'whatsapp-colored' : activeChannel.channelType === 'facebook' ? 'facebook-colored': activeChannel.channelType === 'email' ? 'envelope-colored' : activeChannel.channelType === 'skype' ? 'skype-colored': 'mobile-action' }}.svg"/>
+                      <p>
+                        <small>{{activeChannel.label}}</small>
+                        <span class="channel-list-action">
+                    <button mat-icon-button *ngIf="activeChannel.channelType !== 'email'" (click)="openDialog(callingTemplate, '+4466985845')"><mat-icon>call</mat-icon></button>
+                    <button mat-icon-button><mat-icon>message</mat-icon></button>
+                    </span>
+                      </p>
+                    </li>
+                  </ul>
+                </mat-expansion-panel>
+
               </li>
 
             </ul>
 
           </mat-expansion-panel>
-
           <!-- customer Suggestions Tab start-->
-          <mat-expansion-panel class="drag-expansion-panel" *ngIf="customerSuggestions.length != 0" cdkDrag>
+          <mat-expansion-panel class="drag-expansion-panel" *ngIf="customerSuggestions.length !== 0" cdkDrag>
             <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
               <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Link Profile
               </mat-panel-title>

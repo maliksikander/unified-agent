@@ -35,7 +35,7 @@ export class socketService {
     private _soundService: soundService,
     private ngxService: NgxUiLoaderService
   ) {
-    // this.onTopicData(mockTopicData, "12345");
+    this.onTopicData(mockTopicData, "12345");
 
 
   }

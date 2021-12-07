@@ -525,7 +525,7 @@
         },
         "body": {
           "type": "PLAIN",
-          "markdownText": "Welcome to Expertflow Hybrid Chat solution"
+          "markdownText": "Welcome to Expertflow Hybrid Chat solution lahore"
         }
       }
     },
@@ -3700,9 +3700,9 @@
         "body": {
           "type": "AUDIO",
           "markdownText": "",
-          "caption": "Hello World",
+          "caption": "Hello",
           "attachment": {
-            "mediaUrl": "https://file-examples-com.github.io/uploads/2017/11/file_example_OOG_1MG.ogg",
+            "mediaUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
             "mimeType": "",
             "size": 60184
           }
@@ -4059,7 +4059,18 @@
               "isAnonymous": false,
               "__v": 0
             },
-            "customerSuggestions": [],
+            "customerSuggestions": [
+              {
+                "id":"71a99b10-6838-4f63-b007-2dc3880ecd61",
+                "firstName":"mark",
+                "isAnonymous":false
+              },
+              {
+                "id":"71a99b10-6838-4f63-b007-2dc3880ecd62",
+                "firstName":"suzen",
+                "isAnonymous":false
+              }
+            ],
             "channelData": {
               "channelCustomerIdentifier": "97962945",
               "serviceIdentifier": "+921218",
@@ -6636,7 +6647,18 @@
       }
     }
   ],
-  "customerSuggestions": [],
+  "customerSuggestions": [
+    {
+      "id":"71a99b10-6838-4f63-b007-2dc3880ecd61",
+      "firstName":"mark",
+      "isAnonymous":false
+    },
+    {
+      "id":"71a99b10-6838-4f63-b007-2dc3880ecd62",
+      "firstName":"suzen",
+      "isAnonymous":false
+    }
+  ],
   "topicParticipant": {
     "id": "4882e15c-fc90-458a-8545-689e4b1ab66d",
     "type": "AGENT",
