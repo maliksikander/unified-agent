@@ -1,5 +1,5 @@
 <div class="dialog-header">
-  <h4 mat-dialog-title>Create New Customer <span class="validater" (click)="validateForm()">Validate</span>
+  <h4 mat-dialog-title>Create New Customer <span class="validate-span" (click)="validateForm()">Validate</span>
     <button mat-button mat-dialog-close>
       <mat-icon (click)="onNoClick()">close</mat-icon>
     </button>
@@ -40,11 +40,12 @@
                   </div>
                 </mat-error>
               </mat-form-field>
+
               <ng-container *ngIf="schemaAttribute.isChannelIdentifier == true">
-                <button type="button"  class="duplicate-action add-field" mat-mini-fab>
+                <button type="button" class="duplicate-action add-field" mat-mini-fab>
                   <mat-icon>add</mat-icon>
                 </button>
-                <button class="duplicate-action remove-field"  mat-mini-fab>
+                <button class="duplicate-action remove-field" mat-mini-fab>
                   <mat-icon>close</mat-icon>
                 </button>
               </ng-container>

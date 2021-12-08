@@ -130,14 +130,19 @@ span.field-channel {
 
 }
 
-.validater{
-  color: #9abcef;
+.validate-span {
+  color: coral;
   font-size: 9px;
   border: 1px solid;
-  padding: 2px;
+  padding: 2px 4px 2px 4px;
   border-radius: 8px;
   cursor: pointer;
+  bottom: 1px;
+  position: relative;
+  margin-left: 5px;
 }
+
+
 .check-box-field {
   align-self: center;
   .field-label{

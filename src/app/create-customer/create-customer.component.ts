@@ -1,9 +1,7 @@
 import { Component, OnInit, Inject, ChangeDetectorRef } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, DateAdapter } from "@angular/material";
-import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl } from "@angular/forms";
-import { Router } from "@angular/router";
+import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, FormArray } from "@angular/forms";
 import { httpService } from "../services/http.service";
-import { cacheService } from "../services/cache.service";
 import { sharedService } from "../services/shared.service";
 import { appConfigService } from "../services/appConfig.service";
 
@@ -19,13 +17,11 @@ export class CreateCustomerComponent implements OnInit {
 
   constructor(
     private dateAdapter: DateAdapter<any>,
-    private _router: Router,
     public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<CreateCustomerComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     private _httpService: httpService,
-    private _cacheService: cacheService,
     private _sharedService: sharedService,
     private cd: ChangeDetectorRef,
     private _appConfigService: appConfigService
@@ -61,15 +57,21 @@ export class CreateCustomerComponent implements OnInit {
 
     this.customerForm = new FormGroup({});
 
-    this._httpService.getCustomerSchema().subscribe((e) => {
-      this.schemaAttributes = e.sort((a, b) => {
+    this.getCustomerSchema();
+    this.cd.detectChanges();
+  }
+
+  getCustomerSchema() {
+    this._httpService.getCustomerSchema().subscribe((res) => {
+      let temp = res.filter((item) => item.key != "isAnonymous");
+
+      this.schemaAttributes = temp.sort((a, b) => {
         return a.sortOrder - b.sortOrder;
       });
 
       this.channelTypeList = this._sharedService.channelTypeList;
       this.getAttributeTypes();
     });
-    this.cd.detectChanges();
   }
 
   // adding forms controls to existing form group using attributes in from schema as `attrSchema` parameter
@@ -77,12 +79,18 @@ export class CreateCustomerComponent implements OnInit {
     try {
       attrSchema.forEach((item) => {
         let validatorArray: any = this.addFormValidations(item);
-        this.customerForm.addControl(item.key, new FormControl(item.defaultValue ? item.defaultValue : "", validatorArray));
+        if(item.isChannelIdentifier == false){
+          this.customerForm.addControl(item.key, new FormControl(item.defaultValue ? item.defaultValue : "", validatorArray));
+        }
+        else{
+          // let value = new FormControl("");
+          // this.customerForm.addControl(item.key, new FormArray(value));
+        }
         if (item.type == "boolean" && item.defaultValue == "") {
           this.customerForm.controls[item.key].setValue(item.defaultValue);
         }
       });
-      // console.log("control==>", this.customerForm.controls);
+      console.log("control==>", this.customerForm.controls);
     } catch (e) {
       console.error("Error in add form control :", e);
     }
@@ -124,7 +132,6 @@ export class CreateCustomerComponent implements OnInit {
       }
     );
   }
-
 
   getChannelTypeLogo(typeName) {
     let typeIndex = this.channelTypeList.findIndex((item) => item.name === typeName);
