@@ -8,10 +8,11 @@ import { snackbarService } from "./snackbar.service";
   providedIn: "root"
 })
 export class sharedService {
-  constructor(private _snackbarService: snackbarService, private _httpService: httpService) {}
+  constructor(private _snackbarService: snackbarService, private _httpService: httpService) { }
 
   matCurrentTabIndex = 0;
 
+  channelTypeList = [];
   channelLogoMapper = new Map();
 
   serviceCurrentMessage = new Subject();
@@ -31,6 +32,7 @@ export class sharedService {
   }
 
   setChannelIcons(channelTypes) {
+    this.channelTypeList = channelTypes;
     channelTypes.forEach((channelType) => {
       this._httpService.getChannelLogo(channelType.channelLogo).subscribe((file) => {
         const reader = new FileReader();

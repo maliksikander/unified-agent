@@ -136,11 +136,11 @@
               </ul>
             </div>
             <div class="user-pre-detail" *ngIf="displayProfile">
-              <div *ngFor="let data of customerProfileFormData">
+              <div class="user-detail-area" *ngFor="let data of customerProfileFormData">
 
-                <div class="user-detail-area">
+                <div>
                   <label>{{data.key | sentenceCase}}:</label>
-                  <p class="label-detail">{{data.value}}</p>
+                  <p class="label-detail">{{data.value | spaceInArray}}</p>
                 </div>
 
               </div>
@@ -161,21 +161,21 @@
                 <mat-expansion-panel [hideToggle]="!channel.channelList">
                   <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                     <div class="channel-icon-area web-channel-inner">
-                      <img src="assets/attr-types/{{channel.fieldType === 'tel' ? 'phone-colored': channel.fieldType === 'email' ? 'envelope-colored' : channel.fieldType === 'text' ? 'text-colored': 'mobile-action' }}.svg"/>
+                      <img matTooltip="{{channel.fieldType}}" src="assets/attr-types/{{channel.fieldType | lowercase}}.svg"/>
                       <p>
-                        <strong>{{channel.value}}</strong>
+                        <strong>{{channel.value | spaceInArray}}</strong>
                         <small>{{channel.label}}</small>
                       </p>
                     </div>
                   </mat-expansion-panel-header>
-                  <ul *ngIf="channel.channelList">
+                  <ul class="channel-types-logo" *ngIf="channel.channelList.length > 0 ">
                     <li *ngFor="let activeChannel of channel.channelList">
-                      <img src="assets/images/{{activeChannel.channelType === 'whatsapp' ? 'whatsapp-colored' : activeChannel.channelType === 'facebook' ? 'facebook-colored': activeChannel.channelType === 'email' ? 'envelope-colored' : activeChannel.channelType === 'skype' ? 'skype-colored': 'mobile-action' }}.svg"/>
+                      <img [src]="activeChannel | channelName | channelLogo | async"/>
                       <p>
-                        <small>{{activeChannel.label}}</small>
+                        <small>{{activeChannel}}</small>
                         <span class="channel-list-action">
-                    <button mat-icon-button *ngIf="activeChannel.channelType !== 'email'" (click)="openDialog(callingTemplate, '+4466985845')"><mat-icon>call</mat-icon></button>
-                    <button mat-icon-button><mat-icon>message</mat-icon></button>
+                    <!-- <button mat-icon-button *ngIf="activeChannel.channelType !== 'email'" (click)="openDialog(callingTemplate, '+4466985845')"><mat-icon>call</mat-icon></button>
+                    <button mat-icon-button><mat-icon>message</mat-icon></button> -->
                     </span>
                       </p>
                     </li>

@@ -237,6 +237,9 @@ mat-sidenav.mat-drawer.mat-sidenav {
   transform: none !important;
   transition: all .3s;
   visibility: visible !important;
+  .mat-drawer-inner-container{
+    max-height:99%
+    }
 }
 
 //Logout menu Style
@@ -551,7 +554,6 @@ padding: 0 !important;
     white-space: nowrap;
     word-wrap: normal;
     direction: ltr;
-    -webkit-font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
     transform: rotate(90deg);
     height: 12px;

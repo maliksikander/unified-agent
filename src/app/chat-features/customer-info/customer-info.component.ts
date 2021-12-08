@@ -24,63 +24,93 @@ export class CustomerInfoComponent implements OnInit {
     "active_sessions",
     "link_profile"
   ];
-  mediaChannelData = [
-    {
-      fieldType: 'tel',
-      value: '+4466985845',
-      label: 'Landline Business'
-    },
-    {
-      fieldType: 'tel',
-      value: '+4466985845',
-      label: 'Mobile Personal',
-      channelList: [
-        {
-          label: 'Call & SMS',
-          channelType: 'mobile',
-          channelIdenty: '+4466985845'
-        },
-        {
-          label: 'Whatsapp',
-          channelType: 'whatsapp'
-        }
-      ]
-    },
-    {
-      fieldType: 'email',
-      value: 'a.stanler@skytechinc.com',
-      label: 'Email Business',
-      channelList: [
-        {
-          label: 'email',
-          channelType: 'email',
-          channelIdenty: 'a.stanler@skytechinc.com'
-        },
-        {
-          label: 'facebook',
-          channelType: 'facebook'
-        },
-        {
-          label: 'Skype',
-          channelType: 'skype',
-          channelIdenty: 'SkytechInc'
+  mediaChannelData = [];
 
-        }
-      ]
+  schema = [
+    {
+      "channelTypes": [],
+      "_id": "61a62b05134fc2f8a65bc2a0",
+      "key": "firstName",
+      "defaultValue": "John Doe",
+      "description": "",
+      "isChannelIdentifier": false,
+      "isDeletable": false,
+      "isPii": false,
+      "isRequired": true,
+      "label": "First Name",
+      "length": 50,
+      "sortOrder": 1,
+      "type": "String"
     },
     {
-      fieldType: 'text',
-      value: 'SkytechInc',
-      label: 'Facebook Business',
-      channelList: [
-        {
-          label: 'Facebook',
-          channelType: 'facebook',
-          channelIdenty: 'SkytechInc'
-        }
-      ]
+      "channelTypes": [
+        "WhatsApp",
+        "SMS"
+      ],
+      "_id": "61a7ab05134fc2f8a65c566f",
+      "key": "phoneNumber",
+      "defaultValue": "",
+      "description": "",
+      "isChannelIdentifier": true,
+      "isDeletable": false,
+      "isPii": false,
+      "isRequired": false,
+      "label": "Phone Number",
+      "length": 18,
+      "sortOrder": 2,
+      "type": "PhoneNumber"
+    },
+    {
+      "channelTypes": [],
+      "_id": "61a7ab05134fc2f8a65c5670",
+      "key": "isAnonymous",
+      "defaultValue": false,
+      "description": "",
+      "isChannelIdentifier": false,
+      "isDeletable": false,
+      "isPii": false,
+      "isRequired": true,
+      "label": "Anonymous",
+      "length": 4,
+      "sortOrder": 3,
+      "type": "Boolean"
+    },
+    {
+      "channelTypes": [
+        "Web"
+      ],
+      "_id": "61b0460ccaefbc32b489e82e",
+      "key": "webChannelIdentifier",
+      "label": "Web Channel Identifier",
+      "description": "fsdf",
+      "type": "String",
+      "length": 50,
+      "isRequired": false,
+      "defaultValue": null,
+      "isPii": false,
+      "isChannelIdentifier": true,
+      "isDeletable": true,
+      "sortOrder": 4,
+      "__v": 0
+    },
+    {
+      "channelTypes": [
+        "Viber"
+      ],
+      "_id": "61b04645caefbc32b489e86a",
+      "key": "viber",
+      "label": "Viber",
+      "description": "",
+      "type": "String",
+      "length": 50,
+      "isRequired": false,
+      "defaultValue": "",
+      "isPii": false,
+      "isChannelIdentifier": true,
+      "isDeletable": true,
+      "sortOrder": 5,
+      "__v": 0
     }
-
   ];
 
 
@@ -110,9 +140,9 @@ export class CustomerInfoComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
   }
-  constructor(public _socketService: socketService, private dialog: MatDialog) {}
+  constructor(public _socketService: socketService, private dialog: MatDialog) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   close() {
     this.sidenav.close();
@@ -145,6 +175,7 @@ export class CustomerInfoComponent implements OnInit {
       this.customer = null;
       this.customer = changes.customer.currentValue;
       this.customerProfileFormData = this.getProfileFormData(this.customer);
+      this.mediaChannelData = this.getMediaChannels();
     } else if (changes.activeChannelSessions && changes.activeChannelSessions.currentValue != undefined) {
       this.activeChannelSessions = null;
       this.activeChannelSessions = changes.activeChannelSessions.currentValue;
@@ -154,15 +185,50 @@ export class CustomerInfoComponent implements OnInit {
     }
   }
 
+  getMediaChannels() {
+    this.mediaChannelData = [];
+    let mediaChannelData = [];
+    this.schema.forEach((e) => {
+      if (
+        e.isChannelIdentifier == true &&
+        this.customer.hasOwnProperty(e.key)
+      ) {
+
+        this.customer[e.key].forEach((value) => {
+          mediaChannelData.push({
+            fieldType: e.type,
+            value: value,
+            label: e.label,
+            channelList: e.channelTypes
+          });
+        });
+      }
+    });
+
+    return mediaChannelData;
+  }
+
   getProfileFormData(obj) {
+    let channelIdentifiers = [];
+    this.schema.forEach((e) => {
+      if (e.isChannelIdentifier == true) {
+        channelIdentifiers.push(e.key);
+      }
+    })
+
     let processedObj = [];
     let keys = Object.keys(obj);
     let values = Object.values(obj);
     for (let i = 0; i < keys.length; i++) {
-      if (keys[i] != "id") {
-        processedObj.push({ key: keys[i], value: values[i] });
+      if (keys[i] != "_id" && keys[i] != "createdAt" && keys[i] != "updatedAt"
+        && keys[i] != "updatedBy" && keys[i] != "createdBy" && keys[i] != "__v"
+        && keys[i] != "isAnonymous" && values[i]) {
+        if (!channelIdentifiers.includes(keys[i])) {
+          processedObj.push({ key: keys[i], value: values[i] });
+        }
       }
     }
+
     return processedObj;
   }
 

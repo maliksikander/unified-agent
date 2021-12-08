@@ -320,6 +320,8 @@
 
         mat-expansion-panel-header {
           border: 0;
+          height: auto !important;
+    min-height: 30px;
         }
 
         .web-channel-inner {
@@ -333,7 +335,7 @@
           li {
             padding: 5px !important;
             min-height: 25px;
-            line-height: 25px;
+            // line-height: 25px;
             border-bottom: 1px dashed #D9D9D9;
             margin: 0;
             .channel-list-action{
@@ -349,6 +351,12 @@
           }
         }
 
+      }
+      .channel-types-logo{
+        img{
+          width: 20px;
+          height: 20px;
+        }
       }
     }
   }

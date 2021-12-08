@@ -1,20 +1,27 @@
 {
   "id": "15584d31-df86-4052-818f-d2bfdba5b92b",
   "customer": {
-    "_id": "67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
-    "firstName": "John",
-    "lastName": null,
-    "email": null,
-    "phone1": null,
-    "phone2": null,
-    "viberId": null,
-    "facebookId": null,
-    "webId": null,
-    "createdBy": null,
-    "updatedBy": null,
-    "createdAt": null,
-    "updatedAt": null,
+    "phoneNumber": [
+      "030078444212",
+      "8952150211555",
+      "+92000111221142",
+      "+852221100022114",
+      "+988522222210444"
+    ],
+    "_id": "61b04796936794395cafc4c9",
+    "firstName": "nabeel ahmad",
+    "viber": [
+      "viber 1",
+      "viber 2"
+    ],
+    "webChannelIdentifier": [
+      "134",
+      "1122"
+    ],
     "isAnonymous": false,
+    "address":"505 Meadowbrook StreetGlenside, PA 19038, 878 Wagon St.Salisbury, MD 21801, 770 Sulphur Springs DriveChattanooga, TN 37421",
+    "gender":"",
+    "age":null,
     "__v": 0
   },
   "participants": [
@@ -1122,7 +1129,7 @@
             "state": "STARTED",
             "active": true
           },
-          "replyToMessageId":"7a1120f8-3235-884f8558ae0"
+          "replyToMessageId": "7a1120f8-3235-884f8558ae0"
         },
         "body": {
           "type": "PLAIN",
@@ -1256,7 +1263,7 @@
           "timestamp": 1636360718624,
           "securityInfo": {},
           "stamps": [],
-          "replyToMessageId":"888336cc-f021-4103-bbfd-01bf913e941f",
+          "replyToMessageId": "888336cc-f021-4103-bbfd-01bf913e941f",
           "intent": null,
           "entities": {},
           "channelSession": {
@@ -1487,7 +1494,7 @@
           "timestamp": 1636360718624,
           "securityInfo": {},
           "stamps": [],
-          "replyToMessageId":"4515b200-406f-11ec-b464-a52108c6c",
+          "replyToMessageId": "4515b200-406f-11ec-b464-a52108c6c",
           "intent": null,
           "entities": {},
           "channelSession": {
@@ -1718,7 +1725,7 @@
           "timestamp": 1636360721224,
           "securityInfo": {},
           "stamps": [],
-          "replyToMessageId":"46a26c80-406f-11ec-512121214-a55184008c6c",
+          "replyToMessageId": "46a26c80-406f-11ec-512121214-a55184008c6c",
           "intent": null,
           "entities": {},
           "channelSession": {
@@ -3712,7 +3719,6 @@
     {
       "id": "1ed1c1af-4f8f-417c-be0a-5e3d804b518f",
       "name": "CUSTOMER_MESSAGE",
-
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:33.219+00:00",
       "data": {
@@ -4061,14 +4067,14 @@
             },
             "customerSuggestions": [
               {
-                "id":"71a99b10-6838-4f63-b007-2dc3880ecd61",
-                "firstName":"mark",
-                "isAnonymous":false
+                "id": "71a99b10-6838-4f63-b007-2dc3880ecd61",
+                "firstName": "mark",
+                "isAnonymous": false
               },
               {
-                "id":"71a99b10-6838-4f63-b007-2dc3880ecd62",
-                "firstName":"suzen",
-                "isAnonymous":false
+                "id": "71a99b10-6838-4f63-b007-2dc3880ecd62",
+                "firstName": "suzen",
+                "isAnonymous": false
               }
             ],
             "channelData": {
@@ -5665,7 +5671,6 @@
         }
       }
     },
-
     {
       "id": "1ed1c1af-4f8f-417c-be0a-5e3d804b518f",
       "name": "CUSTOMER_MESSAGE",
@@ -6649,14 +6654,14 @@
   ],
   "customerSuggestions": [
     {
-      "id":"71a99b10-6838-4f63-b007-2dc3880ecd61",
-      "firstName":"mark",
-      "isAnonymous":false
+      "id": "71a99b10-6838-4f63-b007-2dc3880ecd61",
+      "firstName": "mark",
+      "isAnonymous": false
     },
     {
-      "id":"71a99b10-6838-4f63-b007-2dc3880ecd62",
-      "firstName":"suzen",
-      "isAnonymous":false
+      "id": "71a99b10-6838-4f63-b007-2dc3880ecd62",
+      "firstName": "suzen",
+      "isAnonymous": false
     }
   ],
   "topicParticipant": {
