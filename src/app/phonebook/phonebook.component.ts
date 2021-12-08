@@ -86,11 +86,10 @@ export class PhonebookComponent implements OnInit {
   getUserPreference(limit, offSet, sort, query) {
     this._httpService.getUserPreference(this._cacheService.agent.id).subscribe((res) => {
       if (res.docs.length > 0) this.cols = res.docs[0].columns;
-      console.log("col==>", this.cols);
+      // console.log("col==>", this.cols);
       this._httpService.getCustomers(limit, offSet, sort, query).subscribe((e) => {
         this.rows = e.docs;
         this.totalRecords = e.totalDocs;
-        // console.log("dssds==",this.totalRecords)
         // this.loadLabels();
       });
     });
@@ -189,9 +188,10 @@ export class PhonebookComponent implements OnInit {
   onRowClick(id, tab, col) {
     const dialogRef = this.dialog.open(CustomerActionsComponent, {
       panelClass: "inline-editing",
-      maxWidth: "848px",
+      maxWidth: "58vw",
       maxHeight: "88vh",
-      minHeight: "25vh",
+      width: "818px",
+      // height: "88vh",
       data: { id: id, tab: tab }
     });
     dialogRef.afterClosed().subscribe((result: any) => {

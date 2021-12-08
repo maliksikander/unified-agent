@@ -2813,3 +2813,9 @@ color: $main-color;
 
   }
 }
+
+.ui-table .ui-paginator-bottom {
+  // overflow: auto;
+  max-width: calc(100% - 30px);
+  margin-left: 15px
+}

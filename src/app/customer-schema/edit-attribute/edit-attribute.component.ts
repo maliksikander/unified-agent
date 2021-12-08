@@ -13,19 +13,7 @@ import { sharedService } from "src/app/services/shared.service";
 })
 export class EditAttributeComponent implements OnInit {
   attributeTypes: Array<any> = [];
-  // columnTypeControllar = this.data.attribute.type.toLowerCase();
-  // mandatory: boolean = this.data.attribute.is_required;
-  // channelIden: boolean = this.data.attribute.is_channel_identifier;
-
-  // textLength = new FormControl(this.data.attribute.characters, []);
-  // label = new FormControl({ value: this.data.attribute.label, disabled: true });
-  // desc = new FormControl(this.data.attribute.desc, [Validators.maxLength(100)]);
-  // selectChannel = new FormControl(this.data.attribute.channels);
-  // channelList: string[] = ["WEB", "FACEBOOK", "WHATSAPP", "VIBER", "SMS", "GENERIC"];
   channelTypeList: any[] = [];
-
-  // defaultValue = new FormControl("", [Validators.required, Validators.maxLength(50), Validators.minLength(1)]);
-
   editAttributeForm: FormGroup;
 
   constructor(
@@ -35,7 +23,6 @@ export class EditAttributeComponent implements OnInit {
     public dialogRef: MatDialogRef<EditAttributeComponent>,
     private formBuilder: FormBuilder,
     private cd: ChangeDetectorRef,
-    private _appConfigService: appConfigService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
@@ -53,7 +40,6 @@ export class EditAttributeComponent implements OnInit {
       channelTypes: []
     });
 
-    // console.log("data==>", this.data);
     this.channelTypeList = this._sharedService.channelTypeList;
     this.getAttributeTypes();
   }
@@ -102,7 +88,7 @@ export class EditAttributeComponent implements OnInit {
     let length = schemaObj.length ? schemaObj.length : 50;
     let typeDef = this.attributeTypes.find((item) => item.type == e.value);
     let validatorArray: Array<any> = [Validators.required, Validators.pattern(typeDef.regex), Validators.maxLength(length)];
-    if (e.value != "String") validatorArray.pop();
+    if (e.value != "string") validatorArray.pop();
     this.editAttributeForm.controls["defaultValue"].setValidators(validatorArray);
 
     this.cd.detectChanges();
@@ -134,7 +120,7 @@ export class EditAttributeComponent implements OnInit {
   onLengthChange() {
     let value = this.editAttributeForm.value.length;
     if (value && value != null) {
-      this.onTypeChange({ value: "String" });
+      this.onTypeChange({ value: "string" });
       let def = this.editAttributeForm.value.defaultValue;
       this.editAttributeForm.get("defaultValue").setValue(def);
     }

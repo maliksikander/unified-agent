@@ -13,6 +13,16 @@ import { ConfirmationDialogComponent } from "../new-components/confirmation-dial
   styleUrls: ["./customer-actions.component.scss"]
 })
 export class CustomerActionsComponent implements OnInit {
+  formValidation = {};
+  attributeTypes: any[] = [];
+  userInfo;
+  schemaAttributes;
+  editCustomerForm: FormGroup;
+  userIni: boolean = false;
+  schemaIni: boolean = false;
+  editTab: boolean = false;
+  // editActiveMode: boolean = true;
+
   constructor(
     private _httpService: httpService,
     private dateAdapter: DateAdapter<any>,
@@ -28,107 +38,133 @@ export class CustomerActionsComponent implements OnInit {
     this.dateAdapter.setLocale("en-GB");
   }
 
-  userInfo;
-  schemaAttributes;
-  myGroup: FormGroup;
-  userIni: boolean = false;
-  schemaIni: boolean = false;
-  editTab: boolean = false;
-  editActiveMode: boolean = true;
-  selectedUserNumbers = [];
-  phoneControl = new FormControl("", [Validators.required]);
-  smsControl = new FormControl("", [Validators.required]);
+  // selectedUserNumbers = [];
+  // phoneControl = new FormControl("", [Validators.required]);
+  // smsControl = new FormControl("", [Validators.required]);
 
-  customerLabels = [];
-  labels = [];
-  labelSettings = {
-    singleSelection: false,
-    text: "",
-    filterSelectAllText: "Select All",
-    filterUnSelectAllText: "Unselect All",
-    searchPlaceholderText: "Search",
-    selectAllText: "Select All",
-    unSelectAllText: "Unselect All",
-    noDataLabel: "No Data available",
-    enableSearchFilter: true,
-    addNewItemOnFilter: true,
-    primaryKey: "_id"
-  };
+  // customerLabels = [];
+  // labels = [];
+  // labelSettings = {
+  //   singleSelection: false,
+  //   text: "",
+  //   filterSelectAllText: "Select All",
+  //   filterUnSelectAllText: "Unselect All",
+  //   searchPlaceholderText: "Search",
+  //   selectAllText: "Select All",
+  //   unSelectAllText: "Unselect All",
+  //   noDataLabel: "No Data available",
+  //   enableSearchFilter: true,
+  //   addNewItemOnFilter: true,
+  //   primaryKey: "_id"
+  // };
 
   ngOnInit() {
-    const formGroup = {};
+    this.editCustomerForm = new FormGroup({});
 
-    this.myGroup = new FormGroup({});
+    // let query = { field: "_id", value: this.data.id };
+    console.log("data==>", this.data);
+    this.getCustomerByID();
+  }
 
-    let query = { field: "_id", value: this.data.id };
-
-    this._httpService.getCustomerById(this.data.id).subscribe((e) => {
-      console.log("userid ", e);
-      this.userInfo = e.data;
+  getCustomerByID() {
+    this._httpService.getCustomerById(this.data.id).subscribe((res) => {
+      console.log("customer==>", res);
+      this.userInfo = res;
       this.userIni = true;
+      this.getCustomerSchema();
+    });
+  }
 
-      this._httpService.getCustomerSchema().subscribe((ee) => {
-        this.schemaAttributes = ee.data.sort((a, b) => {
-          return a.sort_order - b.sort_order;
-        });
+  getCustomerSchema() {
+    this._httpService.getCustomerSchema().subscribe((ee) => {
+      this.schemaAttributes = ee.sort((a, b) => {
+        return a.sort_order - b.sort_order;
+      });
+      this.getAttributeTypes();
+    });
+  }
 
-        this.schemaIni = true;
-        let urlReg = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/;
-
-        this._httpService.getLabels().subscribe((e) => {
-          this.labels = e.data;
-          this.fetchCustomerLabels();
-        });
-
-        this.schemaAttributes.filter((a) => {
-          formGroup[a.key] = new FormControl({ value: this.userInfo[a.key], disabled: true }, [
-            a.is_required ? Validators.required : Validators.maxLength(2083),
-            a.characters ? Validators.maxLength(a.characters) : Validators.maxLength(2083),
-            a.type == "email" ? Validators.email : Validators.maxLength(2083),
-            a.type == "phone" ? Validators.pattern("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$") : Validators.maxLength(2083),
-            a.type == "number" ? Validators.pattern("^[0-9]*$") : Validators.maxLength(2083),
-            a.type == "alphanumeric" ? Validators.pattern("^[a-zA-Z0-9- _]*$") : Validators.maxLength(2083),
-            a.type == "alphanumeric_special_character"
-              ? Validators.pattern("^[a-zA-Z0-9,  _ @ . : = * % ; $ # ! + / & -]*$")
-              : Validators.maxLength(2083),
-            a.type == "decimal" ? Validators.pattern("^[+-]?([0-9]+.?[0-9]*|.[0-9]+)$") : Validators.maxLength(2083),
-            a.type == "url" ? Validators.pattern(urlReg) : Validators.maxLength(2083)
-          ]);
-        });
-
-        this.myGroup = new FormGroup(formGroup);
-
+  // to get attribute type list
+  getAttributeTypes() {
+    this._httpService.getSchemaTypes().subscribe(
+      (res) => {
+        this.attributeTypes = res;
+        this.formValidation = this.convertArrayToObject(this.attributeTypes, "type");
+        this.addFormControls(this.schemaAttributes);
+        console.log("tab==>", this.data);
         if (this.data.tab == null) {
-          this.editTab = true;
+          this.editTab = false;
         } else {
           if (this.data.tab == "edit") {
             this.editTab = true;
-            this.editActiveMode = false;
+            // this.editActiveMode = false;
             this.schemaAttributes.filter((e) => {
               //  if (e.key != "createdBy" && e.key != "updatedBy") {
-              this.myGroup.get(e.key).enable();
+              this.editCustomerForm.get(e.key).enable();
               // }
             });
           }
         }
-      });
-    });
+        this.schemaIni = true;
+      },
+      (error) => {
+        this._sharedService.Interceptor(error.error, "err");
+      }
+    );
   }
 
-  fetchCustomerLabels() {
-    this.userInfo.labels.filter((id) => {
-      this.labels.filter((label) => {
-        if (label._id == id) {
-          this.customerLabels.push(label);
+  // to convert an array of objects to an object of objects
+  convertArrayToObject(array, key) {
+    try {
+      const initialValue = {};
+      return array.reduce((obj, item) => {
+        return {
+          ...obj,
+          [item[key]]: item
+        };
+      }, initialValue);
+    } catch (e) {
+      console.error("Error in converting array to object method :", e);
+    }
+  }
+
+  // adding forms controls to existing form group using attributes in from schema as `attrSchema` parameter
+  addFormControls(attrSchema: Array<any>) {
+    try {
+      attrSchema.forEach((item) => {
+        let validatorArray: any = this.addFormValidations(item);
+        this.editCustomerForm.addControl(item.key, new FormControl(this.userInfo[item.key] ? this.userInfo[item.key] : "", validatorArray));
+        if (item.type == "boolean" && item.defaultValue == "") {
+          this.editCustomerForm.controls[item.key].setValue(this.userInfo[item.key]);
         }
       });
-    });
-
-    this.myGroup.get("labels").patchValue(this.customerLabels);
+      console.log("control==>", this.editCustomerForm.controls);
+    } catch (e) {
+      console.error("Error in add form control :", e);
+    }
   }
 
-  saveData(customerObj) {
-    customerObj = this.fetchTheIdsOfLabels(customerObj);
+  // creating validation definitions for form controls, using provider schema attribute as parameter
+  addFormValidations(item) {
+    try {
+      let temp = [];
+      let maxVal = 2147483647;
+      let minVal = -2147483647;
+      if (item.isRequired) temp.push(Validators.required);
+      temp.push(Validators.pattern(this.formValidation[item.type].regex));
+      if (item.valueType == "Number") {
+        temp.push(Validators.max(maxVal));
+        temp.push(Validators.min(minVal));
+      }
+      return temp;
+    } catch (e) {
+      console.error("Error in add validion method :", e);
+    }
+  }
+
+  saveData() {
+    let customerObj = this.editCustomerForm.value;
+    // customerObj = this.fetchTheIdsOfLabels(customerObj);
     customerObj["updatedBy"] = this._cacheService.agent.username;
     console.log("customerObj ", customerObj);
     this._httpService.updateCustomerById(this.data.id, customerObj).subscribe(
@@ -142,45 +178,31 @@ export class CustomerActionsComponent implements OnInit {
     );
   }
 
-  fetchTheIdsOfLabels(obj) {
-    let ids = [];
-    if (obj.labels[0]) {
-      obj.labels.filter((e) => {
-        ids.push(e._id);
-      });
-    }
-    obj.labels = ids;
-    return obj;
-  }
-
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   editClick() {
     this.editTab = true;
-    this.editActiveMode = !this.editActiveMode;
-    if (!this.editActiveMode) {
-      this.schemaAttributes.filter((e) => {
-        // if (e.key != "createdBy" && e.key != "updatedBy") {
-        this.myGroup.get(e.key).enable();
-        // }
-      });
-    }
-    if (this.editActiveMode) {
-      this.schemaAttributes.filter((e) => {
-        this.myGroup.get(e.key).disable();
-      });
-    }
+    // this.editTab = !this.editTab;
+    // if (this.editTab) {
+    this.schemaAttributes.filter((e) => {
+      this.editCustomerForm.get(e.key).enable();
+    });
+    // } else {
+    // this.schemaAttributes.filter((e) => {
+    // this.editCustomerForm.get(e.key).disable();
+    // });
+    // }
   }
 
-  checkType(label) {
-    if (label == "Label12") {
-      return "textarea";
-    } else {
-      return "text";
-    }
-  }
+  // checkType(label) {
+  //   if (label == "Label12") {
+  //     return "textarea";
+  //   } else {
+  //     return "text";
+  //   }
+  // }
 
   gotoInteractions() {
     this.onNoClick();
@@ -189,7 +211,7 @@ export class CustomerActionsComponent implements OnInit {
     this._router.navigate(["interactions", this.userInfo._id]);
   }
 
-  deleteCUstomer() {
+  deleteCustomer() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: "490px",
       panelClass: "confirm-dialog",
@@ -220,52 +242,74 @@ export class CustomerActionsComponent implements OnInit {
     }
   }
 
-  onAddItem(data) {
-    this._httpService.getLabels().subscribe((e) => {
-      let duplicate: boolean = false;
-      e.data.find((label) => {
-        if (label.name == data) {
-          duplicate = true;
-        }
-      });
-      if (duplicate) {
-        this._sharedService.snackErrorMessage("Name already exists");
-      } else if (data.length > 100) {
-        this._sharedService.snackErrorMessage("Max length is 100");
-      } else {
-        let obj = {
-          name: data,
-          created_by: this._cacheService.agent.username,
-          color_code: "#a9a9a9"
-        };
-        this._httpService.createLabel(obj).subscribe(
-          (e) => {
-            this._httpService.getLabels().subscribe((ee) => {
-              this.labels = ee.data;
-              this.customerLabels.push(e.data);
-              this.myGroup.get("labels").patchValue(this.customerLabels);
-              this._sharedService.serviceChangeMessage({ msg: "update-labels", data: null });
-            });
-          },
-          (error) => {
-            this._sharedService.Interceptor(error.error, "err");
-          }
-        );
-      }
-    });
-  }
-
   validateForm() {
-    let a = this.myGroup.controls;
+    let a = this.editCustomerForm.controls;
     for (let key in a) {
-      this.myGroup.get(key).markAsTouched();
+      this.editCustomerForm.get(key).markAsTouched();
     }
-    console.log(this.myGroup);
+    console.log("validate form", this.editCustomerForm);
   }
 
-  save(a) {}
-  onItemSelect(item: any) {}
-  OnItemDeSelect(item: any) {}
-  onSelectAll(items: any) {}
-  onDeSelectAll(items: any) {}
+  // save(a) {}
+  // onItemSelect(item: any) {}
+  // OnItemDeSelect(item: any) {}
+  // onSelectAll(items: any) {}
+  // onDeSelectAll(items: any) {}
+
+  // onAddItem(data) {
+  //   this._httpService.getLabels().subscribe((e) => {
+  //     let duplicate: boolean = false;
+  //     e.data.find((label) => {
+  //       if (label.name == data) {
+  //         duplicate = true;
+  //       }
+  //     });
+  //     if (duplicate) {
+  //       this._sharedService.snackErrorMessage("Name already exists");
+  //     } else if (data.length > 100) {
+  //       this._sharedService.snackErrorMessage("Max length is 100");
+  //     } else {
+  //       let obj = {
+  //         name: data,
+  //         created_by: this._cacheService.agent.username,
+  //         color_code: "#a9a9a9"
+  //       };
+  //       this._httpService.createLabel(obj).subscribe(
+  //         (e) => {
+  //           this._httpService.getLabels().subscribe((ee) => {
+  //             this.labels = ee.data;
+  //             this.customerLabels.push(e.data);
+  //             this.editCustomerForm.get("labels").patchValue(this.customerLabels);
+  //             this._sharedService.serviceChangeMessage({ msg: "update-labels", data: null });
+  //           });
+  //         },
+  //         (error) => {
+  //           this._sharedService.Interceptor(error.error, "err");
+  //         }
+  //       );
+  //     }
+  //   });
+  // }
+  // fetchTheIdsOfLabels(obj) {
+  //   let ids = [];
+  //   if (obj.labels[0]) {
+  //     obj.labels.filter((e) => {
+  //       ids.push(e._id);
+  //     });
+  //   }
+  //   obj.labels = ids;
+  //   return obj;
+  // }
+
+  // fetchCustomerLabels() {
+  //   this.userInfo.labels.filter((id) => {
+  //     this.labels.filter((label) => {
+  //       if (label._id == id) {
+  //         this.customerLabels.push(label);
+  //       }
+  //     });
+  //   });
+
+  //   this.editCustomerForm.get("labels").patchValue(this.customerLabels);
+  // }
 }

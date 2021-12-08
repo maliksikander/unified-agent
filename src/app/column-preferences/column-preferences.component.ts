@@ -34,7 +34,9 @@ export class columnPreferences implements OnInit {
 
   getCustomerSchema() {
     this._httpService.getCustomerSchema().subscribe((res) => {
-      this.columns = res.sort((a, b) => {
+      let temp = res.filter((item) => item.key != "isAnonymous");
+
+      this.columns = temp.sort((a, b) => {
         return a.sortOrder - b.sortOrder;
       });
 

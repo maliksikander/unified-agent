@@ -17,6 +17,7 @@ export class SchemaSettingsComponent implements OnInit {
   schema2;
   showDetails: boolean = false;
   divId;
+  isAnonymousObject;
 
   constructor(
     private _sharedService: sharedService,
@@ -43,9 +44,12 @@ export class SchemaSettingsComponent implements OnInit {
   loadSchemas(orderChangeCheck) {
     this._httpService.getCustomerSchema().subscribe(
       (res) => {
-        this.schema1 = res.sort((a, b) => {
+        let temp = res.filter((item) => item.key != "isAnonymous");
+        this.isAnonymousObject = res.filter((item) => item.key == "isAnonymous");
+        this.schema1 = temp.sort((a, b) => {
           return a.sortOrder - b.sortOrder;
         });
+
         let n = this.schema1.length / 2;
 
         this.schema2 = this.schema1.splice(0, n);
@@ -60,22 +64,33 @@ export class SchemaSettingsComponent implements OnInit {
 
   // to save the updated the attribute schema order
   changeOrder(orderChangeCheck) {
-    let finalSchema = [];
-    let i = 1;
+    try {
+      let finalSchema = [];
+      let i = 1;
+      let list1 = JSON.parse(JSON.stringify(this.schema1));
+      let list2 = JSON.parse(JSON.stringify(this.schema2));
+      list2.forEach((e) => {
+        finalSchema.push(e);
+      });
 
-    this.schema2.forEach((e) => {
-      finalSchema.push(e);
-    });
+      list1.forEach((e) => {
+        finalSchema.push(e);
+      });
 
-    this.schema1.forEach((e) => {
-      finalSchema.push(e);
-    });
+      finalSchema.push(this.isAnonymousObject[0]);
 
-    finalSchema.forEach((item) => {
-      item["sortOrder"] = i++;
-      delete item._id;
-    });
+      finalSchema.forEach((item) => {
+        item["sortOrder"] = i++;
+        delete item._id;
+      });
 
+      this.saveOrder(orderChangeCheck, finalSchema);
+    } catch (e) {
+      console.error("Change Order Error:", e);
+    }
+  }
+
+  saveOrder(orderChangeCheck, finalSchema) {
     this._httpService.changeCustomerSchemaOrder(finalSchema).subscribe(
       (e) => {
         if (orderChangeCheck != "delete") this._sharedService.Interceptor("SORT ORDER UPDATED SUCCESSFULLY", "succ");
@@ -88,7 +103,6 @@ export class SchemaSettingsComponent implements OnInit {
   }
 
   edit(attribute) {
-    // console.log("attr ", attribute);
     const dialogRef = this.dialog.open(EditAttributeComponent, {
       width: "815px",
       minHeight: "225px",

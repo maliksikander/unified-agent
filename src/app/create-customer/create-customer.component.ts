@@ -78,7 +78,7 @@ export class CreateCustomerComponent implements OnInit {
       attrSchema.forEach((item) => {
         let validatorArray: any = this.addFormValidations(item);
         this.customerForm.addControl(item.key, new FormControl(item.defaultValue ? item.defaultValue : "", validatorArray));
-        if (item.type == "Boolean" && item.defaultValue == "") {
+        if (item.type == "boolean" && item.defaultValue == "") {
           this.customerForm.controls[item.key].setValue(item.defaultValue);
         }
       });

@@ -12,14 +12,14 @@
     <div class="row">
       <ng-container *ngFor="let schemaAttribute of schemaAttributes">
         <div [ngClass]="[schemaAttribute.length >= 116 ? 'col-md-12':  'col-md-6' ]"
-          [class.check-box-field]="schemaAttribute.type == 'Boolean'">
+          [class.check-box-field]="schemaAttribute.type == 'boolean'">
 
           <div class="input-field">
 
             <!-- AlphaNumeric | URL | Number | PhoneNumber | Email | String | Password | IP | Name -->
 
             <!-- For Character length less than equal to 115  -->
-            <div class="field-set" *ngIf="schemaAttribute.type != 'Boolean'">
+            <div class="field-set" *ngIf="schemaAttribute.type != 'boolean'">
               <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
                   *ngIf="schemaAttribute.isRequired">*</span>
                 <span *ngIf="schemaAttribute.isChannelIdentifier == true" class="field-channel"><img
@@ -51,7 +51,7 @@
             </div>
 
             <!-- For type 'String' and character length greater than equal to 116  -->
-            <div class="field-set" *ngIf=" schemaAttribute.type == 'String'  && schemaAttribute.length >= 116">
+            <div class="field-set" *ngIf=" schemaAttribute.type == 'string'  && schemaAttribute.length >= 116">
               <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
                   *ngIf="schemaAttribute.isRequired">*</span>
               </label>
@@ -75,7 +75,7 @@
 
             <!-- Boolean -->
 
-            <div class="field-set" *ngIf="schemaAttribute.type == 'Boolean'" class="check-box">
+            <div class="field-set" *ngIf="schemaAttribute.type == 'boolean'" class="check-box">
               <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
                   *ngIf="schemaAttribute.isRequired">*</span></label>
               <mat-checkbox color="primary" formControlName="{{schemaAttribute.key}}" matInput></mat-checkbox>

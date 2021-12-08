@@ -16,11 +16,7 @@ import { Item } from "angular2-multiselect-dropdown";
 export class CreateAttributeComponent implements OnInit {
   attributeTypes: Array<any> = [];
   channelIden: boolean = false;
-  // selectedChannel;
   createAttributeForm: FormGroup;
-
-  // selectChannel = new FormControl();
-  // channelList: string[] = ["WEB", "FACEBOOK", "WHATSAPP", "VIBER", "SMS", "GENERIC"];
   channelTypeList: any[] = [];
 
   constructor(
@@ -58,7 +54,7 @@ export class CreateAttributeComponent implements OnInit {
     this._httpService.getSchemaTypes().subscribe(
       (res) => {
         this.attributeTypes = res;
-        this.createAttributeForm.controls["type"].setValue("String");
+        this.createAttributeForm.controls["type"].setValue("string");
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -105,7 +101,7 @@ export class CreateAttributeComponent implements OnInit {
     let length = schemaObj.length ? schemaObj.length : 50;
     let typeDef = this.attributeTypes.find((item) => item.type == e.value);
     let validatorArray: Array<any> = [Validators.required, Validators.pattern(typeDef.regex), Validators.maxLength(length)];
-    if (e.value != "String") validatorArray.pop();
+    if (e.value != "string") validatorArray.pop();
     this.createAttributeForm.controls["defaultValue"].setValidators(validatorArray);
 
     this.cd.detectChanges();
@@ -151,7 +147,7 @@ export class CreateAttributeComponent implements OnInit {
   onLengthChange() {
     let value = this.createAttributeForm.value.length;
     if (value && value != null) {
-      this.onTypeChange({ value: "String" });
+      this.onTypeChange({ value: "string" });
       let def = this.createAttributeForm.value.defaultValue;
       this.createAttributeForm.get("defaultValue").setValue(def);
     }
