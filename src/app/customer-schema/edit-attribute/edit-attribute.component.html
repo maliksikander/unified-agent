@@ -64,7 +64,7 @@
             </mat-error>
             <mat-error
               *ngIf="editAttributeForm.get('length')?.errors?.min || editAttributeForm.get('length')?.errors?.max">
-              *Length should be between 1 - 1000
+              *Number should be between 1 - 1000
             </mat-error>
             <mat-error *ngIf="editAttributeForm.get('length')?.errors?.pattern">
               *Must Enter a Numeric Value
@@ -89,7 +89,7 @@
             </mat-error>
             <mat-error
               *ngIf="editAttributeForm.get('defaultValue')?.errors?.minLength || editAttributeForm.get('defaultValue')?.errors?.maxLength">
-              *Length should be according to the given length
+              *Length should be according to the given limit
             </mat-error>
             <mat-error *ngIf="editAttributeForm.get('defaultValue')?.errors?.pattern">
               *Value does not match the selected type format

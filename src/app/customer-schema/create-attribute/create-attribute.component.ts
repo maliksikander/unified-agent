@@ -1,12 +1,10 @@
 import { Component, OnInit, Inject, ChangeDetectorRef } from "@angular/core";
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatDialog } from "@angular/material";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from "@angular/material";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AbstractControl } from "@angular/forms";
 import { map } from "rxjs/operators";
 import { httpService } from "src/app/services/http.service";
 import { sharedService } from "src/app/services/shared.service";
-import { appConfigService } from "src/app/services/appConfig.service";
-import { Item } from "angular2-multiselect-dropdown";
 
 @Component({
   selector: "app-create-attribute",
@@ -22,7 +20,6 @@ export class CreateAttributeComponent implements OnInit {
   constructor(
     private _sharedService: sharedService,
     private _httpService: httpService,
-    private _appConfigService: appConfigService,
     public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<CreateAttributeComponent>,
     private formBuilder: FormBuilder,
@@ -46,7 +43,6 @@ export class CreateAttributeComponent implements OnInit {
 
     this.channelTypeList = this._sharedService.channelTypeList;
     this.getAttributeTypes();
-    // this.getChannelTypes();
   }
 
   // to get attribute type list
@@ -103,6 +99,11 @@ export class CreateAttributeComponent implements OnInit {
     let validatorArray: Array<any> = [Validators.required, Validators.pattern(typeDef.regex), Validators.maxLength(length)];
     if (e.value != "string") validatorArray.pop();
     this.createAttributeForm.controls["defaultValue"].setValidators(validatorArray);
+
+    if (e.value == "number" || e.value == "password" || e.value == "name" || e.value == "boolean" || e.value == "url") {
+      this.createAttributeForm.controls["isChannelIdentifier"].setValue(false);
+      this.createAttributeForm.controls["channelTypes"].setValue([])
+    }
 
     this.cd.detectChanges();
   }

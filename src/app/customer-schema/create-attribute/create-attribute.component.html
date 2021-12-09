@@ -47,7 +47,7 @@
             <mat-form-field appearance="outline">
               <mat-select formControlName="type" (selectionChange)="onTypeChange($event)">
                 <mat-option *ngFor="let attributeType of attributeTypes" [value]="attributeType.type">
-                  {{attributeType.type}}</mat-option>
+                  {{attributeType.type | titlecase}}</mat-option>
               </mat-select>
               <mat-error *ngIf="createAttributeForm.get('type')?.errors?.required">
                 *Field is required
@@ -65,7 +65,7 @@
             </mat-error>
             <mat-error
               *ngIf="createAttributeForm.get('length')?.errors?.min || createAttributeForm.get('length')?.errors?.max">
-              *Length should be between 1 - 1000
+              *Value should be between 1 - 1000
             </mat-error>
             <mat-error *ngIf="createAttributeForm.get('length')?.errors?.pattern">
               *Must Enter a Numeric Value
@@ -88,7 +88,7 @@
             </mat-error>
             <mat-error
               *ngIf="createAttributeForm.get('defaultValue')?.errors?.minLength || createAttributeForm.get('defaultValue')?.errors?.maxLength">
-              *Length should be according to the given length
+              *Length should be according to the given limit
             </mat-error>
             <mat-error *ngIf="createAttributeForm.get('defaultValue')?.errors?.pattern">
               *Value does not match the selected type format
@@ -119,10 +119,12 @@
     <div class="footer">
 
       <div class="footer-actions row m-0">
-        <div class="check-box channel-identifier form-group">
+        <div class="check-box channel-identifier form-group"
+          *ngIf="createAttributeForm.value.type != 'number' && createAttributeForm.value.type != 'password' && createAttributeForm.value.type != 'name' && createAttributeForm.value.type != 'boolean' && createAttributeForm.value.type != 'url'">
           <label>Channel Identifier</label>
           <mat-checkbox (change)="onChannelIdentifierChange($event)" formControlName="isChannelIdentifier"
-            color="primary">Yes</mat-checkbox>
+            color="primary">Yes
+          </mat-checkbox>
         </div>
 
         <div *ngIf="createAttributeForm.value.isChannelIdentifier" class="form-group label-name select-channel pr-2">

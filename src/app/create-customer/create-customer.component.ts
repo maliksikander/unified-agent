@@ -1,9 +1,8 @@
 import { Component, OnInit, Inject, ChangeDetectorRef } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, DateAdapter } from "@angular/material";
-import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, FormArray } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from "@angular/forms";
 import { httpService } from "../services/http.service";
 import { sharedService } from "../services/shared.service";
-import { appConfigService } from "../services/appConfig.service";
 
 @Component({
   selector: "app-create-customer",
@@ -23,8 +22,7 @@ export class CreateCustomerComponent implements OnInit {
     private fb: FormBuilder,
     private _httpService: httpService,
     private _sharedService: sharedService,
-    private cd: ChangeDetectorRef,
-    private _appConfigService: appConfigService
+    private cd: ChangeDetectorRef
   ) {
     dialogRef.disableClose = true;
     this.dateAdapter.setLocale("en-GB");
@@ -53,8 +51,6 @@ export class CreateCustomerComponent implements OnInit {
   };
 
   ngOnInit() {
-    // const formGroup = {};
-
     this.customerForm = new FormGroup({});
 
     this.getCustomerSchema();
@@ -79,18 +75,16 @@ export class CreateCustomerComponent implements OnInit {
     try {
       attrSchema.forEach((item) => {
         let validatorArray: any = this.addFormValidations(item);
-        if(item.isChannelIdentifier == false){
+        if (item.isChannelIdentifier == false) {
           this.customerForm.addControl(item.key, new FormControl(item.defaultValue ? item.defaultValue : "", validatorArray));
-        }
-        else{
-          // let value = new FormControl("");
-          // this.customerForm.addControl(item.key, new FormArray(value));
+        } else {
+          this.customerForm.addControl(item.key, this.fb.array([new FormControl(item.defaultValue ? item.defaultValue : "", validatorArray)]));
         }
         if (item.type == "boolean" && item.defaultValue == "") {
           this.customerForm.controls[item.key].setValue(item.defaultValue);
         }
       });
-      console.log("control==>", this.customerForm.controls);
+      // console.log("control==>", this.customerForm.controls);
     } catch (e) {
       console.error("Error in add form control :", e);
     }
@@ -135,10 +129,10 @@ export class CreateCustomerComponent implements OnInit {
 
   getChannelTypeLogo(typeName) {
     let typeIndex = this.channelTypeList.findIndex((item) => item.name === typeName);
-    if (typeIndex == -1) return null;
+    if (typeIndex == -1) return "";
     let channelType = this.channelTypeList[typeIndex];
     let filename = channelType.channelLogo;
-    return `${this._appConfigService.config.FILE_SERVER_URL}/file-engine/api/downloadFileStream?filename=${filename}`;
+    return filename;
   }
 
   // to convert an array of objects to an object of objects
@@ -156,33 +150,46 @@ export class CreateCustomerComponent implements OnInit {
     }
   }
 
-  onSave() {}
+  getFormControls(attribute) {
+    let temp: any = this.customerForm.controls[attribute.key];
+    return temp.controls;
+  }
+
+  onAddFormControl(attribute) {
+    let validatorArray: any = this.addFormValidations(attribute);
+    (<FormArray>this.customerForm.controls[attribute.key]).push(new FormControl("", validatorArray));
+  }
+
+  onRemoveFormControl(attribute, i) {
+    const control: any = this.customerForm.get(attribute.key);
+    control.removeAt(i);
+  }
+
+  onSave() {
+    let data = this.customerForm.value;
+    data.isAnonymous = false;
+    // console.log("save result==>", data);
+    this.createCustomer(data);
+  }
 
   validateForm() {
     let a = this.customerForm.controls;
     for (let key in a) {
       this.customerForm.get(key).markAsTouched();
     }
-    console.log("valdiate result==>", this.customerForm);
+    // console.log("valdiate result==>", this.customerForm);
   }
 
-  saveData() {
-    let data = this.customerForm.value;
-    console.log("save result==>", data);
-    // customerObj = this.fetchTheIdsOfLabels(customerObj);
-    // customerObj["createdBy"] = this._cacheService.agent.username;
-    // customerObj["updatedBy"] = "";
-    // console.log(customerObj);
-
-    // this._httpService.createCustomer(customerObj).subscribe(
-    //   (e) => {
-    //     this.dialogRef.close({ event: "refresh" });
-    //     this._sharedService.Interceptor("Customer added!", "succ");
-    //   },
-    //   (error) => {
-    //     this._sharedService.Interceptor(error.error, "err");
-    //   }
-    // );
+  createCustomer(data) {
+    this._httpService.createCustomer(data).subscribe(
+      (e) => {
+        this.dialogRef.close({ event: "refresh" });
+        this._sharedService.Interceptor("Customer added!", "succ");
+      },
+      (error) => {
+        this._sharedService.Interceptor(error.error, "err");
+      }
+    );
   }
 
   // fetchTheIdsOfLabels(obj) {
@@ -233,15 +240,15 @@ export class CreateCustomerComponent implements OnInit {
   // onSelectAll(items: any) {}
   // onDeSelectAll(items: any) {}
 
-  addPhone(): void {
-    // (this.userForm.get('phones') as FormArray).push(
-    //   this.fb.control(null)
-    // );
-  }
+  // addPhone(): void {
+  //   // (this.userForm.get('phones') as FormArray).push(
+  //   //   this.fb.control(null)
+  //   // );
+  // }
 
-  removePhone() {
-    // (this.userForm.get('phones') as FormArray).removeAt(index);
-  }
+  // removePhone() {
+  //   // (this.userForm.get('phones') as FormArray).removeAt(index);
+  // }
 
   // getPhonesFormControls(): AbstractControl {
   // return (<FormArray> this.userForm.get('phones')).controls
