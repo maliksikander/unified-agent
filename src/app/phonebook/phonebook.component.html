@@ -1,6 +1,6 @@
 <div class="phonebook-main-area">
   <div class="phonebook-main row m-0">
-    <button mat-button routerLink="../chats" class="back-to-chat"></button>
+    <button *ngIf="isEmbededView" mat-button routerLink="/customers/chats" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="back-to-chat"></button>
     <div class="customer-heading col-md-6" [ngClass]="filterQuery.length > 0 ? 'col-sm-12': 'col-sm-1'">
       <!--    <h4>Customer List</h4>-->
       <div class="filter-selection">
@@ -83,7 +83,8 @@
       <!--        <mat-option value="linked">Linked</mat-option>-->
       <!--      </mat-select>-->
       <!--    </mat-form-field>-->
-      <button (click)="createCustomer()" mat-button class="btn-create">Create New Customer</button>
+      <button *ngIf="!isEmbededView" (click)="createCustomer()" mat-button class="btn-create">Create New
+        Customer</button>
       <!--        <button mat-button class="">Close</button>-->
     </div>
   </div>
@@ -106,10 +107,11 @@
   <!--  </ng-template>-->
   <!--</p-table>-->
   <div class="main-table">
-    <p-table #dt [value]="rows" (onColReorder)="onColReorder($event)" [rowsPerPageOptions]=[25,50] [rows]="25" [paginator]="true" [style]="{width:'auto'}" scrollHeight="100%"
-    [rowHover]="true" dataKey="id" (onPage)="onPage($event)" [totalRecords]="totalRecords" [columns]="cols"
-    [showCurrentPageReport]="true" [lazy]="true" [reorderableColumns]="true" [resizableColumns]="true"
-    styleClass="sticky-table" currentPageReportTemplate="Showing {{offSet}} to {{limit}} of {{totalRecords}} entries">
+    <p-table #dt [value]="rows" (onColReorder)="onColReorder($event)" [rowsPerPageOptions]=[25,50] [rows]="25"
+      [paginator]="true" [style]="{width:'auto'}" scrollHeight="100%" [rowHover]="true" dataKey="id"
+      (onPage)="onPage($event)" [totalRecords]="totalRecords" [columns]="cols" [showCurrentPageReport]="true"
+      [lazy]="true" [reorderableColumns]="true" [resizableColumns]="true" styleClass="sticky-table"
+      currentPageReportTemplate="Showing {{offSet}} to {{limit}} of {{totalRecords}} entries">
 
       <ng-template pTemplate="header" let-columns>
 
@@ -119,20 +121,24 @@
             <mat-icon matTooltip="Drag the column" class="drag-icon">more_vert</mat-icon>
             <span class="table-head" matTooltip="{{col.header}}">{{col.header}}</span>
 
-            <span matTooltip="Filter" *ngIf="col.type != 'time'" class="filter-icon k-icon k-i-filter-sm" (click)="setFilter($event,col)">
+            <span matTooltip="Filter" *ngIf="col.type != 'time'" class="filter-icon k-icon k-i-filter-sm"
+              (click)="setFilter($event,col)">
 
             </span>
             <span class="sorting-icons">
-              <span matTooltip="Decending" class="k-icon k-i-sort-desc-sm" [ngClass]="{'color': sortArrowDown && sortField == col.field}"
+              <span matTooltip="Decending" class="k-icon k-i-sort-desc-sm"
+                [ngClass]="{'color': sortArrowDown && sortField == col.field}"
                 (click)="onSort(col.field, 'desc')"></span>
-              <span matTooltip="Ascending" class="k-icon k-i-sort-asc-sm" [ngClass]="{'color': sortArrowUp && sortField == col.field}"
-                (click)="onSort(col.field, 'asc')"></span>
+              <span matTooltip="Ascending" class="k-icon k-i-sort-asc-sm"
+                [ngClass]="{'color': sortArrowUp && sortField == col.field}" (click)="onSort(col.field, 'asc')"></span>
             </span>
 
             <div *ngIf="filterOnOff && filterActiveField == col.field" class="customer-search">
 
               <div *ngIf="col.type == 'date_time'">
-                <input class="filter" [(ngModel)]="filterValue" (keyup.enter)="Cfilter($event.target.value, col.field, col.filterMatchMode)" type="text" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1">
+                <input class="filter" [(ngModel)]="filterValue"
+                  (keyup.enter)="Cfilter($event.target.value, col.field, col.filterMatchMode)" type="text"
+                  [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1">
                 <owl-date-time #dt1></owl-date-time>
                 <div class="close-filter">
                   <mat-icon (click)="cancelFilter()" class="closeIcon">cancel</mat-icon>
@@ -141,7 +147,8 @@
 
               <div *ngIf="col.type == 'date'">
                 <input class="filter" type="text" [(ngModel)]="filterValue"
-                 (keyup.enter)="Cfilter($event.target.value, col.field, col.filterMatchMode)" (click)="picker.open()" [matDatepicker]="picker">
+                  (keyup.enter)="Cfilter($event.target.value, col.field, col.filterMatchMode)" (click)="picker.open()"
+                  [matDatepicker]="picker">
                 <mat-datepicker #picker></mat-datepicker>
                 <mat-icon (click)="cancelFilter()" class="closeIcon">cancel</mat-icon>
               </div>
@@ -149,7 +156,7 @@
 
               <div *ngIf="col.type != 'date_time' && col.type != 'date'">
                 <input class="filter" type="text" [(ngModel)]="filterValue"
-                (keyup.enter)="filter($event.target.value, col.field, col.filterMatchMode)">
+                  (keyup.enter)="filter($event.target.value, col.field, col.filterMatchMode)">
                 <div class="close-filter">
                   <mat-icon (click)="cancelFilter()" class="closeIcon">cancel</mat-icon>
                 </div>
@@ -171,7 +178,8 @@
       <!--    </ng-template>-->
 
       <ng-template let-expanded="expanded" pTemplate="body" let-rowData let-columns="columns">
-        <tr class="slide-in-left main-row" style="cursor: pointer">
+        <tr [ngClass]="{'fusion': rowData._id == topicCustomerId }" class="slide-in-left main-row"
+          style="cursor: pointer">
           <!-- <td *ngFor="let col of columns" class="ui-resizable-column">
             {{rowData[col.field]}}
 
@@ -181,22 +189,22 @@
               <li matTooltip="Product Support" style="background: #536ce8;"></li>
             </ul>
                       <span *ngIf="col.type == 'date_time'">{{rowData[col.field] | date:'M/d/yyyy, h:mm a' }}</span>-->
-            <!--          <span *ngIf="col.type == 'time'">{{rowData[col.field] | date:'shortTime' }}</span>-->
-            <!--          <span *ngIf="col.type == 'date'">{{rowData[col.field] | date:'M/d/yyyy' }}</span>-->
-            <!--          <span-->
-            <!--            *ngIf="col.field != 'firstName' && col.type != 'date' && col.type != 'date_time' && col.type != 'time' ">{{rowData[col.field]}}</span>-->
-            <!--
+          <!--          <span *ngIf="col.type == 'time'">{{rowData[col.field] | date:'shortTime' }}</span>-->
+          <!--          <span *ngIf="col.type == 'date'">{{rowData[col.field] | date:'M/d/yyyy' }}</span>-->
+          <!--          <span-->
+          <!--            *ngIf="col.field != 'firstName' && col.type != 'date' && col.type != 'date_time' && col.type != 'time' ">{{rowData[col.field]}}</span>-->
+          <!--
                <span *ngIf="col.field == 'firstName'"><span>{{rowData[col.field]}}</span>-->
-            <!--            <span *ngIf="labels" (mouseleave)="showLblTooltip = false"-->
-            <!--                  (mouseenter)="showLblTooltip = true ; LblTooltipId = rowData._id" class="lblswithname">-->
-            <!--              <span *ngFor="let lbl of labels | fetchLabels : rowData.labels" [ngStyle]="{'background-color':lbl.color_code}" class="dot"></span>-->
-            <!--            </span>-->
-            <!--          </span>-->
-            <!--          <div class="lbl-tooltip" *ngIf="showLblTooltip && LblTooltipId == rowData._id">-->
-            <!--            <div *ngFor="let lbl of labels | fetchLabels : rowData.labels">-->
-            <!--              <span [ngStyle]="{'background-color':lbl.color_code}" class="dot-in-tool"></span><span>{{lbl.name}}</span>-->
-            <!--            </div>-->
-            <!--          </div>
+          <!--            <span *ngIf="labels" (mouseleave)="showLblTooltip = false"-->
+          <!--                  (mouseenter)="showLblTooltip = true ; LblTooltipId = rowData._id" class="lblswithname">-->
+          <!--              <span *ngFor="let lbl of labels | fetchLabels : rowData.labels" [ngStyle]="{'background-color':lbl.color_code}" class="dot"></span>-->
+          <!--            </span>-->
+          <!--          </span>-->
+          <!--          <div class="lbl-tooltip" *ngIf="showLblTooltip && LblTooltipId == rowData._id">-->
+          <!--            <div *ngFor="let lbl of labels | fetchLabels : rowData.labels">-->
+          <!--              <span [ngStyle]="{'background-color':lbl.color_code}" class="dot-in-tool"></span><span>{{lbl.name}}</span>-->
+          <!--            </div>-->
+          <!--          </div>
           </td> -->
 
 
@@ -209,12 +217,14 @@
             <span *ngIf="col.field == 'firstName'"><span>{{rowData[col.field]}}</span>
               <span *ngIf="labels" (mouseleave)="showLblTooltip = false"
                 (mouseenter)="showLblTooltip = true ; LblTooltipId = rowData._id" class="lblswithname">
-                <span *ngFor="let lbl of labels | fetchLabels : rowData.labels" [ngStyle]="{'background-color':lbl.color_code}" class="dot"></span>
+                <span *ngFor="let lbl of labels | fetchLabels : rowData.labels"
+                  [ngStyle]="{'background-color':lbl.color_code}" class="dot"></span>
               </span>
             </span>
             <div class="lbl-tooltip" *ngIf="showLblTooltip && LblTooltipId == rowData._id">
               <div *ngFor="let lbl of labels | fetchLabels : rowData.labels">
-                <span [ngStyle]="{'background-color':lbl.color_code}" class="dot-in-tool"></span><span>{{lbl.name}}</span>
+                <span [ngStyle]="{'background-color':lbl.color_code}"
+                  class="dot-in-tool"></span><span>{{lbl.name}}</span>
               </div>
             </div>
           </td>
@@ -245,8 +255,9 @@
               class="p-button-rounded p-button-success p-mr-2">
               <mat-icon>edit</mat-icon>
             </button>
-            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning link-btn">
-              <mat-icon>link</mat-icon>
+            <button *ngIf="isEmbededView && rowData._id != topicCustomerId" (click)="linkCustomer(rowData)"
+              class="p-button-rounded p-button-warning link-btn">
+              <mat-icon>insert_link</mat-icon>
             </button>
           </td>
         </tr>

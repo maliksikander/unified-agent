@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from "@angular/core";
 import { MatDialog, MatSidenav } from "@angular/material";
-import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
+// import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { socketService } from "src/app/services/socket.service";
 import { sharedService } from "src/app/services/shared.service";
+import { NavigationExtras, Router } from "@angular/router";
 
 @Component({
   selector: "app-customer-info",
@@ -20,12 +21,12 @@ export class CustomerInfoComponent implements OnInit {
   @Output() expandCustomerInfo = new EventEmitter<any>();
   customerProfileFormData: any;
 
-  customArray = [
-    // 'media_channel',
-    "customer_profile",
-    "active_sessions",
-    "link_profile"
-  ];
+  // customArray = [
+  //   // 'media_channel',
+  //   "customer_profile",
+  //   "active_sessions",
+  //   "link_profile"
+  // ];
   mediaChannelData = [];
 
 
@@ -52,10 +53,10 @@ export class CustomerInfoComponent implements OnInit {
     "Glenn Helgass",
     " Ev Gayforth"
   ];
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
-  }
-  constructor(private _sharedService: sharedService, public _socketService: socketService, private dialog: MatDialog) { }
+  // drop(event: CdkDragDrop<string[]>) {
+  //   moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
+  // }
+  constructor(private _router: Router, private _sharedService: sharedService, public _socketService: socketService, private dialog: MatDialog) { }
 
   ngOnInit() { }
 
@@ -168,8 +169,8 @@ export class CustomerInfoComponent implements OnInit {
           "+988522222210444",
           "222222"
         ],
-        "_id": "61b04796936794395cafc4c9",
-        "firstName": "Shabeer ahmad",
+        "_id": "6107c5ee84ab07647ffa7796",
+        "firstName": "Raza 123",
 
         "webChannelIdentifier": [
           "134",
@@ -184,4 +185,43 @@ export class CustomerInfoComponent implements OnInit {
     }, "12345");
 
   }
+
+  viewAllMatches() {
+
+    let channelType;
+    let channelIdentifier;
+    let attr;
+    this._socketService.conversations.find((e) => {
+
+      if (e.topicId == this.topicId) {
+        channelType = e.firstChannelSession.channel.channelType.name;
+        channelIdentifier = e.firstChannelSession.channelData.channelCustomerIdentifier;
+        return
+      }
+    });
+
+    if (channelType && channelIdentifier) {
+
+      this._sharedService.schema.forEach((e: any) => {
+        if (e.isChannelIdentifier == true) {
+          if (e.channelTypes.includes(channelType)) {
+            attr = e.key;
+          }
+        }
+      });
+    }
+
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        'q': 'linking', 'filterKey': attr ? attr : null,
+        'filterValue': channelIdentifier ? channelIdentifier : null,
+        'topicId': this.topicId,
+        'topicCustomerId': this.customer._id
+      }
+    };
+
+    this._router.navigate(['/customers/phonebook'], navigationExtras);
+
+  }
+
 }

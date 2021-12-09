@@ -36,8 +36,6 @@ export class socketService {
     private ngxService: NgxUiLoaderService
   ) {
     this.onTopicData(mockTopicData, "12345");
-
-
   }
 
   connectToSocket() {
@@ -521,61 +519,66 @@ export class socketService {
 
   async linkCustomerWithTopic(selectedCustomer, topicId) {
 
-    const conversation = this.conversations.find((e) => { return e.topicId == topicId });
-    const topicCustomer = conversation.customer;
-    const channelSession = conversation.firstChannelSession;
+    try {
 
-    if (topicCustomer && channelSession) {
+      const conversation = this.conversations.find((e) => { return e.topicId == topicId });
+      const topicCustomer = conversation.customer;
+      const channelSession = conversation.firstChannelSession;
 
-      const channelType = channelSession.channel.channelType.name;
-      const channelIdentifier = channelSession.channelData.channelCustomerIdentifier;
-      console.log("channelType " + channelType + " channelIdentifier " + channelIdentifier);
-      if (channelType && channelIdentifier) {
-        let attr;
+      if (topicCustomer && channelSession) {
 
-        this._sharedService.schema.forEach((e: any) => {
-          if (e.isChannelIdentifier == true) {
-            if (e.channelTypes.includes(channelType)) {
-              attr = e.key;
+        const channelType = channelSession.channel.channelType.name;
+        const channelIdentifier = channelSession.channelData.channelCustomerIdentifier;
+        console.log("channelType " + channelType + " channelIdentifier " + channelIdentifier);
+        if (channelType && channelIdentifier) {
+          let attr;
+
+          this._sharedService.schema.forEach((e: any) => {
+            if (e.isChannelIdentifier == true) {
+              if (e.channelTypes.includes(channelType)) {
+                attr = e.key;
+              }
             }
-          }
-        });
-        console.log("attr " + attr);
+          });
+          console.log("attr " + attr);
 
-        if (attr) {
-          if (selectedCustomer[attr].includes(channelIdentifier)) {
-            console.log("already merged");
-            this.updateTopiCustomer();
-          } else {
-            console.log("not merged");
-            const resp = await this._sharedService.getConfirmation('Merge Attribute Value', `Are you sure you want to add ${channelIdentifier} to ${selectedCustomer.firstName}'s ${attr}`);
-            if (resp == true) {
-              if (selectedCustomer[attr].length < 7) {
-                selectedCustomer[attr].push(channelIdentifier);
-                this.updateTopiCustomer();
-                this.updateCustomer();
-              } else {
-                this._snackbarService.open(`There's no space to left to add new value for ${attr}.
+          if (attr) {
+            if (selectedCustomer[attr].includes(channelIdentifier)) {
+              console.log("already merged");
+              this.updateTopiCustomer();
+            } else {
+              console.log("not merged");
+              const resp = await this._sharedService.getConfirmation('Merge Attribute Value', `Are you sure you want to add ${channelIdentifier} to ${selectedCustomer.firstName}'s ${attr}`);
+              if (resp == true) {
+                if (selectedCustomer[attr].length < 7) {
+                  selectedCustomer[attr].push(channelIdentifier);
+                  this.updateTopiCustomer();
+                  this.updateCustomer();
+                } else {
+                  this._snackbarService.open(`There's no space to left to add new value for ${attr}.
                Delete a value OR create a new customer profile and try linking again.
                If you don't perform any of the above actions,
                the conversation will still be linked to ${topicCustomer.firstName} profile`, "err", 15000);
+                }
+              } else {
+                this.updateTopiCustomer();
               }
-            } else {
-              this.updateTopiCustomer();
             }
+          } else {
+            this.updateTopiCustomer();
+            // this.snackErrorMessage("Unable to link profile");
           }
+
         } else {
           this.updateTopiCustomer();
-          // this.snackErrorMessage("Unable to link profile");
+          //  this.snackErrorMessage("Unable to link profile");
         }
-
+        //  this._socketService.linkCustomerWithInteraction(customerId, this.topicId);
+        console.log(selectedCustomer);
       } else {
-        this.updateTopiCustomer();
-        //  this.snackErrorMessage("Unable to link profile");
+        this._snackbarService.open("unable to link customer", "err");
       }
-      //  this._socketService.linkCustomerWithInteraction(customerId, this.topicId);
-      console.log(selectedCustomer);
-    } else {
+    } catch (err) {
       this._snackbarService.open("unable to link customer", "err");
     }
   }

@@ -509,6 +509,7 @@
 }
 .linked-action{
   text-align: center;
+  margin-top: 16px;
 
   p{
     display: block;
@@ -534,9 +535,9 @@
 }
 .crm-trigger{
   @extend .linked-action;
-  button {
-    min-width: 150px;
-  }
+  // button {
+  //   min-width: 150px;
+  // }
 }
 
 //Calling Dialog

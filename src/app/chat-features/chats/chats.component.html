@@ -3,7 +3,7 @@
 
     <div id="main-content" class="h-100">
       <!--      <button color="primary" class="left-bar-trigger" (click)="barExpand = !barExpand" ><mat-icon>{{barExpand ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}</mat-icon></button>-->
-      <mat-tab-group (selectedTabChange)="tabChanged($event)" [ngClass]="{'bar-expand' : barExpand}"
+      <mat-tab-group [(selectedIndex)]="_sharedService.matCurrentTabIndex" (selectedTabChange)="tabChanged($event)" [ngClass]="{'bar-expand' : barExpand}"
         class="chat-tab-area h-100">
 
         <mat-tab class="main-chat-tab h-100"

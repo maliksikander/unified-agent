@@ -2618,9 +2618,9 @@ body .ui-paginator .ui-dropdown {
 body {
   .ui-table {
       .ui-table-tbody {
-          > tr {
-              background: #ffffff !important;
-          }
+          // > tr {
+          //     background: #ffffff !important;
+          // }
 
           > tr:nth-child(even) {
               background-color: #fcfcfc !important;
