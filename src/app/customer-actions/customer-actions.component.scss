@@ -1,3 +1,5 @@
+@import "src/app/shared/globalVariables";
+
 //.group-row {
 // .col {
 //     margin-bottom: 5px;
@@ -320,7 +322,7 @@
 
 .main-content-create-customer {
   display: block;
-  margin: 0px 26px;
+  margin: 0px 30px;
   padding: 0 0 0px 0px;
   max-height: calc(100% - 110px);
   margin-top: 10px;
@@ -516,4 +518,43 @@
 mat-dialog-actions {
   margin: 0;
   min-height: inherit;
+}
+
+.btn-test {
+  position: absolute;
+  right: -35px;
+  top: 6px;
+}
+
+button.duplicate-action {
+  // position: absolute;
+  // right: 2px;
+  width: 23px;
+  height: 23px;
+  line-height: 23px;
+  // top: 28px;
+  background: $main-color-background;
+  box-shadow: none;
+
+  &.remove-field {
+    background: transparent;
+    mat-icon {
+      color: $red-color;
+    }
+  }
+
+  mat-icon {
+    font-size: 16px;
+    line-height: 5px;
+    height: 23px;
+    color: #8e8e8e;
+  }
+}
+
+span.field-channel {
+  margin-left: 10px;
+  img {
+    margin: 0 2px 1px 0;
+    max-height: 15px;
+  }
 }

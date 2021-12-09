@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatDialog, DateAdapter } from "@angular/material";
-import { FormControl, Validators, FormGroup } from "@angular/forms";
+import { FormControl, Validators, FormGroup, FormArray, FormBuilder } from "@angular/forms";
 import { Router } from "@angular/router";
 import { httpService } from "../services/http.service";
 import { cacheService } from "../services/cache.service";
@@ -17,10 +17,12 @@ export class CustomerActionsComponent implements OnInit {
   attributeTypes: any[] = [];
   userInfo;
   schemaAttributes;
-  editCustomerForm: FormGroup;
+  customerForm: FormGroup;
   userIni: boolean = false;
   schemaIni: boolean = false;
   editTab: boolean = false;
+  channelTypeList: any[] = [];
+  channelIdentifierKeys: Array<any> = [];
   // editActiveMode: boolean = true;
 
   constructor(
@@ -31,6 +33,7 @@ export class CustomerActionsComponent implements OnInit {
     private _router: Router,
     public snackBar: MatSnackBar,
     private _sharedService: sharedService,
+    private fb: FormBuilder,
     public dialogRef: MatDialogRef<CustomerActionsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -59,7 +62,7 @@ export class CustomerActionsComponent implements OnInit {
   // };
 
   ngOnInit() {
-    this.editCustomerForm = new FormGroup({});
+    this.customerForm = new FormGroup({});
 
     // let query = { field: "_id", value: this.data.id };
     console.log("data==>", this.data);
@@ -68,7 +71,7 @@ export class CustomerActionsComponent implements OnInit {
 
   getCustomerByID() {
     this._httpService.getCustomerById(this.data.id).subscribe((res) => {
-      console.log("customer==>", res);
+      // console.log("customer==>", res);
       this.userInfo = res;
       this.userIni = true;
       this.getCustomerSchema();
@@ -91,17 +94,15 @@ export class CustomerActionsComponent implements OnInit {
         this.attributeTypes = res;
         this.formValidation = this.convertArrayToObject(this.attributeTypes, "type");
         this.addFormControls(this.schemaAttributes);
-        console.log("tab==>", this.data);
+        // console.log("tab==>", this.data);
         if (this.data.tab == null) {
           this.editTab = false;
         } else {
           if (this.data.tab == "edit") {
             this.editTab = true;
-            // this.editActiveMode = false;
+
             this.schemaAttributes.filter((e) => {
-              //  if (e.key != "createdBy" && e.key != "updatedBy") {
-              this.editCustomerForm.get(e.key).enable();
-              // }
+              this.customerForm.get(e.key).enable();
             });
           }
         }
@@ -133,12 +134,15 @@ export class CustomerActionsComponent implements OnInit {
     try {
       attrSchema.forEach((item) => {
         let validatorArray: any = this.addFormValidations(item);
-        this.editCustomerForm.addControl(item.key, new FormControl(this.userInfo[item.key] ? this.userInfo[item.key] : "", validatorArray));
-        if (item.type == "boolean" && item.defaultValue == "") {
-          this.editCustomerForm.controls[item.key].setValue(this.userInfo[item.key]);
+        if (item.isChannelIdentifier == false) {
+          this.customerForm.addControl(item.key, new FormControl("", validatorArray));
+        } else {
+          this.customerForm.addControl(item.key, this.fb.array([new FormControl("", validatorArray)]));
+          this.channelIdentifierKeys.push(item.key);
         }
       });
-      console.log("control==>", this.editCustomerForm.controls);
+      console.log("control==>", this.customerForm.controls);
+      this.patchEditValues();
     } catch (e) {
       console.error("Error in add form control :", e);
     }
@@ -162,20 +166,35 @@ export class CustomerActionsComponent implements OnInit {
     }
   }
 
-  saveData() {
-    let customerObj = this.editCustomerForm.value;
+  getFormControls(attribute) {
+    let temp: any = this.customerForm.controls[attribute.key];
+    return temp.controls;
+  }
+
+  onAddFormControl(attribute) {
+    let validatorArray: any = this.addFormValidations(attribute);
+    (<FormArray>this.customerForm.controls[attribute.key]).push(new FormControl("", validatorArray));
+  }
+
+  onRemoveFormControl(attribute, i) {
+    const control: any = this.customerForm.get(attribute.key);
+    control.removeAt(i);
+  }
+
+  onSave() {
+    let customerObj = this.customerForm.value;
     // customerObj = this.fetchTheIdsOfLabels(customerObj);
-    customerObj["updatedBy"] = this._cacheService.agent.username;
-    console.log("customerObj ", customerObj);
-    this._httpService.updateCustomerById(this.data.id, customerObj).subscribe(
-      (e) => {
-        this.dialogRef.close({ event: "refresh" });
-        this._sharedService.Interceptor("Customer updated!", "succ");
-      },
-      (error) => {
-        this._sharedService.Interceptor(error.error, "err");
-      }
-    );
+    // customerObj["updatedBy"] = this._cacheService.agent.username;
+    console.log("edit customer ==>", customerObj);
+    // this._httpService.updateCustomerById(this.data.id, customerObj).subscribe(
+    //   (e) => {
+    //     this.dialogRef.close({ event: "refresh" });
+    //     this._sharedService.Interceptor("Customer updated!", "succ");
+    //   },
+    //   (error) => {
+    //     this._sharedService.Interceptor(error.error, "err");
+    //   }
+    // );
   }
 
   onNoClick(): void {
@@ -184,52 +203,16 @@ export class CustomerActionsComponent implements OnInit {
 
   editClick() {
     this.editTab = true;
-    // this.editTab = !this.editTab;
-    // if (this.editTab) {
     this.schemaAttributes.filter((e) => {
-      this.editCustomerForm.get(e.key).enable();
+      this.customerForm.get(e.key).enable();
     });
-    // } else {
-    // this.schemaAttributes.filter((e) => {
-    // this.editCustomerForm.get(e.key).disable();
-    // });
-    // }
   }
-
-  // checkType(label) {
-  //   if (label == "Label12") {
-  //     return "textarea";
-  //   } else {
-  //     return "text";
-  //   }
-  // }
 
   gotoInteractions() {
     this.onNoClick();
     let obj = { base: "interactions", id: this.userInfo._id };
     sessionStorage.setItem("url", JSON.stringify(obj));
     this._router.navigate(["interactions", this.userInfo._id]);
-  }
-
-  deleteCustomer() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: "490px",
-      panelClass: "confirm-dialog",
-      data: { header: "delete customer", message: `Are you sure you want to delete?` }
-    });
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result && result.event == "confirm") {
-        this._httpService.deleteCustomerById(this.data.id).subscribe(
-          (e) => {
-            this._sharedService.Interceptor("deleted!", "succ");
-            this.dialogRef.close({ event: "delete" });
-          },
-          (error) => {
-            this._sharedService.Interceptor(error, "err");
-          }
-        );
-      }
-    });
   }
 
   makeCall(number) {
@@ -243,12 +226,112 @@ export class CustomerActionsComponent implements OnInit {
   }
 
   validateForm() {
-    let a = this.editCustomerForm.controls;
+    let a = this.customerForm.controls;
     for (let key in a) {
-      this.editCustomerForm.get(key).markAsTouched();
+      this.customerForm.get(key).markAsTouched();
     }
-    console.log("validate form", this.editCustomerForm);
+    console.log("validate form", this.customerForm);
   }
+
+  patchEditValues() {
+    let patchObj = this.userInfo;
+    delete patchObj._id;
+    let patchObjKeys = Object.keys(patchObj);
+    console.log("value patch==>", Object.keys(patchObj));
+    let identifierKeysLength = this.channelIdentifierKeys.length;
+    let patchObjLength = patchObjKeys.length;
+    let array1: Array<any> = [];
+    let array2: Array<any> = [];
+
+    if (identifierKeysLength > patchObjLength) {
+      array1 = this.channelIdentifierKeys;
+      array2 = patchObjKeys;
+    } else {
+      array1 = patchObjKeys;
+      array2 = this.channelIdentifierKeys;
+    }
+
+    array1.forEach((item1) => {
+      array2.forEach((item2) => {
+        if (item1 == item2) {
+          this.clearAllFormArrays(item1);
+          this.createFormArrays(patchObj, item1);
+        }
+      });
+    });
+  }
+
+  clearAllFormArrays(item) {
+    // this.channelIdentifierKeys.forEach((item) => {
+    let attrArray = this.customerForm.get(item) as FormArray;
+    attrArray.clear();
+    // });
+  }
+
+  createFormArrays(data, key) {
+    // let attribute: Array<any> = item;
+    let attrLength = data[key].length;
+    console.log("attribute==>", attrLength);
+      for (let i = 0; i < attrLength; i++) {
+        const attributeArray = this.customerForm.get(key) as FormArray;
+        // attributeArray.push(this.attributes);
+        // for (let j = 0; j < attribute[i].categories.length; j++) {
+          // const categoryArray = attributeArray
+            // .at(i)
+            // .get("categories") as FormArray;
+          // categoryArray.push(this.categories);
+          // for (
+          //   let k = 0;
+          //   k < data.attributes[i].categories[j].values.length;
+          //   k++
+          // ) {
+          //   const categoryValuesArray = categoryArray
+          //     .at(j)
+          //     .get("values") as FormArray;
+          //   categoryValuesArray.push(this.categoryValues);
+          // }
+        // }
+        // this.setValidation(attribute[i].attributeType, i);
+      }
+    //   this.newForm.setValue(data);
+  }
+
+  getChannelTypeLogoName(typeName) {
+    let typeIndex = this.channelTypeList.findIndex((item) => item.name === typeName);
+    if (typeIndex == -1) return "";
+    let channelType = this.channelTypeList[typeIndex];
+    let filename = channelType.channelLogo;
+    return filename;
+  }
+
+  // checkType(label) {
+  //   if (label == "Label12") {
+  //     return "textarea";
+  //   } else {
+  //     return "text";
+  //   }
+  // }
+
+  // deleteCustomer() {
+  //   const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+  //     width: "490px",
+  //     panelClass: "confirm-dialog",
+  //     data: { header: "delete customer", message: `Are you sure you want to delete?` }
+  //   });
+  //   dialogRef.afterClosed().subscribe((result: any) => {
+  //     if (result && result.event == "confirm") {
+  //       this._httpService.deleteCustomerById(this.data.id).subscribe(
+  //         (e) => {
+  //           this._sharedService.Interceptor("deleted!", "succ");
+  //           this.dialogRef.close({ event: "delete" });
+  //         },
+  //         (error) => {
+  //           this._sharedService.Interceptor(error, "err");
+  //         }
+  //       );
+  //     }
+  //   });
+  // }
 
   // save(a) {}
   // onItemSelect(item: any) {}

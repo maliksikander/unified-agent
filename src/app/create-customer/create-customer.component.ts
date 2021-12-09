@@ -127,7 +127,7 @@ export class CreateCustomerComponent implements OnInit {
     );
   }
 
-  getChannelTypeLogo(typeName) {
+  getChannelTypeLogoName(typeName) {
     let typeIndex = this.channelTypeList.findIndex((item) => item.name === typeName);
     if (typeIndex == -1) return "";
     let channelType = this.channelTypeList[typeIndex];

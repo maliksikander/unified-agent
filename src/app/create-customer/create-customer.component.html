@@ -47,14 +47,12 @@
               </div>
             </ng-container>
 
-
-
             <ng-container *ngIf="schemaAttribute.isChannelIdentifier == true" formArrayName="{{schemaAttribute.key}}">
               <div class="field-set" *ngIf="schemaAttribute.type != 'boolean' && schemaAttribute.length <= 115">
                 <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
                     *ngIf="schemaAttribute.isRequired">*</span>
                   <span class="field-channel"><img *ngFor="let channelType of schemaAttribute.channelTypes"
-                      [src]="getChannelTypeLogo(channelType) | channelLogo | async"></span>
+                      [src]="getChannelTypeLogoName(channelType) | channelLogo | async"></span>
                 </label>
                 <ng-container *ngFor="let attr of getFormControls(schemaAttribute);let i = index">
                   <mat-form-field class="field" appearance="outline">
@@ -85,8 +83,6 @@
                 </ng-container>
               </div>
             </ng-container>
-
-
 
 
             <!-- For type 'String' and character length greater than equal to 116  -->

@@ -1,6 +1,7 @@
 <div class="dialog-header">
-  <h4 *ngIf="userIni && schemaIni">{{editTab ? 'Edit Customer' : userInfo.firstName}} <span *ngIf="editTab"
-      class="validate-span" (click)="validateForm()">Validate</span></h4>
+  <h4 *ngIf="userIni && schemaIni">{{editTab ? 'Edit Customer' : userInfo.firstName}}
+    <!-- <span *ngIf="editTab" class="validate-span" (click)="validateForm()">Validate</span> -->
+  </h4>
   <button *ngIf="!editTab" (click)="editClick()" class="cstmBtn slide-in-left whiteClass">
     <mat-icon>edit</mat-icon> <span>Edit Profile</span>
   </button>
@@ -9,74 +10,135 @@
   </button>
 </div>
 
-<!-- [ngClass]="{'btn-active' : editActiveMode != true ,  'whiteClass' : editTab == true , 'greyClass' : editTab != true}" -->
-
-
 <mat-dialog-content class="main-content main-content-action main-action-form">
 
   <div *ngIf="userIni && schemaIni" class="main-content-create-customer">
-    <form [formGroup]="editCustomerForm">
+    <form [formGroup]="customerForm">
 
       <div class="row">
         <div class="main-col" *ngFor="let schemaAttribute of schemaAttributes">
           <div class="main-col">
             <div [ngClass]="[schemaAttribute.length >= 116 ? 'col-md-12':  'col-md-6' ]" class="input-field"
-              [ngStyle]="{'display':  !editTab && (editCustomerForm.get(schemaAttribute.key).value == undefined || editCustomerForm.get(schemaAttribute.key).value.length == 0 || editCustomerForm.get(schemaAttribute.key).value == null || editCustomerForm.get(schemaAttribute.key).value == '' || editCustomerForm.get(schemaAttribute.key)?.value[0] == '') ? 'none' : 'block' }">
-              <!-- ++{{!editTab && (editCustomerForm.get(schemaAttribute.key).value == undefined ||
-              editCustomerForm.get(schemaAttribute.key).value.length == 0 ||
-              editCustomerForm.get(schemaAttribute.key).value == null || editCustomerForm.get(schemaAttribute.key).value
-              == '' || editCustomerForm.get(schemaAttribute.key)?.value[0] == '')}}== -->
-              <!-- *ngIf="(editCustomerForm.get(schemaAttribute.key).value != undefined && editCustomerForm.get(schemaAttribute.key).value != null && editCustomerForm.get(schemaAttribute.key).value != '' && editCustomerForm.get(schemaAttribute.key)?.value[0] != '') || schemaAttribute.type == 'boolean'" -->
-              <div *ngIf="schemaAttribute.type == 'url'" [ngClass]="{'url-area': !editTab}">
+              [ngStyle]="{'display':  !editTab && (customerForm.get(schemaAttribute.key).value == undefined || customerForm.get(schemaAttribute.key).value.length == 0 || customerForm.get(schemaAttribute.key).value == null || customerForm.get(schemaAttribute.key).value == '' || customerForm.get(schemaAttribute.key)?.value[0] == '') ? 'none' : 'block' }">
+
+
+              <!-- <div *ngIf="schemaAttribute.type == 'url'" [ngClass]="{'url-area': !editTab}">
                 <div [ngClass]="{'header-padding': !editTab}" class="lbl">{{schemaAttribute.label}}<span class="red-clr"
                     *ngIf="editTab && schemaAttribute.isRequired">*</span></div>
-                <mat-form-field [matTooltip]="!editTab ? 'goto '+ editCustomerForm.get(schemaAttribute.key).value: '' "
-                  (click)="gotoLink(!editTab,schemaAttribute.type, editCustomerForm.get(schemaAttribute.key).value)"
+                <mat-form-field [matTooltip]="!editTab ? 'goto '+ customerForm.get(schemaAttribute.key).value: '' "
+                  (click)="gotoLink(!editTab,schemaAttribute.type, customerForm.get(schemaAttribute.key).value)"
                   [ngClass]="{'read-view' : !editTab }" class="field hover-class" appearance="outline">
                   <input [required]="schemaAttribute.isRequired" [formControlName]="schemaAttribute.key" matInput>
                   <mat-error>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('required')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('required')">
                       Field is required
                     </div>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('email')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('email')">
                       Invalid email
                     </div>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('maxlength')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('maxlength')">
                       only {{schemaAttribute.characters}} characters are alowed
                     </div>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('pattern')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('pattern')">
                       Invalid pattern
                     </div>
                   </mat-error>
                 </mat-form-field>
-              </div>
+              </div> -->
               <!-- ------------------------- -->
 
+              <!-- AlphaNumeric | URL | Number | PhoneNumber | Email | String | Password | IP | Name -->
 
-              <!-- ----------------- -->
-              <div
-                *ngIf="(schemaAttribute.type == 'string' && schemaAttribute.length <= 115) || schemaAttribute.type == 'number' || schemaAttribute.type == 'email' || schemaAttribute.type == 'phoneNumber' || schemaAttribute.type == 'alphanNmeric'">
+              <!-- <div
+                *ngIf="(schemaAttribute.type == 'string' && schemaAttribute.length <= 115) || schemaAttribute.type == 'number' || schemaAttribute.type == 'email' || schemaAttribute.type == 'phoneNumber' || schemaAttribute.type == 'alphanNmeric' || schemaAttribute.type == 'password' || schemaAttribute.type == 'url' || schemaAttribute.type == 'ip'">
                 <div [ngClass]="{'header-padding': !editTab}" class="lbl">{{schemaAttribute.label}}<span class="red-clr"
                     *ngIf="editTab && schemaAttribute.isRequired">*</span></div>
                 <mat-form-field [ngClass]="{'read-view' : !editTab }" class="field" appearance="outline">
-                  <input [readonly]="!editTab" [required]="schemaAttribute.isRequired"
-                    [formControlName]="schemaAttribute.key" matInput>
+                  <input [readonly]="!editTab" [formControlName]="schemaAttribute.key" matInput>
                   <mat-error>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('required')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('required')">
                       Field is required
                     </div>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('email')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('email')">
                       Invalid email
                     </div>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('maxlength')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('maxlength')">
                       only {{schemaAttribute.characters}} characters are alowed
                     </div>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('pattern')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('pattern')">
                       Invalid pattern
                     </div>
                   </mat-error>
                 </mat-form-field>
-              </div>
+              </div> -->
+
+
+              <ng-container *ngIf="schemaAttribute.isChannelIdentifier == false">
+                <div class="field-set" *ngIf="schemaAttribute.type != 'boolean' && schemaAttribute.length <= 115">
+
+                  <div [ngClass]="{'header-padding': !editTab}" class="lbl">{{schemaAttribute.label}}<span
+                      class="red-clr" *ngIf="schemaAttribute.isRequired">*</span>
+                  </div>
+
+                  <mat-form-field [ngClass]="{'read-view' : !editTab }" class="field" appearance="outline">
+                    <input [readonly]="!editTab" formControlName="{{schemaAttribute.key}}" matInput>
+                    <mat-error>
+                      <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.required">
+                        *Field is required
+                      </div>
+                      <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.pattern">
+                        *Invalid Pattern
+                      </div>
+                      <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.maxLength">
+                        *{{schemaAttribute.length}} are allowed
+                      </div>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf="schemaAttribute.isChannelIdentifier == true" formArrayName="{{schemaAttribute.key}}">
+                <div class="field-set" *ngIf="schemaAttribute.type != 'boolean' && schemaAttribute.length <= 115">
+
+                  <div [ngClass]="{'header-padding': !editTab}" class="lbl">{{schemaAttribute.label}}<span
+                      class="red-clr" *ngIf="schemaAttribute.isRequired">*</span>
+                    <span class="field-channel"><img *ngFor="let channelType of schemaAttribute.channelTypes"
+                        [src]="getChannelTypeLogoName(channelType) | channelLogo | async"></span>
+                  </div>
+
+                  <ng-container *ngFor="let attr of getFormControls(schemaAttribute);let i = index">
+                    <mat-form-field [ngClass]="{'read-view' : !editTab }" class="field" appearance="outline">
+                      <input [readonly]="!editTab" matInput [formControlName]="i">
+                      <mat-error>
+                        <span *ngIf="attr?.errors?.required">
+                          *Field is required
+                        </span>
+                        <span *ngIf="attr?.errors?.pattern">
+                          *Invalid Pattern
+                        </span>
+                        <span *ngIf="attr?.errors?.maxLength">
+                          *Character length should be according to limit
+                        </span>
+                      </mat-error>
+                      <div class="btn-test">
+                        <button *ngIf="i == 0" type="button" class="duplicate-action add-field" mat-mini-fab
+                          (click)="onAddFormControl(schemaAttribute)">
+                          <mat-icon>add</mat-icon>
+                        </button>
+                        <button *ngIf="i > 0" class="duplicate-action remove-field" mat-mini-fab
+                          (click)="onRemoveFormControl(schemaAttribute,i)">
+                          <mat-icon>close</mat-icon>
+                        </button>
+                      </div>
+
+                    </mat-form-field>
+                  </ng-container>
+                </div>
+              </ng-container>
+
+
+
+
               <!-- --------------------------- -->
 
 
@@ -87,23 +149,20 @@
                   <textarea [required]="schemaAttribute.isRequired" [formControlName]="schemaAttribute.key"
                     matInput></textarea>
                   <mat-error>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('required')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('required')">
                       Field is required
                     </div>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('email')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('email')">
                       Invalid email
                     </div>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('maxlength')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('maxlength')">
                       only {{schemaAttribute.characters}} characters are alowed
                     </div>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('pattern')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('pattern')">
                       Invalid pattern
                     </div>
                   </mat-error>
                 </mat-form-field>
-                <!-- <div class="text-area-text" *ngIf="editActiveMode">
-                  {{editCustomerForm.get(schemaAttribute.key).value}}
-                </div> -->
               </div>
 
               <!-- Boolean -->
@@ -112,7 +171,7 @@
                 <mat-checkbox *ngIf="editTab" [ngClass]="{'margin-left' : !editTab}"
                   [formControlName]="schemaAttribute.key" matInput></mat-checkbox>
                 <div class="check-box-readview" *ngIf="!editTab">
-                  {{editCustomerForm.get(schemaAttribute.key).value == true ? 'TRUE' : 'FALSE'}}
+                  {{customerForm.get(schemaAttribute.key).value == true ? 'TRUE' : 'FALSE'}}
                 </div>
               </div>
 
@@ -126,15 +185,15 @@
                     [matDatepicker]="picker" (click)="picker.open()">
                   <mat-datepicker #picker></mat-datepicker>
                   <mat-error>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('required')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('required')">
                       Field is required
                     </div>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('email')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('email')">
                       Invalid email
                     </div>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('maxlength')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('maxlength')">
                     </div>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('pattern')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('pattern')">
                       Invalid pattern
                     </div>
                   </mat-error>
@@ -152,15 +211,15 @@
                   <owl-date-time #dt1></owl-date-time>
 
                   <mat-error>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('required')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('required')">
                       Field is required
                     </div>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('email')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('email')">
                       Invalid email
                     </div>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('maxlength')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('maxlength')">
                     </div>
-                    <div *ngIf="editCustomerForm.get(schemaAttribute.key).hasError('pattern')">
+                    <div *ngIf="customerForm.get(schemaAttribute.key).hasError('pattern')">
                       Invalid pattern
                     </div>
                   </mat-error>
@@ -188,7 +247,7 @@
 
   <!--    <div class="action-btns" *ngIf="editTab && !editActiveMode">-->
 
-  <!--      <button *ngIf="editCustomerForm.valid" (click)="saveData(editCustomerForm.value)" class="submit-btn">SAVE</button>-->
+  <!--      <button *ngIf="customerForm.valid" (click)="saveData(customerForm.value)" class="submit-btn">SAVE</button>-->
   <!--      <button (click)="onNoClick()" class="cancel-btn">CANCEL</button>-->
 
   <!--    </div>-->
@@ -202,12 +261,12 @@
     </button> -->
 
     <!--    <button (click)="onNoClick()" class="cancel-btn">Cancel</button>-->
-    <!--    <button *ngIf="editCustomerForm.valid" (click)="saveData(editCustomerForm.value)"-->
+    <!--    <button *ngIf="customerForm.valid" (click)="saveData(customerForm.value)"-->
     <!--            class="save-btn">Create Contact</button>-->
 
     <span class="action-btns" *ngIf="editTab">
       <button (click)="onNoClick()" class="cancel-btn">CANCEL</button>
-      <button *ngIf="editCustomerForm.valid" (click)="saveData()" class="save-btn">SAVE</button>
+      <button *ngIf="customerForm.valid" (click)="onSave()" class="save-btn">SAVE</button>
     </span>
   </div>
 </mat-dialog-actions>
