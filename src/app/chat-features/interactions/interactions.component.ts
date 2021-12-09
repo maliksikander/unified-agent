@@ -48,7 +48,7 @@ export class InteractionsComponent implements OnInit {
 
   showNewMessageNotif: boolean = false;
   currentScrollPosition: number = 100;
- 
+
   isBarOPened = false;
   activeSessions = [];
 
@@ -172,7 +172,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
- 
+
     if (changes.changeDetecter && changes.changeDetecter.currentValue && this.conversation.index == this._sharedService.matCurrentTabIndex) {
       if (changes.changeDetecter.currentValue.header.sender.type.toLowerCase() == 'agent' &&
         changes.changeDetecter.currentValue.header.sender.participant.keycloakUser.id == this._cacheService.agent.id) {
@@ -336,7 +336,7 @@ export class InteractionsComponent implements OnInit {
 
       event.data.header['status'] = 'sending';
       this.conversation.messages.push(event.data);
-     // this.downTheScrollAfterMilliSecs(50, "smooth");
+      // this.downTheScrollAfterMilliSecs(50, "smooth");
 
       setTimeout(() => {
         this.message = "";

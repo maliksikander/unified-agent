@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChil
 import { MatDialog, MatSidenav } from "@angular/material";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { socketService } from "src/app/services/socket.service";
+import { sharedService } from "src/app/services/shared.service";
 
 @Component({
   selector: "app-customer-info",
@@ -15,6 +16,7 @@ export class CustomerInfoComponent implements OnInit {
   @Input() customerSuggestions: any;
   @Input() activeChannelSessions: any;
   @Input() topicId: any;
+  @Input() firstChannelSession: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
   customerProfileFormData: any;
 
@@ -25,93 +27,6 @@ export class CustomerInfoComponent implements OnInit {
     "link_profile"
   ];
   mediaChannelData = [];
-
-  schema = [
-    {
-      "channelTypes": [],
-      "_id": "61a62b05134fc2f8a65bc2a0",
-      "key": "firstName",
-      "defaultValue": "John Doe",
-      "description": "",
-      "isChannelIdentifier": false,
-      "isDeletable": false,
-      "isPii": false,
-      "isRequired": true,
-      "label": "First Name",
-      "length": 50,
-      "sortOrder": 1,
-      "type": "String"
-    },
-    {
-      "channelTypes": [
-        "WhatsApp",
-        "SMS"
-      ],
-      "_id": "61a7ab05134fc2f8a65c566f",
-      "key": "phoneNumber",
-      "defaultValue": "",
-      "description": "",
-      "isChannelIdentifier": true,
-      "isDeletable": false,
-      "isPii": false,
-      "isRequired": false,
-      "label": "Phone Number",
-      "length": 18,
-      "sortOrder": 2,
-      "type": "PhoneNumber"
-    },
-    {
-      "channelTypes": [],
-      "_id": "61a7ab05134fc2f8a65c5670",
-      "key": "isAnonymous",
-      "defaultValue": false,
-      "description": "",
-      "isChannelIdentifier": false,
-      "isDeletable": false,
-      "isPii": false,
-      "isRequired": true,
-      "label": "Anonymous",
-      "length": 4,
-      "sortOrder": 3,
-      "type": "Boolean"
-    },
-    {
-      "channelTypes": [
-        "Web"
-      ],
-      "_id": "61b0460ccaefbc32b489e82e",
-      "key": "webChannelIdentifier",
-      "label": "Web Channel Identifier",
-      "description": "fsdf",
-      "type": "String",
-      "length": 50,
-      "isRequired": false,
-      "defaultValue": null,
-      "isPii": false,
-      "isChannelIdentifier": true,
-      "isDeletable": true,
-      "sortOrder": 4,
-      "__v": 0
-    },
-    {
-      "channelTypes": [
-        "Viber"
-      ],
-      "_id": "61b04645caefbc32b489e86a",
-      "key": "viber",
-      "label": "Viber",
-      "description": "",
-      "type": "String",
-      "length": 50,
-      "isRequired": false,
-      "defaultValue": "",
-      "isPii": false,
-      "isChannelIdentifier": true,
-      "isDeletable": true,
-      "sortOrder": 5,
-      "__v": 0
-    }
-  ];
 
 
   displayCustomerChannels = false;
@@ -140,7 +55,7 @@ export class CustomerInfoComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
   }
-  constructor(public _socketService: socketService, private dialog: MatDialog) { }
+  constructor(private _sharedService: sharedService, public _socketService: socketService, private dialog: MatDialog) { }
 
   ngOnInit() { }
 
@@ -182,13 +97,16 @@ export class CustomerInfoComponent implements OnInit {
     } else if (changes.customerSuggestions && changes.customerSuggestions.currentValue != undefined) {
       this.customerSuggestions = null;
       this.customerSuggestions = changes.activeChannelSessions.currentValue;
+    } else if (changes.firstChannelSession && changes.firstChannelSession.currentValue != undefined) {
+      this.firstChannelSession = null;
+      this.firstChannelSession = changes.activeChannelSessions.currentValue;
     }
   }
 
   getMediaChannels() {
     this.mediaChannelData = [];
     let mediaChannelData = [];
-    this.schema.forEach((e) => {
+    this._sharedService.schema.forEach((e) => {
       if (
         e.isChannelIdentifier == true &&
         this.customer.hasOwnProperty(e.key)
@@ -210,7 +128,7 @@ export class CustomerInfoComponent implements OnInit {
 
   getProfileFormData(obj) {
     let channelIdentifiers = [];
-    this.schema.forEach((e) => {
+    this._sharedService.schema.forEach((e) => {
       if (e.isChannelIdentifier == true) {
         channelIdentifiers.push(e.key);
       }
@@ -236,7 +154,34 @@ export class CustomerInfoComponent implements OnInit {
     event.stopPropagation();
   }
 
-  linkCustomer(customerId) {
-    this._socketService.linkCustomerWithInteraction(customerId, this.topicId);
+  linkCustomer(selectedCustomer) {
+
+    this._socketService.linkCustomerWithTopic(JSON.parse(JSON.stringify(selectedCustomer)), this.topicId);
+
+    this._socketService.changeTopicCustomer({
+      data: {
+        "phoneNumber": [
+          "030078444212",
+          "xxxxxx99999aaaaaa",
+          "+92000111221142",
+          "+852221100022114",
+          "+988522222210444",
+          "222222"
+        ],
+        "_id": "61b04796936794395cafc4c9",
+        "firstName": "Shabeer ahmad",
+
+        "webChannelIdentifier": [
+          "134",
+          "1122"
+        ],
+        "isAnonymous": false,
+        "address": "505 Meadowbrook StreetGlenside, PA 19038, 878 Wagon St.Salisbury, MD 21801, 770 Sulphur Springs DriveChattanooga, TN 37421",
+        "gender": "",
+        "age": null,
+        "__v": 0
+      }
+    }, "12345");
+
   }
 }

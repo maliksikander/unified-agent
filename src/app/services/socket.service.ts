@@ -257,7 +257,9 @@ export class socketService {
           activeChannelSessions: [cimEvent.data.header.channelSession],
           unReadCount: undefined,
           index: ++this.conversationIndex,
-          state: "ACTIVE"
+          state: "ACTIVE",
+          customerSuggestions: cimEvent.data.header.channelSession.customerSuggestions,
+          firstChannelSession: cimEvent.data.header.channelSession
         });
       }
       this._conversationsListener.next(this.conversations);
@@ -293,8 +295,9 @@ export class socketService {
       index: ++this.conversationIndex,
       state: "ACTIVE",
       customer: topicData.customer,
-      customerSuggestions: topicData.customerSuggestions,
-      topicParticipant: topicData.topicParticipant
+      customerSuggestions: topicData.channelSession.customerSuggestions,
+      topicParticipant: topicData.topicParticipant,
+      firstChannelSession: topicData.channelSession
     };
 
     // feed the conversation with type "messages"
@@ -373,7 +376,9 @@ export class socketService {
       return e.topicId == topicId;
     });
 
-    conversation.customer = cimEvent.data;
+    if (conversation) {
+      conversation.customer = cimEvent.data;
+    }
   }
 
   removeConversation(topicId) {
@@ -513,4 +518,75 @@ export class socketService {
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
+
+  async linkCustomerWithTopic(selectedCustomer, topicId) {
+
+    const conversation = this.conversations.find((e) => { return e.topicId == topicId });
+    const topicCustomer = conversation.customer;
+    const channelSession = conversation.firstChannelSession;
+
+    if (topicCustomer && channelSession) {
+
+      const channelType = channelSession.channel.channelType.name;
+      const channelIdentifier = channelSession.channelData.channelCustomerIdentifier;
+      console.log("channelType " + channelType + " channelIdentifier " + channelIdentifier);
+      if (channelType && channelIdentifier) {
+        let attr;
+
+        this._sharedService.schema.forEach((e: any) => {
+          if (e.isChannelIdentifier == true) {
+            if (e.channelTypes.includes(channelType)) {
+              attr = e.key;
+            }
+          }
+        });
+        console.log("attr " + attr);
+
+        if (attr) {
+          if (selectedCustomer[attr].includes(channelIdentifier)) {
+            console.log("already merged");
+            this.updateTopiCustomer();
+          } else {
+            console.log("not merged");
+            const resp = await this._sharedService.getConfirmation('Merge Attribute Value', `Are you sure you want to add ${channelIdentifier} to ${selectedCustomer.firstName}'s ${attr}`);
+            if (resp == true) {
+              if (selectedCustomer[attr].length < 7) {
+                selectedCustomer[attr].push(channelIdentifier);
+                this.updateTopiCustomer();
+                this.updateCustomer();
+              } else {
+                this._snackbarService.open(`There's no space to left to add new value for ${attr}.
+               Delete a value OR create a new customer profile and try linking again.
+               If you don't perform any of the above actions,
+               the conversation will still be linked to ${topicCustomer.firstName} profile`, "err", 15000);
+              }
+            } else {
+              this.updateTopiCustomer();
+            }
+          }
+        } else {
+          this.updateTopiCustomer();
+          // this.snackErrorMessage("Unable to link profile");
+        }
+
+      } else {
+        this.updateTopiCustomer();
+        //  this.snackErrorMessage("Unable to link profile");
+      }
+      //  this._socketService.linkCustomerWithInteraction(customerId, this.topicId);
+      console.log(selectedCustomer);
+    } else {
+      this._snackbarService.open("unable to link customer", "err");
+    }
+  }
+
+
+  updateTopiCustomer() {
+    console.log("topic updated");
+  }
+
+  updateCustomer() {
+    console.log("customer updated");
+  }
+
 }

@@ -200,7 +200,7 @@
               <ul class="match-content">
                 <li *ngFor="let customer of customerSuggestions">
                   {{customer.firstName}}
-                  <button (click)="linkCustomer(customer.id)" mat-icon-button class="waves-effect">
+                  <button (click)="linkCustomer(customer)" mat-icon-button class="waves-effect">
                     <mat-icon>insert_link</mat-icon>
                   </button>
                 </li>

@@ -812,8 +812,8 @@
 
   <div class="customer-info-main">
     <app-customer-info [activeChannelSessions]="conversation.activeChannelSessions" [customer]="conversation.customer"
-      [customerSuggestions]="conversation.customerSuggestions" [topicId]="conversation.topicId"
-      (expandCustomerInfo)="eventFromChild($event)">
+      [customerSuggestions]="conversation.customerSuggestions" [firstChannelSession]="conversation.firstChannelSession"
+      [topicId]="conversation.topicId" (expandCustomerInfo)="eventFromChild($event)">
     </app-customer-info>
   </div>
 </div>
