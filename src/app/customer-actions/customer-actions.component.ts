@@ -83,6 +83,8 @@ export class CustomerActionsComponent implements OnInit {
       this.schemaAttributes = ee.sort((a, b) => {
         return a.sort_order - b.sort_order;
       });
+
+      this.channelTypeList = this._sharedService.channelTypeList;
       this.getAttributeTypes();
     });
   }
@@ -137,15 +139,52 @@ export class CustomerActionsComponent implements OnInit {
         if (item.isChannelIdentifier == false) {
           this.customerForm.addControl(item.key, new FormControl("", validatorArray));
         } else {
-          this.customerForm.addControl(item.key, this.fb.array([new FormControl("", validatorArray)]));
+          this.customerForm.addControl(item.key, this.fb.array([]));
           this.channelIdentifierKeys.push(item.key);
+          this.addControlInFormArrays(item);
         }
       });
-      console.log("control==>", this.customerForm.controls);
+      // console.log("control==>", this.customerForm.controls);
       this.patchEditValues();
     } catch (e) {
       console.error("Error in add form control :", e);
     }
+  }
+
+  patchEditValues() {
+    let patchObj = JSON.parse(JSON.stringify(this.userInfo));
+    delete patchObj._id, patchObj.__v;
+    this.customerForm.patchValue(patchObj);
+  }
+
+  addControlInFormArrays(schema) {
+    let userObj = JSON.parse(JSON.stringify(this.userInfo));
+    delete userObj._id, userObj.__v;
+    let userObjKeys = Object.keys(userObj);
+    let identifierKeysLength = this.channelIdentifierKeys.length;
+    let patchObjLength = userObjKeys.length;
+
+    let array1: Array<any> = [];
+    let array2: Array<any> = [];
+
+    if (identifierKeysLength > patchObjLength) {
+      array1 = this.channelIdentifierKeys;
+      array2 = userObjKeys;
+    } else {
+      array1 = userObjKeys;
+      array2 = this.channelIdentifierKeys;
+    }
+
+    array1.forEach((item1) => {
+      array2.forEach((item2) => {
+        if (item1 == item2) {
+          let valueLength = userObj[item1].length;
+          for (let i = 0; i < valueLength; i++) {
+            this.onAddFormControl(schema);
+          }
+        }
+      });
+    });
   }
 
   // creating validation definitions for form controls, using provider schema attribute as parameter
@@ -167,6 +206,7 @@ export class CustomerActionsComponent implements OnInit {
   }
 
   getFormControls(attribute) {
+    // console.log("form control ==>",attr)
     let temp: any = this.customerForm.controls[attribute.key];
     return temp.controls;
   }
@@ -183,18 +223,20 @@ export class CustomerActionsComponent implements OnInit {
 
   onSave() {
     let customerObj = this.customerForm.value;
-    // customerObj = this.fetchTheIdsOfLabels(customerObj);
-    // customerObj["updatedBy"] = this._cacheService.agent.username;
-    console.log("edit customer ==>", customerObj);
-    // this._httpService.updateCustomerById(this.data.id, customerObj).subscribe(
-    //   (e) => {
-    //     this.dialogRef.close({ event: "refresh" });
-    //     this._sharedService.Interceptor("Customer updated!", "succ");
-    //   },
-    //   (error) => {
-    //     this._sharedService.Interceptor(error.error, "err");
-    //   }
-    // );
+    this.updateCustomer(customerObj);
+  }
+
+  updateCustomer(customerObj) {
+    let id = this.userInfo._id;
+    this._httpService.updateCustomerById(id, customerObj).subscribe(
+      (e) => {
+        this.dialogRef.close({ event: "refresh" });
+        this._sharedService.Interceptor("Customer updated!", "succ");
+      },
+      (error) => {
+        this._sharedService.Interceptor(error.error, "err");
+      }
+    );
   }
 
   onNoClick(): void {
@@ -231,69 +273,6 @@ export class CustomerActionsComponent implements OnInit {
       this.customerForm.get(key).markAsTouched();
     }
     console.log("validate form", this.customerForm);
-  }
-
-  patchEditValues() {
-    let patchObj = this.userInfo;
-    delete patchObj._id;
-    let patchObjKeys = Object.keys(patchObj);
-    console.log("value patch==>", Object.keys(patchObj));
-    let identifierKeysLength = this.channelIdentifierKeys.length;
-    let patchObjLength = patchObjKeys.length;
-    let array1: Array<any> = [];
-    let array2: Array<any> = [];
-
-    if (identifierKeysLength > patchObjLength) {
-      array1 = this.channelIdentifierKeys;
-      array2 = patchObjKeys;
-    } else {
-      array1 = patchObjKeys;
-      array2 = this.channelIdentifierKeys;
-    }
-
-    array1.forEach((item1) => {
-      array2.forEach((item2) => {
-        if (item1 == item2) {
-          this.clearAllFormArrays(item1);
-          this.createFormArrays(patchObj, item1);
-        }
-      });
-    });
-  }
-
-  clearAllFormArrays(item) {
-    // this.channelIdentifierKeys.forEach((item) => {
-    let attrArray = this.customerForm.get(item) as FormArray;
-    attrArray.clear();
-    // });
-  }
-
-  createFormArrays(data, key) {
-    // let attribute: Array<any> = item;
-    let attrLength = data[key].length;
-    console.log("attribute==>", attrLength);
-      for (let i = 0; i < attrLength; i++) {
-        const attributeArray = this.customerForm.get(key) as FormArray;
-        // attributeArray.push(this.attributes);
-        // for (let j = 0; j < attribute[i].categories.length; j++) {
-          // const categoryArray = attributeArray
-            // .at(i)
-            // .get("categories") as FormArray;
-          // categoryArray.push(this.categories);
-          // for (
-          //   let k = 0;
-          //   k < data.attributes[i].categories[j].values.length;
-          //   k++
-          // ) {
-          //   const categoryValuesArray = categoryArray
-          //     .at(j)
-          //     .get("values") as FormArray;
-          //   categoryValuesArray.push(this.categoryValues);
-          // }
-        // }
-        // this.setValidation(attribute[i].attributeType, i);
-      }
-    //   this.newForm.setValue(data);
   }
 
   getChannelTypeLogoName(typeName) {

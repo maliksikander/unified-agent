@@ -47,6 +47,8 @@ export class PhonebookComponent implements OnInit {
   filterOnOff: boolean = false;
   filterActiveField;
   removable = true;
+  schemaList: Array<any> = [];
+
   constructor(
     private dateAdapter: DateAdapter<any>,
     private _sharedService: sharedService,
@@ -83,16 +85,70 @@ export class PhonebookComponent implements OnInit {
     this.getUserPreference(limit, offSet, sort, query);
   }
 
+  getCustomerSchema(savedPref:Array<any>) {
+    this._httpService.getCustomerSchema().subscribe((res) => {
+      let temp = res.filter((item) => item.key != "isAnonymous");
+
+      this.schemaList = temp.sort((a, b) => {
+        return a.sortOrder - b.sortOrder;
+      });
+
+      this.checkForSchemaConsistency(savedPref);
+      // this.getUserPreference();
+    });
+  }
+
   getUserPreference(limit, offSet, sort, query) {
     this._httpService.getUserPreference(this._cacheService.agent.id).subscribe((res) => {
-      if (res.docs.length > 0) this.cols = res.docs[0].columns;
+      if (res.docs.length > 0) {
+        let savedPref: Array<any> = res.docs[0].columns;
+        this.getCustomerSchema(savedPref);
+      }
       // console.log("col==>", this.cols);
+
       this._httpService.getCustomers(limit, offSet, sort, query).subscribe((e) => {
         this.rows = e.docs;
+        // let savedPref: Array<any> = e.docs;
         this.totalRecords = e.totalDocs;
+
         // this.loadLabels();
       });
     });
+  }
+
+  checkForSchemaConsistency(savedPref: Array<any>) {
+    // console.log("saved array==>", savedPref);
+    // console.log("schema ==>", this.columns);
+    let array1: Array<any> = [];
+    let array2: Array<any> = [];
+    let finalArray: Array<any> = [];
+
+    let schemaLength = this.schemaList.length;
+    let savedPrefLength = savedPref.length;
+
+    if (schemaLength > savedPrefLength) {
+      array1 = this.schemaList;
+      array2 = savedPref;
+    } else {
+      array1 = savedPref;
+      array2 = this.schemaList;
+    }
+
+    array1.forEach((item1) => {
+      array2.forEach((item2) => {
+        if (schemaLength > savedPrefLength) {
+          if (item1.key == item2.field) {
+            finalArray.push(item2);
+          }
+        } else {
+          if (item2.key == item1.field) {
+            finalArray.push(item1);
+          }
+        }
+      });
+    });
+    this.cols = finalArray;
+    // console.log("final ==>", finalArray);
   }
 
   filter(value, field, v) {
