@@ -88,7 +88,7 @@
 
             <div *ngIf="filterOnOff && filterActiveField == col.field" class="customer-search">
 
-              <div *ngIf="col.type == 'date_time'">
+              <!-- <div *ngIf="col.type == 'date_time'">
                 <input class="filter" [(ngModel)]="filterValue"
                   (keyup.enter)="Cfilter($event.target.value, col.field, col.filterMatchMode)" type="text"
                   [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1">
@@ -96,18 +96,18 @@
                 <div class="close-filter">
                   <mat-icon (click)="cancelFilter()" class="closeIcon">cancel</mat-icon>
                 </div>
-              </div>
+              </div> -->
 
-              <div *ngIf="col.type == 'date'">
+              <!-- <div *ngIf="col.type == 'date'">
                 <input class="filter" type="text" [(ngModel)]="filterValue"
                   (keyup.enter)="Cfilter($event.target.value, col.field, col.filterMatchMode)" (click)="picker.open()"
                   [matDatepicker]="picker">
                 <mat-datepicker #picker></mat-datepicker>
                 <mat-icon (click)="cancelFilter()" class="closeIcon">cancel</mat-icon>
-              </div>
+              </div> -->
 
 
-              <div *ngIf="col.type != 'date_time' && col.type != 'date'">
+              <div>
                 <input class="filter" type="text" [(ngModel)]="filterValue"
                   (keyup.enter)="filter($event.target.value, col.field, col.filterMatchMode)">
                 <div class="close-filter">
@@ -161,9 +161,9 @@
 
 
           <td (click)="onRowClick(rowData._id,null,col.type)" *ngFor="let col of columns" class="ui-resizable-column">
-            <span *ngIf="col.type == 'date_time'">{{rowData[col.field] | date:'M/d/yyyy, h:mm a' }}</span>
-            <span *ngIf="col.type == 'time'">{{rowData[col.field] | date:'shortTime' }}</span>
-            <span *ngIf="col.type == 'date'">{{rowData[col.field] | date:'M/d/yyyy' }}</span>
+            <!-- <span *ngIf="col.type == 'date_time'">{{rowData[col.field] | date:'M/d/yyyy, h:mm a' }}</span> -->
+            <!-- <span *ngIf="col.type == 'time'">{{rowData[col.field] | date:'shortTime' }}</span> -->
+            <!-- <span *ngIf="col.type == 'date'">{{rowData[col.field] | date:'M/d/yyyy' }}</span> -->
             <span
               *ngIf="col.field != 'firstName' && col.type != 'date' && col.type != 'date_time' && col.type != 'time' ">{{rowData[col.field]}}</span>
             <span *ngIf="col.field == 'firstName'"><span>{{rowData[col.field]}}</span>

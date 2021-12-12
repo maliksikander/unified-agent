@@ -63,7 +63,7 @@ export class PhonebookComponent implements OnInit {
     this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
     this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       if (e.msg == "update-labels") {
-        this.loadLabels();
+        // this.loadLabels();
       }
     });
   }
@@ -73,19 +73,12 @@ export class PhonebookComponent implements OnInit {
     this.filterActiveField = col.field;
   }
 
-  loadLabels() {
-    this.labels = [];
-    this._httpService.getLabels().subscribe((e) => {
-      this.labels = e.data;
-    });
-  }
-
   loadCustomers(limit, offSet, sort, query) {
     this.rows = null;
     this.getUserPreference(limit, offSet, sort, query);
   }
 
-  getCustomerSchema(savedPref:Array<any>) {
+  getCustomerSchema(savedPref: Array<any>) {
     this._httpService.getCustomerSchema().subscribe((res) => {
       let temp = res.filter((item) => item.key != "isAnonymous");
 
@@ -104,14 +97,10 @@ export class PhonebookComponent implements OnInit {
         let savedPref: Array<any> = res.docs[0].columns;
         this.getCustomerSchema(savedPref);
       }
-      // console.log("col==>", this.cols);
 
       this._httpService.getCustomers(limit, offSet, sort, query).subscribe((e) => {
         this.rows = e.docs;
-        // let savedPref: Array<any> = e.docs;
         this.totalRecords = e.totalDocs;
-
-        // this.loadLabels();
       });
     });
   }
@@ -158,18 +147,10 @@ export class PhonebookComponent implements OnInit {
     this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
   }
 
-  Cfilter(value, field, v) {
-    let b = moment.utc(this.filterValue).utcOffset(-5).toISOString();
-    this.filterQuery = [];
-    this.filterQuery.push(field + ":" + b);
-    this.query = { field: field, value: b };
-    this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
-  }
-
   cancelFilter() {
     this.query = {};
     this.limit = 25;
-    this.offSet = 0;
+    this.offSet = 1;
     this.sort = {};
     this.rows = null;
     this.filterValue = null;
@@ -180,12 +161,12 @@ export class PhonebookComponent implements OnInit {
   }
 
   onPage(event) {
-    console.log(event);
     this.offSet = event.first;
     this.limit = this.offSet + event.rows;
     this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
   }
 
+  // to open create customer dialog
   createCustomer() {
     const dialogRef = this.dialog.open(CreateCustomerComponent, {
       panelClass: "create-customer-dialog",
@@ -200,6 +181,7 @@ export class PhonebookComponent implements OnInit {
     });
   }
 
+  // to open user prefernce dialog
   actions() {
     const dialogRef = this.dialog.open(columnPreferences, {
       maxWidth: "818px",
@@ -214,33 +196,7 @@ export class PhonebookComponent implements OnInit {
     });
   }
 
-  onItemSelect(item: any) {
-    let id = [];
-    this.labelsForFilter.value.filter((e) => {
-      id.push(e._id);
-    });
-    let ids = id.toString();
-    this.query = { field: "labels", value: ids };
-    this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
-  }
-  OnItemDeSelect(item: any) {
-    let id = [];
-    this.labelsForFilter.value.filter((e) => {
-      id.push(e._id);
-    });
-    if (id[0] == null) {
-      this.cancelFilter();
-    } else {
-      let ids = id.toString();
-      this.query = { field: "labels", value: ids };
-      this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
-    }
-  }
-  onSelectAll(items: any) {}
-  onDeSelectAll(items: any) {
-    this.cancelFilter();
-  }
-
+  // to open user customer action dialog
   onRowClick(id, tab, col) {
     const dialogRef = this.dialog.open(CustomerActionsComponent, {
       panelClass: "edit-customer-dialog",
@@ -282,6 +238,7 @@ export class PhonebookComponent implements OnInit {
   sortArrowUp: boolean = false;
   sortArrowDown: boolean = false;
   sortField;
+
   onSort(field, sortOrder) {
     this.sortField = field;
     if (sortOrder == "asc") {
@@ -298,4 +255,48 @@ export class PhonebookComponent implements OnInit {
   ngOnDestroy() {
     this.stateChangedSubscription.unsubscribe();
   }
+
+  // loadLabels() {
+  //   this.labels = [];
+  //   this._httpService.getLabels().subscribe((e) => {
+  //     this.labels = e.data;
+  //   });
+  // }
+
+  // Cfilter(value, field, v) {
+  //   let b = moment.utc(this.filterValue).utcOffset(-5).toISOString();
+  //   this.filterQuery = [];
+  //   this.filterQuery.push(field + ":" + b);
+  //   this.query = { field: field, value: b };
+  //   this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+  // }
+
+  // onItemSelect(item: any) {
+  //   let id = [];
+  //   this.labelsForFilter.value.filter((e) => {
+  //     id.push(e._id);
+  //   });
+  //   let ids = id.toString();
+  //   this.query = { field: "labels", value: ids };
+  //   this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+  // }
+
+  // OnItemDeSelect(item: any) {
+  //   let id = [];
+  //   this.labelsForFilter.value.filter((e) => {
+  //     id.push(e._id);
+  //   });
+  //   if (id[0] == null) {
+  //     this.cancelFilter();
+  //   } else {
+  //     let ids = id.toString();
+  //     this.query = { field: "labels", value: ids };
+  //     this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+  //   }
+  // }
+
+  // onSelectAll(items: any) {}
+  // onDeSelectAll(items: any) {
+  //   this.cancelFilter();
+  // }
 }
