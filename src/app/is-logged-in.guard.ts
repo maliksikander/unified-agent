@@ -9,10 +9,10 @@ export class IsLoggedInGuard implements CanActivate {
   constructor(private _cacheService: cacheService) {}
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    // if (this._cacheService.agent && this._cacheService.agent.id && this._cacheService.agent.username) {
+    if (this._cacheService.agent && this._cacheService.agent.id && this._cacheService.agent.username) {
       return true;
-    // } else {
-      // return false;
-    // }
+    } else {
+      return false;
+    }
   }
 }
