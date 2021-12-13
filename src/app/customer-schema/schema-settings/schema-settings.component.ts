@@ -18,6 +18,8 @@ export class SchemaSettingsComponent implements OnInit {
   showDetails: boolean = false;
   divId;
   isAnonymousObject;
+  channelTypeList: Array<any> = [];
+  showsaveOrder: boolean = false;
 
   constructor(
     private _sharedService: sharedService,
@@ -33,6 +35,7 @@ export class SchemaSettingsComponent implements OnInit {
 
   // angular drag & drop method
   drop(event: CdkDragDrop<string[]>) {
+    this.showsaveOrder = true;
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -53,7 +56,7 @@ export class SchemaSettingsComponent implements OnInit {
         let n = this.schema1.length / 2;
 
         this.schema2 = this.schema1.splice(0, n);
-
+        this.channelTypeList = this._sharedService.channelTypeList;
         if (orderChangeCheck == "delete") this.changeOrder(orderChangeCheck);
       },
       (error) => {
@@ -154,5 +157,13 @@ export class SchemaSettingsComponent implements OnInit {
       }
     });
     this.cd.detectChanges();
+  }
+
+  getChannelTypeLogoName(typeName) {
+    let typeIndex = this.channelTypeList.findIndex((item) => item.name === typeName);
+    if (typeIndex == -1) return "";
+    let channelType = this.channelTypeList[typeIndex];
+    let filename = channelType.channelLogo;
+    return filename;
   }
 }

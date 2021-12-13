@@ -45,7 +45,7 @@
           <label class="text-left">Field Type</label>
           <div class="select-list">
             <mat-form-field appearance="outline">
-              <mat-select formControlName="type" (selectionChange)="onTypeChange($event)">
+              <mat-select class="selected-channels" formControlName="type" (selectionChange)="onTypeChange($event)">
                 <mat-option *ngFor="let attributeType of attributeTypes" [value]="attributeType.type">
                   {{attributeType.type | titlecase}}</mat-option>
               </mat-select>

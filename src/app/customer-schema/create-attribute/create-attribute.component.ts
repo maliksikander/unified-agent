@@ -5,6 +5,7 @@ import { AbstractControl } from "@angular/forms";
 import { map } from "rxjs/operators";
 import { httpService } from "src/app/services/http.service";
 import { sharedService } from "src/app/services/shared.service";
+import { snackbarService } from "src/app/services/snackbar.service";
 
 @Component({
   selector: "app-create-attribute",
@@ -20,10 +21,10 @@ export class CreateAttributeComponent implements OnInit {
   constructor(
     private _sharedService: sharedService,
     private _httpService: httpService,
-    public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<CreateAttributeComponent>,
     private formBuilder: FormBuilder,
     private cd: ChangeDetectorRef,
+    private snackbarService: snackbarService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
@@ -83,11 +84,14 @@ export class CreateAttributeComponent implements OnInit {
 
   createNewAttribute(data) {
     this._httpService.addCustomerSchema(data).subscribe(
-      (e) => {
+      (res) => {
         this.dialogRef.close({ event: "refresh" });
       },
       (error) => {
-        this._sharedService.Interceptor(error.error, "err");
+        console.log("Error :", error);
+        let msg = error.error.error ? error.error.error : error.message;
+        this.snackbarService.open(msg, "err");
+        // this._sharedService.Interceptor(error.error, "err");
       }
     );
   }
@@ -102,7 +106,7 @@ export class CreateAttributeComponent implements OnInit {
 
     if (e.value == "number" || e.value == "password" || e.value == "name" || e.value == "boolean" || e.value == "url") {
       this.createAttributeForm.controls["isChannelIdentifier"].setValue(false);
-      this.createAttributeForm.controls["channelTypes"].setValue([])
+      this.createAttributeForm.controls["channelTypes"].setValue([]);
     }
 
     this.cd.detectChanges();

@@ -170,9 +170,9 @@ export class PhonebookComponent implements OnInit {
   createCustomer() {
     const dialogRef = this.dialog.open(CreateCustomerComponent, {
       panelClass: "create-customer-dialog",
-      maxWidth: "60vw",
+      maxWidth: "80vw",
       // height: "80vh",
-      maxHeight: "80vh"
+      // maxHeight: "80vh"
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result && result.event == "refresh") {
@@ -200,7 +200,7 @@ export class PhonebookComponent implements OnInit {
   onRowClick(id, tab, col) {
     const dialogRef = this.dialog.open(CustomerActionsComponent, {
       panelClass: "edit-customer-dialog",
-      maxWidth: "60vw",
+      maxWidth: "80vw",
       maxHeight: "88vh",
       // width: "818px",
       // height: "88vh",

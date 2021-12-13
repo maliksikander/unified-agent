@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, DateAdapter } from "@angula
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from "@angular/forms";
 import { httpService } from "../services/http.service";
 import { sharedService } from "../services/shared.service";
+import { snackbarService } from "../services/snackbar.service";
 
 @Component({
   selector: "app-create-customer",
@@ -16,13 +17,14 @@ export class CreateCustomerComponent implements OnInit {
 
   constructor(
     private dateAdapter: DateAdapter<any>,
-    public snackBar: MatSnackBar,
+    // public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<CreateCustomerComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     private _httpService: httpService,
     private _sharedService: sharedService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private snackbarService: snackbarService
   ) {
     dialogRef.disableClose = true;
     this.dateAdapter.setLocale("en-GB");
@@ -157,7 +159,13 @@ export class CreateCustomerComponent implements OnInit {
 
   onAddFormControl(attribute) {
     let validatorArray: any = this.addFormValidations(attribute);
-    (<FormArray>this.customerForm.controls[attribute.key]).push(new FormControl("", validatorArray));
+    let temp: any = this.customerForm.controls[attribute.key];
+    let tempLength: number = temp.controls.length;
+    if (tempLength < 10) {
+      (<FormArray>this.customerForm.controls[attribute.key]).push(new FormControl("", validatorArray));
+    } else {
+      this.snackbarService.open("CANNOT_ADD_MORE_FIELDS", "err");
+    }
   }
 
   onRemoveFormControl(attribute, i) {
@@ -168,8 +176,8 @@ export class CreateCustomerComponent implements OnInit {
   onSave() {
     let data = this.customerForm.value;
     data.isAnonymous = false;
-    // console.log("save result==>", data);
-    this.createCustomer(data);
+    console.log("save result==>", data);
+    // this.createCustomer(data);
   }
 
   validateForm() {

@@ -6,6 +6,7 @@ import { httpService } from "../services/http.service";
 import { cacheService } from "../services/cache.service";
 import { sharedService } from "../services/shared.service";
 import { ConfirmationDialogComponent } from "../new-components/confirmation-dialog/confirmation-dialog.component";
+import { snackbarService } from "../services/snackbar.service";
 
 @Component({
   selector: "app-customer-actions",
@@ -22,7 +23,7 @@ export class CustomerActionsComponent implements OnInit {
   schemaIni: boolean = false;
   editTab: boolean = false;
   channelTypeList: any[] = [];
-  channelIdentifierKeys: Array<any> = [];
+  // channelIdentifierKeys: Array<any> = [];
   // editActiveMode: boolean = true;
 
   constructor(
@@ -35,7 +36,8 @@ export class CustomerActionsComponent implements OnInit {
     private _sharedService: sharedService,
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<CustomerActionsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private snackbarService: snackbarService
   ) {
     dialogRef.disableClose = true;
     this.dateAdapter.setLocale("en-GB");
@@ -65,7 +67,6 @@ export class CustomerActionsComponent implements OnInit {
     this.customerForm = new FormGroup({});
 
     // let query = { field: "_id", value: this.data.id };
-    console.log("data==>", this.data);
     this.getCustomerByID();
   }
 
@@ -79,8 +80,9 @@ export class CustomerActionsComponent implements OnInit {
   }
 
   getCustomerSchema() {
-    this._httpService.getCustomerSchema().subscribe((ee) => {
-      this.schemaAttributes = ee.sort((a, b) => {
+    this._httpService.getCustomerSchema().subscribe((res) => {
+      let temp = res.filter((item) => item.key != "isAnonymous");
+      this.schemaAttributes = temp.sort((a, b) => {
         return a.sort_order - b.sort_order;
       });
 
@@ -140,51 +142,59 @@ export class CustomerActionsComponent implements OnInit {
           this.customerForm.addControl(item.key, new FormControl("", validatorArray));
         } else {
           this.customerForm.addControl(item.key, this.fb.array([]));
-          this.channelIdentifierKeys.push(item.key);
-          this.addControlInFormArrays(item);
+          let val = this.userInfo[item.key];
+          let valLength: number = val ? val.length : 1;
+          for (let i = 0; i < valLength; i++) {
+            this.onAddFormControl(item);
+          }
         }
       });
-      // console.log("control==>", this.customerForm.controls);
       this.patchEditValues();
     } catch (e) {
       console.error("Error in add form control :", e);
     }
   }
 
+  // addControlInFormArrays(schema) {
+  //   let userObj = JSON.parse(JSON.stringify(this.userInfo));
+  //   delete userObj._id, userObj.__v;
+  //   let userObjKeys = Object.keys(userObj);
+  //   let identifierKeysLength = this.channelIdentifierKeys.length;
+  //   let patchObjLength = userObjKeys.length;
+  //   console.log("schema==>", schema);
+  //   console.log("userObjkeys==>", userObjKeys);
+  //   console.log("identifierkeys==>", this.channelIdentifierKeys);
+
+  //   let array1: Array<any> = [];
+  //   let array2: Array<any> = [];
+
+  //   if (identifierKeysLength > patchObjLength) {
+  //     array1 = this.channelIdentifierKeys;
+  //     array2 = userObjKeys;
+  //   } else {
+  //     array1 = userObjKeys;
+  //     array2 = this.channelIdentifierKeys;
+  //   }
+
+  //   array1.forEach((item1) => {
+  //     array2.forEach((item2) => {
+  //       if (item1 == item2) {
+  //         console.log("item1==>", item1);
+  //         console.log("item2==>", item2);
+  //         let valueLength = userObj[item1].length;
+  //         console.log("length==>", valueLength);
+  //         for (let i = 0; i < valueLength; i++) {
+  //           this.onAddFormControl(schema);
+  //         }
+  //       }
+  //     });
+  //   });
+  // }
+
   patchEditValues() {
     let patchObj = JSON.parse(JSON.stringify(this.userInfo));
     delete patchObj._id, patchObj.__v;
     this.customerForm.patchValue(patchObj);
-  }
-
-  addControlInFormArrays(schema) {
-    let userObj = JSON.parse(JSON.stringify(this.userInfo));
-    delete userObj._id, userObj.__v;
-    let userObjKeys = Object.keys(userObj);
-    let identifierKeysLength = this.channelIdentifierKeys.length;
-    let patchObjLength = userObjKeys.length;
-
-    let array1: Array<any> = [];
-    let array2: Array<any> = [];
-
-    if (identifierKeysLength > patchObjLength) {
-      array1 = this.channelIdentifierKeys;
-      array2 = userObjKeys;
-    } else {
-      array1 = userObjKeys;
-      array2 = this.channelIdentifierKeys;
-    }
-
-    array1.forEach((item1) => {
-      array2.forEach((item2) => {
-        if (item1 == item2) {
-          let valueLength = userObj[item1].length;
-          for (let i = 0; i < valueLength; i++) {
-            this.onAddFormControl(schema);
-          }
-        }
-      });
-    });
   }
 
   // creating validation definitions for form controls, using provider schema attribute as parameter
@@ -206,14 +216,19 @@ export class CustomerActionsComponent implements OnInit {
   }
 
   getFormControls(attribute) {
-    // console.log("form control ==>",attr)
     let temp: any = this.customerForm.controls[attribute.key];
     return temp.controls;
   }
 
   onAddFormControl(attribute) {
     let validatorArray: any = this.addFormValidations(attribute);
-    (<FormArray>this.customerForm.controls[attribute.key]).push(new FormControl("", validatorArray));
+    let temp: any = this.customerForm.controls[attribute.key];
+    let tempLength: number = temp.controls.length;
+    if (tempLength < 10) {
+      (<FormArray>this.customerForm.controls[attribute.key]).push(new FormControl("", validatorArray));
+    } else {
+      this.snackbarService.open("CANNOT_ADD_MORE_FIELDS", "err");
+    }
   }
 
   onRemoveFormControl(attribute, i) {
@@ -223,6 +238,7 @@ export class CustomerActionsComponent implements OnInit {
 
   onSave() {
     let customerObj = this.customerForm.value;
+    customerObj.isAnonymous = this.userInfo.isAnonymous;
     this.updateCustomer(customerObj);
   }
 

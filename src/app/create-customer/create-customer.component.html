@@ -10,7 +10,7 @@
 <mat-dialog-content *ngIf="dataReady" class="main-content-create-customer">
 
   <form [formGroup]="customerForm">
-    <div class="row">
+    <div class="row row-customer-form">
       <ng-container *ngFor="let schemaAttribute of schemaAttributes">
         <div [ngClass]="[schemaAttribute.length >= 116 ? 'col-md-12':  'col-md-6' ]"
           [class.check-box-field]="schemaAttribute.type == 'boolean'">
@@ -21,7 +21,7 @@
 
             <!-- For Character length less than equal to 115  -->
             <ng-container *ngIf="schemaAttribute.isChannelIdentifier == false">
-              <div class="field-set" *ngIf="schemaAttribute.type != 'boolean' && schemaAttribute.length <= 115">
+              <div class="field-set" *ngIf="schemaAttribute.type != 'boolean'">
 
                 <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
                     *ngIf="schemaAttribute.isRequired">*</span>
@@ -48,7 +48,7 @@
             </ng-container>
 
             <ng-container *ngIf="schemaAttribute.isChannelIdentifier == true" formArrayName="{{schemaAttribute.key}}">
-              <div class="field-set" *ngIf="schemaAttribute.type != 'boolean' && schemaAttribute.length <= 115">
+              <div class="field-set" *ngIf="schemaAttribute.type != 'boolean'">
                 <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
                     *ngIf="schemaAttribute.isRequired">*</span>
                   <span class="field-channel"><img *ngFor="let channelType of schemaAttribute.channelTypes"
@@ -86,7 +86,7 @@
 
 
             <!-- For type 'String' and character length greater than equal to 116  -->
-            <div class="field-set" *ngIf=" schemaAttribute.type == 'string'  && schemaAttribute.length >= 116">
+            <!-- <div class="field-set" *ngIf=" schemaAttribute.type == 'string'  && schemaAttribute.length >= 116">
               <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
                   *ngIf="schemaAttribute.isRequired">*</span>
               </label>
@@ -106,7 +106,7 @@
               </mat-form-field>
 
 
-            </div>
+            </div> -->
 
             <!-- Boolean -->
 
