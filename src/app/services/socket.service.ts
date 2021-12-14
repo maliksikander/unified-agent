@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnInit } from "@angular/core";
 import { io } from "socket.io-client";
 import { BehaviorSubject, Observable } from "rxjs";
 import { Router } from "@angular/router";
@@ -34,10 +34,9 @@ export class socketService {
     private _router: Router,
     private _soundService: soundService,
     private ngxService: NgxUiLoaderService
-  ) {}
+  ) {
+   // this.onTopicData(mockTopicData, "12345");
 
-  ngOnInit(){
-    this.onTopicData(mockTopicData, "12345");
   }
 
   connectToSocket() {
@@ -552,7 +551,7 @@ export class socketService {
             } else {
               console.log("not merged");
               const resp = await this._sharedService.getConfirmation('Merge Attribute Value', `Are you sure you want to add ${channelIdentifier} to ${selectedCustomer.firstName}'s ${attr}`);
-           
+
               if (resp == true) {
                 if (selectedCustomer[attr].length <= 10) {
                   selectedCustomer[attr].push(channelIdentifier);

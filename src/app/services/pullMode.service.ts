@@ -14,7 +14,7 @@ export class pullModeService {
   listNames: any;
 
   constructor(private _sharedService: sharedService, private _httpService: httpService, private _snackbarService: snackbarService) {
-    this.loadLabels();
+   // this.loadLabels();
     this.getPullModeList();
   }
 

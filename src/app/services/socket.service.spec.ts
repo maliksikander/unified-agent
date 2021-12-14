@@ -38,7 +38,7 @@ describe("Socket service", () => {
 
         _sharedService = sharedService;
         _sharedService.schema = mockCustomerSchema;
-
+        
         component = new socketService(
             _snackbarService,
             _appConfigService,
@@ -87,7 +87,7 @@ describe("Socket service", () => {
 
         });
 
-        it("should call updateTopiCustomer function when linking is with customer whose limit exceeds but agent don't want to merge profile", () => {
+        it("should call updateTopiCustomer function when linking is with customer whose limit exceeds but agent do not want to merge profile", () => {
 
             spyOn(component, 'updateTopiCustomer');
             const mock = jest.fn().mockResolvedValueOnce(false)
