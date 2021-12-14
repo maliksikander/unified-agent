@@ -34,7 +34,9 @@ export class socketService {
     private _router: Router,
     private _soundService: soundService,
     private ngxService: NgxUiLoaderService
-  ) {
+  ) {}
+
+  ngOnInit(){
     this.onTopicData(mockTopicData, "12345");
   }
 
@@ -550,12 +552,15 @@ export class socketService {
             } else {
               console.log("not merged");
               const resp = await this._sharedService.getConfirmation('Merge Attribute Value', `Are you sure you want to add ${channelIdentifier} to ${selectedCustomer.firstName}'s ${attr}`);
+           
               if (resp == true) {
-                if (selectedCustomer[attr].length < 7) {
+                if (selectedCustomer[attr].length <= 10) {
                   selectedCustomer[attr].push(channelIdentifier);
                   this.updateTopiCustomer();
-                  this.updateCustomer();
+                  this.updateCustomerProfile();
+                  console.log("limit not exceed")
                 } else {
+                  console.log("limit exceed")
                   this._snackbarService.open(`There's no space to left to add new value for ${attr}.
                Delete a value OR create a new customer profile and try linking again.
                If you don't perform any of the above actions,
@@ -589,7 +594,7 @@ export class socketService {
     console.log("topic updated");
   }
 
-  updateCustomer() {
+  updateCustomerProfile() {
     console.log("customer updated");
   }
 

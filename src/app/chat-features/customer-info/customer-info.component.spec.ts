@@ -1,37 +1,19 @@
 import { CustomerInfoComponent } from "./customer-info.component";
 import { sharedService } from "src/app/services/shared.service";
-import { socketService } from "src/app/services/socket.service";
-import { TestBed } from "@angular/core/testing";
 const mockCustomerSchema: any = require('../../mocks/customerSchema.json');
 const mockTopicData: any = require('../../mocks/topicData.json');
 
 describe("CustomerInfoComponent", () => {
     let component: CustomerInfoComponent;
-    let _socketService: socketService;
-    let _shareredService: sharedService;
-    let mockSharedService;
-    let mockSocketService;
+    let _socketService: any;
+    let _shareredService: any;
     let routerMock: any;
     let dialogMock: any;
 
     beforeEach(() => {
 
-        mockSharedService = {
-            schema: mockCustomerSchema,
-        }
-
-        mockSocketService = {
-
-        }
-        TestBed.configureTestingModule({
-            providers: [
-                { provide: _shareredService, useValue: mockSharedService },
-                { provide: _socketService, useValue: mockSocketService },
-            ]
-        });
-
-        _shareredService = TestBed.get(sharedService);
-        _socketService = TestBed.get(socketService);
+        _shareredService = sharedService;
+        _shareredService.schema = mockCustomerSchema;
 
         component = new CustomerInfoComponent(
             routerMock,
@@ -39,15 +21,6 @@ describe("CustomerInfoComponent", () => {
             _socketService,
             dialogMock
         );
-
-    });
-
-    afterEach(() => {
-
-        component = null;
-        _shareredService = null;
-        _socketService = null;
-        mockSharedService = null;
 
     });
 
@@ -60,13 +33,32 @@ describe("CustomerInfoComponent", () => {
 
         });
 
-        it("should validate the form", () => {
+    });
 
-            _socketService.onTopicData(mockTopicData, "12345");
+    describe("Convert customer object to form data object", () => {
 
-            component.viewAllMatches();
 
-            expect(window.location.pathname).toEqual('/customers/phonebook');
+        it("should extract fields from customer object", () => {
+
+            let obj = component.getProfileFormData(mockTopicData.customer);
+
+            expect(obj).toBeTruthy();
+        });
+
+        it("should not extract extra fields from customer object", () => {
+
+            let obj = component.getProfileFormData(mockTopicData.customer);
+
+            expect(obj).not.toContain(jasmine.objectContaining({ 'key': '_id' }));
+
+        });
+
+        it("should not includes empty values in it", () => {
+
+            let obj = component.getProfileFormData(mockTopicData.customer);
+
+            expect(obj).not.toContain(jasmine.objectContaining({ 'value': '' }));
+
         });
     });
 });
