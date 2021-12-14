@@ -11,8 +11,8 @@ import { sharedService } from "../services/shared.service";
   styleUrls: ["./column-preferences.component.scss"]
 })
 export class columnPreferences implements OnInit {
-  columns = [];
-  checkedColumns = [];
+  columns: Array<any> = [];
+  checkedColumns: Array<any> = [];
   searchItem;
 
   constructor(
@@ -25,26 +25,69 @@ export class columnPreferences implements OnInit {
   ) {}
 
   ngOnInit() {
-    this._httpService.getCustomerSchema().subscribe((ea) => {
-      delete ea.labels;
-      this.columns = ea.data.sort((a, b) => {
-        return a.sort_order - b.sort_order;
-      });
-      this._httpService.getUserPreference(this._cacheService.agent.id).subscribe((e) => {
-        if (e.data.docs[0].columns != null) {
-          let arr = e.data.docs[0].columns;
-          let index = arr.findIndex((r) => r.type == "label");
-          if (index != -1) {
-            arr.splice(index, 1);
-          }
-          this.checkedColumns = arr;
-        }
-      });
-    });
+    this.getCustomerSchema();
   }
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  getCustomerSchema() {
+    this._httpService.getCustomerSchema().subscribe((res) => {
+      let temp = res.filter((item) => item.key != "isAnonymous");
+
+      this.columns = temp.sort((a, b) => {
+        return a.sortOrder - b.sortOrder;
+      });
+
+      this.getUserPreference();
+    });
+  }
+
+  getUserPreference() {
+    this._httpService.getUserPreference(this._cacheService.agent.id).subscribe((res) => {
+      if (res.docs.length > 0 && res.docs[0].columns != null) {
+        let arr = res.docs[0].columns;
+        this.checkForSchemaConsistency(arr);
+        // this.checkedColumns = arr;
+        // console.log("checked columns==>", res);
+      }
+    });
+  }
+
+  checkForSchemaConsistency(savedPref: Array<any>) {
+    // console.log("saved array==>", savedPref);
+    // console.log("schema ==>", this.columns);
+    let array1: Array<any> = [];
+    let array2: Array<any> = [];
+    let finalArray: Array<any> = [];
+
+    let schemaLength = this.columns.length;
+    let savedPrefLength = savedPref.length;
+
+    if (schemaLength > savedPrefLength) {
+      array1 = this.columns;
+      array2 = savedPref;
+    } else {
+      array1 = savedPref;
+      array2 = this.columns;
+    }
+
+    array1.forEach((item1) => {
+      array2.forEach((item2) => {
+        if (schemaLength > savedPrefLength) {
+          if (item1.key == item2.field) {
+            finalArray.push(item2);
+          }
+        } else {
+          if (item2.key == item1.field) {
+            finalArray.push(item1);
+          }
+        }
+      });
+    });
+    this.checkedColumns = finalArray;
+    // console.log("final ==>", finalArray);
   }
 
   onChange(event, item) {
@@ -76,19 +119,25 @@ export class columnPreferences implements OnInit {
           }
         ]
       };
-      this._httpService.changeUserPreference(prefObj).subscribe(
-        (e) => {
-          this.dialogRef.close({ event: "refresh" });
-          this._sharedService.Interceptor("Preference Updated!", "succ");
-        },
-        (error) => {
-          this._sharedService.Interceptor(error, "err");
-        }
-      );
+      // console.log("check==>", prefObj);
+      this.createPeference(prefObj);
     }
   }
 
+  createPeference(obj) {
+    this._httpService.changeUserPreference(obj).subscribe(
+      (e) => {
+        this.dialogRef.close({ event: "refresh" });
+        this._sharedService.Interceptor("Preference Updated!", "succ");
+      },
+      (error) => {
+        this._sharedService.Interceptor(error, "err");
+      }
+    );
+  }
+
   loadChecked(value) {
+    // console.log("Value==>",value)
     if (this.checkedColumns) {
       let x: boolean;
       this.checkedColumns.filter((e) => {

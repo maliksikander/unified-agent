@@ -1,11 +1,9 @@
 import { Component, OnInit, Inject, ChangeDetectorRef } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, DateAdapter } from "@angular/material";
-import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl } from "@angular/forms";
-import { Router } from "@angular/router";
+import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from "@angular/forms";
 import { httpService } from "../services/http.service";
-import { cacheService } from "../services/cache.service";
 import { sharedService } from "../services/shared.service";
-import { appConfigService } from "../services/appConfig.service";
+import { snackbarService } from "../services/snackbar.service";
 
 @Component({
   selector: "app-create-customer",
@@ -19,16 +17,14 @@ export class CreateCustomerComponent implements OnInit {
 
   constructor(
     private dateAdapter: DateAdapter<any>,
-    private _router: Router,
-    public snackBar: MatSnackBar,
+    // public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<CreateCustomerComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     private _httpService: httpService,
-    private _cacheService: cacheService,
     private _sharedService: sharedService,
     private cd: ChangeDetectorRef,
-    private _appConfigService: appConfigService
+    private snackbarService: snackbarService
   ) {
     dialogRef.disableClose = true;
     this.dateAdapter.setLocale("en-GB");
@@ -57,19 +53,23 @@ export class CreateCustomerComponent implements OnInit {
   };
 
   ngOnInit() {
-    // const formGroup = {};
-
     this.customerForm = new FormGroup({});
 
-    this._httpService.getCustomerSchema().subscribe((e) => {
-      this.schemaAttributes = e.sort((a, b) => {
+    this.getCustomerSchema();
+    this.cd.detectChanges();
+  }
+
+  getCustomerSchema() {
+    this._httpService.getCustomerSchema().subscribe((res) => {
+      let temp = res.filter((item) => item.key != "isAnonymous");
+
+      this.schemaAttributes = temp.sort((a, b) => {
         return a.sortOrder - b.sortOrder;
       });
 
       this.channelTypeList = this._sharedService.channelTypeList;
       this.getAttributeTypes();
     });
-    this.cd.detectChanges();
   }
 
   // adding forms controls to existing form group using attributes in from schema as `attrSchema` parameter
@@ -77,8 +77,12 @@ export class CreateCustomerComponent implements OnInit {
     try {
       attrSchema.forEach((item) => {
         let validatorArray: any = this.addFormValidations(item);
-        this.customerForm.addControl(item.key, new FormControl(item.defaultValue ? item.defaultValue : "", validatorArray));
-        if (item.type == "Boolean" && item.defaultValue == "") {
+        if (item.isChannelIdentifier == false) {
+          this.customerForm.addControl(item.key, new FormControl(item.defaultValue ? item.defaultValue : "", validatorArray));
+        } else {
+          this.customerForm.addControl(item.key, this.fb.array([new FormControl(item.defaultValue ? item.defaultValue : "", validatorArray)]));
+        }
+        if (item.type == "boolean" && item.defaultValue == "") {
           this.customerForm.controls[item.key].setValue(item.defaultValue);
         }
       });
@@ -125,13 +129,12 @@ export class CreateCustomerComponent implements OnInit {
     );
   }
 
-
-  getChannelTypeLogo(typeName) {
+  getChannelTypeLogoName(typeName) {
     let typeIndex = this.channelTypeList.findIndex((item) => item.name === typeName);
-    if (typeIndex == -1) return null;
+    if (typeIndex == -1) return "";
     let channelType = this.channelTypeList[typeIndex];
     let filename = channelType.channelLogo;
-    return `${this._appConfigService.config.FILE_SERVER_URL}/file-engine/api/downloadFileStream?filename=${filename}`;
+    return filename;
   }
 
   // to convert an array of objects to an object of objects
@@ -149,33 +152,52 @@ export class CreateCustomerComponent implements OnInit {
     }
   }
 
-  onSave() {}
+  getFormControls(attribute) {
+    let temp: any = this.customerForm.controls[attribute.key];
+    return temp.controls;
+  }
+
+  onAddFormControl(attribute) {
+    let validatorArray: any = this.addFormValidations(attribute);
+    let temp: any = this.customerForm.controls[attribute.key];
+    let tempLength: number = temp.controls.length;
+    if (tempLength < 10) {
+      (<FormArray>this.customerForm.controls[attribute.key]).push(new FormControl("", validatorArray));
+    } else {
+      this.snackbarService.open("CANNOT_ADD_MORE_FIELDS", "err");
+    }
+  }
+
+  onRemoveFormControl(attribute, i) {
+    const control: any = this.customerForm.get(attribute.key);
+    control.removeAt(i);
+  }
+
+  onSave() {
+    let data = this.customerForm.value;
+    data.isAnonymous = false;
+    console.log("save result==>", data);
+    // this.createCustomer(data);
+  }
 
   validateForm() {
     let a = this.customerForm.controls;
     for (let key in a) {
       this.customerForm.get(key).markAsTouched();
     }
-    console.log("valdiate result==>", this.customerForm);
+    // console.log("valdiate result==>", this.customerForm);
   }
 
-  saveData() {
-    let data = this.customerForm.value;
-    console.log("save result==>", data);
-    // customerObj = this.fetchTheIdsOfLabels(customerObj);
-    // customerObj["createdBy"] = this._cacheService.agent.username;
-    // customerObj["updatedBy"] = "";
-    // console.log(customerObj);
-
-    // this._httpService.createCustomer(customerObj).subscribe(
-    //   (e) => {
-    //     this.dialogRef.close({ event: "refresh" });
-    //     this._sharedService.Interceptor("Customer added!", "succ");
-    //   },
-    //   (error) => {
-    //     this._sharedService.Interceptor(error.error, "err");
-    //   }
-    // );
+  createCustomer(data) {
+    this._httpService.createCustomer(data).subscribe(
+      (e) => {
+        this.dialogRef.close({ event: "refresh" });
+        this._sharedService.Interceptor("Customer added!", "succ");
+      },
+      (error) => {
+        this._sharedService.Interceptor(error.error, "err");
+      }
+    );
   }
 
   // fetchTheIdsOfLabels(obj) {
@@ -226,15 +248,15 @@ export class CreateCustomerComponent implements OnInit {
   // onSelectAll(items: any) {}
   // onDeSelectAll(items: any) {}
 
-  addPhone(): void {
-    // (this.userForm.get('phones') as FormArray).push(
-    //   this.fb.control(null)
-    // );
-  }
+  // addPhone(): void {
+  //   // (this.userForm.get('phones') as FormArray).push(
+  //   //   this.fb.control(null)
+  //   // );
+  // }
 
-  removePhone() {
-    // (this.userForm.get('phones') as FormArray).removeAt(index);
-  }
+  // removePhone() {
+  //   // (this.userForm.get('phones') as FormArray).removeAt(index);
+  // }
 
   // getPhonesFormControls(): AbstractControl {
   // return (<FormArray> this.userForm.get('phones')).controls

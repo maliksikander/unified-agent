@@ -1,5 +1,6 @@
 <div class="dialog-header">
-  <h4 mat-dialog-title>Create New Customer <span class="validater" (click)="validateForm()">Validate</span>
+  <h4 mat-dialog-title>Create New Customer
+    <!-- <span class="validate-span" (click)="validateForm()">Validate</span> -->
     <button mat-button mat-dialog-close>
       <mat-icon (click)="onNoClick()">close</mat-icon>
     </button>
@@ -9,49 +10,83 @@
 <mat-dialog-content *ngIf="dataReady" class="main-content-create-customer">
 
   <form [formGroup]="customerForm">
-    <div class="row">
+    <div class="row row-customer-form">
       <ng-container *ngFor="let schemaAttribute of schemaAttributes">
         <div [ngClass]="[schemaAttribute.length >= 116 ? 'col-md-12':  'col-md-6' ]"
-          [class.check-box-field]="schemaAttribute.type == 'Boolean'">
+          [class.check-box-field]="schemaAttribute.type == 'boolean'">
 
           <div class="input-field">
 
             <!-- AlphaNumeric | URL | Number | PhoneNumber | Email | String | Password | IP | Name -->
 
             <!-- For Character length less than equal to 115  -->
-            <div class="field-set" *ngIf="schemaAttribute.type != 'Boolean'">
-              <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
-                  *ngIf="schemaAttribute.isRequired">*</span>
-                <span *ngIf="schemaAttribute.isChannelIdentifier == true" class="field-channel"><img
-                    *ngFor="let channelType of schemaAttribute.channelTypes"
-                    [src]="getChannelTypeLogo(channelType)"></span>
-              </label>
-              <mat-form-field class="field" appearance="outline">
-                <input formControlName="{{schemaAttribute.key}}" matInput>
-                <mat-error>
-                  <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.required">
-                    *Field is required
-                  </div>
-                  <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.pattern">
-                    *Invalid Pattern
-                  </div>
-                  <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.maxLength">
-                    *{{schemaAttribute.length}} are allowed
-                  </div>
-                </mat-error>
-              </mat-form-field>
-              <ng-container *ngIf="schemaAttribute.isChannelIdentifier == true">
-                <button type="button"  class="duplicate-action add-field" mat-mini-fab>
-                  <mat-icon>add</mat-icon>
-                </button>
-                <button class="duplicate-action remove-field"  mat-mini-fab>
-                  <mat-icon>close</mat-icon>
-                </button>
-              </ng-container>
-            </div>
+            <ng-container *ngIf="schemaAttribute.isChannelIdentifier == false">
+              <div class="field-set" *ngIf="schemaAttribute.type != 'boolean'">
+
+                <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
+                    *ngIf="schemaAttribute.isRequired">*</span>
+                  <!-- <span *ngIf="schemaAttribute.isChannelIdentifier == true" class="field-channel"><img
+                      *ngFor="let channelType of schemaAttribute.channelTypes"
+                      [src]="getChannelTypeLogo(channelType) | channelLogo | async"></span> -->
+                </label>
+
+                <mat-form-field class="field" appearance="outline">
+                  <input formControlName="{{schemaAttribute.key}}" matInput>
+                  <mat-error>
+                    <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.required">
+                      *Field is required
+                    </div>
+                    <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.pattern">
+                      *Invalid Pattern
+                    </div>
+                    <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.maxLength">
+                      *{{schemaAttribute.length}} are allowed
+                    </div>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="schemaAttribute.isChannelIdentifier == true" formArrayName="{{schemaAttribute.key}}">
+              <div class="field-set" *ngIf="schemaAttribute.type != 'boolean'">
+                <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
+                    *ngIf="schemaAttribute.isRequired">*</span>
+                  <span class="field-channel"><img *ngFor="let channelType of schemaAttribute.channelTypes"
+                      [src]="getChannelTypeLogoName(channelType) | channelLogo | async"></span>
+                </label>
+                <ng-container *ngFor="let attr of getFormControls(schemaAttribute);let i = index">
+                  <mat-form-field class="field" appearance="outline">
+                    <input matInput [formControlName]="i">
+                    <mat-error>
+                      <span *ngIf="attr?.errors?.required">
+                        *Field is required
+                      </span>
+                      <span *ngIf="attr?.errors?.pattern">
+                        *Invalid Pattern
+                      </span>
+                      <span *ngIf="attr?.errors?.maxLength">
+                        *Character length should be according to limit
+                      </span>
+                    </mat-error>
+                    <div class="btn-test">
+                      <button *ngIf="i == 0" type="button" class="duplicate-action add-field" mat-mini-fab
+                        (click)="onAddFormControl(schemaAttribute)">
+                        <mat-icon>add</mat-icon>
+                      </button>
+                      <button *ngIf="i > 0" class="duplicate-action remove-field" mat-mini-fab
+                        (click)="onRemoveFormControl(schemaAttribute,i)">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </div>
+
+                  </mat-form-field>
+                </ng-container>
+              </div>
+            </ng-container>
+
 
             <!-- For type 'String' and character length greater than equal to 116  -->
-            <div class="field-set" *ngIf=" schemaAttribute.type == 'String'  && schemaAttribute.length >= 116">
+            <!-- <div class="field-set" *ngIf=" schemaAttribute.type == 'string'  && schemaAttribute.length >= 116">
               <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
                   *ngIf="schemaAttribute.isRequired">*</span>
               </label>
@@ -71,11 +106,11 @@
               </mat-form-field>
 
 
-            </div>
+            </div> -->
 
             <!-- Boolean -->
 
-            <div class="field-set" *ngIf="schemaAttribute.type == 'Boolean'" class="check-box">
+            <div class="field-set" *ngIf="schemaAttribute.type == 'boolean'" class="check-box">
               <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
                   *ngIf="schemaAttribute.isRequired">*</span></label>
               <mat-checkbox color="primary" formControlName="{{schemaAttribute.key}}" matInput></mat-checkbox>

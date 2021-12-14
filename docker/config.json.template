@@ -2,5 +2,6 @@
     "GAT_URL" : "${GAT_URL}",
     "SOCKET_URL" : "${SOCKET_URL}",
     "FILE_SERVER_URL" : "${FILE_SERVER_URL}",
+    "CIM_CUSTOMER_URL": "${CIM_CUSTOMER_URL}"
     "ENV" : "${ENV}"
 }

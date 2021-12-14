@@ -1,12 +1,11 @@
 import { Component, OnInit, Inject, ChangeDetectorRef } from "@angular/core";
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatDialog } from "@angular/material";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from "@angular/material";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AbstractControl } from "@angular/forms";
 import { map } from "rxjs/operators";
 import { httpService } from "src/app/services/http.service";
 import { sharedService } from "src/app/services/shared.service";
-import { appConfigService } from "src/app/services/appConfig.service";
-import { Item } from "angular2-multiselect-dropdown";
+import { snackbarService } from "src/app/services/snackbar.service";
 
 @Component({
   selector: "app-create-attribute",
@@ -16,21 +15,16 @@ import { Item } from "angular2-multiselect-dropdown";
 export class CreateAttributeComponent implements OnInit {
   attributeTypes: Array<any> = [];
   channelIden: boolean = false;
-  // selectedChannel;
   createAttributeForm: FormGroup;
-
-  // selectChannel = new FormControl();
-  // channelList: string[] = ["WEB", "FACEBOOK", "WHATSAPP", "VIBER", "SMS", "GENERIC"];
   channelTypeList: any[] = [];
 
   constructor(
     private _sharedService: sharedService,
     private _httpService: httpService,
-    private _appConfigService: appConfigService,
-    public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<CreateAttributeComponent>,
     private formBuilder: FormBuilder,
     private cd: ChangeDetectorRef,
+    private snackbarService: snackbarService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
@@ -50,7 +44,6 @@ export class CreateAttributeComponent implements OnInit {
 
     this.channelTypeList = this._sharedService.channelTypeList;
     this.getAttributeTypes();
-    // this.getChannelTypes();
   }
 
   // to get attribute type list
@@ -58,7 +51,7 @@ export class CreateAttributeComponent implements OnInit {
     this._httpService.getSchemaTypes().subscribe(
       (res) => {
         this.attributeTypes = res;
-        this.createAttributeForm.controls["type"].setValue("String");
+        this.createAttributeForm.controls["type"].setValue("string");
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -91,11 +84,14 @@ export class CreateAttributeComponent implements OnInit {
 
   createNewAttribute(data) {
     this._httpService.addCustomerSchema(data).subscribe(
-      (e) => {
+      (res) => {
         this.dialogRef.close({ event: "refresh" });
       },
       (error) => {
-        this._sharedService.Interceptor(error.error, "err");
+        console.log("Error :", error);
+        let msg = error.error.error ? error.error.error : error.message;
+        this.snackbarService.open(msg, "err");
+        // this._sharedService.Interceptor(error.error, "err");
       }
     );
   }
@@ -105,8 +101,13 @@ export class CreateAttributeComponent implements OnInit {
     let length = schemaObj.length ? schemaObj.length : 50;
     let typeDef = this.attributeTypes.find((item) => item.type == e.value);
     let validatorArray: Array<any> = [Validators.required, Validators.pattern(typeDef.regex), Validators.maxLength(length)];
-    if (e.value != "String") validatorArray.pop();
+    if (e.value != "string") validatorArray.pop();
     this.createAttributeForm.controls["defaultValue"].setValidators(validatorArray);
+
+    if (e.value == "number" || e.value == "password" || e.value == "name" || e.value == "boolean" || e.value == "url") {
+      this.createAttributeForm.controls["isChannelIdentifier"].setValue(false);
+      this.createAttributeForm.controls["channelTypes"].setValue([]);
+    }
 
     this.cd.detectChanges();
   }
@@ -151,7 +152,7 @@ export class CreateAttributeComponent implements OnInit {
   onLengthChange() {
     let value = this.createAttributeForm.value.length;
     if (value && value != null) {
-      this.onTypeChange({ value: "String" });
+      this.onTypeChange({ value: "string" });
       let def = this.createAttributeForm.value.defaultValue;
       this.createAttributeForm.get("defaultValue").setValue(def);
     }

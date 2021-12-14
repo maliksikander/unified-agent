@@ -3,7 +3,7 @@
     <h4>Customer Attributes</h4>
   </div>
   <div class="customer-heading page-heading col-md-6 text-right">
-    <button mat-button (click)="addAttr()" class="create-new-attribute">Create new Attribute</button>
+    <button mat-button (click)="addAttr()" class="create-new-attribute">Create New Attribute</button>
   </div>
 
 </div>
@@ -20,6 +20,11 @@
             <mat-icon class="shadow">more_vert</mat-icon>
             <span class="heading">{{item.label}}</span><span class="steric" *ngIf="item.isRequired">*</span>
             <span class="field-type">({{item.type}})</span>
+
+            <ul class="available-channel-list">
+              <li><img *ngFor="let channelType of item.channelTypes"
+                  [src]="getChannelTypeLogoName(channelType) | channelLogo | async" matTooltip="{{channelType}}"> </li>
+            </ul>
             <mat-icon matTooltip="Options" class="delete-btn box-options" [matMenuTriggerFor]="boxOptions"
               (click)="displayMenu($event)">more_vert
             </mat-icon>
@@ -28,7 +33,7 @@
               <button mat-menu-item class="channel-selection-list" (click)="edit(item)">
                 Edit
               </button>
-              <button mat-menu-item class="channel-selection-list" (click)="deleteAttribute(item)">
+              <button *ngIf="item.isDeletable" mat-menu-item class="channel-selection-list" (click)="deleteAttribute(item)">
                 Delete
               </button>
 
@@ -44,7 +49,7 @@
               <div class="input-align col-md-6 pr-0">
                 <strong> Type </strong> : <span class="un-edit"> {{ item.type}}</span>
               </div>
-              <div *ngIf="item.type == 'String' || item.type == 'URL' " class="input-align col-md-6 pr-0">
+              <div *ngIf="item.type == 'string'" class="input-align col-md-6 pr-0">
                 <strong> Range </strong>:<span class="un-edit"> {{item.length}}</span>
               </div>
               <div class="input-align col-md-6 pr-0">
@@ -68,11 +73,18 @@
         <div *ngFor="let item of schema1; let i = index">
           <div [ngClass]="{'schema-detail-check': showDetails && divId == item._id}" (click)="openDetails(item._id)"
             class="schema-box" cdkDrag>
-            <!--                        <span class="list-count">{{i + 1 + schema2.length}}</span>-->
+
             <mat-icon class="shadow">more_vert</mat-icon>
             <span class="heading">{{item.label}}</span><span class="steric" *ngIf="item.isRequired">*</span>
             <span class="field-type">({{item.type}})</span>
-            <mat-icon matTooltip="option" class="delete-btn box-options" [matMenuTriggerFor]="searchChannelSelection"
+
+            <ul class="available-channel-list">
+              <li><img *ngFor="let channelType of item.channelTypes"
+                  [src]="getChannelTypeLogoName(channelType) | channelLogo | async" matTooltip="{{channelType}}"> </li>
+            </ul>
+
+
+            <mat-icon matTooltip="Options" class="delete-btn box-options" [matMenuTriggerFor]="searchChannelSelection"
               (click)="displayMenu($event)">more_vert
             </mat-icon>
 
@@ -80,7 +92,7 @@
               <button mat-menu-item class="channel-selection-list" (click)="edit(item)">
                 Edit
               </button>
-              <button mat-menu-item class="channel-selection-list" (click)="deleteAttribute(item)">
+              <button *ngIf="item.isDeletable" mat-menu-item class="channel-selection-list" (click)="deleteAttribute(item)">
                 Delete
               </button>
 
@@ -96,7 +108,7 @@
               <div class="input-align col-md-6 pr-0">
                 <strong> Type </strong> : <span class="un-edit"> {{ item.type}}</span>
               </div>
-              <div *ngIf="item.type == 'String' || item.type == 'URL'" class="input-align col-md-6 pr-0">
+              <div *ngIf="item.type == 'string'" class="input-align col-md-6 pr-0">
                 <strong> Range </strong>:<span class="un-edit">{{ item.length}}</span>
               </div>
 
@@ -117,7 +129,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="schema1" class="create-attribute">
+  <div *ngIf="showsaveOrder" class="create-attribute">
     <button mat-button (click)="changeOrder(null)" class="float-right">Save Order</button>
   </div>
 

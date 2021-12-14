@@ -180,7 +180,7 @@ export class socketService {
     });
 
     this.socket.on("onChannelTypes", (res: any) => {
-      console.log("onChannelTypes", res);
+      console.log("onChannelTypes==>", res);
       this._sharedService.channelTypeList = res;
       this._sharedService.setChannelIcons(res);
     });

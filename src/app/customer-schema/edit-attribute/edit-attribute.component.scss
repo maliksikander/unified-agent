@@ -36,7 +36,7 @@ input::-webkit-inner-spin-button {
 //  }
 //}
 
-.create-attr{
+.create-attr {
   padding: 15px 0;
 
   hr {
@@ -48,16 +48,16 @@ input::-webkit-inner-spin-button {
     background: #efefef;
     border: none;
   }
-  label{
+  label {
     font-size: 12px;
     color: #000;
     margin: 0;
-    small{
-      color: rgba(0,0,0,.5);
+    small {
+      color: rgba(0, 0, 0, 0.5);
     }
   }
 
-  .check-box2{
+  .check-box2 {
     padding: 20px 0 0 27px;
     max-width: 190px;
   }
@@ -65,30 +65,28 @@ input::-webkit-inner-spin-button {
     max-width: 210px;
   }
 
-  .lbl{
+  .lbl {
     color: #808080;
     font-size: 13px;
     font-weight: 500;
   }
-  .create-attr-dialog-body{
-
-    .optional{
+  .create-attr-dialog-body {
+    .optional {
       color: #808080;
       font-size: 13px;
     }
-
   }
 }
 
-.characters-length{
+.characters-length {
   //padding-right: 28px;
   padding-left: 0;
 }
 
-.footer{
+.footer {
   padding-top: 0;
 
-  .footer-actions{
+  .footer-actions {
     text-align: right;
     padding: 0 22px;
     position: relative;
@@ -98,7 +96,7 @@ input::-webkit-inner-spin-button {
       top: 30px;
     }
 
-    button{
+    button {
       height: 30px;
       width: auto;
       padding: 0 15px;
@@ -110,7 +108,7 @@ input::-webkit-inner-spin-button {
       color: white;
       font-size: 12px;
 
-      &.save-btn{
+      &.save-btn {
         color: #fff;
         background: $blue-text-color;
         margin-left: 10px;
@@ -119,18 +117,17 @@ input::-webkit-inner-spin-button {
   }
 }
 
-
-.channel-options{
+.channel-options {
   img {
     position: relative;
     max-width: 18px;
     max-height: 18px;
     vertical-align: middle;
     left: 0;
-    top: -.5px;
+    top: -0.5px;
   }
 }
-.mandatory-attribute{
+.mandatory-attribute {
   min-height: 40px;
   padding: 0;
   line-height: 45px;
@@ -147,23 +144,24 @@ input::-webkit-inner-spin-button {
     max-width: 300px !important;
     margin: 0 8px;
   }
-  label{
+  label {
     min-width: 90px;
   }
-  small{
+  small {
     color: #959595;
     font-size: 11px;
-  };
+  }
 }
-.mandatory-steric{
+.mandatory-steric {
   color: $red-color;
 }
-.pii-info{
-  a{
+
+.pii-info {
+  a {
     font-size: 11px;
     position: relative;
     top: -4px;
     margin-left: 10px;
-    color: #0089FF;
+    color: #0089ff;
   }
 }

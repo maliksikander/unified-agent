@@ -23,7 +23,7 @@
 }
 
 .input-field {
-  .field-set{
+  .field-set {
     position: relative;
     padding-right: 35px;
   }
@@ -72,7 +72,6 @@
 }
 
 .drop {
-
   margin-bottom: 14px;
 }
 
@@ -90,26 +89,32 @@
   display: inline-block;
   top: 1px;
 }
-.duplicate-field{
 
+.duplicate-field {
   button.duplicate-action {
-    top: 10px;
+    // top: 10px;
   }
 }
 
-button.duplicate-action {
+.btn-test {
   position: absolute;
-  right: 2px;
+  right: -45px;
+  top: 6px;
+}
+
+button.duplicate-action {
+  // position: absolute;
+  // right: 2px;
   width: 26px;
   height: 26px;
   line-height: 26px;
-  top: 28px;
+  // top: 28px;
   background: $main-color-background;
   box-shadow: none;
 
-  &.remove-field{
+  &.remove-field {
     background: transparent;
-    mat-icon{
+    mat-icon {
       color: $red-color;
     }
   }
@@ -118,38 +123,42 @@ button.duplicate-action {
     font-size: 16px;
     line-height: 10px;
     height: 26px;
-    color: #8E8E8E;
+    color: #8e8e8e;
   }
 }
+
 span.field-channel {
   margin-left: 10px;
-  img{
+  img {
     margin: 0 2px 1px 0;
     max-height: 15px;
   }
-
 }
 
-.validater{
-  color: #9abcef;
+.validate-span {
+  color: coral;
   font-size: 9px;
   border: 1px solid;
-  padding: 2px;
+  padding: 2px 4px 2px 4px;
   border-radius: 8px;
   cursor: pointer;
+  bottom: 1px;
+  position: relative;
+  margin-left: 5px;
 }
+
 .check-box-field {
   align-self: center;
-  .field-label{
+  .field-label {
     margin-right: 10px;
   }
 }
 
-.check-box{
+.check-box {
   margin-top: 2px;
   margin-left: 0;
   padding-top: 0;
 }
-.mat-dialog-actions{
+.mat-dialog-actions {
   border-top: 1px solid #ececec;
 }

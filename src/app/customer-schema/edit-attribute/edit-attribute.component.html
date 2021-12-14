@@ -45,7 +45,8 @@
           <label class="text-left">Field Type</label>
           <div class="select-list">
             <mat-form-field appearance="outline">
-              <mat-select [disabled]="true" formControlName="type" (selectionChange)="onTypeChange($event)">
+              <mat-select class="selected-channels not-allowed" [disabled]="true" formControlName="type"
+                (selectionChange)="onTypeChange($event)">
                 <mat-option *ngFor="let attributeType of attributeTypes" [value]="attributeType.type">
                   {{attributeType.type}}</mat-option>
               </mat-select>
@@ -55,7 +56,7 @@
             </mat-form-field>
           </div>
         </div>
-        <div *ngIf="editAttributeForm.value.type == 'String'" class="form-group label-name col-md-2 characters-length">
+        <div *ngIf="editAttributeForm.value.type == 'string'" class="form-group label-name col-md-2 characters-length">
           <label class="text-left">Number of Characters</label>
           <mat-form-field appearance="outline">
             <input (keyup)="onLengthChange()" type="number" matInput formControlName="length">
@@ -64,7 +65,7 @@
             </mat-error>
             <mat-error
               *ngIf="editAttributeForm.get('length')?.errors?.min || editAttributeForm.get('length')?.errors?.max">
-              *Length should be between 1 - 1000
+              *Number should be between 1 - 1000
             </mat-error>
             <mat-error *ngIf="editAttributeForm.get('length')?.errors?.pattern">
               *Must Enter a Numeric Value
@@ -89,7 +90,7 @@
             </mat-error>
             <mat-error
               *ngIf="editAttributeForm.get('defaultValue')?.errors?.minLength || editAttributeForm.get('defaultValue')?.errors?.maxLength">
-              *Length should be according to the given length
+              *Length should be according to the given limit
             </mat-error>
             <mat-error *ngIf="editAttributeForm.get('defaultValue')?.errors?.pattern">
               *Value does not match the selected type format
@@ -122,7 +123,7 @@
       <div class="footer-actions row m-0">
         <div class="check-box channel-identifier form-group">
           <label>Channel Identifier</label>
-          <mat-checkbox [disabled]="true" (change)="onChannelIdentifierChange($event)"
+          <mat-checkbox class="not-allowed" style="cursor:not-allowed" [disabled]="true" (change)="onChannelIdentifierChange($event)"
             formControlName="isChannelIdentifier" color="primary">Yes</mat-checkbox>
         </div>
 
@@ -130,7 +131,7 @@
           <label class="text-left">Select Channel</label>
           <div class="select-list">
             <mat-form-field appearance="outline">
-              <mat-select [disabled]="true" formControlName="channelTypes" multiple class="selected-channels">
+              <mat-select [disabled]="true" formControlName="channelTypes" multiple class="selected-channels not-allowed">
                 <mat-option class="channel-options" *ngFor="let channel of channelTypeList" [value]="channel.name"><img
                     [src]="channel?.channelLogo | channelLogo | async"> {{channel.name}}
                 </mat-option>
@@ -146,7 +147,7 @@
         <div class="action-right">
 
           <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
-          <button *ngIf="editAttributeForm.valid" (click)="onSave()" class="save-btn">Add
+          <button *ngIf="editAttributeForm.valid" (click)="onSave()" class="save-btn">Update
             Attribute</button>
         </div>
       </div>
