@@ -33,7 +33,7 @@
               <button mat-menu-item class="channel-selection-list" (click)="edit(item)">
                 Edit
               </button>
-              <button mat-menu-item class="channel-selection-list" (click)="deleteAttribute(item)">
+              <button *ngIf="item.isDeletable" mat-menu-item class="channel-selection-list" (click)="deleteAttribute(item)">
                 Delete
               </button>
 
@@ -49,7 +49,7 @@
               <div class="input-align col-md-6 pr-0">
                 <strong> Type </strong> : <span class="un-edit"> {{ item.type}}</span>
               </div>
-              <div *ngIf="item.type == 'String' || item.type == 'URL' " class="input-align col-md-6 pr-0">
+              <div *ngIf="item.type == 'string'" class="input-align col-md-6 pr-0">
                 <strong> Range </strong>:<span class="un-edit"> {{item.length}}</span>
               </div>
               <div class="input-align col-md-6 pr-0">
@@ -92,7 +92,7 @@
               <button mat-menu-item class="channel-selection-list" (click)="edit(item)">
                 Edit
               </button>
-              <button mat-menu-item class="channel-selection-list" (click)="deleteAttribute(item)">
+              <button *ngIf="item.isDeletable" mat-menu-item class="channel-selection-list" (click)="deleteAttribute(item)">
                 Delete
               </button>
 
@@ -108,7 +108,7 @@
               <div class="input-align col-md-6 pr-0">
                 <strong> Type </strong> : <span class="un-edit"> {{ item.type}}</span>
               </div>
-              <div *ngIf="item.type == 'String' || item.type == 'URL'" class="input-align col-md-6 pr-0">
+              <div *ngIf="item.type == 'string'" class="input-align col-md-6 pr-0">
                 <strong> Range </strong>:<span class="un-edit">{{ item.length}}</span>
               </div>
 
