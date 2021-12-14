@@ -2,9 +2,9 @@
   <h4 *ngIf="userIni && schemaIni">{{editTab ? 'Edit Customer' : userInfo.firstName}}
     <!-- <span *ngIf="editTab" class="validate-span" (click)="validateForm()">Validate</span> -->
   </h4>
-  <button *ngIf="!editTab" (click)="editClick()" class="cstmBtn slide-in-left whiteClass">
+  <!-- <button *ngIf="!editTab" (click)="editClick()" class="cstmBtn slide-in-left whiteClass">
     <mat-icon>edit</mat-icon> <span>Edit Profile</span>
-  </button>
+  </button> -->
   <button (click)="onNoClick()" mat-button mat-dialog-close>
     <mat-icon>close</mat-icon>
   </button>

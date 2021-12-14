@@ -240,7 +240,7 @@ export class PhonebookComponent implements OnInit {
       maxHeight: "88vh",
       // width: "818px",
       // height: "88vh",
-      data: { id: id, tab: tab }
+      data: { id: id, tab: 'edit' }
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if ((result && result.event && result.event == "refresh") || (result && result.event && result.event == "delete")) {
