@@ -35,7 +35,7 @@ export class socketService {
     private _soundService: soundService,
     private ngxService: NgxUiLoaderService
   ) {
-   // this.onTopicData(mockTopicData, "12345");
+    // this.onTopicData(mockTopicData, "12345");
 
   }
 
@@ -563,7 +563,7 @@ export class socketService {
                   this._snackbarService.open(`There's no space to left to add new value for ${attr}.
                Delete a value OR create a new customer profile and try linking again.
                If you don't perform any of the above actions,
-               the conversation will still be linked to ${topicCustomer.firstName} profile`, "err", 15000);
+               the conversation will still be linked to ${topicCustomer.firstName} profile`, "err", 15000, "ok");
                 }
               } else {
                 this.updateTopiCustomer();
