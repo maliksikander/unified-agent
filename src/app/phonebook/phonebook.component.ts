@@ -8,6 +8,8 @@ import { cacheService } from "../services/cache.service";
 import { columnPreferences } from "../column-preferences/column-preferences.component";
 import { sharedService } from "../services/shared.service";
 import * as moment from "moment";
+import { ActivatedRoute, Router } from "@angular/router";
+import { socketService } from "../services/socket.service";
 
 @Component({
   selector: "app-phonebook",
@@ -16,6 +18,10 @@ import * as moment from "moment";
 })
 export class PhonebookComponent implements OnInit {
   customers;
+  topicCustomerId;
+  paramsSubscription;
+  isEmbededView: boolean = false;
+  topicId: string;
   stateChangedSubscription;
   totalRecords: number;
   FilterSelected = "action";
@@ -41,7 +47,7 @@ export class PhonebookComponent implements OnInit {
   offSet = 1;
   sort = {};
   query = {};
-  filterQuery: string[] = [];
+  filterQuery = [];
 
   submitted: boolean;
   filterOnOff: boolean = false;
@@ -54,12 +60,16 @@ export class PhonebookComponent implements OnInit {
     private _sharedService: sharedService,
     private _cacheService: cacheService,
     private _httpService: httpService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private _router: Router,
+    private route: ActivatedRoute,
+    private _socketService: socketService
   ) {
     this.dateAdapter.setLocale("en-GB");
   }
 
   ngOnInit() {
+    this.processURLParams();
     this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
     this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       if (e.msg == "update-labels") {
@@ -67,6 +77,22 @@ export class PhonebookComponent implements OnInit {
       }
     });
   }
+
+  processURLParams() {
+    this.paramsSubscription = this.route.queryParams.subscribe((params) => {
+      console.log("params ", params);
+      if (params["q"] == "linking") {
+        this.isEmbededView = true;
+        this.topicId = params["topicId"];
+        this.topicCustomerId = params["topicCustomerId"];
+        if (params["filterKey"]) {
+          this.filterValue = params["filterValue"];
+          this.filter("", params["filterKey"], "");
+        }
+      }
+    });
+  }
+
   setFilter(event: Event, col) {
     this.filterOnOff = !this.filterOnOff;
     event.stopPropagation();
@@ -141,9 +167,10 @@ export class PhonebookComponent implements OnInit {
   }
 
   filter(value, field, v) {
-    this.query = { field: field, value: encodeURIComponent(this.filterValue) };
+    this.filterValue = encodeURIComponent(this.filterValue);
+    this.query = { field: field, value: this.filterValue };
     this.filterQuery = [];
-    this.filterQuery.push(field + ":" + this.filterValue);
+    this.filterQuery.push({ field: field, value: this.filterValue });
     this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
   }
 
@@ -170,7 +197,7 @@ export class PhonebookComponent implements OnInit {
   createCustomer() {
     const dialogRef = this.dialog.open(CreateCustomerComponent, {
       panelClass: "create-customer-dialog",
-      maxWidth: "80vw",
+      maxWidth: "80vw"
       // height: "80vh",
       // maxHeight: "80vh"
     });
@@ -252,8 +279,49 @@ export class PhonebookComponent implements OnInit {
     this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
   }
 
+  linkCustomer(selectedCustomer) {
+    console.log("selected customer fom phonebook ", selectedCustomer);
+    this._socketService.linkCustomerWithTopic(JSON.parse(JSON.stringify(selectedCustomer)), this.topicId);
+  }
+  backToChat() {}
   ngOnDestroy() {
     this.stateChangedSubscription.unsubscribe();
+    this.paramsSubscription.unsubscribe();
+  }
+
+  Cfilter(value, field, v) {
+    let b = moment.utc(this.filterValue).utcOffset(-5).toISOString();
+    this.filterQuery = [];
+    this.filterQuery.push({ field: field, value: b });
+    this.query = { field: field, value: b };
+    this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+  }
+
+  onItemSelect(item: any) {
+    let id = [];
+    this.labelsForFilter.value.filter((e) => {
+      id.push(e._id);
+    });
+    let ids = id.toString();
+    this.query = { field: "labels", value: ids };
+    this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+  }
+  OnItemDeSelect(item: any) {
+    let id = [];
+    this.labelsForFilter.value.filter((e) => {
+      id.push(e._id);
+    });
+    if (id[0] == null) {
+      this.cancelFilter();
+    } else {
+      let ids = id.toString();
+      this.query = { field: "labels", value: ids };
+      this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+    }
+  }
+  onSelectAll(items: any) {}
+  onDeSelectAll(items: any) {
+    this.cancelFilter();
   }
 
   // loadLabels() {
@@ -261,14 +329,6 @@ export class PhonebookComponent implements OnInit {
   //   this._httpService.getLabels().subscribe((e) => {
   //     this.labels = e.data;
   //   });
-  // }
-
-  // Cfilter(value, field, v) {
-  //   let b = moment.utc(this.filterValue).utcOffset(-5).toISOString();
-  //   this.filterQuery = [];
-  //   this.filterQuery.push(field + ":" + b);
-  //   this.query = { field: field, value: b };
-  //   this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
   // }
 
   // onItemSelect(item: any) {

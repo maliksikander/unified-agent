@@ -176,8 +176,8 @@ export class CreateCustomerComponent implements OnInit {
   onSave() {
     let data = this.customerForm.value;
     data.isAnonymous = false;
-    console.log("save result==>", data);
-    // this.createCustomer(data);
+    // console.log("save result==>", data);
+    this.createCustomer(data);
   }
 
   validateForm() {

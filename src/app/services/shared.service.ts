@@ -1,22 +1,24 @@
 import { Injectable } from "@angular/core";
+import { MatDialog } from "@angular/material";
 import { Subject } from "rxjs";
-import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
+import { ConfirmationDialogComponent } from "../new-components/confirmation-dialog/confirmation-dialog.component";
 import { httpService } from "./http.service";
 import { snackbarService } from "./snackbar.service";
+const customerSchema: any = require("../mocks/customerSchema.json");
 
 @Injectable({
   providedIn: "root"
 })
 export class sharedService {
-  constructor(private _snackbarService: snackbarService, private _httpService: httpService) {}
+  constructor(private dialog: MatDialog, private _snackbarService: snackbarService, private _httpService: httpService) {}
+
+  schema;
 
   matCurrentTabIndex = 0;
-
   channelLogoMapper = new Map();
-
   serviceCurrentMessage = new Subject();
-
   channelTypeList: Array<any> = [];
+
   serviceChangeMessage(data: any) {
     this.serviceCurrentMessage.next(data);
   }
@@ -33,6 +35,7 @@ export class sharedService {
   }
 
   setChannelIcons(channelTypes) {
+    this.channelTypeList = channelTypes;
     channelTypes.forEach((channelType) => {
       this._httpService.getChannelLogo(channelType.channelLogo).subscribe((file) => {
         const reader = new FileReader();
@@ -41,6 +44,23 @@ export class sharedService {
           // caching the channel logos
           this.channelLogoMapper.set(channelType.channelLogo, reader.result);
         };
+      });
+    });
+  }
+
+  getConfirmation(header, msg) {
+    return new Promise((resolve) => {
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        width: "490px",
+        panelClass: "confirm-dialog",
+        data: { header: header, message: msg }
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result && result.event == "confirm") {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
       });
     });
   }

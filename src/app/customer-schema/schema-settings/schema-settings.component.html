@@ -1,8 +1,8 @@
 <div class="label-main page-header row m-0">
-  <div class="customer-heading page-heading col-md-6">
+  <div class="customer-heading page-heading col-md-6 col-sm-5">
     <h4>Customer Attributes</h4>
   </div>
-  <div class="customer-heading page-heading col-md-6 text-right">
+  <div class="customer-heading page-heading col-md-6 col-sm-7 text-right">
     <button mat-button (click)="addAttr()" class="create-new-attribute">Create New Attribute</button>
   </div>
 
@@ -23,7 +23,8 @@
 
             <ul class="available-channel-list">
               <li><img *ngFor="let channelType of item.channelTypes"
-                  [src]="getChannelTypeLogoName(channelType) | channelLogo | async" matTooltip="{{channelType}}"> </li>
+                  [src]="channelType | channelName | channelLogo | async" matTooltip="{{channelType}}">
+              </li>
             </ul>
             <mat-icon matTooltip="Options" class="delete-btn box-options" [matMenuTriggerFor]="boxOptions"
               (click)="displayMenu($event)">more_vert
@@ -33,7 +34,8 @@
               <button mat-menu-item class="channel-selection-list" (click)="edit(item)">
                 Edit
               </button>
-              <button *ngIf="item.isDeletable" mat-menu-item class="channel-selection-list" (click)="deleteAttribute(item)">
+              <button *ngIf="item.isDeletable" mat-menu-item class="channel-selection-list"
+                (click)="deleteAttribute(item)">
                 Delete
               </button>
 
@@ -80,7 +82,7 @@
 
             <ul class="available-channel-list">
               <li><img *ngFor="let channelType of item.channelTypes"
-                  [src]="getChannelTypeLogoName(channelType) | channelLogo | async" matTooltip="{{channelType}}"> </li>
+                  [src]="channelType | channelName | channelLogo | async" matTooltip="{{channelType}}"> </li>
             </ul>
 
 
@@ -92,7 +94,8 @@
               <button mat-menu-item class="channel-selection-list" (click)="edit(item)">
                 Edit
               </button>
-              <button *ngIf="item.isDeletable" mat-menu-item class="channel-selection-list" (click)="deleteAttribute(item)">
+              <button *ngIf="item.isDeletable" mat-menu-item class="channel-selection-list"
+                (click)="deleteAttribute(item)">
                 Delete
               </button>
 

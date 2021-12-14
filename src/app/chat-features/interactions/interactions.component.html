@@ -2,7 +2,7 @@
   <div class="interaction-inner">
     <div [ngClass]="{'unidentified-customer':conversation.customer.isAnonymous}" class="container-fluid main-chat-bar">
       <div class="row">
-        <div class="col-md-4 customer-showcase">
+        <div class="col-md-4 col-sm-4 customer-showcase">
           <h3 matTooltipPosition="right" class="customer-highlight">
             {{conversation.customer.firstName | getFirstTwoLetters}}
             <span class="channel-icon">
@@ -16,7 +16,7 @@
 
           </h5>
         </div>
-        <div class="col-md-8 agent-actions">
+        <div class="col-md-8 col-sm-8 agent-actions">
           <ul class="list-group list-group-horizontal agent-controls">
             <li class="list-group-item">
               <button mat-icon-button>
@@ -112,11 +112,17 @@
             <div style="display: unset;" *ngFor="let message of conversation.messages; let index = index">
               <div id="datestamp" class="int-date"
                 *ngIf="(index == 0) || (message.header.timestamp | date: 'dd MMMM yyyy') != (conversation.messages[index-1].header.timestamp | date: 'dd MMMM yyyy')">
-                <span>{{message.header.timestamp | date: 'MMM'}}<b>{{message.header.timestamp | date: 'dd'}}</b></span>
+                <!-- <span>{{message.header.timestamp | date: 'MMM'}}<b>{{message.header.timestamp | date: 'dd'}}</b></span> -->
+                <span>{{message.header.timestamp | amCalendar:{sameDay: '[Today]',
+                  nextDay: '[Tomorrow]',
+                  nextWeek: 'dddd',
+                  lastDay: '[Yesterday]',
+                  lastWeek: '[Last] dddd',
+                  sameElse: 'dddd, MMM YYYY'} }}</span>
               </div>
               <div
-                class="chat-message {{message.body.type | lowercase}} {{  message.header.replyToMessageId != null  ? 'quoted-message-main' : ''}}"
-                [ngClass]=" ((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message slide-in-right' ">
+                class="chat-message {{message.header.status=='sending' ? 'low-opacity' : ''}}  {{message.body.type | lowercase}} {{  message.header.replyToMessageId != null  ? 'quoted-message-main' : ''}}"
+                [ngClass]=" ((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message ' ">
                 <div class="profile-pic">
                   <div class="active-channel channel-icon">
                     <img width="20"
@@ -576,8 +582,12 @@
                     </p>
                   </div>
                 </div>
-
+                <!-- <span class="msg-status" *ngIf="(message.header.sender.type | lowercase) == 'agent' && message.header.status=='sent' &&
+                message.header.sender.participant.keycloakUser.id == _cacheService.agent.id ">
+                  <mat-icon>done</mat-icon>
+                </span> -->
               </div>
+
             </div>
             <div id="chat-area-end"></div>
 
@@ -808,8 +818,8 @@
 
   <div class="customer-info-main">
     <app-customer-info [activeChannelSessions]="conversation.activeChannelSessions" [customer]="conversation.customer"
-      [customerSuggestions]="conversation.customerSuggestions" [topicId]="conversation.topicId"
-      (expandCustomerInfo)="eventFromChild($event)">
+      [customerSuggestions]="conversation.customerSuggestions" [firstChannelSession]="conversation.firstChannelSession"
+      [topicId]="conversation.topicId" (expandCustomerInfo)="eventFromChild($event)">
     </app-customer-info>
   </div>
 </div>

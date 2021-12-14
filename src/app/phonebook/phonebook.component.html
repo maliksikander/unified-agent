@@ -1,12 +1,14 @@
 <div class="phonebook-main-area">
   <div class="phonebook-main row m-0">
-    <button mat-button routerLink="../chats" class="back-to-chat"></button>
-    <div class="customer-heading col-md-6">
+    <button *ngIf="isEmbededView" mat-button routerLink="/customers/chats" routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact:true}" class="back-to-chat"></button>
+    <div class="customer-heading col-md-6" [ngClass]="filterQuery.length > 0 ? 'col-sm-12': 'col-sm-1'">
       <!--    <h4>Customer List</h4>-->
       <div class="filter-selection">
         <mat-chip-list #chipList aria-label="Filter selection">
           <mat-chip *ngFor="let filter of filterQuery" [removable]="removable" (removed)="cancelFilter()">
-            {{filter}}
+            {{filter.field | sentenceCase}}: <span>{{filter.value}}</span>
+
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
           </mat-chip>
         </mat-chip-list>
@@ -20,10 +22,8 @@
       <!--    </mat-form-field>-->
     </div>
 
-    <div class="col-md-6 right-actions text-right">
-
+    <div class="col-md-6 right-actions text-right" [ngClass]="filterQuery.length > 0 ? 'col-sm-12': 'col-sm-11'">
       <button mat-button class="btn-action " (click)="actions()">Column Preference</button>
-
       <mat-menu #columnMenu="matMenu">
         <div class="check-menu" (click)="$event.stopPropagation();">
           <p class="col-list" *ngFor="let col of cols">
@@ -52,8 +52,16 @@
       </div> -->
 
 
-      <button (click)="createCustomer()" mat-button class="btn-create">Create New Customer</button>
-
+      <!--    <mat-form-field appearance="outline" class="selection-trigger">-->
+      <!--      <mat-select [(value)]="FilterSelected">-->
+      <!--        <mat-option value="action"> All Customers</mat-option>-->
+      <!--        <mat-option value="new">New Customers</mat-option>-->
+      <!--        <mat-option value="linked">Linked</mat-option>-->
+      <!--      </mat-select>-->
+      <!--    </mat-form-field>-->
+      <button *ngIf="!isEmbededView" (click)="createCustomer()" mat-button class="btn-create">Create New
+        Customer</button>
+      <!--        <button mat-button class="">Close</button>-->
     </div>
   </div>
 
@@ -131,7 +139,8 @@
       <!--    </ng-template>-->
 
       <ng-template let-expanded="expanded" pTemplate="body" let-rowData let-columns="columns">
-        <tr class="slide-in-left main-row" style="cursor: pointer">
+        <tr [ngClass]="{'fusion': rowData._id == topicCustomerId }" class="slide-in-left main-row"
+          style="cursor: pointer">
           <!-- <td *ngFor="let col of columns" class="ui-resizable-column">
             {{rowData[col.field]}}
 
@@ -207,8 +216,9 @@
               class="p-button-rounded p-button-success p-mr-2">
               <mat-icon>edit</mat-icon>
             </button>
-            <button class="p-button-rounded p-button-warning link-btn">
-              <mat-icon>link</mat-icon>
+            <button *ngIf="isEmbededView && rowData._id != topicCustomerId" (click)="linkCustomer(rowData)"
+              class="p-button-rounded p-button-warning link-btn">
+              <mat-icon>insert_link</mat-icon>
             </button>
           </td>
         </tr>

@@ -52,7 +52,7 @@
                 <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
                     *ngIf="schemaAttribute.isRequired">*</span>
                   <span class="field-channel"><img *ngFor="let channelType of schemaAttribute.channelTypes"
-                      [src]="getChannelTypeLogoName(channelType) | channelLogo | async"></span>
+                      [src]="channelType | channelName  | channelLogo | async"></span>
                 </label>
                 <ng-container *ngFor="let attr of getFormControls(schemaAttribute);let i = index">
                   <mat-form-field class="field" appearance="outline">

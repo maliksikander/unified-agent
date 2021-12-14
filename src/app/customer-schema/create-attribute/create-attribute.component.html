@@ -56,7 +56,7 @@
           </div>
         </div>
         <div *ngIf="createAttributeForm.value.type == 'string'"
-          class="form-group label-name col-md-2 characters-length">
+          class="form-group label-name col-md-3 characters-length">
           <label class="text-left">Number of Characters</label>
           <mat-form-field appearance="outline">
             <input (keyup)="onLengthChange()" type="number" matInput formControlName="length">

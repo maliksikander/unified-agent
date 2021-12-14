@@ -11,7 +11,7 @@
   <mat-sidenav #sidenav (keydown.escape)="close()" disableClose position="end">
     <div class="bar-content">
 
-      <mat-accordion class="right-drag-accordion" cdkDropList (cdkDropListDropped)="drop($event)">
+      <mat-accordion class="right-drag-accordion">
         <div class="right-drag-content">
 
           <!--          <mat-expansion-panel class="drag-expansion-panel" *ngIf="acc == 'media_channel'" cdkDrag>-->
@@ -108,7 +108,7 @@
           <!--            </ul>-->
           <!--          </mat-expansion-panel>-->
 
-          <mat-expansion-panel class="drag-expansion-panel customer-info-panel" cdkDrag>
+          <mat-expansion-panel class="drag-expansion-panel customer-info-panel">
             <mat-expansion-panel-header [collapsedHeight]="'45px'" [expandedHeight]="'45px'">
               <mat-panel-title><span class="material-icons drag-icon">more_vert</span>
                 <div class="profile-area">
@@ -135,142 +135,59 @@
                   [ngClass]="{'tab-active' : displayCustomerChannels}">Media Channels</li>
               </ul>
             </div>
-            <div class="user-pre-detail">
-              <div *ngFor="let data of customerProfileFormData">
+            <div class="user-pre-detail" *ngIf="displayProfile">
+              <div class="user-detail-area" *ngFor="let data of customerProfileFormData">
 
-                <div class="user-detail-area">
+                <div>
                   <label>{{data.key | sentenceCase}}:</label>
-                  <p class="label-detail">{{data.value}}</p>
+                  <p class="label-detail">{{data.value | spaceInArray}}</p>
                 </div>
 
               </div>
 
               <div class="crm-trigger">
-                <p>Not a correct customer profile?</p>
-                <button mat-raised-button>
-                  <a routerLink="/customers/phonebook" routerLinkActive="active"
-                    [routerLinkActiveOptions]="{exact:true}"
-                    [queryParams]="{ 'q': 'linking', 'topicId':topicId }">Re-link Customer
-                    Profile</a>
+                <!-- <p>Not a correct customer profile?</p> -->
+                <button mat-raised-button (click)="gotoEmbedView()">
+                  link Profile
                 </button>
-                <button *ngIf="false" mat-raised-button>link CRM</button>
+                <button mat-raised-button>Update Profile</button>
               </div>
             </div>
             <ul class="channel-list" *ngIf="displayCustomerChannels">
-              <li>
-                <img src="assets/images/landline-phone-colored.svg" />
-                <p>
-                  <strong>+4466985845</strong>
-                  <small>Landline Business</small>
-                </p>
-              </li>
-              <li>
-                <img src="assets/images/phone-colored.svg" />
-                <p>
-                  <strong>+446698988</strong>
-                  <small>Mobile Personal</small>
-                  <span class="channel-list-action">
-                    <button mat-icon-button (click)="openDialog(callingTemplate, '+446698988')">
-                      <mat-icon>call</mat-icon>
-                    </button>
-                    <button mat-icon-button>
-                      <mat-icon>message</mat-icon>
-                    </button>
-                    <button mat-icon-button>
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                  </span>
-                </p>
-              </li>
-              <li>
-                <img src="assets/images/whatsapp-colored.svg" />
-                <p>
-                  <strong>+446698985</strong>
-                  <small>Whatsapp Personal</small>
-                  <span class="channel-list-action">
-                    <button mat-icon-button>
-                      <mat-icon>call</mat-icon>
-                    </button>
-                    <button mat-icon-button>
-                      <mat-icon>message</mat-icon>
-                    </button>
-                    <!--<button mat-icon-button><mat-icon>mail</mat-icon></button>-->
-                    <button mat-icon-button>
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                  </span>
-                </p>
-              </li>
-              <li>
-                <img src="assets/images/envelope-colored.svg" />
-                <p>
-                  <strong>a.stanler@skytechinc.com</strong>
-                  <small>Email Business</small>
-                  <span class="channel-list-action">
-                    <button mat-icon-button>
-                      <mat-icon>mail</mat-icon>
-                    </button>
-                    <button mat-icon-button>
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                  </span>
-                </p>
-              </li>
-              <li>
-                <img src="assets/images/facebook-colored.svg" />
-                <p>
-                  <strong>Skytech Inc.</strong>
-                  <small>Facebook Business</small>
-                  <span class="channel-list-action">
-                    <button mat-icon-button>
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                  </span>
-                </p>
-              </li>
-              <li>
-                <img src="assets/images/skype-colored.svg" />
-                <p>
-                  <strong>adam.reedsuk</strong>
-                  <small>Landline Residence</small>
-                  <span class="channel-list-action">
-                    <button mat-icon-button>
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                  </span>
-                </p>
-              </li>
-              <li>
-                <img src="assets/images/safari-colored.svg" />
-                <p>
-                  <strong>Desktop Browser 1</strong>
-                  <small>Landline Residence</small>
-                  <span class="channel-list-action">
-                    <button mat-icon-button>
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                  </span>
-                </p>
-              </li>
-              <li>
-                <img src="assets/images/chrome-colored.svg" />
-                <p>
-                  <strong>Desktop Browser 2</strong>
-                  <small>Landline Residence</small>
-                  <span class="channel-list-action">
-                    <button mat-icon-button>
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                  </span>
-                </p>
-              </li>
+              <mat-accordion>
+                <li class="multi-channel-list" *ngFor="let channel of mediaChannelData">
 
+                  <mat-expansion-panel [hideToggle]="!channel.channelList">
+                    <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
+                      <div class="channel-icon-area web-channel-inner">
+                        <img matTooltip="{{channel.fieldType}}"
+                          src="assets/attr-types/{{channel.fieldType | lowercase}}.svg" />
+                        <p>
+                          <strong>{{channel.value | spaceInArray}}</strong>
+                          <small>{{channel.label}}</small>
+                        </p>
+                      </div>
+                    </mat-expansion-panel-header>
+                    <ul class="channel-types-logo" *ngIf="channel.channelList.length > 0 ">
+                      <li *ngFor="let activeChannel of channel.channelList">
+                        <img [src]="activeChannel | channelName | channelLogo | async" />
+                        <p>
+                          <small>{{activeChannel}}</small>
+                          <span class="channel-list-action">
+                            <!-- <button mat-icon-button *ngIf="activeChannel.channelType !== 'email'" (click)="openDialog(callingTemplate, '+4466985845')"><mat-icon>call</mat-icon></button>
+                    <button mat-icon-button><mat-icon>message</mat-icon></button> -->
+                          </span>
+                        </p>
+                      </li>
+                    </ul>
+                  </mat-expansion-panel>
+                </li>
+              </mat-accordion>
             </ul>
 
           </mat-expansion-panel>
-
           <!-- customer Suggestions Tab start-->
-          <mat-expansion-panel class="drag-expansion-panel" *ngIf="customerSuggestions.length != 0" cdkDrag>
+          <mat-expansion-panel class="drag-expansion-panel" *ngIf="customerSuggestions.length !== 0">
             <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
               <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Link Profile
               </mat-panel-title>
@@ -282,22 +199,17 @@
               <ul class="match-content">
                 <li *ngFor="let customer of customerSuggestions">
                   {{customer.firstName}}
-                  <button (click)="linkCustomer(customer.id)" mat-icon-button class="waves-effect">
+                  <button (click)="linkCustomer(customer)" mat-icon-button class="waves-effect">
                     <mat-icon>insert_link</mat-icon>
                   </button>
                 </li>
               </ul>
 
               <div class="linked-action">
-                <p>You may link customer to appropriate profile or create a new customer</p>
 
-                <button mat-raised-button>
-                  <a routerLink="/customers/phonebook" routerLinkActive="active"
-                    [routerLinkActiveOptions]="{exact:true}" [queryParams]="{ 'q': 'linking','topicId':topicId }">View
-                    all contacts</a>
+                <button mat-raised-button (click)="viewAllMatches()">
+                  View all Matches
                 </button>
-                <button mat-raised-button>Create New Customer</button>
-
               </div>
             </div>
 
@@ -306,7 +218,7 @@
           <!-- customer Suggestions Tab end-->
 
 
-          <mat-expansion-panel class="drag-expansion-panel" cdkDrag>
+          <mat-expansion-panel class="drag-expansion-panel">
             <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
               <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Active Channels
               </mat-panel-title>
@@ -334,24 +246,29 @@
 
                     </div>
                     <ul class="channel-info-list" *ngIf="channelSession.webChannelData">
-                      <li matTooltip="Device: {{channelSession.webChannelData.browserDeviceInfo.deviceType ? channelSession.webChannelData.browserDeviceInfo.deviceType : 'UNKNOWN'}}">
-<!--                        <mat-icon>{{channelSession.webChannelData.browserDeviceInfo.deviceType |-->
-<!--                          webChannelData:'deviceType'}}</mat-icon>-->
+                      <li
+                        matTooltip="Device: {{channelSession.webChannelData.browserDeviceInfo.deviceType ? channelSession.webChannelData.browserDeviceInfo.deviceType : 'UNKNOWN'}}">
+                        <!--                        <mat-icon>{{channelSession.webChannelData.browserDeviceInfo.deviceType |-->
+                        <!--                          webChannelData:'deviceType'}}</mat-icon>-->
 
-                        <img
-                          src="assets/device-icons/{{channelSession.webChannelData.browserDeviceInfo.deviceType |
+                        <img src="assets/device-icons/{{channelSession.webChannelData.browserDeviceInfo.deviceType |
                           webChannelData:'deviceType'}}.svg" alt="device">
                       </li>
-                      <li matTooltip="Browser: {{channelSession.webChannelData.browserDeviceInfo.browserName ? channelSession.webChannelData.browserDeviceInfo.browserName : 'UNKNOWN'}}">
-                        <img
-                         src="assets/browser-icons/{{channelSession.webChannelData.browserDeviceInfo.browserName |
-                            webChannelData:'browser'}}.svg" alt="browser"> </li>
-                      <li matTooltip="Country: {{channelSession.webChannelData.locale.country ? channelSession.webChannelData.locale.country : 'UNKNOWN'}}">
+                      <li
+                        matTooltip="Browser: {{channelSession.webChannelData.browserDeviceInfo.browserName ? channelSession.webChannelData.browserDeviceInfo.browserName : 'UNKNOWN'}}">
+                        <img src="assets/browser-icons/{{channelSession.webChannelData.browserDeviceInfo.browserName |
+                            webChannelData:'browser'}}.svg" alt="browser">
+                      </li>
+                      <li
+                        matTooltip="Country: {{channelSession.webChannelData.locale.country ? channelSession.webChannelData.locale.country : 'UNKNOWN'}}">
                         <img
                           src="assets/flags/{{channelSession.webChannelData.locale.country | webChannelData:'country'}}.svg"
-                          alt="country"> </li>
-                      <li class="lang-bar" matTooltip="Language: {{channelSession.webChannelData.locale.language ? channelSession.webChannelData.locale.language : 'UNKNOWN'}}">
-                        {{(channelSession.webChannelData.locale.language ? channelSession.webChannelData.locale.language : 'A') | getFirstTwoLetters}} </li>
+                          alt="country">
+                      </li>
+                      <li class="lang-bar"
+                        matTooltip="Language: {{channelSession.webChannelData.locale.language ? channelSession.webChannelData.locale.language : 'UNKNOWN'}}">
+                        {{(channelSession.webChannelData.locale.language ? channelSession.webChannelData.locale.language
+                        : 'A') | getFirstTwoLetters}} </li>
                     </ul>
                   </mat-expansion-panel-header>
                   <ul class="requested-channel-content">
@@ -363,6 +280,12 @@
                       <label>Service Identifier</label>
                       {{channelSession.channelData.serviceIdentifier}}
                     </li>
+                    <div *ngFor="let attr of channelSession.channelData.additionalAttributes">
+                      <li *ngIf="(attr.type | lowercase) != 'webchanneldata'">
+                        <label>{{attr.key | sentenceCase}}</label>
+                        {{attr.value | spaceInArray}}
+                      </li>
+                    </div>
                   </ul>
                   <div class="channel-inner-content"
                     *ngFor="let additionalAttribute of channelSession.channelData.additionalAttributes">

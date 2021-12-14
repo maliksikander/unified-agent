@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "src/app/shared/globalVariables";
+@import "src/assets/styles/compact-view";
 @import "~material-design-icons/iconfont/material-icons.css";
 @import "~primeng/resources/themes/nova-light/theme.css";
 @import "~primeng/resources/primeng.min.css";
@@ -106,8 +107,8 @@ mat-tab-group.chat-tab-area {
   .mat-tab-header {
     width: 60px;
     background: $white-color;
-    margin-top: 0;
-    height: calc(100% - 5px);
+    margin-top: 5px;
+    height: calc(100% - 10px);
     border: 0;
 
     .mat-tab-label-container {
@@ -238,6 +239,9 @@ mat-sidenav.mat-drawer.mat-sidenav {
   transform: none !important;
   transition: all 0.3s;
   visibility: visible !important;
+  .mat-drawer-inner-container {
+    max-height: 99%;
+  }
 }
 
 //Logout menu Style
@@ -549,7 +553,6 @@ snack-bar-container.success-snackbar {
     white-space: nowrap;
     word-wrap: normal;
     direction: ltr;
-    -webkit-font-feature-settings: "liga";
     -webkit-font-smoothing: antialiased;
     transform: rotate(90deg);
     height: 12px;
@@ -2611,12 +2614,21 @@ body .ui-paginator .ui-dropdown {
 body {
   .ui-table {
     .ui-table-tbody {
-      > tr {
-        background: #ffffff !important;
-      }
+      // > tr {
+      //     background: #ffffff !important;
+      // }
 
-      > tr:nth-child(even) {
-        background-color: #fcfcfc !important;
+      > tr {
+        &.fusion {
+          background-color: #fbe9e7 !important;
+          &:nth-child(even) {
+            background-color: #fbe9e7 !important;
+          }
+        }
+
+        &:nth-child(even) {
+          background-color: #fcfcfc !important;
+        }
       }
     }
   }
@@ -2831,4 +2843,15 @@ body {
     width: 100% !important;
     max-width: 100% !important;
   }
+}
+
+body .ui-paginator {
+  background-color: #f4f4f4;
+  border: 1px solid #f3f6fa;
+  padding: 0;
+}
+
+.ui-table .ui-paginator-bottom {
+  border-top: 0 none;
+  margin: 0px 15px 0px 15px;
 }

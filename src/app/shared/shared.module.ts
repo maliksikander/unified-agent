@@ -76,6 +76,8 @@ import { DownloadDirective } from "../download.directive";
 import { getFileExtPipe } from "./pipes/getFileExt.pipe";
 import { getFormattedBytesPipe } from "./pipes/formatBytes.pipe";
 import { getReferredMessagePipe } from "./pipes/getReferredMsg.pipe";
+import { spaceInArrayPipe } from "./pipes/spaceInArray.pipe";
+import { channelNamePipe } from "./pipes/getChannelLogoByName.pipe";
 
 
 @NgModule({
@@ -99,7 +101,9 @@ import { getReferredMessagePipe } from "./pipes/getReferredMsg.pipe";
     sanitizePipe,
     DownloadDirective,
     getFileExtPipe,
-    getReferredMessagePipe
+    getReferredMessagePipe,
+    spaceInArrayPipe,
+    channelNamePipe
   ],
   imports: [
     NgxDocViewerModule,
@@ -252,7 +256,9 @@ import { getReferredMessagePipe } from "./pipes/getReferredMsg.pipe";
     DownloadDirective,
     getFileExtPipe,
     getFormattedBytesPipe,
-    getReferredMessagePipe
+    getReferredMessagePipe,
+    spaceInArrayPipe,
+    channelNamePipe
   ]
 })
 export class SharedModule { }

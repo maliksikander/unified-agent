@@ -103,7 +103,7 @@
                 <div [ngClass]="{'header-padding': !editTab}" class="lbl">{{schemaAttribute.label}}<span class="red-clr"
                     *ngIf="schemaAttribute.isRequired">*</span>
                   <span class="field-channel"><img *ngFor="let channelType of schemaAttribute.channelTypes"
-                      [src]="getChannelTypeLogoName(channelType) | channelLogo | async"></span>
+                      [src]="channelType | channelName | channelLogo | async"></span>
                 </div>
                 <ng-container *ngFor="let attr of getFormControls(schemaAttribute);let i = index">
                   <mat-form-field [ngClass]="{'read-view' : !editTab }" class="field" appearance="outline">
