@@ -153,10 +153,12 @@ export class PhonebookComponent implements OnInit {
       array2.forEach((item2) => {
         if (schemaLength > savedPrefLength) {
           if (item1.key == item2.field) {
+            item2.channelTypes = item1.channelTypes;
             finalArray.push(item2);
           }
         } else {
           if (item2.key == item1.field) {
+            item1.channelTypes = item2.channelTypes;
             finalArray.push(item1);
           }
         }
@@ -165,6 +167,13 @@ export class PhonebookComponent implements OnInit {
     this.cols = finalArray;
     // console.log("final ==>", finalArray);
   }
+
+  // getChannelTypesFromAttributeKey(key) {
+  //   let list: Array<any>;
+  //   let temp = this.schemaList.find((item) => item.key == key);
+  //   list = temp.channelTypes;
+  //   return list;
+  // }
 
   filter(value, field, v) {
     this.filterValue = encodeURIComponent(this.filterValue);

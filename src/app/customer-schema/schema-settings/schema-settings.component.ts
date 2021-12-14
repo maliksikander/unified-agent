@@ -97,6 +97,7 @@ export class SchemaSettingsComponent implements OnInit {
     this._httpService.changeCustomerSchemaOrder(finalSchema).subscribe(
       (e) => {
         if (orderChangeCheck != "delete") this._sharedService.Interceptor("SORT ORDER UPDATED SUCCESSFULLY", "succ");
+        this.showsaveOrder = false;
         this.loadSchemas(null);
       },
       (error) => {

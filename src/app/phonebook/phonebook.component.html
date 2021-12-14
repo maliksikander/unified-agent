@@ -78,14 +78,17 @@
 
         <tr>
           <th class="tracking-in-expand" *ngFor="let col of columns" pResizableColumn pReorderableColumn>
-            <!--          {{col.header}}-->
             <mat-icon matTooltip="Drag the column" class="drag-icon">more_vert</mat-icon>
             <span class="table-head" matTooltip="{{col.header}}">{{col.header}}</span>
 
             <span matTooltip="Filter" *ngIf="col.type != 'time'" class="filter-icon k-icon k-i-filter-sm"
               (click)="setFilter($event,col)">
-
             </span>
+
+            <span class="field-channel">
+              <img *ngFor="let channelType of col?.channelTypes"
+                [src]="channelType | channelName  | channelLogo | async"></span>
+
             <span class="sorting-icons">
               <span matTooltip="Decending" class="k-icon k-i-sort-desc-sm"
                 [ngClass]="{'color': sortArrowDown && sortField == col.field}"
@@ -212,8 +215,7 @@
             </button>
           </div>
           <td>
-            <button (click)="onRowClick(rowData._id,'edit',null)"
-              class="p-button-rounded p-button-success p-mr-2">
+            <button (click)="onRowClick(rowData._id,'edit',null)" class="p-button-rounded p-button-success p-mr-2">
               <mat-icon>edit</mat-icon>
             </button>
             <button *ngIf="isEmbededView && rowData._id != topicCustomerId" (click)="linkCustomer(rowData)"

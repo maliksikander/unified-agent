@@ -80,6 +80,7 @@ import { spaceInArrayPipe } from "./pipes/spaceInArray.pipe";
 import { channelNamePipe } from "./pipes/getChannelLogoByName.pipe";
 
 
+
 @NgModule({
   declarations: [
     getFormattedBytesPipe,
@@ -103,7 +104,7 @@ import { channelNamePipe } from "./pipes/getChannelLogoByName.pipe";
     getFileExtPipe,
     getReferredMessagePipe,
     spaceInArrayPipe,
-    channelNamePipe
+    channelNamePipe,
   ],
   imports: [
     NgxDocViewerModule,
