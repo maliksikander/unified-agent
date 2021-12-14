@@ -56,8 +56,8 @@ export class socketService {
 
     this.socket.on("connect_error", (err) => {
       this.ngxService.stop();
-      console.error("socket connect_error ", err.data.content);
-      this._snackbarService.open(err.data.content, "err");
+      console.error("socket connect_error ", err.data.content ? err.data.content : err);
+      this._snackbarService.open(err.data.content ? err.data.content : err, "err");
       if (err.message == "login-failed") {
         localStorage.clear();
         sessionStorage.clear();

@@ -324,15 +324,15 @@ export class InteractionsComponent implements OnInit {
       }
 
       let event: any = new CimEvent("AGENT_MESSAGE", "MESSAGE", message);
-      this._socketService.emit("publishCimEvent", {
-        cimEvent: new CimEvent("AGENT_MESSAGE", "MESSAGE", message),
-        agentId: this._cacheService.agent.id,
-        topicId: this.conversation.topicId
-      });
-      // setTimeout(() => {
-      //   this._socketService.onCimEventHandler(event, "12345");
+      // this._socketService.emit("publishCimEvent", {
+      //   cimEvent: new CimEvent("AGENT_MESSAGE", "MESSAGE", message),
+      //   agentId: this._cacheService.agent.id,
+      //   topicId: this.conversation.topicId
+      // });
+      setTimeout(() => {
+        this._socketService.onCimEventHandler(event, "12345");
 
-      // }, 5000);
+      }, 5000);
 
       event.data.header['status'] = 'sending';
       this.conversation.messages.push(event.data);

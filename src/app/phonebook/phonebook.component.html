@@ -1,12 +1,14 @@
 <div class="phonebook-main-area">
   <div class="phonebook-main row m-0">
-    <button *ngIf="isEmbededView" mat-button routerLink="/customers/chats" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="back-to-chat"></button>
+    <button *ngIf="isEmbededView" mat-button routerLink="/customers/chats" routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact:true}" class="back-to-chat"></button>
     <div class="customer-heading col-md-6" [ngClass]="filterQuery.length > 0 ? 'col-sm-12': 'col-sm-1'">
       <!--    <h4>Customer List</h4>-->
       <div class="filter-selection">
         <mat-chip-list #chipList aria-label="Filter selection">
           <mat-chip *ngFor="let filter of filterQuery" [removable]="removable" (removed)="cancelFilter()">
-            {{filter}}
+            {{filter.field | sentenceCase}}: <span>{{filter.value}}</span>
+
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
           </mat-chip>
         </mat-chip-list>

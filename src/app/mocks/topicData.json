@@ -341,6 +341,11 @@
                   "createdOn": "2021-11-08T07:29:44.667Z"
                 }
               }
+            },
+            {
+              "key": "SenderName",
+              "type": "string",
+              "value": "RazaEllahi"
             }
           ]
         },
@@ -449,7 +454,13 @@
           "serviceIdentifier": "777777",
           "requestPriority": 0,
           "channelTypeCode": "webChannel",
-          "additionalAttributes": []
+          "additionalAttributes": [
+            {
+              "key": "Gender",
+              "type": "string",
+              "value": "male"
+            }
+          ]
         },
         "latestIntent": null,
         "customerPresence": {

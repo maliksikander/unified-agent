@@ -147,44 +147,42 @@
 
               <div class="crm-trigger">
                 <!-- <p>Not a correct customer profile?</p> -->
-                <button mat-raised-button>
-                  <a routerLink="/customers/phonebook" routerLinkActive="active"
-                    [routerLinkActiveOptions]="{exact:true}"
-                    [queryParams]="{ 'q': 'linking', 'topicId':topicId,'topicCustomerId': customer._id }">link
-                    Profile</a>
+                <button mat-raised-button (click)="gotoEmbedView()">
+                  link Profile
                 </button>
                 <button mat-raised-button>Update Profile</button>
               </div>
             </div>
             <ul class="channel-list" *ngIf="displayCustomerChannels">
-              <li class="multi-channel-list" *ngFor="let channel of mediaChannelData">
-                <mat-expansion-panel [hideToggle]="!channel.channelList">
-                  <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
-                    <div class="channel-icon-area web-channel-inner">
-                      <img matTooltip="{{channel.fieldType}}"
-                        src="assets/attr-types/{{channel.fieldType | lowercase}}.svg" />
-                      <p>
-                        <strong>{{channel.value | spaceInArray}}</strong>
-                        <small>{{channel.label}}</small>
-                      </p>
-                    </div>
-                  </mat-expansion-panel-header>
-                  <ul class="channel-types-logo" *ngIf="channel.channelList.length > 0 ">
-                    <li *ngFor="let activeChannel of channel.channelList">
-                      <img [src]="activeChannel | channelName | channelLogo | async" />
-                      <p>
-                        <small>{{activeChannel}}</small>
-                        <span class="channel-list-action">
-                          <!-- <button mat-icon-button *ngIf="activeChannel.channelType !== 'email'" (click)="openDialog(callingTemplate, '+4466985845')"><mat-icon>call</mat-icon></button>
+              <mat-accordion>
+                <li class="multi-channel-list" *ngFor="let channel of mediaChannelData">
+
+                  <mat-expansion-panel [hideToggle]="!channel.channelList">
+                    <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
+                      <div class="channel-icon-area web-channel-inner">
+                        <img matTooltip="{{channel.fieldType}}"
+                          src="assets/attr-types/{{channel.fieldType | lowercase}}.svg" />
+                        <p>
+                          <strong>{{channel.value | spaceInArray}}</strong>
+                          <small>{{channel.label}}</small>
+                        </p>
+                      </div>
+                    </mat-expansion-panel-header>
+                    <ul class="channel-types-logo" *ngIf="channel.channelList.length > 0 ">
+                      <li *ngFor="let activeChannel of channel.channelList">
+                        <img [src]="activeChannel | channelName | channelLogo | async" />
+                        <p>
+                          <small>{{activeChannel}}</small>
+                          <span class="channel-list-action">
+                            <!-- <button mat-icon-button *ngIf="activeChannel.channelType !== 'email'" (click)="openDialog(callingTemplate, '+4466985845')"><mat-icon>call</mat-icon></button>
                     <button mat-icon-button><mat-icon>message</mat-icon></button> -->
-                        </span>
-                      </p>
-                    </li>
-                  </ul>
-                </mat-expansion-panel>
-
-              </li>
-
+                          </span>
+                        </p>
+                      </li>
+                    </ul>
+                  </mat-expansion-panel>
+                </li>
+              </mat-accordion>
             </ul>
 
           </mat-expansion-panel>
@@ -282,6 +280,12 @@
                       <label>Service Identifier</label>
                       {{channelSession.channelData.serviceIdentifier}}
                     </li>
+                    <div *ngFor="let attr of channelSession.channelData.additionalAttributes">
+                      <li *ngIf="(attr.type | lowercase) != 'webchanneldata'">
+                        <label>{{attr.key | sentenceCase}}</label>
+                        {{attr.value | spaceInArray}}
+                      </li>
+                    </div>
                   </ul>
                   <div class="channel-inner-content"
                     *ngFor="let additionalAttribute of channelSession.channelData.additionalAttributes">

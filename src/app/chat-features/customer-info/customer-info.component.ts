@@ -224,4 +224,16 @@ export class CustomerInfoComponent implements OnInit {
 
   }
 
+  gotoEmbedView(){
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        'q': 'linking',
+        'topicId': this.topicId,
+        'topicCustomerId': this.customer._id
+      }
+    };
+
+    this._router.navigate(['/customers/phonebook'], navigationExtras);
+  }
+
 }

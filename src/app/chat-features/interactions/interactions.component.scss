@@ -275,7 +275,7 @@
     width: 100%;
     position: absolute;
     overflow: auto;
-    padding: 0 0 0 18px;
+    // padding: 0 0 0 18px;
     overflow: hidden;
 
     //left: 0;
@@ -708,7 +708,7 @@
 }
 
 .chat-session-main {
-  margin-left: 45px;
+  // margin-left: 45px;
   display: block;
   padding: 0 30px;
   position: relative;
@@ -716,27 +716,23 @@
 
 
   .int-date {
-    border-right: 1px solid #D4F5FB;
-    padding-right: 25px !important;
-    float: left;
+    position: -webkit-sticky;
     position: sticky;
-    min-width: 25px;
+    min-width: 118px;
     text-align: center;
     line-height: 18px;
     transform: translate(-21px, 0);
     top: 0;
-    margin-left: -51px;
-    background: #fff;
-
+    background: #efefef;
+    width: fit-content;
+    margin: 0 auto;
+    border-radius: 20px;
+    z-index: 99;
+    padding: 1px 10px;
 
     span {
-      color: $blue-text-color;
+      color: #5f6368;
       font-size: 12px;
-
-      b {
-        display: block;
-        font-size: 18px;
-      }
     }
   }
 }
@@ -756,27 +752,27 @@
     border-left: 1px solid $highlight-color;
   }
 
-  .int-date {
-    float: left;
-    padding: 0;
-    position: sticky;
-    min-width: 25px;
-    text-align: center;
-    line-height: 18px;
-    transform: translate(-38px, 0);
-    top: 0;
-    margin-left: -38px;
+  // .int-date {
+  //   float: left;
+  //   padding: 0;
+  //   position: sticky;
+  //   min-width: 25px;
+  //   text-align: center;
+  //   line-height: 18px;
+  //   transform: translate(-38px, 0);
+  //   top: 0;
+  //   margin-left: -38px;
 
-    span {
-      color: #8d9192;
-      font-size: 12px;
+  //   span {
+  //     color: #8d9192;
+  //     font-size: 12px;
 
-      b {
-        display: block;
-        font-size: 18px;
-      }
-    }
-  }
+  //     b {
+  //       display: block;
+  //       font-size: 18px;
+  //     }
+  //   }
+  // }
 }
 
 .panel-divider {
@@ -1921,3 +1917,6 @@ vg-controls.hide {
   }
 }
 
+.low-opacity{
+  opacity: 0.3 !important;
+}

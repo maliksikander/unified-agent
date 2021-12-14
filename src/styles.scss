@@ -2622,9 +2622,18 @@ body {
           //     background: #ffffff !important;
           // }
 
-          > tr:nth-child(even) {
+          > tr{
+            &.fusion{
+              background-color: #fbe9e7 !important;
+              &:nth-child(even) {
+                background-color: #fbe9e7 !important;
+            }
+            }
+
+          &:nth-child(even) {
               background-color: #fcfcfc !important;
           }
+        }
       }
   }
 }
@@ -2817,3 +2826,13 @@ color: $main-color;
   }
 }
 
+body .ui-paginator {
+  background-color: #f4f4f4;
+  border: 1px solid #f3f6fa;
+  padding: 0;
+}
+
+.ui-table .ui-paginator-bottom {
+  border-top: 0 none;
+  margin: 0px 15px 0px 15px;
+}

@@ -47,7 +47,7 @@ export class PhonebookComponent implements OnInit {
   offSet = 0;
   sort = {};
   query = {};
-  filterQuery: string[] = [];
+  filterQuery = [];
 
   submitted: boolean;
   filterOnOff: boolean = false;
@@ -125,14 +125,14 @@ export class PhonebookComponent implements OnInit {
     this.filterValue = encodeURIComponent(this.filterValue);
     this.query = { field: field, value: this.filterValue };
     this.filterQuery = [];
-    this.filterQuery.push(field + ":" + this.filterValue);
+    this.filterQuery.push({ field: field, value: this.filterValue });
     this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
   }
 
   Cfilter(value, field, v) {
     let b = moment.utc(this.filterValue).utcOffset(-5).toISOString();
     this.filterQuery = [];
-    this.filterQuery.push(field + ":" + b);
+    this.filterQuery.push({ field: field, value: b });
     this.query = { field: field, value: b };
     this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
   }

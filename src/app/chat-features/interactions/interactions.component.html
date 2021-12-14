@@ -112,11 +112,17 @@
             <div style="display: unset;" *ngFor="let message of conversation.messages; let index = index">
               <div id="datestamp" class="int-date"
                 *ngIf="(index == 0) || (message.header.timestamp | date: 'dd MMMM yyyy') != (conversation.messages[index-1].header.timestamp | date: 'dd MMMM yyyy')">
-                <span>{{message.header.timestamp | date: 'MMM'}}<b>{{message.header.timestamp | date: 'dd'}}</b></span>
+                <!-- <span>{{message.header.timestamp | date: 'MMM'}}<b>{{message.header.timestamp | date: 'dd'}}</b></span> -->
+                <span>{{message.header.timestamp | amCalendar:{sameDay: '[Today]',
+                  nextDay: '[Tomorrow]',
+                  nextWeek: 'dddd',
+                  lastDay: '[Yesterday]',
+                  lastWeek: '[Last] dddd',
+                  sameElse: 'dddd, MMM YYYY'} }}</span>
               </div>
               <div
-                class="chat-message {{message.body.type | lowercase}} {{  message.header.replyToMessageId != null  ? 'quoted-message-main' : ''}}"
-                [ngClass]=" ((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message slide-in-right' ">
+                class="chat-message {{message.header.status=='sending' ? 'low-opacity' : ''}}  {{message.body.type | lowercase}} {{  message.header.replyToMessageId != null  ? 'quoted-message-main' : ''}}"
+                [ngClass]=" ((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message ' ">
                 <div class="profile-pic">
                   <div class="active-channel channel-icon">
                     <img width="20"
@@ -576,10 +582,10 @@
                     </p>
                   </div>
                 </div>
-                <span class="msg-status" *ngIf="(message.header.sender.type | lowercase) == 'agent' && message.header.status=='sent' &&
+                <!-- <span class="msg-status" *ngIf="(message.header.sender.type | lowercase) == 'agent' && message.header.status=='sent' &&
                 message.header.sender.participant.keycloakUser.id == _cacheService.agent.id ">
                   <mat-icon>done</mat-icon>
-                </span>
+                </span> -->
               </div>
 
             </div>
