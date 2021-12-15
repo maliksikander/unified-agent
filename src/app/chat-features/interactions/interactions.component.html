@@ -1,6 +1,6 @@
-<div class="interaction-main" [ngClass]="{'customer-bar-opened': isBarOPened}">
+<div class="interaction-main" [ngClass]="{'customer-bar-opened': isBarOPened, 'unidentified-customer':conversation.customer.isAnonymous}">
   <div class="interaction-inner">
-    <div [ngClass]="{'unidentified-customer':conversation.customer.isAnonymous}" class="container-fluid main-chat-bar">
+    <div class="container-fluid main-chat-bar">
       <div class="row">
         <div class="col-md-4 col-sm-4 customer-showcase">
           <h3 matTooltipPosition="right" class="customer-highlight">

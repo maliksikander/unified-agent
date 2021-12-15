@@ -31,6 +31,7 @@ import { CreateLabelComponent } from "./labels/create-label/create-label.compone
 import { SubscribedListComponent } from "./pull-mode/subscribed-list/subscribed-list.component";
 import { SubscribedListPreviewComponent } from "./pull-mode/subscribed-list-preview/subscribed-list-preview.component";
 import { FilePreviewComponent } from './file-preview/file-preview.component';
+import { LinkConversationDialogComponent } from './dialogs/link-conversation-dialog/link-conversation-dialog.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsType: SPINNER.chasingDots,
@@ -63,6 +64,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     SubscribedListPreviewComponent,
     FilePreviewComponent,
     FilePreviewComponent,
+    LinkConversationDialogComponent,
 
   ],
   imports: [
@@ -83,7 +85,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     ConfirmationDialogComponent,
     columnPreferences,
     CreateLabelComponent,
-    FilePreviewComponent
+    FilePreviewComponent,
+    LinkConversationDialogComponent
   ],
   providers: [
     {

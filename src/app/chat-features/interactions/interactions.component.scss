@@ -1,7 +1,15 @@
 @import "src/app/shared/globalVariables";
 
 .unidentified-customer{
-  background: #ffecec !important;
+ 
+  .main-chat-bar {
+
+    border-bottom-color: red;
+
+    .customer-highlight,.customer-name{
+      color: red;
+    }
+  }
  }
 
 .main-chat-bar {

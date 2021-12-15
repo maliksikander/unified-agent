@@ -103,8 +103,7 @@ export class httpService {
 
   getCustomers(limit, offset, sort, query): Observable<any> {
     return this._httpClient.get<any>(
-      `${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.customers}?limit=${limit}&offset=${offset}&sort=${
-        sort.field ? sort.field + ":" + sort.order : ""
+      `${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.customers}?limit=${limit}&offset=${offset}&sort=${sort.field ? sort.field + ":" + sort.order : ""
       }&paginateQuery=${query.field ? query.field + ":" + query.value : ""}`,
       {
         headers: new HttpHeaders({
@@ -146,6 +145,13 @@ export class httpService {
     });
   }
 
+  updateTopicCustomer(topicId, customer): Observable<any> {
+    return this._httpClient.put<any>(this._appConfigService.config.BOT_FRAMEWORK_URL + "/customer-topics/" + topicId + "/update-customer", customer, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
   /////////////////////////
 
   getLabels(): Observable<any> {
@@ -191,6 +197,7 @@ export class httpService {
   getChannelLogo(id: string): Observable<Blob> {
     return this._httpClient.get(this._appConfigService.config.FILE_SERVER_URL + this.apiEndpoints.fileServer + id, { responseType: "blob" });
   }
+
 
   uploadToFileEngine(data): Observable<any> {
     return this._httpClient.post<any>(`${this._appConfigService.config.FILE_SERVER_URL}${this.apiEndpoints.uploadFile}`, data, {

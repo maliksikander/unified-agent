@@ -1,0 +1,12 @@
+Link conversation with {{data.customerName}}?
+
+
+
+<div *ngIf="data.isMergeAble == true">
+    <input type="checkbox" [(ngModel)]="isAttributeMerge"/> Add channel Identifer {{data.channelIdentifier}}
+    to {{data.customerName}}'s {{data.attr}}
+</div>
+
+
+<button (click)="sendResponse()">dismiss</button>
+<button (click)="decisionIs = true ; sendResponse()">yes</button>

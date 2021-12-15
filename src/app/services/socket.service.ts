@@ -10,6 +10,7 @@ import { snackbarService } from "./snackbar.service";
 import { pullModeService } from "./pullMode.service";
 import { soundService } from "./sounds.service";
 import { NgxUiLoaderService } from "ngx-ui-loader";
+import { httpService } from "./http.service";
 
 const mockTopicData: any = require('../mocks/topicData.json');
 
@@ -33,9 +34,10 @@ export class socketService {
     private _pullModeService: pullModeService,
     private _router: Router,
     private _soundService: soundService,
-    private ngxService: NgxUiLoaderService
+    private ngxService: NgxUiLoaderService,
+    private _httpService: httpService
   ) {
-    // this.onTopicData(mockTopicData, "12345");
+    //this.onTopicData(mockTopicData, "12345");
 
   }
 
@@ -57,8 +59,10 @@ export class socketService {
 
     this.socket.on("connect_error", (err) => {
       this.ngxService.stop();
-      console.error("socket connect_error ", err.data.content ? err.data.content : err);
-      this._snackbarService.open(err.data.content ? err.data.content : err, "err");
+      try {
+        console.error("socket connect_error ", err.data && err.data.content ? err.data.content : err);
+        this._snackbarService.open(err.data && err.data.content ? err.data.content : err, "err");
+      } catch (err) { }
       if (err.message == "login-failed") {
         localStorage.clear();
         sessionStorage.clear();
@@ -378,6 +382,7 @@ export class socketService {
 
     if (conversation) {
       conversation.customer = cimEvent.data;
+      this._snackbarService.open("Profile linked successfully", "succ");
     }
   }
 
@@ -547,35 +552,51 @@ export class socketService {
           if (attr) {
             if (selectedCustomer[attr].includes(channelIdentifier)) {
               console.log("already merged");
-              this.updateTopiCustomer();
+              const resp: any = await this._sharedService.getProfileLinkingConfirmation(null, selectedCustomer.firstName, null, false);
+              console.log("this is resp ", resp)
+              if (resp.decisionIs) {
+                this.updateTopiCustomer(selectedCustomer, false, topicCustomer.isAnonymous == true ? topicCustomer._id : null, topicId);
+              }
+
             } else {
               console.log("not merged");
-              const resp = await this._sharedService.getConfirmation('Merge Attribute Value', `Are you sure you want to add ${channelIdentifier} to ${selectedCustomer.firstName}'s ${attr}`);
+              // const resp = await this._sharedService.getConfirmation('Merge Attribute Value', `Are you sure you want to add ${channelIdentifier} to ${selectedCustomer.firstName}'s ${attr}`);
+              const resp: any = await this._sharedService.getProfileLinkingConfirmation(channelIdentifier, selectedCustomer.firstName, attr, true);
 
-              if (resp == true) {
-                if (selectedCustomer[attr].length <= 10) {
-                  selectedCustomer[attr].push(channelIdentifier);
-                  this.updateTopiCustomer();
-                  this.updateCustomerProfile();
-                  console.log("limit not exceed")
-                } else {
-                  console.log("limit exceed")
-                  this._snackbarService.open(`There's no space to left to add new value for ${attr}.
+              if (resp.decisionIs == true) {
+                if (resp.isAttributeMerge == true) {
+                  if (selectedCustomer[attr].length <= 9) {
+                    selectedCustomer[attr].push(channelIdentifier);
+                    this.updateTopiCustomer(selectedCustomer, true, topicCustomer.isAnonymous == true ? topicCustomer._id : null, topicId);
+                    console.log("limit not exceed")
+                  } else {
+                    console.log("limit exceed")
+                    this._snackbarService.open(`There's no space to left to add new value for ${attr}.
                Delete a value OR create a new customer profile and try linking again.
                If you don't perform any of the above actions,
                the conversation will still be linked to ${topicCustomer.firstName} profile`, "err", 15000, "ok");
+                    this.updateTopiCustomer(selectedCustomer, false, topicCustomer.isAnonymous == true ? topicCustomer._id : null, topicId);
+                  }
+                } else {
+                  this.updateTopiCustomer(selectedCustomer, false, topicCustomer.isAnonymous == true ? topicCustomer._id : null, topicId);
                 }
-              } else {
-                this.updateTopiCustomer();
               }
             }
           } else {
-            this.updateTopiCustomer();
-            // this.snackErrorMessage("Unable to link profile");
+
+            const resp: any = await this._sharedService.getProfileLinkingConfirmation(null, selectedCustomer.firstName, null, false);
+            if (resp.decisionIs) {
+              this.updateTopiCustomer(selectedCustomer, false, topicCustomer.isAnonymous == true ? topicCustomer._id : null, topicId);
+            }
+            // this._snackbarService.open("unable to link customer", "err");
           }
 
         } else {
-          this.updateTopiCustomer();
+          const resp: any = await this._sharedService.getProfileLinkingConfirmation(null, selectedCustomer.firstName, null, false);
+
+          if (resp.decisionIs) {
+            this.updateTopiCustomer(selectedCustomer, false, topicCustomer.isAnonymous == true ? topicCustomer._id : null, topicId);
+          }
           //  this.snackErrorMessage("Unable to link profile");
         }
         //  this._socketService.linkCustomerWithInteraction(customerId, this.topicId);
@@ -584,17 +605,57 @@ export class socketService {
         this._snackbarService.open("unable to link customer", "err");
       }
     } catch (err) {
+      console.log("err ", err)
       this._snackbarService.open("unable to link customer", "err");
     }
   }
 
 
-  updateTopiCustomer() {
+  updateTopiCustomer(selectedCustomer, needToBeUpdate: boolean, toBeDeletedCustomerId, topicId) {
     console.log("topic updated");
+    console.log("need to be updated " + needToBeUpdate)
+
+    // if (needToBeUpdate) {
+    //   // updating customer
+    //   this._httpService.updateCustomerById(selectedCustomer._id, selectedCustomer).subscribe((e) => {
+
+    //     // updating customer topic
+    //     this._httpService.updateTopicCustomer(topicId, selectedCustomer).subscribe((e) => {
+
+    //       this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
+
+    //     }, (error) => {
+    //       this._snackbarService.open("unable to link customer", "err");
+    //       console.error("error while updating topic customer ", error);
+    //     });
+
+
+    //   }, (error) => {
+    //     this._snackbarService.open("unable to link customer", "err");
+    //     console.error("error while updating customer ", error);
+    //   });
+
+    // } else {
+    //   // updating customer topic
+    //   this._httpService.updateTopicCustomer(topicId, selectedCustomer).subscribe((e) => {
+
+    //     this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
+
+    //   }, (error) => {
+    //     this._snackbarService.open("unable to link customer", "err");
+    //     console.error("error while updating topic customer ", error);
+    //   });
+
+    // }
+
   }
 
-  updateCustomerProfile() {
-    console.log("customer updated");
+  deleteCustomerAndRouteToAgent(toBeDeletedCustomerId) {
+    if (toBeDeletedCustomerId != null) {
+      // deleting customer
+      this._httpService.deleteCustomerById(toBeDeletedCustomerId);
+    }
+    this._router.navigate(["customers"]);
   }
 
 }

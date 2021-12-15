@@ -3,5 +3,6 @@
     "SOCKET_URL": "https://cim.expertflow.com/agent-manager",
     "FILE_SERVER_URL": "https://cim.expertflow.com",
     "CIM_CUSTOMER_URL": "http://localhost:8083",
-    "ENV": "prod"
+    "ENV": "prod",
+    "BOT_FRAMEWORK_URL":"https://cim.expertflow.com/bot-framework"
 }

@@ -1,6 +1,5 @@
-import { TestBed } from "@angular/core/testing";
-import { promise } from "protractor";
-import { of } from "rxjs";
+
+import { doesNotThrow } from "assert";
 import { sharedService } from "./shared.service";
 import { socketService } from "./socket.service";
 var jest: any
@@ -15,11 +14,12 @@ describe("Socket service", () => {
     let _snackbarService: any;
     let _appConfigService: any;
     let _cacheService: any;
-    let _sharedService: any;
+    let _sharedService: any
     let _pullModeService: any;
     let _router: any;
     let _soundService: any;
     let ngxService: any;
+    let _httpService: any
 
     const mockConversation = {
         topicId: "12345",
@@ -38,7 +38,7 @@ describe("Socket service", () => {
 
         _sharedService = sharedService;
         _sharedService.schema = mockCustomerSchema;
-        
+
         component = new socketService(
             _snackbarService,
             _appConfigService,
@@ -47,18 +47,15 @@ describe("Socket service", () => {
             _pullModeService,
             _router,
             _soundService,
-            ngxService
+            ngxService,
+            _httpService
         );
-
         component.conversations.push(mockConversation);
-
     });
 
-    afterEach(() => {
 
-        component = null;
-        _sharedService = null;
-    });
+
+
 
     describe("linkCustomerWithTopic", () => {
 
@@ -69,44 +66,60 @@ describe("Socket service", () => {
 
         });
 
-        it("should call updateTopiCustomer function when linking is succesfully done and without merging", () => {
+        it("should call updateTopiCustomer when linking is without merging", () => {
 
             spyOn(component, 'updateTopiCustomer');
-            component.linkCustomerWithTopic(mockTopicData.channelSession.customerSuggestions[0], "12345");
-            expect(component.updateTopiCustomer).toHaveBeenCalled()
 
-        });
-
-        it("should not call updateTopiCustomer function when linking is with customer whose limit exceeds but agent want to merge profile", () => {
-
-            spyOn(component, 'updateTopiCustomer');
-            const mock = jest.fn().mockResolvedValueOnce(true)
-            _sharedService.getConfirmation = mock
-            component.linkCustomerWithTopic(mockTopicData.channelSession.customerSuggestions[2], "12345");
-            expect(component.updateTopiCustomer).not.toHaveBeenCalled()
-
-        });
-
-        it("should call updateTopiCustomer function when linking is with customer whose limit exceeds but agent do not want to merge profile", () => {
-
-            spyOn(component, 'updateTopiCustomer');
-            const mock = jest.fn().mockResolvedValueOnce(false)
-            _sharedService.getConfirmation = mock
-            component.linkCustomerWithTopic(mockTopicData.channelSession.customerSuggestions[2], "12345");
-            expect(component.updateTopiCustomer).toHaveBeenCalled()
-
-        });
-
-        it("should not call updateCustomerProfile function when linking is done without mergeing", () => {
-
-
-            spyOn(component, 'updateCustomerProfile');
+            _sharedService.getProfileLinkingConfirmation = jest.fn().mockResolvedValueOnce({ isAttributeMerge: false, decisionIs: true })
 
             component.linkCustomerWithTopic(mockTopicData.channelSession.customerSuggestions[0], "12345");
-            expect(component.updateCustomerProfile).not.toHaveBeenCalled();
+
+            setTimeout(function () {
+                expect(component.updateTopiCustomer).toHaveBeenCalled();
+            });
+
+        });
+
+        it("should call updateTopiCustomer when linking is with merging", () => {
+
+            spyOn(component, 'updateTopiCustomer');
+
+            _sharedService.getProfileLinkingConfirmation = jest.fn().mockResolvedValueOnce({ isAttributeMerge: true, decisionIs: true })
+
+            component.linkCustomerWithTopic(mockTopicData.channelSession.customerSuggestions[0], "12345");
+
+            setTimeout(function () {
+                expect(component.updateTopiCustomer).toHaveBeenCalled();
+            });
+
+        });
+
+        it("should also call updateTopiCustomer function when linking is with customer whose limit exceeds but agent want to merge profile", () => {
+
+            spyOn(component, 'updateTopiCustomer');
+            _sharedService.getProfileLinkingConfirmation = jest.fn().mockResolvedValueOnce({ isAttributeMerge: true, decisionIs: true })
+
+            component.linkCustomerWithTopic(mockTopicData.channelSession.customerSuggestions[2], "12345");
+            setTimeout(function () {
+                expect(component.updateTopiCustomer).toHaveBeenCalled();
+            });
+
+        });
+
+        it("should not call updateTopiCustomer function when agent dismiss the confirmation dialog without any confirmation", () => {
+
+            spyOn(component, 'updateTopiCustomer');
+
+            _sharedService.getProfileLinkingConfirmation = jest.fn().mockResolvedValueOnce({ isAttributeMerge: false, decisionIs: false })
+
+            component.linkCustomerWithTopic(mockTopicData.channelSession.customerSuggestions[0], "12345");
+            setTimeout(function () {
+                expect(component.updateTopiCustomer).not.toHaveBeenCalled();
+            });
 
         });
 
     });
 
 });
+

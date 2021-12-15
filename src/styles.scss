@@ -2855,3 +2855,16 @@ body .ui-paginator {
   border-top: 0 none;
   margin: 0px 15px 0px 15px;
 }
+
+// unidentifed customer
+
+.unidentified-customer{
+  .right-drag-accordion .customer-info-panel mat-expansion-panel-header{
+    border-bottom-color: red !important;
+    .profile-area{
+      h3, h5{
+        color: red;
+      }
+    }
+  }
+}

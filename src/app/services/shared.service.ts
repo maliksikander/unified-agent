@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { MatDialog } from "@angular/material";
 import { Subject } from "rxjs";
+import { LinkConversationDialogComponent } from "../dialogs/link-conversation-dialog/link-conversation-dialog.component";
 import { ConfirmationDialogComponent } from "../new-components/confirmation-dialog/confirmation-dialog.component";
 import { httpService } from "./http.service";
 import { snackbarService } from "./snackbar.service";
@@ -10,7 +11,7 @@ const customerSchema: any = require("../mocks/customerSchema.json");
   providedIn: "root"
 })
 export class sharedService {
-  constructor(private dialog: MatDialog, private _snackbarService: snackbarService, private _httpService: httpService) {}
+  constructor(private dialog: MatDialog, private _snackbarService: snackbarService, private _httpService: httpService) { }
 
   schema;
 
@@ -60,6 +61,23 @@ export class sharedService {
           resolve(true);
         } else {
           resolve(false);
+        }
+      });
+    });
+  }
+
+
+  getProfileLinkingConfirmation(channelIdentifier, customerName, attr, isMergeAble) {
+    return new Promise((resolve) => {
+      const dialogRef = this.dialog.open(LinkConversationDialogComponent, {
+        width: "490px",
+        panelClass: "confirm-dialog",
+        data: { channelIdentifier: channelIdentifier, customerName: customerName, attr: attr, isMergeAble: isMergeAble }
+      });
+      dialogRef.afterClosed().subscribe((decision) => {
+        if (decision) {
+          console.log("this is decision ", decision);
+          resolve(decision);
         }
       });
     });

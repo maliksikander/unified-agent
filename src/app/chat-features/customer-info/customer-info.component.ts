@@ -160,27 +160,27 @@ export class CustomerInfoComponent implements OnInit {
   linkCustomer(selectedCustomer) {
     this._socketService.linkCustomerWithTopic(JSON.parse(JSON.stringify(selectedCustomer)), this.topicId);
 
-    this._socketService.changeTopicCustomer(
-      {
-        data: {
-          phoneNumber: ["030078444212", "000", "002"],
-          _id: "61a4ac9a93af2b53287369eb",
-          firstName: "Mark",
-          isAnonymous: false,
-          __v: 0,
-          alphanumeric: "",
-          boolean: "",
-          email: "",
-          ip: "",
-          name: "",
-          number: "",
-          password: "",
-          viber: ["viber"],
-          wewq: ["web"]
-        }
-      },
-      "12345"
-    );
+    // this._socketService.changeTopicCustomer(
+    //   {
+    //     data: {
+    //       phoneNumber: ["030078444212", "000", "002"],
+    //       _id: "61a4ac9a93af2b53287369eb",
+    //       firstName: "Mark",
+    //       isAnonymous: false,
+    //       __v: 0,
+    //       alphanumeric: "",
+    //       boolean: "",
+    //       email: "",
+    //       ip: "",
+    //       name: "",
+    //       number: "",
+    //       password: "",
+    //       viber: ["viber"],
+    //       wewq: ["web"]
+    //     }
+    //   },
+    //   "12345"
+    // );
   }
 
   viewAllMatches() {

@@ -10,7 +10,7 @@
     ],
     "_id": "61a4a8ef9fbc5137dcc2b1af",
     "firstName": "John Miller",
-    "isAnonymous": false,
+    "isAnonymous": true,
     "__v": 0,
     "tesy": [
         "maupassant"
