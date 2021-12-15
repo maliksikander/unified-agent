@@ -2,9 +2,9 @@
   <h4 *ngIf="userIni && schemaIni">{{editTab ? 'Edit Customer' : userInfo.firstName}}
     <!-- <span *ngIf="editTab" class="validate-span" (click)="validateForm()">Validate</span> -->
   </h4>
-  <button *ngIf="!editTab" (click)="editClick()" class="cstmBtn slide-in-left whiteClass">
+  <!-- <button *ngIf="!editTab" (click)="editClick()" class="cstmBtn slide-in-left whiteClass">
     <mat-icon>edit</mat-icon> <span>Edit Profile</span>
-  </button>
+  </button> -->
   <button (click)="onNoClick()" mat-button mat-dialog-close>
     <mat-icon>close</mat-icon>
   </button>
@@ -103,7 +103,7 @@
                 <div [ngClass]="{'header-padding': !editTab}" class="lbl">{{schemaAttribute.label}}<span class="red-clr"
                     *ngIf="schemaAttribute.isRequired">*</span>
                   <span class="field-channel"><img *ngFor="let channelType of schemaAttribute.channelTypes"
-                      [src]="channelType | channelName | channelLogo | async"></span>
+                      [src]="channelType | channelName | channelLogo | async" matTooltip="{{channelType}}"></span>
                 </div>
                 <ng-container *ngFor="let attr of getFormControls(schemaAttribute);let i = index">
                   <mat-form-field [ngClass]="{'read-view' : !editTab }" class="field" appearance="outline">
