@@ -221,7 +221,7 @@ export class InteractionsComponent implements OnInit {
 
   filePreviewOpener(url, fileName, type) {
 
-    url = this._appConfigService.config.FILE_SERVER_URL + "/file-engine/api/downloadFileStream" + new URL(url).search;
+    url = this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream" + new URL(url).search;
 
     const dialogRef = this.dialog.open(FilePreviewComponent, {
       maxHeight: '100vh',
@@ -302,7 +302,7 @@ export class InteractionsComponent implements OnInit {
         message.body['caption'] = "";
         message.body['additionalDetails'] = { 'fileName': fileName };
         message.body['attachment'] = {
-          'mediaUrl': this._appConfigService.config.FILE_SERVER_URL + "/file-engine/api/downloadFileStream?filename=" + fileName,
+          'mediaUrl': this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
           'mimeType': fileMimeType,
           'size': fileSize
         }
@@ -313,7 +313,7 @@ export class InteractionsComponent implements OnInit {
         message.body['caption'] = fileName;
         message.body['additionalDetails'] = {};
         message.body['attachment'] = {
-          'mediaUrl': this._appConfigService.config.FILE_SERVER_URL + "/file-engine/api/downloadFileStream?filename=" + fileName,
+          'mediaUrl': this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
           'mimeType': fileMimeType,
           'size': fileSize,
           'thumbnail': ""

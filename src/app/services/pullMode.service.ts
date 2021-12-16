@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { httpService } from "./http.service";
 import { sharedService } from "./shared.service";
-import { snackbarService } from "./snackbar.service";
 
 @Injectable({
   providedIn: "root"
@@ -13,9 +12,9 @@ export class pullModeService {
   pullModeList = [];
   listNames: any;
 
-  constructor(private _sharedService: sharedService, private _httpService: httpService, private _snackbarService: snackbarService) {
-   // this.loadLabels();
-    this.getPullModeList();
+  constructor(private _sharedService: sharedService, private _httpService: httpService) {
+    // this.loadLabels();
+    // this.getPullModeList();
   }
 
   getPullModeList() {

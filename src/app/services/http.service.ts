@@ -148,7 +148,8 @@ export class httpService {
   updateTopicCustomer(topicId, customer): Observable<any> {
     return this._httpClient.put<any>(this._appConfigService.config.BOT_FRAMEWORK_URL + "/customer-topics/" + topicId + "/update-customer", customer, {
       headers: new HttpHeaders({
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
       })
     });
   }

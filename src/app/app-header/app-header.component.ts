@@ -139,7 +139,7 @@ export class AppHeaderComponent implements OnInit {
   }
   logout() {
     sessionStorage.clear();
-    localStorage.clear();
+  //  localStorage.clear();
     this._socketService.emit("changeAgentState", {
       agentId: this._cacheService.agent.id,
       action: "agentState",
@@ -163,7 +163,7 @@ export class AppHeaderComponent implements OnInit {
   }
 
   moveToLogin() {
-    localStorage.clear();
+   // localStorage.clear();
     sessionStorage.clear();
     this._cacheService.resetCache();
     this._socketService.socket.disconnect();

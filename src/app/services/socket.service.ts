@@ -37,13 +37,17 @@ export class socketService {
     private ngxService: NgxUiLoaderService,
     private _httpService: httpService
   ) {
-  //  this.onTopicData(mockTopicData, "12345");
+    //  this.onTopicData(mockTopicData, "12345");
 
   }
 
   connectToSocket() {
 
-    //load schema
+    //load pullMode list
+    this._cacheService.loadPullModeList();
+
+    //cache customer schema
+    this._cacheService.cacheCustomerSchema();
 
     this.ngxService.start();
     this.uri = this._appConfigService.config.SOCKET_URL;
@@ -67,7 +71,7 @@ export class socketService {
         this._snackbarService.open(err.data && err.data.content ? err.data.content : err, "err");
       } catch (err) { }
       if (err.message == "login-failed") {
-        localStorage.clear();
+        //  localStorage.clear();
         sessionStorage.clear();
         this._cacheService.resetCache();
         this.socket.disconnect();
@@ -93,7 +97,7 @@ export class socketService {
 
       // this means that server forcefully disconnects the socket connection
       if (reason == "io server disconnect") {
-        localStorage.clear();
+        //  localStorage.clear();
         sessionStorage.clear();
         this._cacheService.resetCache();
         this.socket.disconnect();
@@ -282,7 +286,7 @@ export class socketService {
   }
 
   onSocketSessionRemoved() {
-    localStorage.clear();
+    //  localStorage.clear();
     sessionStorage.clear();
     this._cacheService.resetCache();
     this._snackbarService.open("you are logged In from another session", "err");
@@ -521,7 +525,7 @@ export class socketService {
   }
 
   moveToLogin() {
-    localStorage.clear();
+    //  localStorage.clear();
     sessionStorage.clear();
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
@@ -613,40 +617,50 @@ export class socketService {
 
   updateTopiCustomer(selectedCustomer, needToBeUpdate: boolean, toBeDeletedCustomerId, topicId) {
     console.log("topic updated");
-    console.log("need to be updated " + needToBeUpdate)
+    console.log("need to be updated " + needToBeUpdate);
 
-    // if (needToBeUpdate) {
-    //   // updating customer
-    //   this._httpService.updateCustomerById(selectedCustomer._id, selectedCustomer).subscribe((e) => {
+    let selectedCustomerId = selectedCustomer._id;
 
-    //     // updating customer topic
-    //     this._httpService.updateTopicCustomer(topicId, selectedCustomer).subscribe((e) => {
+    if (needToBeUpdate) {
+      // updating customer
 
-    //       this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
+      delete selectedCustomer["_id"];
+      delete selectedCustomer["__v"];
 
-    //     }, (error) => {
-    //       this._snackbarService.open("unable to link customer", "err");
-    //       console.error("error while updating topic customer ", error);
-    //     });
+      this._httpService.updateCustomerById(selectedCustomerId, selectedCustomer).subscribe((e) => {
+
+        selectedCustomer["_id"] = selectedCustomerId;
+
+        // updating customer topic
+        this._httpService.updateTopicCustomer(topicId, selectedCustomer).subscribe((e) => {
+
+          this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
+
+        }, (error) => {
+          this._snackbarService.open("unable to link customer", "err");
+          console.error("error while updating topic customer ", error);
+        });
 
 
-    //   }, (error) => {
-    //     this._snackbarService.open("unable to link customer", "err");
-    //     console.error("error while updating customer ", error);
-    //   });
+      }, (error) => {
+        this._snackbarService.open("unable to link customer", "err");
+        console.error("error while updating customer ", error);
+      });
 
-    // } else {
-    //   // updating customer topic
-    //   this._httpService.updateTopicCustomer(topicId, selectedCustomer).subscribe((e) => {
+    } else {
 
-    //     this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
+      selectedCustomer["_id"] = selectedCustomerId;
+      // updating customer topic
+      this._httpService.updateTopicCustomer(topicId, selectedCustomer).subscribe((e) => {
 
-    //   }, (error) => {
-    //     this._snackbarService.open("unable to link customer", "err");
-    //     console.error("error while updating topic customer ", error);
-    //   });
+        this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
 
-    // }
+      }, (error) => {
+        this._snackbarService.open("unable to link customer", "err");
+        console.error("error while updating topic customer ", error);
+      });
+
+    }
 
   }
 
