@@ -1,12 +1,32 @@
-Link conversation with {{data.customerName}}?
+<!-- Link conversation with {{data.customerName}}?
 
 
-
+Would you like to link conversation with {{data.customerName}}
 <div *ngIf="data.isMergeAble == true">
-    <input type="checkbox" [(ngModel)]="isAttributeMerge"/> Add channel Identifer {{data.channelIdentifier}}
+    <input type="checkbox" [(ngModel)]="isAttributeMerge" /> Add channel Identifer {{data.channelIdentifier}}
     to {{data.customerName}}'s {{data.attr}}
 </div>
 
 
 <button (click)="sendResponse()">dismiss</button>
-<button (click)="decisionIs = true ; sendResponse()">yes</button>
+<button (click)="decisionIs = true ; sendResponse()">yes</button> -->
+
+
+
+<div class="confirmation-dialog">
+    <div class="confirmation-header">
+        <h3>Link conversation with {{data.customerName}}?</h3>
+    </div>
+    <div class="confirmation-content">
+        <p>Would you like to link conversation with {{data.customerName}}</p>
+        <p *ngIf="data.isMergeAble == true">
+            <input type="checkbox" [(ngModel)]="isAttributeMerge" /> Add channel Identifer {{data.channelIdentifier}}
+            to {{data.customerName}}'s {{data.attr}}
+        </p>
+        <div class="confirmation-action">
+            <button mat-raised-button class="close-btn" mat-dialog-close (click)="sendResponse()">Cancel</button>
+            <button mat-raised-button class="confirm-btn" mat-dialog-close
+                (click)="decisionIs = true ; sendResponse()">Confirm</button>
+        </div>
+    </div>
+</div>

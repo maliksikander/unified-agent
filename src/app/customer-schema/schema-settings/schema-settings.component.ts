@@ -127,7 +127,7 @@ export class SchemaSettingsComponent implements OnInit {
 
   // to delete attribute, it expects the attribute schema object
   deleteAttribute(item) {
-    if (item.isDeletable == false) {
+    if (item.isDeleteAble == false) {
       // to check if attribute is deleteable or not
       this.snackBar.open("CANNOT_DELETE_DEFAULT_ATTRIBUTE", "err");
     } else {

@@ -66,7 +66,7 @@ export class CreateAttributeComponent implements OnInit {
   async onSave() {
     let data = this.createAttributeForm.value;
     data.key = this.camelize(data.label);
-    data.isDeletable = true;
+    data.isDeleteAble = true;
     data.channelTypes = data.isChannelIdentifier == true ? data.channelTypes : [];
     this.createNewAttribute(data);
   }

@@ -12,14 +12,14 @@ export class httpService {
   constructor(public _appConfigService: appConfigService, private _httpClient: HttpClient) {
     this.apiEndpoints = {
       login: "/agent/login",
-      customerSchema: "/cim/customerSchema",
-      schemaTypes: "/cim/attributeTypes",
-      customers: "/cim/customers",
+      customerSchema: "/customerSchema",
+      schemaTypes: "/attributeTypes",
+      customers: "/customers",
       labels: "/agent/labels",
       userPreference: "/userPreference",
       pullModeList: "/agent/pull-mode-list",
-      fileServer: "/file-engine/api/downloadFileStream?filename=",
-      uploadFile: "/file-engine/api/uploadFileStream"
+      fileServer: "/api/downloadFileStream?filename=",
+      uploadFile: "/api/uploadFileStream"
     };
   }
 

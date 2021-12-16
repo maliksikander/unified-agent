@@ -37,11 +37,14 @@ export class socketService {
     private ngxService: NgxUiLoaderService,
     private _httpService: httpService
   ) {
-    //this.onTopicData(mockTopicData, "12345");
+  //  this.onTopicData(mockTopicData, "12345");
 
   }
 
   connectToSocket() {
+
+    //load schema
+
     this.ngxService.start();
     this.uri = this._appConfigService.config.SOCKET_URL;
     let origin = new URL(this.uri).origin;
@@ -571,10 +574,7 @@ export class socketService {
                     console.log("limit not exceed")
                   } else {
                     console.log("limit exceed")
-                    this._snackbarService.open(`There's no space to left to add new value for ${attr}.
-               Delete a value OR create a new customer profile and try linking again.
-               If you don't perform any of the above actions,
-               the conversation will still be linked to ${topicCustomer.firstName} profile`, "err", 15000, "ok");
+                    this._snackbarService.open(`The conversation is going to linking with ${selectedCustomer.firstName}, However the channel identifier ${channelIdentifier} can't be added in ${selectedCustomer.firstName}'s ${attr} because space is unavailable, you may delete a channel identifer to add a new one`, "succ", 20000, "Ok");
                     this.updateTopiCustomer(selectedCustomer, false, topicCustomer.isAnonymous == true ? topicCustomer._id : null, topicId);
                   }
                 } else {

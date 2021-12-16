@@ -128,7 +128,7 @@ export class EditAttributeComponent implements OnInit {
 
   onSave() {
     let editedData = this.editAttributeForm.value;
-    editedData.isDeletable = this.data.isDeletable;
+    editedData.isDeleteAble = this.data.isDeleteAble;
     editedData.sortOrder = this.data.sortOrder;
     let id = this.data._id;
     this.editAttribute(editedData, id);

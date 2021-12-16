@@ -434,12 +434,14 @@ snack-bar-container.success-snackbar {
 
 .ui-table-hoverable-rows {
   tbody tr td:last-child {
-    position: absolute;
+    position: sticky;
     right: 0;
-    min-width: auto;
-    width: 0;
     height: 0;
     padding: 0 !important;
+    z-index: -1;
+    max-width: 100px !important;
+    min-width: 100px !important;
+    text-align: center;
     button {
       padding: 0;
       width: 0;
@@ -449,6 +451,7 @@ snack-bar-container.success-snackbar {
       line-height: 35px;
       mat-icon {
         font-size: 18px;
+        color: #fff;
       }
     }
   }
@@ -466,24 +469,28 @@ snack-bar-container.success-snackbar {
       padding-bottom: 0 !important;
       padding-left: 0 !important;
       padding-right: 0 !important;
+      width: fit-content !important;
+    min-width: 250px !important;
+
     }
 
     tbody {
       tr {
         border-left: 1px solid #efefef;
         border-right: 1px solid #efefef;
-        position: relative;
+        // position: relative;
         &:nth-child(even) {
           background-color: transparent !important;
         }
         &:hover td:last-child {
           width: 100px;
           background: transparent;
-          height: auto;
+          // height: auto;
           padding: 4px 12px;
           border-color: transparent !important;
-          transform: translate(0, -50%);
-          top: 50%;
+          // transform: translate(0, -50%);
+          // top: 50%;
+          z-index: 1;
           button {
             width: 28px;
             height: 28px;
@@ -528,6 +535,7 @@ snack-bar-container.success-snackbar {
   overflow: auto;
   max-width: calc(100% - 30px);
   margin-left: 15px;
+  position: relative;
 }
 
 .ui-table-hoverable-rows tbody tr td {

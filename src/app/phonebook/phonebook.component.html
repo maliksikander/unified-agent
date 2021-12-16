@@ -130,7 +130,7 @@
 
 
           </th>
-
+          <th></th>
         </tr>
 
       </ng-template>
@@ -193,27 +193,6 @@
             </div>
           </td>
 
-          <div class="action-trigger">
-            <button class="cstmBtn">
-              <mat-icon>account_circle</mat-icon>
-              <span class="spa">test</span>
-            </button>
-            <button class="call-menu" [matMenuTriggerFor]="menu">
-              <mat-icon>call</mat-icon>
-              <span class="spa">test</span>
-            </button>
-            <mat-menu #menu="matMenu">
-              <button></button>
-            </mat-menu>
-            <button class="cstmBtn">
-              <mat-icon>sms</mat-icon>
-              <span class="spa">test</span>
-            </button>
-            <button class="cstmBtn">
-              <mat-icon>edit</mat-icon>
-              <span class="spa">test</span>
-            </button>
-          </div>
           <td>
             <button (click)="onRowClick(rowData._id,'edit',null)" class="p-button-rounded p-button-success p-mr-2">
               <mat-icon>edit</mat-icon>
