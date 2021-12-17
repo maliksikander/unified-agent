@@ -150,7 +150,7 @@
                 <button mat-raised-button (click)="gotoEmbedView()">
                   link Profile
                 </button>
-                <button mat-raised-button>Update Profile</button>
+                <button (click)="updateProfile()" mat-raised-button>Update Profile</button>
               </div>
             </div>
             <ul class="channel-list" *ngIf="displayCustomerChannels">

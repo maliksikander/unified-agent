@@ -4,6 +4,9 @@ import { MatDialog, MatSidenav } from "@angular/material";
 import { socketService } from "src/app/services/socket.service";
 import { sharedService } from "src/app/services/shared.service";
 import { NavigationExtras, Router } from "@angular/router";
+import { CustomerActionsComponent } from "src/app/customer-actions/customer-actions.component";
+import { httpService } from "src/app/services/http.service";
+import { error } from "protractor";
 
 @Component({
   selector: "app-customer-info",
@@ -55,9 +58,9 @@ export class CustomerInfoComponent implements OnInit {
   // drop(event: CdkDragDrop<string[]>) {
   //   moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
   // }
-  constructor(private _router: Router, private _sharedService: sharedService, public _socketService: socketService, private dialog: MatDialog) {}
+  constructor(private _httpService: httpService, private _router: Router, private _sharedService: sharedService, public _socketService: socketService, private dialog: MatDialog) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   close() {
     this.sidenav.close();
@@ -152,7 +155,26 @@ export class CustomerInfoComponent implements OnInit {
 
     return processedObj;
   }
+  updateProfile() {
+    const dialogRef = this.dialog.open(CustomerActionsComponent, {
+      panelClass: "edit-customer-dialog",
+      maxWidth: "80vw",
+      maxHeight: "88vh",
+      // width: "818px",
+      // height: "88vh",
+      data: { id: this.customer._id, tab: 'edit' }
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if ((result && result.event && result.event == "refresh")) {
 
+        this._httpService.getCustomerById(this.customer._id).subscribe((customer) => {
+
+          this._httpService.updateTopicCustomer(this.topicId, customer).subscribe()
+
+        }, (error) => { });
+      }
+    });
+  }
   moveSession(event) {
     event.stopPropagation();
   }
