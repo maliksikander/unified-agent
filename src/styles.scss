@@ -441,7 +441,7 @@ snack-bar-container.success-snackbar {
     z-index: -1;
     max-width: 100px !important;
     min-width: 100px !important;
-    text-align: center;
+    text-align: right;
     button {
       padding: 0;
       width: 0;
@@ -2876,3 +2876,32 @@ body .ui-paginator {
     }
   }
 }
+
+//Phonebook
+
+
+  .phonebook-main-area{
+    height: calc(100% - 50px);
+    position: absolute;
+    width: calc(100% - 10px);
+    .ui-table-thead{
+      position: sticky;
+      top: 0;
+      z-index: 9;
+    }
+
+    .main-table {
+      position: relative;
+      height: calc(100% - 60px) !important;
+      overflow: hidden;
+
+      .sticky-table{
+        height: 100%;
+
+        .ui-table-wrapper {
+          overflow: auto;
+          height: calc(100% - 40px);
+        }
+      }
+    }
+  }
