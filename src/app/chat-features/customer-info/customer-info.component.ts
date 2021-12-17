@@ -180,7 +180,17 @@ export class CustomerInfoComponent implements OnInit {
   }
 
   linkCustomer(selectedCustomer) {
-    this._socketService.linkCustomerWithTopic(JSON.parse(JSON.stringify(selectedCustomer)), this.topicId);
+
+    let completeSelectedCustomer = {};
+    this._sharedService.schema.forEach((e) => {
+      if (selectedCustomer.hasOwnProperty(e.key)) {
+        completeSelectedCustomer[e.key] = selectedCustomer[e.key];
+      } else {
+        completeSelectedCustomer[e.key] = e.isChannelIdentifier ? [] : '';
+      }
+    });
+    completeSelectedCustomer["_id"] = selectedCustomer._id;
+    this._socketService.linkCustomerWithTopic(completeSelectedCustomer, this.topicId);
 
     // this._socketService.changeTopicCustomer(
     //   {

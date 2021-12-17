@@ -618,6 +618,7 @@ export class socketService {
   updateTopiCustomer(selectedCustomer, needToBeUpdate: boolean, toBeDeletedCustomerId, topicId) {
     console.log("topic updated");
     console.log("need to be updated " + needToBeUpdate);
+    console.log("toBeDeletedCustomerId " + toBeDeletedCustomerId);
 
     let selectedCustomerId = selectedCustomer._id;
 
@@ -634,6 +635,7 @@ export class socketService {
         // updating customer topic
         this._httpService.updateTopicCustomer(topicId, selectedCustomer).subscribe((e) => {
 
+          console.log("update topic success");
           this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
 
         }, (error) => {
@@ -651,6 +653,7 @@ export class socketService {
 
       selectedCustomer["_id"] = selectedCustomerId;
       // updating customer topic
+      console.log("update topic success");
       this._httpService.updateTopicCustomer(topicId, selectedCustomer).subscribe((e) => {
 
         this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
@@ -667,7 +670,7 @@ export class socketService {
   deleteCustomerAndRouteToAgent(toBeDeletedCustomerId) {
     if (toBeDeletedCustomerId != null) {
       // deleting customer
-      this._httpService.deleteCustomerById(toBeDeletedCustomerId);
+      this._httpService.deleteCustomerById(toBeDeletedCustomerId).subscribe();
     }
     this._router.navigate(["customers"]);
   }

@@ -18,8 +18,9 @@
       <div class="row row-customer-form">
         <div class="customer-form-field" *ngFor="let schemaAttribute of schemaAttributes">
           <!-- <div class="main-col"> -->
+            <!-- [ngStyle]="{'display':  !editTab && (customerForm.get(schemaAttribute.key).value == undefined || customerForm.get(schemaAttribute.key).value.length == 0 || customerForm.get(schemaAttribute.key).value == null || customerForm.get(schemaAttribute.key).value == '' || customerForm.get(schemaAttribute.key)?.value[0] == '') ? 'none' : 'inline-block' }" -->
+
           <div [ngClass]="[schemaAttribute.length >= 116 ? 'col-md-12':  'col-md-6' ]" class="input-field"
-            [ngStyle]="{'display':  !editTab && (customerForm.get(schemaAttribute.key).value == undefined || customerForm.get(schemaAttribute.key).value.length == 0 || customerForm.get(schemaAttribute.key).value == null || customerForm.get(schemaAttribute.key).value == '' || customerForm.get(schemaAttribute.key)?.value[0] == '') ? 'none' : 'inline-block' }"
             [class.check-box-field]="schemaAttribute.type == 'boolean'">
 
             <!-- <div *ngIf="schemaAttribute.type == 'url'" [ngClass]="{'url-area': !editTab}">

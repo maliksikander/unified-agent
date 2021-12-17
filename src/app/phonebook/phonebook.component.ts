@@ -289,10 +289,19 @@ export class PhonebookComponent implements OnInit {
   }
 
   linkCustomer(selectedCustomer) {
-    console.log("selected customer fom phonebook ", selectedCustomer);
-    this._socketService.linkCustomerWithTopic(JSON.parse(JSON.stringify(selectedCustomer)), this.topicId);
+    let completeSelectedCustomer = {};
+    this._sharedService.schema.forEach((e) => {
+      if (selectedCustomer.hasOwnProperty(e.key)) {
+        completeSelectedCustomer[e.key] = selectedCustomer[e.key];
+      } else {
+        completeSelectedCustomer[e.key] = e.isChannelIdentifier ? [] : ''; 
+      }
+    });
+    completeSelectedCustomer["_id"] = selectedCustomer._id;
+    console.log("selected customers from phonebook", completeSelectedCustomer);
+    this._socketService.linkCustomerWithTopic(completeSelectedCustomer, this.topicId);
   }
-  backToChat() {}
+  backToChat() { }
   ngOnDestroy() {
     this.stateChangedSubscription.unsubscribe();
     this.paramsSubscription.unsubscribe();
@@ -328,7 +337,7 @@ export class PhonebookComponent implements OnInit {
       this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
     }
   }
-  onSelectAll(items: any) {}
+  onSelectAll(items: any) { }
   onDeSelectAll(items: any) {
     this.cancelFilter();
   }

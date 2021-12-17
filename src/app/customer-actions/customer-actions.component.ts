@@ -216,6 +216,7 @@ export class CustomerActionsComponent implements OnInit {
   }
 
   getFormControls(attribute) {
+   // console.log("function calling in loop");
     let temp: any = this.customerForm.controls[attribute.key];
     return temp.controls;
   }
