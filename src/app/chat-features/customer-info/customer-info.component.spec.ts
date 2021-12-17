@@ -9,6 +9,7 @@ describe("CustomerInfoComponent", () => {
     let _shareredService: any;
     let routerMock: any;
     let dialogMock: any;
+    let _httpService: any;
 
     beforeEach(() => {
 
@@ -19,7 +20,8 @@ describe("CustomerInfoComponent", () => {
             routerMock,
             _shareredService,
             _socketService,
-            dialogMock
+            dialogMock,
+            _httpService
         );
 
     });

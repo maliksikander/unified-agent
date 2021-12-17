@@ -58,7 +58,7 @@ export class CustomerInfoComponent implements OnInit {
   // drop(event: CdkDragDrop<string[]>) {
   //   moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
   // }
-  constructor(private _httpService: httpService, private _router: Router, private _sharedService: sharedService, public _socketService: socketService, private dialog: MatDialog) { }
+  constructor(private _router: Router, private _sharedService: sharedService, public _socketService: socketService, private dialog: MatDialog, private _httpService: httpService) { }
 
   ngOnInit() { }
 
