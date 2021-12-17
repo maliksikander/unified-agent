@@ -2,7 +2,7 @@
     "GAT_URL" : "${GAT_URL}",
     "SOCKET_URL" : "${SOCKET_URL}",
     "FILE_SERVER_URL" : "${FILE_SERVER_URL}",
-    "CIM_CUSTOMER_URL": "${CIM_CUSTOMER_URL}"
-    "ENV" : "${ENV}"
+    "CIM_CUSTOMER_URL": "${CIM_CUSTOMER_URL}",
+    "ENV" : "${ENV}",
     "BOT_FRAMEWORK_URL":"${BOT_FRAMEWORK_URL}"
 }
