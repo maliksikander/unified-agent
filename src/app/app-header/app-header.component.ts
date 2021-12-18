@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { cacheService } from "../services/cache.service";
 import { sharedService } from "../services/shared.service";
 import { socketService } from "../services/socket.service";
+import { CountupTimerService, countUpTimerConfigModel, timerTexts } from 'ngx-timer';
 import { Router } from "@angular/router";
 
 @Component({
@@ -10,7 +11,7 @@ import { Router } from "@angular/router";
   styleUrls: ["./app-header.component.scss"]
 })
 export class AppHeaderComponent implements OnInit {
-  @ViewChild('stateTrigger', {static: false}) stateTrigger: any;
+  @ViewChild('stateTrigger', { static: false }) stateTrigger: any;
   agent = {
     state: "ready",
     name: "Bryan Miller",
@@ -57,30 +58,38 @@ export class AppHeaderComponent implements OnInit {
   changeLanguage = false;
   logoutReasonList = false;
   stateView = true;
-  startTime: Date;
-  stopTime: Date;
-  active: boolean = false;
-  get display() {
-    return this.startTime && this.stopTime ? +this.stopTime - +this.startTime : 0;
-  }
+  // startTime: Date;
+  // stopTime: Date;
+  // active: boolean = false;
+  timerConfigs;
+  // get display() {
+  //   return this.startTime && this.stopTime ? +this.stopTime - +this.startTime : 0;
+  // }
 
-  timer() {
-    if (this.active) {
-      this.stopTime = new Date();
-      setTimeout(() => {
-        this.timer();
-      }, 1000);
-    }
-  }
+  // timer() {
+  //   if (this.active) {
+  //     this.stopTime = new Date();
+  //     setTimeout(() => {
+  //       this.timer();
+  //     }, 1000);
+  //   }
+  // }
 
   constructor(
+    private countupTimerService: CountupTimerService,
     private _router: Router,
     public _cacheService: cacheService,
     private _socketService: socketService,
     private _sharedService: sharedService
-  ) {}
+  ) { }
 
   ngOnInit() {
+    this.timerConfigs = new countUpTimerConfigModel();
+    this.timerConfigs.timerTexts = new timerTexts();
+    this.timerConfigs.timerTexts.hourText = ":"; //default - hh
+    this.timerConfigs.timerTexts.minuteText = ":"; //default - mm
+    this.timerConfigs.timerTexts.secondsText = " "; //default - ss
+    this.timerConfigs.timerClass  = 'state-timer';
     this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       if (e.msg == "stateChanged") {
         if (e.data.state.name.toLowerCase() == "logout") {
@@ -96,10 +105,12 @@ export class AppHeaderComponent implements OnInit {
   }
 
   reStartTimer() {
-    this.startTime = new Date();
-    this.stopTime = this.stopTime;
-    this.active = true;
-    this.timer();
+    // this.startTime = new Date();
+    // this.stopTime = this.stopTime;
+    // this.active = true;
+    // this.timer();
+    this.countupTimerService.stopTimer();
+    this.countupTimerService.startTimer();
   }
 
   changeState(state) {
@@ -139,7 +150,7 @@ export class AppHeaderComponent implements OnInit {
   }
   logout() {
     sessionStorage.clear();
-  //  localStorage.clear();
+    //  localStorage.clear();
     this._socketService.emit("changeAgentState", {
       agentId: this._cacheService.agent.id,
       action: "agentState",
@@ -156,14 +167,14 @@ export class AppHeaderComponent implements OnInit {
     });
   }
 
-  close() {}
+  close() { }
 
   onChange(reason) {
     this.selectedReasonCode = reason;
   }
 
   moveToLogin() {
-   // localStorage.clear();
+    // localStorage.clear();
     sessionStorage.clear();
     this._cacheService.resetCache();
     this._socketService.socket.disconnect();

@@ -78,7 +78,7 @@ import { getFormattedBytesPipe } from "./pipes/formatBytes.pipe";
 import { getReferredMessagePipe } from "./pipes/getReferredMsg.pipe";
 import { spaceInArrayPipe } from "./pipes/spaceInArray.pipe";
 import { channelNamePipe } from "./pipes/getChannelLogoByName.pipe";
-
+import { NgxTimerModule } from 'ngx-timer';
 
 
 @NgModule({
@@ -173,9 +173,11 @@ import { channelNamePipe } from "./pipes/getChannelLogoByName.pipe";
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     AngularMultiSelectModule,
-    NgScrollbarModule
+    NgScrollbarModule,
+    NgxTimerModule
   ],
   exports: [
+    NgxTimerModule,
     MatIconModule,
     MatToolbarModule,
     MatSidenavModule,

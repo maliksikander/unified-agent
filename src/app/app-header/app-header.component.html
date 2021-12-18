@@ -108,7 +108,10 @@
               <img src="assets/images/dummy-user.svg" alt="Agent">
             </div>
           </button>
-          <span class="agent-time">{{display | date :"HH:mm:ss":'UTC'}}</span>
+          <!-- <span class="agent-time">{{display | date :"HH:mm:ss":'UTC'}}</span> -->
+          <span><countup-timer class="agent-time" [countUpTimerConfig]="timerConfigs"></countup-timer></span>
+          
+
 
           <mat-menu  (click)="$event.stopPropagation()" #menu="matMenu" class="custom-user-menu matMenu"
             xPosition="after">
@@ -133,8 +136,10 @@
                     '') }}</span>
                 </button>
               </p>
-              <p class="menu-trigger-custom logged-time ">{{display | date :"HH:mm:ss":'UTC'}}
-              </p>
+              <!-- <p class="menu-trigger-custom logged-time ">{{display | date :"HH:mm:ss":'UTC'}} -->
+                <!-- <p class="menu-trigger-custom logged-time "><countup-timer [countUpTimerConfig]="timerConfigs"></countup-timer></p> -->
+
+              
 
               <div class="mrd-states" (click)="$event.stopPropagation()">
                 <span class="mrd-text">Change MRD State</span>
