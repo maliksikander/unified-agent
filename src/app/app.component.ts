@@ -25,10 +25,14 @@ export class AppComponent implements OnInit {
         this.currentRoute = event.url;
       }
     });
-
+    
     const customerSchema: any = JSON.parse(localStorage.getItem("customerSchema"));
+    const channelTypes: any = JSON.parse(localStorage.getItem("channelTypes"));
     if (customerSchema) {
       this._sharedService.schema = customerSchema;
+    }
+    if (channelTypes) {
+      this._sharedService.channelTypeList = channelTypes;
     }
   }
 }

@@ -18,7 +18,7 @@ export class sharedService {
   matCurrentTabIndex = 0;
   channelLogoMapper = new Map();
   serviceCurrentMessage = new Subject();
-  channelTypeList: Array<any> = [];
+  channelTypeList;
 
   serviceChangeMessage(data: any) {
     this.serviceCurrentMessage.next(data);
@@ -37,6 +37,7 @@ export class sharedService {
 
   setChannelIcons(channelTypes) {
     this.channelTypeList = channelTypes;
+    localStorage.setItem("channelTypes", JSON.stringify(channelTypes));
     channelTypes.forEach((channelType) => {
       this._httpService.getChannelLogo(channelType.channelLogo).subscribe((file) => {
         const reader = new FileReader();
