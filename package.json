@@ -90,5 +90,5 @@
     "reportFile": "test-report.xml",
     "indent": 4,
     "sonar56x": true
-  } 
+  }
 }
