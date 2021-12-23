@@ -109,6 +109,9 @@
           <!-- simple chat area -->
 
           <div class="instruction-content chat-session-main">
+            <div class="int-date load-more" [ngClass]="{'no-more-conversation': noMoreConversation}">
+              <span><mat-icon>arrow_upward</mat-icon>{{noMoreConversation ? 'End of Conversation': 'Load More'}}</span>
+            </div>
             <div style="display: unset;" *ngFor="let message of conversation.messages; let index = index">
               <div id="datestamp" class="int-date"
                 *ngIf="(index == 0) || (message.header.timestamp | date: 'dd MMMM yyyy') != (conversation.messages[index-1].header.timestamp | date: 'dd MMMM yyyy')">
@@ -598,9 +601,12 @@
     </div>
 
     <div class="chat-footer" [ngClass]="{'textarea-disable': conversation.activeChannelSessions.length == 0}">
-      <div class="slide-in-bottom" *ngIf="showNewMessageNotif" (click)="downTheScrollAfterMilliSecs(0,'smooth')"
-        class="new-msg-notif">New
-        Message
+      <div *ngIf="currentScrollPosition < 60 && showNewMessageNotif == false" (click)="downTheScrollAfterMilliSecs(0,'smooth')" class="jump-bottom slide-in-bottom new-msg-notif">
+        <span><mat-icon>arrow_downward</mat-icon>Jump to bottom</span>
+      </div>
+
+      <div class="slide-in-bottom new-msg-notif" *ngIf="showNewMessageNotif"  (click)="downTheScrollAfterMilliSecs(0,'smooth')">
+        New Message
         <span class="material-icons">
           arrow_drop_down
         </span>
