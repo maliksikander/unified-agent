@@ -82,3 +82,134 @@
 
   }
 }
+
+@media(max-width: 575px){
+  .main-header {
+    .main-logo {
+      max-width: 230px;
+    }
+  }
+  .ef_container #main-content{
+    .left-bar-trigger{
+      left: 0;
+      top: 57px;
+      bottom: inherit;
+      border-radius: 0;
+
+      &.arrow_left{
+        left: 227px;
+      }
+    }
+
+    mat-tab-group.chat-tab-area{
+      &.bar-expand{
+        .mat-tab-header{
+          width: 228px;
+          box-shadow: 4px 0 5px #e7edf6;
+
+        }
+        .mat-tab-body-wrapper{
+          width: 100%;
+        }
+      }
+      .mat-tab-header{
+        width: 0;
+        position: absolute;
+        z-index: 9;
+
+      }
+      .mat-tab-body-wrapper{
+        width: 100%;
+        border-left: 0;
+      }
+    }
+
+    .chat-tab-area {
+      &.bar-expand{
+        .chat-footer {
+          width: calc(100% - 10px) !important;
+          left: 5px !important;
+        }
+      }
+      .chat-footer {
+        width: calc(100% - 10px) !important;
+        left: 5px !important;
+
+        .reply-form {
+          .chat-area {
+            width: 100%;
+
+            textarea {
+              margin-left: 0 !important;
+            }
+          }
+
+          .chat-composer-trigger {
+            width: 70px !important;
+          }
+        }
+      }
+    }
+  }
+  .scrollable-main{
+    padding: 10px !important;
+  }
+  .page-header{
+    .page-heading, .create-label{
+
+    }
+  }
+  .schema-container{
+    width: 100% !important;
+  }
+
+  .main-chat-bar{
+    height: auto !important;
+
+    .agent-actions{
+      justify-content: center !important;
+      padding-bottom: 5px;
+    }
+  }
+
+  #chat-content .chat-messages-main {
+    .chat-message{
+      .combined-area{
+        max-width: calc(100% - 40px) !important;
+
+        .audio-player{
+          min-width: 250px;
+        }
+        .file-type-message{
+          .display-file-name{
+            width: 170px !important;
+          }
+
+          &.file-type-video{
+            .file-type-content{
+              flex-flow: wrap;
+            }
+          }
+
+          .file-type-content{
+
+            .shared-card-content{
+              width: 180px !important;
+            }
+          }
+          .chat-time{
+            padding: 0 6px !important;
+          }
+          .display-file{
+            min-width: 60px !important;
+            img{
+              max-width: 50px !important;
+              min-width: 30px !important;
+            }
+
+          }
+        }
+      }
+    }
+  }
+}

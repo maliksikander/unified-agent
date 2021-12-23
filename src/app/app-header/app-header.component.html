@@ -1,6 +1,6 @@
 <div class="profile-detail container-fluid">
   <div class="row main-header">
-    <div class="main-logo col-md-4 col-sm-4">
+    <div class="main-logo col-md-4 col-sm-5">
       <button class="main-menu" mat-icon-button [matMenuTriggerFor]="mainMenu" aria-label="menu">
         <mat-icon>menu</mat-icon>
       </button>
@@ -37,7 +37,7 @@
 
       <img src="assets/images/expertflow-logo.png">
     </div>
-    <div class="col-md-8 col-sm-8 right-profile-area">
+    <div class="col-md-8 col-sm-7 right-profile-area">
       <div class="info">
         <!--      <div (click)="openOutboundMsgDialog()" *ngIf="config._EnableOutboundSms" class="message-trigger-area">-->
         <!--        <button mat-button class="chat-message-trigger" >-->
@@ -110,7 +110,7 @@
           </button>
           <!-- <span class="agent-time">{{display | date :"HH:mm:ss":'UTC'}}</span> -->
           <span><countup-timer class="agent-time" [countUpTimerConfig]="timerConfigs"></countup-timer></span>
-          
+
 
 
           <mat-menu  (click)="$event.stopPropagation()" #menu="matMenu" class="custom-user-menu matMenu"
@@ -139,7 +139,7 @@
               <!-- <p class="menu-trigger-custom logged-time ">{{display | date :"HH:mm:ss":'UTC'}} -->
                 <!-- <p class="menu-trigger-custom logged-time "><countup-timer [countUpTimerConfig]="timerConfigs"></countup-timer></p> -->
 
-              
+
 
               <div class="mrd-states" (click)="$event.stopPropagation()">
                 <span class="mrd-text">Change MRD State</span>
@@ -234,16 +234,16 @@
 
 
 
-  <mat-sidenav-container (backdropClick)="close()" hasBackdrop="true" class="right-canned-message-list announcement-tab"
-    [ngClass]="{'mat-drawer-opened': sidenav?.opened}">
-    <mat-sidenav #sidenav position="end" (keydown.escape)="close()" mode="over" disableClose mode="over">
+<!--  <mat-sidenav-container (backdropClick)="close()" hasBackdrop="true" class="right-canned-message-list announcement-tab"-->
+<!--    [ngClass]="{'mat-drawer-opened': sidenav?.opened}">-->
+<!--    <mat-sidenav #sidenav position="end" (keydown.escape)="close()" mode="over" disableClose mode="over">-->
 
 
-      <div class="announcement-tab-header">
-        <h4>Announcements</h4>
-      </div>
+<!--      <div class="announcement-tab-header">-->
+<!--        <h4>Announcements</h4>-->
+<!--      </div>-->
 
-    </mat-sidenav>
+<!--    </mat-sidenav>-->
 
-  </mat-sidenav-container>
+<!--  </mat-sidenav-container>-->
 </div>

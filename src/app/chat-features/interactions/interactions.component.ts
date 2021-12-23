@@ -66,7 +66,7 @@ export class InteractionsComponent implements OnInit {
   displaySuggestionsArea = false;
   cannedTabOpen = false;
   quickReplies = true;
-  viewHeight = "120px";
+  viewHeight = "150px";
 
   constructor(
     private _sharedService: sharedService,

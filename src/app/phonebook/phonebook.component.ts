@@ -220,7 +220,7 @@ export class PhonebookComponent implements OnInit {
   // to open user prefernce dialog
   actions() {
     const dialogRef = this.dialog.open(columnPreferences, {
-      maxWidth: "818px",
+      maxWidth: "92vw",
       maxHeight: "88vh",
       width: "818px",
       height: "88vh"
@@ -294,7 +294,7 @@ export class PhonebookComponent implements OnInit {
       if (selectedCustomer.hasOwnProperty(e.key)) {
         completeSelectedCustomer[e.key] = selectedCustomer[e.key];
       } else {
-        completeSelectedCustomer[e.key] = e.isChannelIdentifier ? [] : ''; 
+        completeSelectedCustomer[e.key] = e.isChannelIdentifier ? [] : '';
       }
     });
     completeSelectedCustomer["_id"] = selectedCustomer._id;

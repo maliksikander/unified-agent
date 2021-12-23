@@ -755,13 +755,14 @@ button.main-menu-item{
     top: 70px;
   }
   .profile-detail {
-    height: 70px;
+    //height: 70px;
 
-    .left-logo-area, .right-profile-area {
-      width: 100% !important;
-      min-width: 100%;
-      float: none !important;
-    }
+    //.left-logo-area, .right-profile-area {
+    //  width: 100% !important;
+    //  min-width: 100%;
+    //  float: none !important;
+    //}
+
   }
   .supervisor-tab-trigger{
     top: 70px;
@@ -888,7 +889,11 @@ button.main-menu-item{
   }
 
 }
-
+@media(max-width: 575px){
+  .right-profile-area {
+    width:calc(100% - 230px) !important;
+  }
+}
 @media (max-width: 520px) {
   h3.agent_name{
     span{
