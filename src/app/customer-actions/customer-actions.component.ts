@@ -137,13 +137,17 @@ export class CustomerActionsComponent implements OnInit {
   addFormControls(attrSchema: Array<any>) {
     try {
       attrSchema.forEach((item) => {
+        // console.log("val==>", item.key);
         let validatorArray: any = this.addFormValidations(item);
         if (item.isChannelIdentifier == false) {
           this.customerForm.addControl(item.key, new FormControl("", validatorArray));
         } else {
           this.customerForm.addControl(item.key, this.fb.array([]));
           let val = this.userInfo[item.key];
-          let valLength: number = val ? val.length : 1;
+          let valLength: number = val && val.length != 0 ? val.length : 1;
+          // console.log(`${item.key} ==>`, val);
+          // console.log(`${item.key} ==>`, valLength);
+
           for (let i = 0; i < valLength; i++) {
             this.onAddFormControl(item);
           }
@@ -216,7 +220,7 @@ export class CustomerActionsComponent implements OnInit {
   }
 
   getFormControls(attribute) {
-   // console.log("function calling in loop");
+    // console.log("function calling in loop");
     let temp: any = this.customerForm.controls[attribute.key];
     return temp.controls;
   }
