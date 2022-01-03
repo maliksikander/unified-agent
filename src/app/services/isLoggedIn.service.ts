@@ -17,6 +17,8 @@ export class isLoggedInService {
     private _cacheService: cacheService,
   ) {
 
+    this.cacheAgentFcmKey();
+
     if (this._appConfigService.config.ENV == "development") {
       this._cacheService.agent = {
         id: "8d42617c-0603-4fbe-9863-2507c0fff9fd",
@@ -43,6 +45,14 @@ export class isLoggedInService {
         }
       });
     }
+  }
+
+  cacheAgentFcmKey() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('fcm-key')) {
+      this._cacheService.agentFcmkey = params.get('fcm-key');
+    }
+    console.log("in unifiedAgent " + params.get('fcm-key'));
   }
 
   autoLogin() {

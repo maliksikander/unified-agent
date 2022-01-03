@@ -59,7 +59,8 @@ export class socketService {
       path: path == "/" ? "" : path + "/socket.io",
       auth: {
         //  token: this._cacheService.agent.details.access_token,
-        agent: JSON.stringify(this._cacheService.agent)
+        agent: JSON.stringify(this._cacheService.agent),
+        fcmKey: this._cacheService.agentFcmkey ? this._cacheService.agentFcmkey : null
         //agent: ""
       }
     });

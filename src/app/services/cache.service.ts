@@ -10,6 +10,7 @@ import { sharedService } from "./shared.service";
 export class cacheService {
   agent: IKeycloakUser;
   agentPresence: IAgentPresence;
+  agentFcmkey = null;
 
   constructor(private _httpService: httpService, private _pullModeService: pullModeService, private _sharedService: sharedService) {
     this.resetCache();
@@ -26,7 +27,7 @@ export class cacheService {
 
   cacheCustomerSchema() {
     this._httpService.getCustomerSchema().subscribe((res) => {
-     // let temp = res.filter((item) => item.key != "isAnonymous");
+      // let temp = res.filter((item) => item.key != "isAnonymous");
       const schema = res.sort((a, b) => {
         return a.sortOrder - b.sortOrder;
       });
