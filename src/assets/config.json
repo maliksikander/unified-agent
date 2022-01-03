@@ -2,7 +2,7 @@
     "GAT_URL": "https://cim.expertflow.com/agent-manager",
     "SOCKET_URL": "https://cim.expertflow.com/agent-manager",
     "FILE_SERVER_URL": "https://cim.expertflow.com/file-engine",
-    "CIM_CUSTOMER_URL": "http://localhost:8083",
+    "CIM_CUSTOMER_URL": "https://cim.expertflow.com/cim",
     "BOT_FRAMEWORK_URL": "http://192.168.2.50:8080",
     "ENV": "prod"
 }

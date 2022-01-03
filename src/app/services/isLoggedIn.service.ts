@@ -52,7 +52,7 @@ export class isLoggedInService {
     if (params.has('fcm-key')) {
       this._cacheService.agentFcmkey = params.get('fcm-key');
     }
-    console.log("in unifiedAgent " + params.get('fcm-key'));
+    console.log("FCM key in unifiedAgent " + params.get('fcm-key'));
   }
 
   autoLogin() {
