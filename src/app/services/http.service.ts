@@ -8,6 +8,7 @@ import { appConfigService } from "./appConfig.service";
 })
 export class httpService {
   apiEndpoints;
+  mockurl = "https://57be0c49-6ed4-469c-a93a-13f49e48e8c2.mock.pstmn.io";
 
   constructor(public _appConfigService: appConfigService, private _httpClient: HttpClient) {
     this.apiEndpoints = {
@@ -19,7 +20,8 @@ export class httpService {
       userPreference: "/userPreference",
       pullModeList: "/agent/pull-mode-list",
       fileServer: "/api/downloadFileStream?filename=",
-      uploadFile: "/api/uploadFileStream"
+      uploadFile: "/api/uploadFileStream",
+      activities: "activities"
     };
   }
 
@@ -103,7 +105,8 @@ export class httpService {
 
   getCustomers(limit, offset, sort, query): Observable<any> {
     return this._httpClient.get<any>(
-      `${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.customers}?limit=${limit}&offset=${offset}&sort=${sort.field ? sort.field + ":" + sort.order : ""
+      `${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.customers}?limit=${limit}&offset=${offset}&sort=${
+        sort.field ? sort.field + ":" + sort.order : ""
       }&paginateQuery=${query.field ? query.field + ":" + query.value : ""}`,
       {
         headers: new HttpHeaders({
@@ -153,7 +156,18 @@ export class httpService {
       })
     });
   }
-  /////////////////////////
+
+  ///////////////////////// Load Past Activity ////////
+
+  getPastActivities(id, limit, offset): Observable<any> {
+    return this._httpClient.get<any>(`${this.mockurl}/${this.apiEndpoints.actvities}?customerId=${id}&limit=${limit}&offset=${offset}`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+  ////////////////////////
 
   getLabels(): Observable<any> {
     return this._httpClient.get<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.labels, {
@@ -198,7 +212,6 @@ export class httpService {
   getChannelLogo(id: string): Observable<Blob> {
     return this._httpClient.get(this._appConfigService.config.FILE_SERVER_URL + this.apiEndpoints.fileServer + id, { responseType: "blob" });
   }
-
 
   uploadToFileEngine(data): Observable<any> {
     return this._httpClient.post<any>(`${this._appConfigService.config.FILE_SERVER_URL}${this.apiEndpoints.uploadFile}`, data, {
