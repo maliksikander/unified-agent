@@ -30,8 +30,8 @@ import { LabelsListComponent } from "./labels/labels-list/labels-list.component"
 import { CreateLabelComponent } from "./labels/create-label/create-label.component";
 import { SubscribedListComponent } from "./pull-mode/subscribed-list/subscribed-list.component";
 import { SubscribedListPreviewComponent } from "./pull-mode/subscribed-list-preview/subscribed-list-preview.component";
-import { FilePreviewComponent } from './file-preview/file-preview.component';
-import { LinkConversationDialogComponent } from './dialogs/link-conversation-dialog/link-conversation-dialog.component';
+import { FilePreviewComponent } from "./file-preview/file-preview.component";
+import { LinkConversationDialogComponent } from "./dialogs/link-conversation-dialog/link-conversation-dialog.component";
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsType: SPINNER.chasingDots,
@@ -64,8 +64,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     SubscribedListPreviewComponent,
     FilePreviewComponent,
     FilePreviewComponent,
-    LinkConversationDialogComponent,
-
+    LinkConversationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -73,7 +72,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     CommonModule,
     BrowserAnimationsModule,
     SharedModule,
-    NgxUiLoaderHttpModule,
+    NgxUiLoaderHttpModule.forRoot({
+      exclude: ["/file-engine/api/downloadFileStream?filename"]
+    }),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
   ],
   entryComponents: [
@@ -106,4 +107,4 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   exports: [BrowserModule, CommonModule, BrowserAnimationsModule],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

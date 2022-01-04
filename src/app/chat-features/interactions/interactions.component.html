@@ -1,4 +1,5 @@
-<div class="interaction-main" [ngClass]="{'customer-bar-opened': isBarOPened, 'unidentified-customer':conversation.customer.isAnonymous}">
+<div class="interaction-main"
+  [ngClass]="{'customer-bar-opened': isBarOPened, 'unidentified-customer':conversation.customer.isAnonymous}">
   <div class="interaction-inner">
     <div class="container-fluid main-chat-bar">
       <div class="row">
@@ -98,6 +99,7 @@
     </div>
     <!--/Top bar-->
     <!--Interactions Area Start -->
+
     <div id="chat-content" class="container-fluid main-chat-area">
       <div class="row">
 
@@ -107,10 +109,16 @@
 
 
           <!-- simple chat area -->
-
+          <div id="chat-area-start"></div>
           <div class="instruction-content chat-session-main">
             <div class="int-date load-more" [ngClass]="{'no-more-conversation': noMoreConversation}">
-              <span><mat-icon>arrow_upward</mat-icon>{{noMoreConversation ? 'End of Conversation': 'Load More'}}</span>
+              <span [ngStyle]="{'cursor':!noMoreConversation ? 'pointer' : 'normal' }" *ngIf="!loadingPastActivity"
+                (click)="loadPastActivities()">
+                <mat-icon>arrow_upward</mat-icon>{{noMoreConversation ? 'End of Conversation': 'Load More'}}
+              </span>
+              <span *ngIf="loadingPastActivity">
+                <mat-icon>hourglass_empty</mat-icon>{{noMoreConversation ? 'End of Conversation': 'Loading...'}}
+              </span>
             </div>
             <div style="display: unset;" *ngFor="let message of conversation.messages; let index = index">
               <div id="datestamp" class="int-date"
@@ -601,11 +609,15 @@
     </div>
 
     <div class="chat-footer" [ngClass]="{'textarea-disable': conversation.activeChannelSessions.length == 0}">
-      <div *ngIf="currentScrollPosition < 60 && showNewMessageNotif == false" (click)="downTheScrollAfterMilliSecs(0,'smooth')" class="jump-bottom slide-in-bottom new-msg-notif">
-        <span><mat-icon>arrow_downward</mat-icon>Jump to bottom</span>
+      <div *ngIf="currentScrollPosition < 60 && showNewMessageNotif == false"
+        (click)="downTheScrollAfterMilliSecs(0,'smooth')" class="jump-bottom slide-in-bottom new-msg-notif">
+        <span>
+          <mat-icon>arrow_downward</mat-icon>Jump to bottom
+        </span>
       </div>
 
-      <div class="slide-in-bottom new-msg-notif" *ngIf="showNewMessageNotif"  (click)="downTheScrollAfterMilliSecs(0,'smooth')">
+      <div class="slide-in-bottom new-msg-notif" *ngIf="showNewMessageNotif"
+        (click)="downTheScrollAfterMilliSecs(0,'smooth')">
         New Message
         <span class="material-icons">
           arrow_drop_down

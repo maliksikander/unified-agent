@@ -68,7 +68,8 @@ export class InteractionsComponent implements OnInit {
   quickReplies = true;
   viewHeight = "120px";
   noMoreConversation = false;
-  pastActivityApiOffset = 1;
+  pastCimEventsOffsetLimit: number = 0;
+  loadingPastActivity: boolean = false;
 
   constructor(
     private _sharedService: sharedService,
@@ -168,6 +169,14 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior });
+      } catch (err) {}
+    }, milliseconds);
+  }
+
+  upTheScrollAfterMilliSecs(milliseconds, behavior) {
+    setTimeout(() => {
+      try {
+        document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior });
       } catch (err) {}
     }, milliseconds);
   }
@@ -331,17 +340,53 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  // to get load past acitivities
+  // to get past acitivities
   loadPastActivities() {
-    let id = this.conversation.customer;
-    console.log("id==>", id);
-    let limit = 25;
+    try {
+      this.loadingPastActivity = true;
 
-    // this._httpService.getPastActivities(id, limit, this.pastActivityApiOffset).subscribe(
-    //   (res: any) => {},
-    //   (error) => {
-    //     this._sharedService.Interceptor(error.error, "err");
-    //   }
-    // );
+      let limit = 25;
+
+      this._httpService.getPastActivities(this.conversation.customer._id, limit, this.pastCimEventsOffsetLimit).subscribe(
+        (res: any) => {
+          let docsLength: number = res ? res.docs.length : 0;
+          let docs = res.docs;
+          if (docsLength > 0) {
+            this.filterAndMergePastActivities(docs);
+          } else {
+            this.noMoreConversation = true;
+          }
+        },
+        (error) => {
+          this.loadingPastActivity = false;
+          this._sharedService.Interceptor(error.error, "err");
+        }
+      );
+    } catch (e) {
+      console.log("[Load Past Activity] Error :", e);
+    }
+  }
+
+  // to filter out activities and add in the conversation object, it expects a list
+  filterAndMergePastActivities(cimEvents: Array<any>) {
+    try {
+      cimEvents.forEach((event) => {
+        if (
+          event.name.toLowerCase() == "agent_message" ||
+          event.name.toLowerCase() == "bot_message" ||
+          event.name.toLowerCase() == "customer_message"
+        ) {
+          event.data.header["status"] = "sent";
+          this.conversation.messages.unshift(event.data);
+        }
+      });
+
+      this.noMoreConversation = false;
+      this.loadingPastActivity = false;
+      this.upTheScrollAfterMilliSecs(0, "smooth");
+      this.pastCimEventsOffsetLimit = this.pastCimEventsOffsetLimit + cimEvents.length;
+    } catch (e) {
+      console.log("[Load Past Activity] Filter Error :", e);
+    }
   }
 }

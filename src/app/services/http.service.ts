@@ -160,7 +160,7 @@ export class httpService {
   ///////////////////////// Load Past Activity ////////
 
   getPastActivities(id, limit, offset): Observable<any> {
-    return this._httpClient.get<any>(`${this.mockurl}/${this.apiEndpoints.actvities}?customerId=${id}&limit=${limit}&offset=${offset}`, {
+    return this._httpClient.get<any>(`${this.mockurl}/${this.apiEndpoints.activities}?customerId=${id}&limit=${limit}&offset=${offset}`, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
