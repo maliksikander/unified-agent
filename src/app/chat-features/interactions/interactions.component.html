@@ -596,9 +596,11 @@
 
               <!-- ----------------------------------system Notifications started-------------------------------- -->
 
-              <div *ngIf="(message.body.type | lowercase) == 'systemnotification'">
+              <div *ngIf="(message.body.type | lowercase) == 'systemnotification'" class="system-notifs">
 
-                <span>{{message.body.displayText | titlecase}}</span> <span>{{message.body.markdownText}}</span>
+                <span class="inner-text">
+                  <span>{{message.body.displayText | titlecase}}</span> <span>{{" "+message.body.markdownText}}</span>
+                </span>
 
               </div>
               <!-- ----------------------------------system Notifications ended-------------------------------- -->

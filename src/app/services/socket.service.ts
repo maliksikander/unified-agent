@@ -284,6 +284,10 @@ export class socketService {
       this.removeChannelSession(cimEvent, topicId);
     } else if (cimEvent.name.toLowerCase() == "associated_customer_changed") {
       this.changeTopicCustomer(cimEvent, topicId);
+    } else if (cimEvent.name.toLowerCase() == "agent_subscribed") {
+      this.handleAgentSubscription(cimEvent, topicId);
+    } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
+      this.handleAgentSubscription(cimEvent, topicId);
     }
   }
 
@@ -322,7 +326,7 @@ export class socketService {
       ) {
         event.data.header['status'] = 'sent';
         conversation.messages.push(event.data);
-      } else if (event.name.toLowerCase() == "channel_session_started" || event.name.toLowerCase() == "channel_session_ended") {
+      } else if (["channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())) {
         let message = this.createSystemNotificationMessage(event);
         conversation.messages.push(message);
       }
@@ -487,6 +491,18 @@ export class socketService {
       conversation.messages.push(message);
     } else {
       console.error("channelSessionId not found to added");
+    }
+  }
+
+
+  handleAgentSubscription(cimEvent, topicId) {
+    let conversation = this.conversations.find((e) => {
+      return e.topicId == topicId;
+    });
+
+    if (conversation) {
+      let message = this.createSystemNotificationMessage(cimEvent);
+      conversation.messages.push(message);
     }
   }
 
@@ -701,6 +717,16 @@ export class socketService {
 
       message.body['displayText'] = cimEvent.data.channel.channelType.name;
       message.body.markdownText = "session ended";
+
+    } if (cimEvent.name.toLowerCase() == "agent_subscribed") {
+
+      message.body['displayText'] = cimEvent.data.keycloakUser.username;
+      message.body.markdownText = "has joined the conversation";
+
+    } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
+
+      message.body['displayText'] = cimEvent.data.keycloakUser.username;
+      message.body.markdownText = "left the conversation";
 
     }
 

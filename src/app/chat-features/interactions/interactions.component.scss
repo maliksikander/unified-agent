@@ -720,7 +720,7 @@
   display: block;
   padding: 0 30px;
   position: relative;
-  margin-top: 2.5em;
+  margin-top: 0.5em;
   .int-date.load-more {
     position: static !important;
     background: #79a31d !important;
@@ -1994,5 +1994,15 @@ vg-controls.hide {
       margin-right: 5px;
       float: left;
     }
+  }
+}
+
+.system-notifs{
+  text-align: center;
+  .inner-text{
+    width: fit-content;
+    font-size: 11px;
+    padding: 4px 10px 4px 10px;
+    border-radius: 10px;
   }
 }
