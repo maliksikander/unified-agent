@@ -11,6 +11,7 @@ import { pullModeService } from "./pullMode.service";
 import { soundService } from "./sounds.service";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { httpService } from "./http.service";
+import { v4 as uuidv4 } from "uuid";
 
 const mockTopicData: any = require('../mocks/topicData.json');
 
@@ -321,6 +322,9 @@ export class socketService {
       ) {
         event.data.header['status'] = 'sent';
         conversation.messages.push(event.data);
+      } else if (event.name.toLowerCase() == "channel_session_started" || event.name.toLowerCase() == "channel_session_ended") {
+        let message = this.createSystemNotificationMessage(event);
+        conversation.messages.push(message);
       }
     });
 
@@ -455,6 +459,10 @@ export class socketService {
     });
 
     if (conversation) {
+
+      let message = this.createSystemNotificationMessage(cimEvent);
+      conversation.messages.push(message);
+
       let index = conversation.activeChannelSessions.findIndex((channelSession) => {
         return channelSession.id === cimEvent.data.id;
       });
@@ -474,7 +482,9 @@ export class socketService {
     });
 
     if (conversation) {
+      let message = this.createSystemNotificationMessage(cimEvent);
       conversation.activeChannelSessions.push(cimEvent.data);
+      conversation.messages.push(message);
     } else {
       console.error("channelSessionId not found to added");
     }
@@ -666,6 +676,35 @@ export class socketService {
 
     }
 
+  }
+
+
+  createSystemNotificationMessage(cimEvent) {
+
+    let message: any = {
+      id: "",
+      header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
+      body: { markdownText: "", type: "" }
+    };
+
+    message.id = uuidv4();
+    message.header.timestamp = Date.now();
+    message.body.type = "systemNotification";
+    message.header.sender.type = "syatem";
+
+    if (cimEvent.name.toLowerCase() == "channel_session_started") {
+
+      message.body['displayText'] = cimEvent.data.channel.channelType.name;
+      message.body.markdownText = "session started";
+
+    } else if (cimEvent.name.toLowerCase() == "channel_session_ended") {
+
+      message.body['displayText'] = cimEvent.data.channel.channelType.name;
+      message.body.markdownText = "session ended";
+
+    }
+
+    return message;
   }
 
   deleteCustomerAndRouteToAgent(toBeDeletedCustomerId) {
