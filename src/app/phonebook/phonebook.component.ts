@@ -44,7 +44,7 @@ export class PhonebookComponent implements OnInit {
   cols: Array<any> = [];
   limit = 25;
   filterValue;
-  offSet = 1;
+  offSet = 0;
   sort = {};
   query = {};
   filterQuery = [];
@@ -186,7 +186,7 @@ export class PhonebookComponent implements OnInit {
   cancelFilter() {
     this.query = {};
     this.limit = 25;
-    this.offSet = 1;
+    this.offSet = 0;
     this.sort = {};
     this.rows = null;
     this.filterValue = null;
