@@ -99,6 +99,7 @@
     </div>
     <!--/Top bar-->
     <!--Interactions Area Start -->
+
     <div id="chat-content" class="container-fluid main-chat-area">
       <div class="row">
 
@@ -108,11 +109,15 @@
 
 
           <!-- simple chat area -->
-
+          <div id="chat-area-start"></div>
           <div class="instruction-content chat-session-main">
             <div class="int-date load-more" [ngClass]="{'no-more-conversation': noMoreConversation}">
-              <span>
+              <span [ngStyle]="{'cursor':!noMoreConversation ? 'pointer' : 'normal' }" *ngIf="!loadingPastActivity"
+                (click)="loadPastActivities()">
                 <mat-icon>arrow_upward</mat-icon>{{noMoreConversation ? 'End of Conversation': 'Load More'}}
+              </span>
+              <span *ngIf="loadingPastActivity">
+                <mat-icon>hourglass_empty</mat-icon>{{noMoreConversation ? 'End of Conversation': 'Loading...'}}
               </span>
             </div>
             <div style="display: unset;" *ngFor="let message of conversation.messages; let index = index">
@@ -127,7 +132,7 @@
                   sameElse: 'dddd, MMM YYYY'} }}</span>
               </div>
               <div *ngIf="(message.body.type | lowercase) != 'systemnotification'"
-                class="chat-message {{((conversation.messages[index-1].body.type | lowercase) != 'systemnotification' ) && ((message.header.sender | getSenderId) == (conversation.messages[index-1].header.sender | getSenderId)) ? 'bnb' : ''}} {{message.header.status=='sending' ? 'low-opacity' : ''}}  {{message.body.type | lowercase}} {{  message.header.replyToMessageId != null  ? 'quoted-message-main' : ''}}"
+                class="chat-message {{((conversation.messages[index-1].body.type | lowercase) != 'systemnotification' ) && ((message.header.sender | getSenderId) == (conversation.messages[index-1].header.sender | getSenderId)) ? 'same-sender-msg' : ''}} {{message.header.status=='sending' ? 'low-opacity' : ''}}  {{message.body.type | lowercase}} {{  message.header.replyToMessageId != null  ? 'quoted-message-main' : ''}}"
                 [ngClass]=" ((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message ' ">
                 <div class="profile-pic"
                   >

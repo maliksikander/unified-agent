@@ -25,7 +25,7 @@ export class InteractionsComponent implements OnInit {
   @Output() expandCustomerInfo = new EventEmitter<any>();
   @ViewChild("replyInput", { static: true }) elementView: ElementRef;
   @ViewChild(NgScrollbar, { static: true }) scrollbarRef: NgScrollbar;
-  @ViewChild('media', { static: false }) media: ElementRef;
+  @ViewChild("media", { static: false }) media: ElementRef;
   dispayVideoPIP = true;
   scrollSubscriber;
 
@@ -68,6 +68,8 @@ export class InteractionsComponent implements OnInit {
   quickReplies = true;
   viewHeight = "120px";
   noMoreConversation = false;
+  pastCimEventsOffsetLimit: number = 0;
+  loadingPastActivity: boolean = false;
 
   constructor(
     private _sharedService: sharedService,
@@ -142,7 +144,6 @@ export class InteractionsComponent implements OnInit {
     if (this.expanedHeight > 50) {
       this.adjustHeightOnComposerResize();
     }
-
   }
   eventFromChild(data) {
     this.isBarOPened = data;
@@ -172,11 +173,20 @@ export class InteractionsComponent implements OnInit {
     }, milliseconds);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  upTheScrollAfterMilliSecs(milliseconds, behavior) {
+    setTimeout(() => {
+      try {
+        document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior });
+      } catch (err) { }
+    }, milliseconds);
+  }
 
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.changeDetecter && changes.changeDetecter.currentValue && this.conversation.index == this._sharedService.matCurrentTabIndex) {
-      if (changes.changeDetecter.currentValue.header.sender.type.toLowerCase() == 'agent' &&
-        changes.changeDetecter.currentValue.header.sender.participant.keycloakUser.id == this._cacheService.agent.id) {
+      if (
+        changes.changeDetecter.currentValue.header.sender.type.toLowerCase() == "agent" &&
+        changes.changeDetecter.currentValue.header.sender.participant.keycloakUser.id == this._cacheService.agent.id
+      ) {
         this.downTheScrollAfterMilliSecs(50, "smooth");
       } else {
         if (this.currentScrollPosition < 95) {
@@ -197,18 +207,16 @@ export class InteractionsComponent implements OnInit {
 
   adjustHeightOnComposerResize() {
     if (this.currentScrollPosition > 95) {
-      this.downTheScrollAfterMilliSecs(30, 'smooth');
+      this.downTheScrollAfterMilliSecs(30, "smooth");
     }
   }
 
   videoPIP(id) {
-
     try {
       const video: any = document.getElementById(id);
-      video.requestPictureInPicture()
-        .then(pictureInPictureWindow => {
-          pictureInPictureWindow.addEventListener("resize", () => false);
-        });
+      video.requestPictureInPicture().then((pictureInPictureWindow) => {
+        pictureInPictureWindow.addEventListener("resize", () => false);
+      });
     } catch (err) {
       this._snackbarService.open("PIP not supported in this browser", "succ");
       console.error(err);
@@ -217,63 +225,54 @@ export class InteractionsComponent implements OnInit {
 
   fullLocation(lat, lng) {
     const locationUrl = `http://maps.google.com/maps?q=${lat}, ${lng}`;
-    window.open(locationUrl, '_blank');
+    window.open(locationUrl, "_blank");
   }
 
   filePreviewOpener(url, fileName, type) {
-
     url = this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream" + new URL(url).search;
 
     const dialogRef = this.dialog.open(FilePreviewComponent, {
-      maxHeight: '100vh',
-      maxWidth: '100%',
-      height: 'auto',
-      width: 'auto',
+      maxHeight: "100vh",
+      maxWidth: "100%",
+      height: "auto",
+      width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {
-
-    });
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
 
   uploadFile(files) {
-    let availableExtentions: any = ['txt', 'png', 'jpg', 'jpeg', 'pdf', 'ppt', 'xlsx', 'xls', 'doc', 'docx', 'rtf'];
+    let availableExtentions: any = ["txt", "png", "jpg", "jpeg", "pdf", "ppt", "xlsx", "xls", "doc", "docx", "rtf"];
     let ln = files.length;
     if (ln > 0) {
       for (var i = 0; i < ln; i++) {
-
         const fileSize = files[i].size;
-        const fileMimeType = files[i].name.split('.').pop()
+        const fileMimeType = files[i].name.split(".").pop();
 
         if (fileSize <= 5000000) {
           if (availableExtentions.includes(fileMimeType.toLowerCase())) {
-
             let fd = new FormData();
             fd.append("file", files[i]);
             fd.append("conversationId", `${Math.floor(Math.random() * 90000) + 10000}`);
-            this._httpService.uploadToFileEngine(fd).subscribe((e) => {
-
-              this.constructAndSendCimEvent(e.type.split('/')[0], e.type, e.name, e.size);
-
-            }, (error) => {
-              this._snackbarService.open(error, "err");
-            });
-
-
+            this._httpService.uploadToFileEngine(fd).subscribe(
+              (e) => {
+                this.constructAndSendCimEvent(e.type.split("/")[0], e.type, e.name, e.size);
+              },
+              (error) => {
+                this._snackbarService.open(error, "err");
+              }
+            );
           } else {
             this._snackbarService.open(files[i].name + " unsupported type", "err");
           }
         } else {
           this._snackbarService.open(files[i].name + " File size should be less than 5MB", "err");
         }
-
       }
     }
   }
 
-
   constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?) {
-
     let message: any = {
       id: "",
       header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
@@ -291,34 +290,28 @@ export class InteractionsComponent implements OnInit {
       message.header.channelSession = sendingActiveChannelSession;
       message.header.channelData = sendingActiveChannelSession.channelData;
 
-
       if (msgType.toLowerCase() == "plain") {
-
         message.body.type = "PLAIN";
         message.body.markdownText = text.trim();
-
       } else if (msgType.toLowerCase() == "application" || msgType.toLowerCase() == "text") {
-
         message.body.type = "FILE";
-        message.body['caption'] = "";
-        message.body['additionalDetails'] = { 'fileName': fileName };
-        message.body['attachment'] = {
-          'mediaUrl': this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
-          'mimeType': fileMimeType,
-          'size': fileSize
-        }
-
+        message.body["caption"] = "";
+        message.body["additionalDetails"] = { fileName: fileName };
+        message.body["attachment"] = {
+          mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
+          mimeType: fileMimeType,
+          size: fileSize
+        };
       } else if (msgType.toLowerCase() == "image") {
-
         message.body.type = "IMAGE";
-        message.body['caption'] = fileName;
-        message.body['additionalDetails'] = {};
-        message.body['attachment'] = {
-          'mediaUrl': this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
-          'mimeType': fileMimeType,
-          'size': fileSize,
-          'thumbnail': ""
-        }
+        message.body["caption"] = fileName;
+        message.body["additionalDetails"] = {};
+        message.body["attachment"] = {
+          mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
+          mimeType: fileMimeType,
+          size: fileSize,
+          thumbnail: ""
+        };
       } else {
         this._snackbarService.open("unable to process the file", "err");
         return;
@@ -335,18 +328,76 @@ export class InteractionsComponent implements OnInit {
 
       // }, 5000);
 
-      event.data.header['status'] = 'sending';
+      event.data.header["status"] = "sending";
       this.conversation.messages.push(event.data);
       // this.downTheScrollAfterMilliSecs(50, "smooth");
 
       setTimeout(() => {
         this.message = "";
       }, 40);
-
     } else {
       this._snackbarService.open("No active channel session available", "err");
     }
-
   }
 
+  // to get past acitivities
+  loadPastActivities() {
+    try {
+      this.loadingPastActivity = true;
+
+      let limit = 25;
+
+      this._httpService.getPastActivities(this.conversation.customer._id, limit, this.pastCimEventsOffsetLimit).subscribe(
+        (res: any) => {
+          let docsLength: number = res ? res.docs.length : 0;
+          let docs = res.docs;
+          if (docsLength > 0) {
+            this.filterAndMergePastActivities(docs);
+          } else {
+            this.noMoreConversation = true;
+          }
+        },
+        (error) => {
+          this.loadingPastActivity = false;
+          this._sharedService.Interceptor(error.error, "err");
+        }
+      );
+    } catch (e) {
+      console.log("[Load Past Activity] Error :", e);
+    }
+  }
+
+  // to filter out activities and add in the conversation object, it expects a list
+  filterAndMergePastActivities(cimEvents: Array<any>) {
+    try {
+      cimEvents.forEach((event) => {
+        // if (
+        //   event.name.toLowerCase() == "agent_message" ||
+        //   event.name.toLowerCase() == "bot_message" ||
+        //   event.name.toLowerCase() == "customer_message"
+        // ) {
+        //   event.data.header["status"] = "sent";
+        //   this.conversation.messages.unshift(event.data);
+        // }
+        if (
+          event.name.toLowerCase() == "agent_message" ||
+          event.name.toLowerCase() == "bot_message" ||
+          event.name.toLowerCase() == "customer_message"
+        ) {
+          event.data.header['status'] = 'sent';
+          this.conversation.messages.unshift(event.data);
+        } else if (["channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())) {
+          let message = this._socketService.createSystemNotificationMessage(event);
+          this.conversation.messages.unshift(message);
+        }
+      });
+
+      this.noMoreConversation = false;
+      this.loadingPastActivity = false;
+      this.upTheScrollAfterMilliSecs(0, "smooth");
+      this.pastCimEventsOffsetLimit = this.pastCimEventsOffsetLimit + cimEvents.length;
+    } catch (e) {
+      console.log("[Load Past Activity] Filter Error :", e);
+    }
+  }
 }

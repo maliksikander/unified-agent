@@ -291,7 +291,7 @@
     //  message-bubble
 
     .chat-message {
-      margin-bottom: 2px;
+      margin-top: 12px;
       display: flex;
       flex-wrap: wrap;
       .combined-area {
@@ -726,7 +726,7 @@
     background: #79a31d !important;
     color: #fff !important;
     padding: 3px 15px 3px 4px !important;
-    margin-bottom: 15px !important;
+    margin-bottom: 4px !important;
 
     span{
       color: #fff !important;
@@ -767,7 +767,7 @@
     top: 0;
     background: #efefef;
     width: fit-content;
-    margin: 0px auto 12px auto;
+    margin: 18px auto;
     border-radius: 20px;
     z-index: 99;
     padding: 1px 10px;
@@ -1646,7 +1646,7 @@ button.attachment-btn {
 .new-msg-notif{
   z-index: 99;
   position: relative;
-  right: -2px;
+  right: 3px;
   color: white;
   border-radius: 12px;
   padding: 0 10px;
@@ -2000,6 +2000,7 @@ vg-controls.hide {
 .system-notifs{
   text-align: center;
   margin: 4px;
+  line-height: 19px;
   .inner-text{
     width: fit-content;
     font-size: 11px;
@@ -2010,11 +2011,11 @@ vg-controls.hide {
   }
 }
 
-.bnb{
+.same-sender-msg{
   .profile-pic{
     visibility: hidden;
   }
- margin-bottom: 2px !important;
+ margin-top: 1px !important;
   .chat-message-content{
     &:before,&:after{
   
