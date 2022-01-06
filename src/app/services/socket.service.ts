@@ -704,7 +704,7 @@ export class socketService {
     };
 
     message.id = uuidv4();
-    message.header.timestamp = Date.now();
+    message.header.timestamp = cimEvent.timestamp;
     message.body.type = "systemNotification";
     message.header.sender.type = "syatem";
 

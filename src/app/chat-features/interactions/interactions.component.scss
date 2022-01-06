@@ -291,7 +291,7 @@
     //  message-bubble
 
     .chat-message {
-      margin-bottom: 12px;
+      margin-bottom: 2px;
       display: flex;
       flex-wrap: wrap;
       .combined-area {
@@ -1646,7 +1646,7 @@ button.attachment-btn {
 .new-msg-notif{
   z-index: 99;
   position: relative;
-  right: 22px;
+  right: -2px;
   color: white;
   border-radius: 12px;
   padding: 0 10px;
@@ -1999,10 +1999,28 @@ vg-controls.hide {
 
 .system-notifs{
   text-align: center;
+  margin: 4px;
   .inner-text{
     width: fit-content;
     font-size: 11px;
-    padding: 4px 10px 4px 10px;
+    padding: 3px 7px;
     border-radius: 10px;
+    color: #4773b5;
+    border: 1px solid #e8e8e8; 
   }
 }
+
+.bnb{
+  .profile-pic{
+    visibility: hidden;
+  }
+ margin-bottom: 2px !important;
+  .chat-message-content{
+    &:before,&:after{
+  
+      display: none;
+      
+    }
+  }
+}
+
