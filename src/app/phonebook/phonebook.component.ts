@@ -197,8 +197,9 @@ export class PhonebookComponent implements OnInit {
   }
 
   onPage(event) {
+    // console.log("event==>",event)
     this.offSet = event.first;
-    this.limit = this.offSet + event.rows;
+    this.limit = event.rows;
     this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
   }
 
