@@ -13,7 +13,6 @@ export class getSenderIdPipe implements PipeTransform {
         } else if (sender.type.toLowerCase() == "bot") {
             id = "bot";
         }
-        console.log("returned id "+id);
         return id;
     }
 }
