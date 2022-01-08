@@ -70,7 +70,7 @@ export class socketService {
       this.ngxService.stop();
       try {
         console.error("socket connect_error ", err.data && err.data.content ? err.data.content : err);
-        this._snackbarService.open(err.data && err.data.content ? err.data.content : err, "err");
+        this._snackbarService.open(err.data && err.data.content ? err.data.content : "unable to connect to chat", "err");
       } catch (err) { }
       if (err.message == "login-failed") {
         //  localStorage.clear();
@@ -141,7 +141,9 @@ export class socketService {
       try {
         console.log("onTopicData", res);
         this.onTopicData(res.topicData, res.topicId);
-        callback({ status: "ok" });
+        if (callback) {
+          callback({ status: "ok" });
+        }
       } catch (err) {
         console.error("error on onTopicData ", err);
       }
@@ -164,6 +166,7 @@ export class socketService {
 
     this.socket.on("onPullModeSubscribedList", (res: any) => {
       console.log("onPullModeSubscribedList", res);
+      this._sharedService.mainPagetile = "NO CHAT AVAILABLE";
       this._pullModeService.updateSubscribedList(res);
     });
 
@@ -300,9 +303,8 @@ export class socketService {
   }
 
   onTopicData(topicData, topicId) {
-    this._soundService.playBeep();
 
-    this.removeConversation(topicId);
+    // this.removeConversation(topicId);
 
     let conversation = {
       topicId: topicId,
@@ -348,7 +350,19 @@ export class socketService {
       }
     });
 
-    this.conversations.push(conversation);
+    let oldConversation = this.conversations.find((e) => {
+      return e.topicId == topicId;
+    });
+
+    if (oldConversation) {
+      // if that conversation already exists update it
+      oldConversation = conversation;
+    } else {
+      // else push that conversation
+      this.conversations.push(conversation);
+      this._soundService.playBeep();
+    }
+
     this._conversationsListener.next(this.conversations);
   }
 

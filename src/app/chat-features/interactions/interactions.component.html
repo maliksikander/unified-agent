@@ -131,19 +131,18 @@
                   lastWeek: '[Last] dddd',
                   sameElse: 'dddd, MMM YYYY'} }}</span>
               </div>
-              <div *ngIf="(message.body.type | lowercase) != 'systemnotification'"
+              <div *ngIf="(message.body.type | lowercase) != 'systemnotification' && message.header.channelSession"
                 class="chat-message {{((conversation.messages[index-1].body.type | lowercase) != 'systemnotification' ) && ((message.header.sender | getSenderId) == (conversation.messages[index-1].header.sender | getSenderId)) ? 'same-sender-msg' : ''}} {{message.header.status=='sending' ? 'low-opacity' : ''}}  {{message.body.type | lowercase}} {{  message.header.replyToMessageId != null  ? 'quoted-message-main' : ''}}"
                 [ngClass]=" ((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message ' ">
-                <div class="profile-pic"
-                  >
+                <div class="profile-pic">
                   <div class="active-channel channel-icon">
                     <img width="20"
                       [src]="message.header.channelSession.channel.channelType.channelLogo | channelLogo | async">
                   </div>
                   <div *ngIf="(message.header.sender.type | lowercase) != 'bot'" class="profile-pic-area user-img">
                     {{message.header.sender | getSenderName:conversation.customer:true}}</div>
-                  <div *ngIf="(message.header.sender.type | lowercase) == 'bot'" class="profile-pic-area user-img"><img
-                      src="assets/images/robot-dark.svg">
+                  <div *ngIf="(message.header.sender.type | lowercase) == 'bot'" class="profile-pic-area user-img">
+                    <img src="assets/images/robot-dark.svg">
                   </div>
                 </div>
                 <div class="combined-area">
@@ -226,7 +225,8 @@
 
                             <span class="show-file-name"
                               [matTooltip]="referredMessage.body.additionalDetails.fileName">{{referredMessage.body.additionalDetails.fileName}}</span>
-                            <span class="file-size">{{referredMessage.body.attachment.size | getFormattedBytes}}</span>
+                            <span class="file-size">{{referredMessage.body.attachment.size |
+                              getFormattedBytes}}</span>
                             <a (click)="$event.stopPropagation();" class="file-download"
                               href="{{referredMessage.body.attachment.mediaUrl | getFileUrl}}"
                               [download]="referredMessage.body.additionalDetails.fileName" [attr.disabled]="dwld.busy"
@@ -507,7 +507,8 @@
                               </vg-scrub-bar>
                               <div class="clearfix clear"></div>
                               <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
-                              <vg-time-display class="total-time" vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+                              <vg-time-display class="total-time" vgProperty="total" vgFormat="mm:ss">
+                              </vg-time-display>
                             </vg-controls>
 
                             <audio #audio [vgMedia]="audio" id="myAudio" preload="auto">
@@ -610,7 +611,6 @@
 
               </div>
               <!-- ----------------------------------system Notifications ended-------------------------------- -->
-
             </div>
             <div id="chat-area-end"></div>
 

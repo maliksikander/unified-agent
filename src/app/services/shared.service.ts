@@ -14,12 +14,12 @@ export class sharedService {
   constructor(private dialog: MatDialog, private _snackbarService: snackbarService, private _httpService: httpService) { }
 
   schema;
-
+  mainPagetile = "FETCHING CHATS ...";
   matCurrentTabIndex = 0;
   channelLogoMapper = new Map();
   serviceCurrentMessage = new Subject();
   channelTypeList;
-  
+
   serviceChangeMessage(data: any) {
     this.serviceCurrentMessage.next(data);
   }

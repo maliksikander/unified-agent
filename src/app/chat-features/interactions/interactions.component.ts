@@ -94,7 +94,11 @@ export class InteractionsComponent implements OnInit {
   emoji() { }
 
   onSend(text) {
-    this.constructAndSendCimEvent("plain", "", "", "", text);
+    text = text.trim();
+    console.log("text ",text)
+    if (text) {
+      this.constructAndSendCimEvent("plain", "", "", "", text);
+    }
   }
 
   openDialog(templateRef, e): void {
@@ -370,27 +374,23 @@ export class InteractionsComponent implements OnInit {
   // to filter out activities and add in the conversation object, it expects a list
   filterAndMergePastActivities(cimEvents: Array<any>) {
     try {
+      let msgs = [];
       cimEvents.forEach((event) => {
-        // if (
-        //   event.name.toLowerCase() == "agent_message" ||
-        //   event.name.toLowerCase() == "bot_message" ||
-        //   event.name.toLowerCase() == "customer_message"
-        // ) {
-        //   event.data.header["status"] = "sent";
-        //   this.conversation.messages.unshift(event.data);
-        // }
         if (
           event.name.toLowerCase() == "agent_message" ||
           event.name.toLowerCase() == "bot_message" ||
           event.name.toLowerCase() == "customer_message"
         ) {
           event.data.header['status'] = 'sent';
-          this.conversation.messages.unshift(event.data);
+          msgs.push(event.data)
         } else if (["channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())) {
           let message = this._socketService.createSystemNotificationMessage(event);
-          this.conversation.messages.unshift(message);
+          msgs.push(message)
         }
       });
+
+      msgs.reverse();
+      msgs.forEach((e) => { this.conversation.messages.unshift(e); })
 
       this.noMoreConversation = false;
       this.loadingPastActivity = false;
