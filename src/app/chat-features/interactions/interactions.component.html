@@ -13,7 +13,7 @@
           </h3>
           <h5 class="customer-name" [matTooltip]="conversation.customer.firstName">
             {{conversation.customer.firstName | slice :0 :50}}
-            <span class="chat-timer">( 11:32 )</span>
+            <!-- <span class="chat-timer">( 11:32 )</span> -->
 
           </h5>
         </div>
@@ -131,7 +131,7 @@
                   lastWeek: '[Last] dddd',
                   sameElse: 'dddd, MMM YYYY'} }}</span>
               </div>
-              <div *ngIf="(message.body.type | lowercase) != 'systemnotification' && message.header.channelSession"
+              <div *ngIf="(message.body.type | lowercase) != 'systemnotification' && message.header.channelSession && (index != 0)"
                 class="chat-message {{((conversation.messages[index-1].body.type | lowercase) != 'systemnotification' ) && ((message.header.sender | getSenderId) == (conversation.messages[index-1].header.sender | getSenderId)) ? 'same-sender-msg' : ''}} {{message.header.status=='sending' ? 'low-opacity' : ''}}  {{message.body.type | lowercase}} {{  message.header.replyToMessageId != null  ? 'quoted-message-main' : ''}}"
                 [ngClass]=" ((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message ' ">
                 <div class="profile-pic">

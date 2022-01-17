@@ -21,7 +21,7 @@ export class httpService {
       pullModeList: "/agent/pull-mode-list",
       fileServer: "/api/downloadFileStream?filename=",
       uploadFile: "/api/uploadFileStream",
-      activities: "activities"
+      activities: "/customer-topics/customer"
     };
   }
 
@@ -160,11 +160,14 @@ export class httpService {
   ///////////////////////// Load Past Activity ////////
 
   getPastActivities(id, limit, offset): Observable<any> {
-    return this._httpClient.get<any>(`${this.mockurl}/${this.apiEndpoints.activities}?customerId=${id}&limit=${limit}&offset=${offset}`, {
-      headers: new HttpHeaders({
-        "Content-Type": "application/json"
-      })
-    });
+    return this._httpClient.get<any>(
+      `${this._appConfigService.config.BOT_FRAMEWORK_URL}${this.apiEndpoints.activities}/${id}/past-events?limit=${limit}&offset=${offset}`,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }
+    );
   }
 
   ////////////////////////

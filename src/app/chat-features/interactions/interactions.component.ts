@@ -79,7 +79,7 @@ export class InteractionsComponent implements OnInit {
     private _snackbarService: snackbarService,
     public _appConfigService: appConfigService,
     private _httpService: httpService
-  ) { }
+  ) {}
   ngOnInit() {
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
@@ -91,11 +91,11 @@ export class InteractionsComponent implements OnInit {
     // }, 500);
   }
 
-  emoji() { }
+  emoji() {}
 
   onSend(text) {
     text = text.trim();
-    console.log("text ",text)
+    console.log("text ", text);
     if (text) {
       this.constructAndSendCimEvent("plain", "", "", "", text);
     }
@@ -173,7 +173,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -181,7 +181,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -242,7 +242,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => { });
+    dialogRef.afterClosed().subscribe((result: any) => {});
   }
 
   uploadFile(files) {
@@ -353,6 +353,7 @@ export class InteractionsComponent implements OnInit {
 
       this._httpService.getPastActivities(this.conversation.customer._id, limit, this.pastCimEventsOffsetLimit).subscribe(
         (res: any) => {
+          ++this.pastCimEventsOffsetLimit;
           let docsLength: number = res ? res.docs.length : 0;
           let docs = res.docs;
           if (docsLength > 0) {
@@ -381,21 +382,23 @@ export class InteractionsComponent implements OnInit {
           event.name.toLowerCase() == "bot_message" ||
           event.name.toLowerCase() == "customer_message"
         ) {
-          event.data.header['status'] = 'sent';
-          msgs.push(event.data)
-        } else if (["channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())) {
+          event.data.header["status"] = "sent";
+          msgs.push(event.data);
+        } else if (
+          ["channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())
+        ) {
           let message = this._socketService.createSystemNotificationMessage(event);
-          msgs.push(message)
+          msgs.push(message);
         }
       });
 
-      msgs.reverse();
-      msgs.forEach((e) => { this.conversation.messages.unshift(e); })
-
+      // msgs.reverse();
+      msgs.forEach((e) => {
+        this.conversation.messages.unshift(e);
+      });
       this.noMoreConversation = false;
       this.loadingPastActivity = false;
       this.upTheScrollAfterMilliSecs(0, "smooth");
-      this.pastCimEventsOffsetLimit = this.pastCimEventsOffsetLimit + cimEvents.length;
     } catch (e) {
       console.log("[Load Past Activity] Filter Error :", e);
     }

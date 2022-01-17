@@ -720,7 +720,7 @@ export class socketService {
     message.id = uuidv4();
     message.header.timestamp = cimEvent.timestamp;
     message.body.type = "systemNotification";
-    message.header.sender.type = "syatem";
+    message.header.sender.type = "system";
 
     if (cimEvent.name.toLowerCase() == "channel_session_started") {
 
