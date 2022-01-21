@@ -171,7 +171,7 @@
               <mat-accordion>
                 <div class="instruction-content">
                   <div class="int-date">
-                    <span>Fri<b>07</b></span>
+                    <span>November 21, 2021</span>
                   </div>
                   <div class="panel-divider">
                     <div class="line-info">
@@ -393,7 +393,7 @@
 
                 <div class="instruction-content">
                   <div class="int-date">
-                    <span>Sun<b>08</b></span>
+                    <span>November 22, 2021</span>
                   </div>
                   <div class="panel-divider">
                     <div class="line-info">
@@ -604,7 +604,7 @@
           <!-- simple chat area -->
 
           <div class="instruction-content chat-session-main">
-            <div class="int-date"><span>Mon<b>09</b></span></div>
+            <div class="int-date"><span>November 23, 2021</span></div>
             <div *ngFor="let con of convers | LockFilter:searchInteraction">
 
               <div *ngIf="con.notificationMessage" class="topic-notification">
@@ -784,21 +784,240 @@
               </div>
 
             </div>
-            <!--User-data View-->
-  <div class="wrap-up-main panel-divider user-data">
-              <div class="wrap-icon ">
-                <img matTooltip="User Notes" src="assets/images/user-notes.svg" width="20" alt="User notes">
+
+
+<!-- Wrap up expansion panel-->
+            <div class="wrap-up-main panel-divider user-data agent-side">
+              <div class="profile-pic">
+                <div class="active-channel channel-icon wrap-up outbound-call" matTooltip="Outbound Call"><img width="20" src="assets/images/outbound-call.svg"></div>
+                <div class="profile-pic-area user-img">RA</div>
               </div>
+              <mat-expansion-panel>
+
+                <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
+                  <mat-panel-title>
+                    <div class="panel-header">
+                      <ul>
+                        <li>
+                          <span>Outbound call</span>
+                        </li>
+                        <li class="section-duration">
+                          <time>02min 20sec</time>
+                        </li>
+                        <li class="section-tags">
+                          <span>Tag A</span>
+                          <span>Tag B</span>
+                        </li>
+                        <li>
+                          <time>11:45 AM</time>
+                        </li>
+                      </ul>
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="panel-header call-history-panel inner-detail">
+                  <div class="summary-detail">
+                    <ul>
+                      <li><label>Agent ID </label>:<span>Name</span></li>
+                      <li><label>CSQ </label>:<span>CSQ</span></li>
+                      <li><label>Call Duration</label>:<span>02 mins</span></li>
+                      <li><label>Form UR</label>:<span>not Submitted</span></li>
+
+                      <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>
+                      <li><label>Time</label>:<span>14min 50sec</span></li>
+                      <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>
+                      <li><label>Recording URL</label>:<span>https://rec_url</span></li>
+                    </ul>
+                  </div>
+
+                </div>
+
+              </mat-expansion-panel>
+            </div>
+
+
+            <div class="wrap-up-main panel-divider user-data customer-side">
+              <div class="profile-pic">
+                <div class="active-channel channel-icon wrap-up inbound-call" matTooltip="Inbound Call"><img width="20" src="assets/images/incoming-call.svg"></div>
+                <div class="profile-pic-area user-img">FA</div>
+              </div>
+              <mat-expansion-panel>
+
+                <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
+                  <mat-panel-title>
+                    <div class="panel-header">
+                      <ul>
+                        <li class="agent-pic call-services">
+                          <p><span><img src="assets/images/cs1.png"></span></p>
+                        </li>
+                        <li class="section-duration">
+                          <time>02min 20sec</time>
+                        </li>
+                        <li class="section-tags">
+                          <span>Tag A</span>
+                          <span>Tag B</span>
+                        </li>
+                        <li>
+                          <time>11:45 AM</time>
+                        </li>
+                      </ul>
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="panel-header call-history-panel inner-detail">
+                  <div class="history-time">
+                    <time>11:45 AM</time>
+                  </div>
+                  <div class="history-detail inner-detail-history">
+                    <mat-expansion-panel>
+
+                      <mat-expansion-panel-header [collapsedHeight]="'40px'"
+                                                  [expandedHeight]="'40px'">
+                        <mat-panel-title>
+                          <div class="panel-header">
+                            <ul>
+                              <li><span class="phone-number">12345678</span></li>
+                              <li class="agent-pic call-notify">
+                                <span><img src="assets/images/incoming-call.svg"> </span>
+                              </li>
+                              <li class="agent-pic call-services">
+                                <p><span><img src="assets/images/cs1.png"></span> Customer
+                                  Services</p>
+                              </li>
+                              <li class="section-duration">
+                                <time>02min 20sec</time>
+                              </li>
+                              <li class="agent-pic call-notify">
+                                <span><img src="assets/images/call-transfer.svg"> </span>
+                              </li>
+                              <li class="section-tags">
+                                <span>Tag A</span>
+                                <span>Tag B</span>
+                              </li>
+                              <li class="agent-pic">
+                                <span><img src="assets/images/call-record.svg"> </span>
+                              </li>
+                            </ul>
+                          </div>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+
+                      <div class="summary-detail">
+                        <ul>
+                          <li><label>Agent ID </label>:<span>Name</span></li>
+                          <li><label>CSQ </label>:<span>CSQ</span></li>
+                          <li><label>Call Duration</label>:<span>02 mins</span></li>
+                          <li><label>Form UR</label>:<span>not Submitted</span></li>
+
+                          <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>
+                          <li><label>Time</label>:<span>14min 50sec</span></li>
+                          <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>
+                          <li><label>Recording URL</label>:<span>https://rec_url</span></li>
+                        </ul>
+                      </div>
+                    </mat-expansion-panel>
+
+
+                  </div>
+                </div>
+                <div class="panel-header call-history-panel inner-detail">
+                  <div class="history-time">
+                    <time>11:45 AM</time>
+                  </div>
+                  <div class="history-detail inner-detail-history">
+                    <mat-expansion-panel>
+
+                      <mat-expansion-panel-header [collapsedHeight]="'40px'"
+                                                  [expandedHeight]="'40px'">
+                        <mat-panel-title>
+                          <div class="panel-header">
+                            <ul>
+                              <li class="agent-pic call-notify">
+                                <span><img src="assets/images/incoming-call.svg"> </span>
+                              </li>
+                              <li class="agent-pic call-services">
+                                <p><span><img src="assets/images/ag1.png"></span>Tech
+                                  Support</p>
+                              </li>
+                              <li class="section-duration">
+                                <time>02min 20sec</time>
+                              </li>
+                              <li class="agent-pic call-notify">
+                                <span><img src="assets/images/call-end.svg"> </span>
+                              </li>
+                              <li class="section-tags">
+                                <span>Tag A</span>
+                                <span>Tag B</span>
+                              </li>
+                              <li class="agent-pic">
+                                <span><img src="assets/images/call-record.svg"> </span>
+                              </li>
+                            </ul>
+                          </div>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <div class="summary-detail">
+                        <ul>
+                          <li><label>Agent ID </label>:<span>Name</span></li>
+                          <li><label>CSQ </label>:<span>CSQ</span></li>
+                          <li><label>Call Duration</label>:<span>02 mins</span></li>
+                          <li><label>Form UR</label>:<span>not Submitted</span></li>
+
+                          <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>
+                          <li><label>Time</label>:<span>14min 50sec</span></li>
+                          <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>
+                          <li><label>Recording URL</label>:<span>https://rec_url</span></li>
+
+                        </ul>
+                      </div>
+                    </mat-expansion-panel>
+
+                  </div>
+                </div>
+
+<!--                <div class="panel-header call-history-panel inner-detail">-->
+<!--                  <div class="summary-detail">-->
+<!--                    <ul>-->
+<!--                      <li><label>Agent ID </label>:<span>Name</span></li>-->
+<!--                      <li><label>CSQ </label>:<span>CSQ</span></li>-->
+<!--                      <li><label>Call Duration</label>:<span>02 mins</span></li>-->
+<!--                      <li><label>Form UR</label>:<span>not Submitted</span></li>-->
+
+<!--                      <li><label>Wrap-Up</label>:<span>Wrap-Up3</span></li>-->
+<!--                      <li><label>Time</label>:<span>14min 50sec</span></li>-->
+<!--                      <li><label>Call Disposition</label>:<span>Abandoned by Agent</span></li>-->
+<!--                      <li><label>Recording URL</label>:<span>https://rec_url</span></li>-->
+<!--                    </ul>-->
+<!--                  </div>-->
+
+<!--                </div>-->
+
+              </mat-expansion-panel>
+            </div>
+
+
+            <!--User-data View-->
+  <div class="wrap-up-main panel-divider user-data agent-side">
+<!--              <div class="wrap-icon ">-->
+<!--                <img matTooltip="User Notes" src="assets/images/user-notes.svg" width="20" alt="User notes">-->
+<!--              </div>-->
+    <div class="profile-pic">
+      <div class="active-channel channel-icon wrap-up" matTooltip="User Notes"><img width="20" src="assets/images/user-notes.svg"></div>
+      <div class="profile-pic-area user-img">RA</div>
+    </div>
               <mat-expansion-panel (closed)="wrapCount = 5" (opened)="wrapCount = 100" class="{{selectedWrap.code.length > 0 && selectedWrap.note ? 'dual-wrap' : 'single-wrap'}}">
                 <mat-expansion-panel-header [collapsedHeight]="'32px'"
                                             [expandedHeight]="'32px'">
                   <mat-panel-description>
                     <div class="wrap-up-header">
-                      <div class="wrap-time">
-                        <span>03:22 PM</span>
-                      </div>
+
                       <div class="wrap-icon agent-profile-showcase">
                         <img matTooltip="Agent" src="assets/images/ag1.png" width="20" alt="Agent">
+                      </div>
+                      <div class="wrap-time">
+                        <span>03:22 PM</span>
                       </div>
                      </div>
                   </mat-panel-description>
@@ -823,27 +1042,31 @@
             </div>
 
             <!--Wrap-up View-->
-            <div class="wrap-up-main panel-divider">
-              <div class="wrap-icon">
-                <img matTooltip="Wrap Up" src="assets/images/wrap-up.svg" width="20" alt="Wrap Up">
+            <div class="wrap-up-main panel-divider agent-side">
+<!--              <div class="wrap-icon">-->
+<!--                <img matTooltip="Wrap Up" src="assets/images/wrap-up.svg" width="20" alt="Wrap Up">-->
+<!--              </div>-->
+              <div class="profile-pic">
+                <div class="active-channel channel-icon wrap-up" matTooltip="Wrap Up"><img width="20" src="assets/images/wrap-up.svg"></div>
+                <div class="profile-pic-area user-img">RA</div>
               </div>
               <mat-expansion-panel (closed)="wrapCount = 5" (opened)="wrapCount = 100" class="{{selectedWrap.code.length > 0 && selectedWrap.note ? 'dual-wrap' : 'single-wrap'}}">
                 <mat-expansion-panel-header [collapsedHeight]="'32px'"
                                             [expandedHeight]="'32px'">
                   <mat-panel-description>
                     <div class="wrap-up-header">
-                      <div class="wrap-time">
-                        <span>03:22 PM</span>
-                      </div>
                       <div class="wrap-icon agent-profile-showcase">
                         <img matTooltip="Agent" src="assets/images/ag1.png" width="20" alt="Agent">
                       </div>
-                      <ul>
+                      <ul class="wrap-code">
                         <li *ngFor="let wrapCode of selectedWrap.code"  matTooltip="Payment > {{wrapCode}}"  matTooltipClass="wrap-tooltip">
                           {{wrapCode}}
                          </li>
                       </ul>
                       <span class="note-icon"><mat-icon matTooltip="Wrap-up Notes"  matTooltipClass="wrap-tooltip">description</mat-icon></span>
+                      <div class="wrap-time">
+                        <span>03:22 PM</span>
+                      </div>
                     </div>
                   </mat-panel-description>
                 </mat-expansion-panel-header>
@@ -854,28 +1077,32 @@
               </mat-expansion-panel>
             </div>
 
-            <div class="wrap-up-main panel-divider">
-              <div class="wrap-icon">
-                <img matTooltip="Wrap Up" src="assets/images/wrap-up.svg" width="20" alt="Wrap Up">
+            <div class="wrap-up-main panel-divider agent-side">
+<!--              <div class="wrap-icon">-->
+<!--                <img matTooltip="Wrap Up" src="assets/images/wrap-up.svg" width="20" alt="Wrap Up">-->
+<!--              </div>-->
+              <div class="profile-pic">
+                <div class="active-channel channel-icon wrap-up" matTooltip="Wrap Up"><img width="20" src="assets/images/wrap-up.svg"></div>
+                <div class="profile-pic-area user-img">RA</div>
               </div>
               <mat-expansion-panel [ngClass]="{'single-wrap': selectedWrap1.code.length > 0 && selectedWrap1!.note || selectedWrap1.code.length <= 0 && selectedWrap1.note}">
                 <mat-expansion-panel-header [collapsedHeight]="'32px'"
                                             [expandedHeight]="'32px'">
                   <mat-panel-description>
                     <div class="wrap-up-header">
-                      <div class="wrap-time">
-                        <span>03:22 PM</span>
-                      </div>
                       <div class="wrap-icon agent-profile-showcase">
                         <img matTooltip="Agent" src="assets/images/ag1.png" width="20" alt="Agent">
                       </div>
-                      <ul *ngIf="selectedWrap1.code.length > 0">
+                      <ul class="wrap-code" *ngIf="selectedWrap1.code.length > 0">
                         <li *ngFor="let wrapCode of selectedWrap1.code"  matTooltip="Payment > {{wrapCode}}"  matTooltipClass="wrap-tooltip">
                           {{wrapCode}}
                         </li>
                       </ul>
                       <p *ngIf="selectedWrap1.code.length <= 0">{{selectedWrap1.note}}</p>
                       <span *ngIf="selectedWrap1.code.length > 0 && selectedWrap1.note" class="note-icon"><mat-icon matTooltip="Wrap-up Notes"  matTooltipClass="wrap-tooltip">description</mat-icon></span>
+                      <div class="wrap-time">
+                        <span>03:22 PM</span>
+                      </div>
                     </div>
                   </mat-panel-description>
                 </mat-expansion-panel-header>
@@ -886,28 +1113,32 @@
               </mat-expansion-panel>
             </div>
 
-            <div class="wrap-up-main panel-divider">
-              <div class="wrap-icon">
-                <img matTooltip="Wrap Up" src="assets/images/wrap-up.svg" width="20" alt="Wrap Up">
+            <div class="wrap-up-main panel-divider agent-side">
+<!--              <div class="wrap-icon">-->
+<!--                <img matTooltip="Wrap Up" src="assets/images/wrap-up.svg" width="20" alt="Wrap Up">-->
+<!--              </div>-->
+              <div class="profile-pic">
+                <div class="active-channel channel-icon wrap-up" matTooltip="Wrap Up"><img width="20" src="assets/images/wrap-up.svg"></div>
+                <div class="profile-pic-area user-img">RA</div>
               </div>
               <mat-expansion-panel [ngClass]="{'single-wrap': selectedWrap1.code.length > 0 && selectedWrap1!.note || selectedWrap1.code.length <= 0 && selectedWrap1.note}">
                 <mat-expansion-panel-header [collapsedHeight]="'32px'"
                                             [expandedHeight]="'32px'">
                   <mat-panel-description>
                     <div class="wrap-up-header">
-                      <div class="wrap-time">
-                        <span>03:22 PM</span>
-                      </div>
                       <div class="wrap-icon agent-profile-showcase">
                         <img matTooltip="Agent" src="assets/images/ag1.png" width="20" alt="Agent">
                       </div>
-                      <ul *ngIf="selectedWrap3.code.length > 0">
+                      <ul class="wrap-code" *ngIf="selectedWrap3.code.length > 0">
                         <li *ngFor="let wrapCode of selectedWrap3.code"  matTooltip="Payment > {{wrapCode}}"  matTooltipClass="wrap-tooltip">
                           {{wrapCode}}
                         </li>
                       </ul>
                       <p *ngIf="selectedWrap3.code.length <= 0">{{selectedWrap3.note}}</p>
                       <span *ngIf="selectedWrap3.code.length > 0 && selectedWrap3.note" class="note-icon"><mat-icon matTooltip="Wrap-up Notes"  matTooltipClass="wrap-tooltip">description</mat-icon></span>
+                      <div class="wrap-time">
+                        <span>03:22 PM</span>
+                      </div>
                     </div>
                   </mat-panel-description>
                 </mat-expansion-panel-header>
