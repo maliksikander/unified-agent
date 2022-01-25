@@ -37,6 +37,8 @@ dispayVideoPIP = true;
   fileUrl: SafeUrl;
   myControl = new FormControl();
   channelUrl = 'assets/images/web.svg';
+  imageType = false;
+  fileName = '';
   userList = [
     {
       name: 'Technical Support',
@@ -128,6 +130,7 @@ dispayVideoPIP = true;
   message = '';
   transferSearch = '';
   searchInteraction = '';
+  selectedFileInput = '';
   wrapCount = 5;
   convers: any[];
   ringing = false;
@@ -194,7 +197,12 @@ dispayVideoPIP = true;
   interactionSearch = false;
   fbId = '309172437354807';
   postId = '101064781498908';
-
+  // imageDeleteFrom: FormGroup;
+  imageurls =[];
+  filePath: string;
+  filesType: string;
+  name: string;
+  imagePath: string;
   postUrl = '';
   constructor(private snackBar: MatSnackBar, private _cacheService: cacheService, private _socketService: socketService, private dialog: MatDialog, private santizer:DomSanitizer) {
    }
@@ -291,6 +299,7 @@ this.postUrl = "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fweb
     //   this.isSuggestion = false;
     //
     // }
+    console.log('onKey: ', event);
     console.log('onKey: ', this.message);
     if (this.message[0] === '/' || this.message[0] === ' ') {
       this.displaySuggestionsArea = false;
@@ -365,22 +374,56 @@ this.postUrl = "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fweb
     }
   }
 
-  uploadFile(e) {
-    const file = e.target.files[0];
-    const files = e.target.files;
+  // uploadFile(e) {
+  //   const file = e.target.files[0];
+  //   const files = e.target.files;
+  //   const extn = file.type.split("/").pop();
+  //
+  //   this.fileName = file.name;
+  //
+  //   if (extn === 'jpeg' || extn === 'png' || extn === 'jpg' || extn === 'gif') {
+  //     this.imageType = true;
+  //   }
+  //
+  //   for (let i = 0; i < files.length; i++) {
+  //
+  //     console.log(files.item(i), file.name, i);
+  //     this.urlMap.set(files[i].name, files.item(i));
+  //
+  //
+  //     this.uploadFiles = this.urlMap.set(files[i].name, files.item(i));
+  //
+  //
+  //
+  //     // alert(file.name);
+  //   }
+  //   const url = URL.createObjectURL(file);
+  //
+  //   this.fileUrl = this.santizer.bypassSecurityTrustUrl(url);
+  //   console.log( this.urlMap.size);
+  // }
 
-
-    for (let i = 0; i < files.length; i++) {
-
-      console.log(files.item(i), file.name, i);
-      this.urlMap.set(files[i].name, files.item(i));
-
-      // alert(file.name);
+  uploadFile(event) {
+    if (event.target.files && event.target.files[0]) {
+      const filesAmount = event.target.files;
+      for (let i = 0; i < filesAmount.length; i++) {
+        const reader = new FileReader();
+        reader.onload = (event: any) => {
+          this.imageurls.push({
+            filesPath: this.santizer.bypassSecurityTrustUrl(event.target.result),
+            fileType: event.target.result.split(':')[1].split('/')[0],
+            fileName: filesAmount[i].name
+          });
+        }
+        reader.readAsDataURL(event.target.files[i]);
+      }
     }
-    const url = URL.createObjectURL(file);
-
-    this.fileUrl = this.santizer.bypassSecurityTrustUrl(url);
-    console.log(this.urlMap.size);
+  }
+  removeUploadFile(i){
+    this.imageurls.splice(i, 1);
+    // this.fileUrl = null;
+    // this.imageType = false;
+    // this.selectedFileInput = null;
   }
 
   fullLocation(lat, lng){

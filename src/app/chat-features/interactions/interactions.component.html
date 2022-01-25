@@ -1215,8 +1215,12 @@
               <form class="reply-form" [ngClass]="{'whisper-mode': whisper}">
 <!--                <label class="count-reply">{{replyInput.value.length}}/200</label>-->
                 <div class="mat-form-field chat-area"  [ngClass]="{'expand-area-height':expanedHeight > 50}">
-                  <div *ngIf="fileUrl" class="preview-file">
-                    <img [attr.src]="fileUrl" />
+                  <div class="file-preview-cover" *ngIf="imageurls.length > 0">
+                    <div *ngFor='let file of imageurls; let i = index' class="preview-file">
+                      <mat-icon (click)="removeUploadFile(i)">close</mat-icon>
+                      <img *ngIf="file.filesPath" [attr.src]="file.fileType == 'image' ? file.filesPath : 'assets/images/file-type.svg'"/>
+                      <span>{{file.fileName}}</span>
+                    </div>
                   </div>
             <textarea  [formControl]="myControl" [perfectScrollbar] (click)="onTextAreaClick()" data-emoji-picker="true"  [(ngModel)]="message" (keyup)="onKey($event)"
                        name="message"  (change)="textChanged($event)" [matAutocomplete]="auto"  matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea"
@@ -1337,7 +1341,7 @@
                   </button>
 
                   <button class="attachment-btn composer-trigger"  mat-icon-button *ngIf="replyInput.value.length < 1">
-                    <input #myFileInput  type="file" (change)="uploadFile($event)" multiple
+                    <input #myFileInput  [(ngModel)]="selectedFileInput"  type="file" (change)="uploadFile($event)" multiple
                            name="ef_chatbox_chat_file_upload" id="uploadFileBtn" class="file-upload-input1">
                   </button>
 
