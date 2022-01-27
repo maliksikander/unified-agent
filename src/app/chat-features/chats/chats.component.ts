@@ -83,6 +83,71 @@ export class ChatsComponent implements OnInit {
         message: 'Broadband',
       },
       {
+        title: 'farhan',
+        type: 'facebookPost',
+            body: {
+              type: "POST",
+              markdownText: "I am having issue with the server for a long time and filed complaint several times before but it is still not resolved. It is getting a big problem for me and I want it resolved as soon as possible without getting in to any fuss. Can anyone please help?",
+              messageType: "facebookPostComment",
+              commentedBy: "Sarah Stanler ",
+              userProfilePicture: "assets/images/user-picture/natalia.png",
+              commentOn: "Expertflow",
+              linkedReplies: "4",
+              commentDate: "January 26, 2021     06:30PM",
+              mainPostData: {
+                hidden: false,
+                postedContent: {
+                  pageAvatar: "assets/images/user-picture/page-avatar.png",
+                  postedBy: "Steve Jackson",
+                  postedOn: "Expertflow",
+                  postedDate: "January 26, 2021     06:30PM",
+                  postedSummery: {
+                    postedText: "Expertflow is looking for a Sr. Java Backend Developer with 2-5 years of experience in core Java, Spring, JMS, and related technologies, who can join us remotely.\n\nLearn more: https://www.expertflow.com/.../sr-java-backend-developer…/\n\n#33767888",
+                    PostedMedia: ""
+                  }
+                },
+                postComments: [
+                  {
+                    markdownText: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words.",
+                    messageType: "facebookPostComment",
+                    userProfilePicture: "assets/images/user-picture/user1.png",
+                    commentOn: "Expertflow",
+                    commentBy: "Oliver James",
+                    postedTime: "January 26, 2021     06:30PM",
+                    linkedReplies: []
+                  },
+                  {
+                    markdownText: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s.",
+                    messageType: "facebookPostComment",
+                    userProfilePicture: "assets/images/user-picture/user2.png",
+                    commentOn: "Expertflow",
+                    commentBy: "Amelia Stevens",
+                    postedTime: "January 26, 2021     06:30PM",
+                    linkedReplies: [
+                      {
+                        markdownText: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s.",
+                        messageType: "facebookPostComment",
+                        userProfilePicture: "assets/images/user-picture/user3.png",
+                        commentOn: "Expertflow",
+                        commentBy: "Expertflow",
+                        postedTime: "January 26, 2021     06:30PM"
+                      },
+                      {
+                        markdownText: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s.",
+                        messageType: "facebookPostComment",
+                        userProfilePicture: "assets/images/user-picture/user4.png",
+                        commentOn: "Expertflow",
+                        commentBy: "Oscar Browns",
+                        postedTime: "January 26, 2021     06:30PM"
+                      }
+                    ]
+                  }
+                ]
+
+              }
+            }
+      },
+      {
         notificationType: 'joinNotification',
         notificationMessage: '‘John Miller’ joined as agent in chat'
       },

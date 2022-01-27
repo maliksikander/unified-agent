@@ -187,6 +187,8 @@ dispayVideoPIP = true;
       message: 'To help ameliorate this tendency, make sure you proactively follow-up with them letting them know you\'re still working hard to reach a resolution, and that you will let them know when there are updates. This shows you care.',
     },
   ];
+  fullPostView = false;
+  viewFullCommentAction = false;
   displaySuggestionsArea = false;
   cannedTabOpen = false;
   quickReplies = true;
@@ -217,7 +219,7 @@ dispayVideoPIP = true;
     setTimeout(() => {
       new EmojiPicker();
     }, 500);
-this.postUrl = "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fweb.facebook.com%2Fpermalink.php%3Fstory_fbid%3D"+this.fbId+"%26id%3D"+this.postId+"&show_text=true&width=500"
+// this.postUrl = "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fweb.facebook.com%2Fpermalink.php%3Fstory_fbid%3D"+this.fbId+"%26id%3D"+this.postId+"&show_text=true&width=500"
     }
 
 
