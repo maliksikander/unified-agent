@@ -46,7 +46,10 @@ export class LoginComponent implements OnInit {
           this._snackbarService.open("license is " + e.licStatus, "err");
         } else {
           this._cacheService.agent = e.data;
-          sessionStorage.setItem("ccUser", JSON.stringify(e.data));
+          try {
+            sessionStorage.setItem("ccUser", JSON.stringify(e.data));
+          } catch (e) {}
+
           this._socketService.disConnectSocket();
           this._socketService.connectToSocket();
           // this._router.navigate(["customers"]);

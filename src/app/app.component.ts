@@ -13,11 +13,7 @@ export class AppComponent implements OnInit {
 
   currentRoute: string;
 
-  constructor(
-    private _router: Router,
-    private _isLoggedInservice: isLoggedInService,
-    private _sharedService: sharedService
-  ) { }
+  constructor(private _router: Router, private _isLoggedInservice: isLoggedInService, private _sharedService: sharedService) {}
 
   ngOnInit() {
     this._router.events.subscribe((event: any) => {
@@ -25,9 +21,12 @@ export class AppComponent implements OnInit {
         this.currentRoute = event.url;
       }
     });
-    
-    const customerSchema: any = JSON.parse(localStorage.getItem("customerSchema"));
-    const channelTypes: any = JSON.parse(localStorage.getItem("channelTypes"));
+    let customerSchema: any;
+    let channelTypes: any;
+    try {
+      customerSchema = JSON.parse(localStorage.getItem("customerSchema"));
+      channelTypes = JSON.parse(localStorage.getItem("channelTypes"));
+    } catch (e) {}
     if (customerSchema) {
       this._sharedService.schema = customerSchema;
     }

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { cacheService } from "../services/cache.service";
 import { sharedService } from "../services/shared.service";
 import { socketService } from "../services/socket.service";
-import { CountupTimerService, countUpTimerConfigModel, timerTexts } from 'ngx-timer';
+import { CountupTimerService, countUpTimerConfigModel, timerTexts } from "ngx-timer";
 import { Router } from "@angular/router";
 
 @Component({
@@ -11,7 +11,7 @@ import { Router } from "@angular/router";
   styleUrls: ["./app-header.component.scss"]
 })
 export class AppHeaderComponent implements OnInit {
-  @ViewChild('stateTrigger', { static: false }) stateTrigger: any;
+  @ViewChild("stateTrigger", { static: false }) stateTrigger: any;
   agent = {
     state: "ready",
     name: "Bryan Miller",
@@ -81,7 +81,7 @@ export class AppHeaderComponent implements OnInit {
     public _cacheService: cacheService,
     private _socketService: socketService,
     private _sharedService: sharedService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.timerConfigs = new countUpTimerConfigModel();
@@ -89,7 +89,7 @@ export class AppHeaderComponent implements OnInit {
     this.timerConfigs.timerTexts.hourText = ":"; //default - hh
     this.timerConfigs.timerTexts.minuteText = ":"; //default - mm
     this.timerConfigs.timerTexts.secondsText = " "; //default - ss
-    this.timerConfigs.timerClass  = 'state-timer';
+    this.timerConfigs.timerClass = "state-timer";
     this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       if (e.msg == "stateChanged") {
         if (e.data.state.name.toLowerCase() == "logout") {
@@ -149,7 +149,9 @@ export class AppHeaderComponent implements OnInit {
     this.stateView = false;
   }
   logout() {
-    sessionStorage.clear();
+    try {
+      sessionStorage.clear();
+    } catch (e) {}
     //  localStorage.clear();
     this._socketService.emit("changeAgentState", {
       agentId: this._cacheService.agent.id,
@@ -167,7 +169,7 @@ export class AppHeaderComponent implements OnInit {
     });
   }
 
-  close() { }
+  close() {}
 
   onChange(reason) {
     this.selectedReasonCode = reason;
@@ -175,7 +177,9 @@ export class AppHeaderComponent implements OnInit {
 
   moveToLogin() {
     // localStorage.clear();
-    sessionStorage.clear();
+    try {
+      sessionStorage.clear();
+    } catch (e) {}
     this._cacheService.resetCache();
     this._socketService.socket.disconnect();
     this._router.navigate(["login"]).then(() => {

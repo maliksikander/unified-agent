@@ -13,7 +13,7 @@ import { NgxUiLoaderService } from "ngx-ui-loader";
 import { httpService } from "./http.service";
 import { v4 as uuidv4 } from "uuid";
 
-const mockTopicData: any = require('../mocks/topicData.json');
+const mockTopicData: any = require("../mocks/topicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -39,11 +39,9 @@ export class socketService {
     private _httpService: httpService
   ) {
     //  this.onTopicData(mockTopicData, "12345");
-
   }
 
   connectToSocket() {
-
     //load pullMode list
     this._cacheService.loadPullModeList();
 
@@ -71,10 +69,12 @@ export class socketService {
       try {
         console.error("socket connect_error ", err.data && err.data.content ? err.data.content : err);
         this._snackbarService.open(err.data && err.data.content ? err.data.content : "unable to connect to chat", "err");
-      } catch (err) { }
+      } catch (err) {}
       if (err.message == "login-failed") {
         //  localStorage.clear();
-        sessionStorage.clear();
+        try {
+          sessionStorage.clear();
+        } catch (e) {}
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -93,14 +93,15 @@ export class socketService {
   }
 
   subscribeToSocketEvents() {
-
     this.socket.on("disconnect", (reason) => {
       console.error("socket disconnect " + reason);
 
       // this means that server forcefully disconnects the socket connection
       if (reason == "io server disconnect") {
         //  localStorage.clear();
-        sessionStorage.clear();
+        try {
+          sessionStorage.clear();
+        } catch (e) {}
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -204,7 +205,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) { }
+    } catch (err) {}
   }
 
   listen(eventName: string) {
@@ -250,15 +251,16 @@ export class socketService {
 
         // for agent type message change the status of message
         if (cimEvent.name.toLowerCase() == "agent_message") {
-
           // find the message is already located in the conversation
-          let cimMessage = sameTopicConversation.messages.find((message) => { return message.id == cimEvent.data.id });
+          let cimMessage = sameTopicConversation.messages.find((message) => {
+            return message.id == cimEvent.data.id;
+          });
           // if yes, only update the staus
           if (cimMessage) {
-            cimMessage.header['status'] = 'sent';
+            cimMessage.header["status"] = "sent";
           } else {
             // if no, marked staus as sent and push in the conversation
-            cimEvent.data.header['status'] = 'sent';
+            cimEvent.data.header["status"] = "sent";
             sameTopicConversation.messages.push(cimEvent.data);
           }
         } else {
@@ -296,14 +298,15 @@ export class socketService {
 
   onSocketSessionRemoved() {
     //  localStorage.clear();
-    sessionStorage.clear();
+    try {
+      sessionStorage.clear();
+    } catch (e) {}
     this._cacheService.resetCache();
     this._snackbarService.open("you are logged In from another session", "err");
     alert("you are logged in from another session");
   }
 
   onTopicData(topicData, topicId) {
-
     // this.removeConversation(topicId);
 
     let conversation = {
@@ -326,7 +329,7 @@ export class socketService {
         event.name.toLowerCase() == "bot_message" ||
         event.name.toLowerCase() == "customer_message"
       ) {
-        event.data.header['status'] = 'sent';
+        event.data.header["status"] = "sent";
         conversation.messages.push(event.data);
       } else if (["channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())) {
         let message = this.createSystemNotificationMessage(event);
@@ -431,7 +434,6 @@ export class socketService {
       this._sharedService.spliceArray(index, this.conversations);
       --this.conversationIndex;
 
-
       // alter the rest of the conversation's indexes whose indexes are greater than the index of removed conversation
       // in order to remap the conversation indexex along with the indexes of the map tabs
       this.conversations.map((conversation) => {
@@ -439,7 +441,6 @@ export class socketService {
           conversation.index = --conversation.index;
         }
       });
-
     }
 
     this._conversationsListener.next(this.conversations);
@@ -477,7 +478,6 @@ export class socketService {
     });
 
     if (conversation) {
-
       let message = this.createSystemNotificationMessage(cimEvent);
       conversation.messages.push(message);
 
@@ -507,7 +507,6 @@ export class socketService {
       console.error("channelSessionId not found to added");
     }
   }
-
 
   handleAgentSubscription(cimEvent, topicId) {
     let conversation = this.conversations.find((e) => {
@@ -567,21 +566,22 @@ export class socketService {
 
   moveToLogin() {
     //  localStorage.clear();
-    sessionStorage.clear();
+    try {
+      sessionStorage.clear();
+    } catch (e) {}
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
 
   async linkCustomerWithTopic(selectedCustomer, topicId) {
-
     try {
-
-      const conversation = this.conversations.find((e) => { return e.topicId == topicId });
+      const conversation = this.conversations.find((e) => {
+        return e.topicId == topicId;
+      });
       const topicCustomer = conversation.customer;
       const channelSession = conversation.firstChannelSession;
 
       if (topicCustomer && channelSession) {
-
         const channelType = channelSession.channel.channelType.name;
         const channelIdentifier = channelSession.channelData.channelCustomerIdentifier;
         console.log("channelType " + channelType + " channelIdentifier " + channelIdentifier);
@@ -601,11 +601,10 @@ export class socketService {
             if (selectedCustomer[attr].includes(channelIdentifier)) {
               console.log("already merged");
               const resp: any = await this._sharedService.getProfileLinkingConfirmation(null, selectedCustomer.firstName, null, false);
-              console.log("this is resp ", resp)
+              console.log("this is resp ", resp);
               if (resp.decisionIs) {
                 this.updateTopiCustomer(selectedCustomer, false, topicCustomer.isAnonymous == true ? topicCustomer._id : null, topicId);
               }
-
             } else {
               console.log("not merged");
               // const resp = await this._sharedService.getConfirmation('Merge Attribute Value', `Are you sure you want to add ${channelIdentifier} to ${selectedCustomer.firstName}'s ${attr}`);
@@ -616,10 +615,15 @@ export class socketService {
                   if (selectedCustomer[attr].length <= 9) {
                     selectedCustomer[attr].push(channelIdentifier);
                     this.updateTopiCustomer(selectedCustomer, true, topicCustomer.isAnonymous == true ? topicCustomer._id : null, topicId);
-                    console.log("limit not exceed")
+                    console.log("limit not exceed");
                   } else {
-                    console.log("limit exceed")
-                    this._snackbarService.open(`The conversation is going to linking with ${selectedCustomer.firstName}, However the channel identifier ${channelIdentifier} can't be added in ${selectedCustomer.firstName}'s ${attr} because space is unavailable, you may delete a channel identifer to add a new one`, "succ", 20000, "Ok");
+                    console.log("limit exceed");
+                    this._snackbarService.open(
+                      `The conversation is going to linking with ${selectedCustomer.firstName}, However the channel identifier ${channelIdentifier} can't be added in ${selectedCustomer.firstName}'s ${attr} because space is unavailable, you may delete a channel identifer to add a new one`,
+                      "succ",
+                      20000,
+                      "Ok"
+                    );
                     this.updateTopiCustomer(selectedCustomer, false, topicCustomer.isAnonymous == true ? topicCustomer._id : null, topicId);
                   }
                 } else {
@@ -628,14 +632,12 @@ export class socketService {
               }
             }
           } else {
-
             const resp: any = await this._sharedService.getProfileLinkingConfirmation(null, selectedCustomer.firstName, null, false);
             if (resp.decisionIs) {
               this.updateTopiCustomer(selectedCustomer, false, topicCustomer.isAnonymous == true ? topicCustomer._id : null, topicId);
             }
             // this._snackbarService.open("unable to link customer", "err");
           }
-
         } else {
           const resp: any = await this._sharedService.getProfileLinkingConfirmation(null, selectedCustomer.firstName, null, false);
 
@@ -650,11 +652,10 @@ export class socketService {
         this._snackbarService.open("unable to link customer", "err");
       }
     } catch (err) {
-      console.log("err ", err)
+      console.log("err ", err);
       this._snackbarService.open("unable to link customer", "err");
     }
   }
-
 
   updateTopiCustomer(selectedCustomer, needToBeUpdate: boolean, toBeDeletedCustomerId, topicId) {
     console.log("topic updated");
@@ -669,48 +670,44 @@ export class socketService {
       delete selectedCustomer["_id"];
       delete selectedCustomer["__v"];
 
-      this._httpService.updateCustomerById(selectedCustomerId, selectedCustomer).subscribe((e) => {
+      this._httpService.updateCustomerById(selectedCustomerId, selectedCustomer).subscribe(
+        (e) => {
+          selectedCustomer["_id"] = selectedCustomerId;
 
-        selectedCustomer["_id"] = selectedCustomerId;
-
-        // updating customer topic
-        this._httpService.updateTopicCustomer(topicId, selectedCustomer).subscribe((e) => {
-
-          console.log("update topic success");
-          this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
-
-        }, (error) => {
+          // updating customer topic
+          this._httpService.updateTopicCustomer(topicId, selectedCustomer).subscribe(
+            (e) => {
+              console.log("update topic success");
+              this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
+            },
+            (error) => {
+              this._snackbarService.open("unable to link customer", "err");
+              console.error("error while updating topic customer ", error);
+            }
+          );
+        },
+        (error) => {
           this._snackbarService.open("unable to link customer", "err");
-          console.error("error while updating topic customer ", error);
-        });
-
-
-      }, (error) => {
-        this._snackbarService.open("unable to link customer", "err");
-        console.error("error while updating customer ", error);
-      });
-
+          console.error("error while updating customer ", error);
+        }
+      );
     } else {
-
       selectedCustomer["_id"] = selectedCustomerId;
       // updating customer topic
       console.log("update topic success");
-      this._httpService.updateTopicCustomer(topicId, selectedCustomer).subscribe((e) => {
-
-        this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
-
-      }, (error) => {
-        this._snackbarService.open("unable to link customer", "err");
-        console.error("error while updating topic customer ", error);
-      });
-
+      this._httpService.updateTopicCustomer(topicId, selectedCustomer).subscribe(
+        (e) => {
+          this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
+        },
+        (error) => {
+          this._snackbarService.open("unable to link customer", "err");
+          console.error("error while updating topic customer ", error);
+        }
+      );
     }
-
   }
 
-
   createSystemNotificationMessage(cimEvent) {
-
     let message: any = {
       id: "",
       header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
@@ -723,25 +720,18 @@ export class socketService {
     message.header.sender.type = "system";
 
     if (cimEvent.name.toLowerCase() == "channel_session_started") {
-
-      message.body['displayText'] = cimEvent.data.channel.channelType.name;
+      message.body["displayText"] = cimEvent.data.channel.channelType.name;
       message.body.markdownText = "session started";
-
     } else if (cimEvent.name.toLowerCase() == "channel_session_ended") {
-
-      message.body['displayText'] = cimEvent.data.channel.channelType.name;
+      message.body["displayText"] = cimEvent.data.channel.channelType.name;
       message.body.markdownText = "session ended";
-
-    } if (cimEvent.name.toLowerCase() == "agent_subscribed") {
-
-      message.body['displayText'] = cimEvent.data.keycloakUser.username;
+    }
+    if (cimEvent.name.toLowerCase() == "agent_subscribed") {
+      message.body["displayText"] = cimEvent.data.keycloakUser.username;
       message.body.markdownText = "has joined the conversation";
-
     } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
-
-      message.body['displayText'] = cimEvent.data.keycloakUser.username;
+      message.body["displayText"] = cimEvent.data.keycloakUser.username;
       message.body.markdownText = "left the conversation";
-
     }
 
     return message;
@@ -754,5 +744,4 @@ export class socketService {
     }
     this._router.navigate(["customers"]);
   }
-
 }

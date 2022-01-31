@@ -32,7 +32,10 @@ export class cacheService {
         return a.sortOrder - b.sortOrder;
       });
       this._sharedService.schema = schema;
+      try{
       localStorage.setItem("customerSchema", JSON.stringify(schema));
+      }
+      catch(e){}
     });
   }
 

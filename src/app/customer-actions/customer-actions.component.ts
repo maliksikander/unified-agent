@@ -271,12 +271,13 @@ export class CustomerActionsComponent implements OnInit {
     });
   }
 
-  gotoInteractions() {
-    this.onNoClick();
-    let obj = { base: "interactions", id: this.userInfo._id };
-    sessionStorage.setItem("url", JSON.stringify(obj));
-    this._router.navigate(["interactions", this.userInfo._id]);
-  }
+  // gotoInteractions() {
+  //   this.onNoClick();
+  //   let obj = { base: "interactions", id: this.userInfo._id };
+  //   sessionStorage.setItem("url", JSON.stringify(obj));
+
+  //   this._router.navigate(["interactions", this.userInfo._id]);
+  // }
 
   makeCall(number) {
     window.parent.postMessage(number, "*");

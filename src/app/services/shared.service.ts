@@ -37,7 +37,10 @@ export class sharedService {
 
   setChannelIcons(channelTypes) {
     this.channelTypeList = channelTypes;
+    try{
     localStorage.setItem("channelTypes", JSON.stringify(channelTypes));
+    }
+    catch(e){}
     channelTypes.forEach((channelType) => {
       this._httpService.getChannelLogo(channelType.channelLogo).subscribe((file) => {
         const reader = new FileReader();

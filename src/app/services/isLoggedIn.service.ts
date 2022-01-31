@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { appConfigService } from "./appConfig.service";
 import { cacheService } from "./cache.service";
+import { httpService } from "./http.service";
+import { sharedService } from "./shared.service";
 import { socketService } from "./socket.service";
 
 @Injectable({
@@ -15,8 +17,9 @@ export class isLoggedInService {
     private _appConfigService: appConfigService,
     private _socketService: socketService,
     private _cacheService: cacheService,
+    private _httpService: httpService,
+    private _sharedService: sharedService
   ) {
-
     this.cacheAgentFcmKey();
 
     if (this._appConfigService.config.ENV == "development") {
@@ -49,14 +52,55 @@ export class isLoggedInService {
 
   cacheAgentFcmKey() {
     const params = new URLSearchParams(window.location.search);
-    if (params.has('fcm-key')) {
-      this._cacheService.agentFcmkey = params.get('fcm-key');
+    if (params.has("fcm-key")) {
+      this._cacheService.agentFcmkey = params.get("fcm-key");
     }
-    console.log("FCM key in unifiedAgent " + params.get('fcm-key'));
+    console.log("FCM key in unifiedAgent " + params.get("fcm-key"));
+  }
+
+  autoFinesseLogin(params) {
+    let username = decodeURIComponent(params.get("username"));
+    let authToken = decodeURIComponent(params.get("authToken"));
+    let password = decodeURIComponent(params.get("password"));
+    let extension = decodeURIComponent(params.get("ext"));
+    let authWithSSO = JSON.parse(decodeURIComponent(params.get("authWithSSO")));
+    let obj = {
+      username: username,
+      password: authWithSSO == true ? authToken : password,
+      authWithSSO: authWithSSO
+    };
+    // if (obj.username && obj.password) {
+    this._httpService.login(obj).subscribe(
+      (e) => {
+        console.log("this is login resp ", e.data);
+
+        this._cacheService.agent = e.data;
+        try {
+          sessionStorage.setItem("ccUser", JSON.stringify(e.data));
+        } catch (e) {}
+        this._socketService.disConnectSocket();
+        this._socketService.connectToSocket();
+      },
+      (error) => {
+        this._sharedService.Interceptor(error.error, "err");
+        this._router.navigate(["login"]);
+      }
+    );
+    // }
   }
 
   autoLogin() {
-    let ccUser: any = sessionStorage.getItem("ccUser");
+    const params = new URLSearchParams(window.location.search);
+    console.log("params==>" + params);
+    if (params.has("username") && params.has("authWithSSO") && params.has("ext") && (params.has("password") || params.has("authToken"))) {
+      this.autoFinesseLogin(params);
+      return;
+    }
+    let ccUser: any;
+    try {
+      ccUser = sessionStorage.getItem("ccUser");
+    } catch (e) {}
+
     ccUser = JSON.parse(ccUser);
 
     if (ccUser && ccUser.id != null && ccUser.id != undefined && ccUser.id != "") {
