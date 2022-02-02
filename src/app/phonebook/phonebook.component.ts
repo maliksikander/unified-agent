@@ -151,8 +151,11 @@ export class PhonebookComponent implements OnInit {
     let prefArray: Array<any> = savedPref;
     let finalArray: Array<any> = [];
     prefArray.forEach((item) => {
-      let temp = this.schemaList.findIndex((item1) => item1.key == item.field);
-      if (temp != -1) finalArray.push(item);
+      let schemaIndex = this.schemaList.findIndex((item1) => item1.key == item.field);
+      if (schemaIndex != -1) {
+        item.channelTypes = this.schemaList[schemaIndex].channelTypes;
+        finalArray.push(item);
+      }
     });
     this.cols = finalArray;
   }
