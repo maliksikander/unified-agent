@@ -93,8 +93,16 @@ export class httpService {
     });
   }
 
-  changeUserPreference(obj): Observable<any> {
-    return this._httpClient.post<any>(this._appConfigService.config.CIM_CUSTOMER_URL + this.apiEndpoints.userPreference, obj, {
+  createUserPreference(obj): Observable<any> {
+    return this._httpClient.post<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.userPreference}`, obj, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+  updateUserPreference(obj,id): Observable<any> {
+    return this._httpClient.put<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.userPreference}/${id}`, obj, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })

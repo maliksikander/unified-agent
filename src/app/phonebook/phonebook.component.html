@@ -67,7 +67,7 @@
 
 
 
-  <div class="main-table">
+  <div *ngIf="enableTable" class="main-table">
     <p-table #dt [value]="rows" (onColReorder)="onColReorder($event)" [rowsPerPageOptions]=[25,50] [rows]="25"
       [paginator]="true" [style]="{width:'auto'}" scrollHeight="100%" [rowHover]="true" dataKey="id"
       (onPage)="onPage($event)" [totalRecords]="totalRecords" [columns]="cols" [showCurrentPageReport]="true"

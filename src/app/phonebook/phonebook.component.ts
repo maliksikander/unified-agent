@@ -10,6 +10,7 @@ import { sharedService } from "../services/shared.service";
 import * as moment from "moment";
 import { ActivatedRoute, Router } from "@angular/router";
 import { socketService } from "../services/socket.service";
+import { snackbarService } from "../services/snackbar.service";
 
 @Component({
   selector: "app-phonebook",
@@ -48,12 +49,14 @@ export class PhonebookComponent implements OnInit {
   sort = {};
   query = {};
   filterQuery = [];
+  enableTable: boolean = false;
 
   submitted: boolean;
   filterOnOff: boolean = false;
   filterActiveField;
   removable = true;
   schemaList: Array<any> = [];
+  userPreferenceObj;
 
   constructor(
     private dateAdapter: DateAdapter<any>,
@@ -63,7 +66,8 @@ export class PhonebookComponent implements OnInit {
     private dialog: MatDialog,
     private _router: Router,
     private route: ActivatedRoute,
-    private _socketService: socketService
+    private _socketService: socketService,
+    private _snackbarService: snackbarService
   ) {
     this.dateAdapter.setLocale("en-GB");
   }
@@ -80,7 +84,7 @@ export class PhonebookComponent implements OnInit {
 
   processURLParams() {
     this.paramsSubscription = this.route.queryParams.subscribe((params) => {
-      console.log("params ", params);
+      // console.log("params ", params);
       if (params["q"] == "linking") {
         this.isEmbededView = true;
         this.topicId = params["topicId"];
@@ -120,52 +124,37 @@ export class PhonebookComponent implements OnInit {
   getUserPreference(limit, offSet, sort, query) {
     this._httpService.getUserPreference(this._cacheService.agent.id).subscribe((res) => {
       if (res.docs.length > 0) {
+        this.enableTable = true;
         let savedPref: Array<any> = res.docs[0].columns;
+        this.userPreferenceObj = res.docs[0];
         this.getCustomerSchema(savedPref);
+        this.getCustomers(limit, offSet, sort, query);
+      } else {
+        this._snackbarService.open("No Preference Added", "err");
       }
 
-      this._httpService.getCustomers(limit, offSet, sort, query).subscribe((e) => {
-        this.rows = e.docs;
-        this.totalRecords = e.totalDocs;
-      });
+      // this._httpService.getCustomers(limit, offSet, sort, query).subscribe((e) => {
+      //   this.rows = e.docs;
+      //   this.totalRecords = e.totalDocs;
+      // });
+    });
+  }
+
+  getCustomers(limit, offSet, sort, query) {
+    this._httpService.getCustomers(limit, offSet, sort, query).subscribe((e) => {
+      this.rows = e.docs;
+      this.totalRecords = e.totalDocs;
     });
   }
 
   checkForSchemaConsistency(savedPref: Array<any>) {
-    // console.log("saved array==>", savedPref);
-    // console.log("schema ==>", this.columns);
-    let array1: Array<any> = [];
-    let array2: Array<any> = [];
+    let prefArray: Array<any> = savedPref;
     let finalArray: Array<any> = [];
-
-    let schemaLength = this.schemaList.length;
-    let savedPrefLength = savedPref.length;
-
-    if (schemaLength > savedPrefLength) {
-      array1 = this.schemaList;
-      array2 = savedPref;
-    } else {
-      array1 = savedPref;
-      array2 = this.schemaList;
-    }
-
-    array1.forEach((item1) => {
-      array2.forEach((item2) => {
-        if (schemaLength > savedPrefLength) {
-          if (item1.key == item2.field) {
-            item2.channelTypes = item1.channelTypes;
-            finalArray.push(item2);
-          }
-        } else {
-          if (item2.key == item1.field) {
-            item1.channelTypes = item2.channelTypes;
-            finalArray.push(item1);
-          }
-        }
-      });
+    prefArray.forEach((item) => {
+      let temp = this.schemaList.findIndex((item1) => item1.key == item.field);
+      if (temp != -1) finalArray.push(item);
     });
     this.cols = finalArray;
-    // console.log("final ==>", finalArray);
   }
 
   // getChannelTypesFromAttributeKey(key) {
@@ -176,8 +165,9 @@ export class PhonebookComponent implements OnInit {
   // }
 
   filter(value, field, v) {
-    this.filterValue = encodeURIComponent(this.filterValue);
-    this.query = { field: field, value: this.filterValue };
+    let filterVal = JSON.parse(JSON.stringify(this.filterValue));
+    filterVal = encodeURIComponent(filterVal);
+    this.query = { field: field, value: filterVal };
     this.filterQuery = [];
     this.filterQuery.push({ field: field, value: this.filterValue });
     this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
@@ -241,7 +231,7 @@ export class PhonebookComponent implements OnInit {
       maxHeight: "88vh",
       // width: "818px",
       // height: "88vh",
-      data: { id: id, tab: 'edit' }
+      data: { id: id, tab: "edit" }
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if ((result && result.event && result.event == "refresh") || (result && result.event && result.event == "delete")) {
@@ -262,7 +252,12 @@ export class PhonebookComponent implements OnInit {
         }
       ]
     };
-    this._httpService.changeUserPreference(prefObj).subscribe(
+
+    this.editPreference(prefObj, this.userPreferenceObj._id);
+  }
+
+  editPreference(obj, id) {
+    this._httpService.updateUserPreference(obj, id).subscribe(
       (e) => {
         this._sharedService.Interceptor("Preference Updated!", "succ");
       },
@@ -295,14 +290,14 @@ export class PhonebookComponent implements OnInit {
       if (selectedCustomer.hasOwnProperty(e.key)) {
         completeSelectedCustomer[e.key] = selectedCustomer[e.key];
       } else {
-        completeSelectedCustomer[e.key] = e.isChannelIdentifier ? [] : '';
+        completeSelectedCustomer[e.key] = e.isChannelIdentifier ? [] : "";
       }
     });
     completeSelectedCustomer["_id"] = selectedCustomer._id;
     console.log("selected customers from phonebook", completeSelectedCustomer);
     this._socketService.linkCustomerWithTopic(completeSelectedCustomer, this.topicId);
   }
-  backToChat() { }
+  backToChat() {}
   ngOnDestroy() {
     this.stateChangedSubscription.unsubscribe();
     this.paramsSubscription.unsubscribe();
@@ -338,7 +333,7 @@ export class PhonebookComponent implements OnInit {
       this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
     }
   }
-  onSelectAll(items: any) { }
+  onSelectAll(items: any) {}
   onDeSelectAll(items: any) {
     this.cancelFilter();
   }

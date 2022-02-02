@@ -14,6 +14,7 @@ export class columnPreferences implements OnInit {
   columns: Array<any> = [];
   checkedColumns: Array<any> = [];
   searchItem;
+  editObj;
 
   constructor(
     public snackBar: MatSnackBar,
@@ -49,45 +50,24 @@ export class columnPreferences implements OnInit {
       if (res.docs.length > 0 && res.docs[0].columns != null) {
         let arr = res.docs[0].columns;
         this.checkForSchemaConsistency(arr);
+        this.editObj = res.docs[0];
         // this.checkedColumns = arr;
         // console.log("checked columns==>", res);
       }
+      // else{
+
+      // }
     });
   }
 
   checkForSchemaConsistency(savedPref: Array<any>) {
-    // console.log("saved array==>", savedPref);
-    // console.log("schema ==>", this.columns);
-    let array1: Array<any> = [];
-    let array2: Array<any> = [];
+    let prefArray: Array<any> = savedPref;
     let finalArray: Array<any> = [];
-
-    let schemaLength = this.columns.length;
-    let savedPrefLength = savedPref.length;
-
-    if (schemaLength > savedPrefLength) {
-      array1 = this.columns;
-      array2 = savedPref;
-    } else {
-      array1 = savedPref;
-      array2 = this.columns;
-    }
-
-    array1.forEach((item1) => {
-      array2.forEach((item2) => {
-        if (schemaLength > savedPrefLength) {
-          if (item1.key == item2.field) {
-            finalArray.push(item2);
-          }
-        } else {
-          if (item2.key == item1.field) {
-            finalArray.push(item1);
-          }
-        }
-      });
+    prefArray.forEach((item) => {
+      let temp = this.columns.findIndex((item1) => item1.key == item.field);
+      if (temp != -1) finalArray.push(item);
     });
     this.checkedColumns = finalArray;
-    // console.log("final ==>", finalArray);
   }
 
   onChange(event, item) {
@@ -119,13 +99,33 @@ export class columnPreferences implements OnInit {
           }
         ]
       };
-      // console.log("check==>", prefObj);
-      this.createPeference(prefObj);
+      console.log("check==>", prefObj);
+      this.addPreference(prefObj);
     }
   }
 
-  createPeference(obj) {
-    this._httpService.changeUserPreference(obj).subscribe(
+  addPreference(obj) {
+    if (this.editObj) {
+      this.editPreference(obj, this.editObj._id);
+    } else {
+      this.createPreference(obj);
+    }
+  }
+
+  createPreference(obj) {
+    this._httpService.createUserPreference(obj).subscribe(
+      (e) => {
+        this.dialogRef.close({ event: "refresh" });
+        this._sharedService.Interceptor("Preference Added", "succ");
+      },
+      (error) => {
+        this._sharedService.Interceptor(error, "err");
+      }
+    );
+  }
+
+  editPreference(obj, id) {
+    this._httpService.updateUserPreference(obj, id).subscribe(
       (e) => {
         this.dialogRef.close({ event: "refresh" });
         this._sharedService.Interceptor("Preference Updated!", "succ");
