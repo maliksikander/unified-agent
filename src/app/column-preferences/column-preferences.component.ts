@@ -52,7 +52,6 @@ export class columnPreferences implements OnInit {
         this.checkForSchemaConsistency(arr);
         this.editObj = res.docs[0];
         // this.checkedColumns = arr;
-        // console.log("checked columns==>", res);
       }
       // else{
 
@@ -99,7 +98,6 @@ export class columnPreferences implements OnInit {
           }
         ]
       };
-      console.log("check==>", prefObj);
       this.addPreference(prefObj);
     }
   }
@@ -119,7 +117,7 @@ export class columnPreferences implements OnInit {
         this._sharedService.Interceptor("Preference Added", "succ");
       },
       (error) => {
-        this._sharedService.Interceptor(error, "err");
+        this._sharedService.Interceptor(error.error, "err");
       }
     );
   }
@@ -131,13 +129,12 @@ export class columnPreferences implements OnInit {
         this._sharedService.Interceptor("Preference Updated!", "succ");
       },
       (error) => {
-        this._sharedService.Interceptor(error, "err");
+        this._sharedService.Interceptor(error.error, "err");
       }
     );
   }
 
   loadChecked(value) {
-    // console.log("Value==>",value)
     if (this.checkedColumns) {
       let x: boolean;
       this.checkedColumns.filter((e) => {

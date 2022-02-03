@@ -302,7 +302,7 @@ export class CustomerActionsComponent implements OnInit {
     for (let key in a) {
       this.customerForm.get(key).markAsTouched();
     }
-    console.log("validate form", this.customerForm);
+    // console.log("validate form", this.customerForm);
   }
 
   getChannelTypeLogoName(typeName) {
