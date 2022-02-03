@@ -99,6 +99,7 @@ export class CreateCustomerComponent implements OnInit {
       let maxVal = 2147483647;
       let minVal = -2147483647;
       if (item.isRequired) temp.push(Validators.required);
+      if(item.type == 'string') temp.push(Validators.maxLength(JSON.parse(item.length)))
       temp.push(Validators.pattern(this.formValidation[item.type].regex));
       if (item.valueType == "Number") {
         temp.push(Validators.max(maxVal));

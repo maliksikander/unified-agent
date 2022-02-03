@@ -470,8 +470,7 @@ snack-bar-container.success-snackbar {
       padding-left: 0 !important;
       padding-right: 0 !important;
       width: fit-content !important;
-    min-width: 250px !important;
-
+      min-width: 250px !important;
     }
 
     tbody {
@@ -2866,11 +2865,12 @@ body .ui-paginator {
 
 // unidentifed customer
 
-.unidentified-customer{
-  .right-drag-accordion .customer-info-panel mat-expansion-panel-header{
+.unidentified-customer {
+  .right-drag-accordion .customer-info-panel mat-expansion-panel-header {
     border-bottom-color: red !important;
-    .profile-area{
-      h3, h5{
+    .profile-area {
+      h3,
+      h5 {
         color: red;
       }
     }
@@ -2879,36 +2879,41 @@ body .ui-paginator {
 
 //Phonebook
 
+.phonebook-main-area {
+  height: calc(100% - 50px);
+  position: absolute;
+  width: calc(100% - 10px);
+  .ui-table-thead {
+    position: sticky;
+    top: 0;
+    z-index: 9;
+    background: white;
+  }
 
-  .phonebook-main-area{
-    height: calc(100% - 50px);
-    position: absolute;
-    width: calc(100% - 10px);
-    .ui-table-thead{
-      position: sticky;
-      top: 0;
-      z-index: 9;
-      background: white;
-    }
+  .main-table {
+    position: relative;
+    height: calc(100% - 60px) !important;
+    overflow: hidden;
 
-    .main-table {
-      position: relative;
-      height: calc(100% - 60px) !important;
-      overflow: hidden;
+    .sticky-table {
+      height: 100%;
 
-      .sticky-table{
-        height: 100%;
-
-        .ui-table-wrapper {
-          overflow: auto;
-          height: calc(100% - 40px);
-        }
+      .ui-table-wrapper {
+        overflow: auto;
+        height: calc(100% - 40px);
       }
     }
   }
+}
 
-  .state-timer{
-    color: #818181;
-    font-size: 10px;
-    display: inline-block;
+.state-timer {
+  color: #818181;
+  font-size: 10px;
+  display: inline-block;
+}
+
+.main-content-create-customer {
+  mat-error {
+    font-size: 9px;
   }
+}

@@ -11,7 +11,7 @@ const customerSchema: any = require("../mocks/customerSchema.json");
   providedIn: "root"
 })
 export class sharedService {
-  constructor(private dialog: MatDialog, private _snackbarService: snackbarService, private _httpService: httpService) { }
+  constructor(private dialog: MatDialog, private _snackbarService: snackbarService, private _httpService: httpService) {}
 
   schema;
   mainPagetile = "FETCHING CHATS ...";
@@ -37,10 +37,9 @@ export class sharedService {
 
   setChannelIcons(channelTypes) {
     this.channelTypeList = channelTypes;
-    try{
-    localStorage.setItem("channelTypes", JSON.stringify(channelTypes));
-    }
-    catch(e){}
+    try {
+      localStorage.setItem("channelTypes", JSON.stringify(channelTypes));
+    } catch (e) {}
     channelTypes.forEach((channelType) => {
       this._httpService.getChannelLogo(channelType.channelLogo).subscribe((file) => {
         const reader = new FileReader();
@@ -70,7 +69,6 @@ export class sharedService {
     });
   }
 
-
   getProfileLinkingConfirmation(channelIdentifier, customerName, attr, isMergeAble) {
     return new Promise((resolve) => {
       const dialogRef = this.dialog.open(LinkConversationDialogComponent, {
@@ -89,7 +87,7 @@ export class sharedService {
 
   Interceptor(e, res) {
     if (res == "err") {
-      console.log("e", e);
+      console.log("[Error]:", e);
       if (e.statusCode == 401) {
         this._snackbarService.open("UNAUTHORIZED USER", "err");
       } else if (e.statusCode == 400) {
@@ -100,6 +98,8 @@ export class sharedService {
         this._snackbarService.open("Internal Server Error", "err");
       } else if (e.statusCode == 408) {
         this._snackbarService.open(e.msg, "err");
+      } else if (e.error) {
+        this._snackbarService.open(e.error.msg, "err");
       } else {
         this._snackbarService.open("Something went wrong", "err");
       }

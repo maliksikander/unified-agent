@@ -45,6 +45,9 @@ export class EditAttributeComponent implements OnInit {
   }
 
   patchFormValues() {
+
+    // if(this.data.length == null ) this.data.length = ""
+  //  console.log("data==>",this.data)
     this.editAttributeForm.patchValue(this.data);
     this.setValidations();
   }
@@ -55,6 +58,7 @@ export class EditAttributeComponent implements OnInit {
 
   setValidations() {
     let schemaObj = this.editAttributeForm.value;
+    // console.log("schema obj==>", schemaObj);
     let length = schemaObj.length ? schemaObj.length : 50;
     let typeDef;
     for (let i = 0; i <= this.attributeTypes.length; i++) {
@@ -63,11 +67,13 @@ export class EditAttributeComponent implements OnInit {
         break;
       }
     }
-    this.editAttributeForm.controls["defaultValue"].setValidators([
-      Validators.required,
-      Validators.maxLength(length),
-      Validators.pattern(typeDef.regex)
-    ]);
+    if (schemaObj.isRequired)
+      this.editAttributeForm.controls["defaultValue"].setValidators([
+        Validators.required,
+        Validators.maxLength(length),
+        Validators.pattern(typeDef.regex)
+      ]);
+      // console.log("added ==>", this.editAttributeForm);
   }
 
   // to get attribute type list

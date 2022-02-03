@@ -63,11 +63,13 @@ export class CreateAttributeComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  async onSave() {
+  onSave() {
     let data = this.createAttributeForm.value;
     data.key = this.camelize(data.label);
     data.isDeleteAble = true;
     data.channelTypes = data.isChannelIdentifier == true ? data.channelTypes : [];
+    if (data.type != "string") data.length = "";
+    // console.log("attr data==>", data);
     this.createNewAttribute(data);
   }
 
@@ -88,10 +90,7 @@ export class CreateAttributeComponent implements OnInit {
         this.dialogRef.close({ event: "refresh" });
       },
       (error) => {
-        console.log("Error :", error);
-        let msg = error.error.error ? error.error.error : error.message;
-        this.snackbarService.open(msg, "err");
-        // this._sharedService.Interceptor(error.error, "err");
+        this._sharedService.Interceptor(error.error, "err");
       }
     );
   }
