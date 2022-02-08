@@ -22,32 +22,17 @@ export class isLoggedInService {
   ) {
     this.cacheAgentFcmKey();
 
-    if (this._appConfigService.config.ENV == "development") {
-      this._cacheService.agent = {
-        id: "8d42617c-0603-4fbe-9863-2507c0fff9fd",
-        username: "nabeel",
-        firstName: "nabeel",
-        lastName: "ahmed",
-        roles: []
-      };
-      this._socketService.connectToSocket();
+    this.routeSubscriber = this._router.events.subscribe((event: any) => {
+      // we need to observe the route only on window load, thats why we unsubscibe it
+      this.routeSubscriber.unsubscribe();
 
-      // if (this.currentRoute == "/login") {
-      //   this._router.navigate(["customers"]);
-      // }
-    } else {
-      this.routeSubscriber = this._router.events.subscribe((event: any) => {
-        // we need to observe the route only on window load, thats why we unsubscibe it
-        this.routeSubscriber.unsubscribe();
-
-        // if the user opens login page then dont need to auto login
-        if (event.url) {
-          if (event.url != "/login") {
-            this.autoLogin();
-          }
+      // if the user opens login page then dont need to auto login
+      if (event.url) {
+        if (event.url != "/login") {
+          this.autoLogin();
         }
-      });
-    }
+      }
+    });
   }
 
   cacheAgentFcmKey() {
@@ -69,7 +54,10 @@ export class isLoggedInService {
       password: authWithSSO == true ? authToken : password,
       authWithSSO: authWithSSO
     };
-    // if (obj.username && obj.password) {
+    this.fetchCCuserAndMoveToLogin(obj);
+  }
+
+  fetchCCuserAndMoveToLogin(obj: { username: string, password: string, authWithSSO?: boolean }) {
     this._httpService.login(obj).subscribe(
       (e) => {
         console.log("this is login resp ", e.data);
@@ -77,7 +65,7 @@ export class isLoggedInService {
         this._cacheService.agent = e.data;
         try {
           sessionStorage.setItem("ccUser", JSON.stringify(e.data));
-        } catch (e) {}
+        } catch (e) { }
         this._socketService.disConnectSocket();
         this._socketService.connectToSocket();
       },
@@ -86,7 +74,6 @@ export class isLoggedInService {
         this._router.navigate(["login"]);
       }
     );
-    // }
   }
 
   autoLogin() {
@@ -99,7 +86,7 @@ export class isLoggedInService {
     let ccUser: any;
     try {
       ccUser = sessionStorage.getItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
 
     ccUser = JSON.parse(ccUser);
 

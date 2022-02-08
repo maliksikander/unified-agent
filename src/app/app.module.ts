@@ -32,6 +32,7 @@ import { SubscribedListComponent } from "./pull-mode/subscribed-list/subscribed-
 import { SubscribedListPreviewComponent } from "./pull-mode/subscribed-list-preview/subscribed-list-preview.component";
 import { FilePreviewComponent } from "./file-preview/file-preview.component";
 import { LinkConversationDialogComponent } from "./dialogs/link-conversation-dialog/link-conversation-dialog.component";
+import _configService from "../assets/config.json"
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsType: SPINNER.chasingDots,
@@ -73,7 +74,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     BrowserAnimationsModule,
     SharedModule,
     NgxUiLoaderHttpModule.forRoot({
-      exclude: ["/file-engine/api/downloadFileStream?filename"]
+      exclude: [_configService.FILE_SERVER_URL + "/api/downloadFileStream"]
     }),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
   ],
@@ -107,4 +108,4 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   exports: [BrowserModule, CommonModule, BrowserAnimationsModule],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
