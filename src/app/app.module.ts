@@ -39,7 +39,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsPosition: POSITION.centerCenter
 };
 
-console.log(_configService)
+console.log(`${_configService.FILE_SERVER_URL}/api/downloadFileStream`)
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -76,7 +76,10 @@ console.log(_configService)
     BrowserAnimationsModule,
     SharedModule,
     NgxUiLoaderHttpModule.forRoot({
-      exclude: [_configService.FILE_SERVER_URL + "/api/downloadFileStream"]
+      exclude: [`${_configService.FILE_SERVER_URL}/api/downloadFileStream`, "/api/downloadFileStream", "/api/downloadFileStream?filename"]
+    }),
+    NgxUiLoaderHttpModule.forRoot({
+      excludeRegexp: [`${_configService.FILE_SERVER_URL}/api/downloadFileStream`, "/api/downloadFileStream"]
     }),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
   ],

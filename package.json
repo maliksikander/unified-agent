@@ -46,7 +46,7 @@
     "ngx-moment": "^5.0.0",
     "ngx-scrollbar": "^4.2.0",
     "ngx-timer": "^1.0.6",
-    "ngx-ui-loader": "^8.0.0",
+    "ngx-ui-loader": "^7.2.1",
     "primeicons": "^1.0.0",
     "primeng": "^8.1.1",
     "rxjs": "~6.4.0",
