@@ -39,6 +39,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsPosition: POSITION.centerCenter
 };
 
+console.log(_configService)
+
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
