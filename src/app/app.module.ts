@@ -39,8 +39,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsPosition: POSITION.centerCenter
 };
 
-console.log(`${_configService.FILE_SERVER_URL}/api/downloadFileStream`)
-
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
