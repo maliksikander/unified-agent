@@ -638,7 +638,7 @@
       <span class="selected-channel">Selected Channel:
         <label *ngIf="conversation.activeChannelSessions.length > 0"
           style="color:#1a50a3;">{{conversation.activeChannelSessions[conversation.activeChannelSessions.length
-          -1]?.channel.channelType.name| titlecase}}</label>
+          -1]?.channel.channelType.name}}</label>
         <label *ngIf="conversation.activeChannelSessions.length == 0" style="color:grey;">
           None
         </label>

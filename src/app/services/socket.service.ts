@@ -69,12 +69,12 @@ export class socketService {
       try {
         console.error("socket connect_error ", err.data && err.data.content ? err.data.content : err);
         this._snackbarService.open(err.data && err.data.content ? err.data.content : "unable to connect to chat", "err");
-      } catch (err) {}
+      } catch (err) { }
       if (err.message == "login-failed") {
         //  localStorage.clear();
         try {
           sessionStorage.clear();
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -101,7 +101,7 @@ export class socketService {
         //  localStorage.clear();
         try {
           sessionStorage.clear();
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -135,6 +135,12 @@ export class socketService {
         this.onCimEventHandler(JSON.parse(res.cimEvent), res.topicId);
       } catch (err) {
         console.error("error on onCimEvent ", err);
+        // If got any error while receiving cimEvent then simply unsubscribe to the topic
+        this._snackbarService.open("Unable to process event, unsubscribing...", "err");
+        this.emit("topicUnsubscription", {
+          topicId: res.topicId,
+          agentId: this._cacheService.agent.id
+        });
       }
     });
 
@@ -147,6 +153,12 @@ export class socketService {
         }
       } catch (err) {
         console.error("error on onTopicData ", err);
+        this._snackbarService.open("Unable to process chat, unsubscribing...", "err");
+        // If got any error while receiving topicData then simply unsubscribe to the topic
+        this.emit("topicUnsubscription", {
+          topicId: res.topicId,
+          agentId: this._cacheService.agent.id
+        });
       }
     });
 
@@ -205,7 +217,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) {}
+    } catch (err) { }
   }
 
   listen(eventName: string) {
@@ -234,16 +246,18 @@ export class socketService {
       return e.topicId == topicId;
     });
 
-    if (
-      cimEvent.name.toLowerCase() == "agent_message" ||
-      cimEvent.name.toLowerCase() == "bot_message" ||
-      cimEvent.name.toLowerCase() == "customer_message"
-    ) {
-      if (cimEvent.name.toLowerCase() != "agent_message") {
-        this.playSoundAndBrowserNotification(sameTopicConversation, cimEvent);
-      }
+    if (sameTopicConversation) {
 
-      if (sameTopicConversation) {
+      if (
+        cimEvent.name.toLowerCase() == "agent_message" ||
+        cimEvent.name.toLowerCase() == "bot_message" ||
+        cimEvent.name.toLowerCase() == "customer_message"
+      ) {
+        if (cimEvent.name.toLowerCase() != "agent_message") {
+          this.playSoundAndBrowserNotification(sameTopicConversation, cimEvent);
+        }
+
+
         if (cimEvent.data.header.sender.type.toLowerCase() == "customer") {
           this.processActiveChannelSessions(sameTopicConversation, cimEvent.data.header.channelSession);
           ++sameTopicConversation.unReadCount;
@@ -268,31 +282,32 @@ export class socketService {
         }
 
         sameTopicConversation.unReadCount ? undefined : (sameTopicConversation.unReadCount = 0);
-      } else {
-        this.conversations.push({
-          topicId: topicId,
-          messages: [cimEvent.data],
-          activeChannelSessions: [cimEvent.data.header.channelSession],
-          unReadCount: undefined,
-          index: ++this.conversationIndex,
-          state: "ACTIVE",
-          customerSuggestions: cimEvent.data.header.channelSession.customerSuggestions,
-          firstChannelSession: cimEvent.data.header.channelSession
-        });
+
+        this._conversationsListener.next(this.conversations);
+      } else if (cimEvent.type.toLowerCase() == "suggestion") {
+        this.mergeBotSuggestions(sameTopicConversation, cimEvent.data);
+      } else if (cimEvent.name.toLowerCase() == "channel_session_started") {
+        this.addChannelSession(cimEvent, topicId);
+      } else if (cimEvent.name.toLowerCase() == "channel_session_ended") {
+        this.removeChannelSession(cimEvent, topicId);
+      } else if (cimEvent.name.toLowerCase() == "associated_customer_changed") {
+        this.changeTopicCustomer(cimEvent, topicId);
+      } else if (cimEvent.name.toLowerCase() == "agent_subscribed") {
+        this.handleAgentSubscription(cimEvent, topicId);
+      } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
+        this.handleAgentSubscription(cimEvent, topicId);
       }
-      this._conversationsListener.next(this.conversations);
-    } else if (cimEvent.type.toLowerCase() == "suggestion") {
-      this.mergeBotSuggestions(sameTopicConversation, cimEvent.data);
-    } else if (cimEvent.name.toLowerCase() == "channel_session_started") {
-      this.addChannelSession(cimEvent, topicId);
-    } else if (cimEvent.name.toLowerCase() == "channel_session_ended") {
-      this.removeChannelSession(cimEvent, topicId);
-    } else if (cimEvent.name.toLowerCase() == "associated_customer_changed") {
-      this.changeTopicCustomer(cimEvent, topicId);
-    } else if (cimEvent.name.toLowerCase() == "agent_subscribed") {
-      this.handleAgentSubscription(cimEvent, topicId);
-    } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
-      this.handleAgentSubscription(cimEvent, topicId);
+    } else {
+      this.conversations.push({
+        topicId: topicId,
+        messages: [cimEvent.data],
+        activeChannelSessions: [cimEvent.data.header.channelSession],
+        unReadCount: undefined,
+        index: ++this.conversationIndex,
+        state: "ACTIVE",
+        customerSuggestions: cimEvent.data.header.channelSession.customerSuggestions,
+        firstChannelSession: cimEvent.data.header.channelSession
+      });
     }
   }
 
@@ -300,7 +315,7 @@ export class socketService {
     //  localStorage.clear();
     try {
       sessionStorage.clear();
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._snackbarService.open("you are logged In from another session", "err");
     alert("you are logged in from another session");
@@ -568,7 +583,7 @@ export class socketService {
     //  localStorage.clear();
     try {
       sessionStorage.clear();
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
@@ -727,10 +742,10 @@ export class socketService {
       message.body.markdownText = "session ended";
     }
     if (cimEvent.name.toLowerCase() == "agent_subscribed") {
-      message.body["displayText"] = cimEvent.data.keycloakUser.username;
+      message.body["displayText"] = cimEvent.data.ccUser.keycloakUser.username;
       message.body.markdownText = "has joined the conversation";
     } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
-      message.body["displayText"] = cimEvent.data.keycloakUser.username;
+      message.body["displayText"] = cimEvent.data.ccUser.keycloakUser.username;
       message.body.markdownText = "left the conversation";
     }
 
