@@ -39,8 +39,8 @@
                     <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.pattern">
                       *Invalid Pattern
                     </div>
-                    <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.maxLength">
-                      *{{schemaAttribute.length}} are allowed
+                    <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.maxlength">
+                      *Max. {{schemaAttribute.length}} characters are allowed
                     </div>
                   </mat-error>
                 </mat-form-field>
@@ -64,8 +64,8 @@
                       <span *ngIf="attr?.errors?.pattern">
                         *Invalid Pattern
                       </span>
-                      <span *ngIf="attr?.errors?.maxLength">
-                        *Character length should be according to limit
+                      <span *ngIf="attr?.errors?.maxlength">
+                        *Max.{{schemaAttribute.length}} characters are allowed
                       </span>
                     </mat-error>
                     <div class="btn-test">
