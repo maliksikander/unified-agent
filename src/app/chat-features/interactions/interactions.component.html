@@ -170,7 +170,11 @@
                           <!--                    <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
 
                           <p>
-                            <span [innerHTML]="referredMessage.body.markdownText | linkify | ibsformat"></span>
+                            <b
+                              [innerHTML]="referredMessage.body.additionalDetails.interactive.header.text | linkify | ibsformat"></b>
+                            <br>
+                            <span
+                              [innerHTML]="referredMessage.body.additionalDetails.interactive.body.text | linkify | ibsformat"></span>
                             <!--                      <span class="message-stamp">-->
                             <!--                         <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
                             <!--                      </span>-->
@@ -368,7 +372,8 @@
                     [ngClass]="{'replied-message': message.header.replyToMessageId != null ,'file-type-message' : (message.body.type | lowercase) === 'image'||  (message.body.type | lowercase) === 'file' || (message.body.type | lowercase) === 'url' || (message.body.type | lowercase) === 'contact'|| (message.body.type | lowercase) === 'location' || (message.body.type | lowercase) === 'video' || (message.body.type | lowercase) === 'sticker', 'file-type-video' : (message.body.type | lowercase) === 'video', 'file-type-sticker' : (message.body.type | lowercase) === 'sticker' }">
                     <!-- ---------------plain---------------------- -->
                     <div *ngIf="(message.body.type | lowercase) == 'plain'">
-                      <p>
+                      <p
+                        class="{{ ((message.header.sender.type | lowercase) == 'customer') && message.botSuggestions ? 'plain-text-p' : ''}}">
                         <span [innerHTML]="message.body.markdownText | linkify | ibsformat"></span>
                         <span class="message-stamp">
                           <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
@@ -384,6 +389,7 @@
                           *ngIf="((message.header.sender.type | lowercase) == 'customer') && message.botSuggestions"
                           (click)="message.showBotSuggestions =! message.showBotSuggestions ">
                         </button>
+                      </p>
                     </div>
 
                     <!-- ---------------button---------------------- -->
@@ -392,20 +398,25 @@
                       <!--                    <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
 
                       <p>
-                        <span [innerHTML]="message.body.markdownText | linkify | ibsformat"></span>
-                        <span class="message-stamp">
-                          <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
-                        </span>
+                        <b
+                          [innerHTML]="message.body.additionalDetails.interactive.header.text | linkify | ibsformat"></b>
+                        <br>
+                        <span
+                          [innerHTML]="message.body.additionalDetails.interactive.body.text | linkify | ibsformat"></span>
                       </p>
 
 
                       <ul class="structured-actions">
                         <li *ngFor="let button of message.body.buttons">{{button.title}}</li>
                       </ul>
+                      <span class="message-stamp">
+                        <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
+                      </span>
                       <button mat-icon-button class="user_settings"
                         *ngIf="((message.header.sender.type | lowercase) == 'customer') && message.botSuggestions"
                         (click)="message.showBotSuggestions =! message.showBotSuggestions ">
                       </button>
+
                     </div>
 
                     <!-- --------------------sticker--------------------- -->

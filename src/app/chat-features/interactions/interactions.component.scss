@@ -403,8 +403,11 @@
           line-height: 15px;
           word-break: break-word;
           clear: both;
-          padding-right: 2.5em;
           white-space: pre-line;
+          &.plain-text-p{
+           padding-right: 2em;
+
+          }
         }
         .message-stamp {
           position: relative;
@@ -566,13 +569,14 @@
 
       .chat-time {
         color: #6e6e6e;
-        margin-left: 5px;
-        vertical-align: middle;
-        align-self: center;
-        font-weight: normal;
-        font-size: 10px;
-        position: relative;
-        top: 5px;
+    margin-left: 5px;
+    vertical-align: middle;
+    align-self: center;
+    font-weight: normal;
+    font-size: 10px;
+    position: relative;
+    top: 5px;
+    float: right;
       }
 
       //Agent Chat Message Right align
@@ -1451,7 +1455,7 @@
   background-position: center;
   background-repeat: no-repeat;
   height: 15px;
-  top: 9px;
+  bottom: 4px;
 }
 
 .chat-intents {
