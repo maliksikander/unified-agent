@@ -13,8 +13,7 @@
             </p>
           </div>
           <div class="requested-name">
-            <p>{{request.channelSession.customer.firstName ? request.channelSession.customer.firstName : 'UNIDENTIFIED
-              CUSTOMER' }}</p>
+            <p>{{request.channelSession.customer.firstName ? request.channelSession.customer.firstName : 'UNIDENTIFIED CUSTOMER' }}</p>
           </div>
           <div class="notification-trigger">
             <button (click)="getTopicSubscription(request.topicId,request.taskId)" class="mat-flat-button"
