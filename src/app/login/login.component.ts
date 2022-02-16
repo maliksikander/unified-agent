@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
     private _router: Router,
     private fb: FormBuilder,
     private _appConfigService: appConfigService,
-    private _isLoggedInservice: isLoggedInService,
+    private _isLoggedInservice: isLoggedInService
   ) {
     this.loginForm = this.fb.group({
       password: ["", [Validators.required]],
@@ -33,5 +33,4 @@ export class LoginComponent implements OnInit {
   login() {
     this._isLoggedInservice.fetchCCuserAndMoveToLogin(this.loginForm.value);
   }
-
 }
