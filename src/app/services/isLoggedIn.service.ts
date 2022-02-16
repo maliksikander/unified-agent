@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { appConfigService } from "./appConfig.service";
 import { cacheService } from "./cache.service";
+import { finesseService } from "./finesse.service";
 import { httpService } from "./http.service";
 import { sharedService } from "./shared.service";
 import { socketService } from "./socket.service";
@@ -18,7 +19,8 @@ export class isLoggedInService {
     private _socketService: socketService,
     private _cacheService: cacheService,
     private _httpService: httpService,
-    private _sharedService: sharedService
+    private _sharedService: sharedService,
+    private _finesseService: finesseService
   ) {
     this.cacheAgentFcmKey();
 
@@ -55,6 +57,9 @@ export class isLoggedInService {
       authWithSSO: authWithSSO
     };
     this.fetchCCuserAndMoveToLogin(obj);
+    this._finesseService.finesseAgent.extention = extension;
+    this._finesseService.finesseAgent.loginId = username;
+    this._finesseService.finesseAgent.password = password;
   }
 
   fetchCCuserAndMoveToLogin(obj: { username: string, password: string, authWithSSO?: boolean }) {

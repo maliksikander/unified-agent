@@ -5,14 +5,14 @@
         <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #mainMenu="matMenu">
-<!--        <button routerLink="/supervisor/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"-->
-<!--          mat-menu-item class="main-menu-item">-->
-<!--          <span>Dashboard</span>-->
-<!--        </button>-->
-<!--        <button routerLink="/supervisor/announcement" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"-->
-<!--          mat-menu-item class="main-menu-item">-->
-<!--          <span>Team Announcements </span>-->
-<!--        </button>-->
+        <!--        <button routerLink="/supervisor/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"-->
+        <!--          mat-menu-item class="main-menu-item">-->
+        <!--          <span>Dashboard</span>-->
+        <!--        </button>-->
+        <!--        <button routerLink="/supervisor/announcement" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"-->
+        <!--          mat-menu-item class="main-menu-item">-->
+        <!--          <span>Team Announcements </span>-->
+        <!--        </button>-->
         <button routerLink="/customers/chats" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
           mat-menu-item class="main-menu-item">
           <span>Customer Conversation View</span>
@@ -109,71 +109,74 @@
             </div>
           </button>
           <!-- <span class="agent-time">{{display | date :"HH:mm:ss":'UTC'}}</span> -->
-          <span><countup-timer class="agent-time" [countUpTimerConfig]="timerConfigs"></countup-timer></span>
+          <span>
+            <countup-timer class="agent-time" [countUpTimerConfig]="timerConfigs"></countup-timer>
+          </span>
 
 
 
-          <mat-menu  (click)="$event.stopPropagation()" #menu="matMenu" class="custom-user-menu matMenu"
+          <mat-menu (click)="$event.stopPropagation()" #menu="matMenu" class="custom-user-menu matMenu"
             xPosition="after">
             <div class="menu-list-content" (click)="$event.stopPropagation()">
               <div *ngIf="stateView">
-              <div class="main-showcase">
-                <div class="agent-showcase">
-                  <img src="assets/images/dummy-user.svg" alt="Agent">
+                <div class="main-showcase">
+                  <div class="agent-showcase">
+                    <img src="assets/images/dummy-user.svg" alt="Agent">
+                  </div>
+                  <h4 [matTooltip]="agent.name">{{_cacheService.agent.username}}</h4>
+                  <span>(Ext: {{agent.extension}})</span>
                 </div>
-                <h4 [matTooltip]="agent.name">{{_cacheService.agent.username}}</h4>
-                <span>(Ext: {{agent.extension}})</span>
-              </div>
 
-              <p class="menu-trigger-custom state-trigger">
-                <span class="inner-btn">State</span>
+                <p class="menu-trigger-custom state-trigger">
+                  <span class="inner-btn">State</span>
 
-                <button mat-button #stateTrigger="matMenuTrigger" [matMenuTriggerFor]="agentState"   (click)="$event.stopPropagation()"
-                  class="ready {{_cacheService.agentPresence.state.name | lowercase}} mat-menu-item-submenu-trigger">
-                  <span>{{(_cacheService.agentPresence.state.name | removeUnderscore) +
-                    (_cacheService.agentPresence.state.reasonCode != null ?' - '+
-                    _cacheService.agentPresence.state.reasonCode.name :
-                    '') }}</span>
-                </button>
-              </p>
-              <!-- <p class="menu-trigger-custom logged-time ">{{display | date :"HH:mm:ss":'UTC'}} -->
+                  <button mat-button #stateTrigger="matMenuTrigger" [matMenuTriggerFor]="agentState"
+                    (click)="$event.stopPropagation()"
+                    class="ready {{_cacheService.agentPresence.state.name | lowercase}} mat-menu-item-submenu-trigger">
+                    <span>{{(_cacheService.agentPresence.state.name | removeUnderscore) +
+                      (_cacheService.agentPresence.state.reasonCode != null ?' - '+
+                      _cacheService.agentPresence.state.reasonCode.name :
+                      '') }}</span>
+                  </button>
+                </p>
+                <!-- <p class="menu-trigger-custom logged-time ">{{display | date :"HH:mm:ss":'UTC'}} -->
                 <!-- <p class="menu-trigger-custom logged-time "><countup-timer [countUpTimerConfig]="timerConfigs"></countup-timer></p> -->
 
 
 
-              <div class="mrd-states" (click)="$event.stopPropagation()">
-                <span class="mrd-text">Change MRD State</span>
-                <div *ngFor="let agentMrdState of _cacheService.agentPresence.agentMrdStates">
-                  <p class="menu-trigger-custom select-state {{agentMrdState.state | lowercase}}">
-                    <span class="inner-btn ">{{agentMrdState.mrd.name}}<small>({{agentMrdState.state}})</small></span>
-                    <mat-slide-toggle (change)="changeMRD($event,agentMrdState)"
-                      [checked]="agentMrdState.state | getmrdswitches" color="primary"></mat-slide-toggle>
-                  </p>
+                <div class="mrd-states" (click)="$event.stopPropagation()">
+                  <span class="mrd-text">Change MRD State</span>
+                  <div *ngFor="let agentMrdState of _cacheService.agentPresence.agentMrdStates">
+                    <p class="menu-trigger-custom select-state {{agentMrdState.state | lowercase}}">
+                      <span class="inner-btn ">{{agentMrdState.mrd.name}}<small>({{agentMrdState.state}})</small></span>
+                      <mat-slide-toggle (change)="changeMRD($event,agentMrdState)"
+                        [checked]="agentMrdState.state | getmrdswitches" color="primary"></mat-slide-toggle>
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <p class="menu-trigger-custom select-language">
-                <span class="inner-btn">Selected Language</span>
+                <p class="menu-trigger-custom select-language">
+                  <span class="inner-btn">Selected Language</span>
 
-                <!--                <button mat-menu-item [matMenuTriggerFor]="languageSelection" class="language-trigger">-->
-                <!--                  <img src="assets/flags/{{languageFlag}}" width="20"-->
-                <!--                    onError="this.src='assets/flags/generic.png';">{{languageName}} </button>-->
-
+                  <!--                <button mat-menu-item [matMenuTriggerFor]="languageSelection" class="language-trigger">-->
+                  <!--                  <img src="assets/flags/{{languageFlag}}" width="20"-->
+                  <!--                    onError="this.src='assets/flags/generic.png';">{{languageName}} </button>-->
 
 
-                <button (click)="$event.stopPropagation(); updateLanguage()" mat-button class="language-trigger">
-                  <img src="assets/flags/{{languageFlag}}" width="20" onError="this.src='assets/flags/generic.png';">
-                  {{languageName}} <mat-icon>keyboard_arrow_right</mat-icon>
-                </button>
-              </p>
+
+                  <button (click)="$event.stopPropagation(); updateLanguage()" mat-button class="language-trigger">
+                    <img src="assets/flags/{{languageFlag}}" width="20" onError="this.src='assets/flags/generic.png';">
+                    {{languageName}} <mat-icon>keyboard_arrow_right</mat-icon>
+                  </button>
+                </p>
 
 
-              <p class="menu-trigger-custom logged-out-trigger">
-                <button mat-menu-item (click)="logoutReasonList = true; stateView = false;">
-                  Logout
-                  <mat-icon style="color: gray;font-size: 20px;">exit_to_app</mat-icon>
-                </button>
-              </p>
+                <p *ngIf="_finesseService.finesseAgent.loginId == ''" class="menu-trigger-custom logged-out-trigger">
+                  <button mat-menu-item (click)="logoutReasonList = true; stateView = false;">
+                    Logout
+                    <mat-icon style="color: gray;font-size: 20px;">exit_to_app</mat-icon>
+                  </button>
+                </p>
               </div>
 
               <!-- Language list -->
@@ -204,20 +207,23 @@
             </div>
           </mat-menu>
           <mat-menu #agentState="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
-            <button (click)="changeState(1); $event.stopPropagation(); closeStateMenu(stateTrigger)" mat-menu-item class="state-trigger">
+            <button (click)="changeState(1); $event.stopPropagation(); closeStateMenu(stateTrigger)" mat-menu-item
+              class="state-trigger">
 
               <mat-icon style="color: limegreen;">lens
               </mat-icon>
               READY
             </button>
-            <button (click)="changeState(0); $event.stopPropagation(); closeStateMenu(stateTrigger)" mat-menu-item class="state-trigger">
+            <button (click)="changeState(0); $event.stopPropagation(); closeStateMenu(stateTrigger)" mat-menu-item
+              class="state-trigger">
               <mat-icon style="color:#b4b4b4;">
                 lens
               </mat-icon>
               NOT READY
             </button>
             <div *ngFor="let reason of reasonCodes">
-              <button *ngIf="(reason.type | lowercase) == 'not_ready'" (click)="changeState(reason); $event.stopPropagation(); closeStateMenu(stateTrigger)" mat-menu-item
+              <button *ngIf="(reason.type | lowercase) == 'not_ready'"
+                (click)="changeState(reason); $event.stopPropagation(); closeStateMenu(stateTrigger)" mat-menu-item
                 class="state-trigger">
                 <mat-icon style="color:#b4b4b4;">
                   lens
@@ -234,16 +240,16 @@
 
 
 
-<!--  <mat-sidenav-container (backdropClick)="close()" hasBackdrop="true" class="right-canned-message-list announcement-tab"-->
-<!--    [ngClass]="{'mat-drawer-opened': sidenav?.opened}">-->
-<!--    <mat-sidenav #sidenav position="end" (keydown.escape)="close()" mode="over" disableClose mode="over">-->
+  <!--  <mat-sidenav-container (backdropClick)="close()" hasBackdrop="true" class="right-canned-message-list announcement-tab"-->
+  <!--    [ngClass]="{'mat-drawer-opened': sidenav?.opened}">-->
+  <!--    <mat-sidenav #sidenav position="end" (keydown.escape)="close()" mode="over" disableClose mode="over">-->
 
 
-<!--      <div class="announcement-tab-header">-->
-<!--        <h4>Announcements</h4>-->
-<!--      </div>-->
+  <!--      <div class="announcement-tab-header">-->
+  <!--        <h4>Announcements</h4>-->
+  <!--      </div>-->
 
-<!--    </mat-sidenav>-->
+  <!--    </mat-sidenav>-->
 
-<!--  </mat-sidenav-container>-->
+  <!--  </mat-sidenav-container>-->
 </div>
