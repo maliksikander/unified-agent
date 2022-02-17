@@ -1,6 +1,6 @@
-import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+declare var config, callTypes;
 
 @Injectable()
 export class appConfigService {
@@ -20,6 +20,35 @@ export class appConfigService {
         this.config.FILE_SERVER_URL = e.FILE_SERVER_URL;
         this.config.CIM_CUSTOMER_URL = e.CIM_CUSTOMER_URL;
         this.config.BOT_FRAMEWORK_URL = e.BOT_FRAMEWORK_URL;
+
+
+        config = {
+
+          domain: e.domain,
+          boshUrl: e.boshUrl,
+          finesseFlavor: e.finesseFlavor,
+          callVariable: e.callVariable
+        }
+
+        callTypes = {
+
+          inboundTypeCCE: e.inboundTypeCCE,
+          inboundTypeCCX: e.inboundTypeCCX,
+          directType: e.directType,
+          outboundType: e.outboundType,
+          outboundType2: e.outboundType2,
+          outboundCampaignType: e.outboundCampaignType,
+          outboundPreviewCampaignTypeCCX: e.outboundPreviewCampaignTypeCCX,
+          outboundPreviewCampaignTypeCCE: e.outboundPreviewCampaignTypeCCE,
+          directTransferTypeCCE: e.directTransferTypeCCE,
+          directTransferTypeCCX: e.directTransferTypeCCX,
+          consultType: e.consultType,
+          consultTransferTypeCCE: e.consultTransferTypeCCE,
+          consultTransferTypeCCX: e.consultTransferTypeCCX,
+          conferenceType: e.conferenceType,
+
+        }
+
       });
   }
 }

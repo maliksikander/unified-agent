@@ -100,21 +100,6 @@ export class finesseService {
 
         const voiceMrdObj = this.getVoiceMrd(agentPresence.agentMrdStates);
 
-        // for agent ready state
-        // if (agentPresence.state.name.toLowerCase() == "ready") {
-
-        //     // if agent state is ready and finese state is also ready and voice mrd state is not ready then make the voice mrd ready
-        //     if (this.finesseAgentState.state.toLowerCase() == "ready" && voiceMrdObj.state.toLowerCase() != "ready") {
-        //         this._socketService.emit("changeAgentState", {
-        //             agentId: this._cacheService.agent.id,
-        //             action: "agentMRDState",
-        //             state: "READY",
-        //             mrdId: voiceMrdObj.mrd.id
-        //         });
-        //     }
-
-        // }
-
         if (voiceMrdObj.state.toLowerCase() == "ready") {
 
             // if voice mrd state is ready and finesse state is not ready then change the finsess state to ready
@@ -146,7 +131,7 @@ export class finesseService {
         } else if (event.event.toLowerCase() == "xmppevent") {
 
             if (event.response.description == "Connection Established, XMPP Status is Connected") {
-                this._snackbarService.open("Synsying state with cisco", "succ");
+                this._snackbarService.open("CISCO : Synsying state with cisco", "succ");
 
                 executeCommands({ "action": "getNotReadyLogoutReasons" });
             }
@@ -156,7 +141,7 @@ export class finesseService {
         } else if (event.event.toLowerCase() == "error") {
 
             console.log("error " + event.response.description);
-            this._snackbarService.open(event.response.description, "err");
+            this._snackbarService.open("CISCO :" + event.response.description, "err");
 
         } else if (event.event.toLowerCase() == "notreadylogoutreasoncode") {
             this.finesseLogoutReasonCodes = null;
@@ -201,7 +186,7 @@ export class finesseService {
                         this._socketService.emit("changeAgentState", {
                             agentId: this._cacheService.agent.id,
                             action: "agentMRDState",
-                            state: "READY", 
+                            state: "READY",
                             mrdId: voiceMrdObj.mrd.id
                         });
 
