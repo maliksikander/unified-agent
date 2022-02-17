@@ -50,6 +50,7 @@ export class finesseService {
             if (!this.isAlreadysubscribed) {
 
                 this.subscribeToCiscoEvents();
+                this.isAlreadysubscribed = true;
             } else {
                 this.changeFinesseState(agentPresence);
             }
@@ -82,8 +83,6 @@ export class finesseService {
 
     subscribeToCiscoEvents() {
 
-        this._snackbarService.open("Synsying state with cisco", "succ");
-
         let command = {
             "action": "login",
             "parameter":
@@ -102,31 +101,33 @@ export class finesseService {
         const voiceMrdObj = this.getVoiceMrd(agentPresence.agentMrdStates);
 
         // for agent ready state
-        if (agentPresence.state.name.toLowerCase() == "ready") {
+        // if (agentPresence.state.name.toLowerCase() == "ready") {
 
-            // if agent state is ready and finese state is also ready and voice mrd state is not ready then make the voice mrd ready
-            if (this.finesseAgentState.state.toLowerCase() == "ready" && voiceMrdObj.state.toLowerCase() != "ready") {
-                this._socketService.emit("changeAgentState", {
-                    agentId: this._cacheService.agent.id,
-                    action: "agentMRDState",
-                    state: "READY",
-                    mrdId: voiceMrdObj.mrd.id
-                });
-            }
+        //     // if agent state is ready and finese state is also ready and voice mrd state is not ready then make the voice mrd ready
+        //     if (this.finesseAgentState.state.toLowerCase() == "ready" && voiceMrdObj.state.toLowerCase() != "ready") {
+        //         this._socketService.emit("changeAgentState", {
+        //             agentId: this._cacheService.agent.id,
+        //             action: "agentMRDState",
+        //             state: "READY",
+        //             mrdId: voiceMrdObj.mrd.id
+        //         });
+        //     }
 
-            // if agent state is ready and finesse state is not ready then change the finsess state to ready
+        // }
+
+        if (voiceMrdObj.state.toLowerCase() == "ready") {
+
+            // if voice mrd state is ready and finesse state is not ready then change the finsess state to ready
             if (this.finesseAgentState.state.toLowerCase() != "ready") {
                 executeCommands({ "action": "makeReady" });
             }
 
-            // for agent not ready state
-        } else if (agentPresence.state.name.toLowerCase() == "not_ready") {
 
-            // if agent state is not_ready and finesse state is not not_ready then change the finsess state to not_ready
+        } else if (voiceMrdObj.state.toLowerCase() == "not_ready") {
+            // if voice mrd state is not_ready and finesse state is not not_ready then change the finsess state to not_ready
             if (this.finesseAgentState.state.toLowerCase() != "not_ready") {
                 executeCommands({ "action": "makeNotReadyWithReason", "parameter": { "reasonCode": this.finesseNotReadyReasonCodes[0].code } });
             }
-
         }
 
     }
@@ -134,7 +135,8 @@ export class finesseService {
 
 
 
-    clientCallback = function (event) {
+    clientCallback = (event) => {
+
         console.log("CTI event ", event);
 
         if (event.event.toLowerCase() == "agentstate") {
@@ -144,15 +146,17 @@ export class finesseService {
         } else if (event.event.toLowerCase() == "xmppevent") {
 
             if (event.response.description == "Connection Established, XMPP Status is Connected") {
+                this._snackbarService.open("Synsying state with cisco", "succ");
+
                 executeCommands({ "action": "getNotReadyLogoutReasons" });
             }
 
 
 
         } else if (event.event.toLowerCase() == "error") {
+
+            console.log("error " + event.response.description);
             this._snackbarService.open(event.response.description, "err");
-
-
 
         } else if (event.event.toLowerCase() == "notreadylogoutreasoncode") {
             this.finesseLogoutReasonCodes = null;
@@ -167,10 +171,7 @@ export class finesseService {
     handleAgentStateFromFinesse(resp) {
 
         this.finesseAgentState.state = resp.state;
-        this.finesseAgentState.reasonId = resp.reasonCode.id;
-
-        const voiceMrdObj = this.getVoiceMrd(this._cacheService.agentPresence.agentMrdStates);
-
+        this.finesseAgentState.reasonId = resp.reasonCode != undefined ? resp.reasonCode.id : null;
 
         if (resp.state.toLowerCase() == "logout") {
 
@@ -180,38 +181,51 @@ export class finesseService {
                 state: { name: "LOGOUT", reasonCode: '' }
             });
 
+        } else if (resp.state.toLowerCase() == "not_ready" || resp.state.toLowerCase() == "ready") {
 
-        } else if (resp.state != voiceMrdObj.state) {
+            const voiceMrdObj = this.getVoiceMrd(this._cacheService.agentPresence.agentMrdStates);
 
-            if (resp.state.toLowerCase() == "ready") {
+            if (resp.state != voiceMrdObj.state) {
 
-                if (this._cacheService.agentPresence.state.name.toLowerCase() != "ready") {
-                    // If state in finesse is ready and aur agent state in not readtthen make the agent also ready in our system,
-                    // and mrd state will ready on incoming agent state checking on next event
-                    this._socketService.emit("changeAgentState", {
-                        agentId: this._cacheService.agent.id,
-                        action: "agentState",
-                        state: { name: "READY", reasonCode: null }
-                    });
-                } else {
+                if (resp.state.toLowerCase() == "ready") {
+
+                    if (this._cacheService.agentPresence.state.name.toLowerCase() != "ready") {
+                        // If state in finesse is ready and aur agent state in not readtthen make the agent ready first
+                        // and then make voice mrd ready
+                        this._socketService.emit("changeAgentState", {
+                            agentId: this._cacheService.agent.id,
+                            action: "agentState",
+                            state: { name: "READY", reasonCode: null }
+                        });
+
+                        this._socketService.emit("changeAgentState", {
+                            agentId: this._cacheService.agent.id,
+                            action: "agentMRDState",
+                            state: "READY", 
+                            mrdId: voiceMrdObj.mrd.id
+                        });
+
+
+                    } else {
+                        this._socketService.emit("changeAgentState", {
+                            agentId: this._cacheService.agent.id,
+                            action: "agentMRDState",
+                            state: "READY",
+                            mrdId: voiceMrdObj.mrd.id
+                        });
+                    }
+
+                } else if (resp.state.toLowerCase() == "not_ready") {
+
+                    // If state in finesse is not_ready then make the agent voice mrd not_ready
+
                     this._socketService.emit("changeAgentState", {
                         agentId: this._cacheService.agent.id,
                         action: "agentMRDState",
-                        state: "READY",
+                        state: "NOT_READY",
                         mrdId: voiceMrdObj.mrd.id
                     });
                 }
-
-            } else if (resp.state.toLowerCase() == "not_ready") {
-
-                // If state in finesse is not_ready then make the agent voice mrd not_ready
-
-                this._socketService.emit("changeAgentState", {
-                    agentId: this._cacheService.agent.id,
-                    action: "agentMRDState",
-                    state: "NOT_READY",
-                    mrdId: voiceMrdObj.mrd.id
-                });
             }
 
         }
