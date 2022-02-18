@@ -63,8 +63,11 @@ export class columnPreferences implements OnInit {
     let prefArray: Array<any> = savedPref;
     let finalArray: Array<any> = [];
     prefArray.forEach((item) => {
-      let temp = this.columns.findIndex((item1) => item1.key == item.field);
-      if (temp != -1) finalArray.push(item);
+      let index = this.columns.findIndex((item1) => item1.key == item.field);
+      if (index != -1) {
+        item.header = this.columns[index].label;
+        finalArray.push(item);
+      }
     });
     this.checkedColumns = finalArray;
   }

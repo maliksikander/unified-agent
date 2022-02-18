@@ -32,7 +32,7 @@ export class EditAttributeComponent implements OnInit {
       label: ["", [Validators.required, Validators.maxLength(50), Validators.minLength(1)]],
       description: ["", [Validators.maxLength(100)]],
       type: ["", [Validators.required]],
-      length: ["50", [Validators.pattern("^[0-9]*$"), Validators.required, Validators.min(1), Validators.max(1000)]],
+      length: ["50", [Validators.pattern("^[0-9]*$"), Validators.min(1), Validators.max(1000)]],
       isRequired: [false, [Validators.required]],
       defaultValue: [""],
       isPii: [false, [Validators.required]],
@@ -45,9 +45,8 @@ export class EditAttributeComponent implements OnInit {
   }
 
   patchFormValues() {
-
     // if(this.data.length == null ) this.data.length = ""
-  //  console.log("data==>",this.data)
+    //  console.log("data==>",this.data)
     this.editAttributeForm.patchValue(this.data);
     this.setValidations();
   }
@@ -70,10 +69,16 @@ export class EditAttributeComponent implements OnInit {
     if (schemaObj.isRequired)
       this.editAttributeForm.controls["defaultValue"].setValidators([
         Validators.required,
-        Validators.maxLength(length),
+        // Validators.maxLength(length),
         Validators.pattern(typeDef.regex)
       ]);
-      // console.log("added ==>", this.editAttributeForm);
+
+    if (schemaObj.type == "string") {
+      this.editAttributeForm.controls["length"].setValidators([Validators.required]);
+      this.editAttributeForm.controls["defaultValue"].setValidators([Validators.maxLength(length)]);
+    }
+
+    // console.log("added ==>", this.editAttributeForm);
   }
 
   // to get attribute type list

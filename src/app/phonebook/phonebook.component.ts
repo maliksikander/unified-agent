@@ -154,6 +154,7 @@ export class PhonebookComponent implements OnInit {
       let schemaIndex = this.schemaList.findIndex((item1) => item1.key == item.field);
       if (schemaIndex != -1) {
         item.channelTypes = this.schemaList[schemaIndex].channelTypes;
+        item.header = this.schemaList[schemaIndex].label;
         finalArray.push(item);
       }
     });
