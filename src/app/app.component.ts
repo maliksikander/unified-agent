@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
 
   currentRoute: string;
 
-  constructor(private _finesseService: finesseService, private _router: Router, private _isLoggedInservice: isLoggedInService, private _sharedService: sharedService) { }
+  constructor(public _finesseService: finesseService, private _router: Router, private _isLoggedInservice: isLoggedInService, private _sharedService: sharedService) { }
 
   ngOnInit() {
     this._router.events.subscribe((event: any) => {

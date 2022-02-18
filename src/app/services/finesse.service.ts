@@ -12,10 +12,14 @@ declare var executeCommands;
 export class finesseService {
 
     isAlreadysubscribed: boolean = false;
+    showErr: boolean = false;
     finesseAgent = { loginId: '', password: '', extention: '' };
     finesseAgentState = { state: '', reasonId: '' };
     finesseNotReadyReasonCodes;
     finesseLogoutReasonCodes;
+    ignoreAgentState: boolean = false; // in a particular scnerio when from finesse, agent state to going to ready but in cim agent was 
+    // not_ready, so 1st need to set the agent state ready and then voice mrd state ready so for this need to send two concurrent requests
+    // 1st concurrent request dont need to be listen for which we are using this varibale to ignore that request
 
     constructor(private _snackbarService: snackbarService, private _sharedService: sharedService, public _cacheService: cacheService, private _socketService: socketService) {
         this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
@@ -24,21 +28,6 @@ export class finesseService {
             }
         });
 
-    }
-
-    loginCommand() {
-
-        let command = {
-            "action": "login",
-            "parameter":
-            {
-                "loginId": "716531162",
-                "password": "12345",
-                "extension": "1130",
-                "clientCallbackFunction": this.clientCallback
-            }
-        };
-        executeCommands(command);
     }
 
     handlePresence(agentPresence) {
@@ -52,7 +41,11 @@ export class finesseService {
                 this.subscribeToCiscoEvents();
                 this.isAlreadysubscribed = true;
             } else {
-                this.changeFinesseState(agentPresence);
+                if (this.ignoreAgentState == false) {
+                    this.changeFinesseState(agentPresence);
+                } else {
+                    this.ignoreAgentState = false;
+                }
             }
 
         }
@@ -126,13 +119,14 @@ export class finesseService {
 
         if (event.event.toLowerCase() == "agentstate") {
             this.handleAgentStateFromFinesse(event.response);
+            this.showErr = false;
 
 
         } else if (event.event.toLowerCase() == "xmppevent") {
 
             if (event.response.description == "Connection Established, XMPP Status is Connected") {
                 this._snackbarService.open("CISCO : Synsying state with cisco", "succ");
-
+                this.showErr = false;
                 executeCommands({ "action": "getNotReadyLogoutReasons" });
             }
 
@@ -141,6 +135,7 @@ export class finesseService {
         } else if (event.event.toLowerCase() == "error") {
 
             console.log("error " + event.response.description);
+            this.showErr = true;
             this._snackbarService.open("CISCO :" + event.response.description, "err");
 
         } else if (event.event.toLowerCase() == "notreadylogoutreasoncode") {
@@ -183,12 +178,17 @@ export class finesseService {
                             state: { name: "READY", reasonCode: null }
                         });
 
-                        this._socketService.emit("changeAgentState", {
-                            agentId: this._cacheService.agent.id,
-                            action: "agentMRDState",
-                            state: "READY",
-                            mrdId: voiceMrdObj.mrd.id
-                        });
+                        // for this particular request we dont need to listen its response so making it ignorable when receiving
+                        this.ignoreAgentState = true;
+
+                        setTimeout(() => {
+                            this._socketService.emit("changeAgentState", {
+                                agentId: this._cacheService.agent.id,
+                                action: "agentMRDState",
+                                state: "READY",
+                                mrdId: voiceMrdObj.mrd.id
+                            });
+                        }, 500)
 
 
                     } else {

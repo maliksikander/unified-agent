@@ -18,3 +18,13 @@
   min-height: calc(100% - 40px);
   background: #fff;
 }
+
+.finesse-err{
+  height: 14px;
+  font-size: 10px;
+  background: #ff0000ad;
+  color: white;
+  text-align: center;
+  position: relative;
+  line-height: 15px;
+}
