@@ -132,7 +132,7 @@
                   sameElse: 'dddd, MMM YYYY'} }}</span>
               </div>
               <div *ngIf="(message.body.type | lowercase) != 'systemnotification' && message.header.channelSession "
-                class="chat-message {{((index == 0) || ((conversation.messages[index-1].body.type | lowercase) != 'systemnotification' ) && ((message.header.sender | getSenderId) == (conversation.messages[index-1].header.sender | getSenderId))) ? 'same-sender-msg' : ''}} {{message.header.status=='sending' ? 'low-opacity' : ''}}  {{message.body.type | lowercase}} {{  message.header.replyToMessageId != null  ? 'quoted-message-main' : ''}}"
+                class="chat-message {{((index == 0) || ((conversation.messages[index-1].body.type | lowercase) != 'systemnotification' ) && ((message.header.sender | getSenderId) == (conversation.messages[index-1].header.sender | getSenderId) && message.body.type == conversation.messages[index-1].body.type && message.header.replyToMessageId == null && message.header.channelSession.channel.channelType.id == conversation.messages[index-1].header.channelSession.channel.channelType.id  )) ? 'same-sender-msg' : ''}} {{message.header.status=='sending' ? 'low-opacity' : ''}}  {{message.body.type | lowercase}} {{  message.header.replyToMessageId != null  ? 'quoted-message-main' : ''}}"
                 [ngClass]=" ((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message ' ">
                 <div class="profile-pic">
                   <div class="active-channel channel-icon">
