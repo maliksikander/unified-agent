@@ -200,6 +200,7 @@ export class CustomerActionsComponent implements OnInit {
       let patchObj = JSON.parse(JSON.stringify(this.userInfo));
       delete patchObj._id, patchObj.__v;
       this.customerForm.patchValue(patchObj);
+      this.customerForm.markAllAsTouched();
     } catch (e) {
       console.error("[Patch Error]:", e);
     }
