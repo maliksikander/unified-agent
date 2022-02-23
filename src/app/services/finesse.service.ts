@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, Optional } from "@angular/core";
 import { cacheService } from "./cache.service";
 import { sharedService } from "./shared.service";
 import { snackbarService } from "./snackbar.service";
@@ -22,16 +22,21 @@ export class finesseService {
     // 1st concurrent request dont need to be listen for which we are using this varibale to ignore that request
 
     constructor(private _snackbarService: snackbarService, private _sharedService: sharedService, public _cacheService: cacheService, private _socketService: socketService) {
+    
+    }
+
+    initMe() {
         this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
             if (e.msg == "stateChanged" && this.finesseAgent.loginId != '') {
                 this.handlePresence(e.data);
             }
         });
-
     }
 
+    // incoming states from CIM
     handlePresence(agentPresence) {
 
+        // check if the MRDs have a voice mrd in it or not
         let hasVoicMrd: boolean = this.isVoiceMrdExists(agentPresence.agentMrdStates);
 
         if (hasVoicMrd) {
@@ -53,6 +58,7 @@ export class finesseService {
     }
 
 
+    // by passing mrds list into it, it will return true if voide mrd exists in it other wise return false
     isVoiceMrdExists(mrds) {
 
         let found: boolean = false;
@@ -64,6 +70,7 @@ export class finesseService {
         return found;
     }
 
+    // from the list of mrds, it will return voice mrd
     getVoiceMrd(mrds) {
         let voiceMrd = mrds.find(e => {
             if (e.mrd.name.toLowerCase() == "voice") {
@@ -74,6 +81,8 @@ export class finesseService {
         return voiceMrd;
     }
 
+
+    // this will used to subscribe to cisco events
     subscribeToCiscoEvents() {
 
         let command = {
@@ -89,6 +98,8 @@ export class finesseService {
         executeCommands(command);
     }
 
+
+    // send the commands to the finesse
     changeFinesseState(agentPresence) {
 
         const voiceMrdObj = this.getVoiceMrd(agentPresence.agentMrdStates);
@@ -113,6 +124,7 @@ export class finesseService {
 
 
 
+    // this will call when an event from the CTI library received
     clientCallback = (event) => {
 
         console.log("CTI event ", event);
@@ -148,8 +160,11 @@ export class finesseService {
 
     }
 
+
+    // if the receiving event from the CISCO is agentState then this will be called
     handleAgentStateFromFinesse(resp) {
 
+        // saving the current finesse states in memory
         this.finesseAgentState.state = resp.state;
         this.finesseAgentState.reasonId = resp.reasonCode != undefined ? resp.reasonCode.id : null;
 
