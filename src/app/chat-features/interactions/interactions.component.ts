@@ -74,7 +74,7 @@ export class InteractionsComponent implements OnInit {
   constructor(
     private _sharedService: sharedService,
     public _cacheService: cacheService,
-    private _socketService: socketService,
+    public _socketService: socketService,
     private dialog: MatDialog,
     private _snackbarService: snackbarService,
     public _appConfigService: appConfigService,
