@@ -631,7 +631,7 @@
 
     </div>
 
-    <div class="chat-footer" [ngClass]="{'textarea-disable': conversation.activeChannelSessions.length == 0}">
+    <div class="chat-footer" [ngClass]="{'textarea-disable': !_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0}">
       <div *ngIf="currentScrollPosition < 60 && showNewMessageNotif == false"
         (click)="downTheScrollAfterMilliSecs(0,'smooth')" class="jump-bottom slide-in-bottom new-msg-notif">
         <span>
@@ -659,7 +659,7 @@
         <form class="reply-form">
           <label class="count-reply">{{replyInput.value.length}}/200</label>
           <div class="mat-form-field chat-area" [ngClass]="{'expand-area-height':expanedHeight > 50}">
-            <textarea [disabled]="conversation.activeChannelSessions.length == 0"
+            <textarea [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0"
               (keyup.enter)="onSend(replyInput.value); replyInput.value = null" (click)="onTextAreaClick()"
               [attr.data-emoji-picker]="conversation.activeChannelSessions.length > 0 ? true : false"
               [(ngModel)]="message" (keyup)="onKey($event)" name="message" [matAutocomplete]="auto" matInput

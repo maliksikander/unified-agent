@@ -22,7 +22,7 @@ export class finesseService {
     // 1st concurrent request dont need to be listen for which we are using this varibale to ignore that request
 
     constructor(private _snackbarService: snackbarService, private _sharedService: sharedService, public _cacheService: cacheService, private _socketService: socketService) {
-    
+
     }
 
     initMe() {
@@ -140,6 +140,9 @@ export class finesseService {
                 this._snackbarService.open("CISCO : Synsying state with cisco", "succ");
                 this.showErr = false;
                 executeCommands({ "action": "getNotReadyLogoutReasons" });
+            } else if (event.response.description == "XMPP Status is Disconnected!") {
+                this.showErr = true;
+                this._snackbarService.open("XMPP Status is Disconnected!", "err");
             }
 
 

@@ -79,7 +79,7 @@ export class InteractionsComponent implements OnInit {
     private _snackbarService: snackbarService,
     public _appConfigService: appConfigService,
     private _httpService: httpService
-  ) {}
+  ) { }
   ngOnInit() {
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
@@ -91,7 +91,7 @@ export class InteractionsComponent implements OnInit {
     // }, 500);
   }
 
-  emoji() {}
+  emoji() { }
 
   onSend(text) {
     text = text.trim();
@@ -172,16 +172,16 @@ export class InteractionsComponent implements OnInit {
   downTheScrollAfterMilliSecs(milliseconds, behavior) {
     setTimeout(() => {
       try {
-        document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior });
-      } catch (err) {}
+        document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: 'nearest', inline: 'start' });
+      } catch (err) { }
     }, milliseconds);
   }
 
   upTheScrollAfterMilliSecs(milliseconds, behavior) {
     setTimeout(() => {
       try {
-        document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior });
-      } catch (err) {}
+        document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: 'nearest', inline: 'start' });
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -242,7 +242,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
 
   uploadFile(files) {

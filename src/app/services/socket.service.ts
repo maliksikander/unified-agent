@@ -12,7 +12,7 @@ import { soundService } from "./sounds.service";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { httpService } from "./http.service";
 import { v4 as uuidv4 } from "uuid";
- //const mockTopicData: any = require("../mocks/topicData.json");
+ const mockTopicData: any = require("../mocks/topicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -20,6 +20,7 @@ import { v4 as uuidv4 } from "uuid";
 export class socketService {
   socket: any;
   uri: string;
+  isSocketConnected : boolean = false;
   conversations: any = [];
   conversationIndex = -1;
   private _conversationsListener: BehaviorSubject<any> = new BehaviorSubject([]);
@@ -37,7 +38,7 @@ export class socketService {
     private ngxService: NgxUiLoaderService,
     private _httpService: httpService
   ) {
-   // this.onTopicData(mockTopicData, "12345");
+    this.onTopicData(mockTopicData, "12345");
   }
 
   connectToSocket() {
@@ -64,6 +65,7 @@ export class socketService {
     });
 
     this.socket.on("connect_error", (err) => {
+      this.isSocketConnected = false;
       this.ngxService.stop();
       try {
         console.error("socket connect_error ", err.data && err.data.content ? err.data.content : err);
@@ -82,6 +84,7 @@ export class socketService {
 
     this.socket.on("connect", (e) => {
       this.ngxService.stop();
+      this.isSocketConnected = true;
       console.log("socket connect " + e);
       if (this._router.url == "/login") {
         this._router.navigate(["customers"]);
@@ -94,6 +97,8 @@ export class socketService {
   subscribeToSocketEvents() {
     this.socket.on("disconnect", (reason) => {
       console.error("socket disconnect " + reason);
+
+      this.isSocketConnected = false;
 
       // this means that server forcefully disconnects the socket connection
       if (reason == "io server disconnect") {
