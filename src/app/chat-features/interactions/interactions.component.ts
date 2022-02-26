@@ -172,7 +172,7 @@ export class InteractionsComponent implements OnInit {
   downTheScrollAfterMilliSecs(milliseconds, behavior) {
     setTimeout(() => {
       try {
-        document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: 'nearest', inline: 'start' });
+        document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: 'nearest' });
       } catch (err) { }
     }, milliseconds);
   }
@@ -180,7 +180,7 @@ export class InteractionsComponent implements OnInit {
   upTheScrollAfterMilliSecs(milliseconds, behavior) {
     setTimeout(() => {
       try {
-        document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: 'nearest', inline: 'start' });
+        document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: 'nearest'});
       } catch (err) { }
     }, milliseconds);
   }
@@ -283,7 +283,7 @@ export class InteractionsComponent implements OnInit {
       body: { markdownText: "", type: "" }
     };
     let lastActiveChannelSession = this.conversation.activeChannelSessions[this.conversation.activeChannelSessions.length - 1];
-    if (lastActiveChannelSession) {
+    if (lastActiveChannelSession && this._socketService.isSocketConnected) {
       let sendingActiveChannelSession = JSON.parse(JSON.stringify(lastActiveChannelSession));
       delete sendingActiveChannelSession["webChannelData"];
 
@@ -340,7 +340,7 @@ export class InteractionsComponent implements OnInit {
         this.message = "";
       }, 40);
     } else {
-      this._snackbarService.open("No active channel session available", "err");
+      this._snackbarService.open("Unable to send the message at the moment ", "err");
     }
   }
 

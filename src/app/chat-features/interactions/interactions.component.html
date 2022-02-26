@@ -773,7 +773,7 @@
 
             <button style="cursor: pointer;" class="send-btn attachment-btn composer-trigger" mat-icon-button
               *ngIf="replyInput.value.length < 1 && conversation.activeChannelSessions.length > 0">
-              <input accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx" multiple #myFileInput
+              <input accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx" #myFileInput
                 type="file" (change)="uploadFile($event.target.files)" name="ef_chatbox_chat_file_upload"
                 id="uploadFileBtn" class="file-upload-input">
             </button>

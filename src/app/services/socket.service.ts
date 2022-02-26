@@ -12,7 +12,7 @@ import { soundService } from "./sounds.service";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { httpService } from "./http.service";
 import { v4 as uuidv4 } from "uuid";
- //const mockTopicData: any = require("../mocks/topicData.json");
+//const mockTopicData: any = require("../mocks/topicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -20,7 +20,7 @@ import { v4 as uuidv4 } from "uuid";
 export class socketService {
   socket: any;
   uri: string;
-  isSocketConnected : boolean = false;
+  isSocketConnected: boolean = false;
   conversations: any = [];
   conversationIndex = -1;
   private _conversationsListener: BehaviorSubject<any> = new BehaviorSubject([]);
@@ -38,7 +38,7 @@ export class socketService {
     private ngxService: NgxUiLoaderService,
     private _httpService: httpService
   ) {
-  //  this.onTopicData(mockTopicData, "12345");
+    //  this.onTopicData(mockTopicData, "12345");
   }
 
   connectToSocket() {
@@ -302,16 +302,23 @@ export class socketService {
         this.handleAgentSubscription(cimEvent, topicId);
       }
     } else {
-      this.conversations.push({
+
+      this._snackbarService.open("Unable to process event, unsubscribing...", "err");
+      this.emit("topicUnsubscription", {
         topicId: topicId,
-        messages: [cimEvent.data],
-        activeChannelSessions: [cimEvent.data.header.channelSession],
-        unReadCount: undefined,
-        index: ++this.conversationIndex,
-        state: "ACTIVE",
-        customerSuggestions: cimEvent.data.header.channelSession.customerSuggestions,
-        firstChannelSession: cimEvent.data.header.channelSession
+        agentId: this._cacheService.agent.id
       });
+      // console.log("Topic data not available for this cimEvent, creating...");
+      // this.conversations.push({
+      //   topicId: topicId,
+      //   messages: [cimEvent.data],
+      //   activeChannelSessions: [cimEvent.data.header.channelSession],
+      //   unReadCount: undefined,
+      //   index: ++this.conversationIndex,
+      //   state: "ACTIVE",
+      //   customerSuggestions: cimEvent.data.header.channelSession.customerSuggestions,
+      //   firstChannelSession: cimEvent.data.header.channelSession
+      // });
     }
   }
 
