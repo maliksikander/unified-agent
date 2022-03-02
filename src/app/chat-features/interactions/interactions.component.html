@@ -132,7 +132,7 @@
                   sameElse: 'dddd, MMM YYYY'} }}</span>
               </div>
               <div *ngIf="(message.body.type | lowercase) != 'systemnotification' && message.header.channelSession "
-                class="chat-message {{((index == 0) || ((conversation.messages[index-1].body.type | lowercase) != 'systemnotification' ) && ((message.header.sender | getSenderId) == (conversation.messages[index-1].header.sender | getSenderId))) ? 'same-sender-msg' : ''}} {{message.header.status=='sending' ? 'low-opacity' : ''}}  {{message.body.type | lowercase}} {{  message.header.replyToMessageId != null  ? 'quoted-message-main' : ''}}"
+                class="chat-message {{((index == 0) || ((conversation.messages[index-1].body.type | lowercase) != 'systemnotification' ) && ((message.header.sender | getSenderId) == (conversation.messages[index-1].header.sender | getSenderId) && message.body.type == conversation.messages[index-1].body.type && message.header.replyToMessageId == null && message.header.channelSession.channel.channelType.id == conversation.messages[index-1].header.channelSession.channel.channelType.id  )) ? 'same-sender-msg' : ''}} {{message.header.status=='sending' ? 'low-opacity' : ''}}  {{message.body.type | lowercase}} {{  message.header.replyToMessageId != null  ? 'quoted-message-main' : ''}}"
                 [ngClass]=" ((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message ' ">
                 <div class="profile-pic">
                   <div class="active-channel channel-icon">
@@ -631,7 +631,7 @@
 
     </div>
 
-    <div class="chat-footer" [ngClass]="{'textarea-disable': conversation.activeChannelSessions.length == 0}">
+    <div class="chat-footer" [ngClass]="{'textarea-disable': !_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0}">
       <div *ngIf="currentScrollPosition < 60 && showNewMessageNotif == false"
         (click)="downTheScrollAfterMilliSecs(0,'smooth')" class="jump-bottom slide-in-bottom new-msg-notif">
         <span>
@@ -659,7 +659,7 @@
         <form class="reply-form">
           <label class="count-reply">{{replyInput.value.length}}/200</label>
           <div class="mat-form-field chat-area" [ngClass]="{'expand-area-height':expanedHeight > 50}">
-            <textarea [disabled]="conversation.activeChannelSessions.length == 0"
+            <textarea [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0"
               (keyup.enter)="onSend(replyInput.value); replyInput.value = null" (click)="onTextAreaClick()"
               [attr.data-emoji-picker]="conversation.activeChannelSessions.length > 0 ? true : false"
               [(ngModel)]="message" (keyup)="onKey($event)" name="message" [matAutocomplete]="auto" matInput
@@ -773,7 +773,7 @@
 
             <button style="cursor: pointer;" class="send-btn attachment-btn composer-trigger" mat-icon-button
               *ngIf="replyInput.value.length < 1 && conversation.activeChannelSessions.length > 0">
-              <input accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx" multiple #myFileInput
+              <input accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx" #myFileInput
                 type="file" (change)="uploadFile($event.target.files)" name="ef_chatbox_chat_file_upload"
                 id="uploadFileBtn" class="file-upload-input">
             </button>

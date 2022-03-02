@@ -4,6 +4,7 @@ import { sharedService } from "../services/shared.service";
 import { socketService } from "../services/socket.service";
 import { CountupTimerService, countUpTimerConfigModel, timerTexts } from "ngx-timer";
 import { Router } from "@angular/router";
+import { finesseService } from "../services/finesse.service";
 
 @Component({
   selector: "app-header",
@@ -80,8 +81,9 @@ export class AppHeaderComponent implements OnInit {
     private _router: Router,
     public _cacheService: cacheService,
     private _socketService: socketService,
-    private _sharedService: sharedService
-  ) {}
+    private _sharedService: sharedService,
+    public _finesseService: finesseService
+  ) { }
 
   ngOnInit() {
     this.timerConfigs = new countUpTimerConfigModel();
@@ -151,7 +153,7 @@ export class AppHeaderComponent implements OnInit {
   logout() {
     try {
       sessionStorage.clear();
-    } catch (e) {}
+    } catch (e) { }
     //  localStorage.clear();
     this._socketService.emit("changeAgentState", {
       agentId: this._cacheService.agent.id,
@@ -169,7 +171,7 @@ export class AppHeaderComponent implements OnInit {
     });
   }
 
-  close() {}
+  close() { }
 
   onChange(reason) {
     this.selectedReasonCode = reason;
@@ -179,7 +181,7 @@ export class AppHeaderComponent implements OnInit {
     // localStorage.clear();
     try {
       sessionStorage.clear();
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._socketService.socket.disconnect();
     this._router.navigate(["login"]).then(() => {
