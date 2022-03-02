@@ -12,8 +12,7 @@ import { soundService } from "./sounds.service";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { httpService } from "./http.service";
 import { v4 as uuidv4 } from "uuid";
-
-const mockTopicData: any = require("../mocks/topicData.json");
+//const mockTopicData: any = require("../mocks/topicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -21,6 +20,7 @@ const mockTopicData: any = require("../mocks/topicData.json");
 export class socketService {
   socket: any;
   uri: string;
+  isSocketConnected: boolean = false;
   conversations: any = [];
   conversationIndex = -1;
   private _conversationsListener: BehaviorSubject<any> = new BehaviorSubject([]);
@@ -65,6 +65,7 @@ export class socketService {
     });
 
     this.socket.on("connect_error", (err) => {
+      this.isSocketConnected = false;
       this.ngxService.stop();
       try {
         console.error("socket connect_error ", err.data && err.data.content ? err.data.content : err);
@@ -83,6 +84,7 @@ export class socketService {
 
     this.socket.on("connect", (e) => {
       this.ngxService.stop();
+      this.isSocketConnected = true;
       console.log("socket connect " + e);
       if (this._router.url == "/login") {
         this._router.navigate(["customers"]);
@@ -95,6 +97,8 @@ export class socketService {
   subscribeToSocketEvents() {
     this.socket.on("disconnect", (reason) => {
       console.error("socket disconnect " + reason);
+
+      this.isSocketConnected = false;
 
       // this means that server forcefully disconnects the socket connection
       if (reason == "io server disconnect") {
@@ -298,16 +302,23 @@ export class socketService {
         this.handleAgentSubscription(cimEvent, topicId);
       }
     } else {
-      this.conversations.push({
+
+      this._snackbarService.open("Unable to process event, unsubscribing...", "err");
+      this.emit("topicUnsubscription", {
         topicId: topicId,
-        messages: [cimEvent.data],
-        activeChannelSessions: [cimEvent.data.header.channelSession],
-        unReadCount: undefined,
-        index: ++this.conversationIndex,
-        state: "ACTIVE",
-        customerSuggestions: cimEvent.data.header.channelSession.customerSuggestions,
-        firstChannelSession: cimEvent.data.header.channelSession
+        agentId: this._cacheService.agent.id
       });
+      // console.log("Topic data not available for this cimEvent, creating...");
+      // this.conversations.push({
+      //   topicId: topicId,
+      //   messages: [cimEvent.data],
+      //   activeChannelSessions: [cimEvent.data.header.channelSession],
+      //   unReadCount: undefined,
+      //   index: ++this.conversationIndex,
+      //   state: "ACTIVE",
+      //   customerSuggestions: cimEvent.data.header.channelSession.customerSuggestions,
+      //   firstChannelSession: cimEvent.data.header.channelSession
+      // });
     }
   }
 

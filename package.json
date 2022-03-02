@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "nolive": "ng serve --no-live-reload",
     "g": "ng serve --host 0.0.0.0 --disableHostCheck",
     "build": "ng build --prod --base-href /unified-agent/",
     "lint": "ng lint",
