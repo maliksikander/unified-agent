@@ -99,7 +99,7 @@ export class CreateCustomerComponent implements OnInit {
       let maxVal = 2147483647;
       let minVal = -2147483647;
       if (item.isRequired) temp.push(Validators.required);
-      if(item.type == 'string') temp.push(Validators.maxLength(JSON.parse(item.length)))
+      if (item.type == "string") temp.push(Validators.maxLength(JSON.parse(item.length)));
       temp.push(Validators.pattern(this.formValidation[item.type].regex));
       if (item.valueType == "Number") {
         temp.push(Validators.max(maxVal));
@@ -163,7 +163,9 @@ export class CreateCustomerComponent implements OnInit {
     let temp: any = this.customerForm.controls[attribute.key];
     let tempLength: number = temp.controls.length;
     if (tempLength < 10) {
-      (<FormArray>this.customerForm.controls[attribute.key]).push(new FormControl("", validatorArray));
+      (<FormArray>this.customerForm.controls[attribute.key]).push(
+        new FormControl(attribute.defaultValue ? attribute.defaultValue : "", validatorArray)
+      );
     } else {
       this.snackbarService.open("CANNOT_ADD_MORE_FIELDS", "err");
     }
