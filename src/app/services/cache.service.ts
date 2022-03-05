@@ -11,6 +11,7 @@ export class cacheService {
   agent: IKeycloakUser;
   agentPresence: IAgentPresence;
   agentFcmkey = null;
+  isMobileDevice : boolean = false;
 
   constructor(private _httpService: httpService, private _pullModeService: pullModeService, private _sharedService: sharedService) {
     this.resetCache();

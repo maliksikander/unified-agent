@@ -5,6 +5,7 @@ import { socketService } from "../services/socket.service";
 import { CountupTimerService, countUpTimerConfigModel, timerTexts } from "ngx-timer";
 import { Router } from "@angular/router";
 import { finesseService } from "../services/finesse.service";
+import { fcmService } from "../services/fcm.service";
 
 @Component({
   selector: "app-header",
@@ -82,7 +83,8 @@ export class AppHeaderComponent implements OnInit {
     public _cacheService: cacheService,
     private _socketService: socketService,
     private _sharedService: sharedService,
-    public _finesseService: finesseService
+    public _finesseService: finesseService,
+    private _fcmService: fcmService
   ) { }
 
   ngOnInit() {
@@ -150,11 +152,12 @@ export class AppHeaderComponent implements OnInit {
     this.changeLanguage = true;
     this.stateView = false;
   }
-  logout() {
+  async logout() {
+    await this._fcmService.deleteFcmToken();
     try {
       sessionStorage.clear();
+      localStorage.removeItem("ccUser");
     } catch (e) { }
-    //  localStorage.clear();
     this._socketService.emit("changeAgentState", {
       agentId: this._cacheService.agent.id,
       action: "agentState",
@@ -178,10 +181,11 @@ export class AppHeaderComponent implements OnInit {
   }
 
   moveToLogin() {
-    // localStorage.clear();
     try {
       sessionStorage.clear();
+      localStorage.removeItem("ccUser");
     } catch (e) { }
+
     this._cacheService.resetCache();
     this._socketService.socket.disconnect();
     this._router.navigate(["login"]).then(() => {

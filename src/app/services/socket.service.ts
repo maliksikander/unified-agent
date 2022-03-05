@@ -48,18 +48,23 @@ export class socketService {
     //cache customer schema
     this._cacheService.cacheCustomerSchema();
 
-    this.ngxService.start();
     this.uri = this._appConfigService.config.SOCKET_URL;
     let origin = new URL(this.uri).origin;
     let path = new URL(this.uri).pathname;
     console.log("username------ " + this._cacheService.agent.username);
+
+
+    let fcmKeyObj = {
+      desktopFcmKey: this._cacheService.isMobileDevice ? null : this._cacheService.agentFcmkey,
+      mobileFcmKey: this._cacheService.isMobileDevice ? this._cacheService.agentFcmkey : null
+    }
 
     this.socket = io(origin, {
       path: path == "/" ? "" : path + "/socket.io",
       auth: {
         //  token: this._cacheService.agent.details.access_token,
         agent: JSON.stringify(this._cacheService.agent),
-        fcmKey: this._cacheService.agentFcmkey ? this._cacheService.agentFcmkey : null
+        fcm: fcmKeyObj
         //agent: ""
       }
     });
@@ -72,9 +77,9 @@ export class socketService {
         this._snackbarService.open(err.data && err.data.content ? err.data.content : "unable to connect to chat", "err");
       } catch (err) { }
       if (err.message == "login-failed") {
-        //  localStorage.clear();
         try {
           sessionStorage.clear();
+          localStorage.removeItem("ccUser");
         } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
@@ -105,6 +110,7 @@ export class socketService {
         //  localStorage.clear();
         try {
           sessionStorage.clear();
+          localStorage.removeItem("ccUser");
         } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
@@ -323,9 +329,9 @@ export class socketService {
   }
 
   onSocketSessionRemoved() {
-    //  localStorage.clear();
     try {
       sessionStorage.clear();
+      localStorage.removeItem("ccUser");
     } catch (e) { }
     this._cacheService.resetCache();
     this._snackbarService.open("you are logged In from another session", "err");
@@ -591,9 +597,9 @@ export class socketService {
   }
 
   moveToLogin() {
-    //  localStorage.clear();
     try {
       sessionStorage.clear();
+      localStorage.removeItem("ccUser");
     } catch (e) { }
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
