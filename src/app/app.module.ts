@@ -41,7 +41,7 @@ let pwaServiceWorkerDev = [
   ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' })
 
 ];
-console.log("V.1.0");
+console.log("V.1.0.0");
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
   console.log("device is mobile");
@@ -51,10 +51,7 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 } else {
   console.log("device is pc");
   // initialize a server worker for FCM
-  navigator.serviceWorker.register('/assets/firebase-messaging-sw.js')
-  .then((registration) => {
   initializeApp(environment.firebaseConfig);
-  });
 }
 
 

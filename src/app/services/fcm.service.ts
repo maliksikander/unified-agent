@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { environment } from "../../environments/environment";
 import { getMessaging, getToken, deleteToken } from "firebase/messaging";
-import { isDevMode } from '@angular/core';
 import { cacheService } from "./cache.service";
 
 @Injectable({
@@ -14,9 +13,11 @@ export class fcmService {
 
     requestPermission() {
         return new Promise((resolve, reject) => {
-            const messaging = getMessaging();
 
-           
+            navigator.serviceWorker.register('/assets/firebase-messaging-sw.js')
+                .then((registration) => {
+
+                    const messaging = getMessaging();
                     getToken(messaging,
                         { vapidKey: environment.firebaseConfig.vapidKey }).then(
                             (currentToken) => {
@@ -33,14 +34,8 @@ export class fcmService {
                                 console.log('An error occurred while retrieving token. ', err);
                                 reject(err);
                             });
-
-
-                });
-
-
-
-
-        
+                }).catch((err) => { reject(err); });
+        });
     }
 
     deleteFcmToken() {
