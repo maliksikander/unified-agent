@@ -1,12 +1,12 @@
 {
-  "name": "unified-agent-gadget",
-  "short_name": "unified-agent-gadget",
+  "name": "Unified Agent",
+  "short_name": "Unified Agent",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
-  "id":"/",
+  "id":"/unified-agent",
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",

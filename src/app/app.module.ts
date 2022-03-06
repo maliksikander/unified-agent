@@ -41,7 +41,7 @@ let pwaServiceWorkerDev = [
   ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' })
 
 ];
-console.log("V.1");
+console.log("V.1.0");
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
   console.log("device is mobile");
