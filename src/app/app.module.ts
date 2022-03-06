@@ -37,14 +37,22 @@ import { initializeApp } from "firebase/app";
 import _configService from "../assets/config.json";
 import { ServiceWorkerModule } from '@angular/service-worker';
 
+let pwaServiceWorkerDev = [
+  ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' })
+
+];
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-  console.log("device is mobile")
+  console.log("device is mobile");
+  // do not include ngsw-worker.js when device is mobile
+  pwaServiceWorkerDev = [];
+
 } else {
   console.log("device is pc");
   // initialize a server worker for FCM
   initializeApp(environment.firebaseConfig);
 }
+
 
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
@@ -93,9 +101,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
       excludeRegexp: [`${_configService.FILE_SERVER_URL}/api/downloadFileStream`, "/api/downloadFileStream"]
     }),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
-
-    (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) ? null : ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' })
-
+    ...pwaServiceWorkerDev
   ],
   entryComponents: [
     EditAttributeComponent,

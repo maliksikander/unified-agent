@@ -42,14 +42,14 @@ export class AppComponent implements OnInit {
 
   // checks for the update of pwa app
   checkForAppUpdates() {
-    if (!this.updates.isEnabled) {
-      return;
-    }
+   try{
     this.updates.available.subscribe((event) => {
       if (confirm("An update is available, please refresh the App to fetch updates")) {
         this.updates.activateUpdate().then(() => location.reload());
       }
+    
     });
+  }catch(err){}
   }
 
 }
