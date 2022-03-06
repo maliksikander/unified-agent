@@ -47,7 +47,6 @@ export class AppComponent implements OnInit {
       if (confirm("An update is available, please refresh the App to fetch updates")) {
         this.updates.activateUpdate().then(() => location.reload());
       }
-    
     });
   }catch(err){}
   }

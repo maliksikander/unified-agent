@@ -14,27 +14,23 @@ export class fcmService {
     requestPermission() {
         return new Promise((resolve, reject) => {
 
-            navigator.serviceWorker.register('/assets/firebase-messaging-sw.js')
-                .then((registration) => {
-
-                    const messaging = getMessaging();
-                    getToken(messaging,
-                        { vapidKey: environment.firebaseConfig.vapidKey }).then(
-                            (currentToken) => {
-                                if (currentToken) {
-                                    console.log("Hurraaa!!! we got the token.....");
-                                    console.log(currentToken);
-                                    this._cacheService.agentFcmkey = currentToken;
-                                    resolve("ok");
-                                } else {
-                                    console.log('No registration token available. Request permission to generate one.');
-                                    reject("no permission granted")
-                                }
-                            }).catch((err) => {
-                                console.log('An error occurred while retrieving token. ', err);
-                                reject(err);
-                            });
-                }).catch((err) => { reject(err); });
+            const messaging = getMessaging();
+            getToken(messaging,
+                { vapidKey: environment.firebaseConfig.vapidKey }).then(
+                    (currentToken) => {
+                        if (currentToken) {
+                            console.log("Hurraaa!!! we got the token.....");
+                            console.log(currentToken);
+                            this._cacheService.agentFcmkey = currentToken;
+                            resolve("ok");
+                        } else {
+                            console.log('No registration token available. Request permission to generate one.');
+                            reject("no permission granted")
+                        }
+                    }).catch((err) => {
+                        console.log('An error occurred while retrieving token. ', err);
+                        reject(err);
+                    });
         });
     }
 
