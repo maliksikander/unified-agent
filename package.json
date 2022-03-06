@@ -1,7 +1,6 @@
 {
   "name": "unified-agent-gadget",
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
