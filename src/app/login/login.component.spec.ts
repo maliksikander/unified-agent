@@ -11,9 +11,7 @@ describe("LoginComponent", () => {
   beforeEach(() => {
     formBuilderMock = new FormBuilder();
     fixture = new LoginComponent(
-      routerMock,
       formBuilderMock,
-      appConfigService,
       isLoggedInServiceMock
     );
   });

@@ -65,7 +65,6 @@ export class socketService {
         //  token: this._cacheService.agent.details.access_token,
         agent: JSON.stringify(this._cacheService.agent),
         fcm: fcmKeyObj
-        //agent: ""
       }
     });
 
