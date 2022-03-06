@@ -51,7 +51,10 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 } else {
   console.log("device is pc");
   // initialize a server worker for FCM
+  navigator.serviceWorker.register('/assets/firebase-messaging-sw.js')
+  .then((registration) => {
   initializeApp(environment.firebaseConfig);
+  });
 }
 
 
