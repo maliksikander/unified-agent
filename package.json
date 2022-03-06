@@ -54,6 +54,7 @@
     "ngx-ui-loader": "^7.2.1",
     "primeicons": "^1.0.0",
     "primeng": "^8.1.1",
+    "replace-in-file": "^6.3.2",
     "rxjs": "~6.4.0",
     "socket.io-client": "^4.4.0",
     "tslib": "^1.10.0",

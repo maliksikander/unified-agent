@@ -1,6 +1,6 @@
 const replace = require('replace-in-file');
 const options = {
-  files: 'dist/enlink/*.js',
+  files: 'dist/*.js',
   from: "register(\"/firebase-messaging-sw.js\",{scope:\"/firebase-cloud-messaging-push-scope\"})",
   to: "register(\"firebase-messaging-sw.js\",{scope:\"firebase-cloud-messaging-push-scope\"})",
   allowEmptyPaths: false,
