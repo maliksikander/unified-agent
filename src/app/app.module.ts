@@ -102,7 +102,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
       excludeRegexp: [`${_configService.FILE_SERVER_URL}/api/downloadFileStream`, "/api/downloadFileStream"]
     }),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
-    ...pwaServiceWorkerDev
+    pwaServiceWorkerDev
   ],
   entryComponents: [
     EditAttributeComponent,
