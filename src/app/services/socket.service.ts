@@ -38,7 +38,7 @@ export class socketService {
     private ngxService: NgxUiLoaderService,
     private _httpService: httpService
   ) {
-    //  this.onTopicData(mockTopicData, "12345");
+    //this.onTopicData(mockTopicData, "12345");
   }
 
   connectToSocket() {
@@ -389,8 +389,11 @@ export class socketService {
     });
 
     if (oldConversation) {
-      // if that conversation already exists update it
+      // if that conversation already exists update it    
+      oldConversation['messages'] = conversation.messages.concat([]);
+      oldConversation['activeChannelSessions'] = conversation.activeChannelSessions.concat([]);
       oldConversation = conversation;
+
     } else {
       // else push that conversation
       this.conversations.push(conversation);

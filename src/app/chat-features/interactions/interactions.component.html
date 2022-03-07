@@ -114,10 +114,10 @@
             <div class="int-date load-more" [ngClass]="{'no-more-conversation': noMoreConversation}">
               <span [ngStyle]="{'cursor':!noMoreConversation ? 'pointer' : 'normal' }" *ngIf="!loadingPastActivity"
                 (click)="loadPastActivities()">
-                <mat-icon>arrow_upward</mat-icon>{{noMoreConversation ? 'End of Conversation': 'Load More'}}
+                <mat-icon>arrow_upward</mat-icon>{{noMoreConversation ? 'Start of Conversation': 'Load More'}}
               </span>
               <span *ngIf="loadingPastActivity">
-                <mat-icon>hourglass_empty</mat-icon>{{noMoreConversation ? 'End of Conversation': 'Loading...'}}
+                <mat-icon>hourglass_empty</mat-icon>{{noMoreConversation ? 'Start of Conversation': 'Loading...'}}
               </span>
             </div>
             <div style="display: unset;" *ngFor="let message of conversation.messages; let index = index">
@@ -617,7 +617,7 @@
               <div *ngIf="(message.body.type | lowercase) == 'systemnotification'" class="system-notifs">
 
                 <span class="inner-text">
-                  <span>{{message.body.displayText | titlecase}}</span> <span>{{" "+message.body.markdownText}}</span>
+                  <span>{{message.body.displayText}}</span> <span>{{" "+message.body.markdownText}}</span>
                 </span>
 
               </div>
