@@ -17,16 +17,16 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
     });
     const messaging = firebase.messaging();
 
-    // messaging.onBackgroundMessage((payload) => {
-    //     console.log('[firebase-messaging-sw.js] Received background message ', payload);
-    //     // Customize notification here
-    //     const notificationTitle = payload.notification.title;
-    //     const notificationOptions = {
-    //         body: payload.notification.body
+    messaging.onBackgroundMessage((payload) => {
+        console.log('[firebase-messaging-sw.js] Received background message ', payload);
+        // Customize notification here
+        const notificationTitle = payload.data.title;
+        const notificationOptions = {
+            body: payload.data.body
 
-    //     };
+        };
 
-    //     self.registration.showNotification(notificationTitle,
-    //         notificationOptions);
-    // });
+        self.registration.showNotification(notificationTitle,
+            notificationOptions);
+    });
 }
