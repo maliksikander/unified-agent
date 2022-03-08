@@ -1,6 +1,6 @@
-if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+// if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
 
-} else {
+// } else {
     console.log("injecting firebase")
     importScripts("https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js");
     importScripts("https://www.gstatic.com/firebasejs/9.6.7/firebase-messaging-compat.js");
@@ -29,4 +29,4 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
     //     self.registration.showNotification(notificationTitle,
     //         notificationOptions);
     // });
-}
+//}

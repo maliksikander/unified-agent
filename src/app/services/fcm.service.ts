@@ -36,18 +36,18 @@ export class fcmService {
 
     deleteFcmToken() {
         return new Promise((resolve) => {
-            if (this._cacheService.isMobileDevice) {
+            // if (this._cacheService.isMobileDevice) {
+            //     resolve("ok");
+            // } else {
+            const messaging = getMessaging();
+            deleteToken(messaging).then((res) => {
+                console.log("successfully removed fcm key ", res); resolve("ok");
+            }).catch((err) => {
+                console.log(err);
                 resolve("ok");
-            } else {
-                const messaging = getMessaging();
-                deleteToken(messaging).then((res) => {
-                    console.log("successfully removed fcm key ", res); resolve("ok");
-                }).catch((err) => {
-                    console.log(err);
-                    resolve("ok");
 
-                });
-            }
+            });
+            //}
         });
     }
 

@@ -120,12 +120,12 @@ export class isLoggedInService {
 
     this.ngxService.start();
 
-    if (this._cacheService.isMobileDevice) {
+    // if (this._cacheService.isMobileDevice) {
 
-      // for a mobile device the fcm is coming from url
-      this._socketService.connectToSocket();
+    //   // for a mobile device the fcm is coming from url
+    //   this._socketService.connectToSocket();
 
-    } else {
+    // } else {
 
       // for a pc device the fcm is created by the agent-gadget it-self
       try {
@@ -138,7 +138,7 @@ export class isLoggedInService {
 
       }
 
-    }
+   // }
 
   }
 }
