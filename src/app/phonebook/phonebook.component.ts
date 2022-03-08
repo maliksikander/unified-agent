@@ -108,6 +108,10 @@ export class PhonebookComponent implements OnInit {
     this.getUserPreference(limit, offSet, sort, query);
   }
 
+  loadCustomerOnSearchOp(limit, offSet, sort, query) {
+    this.getCustomers(limit, offSet, sort, query);
+  }
+
   getCustomerSchema(savedPref: Array<any>) {
     this._httpService.getCustomerSchema().subscribe((res) => {
       let temp = res.filter((item) => item.key != "isAnonymous");
@@ -174,7 +178,8 @@ export class PhonebookComponent implements OnInit {
     this.query = { field: field, value: filterVal };
     this.filterQuery = [];
     this.filterQuery.push({ field: field, value: this.filterValue });
-    this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+    // this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+    this.loadCustomerOnSearchOp(this.limit, this.offSet, this.sort, this.query);
   }
 
   cancelFilter() {
