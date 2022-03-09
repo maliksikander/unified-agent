@@ -74,6 +74,8 @@
     margin-left: 5px;
     color: #9facbf;
     text-transform: capitalize;
+    position: absolute;
+    right: 24px;
   }
 }
 
@@ -150,6 +152,8 @@
   width: auto;
   text-align: left;
   font-size: 13px;
+  position: relative;
+  top: 1px;
   // text-transform: capitalize;
 }
 
@@ -193,8 +197,6 @@ ul.available-channel-list {
   padding: 0;
   display: inline-block;
   margin: 0;
-  position: absolute;
-  right: 24px;
 
   li {
     display: inline-block;

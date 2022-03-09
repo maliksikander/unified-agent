@@ -661,6 +661,7 @@
           <div class="mat-form-field chat-area" [ngClass]="{'expand-area-height':expanedHeight > 50}">
             <textarea [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0"
               (keyup.enter)="onSend(replyInput.value); replyInput.value = null" (click)="onTextAreaClick()"
+                      (keydown.enter)="onKeydown($event)"
               [attr.data-emoji-picker]="conversation.activeChannelSessions.length > 0 ? true : false"
               [(ngModel)]="message" (keyup)="onKey($event)" name="message" [matAutocomplete]="auto" matInput
               cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none"
