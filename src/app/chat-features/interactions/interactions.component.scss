@@ -424,7 +424,7 @@
             width: 200px;
             position: relative;
             &.video-player{
-              width: 100%;
+              width: 100% !important;
               max-width: 500px;
             }
 
@@ -577,6 +577,7 @@
     position: relative;
     top: 5px;
     float: right;
+        white-space: nowrap;
       }
 
       //Agent Chat Message Right align
@@ -651,8 +652,10 @@
           }
           &.file-type-video {
             .file-type-content {
-              flex-direction: row-reverse;
+              //flex-direction: row-reverse;
               border: 0;
+              flex-wrap: wrap;
+              justify-content: flex-end;
             }
           }
 
@@ -1098,15 +1101,16 @@
   }
 
   span.selected-channel {
-    position: absolute;
-     left: 0;
-      top: -16px;
+    //position: absolute;
+    // left: 0;
+    //  top: -15px;
        font-size: 10px;
         margin-left: 10px;
          color: #9D9D9D;
           background: #fff;
            padding: 0;
             border-radius: 0 12px 12px 0;
+    display: block;
     label{
       margin: 0;
     }
@@ -1945,6 +1949,20 @@ vg-controls.hide {
     &:before, &:after{
       display: none !important;
     }
+
+    .file-type-content{
+      .chat-time{
+        align-self: flex-end !important;
+        top: inherit !important;
+        white-space: nowrap;
+      }
+    }
+    &.file-type-video{
+      .file-type-content{
+        flex-wrap: nowrap !important;
+        justify-content: flex-start !important;
+      }
+    }
   }
   .main-quoted-reply {
     border-left: 7px solid #79a31d;
@@ -1953,6 +1971,24 @@ vg-controls.hide {
   }
   .clearfix{
     width: 100%;
+  }
+
+  &.agent-message{
+    .referred-message-content{
+      &:before{
+        border-color: darken($bubble-background, 20%) !important;
+      }
+    }
+
+    .main-quoted-reply {
+      border-left: 0 !important;
+      border-right: 7px solid darken($bubble-background, 20%);
+      padding: 10px;
+      background: darken($bubble-background, 7%);
+    }
+    .replied-message{
+      background: $bubble-background !important;
+    }
   }
 }
 
@@ -1982,6 +2018,8 @@ vg-controls.hide {
   line-height: 18px;
   width: fit-content;
   border-radius: 20px;
+  position: relative;
+  bottom: -15px;
 
   span {
     color: #fff !important;
@@ -2013,7 +2051,7 @@ vg-controls.hide {
     padding: 3px 7px;
     border-radius: 10px;
     color: #4773b5;
-    border: 1px solid #e8e8e8; 
+    border: 1px solid #e8e8e8;
   }
 }
 
@@ -2024,9 +2062,9 @@ vg-controls.hide {
  margin-top: 1px !important;
   .chat-message-content{
     &:before,&:after{
-  
+
       display: none;
-      
+
     }
   }
 }

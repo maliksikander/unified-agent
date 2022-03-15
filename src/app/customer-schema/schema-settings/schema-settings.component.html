@@ -19,13 +19,12 @@
             <!--                        <span class="list-count">{{i + 1}}</span>-->
             <mat-icon class="shadow">more_vert</mat-icon>
             <span class="heading">{{item.label}}</span><span class="steric" *ngIf="item.isRequired">*</span>
-            <span class="field-type">({{item.type}})</span>
-
             <ul class="available-channel-list">
               <li><img *ngFor="let channelType of item.channelTypes"
                   [src]="channelType | channelName | channelLogo | async" matTooltip="{{channelType}}">
               </li>
             </ul>
+            <span class="field-type">({{item.type}})</span>
             <mat-icon matTooltip="Options" class="delete-btn box-options" [matMenuTriggerFor]="boxOptions"
               (click)="displayMenu($event)">more_vert
             </mat-icon>
@@ -78,13 +77,11 @@
 
             <mat-icon class="shadow">more_vert</mat-icon>
             <span class="heading">{{item.label}}</span><span class="steric" *ngIf="item.isRequired">*</span>
-            <span class="field-type">({{item.type}})</span>
-
             <ul class="available-channel-list">
               <li><img *ngFor="let channelType of item.channelTypes"
                   [src]="channelType | channelName | channelLogo | async" matTooltip="{{channelType}}"> </li>
             </ul>
-
+            <span class="field-type">({{item.type}})</span>
 
             <mat-icon matTooltip="Options" class="delete-btn box-options" [matMenuTriggerFor]="searchChannelSelection"
               (click)="displayMenu($event)">more_vert
