@@ -9,6 +9,7 @@ import { cacheService } from "./cache.service";
 export class fcmService {
 
     constructor(private _cacheService: cacheService) {
+
     }
 
     requestPermission() {

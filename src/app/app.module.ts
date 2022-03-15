@@ -36,6 +36,7 @@ import { environment } from "../environments/environment";
 import { initializeApp } from "firebase/app";
 import _configService from "../assets/config.json";
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { GrafanaComponent } from "./supervisor/grafana/grafana.component";
 
 // let pwaServiceWorkerDev = [
 //   ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' })
@@ -88,7 +89,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     SubscribedListPreviewComponent,
     FilePreviewComponent,
     FilePreviewComponent,
-    LinkConversationDialogComponent
+    LinkConversationDialogComponent,
+    GrafanaComponent
   ],
   imports: [
     BrowserModule,
