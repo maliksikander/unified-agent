@@ -25,12 +25,9 @@ export class isLoggedInService {
     private _fcmService: fcmService,
     private ngxService: NgxUiLoaderService,
     private _snackbarService: snackbarService
-
   ) {
-
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       this._cacheService.isMobileDevice = true;
-
     } else {
       this._cacheService.isMobileDevice = false;
     }
@@ -76,15 +73,15 @@ export class isLoggedInService {
     this._finesseService.initMe();
   }
 
-  fetchCCuserAndMoveToLogin(obj: { username: string, password: string, authWithSSO?: boolean }) {
+  fetchCCuserAndMoveToLogin(obj: { username: string; password: string; authWithSSO?: boolean }) {
     this._httpService.login(obj).subscribe(
       (e) => {
         console.log("this is login resp ", e.data);
 
-        this._cacheService.agent = e.data;
+        this._cacheService.agent = e.data.keycloak_User;
         try {
-          localStorage.setItem("ccUser", btoa(JSON.stringify(e.data)));
-        } catch (e) { }
+          localStorage.setItem("ccUser", btoa(JSON.stringify(e.data.keycloak_User)));
+        } catch (e) {}
         this._socketService.disConnectSocket();
         this.validateFcmKeyAndConnectToSocket();
       },
@@ -104,7 +101,7 @@ export class isLoggedInService {
     let ccUser: any;
     try {
       ccUser = localStorage.getItem("ccUser");
-    } catch (e) { }
+    } catch (e) {}
 
     ccUser = JSON.parse(ccUser ? atob(ccUser) : null);
 
@@ -117,7 +114,6 @@ export class isLoggedInService {
   }
 
   async validateFcmKeyAndConnectToSocket() {
-
     this.ngxService.start();
 
     // if (this._cacheService.isMobileDevice) {
@@ -127,18 +123,15 @@ export class isLoggedInService {
 
     // } else {
 
-      // for a pc device the fcm is created by the agent-gadget it-self
-      try {
-        await this._fcmService.requestPermission();
-        this._socketService.connectToSocket();
+    // for a pc device the fcm is created by the agent-gadget it-self
+    try {
+      await this._fcmService.requestPermission();
+      this._socketService.connectToSocket();
+    } catch (err) {
+      this._snackbarService.open("you will not receive browser notifications", "err");
+      this._socketService.connectToSocket();
+    }
 
-      } catch (err) {
-        this._snackbarService.open("you will not receive browser notifications", "err");
-        this._socketService.connectToSocket();
-
-      }
-
-   // }
-
+    // }
   }
 }
