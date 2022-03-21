@@ -26,11 +26,11 @@
               </li>
             </ul>
             <span class="field-type">({{item.type}})</span>
-            <mat-icon matTooltip="Options" class="delete-btn box-options" [matMenuTriggerFor]="boxOptions"
+            <mat-icon *ngIf="('customer-schema' | authPipe : 'manage') as result" matTooltip="Options" class="delete-btn box-options" [matMenuTriggerFor]="menu"
               (click)="displayMenu($event)">more_vert
             </mat-icon>
 
-            <mat-menu *ngIf="('customer-schema' | authPipe : 'manage') as result" #boxOptions="matMenu"
+            <mat-menu  #menu="matMenu"
               yPosition="below" panelClass="custom" [overlapTrigger]="false">
               <button mat-menu-item class="channel-selection-list" (click)="edit(item)">
                 Edit

@@ -12,6 +12,7 @@ import { soundService } from "./sounds.service";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { httpService } from "./http.service";
 import { v4 as uuidv4 } from "uuid";
+import { AuthService } from "./auth.service";
 //const mockTopicData: any = require("../mocks/topicData.json");
 
 @Injectable({
@@ -36,7 +37,8 @@ export class socketService {
     private _router: Router,
     private _soundService: soundService,
     private ngxService: NgxUiLoaderService,
-    private _httpService: httpService
+    private _httpService: httpService,
+    private _authService: AuthService
   ) {
     //this.onTopicData(mockTopicData, "12345");
   }
@@ -53,11 +55,10 @@ export class socketService {
     let path = new URL(this.uri).pathname;
     console.log("username------ " + this._cacheService.agent.username);
 
-
     let fcmKeyObj = {
       desktopFcmKey: this._cacheService.isMobileDevice ? null : this._cacheService.agentFcmkey,
       mobileFcmKey: this._cacheService.isMobileDevice ? this._cacheService.agentFcmkey : null
-    }
+    };
 
     this.socket = io(origin, {
       path: path == "/" ? "" : path + "/socket.io",
@@ -74,12 +75,12 @@ export class socketService {
       try {
         console.error("socket connect_error ", err.data && err.data.content ? err.data.content : err);
         this._snackbarService.open(err.data && err.data.content ? err.data.content : "unable to connect to chat", "err");
-      } catch (err) { }
+      } catch (err) {}
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) { }
+        } catch (e) {}
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -91,7 +92,8 @@ export class socketService {
       this.isSocketConnected = true;
       console.log("socket connect " + e);
       if (this._router.url == "/login") {
-        this._router.navigate(["customers"]);
+        // this._router.navigate(["customers"]);
+        this._authService.moveToAuthorizedResourceOnLogin();
       }
     });
 
@@ -110,7 +112,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) { }
+        } catch (e) {}
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -226,7 +228,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) { }
+    } catch (err) {}
   }
 
   listen(eventName: string) {
@@ -256,7 +258,6 @@ export class socketService {
     });
 
     if (sameTopicConversation) {
-
       if (
         cimEvent.name.toLowerCase() == "agent_message" ||
         cimEvent.name.toLowerCase() == "bot_message" ||
@@ -265,7 +266,6 @@ export class socketService {
         if (cimEvent.name.toLowerCase() != "agent_message") {
           this.playSoundAndBrowserNotification(sameTopicConversation, cimEvent);
         }
-
 
         if (cimEvent.data.header.sender.type.toLowerCase() == "customer") {
           this.processActiveChannelSessions(sameTopicConversation, cimEvent.data.header.channelSession);
@@ -307,7 +307,6 @@ export class socketService {
         this.handleAgentSubscription(cimEvent, topicId);
       }
     } else {
-
       this._snackbarService.open("Unable to process event, unsubscribing...", "err");
       this.emit("topicUnsubscription", {
         topicId: topicId,
@@ -331,7 +330,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) { }
+    } catch (e) {}
     this._cacheService.resetCache();
     this._snackbarService.open("you are logged In from another session", "err");
     alert("you are logged in from another session");
@@ -390,10 +389,9 @@ export class socketService {
 
     if (oldConversation) {
       // if that conversation already exists update it
-      oldConversation['messages'] = conversation.messages.concat([]);
-      oldConversation['activeChannelSessions'] = conversation.activeChannelSessions.concat([]);
+      oldConversation["messages"] = conversation.messages.concat([]);
+      oldConversation["activeChannelSessions"] = conversation.activeChannelSessions.concat([]);
       oldConversation = conversation;
-
     } else {
       // else push that conversation
       this.conversations.push(conversation);
@@ -602,7 +600,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) { }
+    } catch (e) {}
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }

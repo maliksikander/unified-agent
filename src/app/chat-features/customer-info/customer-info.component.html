@@ -145,7 +145,7 @@
 
               </div>
 
-              <div class="crm-trigger">
+              <div *ngIf="('customer-list' | authPipe : 'manage') as result" class="crm-trigger">
                 <!-- <p>Not a correct customer profile?</p> -->
                 <button mat-raised-button (click)="gotoEmbedView()">
                   link Profile
@@ -200,7 +200,8 @@
                 <div *ngFor="let customer of customerSuggestions; let i = index">
                   <li *ngIf="i<15">
                     {{customer.firstName}}
-                    <button (click)="linkCustomer(customer)" mat-icon-button class="waves-effect">
+                    <button *ngIf="('customer-list' | authPipe : 'manage') as result" (click)="linkCustomer(customer)"
+                      mat-icon-button class="waves-effect">
                       <mat-icon>insert_link</mat-icon>
                     </button>
                   </li>
@@ -209,7 +210,8 @@
 
               <div class="linked-action">
 
-                <button mat-raised-button (click)="viewAllMatches()">
+                <button *ngIf="('customer-list' | authPipe : 'view') as result" mat-raised-button
+                  (click)="viewAllMatches()">
                   View all Matches
                 </button>
               </div>

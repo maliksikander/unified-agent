@@ -19,7 +19,7 @@
         </div>
         <div class="col-md-8 col-sm-8 agent-actions">
           <ul class="list-group list-group-horizontal agent-controls">
-            <li class="list-group-item">
+            <!-- <li class="list-group-item">
               <button mat-icon-button>
                 <mat-icon>group</mat-icon>
               </button>
@@ -44,7 +44,7 @@
               <button mat-icon-button>
                 <mat-icon>pan_tool</mat-icon>
               </button>
-            </li>
+            </li> -->
             <li *ngIf="('leave-chat' | authPipe : 'view') as result" class="list-group-item">
               <button mat-icon-button>
                 <mat-icon (click)="topicUnsub()">close</mat-icon>
@@ -111,7 +111,8 @@
           <!-- simple chat area -->
           <div id="chat-area-start"></div>
           <div class="instruction-content chat-session-main">
-            <div *ngIf="('customer-conversation-view' | authPipe : 'manage') as result" class="int-date load-more" [ngClass]="{'no-more-conversation': noMoreConversation}">
+            <div *ngIf="('customer-conversation-view' | authPipe : 'manage') as result" class="int-date load-more"
+              [ngClass]="{'no-more-conversation': noMoreConversation}">
               <span [ngStyle]="{'cursor':!noMoreConversation ? 'pointer' : 'normal' }" *ngIf="!loadingPastActivity"
                 (click)="loadPastActivities()">
                 <mat-icon>arrow_upward</mat-icon>{{noMoreConversation ? 'Start of Conversation': 'Load More'}}
@@ -591,13 +592,15 @@
                   <div class="intents-inner">
                     <p *ngFor="let botSuggestion of message.botSuggestions">
                       {{botSuggestion.messageBody.markdownText}}
-                      <button mat-mini-fab class="canned-trigger edit-trigger"
+                      <button *ngIf="('customer-conversation-view' | authPipe : 'manage') as result" mat-mini-fab
+                        class="canned-trigger edit-trigger"
                         (click)="replyInput.value=botSuggestion.messageBody.markdownText">
                         <i class="material-icons">
                           edit
                         </i>
                       </button>
-                      <button mat-mini-fab class="canned-trigger send-suggestion"
+                      <button *ngIf="('customer-conversation-view' | authPipe : 'manage') as result" mat-mini-fab
+                        class="canned-trigger send-suggestion"
                         (click)="onSend(botSuggestion.messageBody.markdownText); replyInput.value = null">
                         <i class="material-icons">
                           send
@@ -631,7 +634,8 @@
 
     </div>
 
-    <div class="chat-footer" [ngClass]="{'textarea-disable': !_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0}">
+    <div class="chat-footer"
+      [ngClass]="{'textarea-disable': !_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0}">
       <div *ngIf="currentScrollPosition < 60 && showNewMessageNotif == false"
         (click)="downTheScrollAfterMilliSecs(0,'smooth')" class="jump-bottom slide-in-bottom new-msg-notif">
         <span>
@@ -659,9 +663,10 @@
         <form class="reply-form">
           <label class="count-reply">{{replyInput.value.length}}/1000</label>
           <div class="mat-form-field chat-area" [ngClass]="{'expand-area-height':expanedHeight > 50}">
-            <textarea  maxlength="1000" [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0"
+            <textarea maxlength="1000"
+              [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0 || !('customer-conversation-view' | authPipe : 'manage')"
               (keyup.enter)="onSend(replyInput.value); replyInput.value = null" (click)="onTextAreaClick()"
-                      (keydown.enter)="onKeydown($event)"
+              (keydown.enter)="onKeydown($event)"
               [attr.data-emoji-picker]="conversation.activeChannelSessions.length > 0 ? true : false"
               [(ngModel)]="message" (keyup)="onKey($event)" name="message" [matAutocomplete]="auto" matInput
               cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none"
@@ -741,13 +746,15 @@
                           (click)="replyInput.value=botSuggestion?.messageBody.markdownText"
                           *ngIf="botSuggestion.messageBody.markdownText != undefined">
                           {{botSuggestion.messageBody.markdownText}}
-                          <button mat-mini-fab class="canned-trigger edit-trigger"
+                          <button *ngIf="('customer-conversation-view' | authPipe : 'manage') as result" mat-mini-fab
+                            class="canned-trigger edit-trigger"
                             (click)="replyInput.value=botSuggestion.messageBody.markdownText">
                             <i class="material-icons">
                               edit
                             </i>
                           </button>
-                          <button (click)="onSend(botSuggestion.messageBody.markdownText)" mat-mini-fab
+                          <button *ngIf="('customer-conversation-view' | authPipe : 'manage') as result"
+                            (click)="onSend(botSuggestion.messageBody.markdownText)" mat-mini-fab
                             class="canned-trigger send-suggestion">
                             <i class="material-icons">
                               send
@@ -766,18 +773,20 @@
             <!-- <button class="video-call composer-trigger" (click)="emoji()" mat-icon-button>
               <mat-icon>voice_chat</mat-icon>
             </button> -->
-            <button (click)="onSend(replyInput.value); replyInput.value = null "
-              *ngIf="replyInput.value.length > 0 && conversation.activeChannelSessions.length > 0"
-              class="send-btn composer-trigger" mat-icon-button>
-              <!--              <mat-icon>send</mat-icon>-->
-            </button>
+            <ng-container *ngIf="('customer-conversation-view' | authPipe : 'manage') as result">
+              <button (click)="onSend(replyInput.value); replyInput.value = null "
+                *ngIf="replyInput.value.length > 0 && conversation.activeChannelSessions.length > 0"
+                class="send-btn composer-trigger" mat-icon-button>
+                <!--              <mat-icon>send</mat-icon>-->
+              </button>
 
-            <button style="cursor: pointer;" class="send-btn attachment-btn composer-trigger" mat-icon-button
-              *ngIf="replyInput.value.length < 1 && conversation.activeChannelSessions.length > 0">
-              <input accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx" #myFileInput
-                type="file" (change)="uploadFile($event.target.files)" name="ef_chatbox_chat_file_upload"
-                id="uploadFileBtn" class="file-upload-input">
-            </button>
+              <button style="cursor: pointer;" class="send-btn attachment-btn composer-trigger" mat-icon-button
+                *ngIf="replyInput.value.length < 1 && conversation.activeChannelSessions.length > 0">
+                <input accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx" #myFileInput type="file"
+                  (change)="uploadFile($event.target.files)" name="ef_chatbox_chat_file_upload" id="uploadFileBtn"
+                  class="file-upload-input">
+              </button>
+            </ng-container>
 
             <!--            <span class="attachment-btn" >-->
             <!--            <input #myFileInput *ngIf="replyInput.value.length < 1" (change)="uploadFile($event.target.files)" type="file" [disabled]="chatServerDown || conversation.state =='ended'"-->

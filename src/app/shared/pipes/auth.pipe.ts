@@ -7,7 +7,7 @@ import { AuthService } from "src/app/services/auth.service";
 export class AuthPipe implements PipeTransform {
   constructor(private _authService: AuthService) {}
   transform(resource: any, ...args: any[]): any {
-    // console.log("pipe value==>", value);
+    // console.log("pipe value==>", resource);
     // console.log("args==>", args);
     let scope = args[0];
     // if (args[0] == "manage") {
