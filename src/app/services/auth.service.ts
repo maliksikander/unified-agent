@@ -12,42 +12,63 @@ export class AuthService {
   moveToAuthorizedResourceOnLogin() {
     try {
       // let ccUser: any = this._cacheService.agent;
+      let routeCheck = false;
       let ccUser: any = localStorage.getItem("ccUser");
       ccUser = JSON.parse(ccUser ? atob(ccUser) : null);
       let resources: Array<any> = ccUser.permittedResources.Resources;
-      let item = resources[0];
-      let conversationResource = resources.find((item) => item.rsname.includes("conversation"));
-      // console.log("conver==>",conversationResource)
+      // console.log("resources ==>", resources);
+      // let item = resources[0];
+      let conversationResourceIndex = resources.findIndex((item) => item.rsname.includes("conversation"));
+      // console.log("cobo ==>", conversationResourceIndex);
+      // console.log("cobo ==>",conversationResource)
 
-      if (conversationResource) {
-        let scopes: Array<any> = item.scopes;
+      if (conversationResourceIndex != -1) {
+        let scopes: Array<any> = resources[conversationResourceIndex].scopes;
         scopes.forEach((scope: any) => {
-          if (scope == "view") this.router.navigate(["/customers/chats"]);
+          if (scope == "view") {
+            this.router.navigate(["/customers/chats"]);
+            routeCheck = true;
+          }
         });
       } else {
-        if (item.rsname.includes("schema")) {
-          let scopes: Array<any> = item.scopes;
-          scopes.forEach((scope: any) => {
-            if (scope == "view") this.router.navigate(["/customer-schema"]);
-          });
-        } else if (item.rsname.includes("dashboard")) {
-          let scopes: Array<any> = item.scopes;
-          scopes.forEach((scope: any) => {
-            if (scope == "view") this.router.navigate(["/supervisor/dashboards"]);
-          });
-        } else if (item.rsname.includes("subscribed")) {
-          let scopes: Array<any> = item.scopes;
-          scopes.forEach((scope: any) => {
-            if (scope == "view") this.router.navigate(["/subscribed-list"]);
-          });
-        } else if (item.rsname.includes("phonebook")) {
-          let scopes: Array<any> = item.scopes;
-          scopes.forEach((scope: any) => {
-            if (scope == "view") this.router.navigate(["/customers/phonebook"]);
-          });
-        } else {
-          this.snackbar.open("Not Authorized to Access Resources", "err");
-        }
+        resources.forEach((item) => {
+          if (item.rsname.includes("schema")) {
+            let scopes: Array<any> = item.scopes;
+            scopes.forEach((scope: any) => {
+              if (scope == "view") {
+                this.router.navigate(["/customer-schema"]);
+                routeCheck = true;
+              }
+            });
+          } else if (item.rsname.includes("dashboard")) {
+            let scopes: Array<any> = item.scopes;
+            scopes.forEach((scope: any) => {
+              if (scope == "view") {
+                this.router.navigate(["/supervisor/dashboards"]);
+                routeCheck = true;
+              }
+            });
+          } else if (item.rsname.includes("subscribed")) {
+            let scopes: Array<any> = item.scopes;
+            scopes.forEach((scope: any) => {
+              if (scope == "view") {
+                this.router.navigate(["/subscribed-list"]);
+                routeCheck = true;
+              }
+            });
+          } else if (item.rsname == "customer-list") {
+            let scopes: Array<any> = item.scopes;
+            scopes.forEach((scope: any) => {
+              if (scope == "view") {
+                this.router.navigate(["/customers/phonebook"]);
+                routeCheck = true;
+              }
+            });
+          }
+        });
+        // else {
+        if (routeCheck == false) this.snackbar.open("Not Authorized to Access Resources", "err");
+        // }
       }
     } catch (e) {
       console.log("[Navigation Error in Login] :", e);
