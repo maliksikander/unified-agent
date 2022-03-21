@@ -18,39 +18,43 @@ export class AuthGuard implements CanActivate {
     let ccUser: any = this._cacheService.agent;
     let resources: Array<any> = ccUser.permittedResources.Resources;
     console.log("Resources==>", resources);
-    console.log("path==>", path);
+    // console.log("path==>", path);
     // let local: String = localStorage.getItem("token");
     // let session: String = sessionStorage.getItem("token");
     // this.checkTokenExistenceInStorage(local, session);
-    // let accessRoute: boolean = this.checkRouteAccess(path, resources);
-    // return accessRoute;
-    return true;
+    let accessRoute: boolean = this.checkRouteAccess(path, resources);
+    // console.log("acccess==>", accessRoute);
+    return accessRoute;
+    // return true;
   }
 
   checkRouteAccess(path: String, resources: Array<any>) {
     try {
+      // console.log("ty")
       let resPath;
-      if (path.includes("general")) {
-        resPath = "general";
-      } else if (path.includes("bot")) {
-        resPath = "bot";
-      } else if (path.includes("form")) {
-        resPath = "form";
-      } else if (path.includes("reason")) {
-        resPath = "reason";
-      } else if (path.includes("pull")) {
-        resPath = "pull";
-      } else if (path.includes("web")) {
-        resPath = "web";
-      } else if (path.includes("channel")) {
-        resPath = "channel";
-      } else if (path.includes("routing")) {
-        resPath = "routing";
-      } else if (path.includes("calendar")) {
-        resPath = "calendar";
+      if (path.includes("schema")) {
+        resPath = "schema";
+      } else if (path.includes("dashboard")) {
+        resPath = "dashboard";
+      } else if (path.includes("subscribed")) {
+        resPath = "subscribed";
+      } else if (path.includes("phonebook")) {
+        resPath = "customer-list";
+      } else if (path.includes("customers")) {
+        resPath = "conversation";
       }
-
+      // else if (path.includes("web")) {
+      //   resPath = "web";
+      // } else if (path.includes("channel")) {
+      //   resPath = "channel";
+      // } else if (path.includes("routing")) {
+      //   resPath = "routing";
+      // } else if (path.includes("calendar")) {
+      //   resPath = "calendar";
+      // }
+      // console.log("respath==>", resPath);
       let value = this.checkResource(resPath, resources);
+
       return value;
     } catch (e) {
       console.log("[Route Access Error]:", e);

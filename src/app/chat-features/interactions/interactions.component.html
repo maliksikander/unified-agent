@@ -45,7 +45,7 @@
                 <mat-icon>pan_tool</mat-icon>
               </button>
             </li>
-            <li class="list-group-item">
+            <li *ngIf="('leave-chat' | authPipe : 'view') as result" class="list-group-item">
               <button mat-icon-button>
                 <mat-icon (click)="topicUnsub()">close</mat-icon>
               </button>
@@ -111,7 +111,7 @@
           <!-- simple chat area -->
           <div id="chat-area-start"></div>
           <div class="instruction-content chat-session-main">
-            <div class="int-date load-more" [ngClass]="{'no-more-conversation': noMoreConversation}">
+            <div *ngIf="('customer-conversation-view' | authPipe : 'manage') as result" class="int-date load-more" [ngClass]="{'no-more-conversation': noMoreConversation}">
               <span [ngStyle]="{'cursor':!noMoreConversation ? 'pointer' : 'normal' }" *ngIf="!loadingPastActivity"
                 (click)="loadPastActivities()">
                 <mat-icon>arrow_upward</mat-icon>{{noMoreConversation ? 'Start of Conversation': 'Load More'}}

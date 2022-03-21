@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
+import { AuthService } from "./auth.service";
 import { cacheService } from "./cache.service";
 import { fcmService } from "./fcm.service";
 import { finesseService } from "./finesse.service";
@@ -24,7 +25,8 @@ export class isLoggedInService {
     private _finesseService: finesseService,
     private _fcmService: fcmService,
     private ngxService: NgxUiLoaderService,
-    private _snackbarService: snackbarService
+    private _snackbarService: snackbarService,
+    private _authService:AuthService
   ) {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       this._cacheService.isMobileDevice = true;

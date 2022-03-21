@@ -63,7 +63,7 @@
                         <span class="table-trigger">
                             <button mat-button *ngIf="!(request.id | isAlreadyJoined)" (click)="joinChat(request)"
                                 class="chat-btn" matTooltip="Chat">Join</button>
-                            <button mat-button class="close-btn" (click)="closeChat(request)"
+                            <button *ngIf="('subscribed-list' | authPipe : 'manage') as result" mat-button class="close-btn" (click)="closeChat(request)"
                                 matTooltip="Close">Close</button>
                         </span>
                     </tr>

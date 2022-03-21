@@ -22,7 +22,8 @@
       <!--    </mat-form-field>-->
     </div>
 
-    <div class="col-md-6 right-actions text-right" [ngClass]="filterQuery.length > 0 ? 'col-sm-12': 'col-sm-11'">
+    <div *ngIf="('customer-list' | authPipe : 'manage') as result" class="col-md-6 right-actions text-right"
+      [ngClass]="filterQuery.length > 0 ? 'col-sm-12': 'col-sm-11'">
       <button mat-button class="btn-action " (click)="actions()">Column Preference</button>
       <mat-menu #columnMenu="matMenu">
         <div class="check-menu" (click)="$event.stopPropagation();">
@@ -194,7 +195,7 @@
             </div>
           </td>
 
-          <td>
+          <td *ngIf="('customer-list' | authPipe : 'manage') as result">
             <button (click)="onRowClick(rowData._id,'edit',null)" class="p-button-rounded p-button-success p-mr-2">
               <mat-icon>edit</mat-icon>
             </button>

@@ -2,7 +2,8 @@
   <div class="customer-heading page-heading col-md-6 col-sm-5">
     <h4>Customer Attributes</h4>
   </div>
-  <div class="customer-heading page-heading col-md-6 col-sm-7 text-right">
+  <div *ngIf="('customer-schema' | authPipe : 'manage') as result"
+    class="customer-heading page-heading col-md-6 col-sm-7 text-right">
     <button mat-button (click)="addAttr()" class="create-new-attribute">Create New Attribute</button>
   </div>
 
@@ -29,7 +30,8 @@
               (click)="displayMenu($event)">more_vert
             </mat-icon>
 
-            <mat-menu #boxOptions="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
+            <mat-menu *ngIf="('customer-schema' | authPipe : 'manage') as result" #boxOptions="matMenu"
+              yPosition="below" panelClass="custom" [overlapTrigger]="false">
               <button mat-menu-item class="channel-selection-list" (click)="edit(item)">
                 Edit
               </button>

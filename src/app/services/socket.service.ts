@@ -389,7 +389,7 @@ export class socketService {
     });
 
     if (oldConversation) {
-      // if that conversation already exists update it    
+      // if that conversation already exists update it
       oldConversation['messages'] = conversation.messages.concat([]);
       oldConversation['activeChannelSessions'] = conversation.activeChannelSessions.concat([]);
       oldConversation = conversation;
