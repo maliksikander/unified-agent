@@ -13,28 +13,28 @@
         <!--          mat-menu-item class="main-menu-item">-->
         <!--          <span>Team Announcements </span>-->
         <!--        </button>-->
-        <button *ngIf="('customer-conversation-view' | authPipe : 'view') as result" routerLink="/customers/chats" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
-          mat-menu-item class="main-menu-item">
+        <button *ngIf="('customer-conversation-view' | authPipe : 'view') as result" routerLink="/customers/chats"
+          routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
           <span>Customer Conversation View</span>
         </button>
-        <button *ngIf="('customer-list' | authPipe : 'view') as result" routerLink="/customers/phonebook" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
-          mat-menu-item class="main-menu-item">
+        <button *ngIf="('customer-list' | authPipe : 'view') as result" routerLink="/customers/phonebook"
+          routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
           <span>Customer List View</span>
         </button>
         <!-- <button routerLink="/label" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item
           class="main-menu-item">
           <span>Customer Labels</span>
         </button> -->
-        <button *ngIf="('subscribed-list' | authPipe : 'view') as result" routerLink="/subscribed-list" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
-          mat-menu-item class="main-menu-item">
+        <button *ngIf="('subscribed-list' | authPipe : 'view') as result" routerLink="/subscribed-list"
+          routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
           <span>Subscribed Lists</span>
         </button>
-        <button *ngIf="('customer-schema' | authPipe : 'view') as result" routerLink="/customer-schema" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
-          mat-menu-item class="main-menu-item">
+        <button *ngIf="('customer-schema' | authPipe : 'view') as result" routerLink="/customer-schema"
+          routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
           <span>Customer Schema</span>
         </button>
-        <button *ngIf="('supervisor-dashboard' | authPipe : 'view') as result" routerLink="/supervisor/dashboards" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
-          mat-menu-item class="main-menu-item">
+        <button *ngIf="('supervisor-dashboard' | authPipe : 'view') as result" routerLink="/supervisor/dashboards"
+          routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
           <span>Dashboards</span>
         </button>
       </mat-menu>
@@ -131,7 +131,7 @@
                   <span>(Ext: {{agent.extension}})</span>
                 </div>
 
-                <p *ngIf="('state-change' | authPipe : 'manage') as result" class="menu-trigger-custom state-trigger">
+                <p *ngIf="('state-change' | authPipe : 'view') as result" class="menu-trigger-custom state-trigger">
                   <span class="inner-btn">State</span>
 
                   <button mat-button #stateTrigger="matMenuTrigger" [matMenuTriggerFor]="agentState"
@@ -148,7 +148,8 @@
 
 
 
-                <div *ngIf="('state-change' | authPipe : 'manage') as result" class="mrd-states" (click)="$event.stopPropagation()">
+                <div *ngIf="('state-change' | authPipe : 'view') as result" class="mrd-states"
+                  (click)="$event.stopPropagation()">
                   <span class="mrd-text">Change MRD State</span>
                   <div *ngFor="let agentMrdState of _cacheService.agentPresence.agentMrdStates">
                     <p class="menu-trigger-custom select-state {{agentMrdState.state | lowercase}}">

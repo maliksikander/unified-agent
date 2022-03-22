@@ -16,11 +16,7 @@ export class AuthService {
       let ccUser: any = localStorage.getItem("ccUser");
       ccUser = JSON.parse(ccUser ? atob(ccUser) : null);
       let resources: Array<any> = ccUser.permittedResources.Resources;
-      // console.log("resources ==>", resources);
-      // let item = resources[0];
       let conversationResourceIndex = resources.findIndex((item) => item.rsname.includes("conversation"));
-      // console.log("cobo ==>", conversationResourceIndex);
-      // console.log("cobo ==>",conversationResource)
 
       if (conversationResourceIndex != -1) {
         let scopes: Array<any> = resources[conversationResourceIndex].scopes;
@@ -66,9 +62,7 @@ export class AuthService {
             });
           }
         });
-        // else {
         if (routeCheck == false) this.snackbar.open("Not Authorized to Access Resources", "err");
-        // }
       }
     } catch (e) {
       console.log("[Navigation Error in Login] :", e);
