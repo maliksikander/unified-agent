@@ -15,6 +15,6 @@ export class GrafanaComponent implements OnInit {
 
   }
   grafanaUrl: SafeResourceUrl;
-  url: string = "https://devops237.ef.com:3000/grafana/d/OAdgP4onz/grafana-supervisor-dash?orgId=2&from=1640493464169&to=1640579864169";
+  url: string = "https://cim.expertflow.com/grafana/d/OAdgP4onz/grafana-supervisor-dash?orgId=1&from=1640493464169&to=1640579864169";
 
 }
