@@ -80,6 +80,7 @@ import { spaceInArrayPipe } from "./pipes/spaceInArray.pipe";
 import { channelNamePipe } from "./pipes/getChannelLogoByName.pipe";
 import { NgxTimerModule } from 'ngx-timer';
 import { getSenderIdPipe } from "./pipes/getSenderId.pipe";
+import { AuthPipe } from './pipes/auth.pipe';
 
 
 @NgModule({
@@ -106,7 +107,8 @@ import { getSenderIdPipe } from "./pipes/getSenderId.pipe";
     getReferredMessagePipe,
     spaceInArrayPipe,
     channelNamePipe,
-    getSenderIdPipe
+    getSenderIdPipe,
+    AuthPipe
   ],
   imports: [
     NgxDocViewerModule,
@@ -264,7 +266,8 @@ import { getSenderIdPipe } from "./pipes/getSenderId.pipe";
     getReferredMessagePipe,
     spaceInArrayPipe,
     channelNamePipe,
-    getSenderIdPipe
+    getSenderIdPipe,
+    AuthPipe
   ]
 })
 export class SharedModule { }

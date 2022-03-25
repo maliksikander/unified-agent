@@ -45,7 +45,7 @@
                 <mat-icon>pan_tool</mat-icon>
               </button>
             </li>
-            <li class="list-group-item">
+            <li *ngIf="('leave-chat' | authPipe : 'view') as result" class="list-group-item">
               <button mat-icon-button>
                 <mat-icon (click)="topicUnsub()">close</mat-icon>
               </button>
@@ -111,7 +111,8 @@
           <!-- simple chat area -->
           <div id="chat-area-start"></div>
           <div class="instruction-content chat-session-main">
-            <div class="int-date load-more" [ngClass]="{'no-more-conversation': noMoreConversation}">
+            <div *ngIf="('customer-conversation-view' | authPipe : 'manage') as result" class="int-date load-more"
+              [ngClass]="{'no-more-conversation': noMoreConversation}">
               <span [ngStyle]="{'cursor':!noMoreConversation ? 'pointer' : 'normal' }" *ngIf="!loadingPastActivity"
                 (click)="loadPastActivities()">
                 <mat-icon>arrow_upward</mat-icon>{{noMoreConversation ? 'Start of Conversation': 'Load More'}}
@@ -631,7 +632,8 @@
 
     </div>
 
-    <div class="chat-footer" [ngClass]="{'textarea-disable': !_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0}">
+    <div class="chat-footer"
+      [ngClass]="{'textarea-disable': !_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0}">
       <div *ngIf="currentScrollPosition < 60 && showNewMessageNotif == false"
         (click)="downTheScrollAfterMilliSecs(0,'smooth')" class="jump-bottom slide-in-bottom new-msg-notif">
         <span>
@@ -659,9 +661,10 @@
         <form class="reply-form">
           <label class="count-reply">{{replyInput.value.length}}/1000</label>
           <div class="mat-form-field chat-area" [ngClass]="{'expand-area-height':expanedHeight > 50}">
-            <textarea  maxlength="1000" [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0"
+            <textarea maxlength="1000"
+              [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0"
               (keyup.enter)="onSend(replyInput.value); replyInput.value = null" (click)="onTextAreaClick()"
-                      (keydown.enter)="onKeydown($event)"
+              (keydown.enter)="onKeydown($event)"
               [attr.data-emoji-picker]="conversation.activeChannelSessions.length > 0 ? true : false"
               [(ngModel)]="message" (keyup)="onKey($event)" name="message" [matAutocomplete]="auto" matInput
               cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none"
@@ -766,6 +769,7 @@
             <!-- <button class="video-call composer-trigger" (click)="emoji()" mat-icon-button>
               <mat-icon>voice_chat</mat-icon>
             </button> -->
+
             <button (click)="onSend(replyInput.value); replyInput.value = null "
               *ngIf="replyInput.value.length > 0 && conversation.activeChannelSessions.length > 0"
               class="send-btn composer-trigger" mat-icon-button>
@@ -774,9 +778,9 @@
 
             <button style="cursor: pointer;" class="send-btn attachment-btn composer-trigger" mat-icon-button
               *ngIf="replyInput.value.length < 1 && conversation.activeChannelSessions.length > 0">
-              <input accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx" #myFileInput
-                type="file" (change)="uploadFile($event.target.files)" name="ef_chatbox_chat_file_upload"
-                id="uploadFileBtn" class="file-upload-input">
+              <input accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx" #myFileInput type="file"
+                (change)="uploadFile($event.target.files)" name="ef_chatbox_chat_file_upload" id="uploadFileBtn"
+                class="file-upload-input">
             </button>
 
             <!--            <span class="attachment-btn" >-->

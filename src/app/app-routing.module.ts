@@ -11,17 +11,18 @@ import { LabelsListComponent } from "./labels/labels-list/labels-list.component"
 import { SubscribedListComponent } from "./pull-mode/subscribed-list/subscribed-list.component";
 import { IsLoggedInGuard } from "./is-logged-in.guard";
 import { GrafanaComponent } from "./supervisor/grafana/grafana.component";
+import { AuthGuard } from "./auth.guard";
 
 export const appRoutes: Routes = [
   { path: "login", component: LoginComponent },
-  { path: "customers/phonebook", component: PhonebookComponent, canActivate: [IsLoggedInGuard] },
-  { path: "label", component: LabelsListComponent, canActivate: [IsLoggedInGuard] },
-  { path: "subscribed-list", component: SubscribedListComponent, canActivate: [IsLoggedInGuard] },
-  { path: "supervisor/dashboards", component: GrafanaComponent, canActivate: [IsLoggedInGuard] },
-  { path: "supervisor/announcement", component: AnnouncementComponent, canActivate: [IsLoggedInGuard] },
-  { path: "customer-schema", component: SchemaSettingsComponent, canActivate: [IsLoggedInGuard] },
+  { path: "customers/phonebook", component: PhonebookComponent, canActivate: [IsLoggedInGuard, AuthGuard] },
+  // { path: "label", component: LabelsListComponent, canActivate: [IsLoggedInGuard] },
+  { path: "subscribed-list", component: SubscribedListComponent, canActivate: [IsLoggedInGuard, AuthGuard] },
+  { path: "supervisor/dashboards", component: GrafanaComponent, canActivate: [IsLoggedInGuard, AuthGuard] },
+  // { path: "supervisor/announcement", component: AnnouncementComponent, canActivate: [IsLoggedInGuard,AuthGuard] },
+  { path: "customer-schema", component: SchemaSettingsComponent, canActivate: [IsLoggedInGuard, AuthGuard] },
   { path: "", redirectTo: "/customers/chats", pathMatch: "full" },
-  { path: "customers", data: { preload: true }, loadChildren: "./chat-features/chat.module#ChatModule", canActivate: [IsLoggedInGuard] },
+  { path: "customers", data: { preload: true }, loadChildren: "./chat-features/chat.module#ChatModule", canActivate: [IsLoggedInGuard, AuthGuard] },
   { path: "**", component: NoRouteFoundComponent }
 ];
 
