@@ -39,8 +39,8 @@
                     [src]="request.channelSession.channel.channelType.channelLogo | channelLogo | async"></p>
               </div>
               <div class="requested-name">
-                <p>New Chat message from {{request.channelSession.customer.firstName}} in
-                  '{{_pullModeservice.listNames[request.listId] ? _pullModeservice.listNames[request.listId] : '-'}}'
+                <p>New Chat message from <span>{{request.channelSession.customer.firstName}}</span> in
+                  <span>'{{_pullModeservice.listNames[request.listId] ? _pullModeservice.listNames[request.listId] : '-'}}'</span>
                 </p>
               </div>
               <div class="notification-trigger">
