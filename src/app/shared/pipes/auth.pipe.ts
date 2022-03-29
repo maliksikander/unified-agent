@@ -6,8 +6,7 @@ import { AuthService } from "src/app/services/auth.service";
 })
 export class AuthPipe implements PipeTransform {
   constructor(private _authService: AuthService) {}
-  transform(resource: any, ...args: any[]): any {
-    let scope = args[0];
+  transform(resource: any, scope: any): any {
     return this._authService.checkScope(resource, scope);
   }
 }

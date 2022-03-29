@@ -13,8 +13,12 @@ export class AuthService {
     try {
       // let ccUser: any = this._cacheService.agent;
       let routeCheck = false;
-      let ccUser: any = localStorage.getItem("ccUser");
-      ccUser = JSON.parse(ccUser ? atob(ccUser) : null);
+      let ccUser: any;
+      ccUser = this._cacheService.agent;
+      if (ccUser == undefined || ccUser == null || (ccUser && (ccUser.id == null || ccUser.id == undefined || ccUser.id == ""))) {
+        ccUser = localStorage.getItem("ccUser");
+        ccUser = JSON.parse(ccUser ? atob(ccUser) : null);
+      }
       let resources: Array<any> = ccUser.permittedResources.Resources;
       let conversationResourceIndex = resources.findIndex((item) => item.rsname.includes("conversation"));
 
@@ -72,8 +76,12 @@ export class AuthService {
   //to verify scope in permitted resource
   checkScope(resource, scope) {
     try {
-      let ccUser: any = localStorage.getItem("ccUser");
-      ccUser = JSON.parse(ccUser ? atob(ccUser) : null);
+      let ccUser: any;
+      ccUser = this._cacheService.agent;
+      if (ccUser == undefined || ccUser == null || (ccUser && (ccUser.id == null || ccUser.id == undefined || ccUser.id == ""))) {
+        ccUser = localStorage.getItem("ccUser");
+        ccUser = JSON.parse(ccUser ? atob(ccUser) : null);
+      }
       if (ccUser != null) {
         let permittedResources: Array<any> = ccUser.permittedResources.Resources;
 
@@ -88,7 +96,7 @@ export class AuthService {
       }
       return false;
     } catch (e) {
-      console.log("[Scope Check Error] :", e);
+      console.error("[Scope Check Error] :", e);
       return false;
     }
   }
