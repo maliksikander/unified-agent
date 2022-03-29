@@ -32,7 +32,31 @@ import { SubscribedListComponent } from "./pull-mode/subscribed-list/subscribed-
 import { SubscribedListPreviewComponent } from "./pull-mode/subscribed-list-preview/subscribed-list-preview.component";
 import { FilePreviewComponent } from "./file-preview/file-preview.component";
 import { LinkConversationDialogComponent } from "./dialogs/link-conversation-dialog/link-conversation-dialog.component";
-import _configService from "../assets/config.json"
+import { environment } from "../environments/environment";
+import { initializeApp } from "firebase/app";
+import _configService from "../assets/config.json";
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { GrafanaComponent } from "./supervisor/grafana/grafana.component";
+
+// let pwaServiceWorkerDev = [
+//   ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' })
+
+// ];
+console.log("V.1.0.1");
+
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+  console.log("The device is mobile");
+  // do not include ngsw-worker.js when device is mobile
+ // pwaServiceWorkerDev = [];
+
+} else {
+  console.log("The device is pc");
+  // initialize a server worker for FCM
+ // initializeApp(environment.firebaseConfig);
+}
+
+initializeApp(environment.firebaseConfig);
+
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsType: SPINNER.chasingDots,
@@ -65,7 +89,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     SubscribedListPreviewComponent,
     FilePreviewComponent,
     FilePreviewComponent,
-    LinkConversationDialogComponent
+    LinkConversationDialogComponent,
+    GrafanaComponent
   ],
   imports: [
     BrowserModule,
@@ -79,7 +104,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     NgxUiLoaderHttpModule.forRoot({
       excludeRegexp: [`${_configService.FILE_SERVER_URL}/api/downloadFileStream`, "/api/downloadFileStream"]
     }),
-    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' })
   ],
   entryComponents: [
     EditAttributeComponent,

@@ -177,13 +177,15 @@
         line-height: 40px;
         max-width: 270px;
         text-transform: uppercase;
-        margin: 0 0 20px;
+        margin: 0;
       }
 
       p {
         font-size: 15px;
         color: #fff;
         max-width: 325px;
+        letter-spacing: 3px;
+        word-spacing: 5px;
       }
     }
   }

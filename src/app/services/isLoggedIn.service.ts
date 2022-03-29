@@ -1,10 +1,13 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { appConfigService } from "./appConfig.service";
+import { NgxUiLoaderService } from "ngx-ui-loader";
+import { AuthService } from "./auth.service";
 import { cacheService } from "./cache.service";
+import { fcmService } from "./fcm.service";
 import { finesseService } from "./finesse.service";
 import { httpService } from "./http.service";
 import { sharedService } from "./shared.service";
+import { snackbarService } from "./snackbar.service";
 import { socketService } from "./socket.service";
 
 @Injectable({
@@ -15,13 +18,22 @@ export class isLoggedInService {
 
   constructor(
     private _router: Router,
-    private _appConfigService: appConfigService,
     private _socketService: socketService,
     private _cacheService: cacheService,
     private _httpService: httpService,
     private _sharedService: sharedService,
-    private _finesseService: finesseService
+    private _finesseService: finesseService,
+    private _fcmService: fcmService,
+    private ngxService: NgxUiLoaderService,
+    private _snackbarService: snackbarService,
+    private _authService:AuthService
   ) {
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      this._cacheService.isMobileDevice = true;
+    } else {
+      this._cacheService.isMobileDevice = false;
+    }
+
     this.cacheAgentFcmKey();
 
     this.routeSubscriber = this._router.events.subscribe((event: any) => {
@@ -63,17 +75,17 @@ export class isLoggedInService {
     this._finesseService.initMe();
   }
 
-  fetchCCuserAndMoveToLogin(obj: { username: string, password: string, authWithSSO?: boolean }) {
+  fetchCCuserAndMoveToLogin(obj: { username: string; password: string; authWithSSO?: boolean }) {
     this._httpService.login(obj).subscribe(
       (e) => {
         console.log("this is login resp ", e.data);
 
-        this._cacheService.agent = e.data;
+        this._cacheService.agent = e.data.keycloak_User;
         try {
-          sessionStorage.setItem("ccUser", JSON.stringify(e.data));
-        } catch (e) { }
+          localStorage.setItem("ccUser", btoa(JSON.stringify(e.data.keycloak_User)));
+        } catch (e) {}
         this._socketService.disConnectSocket();
-        this._socketService.connectToSocket();
+        this.validateFcmKeyAndConnectToSocket();
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -90,16 +102,38 @@ export class isLoggedInService {
     }
     let ccUser: any;
     try {
-      ccUser = sessionStorage.getItem("ccUser");
-    } catch (e) { }
+      ccUser = localStorage.getItem("ccUser");
+    } catch (e) {}
 
-    ccUser = JSON.parse(ccUser);
+    ccUser = JSON.parse(ccUser ? atob(ccUser) : null);
 
     if (ccUser && ccUser.id != null && ccUser.id != undefined && ccUser.id != "") {
       this._cacheService.agent = ccUser;
-      this._socketService.connectToSocket();
+      this.validateFcmKeyAndConnectToSocket();
     } else {
       this._router.navigate(["login"]);
     }
+  }
+
+  async validateFcmKeyAndConnectToSocket() {
+    this.ngxService.start();
+
+    // if (this._cacheService.isMobileDevice) {
+
+    //   // for a mobile device the fcm is coming from url
+    //   this._socketService.connectToSocket();
+
+    // } else {
+
+    // for a pc device the fcm is created by the agent-gadget it-self
+    try {
+      await this._fcmService.requestPermission();
+      this._socketService.connectToSocket();
+    } catch (err) {
+      this._snackbarService.open("you will not receive browser notifications", "err");
+      this._socketService.connectToSocket();
+    }
+
+    // }
   }
 }

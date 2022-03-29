@@ -66,7 +66,7 @@ export class InteractionsComponent implements OnInit {
   displaySuggestionsArea = false;
   cannedTabOpen = false;
   quickReplies = true;
-  viewHeight = "120px";
+  viewHeight = "123px";
   noMoreConversation = false;
   pastCimEventsOffsetLimit: number = 0;
   loadingPastActivity: boolean = false;
@@ -402,5 +402,9 @@ export class InteractionsComponent implements OnInit {
     } catch (e) {
       console.log("[Load Past Activity] Filter Error :", e);
     }
+  }
+  onKeydown(event) {
+    event.preventDefault();
+
   }
 }

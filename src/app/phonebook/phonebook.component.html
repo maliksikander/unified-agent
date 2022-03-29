@@ -22,7 +22,8 @@
       <!--    </mat-form-field>-->
     </div>
 
-    <div class="col-md-6 right-actions text-right" [ngClass]="filterQuery.length > 0 ? 'col-sm-12': 'col-sm-11'">
+    <div *ngIf="('customer-list' | authPipe : 'manage') as result" class="col-md-6 right-actions text-right"
+      [ngClass]="filterQuery.length > 0 ? 'col-sm-12': 'col-sm-11'">
       <button mat-button class="btn-action " (click)="actions()">Column Preference</button>
       <mat-menu #columnMenu="matMenu">
         <div class="check-menu" (click)="$event.stopPropagation();">
@@ -195,11 +196,13 @@
           </td>
 
           <td>
-            <button (click)="onRowClick(rowData._id,'edit',null)" class="p-button-rounded p-button-success p-mr-2">
+            <button *ngIf="('customer-list' | authPipe : 'manage') as result"
+              (click)="onRowClick(rowData._id,'edit',null)" class="p-button-rounded p-button-success p-mr-2">
               <mat-icon>edit</mat-icon>
             </button>
-            <button *ngIf="isEmbededView && rowData._id != topicCustomerId" (click)="linkCustomer(rowData)"
-              class="p-button-rounded p-button-warning link-btn">
+            <button
+              *ngIf="(isEmbededView && rowData._id != topicCustomerId) || ('customer-list' | authPipe : 'manage') as result"
+              (click)="linkCustomer(rowData)" class="p-button-rounded p-button-warning link-btn">
               <mat-icon>insert_link</mat-icon>
             </button>
           </td>

@@ -2,7 +2,8 @@
   <div class="customer-heading page-heading col-md-6 col-sm-5">
     <h4>Customer Attributes</h4>
   </div>
-  <div class="customer-heading page-heading col-md-6 col-sm-7 text-right">
+  <div *ngIf="('customer-schema' | authPipe : 'manage') as result"
+    class="customer-heading page-heading col-md-6 col-sm-7 text-right">
     <button mat-button (click)="addAttr()" class="create-new-attribute">Create New Attribute</button>
   </div>
 
@@ -19,18 +20,18 @@
             <!--                        <span class="list-count">{{i + 1}}</span>-->
             <mat-icon class="shadow">more_vert</mat-icon>
             <span class="heading">{{item.label}}</span><span class="steric" *ngIf="item.isRequired">*</span>
-            <span class="field-type">({{item.type}})</span>
-
             <ul class="available-channel-list">
               <li><img *ngFor="let channelType of item.channelTypes"
                   [src]="channelType | channelName | channelLogo | async" matTooltip="{{channelType}}">
               </li>
             </ul>
-            <mat-icon matTooltip="Options" class="delete-btn box-options" [matMenuTriggerFor]="boxOptions"
+            <span class="field-type">({{item.type}})</span>
+            <mat-icon *ngIf="('customer-schema' | authPipe : 'manage') as result" matTooltip="Options" class="delete-btn box-options" [matMenuTriggerFor]="menu"
               (click)="displayMenu($event)">more_vert
             </mat-icon>
 
-            <mat-menu #boxOptions="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
+            <mat-menu  #menu="matMenu"
+              yPosition="below" panelClass="custom" [overlapTrigger]="false">
               <button mat-menu-item class="channel-selection-list" (click)="edit(item)">
                 Edit
               </button>
@@ -78,13 +79,11 @@
 
             <mat-icon class="shadow">more_vert</mat-icon>
             <span class="heading">{{item.label}}</span><span class="steric" *ngIf="item.isRequired">*</span>
-            <span class="field-type">({{item.type}})</span>
-
             <ul class="available-channel-list">
               <li><img *ngFor="let channelType of item.channelTypes"
                   [src]="channelType | channelName | channelLogo | async" matTooltip="{{channelType}}"> </li>
             </ul>
-
+            <span class="field-type">({{item.type}})</span>
 
             <mat-icon matTooltip="Options" class="delete-btn box-options" [matMenuTriggerFor]="searchChannelSelection"
               (click)="displayMenu($event)">more_vert
