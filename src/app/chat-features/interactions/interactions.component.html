@@ -141,7 +141,7 @@
                       [src]="message.header.channelSession.channel.channelType.channelLogo | channelLogo | async">
                   </div>
                   <div *ngIf="(message.header.sender.type | lowercase) != 'bot'" class="profile-pic-area user-img">
-                    {{message.header.sender | getSenderName:conversation.customer:true}}</div>
+                    {{message.header.sender | getSenderName:conversation.customer | getFirstTwoLetters}}</div>
                   <div *ngIf="(message.header.sender.type | lowercase) == 'bot'" class="profile-pic-area user-img">
                     <img src="assets/images/robot-dark.svg">
                   </div>
@@ -672,9 +672,9 @@
               placeholder="{{conversation.messages[conversation.messages.length -1]?.botSuggestions ? 'Bot suggestions are available type / for viewing' :'Type a message here...'}}"></textarea>
             <!-- [ngClass]="{'animate-content': displaySuggestionsAnimation}" -->
 
-            <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete">
+            <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete {{isBarOPened ? 'customer-right-bar': customerBar ? 'customer-left-bar': ''}}">
               <div class="suggested-content" #mainScreen
-                [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}">
+                [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}" *ngIf="conversation.messages[conversation.messages.length -1]?.botSuggestions">
                 <!-- <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies"
                   >
                   <ng-container

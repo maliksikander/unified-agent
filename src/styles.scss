@@ -613,7 +613,7 @@ snack-bar-container.success-snackbar {
   max-width: calc(100% - 75px);
   opacity: 1;
   left: 70px;
-  bottom: 87px;
+  bottom: 78px;
   background: #fff;
   z-index: 999;
   height: auto;
@@ -628,6 +628,15 @@ snack-bar-container.success-snackbar {
     max-width: calc(100% - 10px) !important;
     left: 5px !important;
     width: calc(100% - 10px);
+  }
+  &.customer-right-bar{
+    max-width: calc(100% - 395px);
+
+  }
+  &.customer-left-bar{
+    max-width: calc(100% - 295px);
+    left: 290px;
+
   }
 
   &.true {

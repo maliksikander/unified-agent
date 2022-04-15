@@ -20,12 +20,15 @@ declare var EmojiPicker: any;
 })
 export class InteractionsComponent implements OnInit {
   @Input() conversation: any;
+  @Input() customerBar: any;
   @Input() currentTabIndex: any;
   @Input() changeDetecter: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
   @ViewChild("replyInput", { static: true }) elementView: ElementRef;
   @ViewChild(NgScrollbar, { static: true }) scrollbarRef: NgScrollbar;
   @ViewChild("media", { static: false }) media: ElementRef;
+  @ViewChild("mainScreen", { static: false }) elementViewSuggestions: ElementRef;
+
   dispayVideoPIP = true;
   scrollSubscriber;
 
@@ -129,17 +132,18 @@ export class InteractionsComponent implements OnInit {
       this.displaySuggestionsArea = false;
       this.quickReplies = false;
 
-      // setTimeout(() => {
-      //   this.mainHeight = this.elementView.nativeElement.offsetHeight;
-      //   this.viewHeight = this.mainHeight + 180 + 'px';
-      //   this.scrollToBottom();
-      // }, 500);
+      setTimeout(() => {
+        this.viewHeight = this.elementViewSuggestions.nativeElement.offsetHeight + 123 + 'px';
+        this.downTheScrollAfterMilliSecs(0, "smooth");
+        // this.viewHeight = this.mainHeight + 180 + 'px';
+        // this.scrollToBottom();
+      }, 100);
 
       this.cannedTabOpen = true;
     } else {
       this.cannedTabOpen = false;
       this.quickReplies = true;
-      // this.viewHeight = '180px';
+      this.viewHeight = '123px';
     }
     // if (this.message[0] === '.') {
     //     console.log('value is 0')
