@@ -3,7 +3,26 @@
     <div class="page-heading col-md-6 col-sm-4">
         <h4>Inbox</h4>
     </div>
-    <div class="create-label col-md-6 text-right col-sm-8">
+    <div class="create-label col-md-6 text-right">
+        <mat-form-field appearance="outline" class="selection-trigger chat-selection">
+          <mat-select [(value)]="filterStatus">
+            <mat-option class="all-chats chat-selection-option" value="all" (click)="filterStatus = 'all'">All Chats</mat-option>
+            <mat-option class="active-chats chat-selection-option" value="active" (click)="filterStatus = 'active'">Active</mat-option>
+            <mat-option class="inactive-chats chat-selection-option" value="inactive"  (click)="filterStatus = 'inactive'">Inactive</mat-option>
+            <mat-option class="unread-chats chat-selection-option" value="created"  (click)="filterStatus = 'created'">Unread</mat-option>
+          </mat-select>
+        </mat-form-field>
+    
+        <mat-form-field appearance="outline" class="selection-trigger">
+            <mat-select [(ngModel)]="filterListId">
+                <mat-option value='all'>All Lists</mat-option>
+                <mat-option *ngFor="let list of _pullModeservice.subscribedList" value="{{list.id}}">
+                    {{list.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <!-- <div class="create-label col-md-6 text-right col-sm-8">
         <button [style.backgroundColor]="filterStatus == 'all' ? '#9abcef' : '' " (click)="filterStatus = 'all'"
             class="add-new" mat-button>All</button>
         <button [style.backgroundColor]="filterStatus == 'active' ? '#9abcef' : '' " (click)="filterStatus = 'active'"
@@ -19,8 +38,8 @@
                     {{list.name}}</mat-option>
             </mat-select>
         </mat-form-field>
-    </div>
-</div>
+    </div> -->
+<!-- </div> -->
 <div class="container-fluid">
 
     <div class="table-container manage-dashboard">
@@ -64,7 +83,7 @@
                             <button mat-button *ngIf="!(request.id | isAlreadyJoined)" (click)="joinChat(request)"
                                 class="chat-btn" matTooltip="Chat">Join</button>
                             <button *ngIf="('subscribed-list' | authPipe : 'manage') as result" mat-button class="close-btn" (click)="closeChat(request)"
-                                matTooltip="Close">Close</button>
+                                matTooltip="Close">End</button>
                         </span>
                     </tr>
                 </tbody>
