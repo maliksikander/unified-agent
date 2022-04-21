@@ -17,16 +17,47 @@ div#main-content {
   width: 100%;
   float: left;
 }
-
-.no-chat{
-  text-align: center;
+.no-chat-main{
   position: absolute;
-  top: 50%;
-  color: rgba(128, 128, 128, 0.82);
+  width: calc(100% - 10px);
+  height: calc(100% - 50px);
+  display: flex;
+  align-items: center;
+}
+.no-chat {
+  text-align: center;
+  color: #9D9D9D;
   font-size: 30px;
-  transform: translate(0, -50%);
   margin: 0 auto;
-  width: calc(100% - 50px);
+  width: 100%;
+  display: flex;
+  align-content: center;
+  flex-flow: column;
+  align-items: center;
+
+  .no-chat-icon {
+    width: 270px;
+    height: 270px;
+    background: #F8F7F7;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+
+    mat-icon {
+      color: #D1D1D1;
+      font-size: 5em;
+      width: inherit;
+      height: auto;
+      line-height: inherit;
+    }
+  }
+  button{
+    border: 1px solid #8BB3EF;
+    color: #8BB3EF;
+    font-weight: 400;
+    font-size: 14px;
+  }
 }
 
 .badge1 {

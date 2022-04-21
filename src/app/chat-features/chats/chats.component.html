@@ -48,6 +48,13 @@
   </div>
 </div>
 
-<div *ngIf="(_socketService.conversationsListener | async)?.length == 0" class="no-chat">
-  {{_sharedService.mainPagetile}}
+<div *ngIf="(_socketService.conversationsListener | async)?.length == 0" class="no-chat-main">
+<div class="no-chat">
+  <span class="no-chat-icon">
+    <mat-icon>question_answer</mat-icon>
+  </span>
+
+  <p>{{_sharedService.mainPagetile | titlecase}}</p>
+  <button mat-button>Start new conversation</button>
+</div>
 </div>
