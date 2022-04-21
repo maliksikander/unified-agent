@@ -10,6 +10,7 @@ declare var executeCommands;
 })
 
 export class finesseService {
+
     isAlreadysubscribed: boolean = false;
     showErr: boolean = false;
     finesseAgent = { loginId: '', password: '', extention: '' };
@@ -27,7 +28,6 @@ export class finesseService {
     initMe() {
         this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
             if (e.msg == "stateChanged" && this.finesseAgent.loginId != '') {
-                console.log("stateChanged")
                 this.handlePresence(e.data);
             }
         });
