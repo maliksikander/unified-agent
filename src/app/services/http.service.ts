@@ -165,6 +165,15 @@ export class httpService {
     });
   }
 
+  updatePastConversationCustomer(object): Observable<any> {
+    return this._httpClient.put<any>(`${this._appConfigService.config.BOT_FRAMEWORK_URL}/customer-topics/update-past-conversations`, object, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      })
+    });
+  }
+
   ///////////////////////// Load Past Activity ////////
 
   getPastActivities(id, limit, offset): Observable<any> {

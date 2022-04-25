@@ -607,10 +607,12 @@ export class socketService {
 
   async linkCustomerWithTopic(selectedCustomer, topicId) {
     try {
+      console.log("selectedCustomer==>", selectedCustomer);
       const conversation = this.conversations.find((e) => {
         return e.topicId == topicId;
       });
       const topicCustomer = conversation.customer;
+      console.log("old one==>", topicCustomer);
       const channelSession = conversation.firstChannelSession;
 
       if (topicCustomer && channelSession) {
@@ -635,7 +637,14 @@ export class socketService {
               const resp: any = await this._sharedService.getProfileLinkingConfirmation(null, selectedCustomer.firstName, null, false);
               console.log("this is resp ", resp);
               if (resp.decisionIs) {
-                this.updateTopiCustomer(selectedCustomer, false, topicCustomer.isAnonymous == true ? topicCustomer._id : null, topicId);
+                this.updateTopiCustomer(
+                  selectedCustomer,
+                  topicCustomer,
+                  false,
+                  topicCustomer.isAnonymous == true ? topicCustomer._id : null,
+                  topicId,
+                  resp.isAttributeMerge
+                );
               }
             } else {
               console.log("not merged");
@@ -646,7 +655,14 @@ export class socketService {
                 if (resp.isAttributeMerge == true) {
                   if (selectedCustomer[attr].length <= 9) {
                     selectedCustomer[attr].push(channelIdentifier);
-                    this.updateTopiCustomer(selectedCustomer, true, topicCustomer.isAnonymous == true ? topicCustomer._id : null, topicId);
+                    this.updateTopiCustomer(
+                      selectedCustomer,
+                      topicCustomer,
+                      true,
+                      topicCustomer.isAnonymous == true ? topicCustomer._id : null,
+                      topicId,
+                      resp.isAttributeMerge
+                    );
                     console.log("limit not exceed");
                   } else {
                     console.log("limit exceed");
@@ -656,17 +672,31 @@ export class socketService {
                       20000,
                       "Ok"
                     );
-                    this.updateTopiCustomer(selectedCustomer, false, topicCustomer.isAnonymous == true ? topicCustomer._id : null, topicId);
+                    // this.updateTopiCustomer(selectedCustomer, false, topicCustomer.isAnonymous == true ? topicCustomer._id : null, topicId);
                   }
                 } else {
-                  this.updateTopiCustomer(selectedCustomer, false, topicCustomer.isAnonymous == true ? topicCustomer._id : null, topicId);
+                  this.updateTopiCustomer(
+                    selectedCustomer,
+                    topicCustomer,
+                    false,
+                    topicCustomer.isAnonymous == true ? topicCustomer._id : null,
+                    topicId,
+                    resp.isAttributeMerge
+                  );
                 }
               }
             }
           } else {
             const resp: any = await this._sharedService.getProfileLinkingConfirmation(null, selectedCustomer.firstName, null, false);
             if (resp.decisionIs) {
-              this.updateTopiCustomer(selectedCustomer, false, topicCustomer.isAnonymous == true ? topicCustomer._id : null, topicId);
+              this.updateTopiCustomer(
+                selectedCustomer,
+                topicCustomer,
+                false,
+                topicCustomer.isAnonymous == true ? topicCustomer._id : null,
+                topicId,
+                resp.isAttributeMerge
+              );
             }
             // this._snackbarService.open("unable to link customer", "err");
           }
@@ -674,7 +704,14 @@ export class socketService {
           const resp: any = await this._sharedService.getProfileLinkingConfirmation(null, selectedCustomer.firstName, null, false);
 
           if (resp.decisionIs) {
-            this.updateTopiCustomer(selectedCustomer, false, topicCustomer.isAnonymous == true ? topicCustomer._id : null, topicId);
+            this.updateTopiCustomer(
+              selectedCustomer,
+              topicCustomer,
+              false,
+              topicCustomer.isAnonymous == true ? topicCustomer._id : null,
+              topicId,
+              resp.isAttributeMerge
+            );
           }
           //  this.snackErrorMessage("Unable to link profile");
         }
@@ -689,7 +726,7 @@ export class socketService {
     }
   }
 
-  updateTopiCustomer(selectedCustomer, needToBeUpdate: boolean, toBeDeletedCustomerId, topicId) {
+  updateTopiCustomer(selectedCustomer, topicCustomer, needToBeUpdate: boolean, toBeDeletedCustomerId, topicId, addChannelIdentifier) {
     console.log("topic updated");
     console.log("need to be updated " + needToBeUpdate);
     console.log("toBeDeletedCustomerId " + toBeDeletedCustomerId);
@@ -710,7 +747,13 @@ export class socketService {
           this._httpService.updateTopicCustomer(topicId, selectedCustomer).subscribe(
             (e) => {
               console.log("update topic success");
-              this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
+              if (addChannelIdentifier && toBeDeletedCustomerId != null) {
+                let requestPayload = { currentCustomer: topicCustomer, newCustomer: selectedCustomer };
+                // console.log("test==>", );
+                this.updatePastConversation(requestPayload, toBeDeletedCustomerId);
+              } else {
+                // this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
+              }
             },
             (error) => {
               this._snackbarService.open("unable to link customer", "err");
@@ -737,6 +780,28 @@ export class socketService {
         }
       );
     }
+  }
+
+  updatePastConversation(obj, toBeDeletedCustomerId) {
+    this._httpService.updatePastConversationCustomer(obj).subscribe(
+      (res) => {
+        if (res.status == "OK") {
+          console.log("update past conversation success");
+          this._snackbarService.open(res.message, "succ");
+          this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
+        }
+      },
+      (error) => {
+        console.log("error==>", error);
+        if (error.error && error.error.status && error.error.status == "NOT_FOUND") {
+          console.log("past conversation success not found");
+          // this._snackbarService.open("Post conversation success not found", "err");
+          this._router.navigate(["customers"]);
+        }
+        this._snackbarService.open("unable to link past conversation", "err");
+        console.error("error while updating past conversation customer ", error);
+      }
+    );
   }
 
   createSystemNotificationMessage(cimEvent) {

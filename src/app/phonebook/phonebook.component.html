@@ -201,7 +201,7 @@
               <mat-icon>edit</mat-icon>
             </button>
             <button
-              *ngIf="(isEmbededView && rowData._id != topicCustomerId) || ('customer-list' | authPipe : 'manage') as result"
+              *ngIf="(isEmbededView && rowData._id != topicCustomerId) && ('customer-list' | authPipe : 'manage') as result"
               (click)="linkCustomer(rowData)" class="p-button-rounded p-button-warning link-btn">
               <mat-icon>insert_link</mat-icon>
             </button>
