@@ -1,362 +1,344 @@
 <head>
-        <script src="jQuery3.5.1.min.js"></script>
-        <script src="jabberwerx.js"></script>
-        <script src="config.js"></script>
-        <script src="CTIJsLibrary.js"></script>
-    </head>
+  <title></title>
+  <script src="jQuery3.5.1.min.js"></script>
+  <script src="jabberwerx.js"></script>
+  <script src="config.js"></script>
+  <script src="CTIJsLibrary.js"></script>
+</head>
 
 <body>
-    <div style="position: absolute;height:auto;width: auto;background-color: #ccc;left: 2.5%;top: 2.5%;padding: 2.5%;border-radius: 10px;">
-        <input type="text" id = "username" placeholder="Username"></input> &nbsp;&nbsp;
-        <input type="text" id = "password" placeholder="Password"></input> &nbsp;&nbsp;
-        <input type="text" id = "extension" placeholder="Extension"></input><br/><br/>
-        
-        <button onclick="loginCommand()">
-            Xmpp + Login
-        </button> 
-        &nbsp;&nbsp;
-        <button onclick="makeReadyCommand()">
-            Make Ready
-        </button>&nbsp;&nbsp;
-        <button onclick="makeNotReadyCommand()">
-            Make NotReady
-        </button>&nbsp;&nbsp;
-        <button onclick="makeWorkReadyCommand()">
-            Make WorkReady
-        </button>&nbsp;&nbsp;
-        <button onclick="logoutUserCommand()">
-            Logout
-        </button><br/><br/>
-        <button onclick="getDialogsCommand()">
-            Get Dialogs
-        </button>&nbsp;&nbsp;
-        <button onclick="getUserCommand()">
-            Get User
-        </button>&nbsp;&nbsp;
-        <button onclick="getReasonsCommand()">
-            Get Reasons
-        </button>&nbsp;&nbsp;
-        <button onclick="getWrapUpReasonsCommand()">
-            Get WrapUp Reasons
-        </button><br/><hr/><br/>
-        <input type="text" id = "number" placeholder="Number.."></input>&nbsp;&nbsp;
-        <input type="text" id = "callId" placeholder="Call Id.."></input>&nbsp;&nbsp;
-        <input type="text" id = "callVariableValue" placeholder="Call Variable Value.."></input><br/><br/>
+  <div
+    style="position: absolute;height:auto;width: auto;background-color: #ccc;left: 2.5%;top: 2.5%;padding: 2.5%;border-radius: 10px;">
+    <input type="text" id="username" placeholder="Username"></input> &nbsp;&nbsp;
+    <input type="text" id="password" placeholder="Password"></input> &nbsp;&nbsp;
+    <input type="text" id="extension" placeholder="Extension"></input><br /><br />
 
-        <button onclick="makeCallCommand()">
-            Make Call
-        </button>&nbsp;&nbsp;
-        <button onclick="answerCallCommand()">
-            Answer Call
-        </button>&nbsp;&nbsp;
-        <button onclick="endCallCommand()">
-            End Call
-        </button>&nbsp;&nbsp;
-        <button onclick="holdCallCommand()">
-            Hold Call
-        </button>&nbsp;&nbsp;
-        <button onclick="retrieveCallCommand()">
-            Retrieve Call
-        </button><br/><br/>
-        <button onclick="SSTCommand()">
-            Direct Transfer
-        </button>
-        &nbsp;&nbsp;
-        <button onclick="makeConsultCommand()">
-            Make Consult
-        </button>&nbsp;&nbsp;
-        <button onclick="consultTransferCommand()">
-            Consult Transfer
-        </button>&nbsp;&nbsp;
-        <button onclick="conferenceCommand()">
-            Conference
-        </button><br/><br/>
-        <button onclick="applyWrapupCommand()">
-            Apply Wrapup
-        </button>&nbsp;&nbsp;
-        <button onclick="updateCallvariablesCommand()">
-            Update Call Variables
-        </button>&nbsp;&nbsp;
-    </div><br/><br/>
-    
+    <button onclick="loginCommand()">
+      Xmpp + Login
+    </button>
+    &nbsp;&nbsp;
+    <button onclick="makeReadyCommand()">
+      Make Ready
+    </button>&nbsp;&nbsp;
+    <button onclick="makeNotReadyCommand()">
+      Make NotReady
+    </button>&nbsp;&nbsp;
+    <button onclick="makeWorkReadyCommand()">
+      Make WorkReady
+    </button>&nbsp;&nbsp;
+    <button onclick="logoutUserCommand()">
+      Logout
+    </button><br /><br />
+    <button onclick="getDialogsCommand()">
+      Get Dialogs
+    </button>&nbsp;&nbsp;
+    <button onclick="getUserCommand()">
+      Get User
+    </button>&nbsp;&nbsp;
+    <button onclick="getReasonsCommand()">
+      Get Reasons
+    </button>&nbsp;&nbsp;
+    <button onclick="getWrapUpReasonsCommand()">
+      Get WrapUp Reasons
+    </button><br />
+    <hr /><br />
+    <input type="text" id="number" placeholder="Number.."></input>&nbsp;&nbsp;
+    <input type="text" id="callId" placeholder="Call Id.."></input>&nbsp;&nbsp;
+    <input type="text" id="callVariableValue" placeholder="Call Variable Value.."></input><br /><br />
+
+    <button onclick="makeCallCommand()">
+      Make Call
+    </button>&nbsp;&nbsp;
+    <button onclick="answerCallCommand()">
+      Answer Call
+    </button>&nbsp;&nbsp;
+    <button onclick="endCallCommand()">
+      End Call
+    </button>&nbsp;&nbsp;
+    <button onclick="holdCallCommand()">
+      Hold Call
+    </button>&nbsp;&nbsp;
+    <button onclick="retrieveCallCommand()">
+      Retrieve Call
+    </button><br /><br />
+    <button onclick="SSTCommand()">
+      Direct Transfer
+    </button>
+    &nbsp;&nbsp;
+    <button onclick="makeConsultCommand()">
+      Make Consult
+    </button>&nbsp;&nbsp;
+    <button onclick="consultTransferCommand()">
+      Consult Transfer
+    </button>&nbsp;&nbsp;
+    <button onclick="conferenceCommand()">
+      Conference
+    </button><br /><br />
+    <button onclick="applyWrapupCommand()">
+      Apply Wrapup
+    </button>&nbsp;&nbsp;
+    <button onclick="updateCallvariablesCommand()">
+      Update Call Variables
+    </button>&nbsp;&nbsp;
+  </div><br /><br />
+
 </body>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-    var clientCallback = function(event)
+  var clientCallback = function (event) {
+    console.log("In Client Callback.");
+    console.log(event);
+  }
+  function loginCommand() {
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+    var extension = document.getElementById("extension").value;
+    var parameters =
     {
-        console.log("In Client Callback.");
-        console.log(event);
+      "action": "login",
+      "parameter":
+      {
+        "loginId": username,
+        "password": password,
+        "extension": extension,
+        "clientCallbackFunction": clientCallback,
+      }
     }
-    function loginCommand()
-    {
-        var username = document.getElementById("username").value;
-        var password = document.getElementById("password").value;
-        var extension = document.getElementById("extension").value;
-        var parameters = 
-        {
-            "action"    : "login",
-            "parameter" :
-            {
-                "loginId" : username,
-                "password" : password,
-                "extension" : extension,
-                "clientCallbackFunction" : clientCallback, 
-            }
-        }
-        executeCommands(parameters);
-    }
+    executeCommands(parameters);
+  }
 
-    function getUserCommand()
+  function getUserCommand() {
+    var commandParams =
     {
-        var commandParams = 
-        {
-            "action"    : "getState"
-        }
-        executeCommands(commandParams);
+      "action": "getState"
     }
-    function getDialogsCommand()
+    executeCommands(commandParams);
+  }
+  function getDialogsCommand() {
+    var commandParams =
     {
-        var commandParams = 
-        {
-            "action"    : "getDialog"
-        }
-        executeCommands(commandParams);
+      "action": "getDialog"
     }
-    function logoutUserCommand()
+    executeCommands(commandParams);
+  }
+  function logoutUserCommand() {
+    var commandParams =
     {
-        var commandParams = 
-        {
-            "action"    : "logout",
-            "parameter" :
-            {
-                "reasonCode"     : "29"
-            }
-        }
-        executeCommands(commandParams);
+      "action": "logout",
+      "parameter":
+      {
+        "reasonCode": "29"
+      }
     }
-    function getReasonsCommand()
+    executeCommands(commandParams);
+  }
+  function getReasonsCommand() {
+    var commandParams =
     {
-        var commandParams = 
-        {
-            "action"    : "getNotReadyLogoutReasons"
-        }
-        executeCommands(commandParams);
+      "action": "getNotReadyLogoutReasons"
     }
-    function makeCallCommand() 
+    executeCommands(commandParams);
+  }
+  function makeCallCommand() {
+    var outboundNumber = document.getElementById("number").value;
+    var commandParams =
     {
-        var outboundNumber = document.getElementById("number").value;
-        var commandParams = 
-        {
-            "action" : "makeCall",
-            "parameter" :
-            {
-                "calledNumber" : outboundNumber
-            }
-        }
-        executeCommands(commandParams);
+      "action": "makeCall",
+      "parameter":
+      {
+        "calledNumber": outboundNumber
+      }
     }
-    function answerCallCommand()
+    executeCommands(commandParams);
+  }
+  function answerCallCommand() {
+    var callId = document.getElementById("callId").value;
+    var commandParams =
     {
-        var callId = document.getElementById("callId").value;
-        var commandParams = 
-        {
-            "action"    : "answerCall",
-            "parameter" :
-            {
-                "dialogId": callId
-            }
-        }
-        executeCommands(commandParams);
+      "action": "answerCall",
+      "parameter":
+      {
+        "dialogId": callId
+      }
     }
-    function endCallCommand() 
+    executeCommands(commandParams);
+  }
+  function endCallCommand() {
+    var callId = document.getElementById("callId").value;
+    var commandParams =
     {
-        var callId = document.getElementById("callId").value;
-        var commandParams = 
-        {
-            "action"    : "releaseCall",
-            "parameter" :
-            {
-                "dialogId": callId
-            }
-        }
-        executeCommands(commandParams);
+      "action": "releaseCall",
+      "parameter":
+      {
+        "dialogId": callId
+      }
     }
-    function holdCallCommand() 
+    executeCommands(commandParams);
+  }
+  function holdCallCommand() {
+    var callId = document.getElementById("callId").value;
+    var commandParams =
     {
-        var callId = document.getElementById("callId").value;
-        var commandParams = 
-        {
-            "action"    : "holdCall",
-            "parameter" :
-            {
-                "dialogId": callId
-            }
-        }
-        executeCommands(commandParams);
+      "action": "holdCall",
+      "parameter":
+      {
+        "dialogId": callId
+      }
     }
-    function retrieveCallCommand() 
+    executeCommands(commandParams);
+  }
+  function retrieveCallCommand() {
+    var callId = document.getElementById("callId").value;
+    var commandParams =
     {
-        var callId = document.getElementById("callId").value;
-        var commandParams = 
-        {
-            "action"    : "retrieveCall",
-            "parameter" :
-            {
-                "dialogId": callId
-            }
-        }
-        executeCommands(commandParams);
+      "action": "retrieveCall",
+      "parameter":
+      {
+        "dialogId": callId
+      }
     }
+    executeCommands(commandParams);
+  }
 
-    function makeReadyCommand()
+  function makeReadyCommand() {
+    var commandParams =
     {
-        var commandParams = 
-        {
-            "action"    : "makeReady",
-        };
-        executeCommands(commandParams);
-    }
+      "action": "makeReady",
+    };
+    executeCommands(commandParams);
+  }
 
-    function makeWorkReadyCommand()
+  function makeWorkReadyCommand() {
+    var commandParams =
     {
-        var commandParams = 
-        {
-            "action"    : "makeWorkReady",
-            "parameter" :
-            {
-                "wrapupState" : "WORK_READY"
-            }
-        };
-        executeCommands(commandParams);
-    }
+      "action": "makeWorkReady",
+      "parameter":
+      {
+        "wrapupState": "WORK_READY"
+      }
+    };
+    executeCommands(commandParams);
+  }
 
-    function makeNotReadyCommand()
+  function makeNotReadyCommand() {
+    var commandParams =
     {
-        var commandParams = 
-        {
-            "action"    : "makeNotReadyWithReason",
-            "parameter" :
-            {
-                "reasonCode" : "25"
-            }
-        };
-        executeCommands(commandParams);
-    }
+      "action": "makeNotReadyWithReason",
+      "parameter":
+      {
+        "reasonCode": "25"
+      }
+    };
+    executeCommands(commandParams);
+  }
 
-    function getWrapUpReasonsCommand()
+  function getWrapUpReasonsCommand() {
+    var commandParams =
     {
-        var commandParams = 
-        {
-            "action"    : "getWrapUpReasons",
-        };
-        executeCommands(commandParams);
-    }
+      "action": "getWrapUpReasons",
+    };
+    executeCommands(commandParams);
+  }
 
-    function applyWrapupCommand()
+  function applyWrapupCommand() {
+    var callId = document.getElementById("callId").value;
+    var commandParams =
     {
-        var callId = document.getElementById("callId").value;
-        var commandParams =
+      "action": "updateWrapupData",
+      "parameter":
+      {
+        "dialogId": callId,
+        "wrapupReason": "Test wrapup reason",
+      }
+    }
+    executeCommands(commandParams);
+  }
+
+  function updateCallvariablesCommand() {
+    var callId = document.getElementById("callId").value;
+    var value = document.getElementById("callVariableValue").value;
+
+    var commandParams =
+    {
+      "action": "updateCallVariableData",
+      "parameter":
+      {
+        "dialogId": callId,
+        "callVariables":
         {
-            "action"    : "updateWrapupData",
-            "parameter" :
-            {
-                "dialogId" : callId,
-                "wrapupReason": "Test wrapup reason",
-            }
+          "callVariable":
+            [
+              {
+                "name": config.callVariable,
+                "value": value
+              },
+              {
+                "name": "callVariable2",
+                "value": "123123"
+              }
+            ]
         }
-        executeCommands(commandParams);
+      }
     }
+    executeCommands(commandParams);
+  }
 
-    function updateCallvariablesCommand() 
+  function SSTCommand() {
+    var callId = document.getElementById("callId").value;
+    var number = document.getElementById("number").value;
+    var commandParams =
     {
-        var callId = document.getElementById("callId").value;
-        var value = document.getElementById("callVariableValue").value;
-        
-        var commandParams = 
-        {
-            "action": "updateCallVariableData",
-            "parameter" :
-            {
-                "dialogId": callId,
-                "callVariables": 
-                {
-                    "callVariable": 
-                    [
-                        {
-                            "name": config.callVariable,
-                            "value": value
-                        },
-                        {
-                            "name": "callVariable2",
-                            "value": "123123"
-                        }
-                    ]
-                }
-            }
-        }
-        executeCommands(commandParams);
+      "action": "SST",
+      "parameter":
+      {
+        "dialogId": callId,
+        "numberToTransfer": number,
+      }
     }
 
-    function SSTCommand()
+    executeCommands(commandParams);
+  }
+
+  function makeConsultCommand() {
+    var callId = document.getElementById("callId").value;
+    var number = document.getElementById("number").value;
+    var commandParams =
     {
-        var callId = document.getElementById("callId").value;
-        var number = document.getElementById("number").value;
-        var commandParams = 
-        {
-            "action" : "SST",
-            "parameter" :
-            {
-                "dialogId": callId,
-                "numberToTransfer": number,
-            }
-        }
-
-        executeCommands(commandParams);
+      "action": "makeConsult",
+      "parameter":
+      {
+        "dialogId": callId,
+        "numberToConsult": number,
+      }
     }
+    executeCommands(commandParams);
+  }
 
-    function makeConsultCommand()
+  function consultTransferCommand() {
+    var callId = document.getElementById("callId").value;
+    var commandParams =
     {
-        var callId = document.getElementById("callId").value;
-        var number = document.getElementById("number").value;
-        var commandParams = 
-        {
-            "action" : "makeConsult",
-            "parameter" :
-            {
-                "dialogId": callId,
-                "numberToConsult": number,
-            }
-        }
-        executeCommands(commandParams);
+      "action": "consultTransfer",
+      "parameter":
+      {
+        "dialogId": callId
+      }
     }
+    executeCommands(commandParams);
+  }
 
-    function consultTransferCommand()
+  function conferenceCommand() {
+    var callId = document.getElementById("callId").value;
+    var commandParams =
     {
-        var callId = document.getElementById("callId").value;
-        var commandParams = 
-        {
-            "action" : "consultTransfer",
-            "parameter" :
-            {
-                "dialogId": callId
-            }
-        }
-        executeCommands(commandParams);
+      "action": "conferenceCall",
+      "parameter":
+      {
+        "dialogId": callId
+      }
     }
+    executeCommands(commandParams);
+  }
 
-    function conferenceCommand()
-    {
-        var callId = document.getElementById("callId").value;
-        var commandParams = 
-        {
-            "action" : "conferenceCall",
-            "parameter" :
-            {
-                "dialogId": callId
-            }
-        }
-        executeCommands(commandParams);
-    }
-
-    </script>
+</script>
