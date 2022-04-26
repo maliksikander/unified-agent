@@ -85,6 +85,7 @@
       border: 1px solid #c0ecf9;
       &.chat-channel-area {
         border: 1px solid #c0ecf9;
+        background-color: white !important;
 
        // mat-expansion-panel-header{
           //border-top: 0 !important;
@@ -94,7 +95,7 @@
       }
 
       mat-expansion-panel-header{
-        //background: #ecf7fd !important;
+        background: white !important;
         //border: 1px solid #c0ecf9;
         padding: 0 15px;
         position: relative;
