@@ -33,27 +33,27 @@ export class AppHeaderComponent implements OnInit {
   reasonCodes = [
     {
       id: "ef172d24-7b35-4c6d-ada5-41827034d306",
-      name: "out of office",
+      name: "Out of Office",
       type: "LOGOUT"
     },
     {
       id: "ef172d24-7b35-4c6d-ada5-41827034d307",
-      name: "end of shift",
+      name: "End of Shift",
       type: "LOGOUT"
     },
     {
       id: "ef172d24-7b35-4c6d-ada5-41827034d308",
-      name: "lunch break",
+      name: "Lunch Break",
       type: "NOT_READY"
     },
     {
       id: "ef172d24-7b35-4c6d-ada5-41827034d309",
-      name: "short break",
+      name: "Short Break",
       type: "NOT_READY"
     },
     {
       id: "ef172d24-7b35-4c6d-ada5-41827034d301",
-      name: "out of office",
+      name: "Out of Office",
       type: "NOT_READY"
     }
   ];

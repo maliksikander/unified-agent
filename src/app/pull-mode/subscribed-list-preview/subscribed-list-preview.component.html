@@ -75,7 +75,7 @@
                                     *ngFor="let lbl of _pullModeservice.labels | fetchLabels : request.channelSession.customer?.labels"
                                     [ngStyle]="{'background-color':lbl.color_code}" class="dot"></span>
                             </span>
-                            <span *ngIf="request.id | isAlreadyJoined" class="joined">(JOINED)</span>
+                            <span *ngIf="request.id | isAlreadyJoined" class="joined">(Joined)</span>
                         </td>
                         <td>{{request.time | amTimeAgo:true}}<small> ago</small></td>
                         <td>{{_pullModeservice.listNames[request.listId] ? _pullModeservice.listNames[request.listId] : '-'}}</td>
