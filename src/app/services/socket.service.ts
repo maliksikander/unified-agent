@@ -607,12 +607,12 @@ export class socketService {
 
   async linkCustomerWithTopic(selectedCustomer, topicId) {
     try {
-      console.log("selectedCustomer==>", selectedCustomer);
+      // console.log("selectedCustomer==>", selectedCustomer);
       const conversation = this.conversations.find((e) => {
         return e.topicId == topicId;
       });
       const topicCustomer = conversation.customer;
-      console.log("old one==>", topicCustomer);
+      // console.log("old one==>", topicCustomer);
       const channelSession = conversation.firstChannelSession;
 
       if (topicCustomer && channelSession) {
@@ -769,10 +769,13 @@ export class socketService {
     } else {
       selectedCustomer["_id"] = selectedCustomerId;
       // updating customer topic
-      console.log("update topic success");
+      // console.log("update topic success");
       this._httpService.updateTopicCustomer(topicId, selectedCustomer).subscribe(
         (e) => {
-          this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
+          console.log("update topic success");
+          this.loadPastActivities(topicCustomer._id);
+
+          // this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
         },
         (error) => {
           this._snackbarService.open("unable to link customer", "err");
@@ -786,20 +789,22 @@ export class socketService {
     this._httpService.updatePastConversationCustomer(obj).subscribe(
       (res) => {
         if (res.status == "OK") {
-          console.log("update past conversation success");
-          this._snackbarService.open(res.message, "succ");
+          console.log(res.message);
+          // this._snackbarService.open(res.message, "succ");
           this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
         }
       },
       (error) => {
-        console.log("error==>", error);
+        // console.log("error==>", error);
         if (error.error && error.error.status && error.error.status == "NOT_FOUND") {
-          console.log("past conversation success not found");
+          console.log(error.error.message ? error.error.message : "Conversation_NOT_FOUND");
           // this._snackbarService.open("Post conversation success not found", "err");
           this._router.navigate(["customers"]);
         }
-        this._snackbarService.open("unable to link past conversation", "err");
-        console.error("error while updating past conversation customer ", error);
+        // this._snackbarService.open("unable to link past conversation", "err");
+        else {
+          console.error("error while updating past conversation customer ", error);
+        }
       }
     );
   }
@@ -841,4 +846,61 @@ export class socketService {
     }
     this._router.navigate(["customers"]);
   }
+
+  // to get past acitivities
+  loadPastActivities(customerID) {
+    try {
+      this._httpService.getPastActivities(customerID, 25, 0).subscribe(
+        (res: any) => {
+          let docsLength: number = res ? res.docs.length : 0;
+          // let docs = res.docs;
+          if (docsLength > 0) {
+            this._router.navigate(["customers"]);
+            // this.filterAndMergePastActivities(docs);
+          } else {
+            this.deleteCustomerAndRouteToAgent(customerID);
+            // this.noMoreConversation = true;
+          }
+        },
+        (error) => {
+          this._sharedService.Interceptor(error.error, "err");
+          console.log("[Load Past Activity] Error :", error);
+        }
+      );
+    } catch (e) {
+      console.log("[Load Past Activity] Error :", e);
+    }
+  }
+
+  // to filter out activities and add in the conversation object, it expects a list
+  // filterAndMergePastActivities(cimEvents: Array<any>) {
+  //   try {
+  //     let msgs = [];
+  //     cimEvents.forEach((event) => {
+  //       if (
+  //         event.name.toLowerCase() == "agent_message" ||
+  //         event.name.toLowerCase() == "bot_message" ||
+  //         event.name.toLowerCase() == "customer_message"
+  //       ) {
+  //         event.data.header["status"] = "sent";
+  //         msgs.push(event.data);
+  //       } else if (
+  //         ["channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())
+  //       ) {
+  //         let message = this._socketService.createSystemNotificationMessage(event);
+  //         msgs.push(message);
+  //       }
+  //     });
+
+  //     // msgs.reverse();
+  //     msgs.forEach((e) => {
+  //       this.conversation.messages.unshift(e);
+  //     });
+  //     this.noMoreConversation = false;
+  //     this.loadingPastActivity = false;
+  //     this.upTheScrollAfterMilliSecs(0, "smooth");
+  //   } catch (e) {
+  //     console.log("[Load Past Activity] Filter Error :", e);
+  //   }
+  // }
 }
