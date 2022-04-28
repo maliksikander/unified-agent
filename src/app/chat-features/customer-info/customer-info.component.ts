@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatDialog, MatSidenav } from "@angular/material";
 // import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { socketService } from "src/app/services/socket.service";
@@ -11,7 +11,8 @@ import { error } from "protractor";
 @Component({
   selector: "app-customer-info",
   templateUrl: "./customer-info.component.html",
-  styleUrls: ["./customer-info.component.scss"]
+  styleUrls: ["./customer-info.component.scss"],
+  encapsulation: ViewEncapsulation.None
 })
 export class CustomerInfoComponent implements OnInit {
   @ViewChild("sidenav", { static: true }) sidenav: MatSidenav;

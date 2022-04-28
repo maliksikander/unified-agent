@@ -24,7 +24,7 @@
 
     <div *ngIf="('customer-list' | authPipe : 'manage') as result" class="col-md-6 right-actions text-right"
       [ngClass]="filterQuery.length > 0 ? 'col-sm-12': 'col-sm-11'">
-      <button mat-button class="btn-action " (click)="actions()">Column Preference</button>
+      <button mat-button class="btn-action add-new " (click)="actions()">Column Preference</button>
       <mat-menu #columnMenu="matMenu">
         <div class="check-menu" (click)="$event.stopPropagation();">
           <p class="col-list" *ngFor="let col of cols">

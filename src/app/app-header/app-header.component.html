@@ -137,7 +137,7 @@
                   <button mat-button #stateTrigger="matMenuTrigger" [matMenuTriggerFor]="agentState"
                     (click)="$event.stopPropagation()"
                     class="ready {{_cacheService.agentPresence.state.name | lowercase}} mat-menu-item-submenu-trigger">
-                    <span>{{(_cacheService.agentPresence.state.name | removeUnderscore) +
+                    <span>{{(_cacheService.agentPresence.state.name | removeUnderscore | titlecase) +
                       (_cacheService.agentPresence.state.reasonCode != null ?' - '+
                       _cacheService.agentPresence.state.reasonCode.name :
                       '') }}</span>
@@ -217,14 +217,14 @@
 
               <mat-icon style="color: limegreen;">lens
               </mat-icon>
-              READY
+              Ready
             </button>
             <button (click)="changeState(0); $event.stopPropagation(); closeStateMenu(stateTrigger)" mat-menu-item
               class="state-trigger">
               <mat-icon style="color:#b4b4b4;">
                 lens
               </mat-icon>
-              NOT READY
+              Not Ready
             </button>
             <div *ngFor="let reason of reasonCodes">
               <button *ngIf="(reason.type | lowercase) == 'not_ready'"

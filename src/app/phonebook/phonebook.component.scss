@@ -65,15 +65,15 @@
 
     button{
       font-size: 13px;
-      background: #fff;
-      color: #000;
+      background: $main-color;
+      color: rgb(255, 255, 255);
       border: 0;
       height: 32px;
       line-height: 32px;
       margin-left: 5px;
       margin-right: 5px;
       &:hover{
-        background: lighten(#707070, 50%);
+        background: darken($main-color, 10%);
       }
       img{
         position: relative;
@@ -325,4 +325,16 @@ span.field-channel {
   margin-right: 5px;
   bottom: -5px;
   margin-left: 4px;
+}
+.add-new{
+  cursor: pointer;
+  font-size: 13px;
+  min-width: 25px;
+  background-color: $main-color;
+  color: #fff;
+  text-align: center;
+
+  &:hover{
+    background: darken($main-color, 10%);
+  }
 }

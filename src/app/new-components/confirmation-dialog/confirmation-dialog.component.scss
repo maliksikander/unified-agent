@@ -1,5 +1,5 @@
 .confirmation-header {
-  background: #e35151;
+  background: #af2d2d;
   height: 36px;
   line-height: 36px;
 
@@ -10,7 +10,7 @@
     text-align: center;
     line-height: 36px;
     height: 36px;
-    text-transform: uppercase;
+    text-transform: capitalize;
   }
 
 }
@@ -37,7 +37,7 @@
     text-transform: capitalize;
 
     &.confirm-btn{
-      background: #e35151;
+      background: #af2d2d;
     }
   }
 }

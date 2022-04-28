@@ -27,6 +27,7 @@ export class finesseService {
 
     initMe() {
         this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
+            console.log("state cahnge",e.msg);
             if (e.msg == "stateChanged" && this.finesseAgent.loginId != '') {
                 this.handlePresence(e.data);
             }
