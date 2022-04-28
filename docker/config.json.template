@@ -5,6 +5,7 @@
     "CIM_CUSTOMER_URL": "${CIM_CUSTOMER_URL}",
     "ENV" : "${ENV}",
     "BOT_FRAMEWORK_URL":"${BOT_FRAMEWORK_URL}",
+    "GRAFANA_DASHBOARD_URL:"${GRAFANA_DASHBOARD_URL}",
     "domain": "${domain}",
     "boshUrl": "${boshUrl}",
     "finesseFlavor": "${finesseFlavor}",

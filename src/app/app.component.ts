@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { SwUpdate } from "@angular/service-worker";
 import { finesseService } from "./services/finesse.service";
 import { isLoggedInService } from "./services/isLoggedIn.service";
 import { sharedService } from "./services/shared.service";
@@ -15,7 +14,7 @@ export class AppComponent implements OnInit {
 
   currentRoute: string;
 
-  constructor(private updates: SwUpdate, public _finesseService: finesseService, private _router: Router, private _isLoggedInservice: isLoggedInService, private _sharedService: sharedService) { }
+  constructor(public _finesseService: finesseService, private _router: Router, private _isLoggedInservice: isLoggedInService, private _sharedService: sharedService) { }
 
   ngOnInit() {
     this._router.events.subscribe((event: any) => {
@@ -36,19 +35,19 @@ export class AppComponent implements OnInit {
       this._sharedService.channelTypeList = channelTypes;
     }
 
-    this.checkForAppUpdates();
+   // this.checkForAppUpdates();
 
   }
 
   // checks for the update of pwa app
-  checkForAppUpdates() {
-   try{
-    this.updates.available.subscribe((event) => {
-      if (confirm("An update is available, please refresh the App to fetch updates")) {
-        this.updates.activateUpdate().then(() => location.reload());
-      }
-    });
-  }catch(err){}
-  }
+  // checkForAppUpdates() {
+  //  try{
+  //   this.updates.available.subscribe((event) => {
+  //     if (confirm("An update is available, please refresh the App to fetch updates")) {
+  //       this.updates.activateUpdate().then(() => location.reload());
+  //     }
+  //   });
+  // }catch(err){}
+  // }
 
 }

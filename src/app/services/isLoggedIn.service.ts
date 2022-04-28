@@ -72,6 +72,7 @@ export class isLoggedInService {
     this._finesseService.finesseAgent.extention = extension;
     this._finesseService.finesseAgent.loginId = username;
     this._finesseService.finesseAgent.password = password;
+    console.log("finesse user login ",obj);
     this._finesseService.initMe();
   }
 

@@ -35,7 +35,7 @@ import { LinkConversationDialogComponent } from "./dialogs/link-conversation-dia
 import { environment } from "../environments/environment";
 import { initializeApp } from "firebase/app";
 import _configService from "../assets/config.json";
-import { ServiceWorkerModule } from '@angular/service-worker';
+// import { ServiceWorkerModule } from '@angular/service-worker';
 import { GrafanaComponent } from "./supervisor/grafana/grafana.component";
 
 // let pwaServiceWorkerDev = [
@@ -105,7 +105,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
       excludeRegexp: [`${_configService.FILE_SERVER_URL}/api/downloadFileStream`, "/api/downloadFileStream"]
     }),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' })
+    // ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' })
   ],
   entryComponents: [
     EditAttributeComponent,

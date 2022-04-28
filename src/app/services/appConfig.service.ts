@@ -5,7 +5,7 @@ declare var config, callTypes;
 @Injectable()
 export class appConfigService {
   configUrl = "assets/config.json";
-  public config = { GAT_URL: "", SOCKET_URL: "", ENV: "", FILE_SERVER_URL: "", CIM_CUSTOMER_URL: "", BOT_FRAMEWORK_URL: "" };
+  public config = { GAT_URL: "", SOCKET_URL: "", ENV: "", FILE_SERVER_URL: "", CIM_CUSTOMER_URL: "", BOT_FRAMEWORK_URL: "", GRAFANA_DASHBOARD_URL:"" };
 
   constructor(private _httpClient: HttpClient) { }
 
@@ -20,6 +20,7 @@ export class appConfigService {
         this.config.FILE_SERVER_URL = e.FILE_SERVER_URL;
         this.config.CIM_CUSTOMER_URL = e.CIM_CUSTOMER_URL;
         this.config.BOT_FRAMEWORK_URL = e.BOT_FRAMEWORK_URL;
+        this.config.GRAFANA_DASHBOARD_URL = e.GRAFANA_DASHBOARD_URL
 
 
         config = {
