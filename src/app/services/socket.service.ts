@@ -787,7 +787,11 @@ export class socketService {
       this._httpService.updateTopicCustomer(topicId, selectedCustomer).subscribe(
         (e) => {
           console.log("update topic success");
-          if (toBeDeletedCustomerId != null) this.checkPastActivitiesAndDeleteCustomer(topicCustomer._id);
+          if (toBeDeletedCustomerId != null) {
+            this.checkPastActivitiesAndDeleteCustomer(topicCustomer._id);
+          } else {
+            this._router.navigate(["customers"]);
+          }
         },
         (error) => {
           this._snackbarService.open("unable to link customer", "err");
