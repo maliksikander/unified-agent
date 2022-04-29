@@ -787,7 +787,7 @@ export class socketService {
       this._httpService.updateTopicCustomer(topicId, selectedCustomer).subscribe(
         (e) => {
           console.log("update topic success");
-          this.loadPastActivities(topicCustomer._id);
+          this.checkPastActivitiesAndDeleteCustomer(topicCustomer._id);
         },
         (error) => {
           this._snackbarService.open("unable to link customer", "err");
@@ -807,16 +807,17 @@ export class socketService {
   updatePastConversation(customersObj, toBeDeletedCustomerId) {
     this._httpService.updatePastConversationCustomer(customersObj).subscribe(
       (res) => {
-        if (res.status == "OK") {
-          // if success reponse is fetched ,then delete the customer
+        // if (res.status == "OK") {
+          // if success response is fetched ,then delete the customer
           console.log(res.message);
           this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
-        }
+        // }
       },
       (error) => {
         if (error.error && error.error.status && error.error.status == "NOT_FOUND") {
           console.log(error.error.message ? error.error.message : "Conversation_NOT_FOUND");
-          this._router.navigate(["customers"]);
+          // this._router.navigate(["customers"]);
+          this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
         } else {
           console.error("error while updating past conversation customer ", error);
         }
@@ -845,7 +846,7 @@ export class socketService {
    * @param {ObjectID} customerID the customer ID of the active conversation customer
    * @returns {Object}
    */
-  loadPastActivities(customerID) {
+  checkPastActivitiesAndDeleteCustomer(customerID) {
     try {
       this._httpService.getPastActivities(customerID, 25, 0).subscribe(
         (res: any) => {
