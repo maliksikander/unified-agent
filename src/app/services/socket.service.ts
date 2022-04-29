@@ -787,7 +787,7 @@ export class socketService {
       this._httpService.updateTopicCustomer(topicId, selectedCustomer).subscribe(
         (e) => {
           console.log("update topic success");
-          this.checkPastActivitiesAndDeleteCustomer(topicCustomer._id);
+          if (toBeDeletedCustomerId != null) this.checkPastActivitiesAndDeleteCustomer(topicCustomer._id);
         },
         (error) => {
           this._snackbarService.open("unable to link customer", "err");
@@ -808,9 +808,9 @@ export class socketService {
     this._httpService.updatePastConversationCustomer(customersObj).subscribe(
       (res) => {
         // if (res.status == "OK") {
-          // if success response is fetched ,then delete the customer
-          console.log(res.message);
-          this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
+        // if success response is fetched ,then delete the customer
+        console.log(res.message);
+        this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
         // }
       },
       (error) => {
