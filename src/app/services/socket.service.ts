@@ -605,14 +605,20 @@ export class socketService {
     this._router.navigate(["login"]);
   }
 
+  /**
+   * to link the incoming customer requests to identified customers
+   *
+   * @param {Object} selectedCustomer the customer object which is selected to link the incoming customer with
+   * @param {UUID} topicId selected topic ID
+   * @returns {Object}
+   */
+
   async linkCustomerWithTopic(selectedCustomer, topicId) {
     try {
-      // console.log("selectedCustomer==>", selectedCustomer);
       const conversation = this.conversations.find((e) => {
         return e.topicId == topicId;
       });
       const topicCustomer = conversation.customer;
-      // console.log("old one==>", topicCustomer);
       const channelSession = conversation.firstChannelSession;
 
       if (topicCustomer && channelSession) {
@@ -726,6 +732,18 @@ export class socketService {
     }
   }
 
+  /**
+   * to update the customer object of the current conversation with the selected customer
+   *
+   * @param {Object} selectedCustomer the customer object which is selected to link the incoming customer with
+   * @param {Object} topicCustomer the incoming request customer object
+   * @param {Boolean} needToBeUpdate to check if identifier needs to be updated in the selected
+   * @param {ObjectID} toBeDeletedCustomerId the incoming request customer object ID
+   * @param {UUID} topicId selected topic ID
+   * @param {Boolean} addChannelIdentifier to check if identifier is required to be added in the selected customer or not
+   * @returns {Object}
+   */
+
   updateTopiCustomer(selectedCustomer, topicCustomer, needToBeUpdate: boolean, toBeDeletedCustomerId, topicId, addChannelIdentifier) {
     console.log("topic updated");
     console.log("need to be updated " + needToBeUpdate);
@@ -749,10 +767,7 @@ export class socketService {
               console.log("update topic success");
               if (addChannelIdentifier && toBeDeletedCustomerId != null) {
                 let requestPayload = { currentCustomer: topicCustomer, newCustomer: selectedCustomer };
-                // console.log("test==>", );
                 this.updatePastConversation(requestPayload, toBeDeletedCustomerId);
-              } else {
-                // this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
               }
             },
             (error) => {
@@ -769,13 +784,10 @@ export class socketService {
     } else {
       selectedCustomer["_id"] = selectedCustomerId;
       // updating customer topic
-      // console.log("update topic success");
       this._httpService.updateTopicCustomer(topicId, selectedCustomer).subscribe(
         (e) => {
           console.log("update topic success");
           this.loadPastActivities(topicCustomer._id);
-
-          // this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
         },
         (error) => {
           this._snackbarService.open("unable to link customer", "err");
@@ -785,28 +797,75 @@ export class socketService {
     }
   }
 
-  updatePastConversation(obj, toBeDeletedCustomerId) {
-    this._httpService.updatePastConversationCustomer(obj).subscribe(
+  /**
+   * to update the customer object of the current conversation with the selected customer
+   *
+   * @param {Object} customersObj the object containing current customer and new customer customer objects
+   * @param {ObjectID} toBeDeletedCustomerId the incoming request customer object ID
+   * @returns {Object}
+   */
+  updatePastConversation(customersObj, toBeDeletedCustomerId) {
+    this._httpService.updatePastConversationCustomer(customersObj).subscribe(
       (res) => {
         if (res.status == "OK") {
+          // if success reponse is fetched ,then delete the customer
           console.log(res.message);
-          // this._snackbarService.open(res.message, "succ");
           this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
         }
       },
       (error) => {
-        // console.log("error==>", error);
         if (error.error && error.error.status && error.error.status == "NOT_FOUND") {
           console.log(error.error.message ? error.error.message : "Conversation_NOT_FOUND");
-          // this._snackbarService.open("Post conversation success not found", "err");
           this._router.navigate(["customers"]);
-        }
-        // this._snackbarService.open("unable to link past conversation", "err");
-        else {
+        } else {
           console.error("error while updating past conversation customer ", error);
         }
       }
     );
+  }
+
+  /**
+   * to delete customer object and routing to the customers page
+   *
+   * @param {ObjectID} toBeDeletedCustomerId the customer ID of the active conversation customer
+   * @returns {Object}
+   */
+
+  deleteCustomerAndRouteToAgent(toBeDeletedCustomerId) {
+    if (toBeDeletedCustomerId != null) {
+      // deleting customer
+      this._httpService.deleteCustomerById(toBeDeletedCustomerId).subscribe();
+    }
+    this._router.navigate(["customers"]);
+  }
+
+  /**
+   * to check if there are any past activities associated with the customer object
+   *
+   * @param {ObjectID} customerID the customer ID of the active conversation customer
+   * @returns {Object}
+   */
+  loadPastActivities(customerID) {
+    try {
+      this._httpService.getPastActivities(customerID, 25, 0).subscribe(
+        (res: any) => {
+          let docsLength: number = res ? res.docs.length : 0;
+          if (docsLength > 0) {
+            // to check if there any past activities exist and then routing to the customer page
+            this._router.navigate(["customers"]);
+          } else {
+            // if no past activities exist, then deleting the customer
+            this.deleteCustomerAndRouteToAgent(customerID);
+          }
+        },
+        (error) => {
+          this._sharedService.Interceptor(error.error, "err");
+          console.log("[Load Past Activity] Error :", error);
+        }
+      );
+    } catch (e) {
+      console.log("[Load Past Activity] Error :", e);
+    }
   }
 
   createSystemNotificationMessage(cimEvent) {
@@ -838,69 +897,4 @@ export class socketService {
 
     return message;
   }
-
-  deleteCustomerAndRouteToAgent(toBeDeletedCustomerId) {
-    if (toBeDeletedCustomerId != null) {
-      // deleting customer
-      this._httpService.deleteCustomerById(toBeDeletedCustomerId).subscribe();
-    }
-    this._router.navigate(["customers"]);
-  }
-
-  // to get past acitivities
-  loadPastActivities(customerID) {
-    try {
-      this._httpService.getPastActivities(customerID, 25, 0).subscribe(
-        (res: any) => {
-          let docsLength: number = res ? res.docs.length : 0;
-          // let docs = res.docs;
-          if (docsLength > 0) {
-            this._router.navigate(["customers"]);
-            // this.filterAndMergePastActivities(docs);
-          } else {
-            this.deleteCustomerAndRouteToAgent(customerID);
-            // this.noMoreConversation = true;
-          }
-        },
-        (error) => {
-          this._sharedService.Interceptor(error.error, "err");
-          console.log("[Load Past Activity] Error :", error);
-        }
-      );
-    } catch (e) {
-      console.log("[Load Past Activity] Error :", e);
-    }
-  }
-
-  // to filter out activities and add in the conversation object, it expects a list
-  // filterAndMergePastActivities(cimEvents: Array<any>) {
-  //   try {
-  //     let msgs = [];
-  //     cimEvents.forEach((event) => {
-  //       if (
-  //         event.name.toLowerCase() == "agent_message" ||
-  //         event.name.toLowerCase() == "bot_message" ||
-  //         event.name.toLowerCase() == "customer_message"
-  //       ) {
-  //         event.data.header["status"] = "sent";
-  //         msgs.push(event.data);
-  //       } else if (
-  //         ["channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())
-  //       ) {
-  //         let message = this._socketService.createSystemNotificationMessage(event);
-  //         msgs.push(message);
-  //       }
-  //     });
-
-  //     // msgs.reverse();
-  //     msgs.forEach((e) => {
-  //       this.conversation.messages.unshift(e);
-  //     });
-  //     this.noMoreConversation = false;
-  //     this.loadingPastActivity = false;
-  //     this.upTheScrollAfterMilliSecs(0, "smooth");
-  //   } catch (e) {
-  //     console.log("[Load Past Activity] Filter Error :", e);
-  //   }
-  // }
 }
