@@ -50,7 +50,7 @@ export class SubscribedListPreviewComponent implements OnInit {
 
   joinChat(request) {
     let obj = {
-      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, request.channelSession.topicId, "PRIMARY", "SUBSCRIBED"),
+      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, request.channelSession.conversationId, "PRIMARY", "SUBSCRIBED"),
       agentId: this._cacheService.agent.id,
       channelSession: request.channelSession,
       requestId: request.id

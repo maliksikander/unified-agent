@@ -35,7 +35,7 @@ export class ChatNotificationsComponent implements OnInit {
           "Incoming chat request on push mode on " + e.data.channelSession.channel.channelType.name
         );
       } else if (e.msg == "closePushModeRequestHeader") {
-        this.removePushModeRequestFromRequestArray(e.data.topicId);
+        this.removePushModeRequestFromRequestArray(e.data.conversationId);
       } else if (e.msg == "openPullModeRequestHeader") {
         this.pullModeRequests.push(e.data);
         this._soundService.playRing();
@@ -51,19 +51,19 @@ export class ChatNotificationsComponent implements OnInit {
 
   ngOnInit() {}
 
-  getTopicSubscription(topicId, taskId) {
+  getTopicSubscription(conversationId, taskId) {
     this._socketService.emit("topicSubscription", {
-      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, topicId, "PRIMARY", "SUBSCRIBED"),
+      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, conversationId, "PRIMARY", "SUBSCRIBED"),
       agentId: this._cacheService.agent.id,
-      topicId: topicId,
+      conversationId: conversationId,
       taskId: taskId
     });
-    this.removePushModeRequestFromRequestArray(topicId);
+    this.removePushModeRequestFromRequestArray(conversationId);
     this._router.navigate(["customers"]);
   }
 
-  removePushModeRequestFromRequestArray(topicId) {
-    let index = this._sharedService.getIndexFromTopicId(topicId, this.pushModeRequests);
+  removePushModeRequestFromRequestArray(conversationId) {
+    let index = this._sharedService.getIndexFromConversationId(conversationId, this.pushModeRequests);
     if (index != -1) {
       this._sharedService.spliceArray(index, this.pushModeRequests);
     }

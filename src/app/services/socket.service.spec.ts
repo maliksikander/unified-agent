@@ -19,7 +19,7 @@ describe("Socket service", () => {
   let _authService: any;
 
   const mockConversation = {
-    topicId: "12345",
+    conversationId: "12345",
     messages: [],
     activeChannelSessions: [],
     unReadCount: undefined,

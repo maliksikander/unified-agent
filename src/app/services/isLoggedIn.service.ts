@@ -26,7 +26,7 @@ export class isLoggedInService {
     private _fcmService: fcmService,
     private ngxService: NgxUiLoaderService,
     private _snackbarService: snackbarService,
-    private _authService:AuthService
+    private _authService: AuthService
   ) {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       this._cacheService.isMobileDevice = true;
@@ -72,7 +72,7 @@ export class isLoggedInService {
     this._finesseService.finesseAgent.extention = extension;
     this._finesseService.finesseAgent.loginId = username;
     this._finesseService.finesseAgent.password = password;
-    console.log("finesse user login ",obj);
+    console.log("finesse user login ", obj);
     this._finesseService.initMe();
   }
 

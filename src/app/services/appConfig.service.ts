@@ -5,9 +5,17 @@ declare var config, callTypes;
 @Injectable()
 export class appConfigService {
   configUrl = "assets/config.json";
-  public config = { GAT_URL: "", SOCKET_URL: "", ENV: "", FILE_SERVER_URL: "", CIM_CUSTOMER_URL: "", BOT_FRAMEWORK_URL: "", GRAFANA_DASHBOARD_URL:"" };
+  public config = {
+    GAT_URL: "",
+    SOCKET_URL: "",
+    ENV: "",
+    FILE_SERVER_URL: "",
+    CIM_CUSTOMER_URL: "",
+    BOT_FRAMEWORK_URL: "",
+    GRAFANA_DASHBOARD_URL: ""
+  };
 
-  constructor(private _httpClient: HttpClient) { }
+  constructor(private _httpClient: HttpClient) {}
 
   loadConfig() {
     return this._httpClient
@@ -20,19 +28,16 @@ export class appConfigService {
         this.config.FILE_SERVER_URL = e.FILE_SERVER_URL;
         this.config.CIM_CUSTOMER_URL = e.CIM_CUSTOMER_URL;
         this.config.BOT_FRAMEWORK_URL = e.BOT_FRAMEWORK_URL;
-        this.config.GRAFANA_DASHBOARD_URL = e.GRAFANA_DASHBOARD_URL
-
+        this.config.GRAFANA_DASHBOARD_URL = e.GRAFANA_DASHBOARD_URL;
 
         config = {
-
           domain: e.domain,
           boshUrl: e.boshUrl,
           finesseFlavor: e.finesseFlavor,
           callVariable: e.callVariable
-        }
+        };
 
         callTypes = {
-
           inboundTypeCCE: e.inboundTypeCCE,
           inboundTypeCCX: e.inboundTypeCCX,
           directType: e.directType,
@@ -46,10 +51,8 @@ export class appConfigService {
           consultType: e.consultType,
           consultTransferTypeCCE: e.consultTransferTypeCCE,
           consultTransferTypeCCX: e.consultTransferTypeCCX,
-          conferenceType: e.conferenceType,
-
-        }
-
+          conferenceType: e.conferenceType
+        };
       });
   }
 }

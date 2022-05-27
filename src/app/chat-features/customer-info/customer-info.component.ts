@@ -20,7 +20,7 @@ export class CustomerInfoComponent implements OnInit {
   @Input() customer: any;
   @Input() customerSuggestions: any;
   @Input() activeChannelSessions: any;
-  @Input() topicId: any;
+  @Input() conversationId: any;
   @Input() firstChannelSession: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
   customerProfileFormData: any;
@@ -59,9 +59,15 @@ export class CustomerInfoComponent implements OnInit {
   // drop(event: CdkDragDrop<string[]>) {
   //   moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
   // }
-  constructor(private _router: Router, private _sharedService: sharedService, public _socketService: socketService, private dialog: MatDialog, private _httpService: httpService) { }
+  constructor(
+    private _router: Router,
+    private _sharedService: sharedService,
+    public _socketService: socketService,
+    private dialog: MatDialog,
+    private _httpService: httpService
+  ) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   close() {
     this.sidenav.close();
@@ -163,16 +169,16 @@ export class CustomerInfoComponent implements OnInit {
       maxHeight: "88vh",
       // width: "818px",
       // height: "88vh",
-      data: { id: this.customer._id, tab: 'edit' }
+      data: { id: this.customer._id, tab: "edit" }
     });
     dialogRef.afterClosed().subscribe((result: any) => {
-      if ((result && result.event && result.event == "refresh")) {
-
-        this._httpService.getCustomerById(this.customer._id).subscribe((customer) => {
-
-          this._httpService.updateTopicCustomer(this.topicId, customer).subscribe()
-
-        }, (error) => { });
+      if (result && result.event && result.event == "refresh") {
+        this._httpService.getCustomerById(this.customer._id).subscribe(
+          (customer) => {
+            this._httpService.updateConversationCustomer(this.conversationId, customer).subscribe();
+          },
+          (error) => {}
+        );
       }
     });
   }
@@ -181,17 +187,16 @@ export class CustomerInfoComponent implements OnInit {
   }
 
   linkCustomer(selectedCustomer) {
-
     let completeSelectedCustomer = {};
     this._sharedService.schema.forEach((e) => {
       if (selectedCustomer.hasOwnProperty(e.key)) {
         completeSelectedCustomer[e.key] = selectedCustomer[e.key];
       } else {
-        completeSelectedCustomer[e.key] = e.isChannelIdentifier ? [] : '';
+        completeSelectedCustomer[e.key] = e.isChannelIdentifier ? [] : "";
       }
     });
     completeSelectedCustomer["_id"] = selectedCustomer._id;
-    this._socketService.linkCustomerWithTopic(completeSelectedCustomer, this.topicId);
+    this._socketService.linkCustomerWithTopic(completeSelectedCustomer, this.conversationId);
 
     // this._socketService.changeTopicCustomer(
     //   {
@@ -221,7 +226,7 @@ export class CustomerInfoComponent implements OnInit {
     let channelIdentifier;
     let attr;
     this._socketService.conversations.find((e) => {
-      if (e.topicId == this.topicId) {
+      if (e.conversationId == this.conversationId) {
         channelType = e.firstChannelSession.channel.channelType.name;
         channelIdentifier = e.firstChannelSession.channelData.channelCustomerIdentifier;
         return;
@@ -243,7 +248,7 @@ export class CustomerInfoComponent implements OnInit {
         q: "linking",
         filterKey: attr ? attr : null,
         filterValue: channelIdentifier ? channelIdentifier : null,
-        topicId: this.topicId,
+        conversationId: this.conversationId,
         topicCustomerId: this.customer._id
       }
     };
@@ -255,7 +260,7 @@ export class CustomerInfoComponent implements OnInit {
     let navigationExtras: NavigationExtras = {
       queryParams: {
         q: "linking",
-        topicId: this.topicId,
+        conversationId: this.conversationId,
         topicCustomerId: this.customer._id
       }
     };

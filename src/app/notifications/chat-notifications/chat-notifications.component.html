@@ -16,7 +16,7 @@
             <p>{{request.channelSession.customer.firstName ? request.channelSession.customer.firstName : 'UNIDENTIFIED CUSTOMER' }}</p>
           </div>
           <div class="notification-trigger">
-            <button (click)="getTopicSubscription(request.topicId,request.taskId)" class="mat-flat-button"
+            <button (click)="getTopicSubscription(request.conversationId,request.taskId)" class="mat-flat-button"
               mat-button>Accept</button>
           </div>
         </mat-card-content>

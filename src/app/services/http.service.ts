@@ -101,7 +101,7 @@ export class httpService {
     });
   }
 
-  updateUserPreference(obj,id): Observable<any> {
+  updateUserPreference(obj, id): Observable<any> {
     return this._httpClient.put<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.userPreference}/${id}`, obj, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
@@ -156,13 +156,17 @@ export class httpService {
     });
   }
 
-  updateTopicCustomer(topicId, customer): Observable<any> {
-    return this._httpClient.put<any>(this._appConfigService.config.BOT_FRAMEWORK_URL + "/customer-topics/" + topicId + "/update-customer", customer, {
-      headers: new HttpHeaders({
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
-      })
-    });
+  updateConversationCustomer(conversationId, customer): Observable<any> {
+    return this._httpClient.put<any>(
+      this._appConfigService.config.BOT_FRAMEWORK_URL + "/customer-topics/" + conversationId + "/update-customer",
+      customer,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        })
+      }
+    );
   }
 
   updatePastConversationCustomer(object): Observable<any> {

@@ -12,11 +12,8 @@ export class ChatsComponent implements OnInit {
   conversations = [];
   barExpand = false;
 
-  constructor(
-    public _socketService: socketService,
-    public _sharedService: sharedService,
-  ) { }
-  ngOnInit() { }
+  constructor(public _socketService: socketService, public _sharedService: sharedService) {}
+  ngOnInit() {}
 
   currentTabIndex;
   tabChanged(event: MatTabChangeEvent) {

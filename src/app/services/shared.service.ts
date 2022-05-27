@@ -24,9 +24,9 @@ export class sharedService {
     this.serviceCurrentMessage.next(data);
   }
 
-  getIndexFromTopicId(topicId, array) {
+  getIndexFromConversationId(conversationId, array) {
     let index = array.findIndex((e) => {
-      return e.topicId == topicId;
+      return e.conversationId == conversationId;
     });
     return index;
   }

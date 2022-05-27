@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Validators,FormBuilder, FormGroup } from "@angular/forms";
+import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { isLoggedInService } from "../services/isLoggedIn.service";
 
 @Component({
@@ -10,22 +10,16 @@ import { isLoggedInService } from "../services/isLoggedIn.service";
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-    private _isLoggedInservice: isLoggedInService
-  ) {
+  constructor(private fb: FormBuilder, private _isLoggedInservice: isLoggedInService) {
     this.loginForm = this.fb.group({
       password: ["", [Validators.required]],
       username: ["", [Validators.required]]
     });
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   login() {
     this._isLoggedInservice.fetchCCuserAndMoveToLogin(this.loginForm.value);
   }
-
 }

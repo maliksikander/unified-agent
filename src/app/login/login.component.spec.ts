@@ -10,10 +10,7 @@ describe("LoginComponent", () => {
 
   beforeEach(() => {
     formBuilderMock = new FormBuilder();
-    fixture = new LoginComponent(
-      formBuilderMock,
-      isLoggedInServiceMock
-    );
+    fixture = new LoginComponent(formBuilderMock, isLoggedInServiceMock);
   });
 
   describe("Test: Login Form", () => {

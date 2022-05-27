@@ -82,7 +82,7 @@ export class InteractionsComponent implements OnInit {
     private _snackbarService: snackbarService,
     public _appConfigService: appConfigService,
     private _httpService: httpService
-  ) { }
+  ) {}
   ngOnInit() {
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
@@ -94,7 +94,7 @@ export class InteractionsComponent implements OnInit {
     // }, 500);
   }
 
-  emoji() { }
+  emoji() {}
 
   onSend(text) {
     text = text.trim();
@@ -133,7 +133,7 @@ export class InteractionsComponent implements OnInit {
       this.quickReplies = false;
 
       setTimeout(() => {
-        this.viewHeight = this.elementViewSuggestions.nativeElement.offsetHeight + 123 + 'px';
+        this.viewHeight = this.elementViewSuggestions.nativeElement.offsetHeight + 123 + "px";
         this.downTheScrollAfterMilliSecs(0, "smooth");
         // this.viewHeight = this.mainHeight + 180 + 'px';
         // this.scrollToBottom();
@@ -143,7 +143,7 @@ export class InteractionsComponent implements OnInit {
     } else {
       this.cannedTabOpen = false;
       this.quickReplies = true;
-      this.viewHeight = '123px';
+      this.viewHeight = "123px";
     }
     // if (this.message[0] === '.') {
     //     console.log('value is 0')
@@ -158,34 +158,34 @@ export class InteractionsComponent implements OnInit {
   }
 
   topicUnsub() {
-    console.log("going to unsub from topic " + this.conversation.topicId);
+    console.log("going to unsub from topic " + this.conversation.conversationId);
 
     if (this.conversation.state === "ACTIVE") {
       // if the topic state is 'ACTIVE' then agent needs to request the agent manager for unsubscribe
       this._socketService.emit("topicUnsubscription", {
-        topicId: this.conversation.topicId,
+        conversationId: this.conversation.conversationId,
         agentId: this._cacheService.agent.id
       });
     } else if (this.conversation.state === "CLOSED") {
       // if the topic state is 'CLOSED' it means agent is already unsubscribed by the agent manager
       // now it only needs to clear the conversation from conversations array
-      this._socketService.removeConversation(this.conversation.topicId);
+      this._socketService.removeConversation(this.conversation.conversationId);
     }
   }
 
   downTheScrollAfterMilliSecs(milliseconds, behavior) {
     setTimeout(() => {
       try {
-        document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: 'nearest' });
-      } catch (err) { }
+        document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
+      } catch (err) {}
     }, milliseconds);
   }
 
   upTheScrollAfterMilliSecs(milliseconds, behavior) {
     setTimeout(() => {
       try {
-        document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: 'nearest'});
-      } catch (err) { }
+        document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -246,7 +246,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => { });
+    dialogRef.afterClosed().subscribe((result: any) => {});
   }
 
   uploadFile(files) {
@@ -325,11 +325,11 @@ export class InteractionsComponent implements OnInit {
         return;
       }
 
-      let event: any = new CimEvent("AGENT_MESSAGE", "MESSAGE", message);
+      let event: any = new CimEvent("AGENT_MESSAGE", "MESSAGE", this.conversation.conversationId, message);
       this._socketService.emit("publishCimEvent", {
-        cimEvent: new CimEvent("AGENT_MESSAGE", "MESSAGE", message),
+        cimEvent: new CimEvent("AGENT_MESSAGE", "MESSAGE", this.conversation.conversationId, message),
         agentId: this._cacheService.agent.id,
-        topicId: this.conversation.topicId
+        conversationId: this.conversation.conversationId
       });
       // setTimeout(() => {
       //   this._socketService.onCimEventHandler(event, "12345");
@@ -409,6 +409,5 @@ export class InteractionsComponent implements OnInit {
   }
   onKeydown(event) {
     event.preventDefault();
-
   }
 }

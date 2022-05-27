@@ -1,12 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import {
-  Directive,
-  ElementRef,
-  HostBinding,
-  HostListener,
-  Inject,
-  Input
-} from "@angular/core";
+import { Directive, ElementRef, HostBinding, HostListener, Inject, Input } from "@angular/core";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { of, Subscription } from "rxjs";
 import { catchError, map } from "rxjs/operators";
@@ -84,10 +77,10 @@ export class DownloadDirective {
       .get(this.href, { responseType: "blob" })
       .pipe(
         // Creates the URL object ready for download
-        map(blob => (this.blob = URL.createObjectURL(blob))),
+        map((blob) => (this.blob = URL.createObjectURL(blob))),
 
         // Catches possible errors such as CORS not allowing the file download
-        catchError(error => {
+        catchError((error) => {
           // Reports the error preventing the download
           console.error("Unable to download the source file", error);
 
@@ -98,7 +91,7 @@ export class DownloadDirective {
           return of(this.href);
         })
       )
-      .subscribe(url => {
+      .subscribe((url) => {
         // Updates the href with the blob url on success
         this.href = url;
 

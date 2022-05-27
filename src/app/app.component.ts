@@ -14,7 +14,12 @@ export class AppComponent implements OnInit {
 
   currentRoute: string;
 
-  constructor(public _finesseService: finesseService, private _router: Router, private _isLoggedInservice: isLoggedInService, private _sharedService: sharedService) { }
+  constructor(
+    public _finesseService: finesseService,
+    private _router: Router,
+    private _isLoggedInservice: isLoggedInService,
+    private _sharedService: sharedService
+  ) {}
 
   ngOnInit() {
     this._router.events.subscribe((event: any) => {
@@ -27,7 +32,7 @@ export class AppComponent implements OnInit {
     try {
       customerSchema = JSON.parse(localStorage.getItem("customerSchema"));
       channelTypes = JSON.parse(localStorage.getItem("channelTypes"));
-    } catch (e) { }
+    } catch (e) {}
     if (customerSchema) {
       this._sharedService.schema = customerSchema;
     }
@@ -35,8 +40,7 @@ export class AppComponent implements OnInit {
       this._sharedService.channelTypeList = channelTypes;
     }
 
-   // this.checkForAppUpdates();
-
+    // this.checkForAppUpdates();
   }
 
   // checks for the update of pwa app
@@ -49,5 +53,4 @@ export class AppComponent implements OnInit {
   //   });
   // }catch(err){}
   // }
-
 }

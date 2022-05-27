@@ -43,19 +43,19 @@ export class TopicParticipant {
   participant: ICCUser;
   // stateChangedOn: string;
   token: string;
-  topicId: string;
+  conversationId: string;
   role: string;
   // state: string;
   userCredentials: string;
   state: string;
 
-  constructor(type: string, agent: IKeycloakUser, topicId: string, role: string, state: string) {
+  constructor(type: string, agent: IKeycloakUser, conversationId: string, role: string, state: string) {
     this.id = uuidv4();
     this.type = type;
     this.participant = { id: agent.id, participantType: "CCUser", keycloakUser: agent, associatedRoutingAttributes: [] };
     // this.stateChangedOn = null;
     this.token = null;
-    this.topicId = topicId;
+    this.conversationId = conversationId;
     this.role = role;
     // this.state = null;
     this.userCredentials = null;

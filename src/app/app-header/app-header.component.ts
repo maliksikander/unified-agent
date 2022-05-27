@@ -85,7 +85,7 @@ export class AppHeaderComponent implements OnInit {
     private _sharedService: sharedService,
     public _finesseService: finesseService,
     private _fcmService: fcmService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.timerConfigs = new countUpTimerConfigModel();
@@ -157,7 +157,7 @@ export class AppHeaderComponent implements OnInit {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) { }
+    } catch (e) {}
     this._socketService.emit("changeAgentState", {
       agentId: this._cacheService.agent.id,
       action: "agentState",
@@ -174,7 +174,7 @@ export class AppHeaderComponent implements OnInit {
     });
   }
 
-  close() { }
+  close() {}
 
   onChange(reason) {
     this.selectedReasonCode = reason;
@@ -184,7 +184,7 @@ export class AppHeaderComponent implements OnInit {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) { }
+    } catch (e) {}
 
     this._cacheService.resetCache();
     this._socketService.socket.disconnect();

@@ -78,10 +78,9 @@ import { getFormattedBytesPipe } from "./pipes/formatBytes.pipe";
 import { getReferredMessagePipe } from "./pipes/getReferredMsg.pipe";
 import { spaceInArrayPipe } from "./pipes/spaceInArray.pipe";
 import { channelNamePipe } from "./pipes/getChannelLogoByName.pipe";
-import { NgxTimerModule } from 'ngx-timer';
+import { NgxTimerModule } from "ngx-timer";
 import { getSenderIdPipe } from "./pipes/getSenderId.pipe";
-import { AuthPipe } from './pipes/auth.pipe';
-
+import { AuthPipe } from "./pipes/auth.pipe";
 
 @NgModule({
   declarations: [
@@ -270,4 +269,4 @@ import { AuthPipe } from './pipes/auth.pipe';
     AuthPipe
   ]
 })
-export class SharedModule { }
+export class SharedModule {}

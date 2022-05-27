@@ -11,7 +11,7 @@ export class cacheService {
   agent: IKeycloakUser;
   agentPresence: IAgentPresence;
   agentFcmkey = null;
-  isMobileDevice : boolean = false;
+  isMobileDevice: boolean = false;
 
   constructor(private _httpService: httpService, private _pullModeService: pullModeService, private _sharedService: sharedService) {
     this.resetCache();
@@ -33,15 +33,13 @@ export class cacheService {
         return a.sortOrder - b.sortOrder;
       });
       this._sharedService.schema = schema;
-      try{
-      localStorage.setItem("customerSchema", JSON.stringify(schema));
-      }
-      catch(e){}
+      try {
+        localStorage.setItem("customerSchema", JSON.stringify(schema));
+      } catch (e) {}
     });
   }
 
   loadPullModeList() {
     this._pullModeService.getPullModeList();
   }
-
 }

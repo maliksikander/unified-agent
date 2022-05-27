@@ -47,16 +47,14 @@ console.log("V.1.0.1");
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
   console.log("The device is mobile");
   // do not include ngsw-worker.js when device is mobile
- // pwaServiceWorkerDev = [];
-
+  // pwaServiceWorkerDev = [];
 } else {
   console.log("The device is pc");
   // initialize a server worker for FCM
- // initializeApp(environment.firebaseConfig);
+  // initializeApp(environment.firebaseConfig);
 }
 
 initializeApp(environment.firebaseConfig);
-
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsType: SPINNER.chasingDots,
@@ -104,7 +102,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     NgxUiLoaderHttpModule.forRoot({
       excludeRegexp: [`${_configService.FILE_SERVER_URL}/api/downloadFileStream`, "/api/downloadFileStream"]
     }),
-    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
     // ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' })
   ],
   entryComponents: [
@@ -137,4 +135,4 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   exports: [BrowserModule, CommonModule, BrowserAnimationsModule],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
