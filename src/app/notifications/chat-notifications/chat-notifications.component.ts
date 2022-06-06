@@ -7,6 +7,7 @@ import { Router } from "@angular/router";
 import { sharedService } from "src/app/services/shared.service";
 import { pullModeService } from "src/app/services/pullMode.service";
 import { soundService } from "src/app/services/sounds.service";
+import { finesseService } from "src/app/services/finesse.service";
 
 @Component({
   selector: "app-chat-notifications",
@@ -24,16 +25,27 @@ export class ChatNotificationsComponent implements OnInit {
     private _socketService: socketService,
     private _cacheService: cacheService,
     private _router: Router,
-    private _soundService: soundService
+    private _soundService: soundService,
+    private _finesseService: finesseService
   ) {
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
+      console.log("e==>", e);
       if (e.msg == "openPushModeRequestHeader") {
+        console.log("requestData$$==>", e.data.channelSession.channelData.channelCustomerIdentifier);
         this.pushModeRequests.push(e.data);
+        console.log("list$$==>", this.pushModeRequests);
         this._soundService.playRing();
-        this._soundService.openBrowserNotification(
-          "CHAT REQUESTED",
-          "Incoming chat request on push mode on " + e.data.channelSession.channel.channelType.name
-        );
+        if (e.data.cisco_data) {
+          this._soundService.openBrowserNotification(
+            "Incoming Call Alert",
+            "Incoming call alert request : " + e.data.channelSession.channel.channelType.name
+          );
+        } else {
+          this._soundService.openBrowserNotification(
+            "CHAT REQUESTED",
+            "Incoming chat request on push mode on " + e.data.channelSession.channel.channelType.name
+          );
+        }
       } else if (e.msg == "closePushModeRequestHeader") {
         this.removePushModeRequestFromRequestArray(e.data.conversationId);
       } else if (e.msg == "openPullModeRequestHeader") {
@@ -45,19 +57,38 @@ export class ChatNotificationsComponent implements OnInit {
         );
       } else if (e.msg == "closePullModeRequestHeader") {
         this.removePullModeRequestFromRequestArray(e.data);
+      } else {
+        console.log("e2==>", e);
       }
     });
   }
 
   ngOnInit() {}
 
-  getTopicSubscription(conversationId, taskId) {
-    this._socketService.emit("topicSubscription", {
-      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, conversationId, "PRIMARY", "SUBSCRIBED"),
-      agentId: this._cacheService.agent.id,
-      conversationId: conversationId,
-      taskId: taskId
-    });
+  acceptCall(ciscoData) {
+    let data = {
+      action: "answerCall",
+      parameter: {
+        dialogId: ciscoData.response.dialog.id
+      }
+    };
+    console.log("answer data==>", data);
+    this._finesseService.acceptCallOnFinesse(data);
+  }
+
+  getTopicSubscription(conversationId, taskId, ciscoData = null) {
+    console.log("channelType$$==>", ciscoData);
+    if (ciscoData) {
+      this.acceptCall(ciscoData);
+    } else {
+      this._socketService.emit("topicSubscription", {
+        topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, conversationId, "PRIMARY", "SUBSCRIBED"),
+        agentId: this._cacheService.agent.id,
+        conversationId: conversationId,
+        taskId: taskId
+      });
+    }
+
     this.removePushModeRequestFromRequestArray(conversationId);
     this._router.navigate(["customers"]);
   }

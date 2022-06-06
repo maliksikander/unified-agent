@@ -21,6 +21,7 @@ export class sharedService {
   channelTypeList;
 
   serviceChangeMessage(data: any) {
+    console.log("subject method called")
     this.serviceCurrentMessage.next(data);
   }
 

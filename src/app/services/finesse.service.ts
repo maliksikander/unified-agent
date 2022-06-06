@@ -107,9 +107,15 @@ export class finesseService {
     }
   }
 
+  // accept call on finesse
+  acceptCallOnFinesse(command) {
+    console.log("command==>", command);
+    executeCommands(command);
+  }
+
   // this will call when an event from the CTI library received
   clientCallback = (event) => {
-    console.log("CTI event ", event);
+    console.log("CTI event==>", event);
 
     if (event.event.toLowerCase() == "agentstate") {
       this.handleAgentStateFromFinesse(event.response);
@@ -133,6 +139,14 @@ export class finesseService {
 
       this.finesseLogoutReasonCodes = event.response.logoutReasons;
       this.finesseNotReadyReasonCodes = event.response.notReadyReasons;
+    } else if (event.event == "newInboundCall") {
+      console.log("inboundCallEvent==>", event.response);
+      let cisco_data = event;
+      let data = {
+        cisco_data,
+        agent: this._cacheService.agent
+      };
+      this._socketService.emit("newInboundCallRequest", data);
     }
   };
 

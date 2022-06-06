@@ -1,12 +1,13 @@
-<app-header *ngIf="currentRoute != '/login'"></app-header>
+<app-header *ngIf="currentRoute != '/login' && _cacheService.agent.id"></app-header>
 <div class="parent-notification">
-    <div class="child-notification">
-        <app-chat-notifications>
-        </app-chat-notifications>
-    </div>
+  <div class="child-notification">
+    <app-chat-notifications>
+    </app-chat-notifications>
+  </div>
 </div>
 <ngx-ui-loader></ngx-ui-loader>
 <div class="main-app-area">
-    <div *ngIf="_finesseService.showErr" class="finesse-err">Unable to connect with finesse, try refreshing may resolve the problem</div>
-    <router-outlet></router-outlet>
+  <div *ngIf="_finesseService.showErr" class="finesse-err">Unable to connect with finesse, try refreshing may resolve
+    the problem</div>
+  <router-outlet></router-outlet>
 </div>

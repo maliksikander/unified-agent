@@ -132,9 +132,14 @@ export class socketService {
     });
 
     this.socket.on("taskRequest", (res: any) => {
-      console.log("taskRequest ", res);
+      console.log("taskRequest==>", res);
       this.triggerNewChatRequest(res);
     });
+
+    // this.socket.on("incomingCallAlertEvent", (res: any) => {
+    //   console.log("event received==>")
+    //   this.triggerIncomingCallAlert(res);
+    // });
 
     this.socket.on("revokeTask", (res: any) => {
       console.log("revokeTask ", res);
@@ -246,6 +251,7 @@ export class socketService {
   triggerNewChatRequest(data) {
     this._sharedService.serviceChangeMessage({ msg: "openPushModeRequestHeader", data: data });
   }
+
 
   revokeChatRequest(data) {
     this._sharedService.serviceChangeMessage({ msg: "closePushModeRequestHeader", data: data });

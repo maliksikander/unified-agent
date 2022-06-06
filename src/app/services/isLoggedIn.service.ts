@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
-import { AuthService } from "./auth.service";
 import { cacheService } from "./cache.service";
 import { fcmService } from "./fcm.service";
 import { finesseService } from "./finesse.service";
@@ -26,7 +25,6 @@ export class isLoggedInService {
     private _fcmService: fcmService,
     private ngxService: NgxUiLoaderService,
     private _snackbarService: snackbarService,
-    private _authService: AuthService
   ) {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       this._cacheService.isMobileDevice = true;
@@ -62,12 +60,18 @@ export class isLoggedInService {
     let authToken = decodeURIComponent(params.get("authToken"));
     let password = decodeURIComponent(params.get("password"));
     let extension = decodeURIComponent(params.get("ext"));
+    // let roles = JSON.parse(decodeURIComponent(params.get("roles")));
+    // let finesseUrl = decodeURIComponent(params.get("finesseUrl"));
     let authWithSSO = JSON.parse(decodeURIComponent(params.get("authWithSSO")));
     let obj = {
       username: username,
-      password: authWithSSO == true ? authToken : password,
+      // roles: roles,
+      // finesseUrl: finesseUrl ? finesseUrl : "",
+      password: authWithSSO == true ? "" : password,
+      authToken: authWithSSO == true ? "" : authToken,
       authWithSSO: authWithSSO
     };
+
     this.fetchCCuserAndMoveToLogin(obj);
     this._finesseService.finesseAgent.extention = extension;
     this._finesseService.finesseAgent.loginId = username;

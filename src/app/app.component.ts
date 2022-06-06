@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { cacheService } from "./services/cache.service";
 import { finesseService } from "./services/finesse.service";
 import { isLoggedInService } from "./services/isLoggedIn.service";
 import { sharedService } from "./services/shared.service";
@@ -18,7 +19,8 @@ export class AppComponent implements OnInit {
     public _finesseService: finesseService,
     private _router: Router,
     private _isLoggedInservice: isLoggedInService,
-    private _sharedService: sharedService
+    private _sharedService: sharedService,
+    public _cacheService: cacheService
   ) {}
 
   ngOnInit() {

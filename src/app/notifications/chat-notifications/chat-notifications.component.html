@@ -13,11 +13,15 @@
             </p>
           </div>
           <div class="requested-name">
-            <p>{{request.channelSession.customer.firstName ? request.channelSession.customer.firstName : 'UNIDENTIFIED CUSTOMER' }}</p>
+            <p>{{request.channelSession.customer.firstName ? request.channelSession.customer.firstName : 'UNIDENTIFIED
+              CUSTOMER' }}</p>
+            <p *ngIf="request.channelSession.channel.channelType == 'VOICE'">
+              {{request.channelSession.channelData.channelCustomerIdentifier ?
+              request.channelSession.channelData.channelCustomerIdentifier : 'N/A' }}</p>
           </div>
           <div class="notification-trigger">
-            <button (click)="getTopicSubscription(request.conversationId,request.taskId)" class="mat-flat-button"
-              mat-button>Accept</button>
+            <button (click)="getTopicSubscription(request.conversationId,request.taskId,request?.cisco_data)"
+              class="mat-flat-button" mat-button>Accept</button>
           </div>
         </mat-card-content>
       </mat-card>
@@ -40,7 +44,8 @@
               </div>
               <div class="requested-name">
                 <p>New Chat message from <span>{{request.channelSession.customer.firstName}}</span> in
-                  <span>'{{_pullModeservice.listNames[request.listId] ? _pullModeservice.listNames[request.listId] : '-'}}'</span>
+                  <span>'{{_pullModeservice.listNames[request.listId] ? _pullModeservice.listNames[request.listId] :
+                    '-'}}'</span>
                 </p>
               </div>
               <div class="notification-trigger">
