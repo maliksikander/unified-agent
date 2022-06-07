@@ -140,10 +140,9 @@ export class finesseService {
       this.finesseLogoutReasonCodes = event.response.logoutReasons;
       this.finesseNotReadyReasonCodes = event.response.notReadyReasons;
     } else if (event.event == "newInboundCall") {
-      console.log("inboundCallEvent==>", event.response);
-      let cisco_data = event;
+      // let cisco_data = event;
       let data = {
-        cisco_data,
+        cisco_data: event,
         agent: this._cacheService.agent
       };
       this._socketService.emit("newInboundCallRequest", data);

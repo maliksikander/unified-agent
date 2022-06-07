@@ -132,7 +132,6 @@ export class socketService {
     });
 
     this.socket.on("taskRequest", (res: any) => {
-      console.log("taskRequest==>", res);
       this.triggerNewChatRequest(res);
     });
 

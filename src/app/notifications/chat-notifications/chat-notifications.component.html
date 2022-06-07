@@ -15,7 +15,7 @@
           <div class="requested-name">
             <p>{{request.channelSession.customer.firstName ? request.channelSession.customer.firstName : 'UNIDENTIFIED
               CUSTOMER' }}</p>
-            <p *ngIf="request.channelSession.channel.channelType == 'VOICE'">
+            <p *ngIf="request?.cisco_data">
               {{request.channelSession.channelData.channelCustomerIdentifier ?
               request.channelSession.channelData.channelCustomerIdentifier : 'N/A' }}</p>
           </div>

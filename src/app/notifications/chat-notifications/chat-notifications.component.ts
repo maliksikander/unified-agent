@@ -31,9 +31,7 @@ export class ChatNotificationsComponent implements OnInit {
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       console.log("e==>", e);
       if (e.msg == "openPushModeRequestHeader") {
-        console.log("requestData$$==>", e.data.channelSession.channelData.channelCustomerIdentifier);
         this.pushModeRequests.push(e.data);
-        console.log("list$$==>", this.pushModeRequests);
         this._soundService.playRing();
         if (e.data.cisco_data) {
           this._soundService.openBrowserNotification(
