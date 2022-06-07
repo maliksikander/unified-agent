@@ -168,7 +168,7 @@ export class httpService {
   }
 
   getUserTheme(id): Observable<any> {
-    return this._httpClient.get<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL} + ${this.apiEndpoints.theme}` + "?user_Id=" + id, {
+    return this._httpClient.get<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.theme}?user_Id=${id}`, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })

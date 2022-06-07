@@ -16,6 +16,7 @@ export class AppComponent implements OnInit {
   title = "unified-agent-gadget";
   @HostBinding('class') className = '';
   themeChange;
+  timer;
 
 
   currentRoute: string;
@@ -50,45 +51,37 @@ export class AppComponent implements OnInit {
     // }
   }
 
+  updateTheme(theme:string)
+  {
+    try {
+      this._httpService.updateUserTheme({theme:theme},this._cacheService.agent.id).subscribe(
+        (e)=>{
+              console.log(`theme setting for user ${this._cacheService.agent.id} updated to`, e);
+        }
+  );
+    } catch (err) {
+      console.log(`error updating theme`, err);
+    }
+
+  }
+
   switchTheme(e) {
     this.themeChange = e;
     const darkClassName = 'darkMode';
     this.className = this.themeChange ? darkClassName : '';
     if (this.themeChange === true) {
-      try {
-        this._httpService.updateUserTheme({theme:"dark"},this._cacheService.agent.id).subscribe(
-          (e)=>{
-                console.log(`theme setting for user ${this._cacheService.agent.id} updated to`, e);
-                if(e.theme=='dark')
-                {
-                  localStorage.setItem("darkTheme",e.theme);
-                }
-          }
-    );
-      } catch (e) {
-
-      }
+      clearTimeout(this.timer);
+      this.timer=setTimeout(()=>
+      {
+        this.updateTheme('dark');
+      },5000)
       this.overlay.getContainerElement().classList.add(darkClassName);
-      try {
-        localStorage.setItem('darkTheme', 'darkTheme');
-      } catch (e) {
-
-      }
     } else {
-      try {
-        localStorage.removeItem('darkTheme');
-        this._httpService.updateUserTheme({theme:"light"},this._cacheService.agent.id).subscribe(
-          (e)=>{
-                console.log(`theme setting for user ${this._cacheService.agent.id} updated to`, e);
-                if(e.theme=='dark')
-                {
-                  localStorage.setItem("darkTheme",e.theme);
-                }
-          }
-    );
-      } catch (e) {
-
-      }
+      clearTimeout(this.timer);
+      this.timer=setTimeout(()=>
+      {
+        this.updateTheme('light');
+      },5000)
       console.log("removing dark theme",e);
       this.overlay.getContainerElement().classList.remove(darkClassName);
     }
