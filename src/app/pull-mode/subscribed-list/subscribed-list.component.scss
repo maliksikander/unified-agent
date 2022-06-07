@@ -58,8 +58,16 @@
         line-height: 38px;
         padding: 0 15px;
         font-size: 13px;
-        background: #F7F7F7 !important;
+        background: #F7F7F7;
         border: 0;
+      }
+    }
+
+    tbody{
+      tr{
+        &:hover {
+          background: #EAEAEA;
+        }
       }
     }
   }
@@ -122,7 +130,7 @@
     }
     tr {
       &:hover {
-        background: #EAEAEA !important;
+        background: #EAEAEA;
 
         .table-trigger {
           display: inline-block;

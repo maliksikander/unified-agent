@@ -22,7 +22,7 @@
     right: 0;
     top: 50%;
     transform: translate(0, -50%);
-    box-shadow: -3px 0 3px #ccc !important;
+    box-shadow: -3px 0 3px #ccc;
     border-radius: 5px 0 0 5px;
   }
 }
@@ -50,7 +50,7 @@
     }
     .customer-info-panel {
       mat-expansion-panel-header {
-        background: $white-color !important;
+        background: $white-color;
         border-bottom: 1px solid $highlight-color;
 
         .material-icons.drag-icon {
@@ -65,7 +65,7 @@
       }
     }
     mat-expansion-panel-header {
-      background: $header-gray-color !important;
+      background: $header-gray-color;
       padding-left: 8px !important;
       padding-right: 10px;
 
@@ -188,7 +188,7 @@
         padding: 0 5px;
 
         mat-expansion-panel-header{
-          background: #fff !important;
+          background: #fff;
           padding: 0 5px;
           border-radius: 0 !important;
 

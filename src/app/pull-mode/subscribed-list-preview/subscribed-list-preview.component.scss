@@ -74,7 +74,7 @@
         line-height: 38px;
         padding: 0 15px;
         font-size: 13px;
-        background: #F7F7F7 !important;
+        background: #F7F7F7;
         border: 0;
       }
     }
@@ -124,56 +124,60 @@
     //  width: 20% !important;
     //}
   }
-  tbody {
+  .table {
+    tbody {
 
-    .table-trigger{
-      opacity: 0;
-      visibility: hidden;
-      transition: all .3s;
-      position: absolute;
-      right: 15px;
-      z-index: 2;
-      top: 6px;
-      background: #eaeaea;
-      button{
-        height: 24px;
-        margin: 0 5px;
-        width: 75px;
-        line-height: 22px;
-        background: #E60303;
-        border: 1px solid #BE0D18;
-        color: #fff;
-        font-size: 12px;
+      .table-trigger {
+        opacity: 0;
+        visibility: hidden;
+        transition: all .3s;
+        position: absolute;
+        right: 15px;
+        z-index: 2;
+        top: 6px;
+        background: #eaeaea;
+
+        button {
+          height: 24px;
+          margin: 0 5px;
+          width: 75px;
+          line-height: 22px;
+          background: #E60303;
+          border: 1px solid #BE0D18;
+          color: #fff;
+          font-size: 12px;
 
 
+          &.chat-btn {
+            background: #31CB73;
+            border-color: darken(#31CB73, 10%);;
 
-        &.chat-btn{
-          background:#31CB73 ;
-          border-color:darken(#31CB73, 10%) ;;
-          &:hover{
-            background:darken(#31CB73, 10%) ;
+            &:hover {
+              background: darken(#31CB73, 10%);
+            }
           }
-        }
-        &.close-btn{
-          &:hover {
-            background: #848484;
+
+          &.close-btn {
+            &:hover {
+              background: #848484;
+            }
           }
         }
       }
-    }
-    tr {
-      &:hover {
-        background: #EAEAEA !important;
 
-        .table-trigger {
-          display: inline-block;
-          opacity: 1;
-          visibility: visible;
+      tr {
+        &:hover {
+          background: #EAEAEA;
+
+          .table-trigger {
+            display: inline-block;
+            opacity: 1;
+            visibility: visible;
+          }
         }
       }
     }
   }
-
 }
 
 

@@ -1,11 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
-@import "src/app/shared/globalVariables";
+@import "src/assets/themes/dark-theme";
+//@import "src/app/shared/globalVariables";
 @import "src/assets/styles/compact-view";
 @import "~material-design-icons/iconfont/material-icons.css";
 @import "~primeng/resources/themes/nova-light/theme.css";
 @import "~primeng/resources/primeng.min.css";
 @import "~@progress/kendo-theme-default/dist/all.css";
 @import "~ng-pick-datetime/assets/style/picker.min.css";
+
 
 //@import "primeicons/primeicons.css";
 //@import "primeng/resources/primeng.min.css";
@@ -136,7 +138,7 @@ mat-tab-group.chat-tab-area {
         border-radius: 5px;
 
         &.mat-tab-label-active {
-          background: $bubble-background !important;
+          background: $bubble-background;
           box-shadow: inset 1.5px 0 0 lighten($main-color, 15%), inset 0 1.5px 0 lighten($main-color, 15%), inset 0 -1.5px 0 lighten($main-color, 15%),
             inset -1.5px 0 0 lighten($main-color, 15%);
 
@@ -312,17 +314,16 @@ mat-sidenav.mat-drawer.mat-sidenav {
     padding: 0 10px 0 0;
   }
 }
-snack-bar-container.err-class {
-  background: red;
-  color: white;
+snack-bar-container{
+  color: white !important;
   text-align: center;
   max-width: 60vw;
-}
-
-snack-bar-container.success-snackbar {
-  background: green;
-  color: white;
-  text-align: center;
+  &.err-class {
+    background: #e03636 !important;
+  }
+  &.success-snackbar {
+    background: #0a770a !important;
+  }
 }
 
 .mat-simple-snackbar span {
@@ -399,9 +400,9 @@ snack-bar-container.success-snackbar {
   position: relative;
 
   h4 {
-    font-size: 14px;
+    font-size: 14px !important;
     color: $white-color;
-    line-height: 36px;
+    line-height: 36px !important;
   }
   button {
     position: absolute;
@@ -439,8 +440,8 @@ snack-bar-container.success-snackbar {
     height: 0;
     padding: 0 !important;
     z-index: -1;
-    max-width: 100px !important;
-    min-width: 100px !important;
+    //max-width: 100px !important;
+    //min-width: 100px !important;
     text-align: right;
     button {
       padding: 0;
@@ -482,11 +483,13 @@ snack-bar-container.success-snackbar {
           background-color: transparent !important;
         }
         &:hover td:last-child {
-          width: 100px;
+          //width: 100px;
           background: transparent;
           // height: auto;
           padding: 4px 12px;
           border-color: transparent !important;
+          max-width: 100px !important;
+          min-width: 100px !important;
           // transform: translate(0, -50%);
           // top: 50%;
           z-index: 1;
@@ -815,7 +818,7 @@ snack-bar-container.success-snackbar {
       }
 
       .mat-option-text {
-        color: #676767 !important;
+        color: #676767;
       }
 
       &.mat-active {
@@ -1799,6 +1802,7 @@ button.add-customer {
   min-height: 10vh;
   .mat-dialog-actions {
     margin: 0 !important;
+    border-top: 1px solid rgba(0,0,0,.1);
   }
 
   .mat-form-field-infix {
@@ -2035,7 +2039,7 @@ tspan {
 }
 
 .channel-options {
-  color: #666 !important;
+  color: #666;
   font-size: 13px !important;
   text-transform: capitalize;
 }
@@ -2383,7 +2387,7 @@ tspan {
   &.not_ready {
     .mat-slide-toggle.mat-primary .mat-slide-toggle-bar,
     .mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar {
-      background: #b4b4b4;
+      background: #81818157;
     }
   }
   &.ready {
@@ -2782,13 +2786,13 @@ body {
   vg-play-pause {
     .icon {
       pointer-events: none;
-      border: 2px solid $theme-green;
+      border: 2px solid #00000094;
       border-radius: 100%;
       width: 28px;
       height: 28px;
 
       &:before {
-        color: $theme-green;
+        color: #00000094;
         height: 25px;
         line-height: 25px;
         text-align: center;

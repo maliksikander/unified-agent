@@ -23,6 +23,7 @@ div#main-content {
   height: calc(100% - 50px);
   display: flex;
   align-items: center;
+  overflow: hidden;
 }
 .no-chat {
   text-align: center;

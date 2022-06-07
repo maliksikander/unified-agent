@@ -287,7 +287,7 @@
 }
 
 .main-content {
-  box-shadow: 0px 2px 0px #ececec;
+  //box-shadow: 0px 2px 0px #4545452b;
   //min-height: 75vh;
   margin: 0;
   padding: 0;
@@ -313,19 +313,17 @@
 }
 
 .lbl {
-  color: #777777;
-  font-size: 11px;
-  margin-top: 4px;
-  font-weight: bold;
-  text-transform: capitalize;
+  color: #737373;
+  font-size: 13px;
+  margin: 0;
 }
 
 .main-content-create-customer {
   display: block;
-  margin: 0px 30px;
+  margin: 10px 30px 0 30px;
   padding: 0 0 0px 0px;
   max-height: calc(100% - 110px);
-  margin-top: 10px;
+  //margin-top: 10px;
   //min-height: 73vh;
 
   mat-error {

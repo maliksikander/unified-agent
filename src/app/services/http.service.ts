@@ -21,7 +21,8 @@ export class httpService {
       pullModeList: "/agent/pull-mode-list",
       fileServer: "/api/downloadFileStream?filename=",
       uploadFile: "/api/uploadFileStream",
-      activities: "/customer-topics/customer"
+      activities: "/customer-topics/customer",
+      theme:"/theme"
     };
   }
 
@@ -156,6 +157,26 @@ export class httpService {
     });
   }
 
+  ///////////////////////  Customer Theme //////////
+
+  updateUserTheme(data, id): Observable<any> {
+    return this._httpClient.put<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.theme}/${id}`, data, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+  getUserTheme(id): Observable<any> {
+    return this._httpClient.get<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL} + ${this.apiEndpoints.theme}` + "?user_Id=" + id, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+
+  ////////////////////////////////////////////
   updateConversationCustomer(conversationId, customer): Observable<any> {
     return this._httpClient.put<any>(
       this._appConfigService.config.BOT_FRAMEWORK_URL + "/customer-topics/" + conversationId + "/update-customer",

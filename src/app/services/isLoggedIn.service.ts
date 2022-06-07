@@ -60,18 +60,12 @@ export class isLoggedInService {
     let authToken = decodeURIComponent(params.get("authToken"));
     let password = decodeURIComponent(params.get("password"));
     let extension = decodeURIComponent(params.get("ext"));
-    // let roles = JSON.parse(decodeURIComponent(params.get("roles")));
-    // let finesseUrl = decodeURIComponent(params.get("finesseUrl"));
     let authWithSSO = JSON.parse(decodeURIComponent(params.get("authWithSSO")));
     let obj = {
       username: username,
-      // roles: roles,
-      // finesseUrl: finesseUrl ? finesseUrl : "",
-      password: authWithSSO == true ? "" : password,
-      authToken: authWithSSO == true ? "" : authToken,
+      password: authWithSSO == true ? authToken : password,
       authWithSSO: authWithSSO
     };
-
     this.fetchCCuserAndMoveToLogin(obj);
     this._finesseService.finesseAgent.extention = extension;
     this._finesseService.finesseAgent.loginId = username;

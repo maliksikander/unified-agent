@@ -1,8 +1,8 @@
-<app-header *ngIf="currentRoute != '/login' && _cacheService.agent.id"></app-header>
+<app-header (themeSwitcher)="switchTheme($event)" *ngIf="currentRoute != '/login' && _cacheService.agent.id">
+</app-header>
 <div class="parent-notification">
   <div class="child-notification">
-    <app-chat-notifications>
-    </app-chat-notifications>
+    <app-chat-notifications></app-chat-notifications>
   </div>
 </div>
 <ngx-ui-loader></ngx-ui-loader>

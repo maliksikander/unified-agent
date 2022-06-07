@@ -133,7 +133,7 @@
                   sameElse: 'dddd, MMM YYYY'} }}</span>
               </div>
               <div *ngIf="(message.body.type | lowercase) != 'systemnotification' && message.header.channelSession "
-                class="chat-message {{((index == 0) || ((conversation.messages[index-1].body.type | lowercase) != 'systemnotification' ) && ((message.header.sender | getSenderId) == (conversation.messages[index-1].header.sender | getSenderId) && message.body.type == conversation.messages[index-1].body.type && message.header.replyToMessageId == null && message.header.channelSession.channel.channelType.id == conversation.messages[index-1].header.channelSession.channel.channelType.id  )) ? 'same-sender-msg' : ''}} {{message.header.status=='sending' ? 'low-opacity' : ''}}  {{message.body.type | lowercase}} {{  message.header.replyToMessageId != null  ? 'quoted-message-main' : ''}}"
+                class="chat-message {{((index == 0) || ((conversation.messages[index-1].body.type | lowercase) != 'systemnotification' ) && ((message.header.sender | getSenderId) == (conversation.messages[index-1].header.sender | getSenderId) && message.body.type == conversation.messages[index-1].body.type && message.header.replyToMessageId == null && message.header.channelSession.channel.channelType.id == conversation.messages[index-1].header.channelSession.channel.channelType.id  )) ? 'same-sender-msg' : ''}} {{message.header.status=='sending' ? 'low-opacity' : ''}}  {{message.body.type | lowercase}} {{  message.header.replyToMessageId != null  ? 'quoted-message-main' : ''}} {{message.header.sender.type | lowercase}}"
                 [ngClass]=" ((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message ' ">
                 <div class="profile-pic">
                   <div class="active-channel channel-icon">
@@ -154,7 +154,7 @@
                     <div class="main-quoted-reply"
                       *ngFor="let referredMessage of message.header.replyToMessageId | getReferredMsg:conversation.messages">
                       <div
-                        [ngClass]="{'file-type-message' : (referredMessage.body.type | lowercase) === 'image'||  (referredMessage.body.type | lowercase) === 'file' || (referredMessage.body.type | lowercase) === 'url' || (referredMessage.body.type | lowercase) === 'contact'|| (referredMessage.body.type | lowercase) === 'location' || (referredMessage.body.type | lowercase) === 'video' || (referredMessage.body.type | lowercase) === 'sticker', 'file-type-video' : (referredMessage.body.type | lowercase) === 'video', 'file-type-sticker' : (referredMessage.body.type | lowercase) === 'sticker' }">
+                        [ngClass]="{'file-type-message' : (referredMessage.body.type | lowercase) != 'plain' &&  (referredMessage.body.type | lowercase) != 'button'}">
                         <!-- ---------------plain---------------------- -->
                         <div *ngIf="(referredMessage.body.type | lowercase) == 'plain'">
                           <p>
@@ -193,7 +193,7 @@
 
                         <!-- --------------------sticker--------------------- -->
                         <div *ngIf="(referredMessage.body.type | lowercase) == 'sticker'" class="file-type-content ">
-                          <span class="display-file">
+                          <span class="display-file display-image">
                             <img [src]="referredMessage.body.mediaUrl | getFileUrl">
                           </span>
                           <!--                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
@@ -208,13 +208,13 @@
                             class="display-file display-image">
                             <img [src]="referredMessage.body.attachment.mediaUrl | getFileUrl">
                           </a>
-                          <div class="shared-url shared-card-content">
-                            <span class="url-title card-title"
-                              [matTooltip]="referredMessage.body.caption">{{referredMessage.body.caption}}</span>
-                            <span class="url-description card-description"></span>
-                            <a class="url-link  card-action"
-                              [matTooltip]="referredMessage.body.markdownText">{{referredMessage.body.markdownText}}</a>
-                          </div>
+                          <!--                          <div class="shared-url shared-card-content">-->
+                          <!--                            <span class="url-title card-title"-->
+                          <!--                              [matTooltip]="referredMessage.body.caption">{{referredMessage.body.caption}}</span>-->
+                          <!--                            <span class="url-description card-description"></span>-->
+                          <!--                            <a class="url-link  card-action"-->
+                          <!--                              [matTooltip]="referredMessage.body.markdownText">{{referredMessage.body.markdownText}}</a>-->
+                          <!--                          </div>-->
                           <!--                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
                         </div>
 
@@ -249,8 +249,7 @@
                           class="file-type-content contact-type">
                           <span class="display-file contact-logo">
                             <!--                      <img src="assets/images/contacts-logo.svg">-->
-                            <img
-                              src="assets/images/{{referredMessage.header.sender.type == 'CUSTOMER' ? 'contacts-logo.svg' :  'contacts-logo-bot.svg'}}">
+                            <img src="assets/images/dummy-user.svg">
 
                           </span>
                           <div class="contact-space shared-url shared-card-content">
@@ -346,15 +345,15 @@
 
                         <div *ngIf="(referredMessage.body.type | lowercase) == 'location'"
                           class="file-type-content location-type">
-                          <span class="display-file location-logo"
-                            (click)="fullLocation(referredMessage.body.location.latitude, referredMessage.body.location.longitude)">
-                            <!--                      <img src="assets/images/map-marker.svg">-->
-                            <img
-                              src="assets/images/{{referredMessage.header.sender.type == 'CUSTOMER' ? 'map-marker.svg' :  'map-marker-bot.svg'}}">
+                          <!--                          <span class="display-file location-logo"-->
+                          <!--                            (click)="fullLocation(referredMessage.body.location.latitude, referredMessage.body.location.longitude)">-->
+                          <!--                            &lt;!&ndash;                      <img src="assets/images/map-marker.svg">&ndash;&gt;-->
+                          <!--                            <img-->
+                          <!--                              src="assets/images/{{referredMessage.header.sender.type == 'CUSTOMER' ? 'map-marker.svg' :  'map-marker-bot.svg'}}">-->
 
-                          </span>
+                          <!--                          </span>-->
                           <div class="shared-url shared-card-content location-map">
-                            <agm-map [zoom]="8" [latitude]="referredMessage.body.location.latitude"
+                            <agm-map [zoom]="2" [latitude]="referredMessage.body.location.latitude"
                               [longitude]="referredMessage.body.location.longitude" controlSize="20">
                               <agm-marker [latitude]="referredMessage.body.location.latitude"
                                 [longitude]="referredMessage.body.location.longitude"></agm-marker>
@@ -370,7 +369,7 @@
                   <!-- -----------------------referred reply message end---------------- -->
 
                   <div class="chat-message-content"
-                    [ngClass]="{'replied-message': message.header.replyToMessageId != null ,'file-type-message' : (message.body.type | lowercase) === 'image'||  (message.body.type | lowercase) === 'file' || (message.body.type | lowercase) === 'url' || (message.body.type | lowercase) === 'contact'|| (message.body.type | lowercase) === 'location' || (message.body.type | lowercase) === 'video' || (message.body.type | lowercase) === 'sticker', 'file-type-video' : (message.body.type | lowercase) === 'video', 'file-type-sticker' : (message.body.type | lowercase) === 'sticker' }">
+                    [ngClass]="{'replied-message': message.header.replyToMessageId != null ,'file-type-message' : (message.body.type | lowercase) != 'plain' &&  (message.body.type | lowercase) != 'button'}">
                     <!-- ---------------plain---------------------- -->
                     <div *ngIf="(message.body.type | lowercase) == 'plain'">
                       <p
@@ -422,10 +421,10 @@
 
                     <!-- --------------------sticker--------------------- -->
                     <div *ngIf="(message.body.type | lowercase) == 'sticker'" class="file-type-content ">
-                      <span class="display-file">
+                      <span class="display-file display-image">
                         <img [src]="message.body.mediaUrl | getFileUrl">
                       </span>
-                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
+                      <!--                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                     </div>
 
                     <!-- --------------------image--------------------- -->
@@ -436,15 +435,16 @@
                         class="display-file display-image">
                         <img [src]="message.body.attachment.mediaUrl | getFileUrl">
                       </a>
-                      <div class="shared-url shared-card-content">
-                        <span class="url-title card-title"
-                          [matTooltip]="message.body.caption">{{message.body.caption}}</span>
-                        <span class="url-description card-description"></span>
-                        <a class="url-link  card-action"
-                          [matTooltip]="message.body.markdownText">{{message.body.markdownText}}</a>
-                      </div>
-                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
+                      <!--                      <div class="shared-url shared-card-content">-->
+                      <!--                        <span class="url-title card-title"-->
+                      <!--                          [matTooltip]="message.body.caption">{{message.body.caption}}</span>-->
+                      <!--                        <span class="url-description card-description"></span>-->
+                      <!--                        <a class="url-link  card-action"-->
+                      <!--                          [matTooltip]="message.body.markdownText">{{message.body.markdownText}}</a>-->
+                      <!--                      </div>-->
+                      <!--                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                     </div>
+
 
                     <!-- ---------------------file-------------------------------- -->
 
@@ -467,7 +467,7 @@
                         </a>
 
                       </span>
-                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
+                      <!--                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                     </div>
 
                     <!-- -----------------------contact---------------------------- -->
@@ -475,8 +475,7 @@
                     <div *ngIf="(message.body.type | lowercase) == 'contact'" class="file-type-content contact-type">
                       <span class="display-file contact-logo">
                         <!--                      <img src="assets/images/contacts-logo.svg">-->
-                        <img
-                          src="assets/images/{{message.header.sender.type == 'CUSTOMER' ? 'contacts-logo.svg' :  'contacts-logo-bot.svg'}}">
+                        <img src="assets/images/dummy-user.svg">
 
                       </span>
                       <div class="contact-space shared-url shared-card-content">
@@ -486,7 +485,7 @@
                           <span class="contact-number card-description">{{contact.phones[0].phone}}</span>
                         </div>
                       </div>
-                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
+                      <!--                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                     </div>
 
                     <!-- ------------------------------url------------------------------- -->
@@ -502,7 +501,7 @@
                         <a class="url-link  card-action" [matTooltip]="message.body.mediaUrl"
                           href="{{message.body.mediaUrl}}" target="_blank">{{message.body.mediaUrl}}</a>
                       </div>
-                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
+                      <!--                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                     </div>
 
                     <!-- -----------------------------audio--------------------------------------- -->
@@ -528,7 +527,7 @@
                             </audio>
                           </vg-player>
                         </div>
-                        <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
+                        <!--                        <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                       </div>
                     </div>
 
@@ -562,19 +561,19 @@
                         </div>
                       </div>
 
-                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
+                      <!--                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                     </div>
 
                     <!-- ---------------------location------------------------------- -->
 
                     <div *ngIf="(message.body.type | lowercase) == 'location'" class="file-type-content location-type">
-                      <span class="display-file location-logo"
-                        (click)="fullLocation(message.body.location.latitude, message.body.location.longitude)">
-                        <!--                      <img src="assets/images/map-marker.svg">-->
-                        <img
-                          src="assets/images/{{message.header.sender.type == 'CUSTOMER' ? 'map-marker.svg' :  'map-marker-bot.svg'}}">
+                      <!--                      <span class="display-file location-logo"-->
+                      <!--                        (click)="fullLocation(message.body.location.latitude, message.body.location.longitude)">-->
+                      <!--                        &lt;!&ndash;                      <img src="assets/images/map-marker.svg">&ndash;&gt;-->
+                      <!--                        <img-->
+                      <!--                          src="assets/images/{{message.header.sender.type == 'CUSTOMER' ? 'map-marker.svg' :  'map-marker-bot.svg'}}">-->
 
-                      </span>
+                      <!--                      </span>-->
                       <div class="shared-url shared-card-content location-map">
                         <agm-map [zoom]="8" [latitude]="message.body.location.latitude"
                           [longitude]="message.body.location.longitude" controlSize="20">
@@ -582,8 +581,11 @@
                             [longitude]="message.body.location.longitude"></agm-marker>
                         </agm-map>
                       </div>
-                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>
+                      <!--                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                     </div>
+
+
+                    <span class="chat-time file-type-stamp">{{message.header.timestamp | date:'shortTime'}}</span>
 
                   </div>
                 </div>
@@ -672,9 +674,11 @@
               placeholder="{{conversation.messages[conversation.messages.length -1]?.botSuggestions ? 'Bot suggestions are available type / for viewing' :'Type a message here...'}}"></textarea>
             <!-- [ngClass]="{'animate-content': displaySuggestionsAnimation}" -->
 
-            <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete {{isBarOPened ? 'customer-right-bar': customerBar ? 'customer-left-bar': ''}}">
+            <mat-autocomplete #auto="matAutocomplete"
+              class="suggested-answer answer-autocomplete {{isBarOPened ? 'customer-right-bar': customerBar ? 'customer-left-bar': ''}}">
               <div class="suggested-content" #mainScreen
-                [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}" *ngIf="conversation.messages[conversation.messages.length -1]?.botSuggestions">
+                [ngClass]="{'content-display': cannedTabOpen || displaySuggestionsArea}"
+                *ngIf="conversation.messages[conversation.messages.length -1]?.botSuggestions">
                 <!-- <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies"
                   >
                   <ng-container

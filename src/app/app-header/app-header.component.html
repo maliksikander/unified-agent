@@ -42,7 +42,13 @@
       <img src="assets/images/expertflow-logo.png">
     </div>
     <div class="col-md-8 col-sm-7 right-profile-area">
+
       <div class="info">
+         <span class="theme-switcher">
+            <mat-icon (click)="themeSwitch()"
+                      matTooltip="{{isdarkMode ? 'Switch to light mode' : 'Switch to dark mode'}}">
+              {{isdarkMode ? 'brightness_7' : 'brightness_4'}}</mat-icon>
+      </span>
         <!--      <div (click)="openOutboundMsgDialog()" *ngIf="config._EnableOutboundSms" class="message-trigger-area">-->
         <!--        <button mat-button class="chat-message-trigger" >-->
         <!--          <span class="material-icons">textsms</span>-->
@@ -127,7 +133,7 @@
                   <div class="agent-showcase">
                     <img src="assets/images/dummy-user.svg" alt="Agent">
                   </div>
-                  <h4 [matTooltip]="agent.name">{{_cacheService.agent.username}}</h4>
+                  <h4 [matTooltip]="_cacheService.agent.username">{{_cacheService.agent.username}}</h4>
                   <span>(Ext: {{agent.extension}})</span>
                 </div>
 
@@ -151,7 +157,7 @@
                 <div *ngIf="('state-change' | authPipe : 'view') as result" class="mrd-states"
                   (click)="$event.stopPropagation()">
                   <span class="mrd-text">Change MRD State</span>
-                  <div *ngFor="let agentMrdState of _cacheService.agentPresence.agentMrdStates">
+                  <div class="state-main-wrapper" *ngFor="let agentMrdState of _cacheService.agentPresence.agentMrdStates">
                     <p class="menu-trigger-custom select-state {{agentMrdState.state | lowercase}}">
                       <span class="inner-btn ">{{agentMrdState.mrd.name}}<small>({{agentMrdState.state}})</small></span>
                       <mat-slide-toggle (change)="changeMRD($event,agentMrdState)"

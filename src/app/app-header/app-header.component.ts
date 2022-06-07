@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import { cacheService } from "../services/cache.service";
 import { sharedService } from "../services/shared.service";
 import { socketService } from "../services/socket.service";
@@ -6,6 +6,7 @@ import { CountupTimerService, countUpTimerConfigModel, timerTexts } from "ngx-ti
 import { Router } from "@angular/router";
 import { finesseService } from "../services/finesse.service";
 import { fcmService } from "../services/fcm.service";
+import { httpService } from '../services/http.service';
 
 @Component({
   selector: "app-header",
@@ -14,6 +15,11 @@ import { fcmService } from "../services/fcm.service";
 })
 export class AppHeaderComponent implements OnInit {
   @ViewChild("stateTrigger", { static: false }) stateTrigger: any;
+  @Output() themeSwitcher = new EventEmitter<any>();
+
+
+  isdarkMode = false;
+
   agent = {
     state: "ready",
     name: "Bryan Miller",
@@ -84,8 +90,9 @@ export class AppHeaderComponent implements OnInit {
     private _socketService: socketService,
     private _sharedService: sharedService,
     public _finesseService: finesseService,
-    private _fcmService: fcmService
-  ) {}
+    private _fcmService: fcmService,
+    private _httpService: httpService,
+  ) { }
 
   ngOnInit() {
     this.timerConfigs = new countUpTimerConfigModel();
@@ -106,6 +113,21 @@ export class AppHeaderComponent implements OnInit {
         this._cacheService.agentPresence = e.data;
       }
     });
+    if(this._cacheService.agent.id)
+    {
+      this._httpService.getUserTheme(this._cacheService.agent.id).subscribe(
+        (e)=>{
+              console.log("theme setting is", e);
+              if(e.theme=='dark')
+              {
+                this.themeSwitch()
+              }
+        },(error) => { console.log("error getting user theme", error)}
+  );
+    }
+    // if (localStorage.getItem('darkTheme')) {
+    //   this.isdarkMode = true;
+    // }
   }
 
   reStartTimer() {
@@ -157,7 +179,7 @@ export class AppHeaderComponent implements OnInit {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._socketService.emit("changeAgentState", {
       agentId: this._cacheService.agent.id,
       action: "agentState",
@@ -174,7 +196,7 @@ export class AppHeaderComponent implements OnInit {
     });
   }
 
-  close() {}
+  close() { }
 
   onChange(reason) {
     this.selectedReasonCode = reason;
@@ -184,7 +206,7 @@ export class AppHeaderComponent implements OnInit {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
 
     this._cacheService.resetCache();
     this._socketService.socket.disconnect();
@@ -200,5 +222,11 @@ export class AppHeaderComponent implements OnInit {
     setTimeout(() => {
       this.stateTrigger.closeMenu();
     }, 200);
+  }
+
+  themeSwitch() {
+    this.isdarkMode = !this.isdarkMode;
+    this.themeSwitcher.emit(this.isdarkMode);
+
   }
 }
