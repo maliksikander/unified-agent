@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
 
   currentRoute: string;
 
-  constructor(private overlay: OverlayContainer,private _cacheService: cacheService, public _finesseService: finesseService, private _router: Router,private _httpService: httpService, private _isLoggedInservice: isLoggedInService, private _sharedService: sharedService) { }
+  constructor(private overlay: OverlayContainer,public _cacheService: cacheService, public _finesseService: finesseService, private _router: Router,private _httpService: httpService, private _isLoggedInservice: isLoggedInService, private _sharedService: sharedService) { }
   isdarkMode = false;
 
   ngOnInit() {
