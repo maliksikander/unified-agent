@@ -173,7 +173,7 @@
           </td> -->
 
 
-          <td (click)="onRowClick(rowData._id,null,col.type)" *ngFor="let col of columns" class="ui-resizable-column">
+          <td  *ngFor="let col of columns" class="ui-resizable-column">
             <!-- <span *ngIf="col.type == 'date_time'">{{rowData[col.field] | date:'M/d/yyyy, h:mm a' }}</span> -->
             <!-- <span *ngIf="col.type == 'time'">{{rowData[col.field] | date:'shortTime' }}</span> -->
             <!-- <span *ngIf="col.type == 'date'">{{rowData[col.field] | date:'M/d/yyyy' }}</span> -->
