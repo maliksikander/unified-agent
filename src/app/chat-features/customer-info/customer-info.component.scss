@@ -39,7 +39,7 @@
   //.right-drag-content {
     .material-icons.drag-icon {
       text-shadow: -5px 0px 0px lighten($main-color, 20%);
-      color: lighten($main-color, 20%);
+      color: lighten($main-color, 20%) !important;
       font-size: 16px;
       margin-right: 5px;
 
@@ -55,7 +55,7 @@
 
         .material-icons.drag-icon {
           text-shadow: -5px 0px 0px $highlight-color;
-          color: $highlight-color;
+          color: $highlight-color !important;
 
         }
 
@@ -229,33 +229,35 @@
 .profile-area {
   padding: 0;
 
-  h3 {
-    text-align: center;
-    margin: 0;
-    font-size: 13px;
-    width: 30px;
-    height: 30px;
-    background: $white-color;
-    color: $blue-text-color;
-    line-height: 30px;
-    border-radius: 100%;
-    float: left;
-    top: 2px;
-    position: relative;
-    text-transform: uppercase;
-    font-weight: bold;
-  }
+  //h3 {
+  //  text-align: center;
+  //  margin: 0;
+  //  font-size: 13px;
+  //  width: 30px;
+  //  height: 30px;
+  //  background: $white-color;
+  //  color: $blue-text-color;
+  //  line-height: 30px;
+  //  border-radius: 100%;
+  //  float: left;
+  //  top: 2px;
+  //  position: relative;
+  //  text-transform: uppercase;
+  //  font-weight: bold;
+  //}
 
   .user-name {
     font-size: 16px;
     color: $blue-text-color;
     text-align: left;
     margin: 0;
-    font-weight: bold;
+    font-weight: 600;
     text-transform: capitalize;
     display: inline-block;
     line-height: 35px;
-    padding-left: 10px;
+    //padding-left: 10px;
+    position: relative;
+    top: 3px;
   }
 
   p.user-from {

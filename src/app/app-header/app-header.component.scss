@@ -637,8 +637,8 @@ button.main-menu-item{
         border-color: purple;
       }
       &.not_ready {
-        background: #00000033;
-        border-color: #00000033;
+        background: #00000033 !important;
+        border-color: #00000033 !important;
       }
 
 
@@ -693,7 +693,7 @@ button.main-menu-item{
         font-size: 11px;
         color: #171717;
         font-weight: 400;
-        padding: 0 10px;
+        padding: 0 10px !important;
 
         &:disabled{
           background: #cccccc;
