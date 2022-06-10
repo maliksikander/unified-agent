@@ -55,8 +55,6 @@ export class ChatNotificationsComponent implements OnInit {
         );
       } else if (e.msg == "closePullModeRequestHeader") {
         this.removePullModeRequestFromRequestArray(e.data);
-      } else {
-        console.log("e2==>", e);
       }
     });
   }

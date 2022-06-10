@@ -65,17 +65,19 @@ export class isLoggedInService {
     let finesseUrl = decodeURIComponent(params.get("finesseUrl"));
 
     let obj = {
+      username: username,
       roles: roles,
       finesseUrl: finesseUrl ? finesseUrl : "",
       password: authWithSSO == true ? "" : password,
       authToken: authWithSSO == true ? authToken : "",
       authWithSSO: authWithSSO
     };
+    console.log("finesse user login==> ", obj);
     this.fetchCCuserAndMoveToLogin(obj);
     this._finesseService.finesseAgent.extention = extension;
     this._finesseService.finesseAgent.loginId = username;
     this._finesseService.finesseAgent.password = password;
-    console.log("finesse user login ", obj);
+
     this._finesseService.initMe();
   }
 
