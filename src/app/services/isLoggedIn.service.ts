@@ -24,7 +24,7 @@ export class isLoggedInService {
     private _finesseService: finesseService,
     private _fcmService: fcmService,
     private ngxService: NgxUiLoaderService,
-    private _snackbarService: snackbarService,
+    private _snackbarService: snackbarService
   ) {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       this._cacheService.isMobileDevice = true;
@@ -61,9 +61,14 @@ export class isLoggedInService {
     let password = decodeURIComponent(params.get("password"));
     let extension = decodeURIComponent(params.get("ext"));
     let authWithSSO = JSON.parse(decodeURIComponent(params.get("authWithSSO")));
+    let roles = JSON.parse(decodeURIComponent(params.get("roles")));
+    let finesseUrl = decodeURIComponent(params.get("finesseUrl"));
+
     let obj = {
-      username: username,
-      password: authWithSSO == true ? authToken : password,
+      roles: roles,
+      finesseUrl: finesseUrl ? finesseUrl : "",
+      password: authWithSSO == true ? "" : password,
+      authToken: authWithSSO == true ? authToken : "",
       authWithSSO: authWithSSO
     };
     this.fetchCCuserAndMoveToLogin(obj);
@@ -74,7 +79,7 @@ export class isLoggedInService {
     this._finesseService.initMe();
   }
 
-  fetchCCuserAndMoveToLogin(obj: { username: string; password: string; authWithSSO?: boolean }) {
+  fetchCCuserAndMoveToLogin(obj) {
     this._httpService.login(obj).subscribe(
       (e) => {
         console.log("this is login resp ", e.data);
