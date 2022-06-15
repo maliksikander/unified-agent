@@ -61,29 +61,34 @@ export class ChatNotificationsComponent implements OnInit {
 
   ngOnInit() {}
 
-  acceptCall(ciscoData) {
+  acceptCall(conversationId, taskId, ciscoData) {
     let data = {
       action: "answerCall",
       parameter: {
         dialogId: ciscoData.response.dialog.id
       }
     };
-    console.log("answer data==>", data);
+    // console.log("answer data==>", data);
     this._finesseService.acceptCallOnFinesse(data);
+    this.getTopicSubscription(conversationId, taskId);
   }
 
-  getTopicSubscription(conversationId, taskId, ciscoData = null) {
-    console.log("channelType$$==>", ciscoData);
-    if (ciscoData) {
-      this.acceptCall(ciscoData);
+  onAcceptCallback(conversationId, taskId, ciscoData = null) {
+    console.log("cisco data $$==>", ciscoData);
+    if (ciscoData || ciscoData != null) {
+      this.acceptCall(conversationId, taskId, ciscoData);
     } else {
-      this._socketService.emit("topicSubscription", {
-        topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, conversationId, "PRIMARY", "SUBSCRIBED"),
-        agentId: this._cacheService.agent.id,
-        conversationId: conversationId,
-        taskId: taskId
-      });
+      this.getTopicSubscription(conversationId, taskId);
     }
+  }
+
+  getTopicSubscription(conversationId, taskId) {
+    this._socketService.emit("topicSubscription", {
+      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, conversationId, "PRIMARY", "SUBSCRIBED"),
+      agentId: this._cacheService.agent.id,
+      conversationId: conversationId,
+      taskId: taskId
+    });
 
     this.removePushModeRequestFromRequestArray(conversationId);
     this._router.navigate(["customers"]);
