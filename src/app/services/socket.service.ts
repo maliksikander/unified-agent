@@ -251,7 +251,6 @@ export class socketService {
     this._sharedService.serviceChangeMessage({ msg: "openPushModeRequestHeader", data: data });
   }
 
-
   revokeChatRequest(data) {
     this._sharedService.serviceChangeMessage({ msg: "closePushModeRequestHeader", data: data });
   }
@@ -367,6 +366,7 @@ export class socketService {
         event.data.header["status"] = "sent";
         conversation.messages.push(event.data);
       } else if (["channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())) {
+        console.log("event==>", event);
         let message = this.createSystemNotificationMessage(event);
         conversation.messages.push(message);
       }
@@ -879,6 +879,7 @@ export class socketService {
   }
 
   createSystemNotificationMessage(cimEvent) {
+    console.log("cimEbvent==>", cimEvent);
     let message: any = {
       id: "",
       header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
@@ -891,7 +892,11 @@ export class socketService {
     message.header.sender.type = "system";
 
     if (cimEvent.name.toLowerCase() == "channel_session_started") {
+      // if (cimEvent.data.body) {
+      //   message.body["displayText"] = cimEvent.data.header.channelSession.channel.channelType.name;
+      // } else {
       message.body["displayText"] = cimEvent.data.channel.channelType.name;
+      // }
       message.body.markdownText = "session started";
     } else if (cimEvent.name.toLowerCase() == "channel_session_ended") {
       message.body["displayText"] = cimEvent.data.channel.channelType.name;

@@ -23,5 +23,6 @@
     "consultType": "CONSULT",
     "consultTransferTypeCCE": "CONSULT_OFFERED",
     "consultTransferTypeCCX": "TRANSFER",
-    "conferenceType": "CONFERENCE"
+    "conferenceType": "CONFERENCE",
+    "Rona_State_On_Cisco":"Call Not Answered"
 }

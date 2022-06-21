@@ -32,6 +32,7 @@ export class ChatNotificationsComponent implements OnInit {
       console.log("e==>", e);
       if (e.msg == "openPushModeRequestHeader") {
         this.pushModeRequests.push(e.data);
+        this._sharedService.pushModeConversationList = this.pushModeRequests;
         this._soundService.playRing();
         if (e.data.cisco_data) {
           this._soundService.openBrowserNotification(
@@ -68,13 +69,21 @@ export class ChatNotificationsComponent implements OnInit {
         dialogId: ciscoData.response.dialog.id
       }
     };
-    // console.log("answer data==>", data);
+    // console.log("conversation data==>", conversationId);
+    // console.log("task data==>", taskId);
+    // console.log("answer data==>", conversationId);
     this._finesseService.acceptCallOnFinesse(data);
-    this.getTopicSubscription(conversationId, taskId);
+    this.removePushModeRequestFromRequestArray(conversationId);
+    // this.getTopicSubscription(conversationId, taskId);
   }
 
   onAcceptCallback(conversationId, taskId, ciscoData = null) {
-    console.log("cisco data $$==>", ciscoData);
+    // console.log("cisco data $$==>", ciscoData);
+    console.log("conversation data==>", conversationId);
+    console.log("task data==>", taskId);
+    this._finesseService.voiceConversationId = conversationId;
+    this._finesseService.voiceTaskId = taskId;
+
     if (ciscoData || ciscoData != null) {
       this.acceptCall(conversationId, taskId, ciscoData);
     } else {
@@ -98,6 +107,7 @@ export class ChatNotificationsComponent implements OnInit {
     let index = this._sharedService.getIndexFromConversationId(conversationId, this.pushModeRequests);
     if (index != -1) {
       this._sharedService.spliceArray(index, this.pushModeRequests);
+      // this._sharedService.pushModeConversationList = this.pushModeRequests;
     }
     this._soundService.stopRing();
   }
