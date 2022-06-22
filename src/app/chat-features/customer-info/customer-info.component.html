@@ -112,8 +112,8 @@
             <mat-expansion-panel-header [collapsedHeight]="'45px'" [expandedHeight]="'45px'">
               <mat-panel-title><span class="material-icons drag-icon">more_vert</span>
                 <div class="profile-area">
-<!--                  <h3>{{customer.firstName | getFirstTwoLetters}}-->
-<!--                  </h3>-->
+                  <!--                  <h3>{{customer.firstName | getFirstTwoLetters}}-->
+                  <!--                  </h3>-->
                   <h5 class="user-name">{{customer.firstName}}
                     <!--                    <p class="user-from">London, United Kingdom</p>-->
                   </h5>
@@ -229,14 +229,17 @@
             </mat-expansion-panel-header>
 
             <div class="profile-area multi-channel-area">
-              <mat-accordion >
+              <mat-accordion>
 
                 <mat-expansion-panel class="chat-channel-area" *ngFor="let channelSession of activeChannelSessions">
                   <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                     <div class="channel-icon-area">
                       <span class="channel-icon"><img
                           [src]="channelSession.channel.channelType.channelLogo | channelLogo | async"></span>
-                      <label>{{channelSession.channel.channelType.name}}</label>
+                      <label>{{channelSession.channel.channelType.name}}
+                        <span *ngIf="channelSession?.channel.channelType.name == 'VOICE'" class="call-time">{{ timer
+                          }}</span>
+                      </label>
 
                       <!-- <button (click)="moveSession($event)" mat-button [matMenuTriggerFor]="rerouteMenu"
                         class="re-route-session">Move</button>
@@ -285,9 +288,13 @@
                       {{channelSession.channelData.serviceIdentifier}}
                     </li>
                     <div *ngFor="let attr of channelSession.channelData.additionalAttributes">
-                      <li *ngIf="(attr.type | lowercase) != 'webchanneldata'">
+                      <li *ngIf="(attr.type | lowercase) != 'webchanneldata' && attr.key != 'callStartTime'">
                         <label>{{attr.key | sentenceCase}}</label>
                         {{attr.value | spaceInArray}}
+                      </li>
+                      <li *ngIf="attr.key == 'callStartTime'">
+                        <label>{{attr.key | sentenceCase}}</label>
+                        {{attr.value | date:'hh:mm:ss'}}
                       </li>
                     </div>
                   </ul>

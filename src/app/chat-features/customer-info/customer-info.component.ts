@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from "@angular/core";
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatDialog, MatSidenav } from "@angular/material";
 // import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { socketService } from "src/app/services/socket.service";
@@ -6,8 +6,7 @@ import { sharedService } from "src/app/services/shared.service";
 import { NavigationExtras, Router } from "@angular/router";
 import { CustomerActionsComponent } from "src/app/customer-actions/customer-actions.component";
 import { httpService } from "src/app/services/http.service";
-import { error } from "protractor";
-
+import { finesseService } from "src/app/services/finesse.service";
 @Component({
   selector: "app-customer-info",
   templateUrl: "./customer-info.component.html",
@@ -56,6 +55,8 @@ export class CustomerInfoComponent implements OnInit {
     "Glenn Helgass",
     " Ev Gayforth"
   ];
+  timer = "00:00";
+
   // drop(event: CdkDragDrop<string[]>) {
   //   moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
   // }
@@ -64,10 +65,16 @@ export class CustomerInfoComponent implements OnInit {
     private _sharedService: sharedService,
     public _socketService: socketService,
     private dialog: MatDialog,
-    private _httpService: httpService
+    private _httpService: httpService,
+    private _finesseService: finesseService,
+    private changeDetector: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this._finesseService.callTimer.subscribe((res) => {
+      this.timer = res;
+    });
+  }
 
   close() {
     this.sidenav.close();
@@ -111,6 +118,10 @@ export class CustomerInfoComponent implements OnInit {
       this.firstChannelSession = null;
       this.firstChannelSession = changes.activeChannelSessions.currentValue;
     }
+
+    this._finesseService.conversationList.next(this.activeChannelSessions);
+
+
   }
 
   getMediaChannels() {
@@ -266,5 +277,9 @@ export class CustomerInfoComponent implements OnInit {
     };
 
     this._router.navigate(["/customers/phonebook"], navigationExtras);
+  }
+
+  callStartTime(time) {
+    return new Date(time * 1000).toISOString().substring(11, 16);
   }
 }

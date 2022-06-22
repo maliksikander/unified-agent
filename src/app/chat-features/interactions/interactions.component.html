@@ -6,10 +6,10 @@
         <div class="col-md-4 col-sm-4 customer-showcase">
           <h3 matTooltipPosition="right" class="customer-highlight">
             {{conversation.customer.firstName | getFirstTwoLetters}}
-<!--            <span class="channel-icon">-->
-<!--              <img-->
-<!--                [src]="conversation.activeChannelSessions[conversation.activeChannelSessions.length-1]?.channel.channelType.channelLogo | channelLogo | async">-->
-<!--            </span>-->
+            <!--            <span class="channel-icon">-->
+            <!--              <img-->
+            <!--                [src]="conversation.activeChannelSessions[conversation.activeChannelSessions.length-1]?.channel.channelType.channelLogo | channelLogo | async">-->
+            <!--            </span>-->
           </h3>
           <h5 class="customer-name" [matTooltip]="conversation.customer.firstName">
             {{conversation.customer.firstName | slice :0 :50}}
@@ -47,7 +47,7 @@
             </li>
             <li *ngIf="('leave-chat' | authPipe : 'view') as result" class="list-group-item">
               <button mat-icon-button>
-                <mat-icon (click)="topicUnsub()">close</mat-icon>
+                <mat-icon (click)="onLeaveClick()">close</mat-icon>
               </button>
             </li>
           </ul>

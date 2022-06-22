@@ -32,7 +32,7 @@ export class ChatNotificationsComponent implements OnInit {
       console.log("e==>", e);
       if (e.msg == "openPushModeRequestHeader") {
         this.pushModeRequests.push(e.data);
-        this._sharedService.pushModeConversationList = this.pushModeRequests;
+        this._finesseService.pushModeConversationList.next(this.pushModeRequests);
         this._soundService.playRing();
         if (e.data.cisco_data) {
           this._soundService.openBrowserNotification(
@@ -60,7 +60,11 @@ export class ChatNotificationsComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this._finesseService.callAccepted.subscribe((res) => {
+      this.removePushModeRequestFromRequestArray(res.conversationId);
+    });
+  }
 
   acceptCall(conversationId, taskId, ciscoData) {
     let data = {
@@ -69,18 +73,11 @@ export class ChatNotificationsComponent implements OnInit {
         dialogId: ciscoData.response.dialog.id
       }
     };
-    // console.log("conversation data==>", conversationId);
-    // console.log("task data==>", taskId);
-    // console.log("answer data==>", conversationId);
     this._finesseService.acceptCallOnFinesse(data);
     this.removePushModeRequestFromRequestArray(conversationId);
-    // this.getTopicSubscription(conversationId, taskId);
   }
 
   onAcceptCallback(conversationId, taskId, ciscoData = null) {
-    // console.log("cisco data $$==>", ciscoData);
-    console.log("conversation data==>", conversationId);
-    console.log("task data==>", taskId);
     this._finesseService.voiceConversationId = conversationId;
     this._finesseService.voiceTaskId = taskId;
 

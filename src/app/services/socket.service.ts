@@ -13,6 +13,7 @@ import { NgxUiLoaderService } from "ngx-ui-loader";
 import { httpService } from "./http.service";
 import { v4 as uuidv4 } from "uuid";
 import { AuthService } from "./auth.service";
+import { finesseService } from "./finesse.service";
 // const mockTopicData: any = require("../mocks/topicData.json");
 
 @Injectable({
@@ -99,7 +100,7 @@ export class socketService {
 
     this.subscribeToSocketEvents();
   }
-
+  ciscoDialogId;
   subscribeToSocketEvents() {
     this.socket.on("disconnect", (reason) => {
       console.error("socket disconnect " + reason);
@@ -132,6 +133,7 @@ export class socketService {
     });
 
     this.socket.on("taskRequest", (res: any) => {
+      if (res.cisco_data) this.ciscoDialogId = res.cisco_data.response.dialog.id;
       this.triggerNewChatRequest(res);
     });
 
@@ -353,7 +355,8 @@ export class socketService {
       customer: topicData.customer,
       customerSuggestions: topicData.channelSession.customerSuggestions,
       topicParticipant: topicData.topicParticipant,
-      firstChannelSession: topicData.channelSession
+      firstChannelSession: topicData.channelSession,
+      ciscoDialogId: this.ciscoDialogId
     };
 
     // feed the conversation with type "messages"
@@ -366,7 +369,6 @@ export class socketService {
         event.data.header["status"] = "sent";
         conversation.messages.push(event.data);
       } else if (["channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())) {
-        console.log("event==>", event);
         let message = this.createSystemNotificationMessage(event);
         conversation.messages.push(message);
       }
@@ -879,7 +881,6 @@ export class socketService {
   }
 
   createSystemNotificationMessage(cimEvent) {
-    console.log("cimEbvent==>", cimEvent);
     let message: any = {
       id: "",
       header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },

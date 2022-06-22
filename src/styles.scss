@@ -2932,6 +2932,17 @@ body .ui-paginator {
   display: inline-block;
 }
 
+.call-time {
+  background: #fff !important;
+  width: inherit !important;
+  padding: 0 5px !important;
+  border-radius: 5px !important;
+  height: 18px !important;
+  line-height: 18px !important;
+  top: -1px;
+  position: relative;
+}
+
 .main-content-create-customer {
   mat-error {
     font-size: 9px;

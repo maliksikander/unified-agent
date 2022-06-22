@@ -10,6 +10,7 @@ import { snackbarService } from "src/app/services/snackbar.service";
 import { FilePreviewComponent } from "src/app/file-preview/file-preview.component";
 import { appConfigService } from "src/app/services/appConfig.service";
 import { httpService } from "src/app/services/http.service";
+import { finesseService } from "src/app/services/finesse.service";
 
 declare var EmojiPicker: any;
 
@@ -73,6 +74,7 @@ export class InteractionsComponent implements OnInit {
   noMoreConversation = false;
   pastCimEventsOffsetLimit: number = 0;
   loadingPastActivity: boolean = false;
+  ciscoDialogId;
 
   constructor(
     private _sharedService: sharedService,
@@ -81,7 +83,8 @@ export class InteractionsComponent implements OnInit {
     private dialog: MatDialog,
     private _snackbarService: snackbarService,
     public _appConfigService: appConfigService,
-    private _httpService: httpService
+    private _httpService: httpService,
+    private _finesseService: finesseService
   ) {}
   ngOnInit() {
     //  console.log("i am called hello")
@@ -173,6 +176,46 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
+  onLeaveClick() {
+    let voiceSession: boolean = this.checkForVoiceSession();
+    let nonVoiceSession: boolean = this.checkForNonVoiceSession();
+
+    if (voiceSession && nonVoiceSession) {
+      // get confirmation , if ok then call end and call unsub
+    } else if (voiceSession && !nonVoiceSession) {
+      // get confirmation , if ok then call end and call unsub
+    } else if (!voiceSession && nonVoiceSession) {
+      //call unsub
+    }
+
+    console.log("voice session==>", voiceSession);
+    console.log("non voice session==>", nonVoiceSession);
+
+    this.topicUnsub();
+  }
+
+  checkForVoiceSession() {
+    // console.log("active sessions==>", this.conversation.activeChannelSessions);
+    // console.log("dialog id==>", this.conversation.ciscoDialogId);
+
+    let list: Array<any> = this.conversation.activeChannelSessions;
+    let voiceIndex = list.findIndex((item) => {
+      return item.channel.channelType.name == "VOICE";
+    });
+    if (voiceIndex != -1) return true;
+    return false;
+  }
+
+  checkForNonVoiceSession() {
+    // console.log("active sessions==>", this.conversation.activeChannelSessions);
+    let list: Array<any> = this.conversation.activeChannelSessions;
+    let nonVoiceIndex = list.findIndex((item) => {
+      return item.channel.channelType.name != "VOICE";
+    });
+    if (nonVoiceIndex != -1) return true;
+    return false;
+  }
+
   downTheScrollAfterMilliSecs(milliseconds, behavior) {
     setTimeout(() => {
       try {
@@ -207,6 +250,7 @@ export class InteractionsComponent implements OnInit {
     if (changes.currentTabIndex) {
       this.downTheScrollAfterMilliSecs(500, "auto");
     }
+    this._finesseService.currentConversation.next(this.conversation);
   }
 
   ngOnDestroy() {
