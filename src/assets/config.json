@@ -1,10 +1,13 @@
+
 {
     "GAT_URL": "http://localhost:3000",
     "SOCKET_URL": "http://localhost:3000",
     "FILE_SERVER_URL": "https://cim.expertflow.com/file-engine",
     "CIM_CUSTOMER_URL": "https://cim.expertflow.com/cim",
     "BOT_FRAMEWORK_URL": "https://cim.expertflow.com/bot-framework",
-    "GRAFANA_DASHBOARD_URL":"https://cim.expertflow.com/grafana/",
+    "ROUTING_ENGINE_URL": "https://cim.expertflow.com/routing-engine",
+    "GRAFANA_DASHBOARD_URL":"https://cim.expertflow.com/grafana/d/0GEdiaunk/supervisor-dashboard-cim?orgId=1&from=1655186754072&to=1655208354072",
+    "CIM_REPORTING_URL":"https://cim.expertflow.com/realtime-reports",
     "ENV": "prod",
     "domain": "finesse12.ucce.ipcc",
     "boshUrl": "https://finesse12.ucce.ipcc:7443/http-bind/",

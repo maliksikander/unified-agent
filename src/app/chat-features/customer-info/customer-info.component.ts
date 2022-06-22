@@ -21,6 +21,7 @@ export class CustomerInfoComponent implements OnInit {
   @Input() customerSuggestions: any;
   @Input() activeChannelSessions: any;
   @Input() conversationId: any;
+  @Input() activeConversationData: any;
   @Input() firstChannelSession: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
   customerProfileFormData: any;
@@ -90,6 +91,7 @@ export class CustomerInfoComponent implements OnInit {
     });
   }
   customerInfoToggle() {
+    console.log("lll");
     this.barOpened = !this.barOpened;
     this.expandCustomerInfo.emit(this.barOpened);
   }

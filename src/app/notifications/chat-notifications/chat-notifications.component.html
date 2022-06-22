@@ -13,8 +13,7 @@
             </p>
           </div>
           <div class="requested-name">
-            <p>{{request.channelSession.customer.firstName ? request.channelSession.customer.firstName : 'UNIDENTIFIED
-              CUSTOMER' }}</p>
+            <p matTooltip="{{request.channelSession.customer.firstName ? request.channelSession.customer.firstName : 'UNIDENTIFIED CUSTOMER' }}">{{request.channelSession.customer.firstName ? request.channelSession.customer.firstName : 'UNIDENTIFIED CUSTOMER' }}</p>
             <p *ngIf="request?.cisco_data">
               {{request.channelSession.channelData.channelCustomerIdentifier ?
               request.channelSession.channelData.channelCustomerIdentifier : 'N/A' }}</p>

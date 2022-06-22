@@ -13,6 +13,7 @@ export class channelLogoPipe implements PipeTransform {
         if (this._sharedService.channelLogoMapper.get(filename)) {
           resolve(this.domSanitizer.bypassSecurityTrustUrl(this._sharedService.channelLogoMapper.get(filename).toString()));
         } else {
+          console.log("filename", filename);
           // if not found in memory then get it from file server
           this._httpService.getChannelLogo(filename).subscribe(
             (file) => {

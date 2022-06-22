@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 import { finesseService } from "./services/finesse.service";
 import { isLoggedInService } from "./services/isLoggedIn.service";
 import { sharedService } from "./services/shared.service";
-import {OverlayContainer} from '@angular/cdk/overlay';
+import { OverlayContainer } from "@angular/cdk/overlay";
 import { httpService } from "./services/http.service";
 import { cacheService } from "./services/cache.service";
 
@@ -14,14 +14,21 @@ import { cacheService } from "./services/cache.service";
 })
 export class AppComponent implements OnInit {
   title = "unified-agent-gadget";
-  @HostBinding('class') className = '';
+  @HostBinding("class") className = "";
   themeChange;
   timer;
 
-
   currentRoute: string;
 
-  constructor(private overlay: OverlayContainer,public _cacheService: cacheService, public _finesseService: finesseService, private _router: Router,private _httpService: httpService, private _isLoggedInservice: isLoggedInService, private _sharedService: sharedService) { }
+  constructor(
+    private overlay: OverlayContainer,
+    public _cacheService: cacheService,
+    public _finesseService: finesseService,
+    private _router: Router,
+    private _httpService: httpService,
+    private _isLoggedInservice: isLoggedInService,
+    private _sharedService: sharedService
+  ) {}
   isdarkMode = false;
 
   ngOnInit() {
@@ -35,7 +42,7 @@ export class AppComponent implements OnInit {
     try {
       customerSchema = JSON.parse(localStorage.getItem("customerSchema"));
       channelTypes = JSON.parse(localStorage.getItem("channelTypes"));
-    } catch (e) { }
+    } catch (e) {}
     if (customerSchema) {
       this._sharedService.schema = customerSchema;
     }
@@ -43,7 +50,7 @@ export class AppComponent implements OnInit {
       this._sharedService.channelTypeList = channelTypes;
     }
 
-   // this.checkForAppUpdates();
+    // this.checkForAppUpdates();
 
     // if (localStorage.getItem('darkTheme')) {
     //   this.isdarkMode = true;
@@ -51,38 +58,32 @@ export class AppComponent implements OnInit {
     // }
   }
 
-  updateTheme(theme:string)
-  {
+  updateTheme(theme: string) {
     try {
-      this._httpService.updateUserTheme({theme:theme},this._cacheService.agent.id).subscribe(
-        (e)=>{
-              console.log(`theme setting for user ${this._cacheService.agent.id} updated to`, e);
-        }
-  );
+      this._httpService.updateUserTheme({ theme: theme }, this._cacheService.agent.id).subscribe((e) => {
+        console.log(`theme setting for user ${this._cacheService.agent.id} updated to`, e);
+      });
     } catch (err) {
       console.log(`error updating theme`, err);
     }
-
   }
 
   switchTheme(e) {
     this.themeChange = e;
-    const darkClassName = 'darkMode';
-    this.className = this.themeChange ? darkClassName : '';
+    const darkClassName = "darkMode";
+    this.className = this.themeChange ? darkClassName : "";
     if (this.themeChange === true) {
       clearTimeout(this.timer);
-      this.timer=setTimeout(()=>
-      {
-        this.updateTheme('dark');
-      },5000)
+      this.timer = setTimeout(() => {
+        this.updateTheme("dark");
+      }, 5000);
       this.overlay.getContainerElement().classList.add(darkClassName);
     } else {
       clearTimeout(this.timer);
-      this.timer=setTimeout(()=>
-      {
-        this.updateTheme('light');
-      },5000)
-      console.log("removing dark theme",e);
+      this.timer = setTimeout(() => {
+        this.updateTheme("light");
+      }, 5000);
+      console.log("removing dark theme", e);
       this.overlay.getContainerElement().classList.remove(darkClassName);
     }
   }
@@ -97,5 +98,4 @@ export class AppComponent implements OnInit {
   //   });
   // }catch(err){}
   // }
-
 }

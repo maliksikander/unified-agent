@@ -1,0 +1,67 @@
+<div class="table-container manage-dashboard">
+  <div class="active-chat-list-area">
+    <div class="page-header row m-0">
+      <div class="col-md-6 page-heading">
+        <h4>Answered by {{FilterSelected | titlecase}}</h4>
+      </div>
+      <div class="col-md-6 text-right page-action">
+        <mat-form-field appearance="outline" class="selection-trigger">
+          <mat-select [(value)]="FilterSelected">
+            <mat-option value="agents">Answered by Agents</mat-option>
+            <mat-option value="bots">Answered by Bot</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Customer</th>
+          <th scope="col">Active Since</th>
+          <th *ngIf="FilterSelected=='agents'" scope="col">Queue</th>
+          <th scope="col">{{FilterSelected | titlecase}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngIf="FilterSelected=='bots'">
+          <ng-container *ngFor="let data of activeChatListWithBots">
+          <tr *ngFor="let chat of data.chats">
+            <td><span class="channel-icon {{chat.channelType}}"><img [src]="chat.channelType  | channelName  | channelLogo | async"></span>
+              {{chat.customerName}} <small>({{chat.channelIdentity}})</small></td>
+            <td>{{chat.activeSince | amDuration:'seconds'}} <small>ago</small></td>
+            <td >{{data.botName}}</td>
+            <span class="table-trigger">
+              <button mat-mini-fab class="silent-monitor-btn" matTooltip="Silent Monitoring"><img
+                  src="assets/images/eye.svg" alt="Silent Monitoring"></button>
+              <button mat-mini-fab class="barge-in-btn" matTooltip="Bargein"><img src="assets/images/bargein.svg"
+                  alt="Bargein"></button>
+              <button mat-mini-fab class="close-btn" matTooltip="Close" (click)="closeChat()"><img
+                  src="assets/images/close.svg" alt="Close"></button>
+            </span>
+          </tr>
+        </ng-container>
+        </ng-container>
+        <ng-container *ngIf="FilterSelected=='agents'" >
+          <ng-container *ngFor="let data of activeChatListWithAgents">
+          <tr *ngFor="let chat of data.chats">
+            <td><span class="channel-icon {{chat.channelType}}"><img [src]="chat.channelType  | channelName  | channelLogo | async"></span>
+              {{chat.customerName}} <small>({{chat.channelIdentity}})</small></td>
+            <td>{{chat.activeSince | amDuration:'seconds'}} <small>ago</small> </td>
+            <td >{{data.queueName}}</td>
+            <td >{{chat.agentName}}</td>
+            <span class="table-trigger">
+              <button mat-mini-fab class="silent-monitor-btn" matTooltip="Silent Monitoring"><img
+                  src="assets/images/eye.svg" alt="Silent Monitoring"></button>
+              <button mat-mini-fab class="barge-in-btn" matTooltip="Bargein"><img src="assets/images/bargein.svg"
+                  alt="Bargein"></button>
+              <button mat-mini-fab class="close-btn" matTooltip="Close" (click)="closeChat()"><img
+                  src="assets/images/close.svg" alt="Close"></button>
+            </span>
+          </tr>
+        </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+
+  </div>
+</div>

@@ -1,5 +1,8 @@
+import { ThrowStmt } from "@angular/compiler";
 import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
+import { Location } from "@angular/common";
+
+import { ActivatedRouteSnapshot, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { cacheService } from "./cache.service";
 import { fcmService } from "./fcm.service";
@@ -25,6 +28,7 @@ export class isLoggedInService {
     private _fcmService: fcmService,
     private ngxService: NgxUiLoaderService,
     private _snackbarService: snackbarService,
+    private _location: Location
   ) {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       this._cacheService.isMobileDevice = true;
@@ -37,7 +41,6 @@ export class isLoggedInService {
     this.routeSubscriber = this._router.events.subscribe((event: any) => {
       // we need to observe the route only on window load, thats why we unsubscibe it
       this.routeSubscriber.unsubscribe();
-
       // if the user opens login page then dont need to auto login
       if (event.url) {
         if (event.url != "/login") {
@@ -84,7 +87,7 @@ export class isLoggedInService {
           localStorage.setItem("ccUser", btoa(JSON.stringify(e.data.keycloak_User)));
         } catch (e) {}
         this._socketService.disConnectSocket();
-        this.validateFcmKeyAndConnectToSocket();
+        this.validateFcmKeyAndConnectToSocket(false);
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -108,13 +111,13 @@ export class isLoggedInService {
 
     if (ccUser && ccUser.id != null && ccUser.id != undefined && ccUser.id != "") {
       this._cacheService.agent = ccUser;
-      this.validateFcmKeyAndConnectToSocket();
+      this.validateFcmKeyAndConnectToSocket(params);
     } else {
       this._router.navigate(["login"]);
     }
   }
 
-  async validateFcmKeyAndConnectToSocket() {
+  async validateFcmKeyAndConnectToSocket(params) {
     this.ngxService.start();
 
     // if (this._cacheService.isMobileDevice) {
@@ -126,7 +129,14 @@ export class isLoggedInService {
 
     // for a pc device the fcm is created by the agent-gadget it-self
     try {
+      const url = this._location.path();
+      console.log("url is", url);
       await this._fcmService.requestPermission();
+      if (url.includes("/active-chats")) {
+        this._router.navigate([`supervisor/active-chats`]);
+      } else if (url.includes("/queue-chats")) {
+        this._router.navigate([`supervisor/queue-chats`]); // pass queue id
+      }
       this._socketService.connectToSocket();
     } catch (err) {
       this._snackbarService.open("you will not receive browser notifications", "err");

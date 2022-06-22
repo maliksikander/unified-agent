@@ -23,8 +23,12 @@ export class AuthGuard implements CanActivate {
       let resPath;
       if (path.includes("schema")) {
         resPath = "schema";
-      } else if (path.includes("dashboard")) {
-        resPath = "dashboard";
+      }
+      // else if (path.includes("dashboard")) {
+      //   resPath = "dashboard";
+      // }
+      else if (path.includes("supervisor")) {
+        resPath = "supervisor";
       } else if (path.includes("subscribed")) {
         resPath = "subscribed";
       } else if (path.includes("phonebook")) {

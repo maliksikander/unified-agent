@@ -251,7 +251,6 @@ export class socketService {
     this._sharedService.serviceChangeMessage({ msg: "openPushModeRequestHeader", data: data });
   }
 
-
   revokeChatRequest(data) {
     this._sharedService.serviceChangeMessage({ msg: "closePushModeRequestHeader", data: data });
   }
@@ -302,6 +301,8 @@ export class socketService {
         this.mergeBotSuggestions(sameTopicConversation, cimEvent.data);
       } else if (cimEvent.name.toLowerCase() == "channel_session_started") {
         this.addChannelSession(cimEvent, conversationId);
+      } else if (cimEvent.name.toLowerCase() == "conversation_data_changed") {
+        this.upateActiveConversationData(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "channel_session_ended") {
         this.removeChannelSession(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "associated_customer_changed") {
@@ -347,6 +348,7 @@ export class socketService {
     let conversation = {
       conversationId: conversationId,
       messages: [],
+      activeConversationData: topicData.conversationData,
       activeChannelSessions: [],
       unReadCount: undefined,
       index: ++this.conversationIndex,
@@ -542,6 +544,16 @@ export class socketService {
       conversation.messages.push(message);
     } else {
       console.error("channelSessionId not found to added");
+    }
+  }
+
+  upateActiveConversationData(cimEvent, conversationId) {
+    let conversation = this.conversations.find((e) => {
+      return e.conversationId == conversationId;
+    });
+
+    if (conversation) {
+      conversation.activeConversationData = cimEvent.data;
     }
   }
 
@@ -773,6 +785,8 @@ export class socketService {
               if (addChannelIdentifier && toBeDeletedCustomerId != null) {
                 let requestPayload = { currentCustomer: topicCustomer, newCustomer: selectedCustomer };
                 this.updatePastConversation(requestPayload, toBeDeletedCustomerId);
+              } else {
+                this._router.navigate(["customers"]);
               }
             },
             (error) => {
@@ -904,6 +918,22 @@ export class socketService {
       message.body["displayText"] = cimEvent.data.ccUser.keycloakUser.username;
       message.body.markdownText = "left the conversation";
     }
+
+    return message;
+  }
+
+  createConversationDataMessage(cimEvent) {
+    let message: any = {
+      id: "",
+      header: { timestamp: "", sender: {}, channelData: {} },
+      body: { markdownText: "", type: "" }
+    };
+
+    message.id = uuidv4();
+    message.header.timestamp = cimEvent.timestamp;
+    message.body.type = "conversationData";
+    message.header.sender.type = "system";
+    message.body["conversationData"] = cimEvent.data;
 
     return message;
   }

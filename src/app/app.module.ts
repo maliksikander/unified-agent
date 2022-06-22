@@ -37,6 +37,10 @@ import { initializeApp } from "firebase/app";
 import _configService from "../assets/config.json";
 // import { ServiceWorkerModule } from '@angular/service-worker';
 import { GrafanaComponent } from "./supervisor/grafana/grafana.component";
+import { ActiveChatsComponent } from "./supervisor/active-chats/active-chats.component";
+import { QueueChatsComponent } from "./supervisor/queue-chats/queue-chats.component";
+// import { ActiveChatsComponent } from "./supervisor/active-chats/active-chats.component";
+// import { QueueChatsComponent } from "./supervisor/queue-chats/queue-chats.component";
 
 // let pwaServiceWorkerDev = [
 //   ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' })
@@ -88,7 +92,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     FilePreviewComponent,
     FilePreviewComponent,
     LinkConversationDialogComponent,
-    GrafanaComponent
+    GrafanaComponent,
+    ActiveChatsComponent,
+    QueueChatsComponent
   ],
   imports: [
     BrowserModule,
@@ -97,10 +103,21 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     BrowserAnimationsModule,
     SharedModule,
     NgxUiLoaderHttpModule.forRoot({
-      exclude: [`${_configService.FILE_SERVER_URL}/api/downloadFileStream`, "/api/downloadFileStream", "/api/downloadFileStream?filename"]
+      exclude: [
+        `${_configService.FILE_SERVER_URL}/api/downloadFileStream`,
+        "/api/downloadFileStream",
+        "/api/downloadFileStream?filename",
+        `${_configService.CIM_REPORTING_URL}/`
+      ]
     }),
     NgxUiLoaderHttpModule.forRoot({
-      excludeRegexp: [`${_configService.FILE_SERVER_URL}/api/downloadFileStream`, "/api/downloadFileStream"]
+      excludeRegexp: [
+        `${_configService.FILE_SERVER_URL}/api/downloadFileStream`,
+        "/api/downloadFileStream",
+        `${_configService.CIM_REPORTING_URL}/`,
+        `${_configService.CIM_REPORTING_URL}/active-chats`,
+        `${_configService.CIM_REPORTING_URL}/queue-chats`
+      ]
     }),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
     // ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' })
