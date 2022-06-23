@@ -978,9 +978,12 @@
       }
 
       .agent-pic {
+        p{
+          line-height: 21px !important;
+        }
         span {
           float: left;
-          width: 21px;
+          width: auto;
           height: 21px;
           margin: 0 3px;
           border-radius: 100%;
@@ -2278,4 +2281,11 @@ vg-controls.hide {
       }
     }
   }
+}
+
+
+.voice{
+  .file-type-stamp{
+    display: none !important;
+  } 
 }

@@ -82,10 +82,12 @@ import { channelNamePipe } from "./pipes/getChannelLogoByName.pipe";
 import { NgxTimerModule } from "ngx-timer";
 import { getSenderIdPipe } from "./pipes/getSenderId.pipe";
 import { AuthPipe } from "./pipes/auth.pipe";
+import { timeDurationPipe } from "./pipes/timeDuration.pipe";
 
 @NgModule({
   declarations: [
     getFormattedBytesPipe,
+    timeDurationPipe,
     getMRDSwitchesPipe,
     RemoveUnderscorePipe,
     isAlreadyJoinedPipe,
@@ -269,6 +271,7 @@ import { AuthPipe } from "./pipes/auth.pipe";
     spaceInArrayPipe,
     channelNamePipe,
     getSenderIdPipe,
+    timeDurationPipe,
     AuthPipe
   ]
 })

@@ -6,10 +6,10 @@
         <div class="col-md-4 col-sm-4 customer-showcase">
           <h3 matTooltipPosition="right" class="customer-highlight">
             {{conversation.customer.firstName | getFirstTwoLetters}}
-            <!--            <span class="channel-icon">-->
-            <!--              <img-->
-            <!--                [src]="conversation.activeChannelSessions[conversation.activeChannelSessions.length-1]?.channel.channelType.channelLogo | channelLogo | async">-->
-            <!--            </span>-->
+<!--            <span class="channel-icon">-->
+<!--              <img-->
+<!--                [src]="conversation.activeChannelSessions[conversation.activeChannelSessions.length-1]?.channel.channelType.channelLogo | channelLogo | async">-->
+<!--            </span>-->
           </h3>
           <h5 class="customer-name" [matTooltip]="conversation.customer.firstName">
             {{conversation.customer.firstName | slice :0 :50}}
@@ -47,7 +47,7 @@
             </li>
             <li *ngIf="('leave-chat' | authPipe : 'view') as result" class="list-group-item">
               <button mat-icon-button>
-                <mat-icon (click)="onLeaveClick()">close</mat-icon>
+                <mat-icon (click)="topicUnsub()">close</mat-icon>
               </button>
             </li>
           </ul>
@@ -132,31 +132,6 @@
                   lastWeek: '[Last] dddd',
                   sameElse: 'dddd, MMM YYYY'} }}</span>
               </div>
-              <!-- -----------------------Conversation Data---------------- -->
-              <div *ngIf="(message.body.type | lowercase) == 'conversationdata'"
-                class="system-notifs conversation-data">
-                <span class="inner-text" [matMenuTriggerFor]="conversationData">
-                  <span>Conversation Data <mat-icon>arrow_drop_down</mat-icon></span>
-                </span>
-
-                <mat-menu #conversationData="matMenu">
-                  <div class="conversation-data-main">
-                    <div class="conversation-data">
-                      <div class="conversation-data-header">
-                        <h5>Conversation Data</h5>
-                        <mat-icon>close</mat-icon>
-                      </div>
-                      <ul (click)="$event.stopPropagation()">
-                        <li *ngFor="let data of message.body.conversationData | keyvalue">
-                          <label>{{data.key | titlecase}}:</label><span>{{data.value}}</span></li>
-                      </ul>
-                    </div>
-                  </div>
-                </mat-menu>
-
-              </div>
-              <!-- -------------------------------------------------------- -->
-
               <div *ngIf="(message.body.type | lowercase) != 'systemnotification' && message.header.channelSession "
                 class="chat-message {{((index == 0) || ((conversation.messages[index-1].body.type | lowercase) != 'systemnotification' ) && ((message.header.sender | getSenderId) == (conversation.messages[index-1].header.sender | getSenderId) && message.body.type == conversation.messages[index-1].body.type && message.header.replyToMessageId == null && message.header.channelSession.channel.channelType.id == conversation.messages[index-1].header.channelSession.channel.channelType.id  )) ? 'same-sender-msg' : ''}} {{message.header.status=='sending' ? 'low-opacity' : ''}}  {{message.body.type | lowercase}} {{  message.header.replyToMessageId != null  ? 'quoted-message-main' : ''}} {{message.header.sender.type | lowercase}}"
                 [ngClass]=" ((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message ' ">
@@ -187,7 +162,7 @@
                             <!--                      <span class="message-stamp">-->
                             <!--                         <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
                             <!--                      </span>-->
-
+                           </p>
                         </div>
 
                         <!-- ---------------button---------------------- -->
@@ -610,6 +585,91 @@
                     </div>
 
 
+<!-- <-------------------------------------VOICE MESSAGE START---------------------------------------------------> 
+                    <div class="wrap-up-main panel-divider user-data customer-side voice-activity-main" *ngIf="(message.body.type | lowercase) == 'voice' && (message.header.intent | lowercase) == 'end_voice'">
+                      <mat-expansion-panel>
+
+                        <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
+                          <mat-panel-title>
+                            <div class="panel-header">
+                              <ul>
+                                <li class="agent-pic call-services">
+                                  <p><span>{{_cacheService.agent.username}}</span></p>
+                                </li>
+                                <li class="section-duration">
+                                  <time>{{message.body.dialog.response.dialog.participants.participant[0].startTime | timeDuration:message.body.dialog.response.dialog.participants.participant[0].stateChangeTime }}</time>
+
+                                </li>
+                                <!-- <li class="section-tags">
+                                  <span>Tag A</span>
+                                  <span>Tag B</span>
+                                </li> -->
+                                <li>
+                                  <time>{{message.header.timestamp | date:'shortTime'}}</time>
+                                </li>
+                              </ul>
+                            </div>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+        
+                        <div class="panel-header call-history-panel inner-detail">
+                          <div class="history-time">
+                            <time>{{message.header.timestamp | date:'shortTime'}}</time>
+                          </div>
+                          <div class="history-detail inner-detail-history">
+                            <mat-expansion-panel>
+        
+                              <mat-expansion-panel-header [collapsedHeight]="'40px'"
+                                                          [expandedHeight]="'40px'">
+                                <mat-panel-title>
+                                  <div class="panel-header">
+                                    <ul>
+                                      <li><span class="phone-number">{{message.body.dialog.response.dialog.ani}}</span></li>
+                                      <li class="agent-pic call-notify">
+                                        <span><img src="assets/images/incoming-call.svg"> </span>
+                                      </li>
+                                      <!-- <li class="agent-pic call-services">
+                                        <p><span><img src="assets/images/cs1.png"></span> Customer
+                                          Services</p>
+                                      </li> -->
+                                      <li class="section-duration">
+                                        <time>{{message.body.dialog.response.dialog.participants.participant[0].startTime | timeDuration:message.body.dialog.response.dialog.participants.participant[0].stateChangeTime }}</time>
+                                      </li>
+                                      <li class="agent-pic call-notify">
+                                        <span><img src="assets/images/call-end.svg"> </span>
+                                      </li>
+                                      <!-- <li class="section-tags">
+                                        <span>Tag A</span>
+                                        <span>Tag B</span>
+                                      </li> -->
+                                      <!-- <li class="agent-pic">
+                                        <span><img src="assets/images/call-record.svg"> </span>
+                                      </li> -->
+                                    </ul>
+                                  </div>
+                                </mat-panel-title>
+                              </mat-expansion-panel-header>
+        
+                              <div class="summary-detail">
+                                <ul>
+                                  <li><label>Agent</label>:<span>{{_cacheService.agent.username}}</span></li>
+                                  <li><label>CSQ </label>:<span>CSQ</span></li>
+                                  <li><label>Call Duration</label>:<span>{{message.body.dialog.response.dialog.participants.participant[0].startTime | timeDuration:message.body.dialog.response.dialog.participants.participant[0].stateChangeTime }}</span></li>
+                                  <li><label>Form UR</label>:<span>N/A</span></li>
+                                  <li><label>Wrap-Up</label>:<span>N/A</span></li>
+                                  <li><label>Recording URL</label>:<span>N/A</span></li>
+                                </ul>
+                              </div>
+                            </mat-expansion-panel>
+        
+        
+                          </div>
+                        </div>
+                      </mat-expansion-panel>
+                    </div>
+<!-- <--------------------------------------------VOICE MESSAGE END--------------------------------------------> 
+
+
                     <span class="chat-time file-type-stamp">{{message.header.timestamp | date:'shortTime'}}</span>
 
                   </div>
@@ -645,7 +705,7 @@
               <div *ngIf="(message.body.type | lowercase) == 'systemnotification'" class="system-notifs">
 
                 <span class="inner-text">
-                  <span>{{message.body.displayText}}</span> <span>{{" "+message.body.markdownText}}</span> <span class="notification-time">{{message.header.timestamp | date:'hh:mm:ss'}}</span>
+                  <span>{{message.body.displayText}}</span> <span>{{" "+message.body.markdownText}}</span>
                 </span>
 
               </div>
@@ -689,7 +749,7 @@
           <label class="count-reply">{{replyInput.value.length}}/1000</label>
           <div class="mat-form-field chat-area" [ngClass]="{'expand-area-height':expanedHeight > 50}">
             <textarea maxlength="1000"
-              [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0 || !conversation.isMessageComposerEnable"
+              [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0"
               (keyup.enter)="onSend(replyInput.value); replyInput.value = null" (click)="onTextAreaClick()"
               (keydown.enter)="onKeydown($event)"
               [attr.data-emoji-picker]="conversation.activeChannelSessions.length > 0 ? true : false"
@@ -808,7 +868,7 @@
             <button style="cursor: pointer;" class="send-btn attachment-btn composer-trigger" mat-icon-button
               *ngIf="replyInput.value.length < 1 && conversation.activeChannelSessions.length > 0">
               <input accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx" #myFileInput type="file"
-              (change)="uploadFile($event.target.files); $event.target.value = ''" name="ef_chatbox_chat_file_upload" id="uploadFileBtn"
+                (change)="uploadFile($event.target.files); $event.target.value = ''" name="ef_chatbox_chat_file_upload" id="uploadFileBtn"
                 class="file-upload-input">
             </button>
 
@@ -894,8 +954,7 @@
   <div class="customer-info-main">
     <app-customer-info [activeChannelSessions]="conversation.activeChannelSessions" [customer]="conversation.customer"
       [customerSuggestions]="conversation.customerSuggestions" [firstChannelSession]="conversation.firstChannelSession"
-      [conversationId]="conversation.conversationId" [activeConversationData]="conversation.activeConversationData"
-      (expandCustomerInfo)="eventFromChild($event)">
+      [conversationId]="conversation.conversationId" (expandCustomerInfo)="eventFromChild($event)">
     </app-customer-info>
   </div>
 </div>
