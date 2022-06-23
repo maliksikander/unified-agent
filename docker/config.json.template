@@ -25,5 +25,5 @@
     "consultTransferTypeCCE": "${consultTransferTypeCCE}",
     "consultTransferTypeCCX": "${consultTransferTypeCCX}",
     "conferenceType": "${conferenceType}",
-    "Rona_State_On_Cisco":"${Rona_State_On_Cisco}"
+    "ronaStateOnCisco":"${ronaStateOnCisco}"
 }
