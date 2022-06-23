@@ -13,7 +13,9 @@ export class appConfigService {
     CIM_CUSTOMER_URL: "",
     BOT_FRAMEWORK_URL: "",
     GRAFANA_DASHBOARD_URL: "",
-    Rona_State_On_Cisco: ""
+    Rona_State_On_Cisco: "",
+    ROUTING_ENGINE_URL: "",
+    CIM_REPORTING_URL: ""
   };
 
   constructor(private _httpClient: HttpClient) {}
@@ -31,6 +33,8 @@ export class appConfigService {
         this.config.BOT_FRAMEWORK_URL = e.BOT_FRAMEWORK_URL;
         this.config.GRAFANA_DASHBOARD_URL = e.GRAFANA_DASHBOARD_URL;
         this.config.Rona_State_On_Cisco = e.Rona_State_On_Cisco;
+        this.config.ROUTING_ENGINE_URL = e.ROUTING_ENGINE_URL;
+        this.config.CIM_REPORTING_URL = e.CIM_REPORTING_URL;
 
         config = {
           domain: e.domain,

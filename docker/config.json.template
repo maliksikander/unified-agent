@@ -3,6 +3,7 @@
     "SOCKET_URL" : "${SOCKET_URL}",
     "FILE_SERVER_URL" : "${FILE_SERVER_URL}",
     "CIM_CUSTOMER_URL": "${CIM_CUSTOMER_URL}",
+    "CIM_REPORTING_URL":"${CIM_REPORTING_URL}",
     "ENV" : "${ENV}",
     "BOT_FRAMEWORK_URL":"${BOT_FRAMEWORK_URL}",
     "GRAFANA_DASHBOARD_URL":"${GRAFANA_DASHBOARD_URL}",
@@ -23,5 +24,6 @@
     "consultType": "${consultType}",
     "consultTransferTypeCCE": "${consultTransferTypeCCE}",
     "consultTransferTypeCCX": "${consultTransferTypeCCX}",
-    "conferenceType": "${conferenceType}"
+    "conferenceType": "${conferenceType}",
+    "Rona_State_On_Cisco":"${Rona_State_On_Cisco}"
 }

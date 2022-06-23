@@ -5,7 +5,6 @@ import { LinkConversationDialogComponent } from "../dialogs/link-conversation-di
 import { ConfirmationDialogComponent } from "../new-components/confirmation-dialog/confirmation-dialog.component";
 import { httpService } from "./http.service";
 import { snackbarService } from "./snackbar.service";
-// const customerSchema: any = require("../mocks/customerSchema.json");
 
 @Injectable({
   providedIn: "root"

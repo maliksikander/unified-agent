@@ -11,7 +11,9 @@ import { LabelsListComponent } from "./labels/labels-list/labels-list.component"
 import { SubscribedListComponent } from "./pull-mode/subscribed-list/subscribed-list.component";
 import { IsLoggedInGuard } from "./is-logged-in.guard";
 import { GrafanaComponent } from "./supervisor/grafana/grafana.component";
+import { ActiveChatsComponent } from "./supervisor/active-chats/active-chats.component";
 import { AuthGuard } from "./auth.guard";
+import { QueueChatsComponent } from "./supervisor/queue-chats/queue-chats.component";
 
 export const appRoutes: Routes = [
   { path: "login", component: LoginComponent },
@@ -21,6 +23,8 @@ export const appRoutes: Routes = [
   { path: "supervisor/dashboards", component: GrafanaComponent, canActivate: [IsLoggedInGuard, AuthGuard] },
   // { path: "supervisor/announcement", component: AnnouncementComponent, canActivate: [IsLoggedInGuard,AuthGuard] },
   { path: "customer-schema", component: SchemaSettingsComponent, canActivate: [IsLoggedInGuard, AuthGuard] },
+  { path: "supervisor/queue-chats", component: QueueChatsComponent, canActivate: [IsLoggedInGuard, AuthGuard] },
+  { path: "supervisor/active-chats", component: ActiveChatsComponent, canActivate: [IsLoggedInGuard, AuthGuard] },
   { path: "", redirectTo: "/customers/chats", pathMatch: "full" },
   { path: "customers", data: { preload: true }, loadChildren: "./chat-features/chat.module#ChatModule", canActivate: [IsLoggedInGuard, AuthGuard] },
   { path: "**", component: NoRouteFoundComponent }

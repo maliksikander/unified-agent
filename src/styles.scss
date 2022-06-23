@@ -2387,43 +2387,43 @@ tspan {
   &.not_ready {
     .mat-slide-toggle.mat-primary .mat-slide-toggle-bar,
     .mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar {
-      background: #81818157;
+      background: #81818157 !important;
     }
   }
   &.ready {
     .mat-slide-toggle.mat-primary .mat-slide-toggle-bar,
     .mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar {
-      background: $green-color;
+      background: $green-color !important;;
     }
   }
   &.interrupted {
     .mat-slide-toggle.mat-primary .mat-slide-toggle-bar,
     .mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar {
-      background: #cb2525;
+      background: #cb2525 !important;;
     }
   }
   &.active {
     .mat-slide-toggle.mat-primary .mat-slide-toggle-bar,
     .mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar {
-      background: #fdb635;
+      background: #fdb635 !important;;
     }
   }
   &.busy {
     .mat-slide-toggle.mat-primary .mat-slide-toggle-bar,
     .mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar {
-      background: #cb2525;
+      background: #cb2525 !important;;
     }
   }
   &.unknown {
     .mat-slide-toggle.mat-primary .mat-slide-toggle-bar,
     .mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar {
-      background: #cb2525;
+      background: #cb2525 !important;;
     }
   }
   &.pending_not_ready {
     .mat-slide-toggle.mat-primary .mat-slide-toggle-bar,
     .mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar {
-      background: purple;
+      background: purple !important;;
     }
   }
 

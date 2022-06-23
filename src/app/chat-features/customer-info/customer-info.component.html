@@ -114,7 +114,7 @@
                 <div class="profile-area">
                   <!--                  <h3>{{customer.firstName | getFirstTwoLetters}}-->
                   <!--                  </h3>-->
-                  <h5 class="user-name">{{customer.firstName}}
+                  <h5 class="user-name">Customer Info
                     <!--                    <p class="user-from">London, United Kingdom</p>-->
                   </h5>
                 </div>
@@ -324,9 +324,33 @@
             </div>
 
           </mat-expansion-panel>
+          <!-- Current Conversation data-->
+          <mat-expansion-panel class="drag-expansion-panel conversation-data-panel">
+            <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
+              <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Conversation Data <small>(Active
+                  Conversation)</small>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
 
+            <div class="conversation-data-main">
+              <div class="conversation-data" >
+                <ul (click)="$event.stopPropagation()" *ngIf="(activeConversationData | keyvalue)?.length else notFound">
+
+                  <li *ngFor="let data of activeConversationData | keyvalue"><label>{{data.key | titlecase}}:</label><span>{{data.value}}</span></li>
+
+                </ul>
+                <ng-template #notFound>
+                  <ul >
+                    <li ><label>Data</label><span>Not Found</span></li>
+                  </ul>
+                </ng-template>
+              </div>
+            </div>
+
+          </mat-expansion-panel>
         </div>
       </mat-accordion>
+
     </div>
 
 

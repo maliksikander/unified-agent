@@ -52,14 +52,17 @@
       }
 
       .requested-name {
-        flex: 2;
-        margin: 0 5px;
-        align-self: center;
-
+          flex: 2;
+          margin: 0 5px;
+          align-self: center;
         p {
           margin: 0;
           font-size: 12px;
           color: #fff;
+          max-width: 235px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: pre-line;
         }
       }
       .notification-trigger {

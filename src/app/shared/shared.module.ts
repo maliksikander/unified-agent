@@ -67,6 +67,7 @@ import { columnsFilterClass } from "./pipes/columnsFilter.pipe";
 import { MomentModule } from "ngx-moment";
 import { filterPullModeRequestsPipe } from "./pipes/filterPullModeReqsts.pipe";
 import { channelLogoPipe } from "./pipes/getChannelLogo.pipe";
+import { activeConversationPipe } from "./pipes/getActiveConversationData.pipe";
 import { isAlreadyJoinedPipe } from "./pipes/isAlreadyJoined.pipe";
 import { webChannelDataPipe } from "./pipes/webChannelData.pipe";
 import { getFileUrlPipe } from "./pipes/getFileUrl.pipe";
@@ -98,6 +99,7 @@ import { AuthPipe } from "./pipes/auth.pipe";
     columnsFilterClass,
     filterPullModeRequestsPipe,
     channelLogoPipe,
+    activeConversationPipe,
     webChannelDataPipe,
     getFileUrlPipe,
     sanitizePipe,
@@ -254,6 +256,7 @@ import { AuthPipe } from "./pipes/auth.pipe";
     columnsFilterClass,
     MomentModule,
     channelLogoPipe,
+    activeConversationPipe,
     isAlreadyJoinedPipe,
     webChannelDataPipe,
     getFileUrlPipe,

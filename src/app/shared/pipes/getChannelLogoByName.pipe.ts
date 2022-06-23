@@ -9,7 +9,6 @@ export class channelNamePipe implements PipeTransform {
       let channeltype = this._sharedService.channelTypeList.find((e) => {
         return e.name == name;
       });
-
       if (channeltype) {
         return channeltype.channelLogo;
       } else {

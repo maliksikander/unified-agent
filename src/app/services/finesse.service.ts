@@ -208,6 +208,7 @@ export class finesseService {
 
     if (voiceSession && nonVoiceSession) {
       console.log("1==>");
+      // this._socketService.topicUnsub(conversation);
       // end channel session
       let taskState = {
         name: "CLOSED",

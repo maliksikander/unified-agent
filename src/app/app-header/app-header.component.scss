@@ -140,26 +140,26 @@
     color: #ccc;
     text-shadow: 0 0 5px rgb(0, 0, 0, .3);
     &.ready {
-      color: $green-color;
+      color: $green-color !important;
     }
     &.active {
-      color: #fdb635;
+      color: #fdb635 !important;
     }
     &.not_ready {
-      color: #b4b4b4;
+      color: #b4b4b4 !important;
     }
     &.pending_not_ready {
-      color: purple;
+      color: purple !important;
     }
-    &.interrupted {
-      color: #CB2525;
+    &.interrupted,  &.busy, &.unknown {
+      color: #CB2525 !important;
     }
-    &.busy {
-      color: #CB2525;
-    }
-    &.unknown {
-      color: #CB2525
-    }
+    //&.busy {
+    //  color: #CB2525 !important;
+    //}
+    //&.unknown {
+    //  color: #CB2525 !important;
+    //}
   }
   img{
     width: 100%;
@@ -220,29 +220,29 @@
       line-height: 14px;
       display: inline-block;
     }
-    &.false{
-      background: #999 !important;
-    }
-    &.ready {
-      background: $green-color;
-    }
-    &.active {
-      background: #fdb635;
-    }
-    &.not_ready {
-      background: #b4b4b4;
-    }
-
-
-    &.interrupted {
-      background: #CB2525;
-    }
-    &.busy {
-      background: #CB2525;
-    }
-    &.unknown {
-      background: #CB2525
-    }
+    //&.false{
+    //  background: #999 !important;
+    //}
+    //&.ready {
+    //  background: $green-color;
+    //}
+    //&.active {
+    //  background: #fdb635;
+    //}
+    //&.not_ready {
+    //  background: #b4b4b4;
+    //}
+    //
+    //
+    //&.interrupted {
+    //  background: #CB2525;
+    //}
+    //&.busy {
+    //  background: #CB2525;
+    //}
+    //&.unknown {
+    //  background: #CB2525
+    //}
 
     i{
       position: absolute;
@@ -292,15 +292,15 @@
   }
   }
 
-  &.interrupted {
+  &.interrupted,  &.busy, &.unknown {
     border: 1px solid #CB2525;
   }
-  &.busy {
-    border: 1px solid #CB2525;
-  }
-  &.unknown {
-    border: 1px solid #CB2525
-  }
+  //&.busy {
+  //  border: 1px solid #CB2525;
+  //}
+  //&.unknown {
+  //  border: 1px solid #CB2525
+  //}
 
   .false {
     border: 1px solid grey
@@ -624,37 +624,37 @@ button.main-menu-item{
         right: 11px;
       }
 
-      &.ready {
-        background: $green-color;
-        border-color: $green-color;
-      }
-      &.active {
-        background: #fdb635;
-        border-color: #fdb635;
-      }
-      &.pending_not_ready {
-        background: purple;
-        border-color: purple;
-      }
-      &.not_ready {
-        background: #00000033 !important;
-        border-color: #00000033 !important;
-      }
-
-
-      &.interrupted {
-        background: #CB2525;
-        border-color: #CB2525;
-      }
-
-      &.busy {
-        background: #CB2525;
-        border-color: #CB2525;
-      }
-      &.false{
-        border-color: #999 !important;
-        background: #999 !important;
-      }
+      //&.ready {
+      //  background: $green-color;
+      //  border-color: $green-color;
+      //}
+      //&.active {
+      //  background: #fdb635;
+      //  border-color: #fdb635;
+      //}
+      //&.pending_not_ready {
+      //  background: purple;
+      //  border-color: purple;
+      //}
+      //&.not_ready {
+      //  background: #00000033 !important;
+      //  border-color: #00000033 !important;
+      //}
+      //
+      //
+      //&.interrupted {
+      //  background: #CB2525;
+      //  border-color: #CB2525;
+      //}
+      //
+      //&.busy {
+      //  background: #CB2525;
+      //  border-color: #CB2525;
+      //}
+      //&.false{
+      //  border-color: #999 !important;
+      //  background: #999 !important;
+      //}
     }
 
     .language-trigger {
@@ -1060,3 +1060,33 @@ button.language-selection img {
 //    border-radius: 100%;
 //  }
 //}
+
+
+button{
+  &.ready {
+  background: $green-color !important;
+  border-color: $green-color;
+}
+  &.active {
+    background: #fdb635 !important;
+    border-color: #fdb635;
+  }
+  &.pending_not_ready {
+    background: purple !important;
+    border-color: purple;
+  }
+  &.not_ready {
+    background: #00000033 !important;
+    border-color: #00000033 !important;
+  }
+
+
+  &.interrupted, &.busy, &.unknown {
+    background: #CB2525 !important;
+    border-color: #CB2525;
+  }
+  &.false{
+    border-color: #999 !important;
+    background: #999 !important;
+  }
+}

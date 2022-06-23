@@ -92,6 +92,7 @@ export class InteractionsComponent implements OnInit {
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
     }
+    console.log("conversation messages for checking", this.conversation.messages);
     this.convers = this.conversation.messages;
     // setTimeout(() => {
     //   new EmojiPicker();
@@ -435,6 +436,9 @@ export class InteractionsComponent implements OnInit {
           ["channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())
         ) {
           let message = this._socketService.createSystemNotificationMessage(event);
+          msgs.push(message);
+        } else if (event.name.toLowerCase() == "conversation_data_changed") {
+          let message = this._socketService.createConversationDataMessage(event);
           msgs.push(message);
         }
       });

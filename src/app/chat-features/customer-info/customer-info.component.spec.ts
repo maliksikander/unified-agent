@@ -10,12 +10,13 @@ describe("CustomerInfoComponent", () => {
   let routerMock: any;
   let dialogMock: any;
   let _httpService: any;
+  let _finneseService: any;
 
   beforeEach(() => {
     _shareredService = sharedService;
     _shareredService.schema = mockCustomerSchema;
 
-    component = new CustomerInfoComponent(routerMock, _shareredService, _socketService, dialogMock, _httpService);
+    component = new CustomerInfoComponent(routerMock, _shareredService, _socketService, dialogMock, _httpService,_finneseService);
   });
 
   describe("Test: Get media channels", () => {

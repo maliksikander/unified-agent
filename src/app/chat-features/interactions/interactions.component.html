@@ -132,6 +132,31 @@
                   lastWeek: '[Last] dddd',
                   sameElse: 'dddd, MMM YYYY'} }}</span>
               </div>
+              <!-- -----------------------Conversation Data---------------- -->
+              <div *ngIf="(message.body.type | lowercase) == 'conversationdata'"
+                class="system-notifs conversation-data">
+                <span class="inner-text" [matMenuTriggerFor]="conversationData">
+                  <span>Conversation Data <mat-icon>arrow_drop_down</mat-icon></span>
+                </span>
+
+                <mat-menu #conversationData="matMenu">
+                  <div class="conversation-data-main">
+                    <div class="conversation-data">
+                      <div class="conversation-data-header">
+                        <h5>Conversation Data</h5>
+                        <mat-icon>close</mat-icon>
+                      </div>
+                      <ul (click)="$event.stopPropagation()">
+                        <li *ngFor="let data of message.body.conversationData | keyvalue">
+                          <label>{{data.key | titlecase}}:</label><span>{{data.value}}</span></li>
+                      </ul>
+                    </div>
+                  </div>
+                </mat-menu>
+
+              </div>
+              <!-- -------------------------------------------------------- -->
+
               <div *ngIf="(message.body.type | lowercase) != 'systemnotification' && message.header.channelSession "
                 class="chat-message {{((index == 0) || ((conversation.messages[index-1].body.type | lowercase) != 'systemnotification' ) && ((message.header.sender | getSenderId) == (conversation.messages[index-1].header.sender | getSenderId) && message.body.type == conversation.messages[index-1].body.type && message.header.replyToMessageId == null && message.header.channelSession.channel.channelType.id == conversation.messages[index-1].header.channelSession.channel.channelType.id  )) ? 'same-sender-msg' : ''}} {{message.header.status=='sending' ? 'low-opacity' : ''}}  {{message.body.type | lowercase}} {{  message.header.replyToMessageId != null  ? 'quoted-message-main' : ''}} {{message.header.sender.type | lowercase}}"
                 [ngClass]=" ((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message ' ">
@@ -620,7 +645,7 @@
               <div *ngIf="(message.body.type | lowercase) == 'systemnotification'" class="system-notifs">
 
                 <span class="inner-text">
-                  <span>{{message.body.displayText}}</span> <span>{{" "+message.body.markdownText}}</span>
+                  <span>{{message.body.displayText}}</span> <span>{{" "+message.body.markdownText}}</span> <span class="notification-time">{{message.header.timestamp | date:'hh:mm:ss'}}</span>
                 </span>
 
               </div>
@@ -783,7 +808,7 @@
             <button style="cursor: pointer;" class="send-btn attachment-btn composer-trigger" mat-icon-button
               *ngIf="replyInput.value.length < 1 && conversation.activeChannelSessions.length > 0">
               <input accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx" #myFileInput type="file"
-                (change)="uploadFile($event.target.files)" name="ef_chatbox_chat_file_upload" id="uploadFileBtn"
+              (change)="uploadFile($event.target.files); $event.target.value = ''" name="ef_chatbox_chat_file_upload" id="uploadFileBtn"
                 class="file-upload-input">
             </button>
 
@@ -869,7 +894,8 @@
   <div class="customer-info-main">
     <app-customer-info [activeChannelSessions]="conversation.activeChannelSessions" [customer]="conversation.customer"
       [customerSuggestions]="conversation.customerSuggestions" [firstChannelSession]="conversation.firstChannelSession"
-      [conversationId]="conversation.conversationId" (expandCustomerInfo)="eventFromChild($event)">
+      [conversationId]="conversation.conversationId" [activeConversationData]="conversation.activeConversationData"
+      (expandCustomerInfo)="eventFromChild($event)">
     </app-customer-info>
   </div>
 </div>

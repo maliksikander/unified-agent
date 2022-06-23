@@ -22,7 +22,7 @@ export class httpService {
       fileServer: "/api/downloadFileStream?filename=",
       uploadFile: "/api/uploadFileStream",
       activities: "/customer-topics/customer",
-      theme:"/theme"
+      theme: "/theme"
     };
   }
 
@@ -101,6 +101,55 @@ export class httpService {
       })
     });
   }
+  getActiveConversationData(conversationId): Observable<any> {
+    return this._httpClient.get<any>(`${this._appConfigService.config.BOT_FRAMEWORK_URL}/customer-topics/${conversationId}/conversation-data`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+  getQueuedChats(queueId): Observable<any> {
+    return this._httpClient.get<any>(`https://a25b1bfb-39a5-45af-8ebb-e79a6dad8273.mock.pstmn.io/queued-requests-detail/${queueId}`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+  getActiveChatsWithAgents(queueId): Observable<any> {
+    return this._httpClient.get<any>(`https://a25b1bfb-39a5-45af-8ebb-e79a6dad8273.mock.pstmn.io/active-chats-detail/${queueId}`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+  getActiveChatsWithBots(queueId): Observable<any> {
+    return this._httpClient.get<any>(`https://a25b1bfb-39a5-45af-8ebb-e79a6dad8273.mock.pstmn.io/active-chats-with-bot-detail/${queueId}`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+  getAllActiveChatsWithAgents(): Observable<any> {
+    return this._httpClient.get<any>(`${this._appConfigService.config.CIM_REPORTING_URL}/queue-active-chats/detail`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+  getAllActiveChatsWithBots(): Observable<any> {
+    return this._httpClient.get<any>(`${this._appConfigService.config.CIM_REPORTING_URL}/bot-active-chats/detail`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+  getAllQueuedChats(): Observable<any> {
+    return this._httpClient.get<any>(`${this._appConfigService.config.CIM_REPORTING_URL}/queued-chats/detail`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
 
   updateUserPreference(obj, id): Observable<any> {
     return this._httpClient.put<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.userPreference}/${id}`, obj, {
@@ -174,7 +223,6 @@ export class httpService {
       })
     });
   }
-
 
   ////////////////////////////////////////////
   updateConversationCustomer(conversationId, customer): Observable<any> {

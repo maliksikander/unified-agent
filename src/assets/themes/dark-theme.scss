@@ -1,4 +1,3 @@
-
 //
 //:root {
 //
@@ -125,35 +124,43 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
 
   //Login page
-  .auth-section{
-    .main-inner-section{
-      h2,h3,p,span, label{
+  .auth-section {
+    .main-inner-section {
+
+      h2,
+      h3,
+      p,
+      span,
+      label {
         color: mat-contrast($dark-primary, 600) !important;
       }
+
       &.login-area {
         background: rgba(21, 21, 43, 98%) !important;
       }
-      &.logo-area{
+
+      &.logo-area {
         background: rgb(30, 30, 52, 96%) !important;
       }
 
-      .form-group{
-        label{
+      .form-group {
+        label {
           color: mat-contrast($dark-primary, 600) !important;
         }
-        input{
+
+        input {
           background: mat-color($dark-primary, 400) !important;
           border-color: lighten(mat-color($dark-primary, 400), 10%) !important;
           color: mat-contrast($dark-primary, 600) !important;
         }
       }
 
-      .login-trigger{
-        button{
+      .login-trigger {
+        button {
           background: #162B52 !important;
           border-color: #162B52 !important;
 
-          &:disabled{
+          &:disabled {
             background: #3C3C3C !important;
             border-color: #3C3C3C !important;
           }
@@ -165,53 +172,63 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
 
   .unidentified-customer .right-drag-accordion {
-    .customer-info-panel mat-expansion-panel-header{
+    .customer-info-panel mat-expansion-panel-header {
       border-color: mat-color($ef-red, 700) !important;
     }
-   .profile-area {
-     h3, h5 {
-       color: mat-color($ef-red, 700) !important;
-     }
-   }
+
+    .profile-area {
+
+      h3,
+      h5 {
+        color: mat-color($ef-red, 700) !important;
+      }
+    }
   }
-  .language-change-list{
+
+  .language-change-list {
     background: mat-color($dark-primary) !important;
-button{
-  color: mat-contrast($dark-primary, 600) !important;
-}
-    mat-checkbox{
-      &:hover{
+
+    button {
+      color: mat-contrast($dark-primary, 600) !important;
+    }
+
+    mat-checkbox {
+      &:hover {
         background: transparent !important;
       }
 
-       .mat-checkbox-background{
-         background: transparent !important;
-       }
+      .mat-checkbox-background {
+        background: transparent !important;
+      }
     }
-    .main-logout{
+
+    .main-logout {
       background: lighten(mat-color($dark-primary), 10%) !important;
     }
   }
+
   button.mat-menu-item {
     background: mat-color($dark-primary);
-    color:mat-contrast($dark-primary, 600);
+    color: mat-contrast($dark-primary, 600);
 
-    &.active, &:hover {
+    &.active,
+    &:hover {
       background: mat-color($dark-primary, 800) !important;
     }
   }
+
   .mat-menu-panel {
     background: mat-color($dark-primary);
 
-    .mrd-states{
-      .mrd-text{
+    .mrd-states {
+      .mrd-text {
         background: mat-color($dark-primary) !important;
 
       }
 
-      .state-main-wrapper{
+      .state-main-wrapper {
         //border-bottom: 1px solid #22223a;
-        background:  mat-color($dark-primary, 800);
+        background: mat-color($dark-primary, 800);
       }
 
       //.mat-slide-toggle-bar {
@@ -220,48 +237,55 @@ button{
 
     }
   }
-  .menu-trigger-custom button{
-    background: transparent;
-    color:mat-contrast($dark-primary, 600) !important;
 
-    &.ready, &#avatar.active {
+  .menu-trigger-custom button {
+    background: transparent;
+    color: mat-contrast($dark-primary, 600) !important;
+
+    &.ready,
+    &#avatar.active {
       background: #139850 !important;
       border-color: #139850 !important;
     }
   }
+
   .select-state.ready {
-    .mat-slide-toggle.mat-primary{
+    .mat-slide-toggle.mat-primary {
       &.mat-checked .mat-slide-toggle-bar {
         background: #139850 !important;
       }
-      .mat-slide-toggle-bar{
+
+      .mat-slide-toggle-bar {
         background: #139850 !important;
       }
     }
   }
-  .main-logo img{
+
+  .main-logo img {
     filter: brightness(10);
   }
-  .main-showcase{
-    h4{
+
+  .main-showcase {
+    h4 {
       color: lighten(mat-color($ef-blue, 600), 10%) !important;
     }
   }
 
-.interaction-main{
-  &.unidentified-customer {
-    .main-chat-bar {
-      border-color: mat-color($ef-red, 700) !important;
+  .interaction-main {
+    &.unidentified-customer {
+      .main-chat-bar {
+        border-color: mat-color($ef-red, 700) !important;
 
-      .customer-name, .customer-highlight {
-        color: mat-color($ef-red, 700) !important;
+        .customer-name,
+        .customer-highlight {
+          color: mat-color($ef-red, 700) !important;
+        }
       }
     }
   }
-}
 
-  .create-label{
-    .add-new{
+  .create-label {
+    .add-new {
       background: mat-color($dark-primary, 700) !important;
     }
   }
@@ -306,7 +330,7 @@ button{
     .chat-footer {
       background: mat-color($dark-primary);
 
-      .jump-bottom{
+      .jump-bottom {
         background: #4370C3 !important;
         border: 1px solid #2E56A0 !important;
       }
@@ -332,7 +356,8 @@ button{
         border-top: 1px solid mat-color($dark-primary, 800) !important;
         background: mat-color($dark-primary, A700) !important;
       }
-      .mat-icon-button.send-btn{
+
+      .mat-icon-button.send-btn {
         filter: brightness(5);
       }
 
@@ -342,7 +367,8 @@ button{
       background: mat-color($dark-primary, 500) !important;
       //color:  mat-contrast($dark-primary, 600);
       border: 1px solid #35354D;
-      &.load-more{
+
+      &.load-more {
         background: #4370C3 !important;
         border: 1px solid #2E56A0 !important;
       }
@@ -361,11 +387,12 @@ button{
   }
 
   .agent-controls {
-    button{
+    button {
       background: mat-color($dark-primary, 800) !important;
 
       .arrow-gray {
-        color:  mat-contrast($dark-primary, 600) !important;
+        color: mat-contrast($dark-primary, 600) !important;
+
         &:after {
           background: mat-color($dark-primary, 800) !important;
         }
@@ -374,13 +401,14 @@ button{
       &:hover {
         background: mat-color($ef-gold, 500) !important;
         color: mat-color($dark-primary, 800) !important;
-        mat-icon{
+
+        mat-icon {
           color: mat-color($dark-primary, 800) !important;
         }
 
         i {
           &.arrow-gray {
-            color:  mat-color($dark-primary, 800) !important;
+            color: mat-color($dark-primary, 800) !important;
           }
 
           &:after {
@@ -396,16 +424,18 @@ button{
       background: mat-color($dark-primary, 800) !important;
       border-color: #1A50A3 !important;
     }
-    .agent-actions{
 
-    }
+    .agent-actions {}
   }
 
-  .profile-detail, .main-chat-bar, .chat-messages-main {
+  .profile-detail,
+  .main-chat-bar,
+  .chat-messages-main {
     background: mat-color($dark-primary) !important;
     color: mat-contrast($dark-primary, 500) !important;
 
   }
+
   .no-chat {
 
     .no-chat-icon {
@@ -416,16 +446,20 @@ button{
         opacity: .8;
       }
     }
-    p{
+
+    p {
       color: #6D6D91 !important;
     }
+
     button {
       opacity: .7;
+
       span {
         color: #8BB3EF !important;
       }
     }
   }
+
   .chat-tab-area {
     .mat-tab-body-wrapper {
       border-color: mat-color($dark-primary, 800) !important;
@@ -450,6 +484,7 @@ button{
 
     .chat-message-content {
       background: mat-color($dark-primary, 700) !important;
+
       //p{
       //  //color: mat-contrast($dark-primary, 600) !important;
       //}
@@ -462,7 +497,7 @@ button{
         background: mat-color($dark-primary, 500) !important;
       }
 
-      &.file-type-message{
+      &.file-type-message {
         background: #273755 !important;
         box-shadow: 1px 0 0 #2E2E42, -1px 0 0 #2E2E42, 0 1px 0 #2E2E42, 0px -1px 0 #2E2E42 !important;
 
@@ -471,21 +506,23 @@ button{
           border-top-color: #273755 !important;
         }
 
-        &:after{
+        &:after {
           box-shadow: 1px 0 0 #2E2E42, 0px -1px 0 #2E2E42 !important;
         }
 
-        .audio-file{
+        .audio-file {
           background: transparent !important;
 
-          vg-play-pause{
+          vg-play-pause {
             .icon {
               border: 2px solid #ffffff94;
-              &:before{
+
+              &:before {
                 color: #ffffff94;
               }
             }
           }
+
           vg-scrub-bar-current-time {
             background: #ffffff33;
 
@@ -500,17 +537,18 @@ button{
 
         }
 
-        .contact-logo{
-          img{
+        .contact-logo {
+          img {
             filter: brightness(1) !important;
           }
         }
-        .contact-inner{
+
+        .contact-inner {
           border-bottom-color: rgb(255 255 255 / 7%) !important;
         }
 
-        a.file-download{
-         color: mat-color($dark-primary, 900) !important;
+        a.file-download {
+          color: mat-color($dark-primary, 900) !important;
         }
       }
     }
@@ -527,13 +565,15 @@ button{
         &:after {
           background: mat-color($dark-primary, 500) !important;
         }
-        &.file-type-message{
-         &:after{
-           box-shadow: -1px -1px 0 mat-color($dark-primary, 400), -1px 0px 0 mat-color($dark-primary, 400) !important;
-         }
-          &:before{
-           box-shadow: 0px -1px 0px  mat-color($dark-primary, 400) !important;
-         }
+
+        &.file-type-message {
+          &:after {
+            box-shadow: -1px -1px 0 mat-color($dark-primary, 400), -1px 0px 0 mat-color($dark-primary, 400) !important;
+          }
+
+          &:before {
+            box-shadow: 0px -1px 0px mat-color($dark-primary, 400) !important;
+          }
         }
       }
 
@@ -541,25 +581,29 @@ button{
         background: mat-color($dark-primary, 400) !important;
       }
 
-      &.bot{
-        .profile-pic-area{
-          img{
+      &.bot {
+        .profile-pic-area {
+          img {
             filter: brightness(3) hue-rotate(70deg) !important;
           }
         }
       }
     }
-    .referred-message-content{
-      &:before{
+
+    .referred-message-content {
+      &:before {
         border-top-color: mat-color($dark-primary, 900) !important;
       }
     }
-    .main-quoted-reply{
+
+    .main-quoted-reply {
       border-left-color: mat-color($dark-primary, 900) !important;
     }
   }
 
-  p, span, mat-icon {
+  p,
+  span,
+  mat-icon {
     color: mat-contrast($dark-primary, 600) !important;
   }
 
@@ -581,7 +625,8 @@ button{
 
         &.chat-channel-area {
           background: mat-color($dark-primary, 500) !important;
-          border-color: mat-color($dark-primary, 400) !important;;
+          border-color: mat-color($dark-primary, 400) !important;
+          ;
         }
 
         &.customer-info-panel {
@@ -698,9 +743,10 @@ button{
       }
 
       table {
-         tbody {
+        tbody {
           border-color: transparent !important;
         }
+
         th {
           background: mat-color($dark-primary, 800) !important;
           border-color: mat-color($dark-primary, 400) !important;
@@ -741,7 +787,9 @@ button{
 
       }
 
-      .ui-dropdown-label, .ui-dropdown-trigger, .ui-dropdown-item {
+      .ui-dropdown-label,
+      .ui-dropdown-trigger,
+      .ui-dropdown-item {
         background: mat-color($dark-primary) !important;
         border: 1px solid mat-color($dark-primary, 400);
         color: mat-contrast($dark-primary, 600);
@@ -765,7 +813,7 @@ button{
     background: mat-color($dark-primary, 800) !important;
 
     .page-heading {
-      h4{
+      h4 {
         color: #567fbf;
       }
 
@@ -775,6 +823,7 @@ button{
     }
 
   }
+
   //Subscribed Lists
   .table {
     border: 1px solid mat-color($dark-primary, 400);
@@ -796,6 +845,7 @@ button{
 
         &:nth-child(even) {
           background: mat-color($dark-primary) !important;
+
           &:hover {
             background: mat-color($dark-primary, 800) !important;
           }
@@ -805,7 +855,7 @@ button{
           background: mat-color($dark-primary, 800) !important;
         }
 
-        .table-trigger{
+        .table-trigger {
           background: mat-color($dark-primary, 800) !important;
         }
       }
@@ -853,8 +903,9 @@ button{
       color: mat-contrast($dark-primary, 600) !important;
     }
   }
-  .dialog-main-content{
-    label{
+
+  .dialog-main-content {
+    label {
       color: mat-contrast($dark-primary, 600) !important;
     }
   }
@@ -886,7 +937,9 @@ button{
   }
 
 
-  .button-area, .footer-buttons, .action-right {
+  .button-area,
+  .footer-buttons,
+  .action-right {
     button {
       background: #2F2F3E !important;
 
@@ -900,7 +953,8 @@ button{
     .field-label {
       color: #9D9B9B;
     }
-    input{
+
+    input {
       color: #D9D9D9 !important;
     }
   }
@@ -908,20 +962,22 @@ button{
   .duplicate-action {
     background: mat-color($dark-primary, 800);
 
-    &.add-field{
+    &.add-field {
       background: mat-color($dark-primary, 800);
     }
-    &.remove-field{
-      mat-icon{
+
+    &.remove-field {
+      mat-icon {
         color: mat-color($ef-red, 500) !important;
       }
     }
   }
-  mat-dialog-actions{
+
+  mat-dialog-actions {
     border-top: 1px solid mat-color($dark-primary, 400) !important;
   }
 
-//  Pull Notifications
+  //  Pull Notifications
   .pull-notification-main {
     .notification-area {
       &.pull-request-notifications {
@@ -939,25 +995,28 @@ button{
 
     }
   }
-    .mat-form-field-type-mat-select{
-      &.selection-trigger{
-        font-size: 12px;
-      }
-      .mat-form-field-wrapper {
-        .mat-form-field-infix{
+
+  .mat-form-field-type-mat-select {
+    &.selection-trigger {
+      font-size: 12px;
+    }
+
+    .mat-form-field-wrapper {
+      .mat-form-field-infix {
         background: mat-color($dark-primary, 700);
       }
     }
   }
+
   div.mat-select-panel {
-    background:  mat-color($dark-primary);
+    background: mat-color($dark-primary);
   }
 
-//  bot Suggestions
-  .mat-autocomplete-panel.suggested-answer.answer-autocomplete{
+  //  bot Suggestions
+  .mat-autocomplete-panel.suggested-answer.answer-autocomplete {
     background: mat-color($dark-primary);
 
-    .mat-tab-label{
+    .mat-tab-label {
       color: mat-contrast($dark-primary, 600) !important;
       border-bottom: 2px inset mat-color($dark-primary, 800) !important;
 
@@ -971,10 +1030,10 @@ button{
       background: mat-color($dark-primary, 800) !important;
 
       &:hover {
-        background:lighten(mat-color($dark-primary, 800) , 10%) !important;
+        background: lighten(mat-color($dark-primary, 800), 10%) !important;
       }
 
-      .mat-option-text{
+      .mat-option-text {
         color: mat-contrast($dark-primary, 600) !important;
       }
     }
@@ -982,12 +1041,13 @@ button{
 
   //schema-list
 
-  .schema-list{
+  .schema-list {
     background: transparent !important;
 
 
-    .schema-box, .schema-details{
-      background:  mat-color($dark-primary, 800) !important;
+    .schema-box,
+    .schema-details {
+      background: mat-color($dark-primary, 800) !important;
       color: darken(mat-contrast($dark-primary, 600), 15%) !important;
 
       span.field-type {
@@ -995,28 +1055,34 @@ button{
       }
     }
   }
-  .create-attr{
-    label, .create-attr select, .create-attr input{
+
+  .create-attr {
+
+    label,
+    .create-attr select,
+    .create-attr input {
       color: mat-contrast($dark-primary, 600) !important;
     }
-    .mat-form-field-wrapper .mat-form-field-infix{
+
+    .mat-form-field-wrapper .mat-form-field-infix {
       background: transparent;
     }
   }
 
   .mat-pseudo-checkbox::after {
-    color:  #4773B5 !important;
+    color: #4773B5 !important;
   }
-  .create-attr select, .create-attr input {
+
+  .create-attr select,
+  .create-attr input {
     color: mat-contrast($dark-primary, 600) !important;
   }
 
-  mat-error{
-    span{
+  mat-error {
+    span {
       color: #f74d4d !important;
     }
   }
-
   .chat-intents .intents-inner {
     background: #273755 !important;
     border: 1px dashed #314466 !important;
@@ -1030,10 +1096,25 @@ button{
         border-color: mat-color($dark-primary) !important;
       }
     }
+
+  }
+  .manage-dashboard {
+    .page-heading {
+      background: mat-color($dark-primary, 800) !important;
+      h4{
+        color: mat-contrast($dark-primary, 500) !important;
+      }
+    }
+  }
+  .conversation-data-main{
+    .conversation-data{
+      background: mat-color($dark-primary, 800);
+      h5{
+        color: #D3D3D3 !important;
+      }
+      label{
+        color: #8E8A8A !important;
+      }
+    }
   }
 }
-
-
-
-
-
