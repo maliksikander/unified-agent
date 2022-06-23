@@ -39,6 +39,10 @@ export class ChatNotificationsComponent implements OnInit {
             "Incoming Call Alert",
             "Incoming call alert request : " + e.data.channelSession.channel.channelType.name
           );
+          this._finesseService.taskAndConversationIdSubject.next({
+            taskId: e.data.taskId,
+            conversationId: e.data.conversationId
+          });
         } else {
           this._soundService.openBrowserNotification(
             "CHAT REQUESTED",
@@ -62,7 +66,18 @@ export class ChatNotificationsComponent implements OnInit {
 
   ngOnInit() {
     this._finesseService.callAccepted.subscribe((res) => {
-      this.removePushModeRequestFromRequestArray(res.conversationId);
+      if (res.identifier) {
+        let requestIndex = this.pushModeRequests.findIndex((item) => {
+          return item.channelSession.channelData.channelCustomerIdentifier == res.identifier;
+        });
+        console.log("oops==>",requestIndex)
+        if (requestIndex != -1) {
+
+          this.removePushModeRequestFromRequestArray(this.pushModeRequests[requestIndex].conversationId);
+        }
+      } else {
+        this.removePushModeRequestFromRequestArray(res.conversationId);
+      }
     });
   }
 
@@ -78,8 +93,8 @@ export class ChatNotificationsComponent implements OnInit {
   }
 
   onAcceptCallback(conversationId, taskId, ciscoData = null) {
-    this._finesseService.voiceConversationId = conversationId;
-    this._finesseService.voiceTaskId = taskId;
+    // this._finesseService.voiceConversationId = conversationId;
+    // this._finesseService.voiceTaskId = taskId;
 
     if (ciscoData || ciscoData != null) {
       this.acceptCall(conversationId, taskId, ciscoData);

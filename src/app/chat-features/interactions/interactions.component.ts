@@ -11,6 +11,7 @@ import { FilePreviewComponent } from "src/app/file-preview/file-preview.componen
 import { appConfigService } from "src/app/services/appConfig.service";
 import { httpService } from "src/app/services/http.service";
 import { finesseService } from "src/app/services/finesse.service";
+import { ConfirmationDialogComponent } from "src/app/new-components/confirmation-dialog/confirmation-dialog.component";
 
 declare var EmojiPicker: any;
 
@@ -95,6 +96,8 @@ export class InteractionsComponent implements OnInit {
     // setTimeout(() => {
     //   new EmojiPicker();
     // }, 500);
+
+    console.log("convo==>",this.conversation)
   }
 
   emoji() {}
@@ -160,60 +163,56 @@ export class InteractionsComponent implements OnInit {
     this.isBarOPened = data;
   }
 
-  topicUnsub() {
-    console.log("going to unsub from topic " + this.conversation.conversationId);
+  // topicUnsub() {
+  //   console.log("going to unsub from topic " + this.conversation.conversationId);
 
-    if (this.conversation.state === "ACTIVE") {
-      // if the topic state is 'ACTIVE' then agent needs to request the agent manager for unsubscribe
-      this._socketService.emit("topicUnsubscription", {
-        conversationId: this.conversation.conversationId,
-        agentId: this._cacheService.agent.id
-      });
-    } else if (this.conversation.state === "CLOSED") {
-      // if the topic state is 'CLOSED' it means agent is already unsubscribed by the agent manager
-      // now it only needs to clear the conversation from conversations array
-      this._socketService.removeConversation(this.conversation.conversationId);
-    }
-  }
+  //   if (this.conversation.state === "ACTIVE") {
+  //     // if the topic state is 'ACTIVE' then agent needs to request the agent manager for unsubscribe
+  //     this._socketService.emit("topicUnsubscription", {
+  //       conversationId: this.conversation.conversationId,
+  //       agentId: this._cacheService.agent.id
+  //     });
+  //   } else if (this.conversation.state === "CLOSED") {
+  //     // if the topic state is 'CLOSED' it means agent is already unsubscribed by the agent manager
+  //     // now it only needs to clear the conversation from conversations array
+  //     this._socketService.removeConversation(this.conversation.conversationId);
+  //   }
+  // }
 
   onLeaveClick() {
-    let voiceSession: boolean = this.checkForVoiceSession();
-    let nonVoiceSession: boolean = this.checkForNonVoiceSession();
+    let voiceSession: boolean = this._finesseService.checkForVoiceSession(this.conversation);
+    let nonVoiceSession: boolean = this._finesseService.checkForNonVoiceSession(this.conversation);
 
     if (voiceSession && nonVoiceSession) {
-      // get confirmation , if ok then call end and call unsub
+      this.closeConversationConfirmation();
     } else if (voiceSession && !nonVoiceSession) {
-      // get confirmation , if ok then call end and call unsub
+      this.closeConversationConfirmation();
     } else if (!voiceSession && nonVoiceSession) {
-      //call unsub
+      this._socketService.topicUnsub(this.conversation);
     }
-
-    console.log("voice session==>", voiceSession);
-    console.log("non voice session==>", nonVoiceSession);
-
-    this.topicUnsub();
   }
 
-  checkForVoiceSession() {
-    // console.log("active sessions==>", this.conversation.activeChannelSessions);
-    // console.log("dialog id==>", this.conversation.ciscoDialogId);
-
-    let list: Array<any> = this.conversation.activeChannelSessions;
-    let voiceIndex = list.findIndex((item) => {
-      return item.channel.channelType.name == "VOICE";
+  closeConversationConfirmation() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: "490px",
+      panelClass: "confirm-dialog",
+      data: { header: "Close Conversation", message: `Call in progress,Are you sure you want to close this conversation?` }
     });
-    if (voiceIndex != -1) return true;
-    return false;
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.event == "confirm") {
+        this.endCallOnFinesse();
+      }
+    });
   }
 
-  checkForNonVoiceSession() {
-    // console.log("active sessions==>", this.conversation.activeChannelSessions);
-    let list: Array<any> = this.conversation.activeChannelSessions;
-    let nonVoiceIndex = list.findIndex((item) => {
-      return item.channel.channelType.name != "VOICE";
-    });
-    if (nonVoiceIndex != -1) return true;
-    return false;
+  endCallOnFinesse() {
+    let data = {
+      action: "releaseCall",
+      parameter: {
+        dialogId: this.conversation.ciscoDialogId
+      }
+    };
+    this._finesseService.endCallOnFinesse(data);
   }
 
   downTheScrollAfterMilliSecs(milliseconds, behavior) {

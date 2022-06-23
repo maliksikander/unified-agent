@@ -31,6 +31,8 @@ export class finesseService {
   pushModeConversationList = new Subject<any>();
   conversationList = new Subject<any>();
   currentConversation = new Subject<any>();
+  currentTaskId = new Subject<any>();
+  taskAndConversationIdSubject = new Subject<any>();
   pushConversationList = [];
   conversationListWithActiveSession = [];
   activeConversation;
@@ -47,6 +49,12 @@ export class finesseService {
       this.pushConversationList = res;
     });
 
+    this.taskAndConversationIdSubject.subscribe((res) => {
+      this.voiceTaskId = res.taskId;
+      this.voiceConversationId = res.conversationId;
+      console.log(this.voiceTaskId, "<===checker===>", this.voiceConversationId);
+    });
+
     this.conversationList.subscribe((res) => {
       this.conversationListWithActiveSession = res;
       console.log("active Sessions in Service ==>", this.conversationListWithActiveSession);
@@ -55,6 +63,11 @@ export class finesseService {
     this.currentConversation.subscribe((res) => {
       this.activeConversation = res;
       console.log("active Conversation in Service ==>", this.activeConversation);
+    });
+
+    this.currentTaskId.subscribe((res) => {
+      this.voiceTaskId = res;
+      console.log("task id in service ==>", this.voiceTaskId);
     });
   }
 
@@ -144,6 +157,11 @@ export class finesseService {
     executeCommands(command);
   }
 
+  // end call on finesse
+  endCallOnFinesse(command) {
+    executeCommands(command);
+  }
+
   // this will call when an event from the CTI library received
   dialogState: any = {};
   customerIdentifier;
@@ -157,6 +175,24 @@ export class finesseService {
     this.pushModeConversationList.next(this.pushConversationList);
   }
 
+  checkForVoiceSession(conversation) {
+    let list: Array<any> = conversation.activeChannelSessions;
+    let voiceIndex = list.findIndex((item) => {
+      return item.channel.channelType.name == "VOICE";
+    });
+    if (voiceIndex != -1) return true;
+    return false;
+  }
+
+  checkForNonVoiceSession(conversation) {
+    let list: Array<any> = conversation.activeChannelSessions;
+    let nonVoiceIndex = list.findIndex((item) => {
+      return item.channel.channelType.name != "VOICE";
+    });
+    if (nonVoiceIndex != -1) return true;
+    return false;
+  }
+
   // getActiveChannelSession(conversationId) {
   //   let activeChannelSessions = this.conversationListWithActiveSession.find((item) => {
   //     item.id == conversationId;
@@ -164,6 +200,55 @@ export class finesseService {
 
   //   console.log("channel Session ==>", activeChannelSessions);
   // }
+
+  onCallEnd(conversation) {
+    let voiceSession: boolean = this.checkForVoiceSession(conversation);
+    let nonVoiceSession: boolean = this.checkForNonVoiceSession(conversation);
+    // console.log("Voice Session==>", voiceSession);
+
+    if (voiceSession && nonVoiceSession) {
+      console.log("1==>");
+      // end channel session
+      let taskState = {
+        name: "CLOSED",
+        reasonCode: "DONE"
+      };
+      this.emitEndCallEvent(conversation.conversationId, this.voiceTaskId, taskState, false);
+    } else if (voiceSession && !nonVoiceSession) {
+      console.log("2==>");
+      this._socketService.topicUnsub(conversation);
+      //change task state end channel session
+      let taskState = {
+        name: "CLOSED",
+        reasonCode: "DONE"
+      };
+      this.emitEndCallEvent(conversation.conversationId, this.voiceTaskId, taskState, true);
+    }
+    else{
+      console.log("3==>")
+    }
+    // else if (!voiceSession && nonVoiceSession) {
+    //   console.log("3==>");
+    //   // end Channel Session
+    //   let taskState = {
+    //     name: "CLOSED",
+    //     reasonCode: "DONE"
+    //   };
+    //   this.emitEndCallEvent(conversation.conversationId, this.voiceTaskId, taskState, false);
+    // }
+  }
+
+  emitEndCallEvent(conversationId, taskId, taskState, changeTaskState) {
+    console.log("conversation on emit end call==>", conversationId);
+    let data = {
+      // taskState,
+      taskId,
+      conversationId,
+      cisco_data: this.dialogState,
+      changeTaskState
+    };
+    this._socketService.emit("onCallEnd", data);
+  }
 
   clientCallback = (event) => {
     try {
@@ -175,38 +260,32 @@ export class finesseService {
           let participants = this.dialogState.dialog.participants.Participant;
           if (Array.isArray(participants)) {
             participants.forEach((item) => {
-              if (item.state == "DROPPED") {
-                if (this.timeoutId) clearInterval(this.timeoutId);
-                // let customerIdentifier = this.dialogState.dialog.ani;
-                // let conversationIndex = this.getVoiceConversationIndex(customerIdentifier);
-                // let conversation;
-                // if (this.active) conversation = this.pushModeConversationList[conversationIndex];
+              if (item.state == "DROPPED" && this.dialogState.dialog.state == "ACTIVE") {
+                if (this.timeoutId) {
+                  clearInterval(this.timeoutId);
+                  this.min = 0;
+                  this.sec = 0;
+                }
 
-                // console.log("taskID==>", this.voiceTaskId);
-                // console.log("conversationID==>", this.voiceConversationId);
-                // console.log("conversationIndex==>", conversationIndex);
-                console.log("conversation==>", this.activeConversation);
+                // console.log("conversation==>", this.activeConversation);
                 if (this.activeConversation) {
                   console.log("Call ENDED 1==>");
-                  // this.getActiveChannelSession(conversation.id);
-                  // console.log("conversation==>", conversation);
-                  // let data = {
-                  //   taskState: {
-                  //     name: "CLOSED",
-                  //     reasonCode: "DONE"
-                  //   },
-                  //   taskId: conversation.taskId,
-                  //   cisco_data: this.dialogState
-                  // };
-                  // this._socketService.emit("onCallEnd", data);
+                  this.onCallEnd(this.activeConversation);
+
                   this.clearConversationFromList(this.activeConversation.conversationIdId);
                 } else if (this.voiceConversationId && this.voiceTaskId) {
-                  console.log("Call ENDED 2==>");
+                  this.onCallEnd(this.voiceConversationId);
+                  // console.log("Call ENDED 2==>");
                   this.clearConversationFromList(this.voiceConversationId);
                 } else {
                   // this._snackbarService.open("No Conversation Found", "err");
-                  console.log("[Call Dropped]No Conversation Found");
+                  console.log("[Call Dropped Event] No Conversation Found");
                 }
+              } else if (this.dialogState.dialog.state == "FAILED") {
+                let identifier = this.dialogState.dialog.fromAddress;
+                this.callAccepted.next({
+                  identifier
+                });
               }
             });
           }
@@ -312,15 +391,22 @@ export class finesseService {
               // console.log("dialgState==>", this.dialogState);
               let conversationIndex;
               if (this.customerIdentifier) conversationIndex = this.getVoiceConversationIndex(this.customerIdentifier);
-              let conversation = this.pushConversationList[conversationIndex];
 
-              if (conversation) {
-                this.emitVoiceRONAEvent(conversation.taskId);
-              } else if (this.voiceConversationId && this.voiceTaskId) {
+              let conversation = this.pushConversationList[conversationIndex];
+              if (this.voiceConversationId && this.voiceTaskId) {
+                this.callAccepted.next({
+                  conversationId: this.voiceConversationId
+                });
                 this.emitVoiceRONAEvent(this.voiceTaskId);
-              } else {
-                this._snackbarService.open("No Conversation Found", "err");
+              } else if (conversation) {
+                this.callAccepted.next({
+                  conversationId: this.voiceConversationId
+                });
+                this.emitVoiceRONAEvent(conversation.taskId);
               }
+              // else {
+              //   this._snackbarService.open("No Conversation Found", "err");
+              // }
             }
           }
 
@@ -372,6 +458,7 @@ export class finesseService {
     this.callAccepted.next({
       conversationId
     });
+    this.currentTaskId.next(taskId);
     this._router.navigate(["customers"]);
   }
 
@@ -379,12 +466,19 @@ export class finesseService {
     let temp: Array<any> = this.pushConversationList;
     console.log("temp===>", temp);
     for (let i = 0; i <= temp.length; i++) {
-      if (temp[i] && temp[i].channelSession && temp[i].channelSession.customer && temp[i].channelSession.customer.vOICE) {
-        if (temp[i].channelSession.customer.vOICE.includes(identifier)) {
+      if (
+        temp[i] &&
+        temp[i].channelSession &&
+        temp[i].channelSession.customer &&
+        (temp[i].channelSession.customer.voice || temp[i].channelSession.customer.vOICE)
+      ) {
+        if (temp[i].channelSession.customer.voice && temp[i].channelSession.customer.voice.includes(identifier)) {
+          return i;
+        } else if (temp[i].channelSession.customer.vOICE.includes(identifier)) {
           return i;
         }
       } else {
-        console.log("[Get Voice Conversation] No Coversation Found");
+        console.log("[Get Voice Conversation] No Conversation Found==>");
         return -1;
       }
     }

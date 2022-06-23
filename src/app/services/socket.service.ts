@@ -123,7 +123,6 @@ export class socketService {
     });
 
     this.socket.on("agentPresence", (res: any) => {
-      console.log(res);
       this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: res.agentPresence });
     });
 
@@ -344,7 +343,6 @@ export class socketService {
 
   onTopicData(topicData, conversationId) {
     // this.removeConversation(conversationId);
-
     let conversation = {
       conversationId: conversationId,
       messages: [],
@@ -356,7 +354,8 @@ export class socketService {
       customerSuggestions: topicData.channelSession.customerSuggestions,
       topicParticipant: topicData.topicParticipant,
       firstChannelSession: topicData.channelSession,
-      ciscoDialogId: this.ciscoDialogId
+      ciscoDialogId: this.ciscoDialogId,
+      isMessageComposerEnable: true
     };
 
     // feed the conversation with type "messages"
@@ -390,6 +389,8 @@ export class socketService {
       }
     });
 
+    conversation.isMessageComposerEnable = this.getVoiceChannelSession(conversation);
+
     let oldConversation = this.conversations.find((e) => {
       return e.conversationId == conversationId;
     });
@@ -405,7 +406,17 @@ export class socketService {
       this._soundService.playBeep();
     }
 
+    console.log("conversations==>", this.conversations);
     this._conversationsListener.next(this.conversations);
+  }
+
+  getVoiceChannelSession(conversation) {
+    let list: Array<any> = conversation.activeChannelSessions;
+    let nonVoiceIndex = list.findIndex((item) => {
+      return item.channel.channelType.name != "VOICE";
+    });
+    if (nonVoiceIndex != -1) return true;
+    return false;
   }
 
   // getActiveChannelSessions(messages) {
@@ -526,6 +537,7 @@ export class socketService {
 
       if (index != -1) {
         conversation.activeChannelSessions.splice(index, 1);
+        conversation.isMessageComposerEnable = this.getVoiceChannelSession(conversation);
         console.log("channel session removed");
       } else {
         console.error("channelSessionId not found to removed");
@@ -542,6 +554,7 @@ export class socketService {
       let message = this.createSystemNotificationMessage(cimEvent);
       conversation.activeChannelSessions.push(cimEvent.data);
       conversation.messages.push(message);
+      conversation.isMessageComposerEnable = this.getVoiceChannelSession(conversation);
     } else {
       console.error("channelSessionId not found to added");
     }
@@ -912,5 +925,21 @@ export class socketService {
     }
 
     return message;
+  }
+
+  topicUnsub(conversation) {
+    console.log("going to unsub from topic " + conversation.conversationId);
+
+    if (conversation.state === "ACTIVE") {
+      // if the topic state is 'ACTIVE' then agent needs to request the agent manager for unsubscribe
+      this.emit("topicUnsubscription", {
+        conversationId: conversation.conversationId,
+        agentId: this._cacheService.agent.id
+      });
+    } else if (conversation.state === "CLOSED") {
+      // if the topic state is 'CLOSED' it means agent is already unsubscribed by the agent manager
+      // now it only needs to clear the conversation from conversations array
+      this.removeConversation(conversation.conversationId);
+    }
   }
 }
