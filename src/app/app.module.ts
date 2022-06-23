@@ -107,16 +107,17 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
         `${_configService.FILE_SERVER_URL}/api/downloadFileStream`,
         "/api/downloadFileStream",
         "/api/downloadFileStream?filename",
-        `${_configService.CIM_REPORTING_URL}/`
+        `${_configService.CIM_REPORTING_URL}/queued-chats/detail`,
+        `${_configService.CIM_REPORTING_URL}/queue-active-chats/detail`,
       ]
     }),
     NgxUiLoaderHttpModule.forRoot({
       excludeRegexp: [
         `${_configService.FILE_SERVER_URL}/api/downloadFileStream`,
         "/api/downloadFileStream",
-        `${_configService.CIM_REPORTING_URL}/`,
-        `${_configService.CIM_REPORTING_URL}/supervisor/active-chats`,
-        `${_configService.CIM_REPORTING_URL}/supervisor/queue-chats`
+        `${_configService.CIM_REPORTING_URL}/queued-chats/detail`,
+        `${_configService.CIM_REPORTING_URL}/queue-active-chats/detail`,
+
       ]
     }),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
