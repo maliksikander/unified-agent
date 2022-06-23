@@ -115,8 +115,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
         `${_configService.FILE_SERVER_URL}/api/downloadFileStream`,
         "/api/downloadFileStream",
         `${_configService.CIM_REPORTING_URL}/`,
-        `${_configService.CIM_REPORTING_URL}/active-chats`,
-        `${_configService.CIM_REPORTING_URL}/queue-chats`
+        `${_configService.CIM_REPORTING_URL}/supervisor/active-chats`,
+        `${_configService.CIM_REPORTING_URL}/supervisor/queue-chats`
       ]
     }),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
