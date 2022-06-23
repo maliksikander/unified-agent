@@ -6,7 +6,7 @@
       </div>
       <div class="col-md-6 text-right  page-action">
         <mat-form-field appearance="outline" class="selection-trigger">
-          <mat-select [(value)]="FilterSelected" (selectionChange)="filterData())">
+          <mat-select [(value)]="FilterSelected" (selectionChange)="filterData()">
             <mat-option value="all">All Queues</mat-option>
             <mat-option *ngFor="let item of queuedChatList; index as i" [value]="i">{{item.queueName}}</mat-option>
           </mat-select>
