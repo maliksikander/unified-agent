@@ -47,7 +47,7 @@
             </li>
             <li *ngIf="('leave-chat' | authPipe : 'view') as result" class="list-group-item">
               <button mat-icon-button>
-                <mat-icon (click)="topicUnsub()">close</mat-icon>
+                <mat-icon (click)="onLeaveClick()">close</mat-icon>
               </button>
             </li>
           </ul>
@@ -585,7 +585,7 @@
                     </div>
 
 
-<!-- <-------------------------------------VOICE MESSAGE START---------------------------------------------------> 
+<!-- <-------------------------------------VOICE MESSAGE START--------------------------------------------------->
                     <div class="wrap-up-main panel-divider user-data customer-side voice-activity-main" *ngIf="(message.body.type | lowercase) == 'voice' && (message.header.intent | lowercase) == 'end_voice'">
                       <mat-expansion-panel>
 
@@ -611,14 +611,14 @@
                             </div>
                           </mat-panel-title>
                         </mat-expansion-panel-header>
-        
+
                         <div class="panel-header call-history-panel inner-detail">
                           <div class="history-time">
                             <time>{{message.header.timestamp | date:'shortTime'}}</time>
                           </div>
                           <div class="history-detail inner-detail-history">
                             <mat-expansion-panel>
-        
+
                               <mat-expansion-panel-header [collapsedHeight]="'40px'"
                                                           [expandedHeight]="'40px'">
                                 <mat-panel-title>
@@ -649,7 +649,7 @@
                                   </div>
                                 </mat-panel-title>
                               </mat-expansion-panel-header>
-        
+
                               <div class="summary-detail">
                                 <ul>
                                   <li><label>Agent</label>:<span>{{_cacheService.agent.username}}</span></li>
@@ -661,13 +661,13 @@
                                 </ul>
                               </div>
                             </mat-expansion-panel>
-        
-        
+
+
                           </div>
                         </div>
                       </mat-expansion-panel>
                     </div>
-<!-- <--------------------------------------------VOICE MESSAGE END--------------------------------------------> 
+<!-- <--------------------------------------------VOICE MESSAGE END-------------------------------------------->
 
 
                     <span class="chat-time file-type-stamp">{{message.header.timestamp | date:'shortTime'}}</span>
