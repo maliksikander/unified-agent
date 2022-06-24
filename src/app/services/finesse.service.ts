@@ -224,9 +224,8 @@ export class finesseService {
         reasonCode: "DONE"
       };
       this.emitEndCallEvent(conversation.conversationId, this.voiceTaskId, taskState, true);
-    }
-    else{
-      console.log("3==>")
+    } else {
+      console.log("3==>");
     }
     // else if (!voiceSession && nonVoiceSession) {
     //   console.log("3==>");
@@ -378,7 +377,7 @@ export class finesseService {
           }
         } else if (resp.state.toLowerCase() == "not_ready") {
           // If state in finesse is not_ready then make the agent voice mrd not_ready
-
+          console.log("rona==>");
           this._socketService.emit("changeAgentState", {
             agentId: this._cacheService.agent.id,
             action: "agentMRDState",
@@ -388,17 +387,17 @@ export class finesseService {
 
           if (resp.reasonCode && resp.reasonCode.label) {
             if (resp.reasonCode.label == ronaStateOnCisco) {
-              // console.log("test==>", resp.reasonCode.label);
-              // console.log("dialgState==>", this.dialogState);
               let conversationIndex;
               if (this.customerIdentifier) conversationIndex = this.getVoiceConversationIndex(this.customerIdentifier);
 
               let conversation = this.pushConversationList[conversationIndex];
               if (this.voiceConversationId && this.voiceTaskId) {
+                // console.log("1==>");
                 this.callAccepted.next({
                   conversationId: this.voiceConversationId
                 });
                 this.emitVoiceRONAEvent(this.voiceTaskId);
+                // console.log("2==>");
               } else if (conversation) {
                 this.callAccepted.next({
                   conversationId: this.voiceConversationId
@@ -406,7 +405,8 @@ export class finesseService {
                 this.emitVoiceRONAEvent(conversation.taskId);
               }
               // else {
-              //   this._snackbarService.open("No Conversation Found", "err");
+              //   console.log("3==>");
+              //   // this._snackbarService.open("No Conversation Found", "err");
               // }
             }
           }

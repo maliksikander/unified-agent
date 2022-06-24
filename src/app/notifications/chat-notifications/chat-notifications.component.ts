@@ -70,9 +70,7 @@ export class ChatNotificationsComponent implements OnInit {
         let requestIndex = this.pushModeRequests.findIndex((item) => {
           return item.channelSession.channelData.channelCustomerIdentifier == res.identifier;
         });
-        console.log("oops==>",requestIndex)
         if (requestIndex != -1) {
-
           this.removePushModeRequestFromRequestArray(this.pushModeRequests[requestIndex].conversationId);
         }
       } else {
