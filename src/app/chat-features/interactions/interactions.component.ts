@@ -86,7 +86,7 @@ export class InteractionsComponent implements OnInit {
     public _appConfigService: appConfigService,
     private _httpService: httpService,
     private _finesseService: finesseService
-  ) {}
+  ) { }
   ngOnInit() {
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
@@ -98,10 +98,10 @@ export class InteractionsComponent implements OnInit {
     //   new EmojiPicker();
     // }, 500);
 
-    console.log("convo==>",this.conversation)
+    console.log("convo==>", this.conversation)
   }
 
-  emoji() {}
+  emoji() { }
 
   onSend(text) {
     text = text.trim();
@@ -181,18 +181,25 @@ export class InteractionsComponent implements OnInit {
   // }
 
   onLeaveClick() {
-    let voiceSession: boolean = this._finesseService.checkForVoiceSession(this.conversation);
-    let nonVoiceSession: boolean = this._finesseService.checkForNonVoiceSession(this.conversation);
+    // let voiceSession: boolean = this._finesseService.checkForVoiceSession(this.conversation);
+    // let nonVoiceSession: boolean = this._finesseService.checkForNonVoiceSession(this.conversation);
 
-    if (voiceSession && nonVoiceSession) {
+    // if (voiceSession && nonVoiceSession) {
+    //   this.closeConversationConfirmation();
+    // } else if (voiceSession && !nonVoiceSession) {
+    //   this.closeConversationConfirmation();
+    // } else if (!voiceSession && nonVoiceSession) {
+    //   this._socketService.topicUnsub(this.conversation);
+    // } else {
+    //   this._socketService.topicUnsub(this.conversation);
+    // }
+
+    if (this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
       this.closeConversationConfirmation();
-    } else if (voiceSession && !nonVoiceSession) {
-      this.closeConversationConfirmation();
-    } else if (!voiceSession && nonVoiceSession) {
-      this._socketService.topicUnsub(this.conversation);
-    }else{
+    } else {
       this._socketService.topicUnsub(this.conversation);
     }
+
   }
 
   closeConversationConfirmation() {
@@ -222,7 +229,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -230,7 +237,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -292,7 +299,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
 
   uploadFile(files) {

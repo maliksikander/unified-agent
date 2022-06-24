@@ -14,7 +14,7 @@ import { httpService } from "./http.service";
 import { v4 as uuidv4 } from "uuid";
 import { AuthService } from "./auth.service";
 import { finesseService } from "./finesse.service";
- //const mockTopicData: any = require("../mocks/topicData.json");
+//const mockTopicData: any = require("../mocks/topicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -76,12 +76,12 @@ export class socketService {
       try {
         console.error("socket connect_error ", err.data && err.data.content ? err.data.content : err);
         this._snackbarService.open(err.data && err.data.content ? err.data.content : "unable to connect to chat", "err");
-      } catch (err) {}
+      } catch (err) { }
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -113,7 +113,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -233,7 +233,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) {}
+    } catch (err) { }
   }
 
   listen(eventName: string) {
@@ -337,7 +337,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._snackbarService.open("you are logged In from another session", "err");
     alert("you are logged in from another session");
@@ -358,7 +358,7 @@ export class socketService {
       topicParticipant: topicData.topicParticipant,
       firstChannelSession: topicData.channelSession,
       ciscoDialogId: this.ciscoDialogId,
-      isMessageComposerEnable: true
+      messageComposerState: false
     };
 
     // feed the conversation with type "messages"
@@ -388,11 +388,18 @@ export class socketService {
         if (webChannelData) {
           participant["webChannelData"] = webChannelData.value;
         }
-        conversation.activeChannelSessions.push(participant);
+
+        // if the channel session is of voice then we will not push that channel session in the last of the array
+        // because is channel session in the array is used to send the message to customer
+        if (participant.channel.channelConfig.routingPolicy.routingMode.toLowerCase == "pull" || participant.channel.channelConfig.routingPolicy.routingMode.toLowerCase == "push") {
+          conversation.activeChannelSessions.push(participant);
+        } else {
+          conversation.activeChannelSessions.unshift(participant);
+        }
       }
     });
 
-    conversation.isMessageComposerEnable = this.getVoiceChannelSession(conversation);
+    conversation.messageComposerState = this.isNonVoiceChannelSessionExists(conversation.activeChannelSessions);
 
     let oldConversation = this.conversations.find((e) => {
       return e.conversationId == conversationId;
@@ -413,13 +420,35 @@ export class socketService {
     this._conversationsListener.next(this.conversations);
   }
 
-  getVoiceChannelSession(conversation) {
-    let list: Array<any> = conversation.activeChannelSessions;
-    let nonVoiceIndex = list.findIndex((item) => {
-      return item.channel.channelType.name != "VOICE";
+  isVoiceChannelSessionExists(activeChannelSessions) {
+
+    let voiceChannelSession = activeChannelSessions.find((channelSession) => {
+      if (channelSession.channel.channelConfig.routingPolicy.toLowerCase == "external") {
+        return channelSession;
+      }
     });
-    if (nonVoiceIndex != -1) return true;
-    return false;
+
+    if (voiceChannelSession) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  isNonVoiceChannelSessionExists(activeChannelSessions) {
+
+    let nonVoiceChannelSession = activeChannelSessions.find((channelSession) => {
+      if (channelSession.channel.channelConfig.routingPolicy.toLowerCase == "pull" || channelSession.channel.channelConfig.routingPolicy.toLowerCase == "push") {
+        return channelSession;
+      }
+    });
+
+    if (nonVoiceChannelSession) {
+      return true;
+    } else {
+      return false;
+    }
+
   }
 
   // getActiveChannelSessions(messages) {
@@ -540,7 +569,7 @@ export class socketService {
 
       if (index != -1) {
         conversation.activeChannelSessions.splice(index, 1);
-        conversation.isMessageComposerEnable = this.getVoiceChannelSession(conversation);
+        conversation.messageComposerState = this.isNonVoiceChannelSessionExists(conversation.activeChannelSessions);
         console.log("channel session removed");
       } else {
         console.error("channelSessionId not found to removed");
@@ -557,7 +586,7 @@ export class socketService {
       let message = this.createSystemNotificationMessage(cimEvent);
       conversation.activeChannelSessions.push(cimEvent.data);
       conversation.messages.push(message);
-      conversation.isMessageComposerEnable = this.getVoiceChannelSession(conversation);
+      conversation.messageComposerState = this.isNonVoiceChannelSessionExists(conversation.activeChannelSessions);
     } else {
       console.error("channelSessionId not found to added");
     }
@@ -633,7 +662,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
