@@ -649,339 +649,590 @@
         "state": "STARTED",
         "active": true
       }
-    },
-    {
-      "id": "068d2ca0-bff6-4318-a617-adcb7288ddd8",
+    },{
+      "id": "4f48bdb2-5bf6-4e07-9373-125be74761f3",
       "name": "CUSTOMER_MESSAGE",
       "type": "MESSAGE",
-      "timestamp": "2021-11-08T08:37:30.572+00:00",
+      "timestamp": "2022-06-24T09:08:13.978+00:00",
+      "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
       "data": {
-        "id": "4515b200-406f-11ec-b464-a52108c6c",
+        "id": "2d6b1410-f39d-11ec-b2eb-1579505a1c2e",
         "header": {
           "sender": {
             "type": "CUSTOMER",
             "role": "CUSTOMER",
             "participant": {
               "participantType": "ChannelSession",
-              "id": "94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
+              "id": "68c363eb-2fda-449a-bf01-4584ab96e906",
               "channel": {
-                "id": "6185267a7ffc8449d4c3c1ce",
-                "name": "web",
-                "serviceIdentifier": "+921218",
+                "id": "62b467a781b64a615463c945",
+                "name": "Voice",
+                "serviceIdentifier": "62451",
                 "tenant": {
-                  "id": "30f0726d-ef48-4013-8eeb-74bc2c35625f",
+                  "id": "624c1893-28ee-4364-96fb-d114aaf8adf3",
                   "name": null
                 },
                 "channelConfig": {
-                  "id": "348b6c36-5dbf-47df-8ba4-8625f00a1785",
-                  "channelMode": "HYBRID",
+                  "id": "11aa6a1d-0326-4800-8654-7ad11f3f4651",
+                  "channelMode": "BOT",
                   "conversationBot": "",
-                  "responseSla": 20,
-                  "customerActivityTimeout": 20,
+                  "responseSla": 0,
+                  "customerActivityTimeout": 3600,
                   "customerIdentificationCriteria": {
                     "value": null
                   },
                   "routingPolicy": {
-                    "agentSelectionPolicy": "LONGEST_AVAILABLE",
-                    "routeToLastAgent": true,
-                    "routingMode": "PUSH",
-                    "routingObjectId": "6172426726c3762d4f5f68fe",
-                    "agentRequestTtl": 20
+                    "agentSelectionPolicy": null,
+                    "routeToLastAgent": false,
+                    "routingMode": "EXTERNAL",
+                    "routingObjectId": null,
+                    "agentRequestTtl": 0
                   },
-                  "botId": "8b43ef12-f30b-48ce-aa03-c60d450fc042"
+                  "botId": "9ba1f9d4-6c22-4e6f-b497-166c447c3b4a"
                 },
                 "channelConnector": {
-                  "id": "6178062f39b2a10f979a9499",
-                  "name": "web connector",
+                  "id": "62b0514dc95f9101f97eee6a",
+                  "name": "Voice",
                   "channelProviderInterface": {
-                    "id": "61769ad86959682449337620",
-                    "name": "Web Provider",
+                    "id": "62b05122c95f9101f97eee52",
+                    "name": "Voice",
                     "supportedChannelTypes": [
                       {
-                        "id": "6176bfde6e67cc29d93be907",
-                        "name": "Web",
-                        "channelLogo": "_WHATSAPP.svg",
+                        "id": "62b0507dc95f9101f97eee31",
+                        "name": "VOICE",
+                        "channelLogo": "17941_phone_in_talk_FILL0_wght400_GRAD0_opsz48.svg",
                         "isInteractive": true,
-                        "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+                        "mediaRoutingDomain": "6298b744b777de61844f616b"
                       }
                     ],
-                    "providerWebhook": "http://192.168.50.25:7000/message/receive",
+                    "providerWebhook": "null",
                     "channelProviderConfigSchema": []
                   },
                   "channelProviderConfigs": [],
                   "tenant": {
-                    "id": "8773b513-6441-42bf-99d4-e243afbb3a07",
+                    "id": "314d3108-e73d-434e-8eef-92d274c1df2a",
                     "name": null
                   }
                 },
                 "channelType": {
-                  "id": "6176bfde6e67cc29d93be907",
-                  "name": "Web",
-                  "channelLogo": "_WHATSAPP.svg",
+                  "id": "62b0507dc95f9101f97eee31",
+                  "name": "VOICE",
+                  "channelLogo": "17941_phone_in_talk_FILL0_wght400_GRAD0_opsz48.svg",
                   "isInteractive": true,
-                  "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+                  "mediaRoutingDomain": "6298b744b777de61844f616b"
                 }
               },
               "customer": {
-                "_id": "67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
-                "firstName": "John",
-                "lastName": null,
-                "email": null,
-                "phone1": null,
-                "phone2": null,
-                "viberId": null,
-                "facebookId": null,
-                "webId": null,
-                "createdBy": null,
-                "updatedBy": null,
-                "createdAt": null,
-                "updatedAt": null,
+                "_id": "62b05d0939a8bdd982d1ac7e",
+                "firstName": "Raza",
+                "phoneNumber": [
+                  ""
+                ],
                 "isAnonymous": false,
-                "__v": 0
+                "__v": 0,
+                "voice": [
+                  "42225"
+                ],
+                "ahmadWeb": [
+                  "2222"
+                ],
+                "web": [
+                  "162522"
+                ]
               },
               "customerSuggestions": [],
               "channelData": {
-                "channelCustomerIdentifier": "97962945",
-                "serviceIdentifier": "+921218",
+                "channelCustomerIdentifier": "42225",
+                "serviceIdentifier": "62451",
                 "requestPriority": 0,
-                "channelTypeCode": "webChannel",
-                "additionalAttributes": []
+                "channelTypeCode": "VOICE",
+                "additionalAttributes": [
+                  {
+                    "key": "callVariable1",
+                    "type": "String2000",
+                    "value": ""
+                  },
+                  {
+                    "key": "callVariable2",
+                    "type": "String2000",
+                    "value": ""
+                  },
+                  {
+                    "key": "callVariable3",
+                    "type": "String2000",
+                    "value": ""
+                  },
+                  {
+                    "key": "callVariable4",
+                    "type": "String2000",
+                    "value": ""
+                  },
+                  {
+                    "key": "callVariable5",
+                    "type": "String2000",
+                    "value": ""
+                  },
+                  {
+                    "key": "callVariable6",
+                    "type": "String2000",
+                    "value": ""
+                  },
+                  {
+                    "key": "callVariable7",
+                    "type": "String2000",
+                    "value": ""
+                  },
+                  {
+                    "key": "callVariable8",
+                    "type": "String2000",
+                    "value": ""
+                  },
+                  {
+                    "key": "callVariable9",
+                    "type": "String2000",
+                    "value": ""
+                  },
+                  {
+                    "key": "callVariable10",
+                    "type": "String2000",
+                    "value": "app"
+                  },
+                  {
+                    "key": "user.microapp.locale",
+                    "type": "String2000",
+                    "value": "en-us"
+                  },
+                  {
+                    "key": "user.microapp.media_server",
+                    "type": "String2000",
+                    "value": "http://192.168.1.72"
+                  },
+                  {
+                    "key": "user.microapp.fetchdelay",
+                    "type": "String2000",
+                    "value": "D"
+                  },
+                  {
+                    "key": "user.microapp.app_media_lib",
+                    "type": "String2000",
+                    "value": "app"
+                  },
+                  {
+                    "key": "user.cvp_server_info",
+                    "type": "String2000",
+                    "value": "192.168.1.72"
+                  },
+                  {
+                    "key": "callStartTime",
+                    "type": "String2000",
+                    "value": "2022-06-24T08:51:51.268Z"
+                  }
+                ]
               },
               "latestIntent": null,
               "customerPresence": {
                 "value": null
               },
               "isActive": true,
-              "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+              "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
               "state": "STARTED",
               "active": true
             },
-            "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
-            "joiningTime": 1636360646203,
+            "id": "1495bb50-d105-4325-8703-6e396bb34140",
+            "joiningTime": 1656060694039,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "channelData": {
-            "channelCustomerIdentifier": "97962945",
-            "serviceIdentifier": "+921218",
+            "channelCustomerIdentifier": "42225",
+            "serviceIdentifier": "62451",
             "requestPriority": 0,
-            "channelTypeCode": "webChannel",
-            "additionalAttributes": []
+            "channelTypeCode": "VOICE",
+            "additionalAttributes": [
+              {
+                "key": "callVariable1",
+                "type": "String2000",
+                "value": ""
+              },
+              {
+                "key": "callVariable2",
+                "type": "String2000",
+                "value": ""
+              },
+              {
+                "key": "callVariable3",
+                "type": "String2000",
+                "value": ""
+              },
+              {
+                "key": "callVariable4",
+                "type": "String2000",
+                "value": ""
+              },
+              {
+                "key": "callVariable5",
+                "type": "String2000",
+                "value": ""
+              },
+              {
+                "key": "callVariable6",
+                "type": "String2000",
+                "value": ""
+              },
+              {
+                "key": "callVariable7",
+                "type": "String2000",
+                "value": ""
+              },
+              {
+                "key": "callVariable8",
+                "type": "String2000",
+                "value": ""
+              },
+              {
+                "key": "callVariable9",
+                "type": "String2000",
+                "value": ""
+              },
+              {
+                "key": "callVariable10",
+                "type": "String2000",
+                "value": "app"
+              },
+              {
+                "key": "user.microapp.locale",
+                "type": "String2000",
+                "value": "en-us"
+              },
+              {
+                "key": "user.microapp.media_server",
+                "type": "String2000",
+                "value": "http://192.168.1.72"
+              },
+              {
+                "key": "user.microapp.fetchdelay",
+                "type": "String2000",
+                "value": "D"
+              },
+              {
+                "key": "user.microapp.app_media_lib",
+                "type": "String2000",
+                "value": "app"
+              },
+              {
+                "key": "user.cvp_server_info",
+                "type": "String2000",
+                "value": "192.168.1.72"
+              },
+              {
+                "key": "callStartTime",
+                "type": "String2000",
+                "value": null
+              }
+            ]
           },
           "language": {},
-          "timestamp": 1636360718624,
+          "timestamp": 1656061693905,
           "securityInfo": {},
           "stamps": [],
           "intent": "END_VOICE",
           "entities": {},
           "channelSession": {
             "participantType": "ChannelSession",
-            "id": "94974af3-a6a6-4f03-b8d6-0e8c8e3b6497",
+            "id": "68c363eb-2fda-449a-bf01-4584ab96e906",
             "channel": {
-              "id": "6185267a7ffc8449d4c3c1ce",
-              "name": "web",
-              "serviceIdentifier": "+921218",
+              "id": "62b467a781b64a615463c945",
+              "name": "Voice",
+              "serviceIdentifier": "62451",
               "tenant": {
-                "id": "30f0726d-ef48-4013-8eeb-74bc2c35625f",
+                "id": "624c1893-28ee-4364-96fb-d114aaf8adf3",
                 "name": null
               },
               "channelConfig": {
-                "id": "348b6c36-5dbf-47df-8ba4-8625f00a1785",
-                "channelMode": "HYBRID",
+                "id": "11aa6a1d-0326-4800-8654-7ad11f3f4651",
+                "channelMode": "BOT",
                 "conversationBot": "",
-                "responseSla": 20,
-                "customerActivityTimeout": 20,
+                "responseSla": 0,
+                "customerActivityTimeout": 3600,
                 "customerIdentificationCriteria": {
                   "value": null
                 },
                 "routingPolicy": {
-                  "agentSelectionPolicy": "LONGEST_AVAILABLE",
-                  "routeToLastAgent": true,
-                  "routingMode": "PUSH",
-                  "routingObjectId": "6172426726c3762d4f5f68fe",
-                  "agentRequestTtl": 20
+                  "agentSelectionPolicy": null,
+                  "routeToLastAgent": false,
+                  "routingMode": "EXTERNAL",
+                  "routingObjectId": null,
+                  "agentRequestTtl": 0
                 },
-                "botId": "8b43ef12-f30b-48ce-aa03-c60d450fc042"
+                "botId": "9ba1f9d4-6c22-4e6f-b497-166c447c3b4a"
               },
               "channelConnector": {
-                "id": "6178062f39b2a10f979a9499",
-                "name": "web connector",
+                "id": "62b0514dc95f9101f97eee6a",
+                "name": "Voice",
                 "channelProviderInterface": {
-                  "id": "61769ad86959682449337620",
-                  "name": "Web Provider",
+                  "id": "62b05122c95f9101f97eee52",
+                  "name": "Voice",
                   "supportedChannelTypes": [
                     {
-                      "id": "6176bfde6e67cc29d93be907",
-                      "name": "Web",
-                      "channelLogo": "_WHATSAPP.svg",
+                      "id": "62b0507dc95f9101f97eee31",
+                      "name": "VOICE",
+                      "channelLogo": "17941_phone_in_talk_FILL0_wght400_GRAD0_opsz48.svg",
                       "isInteractive": true,
-                      "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+                      "mediaRoutingDomain": "6298b744b777de61844f616b"
                     }
                   ],
-                  "providerWebhook": "http://192.168.50.25:7000/message/receive",
+                  "providerWebhook": "null",
                   "channelProviderConfigSchema": []
                 },
                 "channelProviderConfigs": [],
                 "tenant": {
-                  "id": "8773b513-6441-42bf-99d4-e243afbb3a07",
+                  "id": "314d3108-e73d-434e-8eef-92d274c1df2a",
                   "name": null
                 }
               },
               "channelType": {
-                "id": "6176bfde6e67cc29d93be907",
-                "name": "Web",
-                "channelLogo": "_WHATSAPP.svg",
+                "id": "62b0507dc95f9101f97eee31",
+                "name": "VOICE",
+                "channelLogo": "17941_phone_in_talk_FILL0_wght400_GRAD0_opsz48.svg",
                 "isInteractive": true,
-                "mediaRoutingDomain": "6172421126c3762d4f5f68fc"
+                "mediaRoutingDomain": "6298b744b777de61844f616b"
               }
             },
             "customer": {
-              "_id": "67b01aa5-9450-46fa-8b39-fde1bb6f7e68",
-              "firstName": "John",
-              "lastName": null,
-              "email": null,
-              "phone1": null,
-              "phone2": null,
-              "viberId": null,
-              "facebookId": null,
-              "webId": null,
-              "createdBy": null,
-              "updatedBy": null,
-              "createdAt": null,
-              "updatedAt": null,
+              "_id": "62b05d0939a8bdd982d1ac7e",
+              "firstName": "Raza",
+              "phoneNumber": [
+                ""
+              ],
               "isAnonymous": false,
-              "__v": 0
+              "__v": 0,
+              "voice": [
+                "42225"
+              ],
+              "ahmadWeb": [
+                "2222"
+              ],
+              "web": [
+                "162522"
+              ]
             },
             "customerSuggestions": [],
             "channelData": {
-              "channelCustomerIdentifier": "97962945",
-              "serviceIdentifier": "+921218",
+              "channelCustomerIdentifier": "42225",
+              "serviceIdentifier": "62451",
               "requestPriority": 0,
-              "channelTypeCode": "webChannel",
-              "additionalAttributes": []
+              "channelTypeCode": "VOICE",
+              "additionalAttributes": [
+                {
+                  "key": "callVariable1",
+                  "type": "String2000",
+                  "value": ""
+                },
+                {
+                  "key": "callVariable2",
+                  "type": "String2000",
+                  "value": ""
+                },
+                {
+                  "key": "callVariable3",
+                  "type": "String2000",
+                  "value": ""
+                },
+                {
+                  "key": "callVariable4",
+                  "type": "String2000",
+                  "value": ""
+                },
+                {
+                  "key": "callVariable5",
+                  "type": "String2000",
+                  "value": ""
+                },
+                {
+                  "key": "callVariable6",
+                  "type": "String2000",
+                  "value": ""
+                },
+                {
+                  "key": "callVariable7",
+                  "type": "String2000",
+                  "value": ""
+                },
+                {
+                  "key": "callVariable8",
+                  "type": "String2000",
+                  "value": ""
+                },
+                {
+                  "key": "callVariable9",
+                  "type": "String2000",
+                  "value": ""
+                },
+                {
+                  "key": "callVariable10",
+                  "type": "String2000",
+                  "value": "app"
+                },
+                {
+                  "key": "user.microapp.locale",
+                  "type": "String2000",
+                  "value": "en-us"
+                },
+                {
+                  "key": "user.microapp.media_server",
+                  "type": "String2000",
+                  "value": "http://192.168.1.72"
+                },
+                {
+                  "key": "user.microapp.fetchdelay",
+                  "type": "String2000",
+                  "value": "D"
+                },
+                {
+                  "key": "user.microapp.app_media_lib",
+                  "type": "String2000",
+                  "value": "app"
+                },
+                {
+                  "key": "user.cvp_server_info",
+                  "type": "String2000",
+                  "value": "192.168.1.72"
+                },
+                {
+                  "key": "callStartTime",
+                  "type": "String2000",
+                  "value": "2022-06-24T08:51:51.268Z"
+                }
+              ]
             },
             "latestIntent": null,
             "customerPresence": {
               "value": null
             },
-            "isActive": true,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-            "state": "STARTED",
-            "active": true
-          }
+            "isActive": false,
+            "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+            "state": "ENDED",
+            "active": false
+          },
+          "replyToMessageId": null,
+          "providerMessageId": "",
+          "status": "sent"
         },
         "body": {
           "type": "VOICE",
-          "markdownText": "xxxxx",
-          "agentId": "123",
+          "markdownText": "",
+          "agentId": "492041558",
           "dialog": {
-            "event": "dialogState",
-            "response": {
-              "loginId": "123",
-              "dialog": {
-                "id": "17270273",
-                "callType": "OTHER_IN",
-                "ani": "123",
-                "wrapUpReason": "Test wrapup",
-                "associatedDialogUri": "",
-                "secondaryId": null,
-                "participants": {
-                  "participant": [
-                    {
-                      "actions": {
-                        "action": [
-                          "TRANSFER_SST",
-                          "CONSULT_CALL",
-                          "HOLD",
-                          "UPDATE_CALL_DATA",
-                          "SEND_DTMF",
-                          "START_RECORDING",
-                          "DROP"
-                        ]
-                      },
-                      "mediaAddress": "2202",
-                      "mediaAddressType": "AGENT_DEVICE",
-                      "startTime": "2021-11-01T11:30:04.329Z",
-                      "state": "ACTIVE",
-                      "stateCause": "",
-                      "stateChangeTime": "2021-09-01T11:49:04.329Z"
+            "loginId": "492041558",
+            "dialog": {
+              "id": "17653406",
+              "callType": "PREROUTE_ACD_IN",
+              "fromAddress": "42225",
+              "dialedNumber": "62451",
+              "dnis": "42224",
+              "ani": "42225",
+              "state": "ACTIVE",
+              "wrapUpReason": null,
+              "associatedDialogUri": null,
+              "secondaryId": null,
+              "participants": {
+                "Participant": [
+                  {
+                    "actions": {
+                      "action": "UPDATE_CALL_DATA"
                     },
-                    {
-                      "actions": {
-                        "action": [
-                          "TRANSFER_SST",
-                          "CONSULT_CALL",
-                          "HOLD",
-                          "UPDATE_CALL_DATA",
-                          "SEND_DTMF",
-                          "START_RECORDING",
-                          "DROP"
-                        ]
-                      },
-                      "mediaAddress": "2209",
-                      "mediaAddressType": "",
-                      "startTime": "2021-12-01T11:49:04.329Z",
-                      "state": "ACTIVE",
-                      "stateCause": "",
-                      "stateChangeTime": "2021-12-01T11:49:04.329Z"
-                    }
-                  ]
-                },
-                "callVariables": {
-                  "callVariable": [
-                    {
-                      "name": "callVariable1",
-                      "value": ""
-                    },
-                    {
-                      "name": "callVariable2",
-                      "value": ""
-                    },
-                    {
-                      "name": "callVariable3",
-                      "value": ""
-                    },
-                    {
-                      "name": "callVariable4",
-                      "value": ""
-                    },
-                    {
-                      "name": "callVariable5",
-                      "value": ""
-                    },
-                    {
-                      "name": "callVariable6",
-                      "value": ""
-                    },
-                    {
-                      "name": "callVariable7",
-                      "value": ""
-                    },
-                    {
-                      "name": "callVariable8",
-                      "value": ""
-                    },
-                    {
-                      "name": "callVariable9",
-                      "value": ""
-                    },
-                    {
-                      "name": "callVariable10",
-                      "value": "17270273"
-                    }
-                  ]
-                },
-                "state": "ACTIVE"
+                    "mediaAddress": "42224",
+                    "mediaAddressType": "AGENT_DEVICE",
+                    "startTime": "2022-06-24T09:06:43.784Z",
+                    "state": "WRAP_UP",
+                    "stateCause": "",
+                    "stateChangeTime": "2022-06-24T09:08:31.780Z"
+                  },
+                  {
+                    "actions": "",
+                    "mediaAddress": "42225",
+                    "mediaAddressType": "",
+                    "startTime": "2022-06-24T09:06:43.784Z",
+                    "state": "DROPPED",
+                    "stateCause": "",
+                    "stateChangeTime": "2022-06-24T09:08:31.781Z"
+                  }
+                ]
+              },
+              "callVariables": {
+                "CallVariable": [
+                  {
+                    "name": "callVariable1",
+                    "value": ""
+                  },
+                  {
+                    "name": "callVariable2",
+                    "value": ""
+                  },
+                  {
+                    "name": "callVariable3",
+                    "value": ""
+                  },
+                  {
+                    "name": "callVariable4",
+                    "value": ""
+                  },
+                  {
+                    "name": "callVariable5",
+                    "value": ""
+                  },
+                  {
+                    "name": "callVariable6",
+                    "value": ""
+                  },
+                  {
+                    "name": "callVariable7",
+                    "value": ""
+                  },
+                  {
+                    "name": "callVariable8",
+                    "value": ""
+                  },
+                  {
+                    "name": "callVariable9",
+                    "value": ""
+                  },
+                  {
+                    "name": "callVariable10",
+                    "value": "app"
+                  },
+                  {
+                    "name": "user.microapp.locale",
+                    "value": "en-us"
+                  },
+                  {
+                    "name": "user.microapp.media_server",
+                    "value": "http://192.168.1.72"
+                  },
+                  {
+                    "name": "user.microapp.fetchdelay",
+                    "value": "D"
+                  },
+                  {
+                    "name": "user.microapp.app_media_lib",
+                    "value": "app"
+                  },
+                  {
+                    "name": "user.cvp_server_info",
+                    "value": "192.168.1.72"
+                  }
+                ]
               }
             }
           }
         }
       }
-    },
+    }
+    ,
     {
       "id": "23a43ff2-b674-463d-9d66-01f4c73201c3",
       "name": "BOT_MESSAGE",

@@ -190,6 +190,8 @@ export class InteractionsComponent implements OnInit {
       this.closeConversationConfirmation();
     } else if (!voiceSession && nonVoiceSession) {
       this._socketService.topicUnsub(this.conversation);
+    }else{
+      this._socketService.topicUnsub(this.conversation);
     }
   }
 

@@ -612,7 +612,95 @@
 
 
                     <!-- <-------------------------------------VOICE MESSAGE START--------------------------------------------------->
+                    <div class="wrap-up-main panel-divider user-data customer-side voice-activity-main"
+                      *ngIf="(message.body.type | lowercase) == 'voice' && (message.header.intent | lowercase) == 'end_voice'">
+                      <mat-expansion-panel>
 
+                        <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
+                          <mat-panel-title>
+                            <div class="panel-header">
+                              <ul>
+                                <li class="agent-pic call-services">
+                                  <p><span>{{_cacheService.agent.username}}</span></p>
+                                </li>
+                                <li class="section-duration">
+                                  <time>{{message.body.dialog.dialog.participants.Participant[0].startTime |
+                                    timeDuration:message.body.dialog.dialog.participants.Participant[0].stateChangeTime
+                                    }}</time>
+
+                                </li>
+                                <!-- <li class="section-tags">
+                                  <span>Tag A</span>
+                                  <span>Tag B</span>
+                                </li> -->
+                                <li>
+                                  <time>{{message.header.timestamp | date:'shortTime'}}</time>
+                                </li>
+                              </ul>
+                            </div>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div class="panel-header call-history-panel inner-detail">
+                          <div class="history-time">
+                            <time>{{message.header.timestamp | date:'shortTime'}}</time>
+                          </div>
+                          <div class="history-detail inner-detail-history">
+                            <mat-expansion-panel>
+
+                              <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
+                                <mat-panel-title>
+                                  <div class="panel-header">
+                                    <ul>
+                                      <li><span class="phone-number">{{message?.body?.dialog.dialog.ani}}</span>
+                                      </li>
+                                      <li class="agent-pic call-notify">
+                                        <span><img src="assets/images/incoming-call.svg"> </span>
+                                      </li>
+                                      <!-- <li class="agent-pic call-services">
+                                        <p><span><img src="assets/images/cs1.png"></span> Customer
+                                          Services</p>
+                                      </li> -->
+                                      <li class="section-duration">
+                                        <time>{{message.body.dialog.dialog.participants.Participant[0].startTime |
+                                          timeDuration:message.body.dialog.dialog.participants.Participant[0].stateChangeTime
+                                          }}</time>
+                                      </li>
+                                      <li class="agent-pic call-notify">
+                                        <span><img src="assets/images/call-end.svg"> </span>
+                                      </li>
+                                      <!-- <li class="section-tags">
+                                        <span>Tag A</span>
+                                        <span>Tag B</span>
+                                      </li> -->
+                                      <!-- <li class="agent-pic">
+                                        <span><img src="assets/images/call-record.svg"> </span>
+                                      </li> -->
+                                    </ul>
+                                  </div>
+                                </mat-panel-title>
+                              </mat-expansion-panel-header>
+
+                              <div class="summary-detail">
+                                <ul>
+                                  <li><label>Agent</label>:<span>{{_cacheService.agent.username}}</span></li>
+                                  <li><label>CSQ </label>:<span>CSQ</span></li>
+                                  <li><label>Call
+                                      Duration</label>:<span>{{message.body.dialog.dialog.participants.Participant[0].startTime |
+                                        timeDuration:message.body.dialog.dialog.participants.Participant[0].stateChangeTime
+                                        }}</span></li>
+                                  <li><label>Form UR</label>:<span>N/A</span></li>
+                                  <li><label>Wrap-Up</label>:<span>N/A</span></li>
+                                  <li><label>Recording URL</label>:<span>N/A</span></li>
+                                </ul>
+                              </div>
+                            </mat-expansion-panel>
+
+
+                          </div>
+                        </div>
+                      </mat-expansion-panel>
+                    </div>
                     <!-- <--------------------------------------------VOICE MESSAGE END-------------------------------------------->
 
 

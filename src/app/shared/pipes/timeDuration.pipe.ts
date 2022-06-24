@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class timeDurationPipe implements PipeTransform {
 
-    transform(fromDate: any, substractDate: any): string {
+    transform(substractDate: any, fromDate: any): string {
 
         fromDate = new Date(fromDate);
         substractDate = new Date(substractDate);
