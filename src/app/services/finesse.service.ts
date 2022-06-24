@@ -144,7 +144,7 @@ export class finesseService {
       if (this.finesseAgentState.state.toLowerCase() != "ready") {
         executeCommands({ action: "makeReady" });
       }
-    } else if (voiceMrdObj.state.toLowerCase() == "not_ready") {
+    } else if (voiceMrdObj.state.toLowerCase() == "not_ready" || voiceMrdObj.state.toLowerCase() == "pending_not_ready") {
       // if voice mrd state is not_ready and finesse state is not not_ready then change the finsess state to not_ready
       if (this.finesseAgentState.state.toLowerCase() != "not_ready") {
         executeCommands({ action: "makeNotReadyWithReason", parameter: { reasonCode: this.finesseNotReadyReasonCodes[0].code } });

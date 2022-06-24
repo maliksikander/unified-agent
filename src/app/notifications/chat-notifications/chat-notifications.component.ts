@@ -94,7 +94,7 @@ export class ChatNotificationsComponent implements OnInit {
     // this._finesseService.voiceConversationId = conversationId;
     // this._finesseService.voiceTaskId = taskId;
 
-    if (ciscoData || ciscoData != null) {
+    if (ciscoData) {
       this.acceptCall(conversationId, taskId, ciscoData);
     } else {
       this.getTopicSubscription(conversationId, taskId);
