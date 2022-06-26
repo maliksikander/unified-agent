@@ -1,25 +1,17 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
-    name: 'timeDuration'
+  name: "timeDuration"
 })
 export class timeDurationPipe implements PipeTransform {
+  transform(t1: any, t2: any): string {
+    t1 = new Date(t1);
+    t2 = new Date(t2);
 
-    transform(substractDate: any, fromDate: any): string {
+    const min = Math.abs(t1.getMinutes() - t2.getMinutes());
+    const hours = Math.abs(t1.getHours() - t2.getHours());
+    const seconds = Math.abs(t1.getSeconds() - t2.getSeconds());
 
-        fromDate = new Date(fromDate);
-        substractDate = new Date(substractDate);
-        const difference = fromDate.valueOf() - substractDate.valueOf();
-
-        const minutes = Math.floor((difference / (1000 * 60)) % 60);
-        const hours = Math.floor(difference / (1000 * 60 * 60) % 24);
-
-        return `${this.formatTime(hours)}:${this.formatTime(minutes)}`;
-    }
-
-    formatTime(time: number): string {
-        const formattedTime = (time < 10) ? '0' + time : time.toString();
-        return formattedTime;
-    }
-
+    return hours + ":" + min + ":" + seconds;
+  }
 }

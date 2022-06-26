@@ -120,7 +120,7 @@ export class CustomerInfoComponent implements OnInit {
       this.firstChannelSession = changes.activeChannelSessions.currentValue;
     }
 
-    this._finesseService.conversationList.next(this.activeChannelSessions);
+    // this._finesseService.conversationList.next(this.activeChannelSessions);
 
 
   }

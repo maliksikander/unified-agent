@@ -394,8 +394,8 @@ export class socketService {
         // if the channel session is of voice then we will not push that channel session in the last of the array
         // because the channel session in the array is used to send the message to customer
         if (
-          participant.channel.channelConfig.routingPolicy.routingMode.toLowerCase == "pull" ||
-          participant.channel.channelConfig.routingPolicy.routingMode.toLowerCase == "push"
+          participant.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "pull" ||
+          participant.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "push"
         ) {
           conversation.activeChannelSessions.push(participant);
         } else {
@@ -593,8 +593,8 @@ export class socketService {
       // if the channel session is of voice then we will not push that channel session in the last of the array
       // because the channel session in the array is used to send the message to customer
       if (
-        cimEvent.data.channel.channelConfig.routingPolicy.routingMode.toLowerCase == "pull" ||
-        cimEvent.data.channel.channelConfig.routingPolicy.routingMode.toLowerCase == "push"
+        cimEvent.data.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "pull" ||
+        cimEvent.data.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "push"
       ) {
         conversation.activeChannelSessions.push(cimEvent.data);
       } else {

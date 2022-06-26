@@ -212,12 +212,14 @@ export class InteractionsComponent implements OnInit {
         this._finesseService.isLeaveButtonClicked = true;
         console.log("is leave clicked==>",this._finesseService.isLeaveButtonClicked)
         this.endCallOnFinesse();
+        this._finesseService.emitEndChannelSessionEvent();
         this._socketService.topicUnsub(this.conversation);
       }
     });
   }
 
   endCallOnFinesse() {
+    console.log("in com==>",this.conversation)
     let data = {
       action: "releaseCall",
       parameter: {

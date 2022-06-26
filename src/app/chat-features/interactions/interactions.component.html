@@ -624,8 +624,13 @@
                                   <p><span>{{_cacheService.agent.username}}</span></p>
                                 </li>
                                 <li class="section-duration">
-                                  <time>{{message.body.dialog.dialog.participants.Participant[0].startTime |
-                                    timeDuration:message.body.dialog.dialog.participants.Participant[0].stateChangeTime
+                                  <time>{{message?.body?.dialog?.dialog?.participants?.Participant[0]?.startTime ?
+                                    message?.body?.dialog?.dialog?.participants?.Participant[0]?.startTime :
+                                    message?.body?.dialog?.participants?.Participant[0]?.startTime |
+                                    timeDuration:
+                                    message?.body?.dialog?.dialog?.participants?.Participant[0]?.stateChangeTime ?
+                                    message?.body?.dialog?.dialog?.participants?.Participant[0]?.stateChangeTime :
+                                    message?.body?.dialog?.participants?.Participant[0]?.stateChangeTime
                                     }}</time>
 
                                 </li>
@@ -652,7 +657,9 @@
                                 <mat-panel-title>
                                   <div class="panel-header">
                                     <ul>
-                                      <li><span class="phone-number">{{message?.body?.dialog.dialog.ani}}</span>
+                                      <li><span class="phone-number">{{message?.body?.dialog?.dialog?.ani ?
+                                          message?.body?.dialog?.dialog?.ani : message?.body?.dialog?.ani
+                                          }}</span>
                                       </li>
                                       <li class="agent-pic call-notify">
                                         <span><img src="assets/images/incoming-call.svg"> </span>
@@ -662,8 +669,13 @@
                                           Services</p>
                                       </li> -->
                                       <li class="section-duration">
-                                        <time>{{message.body.dialog.dialog.participants.Participant[0].startTime |
-                                          timeDuration:message.body.dialog.dialog.participants.Participant[0].stateChangeTime
+                                        <time>{{message.body?.dialog?.dialog?.participants?.Participant[0]?.startTime ?
+                                          message.body?.dialog?.dialog?.participants?.Participant[0]?.startTime :
+                                          message.body?.dialog?.participants?.Participant[0]?.startTime|
+                                          timeDuration:
+                                          message.body?.dialog?.dialog?.participants?.Participant[0]?.stateChangeTime ?
+                                          message.body?.dialog?.dialog?.participants?.Participant[0]?.stateChangeTime :
+                                          message.body?.dialog?.participants?.Participant[0]?.stateChangeTime
                                           }}</time>
                                       </li>
                                       <li class="agent-pic call-notify">
@@ -686,9 +698,15 @@
                                   <li><label>Agent</label>:<span>{{_cacheService.agent.username}}</span></li>
                                   <li><label>CSQ </label>:<span>CSQ</span></li>
                                   <li><label>Call
-                                      Duration</label>:<span>{{message.body.dialog.dialog.participants.Participant[0].startTime |
-                                        timeDuration:message.body.dialog.dialog.participants.Participant[0].stateChangeTime
-                                        }}</span></li>
+                                      Duration</label>:<span>{{message.body?.dialog?.dialog?.participants?.Participant[0]?.startTime
+                                      ? message.body?.dialog?.dialog?.participants?.Participant[0]?.startTime :
+                                      message.body?.dialog?.participants?.Participant[0]?.startTime
+                                      |
+                                      timeDuration:
+                                      message.body?.dialog?.dialog?.participants?.Participant[0]?.stateChangeTime ?
+                                      message.body?.dialog?.dialog?.participants?.Participant[0]?.stateChangeTime :
+                                      message.body?.dialog?.participants?.Participant[0]?.stateChangeTime
+                                      }}</span></li>
                                   <li><label>Form UR</label>:<span>N/A</span></li>
                                   <li><label>Wrap-Up</label>:<span>N/A</span></li>
                                   <li><label>Recording URL</label>:<span>N/A</span></li>
@@ -756,7 +774,7 @@
     </div>
 
     <div class="chat-footer"
-      [ngClass]="{'textarea-disable': !_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0}">
+      [ngClass]="{'textarea-disable': !_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0 || !conversation.messageComposerState}">
       <div *ngIf="currentScrollPosition < 60 && showNewMessageNotif == false"
         (click)="downTheScrollAfterMilliSecs(0,'smooth')" class="jump-bottom slide-in-bottom new-msg-notif">
         <span>
@@ -902,7 +920,7 @@
             </button>
 
             <button style="cursor: pointer;" class="send-btn attachment-btn composer-trigger" mat-icon-button
-              *ngIf="replyInput.value.length < 1 && conversation.activeChannelSessions.length > 0">
+              *ngIf="replyInput.value.length < 1 && conversation.activeChannelSessions.length > 0 && conversation.messageComposerState">
               <input accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx" #myFileInput type="file"
                 (change)="uploadFile($event.target.files); $event.target.value = ''" name="ef_chatbox_chat_file_upload"
                 id="uploadFileBtn" class="file-upload-input">

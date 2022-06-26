@@ -77,7 +77,7 @@ export class isLoggedInService {
     };
     console.log("finesse user login==> ", obj);
     this.fetchCCuserAndMoveToLogin(obj);
-    this._finesseService.finesseAgent.extention = extension;
+    this._finesseService.finesseAgent.extension = extension;
     this._finesseService.finesseAgent.loginId = username;
     this._finesseService.finesseAgent.password = password;
 
