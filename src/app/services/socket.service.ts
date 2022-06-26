@@ -14,7 +14,8 @@ import { httpService } from "./http.service";
 import { v4 as uuidv4 } from "uuid";
 import { AuthService } from "./auth.service";
 import { finesseService } from "./finesse.service";
-//const mockTopicData: any = require("../mocks/topicData.json");
+import { TopicParticipant } from "../models/User/Interfaces";
+// const mockTopicData: any = require("../mocks/topicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -76,12 +77,12 @@ export class socketService {
       try {
         console.error("socket connect_error ", err.data && err.data.content ? err.data.content : err);
         this._snackbarService.open(err.data && err.data.content ? err.data.content : "unable to connect to chat", "err");
-      } catch (err) { }
+      } catch (err) {}
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) { }
+        } catch (e) {}
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -113,7 +114,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) { }
+        } catch (e) {}
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -163,7 +164,7 @@ export class socketService {
     this.socket.on("onTopicData", (res: any, callback: any) => {
       try {
         console.log("onTopicData", res);
-        this.onTopicData(res.topicData, res.conversationId);
+        this.onTopicData(res.topicData, res.conversationId, res.taskId);
         if (callback) {
           callback({ status: "ok" });
         }
@@ -233,7 +234,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) { }
+    } catch (err) {}
   }
 
   listen(eventName: string) {
@@ -337,16 +338,17 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) { }
+    } catch (e) {}
     this._cacheService.resetCache();
     this._snackbarService.open("you are logged In from another session", "err");
     alert("you are logged in from another session");
   }
 
-  onTopicData(topicData, conversationId) {
+  onTopicData(topicData, conversationId, taskId) {
     // this.removeConversation(conversationId);
     let conversation = {
       conversationId: conversationId,
+      taskId,
       messages: [],
       activeConversationData: topicData.conversationData,
       activeChannelSessions: [],
@@ -391,7 +393,10 @@ export class socketService {
 
         // if the channel session is of voice then we will not push that channel session in the last of the array
         // because the channel session in the array is used to send the message to customer
-        if (participant.channel.channelConfig.routingPolicy.routingMode.toLowerCase == "pull" || participant.channel.channelConfig.routingPolicy.routingMode.toLowerCase == "push") {
+        if (
+          participant.channel.channelConfig.routingPolicy.routingMode.toLowerCase == "pull" ||
+          participant.channel.channelConfig.routingPolicy.routingMode.toLowerCase == "push"
+        ) {
           conversation.activeChannelSessions.push(participant);
         } else {
           conversation.activeChannelSessions.unshift(participant);
@@ -421,9 +426,8 @@ export class socketService {
   }
 
   isVoiceChannelSessionExists(activeChannelSessions) {
-
     let voiceChannelSession = activeChannelSessions.find((channelSession) => {
-      if (channelSession.channel.channelConfig.routingPolicy.toLowerCase == "external") {
+      if (channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "external") {
         return channelSession;
       }
     });
@@ -436,9 +440,11 @@ export class socketService {
   }
 
   isNonVoiceChannelSessionExists(activeChannelSessions) {
-
     let nonVoiceChannelSession = activeChannelSessions.find((channelSession) => {
-      if (channelSession.channel.channelConfig.routingPolicy.toLowerCase == "pull" || channelSession.channel.channelConfig.routingPolicy.toLowerCase == "push") {
+      if (
+        channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "pull" ||
+        channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "push"
+      ) {
         return channelSession;
       }
     });
@@ -448,7 +454,6 @@ export class socketService {
     } else {
       return false;
     }
-
   }
 
   // getActiveChannelSessions(messages) {
@@ -585,10 +590,12 @@ export class socketService {
     if (conversation) {
       let message = this.createSystemNotificationMessage(cimEvent);
 
-
       // if the channel session is of voice then we will not push that channel session in the last of the array
       // because the channel session in the array is used to send the message to customer
-      if (cimEvent.data.channel.channelConfig.routingPolicy.routingMode.toLowerCase == "pull" || cimEvent.data.channel.channelConfig.routingPolicy.routingMode.toLowerCase == "push") {
+      if (
+        cimEvent.data.channel.channelConfig.routingPolicy.routingMode.toLowerCase == "pull" ||
+        cimEvent.data.channel.channelConfig.routingPolicy.routingMode.toLowerCase == "push"
+      ) {
         conversation.activeChannelSessions.push(cimEvent.data);
       } else {
         conversation.activeChannelSessions.unshift(cimEvent.data);
@@ -597,7 +604,6 @@ export class socketService {
       conversation.messages.push(message);
 
       conversation.messageComposerState = this.isNonVoiceChannelSessionExists(conversation.activeChannelSessions);
-
     } else {
       console.error("channelSessionId not found to added");
     }
@@ -673,7 +679,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) { }
+    } catch (e) {}
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
@@ -996,6 +1002,15 @@ export class socketService {
       // now it only needs to clear the conversation from conversations array
       this.removeConversation(conversation.conversationId);
     }
+  }
+
+  getTopicSubscription(conversationId, taskId) {
+    this.emit("topicSubscription", {
+      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, conversationId, "PRIMARY", "SUBSCRIBED"),
+      agentId: this._cacheService.agent.id,
+      conversationId: conversationId,
+      taskId: taskId
+    });
   }
 
   createConversationDataMessage(cimEvent) {

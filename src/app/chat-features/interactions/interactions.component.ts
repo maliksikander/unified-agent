@@ -86,7 +86,7 @@ export class InteractionsComponent implements OnInit {
     public _appConfigService: appConfigService,
     private _httpService: httpService,
     private _finesseService: finesseService
-  ) { }
+  ) {}
   ngOnInit() {
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
@@ -98,10 +98,10 @@ export class InteractionsComponent implements OnInit {
     //   new EmojiPicker();
     // }, 500);
 
-    console.log("convo==>", this.conversation)
+    console.log("convo==>", this.conversation);
   }
 
-  emoji() { }
+  emoji() {}
 
   onSend(text) {
     text = text.trim();
@@ -199,7 +199,6 @@ export class InteractionsComponent implements OnInit {
     } else {
       this._socketService.topicUnsub(this.conversation);
     }
-
   }
 
   closeConversationConfirmation() {
@@ -210,7 +209,10 @@ export class InteractionsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.event == "confirm") {
+        this._finesseService.isLeaveButtonClicked = true;
+        console.log("is leave clicked==>",this._finesseService.isLeaveButtonClicked)
         this.endCallOnFinesse();
+        this._socketService.topicUnsub(this.conversation);
       }
     });
   }
@@ -229,7 +231,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -237,7 +239,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -299,7 +301,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => { });
+    dialogRef.afterClosed().subscribe((result: any) => {});
   }
 
   uploadFile(files) {

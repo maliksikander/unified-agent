@@ -32,10 +32,16 @@ export class finesseService {
   conversationList = new Subject<any>();
   currentConversation = new Subject<any>();
   currentTaskId = new Subject<any>();
-  taskAndConversationIdSubject = new Subject<any>();
-  pushConversationList = [];
+  voiceChannelSessionSubject = new Subject<any>();
+  removeNotification = new Subject<any>();
+  // pushConversationList = [];
   conversationListWithActiveSession = [];
   activeConversation;
+  isLeaveButtonClicked: boolean = false;
+  dialogState: any = {};
+  customerIdentifier;
+  timeoutId;
+  voiceChannelSession;
 
   constructor(
     private _snackbarService: snackbarService,
@@ -44,15 +50,27 @@ export class finesseService {
     private _socketService: socketService,
     private _configService: appConfigService,
     private _router: Router
-  ) {
-    this.pushModeConversationList.subscribe((res) => {
-      this.pushConversationList = res;
+  ) {}
+
+  initMe() {
+    this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
+      console.log("state cahnge", e.msg);
+      if (e.msg == "stateChanged" && this.finesseAgent.loginId != "") {
+        this.handlePresence(e.data);
+      }
     });
 
-    this.taskAndConversationIdSubject.subscribe((res) => {
-      this.voiceTaskId = res.taskId;
+    // this.pushModeConversationList.subscribe((res) => {
+    //   this.pushConversationList = res;
+    //   console.log("checker 1===>", this.pushConversationList);
+    // });
+
+    this.voiceChannelSessionSubject.subscribe((res) => {
+      // this.voiceTaskId = res.taskId;
       this.voiceConversationId = res.conversationId;
-      console.log(this.voiceTaskId, "<===checker===>", this.voiceConversationId);
+      this.voiceChannelSession = res.channelSession;
+      console.log("conversation id in finesse service ===>", this.voiceConversationId);
+      console.log("voice channel session in finesse service ===>", this.voiceChannelSession);
     });
 
     this.conversationList.subscribe((res) => {
@@ -68,15 +86,6 @@ export class finesseService {
     this.currentTaskId.subscribe((res) => {
       this.voiceTaskId = res;
       console.log("task id in service ==>", this.voiceTaskId);
-    });
-  }
-
-  initMe() {
-    this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
-      console.log("state cahnge", e.msg);
-      if (e.msg == "stateChanged" && this.finesseAgent.loginId != "") {
-        this.handlePresence(e.data);
-      }
     });
   }
 
@@ -163,20 +172,17 @@ export class finesseService {
   }
 
   // this will call when an event from the CTI library received
-  dialogState: any = {};
-  customerIdentifier;
+  // clearConversationFromList(conversationId) {
+  //   let index = this.pushConversationList.findIndex((item) => {
+  //     return item.id == conversationId;
+  //   });
+  //   this.pushConversationList.splice(index, 1);
 
-  clearConversationFromList(conversationId) {
-    let index = this.pushConversationList.findIndex((item) => {
-      return item.id == conversationId;
-    });
-    this.pushConversationList.splice(index, 1);
-
-    this.pushModeConversationList.next(this.pushConversationList);
-  }
+  //   this.pushModeConversationList.next(this.pushConversationList);
+  // }
 
   checkForVoiceSession(conversation) {
-    let list: Array<any> = conversation.activeChannelSessions;
+    let list: Array<any> = conversation.activeChannelSessions ? conversation.activeChannelSessions : [];
     let voiceIndex = list.findIndex((item) => {
       return item.channel.channelType.name == "VOICE";
     });
@@ -185,7 +191,7 @@ export class finesseService {
   }
 
   checkForNonVoiceSession(conversation) {
-    let list: Array<any> = conversation.activeChannelSessions;
+    let list: Array<any> = conversation.activeChannelSessions ? conversation.activeChannelSessions : [];
     let nonVoiceIndex = list.findIndex((item) => {
       return item.channel.channelType.name != "VOICE";
     });
@@ -214,7 +220,8 @@ export class finesseService {
         name: "CLOSED",
         reasonCode: "DONE"
       };
-      this.emitEndCallEvent(conversation.conversationId, this.voiceTaskId, taskState, false);
+      // this.emitEndCallEvent(conversation.conversationId, this.voiceTaskId, taskState, false);
+      this.emitEndChannelSessionEvent();
     } else if (voiceSession && !nonVoiceSession) {
       console.log("2==>");
       this._socketService.topicUnsub(conversation);
@@ -223,9 +230,10 @@ export class finesseService {
         name: "CLOSED",
         reasonCode: "DONE"
       };
-      this.emitEndCallEvent(conversation.conversationId, this.voiceTaskId, taskState, true);
+      this.emitEndChannelSessionEvent();
+      // this.emitEndCallEvent(conversation.conversationId, this.voiceTaskId, taskState, true);
     } else {
-      console.log("3==>");
+      console.log("Only NON VOICE EXITS ON CALL END==>");
     }
     // else if (!voiceSession && nonVoiceSession) {
     //   console.log("3==>");
@@ -238,17 +246,17 @@ export class finesseService {
     // }
   }
 
-  emitEndCallEvent(conversationId, taskId, taskState, changeTaskState) {
-    console.log("conversation on emit end call==>", conversationId);
-    let data = {
-      // taskState,
-      taskId,
-      conversationId,
-      cisco_data: this.dialogState,
-      changeTaskState
-    };
-    this._socketService.emit("onCallEnd", data);
-  }
+  // emitEndCallEvent(conversationId, taskId, taskState, changeTaskState) {
+  //   console.log("conversation on emit end call==>", conversationId);
+  //   let data = {
+  //     // taskState,
+  //     // taskId,
+  //     // conversationId,
+  //     cisco_data: this.dialogState,
+  //     // changeTaskState
+  //   };
+  //   this._socketService.emit("onCallEnd", data);
+  // }
 
   clientCallback = (event) => {
     try {
@@ -266,26 +274,36 @@ export class finesseService {
                   this.min = 0;
                   this.sec = 0;
                 }
+                console.log("is leave clicked in finesse 1==>", this.isLeaveButtonClicked);
+                if (!this.isLeaveButtonClicked) {
+                  // console.log("conversation==>", this.activeConversation);
+                  if (this.activeConversation) {
+                    // console.log("Call ENDED 1==>");
+                    this.onCallEnd(this.activeConversation);
 
-                // console.log("conversation==>", this.activeConversation);
-                if (this.activeConversation) {
-                  console.log("Call ENDED 1==>");
-                  this.onCallEnd(this.activeConversation);
-
-                  this.clearConversationFromList(this.activeConversation.conversationIdId);
-                } else if (this.voiceConversationId && this.voiceTaskId) {
-                  this.onCallEnd(this.voiceConversationId);
-                  // console.log("Call ENDED 2==>");
-                  this.clearConversationFromList(this.voiceConversationId);
+                    // this.clearConversationFromList(this.activeConversation.conversationIdId);
+                  } else if (this.voiceConversationId && this.voiceTaskId) {
+                    this.onCallEnd(this.voiceConversationId);
+                    // console.log("Call ENDED 2==>");
+                    // this.clearConversationFromList(this.voiceConversationId);
+                  } else {
+                    // this._snackbarService.open("No Conversation Found", "err");
+                    console.log("[Call Dropped Event] No Conversation Found");
+                  }
                 } else {
-                  // this._snackbarService.open("No Conversation Found", "err");
-                  console.log("[Call Dropped Event] No Conversation Found");
+                  this.isLeaveButtonClicked = false;
                 }
+              } else if (item.state == "DROPPED" && this.dialogState.dialog.state == "ALERTING") {
+                this.removeNotification.next({
+                  conversationId: this.voiceConversationId
+                });
+                this.emitEndChannelSessionEvent();
               } else if (this.dialogState.dialog.state == "FAILED") {
                 let identifier = this.dialogState.dialog.fromAddress;
-                this.callAccepted.next({
+                this.removeNotification.next({
                   identifier
                 });
+                this.emitEndChannelSessionEvent();
               }
             });
           }
@@ -314,11 +332,12 @@ export class finesseService {
         this.finesseNotReadyReasonCodes = event.response.notReadyReasons;
       } else if (event.event == "newInboundCall") {
         let data = {
-          cisco_data: event,
-          agent: this._cacheService.agent
+          cisco_data: event
+          // agent: this._cacheService.agent
         };
-
+        // console.log("test==>", this._socketService.conversations);
         this.customerIdentifier = event.response.dialog.ani;
+        // let channelSession = this.checkForExisitingConversation(this.customerIdentifier);
         this._socketService.emit("newInboundCallRequest", data);
       }
     } catch (e) {
@@ -326,8 +345,18 @@ export class finesseService {
     }
   };
 
-  timeoutId;
-  callAccepted = new Subject<any>();
+  checkForExisitingConversation(idenitifer) {
+    let list: Array<any> = this._socketService.conversations ? this._socketService.conversations : [];
+    let conversation = list.find((item) => {
+      if (item.firstChannelSession.customer) {
+        return item.firstChannelSession.customer.voice == idenitifer;
+      }
+    });
+    if (conversation) {
+      return conversation.firstChannelSession;
+    }
+    return null;
+  }
 
   // if the receiving event from the CISCO is agentState then this will be called
   handleAgentStateFromFinesse(resp) {
@@ -377,7 +406,6 @@ export class finesseService {
           }
         } else if (resp.state.toLowerCase() == "not_ready") {
           // If state in finesse is not_ready then make the agent voice mrd not_ready
-          console.log("rona==>");
           this._socketService.emit("changeAgentState", {
             agentId: this._cacheService.agent.id,
             action: "agentMRDState",
@@ -386,28 +414,21 @@ export class finesseService {
           });
 
           if (resp.reasonCode && resp.reasonCode.label) {
+            // console.log("rona 0.1==>");
             if (resp.reasonCode.label == ronaStateOnCisco) {
-              let conversationIndex;
-              if (this.customerIdentifier) conversationIndex = this.getVoiceConversationIndex(this.customerIdentifier);
-
-              let conversation = this.pushConversationList[conversationIndex];
-              if (this.voiceConversationId && this.voiceTaskId) {
-                // console.log("1==>");
-                this.callAccepted.next({
+              // console.log("rona 0.2==>");
+              // let conversationIndex;
+              // if (this.customerIdentifier) conversationIndex = this.getVoiceConversationIndex();
+              // let conversation = this.pushConversationList[conversationIndex];
+              if (this.voiceConversationId) {
+                // console.log("rona 1==>");
+                this.removeNotification.next({
                   conversationId: this.voiceConversationId
                 });
-                this.emitVoiceRONAEvent(this.voiceTaskId);
-                // console.log("2==>");
-              } else if (conversation) {
-                this.callAccepted.next({
-                  conversationId: this.voiceConversationId
-                });
-                this.emitVoiceRONAEvent(conversation.taskId);
+                this.emitEndChannelSessionEvent();
+              } else {
+                this._snackbarService.open("No Conversation Found", "err");
               }
-              // else {
-              //   console.log("3==>");
-              //   // this._snackbarService.open("No Conversation Found", "err");
-              // }
             }
           }
 
@@ -420,70 +441,71 @@ export class finesseService {
         }
       }
     } else if (resp.state.toLowerCase() == "talking") {
-      let conversationIndex;
-      if (this.customerIdentifier) conversationIndex = this.getVoiceConversationIndex(this.customerIdentifier);
-      let conversation = this.pushConversationList[conversationIndex];
+      // let conversationIndex;
+      // if (this.customerIdentifier) conversationIndex = this.getVoiceConversationIndex();
+      // let conversation = this.pushConversationList[conversationIndex];
+      // console.log("check coversation==>", conversation);
+      console.log("talking convo id==>", this.voiceConversationId);
+      // console.log("talking task id==>", this.voiceTaskId);
       this.timeoutId = setInterval(() => {
         this.startTimer();
       }, 1000);
-      if (conversation) {
-        this.topicSubscriptionEvent(conversation.taskId, conversation.conversationId);
-      } else if (this.voiceConversationId && this.voiceTaskId) {
-        this.topicSubscriptionEvent(this.voiceTaskId, this.voiceConversationId);
+      // if (conversation) {
+      // console.log("11==>");
+      // this.topicSubscriptionEvent(conversation.conversationId, conversation.taskId);
+      // } else
+      if (this.voiceConversationId && this.voiceChannelSession) {
+        console.log("12==>");
+        this.createTaskAndTopicSubscriptionEvent(this.voiceConversationId, this.voiceChannelSession);
       } else {
+        console.log("13==>");
         this._snackbarService.open("No Conversation ID Found", "err");
       }
     }
   }
 
-  emitVoiceRONAEvent(taskId) {
+  emitEndChannelSessionEvent() {
     let data = {
-      taskState: {
-        name: "CLOSED",
-        reasonCode: "RONA"
-      },
-      taskId: taskId,
       cisco_data: this.dialogState
     };
 
-    this._socketService.emit("onVoiceRONA", data);
+    this._socketService.emit("endChannelSession", data);
   }
 
-  topicSubscriptionEvent(taskId, conversationId) {
-    this._socketService.emit("topicSubscription", {
+  createTaskAndTopicSubscriptionEvent(conversationId, channelSession) {
+    this._socketService.emit("onCallAcceptTopicSubscription", {
       topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, conversationId, "PRIMARY", "SUBSCRIBED"),
       agentId: this._cacheService.agent.id,
       conversationId,
-      taskId
+      channelSession
     });
-    this.callAccepted.next({
+
+    this.removeNotification.next({
       conversationId
     });
-    this.currentTaskId.next(taskId);
+    // this.currentTaskId.next(taskId);
     this._router.navigate(["customers"]);
   }
 
-  getVoiceConversationIndex(identifier) {
-    let temp: Array<any> = this.pushConversationList;
-    console.log("temp===>", temp);
-    for (let i = 0; i <= temp.length; i++) {
-      if (
-        temp[i] &&
-        temp[i].channelSession &&
-        temp[i].channelSession.customer &&
-        (temp[i].channelSession.customer.voice || temp[i].channelSession.customer.vOICE)
-      ) {
-        if (temp[i].channelSession.customer.voice && temp[i].channelSession.customer.voice.includes(identifier)) {
-          return i;
-        } else if (temp[i].channelSession.customer.vOICE.includes(identifier)) {
-          return i;
-        }
-      } else {
-        console.log("[Get Voice Conversation] No Conversation Found==>");
-        return -1;
-      }
-    }
-  }
+  // getVoiceConversationIndex() {
+  //   let temp: Array<any> = this.pushConversationList;
+  //   console.log("temp===>", temp);
+  //   for (let i = 0; i <= temp.length; i++) {
+  //     if (
+  //       temp[i] &&
+  //       temp[i].channelSession &&
+  //       temp[i].channelSession.customer &&
+  //       (temp[i].channelSession.customer.voice || temp[i].channelSession.customer.vOICE)
+  //     ) {
+  //       if (temp[i].channelSession.customer.voice) {
+  //         return i;
+  //       }
+  //     } else {
+  //       console.log("[Get Voice Conversation] No Conversation Found==>");
+  //       return -1;
+  //     }
+  //   }
+  // }
 
   startTimer() {
     this.sec = this.sec + 1;

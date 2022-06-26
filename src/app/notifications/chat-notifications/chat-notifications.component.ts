@@ -32,16 +32,16 @@ export class ChatNotificationsComponent implements OnInit {
       console.log("e==>", e);
       if (e.msg == "openPushModeRequestHeader") {
         this.pushModeRequests.push(e.data);
-        this._finesseService.pushModeConversationList.next(this.pushModeRequests);
+        // this._finesseService.pushModeConversationList.next(this.pushModeRequests);
         this._soundService.playRing();
         if (e.data.cisco_data) {
           this._soundService.openBrowserNotification(
             "Incoming Call Alert",
             "Incoming call alert request : " + e.data.channelSession.channel.channelType.name
           );
-          this._finesseService.taskAndConversationIdSubject.next({
-            taskId: e.data.taskId,
-            conversationId: e.data.conversationId
+          this._finesseService.voiceChannelSessionSubject.next({
+            conversationId: e.data.conversationId,
+            channelSession:e.data.channelSession
           });
         } else {
           this._soundService.openBrowserNotification(
@@ -65,7 +65,7 @@ export class ChatNotificationsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._finesseService.callAccepted.subscribe((res) => {
+    this._finesseService.removeNotification.subscribe((res) => {
       if (res.identifier) {
         let requestIndex = this.pushModeRequests.findIndex((item) => {
           return item.channelSession.channelData.channelCustomerIdentifier == res.identifier;
@@ -79,7 +79,7 @@ export class ChatNotificationsComponent implements OnInit {
     });
   }
 
-  acceptCall(conversationId, taskId, ciscoData) {
+  acceptCall(conversationId, ciscoData) {
     let data = {
       action: "answerCall",
       parameter: {
@@ -91,11 +91,9 @@ export class ChatNotificationsComponent implements OnInit {
   }
 
   onAcceptCallback(conversationId, taskId, ciscoData = null) {
-    // this._finesseService.voiceConversationId = conversationId;
-    // this._finesseService.voiceTaskId = taskId;
-
+    console.log("conversationId==>", conversationId);
     if (ciscoData) {
-      this.acceptCall(conversationId, taskId, ciscoData);
+      this.acceptCall(conversationId, ciscoData);
     } else {
       this.getTopicSubscription(conversationId, taskId);
     }
