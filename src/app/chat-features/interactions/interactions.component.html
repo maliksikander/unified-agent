@@ -624,14 +624,25 @@
                                   <p><span>{{_cacheService.agent.username}}</span></p>
                                 </li>
                                 <li class="section-duration">
-                                  <time>{{message?.body?.dialog?.dialog?.participants?.Participant[0]?.startTime ?
+                                  <time>
+
+                                    {{message.body.dialog.dialog.participants | timeDurationFromParticipant }}
+
+                                    <!-- {{message?.body?.dialog?.dialog?.participants?.Participant[0]?.startTime ?
                                     message?.body?.dialog?.dialog?.participants?.Participant[0]?.startTime :
                                     message?.body?.dialog?.participants?.Participant[0]?.startTime |
                                     timeDuration:
                                     message?.body?.dialog?.dialog?.participants?.Participant[0]?.stateChangeTime ?
                                     message?.body?.dialog?.dialog?.participants?.Participant[0]?.stateChangeTime :
                                     message?.body?.dialog?.participants?.Participant[0]?.stateChangeTime
-                                    }}</time>
+                                    }} -->
+
+
+                                    <!-- {{message.body.dialog.dialog.participants.Participant[0].startTime |
+                                      timeDuration:message.body.dialog.dialog.participants.Participant[0].stateChangeTime
+                                      }} -->
+
+                                  </time>
 
                                 </li>
                                 <!-- <li class="section-tags">
@@ -657,9 +668,13 @@
                                 <mat-panel-title>
                                   <div class="panel-header">
                                     <ul>
-                                      <li><span class="phone-number">{{message?.body?.dialog?.dialog?.ani ?
+                                      <li><span class="phone-number">
+                                          <!-- {{message?.body?.dialog?.dialog?.ani ?
                                           message?.body?.dialog?.dialog?.ani : message?.body?.dialog?.ani
-                                          }}</span>
+                                          }} -->
+                                          {{message.body.dialog.dialog.ani ? message.body.dialog.dialog.ani :
+                                          message.body.dialog.dialog.fromAddress}}
+                                        </span>
                                       </li>
                                       <li class="agent-pic call-notify">
                                         <span><img src="assets/images/incoming-call.svg"> </span>
@@ -669,14 +684,22 @@
                                           Services</p>
                                       </li> -->
                                       <li class="section-duration">
-                                        <time>{{message.body?.dialog?.dialog?.participants?.Participant[0]?.startTime ?
+                                        <time>
+                                          {{message.body.dialog.dialog.participants | timeDurationFromParticipant }}
+                                          <!-- {{message.body.dialog.dialog.participants.Participant[0].startTime |
+                                          timeDuration:message.body.dialog.dialog.participants.Participant[0].stateChangeTime
+                                          }} -->
+
+
+                                          <!-- {{message.body?.dialog?.dialog?.participants?.Participant[0]?.startTime ?
                                           message.body?.dialog?.dialog?.participants?.Participant[0]?.startTime :
                                           message.body?.dialog?.participants?.Participant[0]?.startTime|
                                           timeDuration:
                                           message.body?.dialog?.dialog?.participants?.Participant[0]?.stateChangeTime ?
                                           message.body?.dialog?.dialog?.participants?.Participant[0]?.stateChangeTime :
                                           message.body?.dialog?.participants?.Participant[0]?.stateChangeTime
-                                          }}</time>
+                                          }} -->
+                                        </time>
                                       </li>
                                       <li class="agent-pic call-notify">
                                         <span><img src="assets/images/call-end.svg"> </span>
@@ -698,7 +721,16 @@
                                   <li><label>Agent</label>:<span>{{_cacheService.agent.username}}</span></li>
                                   <li><label>CSQ </label>:<span>CSQ</span></li>
                                   <li><label>Call
-                                      Duration</label>:<span>{{message.body?.dialog?.dialog?.participants?.Participant[0]?.startTime
+                                      Duration</label>:<span>
+
+                                      {{message.body.dialog.dialog.participants | timeDurationFromParticipant }}
+
+                                      <!-- {{message.body.dialog.dialog.participants.Participant[0].startTime |
+                                      timeDuration:message.body.dialog.dialog.participants.Participant[0].stateChangeTime
+                                      }} -->
+
+
+                                      <!-- {{message.body?.dialog?.dialog?.participants?.Participant[0]?.startTime
                                       ? message.body?.dialog?.dialog?.participants?.Participant[0]?.startTime :
                                       message.body?.dialog?.participants?.Participant[0]?.startTime
                                       |
@@ -706,7 +738,8 @@
                                       message.body?.dialog?.dialog?.participants?.Participant[0]?.stateChangeTime ?
                                       message.body?.dialog?.dialog?.participants?.Participant[0]?.stateChangeTime :
                                       message.body?.dialog?.participants?.Participant[0]?.stateChangeTime
-                                      }}</span></li>
+                                      }} -->
+                                    </span></li>
                                   <li><label>Form UR</label>:<span>N/A</span></li>
                                   <li><label>Wrap-Up</label>:<span>N/A</span></li>
                                   <li><label>Recording URL</label>:<span>N/A</span></li>

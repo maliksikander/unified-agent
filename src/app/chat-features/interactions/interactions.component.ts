@@ -219,7 +219,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   endCallOnFinesse() {
-    console.log("in com==>",this.conversation)
+    console.log("in comp==>",this.conversation)
     let data = {
       action: "releaseCall",
       parameter: {

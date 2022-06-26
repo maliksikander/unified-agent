@@ -274,23 +274,23 @@ export class finesseService {
           let participants = this.dialogState.dialog.participants.Participant;
           if (Array.isArray(participants)) {
             participants.forEach((item) => {
-              console.log("item==>", item);
+              // console.log("item==>", item);
               let currentParticipant = item.mediaAddress == this.finesseAgent.extension ? item : undefined;
 
               if (currentParticipant) {
                 if (this.dialogState.dialog.state == "ACTIVE") {
                   if (currentParticipant.state == "ACTIVE") {
                     // console.log("participant 1==>", currentParticipant);
-                    console.log("talking convo id==>", this.voiceConversationId);
+                    // console.log("talking convo id==>", this.voiceConversationId);
 
                     this.timeoutId = setInterval(() => {
                       this.startTimer();
                     }, 1000);
                     if (this.voiceConversationId && this.voiceChannelSession) {
-                      console.log("12==>");
+                      // console.log("12==>");
                       this.createTaskAndTopicSubscriptionEvent(this.voiceConversationId, this.voiceChannelSession);
                     } else {
-                      console.log("13==>");
+                      // console.log("13==>");
                       this._snackbarService.open("No Conversation ID Found", "err");
                     }
                   } else if (currentParticipant.state == "DROPPED") {
@@ -299,7 +299,7 @@ export class finesseService {
                       this.min = 0;
                       this.sec = 0;
                     }
-                    console.log("is leave clicked in finesse 1==>", this.isLeaveButtonClicked);
+                    // console.log("is leave clicked in finesse 1==>", this.isLeaveButtonClicked);
                     if (!this.isLeaveButtonClicked) {
                       if (this.activeConversation) {
                         this.onCallEnd(this.activeConversation);
@@ -327,7 +327,7 @@ export class finesseService {
             });
           } else {
             if (participants.state == "DROPPED") {
-              console.log("end call==>", participants);
+              // console.log("end call==>", participants);
               if (this.timeoutId) {
                 clearInterval(this.timeoutId);
                 this.min = 0;
@@ -451,6 +451,7 @@ export class finesseService {
             mrdId: voiceMrdObj.mrd.id
           });
 
+          // rona
           if (resp.reasonCode && resp.reasonCode.label) {
             // console.log("rona 0.1==>");
             if (resp.reasonCode.label == ronaStateOnCisco) {
@@ -479,6 +480,23 @@ export class finesseService {
         }
       }
     } else if (resp.state.toLowerCase() == "talking") {
+      const voiceMrdObj = this.getVoiceMrd(this._cacheService.agentPresence.agentMrdStates);
+      if (voiceMrdObj.state.toLowerCase() == "pending_not_ready" || voiceMrdObj.state.toLowerCase() == "not_ready") {
+        this._socketService.emit("changeAgentState", {
+          agentId: this._cacheService.agent.id,
+          action: "agentMRDState",
+          state: "READY",
+          mrdId: voiceMrdObj.mrd.id
+        });
+      } else if (voiceMrdObj.state.toLowerCase() == "ready") {
+        console.log("check takling is failed==>");
+        this._socketService.emit("changeAgentState", {
+          agentId: this._cacheService.agent.id,
+          action: "agentMRDState",
+          state: "BUSY",
+          mrdId: voiceMrdObj.mrd.id
+        });
+      }
     }
   }
 

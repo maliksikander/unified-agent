@@ -12,6 +12,7 @@ export class timeDurationPipe implements PipeTransform {
     const hours = Math.abs(t1.getHours() - t2.getHours());
     const seconds = Math.abs(t1.getSeconds() - t2.getSeconds());
 
-    return hours + ":" + min + ":" + seconds;
+    let result = hours != 0 ? hours + "Hour " + min + "Min " + seconds + "Secs" : min + "Min " + seconds + "Secs";
+    return result;
   }
 }

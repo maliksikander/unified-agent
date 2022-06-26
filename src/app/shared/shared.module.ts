@@ -83,10 +83,12 @@ import { NgxTimerModule } from "ngx-timer";
 import { getSenderIdPipe } from "./pipes/getSenderId.pipe";
 import { AuthPipe } from "./pipes/auth.pipe";
 import { timeDurationPipe } from "./pipes/timeDuration.pipe";
+import { timeDurationFromParticipantPipe } from "./pipes/timeDurationFromParticipant.pipe";
 
 @NgModule({
   declarations: [
     getFormattedBytesPipe,
+    timeDurationFromParticipantPipe,
     timeDurationPipe,
     getMRDSwitchesPipe,
     RemoveUnderscorePipe,
@@ -272,7 +274,8 @@ import { timeDurationPipe } from "./pipes/timeDuration.pipe";
     channelNamePipe,
     getSenderIdPipe,
     timeDurationPipe,
-    AuthPipe
+    AuthPipe,
+    timeDurationFromParticipantPipe
   ]
 })
 export class SharedModule {}
