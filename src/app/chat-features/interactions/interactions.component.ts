@@ -97,8 +97,9 @@ export class InteractionsComponent implements OnInit {
     // setTimeout(() => {
     //   new EmojiPicker();
     // }, 500);
-
-    console.log("convo==>", this.conversation);
+    this._finesseService._ciscoDialogID.subscribe((res) => {
+      this.ciscoDialogId = res;
+    });
   }
 
   emoji() {}
@@ -181,19 +182,6 @@ export class InteractionsComponent implements OnInit {
   // }
 
   onLeaveClick() {
-    // let voiceSession: boolean = this._finesseService.checkForVoiceSession(this.conversation);
-    // let nonVoiceSession: boolean = this._finesseService.checkForNonVoiceSession(this.conversation);
-
-    // if (voiceSession && nonVoiceSession) {
-    //   this.closeConversationConfirmation();
-    // } else if (voiceSession && !nonVoiceSession) {
-    //   this.closeConversationConfirmation();
-    // } else if (!voiceSession && nonVoiceSession) {
-    //   this._socketService.topicUnsub(this.conversation);
-    // } else {
-    //   this._socketService.topicUnsub(this.conversation);
-    // }
-
     if (this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
       this.closeConversationConfirmation();
     } else {
@@ -210,7 +198,6 @@ export class InteractionsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.event == "confirm") {
         this._finesseService.isLeaveButtonClicked = true;
-        console.log("is leave clicked==>",this._finesseService.isLeaveButtonClicked)
         this.endCallOnFinesse();
         this._finesseService.emitEndChannelSessionEvent();
         this._socketService.topicUnsub(this.conversation);
@@ -219,11 +206,10 @@ export class InteractionsComponent implements OnInit {
   }
 
   endCallOnFinesse() {
-    console.log("in comp==>",this.conversation)
     let data = {
       action: "releaseCall",
       parameter: {
-        dialogId: this.conversation.ciscoDialogId
+        dialogId: this._socketService.ciscoDialogId ? this._socketService.ciscoDialogId : this.conversation.ciscoDialogId
       }
     };
     this._finesseService.endCallOnFinesse(data);

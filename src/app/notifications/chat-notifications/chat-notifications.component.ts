@@ -32,7 +32,6 @@ export class ChatNotificationsComponent implements OnInit {
       console.log("e==>", e);
       if (e.msg == "openPushModeRequestHeader") {
         this.pushModeRequests.push(e.data);
-        // this._finesseService.pushModeConversationList.next(this.pushModeRequests);
         this._soundService.playRing();
         if (e.data.cisco_data) {
           this._soundService.openBrowserNotification(
@@ -41,7 +40,7 @@ export class ChatNotificationsComponent implements OnInit {
           );
           this._finesseService.voiceChannelSessionSubject.next({
             conversationId: e.data.conversationId,
-            channelSession:e.data.channelSession
+            channelSession: e.data.channelSession
           });
         } else {
           this._soundService.openBrowserNotification(
@@ -67,12 +66,7 @@ export class ChatNotificationsComponent implements OnInit {
   ngOnInit() {
     this._finesseService.removeNotification.subscribe((res) => {
       if (res.identifier) {
-        let requestIndex = this.pushModeRequests.findIndex((item) => {
-          return item.channelSession.channelData.channelCustomerIdentifier == res.identifier;
-        });
-        if (requestIndex != -1) {
-          this.removePushModeRequestFromRequestArray(this.pushModeRequests[requestIndex].conversationId);
-        }
+        this.removeExternalModeRequestFromRequestArray(res.identifier, res.conversationId);
       } else {
         this.removePushModeRequestFromRequestArray(res.conversationId);
       }
@@ -91,7 +85,6 @@ export class ChatNotificationsComponent implements OnInit {
   }
 
   onAcceptCallback(conversationId, taskId, ciscoData = null) {
-    console.log("conversationId==>", conversationId);
     if (ciscoData) {
       this.acceptCall(conversationId, ciscoData);
     } else {
@@ -115,8 +108,18 @@ export class ChatNotificationsComponent implements OnInit {
     let index = this._sharedService.getIndexFromConversationId(conversationId, this.pushModeRequests);
     if (index != -1) {
       this._sharedService.spliceArray(index, this.pushModeRequests);
-      // this._sharedService.pushModeConversationList = this.pushModeRequests;
     }
+    this._soundService.stopRing();
+  }
+
+  removeExternalModeRequestFromRequestArray(identifier, conversationId) {
+    this.pushModeRequests.forEach((item, index) => {
+      if (item.conversationId == conversationId) {
+        if (item.channelSession.channelData.channelCustomerIdentifier == identifier) {
+          this.pushModeRequests.splice(index, 1);
+        }
+      }
+    });
     this._soundService.stopRing();
   }
 
