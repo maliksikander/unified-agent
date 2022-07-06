@@ -12,6 +12,7 @@ import { appConfigService } from "src/app/services/appConfig.service";
 import { httpService } from "src/app/services/http.service";
 import { finesseService } from "src/app/services/finesse.service";
 import { ConfirmationDialogComponent } from "src/app/new-components/confirmation-dialog/confirmation-dialog.component";
+import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
 
 declare var EmojiPicker: any;
 
@@ -455,5 +456,12 @@ export class InteractionsComponent implements OnInit {
   }
   onKeydown(event) {
     event.preventDefault();
+  }
+
+  openWrapUpDialog(e): void {
+    this.dialog.open(WrapUpFormComponent, {
+      panelClass: "wrap-dialog",
+      data: { header: e }
+    });
   }
 }
