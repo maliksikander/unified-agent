@@ -45,18 +45,16 @@ export class WrapUpFormComponent implements OnInit {
     }
     console.log(this.categoriesList, "categoriesList");
   }
-  removeWrapupCategories(e: any, isChecked: boolean) {
-    const index = this.categoriesList.indexOf(e);
-    this.categoriesList.splice(index, 1);
-    this.selectedWrapUpList.splice(index);
-  }
+  // removeWrapupCategories(e: any) {
+  //   const index = this.categoriesList.indexOf(e);
+  //   this.categoriesList.splice(index, 1);
+  //   this.selectedWrapUpList.splice(index);
+  // }
 
-  removeWrapupLabels(e: any, isChecked: boolean) {
-    const index = this.selectedWrapUpList.indexOf(e);
-    this.selectedWrapUpList.splice(index, 1);
-  }
-
-  //
+  // removeWrapupLabels(e: any, isChecked: boolean) {
+  //   const index = this.selectedWrapUpList.indexOf(e);
+  //   this.selectedWrapUpList.splice(index, 1);
+  // }
 
   add(event: any): void {
     const value = (event.value || "").trim();
@@ -101,7 +99,7 @@ export class WrapUpFormComponent implements OnInit {
 
   selectWrapup(category, wrapup) {
     let obj = {
-      category,
+      categoryName: category,
       value: wrapup
     };
     if (this.selectedWrapUpList.length === 0) {
@@ -109,7 +107,7 @@ export class WrapUpFormComponent implements OnInit {
     }
 
     const index = this.selectedWrapUpList.findIndex((item) => {
-      return item.category == category && item.value == wrapup;
+      return item.categoryName == category && item.value == wrapup;
     });
 
     if (this.categoryOptions.isMultipleChoice == true) {
@@ -179,5 +177,6 @@ export class WrapUpFormComponent implements OnInit {
 
   onSave() {
     console.log("check-->", this.notesFormCtrl.value);
+    console.log("check2-->", this.selectedWrapUpList);
   }
 }

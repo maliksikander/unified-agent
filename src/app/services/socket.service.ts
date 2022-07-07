@@ -13,7 +13,6 @@ import { NgxUiLoaderService } from "ngx-ui-loader";
 import { httpService } from "./http.service";
 import { v4 as uuidv4 } from "uuid";
 import { AuthService } from "./auth.service";
-import { finesseService } from "./finesse.service";
 import { TopicParticipant } from "../models/User/Interfaces";
 // const mockTopicData: any = require("../mocks/topicData.json");
 

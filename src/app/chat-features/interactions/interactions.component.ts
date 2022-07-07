@@ -461,7 +461,7 @@ export class InteractionsComponent implements OnInit {
   openWrapUpDialog(e): void {
     this.dialog.open(WrapUpFormComponent, {
       panelClass: "wrap-dialog",
-      data: { header: e }
+      data: { header: e, conversation: this.conversation }
     });
   }
 }

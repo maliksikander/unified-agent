@@ -2948,3 +2948,14 @@ body .ui-paginator {
     font-size: 9px;
   }
 }
+
+.categories-search{
+  .mat-form-field-underline{
+    display: none;
+  }
+
+  .mat-form-field-wrapper{
+    padding-bottom: 0 !important;
+  }
+}
+
