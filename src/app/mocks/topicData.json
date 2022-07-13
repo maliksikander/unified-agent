@@ -9132,9 +9132,28 @@
               "markdownText": "",
               "type": "WRAPUP",
               "wrapups": [
-
+                  {
+                      "categoryName": "Category2",
+                      "value": "Option1"
+                  },
+                  {
+                    "categoryName": "Category1",
+                    "value": "Option1"
+                  },
+                  {
+                    "categoryName": "Category2",
+                    "value": "Option1"
+                },
+                {
+                  "categoryName": "Category1",
+                  "value": "Option1"
+                },
+                {
+                  "categoryName": "Category2",
+                  "value": "Option1"
+                }
               ],
-              "note": "nknkkkfgsweggweegwegjknwngvkwenbenboewlnerlnbelbknbnenbrnbnbenknkkkfgsweggwee11 gwegjknwngvkwenbenboewlnerlnbelbknbnenbrnbnbenknkkkfgsweggweegwegjknwngvkwenbenboewlnerlnbelbknbnenbrnbnbenknkkkfgsweggweegwegjknwngvkwenbenboewlnerlnbelbknbnenbrnbnbenknkkkfgsweggweegwegjknwngvkwenbenboewlnerlnbelbknbnenbrnbnbenknkkkfgsweggweegwegjknwngvkwenbenboewlnerlnbelbknbnenbrnbnbenknkkkfgsweggweegwegjknwngvkwenbenboewlnerlnbelbknbnenbrnbnbenknkkkfgsweggweegwegjknwngvkwenbenboewlnerlnbelbknbnenbrnbnbenknkkkfgsweggweegwegjknwngvkwenbenboewlnerlnbelbknbnenbrnbnbenknkkkfgsweggweegwegjknwngvkwenbenboewlnerlnbelbknbnenbrnbnbenknkkkfgsweggweegwegjknwngvkwenbenboewlnerlnbelbknbnenbrnbnbenknkkkfgsweggweegwegjknwngvkwenbenboewlnerlnbelbknbnenbrnbnbenknkkkfgsweggweegwegjknwngvkwenbenboewlnerlnbelbknbnenbrnbnbenknkkkfgsweggweegwegjknwngvkwenbenboewlnerlnbelbknbnenbrnbnbe"
+              "note": "nknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkknknkkk"
           }
       }
   }
