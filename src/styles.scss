@@ -2959,3 +2959,114 @@ body .ui-paginator {
   }
 }
 
+//Wrap-up preview if single selection
+
+
+
+
+
+//Custom Tooltip
+.wrap-tooltip{
+background: #4773B5;
+color: #fff;
+font-size: 10px;
+padding: 3px 10px !important;
+margin-top: 8px !important;
+}
+
+span.note-icon {
+  height: 24px;
+  line-height: 24px;
+  position: relative;
+  padding-left: 8px;
+  margin-left: 8px;
+  mat-icon{
+    color: $highlight-color;
+    font-size: 22px;
+    line-height: 24px;
+  }
+
+  &:before{
+    content: "";
+    height: 18px;
+    padding: 2px;
+    border-left: 1px solid #ccc;
+    position: absolute;
+    left: 0;
+    top: 3px;
+    }
+}
+
+// .wrapup{
+//   // .wrap-up-main{
+
+//   // .mat-expansion-panel{
+//     .mat-expanded{
+//       .mat-expansion-panel-header{
+//         padding-left: 0;
+//           p{
+//             text-overflow: inherit !important;
+//             // overflow: hidden;
+//             white-space: pre-wrap !important;
+//           }
+//       }
+//     }
+
+
+//     // }
+
+//     .mat-expansion-panel-header{
+//       padding-left: 0;
+//         p{
+//           // text-overflow: ellipsis !important;
+//           // overflow: hidden !important;
+//           // white-space: pre !important;
+//           &:after{
+//             border-right: 0 !important
+//           }
+//         }
+//     }
+
+//     .mat-expansion-panel-body {
+//       padding: 0 15px 10px ;
+//   }
+
+//     .file-type-stamp{
+//       display: none !important;
+//     }
+
+//     .wrap-up-header ul{
+//       &:after,&:before{
+//         display: none !important;
+//       }
+//     }
+
+
+
+//   // }
+// }
+
+// .single-wrap {
+//   .mat-expansion-panel-content{
+//     display: none !important;
+//     visibility: hidden !important;
+//   }
+//   }
+
+//   .dual-wrap{
+//     &.mat-expanded {
+//       .note-icon{
+//         display: none;
+//       }
+//       .mat-expansion-panel-content{
+//         display: flex;
+//       }
+//     }
+
+//   .mat-expansion-panel-content{
+//     display: none;
+//   }
+//     p{
+//       margin-top: 10px;
+//     }
+//   }

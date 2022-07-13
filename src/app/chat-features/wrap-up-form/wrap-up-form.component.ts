@@ -1,12 +1,11 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from "@angular/core";
-import { MAT_DIALOG_DATA, MatAutocompleteSelectedEvent } from "@angular/material";
+import { MAT_DIALOG_DATA, MatAutocompleteSelectedEvent, MatDialogRef } from "@angular/material";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { FormControl } from "@angular/forms";
 import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import { httpService } from "src/app/services/http.service";
 import { sharedService } from "src/app/services/shared.service";
-import { ThrowStmt } from "@angular/compiler";
 
 @Component({
   selector: "app-wrap-up-form",
@@ -28,7 +27,12 @@ export class WrapUpFormComponent implements OnInit {
   wrapUpData;
   categoryOptions;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private _httpService: httpService, private _sharedService: sharedService) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private _httpService: httpService,
+    private _sharedService: sharedService,
+    private dialogRef: MatDialogRef<WrapUpFormComponent>
+  ) {}
 
   ngOnInit() {
     this.wrapUpData = this.data;
@@ -175,8 +179,15 @@ export class WrapUpFormComponent implements OnInit {
     this.singleValueList = list;
   }
 
+  closeDialog() {
+    this.dialogRef.close({ event: "close" });
+  }
+
   onSave() {
-    console.log("check-->", this.notesFormCtrl.value);
-    console.log("check2-->", this.selectedWrapUpList);
+    let data = {
+      wrapups: this.selectedWrapUpList,
+      note: this.notesFormCtrl.value ? this.notesFormCtrl.value : ""
+    };
+    this.dialogRef.close({ event: "apply", data });
   }
 }
