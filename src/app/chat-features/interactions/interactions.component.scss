@@ -2322,7 +2322,7 @@ vg-controls.hide {
   p, ul{
     text-overflow: ellipsis;
     overflow: hidden;
-    white-space: pre !important;
+    white-space: pre;
     margin: 0;
     font-size: 13px;
     color: #333;
