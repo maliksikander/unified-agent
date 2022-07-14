@@ -325,7 +325,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?, wrapups?, note?) {
-    console.log("msg==>",msgType)
+    console.log("msg==>", msgType);
     let message: any = {
       id: "",
       header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
@@ -376,20 +376,14 @@ export class InteractionsComponent implements OnInit {
       }
 
       let event: any = new CimEvent("AGENT_MESSAGE", "MESSAGE", this.conversation.conversationId, message);
-      console.log("event meesss==>",event)
-      // this._socketService.emit("publishCimEvent", {
-      //   cimEvent: new CimEvent("AGENT_MESSAGE", "MESSAGE", this.conversation.conversationId, message),
-      //   agentId: this._cacheService.agent.id,
-      //   conversationId: this.conversation.conversationId
-      // });
-      // setTimeout(() => {
-      //   this._socketService.onCimEventHandler(event, "12345");
-
-      // }, 5000);
+      this._socketService.emit("publishCimEvent", {
+        cimEvent: event,
+        agentId: this._cacheService.agent.id,
+        conversationId: this.conversation.conversationId
+      });
 
       event.data.header["status"] = "sending";
       this.conversation.messages.push(event.data);
-      // this.downTheScrollAfterMilliSecs(50, "smooth");
 
       setTimeout(() => {
         this.message = "";
@@ -474,7 +468,7 @@ export class InteractionsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((res) => {
       if (res.event == "apply") {
         console.log("tester==>", res);
-        this.constructAndSendCimEvent("wrapup", "", "", "", "",res.data.wrapups,res.data.note);
+        this.constructAndSendCimEvent("wrapup", "", "", "", "", res.data.wrapups, res.data.note);
       }
     });
   }

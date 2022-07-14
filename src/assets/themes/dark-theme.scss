@@ -1156,4 +1156,19 @@ $theme: mat-light-theme($primary, $accent, $warn);
   color: mat-contrast($dark-primary,600) !important;
 }
 
+.wrapup .mat-expansion-panel-header ul, .wrapup .mat-expansion-panel-header p {
+  color: mat-contrast($dark-primary,600) !important;
+}
+
+.wrap-code li {
+  color: mat-contrast($dark-primary,600) !important;
+  // color: #000;
+}
+
+.instruction-content mat-expansion-panel-header.mat-expanded {
+  background: mat-color($dark-primary,400) !important;
+  // border-radius: 0;
+  // margin-bottom: 10px;
+}
+
 }

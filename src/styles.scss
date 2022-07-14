@@ -2998,6 +2998,7 @@ span.note-icon {
 }
 
  .wrapup{
+
    .chat-message-content{
      display: block !important;
    }
@@ -3069,3 +3070,9 @@ span.note-icon {
        display: none !important;
      }
    }
+
+   .categories-search {
+    .mat-form-field-appearance-fill .mat-form-field-flex {
+      background-color: transparent !important;
+  }
+}
