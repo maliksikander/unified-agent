@@ -24,7 +24,7 @@ export class LabelsListComponent implements OnInit {
   loadLabels() {
     this._httpService.getLabels().subscribe(
       (e) => {
-        this.labels = e.data;
+        this.labels = e;
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");

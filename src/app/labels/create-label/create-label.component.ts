@@ -22,7 +22,7 @@ export class CreateLabelComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
-  name = new FormControl("", [Validators.required, Validators.maxLength(100)], this.ValidateNameDuplication.bind(this));
+  name = new FormControl("", [Validators.required, Validators.maxLength(10)], this.ValidateNameDuplication.bind(this));
   open: boolean = false;
   nameToBeMatched;
   currentColor = "#a9a9a9";
@@ -87,9 +87,9 @@ export class CreateLabelComponent implements OnInit {
   ValidateNameDuplication(control: AbstractControl) {
     return this._httpService.getLabels().pipe(
       map((e) => {
-        const labels = e.data;
+        const labels = e;
 
-        if (this.data.action == "new" && labels.find((e) => e.name == control.value)) {
+        if (this.data.action == "new" && labels && labels.find((e) => e.name == control.value)) {
           return { validName: true };
         }
 

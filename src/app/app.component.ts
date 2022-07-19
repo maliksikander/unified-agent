@@ -61,7 +61,6 @@ export class AppComponent implements OnInit {
   updateTheme(theme: string) {
     try {
       this._httpService.updateUserTheme({ theme: theme }, this._cacheService.agent.id).subscribe((e) => {
-        console.log(`theme setting for user ${this._cacheService.agent.id} updated to`, e);
       });
     } catch (err) {
       console.log(`error updating theme`, err);
@@ -83,7 +82,6 @@ export class AppComponent implements OnInit {
       this.timer = setTimeout(() => {
         this.updateTheme("light");
       }, 5000);
-      console.log("removing dark theme", e);
       this.overlay.getContainerElement().classList.remove(darkClassName);
     }
   }

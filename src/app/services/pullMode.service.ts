@@ -121,7 +121,6 @@ export class pullModeService {
     });
     // this will close the notification header from main screen
     this._sharedService.serviceChangeMessage({ msg: "closePullModeRequestHeader", data: reqId });
-    console.log("this.subscribedListRequests after deleted ", this.subscribedListRequests);
     this.updateRequestArrayRef();
   }
 

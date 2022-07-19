@@ -13,7 +13,7 @@
         <div class="form-group label-name col-md-6">
           <label class="text-left">Label <span class="mandatory-steric">*</span></label>
           <mat-form-field appearance="outline">
-            <input formControlName="label" matInput>
+            <input [ngClass]="{'not-allowed' : editAttributeForm.value.key=='labels'}" [readonly]="editAttributeForm.value.key=='labels'" formControlName="label" matInput>
             <mat-error *ngIf="editAttributeForm.get('label')?.errors?.required">
               *Field is required
             </mat-error>
@@ -59,7 +59,7 @@
         <div *ngIf="editAttributeForm.value.type == 'string'" class="form-group label-name col-md-3 characters-length">
           <label class="text-left">Number of Characters</label>
           <mat-form-field appearance="outline">
-            <input (keyup)="onLengthChange()" type="number" matInput formControlName="length">
+            <input [ngClass]="{'not-allowed' : editAttributeForm.value.key=='labels'}" [readonly]="editAttributeForm.value.key=='labels'" (keyup)="onLengthChange()" type="number" matInput formControlName="length">
             <mat-error *ngIf="editAttributeForm.get('length')?.errors?.required">
               *Field is required
             </mat-error>
@@ -81,7 +81,7 @@
             formControlName="isRequired" (change)="onRequiredValueChange($event)" color="primary">Mandatory
             Attribute</mat-checkbox>
         </div>
-        <div class="form-group label-name  default-value" *ngIf="editAttributeForm.value.isRequired">
+        <div class="form-group label-name  default-value" [hidden]="editAttributeForm.value.key == 'labels'" *ngIf="editAttributeForm.value.isRequired">
           <label class="text-left">Default Value <span class="mandatory-steric">*</span></label>
           <mat-form-field appearance="outline">
             <input formControlName="defaultValue" matInput>

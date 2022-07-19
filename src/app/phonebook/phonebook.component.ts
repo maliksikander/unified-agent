@@ -303,7 +303,6 @@ export class PhonebookComponent implements OnInit {
       }
     });
     completeSelectedCustomer["_id"] = selectedCustomer._id;
-    console.log("selected customers from phonebook", completeSelectedCustomer);
     this._socketService.linkCustomerWithTopic(completeSelectedCustomer, this.conversationId);
   }
   backToChat() {}

@@ -16,7 +16,7 @@ export class httpService {
       customerSchema: "/customerSchema",
       schemaTypes: "/attributeTypes",
       customers: "/customers",
-      labels: "/agent/labels",
+      labels: "/label",
       userPreference: "/userPreference",
       pullModeList: "/agent/pull-mode-list",
       fileServer: "/api/downloadFileStream?filename=",
@@ -263,7 +263,7 @@ export class httpService {
   ////////////////////////
 
   getLabels(): Observable<any> {
-    return this._httpClient.get<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.labels, {
+    return this._httpClient.get<any>(this._appConfigService.config.CIM_CUSTOMER_URL + this.apiEndpoints.labels, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
@@ -271,7 +271,7 @@ export class httpService {
   }
 
   createLabel(label): Observable<any> {
-    return this._httpClient.post<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.labels, label, {
+    return this._httpClient.post<any>(this._appConfigService.config.CIM_CUSTOMER_URL + this.apiEndpoints.labels, label, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
@@ -279,7 +279,7 @@ export class httpService {
   }
 
   updateLabel(id, label): Observable<any> {
-    return this._httpClient.put<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.labels + "?id=" + id, label, {
+    return this._httpClient.put<any>(this._appConfigService.config.CIM_CUSTOMER_URL + this.apiEndpoints.labels + "?_id=" + id, label, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
@@ -287,7 +287,7 @@ export class httpService {
   }
 
   deleteLabel(id): Observable<any> {
-    return this._httpClient.delete<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.labels + "?id=" + id, {
+    return this._httpClient.delete<any>(this._appConfigService.config.CIM_CUSTOMER_URL + this.apiEndpoints.labels + "?_id=" + id, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })

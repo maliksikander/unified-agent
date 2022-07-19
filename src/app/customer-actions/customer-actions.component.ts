@@ -19,6 +19,21 @@ export class CustomerActionsComponent implements OnInit {
   userInfo;
   schemaAttributes;
   customerForm: FormGroup;
+  customerLabels = [];
+  labels = [];
+  labelSettings = {
+    singleSelection: false,
+    text: "",
+    filterSelectAllText: "Select all",
+    filterUnSelectAllText: "Unselect all",
+    searchPlaceholderText: "Search",
+    selectAllText: "Select all",
+    unSelectAllText: "Unselect all",
+    noDataLabel: "No Data Available",
+    enableSearchFilter: true,
+    addNewItemOnFilter: true,
+    primaryKey: "_id"
+  };
   userIni: boolean = false;
   schemaIni: boolean = false;
   editTab: boolean = false;
@@ -65,20 +80,41 @@ export class CustomerActionsComponent implements OnInit {
 
   ngOnInit() {
     this.customerForm = new FormGroup({});
-
+    this.getCustomerById()
     // let query = { field: "_id", value: this.data.id };
-    this.getCustomerByID();
+
+  }
+  getAllLabels()
+  {
+    this._httpService.getLabels().subscribe(
+    (e) => {
+     this.labels=e;
+     if (Array.isArray(this.userInfo.labels))
+     {
+     this.fetchCustomerLabels();
+     }
+     else
+     {
+      this.userInfo.labels=[]
+     }
+    },
+    (error) => {
+      this._sharedService.Interceptor(error.error, "err");
+    }
+  );
   }
 
-  getCustomerByID() {
+  getCustomerById() {
     this._httpService.getCustomerById(this.data.id).subscribe((res) => {
-      // console.log("customer==>", res);
       this.userInfo = res;
       this.userIni = true;
+      this.getAllLabels();
       this.getCustomerSchema();
+    },(err)=>
+    {
+      console.log("error getting customer by Id",err)
     });
   }
-
   getCustomerSchema() {
     this._httpService.getCustomerSchema().subscribe((res) => {
       let temp = res.filter((item) => item.key != "isAnonymous");
@@ -132,6 +168,7 @@ export class CustomerActionsComponent implements OnInit {
       console.error("Error in converting array to object method :", e);
     }
   }
+
 
   // adding forms controls to existing form group using attributes in from schema as `attrSchema` parameter
   addFormControls(attrSchema: Array<any>) {
@@ -253,9 +290,17 @@ export class CustomerActionsComponent implements OnInit {
   onSave() {
     let customerObj = this.customerForm.value;
     customerObj.isAnonymous = this.userInfo.isAnonymous;
+    customerObj = this.fetchTheIdsOfLabels(customerObj);
     this.updateCustomer(customerObj);
   }
-
+  fetchTheIdsOfLabels(obj) {
+    let ids = [];
+    obj.labels.filter((e) => {
+      ids.push(e._id);
+    });
+    obj.labels = ids;
+    return obj;
+  }
   updateCustomer(customerObj) {
     let id = this.userInfo._id;
     this._httpService.updateCustomerById(id, customerObj).subscribe(
@@ -314,13 +359,13 @@ export class CustomerActionsComponent implements OnInit {
     return filename;
   }
 
-  // checkType(label) {
-  //   if (label == "Label12") {
-  //     return "textarea";
-  //   } else {
-  //     return "text";
-  //   }
-  // }
+  checkType(label) {
+    if (label == "Label12") {
+      return "textarea";
+    } else {
+      return "text";
+    }
+  }
 
   // deleteCustomer() {
   //   const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -344,65 +389,56 @@ export class CustomerActionsComponent implements OnInit {
   // }
 
   // save(a) {}
-  // onItemSelect(item: any) {}
-  // OnItemDeSelect(item: any) {}
-  // onSelectAll(items: any) {}
-  // onDeSelectAll(items: any) {}
+  onItemSelect(item: any) {}
+  OnItemDeSelect(item: any) {}
+  onSelectAll(items: any) {}
+  onDeSelectAll(items: any) {}
 
-  // onAddItem(data) {
-  //   this._httpService.getLabels().subscribe((e) => {
-  //     let duplicate: boolean = false;
-  //     e.data.find((label) => {
-  //       if (label.name == data) {
-  //         duplicate = true;
-  //       }
-  //     });
-  //     if (duplicate) {
-  //       this._sharedService.snackErrorMessage("Name already exists");
-  //     } else if (data.length > 100) {
-  //       this._sharedService.snackErrorMessage("Max length is 100");
-  //     } else {
-  //       let obj = {
-  //         name: data,
-  //         created_by: this._cacheService.agent.username,
-  //         color_code: "#a9a9a9"
-  //       };
-  //       this._httpService.createLabel(obj).subscribe(
-  //         (e) => {
-  //           this._httpService.getLabels().subscribe((ee) => {
-  //             this.labels = ee.data;
-  //             this.customerLabels.push(e.data);
-  //             this.editCustomerForm.get("labels").patchValue(this.customerLabels);
-  //             this._sharedService.serviceChangeMessage({ msg: "update-labels", data: null });
-  //           });
-  //         },
-  //         (error) => {
-  //           this._sharedService.Interceptor(error.error, "err");
-  //         }
-  //       );
-  //     }
-  //   });
-  // }
-  // fetchTheIdsOfLabels(obj) {
-  //   let ids = [];
-  //   if (obj.labels[0]) {
-  //     obj.labels.filter((e) => {
-  //       ids.push(e._id);
-  //     });
-  //   }
-  //   obj.labels = ids;
-  //   return obj;
-  // }
+  onAddItem(data) {
+    this._httpService.getLabels().subscribe((e) => {
+      let duplicate: boolean = false;
+      e.find((label) => {
+        if (label.name == data) {
+          duplicate = true;
+        }
+      });
+      if (duplicate) {
+        this._sharedService.snackErrorMessage("Name already exists");
+      } else if (data.length > 100) {
+        this._sharedService.snackErrorMessage("Max length is 100");
+      } else {
+        let obj = {
+          name: data,
+          created_by: this._cacheService.agent.username,
+          color_code: "#a9a9a9"
+        };
+        this._httpService.createLabel(obj).subscribe(
+          (e) => {
+            this._httpService.getLabels().subscribe((ee) => {
+              this.labels = ee;
+              this.customerLabels.push(e);
+              this.customerForm.get("labels").patchValue(this.customerLabels);
+              this._sharedService.serviceChangeMessage({ msg: "update-labels", data: null });
+            });
+          },
+          (error) => {
+            this._sharedService.Interceptor(error.error, "err");
+          }
+        );
+      }
+    });
+  }
 
-  // fetchCustomerLabels() {
-  //   this.userInfo.labels.filter((id) => {
-  //     this.labels.filter((label) => {
-  //       if (label._id == id) {
-  //         this.customerLabels.push(label);
-  //       }
-  //     });
-  //   });
-
-  //   this.editCustomerForm.get("labels").patchValue(this.customerLabels);
-  // }
+  fetchCustomerLabels() {
+    this.userInfo.labels.forEach((id) => {
+      let find = this.labels.find((label) => {
+        return label._id == id
+      });
+      if(find)
+      {
+        this.customerLabels.push(find);
+      }
+    });
+    this.userInfo.labels=this.customerLabels
+  }
 }

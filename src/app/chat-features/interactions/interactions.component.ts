@@ -92,7 +92,6 @@ export class InteractionsComponent implements OnInit {
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
     }
-    console.log("conversation messages for checking", this.conversation.messages);
     this.convers = this.conversation.messages;
     // setTimeout(() => {
     //   new EmojiPicker();

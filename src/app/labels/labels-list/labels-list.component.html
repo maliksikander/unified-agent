@@ -16,7 +16,7 @@
         <span matTooltip="{{label.name}}" class="name">{{label.name}}</span>
         <span (click)="showMeta(label._id)" class="more-vert"><mat-icon>more_vert</mat-icon></span>
         <div (mouseleave)="showMetaDIv = false" *ngIf="showMetaDIv && metaDivId == label._id" class="meta">
-          <div *ngIf="label.created_by"> Create By : {{label.created_by}}</div>
+          <div *ngIf="label.created_by"> Created By : {{label.created_by}}</div>
         <div> Created At : {{label.createdAt | date :'shortDate'}}</div>
         <div *ngIf="label.updated_by"> Updated By : {{label.updated_by}}</div>
         <div *ngIf="label.updatedAt"> Updated At : {{label.updatedAt | date :'shortDate'}}</div>

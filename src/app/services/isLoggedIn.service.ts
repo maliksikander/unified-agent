@@ -137,7 +137,6 @@ export class isLoggedInService {
     // for a pc device the fcm is created by the agent-gadget it-self
     try {
       const url = this._location.path();
-      console.log("url is", url);
       await this._fcmService.requestPermission();
       if (url.includes("/active-chats")) {
         this._router.navigate([`supervisor/active-chats`]);

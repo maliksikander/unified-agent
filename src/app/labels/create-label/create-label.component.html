@@ -13,8 +13,8 @@
       <mat-error class="mrg-top" *ngIf="name.hasError('required')">
         field is mandatory
       </mat-error>
-      <mat-error class="mrg-top" *ngIf="name.hasError('max')">
-        Range should be 1 - 1000
+      <mat-error class="mrg-top" *ngIf="name.hasError('maxLength')">
+        Range should be 1 - 100
       </mat-error>
       <mat-error class="mrg-top" *ngIf="name.hasError('validName')">
         That name Already Exists

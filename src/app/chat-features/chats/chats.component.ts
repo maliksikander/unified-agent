@@ -20,6 +20,5 @@ export class ChatsComponent implements OnInit {
     let index = event.index;
     this.currentTabIndex = index;
     this._sharedService.matCurrentTabIndex = index;
-    console.log("tabChanged: index = ", index);
   }
 }

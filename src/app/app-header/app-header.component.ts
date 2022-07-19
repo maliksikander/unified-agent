@@ -115,7 +115,6 @@ export class AppHeaderComponent implements OnInit {
     if (this._cacheService.agent.id) {
       this._httpService.getUserTheme(this._cacheService.agent.id).subscribe(
         (e) => {
-          console.log("theme setting is", e);
           if (e.theme == "dark") {
             this.themeSwitch();
           }

@@ -97,13 +97,11 @@ export class CustomerInfoComponent implements OnInit {
     });
   }
   customerInfoToggle() {
-    console.log("lll");
     this.barOpened = !this.barOpened;
     this.expandCustomerInfo.emit(this.barOpened);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("changes ", changes);
     if (changes.customer && changes.customer.currentValue != undefined) {
       this.customer = null;
       this.customer = changes.customer.currentValue;

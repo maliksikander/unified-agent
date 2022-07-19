@@ -21,7 +21,7 @@
 
             <!-- For Character length less than equal to 115  -->
             <ng-container *ngIf="schemaAttribute.isChannelIdentifier == false">
-              <div class="field-set" *ngIf="schemaAttribute.type != 'boolean'">
+              <div class="field-set" *ngIf="schemaAttribute.type != 'boolean' && schemaAttribute.key != 'labels'">
 
                 <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
                     *ngIf="schemaAttribute.isRequired">*</span>
@@ -181,33 +181,33 @@
           </div> -->
 
             <!-- Label   -->
-            <!-- <div class="field-set" *ngIf="schemaAttribute.type == 'label'">
-            <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
-                *ngIf="schemaAttribute.is_required">*</span>
-            </label>
-            <div class="drop">
-              <angular2-multiselect [data]="labels" [(ngModel)]="customerLabels" [settings]="labelSettings"
-                (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
-                (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
-                (onAddFilterNewItem)="onAddItem($event)" formControlName="{{schemaAttribute.key}}">
+            <div class="field-set" *ngIf="schemaAttribute.key == 'labels'">
+              <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
+                  *ngIf="schemaAttribute.is_required">*</span>
+              </label>
+              <div class="drop">
+                <angular2-multiselect [data]="labels"  [settings]="labelSettings"
+                  (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
+                  (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
+                  (onAddFilterNewItem)="onAddItem($event)" formControlName="{{schemaAttribute.key}}">
 
-                <c-badge>
-                  <ng-template let-item="item">
-                    <div class="dot" [ngStyle]="{'background-color':item.color_code}"></div>
+                  <c-badge>
+                    <ng-template let-item="item">
+                      <div class="dot" [ngStyle]="{'background-color':item.color_code}"></div>
 
-                    <label style="margin: 0px;">{{item.name}}</label>
-                  </ng-template>
-                </c-badge>
-                <c-item>
-                  <ng-template let-item="item">
-                    <div class="dot" [ngStyle]="{'background-color':item.color_code}"></div>
+                      <label style="margin: 0px;">{{item.name}}</label>
+                    </ng-template>
+                  </c-badge>
+                  <c-item>
+                    <ng-template let-item="item">
+                      <div class="dot" [ngStyle]="{'background-color':item.color_code}"></div>
 
-                    <label style="color: #333;min-width: 150px;">{{item.name}}</label>
-                  </ng-template>
-                </c-item>
-              </angular2-multiselect>
+                      <label style="color: #333;min-width: 150px;">{{item.name}}</label>
+                    </ng-template>
+                  </c-item>
+                </angular2-multiselect>
+              </div>
             </div>
-          </div> -->
 
           </div>
         </div>

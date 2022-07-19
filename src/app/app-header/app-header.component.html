@@ -21,10 +21,10 @@
           routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
           <span>Customer List View</span>
         </button>
-        <!-- <button routerLink="/label" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item
+        <button routerLink="/label" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item
           class="main-menu-item">
           <span>Customer Labels</span>
-        </button> -->
+        </button>
         <button *ngIf="('subscribed-list' | authPipe : 'view') as result" routerLink="/subscribed-list"
           routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
           <span>Subscribed Lists</span>
@@ -35,13 +35,13 @@
         </button>
         <button mat-menu-item [matMenuTriggerFor]="supervisor"
           *ngIf="('supervisor-dashboard' | authPipe : 'view') as result" mat-menu-item class="main-menu-item">
-          <span>Summary Dashboard</span>
+          <span>Dashboard</span>
         </button>
       </mat-menu>
       <mat-menu #supervisor="matMenu">
         <button routerLink="/supervisor/dashboards" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
           mat-menu-item class="main-menu-item">
-          <span>Dashboards</span>
+          <span>Summary Dashboard</span>
         </button>
         <button routerLink="/supervisor/active-chats" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
           mat-menu-item class="main-menu-item">

@@ -61,7 +61,7 @@ export class QueueChatsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {});
   }
   filterData() {
-    console.log("Filter Selected for Queued Chats", this.FilterSelected);
+    // console.log("Filter Selected for Queued Chats", this.FilterSelected);
     if (this.FilterSelected == "all") {
       this.filteredData = this.queuedChatList;
     } else {
@@ -75,7 +75,7 @@ export class QueueChatsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log("The dialog was closed");
+      // console.log("The dialog was closed");
     });
   }
   ngOnDestroy(): void {

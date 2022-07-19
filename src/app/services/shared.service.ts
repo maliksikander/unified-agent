@@ -18,7 +18,6 @@ export class sharedService {
   channelLogoMapper = new Map();
   serviceCurrentMessage = new Subject();
   channelTypeList;
-
   serviceChangeMessage(data: any) {
     this.serviceCurrentMessage.next(data);
   }

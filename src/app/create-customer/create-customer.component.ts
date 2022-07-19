@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, DateAdapter } from "@angula
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from "@angular/forms";
 import { httpService } from "../services/http.service";
 import { sharedService } from "../services/shared.service";
+import { cacheService } from "../services/cache.service";
 import { snackbarService } from "../services/snackbar.service";
 
 @Component({
@@ -23,6 +24,7 @@ export class CreateCustomerComponent implements OnInit {
     private fb: FormBuilder,
     private _httpService: httpService,
     private _sharedService: sharedService,
+    private _cacheService: cacheService,
     private cd: ChangeDetectorRef,
     private snackbarService: snackbarService
   ) {
@@ -56,6 +58,7 @@ export class CreateCustomerComponent implements OnInit {
     this.customerForm = new FormGroup({});
 
     this.getCustomerSchema();
+    this.getALLLabels()
     this.cd.detectChanges();
   }
 
@@ -70,6 +73,17 @@ export class CreateCustomerComponent implements OnInit {
       this.channelTypeList = this._sharedService.channelTypeList;
       this.getAttributeTypes();
     });
+  }
+  getALLLabels()
+  {
+    this._httpService.getLabels().subscribe(
+    (e) => {
+     this.labels=e;
+    },
+    (error) => {
+      this._sharedService.Interceptor(error.error, "err");
+    }
+  );
   }
 
   // adding forms controls to existing form group using attributes in from schema as `attrSchema` parameter
@@ -176,8 +190,13 @@ export class CreateCustomerComponent implements OnInit {
     control.removeAt(i);
   }
 
+
   onSave() {
     let data = this.customerForm.value;
+    if(data.labels=="")
+      data.labels=[]
+    console.log("data on save ",data)
+    data = this.fetchTheIdsOfLabels(data);
     data.isAnonymous = false;
     // console.log("save result==>", data);
     this.createCustomer(data);
@@ -203,53 +222,53 @@ export class CreateCustomerComponent implements OnInit {
     );
   }
 
-  // fetchTheIdsOfLabels(obj) {
-  //   let ids = [];
-  //   obj.labels.filter((e) => {
-  //     ids.push(e._id);
-  //   });
-  //   obj.labels = ids;
-  //   return obj;
-  // }
+  fetchTheIdsOfLabels(obj) {
+    let ids = [];
+    obj.labels.filter((e) => {
+      ids.push(e._id);
+    });
+    obj.labels = ids;
+    return obj;
+  }
 
-  // onAddItem(data) {
-  //   //   this._httpService.getLabels().subscribe((e) => {
-  //   //     let duplicate: boolean = false;
-  //   //     e.data.find((label) => {
-  //   //       if (label.name == data) {
-  //   //         duplicate = true;
-  //   //       }
-  //   //     });
-  //   //     if (duplicate) {
-  //   //       this._sharedService.snackErrorMessage("Name already exists");
-  //   //     } else if (data.length > 100) {
-  //   //       this._sharedService.snackErrorMessage("Max 100 characters are allowed");
-  //   //     } else {
-  //   //       let obj = {
-  //   //         name: data,
-  //   //         created_by: this._cacheService.agent.username,
-  //   //         color_code: "#a9a9a9"
-  //   //       };
-  //   //       this._httpService.createLabel(obj).subscribe(
-  //   //         (e) => {
-  //   //           this._httpService.getLabels().subscribe((ee) => {
-  //   //             this.labels = ee.data;
-  //   //             this.customerLabels.push(e.data);
-  //   //             this.myGroup.get("labels").patchValue(this.customerLabels);
-  //   //           });
-  //   //         },
-  //   //         (error) => {
-  //   //           this._sharedService.Interceptor(error.error, "err");
-  //   //         }
-  //   //       );
-  //   //     }
-  //   //   });
-  // }
+  onAddItem(data) {
+      this._httpService.getLabels().subscribe((e) => {
+        let duplicate: boolean = false;
+        e.find((label) => {
+          if (label.name == data) {
+            duplicate = true;
+          }
+        });
+        if (duplicate) {
+          this._sharedService.snackErrorMessage("Name already exists");
+        } else if (data.length > 100) {
+          this._sharedService.snackErrorMessage("Max 100 characters are allowed");
+        } else {
+          let obj = {
+            name: data,
+            created_by: this._cacheService.agent.firstName,
+            color_code: "#a9a9a9"
+          };
+          this._httpService.createLabel(obj).subscribe((e) => {
 
-  // onItemSelect(item: any) {}
-  // OnItemDeSelect(item: any) {}
-  // onSelectAll(items: any) {}
-  // onDeSelectAll(items: any) {}
+            this._httpService.getLabels().subscribe((ee) => {
+              this.labels = ee;
+              this.customerLabels.push(e);
+              this.customerForm.get('labels').patchValue(this.customerLabels);
+              this._sharedService.serviceChangeMessage("update-labels");
+            });
+
+          }, (error) => {
+            this._sharedService.Interceptor(error, 'err');
+          });
+        }
+      });
+  }
+
+  onItemSelect(item: any) {}
+  OnItemDeSelect(item: any) {}
+  onSelectAll(items: any) {}
+  onDeSelectAll(items: any) {}
 
   // addPhone(): void {
   //   // (this.userForm.get('phones') as FormArray).push(
