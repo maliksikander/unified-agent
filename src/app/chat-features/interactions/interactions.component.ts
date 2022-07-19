@@ -325,7 +325,6 @@ export class InteractionsComponent implements OnInit {
   }
 
   constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?, wrapups?, note?) {
-    console.log("msg==>", msgType);
     let message: any = {
       id: "",
       header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
@@ -459,6 +458,7 @@ export class InteractionsComponent implements OnInit {
     event.preventDefault();
   }
 
+  // to open dialog form
   openWrapUpDialog(e): void {
     const dialogRef = this.dialog.open(WrapUpFormComponent, {
       panelClass: "wrap-dialog",
@@ -467,7 +467,6 @@ export class InteractionsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((res) => {
       if (res.event == "apply") {
-        console.log("tester==>", res);
         this.constructAndSendCimEvent("wrapup", "", "", "", "", res.data.wrapups, res.data.note);
       }
     });

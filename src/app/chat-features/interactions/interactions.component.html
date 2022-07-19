@@ -771,7 +771,6 @@
                         <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
                           <mat-panel-description>
                             <div class="wrap-up-header">
-                              <!-- <ng-container *ngIf="message.body?.wrapups?.length > 0 && message.body?.note?.length > 0"> -->
                               <ul *ngIf="message.body?.wrapups?.length > 0" class="wrap-code">
                                 <li *ngFor="let wrapCode of message.body?.wrapups"
                                   matTooltip="{{wrapCode.categoryName}} > {{wrapCode.value}}"
@@ -784,7 +783,6 @@
                                 <mat-icon matTooltip="Wrap-up Notes" matTooltipClass="wrap-tooltip">description
                                 </mat-icon>
                               </span>
-                              <!-- </ng-container> -->
                               <div class="wrap-time">
                                 <span>{{message.header.timestamp | date:'shortTime'}}</span>
                               </div>
@@ -796,10 +794,6 @@
                           <p>{{message.body?.note}}</p>
                         </div>
                       </mat-expansion-panel>
-
-
-
-
                     </div>
                     <!-- <--------------------------------------------Wrap Up MESSAGE END-------------------------------------------->
 

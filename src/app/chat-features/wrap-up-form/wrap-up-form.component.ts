@@ -14,6 +14,7 @@ import { sharedService } from "src/app/services/shared.service";
 })
 export class WrapUpFormComponent implements OnInit {
   selectedWrapUpList: Array<any> = [];
+  singleValueList = [];
   categoriesList: any = [];
   separatorKeysCodes: number[] = [ENTER, COMMA];
   wrapCtrl = new FormControl();
@@ -40,47 +41,7 @@ export class WrapUpFormComponent implements OnInit {
     this.getWrapUpForm();
   }
 
-  selectWrapupCategories(e: any, isChecked: boolean) {
-    if (isChecked) {
-      this.categoriesList.push(e);
-    } else {
-      const index = this.categoriesList.indexOf(e);
-      this.categoriesList.splice(index, 1);
-    }
-    console.log(this.categoriesList, "categoriesList");
-  }
-  // removeWrapupCategories(e: any) {
-  //   const index = this.categoriesList.indexOf(e);
-  //   this.categoriesList.splice(index, 1);
-  //   this.selectedWrapUpList.splice(index);
-  // }
-
-  // removeWrapupLabels(e: any, isChecked: boolean) {
-  //   const index = this.selectedWrapUpList.indexOf(e);
-  //   this.selectedWrapUpList.splice(index, 1);
-  // }
-
-  add(event: any): void {
-    const value = (event.value || "").trim();
-    // Add our wrapCode
-    console.log("add event val==>", value);
-    if (value) {
-      // if (this.allWrapUps.indexOf(value) !== -1) {
-      //   const index = this.wrapupLabels.indexOf(value);
-      //   if (index === -1) {
-      //     this.wrapupLabels.push(value);
-      //   }
-      //   if (this.wrapupLabels.length === 0) {
-      //     this.wrapupLabels.push(value);
-      //   }
-      // }
-    }
-
-    // Clear the input value
-    this.wrapUpInput.nativeElement.value = "";
-    this.wrapCtrl.setValue(null);
-  }
-
+  // to remove selected wrap up from list
   remove(wrapCode: string): void {
     const index = this.selectedWrapUpList.indexOf(wrapCode);
     if (index >= 0) {
@@ -89,18 +50,11 @@ export class WrapUpFormComponent implements OnInit {
   }
 
   onSelectionReset(event: MatAutocompleteSelectedEvent): void {
-    // const index = this.selectedWrapUpList.indexOf(event.option.viewValue);
-    // if (index === -1) {
-    //   this.selectedWrapUpList.push(event.option.viewValue);
-    // }
-    // if (this.selectedWrapUpList.length === 0) {
-    //   this.selectedWrapUpList.push(event.option.viewValue);
-    // }
-
     this.wrapUpInput.nativeElement.value = "";
     this.wrapCtrl.setValue(null);
   }
 
+  //to add wrap up to list
   selectWrapup(category, wrapup) {
     let obj = {
       categoryName: category,
@@ -121,6 +75,7 @@ export class WrapUpFormComponent implements OnInit {
     }
   }
 
+  //to filter wrap up codes
   private _filter(value): any[] {
     if (value) {
       if (typeof value == "string") {
@@ -153,6 +108,7 @@ export class WrapUpFormComponent implements OnInit {
     );
   }
 
+  //to get filtered wrap up codes
   getCategoryValues() {
     this.convertCategoryListForSearch();
     this.filteredWrapUp = this.wrapCtrl.valueChanges.pipe(
@@ -161,7 +117,7 @@ export class WrapUpFormComponent implements OnInit {
     );
   }
 
-  singleValueList = [];
+  //to convert category based wrap list array structure
   convertCategoryListForSearch() {
     let list: Array<any> = [];
 
