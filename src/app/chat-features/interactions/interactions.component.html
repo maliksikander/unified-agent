@@ -268,7 +268,7 @@
                             <a (click)="$event.stopPropagation();" class="file-download"
                               href="{{referredMessage.body.attachment.mediaUrl | getFileUrl}}"
                               [download]="referredMessage.body.additionalDetails.fileName" [attr.disabled]="dwld.busy"
-                              #dwld="wmDownload">
+                              #dwld="wmDownload" download>
                               Download
                             </a>
 
@@ -495,7 +495,7 @@
                         <a (click)="$event.stopPropagation();" class="file-download"
                           href="{{message.body.attachment.mediaUrl | getFileUrl}}"
                           [download]="message.body.additionalDetails.fileName" [attr.disabled]="dwld.busy"
-                          #dwld="wmDownload">
+                          #dwld="wmDownload" download>
                           Download
                         </a>
 
@@ -778,8 +778,10 @@
                                   {{wrapCode.value}}
                                 </li>
                               </ul>
-                              <p *ngIf="message.body?.wrapups?.length == 0 && message.body?.note?.length > 0">{{message.body?.note}} </p>
-                              <span *ngIf="message.body?.wrapups?.length > 0 && message.body?.note?.length > 0" class="note-icon">
+                              <p *ngIf="message.body?.wrapups?.length == 0 && message.body?.note?.length > 0">
+                                {{message.body?.note}} </p>
+                              <span *ngIf="message.body?.wrapups?.length > 0 && message.body?.note?.length > 0"
+                                class="note-icon">
                                 <mat-icon matTooltip="Wrap-up Notes" matTooltipClass="wrap-tooltip">description
                                 </mat-icon>
                               </span>
@@ -866,8 +868,8 @@
         </span>
       </div>
       <span class="selected-channel">Selected Channel:
-        <label *ngIf="conversation.activeChannelSessions.length > 0"
-          style="color:#1a50a3;">{{conversation.activeChannelSessions[conversation.activeChannelSessions.length
+        <label
+          *ngIf="conversation.activeChannelSessions.length > 0">{{conversation.activeChannelSessions[conversation.activeChannelSessions.length
           -1]?.channel.channelType.name}}</label>
         <label *ngIf="conversation.activeChannelSessions.length == 0" style="color:grey;">
           None

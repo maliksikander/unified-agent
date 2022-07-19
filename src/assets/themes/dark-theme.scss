@@ -172,15 +172,25 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
 
   .unidentified-customer .right-drag-accordion {
+
+    .drag-icon{
+      text-shadow: -5px 0px 0px  mat-contrast($dark-primary, 700) !important;
+      color:  mat-contrast($dark-primary, 700) !important;
+    }
+
+
     .customer-info-panel mat-expansion-panel-header {
       border-color: mat-color($ef-red, 700) !important;
     }
 
     .profile-area {
 
-      h3,
+      h3{
+        color: #F53939 !important;
+      }
+
       h5 {
-        color: mat-color($ef-red, 700) !important;
+        color: mat-contrast($dark-primary, 600) !important;
       }
     }
   }
@@ -551,7 +561,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
         }
 
         a.file-download {
-          color: mat-color($dark-primary, 900) !important;
+          color: #5A8FF5 !important;
         }
       }
     }
@@ -591,6 +601,24 @@ $theme: mat-light-theme($primary, $accent, $warn);
           }
         }
       }
+
+      &.quoted-message-main {
+        .main-quoted-reply {
+          background: #00000030 !important;
+          border-right-color: #484865 !important;
+        }
+          .replied-message{
+            background:mat-color($dark-primary, 400) !important;
+        }
+
+        .referred-message-content{
+          &:before{
+            border-color: #484865 !important;
+          }
+        }
+      }
+
+
     }
 
     .referred-message-content {
@@ -903,7 +931,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
     background: #1D3A73;
 
     h4 {
-      color: mat-contrast($dark-primary, 600) !important;
+      color: mat-contrast($dark-primary, 300) !important;
     }
   }
 
@@ -1170,5 +1198,39 @@ $theme: mat-light-theme($primary, $accent, $warn);
   // border-radius: 0;
   // margin-bottom: 10px;
 }
+
+.linked-area {
+  .match-content li {
+    border-bottom-color: mat-color($dark-primary);
+    &:hover{
+      background: mat-color($dark-primary, 400);
+      button {
+        background: mat-color($dark-primary, 500);
+        &:hover{
+          background: mat-color($dark-primary, 700);
+
+        }
+      }
+    }
+  }
+}
+
+.linked-action, .crm-trigger {
+  button{
+    background: mat-color($dark-primary, 700) !important;
+    font-size: 10px !important;
+    padding: 0;
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    font-weight: 400 !important;
+    margin: 0 3px 10px;
+  }
+}
+
+.not-allowed .mat-checkbox-background {
+  background-color: #686868 !important;
+}
+
 
 }

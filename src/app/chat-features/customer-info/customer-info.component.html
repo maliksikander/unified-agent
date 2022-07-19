@@ -210,7 +210,7 @@
 
               <div class="linked-action">
 
-                <button *ngIf="('customer-list' | authPipe : 'view') as result" mat-raised-button
+                <button mat-button *ngIf="('customer-list' | authPipe : 'view') as result"
                   (click)="viewAllMatches()">
                   View all Matches
                 </button>

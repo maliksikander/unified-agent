@@ -39,7 +39,7 @@
   //.right-drag-content {
     .material-icons.drag-icon {
       text-shadow: -5px 0px 0px lighten($main-color, 20%);
-      color: lighten($main-color, 20%) !important;
+      color: lighten($main-color, 20%);
       font-size: 16px;
       margin-right: 5px;
 
@@ -55,7 +55,7 @@
 
         .material-icons.drag-icon {
           text-shadow: -5px 0px 0px $highlight-color;
-          color: $highlight-color !important;
+          color: $highlight-color;
 
         }
 
@@ -247,11 +247,11 @@
   //}
 
   .user-name {
-    font-size: 16px;
+    font-size: 14px;
     color: $blue-text-color;
     text-align: left;
     margin: 0;
-    font-weight: 600;
+    font-weight: 500;
     text-transform: capitalize;
     display: inline-block;
     line-height: 35px;
@@ -460,7 +460,7 @@
   height: calc(100% - 20px);
 
   h5 {
-    color: $blue-text-color;
+    color:  #0093FF;
     font-size: 12px;
     font-weight: 600;
     text-align: center;
