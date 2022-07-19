@@ -38,8 +38,7 @@ export class CreateCustomerComponent implements OnInit {
   dataReady: boolean = false;
   customerForm: FormGroup;
   nos;
-  customerLabels = [];
-  labels = [];
+  labelList = [];
   labelSettings = {
     singleSelection: false,
     text: "",
@@ -58,7 +57,7 @@ export class CreateCustomerComponent implements OnInit {
     this.customerForm = new FormGroup({});
 
     this.getCustomerSchema();
-    this.getALLLabels()
+    this.getAllLabels()
     this.cd.detectChanges();
   }
 
@@ -74,14 +73,14 @@ export class CreateCustomerComponent implements OnInit {
       this.getAttributeTypes();
     });
   }
-  getALLLabels()
+  getAllLabels()
   {
     this._httpService.getLabels().subscribe(
     (e) => {
-     this.labels=e;
+     this.labelList=e;
     },
     (error) => {
-      this._sharedService.Interceptor(error.error, "err");
+      this._sharedService.Interceptor(error.error, "error getting labels");
     }
   );
   }
@@ -195,7 +194,6 @@ export class CreateCustomerComponent implements OnInit {
     let data = this.customerForm.value;
     if(data.labels=="")
       data.labels=[]
-    console.log("data on save ",data)
     data = this.fetchTheIdsOfLabels(data);
     data.isAnonymous = false;
     // console.log("save result==>", data);
@@ -252,9 +250,15 @@ export class CreateCustomerComponent implements OnInit {
           this._httpService.createLabel(obj).subscribe((e) => {
 
             this._httpService.getLabels().subscribe((ee) => {
-              this.labels = ee;
-              this.customerLabels.push(e);
-              this.customerForm.get('labels').patchValue(this.customerLabels);
+              this.labelList = ee;
+              if(this.customerForm.get('labels').value)
+              {
+                this.customerForm.get('labels').value.push(e)
+              }
+              else
+              {
+                this.customerForm.get("labels").patchValue([e])
+              }
               this._sharedService.serviceChangeMessage("update-labels");
             });
 
@@ -265,7 +269,9 @@ export class CreateCustomerComponent implements OnInit {
       });
   }
 
-  onItemSelect(item: any) {}
+  onItemSelect(item: any) {
+
+  }
   OnItemDeSelect(item: any) {}
   onSelectAll(items: any) {}
   onDeSelectAll(items: any) {}

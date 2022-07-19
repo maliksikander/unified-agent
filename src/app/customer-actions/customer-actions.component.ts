@@ -19,8 +19,7 @@ export class CustomerActionsComponent implements OnInit {
   userInfo;
   schemaAttributes;
   customerForm: FormGroup;
-  customerLabels = [];
-  labels = [];
+  labelList = [];
   labelSettings = {
     singleSelection: false,
     text: "",
@@ -88,7 +87,7 @@ export class CustomerActionsComponent implements OnInit {
   {
     this._httpService.getLabels().subscribe(
     (e) => {
-     this.labels=e;
+     this.labelList=e;
      if (Array.isArray(this.userInfo.labels))
      {
      this.fetchCustomerLabels();
@@ -415,9 +414,15 @@ export class CustomerActionsComponent implements OnInit {
         this._httpService.createLabel(obj).subscribe(
           (e) => {
             this._httpService.getLabels().subscribe((ee) => {
-              this.labels = ee;
-              this.customerLabels.push(e);
-              this.customerForm.get("labels").patchValue(this.customerLabels);
+              this.labelList = ee;
+              if(this.customerForm.get('labels').value)
+              {
+                this.customerForm.get('labels').value.push(e)
+              }
+              else
+              {
+                this.customerForm.get("labels").patchValue([e])
+              }
               this._sharedService.serviceChangeMessage({ msg: "update-labels", data: null });
             });
           },
@@ -430,15 +435,16 @@ export class CustomerActionsComponent implements OnInit {
   }
 
   fetchCustomerLabels() {
+    let customerLabels=[]
     this.userInfo.labels.forEach((id) => {
-      let find = this.labels.find((label) => {
+      let find = this.labelList.find((label) => {
         return label._id == id
       });
       if(find)
       {
-        this.customerLabels.push(find);
+        customerLabels.push(find);
       }
     });
-    this.userInfo.labels=this.customerLabels
+    this.userInfo.labels=customerLabels;
   }
 }

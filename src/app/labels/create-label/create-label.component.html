@@ -10,7 +10,7 @@
     <label class="text-left">Label</label>
     <mat-form-field class="field" appearance="outline">
       <input matInput [formControl]="name">
-      <mat-error class="mrg-top" *ngIf="name.hasError('required')">
+      <!-- <mat-error class="mrg-top" *ngIf="name.hasError('required')">
         field is mandatory
       </mat-error>
       <mat-error class="mrg-top" *ngIf="name.hasError('maxLength')">
@@ -18,6 +18,17 @@
       </mat-error>
       <mat-error class="mrg-top" *ngIf="name.hasError('validName')">
         That name Already Exists
+      </mat-error> -->
+      <mat-error>
+        <div *ngIf="name.hasError('required')">
+          *Field is required
+        </div>
+        <div *ngIf="name.hasError('maxlength')">
+          Range should be 1 - 100
+        </div>
+        <div *ngIf="name.hasError('validName')">
+          That name Already Exists
+        </div>
       </mat-error>
     </mat-form-field>
 
@@ -61,7 +72,7 @@
 
   <div class="btns">
     <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
-    <button *ngIf="name.valid" (click)="makeObject()" class="save-btn">Create</button>
+    <button *ngIf="name.valid" (click)="onSaveLabel()" class="save-btn">Create</button>
   </div>
 
 </div>

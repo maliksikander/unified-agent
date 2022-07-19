@@ -32,7 +32,7 @@ export class LabelsListComponent implements OnInit {
     );
   }
 
-  createUpdate(label, action) {
+  openLabelDialog(label, action) {
     const dialogRef = this.dialog.open(CreateLabelComponent, {
       maxWidth: "568px",
       width: "568px",
@@ -51,7 +51,7 @@ export class LabelsListComponent implements OnInit {
     this.showMetaDIv = true;
   }
 
-  delete(id) {
+  onDelete(id) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: "490px",
       panelClass: "confirm-dialog",
@@ -59,16 +59,20 @@ export class LabelsListComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result && result.event == "confirm") {
-        this._httpService.deleteLabel(id).subscribe(
-          (e) => {
-            this._sharedService.Interceptor("deleted!", "succ");
-            this.loadLabels();
-          },
-          (error) => {
-            this._sharedService.Interceptor(error.error, "err");
-          }
-        );
+        this.deleteLabel(id);
+
       }
     });
+  }
+  deleteLabel(id){
+    this._httpService.deleteLabel(id).subscribe(
+      (e) => {
+        this._sharedService.Interceptor("deleted!", "succ");
+        this.loadLabels();
+      },
+      (error) => {
+        this._sharedService.Interceptor(error.error, "err");
+      }
+    );
   }
 }
