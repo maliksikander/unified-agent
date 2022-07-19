@@ -649,7 +649,8 @@
         "state": "STARTED",
         "active": true
       }
-    },{
+    },
+    {
       "id": "4f48bdb2-5bf6-4e07-9373-125be74761f3",
       "name": "CUSTOMER_MESSAGE",
       "type": "MESSAGE",
@@ -8861,7 +8862,301 @@
           }
         }
       }
-    }
+    },
+    {
+      "id": "1ed1c1af-4f8f-417c-be0a-5e3d804b518f",
+      "name": "AGENT_MESSAGE",
+      "type": "MESSAGE",
+      "conversationId": "522c3d2d-2397-44ff-900f-6c1e99629a08",
+      "timestamp": 1657694228202,
+      "data": {
+          "id": "6ab91f4f-c5e8-4c65-8271-ab3f64b8d0ae",
+          "header": {
+              "timestamp": 1657694228197,
+              "sender": {
+                  "id": "d5f766e8-d3dc-4a4a-8f63-0c642c587fbd",
+                  "type": "AGENT",
+                  "participant": {
+                      "id": "e497f372-1141-4ff7-8eaf-60228b59f372",
+                      "participantType": "CCUser",
+                      "keycloakUser": {
+                          "id": "e497f372-1141-4ff7-8eaf-60228b59f372",
+                          "username": "saud",
+                          "permittedResources": {
+                              "Resources": [
+                                  {
+                                      "scopes": [
+                                          "view",
+                                          "manage"
+                                      ],
+                                      "rsid": "2158c6d6-cfdc-4ecb-aab4-8c521ee0d193",
+                                      "rsname": "subscribed-list"
+                                  },
+                                  {
+                                      "scopes": [
+                                          "view"
+                                      ],
+                                      "rsid": "b382ef18-46fd-4040-9bbe-68013ce5cc30",
+                                      "rsname": "leave-chat"
+                                  },
+                                  {
+                                      "scopes": [
+                                          "view"
+                                      ],
+                                      "rsid": "81e4cf55-e5fe-4612-965a-14e6d5888ca2",
+                                      "rsname": "state-change"
+                                  },
+                                  {
+                                      "scopes": [
+                                          "view",
+                                          "manage"
+                                      ],
+                                      "rsid": "78b1e6ee-c297-4536-b60a-e4afa755ab76",
+                                      "rsname": "customer-list"
+                                  },
+                                  {
+                                      "scopes": [
+                                          "view",
+                                          "manage"
+                                      ],
+                                      "rsid": "937c600f-1df4-47dc-b901-a0893adcdd6a",
+                                      "rsname": "customer-conversation-view"
+                                  }
+                              ]
+                          },
+                          "roles": [
+                              "agent"
+                          ],
+                          "realm": "expertflow"
+                      },
+                      "associatedRoutingAttributes": []
+                  },
+                  "token": null,
+                  "conversationId": "522c3d2d-2397-44ff-900f-6c1e99629a08",
+                  "role": "PRIMARY",
+                  "userCredentials": null,
+                  "state": "SUBSCRIBED"
+              },
+              "channelSession": {
+                  "participantType": "ChannelSession",
+                  "id": "7c9b4940-7840-4cc4-b9b3-1639e11220fd",
+                  "channel": {
+                      "id": "62c59622855dbb54bf8ba72b",
+                      "name": "faizan-web",
+                      "serviceIdentifier": "1122",
+                      "tenant": {
+                          "id": "3259c23d-c3c1-4b0c-b0d8-2be8015e0c8a",
+                          "name": null
+                      },
+                      "channelConfig": {
+                          "id": "6e6951a1-b23a-418c-97a9-3ca32191431b",
+                          "channelMode": "HYBRID",
+                          "conversationBot": "",
+                          "responseSla": 60,
+                          "customerActivityTimeout": 60,
+                          "customerIdentificationCriteria": {
+                              "value": null
+                          },
+                          "routingPolicy": {
+                              "agentSelectionPolicy": "LONGEST_AVAILABLE",
+                              "routeToLastAgent": true,
+                              "routingMode": "PULL",
+                              "routingObjectId": "62c595f837bf6c0031e51eb8",
+                              "agentRequestTtl": 60
+                          },
+                          "botId": "67edecb1-2c0b-40a9-b644-d242887efa1b"
+                      },
+                      "channelConnector": {
+                          "id": "62c594c1855dbb54bf8ba6fe",
+                          "name": "web-connector",
+                          "channelProviderInterface": {
+                              "id": "62c594b3855dbb54bf8ba6f8",
+                              "name": "Web",
+                              "supportedChannelTypes": [
+                                  {
+                                      "id": "62c444ff855dbb54bf8ba413",
+                                      "name": "WEB",
+                                      "channelLogo": "_WEB.svg",
+                                      "isInteractive": true,
+                                      "mediaRoutingDomain": "62c5337d3cd2ad0cc479c371"
+                                  }
+                              ],
+                              "providerWebhook": "https://0267-175-107-237-121.ngrok.io/message/receive",
+                              "channelProviderConfigSchema": []
+                          },
+                          "channelProviderConfigs": [],
+                          "tenant": {
+                              "id": "13b31bab-99c8-44f0-ad0f-d0731ddacca8",
+                              "name": null
+                          }
+                      },
+                      "channelType": {
+                          "id": "62c444ff855dbb54bf8ba413",
+                          "name": "WEB",
+                          "channelLogo": "_WEB.svg",
+                          "isInteractive": true,
+                          "mediaRoutingDomain": "62c5337d3cd2ad0cc479c371"
+                      }
+                  },
+                  "customer": {
+                      "_id": "62ce67a7f475ce552b8edd75",
+                      "firstName": "Jane Doe",
+                      "phoneNumber": [],
+                      "isAnonymous": true,
+                      "__v": 0,
+                      "web": [
+                          "123449"
+                      ]
+                  },
+                  "customerSuggestions": [],
+                  "channelData": {
+                      "channelCustomerIdentifier": "123449",
+                      "serviceIdentifier": "1122",
+                      "requestPriority": 0,
+                      "channelTypeCode": "webChannel",
+                      "additionalAttributes": [
+                          {
+                              "key": "WebChannelData",
+                              "type": "WebChannelData",
+                              "value": {
+                                  "browserDeviceInfo": {
+                                      "browserId": "123456",
+                                      "browserIdExpiryTime": "9999",
+                                      "browserName": "chrome",
+                                      "deviceType": "desktop"
+                                  },
+                                  "queue": "",
+                                  "locale": {
+                                      "timezone": "asia/karachi",
+                                      "language": "english",
+                                      "country": "pakistan"
+                                  },
+                                  "formData": {
+                                      "id": 0.7935768637066631,
+                                      "formId": 0.5898361711012303,
+                                      "filledBy": "web-init",
+                                      "attributes": [
+                                          {
+                                              "value": "",
+                                              "key": "firstName",
+                                              "type": "string"
+                                          },
+                                          {
+                                              "value": "",
+                                              "key": "lastName",
+                                              "type": "string"
+                                          },
+                                          {
+                                              "value": "",
+                                              "key": "email",
+                                              "type": "string"
+                                          },
+                                          {
+                                              "value": "123449",
+                                              "key": "channelIdentifier1",
+                                              "type": "string"
+                                          }
+                                      ],
+                                      "createdOn": "2022-07-13T06:35:43.929Z"
+                                  }
+                              }
+                          }
+                      ]
+                  },
+                  "latestIntent": null,
+                  "customerPresence": {
+                      "value": null
+                  },
+                  "isActive": true,
+                  "conversationId": "522c3d2d-2397-44ff-900f-6c1e99629a08",
+                  "state": "STARTED",
+                  "active": true
+              },
+              "channelData": {
+                  "channelCustomerIdentifier": "123449",
+                  "serviceIdentifier": "1122",
+                  "requestPriority": 0,
+                  "channelTypeCode": "webChannel",
+                  "additionalAttributes": [
+                      {
+                          "key": "WebChannelData",
+                          "type": "WebChannelData",
+                          "value": {
+                              "browserDeviceInfo": {
+                                  "browserId": "123456",
+                                  "browserIdExpiryTime": "9999",
+                                  "browserName": "chrome",
+                                  "deviceType": "desktop"
+                              },
+                              "queue": "",
+                              "locale": {
+                                  "timezone": "asia/karachi",
+                                  "language": "english",
+                                  "country": "pakistan"
+                              },
+                              "formData": {
+                                  "id": 0.7935768637066631,
+                                  "formId": 0.5898361711012303,
+                                  "filledBy": "web-init",
+                                  "attributes": [
+                                      {
+                                          "value": "",
+                                          "key": "firstName",
+                                          "type": "string"
+                                      },
+                                      {
+                                          "value": "",
+                                          "key": "lastName",
+                                          "type": "string"
+                                      },
+                                      {
+                                          "value": "",
+                                          "key": "email",
+                                          "type": "string"
+                                      },
+                                      {
+                                          "value": "123449",
+                                          "key": "channelIdentifier1",
+                                          "type": "string"
+                                      }
+                                  ],
+                                  "createdOn": "2022-07-13T06:35:43.929Z"
+                              }
+                          }
+                      }
+                  ]
+              },
+              "status": "sending"
+          },
+          "body": {
+              "markdownText": "",
+              "type": "WRAPUP",
+              "wrapups": [
+                  {
+                      "categoryName": "Category2",
+                      "value": "Option1"
+                  },
+                  {
+                    "categoryName": "Category1",
+                    "value": "Option1"
+                  },
+                  {
+                    "categoryName": "Category2",
+                    "value": "Option1"
+                },
+                {
+                  "categoryName": "Category1",
+                  "value": "Option1"
+                },
+                {
+                  "categoryName": "Category2",
+                  "value": "Option1"
+                }
+              ],
+              "note": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum\nnumquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium noptio, eaque rerum! Provident similique accusantium nemo autem. Veritatis nobcaecati tenetur iure eius earum ut molestias architecto voluptate aliquam nihil, eveniet aliquid culpa officia aut! Impedit sit sunt quaerat"
+          }
+      }
+  }
   ],
   "topicParticipant": {
     "id": "4882e15c-fc90-458a-8545-689e4b1ab66d",

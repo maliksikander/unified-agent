@@ -22,7 +22,8 @@ export class httpService {
       fileServer: "/api/downloadFileStream?filename=",
       uploadFile: "/api/uploadFileStream",
       activities: "/customer-topics/customer",
-      theme: "/theme"
+      theme: "/theme",
+      forms: "/forms"
     };
   }
 
@@ -309,6 +310,16 @@ export class httpService {
   uploadToFileEngine(data): Observable<any> {
     return this._httpClient.post<any>(`${this._appConfigService.config.FILE_SERVER_URL}${this.apiEndpoints.uploadFile}`, data, {
       headers: new HttpHeaders({})
+    });
+  }
+
+  ////////////////// Forms Api ////////////////
+
+  getWrapUpForm(): Observable<any> {
+    return this._httpClient.get<any>(`${this._appConfigService.config.UNIFIED_ADMIN_URL}${this.apiEndpoints.forms}/62d07f4f0980a50a91210bef`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
     });
   }
 }

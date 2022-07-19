@@ -19,6 +19,13 @@
         </div>
         <div class="col-md-8 col-sm-8 agent-actions">
           <ul class="list-group list-group-horizontal agent-controls">
+
+            <li class="list-group-item">
+              <button mat-fab matTooltip="Note" aria-label="Note" (click)="openWrapUpDialog('Wrap-up')">
+                <img alt="Note" src="assets/images/note.svg">
+              </button>
+            </li>
+
             <li class="list-group-item">
               <button mat-icon-button>
                 <mat-icon>group</mat-icon>
@@ -753,6 +760,42 @@
                       </mat-expansion-panel>
                     </div>
                     <!-- <--------------------------------------------VOICE MESSAGE END-------------------------------------------->
+
+                    <!-- <-------------------------------------Wrap Up MESSAGE START--------------------------------------------------->
+                    <div class="wrap-up-main user-data customer-side voice-activity-main"
+                      *ngIf="(message.body.type | lowercase) == 'wrapup'">
+
+                      <mat-expansion-panel (closed)="message.body?.wrapups?.length <= 5"
+                        (opened)="message.body?.wrapups?.length > 5 || message.body?.note?.length > 0 "
+                        class="{{message.body?.wrapups?.length > 0 && message.body?.note ? 'dual-wrap' : 'single-wrap'}}">
+                        <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
+                          <mat-panel-description>
+                            <div class="wrap-up-header">
+                              <ul *ngIf="message.body?.wrapups?.length > 0" class="wrap-code">
+                                <li *ngFor="let wrapCode of message.body?.wrapups"
+                                  matTooltip="{{wrapCode.categoryName}} > {{wrapCode.value}}"
+                                  matTooltipClass="wrap-tooltip">
+                                  {{wrapCode.value}}
+                                </li>
+                              </ul>
+                              <p *ngIf="message.body?.wrapups?.length == 0 && message.body?.note?.length > 0">{{message.body?.note}} </p>
+                              <span *ngIf="message.body?.wrapups?.length > 0 && message.body?.note?.length > 0" class="note-icon">
+                                <mat-icon matTooltip="Wrap-up Notes" matTooltipClass="wrap-tooltip">description
+                                </mat-icon>
+                              </span>
+                              <div class="wrap-time">
+                                <span>{{message.header.timestamp | date:'shortTime'}}</span>
+                              </div>
+                            </div>
+
+                          </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <div class="wrap-content">
+                          <p>{{message.body?.note}}</p>
+                        </div>
+                      </mat-expansion-panel>
+                    </div>
+                    <!-- <--------------------------------------------Wrap Up MESSAGE END-------------------------------------------->
 
 
                     <span class="chat-time file-type-stamp">{{message.header.timestamp | date:'shortTime'}}</span>

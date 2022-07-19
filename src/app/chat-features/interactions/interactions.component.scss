@@ -2287,5 +2287,125 @@ vg-controls.hide {
 .voice{
   .file-type-stamp{
     display: none !important;
-  } 
+  }
+}
+
+
+
+.note-area {
+  margin-top: 8px;
+  textarea {
+    width: 100%;
+    border: 1px solid #D4D4D4;
+    resize: none;
+    min-height: 65px;
+    border-radius: 3px;
+  }
+}
+
+.wrap-up-header{
+  width: 100%;
+  display: flex;
+  flex-flow: nowrap;
+
+  .wrap-time{
+    width: -moz-fit-content;
+    width: fit-content;
+    white-space: nowrap;
+    margin: 0 5px 0 5px;
+    align-self: center;
+    border-left: 1px solid #ccc;
+    padding-left: 5px;
+    font-size: 12px;
+    color: #000;
+  }
+  p, ul{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: pre;
+    margin: 0;
+    font-size: 13px;
+    color: #333;
+    line-height: 18px;
+    align-self: center;
+    position: relative;
+    padding-left: 5px;
+    max-width: 85%;
+    &:after{
+      content: "";
+      width: 1px;
+      height: calc(100% - 0px);
+      border-right: 1px solid #ccc;
+      display: block;
+      padding: 0;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }
+}
+.wrap-icon {
+  width: 28px;
+  height: 28px;
+  background: #f1f1f1;
+  border-radius: 100%;
+  text-align: center;
+  margin-right: 10px;
+  float: left;
+  top: 3px;
+  position: relative;
+  line-height: 28px;
+
+  img {
+    width: 15px;
+    height: 15px;
+    vertical-align: middle;
+  }
+
+  &.agent-profile-showcase{
+    width: 25px;
+    height: 25px;
+    top: 0;
+    align-self: center;
+    margin-right: 5px;
+    line-height: 25px;
+    img{
+      width: 25px;
+      height: 25px;
+    }
+  }
+}
+.wrap-up-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+
+  p{
+    font-size: 11px;
+    color: #000;
+
+    span{
+      color: #25afcb;
+      font-weight: 600;
+    }
+  }
+}
+
+.wrap-code {
+  padding: 0;
+  list-style: none;
+
+  li{
+    display: inline-block;
+    border: 1px solid #91acd4;
+    border-radius: 15px;
+    padding: 0 5px;
+    font-size: 12px;
+    margin: 0 2px;
+    height: 22px;
+    line-height: 21px;
+    color: #000;
+    text-transform: capitalize;
+  }
 }

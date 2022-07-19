@@ -15,7 +15,8 @@ export class appConfigService {
     GRAFANA_DASHBOARD_URL: "",
     Rona_State_On_Cisco: "",
     ROUTING_ENGINE_URL: "",
-    CIM_REPORTING_URL: ""
+    CIM_REPORTING_URL: "",
+    UNIFIED_ADMIN_URL:""
   };
 
   constructor(private _httpClient: HttpClient) {}
@@ -35,6 +36,7 @@ export class appConfigService {
         this.config.Rona_State_On_Cisco = e.ronaStateOnCisco;
         this.config.ROUTING_ENGINE_URL = e.ROUTING_ENGINE_URL;
         this.config.CIM_REPORTING_URL = e.CIM_REPORTING_URL;
+        this.config.UNIFIED_ADMIN_URL = e.UNIFIED_ADMIN_URL;
 
         config = {
           domain: e.domain,

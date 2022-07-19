@@ -94,7 +94,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     LinkConversationDialogComponent,
     GrafanaComponent,
     ActiveChatsComponent,
-    QueueChatsComponent
+    QueueChatsComponent,
   ],
   imports: [
     BrowserModule,

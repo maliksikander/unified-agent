@@ -13,7 +13,6 @@ import { NgxUiLoaderService } from "ngx-ui-loader";
 import { httpService } from "./http.service";
 import { v4 as uuidv4 } from "uuid";
 import { AuthService } from "./auth.service";
-import { finesseService } from "./finesse.service";
 import { TopicParticipant } from "../models/User/Interfaces";
 // const mockTopicData: any = require("../mocks/topicData.json");
 
@@ -42,7 +41,7 @@ export class socketService {
     private _httpService: httpService,
     private _authService: AuthService
   ) {
-    // this.onTopicData(mockTopicData, "12345");
+    // this.onTopicData(mockTopicData, "12345","");
   }
 
   connectToSocket() {
@@ -151,7 +150,9 @@ export class socketService {
       try {
         this.onCimEventHandler(JSON.parse(res.cimEvent), res.conversationId);
       } catch (err) {
-        console.error("error on onCimEvent ", err);
+        console.log("error on onCimEvent ==>" + err);
+        console.error("error on onCimEvent ==>" + err);
+        console.log("error on onCimEvent ==>" + err);
         // If got any error while receiving cimEvent then simply unsubscribe to the topic
         this._snackbarService.open("Unable to process event, unsubscribing...", "err");
         this.emit("topicUnsubscription", {

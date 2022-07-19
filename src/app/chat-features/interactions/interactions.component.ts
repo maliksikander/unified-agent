@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Outpu
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
-import { MatDialog } from "@angular/material";
+import { MatDialog, MatDialogRef } from "@angular/material";
 import { CimEvent } from "../../models/Event/cimEvent";
 import { v4 as uuidv4 } from "uuid";
 import { NgScrollbar } from "ngx-scrollbar";
@@ -12,6 +12,7 @@ import { appConfigService } from "src/app/services/appConfig.service";
 import { httpService } from "src/app/services/http.service";
 import { finesseService } from "src/app/services/finesse.service";
 import { ConfirmationDialogComponent } from "src/app/new-components/confirmation-dialog/confirmation-dialog.component";
+import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
 
 declare var EmojiPicker: any;
 
@@ -322,7 +323,7 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?) {
+  constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?, wrapups?, note?) {
     let message: any = {
       id: "",
       header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
@@ -362,6 +363,11 @@ export class InteractionsComponent implements OnInit {
           size: fileSize,
           thumbnail: ""
         };
+      } else if (msgType.toLowerCase() == "wrapup") {
+        message.body.type = "WRAPUP";
+        message.body.markdownText = "";
+        message.body["wrapups"] = wrapups;
+        message.body["note"] = note;
       } else {
         this._snackbarService.open("unable to process the file", "err");
         return;
@@ -369,18 +375,13 @@ export class InteractionsComponent implements OnInit {
 
       let event: any = new CimEvent("AGENT_MESSAGE", "MESSAGE", this.conversation.conversationId, message);
       this._socketService.emit("publishCimEvent", {
-        cimEvent: new CimEvent("AGENT_MESSAGE", "MESSAGE", this.conversation.conversationId, message),
+        cimEvent: event,
         agentId: this._cacheService.agent.id,
         conversationId: this.conversation.conversationId
       });
-      // setTimeout(() => {
-      //   this._socketService.onCimEventHandler(event, "12345");
-
-      // }, 5000);
 
       event.data.header["status"] = "sending";
       this.conversation.messages.push(event.data);
-      // this.downTheScrollAfterMilliSecs(50, "smooth");
 
       setTimeout(() => {
         this.message = "";
@@ -454,5 +455,19 @@ export class InteractionsComponent implements OnInit {
   }
   onKeydown(event) {
     event.preventDefault();
+  }
+
+  // to open dialog form
+  openWrapUpDialog(e): void {
+    const dialogRef = this.dialog.open(WrapUpFormComponent, {
+      panelClass: "wrap-dialog",
+      data: { header: e, conversation: this.conversation }
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res.event == "apply") {
+        this.constructAndSendCimEvent("wrapup", "", "", "", "", res.data.wrapups, res.data.note);
+      }
+    });
   }
 }
