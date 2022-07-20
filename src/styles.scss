@@ -1961,7 +1961,10 @@ ul.customer-labels {
     padding: 0;
   }
   .mat-form-field-infix {
-    padding: 10px 0;
+    padding: 10px 0 !important;
+  }
+  mat-error{
+    margin-top: 0;
   }
 }
 
@@ -3085,8 +3088,8 @@ span.note-icon {
 }
 .label-name {
   mat-error {
-    font-size: 9px;
-    margin-top: 15px;
+    font-size: 10px;
+    margin-top: 5px;
   }
 }
 
