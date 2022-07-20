@@ -14,7 +14,7 @@ import { httpService } from "./http.service";
 import { v4 as uuidv4 } from "uuid";
 import { AuthService } from "./auth.service";
 import { TopicParticipant } from "../models/User/Interfaces";
-const mockTopicData: any = require("../mocks/topicData.json");
+// const mockTopicData: any = require("../mocks/topicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -41,7 +41,7 @@ export class socketService {
     private _httpService: httpService,
     private _authService: AuthService
   ) {
-    this.onTopicData(mockTopicData, "12345","");
+    // this.onTopicData(mockTopicData, "12345","");
   }
 
   connectToSocket() {
