@@ -42,7 +42,7 @@ export class CreateLabelComponent implements OnInit {
 
   ngOnInit() {
     if (this.data.action == "update") {
-      this.currentColor = this.data.label.color_code;
+      this.currentColor = this.data.label.colorCode;
       this.nameToBeMatched = this.data.label.name;
       this.name.patchValue(this.data.label.name);
     }
@@ -55,7 +55,7 @@ export class CreateLabelComponent implements OnInit {
   onSaveLabel() {
     let obj = {
       name: this.name.value,
-      color_code: this.currentColor
+      colorCode: this.currentColor
     };
 
     if (this.data.action == "update") {
@@ -67,10 +67,10 @@ export class CreateLabelComponent implements OnInit {
   }
   createLabel(obj)
   {
-    obj["created_by"] = this._cacheService.agent.username;
+    obj["createdBy"] = this._cacheService.agent.username;
       this._httpService.createLabel(obj).subscribe(
         (e) => {
-          this._sharedService.Interceptor("label Created", "succ");
+          this._sharedService.Interceptor("Label Created", "succ");
           this.dialogRef.close({ event: "refresh" });
         },
         (error) => {
@@ -80,10 +80,10 @@ export class CreateLabelComponent implements OnInit {
   }
   updateLabel(obj)
   {
-    obj["updated_by"] = this._cacheService.agent.username;
+    obj["updatedBy"] = this._cacheService.agent.username;
     this._httpService.updateLabel(this.data.label._id, obj).subscribe(
       (e) => {
-        this._sharedService.Interceptor("label Updated", "succ");
+        this._sharedService.Interceptor("Label Updated", "succ");
         this.dialogRef.close({ event: "refresh" });
       },
       (error) => {
