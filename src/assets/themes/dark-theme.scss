@@ -173,6 +173,10 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
   .unidentified-customer .right-drag-accordion {
 
+    .channel-icon-area .call-time{
+      background: mat-color($dark-primary, 400) !important;
+    }
+
     .drag-icon{
       text-shadow: -5px 0px 0px  mat-contrast($dark-primary, 700) !important;
       color:  mat-contrast($dark-primary, 700) !important;
@@ -1236,8 +1240,8 @@ $theme: mat-light-theme($primary, $accent, $warn);
   //  Voice activity
   .voice-activity-main{
     .mat-expansion-panel{
-      background: mat-color($dark-primary, 800);
-      border: 1px solid  mat-color($dark-primary, 700);
+      background: mat-color($dark-primary, 500);
+      border: 1px solid  mat-color($dark-primary, 400);
 
       time{
         color: mat-contrast($dark-primary, 500) !important;

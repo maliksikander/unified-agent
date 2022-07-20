@@ -333,7 +333,7 @@
         .profile-pic-area {
           width: 32px;
           height: 32px;
-          background: $customer-bubble;
+          background: $main-color-background;
           text-align: center;
           font-size: 11px;
           font-weight: 600;
@@ -978,6 +978,17 @@
 
         &:last-child {
           border-right: 0;
+        }
+
+        &.participant-agent{
+          span {
+            border: 1px solid #ededed;
+            width: 24px !important;
+            height: 24px !important;
+            text-align: center;
+            line-height: 23px;
+            font-weight: 500;
+          }
         }
 
         span, p {
