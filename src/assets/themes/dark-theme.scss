@@ -1233,4 +1233,50 @@ $theme: mat-light-theme($primary, $accent, $warn);
 }
 
 
+  //  Voice activity
+  .voice-activity-main{
+    .mat-expansion-panel{
+      background: mat-color($dark-primary, 800);
+      border: 1px solid  mat-color($dark-primary, 700);
+
+      time{
+        color: mat-contrast($dark-primary, 500) !important;
+      }
+      .section-tags{
+        span{
+          background: mat-color($dark-primary, 700) !important;
+          border-color: mat-color($dark-primary, 700) !important;
+
+        }
+      }
+    }
+    mat-expansion-panel-header{
+      &.mat-expanded{
+        background: mat-color($dark-primary, 700) !important;
+
+        .section-tags{
+          span{
+            background: mat-color($dark-primary, 800) !important;
+            border-color: mat-color($dark-primary, 800) !important;
+          }
+        }
+      }
+    }
+    .call-history-panel{
+      background:mat-color($dark-primary) !important;
+    }
+
+    .mat-expansion-indicator::after{
+      color: mat-contrast($dark-primary, 500) !important;
+    }
+  }
+  .more-section-tags{
+    background:mat-color($dark-primary) !important;
+
+    span{
+      background: mat-color($dark-primary, 400) !important;
+      border-color: rgba(255,255,255,0.1) !important;;
+    }
+  }
+
 }

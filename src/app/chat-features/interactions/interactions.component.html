@@ -169,14 +169,21 @@
                 class="chat-message {{((index == 0) || ((conversation.messages[index-1].body.type | lowercase) != 'systemnotification' ) && ((message.header.sender | getSenderId) == (conversation.messages[index-1].header.sender | getSenderId) && message.body.type == conversation.messages[index-1].body.type && message.header.replyToMessageId == null && message.header.channelSession.channel.channelType.id == conversation.messages[index-1].header.channelSession.channel.channelType.id  )) ? 'same-sender-msg' : ''}} {{message.header.status=='sending' ? 'low-opacity' : ''}}  {{message.body.type | lowercase}} {{  message.header.replyToMessageId != null  ? 'quoted-message-main' : ''}} {{message.header.sender.type | lowercase}}"
                 [ngClass]=" ((message.header.sender.type | lowercase) == 'customer') ?'user-message slide-in-left':'agent-message ' ">
                 <div class="profile-pic">
-                  <div class="active-channel channel-icon">
+                  <div class="active-channel channel-icon" *ngIf="(message.header.sender.type | lowercase) !== 'customer'">
                     <img width="20"
                       [src]="message.header.channelSession.channel.channelType.channelLogo | channelLogo | async">
                   </div>
-                  <div *ngIf="(message.header.sender.type | lowercase) != 'bot'" class="profile-pic-area user-img">
+
+
+                  <div *ngIf="(message.header.sender.type | lowercase) != 'bot' && (message.header.sender.type | lowercase) != 'customer'" class="profile-pic-area user-img">
                     {{message.header.sender | getSenderName:conversation.customer | getFirstTwoLetters}}</div>
                   <div *ngIf="(message.header.sender.type | lowercase) == 'bot'" class="profile-pic-area user-img">
                     <img src="assets/images/robot-dark.svg">
+                  </div>
+
+                  <div *ngIf="(message.header.sender.type | lowercase) == 'customer'" class="profile-pic-area user-img customer-channel-showcase">
+                    <img width="20"
+                         [src]="message.header.channelSession.channel.channelType.channelLogo | channelLogo | async" alt="Channel Icon">
                   </div>
                 </div>
                 <div class="combined-area">
@@ -618,6 +625,10 @@
                     </div>
 
 
+
+
+
+
                     <!-- <-------------------------------------VOICE MESSAGE START--------------------------------------------------->
                     <div class="wrap-up-main panel-divider user-data customer-side voice-activity-main"
                       *ngIf="(message.body.type | lowercase) == 'voice' && (message.header.intent | lowercase) == 'end_voice'">
@@ -761,6 +772,172 @@
                     </div>
                     <!-- <--------------------------------------------VOICE MESSAGE END-------------------------------------------->
 
+                    <!-- Voice call activity-->
+
+                    <div *ngIf="(message.body.type | lowercase) == 'voice' && message.body.transfer !== true" class="voice-activity-main panel-divider user-data customer-side">
+                      <mat-expansion-panel>
+
+                        <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+                          <mat-panel-title>
+                            <div class="panel-header">
+                              <ul>
+                                <li><span class="phone-number">+15632148756</span></li>
+
+                                <li class="agent-pic call-services">
+                                  <span><img src="assets/images/cs1.png" alt="participant" matTooltip="Agent"></span>
+                                </li>
+                                <li class="section-duration">
+                                  <time>02min 20sec</time>
+                                </li>
+                                <!--                                <li class="section-tags">-->
+                                <!--                                  <span>Broadband Disconnection</span>-->
+                                <!--                                  <span>Slow internet</span>-->
+                                <!--                                  <span class="sub-tags" (click)="$event.stopPropagation()" [matMenuTriggerFor]="voiceTags">3+</span>-->
+                                <!--                                </li>-->
+                                <!--                                <li class="agent-pic">-->
+                                <!--                                  <span><img src="assets/images/call-record.svg"> </span>-->
+                                <!--                                </li>-->
+                                <!--                                <li class="agent-pic call-transcript">-->
+                                <!--                                  <span><img src="assets/images/call-transcript.svg"> </span>-->
+                                <!--                                </li>-->
+                                <li>
+                                  <time>11:45 AM</time>
+                                </li>
+                              </ul>
+                            </div>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="panel-header call-history-panel inner-detail">
+                          <div class="history-detail inner-detail-history">
+                            <div class="panel-header">
+                              <ul>
+                                <li class="agent-pic call-services">
+                                  <p>Customer Services</p>
+                                </li>
+                                <li class="agent-pic call-services">
+                                  <span><img src="assets/images/cs1.png" alt="participant" matTooltip="Agent"></span>
+                                </li>
+                                <li class="agent-pic call-notify">
+                                  <span><img src="assets/images/incoming-call.svg" alt="incoming call"> </span>
+                                </li>
+
+                                <li class="section-duration">
+                                  <time>02min 20sec</time>
+                                </li>
+                                <!--                                <li class="section-tags">-->
+                                <!--                                  <span>slow internet</span>-->
+                                <!--                                  <span>Bill information</span>-->
+                                <!--                                  <span class="sub-tags" [matMenuTriggerFor]="voiceTags">3+</span>-->
+                                <!--                                </li>-->
+                                <li class="agent-pic call-notify">
+                                  <span><img src="assets/images/call-transfer.svg"> </span>
+                                </li>
+                                <!--                                <li class="agent-pic">-->
+                                <!--                                  <span><img src="assets/images/call-record.svg"> </span>-->
+                                <!--                                </li>-->
+                                <!--                                <li class="agent-pic call-transcript">-->
+                                <!--                                  <span><img src="assets/images/call-transcript.svg"> </span>-->
+                                <!--                                </li>-->
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="panel-header call-history-panel inner-detail">
+                          <div class="history-detail inner-detail-history">
+                            <div class="panel-header">
+                              <ul>
+                                <li class="agent-pic call-services">
+                                  <p> Customer Services</p>
+                                </li>
+                                <li class="agent-pic call-services">
+                                  <span><img src="assets/images/cs1.png" alt="participant" matTooltip="Agent"></span>
+                                </li>
+                                <li class="agent-pic call-notify">
+                                  <span><img src="assets/images/incoming-call.svg"> </span>
+                                </li>
+
+                                <li class="section-duration">
+                                  <time>02min 20sec</time>
+                                </li>
+                                <!--                                <li class="section-tags">-->
+                                <!--                                  <span>slow internet</span>-->
+                                <!--                                  <span>Bill information</span>-->
+                                <!--                                  <span class="sub-tags" [matMenuTriggerFor]="voiceTags">3+</span>-->
+                                <!--                                </li>-->
+                                <li class="agent-pic call-notify">
+                                  <span><img src="assets/images/call-end.svg"> </span>
+                                </li>
+                                <!--                                <li class="agent-pic">-->
+                                <!--                                  <span><img src="assets/images/call-record.svg"> </span>-->
+                                <!--                                </li>-->
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                      </mat-expansion-panel>
+                    </div>
+
+                    <!--                    <mat-menu #voiceTags="matMenu">-->
+                    <!--                      <div class="more-section-tags">-->
+                    <!--                        <span>Broadband Disconnection</span>-->
+                    <!--                        <span>Billing Information</span>-->
+                    <!--                        <span>Customer update</span>-->
+                    <!--                        <span>Payment due date</span>-->
+                    <!--                        <span>Slow internet</span>-->
+                    <!--                      </div>-->
+                    <!--                    </mat-menu>-->
+                    <!-- ./Voice call activity-->
+
+                    <!-- Voice call activity-->
+
+                    <div *ngIf="(message.body.type | lowercase) == 'voice' && message.body.transfer == true" class="voice-activity-main panel-divider user-data customer-side">
+
+                      <mat-expansion-panel hideToggle disabled>
+
+                        <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+                          <mat-panel-title>
+                            <div class="panel-header">
+                              <ul>
+                                <li><span class="phone-number">+15632148756</span></li>
+
+                                <li class="agent-pic call-services">
+                                  <p> Customer Services</p>
+                                </li>
+                                <li class="agent-pic call-services">
+                                  <span><img src="assets/images/cs1.png" alt="participant" matTooltip="Agent"></span>
+                                </li>
+
+                                <!--                                <li class="agent-pic call-services">-->
+                                <!--                                  <p><span><img src="assets/images/cs1.png"></span></p>-->
+                                <!--                                </li>-->
+                                <li class="section-duration">
+                                  <time>02min 20sec</time>
+                                </li>
+                                <!--                                <li class="section-tags">-->
+                                <!--                                  <span>slow internet</span>-->
+                                <!--                                  <span>Bill information</span>-->
+                                <!--                                  <span class="sub-tags" [matMenuTriggerFor]="voiceTags">3+</span>-->
+
+                                <!--                                </li>-->
+                                <!--                                <li class="agent-pic">-->
+                                <!--                                  <span><img src="assets/images/call-record.svg"> </span>-->
+                                <!--                                </li>-->
+                                <li>
+                                  <time>11:45 AM</time>
+                                </li>
+                              </ul>
+                            </div>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                      </mat-expansion-panel>
+
+                    </div>
+
+
+                    <!-- ./Voice call activity-->
+
+
                     <!-- <-------------------------------------Wrap Up MESSAGE START--------------------------------------------------->
                     <div class="wrap-up-main user-data customer-side voice-activity-main"
                       *ngIf="(message.body.type | lowercase) == 'wrapup'">
@@ -834,9 +1011,12 @@
 
               <div *ngIf="(message.body.type | lowercase) == 'systemnotification'" class="system-notifs">
 
+<!--                <span class="inner-text">-->
+<!--                  <span>{{message.body.displayText}}</span> <span>{{" "+message.body.markdownText}}</span> <span-->
+<!--                    class="notification-time">{{message.header.timestamp | date:'hh:mm:ss'}}</span>-->
+<!--                </span>-->
                 <span class="inner-text">
-                  <span>{{message.body.displayText}}</span> <span>{{" "+message.body.markdownText}}</span> <span
-                    class="notification-time">{{message.header.timestamp | date:'hh:mm:ss'}}</span>
+                  <span>{{message.body.displayText}}</span> <span>{{" "+message.body.markdownText}}</span> <span class="notification-time">{{message.header.timestamp | date:'hh:mm:ss'}}</span>
                 </span>
 
 

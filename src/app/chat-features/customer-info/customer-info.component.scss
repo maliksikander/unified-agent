@@ -117,10 +117,11 @@
         height: 22px;
         border-radius: 100%;
         text-align: center;
-        //display: inline-flex;
+        display: inline-flex;
         margin-right: 8px;
         align-items: center;
         justify-content: center;
+        vertical-align: middle;
       }
       .call-time {
         background: #fff !important;

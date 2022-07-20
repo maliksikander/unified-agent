@@ -341,6 +341,16 @@
           border-radius: 100%;
           color: #000;
           text-transform: uppercase;
+
+          &.customer-channel-showcase{
+            line-height: 30px !important;
+            img{
+              width: 25px;
+              height: 25px;
+              border-radius: 100%;
+              vertical-align: middle;
+            }
+          }
         }
       }
 
@@ -510,7 +520,7 @@
           }
         }
         &.file-type-message{
-          padding: 5px !important;
+          padding: 5px;
           //border: 1px solid invert($customer-bubble, 10%);
           //margin: -.5px 0;
           background: #F3F8EC;
@@ -988,11 +998,12 @@
           line-height: 21px !important;
         }
         span {
-          float: left;
+          display:inline-block;
           width: auto;
           height: 21px;
           margin: 0 3px;
           border-radius: 100%;
+          vertical-align: middle;
 
           &.robot-pic{
             background: $main-color;
@@ -1011,6 +1022,12 @@
             margin: 0;
             display: block;
             text-align: center;
+          }
+        }
+
+        &.call-transcript{
+          img{
+            border-radius: 0 !important;
           }
         }
       }
@@ -1049,7 +1066,7 @@
 
   .section-tags {
     span {
-      margin: 0 3px;
+      margin: 0 2px;
       padding: 3px 8px;
       border-radius: 15px;
       font-size: 10px !important;
@@ -1057,6 +1074,9 @@
       top: -2px;
       border: 1px solid lighten($main-color, 30%);
       background: #fff;
+      &.sub-tags{
+        cursor: pointer;
+      }
 
     }
   }
@@ -1093,7 +1113,7 @@
       padding-left: 12px;
 
       &.inner-detail-history {
-        width: calc(100% - 90px);
+        width: 100%;
         margin-left: 10px;
         position: relative;
 
@@ -2290,10 +2310,32 @@ vg-controls.hide {
 }
 
 
-.voice{
+.chat-message.voice{
   .file-type-stamp{
     display: none !important;
   }
+  .combined-area {
+    //width: 100%;
+
+    .chat-message-content {
+      &:before, &:after {
+        display: none;
+      }
+
+      background: transparent !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+      width: 100%;
+
+      .call-history-panel {
+        background: #F7F7F7;
+        padding: 6px !important;
+        margin: 5px 0;
+        border-radius: 3px;
+      }
+    }
+  }
+
 }
 
 .note-area {
@@ -2416,4 +2458,20 @@ vg-controls.hide {
 
 .display-file {
   padding-top: 10px;
+}
+
+.more-section-tags {
+  min-width: 180px;
+  margin: 10px 0 5px;
+  span {
+    margin: 5px;
+    padding: 3px 8px;
+    border-radius: 15px;
+    font-size: 10px !important;
+    position: relative;
+    border: 1px solid lighten($main-color, 30%);
+    //background: #fff;
+    display: block;
+    cursor: default;
+  }
 }
