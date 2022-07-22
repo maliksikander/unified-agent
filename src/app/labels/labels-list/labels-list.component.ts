@@ -55,7 +55,7 @@ export class LabelsListComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: "490px",
       panelClass: "confirm-dialog",
-      data: { header: "delete Label", message: `Are you sure you want to delete?` }
+      data: { header: "Delete Label", message: `Are you sure you want to delete the label?` }
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result && result.event == "confirm") {
@@ -67,7 +67,7 @@ export class LabelsListComponent implements OnInit {
   deleteLabel(id){
     this._httpService.deleteLabel(id).subscribe(
       (e) => {
-        this._sharedService.Interceptor("deleted!", "succ");
+        this._sharedService.Interceptor("Label Deleted", "succ");
         this.loadLabels();
       },
       (error) => {

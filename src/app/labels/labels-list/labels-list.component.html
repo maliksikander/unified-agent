@@ -8,26 +8,26 @@
 </div>
 
 
-  <div *ngIf="labels" class="container">
-    <div class="row label-list">
-      <div class="col-md-4" *ngFor="let label of labels">
-        <div class="bar">
-        <span class="dot" [ngStyle]="{'background-color': label.color_code}"></span>
+<div *ngIf="labels" class="container">
+  <div class="row label-list">
+    <div class="col-md-4" *ngFor="let label of labels">
+      <div class="bar">
+        <span class="dot" [ngStyle]="{'background-color': label.colorCode}"></span>
         <span matTooltip="{{label.name}}" class="name">{{label.name}}</span>
         <span (click)="showMeta(label._id)" class="more-vert"><mat-icon>more_vert</mat-icon></span>
-          <div (mouseleave)="showMetaDIv = false" *ngIf="showMetaDIv && metaDivId == label._id" class="label-meta">
-            <div class="label-detail">
-              <p *ngIf="label.created_by"> Created By : <span>{{label.created_by}}</span></p>
-              <p> Created At : <span>{{label.createdAt | date :'shortDate'}}</span></p>
-              <p *ngIf="label.updated_by"> Updated By : <span>{{label.updated_by}}</span></p>
-              <p *ngIf="label.updatedAt"> Updated At : <span>{{label.updatedAt | date :'shortDate'}}</span></p>
-            </div>
-            <div class="label-actions-trigger">
-              <span (click)="openLabelDialog(label,'update')" class="meta-btns">Edit</span>
-              <span (click)="onDelete(label._id)" class="meta-btns">Delete</span>
-            </div>
+        <div (mouseleave)="showMetaDIv = false" *ngIf="showMetaDIv && metaDivId == label._id" class="label-meta">
+          <div class="label-detail">
+            <p *ngIf="label.createdBy"> Created By : <span>{{label.createdBy}}</span></p>
+            <p> Created At : <span>{{label.createdAt | date :'shortDate'}}</span></p>
+            <p *ngIf="label.updatedBy"> Updated By : <span>{{label.updatedBy}}</span></p>
+            <p *ngIf="label.updatedAt"> Updated At : <span>{{label.updatedAt | date :'shortDate'}}</span></p>
+          </div>
+          <div class="label-actions-trigger">
+            <span (click)="openLabelDialog(label,'update')" class="meta-btns">Edit</span>
+            <span (click)="onDelete(label._id)" class="meta-btns">Delete</span>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>

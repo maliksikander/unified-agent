@@ -408,8 +408,8 @@ export class CustomerActionsComponent implements OnInit {
       } else {
         let obj = {
           name: data,
-          created_by: this._cacheService.agent.username,
-          color_code: "#a9a9a9"
+          createdBy: this._cacheService.agent.username,
+          colorCode: "#a9a9a9"
         };
         this._httpService.createLabel(obj).subscribe(
           (e) => {

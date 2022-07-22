@@ -212,7 +212,7 @@ export class CreateCustomerComponent implements OnInit {
     this._httpService.createCustomer(data).subscribe(
       (e) => {
         this.dialogRef.close({ event: "refresh" });
-        this._sharedService.Interceptor("Customer added!", "succ");
+        this._sharedService.Interceptor("New Customer Created", "succ");
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -244,8 +244,8 @@ export class CreateCustomerComponent implements OnInit {
         } else {
           let obj = {
             name: data,
-            created_by: this._cacheService.agent.firstName,
-            color_code: "#a9a9a9"
+            createdBy: this._cacheService.agent.firstName,
+            colorCode: "#a9a9a9"
           };
           this._httpService.createLabel(obj).subscribe((e) => {
 

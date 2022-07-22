@@ -12,7 +12,7 @@
             <mat-option class="unread-chats chat-selection-option" value="created" >Unread</mat-option>
           </mat-select>
         </mat-form-field>
-    
+
         <mat-form-field appearance="outline" class="selection-trigger">
             <mat-select [(ngModel)]="filterListId">
                 <mat-option value='all'>All Lists</mat-option>
@@ -73,7 +73,7 @@
                             <span *ngIf="_pullModeservice.labels" class="lblswithname">
                                 <span
                                     *ngFor="let lbl of _pullModeservice.labels | fetchLabels : request.channelSession.customer?.labels"
-                                    [ngStyle]="{'background-color':lbl.color_code}" class="dot"></span>
+                                    [ngStyle]="{'background-color':lbl.colorCode}" class="dot"></span>
                             </span>
                             <span *ngIf="request.id | isAlreadyJoined" class="joined">(Joined)</span>
                         </td>
