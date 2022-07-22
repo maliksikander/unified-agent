@@ -1518,7 +1518,7 @@ button.add-customer {
     cursor: pointer;
     align-items: center;
     padding: 2px 0 !important;
-    min-height: 43px !important;
+    min-height: 36px !important;
 
     &:focus {
       outline: none !important;
@@ -1962,9 +1962,6 @@ ul.customer-labels {
   }
   .mat-form-field-infix {
     padding: 10px 0 !important;
-  }
-  mat-error{
-    margin-top: 0;
   }
 }
 

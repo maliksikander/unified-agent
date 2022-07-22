@@ -163,3 +163,18 @@ span.field-channel {
 .mat-dialog-actions {
   border-top: 1px solid #ececec;
 }
+
+.row-customer-form{
+  position: relative;
+  padding-bottom: 80px;
+
+  .labels{
+    display: inline-flex !important;
+    flex: 100% !important;
+    clear: both;
+    flex-flow: column;
+    position: absolute;
+    left: 0;
+    top: calc(100% - 80px);
+  }
+}
