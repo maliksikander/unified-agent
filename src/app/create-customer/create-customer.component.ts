@@ -1,10 +1,11 @@
-import { Component, OnInit, Inject, ChangeDetectorRef } from "@angular/core";
+import { Component, OnInit, Inject, ChangeDetectorRef, ViewChild } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, DateAdapter } from "@angular/material";
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from "@angular/forms";
 import { httpService } from "../services/http.service";
 import { sharedService } from "../services/shared.service";
 import { cacheService } from "../services/cache.service";
 import { snackbarService } from "../services/snackbar.service";
+import { AngularMultiSelect } from "angular2-multiselect-dropdown";
 
 @Component({
   selector: "app-create-customer",
@@ -15,6 +16,7 @@ export class CreateCustomerComponent implements OnInit {
   formValidation = {};
   attributeTypes: any[] = [];
   channelTypeList: any[] = [];
+  @ViewChild('dropdownRef', { static: false }) dropdownRef : AngularMultiSelect;
 
   constructor(
     private dateAdapter: DateAdapter<any>,
@@ -259,7 +261,9 @@ export class CreateCustomerComponent implements OnInit {
               {
                 this.customerForm.get("labels").patchValue([e])
               }
-              this._sharedService.serviceChangeMessage("update-labels");
+              // this._sharedService.serviceChangeMessage("update-labels");
+              this.dropdownRef.clearSearch();
+
             });
 
           }, (error) => {
@@ -270,9 +274,11 @@ export class CreateCustomerComponent implements OnInit {
   }
 
   onItemSelect(item: any) {
-
+    this.dropdownRef.clearSearch();
   }
-  OnItemDeSelect(item: any) {}
+  OnItemDeSelect(item: any) {
+    this.dropdownRef.clearSearch();
+  }
   onSelectAll(items: any) {}
   onDeSelectAll(items: any) {}
 

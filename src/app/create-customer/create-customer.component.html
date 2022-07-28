@@ -186,7 +186,7 @@
                   *ngIf="schemaAttribute.is_required">*</span>
               </label>
               <div class="drop">
-                <angular2-multiselect [data]="labelList"  [settings]="labelSettings"
+                <angular2-multiselect [data]="labelList"  [settings]="labelSettings" #dropdownRef 
                   (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
                   (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
                   (onAddFilterNewItem)="onAddItem($event)" formControlName="{{schemaAttribute.key}}">

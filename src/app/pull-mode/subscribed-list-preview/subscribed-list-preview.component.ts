@@ -3,6 +3,7 @@ import { MatDialog } from "@angular/material";
 import { Router } from "@angular/router";
 import { TopicParticipant } from "src/app/models/User/Interfaces";
 import { cacheService } from "src/app/services/cache.service";
+import { httpService } from "src/app/services/http.service";
 import { pullModeService } from "src/app/services/pullMode.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
@@ -19,8 +20,10 @@ export class SubscribedListPreviewComponent implements OnInit {
 
   listPreview = true;
   filterStatus = "all";
+  labels: Array<any> = [];
 
   constructor(
+    private _httpService: httpService,
     private _sharedService: sharedService,
     private dialog: MatDialog,
     public _pullModeservice: pullModeService,
@@ -29,8 +32,14 @@ export class SubscribedListPreviewComponent implements OnInit {
     private _router: Router
   ) {}
 
-  ngOnInit() {}
-
+  ngOnInit() {
+    this.loadLabels()
+  }
+  loadLabels() {
+    this._httpService.getLabels().subscribe((e) => {
+      this.labels = e;
+    });
+  }
   listPreviewToggle() {
     this.expandCustomerInfo.emit((this.listPreview = false));
   }

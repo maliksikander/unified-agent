@@ -124,9 +124,6 @@ export class AppHeaderComponent implements OnInit {
         }
       );
     }
-    // if (localStorage.getItem('darkTheme')) {
-    //   this.isdarkMode = true;
-    // }
   }
 
   reStartTimer() {

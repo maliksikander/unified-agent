@@ -34,6 +34,7 @@ export class InteractionsComponent implements OnInit {
 
   dispayVideoPIP = true;
   scrollSubscriber;
+  labels:Array<any>=[];
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -100,8 +101,13 @@ export class InteractionsComponent implements OnInit {
     this._finesseService._ciscoDialogID.subscribe((res) => {
       this.ciscoDialogId = res;
     });
+    this.loadLabels()
   }
-
+  loadLabels() {
+    this._httpService.getLabels().subscribe((e) => {
+      this.labels = e;
+    });
+  }
   emoji() {}
 
   onSend(text) {

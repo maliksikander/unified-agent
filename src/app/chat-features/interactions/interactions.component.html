@@ -16,6 +16,12 @@
             <!-- <span class="chat-timer">( 11:32 )</span> -->
 
           </h5>
+          <span *ngIf="conversation.customer.labels" (mouseleave)="showLblTooltip = false"
+            (mouseenter)="showLblTooltip = true ; LblTooltipId = conversation.customer._id" class="lblswithname">
+            <span matTooltip="{{lbl.name}}" *ngFor="let lbl of labels | fetchLabels : conversation.customer.labels"
+              [ngStyle]="{'background-color':lbl.colorCode}" class="dot">
+            </span>
+          </span>
         </div>
         <div class="col-md-8 col-sm-8 agent-actions">
           <ul class="list-group list-group-horizontal agent-controls">

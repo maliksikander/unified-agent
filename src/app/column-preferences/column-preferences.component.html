@@ -23,8 +23,12 @@
     <h4>Selected Columns ({{checkedColumns.length}})</h4>
     <div class="scrollable-area-right right-area" cdkDropList (cdkDropListDropped)="drop($event)">
       <div *ngIf="columns[0]" class="drag-list" >
-        <div class="drag-box" *ngFor="let col of checkedColumns" cdkDrag><mat-icon>more_vert</mat-icon>
-          <span>{{col.header}}</span></div>
+        <ng-container *ngFor="let col of checkedColumns">
+
+        <div [hidden]="col.header == 'Labels'" class="drag-box"  cdkDrag><mat-icon>more_vert</mat-icon>
+          <span >{{col.header}}</span>
+        </div>
+      </ng-container>
       </div>
     </div>
   </div>

@@ -1,5 +1,5 @@
 <div class="header">
-  <h3 class="header-name">Add label</h3>
+  <h3 class="header-name">{{formTitle}}</h3>
 <!--  <mat-icon (click)="onNoClick()" class="closeBtn">close</mat-icon>-->
 </div>
 
@@ -72,7 +72,7 @@
 
   <div class="btns">
     <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
-    <button *ngIf="name.valid" (click)="onSaveLabel()" class="save-btn">Create</button>
+    <button *ngIf="name.valid" (click)="onSaveLabel()" class="save-btn">{{buttonTitle}}</button>
   </div>
 
 </div>

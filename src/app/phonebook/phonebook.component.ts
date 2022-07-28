@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, ViewChild, ElementRef } from "@angular/core";
 import { DateAdapter, MatDialog } from "@angular/material";
 import { CreateCustomerComponent } from "../create-customer/create-customer.component";
 import { FormControl } from "@angular/forms";
@@ -11,6 +11,7 @@ import * as moment from "moment";
 import { ActivatedRoute, Router } from "@angular/router";
 import { socketService } from "../services/socket.service";
 import { snackbarService } from "../services/snackbar.service";
+import { AngularMultiSelect } from "angular2-multiselect-dropdown";
 
 @Component({
   selector: "app-phonebook",
@@ -23,7 +24,6 @@ export class PhonebookComponent implements OnInit {
   paramsSubscription;
   isEmbededView: boolean = false;
   conversationId: string;
-  stateChangedSubscription;
   totalRecords: number;
   FilterSelected = "action";
   selectedTeam = "us-corporate";
@@ -57,6 +57,7 @@ export class PhonebookComponent implements OnInit {
   removable = true;
   schemaList: Array<any> = [];
   userPreferenceObj;
+  @ViewChild('dropdownRef', { static: false }) dropdownRef : AngularMultiSelect;
 
   constructor(
     private dateAdapter: DateAdapter<any>,
@@ -74,12 +75,7 @@ export class PhonebookComponent implements OnInit {
 
   ngOnInit() {
     this.processURLParams();
-    this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
-    this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
-      if (e.msg == "update-labels") {
-        // this.loadLabels();
-      }
-    });
+    this.loadLabelsAndCustomer();
   }
 
   processURLParams() {
@@ -98,6 +94,7 @@ export class PhonebookComponent implements OnInit {
   }
 
   setFilter(event: Event, col) {
+    console.log("setting filter ==>",col.field)
     this.filterOnOff = !this.filterOnOff;
     event.stopPropagation();
     this.filterActiveField = col.field;
@@ -159,7 +156,8 @@ export class PhonebookComponent implements OnInit {
       if (schemaIndex != -1) {
         item.channelTypes = this.schemaList[schemaIndex].channelTypes;
         item.header = this.schemaList[schemaIndex].label;
-        finalArray.push(item);
+        if(item.field.toLowerCase()!=='labels')
+            finalArray.push(item);
       }
     });
     this.cols = finalArray;
@@ -192,7 +190,8 @@ export class PhonebookComponent implements OnInit {
     this.sortArrowDown = false;
     this.sortArrowUp = false;
     this.filterQuery = [];
-    this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+    this.labelsForFilter.reset();
+    this.loadLabelsAndCustomer();
   }
 
   onPage(event) {
@@ -212,7 +211,7 @@ export class PhonebookComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result && result.event == "refresh") {
-        this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+        this.cancelFilter();
       }
     });
   }
@@ -227,7 +226,7 @@ export class PhonebookComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result && result.event == "refresh") {
-        this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+        this.loadLabelsAndCustomer();
       }
     });
   }
@@ -244,7 +243,7 @@ export class PhonebookComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if ((result && result.event && result.event == "refresh") || (result && result.event && result.event == "delete")) {
-        this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+       this.loadLabelsAndCustomer()
       }
     });
   }
@@ -307,7 +306,6 @@ export class PhonebookComponent implements OnInit {
   }
   backToChat() {}
   ngOnDestroy() {
-    this.stateChangedSubscription.unsubscribe();
     this.paramsSubscription.unsubscribe();
   }
 
@@ -326,6 +324,7 @@ export class PhonebookComponent implements OnInit {
     });
     let ids = id.toString();
     this.query = { field: "labels", value: ids };
+    this.dropdownRef.clearSearch();
     this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
   }
   OnItemDeSelect(item: any) {
@@ -346,39 +345,11 @@ export class PhonebookComponent implements OnInit {
     this.cancelFilter();
   }
 
-  // loadLabels() {
-  //   this.labels = [];
-  //   this._httpService.getLabels().subscribe((e) => {
-  //     this.labels = e.data;
-  //   });
-  // }
+  loadLabelsAndCustomer() {
+    this._httpService.getLabels().subscribe((e) => {
+      this.labels = e;
+      this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+    });
+  }
 
-  // onItemSelect(item: any) {
-  //   let id = [];
-  //   this.labelsForFilter.value.filter((e) => {
-  //     id.push(e._id);
-  //   });
-  //   let ids = id.toString();
-  //   this.query = { field: "labels", value: ids };
-  //   this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
-  // }
-
-  // OnItemDeSelect(item: any) {
-  //   let id = [];
-  //   this.labelsForFilter.value.filter((e) => {
-  //     id.push(e._id);
-  //   });
-  //   if (id[0] == null) {
-  //     this.cancelFilter();
-  //   } else {
-  //     let ids = id.toString();
-  //     this.query = { field: "labels", value: ids };
-  //     this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
-  //   }
-  // }
-
-  // onSelectAll(items: any) {}
-  // onDeSelectAll(items: any) {
-  //   this.cancelFilter();
-  // }
 }

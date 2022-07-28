@@ -35,6 +35,7 @@ export class ActiveChatsComponent implements OnInit {
         map(() => {
           this._httpService.getAllActiveChatsWithAgents().subscribe((e) => {
             this.activeChatListWithAgents = e;
+            console.log("Active chats with agents==>",e)
           });
           this._httpService.getAllActiveChatsWithBots().subscribe((e) => {
             this.activeChatListWithBots = e;
