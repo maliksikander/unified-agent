@@ -94,7 +94,6 @@ export class PhonebookComponent implements OnInit {
   }
 
   setFilter(event: Event, col) {
-    console.log("setting filter ==>",col.field)
     this.filterOnOff = !this.filterOnOff;
     event.stopPropagation();
     this.filterActiveField = col.field;
@@ -325,7 +324,7 @@ export class PhonebookComponent implements OnInit {
     let ids = id.toString();
     this.query = { field: "labels", value: ids };
     this.dropdownRef.clearSearch();
-    this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+    this.getCustomers(this.limit, this.offSet, this.sort, this.query);
   }
   OnItemDeSelect(item: any) {
     let id = [];
@@ -337,7 +336,7 @@ export class PhonebookComponent implements OnInit {
     } else {
       let ids = id.toString();
       this.query = { field: "labels", value: ids };
-      this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+      this.getCustomers(this.limit, this.offSet, this.sort, this.query);
     }
   }
   onSelectAll(items: any) {}

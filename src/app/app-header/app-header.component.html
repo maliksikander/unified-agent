@@ -21,7 +21,7 @@
           routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
           <span>Customer List View</span>
         </button>
-        <button  *ngIf="('customer-schema' | authPipe : 'view') as result" routerLink="/label" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" [routerLinkActiveOptions]="{exact:true}"
+        <button  *ngIf="('customer-labels' | authPipe : 'view') as result" routerLink="/label" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" [routerLinkActiveOptions]="{exact:true}"
          mat-menu-item class="main-menu-item">
           <span>Customer Labels</span>
         </button>

@@ -102,11 +102,7 @@ export class CreateLabelComponent implements OnInit {
     return this._httpService.getLabels().pipe(
       map((e) => {
         const labels = e;
-        console.log("labels==>",e);
-        console.log("control.value==>",control.value);
-        console.log("this.data.action",this.data.action);
         if (this.data.action == "new" && labels && labels.find((e) => e.name == control.value)) {
-          console.log("true")
           return { validName: true };
         }
 

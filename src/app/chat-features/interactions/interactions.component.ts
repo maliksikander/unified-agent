@@ -112,7 +112,6 @@ export class InteractionsComponent implements OnInit {
 
   onSend(text) {
     text = text.trim();
-    console.log("text ", text);
     if (text) {
       this.constructAndSendCimEvent("plain", "", "", "", text);
     }

@@ -13,7 +13,6 @@ export class AuthGuard implements CanActivate {
     let path: String = route.routeConfig.path;
     let ccUser: any = this._cacheService.agent;
     let resources: Array<any> = ccUser.permittedResources.Resources;
-    // console.log("Resources==>", resources);
     let accessRoute: boolean = this.checkRouteAccess(path, resources);
     return accessRoute;
   }
@@ -37,7 +36,7 @@ export class AuthGuard implements CanActivate {
         resPath = "conversation";
       }
       else if (path.includes("label")) {
-        resPath = "schema";
+        resPath = "customer-labels";
       }
       let value = this.checkResource(resPath, resources);
 

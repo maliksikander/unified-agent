@@ -152,7 +152,6 @@ export class CustomerInfoComponent implements OnInit {
 
     let processedObj = [];
     let keys = Object.keys(obj);
-    console.log("keys==>",keys)
     let values = Object.values(obj);
     for (let i = 0; i < keys.length; i++) {
       if (
