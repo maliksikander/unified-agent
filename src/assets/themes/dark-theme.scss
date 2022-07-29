@@ -758,7 +758,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
       background: mat-color($dark-primary, 800);
 
       .right-actions {
-        button {
+        button, .lbl-filter-search {
           background: mat-color($dark-primary, 700) !important;
         }
       }
@@ -1279,7 +1279,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
     span{
       background: mat-color($dark-primary, 400) !important;
-      border-color: rgba(255,255,255,0.1) !important;;
+      border-color: rgba(255,255,255,0.1) !important;
     }
   }
 .label-list{
@@ -1343,5 +1343,28 @@ $theme: mat-light-theme($primary, $accent, $warn);
       border-color: mat-color($dark-primary, 600) !important;
              }
     }
+  }
+
+  .custom-dropdown.lbl-filter-search {
+    color:  mat-contrast($dark-primary, 600) !important;
+
+    .arrow-up{
+      border-bottom-color: mat-color($dark-primary) !important;
+      filter: drop-shadow(0px 0px 0px #fff);
+    }
+    .list-area{
+      background: mat-color($dark-primary) !important;
+      border: 1px solid #ffffff30;
+
+    }
+    .list-filter {
+      input {
+        color:  mat-contrast($dark-primary, 600) !important;
+        background: transparent;
+      }
+    }
+  }
+  ul.customer-labels li{
+    border-color: mat-color($dark-primary) !important;
   }
 }

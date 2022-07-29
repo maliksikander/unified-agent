@@ -1817,7 +1817,7 @@ button.add-customer {
 }
 
 ul.customer-labels {
-  margin: 0 5px;
+  margin: 0 8px;
   padding: 0;
   display: inline-block;
   list-style: none;
@@ -2147,7 +2147,7 @@ tspan {
   &.lbl-filter-search {
     display: inline-block;
     left: 0 !important;
-    top: 0 !important;
+    top: -1px !important;
   }
 
   .pure-checkbox input[type="checkbox"] + label {
@@ -2158,7 +2158,7 @@ tspan {
   }
 
   .dropdown-list ul li:first-child {
-    padding-top: 0px;
+    padding-top: 0;
   }
   .dropdown-list ul li:first-child {
     padding-bottom: 0px;
