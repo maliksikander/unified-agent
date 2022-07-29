@@ -311,6 +311,10 @@ function parseDialogEvent(dialogEvent) {
             wrapUpReason = dialogEvent.mediaProperties.wrapUpReason;
         }
 
+        var queueName = null;
+        if(dialogEvent.mediaProperties.queueName)
+            queueName = dialogEvent.mediaProperties.queueName;
+
         var dialog =
         {
             id: dialogEvent.id,
@@ -321,6 +325,7 @@ function parseDialogEvent(dialogEvent) {
             ani: null,
             state: dialogEvent.state,
             wrapUpReason: wrapUpReason,
+            queueName: queueName,
             associatedDialogUri: getDigits(dialogEvent.associatedDialogUri),
             secondaryId: secondaryId,
             participants: dialogEvent.participants,

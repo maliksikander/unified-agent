@@ -10,7 +10,9 @@ export class ibsformatPipe implements PipeTransform {
         ["b", "*"],
         ["i", "_"],
         ["strike", "~"],
-        ["mark", "!"]
+        ["mark", "!"],
+        ["em", "```"],
+        ["em", "`"]
       ],
       { detectLinks: false, target: "_blank" },
       { allowXssEscaping: false }
