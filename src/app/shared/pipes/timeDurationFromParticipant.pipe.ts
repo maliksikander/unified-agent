@@ -18,7 +18,7 @@ export class timeDurationFromParticipantPipe implements PipeTransform {
       const hours = Math.abs(startTime.getHours() - endTime.getHours());
       const seconds = Math.abs(startTime.getSeconds() - endTime.getSeconds());
 
-      let result = hours != 0 ? hours + "Hour " + min + "Min " + seconds + "Secs" : min + "Min " + seconds + "Secs";
+      let result = hours != 0 ? hours + "h " + min + "m " + seconds + "s" : min + "m " + seconds + "s";
       return result;
     } else {
       return "N/A";

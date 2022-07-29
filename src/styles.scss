@@ -303,6 +303,11 @@ mat-sidenav.mat-drawer.mat-sidenav {
   }
   &.voice-call {
     background: $call-color !important;
+
+    img{
+      width: 12px !important;
+      height: 12px !important;
+    }
   }
 }
 .panel-divider {
@@ -1400,25 +1405,25 @@ button.add-customer {
 //interaction history expanded view
 .instruction-content .panel-divider {
   .mat-expanded {
-    .section-tags {
-      span {
-        background: #fff !important;
-        color: #707070 !important;
-      }
-    }
+    //.section-tags {
+    //  span {
+    //    background: #fff !important;
+    //    color: #707070 !important;
+    //  }
+    //}
 
     .mat-expansion-panel-header {
-      .section-tags {
-        span {
-          background: #707070 !important;
-          color: #fff !important;
-        }
-      }
+      //.section-tags {
+      //  span {
+      //    background: #707070;
+      //    color: #fff !important;
+      //  }
+      //}
       &.mat-expanded {
         .section-tags {
           span {
-            background: #fff !important;
-            color: #212121 !important;
+            background: #fff;
+            color: #212121;
           }
         }
       }
@@ -1513,7 +1518,7 @@ button.add-customer {
     cursor: pointer;
     align-items: center;
     padding: 2px 0 !important;
-    min-height: 43px !important;
+    min-height: 36px !important;
 
     &:focus {
       outline: none !important;
@@ -1956,7 +1961,7 @@ ul.customer-labels {
     padding: 0;
   }
   .mat-form-field-infix {
-    padding: 10px 0;
+    padding: 10px 0 !important;
   }
 }
 
@@ -2017,6 +2022,8 @@ tspan {
 }
 
 .not-allowed {
+  cursor: not-allowed;
+
   .mat-select-value {
     cursor: not-allowed;
   }
@@ -2024,7 +2031,6 @@ tspan {
   .mat-checkbox-background {
     background-color: #ccc !important;
   }
-  cursor: not-allowed;
 
   // .mat-checkbox-disabled {
   //   cursor: not-allowed !important;
@@ -2934,7 +2940,7 @@ body .ui-paginator {
 }
 
 .call-time {
-  background: #fff !important;
+  background: #fff;
   width: inherit !important;
   padding: 0 5px !important;
   border-radius: 5px !important;
@@ -3079,7 +3085,22 @@ span.note-icon {
 }
 .label-name {
   mat-error {
-    font-size: 9px;
-    margin-top: 15px;
+    font-size: 10px;
+    margin-top: 5px;
+  }
+}
+
+.voice-activity-main{
+  .mat-expansion-panel-body{
+    padding:5px;
+  }
+  .mat-expansion-panel-header{
+    &.mat-expanded{
+      margin: 0 !important;
+    }
+
+    .mat-content {
+      padding-right: 6rem;
+    }
   }
 }
