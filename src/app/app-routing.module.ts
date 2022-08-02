@@ -18,10 +18,9 @@ import { QueueChatsComponent } from "./supervisor/queue-chats/queue-chats.compon
 export const appRoutes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "customers/phonebook", component: PhonebookComponent, canActivate: [IsLoggedInGuard, AuthGuard] },
-  { path: "label", component: LabelsListComponent, canActivate: [IsLoggedInGuard] },
+  { path: "label", component: LabelsListComponent, canActivate: [IsLoggedInGuard, AuthGuard] },
   { path: "subscribed-list", component: SubscribedListComponent, canActivate: [IsLoggedInGuard, AuthGuard] },
   { path: "supervisor/dashboards", component: GrafanaComponent, canActivate: [IsLoggedInGuard, AuthGuard] },
-  // { path: "supervisor/announcement", component: AnnouncementComponent, canActivate: [IsLoggedInGuard,AuthGuard] },
   { path: "customer-schema", component: SchemaSettingsComponent, canActivate: [IsLoggedInGuard, AuthGuard] },
   { path: "supervisor/queue-chats", component: QueueChatsComponent, canActivate: [IsLoggedInGuard, AuthGuard] },
   { path: "supervisor/active-chats", component: ActiveChatsComponent, canActivate: [IsLoggedInGuard, AuthGuard] },

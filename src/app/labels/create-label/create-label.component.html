@@ -1,12 +1,12 @@
 <div class="header">
-  <h3 class="header-name">Add label</h3>
+  <h3 class="header-name">{{formTitle}}</h3>
 <!--  <mat-icon (click)="onNoClick()" class="closeBtn">close</mat-icon>-->
 </div>
 
 
 <div class="label-create-area">
   <div class="row m-0">
-  <div class="form-group label-name">
+  <div class="form-group">
     <label class="text-left">Label</label>
     <mat-form-field class="field" appearance="outline">
       <input matInput [formControl]="name">
@@ -70,9 +70,9 @@
 <!--    </div>-->
 <!--  </div>-->
 
-  <div class="btns">
+  <div class="button-area">
     <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
-    <button *ngIf="name.valid" (click)="onSaveLabel()" class="save-btn">Create</button>
+    <button *ngIf="name.valid" (click)="onSaveLabel()" class="save-btn">{{buttonTitle}}</button>
   </div>
 
 </div>

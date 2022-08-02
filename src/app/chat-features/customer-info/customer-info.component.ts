@@ -162,6 +162,7 @@ export class CustomerInfoComponent implements OnInit {
         keys[i] != "createdBy" &&
         keys[i] != "__v" &&
         keys[i] != "isAnonymous" &&
+        keys[i] != "labels" &&
         values[i]
       ) {
         if (!channelIdentifiers.includes(keys[i])) {

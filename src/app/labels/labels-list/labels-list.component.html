@@ -3,26 +3,29 @@
     <h4>Customer Labels</h4>
   </div>
   <div class="create-label col-md-6 col-sm-6">
-    <button mat-button (click)="openLabelDialog('','new')" class="add-new"><mat-icon>add</mat-icon></button>
+    <button *ngIf="('customer-labels' | authPipe : 'manage') as result" mat-button (click)="openLabelDialog('','new')" class="add-new"><mat-icon>add</mat-icon></button>
   </div>
 </div>
 
 
   <div *ngIf="labels" class="container">
-    <div class="row">
+    <div class="row label-list">
       <div class="col-md-4" *ngFor="let label of labels">
         <div class="bar">
         <span class="dot" [ngStyle]="{'background-color': label.colorCode}"></span>
         <span matTooltip="{{label.name}}" class="name">{{label.name}}</span>
         <span (click)="showMeta(label._id)" class="more-vert"><mat-icon>more_vert</mat-icon></span>
-        <div (mouseleave)="showMetaDIv = false" *ngIf="showMetaDIv && metaDivId == label._id" class="meta">
-          <div *ngIf="label.createdBy"> Created By : {{label.createdBy}}</div>
-        <div> Created At : {{label.createdAt | date :'shortDate'}}</div>
-        <div *ngIf="label.updatedBy"> Updated By : {{label.updatedBy}}</div>
-        <div *ngIf="label.updatedAt"> Updated At : {{label.updatedAt | date :'shortDate'}}</div>
-          <div (click)="openLabelDialog(label,'update')" style="height: 20px;" class="meta-btns">Edit</div>
-          <hr class="hr">
-          <div (click)="onDelete(label._id)" class="meta-btns">Delete</div>
+        <div (mouseleave)="showMetaDIv = false" *ngIf="showMetaDIv && metaDivId == label._id" class="label-meta">
+          <div class="label-detail">
+            <p *ngIf="label.createdBy"> Created By : <span>{{label.createdBy}}</span></p>
+            <p> Created At : <span>{{label.createdAt | date :'shortDate'}}</span></p>
+            <p *ngIf="label.updatedBy"> Updated By : <span>{{label.updatedBy}}</span></p>
+            <p *ngIf="label.updatedAt"> Updated At : <span>{{label.updatedAt | date :'shortDate'}}</span></p>
+          </div>
+          <div class="label-actions-trigger" *ngIf="('customer-labels' | authPipe : 'manage') as result" >
+            <span  (click)="openLabelDialog(label,'update')" class="meta-btns">Edit</span>
+            <span (click)="onDelete(label._id)" class="meta-btns">Delete</span>
+          </div>
         </div>
         </div>
       </div>

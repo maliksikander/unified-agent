@@ -1518,7 +1518,7 @@ button.add-customer {
     cursor: pointer;
     align-items: center;
     padding: 2px 0 !important;
-    min-height: 43px !important;
+    min-height: 36px !important;
 
     &:focus {
       outline: none !important;
@@ -1817,7 +1817,7 @@ button.add-customer {
 }
 
 ul.customer-labels {
-  margin: 0 5px;
+  margin: 0 8px;
   padding: 0;
   display: inline-block;
   list-style: none;
@@ -1962,9 +1962,6 @@ ul.customer-labels {
   }
   .mat-form-field-infix {
     padding: 10px 0 !important;
-  }
-  mat-error{
-    margin-top: 0;
   }
 }
 
@@ -2150,7 +2147,7 @@ tspan {
   &.lbl-filter-search {
     display: inline-block;
     left: 0 !important;
-    top: 0 !important;
+    top: -1px !important;
   }
 
   .pure-checkbox input[type="checkbox"] + label {
@@ -2161,7 +2158,7 @@ tspan {
   }
 
   .dropdown-list ul li:first-child {
-    padding-top: 0px;
+    padding-top: 0;
   }
   .dropdown-list ul li:first-child {
     padding-bottom: 0px;

@@ -13,7 +13,7 @@
     <div class="row row-customer-form">
       <ng-container *ngFor="let schemaAttribute of schemaAttributes">
         <div [ngClass]="[schemaAttribute.length >= 116 ? 'col-md-12': 'col-md-6' ]"
-          [class.check-box-field]="schemaAttribute.type == 'boolean'">
+          [class.check-box-field]="schemaAttribute.type == 'boolean'" class="{{schemaAttribute.key}}">
 
           <div class="input-field">
 
@@ -186,7 +186,7 @@
                   *ngIf="schemaAttribute.is_required">*</span>
               </label>
               <div class="drop">
-                <angular2-multiselect [data]="labelList"  [settings]="labelSettings"
+                <angular2-multiselect [data]="labelList"  [settings]="labelSettings" #dropdownRef 
                   (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
                   (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
                   (onAddFilterNewItem)="onAddItem($event)" formControlName="{{schemaAttribute.key}}">

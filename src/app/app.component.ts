@@ -49,13 +49,6 @@ export class AppComponent implements OnInit {
     if (channelTypes) {
       this._sharedService.channelTypeList = channelTypes;
     }
-
-    // this.checkForAppUpdates();
-
-    // if (localStorage.getItem('darkTheme')) {
-    //   this.isdarkMode = true;
-    //   this.switchTheme(this.isdarkMode);
-    // }
   }
 
   updateTheme(theme: string) {

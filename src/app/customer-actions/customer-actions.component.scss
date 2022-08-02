@@ -325,7 +325,7 @@
 .main-content-create-customer {
   display: block;
   margin: 10px 30px 0 30px;
-  padding: 0 0 0px 0px;
+  padding: 0 15px 0 0;
   max-height: calc(100% - 110px);
   //margin-top: 10px;
   //min-height: 73vh;
@@ -561,4 +561,21 @@ span.field-channel {
     width: 15px;
     max-height: 15px;
   }
+}
+.row-customer-form{
+  position: relative;
+  padding-bottom: 80px;
+
+  .labels{
+    display: inline-flex !important;
+    flex: 100% !important;
+    clear: both;
+    flex-flow: column;
+    position: absolute;
+    left: 0;
+    top: calc(100% - 90px);
+  }
+}
+.drop .c-btn{
+  min-height: 35px !important;
 }

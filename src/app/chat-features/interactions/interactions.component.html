@@ -11,11 +11,19 @@
             <!--                [src]="conversation.activeChannelSessions[conversation.activeChannelSessions.length-1]?.channel.channelType.channelLogo | channelLogo | async">-->
             <!--            </span>-->
           </h3>
-          <h5 class="customer-name" [matTooltip]="conversation.customer.firstName">
+          <h5 class="customer-name">
             {{conversation.customer.firstName | slice :0 :50}}
             <!-- <span class="chat-timer">( 11:32 )</span> -->
 
+            <ul *ngIf="conversation.customer.labels" class="customer-labels"><li *ngFor="let lbl of labels | fetchLabels : conversation.customer.labels" matTooltip="{{lbl.name}}"
+                                                                                 [ngStyle]="{'background-color':lbl.colorCode}" ></li></ul>
           </h5>
+<!--          <span *ngIf="conversation.customer.labels" (mouseleave)="showLblTooltip = false"-->
+<!--            (mouseenter)="showLblTooltip = true ; LblTooltipId = conversation.customer._id" class="lblswithname">-->
+<!--            <span matTooltip="{{lbl.name}}" *ngFor="let lbl of labels | fetchLabels : conversation.customer.labels"-->
+<!--              [ngStyle]="{'background-color':lbl.colorCode}" class="dot">-->
+<!--            </span>-->
+<!--          </span>-->
         </div>
         <div class="col-md-8 col-sm-8 agent-actions">
           <ul class="list-group list-group-horizontal agent-controls">

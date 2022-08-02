@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from "@angular/core";
+import { Component, OnInit, Inject, ViewChild } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatDialog, DateAdapter } from "@angular/material";
 import { FormControl, Validators, FormGroup, FormArray, FormBuilder } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -7,6 +7,7 @@ import { cacheService } from "../services/cache.service";
 import { sharedService } from "../services/shared.service";
 import { ConfirmationDialogComponent } from "../new-components/confirmation-dialog/confirmation-dialog.component";
 import { snackbarService } from "../services/snackbar.service";
+import { AngularMultiSelect } from "angular2-multiselect-dropdown";
 
 @Component({
   selector: "app-customer-actions",
@@ -39,6 +40,7 @@ export class CustomerActionsComponent implements OnInit {
   channelTypeList: any[] = [];
   // channelIdentifierKeys: Array<any> = [];
   // editActiveMode: boolean = true;
+  @ViewChild('dropdownRef', { static: false }) dropdownRef : AngularMultiSelect;
 
   constructor(
     private _httpService: httpService,
@@ -388,8 +390,12 @@ export class CustomerActionsComponent implements OnInit {
   // }
 
   // save(a) {}
-  onItemSelect(item: any) {}
-  OnItemDeSelect(item: any) {}
+  onItemSelect(item: any) {
+    this.dropdownRef.clearSearch()
+  }
+  OnItemDeSelect(item: any) {
+    this.dropdownRef.clearSearch();
+  }
   onSelectAll(items: any) {}
   onDeSelectAll(items: any) {}
 
@@ -423,7 +429,7 @@ export class CustomerActionsComponent implements OnInit {
               {
                 this.customerForm.get("labels").patchValue([e])
               }
-              this._sharedService.serviceChangeMessage({ msg: "update-labels", data: null });
+              this.dropdownRef.clearSearch();
             });
           },
           (error) => {

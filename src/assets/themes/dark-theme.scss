@@ -368,7 +368,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
       .textarea-disable .reply-form {
         border-top: 1px solid mat-color($dark-primary, 800) !important;
-        background: mat-color($dark-primary, A700) !important;
+        background: mat-color($dark-primary) !important;
       }
 
       .mat-icon-button.send-btn {
@@ -758,7 +758,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
       background: mat-color($dark-primary, 800);
 
       .right-actions {
-        button {
+        button, .lbl-filter-search {
           background: mat-color($dark-primary, 700) !important;
         }
       }
@@ -932,7 +932,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
   //  Dialog
   .dialog-header {
-    background: #1D3A73;
+    background: mat-color($dark-primary, A700);
 
     h4 {
       color: mat-contrast($dark-primary, 300) !important;
@@ -979,7 +979,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
       background: #2F2F3E !important;
 
       &.save-btn {
-        background: #1D3A73 !important;
+        background: mat-color($dark-primary, A700) !important;
       }
     }
   }
@@ -1018,7 +1018,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
       &.pull-request-notifications {
 
         .mat-card-content {
-          background: #1D3A73 !important;
+          background: mat-color($dark-primary, A700) !important;
 
           p {
             color: mat-contrast($dark-primary, 600);
@@ -1279,8 +1279,92 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
     span{
       background: mat-color($dark-primary, 400) !important;
-      border-color: rgba(255,255,255,0.1) !important;;
+      border-color: rgba(255,255,255,0.1) !important;
+    }
+  }
+.label-list{
+  .bar{
+    background: mat-color($dark-primary, 800) !important;
+    border-color: mat-color($dark-primary, 400) !important;
+  }
+}
+  //.meta{
+  //  background: mat-color($dark-primary, A700) !important;
+  //  color: #fcfcfc !important;
+  //  &:after{
+  //    border-bottom-color: mat-color($dark-primary, A700) !important;
+  //  }
+  //  .meta-btns {
+  //    background-color: rgba(0, 0, 0, .3) !important;
+  //  }
+  //}
+
+
+  .label-meta {
+    background: mat-color($dark-primary, A700) !important;
+    color: #fcfcfc !important;
+
+    &:after {
+      border-bottom-color: mat-color($dark-primary, A700) !important;
+      -webkit-filter: drop-shadow(-1px 0px 0px mat-color($dark-primary, A700)) !important;
+      filter: drop-shadow(0px -1px 0px mat-color($dark-primary, A700)) !important;
+      box-shadow: 1px 0 0 mat-color($dark-primary, A700) !important;
+    }
+  }
+  .opener{
+    border: 1px solid #606264 !important;
+  }
+  .drop {
+    .c-btn {
+      border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    }
+    .select-all,
+    .list-filter{
+      border-bottom: 1px solid #cccccc4d !important;
+      input {
+      background: transparent !important;
+    }
+    }
+    .list-area {
+      border: 1px solid rgba(255, 255, 255, 0.3) !important;
+      background: mat-color($dark-primary, 400) !important;
+      box-shadow: 0 1px 5px rgba(255, 255, 255, 0.5) !important;
+    }
+    li{
+      &:hover {
+        background: #00000024 !important;
+      }
+    }
+    .pure-checkbox input[type=checkbox]:checked + label{
+      &:before{
+        background: transparent !important;
+      }&:after{
+               background: transparent !important;
+      border-color: mat-color($dark-primary, 600) !important;
+             }
     }
   }
 
+  .custom-dropdown.lbl-filter-search {
+    color:  mat-contrast($dark-primary, 600) !important;
+
+    .arrow-up{
+      border-bottom-color: mat-color($dark-primary) !important;
+      filter: drop-shadow(0px 0px 0px #fff);
+    }
+    .list-area{
+      background: mat-color($dark-primary) !important;
+      border: 1px solid #ffffff30;
+
+    }
+    .list-filter {
+      input {
+        color:  mat-contrast($dark-primary, 600) !important;
+        background: transparent;
+      }
+    }
+  }
+  ul.customer-labels li{
+    border-color: mat-color($dark-primary) !important;
+  }
 }

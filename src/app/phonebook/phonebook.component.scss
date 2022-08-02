@@ -81,6 +81,14 @@
         margin-left: 4px;
       }
     }
+    .lbl-filter-search {
+      @extend button;
+    color: #333;
+
+      .lbl-search-lbl {
+        color: #fff;
+      }
+    }
   }
 }
 
@@ -197,6 +205,7 @@ tr.slide-in-left:hover {
   width: auto;
   vertical-align: middle;
   background: #fff;
+  top: -1px;
 
   .dot-in-filter {
     height: 15px;

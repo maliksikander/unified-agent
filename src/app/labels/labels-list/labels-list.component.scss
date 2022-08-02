@@ -99,26 +99,47 @@
   overflow: hidden;
 }
 
-.meta {
+.label-meta {
   background: $blue-text-color;
   color: #fff;
   position: absolute;
-  width: 159px;
+  width: 160px;
   font-size: 12px;
-  padding: 2px 3px 0 5px;
+  //padding: 2px 3px 0 5px;
   right: 10px;
   z-index: 9;
   top: 42px;
+  border-radius: 3px 0 3px 3px;
 
-  .meta-btns {
-    background-color: $main-color;
-    margin-left: -5px;
-    padding-left: 5px;
-    margin-right: -3px;
-    padding-right: 3px;
-    cursor: pointer;
-    font-weight: bold;
-    color: #fff;
+  .label-detail {
+    padding: 5px;
+    p{
+      padding: 0 2px;
+      margin: 0;
+      span{
+        padding-left: 7px;
+      }
+
+    }
+  }
+
+    .label-actions-trigger {
+      background: rgba(0,0,0,.2);
+      padding: 0 5px;
+
+      .meta-btns {
+        display: block;
+        padding: 2px;
+        cursor: pointer;
+        border-bottom: 1px dashed rgba(255,222,255,.4);
+        &:last-child{
+          border: 0;
+        }
+
+        &:hover{
+          background: rgba(0,0,0,.1);
+        }
+      }
   }
 
   &:after {

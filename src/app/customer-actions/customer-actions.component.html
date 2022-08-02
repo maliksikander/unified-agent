@@ -16,7 +16,7 @@
     <form [formGroup]="customerForm">
 
       <div class="row row-customer-form">
-        <div class="customer-form-field" *ngFor="let schemaAttribute of schemaAttributes">
+        <div class="customer-form-field {{schemaAttribute.key}}" *ngFor="let schemaAttribute of schemaAttributes">
           <!-- <div class="main-col"> -->
           <!-- [ngStyle]="{'display':  !editTab && (customerForm.get(schemaAttribute.key).value == undefined || customerForm.get(schemaAttribute.key).value.length == 0 || customerForm.get(schemaAttribute.key).value == null || customerForm.get(schemaAttribute.key).value == '' || customerForm.get(schemaAttribute.key)?.value[0] == '') ? 'none' : 'inline-block' }" -->
 
@@ -178,7 +178,7 @@
                   *ngIf="schemaAttribute.is_required">*</span>
               </label>
               <div class="drop">
-                <angular2-multiselect [data]="labelList" [settings]="labelSettings" (onSelect)="onItemSelect($event)"
+                <angular2-multiselect [data]="labelList" [settings]="labelSettings" (onSelect)="onItemSelect($event)" #dropdownRef
                   (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
                   (onDeSelectAll)="onDeSelectAll($event)" (onAddFilterNewItem)="onAddItem($event)"
                   formControlName="{{schemaAttribute.key}}">

@@ -24,6 +24,8 @@ export class CreateLabelComponent implements OnInit {
   name = new FormControl("", [Validators.required, Validators.maxLength(100)], this.ValidateNameDuplication.bind(this));
   open: boolean = false;
   nameToBeMatched;
+  formTitle:string='Add Label'
+  buttonTitle:string='Create'
   currentColor = "#a9a9a9";
   labelColorCode = [
     "#f34f1b",
@@ -44,6 +46,8 @@ export class CreateLabelComponent implements OnInit {
     if (this.data.action == "update") {
       this.currentColor = this.data.label.colorCode;
       this.nameToBeMatched = this.data.label.name;
+      this.formTitle='Update Label'
+      this.buttonTitle='Update'
       this.name.patchValue(this.data.label.name);
     }
   }
@@ -72,6 +76,7 @@ export class CreateLabelComponent implements OnInit {
         (e) => {
           this._sharedService.Interceptor("Label Created", "succ");
           this.dialogRef.close({ event: "refresh" });
+          this._sharedService.serviceChangeMessage({msg:"update-labels"});
         },
         (error) => {
           this._sharedService.Interceptor(error.error, "err");
@@ -85,6 +90,7 @@ export class CreateLabelComponent implements OnInit {
       (e) => {
         this._sharedService.Interceptor("Label Updated", "succ");
         this.dialogRef.close({ event: "refresh" });
+        this._sharedService.serviceChangeMessage({msg:"update-labels"});
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -93,10 +99,10 @@ export class CreateLabelComponent implements OnInit {
   }
 
   ValidateNameDuplication(control: AbstractControl) {
+  
     return this._httpService.getLabels().pipe(
       map((e) => {
         const labels = e;
-
         if (this.data.action == "new" && labels && labels.find((e) => e.name == control.value)) {
           return { validName: true };
         }

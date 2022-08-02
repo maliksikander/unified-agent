@@ -84,7 +84,7 @@ export class AuthService {
       }
       if (ccUser != null) {
         let permittedResources: Array<any> = ccUser.permittedResources.Resources;
-
+  
         for (let i = 0; i < permittedResources.length; i++) {
           if (permittedResources[i].rsname.includes(resource)) {
             let resourceScopes: Array<any> = permittedResources[i].scopes;

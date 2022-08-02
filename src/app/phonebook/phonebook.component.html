@@ -34,23 +34,23 @@
       </mat-menu>
 
 
-      <!-- <div *ngIf="labels" class="lbl-filter-search custom-dropdown">
+      <div *ngIf="labels" class="lbl-filter-search custom-dropdown">
         <span (click)="lblSearch = !lblSearch" class="lbl-search-lbl">
           Filter Across Labels
         </span>
-        <angular2-multiselect [data]="labels" [settings]="labelSettings" (onSelect)="onItemSelect($event)"
+        <angular2-multiselect  [data]="labels" [settings]="labelSettings" (onSelect)="onItemSelect($event)"
           (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
-          (onDeSelectAll)="onDeSelectAll($event)" [formControl]="labelsForFilter">
+          (onDeSelectAll)="onDeSelectAll($event)" [formControl]="labelsForFilter" #dropdownRef >
 
           <c-item>
             <ng-template let-item="item">
               <div class="dot-in-filter" [ngStyle]="{'background-color':item.colorCode}"></div>
 
-              <label style="color: #333;min-width: 150px;">{{item.name}}</label>
+              <label style="min-width: 150px;">{{item.name}}</label>
             </ng-template>
           </c-item>
         </angular2-multiselect>
-      </div> -->
+      </div>
 
 
       <!--    <mat-form-field appearance="outline" class="selection-trigger">-->
@@ -181,18 +181,25 @@
               *ngIf="col.field != 'firstName' && col.type != 'date' && col.type != 'date_time' && col.type != 'time' ">{{rowData[col.field]
               | spaceInArray}}</span>
             <span *ngIf="col.field == 'firstName'"><span>{{rowData[col.field] | spaceInArray}}</span>
-              <span *ngIf="labels" (mouseleave)="showLblTooltip = false"
-                (mouseenter)="showLblTooltip = true ; LblTooltipId = rowData._id" class="lblswithname">
-                <span *ngFor="let lbl of labels | fetchLabels : rowData.labels"
-                  [ngStyle]="{'background-color':lbl.colorCode}" class="dot"></span>
-              </span>
+<!--              <span *ngIf="labels" (mouseleave)="showLblTooltip = false"-->
+<!--                (mouseenter)="showLblTooltip = true ; LblTooltipId = rowData._id" class="lblswithname">-->
+<!--                <span matTooltip="{{lbl.name}}" *ngFor="let lbl of labels | fetchLabels : rowData.labels"-->
+<!--                  [ngStyle]="{'background-color':lbl.colorCode}" class="dot"></span>-->
+<!--              </span>-->
+
+              <ul class="customer-labels" *ngIf="labels"><li  *ngFor="let lbl of labels | fetchLabels : rowData.labels" matTooltip="{{lbl.name}}" [ngStyle]="{'background-color':lbl.colorCode}" ></li></ul>
+
             </span>
-            <div class="lbl-tooltip" *ngIf="showLblTooltip && LblTooltipId == rowData._id">
+
+
+
+
+            <!-- <div class="lbl-tooltip" *ngIf="showLblTooltip && LblTooltipId == rowData._id">
               <div *ngFor="let lbl of labels | fetchLabels : rowData.labels">
                 <span [ngStyle]="{'background-color':lbl.colorCode}"
                   class="dot-in-tool"></span><span>{{lbl.name}}</span>
-              </div>
-            </div>
+              </div> -->
+            <!-- </div> -->
           </td>
 
           <td>

@@ -57,7 +57,6 @@ export class EditAttributeComponent implements OnInit {
 
   setValidations() {
     let schemaObj = this.editAttributeForm.value;
-    console.log("schema obj==>", schemaObj);
     let length = schemaObj.length ? schemaObj.length : 50;
     let typeDef;
     for (let i = 0; i <= this.attributeTypes.length; i++) {
@@ -85,7 +84,6 @@ export class EditAttributeComponent implements OnInit {
   getAttributeTypes() {
     this._httpService.getSchemaTypes().subscribe(
       (res) => {
-        console.log("attribute types", res);
         this.attributeTypes = res;
         if (this.data) this.patchFormValues();
       },
@@ -145,7 +143,6 @@ export class EditAttributeComponent implements OnInit {
 
   onSave() {
     let editedData = this.editAttributeForm.value;
-    console.log("on save",editedData)
     editedData.isDeleteAble = this.data.isDeleteAble;
     editedData.sortOrder = this.data.sortOrder;
     let id = this.data._id;
