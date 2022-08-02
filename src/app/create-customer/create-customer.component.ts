@@ -16,7 +16,7 @@ export class CreateCustomerComponent implements OnInit {
   formValidation = {};
   attributeTypes: any[] = [];
   channelTypeList: any[] = [];
-  @ViewChild('dropdownRef', { static: false }) dropdownRef : AngularMultiSelect;
+  @ViewChild('dropdownRef', { static: false }) dropdownRef: AngularMultiSelect;
 
   constructor(
     private dateAdapter: DateAdapter<any>,
@@ -75,16 +75,15 @@ export class CreateCustomerComponent implements OnInit {
       this.getAttributeTypes();
     });
   }
-  getAllLabels()
-  {
+  getAllLabels() {
     this._httpService.getLabels().subscribe(
-    (e) => {
-     this.labelList=e;
-    },
-    (error) => {
-      this._sharedService.Interceptor(error.error, "error getting labels");
-    }
-  );
+      (e) => {
+        this.labelList = e;
+      },
+      (error) => {
+        this._sharedService.Interceptor(error.error, "error getting labels");
+      }
+    );
   }
 
   // adding forms controls to existing form group using attributes in from schema as `attrSchema` parameter
@@ -194,8 +193,8 @@ export class CreateCustomerComponent implements OnInit {
 
   onSave() {
     let data = this.customerForm.value;
-    if(data.labels=="")
-      data.labels=[]
+    if (data.labels == "")
+      data.labels = []
     data = this.fetchTheIdsOfLabels(data);
     data.isAnonymous = false;
     // console.log("save result==>", data);
@@ -232,45 +231,43 @@ export class CreateCustomerComponent implements OnInit {
   }
 
   onAddItem(data) {
-      this._httpService.getLabels().subscribe((e) => {
-        let duplicate: boolean = false;
-        e.find((label) => {
-          if (label.name == data) {
-            duplicate = true;
-          }
-        });
-        if (duplicate) {
-          this._sharedService.snackErrorMessage("Name already exists");
-        } else if (data.length > 100) {
-          this._sharedService.snackErrorMessage("Max 100 characters are allowed");
-        } else {
-          let obj = {
-            name: data,
-            createdBy: this._cacheService.agent.firstName,
-            colorCode: "#a9a9a9"
-          };
-          this._httpService.createLabel(obj).subscribe((e) => {
-
-            this._httpService.getLabels().subscribe((ee) => {
-              this.labelList = ee;
-              if(this.customerForm.get('labels').value)
-              {
-                this.customerForm.get('labels').value.push(e)
-              }
-              else
-              {
-                this.customerForm.get("labels").patchValue([e])
-              }
-              // this._sharedService.serviceChangeMessage("update-labels");
-              this.dropdownRef.clearSearch();
-
-            });
-
-          }, (error) => {
-            this._sharedService.Interceptor(error, 'err');
-          });
+    this._httpService.getLabels().subscribe((e) => {
+      let duplicate: boolean = false;
+      e.find((label) => {
+        if (label.name == data) {
+          duplicate = true;
         }
       });
+      if (duplicate) {
+        this._sharedService.snackErrorMessage("Name already exists");
+      } else if (data.length > 100) {
+        this._sharedService.snackErrorMessage("Max 100 characters are allowed");
+      } else {
+        let obj = {
+          name: data,
+          createdBy: this._cacheService.agent.firstName,
+          colorCode: "#a9a9a9"
+        };
+        this._httpService.createLabel(obj).subscribe((e) => {
+
+          this._httpService.getLabels().subscribe((ee) => {
+            this.labelList = ee;
+            if (this.customerForm.get('labels').value) {
+              this.customerForm.get('labels').value.push(e)
+            }
+            else {
+              this.customerForm.get("labels").patchValue([e])
+            }
+            // this._sharedService.serviceChangeMessage("update-labels");
+            this.dropdownRef.clearSearch();
+
+          });
+
+        }, (error) => {
+          this._sharedService.Interceptor(error, 'err');
+        });
+      }
+    });
   }
 
   onItemSelect(item: any) {
@@ -279,8 +276,8 @@ export class CreateCustomerComponent implements OnInit {
   OnItemDeSelect(item: any) {
     this.dropdownRef.clearSearch();
   }
-  onSelectAll(items: any) {}
-  onDeSelectAll(items: any) {}
+  onSelectAll(items: any) { }
+  onDeSelectAll(items: any) { }
 
   // addPhone(): void {
   //   // (this.userForm.get('phones') as FormArray).push(

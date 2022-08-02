@@ -1,9 +1,9 @@
 
 {
-    "GAT_URL": "https://cim.expertflow.com/agent-manager",
-    "SOCKET_URL": "https://cim.expertflow.com/agent-manager",
+    "GAT_URL": "http://localhost:3000",
+    "SOCKET_URL": "http://localhost:3000",
     "FILE_SERVER_URL": "https://cim.expertflow.com/file-engine",
-    "CIM_CUSTOMER_URL": "http://localhost:8083",
+    "CIM_CUSTOMER_URL": "https://cim.expertflow.com/cim",
     "BOT_FRAMEWORK_URL": "https://cim.expertflow.com/bot-framework",
     "ROUTING_ENGINE_URL": "https://cim.expertflow.com/routing-engine",
     "GRAFANA_DASHBOARD_URL":"https://cim.expertflow.com/grafana/d/0GEdiaunk/supervisor-dashboard-cim?orgId=1&from=1655186754072&to=1655208354072",

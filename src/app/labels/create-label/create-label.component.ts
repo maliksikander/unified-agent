@@ -99,6 +99,7 @@ export class CreateLabelComponent implements OnInit {
   }
 
   ValidateNameDuplication(control: AbstractControl) {
+  
     return this._httpService.getLabels().pipe(
       map((e) => {
         const labels = e;
