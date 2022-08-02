@@ -41,7 +41,7 @@ export class socketService {
     private _httpService: httpService,
     private _authService: AuthService
   ) {
-    this.onTopicData(mockTopicData, "12345","");
+    // this.onTopicData(mockTopicData, "12345","");
   }
 
   connectToSocket() {
