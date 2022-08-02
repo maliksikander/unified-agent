@@ -173,6 +173,10 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
   .unidentified-customer .right-drag-accordion {
 
+    .channel-icon-area .call-time{
+      background: mat-color($dark-primary, 400) !important;
+    }
+
     .drag-icon{
       text-shadow: -5px 0px 0px  mat-contrast($dark-primary, 700) !important;
       color:  mat-contrast($dark-primary, 700) !important;
@@ -1232,5 +1236,51 @@ $theme: mat-light-theme($primary, $accent, $warn);
   background-color: #686868 !important;
 }
 
+
+  //  Voice activity
+  .voice-activity-main{
+    .mat-expansion-panel{
+      background: mat-color($dark-primary, 500);
+      border: 1px solid  mat-color($dark-primary, 400);
+
+      time{
+        color: mat-contrast($dark-primary, 500) !important;
+      }
+      .section-tags{
+        span{
+          background: mat-color($dark-primary, 700) !important;
+          border-color: mat-color($dark-primary, 700) !important;
+
+        }
+      }
+    }
+    mat-expansion-panel-header{
+      &.mat-expanded{
+        background: mat-color($dark-primary, 700) !important;
+
+        .section-tags{
+          span{
+            background: mat-color($dark-primary, 800) !important;
+            border-color: mat-color($dark-primary, 800) !important;
+          }
+        }
+      }
+    }
+    .call-history-panel{
+      background:mat-color($dark-primary) !important;
+    }
+
+    .mat-expansion-indicator::after{
+      color: mat-contrast($dark-primary, 500) !important;
+    }
+  }
+  .more-section-tags{
+    background:mat-color($dark-primary) !important;
+
+    span{
+      background: mat-color($dark-primary, 400) !important;
+      border-color: rgba(255,255,255,0.1) !important;;
+    }
+  }
 
 }
