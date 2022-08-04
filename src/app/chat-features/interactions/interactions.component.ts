@@ -34,7 +34,7 @@ export class InteractionsComponent implements OnInit {
 
   dispayVideoPIP = true;
   scrollSubscriber;
-  labels:Array<any>=[];
+  labels: Array<any> = [];
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -101,7 +101,7 @@ export class InteractionsComponent implements OnInit {
     this._finesseService._ciscoDialogID.subscribe((res) => {
       this.ciscoDialogId = res;
     });
-    this.loadLabels()
+    this.loadLabels();
   }
   loadLabels() {
     this._httpService.getLabels().subscribe((e) => {
@@ -168,6 +168,10 @@ export class InteractionsComponent implements OnInit {
   }
   eventFromChild(data) {
     this.isBarOPened = data;
+  }
+
+  eventFromChildForUpdatedLabel(data) {
+    this.labels = data;
   }
 
   // topicUnsub() {
@@ -335,47 +339,64 @@ export class InteractionsComponent implements OnInit {
       body: { markdownText: "", type: "" }
     };
     let lastActiveChannelSession = this.conversation.activeChannelSessions[this.conversation.activeChannelSessions.length - 1];
-    if (lastActiveChannelSession && this._socketService.isSocketConnected) {
-      let sendingActiveChannelSession = JSON.parse(JSON.stringify(lastActiveChannelSession));
-      delete sendingActiveChannelSession["webChannelData"];
+    let firstChannelSession = this.conversation.firstChannelSession;
+    if (this._socketService.isSocketConnected) {
+      if (lastActiveChannelSession) {
+        let sendingActiveChannelSession = JSON.parse(JSON.stringify(lastActiveChannelSession));
+        delete sendingActiveChannelSession["webChannelData"];
 
-      message.id = uuidv4();
-      message.header.timestamp = Date.now();
+        message.id = uuidv4();
+        message.header.timestamp = Date.now();
 
-      message.header.sender = this.conversation.topicParticipant;
-      message.header.channelSession = sendingActiveChannelSession;
-      message.header.channelData = sendingActiveChannelSession.channelData;
+        message.header.sender = this.conversation.topicParticipant;
+        message.header.channelSession = sendingActiveChannelSession;
+        message.header.channelData = sendingActiveChannelSession.channelData;
 
-      if (msgType.toLowerCase() == "plain") {
-        message.body.type = "PLAIN";
-        message.body.markdownText = text.trim();
-      } else if (msgType.toLowerCase() == "application" || msgType.toLowerCase() == "text") {
-        message.body.type = "FILE";
-        message.body["caption"] = "";
-        message.body["additionalDetails"] = { fileName: fileName };
-        message.body["attachment"] = {
-          mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
-          mimeType: fileMimeType,
-          size: fileSize
-        };
-      } else if (msgType.toLowerCase() == "image") {
-        message.body.type = "IMAGE";
-        message.body["caption"] = fileName;
-        message.body["additionalDetails"] = {};
-        message.body["attachment"] = {
-          mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
-          mimeType: fileMimeType,
-          size: fileSize,
-          thumbnail: ""
-        };
-      } else if (msgType.toLowerCase() == "wrapup") {
-        message.body.type = "WRAPUP";
-        message.body.markdownText = "";
-        message.body["wrapups"] = wrapups;
-        message.body["note"] = note;
-      } else {
-        this._snackbarService.open("unable to process the file", "err");
-        return;
+        if (msgType.toLowerCase() == "plain") {
+          message.body.type = "PLAIN";
+          message.body.markdownText = text.trim();
+        } else if (msgType.toLowerCase() == "application" || msgType.toLowerCase() == "text") {
+          message.body.type = "FILE";
+          message.body["caption"] = "";
+          message.body["additionalDetails"] = { fileName: fileName };
+          message.body["attachment"] = {
+            mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
+            mimeType: fileMimeType,
+            size: fileSize
+          };
+        } else if (msgType.toLowerCase() == "image") {
+          message.body.type = "IMAGE";
+          message.body["caption"] = fileName;
+          message.body["additionalDetails"] = {};
+          message.body["attachment"] = {
+            mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
+            mimeType: fileMimeType,
+            size: fileSize,
+            thumbnail: ""
+          };
+        } else if (msgType.toLowerCase() == "wrapup") {
+          message.body.type = "WRAPUP";
+          message.body.markdownText = "";
+          message.body["wrapups"] = wrapups;
+          message.body["note"] = note;
+        } else {
+          this._snackbarService.open("unable to process the file", "err");
+          return;
+        }
+      } else if (!lastActiveChannelSession && firstChannelSession) {
+        message.id = uuidv4();
+        message.header.timestamp = Date.now();
+
+        message.header.sender = this.conversation.topicParticipant;
+        message.header.channelSession = firstChannelSession;
+        message.header.channelData = firstChannelSession.channelData;
+
+        if (msgType.toLowerCase() == "wrapup") {
+          message.body.type = "WRAPUP";
+          message.body.markdownText = "";
+          message.body["wrapups"] = wrapups;
+          message.body["note"] = note;
+        }
       }
 
       let event: any = new CimEvent("AGENT_MESSAGE", "MESSAGE", this.conversation.conversationId, message);

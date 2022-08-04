@@ -22,7 +22,9 @@ export class CustomerInfoComponent implements OnInit {
   @Input() conversationId: any;
   @Input() activeConversationData: any;
   @Input() firstChannelSession: any;
+  @Output() updatedlabels = new EventEmitter<boolean>();
   @Output() expandCustomerInfo = new EventEmitter<any>();
+
   customerProfileFormData: any;
 
   // customArray = [
@@ -184,6 +186,7 @@ export class CustomerInfoComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result && result.event && result.event == "refresh") {
+        this.updatedlabels.emit(result.data);
         this._httpService.getCustomerById(this.customer._id).subscribe(
           (customer) => {
             this._httpService.updateConversationCustomer(this.conversationId, customer).subscribe();

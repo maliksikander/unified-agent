@@ -306,7 +306,7 @@ export class CustomerActionsComponent implements OnInit {
     let id = this.userInfo._id;
     this._httpService.updateCustomerById(id, customerObj).subscribe(
       (e) => {
-        this.dialogRef.close({ event: "refresh" });
+        this.dialogRef.close({ event: "refresh",data:this.labelList  });
         this._sharedService.Interceptor("Customer updated!", "succ");
       },
       (error) => {

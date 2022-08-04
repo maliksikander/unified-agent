@@ -252,7 +252,7 @@ export class httpService {
 
   getPastActivities(id, limit, offset): Observable<any> {
     return this._httpClient.get<any>(
-      `${this._appConfigService.config.BOT_FRAMEWORK_URL}${this.apiEndpoints.activities}P?limit=${limit}&offset=${offset}`,
+      `${this._appConfigService.config.BOT_FRAMEWORK_URL}${this.apiEndpoints.activities}/${id}/past-events?limit=${limit}&offset=${offset}`,
       {
         headers: new HttpHeaders({
           "Content-Type": "application/json"

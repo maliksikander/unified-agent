@@ -1251,7 +1251,7 @@
     <app-customer-info [activeChannelSessions]="conversation.activeChannelSessions" [customer]="conversation.customer"
       [customerSuggestions]="conversation.customerSuggestions" [firstChannelSession]="conversation.firstChannelSession"
       [conversationId]="conversation.conversationId" [activeConversationData]="conversation.activeConversationData"
-      (expandCustomerInfo)="eventFromChild($event)">
+      (expandCustomerInfo)="eventFromChild($event)" (updatedlabels)="eventFromChildForUpdatedLabel($event)">
     </app-customer-info>
   </div>
 </div>
