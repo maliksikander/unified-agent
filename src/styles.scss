@@ -3104,3 +3104,19 @@ span.note-icon {
     }
   }
 }
+.wrap-up-main{
+  mat-expansion-panel{
+    .wrap-up-header{
+      p{
+        white-space: nowrap !important;
+      }
+    }
+    &.mat-expanded{
+      .wrap-up-header{
+        p{
+          white-space: pre-line !important;
+        }
+      }
+  }
+  }
+}
