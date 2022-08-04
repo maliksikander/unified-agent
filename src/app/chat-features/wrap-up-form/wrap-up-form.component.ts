@@ -69,7 +69,7 @@ export class WrapUpFormComponent implements OnInit {
     });
 
     if (this.categoryOptions.isMultipleChoice == true) {
-      if (index === -1 && this.selectedWrapUpList.length <= 5) this.selectedWrapUpList.push(obj);
+      if (index === -1 && this.selectedWrapUpList.length < 5) this.selectedWrapUpList.push(obj);
     } else {
       if (index === -1 && this.selectedWrapUpList.length < 1) this.selectedWrapUpList.push(obj);
     }
