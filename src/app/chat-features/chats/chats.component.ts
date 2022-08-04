@@ -10,19 +10,19 @@ import { socketService } from "src/app/services/socket.service";
   styleUrls: ["./chats.component.scss"]
 })
 export class ChatsComponent implements OnInit {
-  conversations = [];
+  // conversations = [];
   barExpand = false;
-  labels :Array<any>=[];
+  // labels :Array<any>=[];
   constructor(private _httpService:httpService,
     public _socketService: socketService, public _sharedService: sharedService) {}
   ngOnInit() {
-    this.loadLabels()
+    // this.loadLabels()
   }
-  loadLabels() {
-    this._httpService.getLabels().subscribe((e) => {
-      this.labels = e;
-    });
-  }
+  // loadLabels() {
+  //   this._httpService.getLabels().subscribe((e) => {
+  //     this.labels = e;
+  //   });
+  // }
   currentTabIndex;
   tabChanged(event: MatTabChangeEvent) {
     let index = event.index;
