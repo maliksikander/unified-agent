@@ -3,6 +3,7 @@ import { DateAdapter, MatDialog } from "@angular/material";
 import { CreateCustomerComponent } from "../create-customer/create-customer.component";
 import { FormControl } from "@angular/forms";
 import { httpService } from "../services/http.service";
+import { TopicParticipant } from "src/app/models/User/Interfaces";
 import { CustomerActionsComponent } from "../customer-actions/customer-actions.component";
 import { cacheService } from "../services/cache.service";
 import { columnPreferences } from "../column-preferences/column-preferences.component";
@@ -245,6 +246,12 @@ export class PhonebookComponent implements OnInit {
        this.loadLabelsAndCustomer()
       }
     });
+  }
+  openCOnversationView(customer)
+  {
+    
+    this._socketService.onTopicData({customer}, '12345', '')
+    // this._router.navigate(["customers"]);
   }
 
   onColReorder(event) {

@@ -347,6 +347,7 @@ export class socketService {
 
   onTopicData(topicData, conversationId, taskId) {
     // this.removeConversation(conversationId);
+    console.log("conversations==>")
     let conversation = {
       conversationId: conversationId,
       taskId,
@@ -357,15 +358,16 @@ export class socketService {
       index: ++this.conversationIndex,
       state: "ACTIVE",
       customer: topicData.customer,
-      customerSuggestions: topicData.channelSession.customerSuggestions,
-      topicParticipant: topicData.topicParticipant,
-      firstChannelSession: topicData.channelSession,
+      customerSuggestions: topicData.channelSession?topicData.channelSession.customerSuggestions:"",
+      topicParticipant: topicData.topicParticipant?topicData.topicParticipant:'',
+      firstChannelSession: topicData.channelSession?topicData.channelSession:"",
       ciscoDialogId: this.ciscoDialogId,
       messageComposerState: false
     };
+   
 
     // feed the conversation with type "messages"
-    topicData.topicEvents.forEach((event, i) => {
+    topicData.topicEvents?topicData.topicEvents:[].forEach((event, i) => {
       if (
         event.name.toLowerCase() == "agent_message" ||
         event.name.toLowerCase() == "bot_message" ||
@@ -380,7 +382,7 @@ export class socketService {
     });
 
     // feed the active channel sessions
-    topicData.participants.forEach((e) => {
+    topicData.participants?topicData.participants:[].forEach((e) => {
       if (e.type.toLowerCase() == "customer") {
         let participant = e.participant;
 

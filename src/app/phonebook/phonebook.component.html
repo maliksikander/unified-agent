@@ -207,6 +207,10 @@
               (click)="onRowClick(rowData._id,'edit',null)" class="p-button-rounded p-button-success p-mr-2">
               <mat-icon>edit</mat-icon>
             </button>
+            <button *ngIf="('customer-conversation-view' | authPipe : 'view') as result"
+            (click)="openCOnversationView(rowData)"  class="p-button-rounded p-button-success p-mr-2">
+              <mat-icon>edit</mat-icon>
+            </button>
             <button
               *ngIf="(isEmbededView && rowData._id != topicCustomerId) && ('customer-list' | authPipe : 'manage') as result"
               (click)="linkCustomer(rowData)" class="p-button-rounded p-button-warning link-btn">
