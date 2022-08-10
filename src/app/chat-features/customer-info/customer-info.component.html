@@ -163,7 +163,7 @@
                       <div class="channel-icon-area web-channel-inner">
                         <img matTooltip="{{channel.fieldType}}"
                           src="assets/attr-types/{{channel.fieldType | lowercase}}.svg" />
-                        <p (click)="startOutBoundConversation()">
+                        <p (click)="startOutBoundConversation(channel.value)">
                           <strong>{{channel.value | spaceInArray}}</strong>
                           <small>{{channel.label}}</small>
                         </p>

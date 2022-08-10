@@ -24,10 +24,6 @@ export class CustomerInfoComponent implements OnInit {
   @Input() firstChannelSession: any;
   @Output() updatedlabels = new EventEmitter<boolean>();
   @Output() expandCustomerInfo = new EventEmitter<any>();
-<<<<<<< HEAD
-=======
-  @Output() updatedlabels = new EventEmitter<boolean>();
->>>>>>> b3a61c93b04ee9f38cb72c21955daa53e26fca4f
 
   customerProfileFormData: any;
 
@@ -147,8 +143,34 @@ export class CustomerInfoComponent implements OnInit {
 
     return mediaChannelData;
   }
-  startOutBoundConversation()
+  startOutBoundConversation(channelCustomerIdentifier)
   {
+    let obj={
+    "id": "11111111111111",
+    "header": {
+        "channelData": {
+            "channelCustomerIdentifier":channelCustomerIdentifier ,
+            "serviceIdentifier": "1111",
+            "channelTypeCode":"webChannel"
+        },
+        "language": {},
+        "timestamp": "",
+        "securityInfo": {},
+        "stamps": [],
+        "intent": null,
+        "entities": {}
+    },
+    "body": {
+        "type": "PLAIN",
+        "markdownText": ""
+    }
+    
+}
+
+
+
+
+
     console.log("outbound functuon called")
   }
 
@@ -202,8 +224,6 @@ export class CustomerInfoComponent implements OnInit {
           (error) => {}
         );
       }
-
-      
     });
   }
   moveSession(event) {
