@@ -247,11 +247,12 @@ export class PhonebookComponent implements OnInit {
       }
     });
   }
+  //to open conversation view for outbound chat
   openCOnversationView(customer)
   {
     
-    this._socketService.onTopicData({customer}, '12345', '')
-    // this._router.navigate(["customers"]);
+    this._socketService.onTopicData({customer}, 'FAKE_CONVERSATION', '')
+    this._router.navigate(["customers"]);
   }
 
   onColReorder(event) {

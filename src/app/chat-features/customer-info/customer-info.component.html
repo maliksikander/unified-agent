@@ -144,7 +144,7 @@
                 </div>
 
               </div>
-
+              <ng-template *ngIf="conversationId != 'FAKE_CONVERSATION'">
               <div *ngIf="('customer-list' | authPipe : 'manage') as result" class="crm-trigger">
                 <!-- <p>Not a correct customer profile?</p> -->
                 <button mat-raised-button (click)="gotoEmbedView()">
@@ -152,6 +152,7 @@
                 </button>
                 <button (click)="updateProfile()" mat-raised-button>Update Profile</button>
               </div>
+              </ng-template>
             </div>
             <ul class="channel-list" *ngIf="displayCustomerChannels">
               <mat-accordion>
@@ -162,7 +163,7 @@
                       <div class="channel-icon-area web-channel-inner">
                         <img matTooltip="{{channel.fieldType}}"
                           src="assets/attr-types/{{channel.fieldType | lowercase}}.svg" />
-                        <p>
+                        <p (click)="startOutBoundConversation()">
                           <strong>{{channel.value | spaceInArray}}</strong>
                           <small>{{channel.label}}</small>
                         </p>

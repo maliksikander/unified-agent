@@ -143,6 +143,10 @@ export class CustomerInfoComponent implements OnInit {
 
     return mediaChannelData;
   }
+  startOutBoundConversation()
+  {
+    console.log("outbound functuon called")
+  }
 
   getProfileFormData(obj) {
     let channelIdentifiers = [];
