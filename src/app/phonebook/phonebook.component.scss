@@ -9,7 +9,7 @@
   min-height: 50px;
   padding-right: 10px;
   position: relative;
-  padding-left: 50px;
+  //padding-left: 50px;
   .back-to-chat{
     background: lighten($blue-text-color, 40%);
     height: 50px;
@@ -42,6 +42,7 @@
       display: inline-block;
       line-height: 30px;
     }
+
   }
   .filter-selection{
     display: inline-block;
@@ -347,3 +348,85 @@ span.field-channel {
     background: darken($main-color, 10%);
   }
 }
+
+//Search filter
+.search-customer-list-main{
+  flex: auto;
+  margin-right: 5px;
+  padding-left: 15px;
+  position: relative;
+
+  .search-customer-list{
+    mat-form-field{
+      width: 100%;
+
+      mat-icon{
+        right: 5px;
+        position: relative;
+      }
+    }
+  }
+  .filter-list-main{
+    position: absolute;
+    top: 100%;
+    right: 3px;
+    width: calc(100% - 20px);
+    background: #fff;
+    padding: 10px 15px;
+    z-index: 99;
+    border-radius: 3px;
+    box-shadow: 0 2px 2px #0002;
+
+    h5{
+      font-size: 13px;
+      margin-bottom: 15px;
+      font-weight: normal;
+    }
+  }
+  mat-radio-group{
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+
+    mat-radio-button{
+      flex: 0 0 25%;
+      font-size: 13px;
+      color: #000;
+    }
+  }
+  .filter-action-trigger{
+    position: absolute;
+    right: 2px;
+    border-left:1px solid #a0a0a078;
+    height: 31px;
+    line-height: 31px;
+    top: 6px;
+    color: #969696;
+    border-radius: 0 3px 3px 0;
+    &.clicked{
+      box-shadow: 0 10px 0px #fff, 0 0 8px #ccc;
+      border-left: 0;
+    }
+  }
+
+  .footer-buttons{
+    text-align: right;
+    padding: 10px;
+
+    button{
+      font-size: 13px;
+      color: $blue-text-color;
+      background: transparent;
+      height: 28px;
+      line-height: 28px;
+      min-width: 90px;
+      margin-left: 5px;
+
+      &.save-btn{
+        background: $blue-text-color;
+        color: #fff;
+      }
+    }
+  }
+}
+

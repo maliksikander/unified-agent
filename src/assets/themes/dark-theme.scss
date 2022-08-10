@@ -63,8 +63,6 @@
 //
 
 
-
-
 $white-color: #ffffff;
 $header-gray-color: #F3F6F8;
 $light-gray-color: #F5F5F5;
@@ -92,7 +90,6 @@ $viber-color: #8e24aa;
 $call-color: #F50000;
 
 
-
 //@use '~@angular/material' as mat;
 
 @import "~@angular/material/theming";
@@ -106,9 +103,6 @@ $warn: mat-palette($ef-red);
 $theme: mat-light-theme($primary, $accent, $warn);
 
 @include angular-material-theme($theme);
-
-
-
 
 
 // Our dark theme
@@ -170,16 +164,15 @@ $theme: mat-light-theme($primary, $accent, $warn);
   }
 
 
-
   .unidentified-customer .right-drag-accordion {
 
-    .channel-icon-area .call-time{
+    .channel-icon-area .call-time {
       background: mat-color($dark-primary, 400) !important;
     }
 
-    .drag-icon{
-      text-shadow: -5px 0px 0px  mat-contrast($dark-primary, 700) !important;
-      color:  mat-contrast($dark-primary, 700) !important;
+    .drag-icon {
+      text-shadow: -5px 0px 0px mat-contrast($dark-primary, 700) !important;
+      color: mat-contrast($dark-primary, 700) !important;
     }
 
 
@@ -189,7 +182,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
     .profile-area {
 
-      h3{
+      h3 {
         color: #F53939 !important;
       }
 
@@ -392,6 +385,10 @@ $theme: mat-light-theme($primary, $accent, $warn);
       }
     }
 
+    button.add-customer{
+      background: mat-color($dark-primary, 400) !important;
+    }
+
   }
 
   .system-notifs {
@@ -430,7 +427,8 @@ $theme: mat-light-theme($primary, $accent, $warn);
           }
         }
       }
-      img{
+
+      img {
         filter: grayscale(1) brightness(1.9);
       }
     }
@@ -442,7 +440,8 @@ $theme: mat-light-theme($primary, $accent, $warn);
       border-color: #1A50A3 !important;
     }
 
-    .agent-actions {}
+    .agent-actions {
+    }
   }
 
   .profile-detail,
@@ -611,12 +610,13 @@ $theme: mat-light-theme($primary, $accent, $warn);
           background: #00000030 !important;
           border-right-color: #484865 !important;
         }
-          .replied-message{
-            background:mat-color($dark-primary, 400) !important;
+
+        .replied-message {
+          background: mat-color($dark-primary, 400) !important;
         }
 
-        .referred-message-content{
-          &:before{
+        .referred-message-content {
+          &:before {
             border-color: #484865 !important;
           }
         }
@@ -661,7 +661,6 @@ $theme: mat-light-theme($primary, $accent, $warn);
         &.chat-channel-area {
           background: mat-color($dark-primary, 500) !important;
           border-color: mat-color($dark-primary, 400) !important;
-          ;
         }
 
         &.customer-info-panel {
@@ -762,6 +761,14 @@ $theme: mat-light-theme($primary, $accent, $warn);
           background: mat-color($dark-primary, 700) !important;
         }
       }
+
+      .mat-form-field-outline {
+        background: mat-color($dark-primary) !important;
+      }
+
+      .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+        color: #ffffff17;
+      }
     }
 
     .ui-table-hoverable-rows {
@@ -840,6 +847,23 @@ $theme: mat-light-theme($primary, $accent, $warn);
       //
       //  }
       //}
+    }
+
+    .search-customer-list-main {
+      .filter-list-main {
+        background: mat-color($dark-primary, 800) !important;
+
+        mat-radio-button {
+          color: mat-contrast($dark-primary, 500) !important;
+        }
+      }
+
+      .filter-action-trigger {
+        &.clicked {
+          box-shadow: 0 10px 0 mat-color($dark-primary, 800), 0 0 8px #ffffff26 !important;
+          border-left: 0;
+        }
+      }
     }
   }
 
@@ -1118,6 +1142,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
       color: #f74d4d !important;
     }
   }
+
   .chat-intents .intents-inner {
     background: #273755 !important;
     border: 1px dashed #314466 !important;
@@ -1133,161 +1158,180 @@ $theme: mat-light-theme($primary, $accent, $warn);
     }
 
   }
+
   .manage-dashboard {
     .page-heading {
       background: mat-color($dark-primary, 800) !important;
-      h4{
+
+      h4 {
         color: mat-contrast($dark-primary, 500) !important;
       }
     }
   }
-  .conversation-data-main{
-    .conversation-data{
+
+  .conversation-data-main {
+    .conversation-data {
       background: mat-color($dark-primary, 800);
-      h5{
+
+      h5 {
         color: #D3D3D3 !important;
       }
-      label{
+
+      label {
         color: #8E8A8A !important;
       }
     }
   }
-  .note-accordion{
-    .mat-expansion-panel{
+
+  .note-accordion {
+    .mat-expansion-panel {
       background: transparent !important;
     }
+
     .mat-expansion-indicator::after {
       color: mat-contrast($dark-primary, 600) !important;
-  }
+    }
 
   }
 
-  textarea{
-    background: mat-color($dark-primary,400);
-    color: mat-contrast($dark-primary,600);
-}
-.categories-search{
-  .mat-form-field-appearance-fill .mat-form-field-flex{
-    background: transparent !important;
+  textarea {
+    background: mat-color($dark-primary, 400);
+    color: mat-contrast($dark-primary, 600);
   }
-  // .mat-form-field-underline{
-  //   display: none;
-  // }
 
-  // .mat-form-field-wrapper{
-  //   padding-bottom: 0 !important;
-  // }
+  .categories-search {
+    .mat-form-field-appearance-fill .mat-form-field-flex {
+      background: transparent !important;
+    }
 
-}
-.mat-autocomplete-panel {
-  background: mat-color($dark-primary);
-}
+    // .mat-form-field-underline{
+    //   display: none;
+    // }
 
-.wrap-code-area .categories-label-area mat-chip{
-  background: mat-color($dark-primary,400) !important;
-  color: mat-contrast($dark-primary,600) !important;
-}
+    // .mat-form-field-wrapper{
+    //   padding-bottom: 0 !important;
+    // }
 
-.wrapup .mat-expansion-panel-header ul, .wrapup .mat-expansion-panel-header p {
-  color: mat-contrast($dark-primary,600) !important;
-}
+  }
 
-.wrap-code li {
-  color: mat-contrast($dark-primary,600) !important;
-  // color: #000;
-}
+  .mat-autocomplete-panel {
+    background: mat-color($dark-primary);
+  }
 
-.instruction-content mat-expansion-panel-header.mat-expanded {
-  background: mat-color($dark-primary,400) !important;
-  // border-radius: 0;
-  // margin-bottom: 10px;
-}
+  .wrap-code-area .categories-label-area mat-chip {
+    background: mat-color($dark-primary, 400) !important;
+    color: mat-contrast($dark-primary, 600) !important;
+  }
 
-.linked-area {
-  .match-content li {
-    border-bottom-color: mat-color($dark-primary);
-    &:hover{
-      background: mat-color($dark-primary, 400);
-      button {
-        background: mat-color($dark-primary, 500);
-        &:hover{
-          background: mat-color($dark-primary, 700);
+  .wrapup .mat-expansion-panel-header ul, .wrapup .mat-expansion-panel-header p {
+    color: mat-contrast($dark-primary, 600) !important;
+  }
 
+  .wrap-code li {
+    color: mat-contrast($dark-primary, 600) !important;
+    // color: #000;
+  }
+
+  .instruction-content mat-expansion-panel-header.mat-expanded {
+    background: mat-color($dark-primary, 400) !important;
+    // border-radius: 0;
+    // margin-bottom: 10px;
+  }
+
+  .linked-area {
+    .match-content li {
+      border-bottom-color: mat-color($dark-primary);
+
+      &:hover {
+        background: mat-color($dark-primary, 400);
+
+        button {
+          background: mat-color($dark-primary, 500);
+
+          &:hover {
+            background: mat-color($dark-primary, 700);
+
+          }
         }
       }
     }
   }
-}
 
-.linked-action, .crm-trigger {
-  button{
-    background: mat-color($dark-primary, 700) !important;
-    font-size: 10px !important;
-    padding: 0;
-    display: inline-block;
-    height: 28px;
-    line-height: 28px;
-    font-weight: 400 !important;
-    margin: 0 3px 10px;
+  .linked-action, .crm-trigger {
+    button {
+      background: mat-color($dark-primary, 700) !important;
+      font-size: 10px !important;
+      padding: 0;
+      display: inline-block;
+      height: 28px;
+      line-height: 28px;
+      font-weight: 400 !important;
+      margin: 0 3px 10px;
+    }
   }
-}
 
-.not-allowed .mat-checkbox-background {
-  background-color: #686868 !important;
-}
+  .not-allowed .mat-checkbox-background {
+    background-color: #686868 !important;
+  }
 
 
   //  Voice activity
-  .voice-activity-main{
-    .mat-expansion-panel{
+  .voice-activity-main {
+    .mat-expansion-panel {
       background: mat-color($dark-primary, 500);
-      border: 1px solid  mat-color($dark-primary, 400);
+      border: 1px solid mat-color($dark-primary, 400);
 
-      time{
+      time {
         color: mat-contrast($dark-primary, 500) !important;
       }
-      .section-tags{
-        span{
+
+      .section-tags {
+        span {
           background: mat-color($dark-primary, 700) !important;
           border-color: mat-color($dark-primary, 700) !important;
 
         }
       }
     }
-    mat-expansion-panel-header{
-      &.mat-expanded{
+
+    mat-expansion-panel-header {
+      &.mat-expanded {
         background: mat-color($dark-primary, 700) !important;
 
-        .section-tags{
-          span{
+        .section-tags {
+          span {
             background: mat-color($dark-primary, 800) !important;
             border-color: mat-color($dark-primary, 800) !important;
           }
         }
       }
     }
-    .call-history-panel{
-      background:mat-color($dark-primary) !important;
+
+    .call-history-panel {
+      background: mat-color($dark-primary) !important;
     }
 
-    .mat-expansion-indicator::after{
+    .mat-expansion-indicator::after {
       color: mat-contrast($dark-primary, 500) !important;
     }
   }
-  .more-section-tags{
-    background:mat-color($dark-primary) !important;
 
-    span{
+  .more-section-tags {
+    background: mat-color($dark-primary) !important;
+
+    span {
       background: mat-color($dark-primary, 400) !important;
-      border-color: rgba(255,255,255,0.1) !important;
+      border-color: rgba(255, 255, 255, 0.1) !important;
     }
   }
-.label-list{
-  .bar{
-    background: mat-color($dark-primary, 800) !important;
-    border-color: mat-color($dark-primary, 400) !important;
+
+  .label-list {
+    .bar {
+      background: mat-color($dark-primary, 800) !important;
+      border-color: mat-color($dark-primary, 400) !important;
+    }
   }
-}
+
   //.meta{
   //  background: mat-color($dark-primary, A700) !important;
   //  color: #fcfcfc !important;
@@ -1311,60 +1355,72 @@ $theme: mat-light-theme($primary, $accent, $warn);
       box-shadow: 1px 0 0 mat-color($dark-primary, A700) !important;
     }
   }
-  .opener{
+
+  .opener {
     border: 1px solid #606264 !important;
   }
+
   .drop {
     .c-btn {
       border: 1px solid rgba(255, 255, 255, 0.3) !important;
     }
+
     .select-all,
-    .list-filter{
+    .list-filter {
       border-bottom: 1px solid #cccccc4d !important;
+
       input {
-      background: transparent !important;
+        background: transparent !important;
+      }
     }
-    }
+
     .list-area {
       border: 1px solid rgba(255, 255, 255, 0.3) !important;
       background: mat-color($dark-primary, 400) !important;
       box-shadow: 0 1px 5px rgba(255, 255, 255, 0.5) !important;
     }
-    li{
+
+    li {
       &:hover {
         background: #00000024 !important;
       }
     }
-    .pure-checkbox input[type=checkbox]:checked + label{
-      &:before{
+
+    .pure-checkbox input[type=checkbox]:checked + label {
+      &:before {
         background: transparent !important;
-      }&:after{
-               background: transparent !important;
-      border-color: mat-color($dark-primary, 600) !important;
-             }
+      }
+
+      &:after {
+        background: transparent !important;
+        border-color: mat-color($dark-primary, 600) !important;
+      }
     }
   }
 
   .custom-dropdown.lbl-filter-search {
-    color:  mat-contrast($dark-primary, 600) !important;
+    color: mat-contrast($dark-primary, 600) !important;
 
-    .arrow-up{
+    .arrow-up {
       border-bottom-color: mat-color($dark-primary) !important;
       filter: drop-shadow(0px 0px 0px #fff);
     }
-    .list-area{
+
+    .list-area {
       background: mat-color($dark-primary) !important;
       border: 1px solid #ffffff30;
 
     }
+
     .list-filter {
       input {
-        color:  mat-contrast($dark-primary, 600) !important;
+        color: mat-contrast($dark-primary, 600) !important;
         background: transparent;
       }
     }
   }
-  ul.customer-labels li{
+
+  ul.customer-labels li {
     border-color: mat-color($dark-primary) !important;
   }
 }

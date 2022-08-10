@@ -2,9 +2,37 @@
   <div class="phonebook-main row m-0">
     <button *ngIf="isEmbededView" mat-button routerLink="/customers/chats" routerLinkActive="active"
       [routerLinkActiveOptions]="{exact:true}" class="back-to-chat"></button>
-    <div class="customer-heading col-md-6" [ngClass]="filterQuery.length > 0 ? 'col-sm-12': 'col-sm-1'">
+    <div class="customer-heading search-customer-list-main">
       <!--    <h4>Customer List</h4>-->
-      <div class="filter-selection">
+      <!--    <h4>Customer List</h4>-->
+      <div class="search-customer-list">
+
+
+        <mat-form-field appearance="outline">
+          <input matInput placeholder="Search">
+          <span *ngIf="selectedSearchLabel.length > 0" matPrefix>{{selectedSearchLabel}}:</span>
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        <button class="filter-action-trigger" [ngClass]="{'clicked' : isFilterListOpened}" (click)="isFilterList()" mat-icon-button><mat-icon>{{isFilterListOpened ? 'close': 'filter_list'}} </mat-icon></button>
+
+
+        <div class="filter-list-main" *ngIf="isFilterListOpened">
+          <h5>Select Column(s)</h5>
+          <div class="filter-list-selection">
+            <mat-radio-group aria-label="Select an option">
+              <mat-radio-button value="{{col.header}}" *ngFor="let col of cols" (change)="selectedFilter($event)">{{col.header}}</mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <div class="footer-buttons">
+            <button class="cancel-btn" (click)="isFilterList()" mat-button>Cancel</button>
+            <button class="save-btn" (click)="isFilterList()" mat-button>Done</button>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="filter-selection" *ngIf="false">
         <mat-chip-list #chipList aria-label="Filter selection">
           <mat-chip *ngFor="let filter of filterQuery" [removable]="removable" (removed)="cancelFilter()">
             {{filter.field | sentenceCase}}: <span>{{filter.value}}</span>
@@ -22,8 +50,7 @@
       <!--    </mat-form-field>-->
     </div>
 
-    <div *ngIf="('customer-list' | authPipe : 'manage') as result" class="col-md-6 right-actions text-right"
-      [ngClass]="filterQuery.length > 0 ? 'col-sm-12': 'col-sm-11'">
+    <div *ngIf="('customer-list' | authPipe : 'manage') as result" class="right-actions text-right">
       <button mat-button class="btn-action add-new " (click)="actions()">Column Preference</button>
       <mat-menu #columnMenu="matMenu">
         <div class="check-menu" (click)="$event.stopPropagation();">
@@ -209,7 +236,7 @@
             </button>
             <button *ngIf="('customer-conversation-view' | authPipe : 'view') as result"
             (click)="openCOnversationView(rowData)"  class="p-button-rounded p-button-success p-mr-2">
-              <mat-icon>edit</mat-icon>
+              <mat-icon>person</mat-icon>
             </button>
             <button
               *ngIf="(isEmbededView && rowData._id != topicCustomerId) && ('customer-list' | authPipe : 'manage') as result"

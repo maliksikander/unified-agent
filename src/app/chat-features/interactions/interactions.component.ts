@@ -79,6 +79,7 @@ export class InteractionsComponent implements OnInit {
   pastCimEventsOffsetLimit: number = 0;
   loadingPastActivity: boolean = false;
   ciscoDialogId;
+  activeChat = false;
 
   constructor(
     private _sharedService: sharedService,

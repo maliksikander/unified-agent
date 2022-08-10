@@ -51,9 +51,11 @@ export class PhonebookComponent implements OnInit {
   query = {};
   filterQuery = [];
   enableTable: boolean = false;
+  selectedSearchLabel = '';
 
   submitted: boolean;
   filterOnOff: boolean = false;
+  isFilterListOpened: boolean = false;
   filterActiveField;
   removable = true;
   schemaList: Array<any> = [];
@@ -250,7 +252,7 @@ export class PhonebookComponent implements OnInit {
   //to open conversation view for outbound chat
   openCOnversationView(customer)
   {
-    
+
     this._socketService.onTopicData({customer}, 'FAKE_CONVERSATION', '')
     this._router.navigate(["customers"]);
   }
@@ -359,4 +361,12 @@ export class PhonebookComponent implements OnInit {
     });
   }
 
+  isFilterList() {
+    this.isFilterListOpened = !this.isFilterListOpened;
+  }
+
+  selectedFilter(e){
+    this.selectedSearchLabel = e.value;
+    console.log(e, 'valueee')
+  }
 }

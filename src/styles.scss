@@ -107,10 +107,14 @@ mat-tab-group.chat-tab-area {
   }
 
   .mat-tab-header {
+    //margin-top: 5px;
+    //height: calc(100% - 10px);
+    //border: 0;
+
     width: 60px;
     background: $white-color;
-    margin-top: 5px;
-    height: calc(100% - 10px);
+    margin-top: 55px;
+    height: calc(100% - 65px);
     border: 0;
 
     .mat-tab-label-container {
@@ -2905,6 +2909,61 @@ body .ui-paginator {
 }
 
 //Phonebook
+
+//Customer list search
+.filter-list-selection {
+  mat-radio-button{
+    &.mat-radio-checked {
+      .mat-radio-outer-circle {
+        border-color: $blue-text-color;
+      }
+      .mat-radio-inner-circle{
+        background-color: $blue-text-color;
+      }
+    }
+  }
+  .mat-radio-container{
+      width: 15px;
+      height: 15px;
+  }
+  .mat-radio-outer-circle{
+    width: 15px;
+    height: 15px;
+  }
+  .mat-radio-inner-circle {
+    width: 15px;
+    height: 15px;
+  }
+}
+.search-customer-list{
+  .mat-form-field-prefix{
+    top: 1px !important;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .mat-form-field-wrapper{
+    padding: 0;
+    margin: 0;
+
+    .mat-form-field-flex{
+      padding-right: 40px;
+    }
+  }
+  .mat-form-field-infix{
+    padding: 10px !important;
+    top: 2px;
+    border: 0;
+
+    input{
+      height: 20px;
+    }
+
+  }
+  .mat-form-field-suffix {
+    top: 7.5px !important;
+    color: rgba(0,0,0, 0.3);
+  }
+}
 
 .phonebook-main-area {
   height: calc(100% - 50px);

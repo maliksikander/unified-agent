@@ -118,6 +118,18 @@
             replyInput?.offsetHeight > 80 ? 'calc(100% - ' + (replyInput?.offsetHeight + 80) + 'px)' : 'calc(100% - ' + viewHeight + ')'
           "
         >
+
+          <div *ngIf="activeChat == false" class="no-chat-main">
+            <div class="no-chat">
+  <span class="no-chat-icon">
+    <mat-icon>question_answer</mat-icon>
+  </span>
+
+              <p>No active conversation</p>
+              <p>Click <a routerLink="">here</a> to load the past conversations</p>
+            </div>
+          </div>
+
           <!-- voice message chat area -->
 
           <!-- simple chat area -->
