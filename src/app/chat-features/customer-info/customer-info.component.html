@@ -1,19 +1,16 @@
 <!--Right Sidebar trigger area-->
 <div class="right-info-bar">
   <button mat-raised-button (click)="sidenav.toggle(); customerInfoToggle()">
-    <mat-icon>{{barOpened ? 'navigate_next' : 'navigate_before'}}</mat-icon>
+    <mat-icon>{{ barOpened ? "navigate_next" : "navigate_before" }}</mat-icon>
   </button>
 </div>
-
 
 <!--Right sidebar-->
 <mat-sidenav-container class="right-side-bar-main" (backdropClick)="close()">
   <mat-sidenav #sidenav (keydown.escape)="close()" disableClose position="end">
     <div class="bar-content">
-
       <mat-accordion class="right-drag-accordion">
         <div class="right-drag-content">
-
           <!--          <mat-expansion-panel class="drag-expansion-panel" *ngIf="acc == 'media_channel'" cdkDrag>-->
           <!--            <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">-->
           <!--              <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Media Channels-->
@@ -110,11 +107,13 @@
 
           <mat-expansion-panel class="drag-expansion-panel customer-info-panel">
             <mat-expansion-panel-header [collapsedHeight]="'45px'" [expandedHeight]="'45px'">
-              <mat-panel-title><span class="material-icons drag-icon">more_vert</span>
+              <mat-panel-title
+                ><span class="material-icons drag-icon">more_vert</span>
                 <div class="profile-area">
                   <!--                  <h3>{{customer.firstName | getFirstTwoLetters}}-->
                   <!--                  </h3>-->
-                  <h5 class="user-name">Customer Info
+                  <h5 class="user-name">
+                    Customer Info
                     <!--                    <p class="user-from">London, United Kingdom</p>-->
                   </h5>
                 </div>
@@ -129,54 +128,50 @@
             <!--            </div>-->
             <div class="custom-tab-area">
               <ul>
-                <li (click)="displayProfile = true; displayCustomerChannels = false"
-                  [ngClass]="{'tab-active' : displayProfile}">Customer Profile</li>
-                <li (click)="displayProfile = false; displayCustomerChannels = true"
-                  [ngClass]="{'tab-active' : displayCustomerChannels}">Media Channels</li>
+                <li (click)="displayProfile = true; displayCustomerChannels = false" [ngClass]="{ 'tab-active': displayProfile }">
+                  Customer Profile
+                </li>
+                <li (click)="displayProfile = false; displayCustomerChannels = true" [ngClass]="{ 'tab-active': displayCustomerChannels }">
+                  Media Channels
+                </li>
               </ul>
             </div>
             <div class="user-pre-detail" *ngIf="displayProfile">
               <div class="user-detail-area" *ngFor="let data of customerProfileFormData">
-
                 <div>
-                  <label>{{data.key | sentenceCase}}:</label>
-                  <p class="label-detail">{{data.value | spaceInArray}}</p>
+                  <label>{{ data.key | sentenceCase }}:</label>
+                  <p class="label-detail">{{ data.value | spaceInArray }}</p>
                 </div>
-
               </div>
-              <ng-template *ngIf="conversationId != 'FAKE_CONVERSATION'">
-              <div *ngIf="('customer-list' | authPipe : 'manage') as result" class="crm-trigger">
-                <!-- <p>Not a correct customer profile?</p> -->
-                <button mat-raised-button (click)="gotoEmbedView()">
-                  link Profile
-                </button>
-                <button (click)="updateProfile()" mat-raised-button>Update Profile</button>
-              </div>
-              </ng-template>
+              <ng-container *ngIf="conversationId != 'FAKE_CONVERSATION'">
+                <div *ngIf="'customer-list' | authPipe: 'manage' as result" class="crm-trigger">
+                  <!-- <p>Not a correct customer profile?</p> -->
+                  <button mat-raised-button (click)="gotoEmbedView()">link Profile</button>
+                  <button (click)="updateProfile()" mat-raised-button>Update Profile</button>
+                </div>
+              </ng-container>
             </div>
             <ul class="channel-list" *ngIf="displayCustomerChannels">
               <mat-accordion>
                 <li class="multi-channel-list" *ngFor="let channel of mediaChannelData">
-
                   <mat-expansion-panel [hideToggle]="!channel.channelList">
                     <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                       <div class="channel-icon-area web-channel-inner">
-                        <img matTooltip="{{channel.fieldType}}"
-                          src="assets/attr-types/{{channel.fieldType | lowercase}}.svg" />
-                        <p (click)="startOutBoundConversation(channel.value)">
-                          <strong>{{channel.value | spaceInArray}}</strong>
-                          <small>{{channel.label}}</small>
+                        <img matTooltip="{{ channel.fieldType }}" src="assets/attr-types/{{ channel.fieldType | lowercase }}.svg" />
+                        <p>
+                          <strong>{{ channel.value | spaceInArray }}</strong>
+                          <small>{{ channel.label }}</small>
                         </p>
                       </div>
                     </mat-expansion-panel-header>
-                    <ul class="channel-types-logo" *ngIf="channel.channelList.length > 0 ">
+                    <ul class="channel-types-logo" *ngIf="channel.channelList.length > 0">
                       <li *ngFor="let activeChannel of channel.channelList">
                         <img [src]="activeChannel | channelName | channelLogo | async" />
                         <p>
-                          <small>{{activeChannel}}</small>
+                          <small>{{ activeChannel }}</small>
                           <span class="channel-list-action">
                             <button mat-icon-button><mat-icon>call</mat-icon></button>
-                            <button mat-icon-button><mat-icon>message</mat-icon></button>
+                            <button mat-icon-button (click)="startOutBoundConversation(channel.value)"><mat-icon>message</mat-icon></button>
                             <!-- <button mat-icon-button *ngIf="activeChannel.channelType !== 'email'" (click)="openDialog(callingTemplate, '+4466985845')"><mat-icon>call</mat-icon></button>
                     <button mat-icon-button><mat-icon>message</mat-icon></button> -->
                           </span>
@@ -187,24 +182,25 @@
                 </li>
               </mat-accordion>
             </ul>
-
           </mat-expansion-panel>
           <!-- customer Suggestions Tab start-->
           <mat-expansion-panel class="drag-expansion-panel" *ngIf="customerSuggestions.length !== 0">
             <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
-              <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Link Profile
-              </mat-panel-title>
+              <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Link Profile </mat-panel-title>
             </mat-expansion-panel-header>
 
             <div class="linked-area">
-              <h5>{{customerSuggestions.length}} profiles matches this
-                customer data.</h5>
+              <h5>{{ customerSuggestions.length }} profiles matches this customer data.</h5>
               <ul class="match-content">
                 <div *ngFor="let customer of customerSuggestions; let i = index">
-                  <li *ngIf="i<15">
-                    {{customer.firstName}}
-                    <button *ngIf="('customer-list' | authPipe : 'manage') as result" (click)="linkCustomer(customer)"
-                      mat-icon-button class="waves-effect">
+                  <li *ngIf="i < 15">
+                    {{ customer.firstName }}
+                    <button
+                      *ngIf="'customer-list' | authPipe: 'manage' as result"
+                      (click)="linkCustomer(customer)"
+                      mat-icon-button
+                      class="waves-effect"
+                    >
                       <mat-icon>insert_link</mat-icon>
                     </button>
                   </li>
@@ -212,36 +208,27 @@
               </ul>
 
               <div class="linked-action">
-
-                <button mat-button *ngIf="('customer-list' | authPipe : 'view') as result"
-                  (click)="viewAllMatches()">
-                  View all Matches
-                </button>
+                <button mat-button *ngIf="'customer-list' | authPipe: 'view' as result" (click)="viewAllMatches()">View all Matches</button>
               </div>
             </div>
-
           </mat-expansion-panel>
 
           <!-- customer Suggestions Tab end-->
 
-
           <mat-expansion-panel class="drag-expansion-panel">
             <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
-              <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Active Channels
-              </mat-panel-title>
+              <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Active Channels </mat-panel-title>
             </mat-expansion-panel-header>
 
             <div class="profile-area multi-channel-area">
               <mat-accordion>
-
                 <mat-expansion-panel class="chat-channel-area" *ngFor="let channelSession of activeChannelSessions">
                   <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                     <div class="channel-icon-area">
-                      <span class="channel-icon"><img
-                          [src]="channelSession.channel.channelType.channelLogo | channelLogo | async"></span>
-                      <label>{{channelSession.channel.channelType.name}}
-                        <span *ngIf="channelSession?.channel.channelType.name == 'VOICE'" class="call-time">{{ timer
-                          }}</span>
+                      <span class="channel-icon"><img [src]="channelSession.channel.channelType.channelLogo | channelLogo | async" /></span>
+                      <label
+                        >{{ channelSession.channel.channelType.name }}
+                        <span *ngIf="channelSession?.channel.channelType.name == 'VOICE'" class="call-time">{{ timer }}</span>
                       </label>
 
                       <!-- <button (click)="moveSession($event)" mat-button [matMenuTriggerFor]="rerouteMenu"
@@ -253,56 +240,77 @@
                           (click)="reRouteDialog(reRouteSessionConfirmation, 're-assign')" mat-menu-item>Re-assign to
                           self</button>
                       </mat-menu> -->
-
                     </div>
                     <ul class="channel-info-list" *ngIf="channelSession.webChannelData">
                       <li
-                        matTooltip="Device: {{channelSession.webChannelData.browserDeviceInfo.deviceType ? channelSession.webChannelData.browserDeviceInfo.deviceType : 'UNKNOWN'}}">
+                        matTooltip="Device: {{
+                          channelSession.webChannelData.browserDeviceInfo.deviceType
+                            ? channelSession.webChannelData.browserDeviceInfo.deviceType
+                            : 'UNKNOWN'
+                        }}"
+                      >
                         <!--                        <mat-icon>{{channelSession.webChannelData.browserDeviceInfo.deviceType |-->
                         <!--                          webChannelData:'deviceType'}}</mat-icon>-->
 
-                        <img src="assets/device-icons/{{channelSession.webChannelData.browserDeviceInfo.deviceType |
-                          webChannelData:'deviceType'}}.svg" alt="device">
-                      </li>
-                      <li
-                        matTooltip="Browser: {{channelSession.webChannelData.browserDeviceInfo.browserName ? channelSession.webChannelData.browserDeviceInfo.browserName : 'UNKNOWN'}}">
-                        <img src="assets/browser-icons/{{channelSession.webChannelData.browserDeviceInfo.browserName |
-                            webChannelData:'browser'}}.svg" alt="browser">
-                      </li>
-                      <li
-                        matTooltip="Country: {{channelSession.webChannelData.locale.country ? channelSession.webChannelData.locale.country : 'UNKNOWN'}}">
                         <img
-                          src="assets/flags/{{channelSession.webChannelData.locale.country | webChannelData:'country'}}.svg"
-                          alt="country">
+                          src="assets/device-icons/{{
+                            channelSession.webChannelData.browserDeviceInfo.deviceType | webChannelData: 'deviceType'
+                          }}.svg"
+                          alt="device"
+                        />
                       </li>
-                      <li class="lang-bar"
-                        matTooltip="Language: {{channelSession.webChannelData.locale.language ? channelSession.webChannelData.locale.language : 'UNKNOWN'}}">
-                        {{(channelSession.webChannelData.locale.language ? channelSession.webChannelData.locale.language
-                        : 'A') | getFirstTwoLetters}} </li>
+                      <li
+                        matTooltip="Browser: {{
+                          channelSession.webChannelData.browserDeviceInfo.browserName
+                            ? channelSession.webChannelData.browserDeviceInfo.browserName
+                            : 'UNKNOWN'
+                        }}"
+                      >
+                        <img
+                          src="assets/browser-icons/{{ channelSession.webChannelData.browserDeviceInfo.browserName | webChannelData: 'browser' }}.svg"
+                          alt="browser"
+                        />
+                      </li>
+                      <li
+                        matTooltip="Country: {{
+                          channelSession.webChannelData.locale.country ? channelSession.webChannelData.locale.country : 'UNKNOWN'
+                        }}"
+                      >
+                        <img src="assets/flags/{{ channelSession.webChannelData.locale.country | webChannelData: 'country' }}.svg" alt="country" />
+                      </li>
+                      <li
+                        class="lang-bar"
+                        matTooltip="Language: {{
+                          channelSession.webChannelData.locale.language ? channelSession.webChannelData.locale.language : 'UNKNOWN'
+                        }}"
+                      >
+                        {{
+                          (channelSession.webChannelData.locale.language ? channelSession.webChannelData.locale.language : "A") | getFirstTwoLetters
+                        }}
+                      </li>
                     </ul>
                   </mat-expansion-panel-header>
                   <ul class="requested-channel-content">
                     <li>
                       <label>Customer Identifier</label>
-                      {{channelSession.channelData.channelCustomerIdentifier}}
+                      {{ channelSession.channelData.channelCustomerIdentifier }}
                     </li>
                     <li>
                       <label>Service Identifier</label>
-                      {{channelSession.channelData.serviceIdentifier}}
+                      {{ channelSession.channelData.serviceIdentifier }}
                     </li>
                     <div *ngFor="let attr of channelSession.channelData.additionalAttributes">
                       <li *ngIf="(attr.type | lowercase) != 'webchanneldata' && attr.key != 'callStartTime'">
-                        <label>{{attr.key | sentenceCase}}</label>
-                        {{attr.value | spaceInArray}}
+                        <label>{{ attr.key | sentenceCase }}</label>
+                        {{ attr.value | spaceInArray }}
                       </li>
                       <li *ngIf="attr.key == 'callStartTime'">
-                        <label>{{attr.key | sentenceCase}}</label>
-                        {{attr.value | date:'hh:mm:ss'}}
+                        <label>{{ attr.key | sentenceCase }}</label>
+                        {{ attr.value | date: "hh:mm:ss" }}
                       </li>
                     </div>
                   </ul>
-                  <div class="channel-inner-content"
-                    *ngFor="let additionalAttribute of channelSession.channelData.additionalAttributes">
+                  <div class="channel-inner-content" *ngFor="let additionalAttribute of channelSession.channelData.additionalAttributes">
                     <!--Web chat desktop channel accordion-->
                     <mat-expansion-panel *ngIf="(additionalAttribute.type | lowercase) == 'webchanneldata'">
                       <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
@@ -311,16 +319,14 @@
                         </div>
                       </mat-expansion-panel-header>
 
-                      <ul class="requested-channel-content"
-                        *ngFor="let attr of additionalAttribute.value.formData.attributes">
+                      <ul class="requested-channel-content" *ngFor="let attr of additionalAttribute.value.formData.attributes">
                         <li>
-                          <label>{{attr.key | sentenceCase}}</label>
-                          {{attr.value}}
+                          <label>{{ attr.key | sentenceCase }}</label>
+                          {{ attr.value }}
                         </li>
                       </ul>
                     </mat-expansion-panel>
                   </div>
-
                 </mat-expansion-panel>
 
                 <!--Call Active accordion-->
@@ -359,41 +365,35 @@
                     </li>
                   </ul>
                 </mat-expansion-panel> -->
-
               </mat-accordion>
             </div>
-
           </mat-expansion-panel>
           <!-- Current Conversation data-->
           <mat-expansion-panel class="drag-expansion-panel conversation-data-panel">
             <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
-              <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Conversation Data <small>(Active
-                  Conversation)</small>
+              <mat-panel-title
+                ><span class="material-icons drag-icon">more_vert</span>Conversation Data <small>(Active Conversation)</small>
               </mat-panel-title>
             </mat-expansion-panel-header>
 
             <div class="conversation-data-main">
-              <div class="conversation-data" >
-                <ul (click)="$event.stopPropagation()" *ngIf="(activeConversationData | keyvalue)?.length else notFound">
-
-                  <li *ngFor="let data of activeConversationData | keyvalue"><label>{{data.key | titlecase}}:</label><span>{{data.value}}</span></li>
-
+              <div class="conversation-data">
+                <ul (click)="$event.stopPropagation()" *ngIf="(activeConversationData | keyvalue)?.length; else notFound">
+                  <li *ngFor="let data of activeConversationData | keyvalue">
+                    <label>{{ data.key | titlecase }}:</label><span>{{ data.value }}</span>
+                  </li>
                 </ul>
                 <ng-template #notFound>
-                  <ul >
-                    <li ><label>Data</label><span>Not Found</span></li>
+                  <ul>
+                    <li><label>Data</label><span>Not Found</span></li>
                   </ul>
                 </ng-template>
               </div>
             </div>
-
           </mat-expansion-panel>
         </div>
       </mat-accordion>
-
     </div>
-
-
   </mat-sidenav>
 
   <!--  <mat-sidenav-content>-->
@@ -412,7 +412,7 @@
           <div class="call-detail">
             <p>initiate outgoing call to</p>
             <h4>Stacy Miller</h4>
-            <strong>{{outgoingCallingNumber}}</strong>
+            <strong>{{ outgoingCallingNumber }}</strong>
             <small>(Mobile)</small>
           </div>
         </div>
@@ -429,11 +429,17 @@
 <ng-template #reRouteSessionConfirmation>
   <div class="confirmation-dialog">
     <div class="confirmation-header">
-      <h3>{{reRouteText}} Chat Session</h3>
+      <h3>{{ reRouteText }} Chat Session</h3>
     </div>
     <div class="confirmation-content">
-      <p>{{reRouteText == 're-assign' ? 'Are you sure You want re-assign chat session to your self?' : 'Are you sure You
-        want re-route Whatsapp chat session to another agent?'}}</p>
+      <p>
+        {{
+          reRouteText == "re-assign"
+            ? "Are you sure You want re-assign chat session to your self?"
+            : "Are you sure You
+        want re-route Whatsapp chat session to another agent?"
+        }}
+      </p>
       <div class="confirmation-action">
         <button mat-raised-button class="close-btn" mat-dialog-close>Cancel</button>
         <button mat-raised-button class="confirm-btn">Confirm</button>

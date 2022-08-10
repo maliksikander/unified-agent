@@ -365,14 +365,16 @@ export class socketService {
     };
 
     // feed the conversation with type "messages"
-    topicData.topicEvents
+    let topicEvents=topicData.topicEvents
       ? topicData.topicEvents
-      : [].forEach((event, i) => {
+      : []
+      topicEvents.forEach((event, i) => {
           if (
             event.name.toLowerCase() == "agent_message" ||
             event.name.toLowerCase() == "bot_message" ||
             event.name.toLowerCase() == "customer_message"
           ) {
+            console.log("messages found")
             event.data.header["status"] = "sent";
             conversation.messages.push(event.data);
           } else if (
@@ -384,9 +386,10 @@ export class socketService {
         });
 
     // feed the active channel sessions
-    topicData.participants
+    let participants =topicData.participants
       ? topicData.participants
-      : [].forEach((e) => {
+      : []
+      participants.forEach((e) => {
           if (e.type.toLowerCase() == "customer") {
             let participant = e.participant;
 
@@ -423,15 +426,16 @@ export class socketService {
       oldConversation["messages"] = conversation.messages.concat([]);
       oldConversation["activeChannelSessions"] = conversation.activeChannelSessions.concat([]);
       oldConversation = conversation;
+      console.log("old conversation", oldConversation);
     } else {
-      let fakeConversation = this.conversations.find((e) => {
+      let fakeConversationIndex = this.conversations.findIndex((e) => {
         return e.conversationId == "FAKE_CONVERSATION" && e.customer._id == topicData.customer._id;
       });
-      if (fakeConversation) {
+      if (fakeConversationIndex!=-1) {
         //if fake conversation found replace it with real conversation
         //so that can send message to the customer
-        fakeConversation['customer'] = topicData.customer;
-        console.log("fake conve found", fakeConversation);
+        this.conversations[fakeConversationIndex] = conversation
+        console.log("fake conve found", fakeConversationIndex);
       } else {
         // else push that conversation
         this.conversations.push(conversation);

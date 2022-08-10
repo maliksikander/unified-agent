@@ -15,49 +15,50 @@
             <!-- <span class="chat-timer">( 11:32 )</span> -->
 
             <ul *ngIf="conversation.customer.labels" class="customer-labels">
-
-              <li *ngFor="let lbl of labels | fetchLabels : conversation.customer.labels" matTooltip="{{lbl.name}}"
-               [ngStyle]="{'background-color':lbl.colorCode}" >
-              </li>
+              <li
+                *ngFor="let lbl of labels | fetchLabels: conversation.customer.labels"
+                matTooltip="{{ lbl.name }}"
+                [ngStyle]="{ 'background-color': lbl.colorCode }"
+              ></li>
             </ul>
           </h5>
         </div>
-        <div  class="col-md-8 col-sm-8 agent-actions">
+        <div class="col-md-8 col-sm-8 agent-actions">
           <ul class="list-group list-group-horizontal agent-controls">
-            <ng-template *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
-            <li class="list-group-item">
-              <button mat-fab matTooltip="Wrapup" aria-label="WrapUp" (click)="openWrapUpDialog('Wrap-up')">
-                <img alt="Note" src="assets/images/note.svg" />
-              </button>
-            </li>
+            <ng-container *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
+              <li class="list-group-item">
+                <button mat-fab matTooltip="Wrapup" aria-label="WrapUp" (click)="openWrapUpDialog('Wrap-up')">
+                  <img alt="Note" src="assets/images/note.svg" />
+                </button>
+              </li>
 
-            <li class="list-group-item">
-              <button mat-icon-button>
-                <mat-icon>group</mat-icon>
-              </button>
-            </li>
-            <li class="list-group-item">
-              <button mat-icon-button>
-                <mat-icon>history</mat-icon>
-              </button>
-            </li>
-            <li class="list-group-item">
-              <button mat-icon-button>
-                <mat-icon>chat_bubble</mat-icon>
-                <i class="material-icons arrow-red arrow-gray">arrow_forward</i>
-              </button>
-            </li>
-            <li class="list-group-item">
-              <button mat-icon-button>
-                <mat-icon>person_add</mat-icon>
-              </button>
-            </li>
-            <li class="list-group-item">
-              <button mat-icon-button>
-                <mat-icon>pan_tool</mat-icon>
-              </button>
-            </li>
-          </ng-template>
+              <li class="list-group-item">
+                <button mat-icon-button>
+                  <mat-icon>group</mat-icon>
+                </button>
+              </li>
+              <li class="list-group-item">
+                <button mat-icon-button>
+                  <mat-icon>history</mat-icon>
+                </button>
+              </li>
+              <li class="list-group-item">
+                <button mat-icon-button>
+                  <mat-icon>chat_bubble</mat-icon>
+                  <i class="material-icons arrow-red arrow-gray">arrow_forward</i>
+                </button>
+              </li>
+              <li class="list-group-item">
+                <button mat-icon-button>
+                  <mat-icon>person_add</mat-icon>
+                </button>
+              </li>
+              <li class="list-group-item">
+                <button mat-icon-button>
+                  <mat-icon>pan_tool</mat-icon>
+                </button>
+              </li>
+            </ng-container>
             <li *ngIf="'leave-chat' | authPipe: 'view' as result" class="list-group-item">
               <button mat-icon-button>
                 <mat-icon (click)="onLeaveClick()">close</mat-icon>
@@ -109,7 +110,6 @@
     </div>
     <!--/Top bar-->
     <!--Interactions Area Start -->
-
     <div id="chat-content" class="container-fluid main-chat-area">
       <div class="row">
         <ng-scrollbar
@@ -118,12 +118,11 @@
             replyInput?.offsetHeight > 80 ? 'calc(100% - ' + (replyInput?.offsetHeight + 80) + 'px)' : 'calc(100% - ' + viewHeight + ')'
           "
         >
-
-          <div *ngIf="activeChat == false" class="no-chat-main">
+          <div *ngIf="!conversation.messages.length" class="no-chat-main">
             <div class="no-chat">
-  <span class="no-chat-icon">
-    <mat-icon>question_answer</mat-icon>
-  </span>
+              <span class="no-chat-icon">
+                <mat-icon>question_answer</mat-icon>
+              </span>
 
               <p>No active conversation</p>
               <p>Click <a routerLink="">here</a> to load the past conversations</p>
@@ -137,7 +136,7 @@
           <div class="instruction-content chat-session-main">
             <ng-template *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
               <div
-                *ngIf="('customer-conversation-view' | authPipe : 'manage') as result "
+                *ngIf="'customer-conversation-view' | authPipe: 'manage' as result"
                 class="int-date load-more"
                 [ngClass]="{ 'no-more-conversation': noMoreConversation }"
               >
@@ -202,10 +201,10 @@
                   index == 0 ||
                   ((conversation.messages[index - 1].body.type | lowercase) != 'systemnotification' &&
                     (message.header.sender | getSenderId) == (conversation.messages[index - 1].header.sender | getSenderId) &&
-                      message.body.type == conversation.messages[index - 1].body.type &&
-                      message.header.replyToMessageId == null &&
-                      message.header.channelSession.channel.channelType.id ==
-                        conversation.messages[index - 1].header.channelSession.channel.channelType.id)
+                    message.body.type == conversation.messages[index - 1].body.type &&
+                    message.header.replyToMessageId == null &&
+                    message.header.channelSession.channel.channelType.id ==
+                      conversation.messages[index - 1].header.channelSession.channel.channelType.id)
                     ? 'same-sender-msg'
                     : ''
                 }} {{ message.header.status == 'sending' ? 'low-opacity' : '' }}  {{ message.body.type | lowercase }} {{
@@ -1309,11 +1308,16 @@
   </div>
 
   <div class="customer-info-main">
-
-    <app-customer-info [activeChannelSessions]="conversation.activeChannelSessions" [customer]="conversation.customer"
-      [customerSuggestions]="conversation.customerSuggestions" [firstChannelSession]="conversation.firstChannelSession"
-      [conversationId]="conversation.conversationId" [activeConversationData]="conversation.activeConversationData"
-      (expandCustomerInfo)="eventFromChild($event)" (updatedlabels)="eventFromChildForUpdatedLabel($event)">
+    <app-customer-info
+      [activeChannelSessions]="conversation.activeChannelSessions"
+      [customer]="conversation.customer"
+      [customerSuggestions]="conversation.customerSuggestions"
+      [firstChannelSession]="conversation.firstChannelSession"
+      [conversationId]="conversation.conversationId"
+      [activeConversationData]="conversation.activeConversationData"
+      (expandCustomerInfo)="eventFromChild($event)"
+      (updatedlabels)="eventFromChildForUpdatedLabel($event)"
+    >
     </app-customer-info>
   </div>
 </div>

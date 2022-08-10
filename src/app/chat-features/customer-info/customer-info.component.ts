@@ -7,6 +7,8 @@ import { NavigationExtras, Router } from "@angular/router";
 import { CustomerActionsComponent } from "src/app/customer-actions/customer-actions.component";
 import { httpService } from "src/app/services/http.service";
 import { finesseService } from "src/app/services/finesse.service";
+const mockTopicData: any = require("../../../app/mocks/topicData.json");
+
 @Component({
   selector: "app-customer-info",
   templateUrl: "./customer-info.component.html",
@@ -69,7 +71,7 @@ export class CustomerInfoComponent implements OnInit {
     public _socketService: socketService,
     private dialog: MatDialog,
     private _httpService: httpService,
-    private _finesseService: finesseService,
+    private _finesseService: finesseService
   ) {}
 
   ngOnInit() {
@@ -121,8 +123,6 @@ export class CustomerInfoComponent implements OnInit {
     }
 
     // this._finesseService.conversationList.next(this.activeChannelSessions);
-
-
   }
 
   getMediaChannels() {
@@ -143,35 +143,11 @@ export class CustomerInfoComponent implements OnInit {
 
     return mediaChannelData;
   }
-  startOutBoundConversation(channelCustomerIdentifier)
-  {
-    let obj={
-    "id": "11111111111111",
-    "header": {
-        "channelData": {
-            "channelCustomerIdentifier":channelCustomerIdentifier ,
-            "serviceIdentifier": "1111",
-            "channelTypeCode":"webChannel"
-        },
-        "language": {},
-        "timestamp": "",
-        "securityInfo": {},
-        "stamps": [],
-        "intent": null,
-        "entities": {}
-    },
-    "body": {
-        "type": "PLAIN",
-        "markdownText": ""
-    }
-    
-}
+  startOutBoundConversation(channelCustomerIdentifier) {
+    mockTopicData.customer=this.customer
+     this._socketService.onTopicData(mockTopicData, 12345,"");
 
-
-
-
-
-    console.log("outbound functuon called")
+    console.log("outbound functuon called");
   }
 
   getProfileFormData(obj) {
