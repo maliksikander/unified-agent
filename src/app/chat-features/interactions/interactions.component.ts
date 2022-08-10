@@ -27,6 +27,7 @@ export class InteractionsComponent implements OnInit {
   @Input() currentTabIndex: any;
   @Input() changeDetecter: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
+  @Output() updatedlabels = new EventEmitter<boolean>();
   @ViewChild("replyInput", { static: true }) elementView: ElementRef;
   @ViewChild(NgScrollbar, { static: true }) scrollbarRef: NgScrollbar;
   @ViewChild("media", { static: false }) media: ElementRef;
@@ -88,7 +89,7 @@ export class InteractionsComponent implements OnInit {
     public _appConfigService: appConfigService,
     private _httpService: httpService,
     private _finesseService: finesseService
-  ) {}
+  ) { }
   ngOnInit() {
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
@@ -108,7 +109,7 @@ export class InteractionsComponent implements OnInit {
       this.labels = e;
     });
   }
-  emoji() {}
+  emoji() { }
 
   onSend(text) {
     text = text.trim();
@@ -169,6 +170,9 @@ export class InteractionsComponent implements OnInit {
   eventFromChild(data) {
     this.isBarOPened = data;
   }
+  eventFromChildForUpdatedLabel(data) {
+   this.labels=data
+  }
 
   eventFromChildForUpdatedLabel(data) {
     this.labels = data;
@@ -228,7 +232,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -236,7 +240,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -298,7 +302,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
 
   uploadFile(files) {

@@ -15,6 +15,7 @@
             <!-- <span class="chat-timer">( 11:32 )</span> -->
 
             <ul *ngIf="conversation.customer.labels" class="customer-labels">
+<<<<<<< HEAD
               <li
                 *ngFor="let lbl of labels | fetchLabels: conversation.customer.labels"
                 matTooltip="{{ lbl.name }}"
@@ -28,6 +29,13 @@
           <!--              [ngStyle]="{'background-color':lbl.colorCode}" class="dot">-->
           <!--            </span>-->
           <!--          </span>-->
+=======
+              <li *ngFor="let lbl of labels | fetchLabels : conversation.customer.labels" matTooltip="{{lbl.name}}"
+               [ngStyle]="{'background-color':lbl.colorCode}" >
+              </li>
+            </ul>
+          </h5>
+>>>>>>> b3a61c93b04ee9f38cb72c21955daa53e26fca4f
         </div>
         <div  class="col-md-8 col-sm-8 agent-actions">
           <ul class="list-group list-group-horizontal agent-controls">
@@ -1304,6 +1312,7 @@
   </div>
 
   <div class="customer-info-main">
+<<<<<<< HEAD
     <app-customer-info
       [activeChannelSessions]="conversation.activeChannelSessions"
       [customer]="conversation.customer"
@@ -1314,6 +1323,12 @@
       (expandCustomerInfo)="eventFromChild($event)"
       (updatedlabels)="eventFromChildForUpdatedLabel($event)"
     >
+=======
+    <app-customer-info [activeChannelSessions]="conversation.activeChannelSessions" [customer]="conversation.customer"
+      [customerSuggestions]="conversation.customerSuggestions" [firstChannelSession]="conversation.firstChannelSession"
+      [conversationId]="conversation.conversationId" [activeConversationData]="conversation.activeConversationData"
+      (expandCustomerInfo)="eventFromChild($event)" (updatedlabels)="eventFromChildForUpdatedLabel($event)">
+>>>>>>> b3a61c93b04ee9f38cb72c21955daa53e26fca4f
     </app-customer-info>
   </div>
 </div>

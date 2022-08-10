@@ -24,6 +24,10 @@ export class CustomerInfoComponent implements OnInit {
   @Input() firstChannelSession: any;
   @Output() updatedlabels = new EventEmitter<boolean>();
   @Output() expandCustomerInfo = new EventEmitter<any>();
+<<<<<<< HEAD
+=======
+  @Output() updatedlabels = new EventEmitter<boolean>();
+>>>>>>> b3a61c93b04ee9f38cb72c21955daa53e26fca4f
 
   customerProfileFormData: any;
 
@@ -198,6 +202,8 @@ export class CustomerInfoComponent implements OnInit {
           (error) => {}
         );
       }
+
+      
     });
   }
   moveSession(event) {
