@@ -173,11 +173,6 @@ export class InteractionsComponent implements OnInit {
   eventFromChildForUpdatedLabel(data) {
    this.labels=data
   }
-
-  eventFromChildForUpdatedLabel(data) {
-    this.labels = data;
-  }
-
   // topicUnsub() {
   //   console.log("going to unsub from topic " + this.conversation.conversationId);
 
