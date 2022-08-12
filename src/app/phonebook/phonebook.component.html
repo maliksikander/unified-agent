@@ -10,7 +10,7 @@
 
         <mat-form-field appearance="outline">
           <input matInput placeholder="Search" [(ngModel)]="filterValue"
-          (keyup.enter)="filter($event.target.value, selectedSearchField, '')" >
+          (keyup.enter)="filter($event.target.value, selectedSearchField, '') ; isFilterList()" >
           <span *ngIf="selectedSearchLabel.length > 0" matPrefix>{{selectedSearchLabel}}:</span>
           <mat-icon matSuffix matSuffix *ngIf="selectedSearchLabel.length == 0">search</mat-icon>
           <mat-icon  matSuffix *ngIf="selectedSearchLabel.length > 0" (click)="cancelFilter()">close</mat-icon>
@@ -28,7 +28,7 @@
 
           <div class="footer-buttons">
             <button class="cancel-btn" (click)="isFilterList()" mat-button>Cancel</button>
-            <button class="save-btn" (click)="isFilterList()" mat-button>Done</button>
+            <button class="save-btn" (click)="filter('', selectedSearchField, '');  isFilterList()" mat-button>Done</button>
           </div>
         </div>
       </div>

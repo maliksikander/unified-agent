@@ -355,10 +355,10 @@ export class socketService {
       activeConversationData: topicData.conversationData,
       activeChannelSessions: [],
       unReadCount: undefined,
-      index: ++this.conversationIndex,
+      index: null,
       state: conversationId == "FAKE_CONVERSATION" ? "CLOSED" : "ACTIVE",
       customer: topicData.customer,
-      customerSuggestions: topicData.channelSession ? topicData.channelSession.customerSuggestions : "",
+      customerSuggestions: topicData.channelSession ? topicData.channelSession.customerSuggestions : [],
       topicParticipant: topicData.topicParticipant ? topicData.topicParticipant : "",
       firstChannelSession: topicData.channelSession ? topicData.channelSession : "",
       ciscoDialogId: this.ciscoDialogId,
@@ -369,88 +369,72 @@ export class socketService {
     let topicEvents=topicData.topicEvents
       ? topicData.topicEvents
       : []
-      topicEvents.forEach((event, i) => {
-          if (
-            event.name.toLowerCase() == "agent_message" ||
-            event.name.toLowerCase() == "bot_message" ||
-            event.name.toLowerCase() == "customer_message"
-          ) {
-            console.log("messages found")
-            event.data.header["status"] = "sent";
-            conversation.messages.push(event.data);
-          } else if (
-            ["channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())
-          ) {
-            let message = this.createSystemNotificationMessage(event);
-            conversation.messages.push(message);
-          }
-        });
-
-    // feed the active channel sessions
-    let participants =topicData.participants
-      ? topicData.participants
-      : []
-      participants.forEach((e) => {
-          if (e.type.toLowerCase() == "customer") {
-            let participant = e.participant;
-
-            // seprate the webChanneldata in channel session if found in additionalAttributes
-            let webChannelData = participant.channelData.additionalAttributes.find((e) => {
-              return e.type.toLowerCase() == "webchanneldata";
-            });
-            if (webChannelData) {
-              participant["webChannelData"] = webChannelData.value;
-            }
-
-            // if the channel session is of voice then we will not push that channel session in the last of the array
-            // because the channel session in the array is used to send the message to customer
-            if (
-              participant.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "pull" ||
-              participant.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "push"
-            ) {
-              conversation.activeChannelSessions.push(participant);
-            } else {
-              conversation.activeChannelSessions.unshift(participant);
-            }
-          }
-        });
-    conversation.messageComposerState = this.isNonVoiceChannelSessionExists(conversation.activeChannelSessions);
-
-    let oldConversation = this.conversations.find((e) => {
-      return e.conversationId != "FAKE_CONVERSATION" && e.conversationId == conversationId;
+    // feed the conversation with type "messages"
+    topicEvents.forEach((event, i) => {
+      if (
+        event.name.toLowerCase() == "agent_message" ||
+        event.name.toLowerCase() == "bot_message" ||
+        event.name.toLowerCase() == "customer_message"
+      ) {
+        event.data.header["status"] = "sent";
+        conversation.messages.push(event.data);
+      } else if (["channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())) {
+        let message = this.createSystemNotificationMessage(event);
+        conversation.messages.push(message);
+      }
     });
-    //find out if fake conversation exist for the customer
-    // fake conversation is the conversation we create to open conversation view
-    //when agent want to initiate chat with customer
+    let participants =topicData.participants
+    ? topicData.participants
+    : []
+    // feed the active channel sessions
+    participants.forEach((e) => {
+      if (e.type.toLowerCase() == "customer") {
+        let participant = e.participant;
+
+        // seprate the webChanneldata in channel session if found in additionalAttributes
+        let webChannelData = participant.channelData.additionalAttributes.find((e) => {
+          return e.type.toLowerCase() == "webchanneldata";
+        });
+        if (webChannelData) {
+          participant["webChannelData"] = webChannelData.value;
+        }
+
+        // if the channel session is of voice then we will not push that channel session in the last of the array
+        // because the channel session in the array is used to send the message to customer
+        if (
+          participant.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "pull" ||
+          participant.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "push"
+        ) {
+          conversation.activeChannelSessions.push(participant);
+        } else {
+          conversation.activeChannelSessions.unshift(participant);
+        }
+      }
+    });
+
+    conversation.messageComposerState = this.isNonVoiceChannelSessionExists(conversation.activeChannelSessions);
+let index;
+    let oldConversation = this.conversations.find((e,indx) => {
+      if(e.customer._id == topicData.customer._id)
+      {
+        index=indx;
+        conversation.index=e.index;
+        return e
+      }
+    });
+
     if (oldConversation) {
       // if that conversation already exists update it
-      oldConversation["messages"] = conversation.messages.concat([]);
-      oldConversation["activeChannelSessions"] = conversation.activeChannelSessions.concat([]);
-      oldConversation = conversation;
-      console.log("old conversation", oldConversation);
-    } else {
-      let fakeConversationIndex = this.conversations.findIndex((e) => {
-        return e.conversationId == "FAKE_CONVERSATION" && e.customer._id == topicData.customer._id;
-      });
-      if (fakeConversationIndex!=-1) {
-        //if fake conversation found replace it with real conversation
-        //so that can send message to the customer
-        this.conversations[fakeConversationIndex] = conversation
-        console.log("fake conve found", fakeConversationIndex);
-      }
-      else
-      {
-        let activeConversationnAlreadyExists = this.conversations.findIndex((e) => {
-          return conversation.conversationId == "FAKE_CONVERSATION" && e.customer._id == topicData.customer._id;
-        });
-        if(activeConversationnAlreadyExists==-1)
+      if(conversation.conversationId!='FAKE_CONVERSATION')
         {
-          console.log("active conve found", activeConversationnAlreadyExists);
-
-          this.conversations.push(conversation);
-          this._soundService.playBeep();
+          this.conversations[index]=conversation;
+          console.log("old convo ===>",oldConversation)
         }
-      } 
+    } else {
+      // else push that conversation
+      conversation.index=++this.conversationIndex;
+      this.conversations.push(conversation);
+      this._soundService.playBeep();
     }
 
     console.log("conversations==>", this.conversations);
