@@ -144,10 +144,10 @@ export class CustomerInfoComponent implements OnInit {
     return mediaChannelData;
   }
   startOutBoundConversation(channelCustomerIdentifier) {
-    mockTopicData.customer=this.customer
-     this._socketService.onTopicData(mockTopicData, 12345,"");
+    // mockTopicData.customer=this.customer
+    //  this._socketService.onTopicData(mockTopicData, 12345,"");
 
-    console.log("outbound functuon called");
+    // console.log("outbound functuon called");
   }
 
   getProfileFormData(obj) {
@@ -245,6 +245,7 @@ export class CustomerInfoComponent implements OnInit {
     let channelType;
     let channelIdentifier;
     let attr;
+    let label;
     this._socketService.conversations.find((e) => {
       if (e.conversationId == this.conversationId) {
         channelType = e.firstChannelSession.channel.channelType.name;
@@ -258,6 +259,7 @@ export class CustomerInfoComponent implements OnInit {
         if (e.isChannelIdentifier == true) {
           if (e.channelTypes.includes(channelType)) {
             attr = e.key;
+            label=e.label
           }
         }
       });
@@ -267,6 +269,7 @@ export class CustomerInfoComponent implements OnInit {
       queryParams: {
         q: "linking",
         filterKey: attr ? attr : null,
+        filterLabel:label,
         filterValue: channelIdentifier ? channelIdentifier : null,
         conversationId: this.conversationId,
         topicCustomerId: this.customer._id

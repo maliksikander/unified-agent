@@ -42,6 +42,7 @@ export class PhonebookComponent implements OnInit {
     primaryKey: "_id"
   };
   labels = [];
+  selectedSearchField='';
   rows: Array<any> = [];
   cols: Array<any> = [];
   limit = 25;
@@ -52,7 +53,6 @@ export class PhonebookComponent implements OnInit {
   filterQuery = [];
   enableTable: boolean = false;
   selectedSearchLabel = '';
-
   submitted: boolean;
   filterOnOff: boolean = false;
   isFilterListOpened: boolean = false;
@@ -89,6 +89,8 @@ export class PhonebookComponent implements OnInit {
         this.conversationId = params["conversationId"];
         this.topicCustomerId = params["topicCustomerId"];
         if (params["filterKey"]) {
+          this.selectedSearchLabel=params["filterLabel"];
+          this.selectedSearchField=params["filterKey"];
           this.filterValue = params["filterValue"];
           this.filter("", params["filterKey"], "");
         }
@@ -173,6 +175,8 @@ export class PhonebookComponent implements OnInit {
   // }
 
   filter(value, field, v) {
+    if(this.filterValue && field!='')
+    {
     let filterVal = JSON.parse(JSON.stringify(this.filterValue));
     filterVal = encodeURIComponent(filterVal);
     this.query = { field: field, value: filterVal };
@@ -180,6 +184,7 @@ export class PhonebookComponent implements OnInit {
     this.filterQuery.push({ field: field, value: this.filterValue });
     // this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
     this.loadCustomerOnSearchOp(this.limit, this.offSet, this.sort, this.query);
+    }
   }
 
   cancelFilter() {
@@ -189,6 +194,8 @@ export class PhonebookComponent implements OnInit {
     this.sort = {};
     this.rows = null;
     this.filterValue = null;
+    this.selectedSearchField='';
+    this.selectedSearchLabel='';
     this.sortArrowDown = false;
     this.sortArrowUp = false;
     this.filterQuery = [];
@@ -252,7 +259,6 @@ export class PhonebookComponent implements OnInit {
   //to open conversation view for outbound chat
   openCOnversationView(customer)
   {
-
     this._socketService.onTopicData({customer}, 'FAKE_CONVERSATION', '')
     this._router.navigate(["customers"]);
   }
@@ -365,8 +371,9 @@ export class PhonebookComponent implements OnInit {
     this.isFilterListOpened = !this.isFilterListOpened;
   }
 
-  selectedFilter(e){
+  selectedFilter(e,field){
     this.selectedSearchLabel = e.value;
+    this.selectedSearchField = field;
     console.log(e, 'valueee')
   }
 }

@@ -14,6 +14,7 @@ import { httpService } from "./http.service";
 import { v4 as uuidv4 } from "uuid";
 import { AuthService } from "./auth.service";
 import { TopicParticipant } from "../models/User/Interfaces";
+import { E } from "@angular/cdk/keycodes";
 // const mockTopicData: any = require("../mocks/topicData.json");
 
 @Injectable({
@@ -436,17 +437,25 @@ export class socketService {
         //so that can send message to the customer
         this.conversations[fakeConversationIndex] = conversation
         console.log("fake conve found", fakeConversationIndex);
-      } else {
-        // else push that conversation
-        this.conversations.push(conversation);
-        this._soundService.playBeep();
       }
+      else
+      {
+        let activeConversationnAlreadyExists = this.conversations.findIndex((e) => {
+          return conversation.conversationId == "FAKE_CONVERSATION" && e.customer._id == topicData.customer._id;
+        });
+        if(activeConversationnAlreadyExists==-1)
+        {
+          console.log("active conve found", activeConversationnAlreadyExists);
+
+          this.conversations.push(conversation);
+          this._soundService.playBeep();
+        }
+      } 
     }
 
     console.log("conversations==>", this.conversations);
     this._conversationsListener.next(this.conversations);
   }
-
   isVoiceChannelSessionExists(activeChannelSessions) {
     let voiceChannelSession = activeChannelSessions.find((channelSession) => {
       if (channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "external") {
@@ -530,15 +539,14 @@ export class socketService {
 
   removeConversation(conversationId) {
     // fetching the whole conversation which needs to be removed
-    const removedConversation = this.conversations.find((conversation) => {
-      return conversation.conversationId == conversationId;
-    });
-
-    // remove the conversation from array
-    let index = this.conversations.findIndex((conversation) => {
-      return conversation.conversationId == conversationId;
-    });
-
+    let index;
+    const removedConversation = this.conversations.find((conversation,indx) => {
+        if(conversation.conversationId == conversationId || conversation.customer._id == conversationId)
+        {
+          index=indx;
+          return conversation;
+        }
+      });
     if (index != -1) {
       this._sharedService.spliceArray(index, this.conversations);
       --this.conversationIndex;
@@ -1022,7 +1030,13 @@ export class socketService {
     } else if (conversation.state === "CLOSED") {
       // if the topic state is 'CLOSED' it means agent is already unsubscribed by the agent manager
       // now it only needs to clear the conversation from conversations array
-      this.removeConversation(conversation.conversationId);
+      if(conversation.conversationId=='FAKE_CONVERSATION')
+      {
+      this.removeConversation(conversation.customer._id);
+      }
+      else{
+        this.removeConversation(conversation.conversationId);
+      }
     }
   }
 

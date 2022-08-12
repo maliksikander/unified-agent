@@ -8,6 +8,7 @@ import { sharedService } from "../services/shared.service";
 import { ConfirmationDialogComponent } from "../new-components/confirmation-dialog/confirmation-dialog.component";
 import { snackbarService } from "../services/snackbar.service";
 import { AngularMultiSelect } from "angular2-multiselect-dropdown";
+import { socketService } from "../services/socket.service";
 
 @Component({
   selector: "app-customer-actions",
@@ -44,6 +45,7 @@ export class CustomerActionsComponent implements OnInit {
 
   constructor(
     private _httpService: httpService,
+    private _socketService: socketService,
     private dateAdapter: DateAdapter<any>,
     private dialog: MatDialog,
     private _cacheService: cacheService,

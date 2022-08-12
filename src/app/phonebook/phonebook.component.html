@@ -2,25 +2,27 @@
   <div class="phonebook-main row m-0">
     <button *ngIf="isEmbededView" mat-button routerLink="/customers/chats" routerLinkActive="active"
       [routerLinkActiveOptions]="{exact:true}" class="back-to-chat"></button>
-    <div class="customer-heading search-customer-list-main">
+    <div [ngClass]="{'back-to-chat-trigger' : isEmbededView}" class="customer-heading search-customer-list-main">
       <!--    <h4>Customer List</h4>-->
       <!--    <h4>Customer List</h4>-->
-      <div class="search-customer-list">
+      <div  class="search-customer-list">
 
 
         <mat-form-field appearance="outline">
-          <input matInput placeholder="Search">
+          <input matInput placeholder="Search" [(ngModel)]="filterValue"
+          (keyup.enter)="filter($event.target.value, selectedSearchField, '')" >
           <span *ngIf="selectedSearchLabel.length > 0" matPrefix>{{selectedSearchLabel}}:</span>
-          <mat-icon matSuffix>search</mat-icon>
+          <mat-icon matSuffix matSuffix *ngIf="selectedSearchLabel.length == 0">search</mat-icon>
+          <mat-icon  matSuffix *ngIf="selectedSearchLabel.length > 0" (click)="cancelFilter()">close</mat-icon>
         </mat-form-field>
-        <button class="filter-action-trigger" [ngClass]="{'clicked' : isFilterListOpened}" (click)="isFilterList()" mat-icon-button><mat-icon>{{isFilterListOpened ? 'close': 'filter_list'}} </mat-icon></button>
+        <button class="filter-action-trigger" [ngClass]="{'clicked' : isFilterListOpened}" (click)="isFilterList()" mat-icon-button><mat-icon>{{isFilterListOpened ? 'filter_list': 'filter_list'}} </mat-icon></button>
 
 
         <div class="filter-list-main" *ngIf="isFilterListOpened">
           <h5>Select Column(s)</h5>
           <div class="filter-list-selection">
             <mat-radio-group aria-label="Select an option">
-              <mat-radio-button value="{{col.header}}" *ngFor="let col of cols" (change)="selectedFilter($event)">{{col.header}}</mat-radio-button>
+              <mat-radio-button value="{{col.header}}" *ngFor="let col of cols" (change)="selectedFilter($event,col.field)">{{col.header}}</mat-radio-button>
             </mat-radio-group>
           </div>
 

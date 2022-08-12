@@ -154,12 +154,12 @@
             <ul class="channel-list" *ngIf="displayCustomerChannels">
               <mat-accordion>
                 <li class="multi-channel-list" *ngFor="let channel of mediaChannelData">
-                  <mat-expansion-panel [hideToggle]="!channel.channelList">
+                  <mat-expansion-panel [hideToggle]="!channel.channelList" *ngIf="channel.label!='Web'">
                     <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                       <div class="channel-icon-area web-channel-inner">
                         <img matTooltip="{{ channel.fieldType }}" src="assets/attr-types/{{ channel.fieldType | lowercase }}.svg" />
-                        <p>
-                          <strong>{{ channel.value | spaceInArray }}</strong>
+                        <p >
+                          <strong>{{ channel.value | spaceInArray }} aa</strong>
                           <small>{{ channel.label }}</small>
                         </p>
                       </div>
