@@ -158,7 +158,6 @@
                     <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                       <div class="channel-icon-area web-channel-inner">
                         <img matTooltip="{{ channel.fieldType }}" src="assets/attr-types/{{ channel.fieldType | lowercase }}.svg" />
-                        {{ channel | json }}
                         <p>
                           <strong>{{ channel.value | spaceInArray }}</strong>
                           <small>{{ channel.label }}</small>

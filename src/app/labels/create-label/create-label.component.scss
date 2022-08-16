@@ -183,3 +183,9 @@
 .label-expire{
   align-self: flex-end;
 }
+.label-name {
+  mat-error {
+    font-size: 10px;
+    margin-top: 20px;
+  }
+}

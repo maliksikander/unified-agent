@@ -3,7 +3,7 @@
     "GAT_URL": "https://cim.expertflow.com/agent-manager",
     "SOCKET_URL": "https://cim.expertflow.com/agent-manager",
     "FILE_SERVER_URL": "https://cim.expertflow.com/file-engine",
-    "CCM_URL": "https://6b83-39-35-164-151.ngrok.io",
+    "CCM_URL": "https://cim.expertflow.com/ccm",
     "CIM_CUSTOMER_URL": "http://localhost:8083",
     "BOT_FRAMEWORK_URL": "https://cim.expertflow.com/bot-framework",
     "ROUTING_ENGINE_URL": "https://cim.expertflow.com/routing-engine",
