@@ -323,7 +323,7 @@ export class httpService {
     });
   }
   startOutboundConversation(cimMessage): Observable<any> {
-    return this._httpClient.post<any>(this._appConfigService.config.CIM_CUSTOMER_URL + this.apiEndpoints.labels, cimMessage, {
+    return this._httpClient.post<any>(this._appConfigService.config.CCM_URL + '/message/receive', cimMessage, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })

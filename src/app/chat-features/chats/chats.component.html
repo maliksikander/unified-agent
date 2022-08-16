@@ -51,7 +51,7 @@
           </div>
         </mat-tab>
       </mat-tab-group>
-      <button class="add-customer" mat-fab routerLink="/customers/phonebook">
+      <button *ngIf="('start-conversation' | authPipe : 'view') as result" class="add-customer" mat-fab routerLink="/customers/phonebook">
         <mat-icon>add</mat-icon>
       </button>
       <button color="primary" class="left-bar-trigger {{ barExpand ? 'arrow_left' : 'arrow_right' }}" (click)="barExpand = !barExpand"></button>

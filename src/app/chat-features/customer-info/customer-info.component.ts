@@ -7,7 +7,10 @@ import { NavigationExtras, Router } from "@angular/router";
 import { CustomerActionsComponent } from "src/app/customer-actions/customer-actions.component";
 import { httpService } from "src/app/services/http.service";
 import { finesseService } from "src/app/services/finesse.service";
-const mockTopicData: any = require("../../../app/mocks/topicData.json");
+import { cacheService } from "src/app/services/cache.service";
+import * as uuid from "uuid";
+import { snackbarService } from "src/app/services/snackbar.service";
+// const mockTopicData: any = require("../../../app/mocks/topicData.json");
 
 @Component({
   selector: "app-customer-info",
@@ -71,7 +74,9 @@ export class CustomerInfoComponent implements OnInit {
     public _socketService: socketService,
     private dialog: MatDialog,
     private _httpService: httpService,
-    private _finesseService: finesseService
+    private _finesseService: finesseService,
+    private _cacheService: cacheService,
+    private _snackBarService: snackbarService
   ) {}
 
   ngOnInit() {
@@ -143,11 +148,43 @@ export class CustomerInfoComponent implements OnInit {
 
     return mediaChannelData;
   }
-  startOutBoundConversation(channelCustomerIdentifier) {
+  startOutBoundConversation(channelCustomerIdentifier, channelTypeName) {
     // mockTopicData.customer=this.customer
     //  this._socketService.onTopicData(mockTopicData, 12345,"");
 
-    // console.log("outbound functuon called");
+    console.log("outbound functuon called", channelTypeName, channelCustomerIdentifier);
+    if (!channelCustomerIdentifier) {
+      this._snackBarService.open("Channel Identifier Not Found","err")
+    } else {
+      let cimMessage = {
+        id: uuid.v4().toString(),
+        header: {
+          channelData: {
+            channelCustomerIdentifier: channelCustomerIdentifier,
+            serviceIdentifier: channelTypeName,
+            additionalAttributes: [{ key: "agentId", type: "String100", value: this._cacheService.agent.id },
+            { key: "channelTypeName", type: "String100", value: channelTypeName }]
+          },
+          language: {},
+          timestamp: "",
+          securityInfo: {},
+          stamps: [],
+          intent: "AGENT_OUTBOUND",
+          entities: { customer: this.customer }
+        },
+        body: {
+          type: "PLAIN",
+          markdownText: ""
+        }
+      };
+      this._httpService.startOutboundConversation(cimMessage).subscribe(
+        (e) => {},
+        (err) => {
+          this._snackBarService.open("Error Starting Outbound Conversation","err");
+          console.log("Error Starting Outbound Conversation","err");
+        }
+      );
+    }
   }
 
   getProfileFormData(obj) {
@@ -259,7 +296,7 @@ export class CustomerInfoComponent implements OnInit {
         if (e.isChannelIdentifier == true) {
           if (e.channelTypes.includes(channelType)) {
             attr = e.key;
-            label=e.label
+            label = e.label;
           }
         }
       });
@@ -269,7 +306,7 @@ export class CustomerInfoComponent implements OnInit {
       queryParams: {
         q: "linking",
         filterKey: attr ? attr : null,
-        filterLabel:label,
+        filterLabel: label,
         filterValue: channelIdentifier ? channelIdentifier : null,
         conversationId: this.conversationId,
         topicCustomerId: this.customer._id

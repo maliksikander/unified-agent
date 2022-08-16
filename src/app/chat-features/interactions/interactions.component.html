@@ -125,7 +125,7 @@
               </span>
 
               <p>No active conversation</p>
-              <p>Click <a routerLink="" (click)="loadPastActivities()">here</a> to load the past conversations</p>
+              <p *ngIf="'customer-conversation-view' | authPipe: 'manage' as result">Click <a routerLink="" (click)="loadPastActivities('FAKE_CONVERSATION')">here</a> to load the past conversations</p>
             </div>
           </div>
 
@@ -140,7 +140,7 @@
                 class="int-date load-more"
                 [ngClass]="{ 'no-more-conversation': noMoreConversation }"
               >
-                <span [ngStyle]="{ cursor: !noMoreConversation ? 'pointer' : 'normal' }" *ngIf="!loadingPastActivity" (click)="loadPastActivities()">
+                <span [ngStyle]="{ cursor: !noMoreConversation ? 'pointer' : 'normal' }" *ngIf="!loadingPastActivity" (click)="loadPastActivities('')">
                   <mat-icon>arrow_upward</mat-icon>{{ noMoreConversation ? "Start of Conversation" : "Load More" }}
                 </span>
                 <span *ngIf="loadingPastActivity">

@@ -154,11 +154,12 @@
             <ul class="channel-list" *ngIf="displayCustomerChannels">
               <mat-accordion>
                 <li class="multi-channel-list" *ngFor="let channel of mediaChannelData">
-                  <mat-expansion-panel [hideToggle]="!channel.channelList" >
+                  <mat-expansion-panel [hideToggle]="!channel.channelList">
                     <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                       <div class="channel-icon-area web-channel-inner">
                         <img matTooltip="{{ channel.fieldType }}" src="assets/attr-types/{{ channel.fieldType | lowercase }}.svg" />
-                        <p >
+                        {{ channel | json }}
+                        <p>
                           <strong>{{ channel.value | spaceInArray }}</strong>
                           <small>{{ channel.label }}</small>
                         </p>
@@ -171,7 +172,15 @@
                           <small>{{ activeChannel }}</small>
                           <span class="channel-list-action">
                             <!-- <button mat-icon-button><mat-icon>call</mat-icon></button> -->
-                            <button mat-icon-button (click)="startOutBoundConversation(channel.value)" *ngIf="channel.label=='Phone Number'"><mat-icon>message</mat-icon></button>
+                            <ng-container *ngIf="('start-conversation' | authPipe : 'view') as result" >
+                              <button
+                                mat-icon-button
+                                (click)="startOutBoundConversation(channel.value, activeChannel)"
+                                *ngIf="activeChannel == 'WHATSAPP'"
+                              >
+                                <mat-icon>message</mat-icon>
+                              </button>
+                            </ng-container>
                             <!-- <button mat-icon-button *ngIf="activeChannel.channelType !== 'email'" (click)="openDialog(callingTemplate, '+4466985845')"><mat-icon>call</mat-icon></button>
                     <button mat-icon-button><mat-icon>message</mat-icon></button> -->
                           </span>

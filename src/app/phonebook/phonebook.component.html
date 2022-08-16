@@ -10,7 +10,7 @@
 
         <mat-form-field appearance="outline">
           <input matInput placeholder="Search" [(ngModel)]="filterValue"
-          (keyup.enter)="filter($event.target.value, selectedSearchField, '') ; isFilterList()" >
+          (keyup.enter)="filter(selectedSearchField) ; this.isFilterListOpened=false" >
           <span *ngIf="selectedSearchLabel.length > 0" matPrefix>{{selectedSearchLabel}}:</span>
           <mat-icon matSuffix matSuffix *ngIf="selectedSearchLabel.length == 0">search</mat-icon>
           <mat-icon  matSuffix *ngIf="selectedSearchLabel.length > 0" (click)="cancelFilter()">close</mat-icon>
@@ -34,7 +34,7 @@
       </div>
 
 
-      <div class="filter-selection" *ngIf="false">
+      <!-- <div class="filter-selection" *ngIf="false">
         <mat-chip-list #chipList aria-label="Filter selection">
           <mat-chip *ngFor="let filter of filterQuery" [removable]="removable" (removed)="cancelFilter()">
             {{filter.field | sentenceCase}}: <span>{{filter.value}}</span>
@@ -42,7 +42,7 @@
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
           </mat-chip>
         </mat-chip-list>
-      </div>
+      </div> -->
       <!--    <mat-form-field appearance="outline" class="selection-trigger categorize-selection">-->
       <!--      <mat-select [(value)]="selectedTeam">-->
       <!--        <mat-option value="us-corporate">US Corporate Customers</mat-option>-->
@@ -111,7 +111,7 @@
             <mat-icon matTooltip="Drag the column" class="drag-icon">more_vert</mat-icon>
             <span class="table-head" matTooltip="{{col.header}}">{{col.header}}</span>
 
-            <span matTooltip="Filter" *ngIf="col.type != 'time'" class="filter-icon k-icon k-i-filter-sm"
+            <span matTooltip="Filter" *ngIf="false" class="filter-icon k-icon k-i-filter-sm"
               (click)="setFilter($event,col)">
             </span>
 
@@ -150,7 +150,7 @@
 
               <div>
                 <input class="filter" type="text" [(ngModel)]="filterValue"
-                  (keyup.enter)="filter($event.target.value, col.field, col.filterMatchMode)">
+                  (keyup.enter)="filter(col.field)">
                 <div class="close-filter">
                   <mat-icon (click)="cancelFilter()" class="closeIcon">cancel</mat-icon>
                 </div>
@@ -236,10 +236,12 @@
               (click)="onRowClick(rowData._id,'edit',null)" class="p-button-rounded p-button-success p-mr-2">
               <mat-icon>edit</mat-icon>
             </button>
+            <ng-container *ngIf="('start-conversation' | authPipe : 'view') as result">
             <button *ngIf="('customer-conversation-view' | authPipe : 'view') as result"
             (click)="openCOnversationView(rowData)"  class="p-button-rounded p-button-success p-mr-2">
               <mat-icon>person</mat-icon>
             </button>
+          </ng-container>
             <button
               *ngIf="(isEmbededView && rowData._id != topicCustomerId) && ('customer-list' | authPipe : 'manage') as result"
               (click)="linkCustomer(rowData)" class="p-button-rounded p-button-warning link-btn">

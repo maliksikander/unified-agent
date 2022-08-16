@@ -92,7 +92,7 @@ export class PhonebookComponent implements OnInit {
           this.selectedSearchLabel=params["filterLabel"];
           this.selectedSearchField=params["filterKey"];
           this.filterValue = params["filterValue"];
-          this.filter("", params["filterKey"], "");
+          this.filter(params["filterKey"]);
         }
       }
     });
@@ -174,8 +174,8 @@ export class PhonebookComponent implements OnInit {
   //   return list;
   // }
 
-  filter(value, field, v) {
-    if(this.filterValue && field!='')
+  filter(field) {
+    if(this.filterValue && field)
     {
     let filterVal = JSON.parse(JSON.stringify(this.filterValue));
     filterVal = encodeURIComponent(filterVal);
@@ -183,6 +183,7 @@ export class PhonebookComponent implements OnInit {
     this.filterQuery = [];
     this.filterQuery.push({ field: field, value: this.filterValue });
     // this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+    this.offSet=0;
     this.loadCustomerOnSearchOp(this.limit, this.offSet, this.sort, this.query);
     }
   }

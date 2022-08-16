@@ -418,7 +418,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   // to get past acitivities
-  loadPastActivities() {
+  loadPastActivities(conversation) {
     try {
       this.loadingPastActivity = true;
 
@@ -432,11 +432,14 @@ export class InteractionsComponent implements OnInit {
           if (docsLength > 0) {
             this.filterAndMergePastActivities(docs);
           } else {
+            if(conversation=='FAKE_CONVERSATION')
+              this._snackbarService.open("No Conversation Found","succ")
             this.noMoreConversation = true;
           }
         },
         (error) => {
           this.loadingPastActivity = false;
+          this._snackbarService.open("Error Fetching Past COnversation","succ")
           this._sharedService.Interceptor(error.error, "err");
         }
       );
