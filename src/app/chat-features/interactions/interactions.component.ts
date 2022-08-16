@@ -74,12 +74,13 @@ export class InteractionsComponent implements OnInit {
   displaySuggestionsArea = false;
   cannedTabOpen = false;
   quickReplies = true;
-  viewHeight = "123px";
+  viewHeight = "132px";
   noMoreConversation = false;
   pastCimEventsOffsetLimit: number = 0;
   loadingPastActivity: boolean = false;
   ciscoDialogId;
   activeChat = false;
+  activeChannelSessionList: Array<any>;
 
   constructor(
     private _sharedService: sharedService,
@@ -90,7 +91,7 @@ export class InteractionsComponent implements OnInit {
     public _appConfigService: appConfigService,
     private _httpService: httpService,
     private _finesseService: finesseService
-  ) { }
+  ) {}
   ngOnInit() {
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
@@ -110,7 +111,7 @@ export class InteractionsComponent implements OnInit {
       this.labels = e;
     });
   }
-  emoji() { }
+  emoji() {}
 
   onSend(text) {
     text = text.trim();
@@ -172,7 +173,7 @@ export class InteractionsComponent implements OnInit {
     this.isBarOPened = data;
   }
   eventFromChildForUpdatedLabel(data) {
-   this.labels=data
+    this.labels = data;
   }
   // topicUnsub() {
   //   console.log("going to unsub from topic " + this.conversation.conversationId);
@@ -228,7 +229,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -236,7 +237,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -258,6 +259,20 @@ export class InteractionsComponent implements OnInit {
     if (changes.currentTabIndex) {
       this.downTheScrollAfterMilliSecs(500, "auto");
     }
+
+    if (changes.conversation) {
+      this.activeChannelSessionList = changes.conversation.currentValue.activeChannelSessions;
+      this.activeChannelSessionList.forEach((item, index, array) => {
+        if (index === array.length - 1 && item.channel.channelType.name != "VOICE") {
+          item.isChecked = true;
+        } else if (index === array.length - 1 && item.channel.channelType.name == "VOICE") {
+          this.activeChannelSessionList[array.length - 2].isChecked = true;
+        } else {
+          item.isChecked = false;
+        }
+      });
+    }
+
     this._finesseService.currentConversation.next(this.conversation);
   }
 
@@ -298,7 +313,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => { });
+    dialogRef.afterClosed().subscribe((result: any) => {});
   }
 
   uploadFile(files) {
@@ -333,17 +348,21 @@ export class InteractionsComponent implements OnInit {
   }
 
   constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?, wrapups?, note?) {
-    let message: any = {
-      id: "",
-      header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
-      body: { markdownText: "", type: "" }
-    };
-    let lastActiveChannelSession = this.conversation.activeChannelSessions[this.conversation.activeChannelSessions.length - 1];
-    let firstChannelSession = this.conversation.firstChannelSession;
     if (this._socketService.isSocketConnected) {
+      let message: any = {
+        id: "",
+        header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
+        body: { markdownText: "", type: "" }
+      };
+
+      let lastActiveChannelSession = this.activeChannelSessionList.find((item) => item.isChecked == true);
+      // let lastActiveChannelSession = this.conversation.activeChannelSessions[this.conversation.activeChannelSessions.length - 1];
+      let firstChannelSession = this.conversation.firstChannelSession;
+
       if (lastActiveChannelSession) {
         let sendingActiveChannelSession = JSON.parse(JSON.stringify(lastActiveChannelSession));
         delete sendingActiveChannelSession["webChannelData"];
+        delete sendingActiveChannelSession["isChecked"];
 
         message.id = uuidv4();
         message.header.timestamp = Date.now();
@@ -432,14 +451,13 @@ export class InteractionsComponent implements OnInit {
           if (docsLength > 0) {
             this.filterAndMergePastActivities(docs);
           } else {
-            if(conversation=='FAKE_CONVERSATION')
-              this._snackbarService.open("No Conversation Found","succ")
+            if (conversation == "FAKE_CONVERSATION") this._snackbarService.open("No Conversation Found", "succ");
             this.noMoreConversation = true;
           }
         },
         (error) => {
           this.loadingPastActivity = false;
-          this._snackbarService.open("Error Fetching Past COnversation","succ")
+          this._snackbarService.open("Error Fetching Past COnversation", "succ");
           this._sharedService.Interceptor(error.error, "err");
         }
       );
@@ -498,5 +516,13 @@ export class InteractionsComponent implements OnInit {
         this.constructAndSendCimEvent("wrapup", "", "", "", "", res.data.wrapups, res.data.note);
       }
     });
+  }
+
+  switchChannelSession(channel, channelIndex) {
+    if (channel.isChecked != true) {
+      let previousSelectedChannelIndex = this.activeChannelSessionList.findIndex((item) => item.isChecked == true);
+      if (previousSelectedChannelIndex != -1) this.activeChannelSessionList[previousSelectedChannelIndex].isChecked = false;
+      this.activeChannelSessionList[channelIndex].isChecked = true;
+    }
   }
 }
