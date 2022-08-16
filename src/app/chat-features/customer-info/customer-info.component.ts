@@ -151,8 +151,6 @@ export class CustomerInfoComponent implements OnInit {
   startOutBoundConversation(channelCustomerIdentifier, channelTypeName) {
     // mockTopicData.customer=this.customer
     //  this._socketService.onTopicData(mockTopicData, 12345,"");
-
-    console.log("outbound functuon called", channelTypeName, channelCustomerIdentifier);
     if (!channelCustomerIdentifier) {
       this._snackBarService.open("Channel Identifier Not Found","err")
     } else {
