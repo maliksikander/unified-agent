@@ -76,7 +76,7 @@
                                     [ngStyle]="{'background-color':lbl.colorCode}" class="dot"></span>
                             </span> -->
 
-                            <span *ngIf="labels" 
+                            <span *ngIf="labels"
                                 class="lblswithname">
                                 <span matTooltip="{{lbl?.name}}" *ngFor="let lbl of labels | fetchLabels : request.channelSession?.customer?.labels"
                                     [ngStyle]="{'background-color':lbl?.colorCode}" class="dot"></span>
@@ -92,7 +92,7 @@
 
                             <span *ngIf="request.id | isAlreadyJoined" class="joined">(Joined)</span>
                         </td>
-                        <td>{{request.time | amTimeAgo:true}}<small> ago</small></td>
+                        <td>{{request.time | amTimeAgo:true}}<small> Ago</small></td>
                         <td>{{_pullModeservice.listNames[request.listId] ? _pullModeservice.listNames[request.listId] :
                             '-'}}</td>
                         <span class="table-trigger">

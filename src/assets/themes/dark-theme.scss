@@ -1273,7 +1273,13 @@ $theme: mat-light-theme($primary, $accent, $warn);
   .not-allowed .mat-checkbox-background {
     background-color: #686868 !important;
   }
-
+.wrap-up-main {
+  .wrap-code {
+    li {
+      border: 1px solid #ffffff21 !important;
+    }
+  }
+}
 
   //  Voice activity
   .voice-activity-main {
@@ -1296,7 +1302,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
     mat-expansion-panel-header {
       &.mat-expanded {
-        background: mat-color($dark-primary, 700) !important;
+        background: #0000000f !important;
 
         .section-tags {
           span {
