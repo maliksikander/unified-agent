@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
 
   updateTheme(theme: string) {
     try {
-      this._httpService.updateUserTheme({ theme: theme }, this._cacheService.agent.id).subscribe((e) => {
+      this._httpService.updateAgentSettings({ theme: theme }, this._cacheService.agent.id).subscribe((e) => {
       });
     } catch (err) {
       console.log(`error updating theme`, err);
@@ -61,23 +61,31 @@ export class AppComponent implements OnInit {
   }
 
   switchTheme(e) {
-    this.themeChange = e;
+    this.themeChange = e.isdarkMode;
     const darkClassName = "darkMode";
     this.className = this.themeChange ? darkClassName : "";
     if (this.themeChange === true) {
+      if(!e.onlySwitch)
+      {
+        console.log("send request also")
       clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         this.updateTheme("dark");
       }, 5000);
+      }
       this.overlay.getContainerElement().classList.add(darkClassName);
     } else {
+      if(!e.onlySwitch)
+      {
       clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         this.updateTheme("light");
       }, 5000);
+     }
       this.overlay.getContainerElement().classList.remove(darkClassName);
     }
   }
+
 
   // checks for the update of pwa app
   // checkForAppUpdates() {

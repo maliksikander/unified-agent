@@ -60,7 +60,7 @@
 
       <div class="info">
         <span class="theme-switcher">
-          <mat-icon (click)="themeSwitch()"
+          <mat-icon (click)="themeSwitch('')"
             matTooltip="{{isdarkMode ? 'Switch to light mode' : 'Switch to dark mode'}}">
             {{isdarkMode ? 'brightness_7' : 'brightness_4'}}</mat-icon>
         </span>
@@ -194,7 +194,7 @@
 
 
                   <button (click)="$event.stopPropagation(); updateLanguage()" mat-button class="language-trigger">
-                    <img src="assets/flags/{{languageFlag}}" width="20" onError="this.src='assets/flags/generic.png';">
+                    <img src="{{languageFlag}}" width="20" onError="this.src='assets/flags/generic.png';">
                     {{languageName}} <mat-icon>keyboard_arrow_right</mat-icon>
                   </button>
                 </p>
@@ -215,7 +215,7 @@
                 <button mat-menu-item class="language-selection"
                   [ngClass]="{'selected-language': language.code == changeLanguageCode}"
                   *ngFor="let language of languages" (click)="lang(language.code)">
-                  <img src="assets/flags/{{language.flag}}" width="20"
+                  <img src="{{language.flag}}" width="20"
                     onError="this.src='assets/flags/generic.png';">{{language.name}}
                 </button>
               </div>
@@ -225,9 +225,9 @@
                   <mat-icon (click)="logoutReasonList = false; stateView = true">close</mat-icon>
                 </p>
                 <div *ngFor="let reason of reasonCodes; let i = index">
-                  <span *ngIf="(reason.type | lowercase ) == 'logout'" class="logout-reason-inner">
+                  <span *ngIf="(reason.type | lowercase ) == 'log_out'" class="logout-reason-inner">
                     <mat-checkbox [checked]="selected === i" (change)="selected = i; onChange(reason)" color="primary"
-                      labelPosition="after">{{reason.name}}</mat-checkbox>
+                      labelPosition="after">{{reason.label}}</mat-checkbox>
                   </span>
                 </div>
                 <button (click)="logout()" mat-button class="main-logout">Logout</button>
@@ -257,7 +257,7 @@
                 <mat-icon style="color:#b4b4b4;">
                   lens
                 </mat-icon>
-                {{reason.name}}
+                {{reason.label}}
               </button>
             </div>
           </mat-menu>

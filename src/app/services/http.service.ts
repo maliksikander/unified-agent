@@ -22,7 +22,7 @@ export class httpService {
       fileServer: "/api/downloadFileStream?filename=",
       uploadFile: "/api/uploadFileStream",
       activities: "/customer-topics/customer",
-      theme: "/theme",
+      agentSetting: "/agentSetting",
       forms: "/forms"
     };
   }
@@ -207,18 +207,18 @@ export class httpService {
     });
   }
 
-  ///////////////////////  Customer Theme //////////
+  ///////////////////////  agentSetting //////////
 
-  updateUserTheme(data, id): Observable<any> {
-    return this._httpClient.put<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.theme}/${id}`, data, {
+  updateAgentSettings(data, id): Observable<any> {
+    return this._httpClient.put<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.agentSetting}/${id}`, data, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
     });
   }
 
-  getUserTheme(id): Observable<any> {
-    return this._httpClient.get<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.theme}?user_Id=${id}`, {
+  getAgentSettings(id): Observable<any> {
+    return this._httpClient.get<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.agentSetting}?user_Id=${id}`, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
@@ -324,6 +324,20 @@ export class httpService {
   }
   startOutboundConversation(cimMessage): Observable<any> {
     return this._httpClient.post<any>(this._appConfigService.config.CCM_URL + '/message/receive', cimMessage, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+  getSupportedlanguages():Observable<any>{
+    return this._httpClient.get<any>(`${this._appConfigService.config.UNIFIED_ADMIN_URL}/locale-setting`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+  getReasonCodes():Observable<any>{
+    return this._httpClient.get<any>(`${this._appConfigService.config.UNIFIED_ADMIN_URL}/reasons`, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
