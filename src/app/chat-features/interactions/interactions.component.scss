@@ -820,6 +820,11 @@
           }
         }
       }
+      &.video{
+        .chat-time{
+        background: transparent !important;
+      }
+      }
 
       &.image, &.video, &.location{
 
