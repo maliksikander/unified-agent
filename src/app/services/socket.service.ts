@@ -76,7 +76,11 @@ export class socketService {
       this.ngxService.stop();
       try {
         console.error("socket connect_error ", err.data && err.data.content ? err.data.content : err);
-        this._snackbarService.open(err.data && err.data.content ? err.data.content : "unable to connect to chat", "err");
+        if (err.data && err.data.content && err.data.content && err.data.content.key == "LM" && err.data.content.licStatus) {
+          this._snackbarService.open("The license is :" + err.data.content.licStatus, "err");
+        } else {
+          this._snackbarService.open(err.data && err.data.content ? err.data.content : "unable to connect to chat", "err");
+        }
       } catch (err) {}
       if (err.message == "login-failed") {
         try {
@@ -366,9 +370,7 @@ export class socketService {
     };
 
     // feed the conversation with type "messages"
-    let topicEvents=topicData.topicEvents
-      ? topicData.topicEvents
-      : []
+    let topicEvents = topicData.topicEvents ? topicData.topicEvents : [];
     // feed the conversation with type "messages"
     topicEvents.forEach((event, i) => {
       if (
@@ -383,9 +385,7 @@ export class socketService {
         conversation.messages.push(message);
       }
     });
-    let participants =topicData.participants
-    ? topicData.participants
-    : []
+    let participants = topicData.participants ? topicData.participants : [];
     // feed the active channel sessions
     participants.forEach((e) => {
       if (e.type.toLowerCase() == "customer") {
@@ -413,26 +413,24 @@ export class socketService {
     });
 
     conversation.messageComposerState = this.isNonVoiceChannelSessionExists(conversation.activeChannelSessions);
-let index;
-    let oldConversation = this.conversations.find((e,indx) => {
-      if(e.customer._id == topicData.customer._id)
-      {
-        index=indx;
-        conversation.index=e.index;
-        return e
+    let index;
+    let oldConversation = this.conversations.find((e, indx) => {
+      if (e.customer._id == topicData.customer._id) {
+        index = indx;
+        conversation.index = e.index;
+        return e;
       }
     });
 
     if (oldConversation) {
       // if that conversation already exists update it
-      if(conversation.conversationId!='FAKE_CONVERSATION')
-        {
-          this.conversations[index]=conversation;
-          console.log("old convo ===>",oldConversation)
-        }
+      if (conversation.conversationId != "FAKE_CONVERSATION") {
+        this.conversations[index] = conversation;
+        console.log("old convo ===>", oldConversation);
+      }
     } else {
       // else push that conversation
-      conversation.index=++this.conversationIndex;
+      conversation.index = ++this.conversationIndex;
       this.conversations.push(conversation);
       this._soundService.playBeep();
     }
@@ -524,13 +522,12 @@ let index;
   removeConversation(conversationId) {
     // fetching the whole conversation which needs to be removed
     let index;
-    const removedConversation = this.conversations.find((conversation,indx) => {
-        if(conversation.conversationId == conversationId || conversation.customer._id == conversationId)
-        {
-          index=indx;
-          return conversation;
-        }
-      });
+    const removedConversation = this.conversations.find((conversation, indx) => {
+      if (conversation.conversationId == conversationId || conversation.customer._id == conversationId) {
+        index = indx;
+        return conversation;
+      }
+    });
     if (index != -1) {
       this._sharedService.spliceArray(index, this.conversations);
       --this.conversationIndex;
@@ -1014,11 +1011,9 @@ let index;
     } else if (conversation.state === "CLOSED") {
       // if the topic state is 'CLOSED' it means agent is already unsubscribed by the agent manager
       // now it only needs to clear the conversation from conversations array
-      if(conversation.conversationId=='FAKE_CONVERSATION')
-      {
-      this.removeConversation(conversation.customer._id);
-      }
-      else{
+      if (conversation.conversationId == "FAKE_CONVERSATION") {
+        this.removeConversation(conversation.customer._id);
+      } else {
         this.removeConversation(conversation.conversationId);
       }
     }
