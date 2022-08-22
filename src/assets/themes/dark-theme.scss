@@ -251,19 +251,19 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
     &.ready,
     &#avatar.active {
-      background: #139850 !important;
-      border-color: #139850 !important;
+      background: $theme-green !important;
+      border-color: $theme-green !important;
     }
   }
 
   .select-state.ready {
     .mat-slide-toggle.mat-primary {
       &.mat-checked .mat-slide-toggle-bar {
-        background: #139850 !important;
+        background: $theme-green !important;
       }
 
       .mat-slide-toggle-bar {
-        background: #139850 !important;
+        background: $theme-green !important;
       }
     }
   }

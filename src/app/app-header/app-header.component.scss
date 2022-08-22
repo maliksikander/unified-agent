@@ -140,7 +140,7 @@
     color: #ccc;
     text-shadow: 0 0 5px rgb(0, 0, 0, .3);
     &.ready {
-      color: $green-color !important;
+      color: $theme-green !important;
     }
     &.active {
       color: #fdb635 !important;
@@ -268,15 +268,15 @@
     }
   }
   &.ready {
-    border: 1px solid $green-color;
+    border: 1px solid $theme-green;
     mat-icon{
-      color: $green-color !important;
+      color: $theme-green !important;
     }
   }
   &.active {
     @extend .ready;
     mat-icon{
-      color: $green-color !important;
+      color: $theme-green !important;
     }
   }
   &.not_ready {
@@ -707,6 +707,23 @@ button.main-menu-item{
           top: 3px;
           position: relative;
         }
+
+        &.theme-switcher{
+          .theme-sub-text{
+            position: relative;
+            top: -4px;
+
+            small{
+              position: absolute;
+              left: 1px;
+              top: 8px;
+              color: #8e8e8e;
+            }
+          }
+          mat-icon{
+            color: #8e8e8e;
+          }
+        }
       }
     }
 
@@ -859,7 +876,7 @@ button.main-menu-item{
           word-wrap: normal;
           -webkit-font-smoothing: antialiased;
           position: absolute;
-          color: #25CB8D !important;
+          color: $theme-green !important;
           right: 10px;
           top: 0;
         }
@@ -989,14 +1006,14 @@ button.main-menu-item{
 .back-to-interaction{
     span{
       font-size: 22px;
-      color: $green-color;
+      color: $theme-green;
       transition: all 0.2s;
       margin-right: 3px;
       vertical-align: bottom;
       cursor: pointer;
     &:hover{
       transition: all .2s;
-        color: darken($green-color, 10%);
+        color: darken($theme-green, 10%);
     }
   }
 }
@@ -1064,8 +1081,8 @@ button.language-selection img {
 
 button{
   &.ready {
-  background: $green-color !important;
-  border-color: $green-color;
+  background: $theme-green !important;
+  border-color: $theme-green;
 }
   &.active {
     background: #fdb635 !important;

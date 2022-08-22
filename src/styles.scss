@@ -2404,7 +2404,7 @@ tspan {
   &.ready {
     .mat-slide-toggle.mat-primary .mat-slide-toggle-bar,
     .mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar {
-      background: $green-color !important;;
+      background: $theme-green !important;
     }
   }
   &.interrupted {

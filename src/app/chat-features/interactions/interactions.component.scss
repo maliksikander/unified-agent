@@ -626,7 +626,7 @@
 
         &.referred-message-content{
           &:before{
-            border-top-color: #79a31d;
+            border-top-color: $theme-green;
           }
         }
       }
@@ -879,7 +879,7 @@
   margin-top: 0.5em;
   .int-date.load-more {
     position: static !important;
-    background: #79a31d;
+    background: $theme-green;
     color: #fff !important;
     padding: 3px 15px 3px 4px !important;
     margin-bottom: 4px !important;
@@ -2116,7 +2116,7 @@ vg-controls.hide {
     display: block !important;
 
     &:before{
-      border-top-color: #79a31d;
+      border-top-color: $theme-green;
     }
   }
   .replied-message{
@@ -2144,7 +2144,7 @@ vg-controls.hide {
     }
   }
   .main-quoted-reply {
-    border-left: 4px solid #79a31d;
+    border-left: 4px solid $theme-green;
     padding: 10px;
     background: rgba(0,0,0,11%);
   }
@@ -2190,7 +2190,7 @@ vg-controls.hide {
 }
 
 .jump-bottom {
-  background: #79a31d;
+  background: $theme-green;
   padding: 3px 15px 3px 4px !important;
   min-width: 118px;
   text-align: center;

@@ -59,11 +59,11 @@
     <div class="col-md-8 col-sm-7 right-profile-area">
 
       <div class="info">
-        <span class="theme-switcher">
-          <mat-icon (click)="themeSwitch()"
-            matTooltip="{{isdarkMode ? 'Switch to light mode' : 'Switch to dark mode'}}">
-            {{isdarkMode ? 'brightness_7' : 'brightness_4'}}</mat-icon>
-        </span>
+<!--        <span class="theme-switcher">-->
+<!--          <mat-icon (click)="themeSwitch()"-->
+<!--            matTooltip="{{isdarkMode ? 'Switch to light mode' : 'Switch to dark mode'}}">-->
+<!--            {{isdarkMode ? 'brightness_7' : 'brightness_4'}}</mat-icon>-->
+<!--        </span>-->
         <!-- <div class="back-to-interaction"><span class="notification-hint">3</span><span class="material-icons"
             routerlink="/customers/chats">question_answer</span></div> -->
         <!--      <div (click)="openOutboundMsgDialog()" *ngIf="config._EnableOutboundSms" class="message-trigger-area">-->
@@ -196,6 +196,15 @@
                   <button (click)="$event.stopPropagation(); updateLanguage()" mat-button class="language-trigger">
                     <img src="assets/flags/{{languageFlag}}" width="20" onError="this.src='assets/flags/generic.png';">
                     {{languageName}} <mat-icon>keyboard_arrow_right</mat-icon>
+                  </button>
+                </p>
+
+                <p class="menu-trigger-custom logged-out-trigger">
+                  <button mat-menu-item  class="theme-switcher" (click)="themeSwitch()"
+                          matTooltip="{{isdarkMode ? 'Switch to light mode' : 'Switch to dark mode'}}">
+                    <span class="theme-sub-text">Theme<small>(Light or dark)</small></span>
+                    <mat-icon>
+                      {{isdarkMode ? 'brightness_7' : 'brightness_6'}}</mat-icon>
                   </button>
                 </p>
 
