@@ -232,7 +232,7 @@
           </td>
 
           <td>
-            <button *ngIf="('customer-list' | authPipe : 'manage') as result"
+            <button *ngIf="!isEmbededView && ('customer-list' | authPipe : 'manage') as result"
               (click)="onRowClick(rowData._id,'edit',null)" class="p-button-rounded p-button-success p-mr-2">
               <mat-icon>edit</mat-icon>
             </button>
