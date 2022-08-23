@@ -134,7 +134,18 @@ export class socketService {
 
     this.socket.on("taskRequest", (res: any) => {
       if (res.cisco_data) this.ciscoDialogId = res.cisco_data.response.dialog.id;
-      this.triggerNewChatRequest(res);
+      if(res.taskState && res.taskState.name.toLowerCase() == "started"){
+        this.emit("topicSubscription", {
+          topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.conversationId, "PRIMARY", "SUBSCRIBED"),
+          agentId: this._cacheService.agent.id,
+          conversationId: res.conversationId,
+          taskId: res.taskId
+        });
+      }
+      else
+      {
+        this.triggerNewChatRequest(res);
+      }
     });
 
     // this.socket.on("incomingCallAlertEvent", (res: any) => {
