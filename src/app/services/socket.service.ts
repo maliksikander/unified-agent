@@ -15,7 +15,7 @@ import { v4 as uuidv4 } from "uuid";
 import { AuthService } from "./auth.service";
 import { TopicParticipant } from "../models/User/Interfaces";
 import { E } from "@angular/cdk/keycodes";
-// const mockTopicData: any = require("../mocks/topicData.json");
+const mockTopicData: any = require("../mocks/topicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -42,7 +42,7 @@ export class socketService {
     private _httpService: httpService,
     private _authService: AuthService
   ) {
-    // this.onTopicData(mockTopicData, "12345","");
+    this.onTopicData(mockTopicData, "12345","");
   }
 
   connectToSocket() {
@@ -399,7 +399,7 @@ export class socketService {
           participant["webChannelData"] = webChannelData.value;
         }
 
-        // if the channel session is of voice then we will not push that channel session in the last of the array
+        // if the channel session is of voice or facebook then we will not push that channel session in the last of the array
         // because the channel session in the array is used to send the message to customer
         if (
           participant.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "pull" ||

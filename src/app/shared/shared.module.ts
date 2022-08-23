@@ -82,6 +82,7 @@ import { channelNamePipe } from "./pipes/getChannelLogoByName.pipe";
 import { NgxTimerModule } from "ngx-timer";
 import { getSenderIdPipe } from "./pipes/getSenderId.pipe";
 import { AuthPipe } from "./pipes/auth.pipe";
+import { CheckActiveChannelSession } from "./pipes/checkActiveChannelSession";
 import { timeDurationPipe } from "./pipes/timeDuration.pipe";
 import { timeDurationFromParticipantPipe } from "./pipes/timeDurationFromParticipant.pipe";
 
@@ -113,7 +114,8 @@ import { timeDurationFromParticipantPipe } from "./pipes/timeDurationFromPartici
     spaceInArrayPipe,
     channelNamePipe,
     getSenderIdPipe,
-    AuthPipe
+    AuthPipe,
+    CheckActiveChannelSession
   ],
   imports: [
     NgxDocViewerModule,
@@ -275,6 +277,7 @@ import { timeDurationFromParticipantPipe } from "./pipes/timeDurationFromPartici
     getSenderIdPipe,
     timeDurationPipe,
     AuthPipe,
+    CheckActiveChannelSession,
     timeDurationFromParticipantPipe
   ]
 })

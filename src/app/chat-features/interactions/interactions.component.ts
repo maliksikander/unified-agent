@@ -81,7 +81,8 @@ export class InteractionsComponent implements OnInit {
   ciscoDialogId;
   activeChat = false;
   activeChannelSessionList: Array<any>;
-
+  postId: string = null;
+  commentId: string = null;
   constructor(
     private _sharedService: sharedService,
     public _cacheService: cacheService,
@@ -115,9 +116,29 @@ export class InteractionsComponent implements OnInit {
 
   onSend(text) {
     text = text.trim();
-    if (text) {
+    if (this.postId && this.commentId) {
+      console.log("posting comment==>",this.postId)
+      this.constructAndSendCimEvent("COMMENT", "", "", "", text);
+    } else {
       this.constructAndSendCimEvent("plain", "", "", "", text);
     }
+  }
+  likeComment(postId) {
+    this.constructAndSendCimEvent("like", "", "", "", "");
+  }
+  deleteComment(postId) {
+    this.constructAndSendCimEvent("delete", "", "", "", "");
+  }
+  hideComment(postId) {
+    this.constructAndSendCimEvent("hide", "", "", "", "");
+  }
+  replyToComment(text) {
+    this.constructAndSendCimEvent("COMMENT", "", "", "", "");
+  }
+  reply(postId, commentId) {
+    console.log("setting postId==>",postId)
+    this.postId = postId;
+    this.commentId = commentId;
   }
 
   openDialog(templateRef, e): void {
@@ -263,7 +284,7 @@ export class InteractionsComponent implements OnInit {
     if (changes.conversation) {
       this.activeChannelSessionList = changes.conversation.currentValue.activeChannelSessions;
       this.activeChannelSessionList.forEach((item, index, array) => {
-        if (index === array.length - 1 && item.channel.channelType.name != "VOICE") {
+        if (index === array.length - 1 && (item.channel.channelType.name != "VOICE" || item.channel.channelType.name != "VOICE")) {
           item.isChecked = true;
         } else if (index === array.length - 1 && item.channel.channelType.name == "VOICE") {
           this.activeChannelSessionList[array.length - 2].isChecked = true;
@@ -354,8 +375,18 @@ export class InteractionsComponent implements OnInit {
         header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
         body: { markdownText: "", type: "" }
       };
-
-      let lastActiveChannelSession = this.activeChannelSessionList.find((item) => item.isChecked == true);
+      let lastActiveChannelSession
+      if(msgType.toLowerCase()=='comment' || msgType.toLowerCase()=='like' || msgType.toLowerCase()=='hide' || msgType.toLowerCase()=='delete')
+      {
+        lastActiveChannelSession = this.activeChannelSessionList.find((item) => 
+        {item.channel.channelType.name.toLowerCase() == "facebook"});
+      }
+      else
+      {
+        lastActiveChannelSession = this.activeChannelSessionList.find((item) => 
+        {item.isChecked == true});
+      }
+      
       // let lastActiveChannelSession = this.conversation.activeChannelSessions[this.conversation.activeChannelSessions.length - 1];
       let firstChannelSession = this.conversation.firstChannelSession;
 
@@ -374,6 +405,28 @@ export class InteractionsComponent implements OnInit {
         if (msgType.toLowerCase() == "plain") {
           message.body.type = "PLAIN";
           message.body.markdownText = text.trim();
+        } else if (msgType.toLowerCase() == "comment") {
+          console.log("comment");
+          message.body.type = "COMMENT";
+          message.body.postId = this.postId;
+          message.body.commentType = "PUBLIC";
+          message.body.itemType = "COMMENT";
+          message.body.markdownText = text.trim();
+        } else if (msgType.toLowerCase() == "like") {
+          message.body.type = "COMMENT";
+          message.body.postId = this.postId;
+          message.body.commentType = "PUBLIC";
+          message.body.itemType = "LIKE";
+        } else if (msgType.toLowerCase() == "hide") {
+          message.body.type = "COMMENT";
+          message.body.postId = this.postId;
+          message.body.commentType = "PUBLIC";
+          message.body.itemType = "HIDE";
+        } else if (msgType.toLowerCase() == "delete") {
+          message.body.type = "COMMENT";
+          message.body.postId = this.postId;
+          message.body.commentType = "PUBLIC";
+          message.body.itemType = "DELETE";
         } else if (msgType.toLowerCase() == "application" || msgType.toLowerCase() == "text") {
           message.body.type = "FILE";
           message.body["caption"] = "";
@@ -426,10 +479,16 @@ export class InteractionsComponent implements OnInit {
       });
 
       event.data.header["status"] = "sending";
+      if(msgType.toLowerCase() != "delete" && msgType.toLowerCase() != "hide" && msgType.toLowerCase() != "like")
+      {
+      console.log("event data==>",event.data);
       this.conversation.messages.push(event.data);
+      }
 
       setTimeout(() => {
         this.message = "";
+        this.postId = null;
+        this.commentId = null;
       }, 40);
     } else {
       this._snackbarService.open("Unable to send the message at the moment ", "err");
