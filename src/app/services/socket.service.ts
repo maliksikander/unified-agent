@@ -75,11 +75,12 @@ export class socketService {
       this.isSocketConnected = false;
       this.ngxService.stop();
       try {
+        console.log(err.data);
         console.error("socket connect_error ", err.data && err.data.content ? err.data.content : err);
         if (err.data && err.data.content && err.data.content && err.data.content.key == "LM" && err.data.content.licStatus) {
           this._snackbarService.open("The license is :" + err.data.content.licStatus, "err");
         } else {
-          this._snackbarService.open(err.data && err.data.content ? err.data.content : "unable to connect to chat", "err");
+          this._snackbarService.open(err.data && err.data.content ? err.data.content.msg : "unable to connect to chat", "err");
         }
       } catch (err) {}
       if (err.message == "login-failed") {
