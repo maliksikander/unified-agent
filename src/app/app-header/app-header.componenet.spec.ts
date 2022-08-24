@@ -35,7 +35,7 @@ describe("Appheader component", () => {
             expect(fixture.selectedReasonCode).toBeUndefined();
         });
         it('selectedReasonCode should be lunch_break', () => {
-            fixture.onChange("lunch_break");
+            fixture.onChange("lunch_break",{checked:true});
             expect(fixture.selectedReasonCode).toEqual('lunch_break');
         });
 

@@ -33,33 +33,7 @@ export class AppHeaderComponent implements OnInit {
   languageName = "English";
   languages :
     { _id:string, code: string, name: string, flag: string }[]
-  reasonCodes= [
-    {
-      id: "ef172d24-7b35-4c6d-ada5-41827034d306",
-      name: "Out of Office",
-      type: "LOGOUT"
-    },
-    {
-      id: "ef172d24-7b35-4c6d-ada5-41827034d307",
-      name: "End of Shift",
-      type: "LOGOUT"
-    },
-    {
-      id: "ef172d24-7b35-4c6d-ada5-41827034d308",
-      name: "Lunch Break",
-      type: "NOT_READY"
-    },
-    {
-      id: "ef172d24-7b35-4c6d-ada5-41827034d309",
-      name: "Short Break",
-      type: "NOT_READY"
-    },
-    {
-      id: "ef172d24-7b35-4c6d-ada5-41827034d301",
-      name: "Out of Office",
-      type: "NOT_READY"
-    }
-  ];
+  reasonCodes=[];
 ;
   changeLanguage = false;
   logoutReasonList = false;
@@ -132,14 +106,14 @@ export class AppHeaderComponent implements OnInit {
         console.log("error getting supported languages", error);
       }
     );
-    // this._httpService.getReasonCodes().subscribe(
-    //   (e) => {
-    //     this.reasonCodes = e;
-    //   },
-    //   (err) => {
-    //     console.error("error getting reason codes", err);
-    //   }
-    // );
+    this._httpService.getReasonCodes().subscribe(
+      (e) => {
+        this.reasonCodes = e;
+      },
+      (err) => {
+        console.error("error getting reason codes", err);
+      }
+    );
   }
 
   reStartTimer() {
@@ -234,8 +208,15 @@ export class AppHeaderComponent implements OnInit {
 
   close() {}
 
-  onChange(reason) {
-    this.selectedReasonCode = reason;
+  onChange(reason,e) {
+    if(e.checked)
+    {
+      this.selectedReasonCode = reason;
+    }
+    else
+    {
+      this.selectedReasonCode=undefined;
+    }
   }
 
   moveToLogin() {
