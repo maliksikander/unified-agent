@@ -41,9 +41,14 @@ export class appConfigService {
         this.config.CCM_URL = e.CCM_URL;
         config = {
           domain: e.domain,
+          subDomain: e.subDomain,
           boshUrl: e.boshUrl,
+          subBoshUrl: e.subBoshUrl,
           finesseFlavor: e.finesseFlavor,
-          callVariable: e.callVariable
+          callVariable: e.callVariable,
+          getQueuesDelay: e.getQueuesDelay,
+          ssoBackendUrl: e.ssoBackendUrl,
+          isGadget: e.isGadget
         };
 
         callTypes = {
@@ -60,7 +65,9 @@ export class appConfigService {
           consultType: e.consultType,
           consultTransferTypeCCE: e.consultTransferTypeCCE,
           consultTransferTypeCCX: e.consultTransferTypeCCX,
-          conferenceType: e.conferenceType
+          conferenceType: e.conferenceType,
+          silentMonitorType: e.silentMonitorType,
+          bargeInType: e.bargeInType
         };
       });
   }

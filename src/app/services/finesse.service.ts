@@ -15,7 +15,7 @@ declare var executeCommands;
 export class finesseService {
   isAlreadysubscribed: boolean = false;
   showErr: boolean = false;
-  finesseAgent = { loginId: "", password: "", extension: "" };
+  finesseAgent = { loginId: "", password: "", extension: "",isSSOUser: "" };
   finesseAgentState = { state: "", reasonId: "" };
   finesseNotReadyReasonCodes;
   finesseLogoutReasonCodes;
@@ -114,6 +114,7 @@ export class finesseService {
         loginId: this.finesseAgent.loginId,
         password: this.finesseAgent.password,
         extension: this.finesseAgent.extension,
+        isSSOUser: this.finesseAgent.isSSOUser,
         clientCallbackFunction: this.clientCallback
       }
     };

@@ -130,7 +130,7 @@
           <!-- simple chat area -->
           <div id="chat-area-start"></div>
           <div class="instruction-content chat-session-main">
-            <ng-template *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
+            <ng-container *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
               <div *ngIf="'customer-conversation-view' | authPipe: 'manage' as result" class="int-date load-more"
                 [ngClass]="{ 'no-more-conversation': noMoreConversation }">
                 <span [ngStyle]="{ cursor: !noMoreConversation ? 'pointer' : 'normal' }" *ngIf="!loadingPastActivity"
@@ -141,7 +141,7 @@
                   <mat-icon>hourglass_empty</mat-icon>{{ noMoreConversation ? "Start of Conversation" : "Loading..." }}
                 </span>
               </div>
-            </ng-template>
+            </ng-container>
             <div style="display: unset" *ngFor="let message of conversation.messages; let index = index">
               <div id="datestamp" class="int-date" *ngIf="
                   index == 0 ||

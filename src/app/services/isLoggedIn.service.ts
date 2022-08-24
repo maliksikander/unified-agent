@@ -79,8 +79,9 @@ export class isLoggedInService {
     this.fetchCCuserAndMoveToLogin(obj);
     this._finesseService.finesseAgent.extension = extension;
     this._finesseService.finesseAgent.loginId = username;
-    this._finesseService.finesseAgent.password = password;
-
+    // this._finesseService.finesseAgent.password = password;
+    this._finesseService.finesseAgent.password = authWithSSO == true ? authToken : password;
+    this._finesseService.finesseAgent.isSSOUser = authWithSSO;
     this._finesseService.initMe();
   }
 

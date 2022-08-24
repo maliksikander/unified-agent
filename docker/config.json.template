@@ -10,9 +10,14 @@
     "BOT_FRAMEWORK_URL":"${BOT_FRAMEWORK_URL}",
     "GRAFANA_DASHBOARD_URL":"${GRAFANA_DASHBOARD_URL}",
     "domain": "${domain}",
+    "subDomain" : "${subDomain}",
     "boshUrl": "${boshUrl}",
+    "subBoshUrl" : "${subBoshUrl}"
     "finesseFlavor": "${finesseFlavor}",
     "callVariable": "${callVariable}",
+    "getQueuesDelay": ${getQueuesDelay},
+    "ssoBackendUrl": "${ssoBackendUrl}",
+	  "isGadget": ${isGadget},
     "inboundTypeCCE": "${inboundTypeCCE}",
     "inboundTypeCCX": "${inboundTypeCCX}",
     "directType": "${directType}",
@@ -27,5 +32,7 @@
     "consultTransferTypeCCE": "${consultTransferTypeCCE}",
     "consultTransferTypeCCX": "${consultTransferTypeCCX}",
     "conferenceType": "${conferenceType}",
+    "silentMonitorType": "${silentMonitorType}",
+	  "bargeInType": "${bargeInType}"
     "ronaStateOnCisco":"${ronaStateOnCisco}"
 }
