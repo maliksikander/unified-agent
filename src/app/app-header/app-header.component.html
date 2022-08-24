@@ -160,10 +160,11 @@
                   <button mat-button #stateTrigger="matMenuTrigger" [matMenuTriggerFor]="agentState"
                     (click)="$event.stopPropagation()"
                     class="{{_cacheService.agentPresence.state.name | lowercase}} mat-menu-item-submenu-trigger">
-                    <span>{{(_cacheService.agentPresence.state.name | removeUnderscore | titlecase) +
+                    <span style="text-overflow:ellipsis">{{(_cacheService.agentPresence.state.name | removeUnderscore | titlecase) +
                       (_cacheService.agentPresence.state.reasonCode != null ?' - '+
                       _cacheService.agentPresence.state.reasonCode.name :
                       '') }}</span>
+                      <!-- <p style="color: red;">{{_cacheService.agentPresence.state.reasonCode | json}}</p> -->
                   </button>
                 </p>
                 <!-- <p class="menu-trigger-custom logged-time ">{{display | date :"HH:mm:ss":'UTC'}} -->
@@ -227,7 +228,7 @@
                 <div *ngFor="let reason of reasonCodes; let i = index">
                   <span *ngIf="(reason.type | lowercase ) == 'log_out'" class="logout-reason-inner">
                     <mat-checkbox [checked]="selected === i" (change)="selected = i; onChange(reason)" color="primary"
-                      labelPosition="after">{{reason.label}}</mat-checkbox>
+                      labelPosition="after">{{reason.name}}</mat-checkbox>
                   </span>
                 </div>
                 <button (click)="logout()" mat-button class="main-logout">Logout</button>
@@ -243,13 +244,13 @@
               </mat-icon>
               Ready
             </button>
-            <button (click)="changeState(0); $event.stopPropagation(); closeStateMenu(stateTrigger)" mat-menu-item
+            <!-- <button (click)="changeState(0); $event.stopPropagation(); closeStateMenu(stateTrigger)" mat-menu-item
               class="state-trigger">
               <mat-icon style="color:#b4b4b4;">
                 lens
               </mat-icon>
               Not Ready
-            </button>
+            </button> -->
             <div *ngFor="let reason of reasonCodes">
               <button *ngIf="(reason.type | lowercase) == 'not_ready'"
                 (click)="changeState(reason); $event.stopPropagation(); closeStateMenu(stateTrigger)" mat-menu-item
@@ -257,7 +258,7 @@
                 <mat-icon style="color:#b4b4b4;">
                   lens 
                 </mat-icon>
-                {{reason.label}}
+                {{reason.name}}
               </button>
             </div>
           </mat-menu>

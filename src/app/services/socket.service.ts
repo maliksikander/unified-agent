@@ -124,6 +124,7 @@ export class socketService {
     });
 
     this.socket.on("agentPresence", (res: any) => {
+      console.log("agent presence",res)
       this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: res.agentPresence });
     });
 
