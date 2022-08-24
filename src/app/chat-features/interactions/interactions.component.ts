@@ -391,6 +391,8 @@ export class InteractionsComponent implements OnInit {
       let firstChannelSession = this.conversation.firstChannelSession;
 
       if (lastActiveChannelSession) {
+        console.log("last active channel session found==>",lastActiveChannelSession);
+
         let sendingActiveChannelSession = JSON.parse(JSON.stringify(lastActiveChannelSession));
         delete sendingActiveChannelSession["webChannelData"];
         delete sendingActiveChannelSession["isChecked"];
@@ -456,6 +458,7 @@ export class InteractionsComponent implements OnInit {
           return;
         }
       } else if (!lastActiveChannelSession && firstChannelSession) {
+        console.log("first active channel session found==>",firstChannelSession);
         message.id = uuidv4();
         message.header.timestamp = Date.now();
 

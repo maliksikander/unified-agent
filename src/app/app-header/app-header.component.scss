@@ -1090,3 +1090,11 @@ button{
     background: #999 !important;
   }
 }
+.ellipsis
+{
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
+  text-overflow: ellipsis;
+  width: 140px;
+}
