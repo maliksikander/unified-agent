@@ -4,7 +4,6 @@
       <div class="row">
         <div class="col-md-4 col-sm-4 customer-showcase">
           <h3 matTooltipPosition="right" class="customer-highlight">
-  
             {{ conversation.customer.firstName | getFirstTwoLetters }}
             <!--            <span class="channel-icon">-->
             <!--              <img-->
@@ -243,7 +242,8 @@
                     matTooltip="{{ message.header.sender | getSenderName: conversation.customer }}"
                     *ngIf="(message.header.sender.type | lowercase) != 'bot' && (message.header.sender.type | lowercase) != 'customer'"
                     class="profile-pic-area user-img"
-                  >                    {{ message.header.sender | getSenderName: conversation.customer | getFirstTwoLetters }}
+                  >
+                    {{ message.header.sender | getSenderName: conversation.customer | getFirstTwoLetters }}
                   </div>
                   <div *ngIf="(message.header.sender.type | lowercase) == 'bot'" class="profile-pic-area user-img">
                     <img src="assets/images/robot-dark.svg" />
@@ -1023,7 +1023,6 @@
                     <!--Facebook post comment type-->
 
                     <div class="post-message-main" *ngIf="(message.body.type | lowercase) == 'comment'">
-                
                       <div class="post-main-area">
                         <!-- <div class="post-message-header" *ngIf="fullPostView && con.body.mainPostData">
                           <div class="post-by">
@@ -1038,10 +1037,10 @@
                           </div>
                         </div> -->
                         <!-- *ngIf="activeChannelSessionList | checkActiveChannelSession: 'FACEBOOK' as result" -->
-                        <div *ngIf="(message.header.sender.type | lowercase) != 'agent'" class="comment-controlls post-controlls" >
+                        <div *ngIf="(message.header.sender.type | lowercase) != 'agent'" class="comment-controlls post-controlls">
                           <ul>
                             <li>
-                              <mat-icon (click)="reply(message.body.postId,'2222')">chat_bubble_outline</mat-icon>
+                              <mat-icon (click)="reply(message.body.postId, '2222')">chat_bubble_outline</mat-icon>
                             </li>
                             <li>
                               <mat-icon (click)="likeComment(message.body.postId)">thumb_up</mat-icon>
@@ -1082,7 +1081,7 @@
                         <div class="main-comment">
                           <div class="post-inner-content">
                             <p>
-                              <span  [innerHTML]="message.body.markdownText | linkify | ibsformat"></span>
+                              <span [innerHTML]="message.body.markdownText | linkify | ibsformat"></span>
                               <!-- <span
                                 *ngIf="fullPostView && con.body.mainPostData"
                                 [innerHTML]="con.body.mainPostData.postedContent.postedSummery.postedText | linkify | ibsformat"
@@ -1091,7 +1090,7 @@
                           </div>
                         </div>
                         <!-- <div class="post-sub-comments-area"> -->
-                          <!-- <div class="total-comment-count">
+                        <!-- <div class="total-comment-count">
                             <span><mat-icon>chat_bubble_outline</mat-icon>16 </span>
                           </div>
 
@@ -1176,12 +1175,10 @@
                           </div> -->
                         <!-- </div> -->
 
-                        <div class="message-footer" >
+                        <div class="message-footer">
                           <span>
                             <!-- <mat-icon>chat_bubble_outline</mat-icon>4 -->
-                            <strong
-                              ><span>Posted on</span><b (click)="fullPostView = true">Expertflow</b></strong
-                            >
+                            <strong><span>Posted on</span><b (click)="fullPostView = true">Expertflow</b></strong>
                           </span>
                           <!-- <span class="message-stamp">
                             <span class="chat-time">12/12/34</span>
@@ -1271,23 +1268,32 @@
           [matMenuTriggerFor]="channelSwitching"
           class="channel-switching-trigger"
         >
-          <span class="channel-selected">
-            <img
-              [src]="activeChannelSessionList[activeChannelSessionList.length - 1]?.channel.channelType.channelLogo | channelLogo | async"
-              width="20"
-              onError="this.src='assets/flags/generic.png';"
-            />
-          </span>
-          {{ activeChannelSessionList[activeChannelSessionList.length - 1]?.channel.channelType.name }}
-          <i class="material-icons"> arrow_drop_down </i>
+          <ng-container *ngFor="let selectedChannel of activeChannelSessionList">
+            <span class="channel-selected">
+              <!-- <img [src]="activeChannelSessionList[activeChannelSessionList.length
+        -1]?.channel.channelType.channelLogo | channelLogo | async" width="20"
+              onError="this.src='assets/flags/generic.png';"> -->
+              <img
+                *ngIf="selectedChannel?.isChecked == true"
+                [src]="selectedChannel?.channel.channelType.channelLogo | channelLogo | async"
+                width="20"
+                onError="this.src='assets/flags/generic.png';"
+              />
+            </span>
+
+            <ng-container *ngIf="selectedChannel?.isChecked == true">{{ selectedChannel?.channel?.channelType?.name }} </ng-container>
+
+            <!-- {{activeChannelSessionList[activeChannelSessionList.length
+        -1]?.channel.channelType.name}}  -->
+            <i class="material-icons"> arrow_drop_down </i>
+          </ng-container>
         </button>
         <label *ngIf="activeChannelSessionList.length == 0" style="color: grey; padding-left: 2px"> None </label>
       </span>
 
       <mat-menu #channelSwitching="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
         <button
-          [disabled]="channel?.channel?.channelType.name == 'VOICE'"
-          [disabled]="channel?.channel?.channelType.name == 'FACEBOOK'"
+          [disabled]="channel?.channel?.channelType.name == 'VOICE' || channel?.channel?.channelType.name == 'facebook'"
           mat-menu-item
           class="channel-selection-list"
           (click)="switchChannelSession(channel, i)"

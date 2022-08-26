@@ -83,6 +83,7 @@ export class InteractionsComponent implements OnInit {
   activeChannelSessionList: Array<any>;
   postId: string = null;
   commentId: string = null;
+  activeChannelSession
   constructor(
     private _sharedService: sharedService,
     public _cacheService: cacheService,
@@ -124,6 +125,7 @@ export class InteractionsComponent implements OnInit {
     }
   }
   likeComment(postId) {
+    this.postId=postId
     this.constructAndSendCimEvent("like", "", "", "", "");
   }
   deleteComment(postId) {
@@ -132,13 +134,21 @@ export class InteractionsComponent implements OnInit {
   hideComment(postId) {
     this.constructAndSendCimEvent("hide", "", "", "", "");
   }
-  replyToComment(text) {
-    this.constructAndSendCimEvent("COMMENT", "", "", "", "");
-  }
+  // replyToComment(text) {
+  //   this.constructAndSendCimEvent("COMMENT", "", "", "", "");
+  // }
   reply(postId, commentId) {
     console.log("setting postId==>",postId)
     this.postId = postId;
     this.commentId = commentId;
+    this.activeChannelSessionList.find((item,index)=>
+    {
+      if(item.channel.channelType.name == "facebook")
+      {
+        this.switchChannelSession(item,index);
+      }
+    })
+
   }
 
   openDialog(templateRef, e): void {
@@ -280,19 +290,24 @@ export class InteractionsComponent implements OnInit {
     if (changes.currentTabIndex) {
       this.downTheScrollAfterMilliSecs(500, "auto");
     }
+console.log("before",this.conversation.activeChannelSessions)
+    this.activeChannelSessionList = this.conversation.activeChannelSessions;
+    this.activeChannelSessionList.forEach((item, index, array) => {
+      if(array.length==1)
+      {
+        item.isChecked = true;
+      }
+      else if (index === array.length - 1 && item.channel.channelType.name != "VOICE" && item.channel.channelType.name != "facebook") {
+        item.isChecked = true;
+      }
+       else if (index === array.length - 1 && (item.channel.channelType.name == "VOICE" || item.channel.channelType.name == "facebook")) {
+        this.activeChannelSessionList[array.length - 2].isChecked = true;
+      } else {
+        item.isChecked = false;
+      }
+      console.log("after",this.conversation.activeChannelSessions)
+    });
 
-    if (changes.conversation) {
-      this.activeChannelSessionList = changes.conversation.currentValue.activeChannelSessions;
-      this.activeChannelSessionList.forEach((item, index, array) => {
-        if (index === array.length - 1 && (item.channel.channelType.name != "VOICE" || item.channel.channelType.name != "VOICE")) {
-          item.isChecked = true;
-        } else if (index === array.length - 1 && item.channel.channelType.name == "VOICE") {
-          this.activeChannelSessionList[array.length - 2].isChecked = true;
-        } else {
-          item.isChecked = false;
-        }
-      });
-    }
 
     this._finesseService.currentConversation.next(this.conversation);
   }
@@ -375,18 +390,17 @@ export class InteractionsComponent implements OnInit {
         header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
         body: { markdownText: "", type: "" }
       };
-      let lastActiveChannelSession
-      if(msgType.toLowerCase()=='comment' || msgType.toLowerCase()=='like' || msgType.toLowerCase()=='hide' || msgType.toLowerCase()=='delete')
-      {
-        lastActiveChannelSession = this.activeChannelSessionList.find((item) => 
-        {item.channel.channelType.name.toLowerCase() == "facebook"});
-      }
-      else
-      {
-        lastActiveChannelSession = this.activeChannelSessionList.find((item) => 
-        {item.isChecked == true});
-      }
-      
+      console.log("active channel sessions",this.activeChannelSessionList)
+      // let lastActiveChannelSession
+      // if(msgType.toLowerCase()=='comment' || msgType.toLowerCase()=='like' || msgType.toLowerCase()=='hide' || msgType.toLowerCase()=='delete')
+      // {
+      //   lastActiveChannelSession = this.activeChannelSessionList.find((item) => 
+      //   {item.channel.channelType.name.toLowerCase() == "facebook"});
+      // }
+      // else
+      // {
+        let lastActiveChannelSession = this.activeChannelSessionList.find((item) => item.isChecked == true);
+      console.log("last channel sessions",lastActiveChannelSession)
       // let lastActiveChannelSession = this.conversation.activeChannelSessions[this.conversation.activeChannelSessions.length - 1];
       let firstChannelSession = this.conversation.firstChannelSession;
 
@@ -408,11 +422,18 @@ export class InteractionsComponent implements OnInit {
           message.body.type = "PLAIN";
           message.body.markdownText = text.trim();
         } else if (msgType.toLowerCase() == "comment") {
-          console.log("comment");
+          // lastActiveChannelSession.channelData.additionalAttributes.find((item)=>
+          // {
+          //   if(item.key=='comment_id')
+          //   {
+          //     item.value=this.commentId;
+          //   }
+          // })
+          console.log("commenting now");
           message.body.type = "COMMENT";
           message.body.postId = this.postId;
           message.body.commentType = "PUBLIC";
-          message.body.itemType = "COMMENT";
+          message.body.itemType = "TEXT";
           message.body.markdownText = text.trim();
         } else if (msgType.toLowerCase() == "like") {
           message.body.type = "COMMENT";
@@ -481,10 +502,11 @@ export class InteractionsComponent implements OnInit {
         conversationId: this.conversation.conversationId
       });
 
-      event.data.header["status"] = "sending";
+     
       if(msgType.toLowerCase() != "delete" && msgType.toLowerCase() != "hide" && msgType.toLowerCase() != "like")
       {
       console.log("event data==>",event.data);
+      event.data.header["status"] = "sending";
       this.conversation.messages.push(event.data);
       }
 
@@ -581,10 +603,32 @@ export class InteractionsComponent implements OnInit {
   }
 
   switchChannelSession(channel, channelIndex) {
-    if (channel.isChecked != true) {
-      let previousSelectedChannelIndex = this.activeChannelSessionList.findIndex((item) => item.isChecked == true);
-      if (previousSelectedChannelIndex != -1) this.activeChannelSessionList[previousSelectedChannelIndex].isChecked = false;
-      this.activeChannelSessionList[channelIndex].isChecked = true;
+    try {
+      if (channel.isChecked != true) {
+        let previousSelectedChannelIndex = this.activeChannelSessionList.findIndex((item) => item.isChecked == true);
+        if (previousSelectedChannelIndex != -1) 
+        {
+          console.log("prev false now",previousSelectedChannelIndex)
+          this.activeChannelSessionList[previousSelectedChannelIndex].isChecked = false;
+        }
+        this.activeChannelSessionList[channelIndex].isChecked = true;
+        console.log("active channel session before",this.activeChannelSessionList)
+
+        let activeSessionIndex = this.conversation.activeChannelSessions.findIndex(
+          (item) => item.id == this.activeChannelSessionList[channelIndex].id
+        );
+        if (activeSessionIndex != -1)
+        {
+          console.log("aplice now")
+
+          this.conversation.activeChannelSessions=this.activeChannelSessionList;
+
+        }
+      }
+      console.log("active channel session now",this.activeChannelSessionList)
+    } catch (e) {
+      console.error("[Error in Channel Switching] :", e);
     }
+
   }
 }
