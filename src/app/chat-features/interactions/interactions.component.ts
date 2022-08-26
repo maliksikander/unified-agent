@@ -83,7 +83,6 @@ export class InteractionsComponent implements OnInit {
   activeChannelSessionList: Array<any>;
   postId: string = null;
   commentId: string = null;
-  activeChannelSession
   constructor(
     private _sharedService: sharedService,
     public _cacheService: cacheService,
@@ -124,21 +123,26 @@ export class InteractionsComponent implements OnInit {
       this.constructAndSendCimEvent("plain", "", "", "", text);
     }
   }
-  likeComment(postId) {
-    this.postId=postId
+  likeComment(postId,commentId) {
+    this.postId=postId;
+    this.commentId = commentId;
     this.constructAndSendCimEvent("like", "", "", "", "");
   }
-  deleteComment(postId) {
+  deleteComment(postId,commentId) {
+    this.postId=postId;
+    this.commentId = commentId;
     this.constructAndSendCimEvent("delete", "", "", "", "");
   }
-  hideComment(postId) {
+  hideComment(postId,commentId) {
+    this.postId=postId;
+    this.commentId = commentId;
     this.constructAndSendCimEvent("hide", "", "", "", "");
   }
   // replyToComment(text) {
   //   this.constructAndSendCimEvent("COMMENT", "", "", "", "");
   // }
   reply(postId, commentId) {
-    console.log("setting postId==>",postId)
+    console.log("setting commentid==>",commentId)
     this.postId = postId;
     this.commentId = commentId;
     this.activeChannelSessionList.find((item,index)=>
@@ -300,7 +304,9 @@ console.log("before",this.conversation.activeChannelSessions)
       else if (index === array.length - 1 && item.channel.channelType.name != "VOICE" && item.channel.channelType.name != "facebook") {
         item.isChecked = true;
       }
-       else if (index === array.length - 1 && (item.channel.channelType.name == "VOICE" || item.channel.channelType.name == "facebook")) {
+      else if (index === array.length - 1 && (item.channel.channelType.name == "VOICE" || item.channel.channelType.name == "facebook"))
+        {
+
         this.activeChannelSessionList[array.length - 2].isChecked = true;
       } else {
         item.isChecked = false;
@@ -422,13 +428,7 @@ console.log("before",this.conversation.activeChannelSessions)
           message.body.type = "PLAIN";
           message.body.markdownText = text.trim();
         } else if (msgType.toLowerCase() == "comment") {
-          // lastActiveChannelSession.channelData.additionalAttributes.find((item)=>
-          // {
-          //   if(item.key=='comment_id')
-          //   {
-          //     item.value=this.commentId;
-          //   }
-          // })
+          lastActiveChannelSession.channelData.additionalAttributes[1].value=this.commentId
           console.log("commenting now");
           message.body.type = "COMMENT";
           message.body.postId = this.postId;
@@ -436,16 +436,19 @@ console.log("before",this.conversation.activeChannelSessions)
           message.body.itemType = "TEXT";
           message.body.markdownText = text.trim();
         } else if (msgType.toLowerCase() == "like") {
+          lastActiveChannelSession.channelData.additionalAttributes[1].value=this.commentId
           message.body.type = "COMMENT";
           message.body.postId = this.postId;
           message.body.commentType = "PUBLIC";
           message.body.itemType = "LIKE";
         } else if (msgType.toLowerCase() == "hide") {
+          lastActiveChannelSession.channelData.additionalAttributes[1].value=this.commentId
           message.body.type = "COMMENT";
           message.body.postId = this.postId;
           message.body.commentType = "PUBLIC";
           message.body.itemType = "HIDE";
         } else if (msgType.toLowerCase() == "delete") {
+          lastActiveChannelSession.channelData.additionalAttributes[1].value=this.commentId
           message.body.type = "COMMENT";
           message.body.postId = this.postId;
           message.body.commentType = "PUBLIC";
@@ -619,9 +622,9 @@ console.log("before",this.conversation.activeChannelSessions)
         );
         if (activeSessionIndex != -1)
         {
-          console.log("aplice now")
+          console.log("aplice now",this.conversation.activeChannelSessions.splice(activeSessionIndex, 1)[0])
 
-          this.conversation.activeChannelSessions=this.activeChannelSessionList;
+          this.conversation.activeChannelSessions.push(this.conversation.activeChannelSessions.splice(activeSessionIndex, 1)[0]);
 
         }
       }

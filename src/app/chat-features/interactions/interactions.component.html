@@ -1040,7 +1040,7 @@
                         <div *ngIf="(message.header.sender.type | lowercase) != 'agent'" class="comment-controlls post-controlls">
                           <ul>
                             <li>
-                              <mat-icon (click)="reply(message.body.postId, '2222')">chat_bubble_outline</mat-icon>
+                              <mat-icon (click)="reply(message.body.postId, message.header.channelData.additionalAttributes[1].value)">chat_bubble_outline</mat-icon>
                             </li>
                             <li>
                               <mat-icon (click)="likeComment(message.body.postId)">thumb_up</mat-icon>
