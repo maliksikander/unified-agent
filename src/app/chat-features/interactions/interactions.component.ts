@@ -297,14 +297,10 @@ export class InteractionsComponent implements OnInit {
 console.log("before",this.conversation.activeChannelSessions)
     this.activeChannelSessionList = this.conversation.activeChannelSessions;
     this.activeChannelSessionList.forEach((item, index, array) => {
-      if(array.length==1)
-      {
+     if (index === array.length - 1 && item.channel.channelType.name != "VOICE" && item.channel.channelType.name != "facebook") {
         item.isChecked = true;
       }
-      else if (index === array.length - 1 && item.channel.channelType.name != "VOICE" && item.channel.channelType.name != "facebook") {
-        item.isChecked = true;
-      }
-      else if (index === array.length - 1 && (item.channel.channelType.name == "VOICE" || item.channel.channelType.name == "facebook"))
+      else if (array.length >1 && index === array.length - 1 && (item.channel.channelType.name == "VOICE" || item.channel.channelType.name == "facebook"))
         {
           item.isChecked = false;
         this.activeChannelSessionList[array.length - 2].isChecked = true;
