@@ -641,12 +641,36 @@ export class socketService {
       let message = this.createSystemNotificationMessage(cimEvent);
       conversation.messages.push(message);
 
-      let index = conversation.activeChannelSessions.findIndex((channelSession) => {
-        return channelSession.id === cimEvent.data.id;
+      let removedChannelSessionIndex = null;
+      let removedChannelSession;
+
+      conversation.activeChannelSessions.forEach((channelSession, index) => {
+        if (channelSession.id === cimEvent.data.id) {
+          removedChannelSessionIndex = index;
+          removedChannelSession = channelSession;
+        };
       });
 
-      if (index != -1) {
-        conversation.activeChannelSessions.splice(index, 1);
+      if (removedChannelSessionIndex != null) {
+
+        conversation.activeChannelSessions.splice(removedChannelSessionIndex, 1);
+
+        if (removedChannelSession["isChecked"] == true) {
+
+          // if the channel session is of web or whatsapp then channel session should be selected
+          // because the channel session in the array is used to send the message to customer
+          let repliedChannelSession = conversation.activeChannelSessions.find((channelSession) => {
+            if (channelSession.channel.channelType.name.toLowerCase() != "voice" && channelSession.channel.channelType.name.toLowerCase() != "facebook") {
+              return channelSession;
+            }
+          });
+
+          if (repliedChannelSession) {
+            repliedChannelSession["isChecked"] = true;
+          }
+
+        }
+
         conversation.messageComposerState = this.isNonVoiceChannelSessionExists(conversation.activeChannelSessions);
         console.log("channel session removed");
       } else {
