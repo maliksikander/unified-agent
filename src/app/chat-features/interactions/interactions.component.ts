@@ -277,12 +277,15 @@ export class InteractionsComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log("changes",changes);
     if (changes.changeDetecter && changes.changeDetecter.currentValue && this.conversation.index == this._sharedService.matCurrentTabIndex) {
+      
       if (
         changes.changeDetecter.currentValue.header.sender.type.toLowerCase() == "agent" &&
         changes.changeDetecter.currentValue.header.sender.participant.keycloakUser.id == this._cacheService.agent.id
       ) {
         this.downTheScrollAfterMilliSecs(50, "smooth");
+        
       } else {
         if (this.currentScrollPosition < 95) {
           this.showNewMessageNotif = true;
@@ -294,21 +297,21 @@ export class InteractionsComponent implements OnInit {
     if (changes.currentTabIndex) {
       this.downTheScrollAfterMilliSecs(500, "auto");
     }
-console.log("before",this.conversation.activeChannelSessions)
-    this.activeChannelSessionList = this.conversation.activeChannelSessions;
-    this.activeChannelSessionList.forEach((item, index, array) => {
-     if (index === array.length - 1 && item.channel.channelType.name != "VOICE" && item.channel.channelType.name != "facebook") {
-        item.isChecked = true;
-      }
-      else if (array.length >1 && index === array.length - 1 && (item.channel.channelType.name == "VOICE" || item.channel.channelType.name == "facebook"))
-        {
-          item.isChecked = false;
-        this.activeChannelSessionList[array.length - 2].isChecked = true;
-      } else {
-        item.isChecked = false;
-      }
-      console.log("after",this.conversation.activeChannelSessions)
-    });
+// console.log("before",this.conversation.activeChannelSessions)
+//     this.activeChannelSessionList = this.conversation.activeChannelSessions;
+//     this.activeChannelSessionList.forEach((item, index, array) => {
+//      if (index === array.length - 1 && item.channel.channelType.name != "VOICE" && item.channel.channelType.name != "facebook") {
+//         item.isChecked = true;
+//       }
+//       else if (array.length >1 && index === array.length - 1 && (item.channel.channelType.name == "VOICE" || item.channel.channelType.name == "facebook"))
+//         {
+//           item.isChecked = false;
+//         this.activeChannelSessionList[array.length - 2].isChecked = true;
+//       } else {
+//         item.isChecked = false;
+//       }
+//       console.log("after",this.conversation.activeChannelSessions)
+    // });
 
 
     this._finesseService.currentConversation.next(this.conversation);

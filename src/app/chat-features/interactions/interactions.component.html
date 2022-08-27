@@ -1036,11 +1036,13 @@
                             <mat-icon (click)="fullPostView = false">close</mat-icon>
                           </div>
                         </div> -->
-                        <!-- *ngIf="activeChannelSessionList | checkActiveChannelSession: 'FACEBOOK' as result" -->
+                        <!-- *ngIf="conversation.activeChannelSessions | checkActiveChannelSession: 'FACEBOOK' as result" -->
                         <div *ngIf="(message.header.sender.type | lowercase) != 'agent'" class="comment-controlls post-controlls">
                           <ul>
                             <li>
-                              <mat-icon (click)="reply(message.body.postId, message.header.channelData.additionalAttributes[1].value)">chat_bubble_outline</mat-icon>
+                              <mat-icon (click)="reply(message.body.postId, message.header.channelData.additionalAttributes[1].value)"
+                                >chat_bubble_outline</mat-icon
+                              >
                             </li>
                             <li>
                               <mat-icon (click)="likeComment(message.body.postId)">thumb_up</mat-icon>
@@ -1268,44 +1270,44 @@
           [matMenuTriggerFor]="channelSwitching"
           class="channel-switching-trigger"
         >
-          <ng-container *ngFor="let selectedChannel of activeChannelSessionList">
+          <ng-container *ngFor="let channelSession of conversation.activeChannelSessions">
             <span class="channel-selected">
-              <!-- <img [src]="activeChannelSessionList[activeChannelSessionList.length
+              <!-- <img [src]="conversation.activeChannelSessions[conversation.activeChannelSessions.length
         -1]?.channel.channelType.channelLogo | channelLogo | async" width="20"
               onError="this.src='assets/flags/generic.png';"> -->
               <img
-                *ngIf="selectedChannel?.isChecked == true"
-                [src]="selectedChannel?.channel.channelType.channelLogo | channelLogo | async"
+                *ngIf="channelSession?.isChecked == true"
+                [src]="channelSession?.channel.channelType.channelLogo | channelLogo | async"
                 width="20"
                 onError="this.src='assets/flags/generic.png';"
               />
             </span>
 
-            <ng-container *ngIf="selectedChannel?.isChecked == true">{{ selectedChannel?.channel?.channelType?.name }} </ng-container>
+            <ng-container *ngIf="channelSession?.isChecked == true">{{ channelSession?.channel?.channelType?.name }} </ng-container>
 
-            <!-- {{activeChannelSessionList[activeChannelSessionList.length
+            <!-- {{conversation.activeChannelSessions[conversation.activeChannelSessions.length
         -1]?.channel.channelType.name}}  -->
             <i class="material-icons"> arrow_drop_down </i>
           </ng-container>
         </button>
-        <label *ngIf="activeChannelSessionList.length == 0" style="color: grey; padding-left: 2px"> None </label>
+        <label *ngIf="conversation.activeChannelSessions.length == 0" style="color: grey; padding-left: 2px"> None </label>
       </span>
 
       <mat-menu #channelSwitching="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
         <button
-          [disabled]="channel?.channel?.channelType.name == 'VOICE' || channel?.channel?.channelType.name == 'facebook'"
+          [disabled]="channelSession?.channel?.channelType.name == 'VOICE' || channelSession?.channel?.channelType.name == 'facebook'"
           mat-menu-item
           class="channel-selection-list"
-          (click)="switchChannelSession(channel, i)"
-          *ngFor="let channel of activeChannelSessionList; let i = index"
+          (click)="switchChannelSession(channelSession, i)"
+          *ngFor="let channelSession of conversation.activeChannelSessions; let i = index"
         >
           <span class="channel-list"
             ><img
-              [src]="channel?.channel?.channelType.channelLogo | channelLogo | async"
+              [src]="channelSession?.channel?.channelType.channelLogo | channelLogo | async"
               width="20"
               onError="this.src='assets/flags/generic.png';" /></span
-          >{{ channel?.channel?.channelType.name }}
-          <i class="material-icons" *ngIf="channel?.isChecked"> check </i>
+          >{{ channelSession?.channel?.channelType.name }}
+          <i class="material-icons" *ngIf="channelSession?.isChecked"> check </i>
         </button>
       </mat-menu>
 
