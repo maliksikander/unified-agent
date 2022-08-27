@@ -306,7 +306,7 @@ console.log("before",this.conversation.activeChannelSessions)
       }
       else if (index === array.length - 1 && (item.channel.channelType.name == "VOICE" || item.channel.channelType.name == "facebook"))
         {
-
+          item.isChecked = false;
         this.activeChannelSessionList[array.length - 2].isChecked = true;
       } else {
         item.isChecked = false;
@@ -617,16 +617,16 @@ console.log("before",this.conversation.activeChannelSessions)
         this.activeChannelSessionList[channelIndex].isChecked = true;
         console.log("active channel session before",this.activeChannelSessionList)
 
-        let activeSessionIndex = this.conversation.activeChannelSessions.findIndex(
-          (item) => item.id == this.activeChannelSessionList[channelIndex].id
-        );
-        if (activeSessionIndex != -1)
-        {
-          console.log("aplice now",this.conversation.activeChannelSessions.splice(activeSessionIndex, 1)[0])
+        // let activeSessionIndex = this.conversation.activeChannelSessions.findIndex(
+        //   (item) => item.id == this.activeChannelSessionList[channelIndex].id
+        // );
+        // if (activeSessionIndex != -1)
+        // {
+        //   console.log("aplice now",this.conversation.activeChannelSessions.splice(activeSessionIndex, 1)[0])
 
-          this.conversation.activeChannelSessions.push(this.conversation.activeChannelSessions.splice(activeSessionIndex, 1)[0]);
+        //   this.conversation.activeChannelSessions.push(this.conversation.activeChannelSessions.splice(activeSessionIndex, 1)[0]);
 
-        }
+        // }
       }
       console.log("active channel session now",this.activeChannelSessionList)
     } catch (e) {
