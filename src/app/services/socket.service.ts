@@ -77,12 +77,12 @@ export class socketService {
       try {
         console.error("socket connect_error ", err.data && err.data.content ? err.data.content : err);
         this._snackbarService.open(err.data && err.data.content ? err.data.content : "unable to connect to chat", "err");
-      } catch (err) {}
+      } catch (err) { }
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -114,7 +114,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -134,7 +134,7 @@ export class socketService {
 
     this.socket.on("taskRequest", (res: any) => {
       if (res.cisco_data) this.ciscoDialogId = res.cisco_data.response.dialog.id;
-      if(res.taskState && res.taskState.name.toLowerCase() == "started"){
+      if (res.taskState && res.taskState.name.toLowerCase() == "started") {
         this.emit("topicSubscription", {
           topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.conversationId, "PRIMARY", "SUBSCRIBED"),
           agentId: this._cacheService.agent.id,
@@ -142,8 +142,7 @@ export class socketService {
           taskId: res.taskId
         });
       }
-      else
-      {
+      else {
         this.triggerNewChatRequest(res);
       }
 
@@ -248,7 +247,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) {}
+    } catch (err) { }
   }
 
   listen(eventName: string) {
@@ -352,7 +351,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._snackbarService.open("you are logged In from another session", "err");
     alert("you are logged in from another session");
@@ -378,7 +377,7 @@ export class socketService {
     };
 
     // feed the conversation with type "messages"
-    let topicEvents=topicData.topicEvents
+    let topicEvents = topicData.topicEvents
       ? topicData.topicEvents
       : []
     // feed the conversation with type "messages"
@@ -395,9 +394,9 @@ export class socketService {
         conversation.messages.push(message);
       }
     });
-    let participants =topicData.participants
-    ? topicData.participants
-    : []
+    let participants = topicData.participants
+      ? topicData.participants
+      : []
     // feed the active channel sessions
     participants.forEach((e) => {
       if (e.type.toLowerCase() == "customer") {
@@ -417,52 +416,47 @@ export class socketService {
 
         // if the channel session is of voice or facebook then channel session should be disabled
         // because the channel session in the array is used to send the message to customer
-          conversation.activeChannelSessions.forEach((channelSession)=>
-          {
-            if(channelSession.channel.channelType.name.toLowerCase() == "voice" || channelSession.channel.channelType.name.toLowerCase() == "facebook")
-            {
-              channelSession["isDisabled"]=true;
-            }
-          });
+        conversation.activeChannelSessions.forEach((channelSession) => {
+          if (channelSession.channel.channelType.name.toLowerCase() == "voice" || channelSession.channel.channelType.name.toLowerCase() == "facebook") {
+            channelSession["isDisabled"] = true;
+            channelSession["isChecked"] = false;
+          }
+        });
 
 
         // if the channel session is of web or whatsapp then channel session should be selected
         // because the channel session in the array is used to send the message to customer
-          let repliedChannelSession=conversation.activeChannelSessions.find((channelSession)=>
-          {
-            if(channelSession.channel.channelType.name.toLowerCase() == "web" || channelSession.channel.channelType.name.toLowerCase() == "whatsapp")
-            {
-              return channelSession;
-            }
-          });
-          if(repliedChannelSession)
-          {
-            repliedChannelSession["isChecked"]=true;
-
+        let repliedChannelSession = conversation.activeChannelSessions.find((channelSession) => {
+          if (channelSession.channel.channelType.name.toLowerCase() != "voice" && channelSession.channel.channelType.name.toLowerCase() != "facebook") {
+            return channelSession;
           }
+        });
+
+        if (repliedChannelSession) {
+          repliedChannelSession["isChecked"] = true;
+
+        }
       }
     });
 
     conversation.messageComposerState = this.isNonVoiceChannelSessionExists(conversation.activeChannelSessions);
     let index;
-    let oldConversation = this.conversations.find((e,indx) => {
-      if(e.customer._id == topicData.customer._id)
-      {
-        index=indx;
-        conversation.index=e.index;
+    let oldConversation = this.conversations.find((e, indx) => {
+      if (e.customer._id == topicData.customer._id) {
+        index = indx;
+        conversation.index = e.index;
         return e
       }
     });
 
     if (oldConversation) {
       // if that conversation already exists update it
-      if(conversation.conversationId!='FAKE_CONVERSATION')
-        {
-          this.conversations[index]=conversation;
-        }
+      if (conversation.conversationId != 'FAKE_CONVERSATION') {
+        this.conversations[index] = conversation;
+      }
     } else {
       // else push that conversation
-      conversation.index=++this.conversationIndex;
+      conversation.index = ++this.conversationIndex;
       this.conversations.push(conversation);
       this._soundService.playBeep();
     }
@@ -538,19 +532,42 @@ export class socketService {
     //   // pusing the incoming channel to the last in array
     //   conversation.activeChannelSessions.push(incomingChannelSession);
     // }
-    // if(incomingChannelSession.channel.channelType.name.toLowerCase()=='facebook' || incomingChannelSession.channel.channelType.name.toLowerCase()=="voice" )
-    // {
-    //   incomingChannelSession["isDisabled"]=true;
-    // }
-    // else
-    // {
-    //   conversation.activeChannelSessions.forEach((channelSession)=>
-    //   {
-    //     channelSession["isSelected"]=false;
-    //   });
-    //   incomingChannelSession["isSelected"]=true;
-    //   conversation.activeChannelSessions.push(incomingChannelSession);
-    // }
+    if (incomingChannelSession.channel.channelType.name.toLowerCase() == "web") {
+
+      let webChannelSession = conversation.activeChannelSessions.find((channelSession) => {
+        return channelSession.channel.channelType.name.toLowerCase() == "web";
+      });
+
+      if (webChannelSession["isChecked"] != true) {
+
+        conversation.activeChannelSessions.forEach((channelSession) => {
+          channelSession["isChecked"] = false;
+        });
+
+        webChannelSession["isChecked"] = true;
+
+      }
+
+    } else if (incomingChannelSession.channel.channelType.name.toLowerCase() == "whatsapp") {
+
+
+      let whatsappChannelSession = conversation.activeChannelSessions.find((channelSession) => {
+        return channelSession.channel.channelType.name.toLowerCase() == "whatsapp";
+      });
+
+      if (whatsappChannelSession["isChecked"] != true) {
+
+        conversation.activeChannelSessions.forEach((channelSession) => {
+          channelSession["isChecked"] = false;
+        });
+
+        whatsappChannelSession["isChecked"] = true;
+
+      }
+
+    }
+
+
   }
 
   changeTopicCustomer(cimEvent, conversationId) {
@@ -567,13 +584,12 @@ export class socketService {
   removeConversation(conversationId) {
     // fetching the whole conversation which needs to be removed
     let index;
-    const removedConversation = this.conversations.find((conversation,indx) => {
-        if(conversation.conversationId == conversationId || conversation.customer._id == conversationId)
-        {
-          index=indx;
-          return conversation;
-        }
-      });
+    const removedConversation = this.conversations.find((conversation, indx) => {
+      if (conversation.conversationId == conversationId || conversation.customer._id == conversationId) {
+        index = indx;
+        return conversation;
+      }
+    });
     if (index != -1) {
       this._sharedService.spliceArray(index, this.conversations);
       --this.conversationIndex;
@@ -647,19 +663,19 @@ export class socketService {
     if (conversation) {
       let message = this.createSystemNotificationMessage(cimEvent);
 
-      if(cimEvent.data.channel.channelType.name.toLowerCase()=='facebook' || cimEvent.data.channel.channelType.name.toLowerCase()=="voice" )
-    {
-      cimEvent.data["isDisabled"]=true;
-    }
-    else
-    {
-      conversation.activeChannelSessions.forEach((channelSession)=>
-      {
-        channelSession["isSelected"]=false;
-      });
-      cimEvent.data["isSelected"]=true;
-    }
-    conversation.activeChannelSessions.push(cimEvent.data);
+      if (cimEvent.data.channel.channelType.name.toLowerCase() == 'facebook' || cimEvent.data.channel.channelType.name.toLowerCase() == "voice") {
+        cimEvent.data["isDisabled"] = true;
+        cimEvent.data["isSelected"] = false;
+      }
+      else {
+        conversation.activeChannelSessions.forEach((channelSession) => {
+          channelSession["isSelected"] = false;
+        });
+        cimEvent.data["isSelected"] = true;
+      }
+
+      conversation.activeChannelSessions.push(cimEvent.data);
+
       conversation.messages.push(message);
 
       conversation.messageComposerState = this.isNonVoiceChannelSessionExists(conversation.activeChannelSessions);
@@ -738,7 +754,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
@@ -1059,11 +1075,10 @@ export class socketService {
     } else if (conversation.state === "CLOSED") {
       // if the topic state is 'CLOSED' it means agent is already unsubscribed by the agent manager
       // now it only needs to clear the conversation from conversations array
-      if(conversation.conversationId=='FAKE_CONVERSATION')
-      {
-      this.removeConversation(conversation.customer._id);
+      if (conversation.conversationId == 'FAKE_CONVERSATION') {
+        this.removeConversation(conversation.customer._id);
       }
-      else{
+      else {
         this.removeConversation(conversation.conversationId);
       }
     }
