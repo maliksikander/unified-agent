@@ -82,9 +82,9 @@ import { channelNamePipe } from "./pipes/getChannelLogoByName.pipe";
 import { NgxTimerModule } from "ngx-timer";
 import { getSenderIdPipe } from "./pipes/getSenderId.pipe";
 import { AuthPipe } from "./pipes/auth.pipe";
-import { CheckActiveChannelSession } from "./pipes/checkActiveChannelSession";
 import { timeDurationPipe } from "./pipes/timeDuration.pipe";
 import { timeDurationFromParticipantPipe } from "./pipes/timeDurationFromParticipant.pipe";
+import { getCheckedChannelSessionPipe } from "./pipes/getCheckedChannelSession.pipe";
 
 @NgModule({
   declarations: [
@@ -115,7 +115,7 @@ import { timeDurationFromParticipantPipe } from "./pipes/timeDurationFromPartici
     channelNamePipe,
     getSenderIdPipe,
     AuthPipe,
-    CheckActiveChannelSession
+    getCheckedChannelSessionPipe
   ],
   imports: [
     NgxDocViewerModule,
@@ -277,7 +277,7 @@ import { timeDurationFromParticipantPipe } from "./pipes/timeDurationFromPartici
     getSenderIdPipe,
     timeDurationPipe,
     AuthPipe,
-    CheckActiveChannelSession,
+    getCheckedChannelSessionPipe,
     timeDurationFromParticipantPipe
   ]
 })

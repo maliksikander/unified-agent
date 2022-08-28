@@ -175,8 +175,8 @@ export class socketService {
     });
 
     this.socket.on("onTopicData", (res: any, callback: any) => {
+      console.log("onTopicData", res);
       try {
-        console.log("onTopicData", res);
         this.onTopicData(res.topicData, res.conversationId, res.taskId);
         if (callback) {
           callback({ status: "ok" });
@@ -419,8 +419,11 @@ export class socketService {
         conversation.activeChannelSessions.forEach((channelSession) => {
           if (channelSession.channel.channelType.name.toLowerCase() == "voice" || channelSession.channel.channelType.name.toLowerCase() == "facebook") {
             channelSession["isDisabled"] = true;
-            channelSession["isChecked"] = false;
+          } else {
+            channelSession["isDisabled"] = false;
           }
+          channelSession["isChecked"] = false;
+
         });
 
 
@@ -546,6 +549,9 @@ export class socketService {
 
         webChannelSession["isChecked"] = true;
 
+        conversation.activeChannelSessions = conversation.activeChannelSessions.concat([]);
+
+
       }
 
     } else if (incomingChannelSession.channel.channelType.name.toLowerCase() == "whatsapp") {
@@ -562,6 +568,9 @@ export class socketService {
         });
 
         whatsappChannelSession["isChecked"] = true;
+
+        conversation.activeChannelSessions = conversation.activeChannelSessions.concat([]);
+
 
       }
 
@@ -671,6 +680,8 @@ export class socketService {
 
         }
 
+        conversation.activeChannelSessions = conversation.activeChannelSessions.concat([]);
+
         conversation.messageComposerState = this.isNonVoiceChannelSessionExists(conversation.activeChannelSessions);
         console.log("channel session removed");
       } else {
@@ -689,16 +700,20 @@ export class socketService {
 
       if (cimEvent.data.channel.channelType.name.toLowerCase() == 'facebook' || cimEvent.data.channel.channelType.name.toLowerCase() == "voice") {
         cimEvent.data["isDisabled"] = true;
-        cimEvent.data["isSelected"] = false;
+        cimEvent.data["isChecked"] = false;
       }
       else {
         conversation.activeChannelSessions.forEach((channelSession) => {
-          channelSession["isSelected"] = false;
+          channelSession["isChecked"] = false;
         });
-        cimEvent.data["isSelected"] = true;
+        cimEvent.data["isChecked"] = true;
+        cimEvent.data["isDisabled"] = false;
       }
 
       conversation.activeChannelSessions.push(cimEvent.data);
+
+      conversation.activeChannelSessions = conversation.activeChannelSessions.concat([]);
+
 
       conversation.messages.push(message);
 
