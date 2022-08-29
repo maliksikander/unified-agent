@@ -36,6 +36,9 @@ export class InteractionsComponent implements OnInit {
   dispayVideoPIP = true;
   scrollSubscriber;
   labels: Array<any> = [];
+  quotedMessage: any;
+  replyToMessageId:any;
+  
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -115,7 +118,9 @@ export class InteractionsComponent implements OnInit {
 
   onSend(text) {
     text = text.trim();
+
     this.constructAndSendCimEvent("plain", "", "", "", text);
+      
   }
 
   fbCommentAction(fbPostId, additionalAttributes, action) {
@@ -177,12 +182,13 @@ export class InteractionsComponent implements OnInit {
 
   }
 
-  replyToFbComment(fbPostId, additionalAttributes) {
-
+  replyToFbComment(fbPostId, additionalAttributes,replyToMessageId) {
+    console.log("j",additionalAttributes)
     this.fbPostId = fbPostId;
+    this.replyToMessageId=replyToMessageId;
 
     additionalAttributes.forEach((attr) => {
-      if (attr.key == 'commentId') {
+      if (attr.key == 'comment_id') {
         this.fbCommentId = attr.value;
       }
     });
@@ -204,7 +210,8 @@ export class InteractionsComponent implements OnInit {
         fbChannelSession.isChecked = true;
 
         this.conversation.activeChannelSessions = this.conversation.activeChannelSessions.concat([]);
-
+        console.log("fb channel session ,",this.conversation.activeChannelSessions)
+        
       } else {
 
         this._snackbarService.open("Requested session not available at the moment", "succ");
@@ -224,7 +231,10 @@ export class InteractionsComponent implements OnInit {
       panelClass: "wrap-dialog"
     });
   }
-
+  quotedReply(e) {
+    console.log(e, 'quoted reply text main');
+    this.quotedMessage = e;
+  }
   onTextAreaClick() {
     this.conversation.unReadCount = 0;
   }
@@ -457,26 +467,22 @@ export class InteractionsComponent implements OnInit {
         header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
         body: { markdownText: "", type: "" }
       };
-      console.log("active channel sessions", this.activeChannelSessionList)
-      // let lastActiveChannelSession
-      // if(msgType.toLowerCase()=='comment' || msgType.toLowerCase()=='like' || msgType.toLowerCase()=='hide' || msgType.toLowerCase()=='delete')
-      // {
-      //   lastActiveChannelSession = this.activeChannelSessionList.find((item) => 
-      //   {item.channel.channelType.name.toLowerCase() == "facebook"});
-      // }
-      // else
-      // {
-      let lastActiveChannelSession = this.activeChannelSessionList.find((item) => item.isChecked == true);
-      console.log("last channel sessions", lastActiveChannelSession)
-      // let lastActiveChannelSession = this.conversation.activeChannelSessions[this.conversation.activeChannelSessions.length - 1];
+      let lastActiveChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
       let firstChannelSession = this.conversation.firstChannelSession;
-
       if (lastActiveChannelSession) {
-        console.log("last active channel session found==>", lastActiveChannelSession);
-
+        let isFbChannel;
+        lastActiveChannelSession.channelData.additionalAttributes.find((attr)=>
+        {
+          if(attr.key=='comment_id')
+          {
+            attr.value=this.fbCommentId;
+            isFbChannel=true;
+          }
+        })
         let sendingActiveChannelSession = JSON.parse(JSON.stringify(lastActiveChannelSession));
         delete sendingActiveChannelSession["webChannelData"];
         delete sendingActiveChannelSession["isChecked"];
+        delete sendingActiveChannelSession["isDisabled"];
 
         message.id = uuidv4();
         message.header.timestamp = Date.now();
@@ -484,36 +490,24 @@ export class InteractionsComponent implements OnInit {
         message.header.sender = this.conversation.topicParticipant;
         message.header.channelSession = sendingActiveChannelSession;
         message.header.channelData = sendingActiveChannelSession.channelData;
-
-        if (msgType.toLowerCase() == "plain") {
-          message.body.type = "PLAIN";
-          message.body.markdownText = text.trim();
-        } else if (msgType.toLowerCase() == "comment") {
-          lastActiveChannelSession.channelData.additionalAttributes[1].value = this.fbCommentId
-          console.log("commenting now");
+        console.log("last",lastActiveChannelSession)
+        if (isFbChannel) {
+          // message.header.channelData.additionalAttributes.forEach((attr) => {
+          //   if (attr.key == 'comment_id') {
+          //    attr.value= this.fbCommentId
+          //   }
+          // });
           message.body.type = "COMMENT";
-          message.body.fbPostId = this.fbPostId;
+          message.body.postId = this.fbPostId;
           message.body.commentType = "PUBLIC";
           message.body.itemType = "TEXT";
           message.body.markdownText = text.trim();
-        } else if (msgType.toLowerCase() == "like") {
-          lastActiveChannelSession.channelData.additionalAttributes[1].value = this.fbCommentId
-          message.body.type = "COMMENT";
-          message.body.fbPostId = this.fbPostId;
-          message.body.commentType = "PUBLIC";
-          message.body.itemType = "LIKE";
-        } else if (msgType.toLowerCase() == "hide") {
-          lastActiveChannelSession.channelData.additionalAttributes[1].value = this.fbCommentId
-          message.body.type = "COMMENT";
-          message.body.fbPostId = this.fbPostId;
-          message.body.commentType = "PUBLIC";
-          message.body.itemType = "HIDE";
-        } else if (msgType.toLowerCase() == "delete") {
-          lastActiveChannelSession.channelData.additionalAttributes[1].value = this.fbCommentId
-          message.body.type = "COMMENT";
-          message.body.fbPostId = this.fbPostId;
-          message.body.commentType = "PUBLIC";
-          message.body.itemType = "DELETE";
+          message.header.replyToMessageId=this.replyToMessageId;
+          console.log("message",message)
+        }
+        else if (msgType.toLowerCase() == "plain") {
+          message.body.type = "PLAIN";
+          message.body.markdownText = text.trim();
         } else if (msgType.toLowerCase() == "application" || msgType.toLowerCase() == "text") {
           message.body.type = "FILE";
           message.body["caption"] = "";
@@ -567,16 +561,15 @@ export class InteractionsComponent implements OnInit {
       });
 
 
-      if (msgType.toLowerCase() != "delete" && msgType.toLowerCase() != "hide" && msgType.toLowerCase() != "like") {
         console.log("event data==>", event.data);
         event.data.header["status"] = "sending";
         this.conversation.messages.push(event.data);
-      }
 
       setTimeout(() => {
         this.message = "";
-        this.fbPostId = null;
-        this.fbCommentId = null;
+        // this.fbPostId = null;
+        // this.fbCommentId = null;
+        this.quotedMessage=null;
       }, 40);
     } else {
       this._snackbarService.open("Unable to send the message at the moment ", "err");
