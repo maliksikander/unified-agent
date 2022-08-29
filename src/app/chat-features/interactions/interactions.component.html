@@ -241,12 +241,13 @@
                         }">
                         <!-- ---------------plain---------------------- -->
                         <!-- <p>{{referredMessage.body.type}}</p> -->
-                        <div *ngIf="(referredMessage.body.type | lowercase) == 'plain' || (referredMessage.body.type | lowercase) == 'comment'">
+                        <div
+                          *ngIf="(referredMessage.body.type | lowercase) == 'plain' || ((referredMessage.body.type | lowercase) == 'comment' && (referredMessage.body.itemType | lowercase) == 'text' )">
                           <p>
                             <span [innerHTML]="referredMessage.body.markdownText | linkify | ibsformat"></span>
-                                                 <span class="message-stamp">
-                                                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
-                                                 </span>
+                            <span class="message-stamp">
+                              <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
+                            </span>
                           </p>
                         </div>
 
@@ -974,7 +975,7 @@
 
                     <!--Facebook post comment type-->
 
-                    <div class="post-message-main" *ngIf="(message.body.type | lowercase) == 'comment'" >
+                    <div class="post-message-main" *ngIf="(message.body.type | lowercase) == 'comment'">
                       <div class="post-main-area">
                         <!-- <div class="post-message-header" *ngIf="fullPostView && con.body.mainPostData">
                           <div class="post-by">
@@ -993,8 +994,7 @@
                           class="comment-controlls post-controlls">
                           <ul>
                             <li>
-                              <mat-icon
-                                (click)="replyToFbComment(message.body.postId, message.header.channelData.additionalAttributes,message.id); quotedReply(message)">
+                              <mat-icon (click)="replyToFbComment(message);">
                                 chat_bubble_outline</mat-icon>
                             </li>
                             <li>
@@ -1198,25 +1198,28 @@
       }">
       <div class="quoted-message-selected-area" *ngIf="quotedMessage">
         <div class="message-selected-inner">
-        <span *ngIf="quotedMessage.header.sender.participant.customer">{{quotedMessage.header.sender.participant?.customer?.firstName}} {{quotedMessage.header.sender.participant?.customer?.lastName}}</span>
-        <span  *ngIf="quotedMessage.header.sender.participant.keycloakUser">
-          {{quotedMessage.header.sender.participant.keycloakUser.firstName}} {{quotedMessage.header.sender.participant.keycloakUser.lastName}}</span>
-        <p>
-          <span *ngIf="quotedMessage.body.attachment" class="display-file display-image">
-                        <img [src]="quotedMessage.body.attachment.mediaUrl | getFileUrl" />
-            {{quotedMessage.body.caption}}
+          <span
+            *ngIf="quotedMessage.header.sender.participant.customer">{{quotedMessage.header.sender.participant?.customer?.firstName}}
+            {{quotedMessage.header.sender.participant?.customer?.lastName}}</span>
+          <span *ngIf="quotedMessage.header.sender.participant.keycloakUser">
+            {{quotedMessage.header.sender.participant.keycloakUser.firstName}}
+            {{quotedMessage.header.sender.participant.keycloakUser.lastName}}</span>
+          <p>
+            <span *ngIf="quotedMessage.body.attachment" class="display-file display-image">
+              <img [src]="quotedMessage.body.attachment.mediaUrl | getFileUrl" />
+              {{quotedMessage.body.caption}}
             </span>
-      
-          <span *ngIf="quotedMessage.body.mediaUrl" class="display-file display-image">
-                            <img src="assets/images/url.png" />
-            {{quotedMessage.body.mediaUrl}}
+
+            <span *ngIf="quotedMessage.body.mediaUrl" class="display-file display-image">
+              <img src="assets/images/url.png" />
+              {{quotedMessage.body.mediaUrl}}
             </span>
-          {{quotedMessage.body.markdownText}}
-        </p>
-      
-        <button mat-icon-button class="quoted-message-cancel" (click)="quotedMessage = ''">
-          <mat-icon>close</mat-icon>
-        </button>
+            {{quotedMessage.body.markdownText}}
+          </p>
+
+          <button mat-icon-button class="quoted-message-cancel" (click)="quotedMessage = ''">
+            <mat-icon>close</mat-icon>
+          </button>
         </div>
       </div>
 

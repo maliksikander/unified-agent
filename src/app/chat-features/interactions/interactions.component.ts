@@ -13,6 +13,7 @@ import { httpService } from "src/app/services/http.service";
 import { finesseService } from "src/app/services/finesse.service";
 import { ConfirmationDialogComponent } from "src/app/new-components/confirmation-dialog/confirmation-dialog.component";
 import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
+import { stringLength } from "@firebase/util";
 
 declare var EmojiPicker: any;
 
@@ -37,8 +38,8 @@ export class InteractionsComponent implements OnInit {
   scrollSubscriber;
   labels: Array<any> = [];
   quotedMessage: any;
-  replyToMessageId:any;
-  
+  replyToMessageId: any;
+
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -120,7 +121,7 @@ export class InteractionsComponent implements OnInit {
     text = text.trim();
 
     this.constructAndSendCimEvent("plain", "", "", "", text);
-      
+
   }
 
   fbCommentAction(fbPostId, additionalAttributes, action) {
@@ -182,12 +183,14 @@ export class InteractionsComponent implements OnInit {
 
   }
 
-  replyToFbComment(fbPostId, additionalAttributes,replyToMessageId) {
-    console.log("j",additionalAttributes)
-    this.fbPostId = fbPostId;
-    this.replyToMessageId=replyToMessageId;
+  replyToFbComment(message) {
 
-    additionalAttributes.forEach((attr) => {
+    message.body.postId, message.header.channelData.additionalAttributes,message.id
+
+    this.fbPostId = message.body.postId;
+    this.replyToMessageId = message.id;
+
+    message.header.channelData.additionalAttributes.forEach((attr) => {
       if (attr.key == 'comment_id') {
         this.fbCommentId = attr.value;
       }
@@ -210,8 +213,10 @@ export class InteractionsComponent implements OnInit {
         fbChannelSession.isChecked = true;
 
         this.conversation.activeChannelSessions = this.conversation.activeChannelSessions.concat([]);
-        console.log("fb channel session ,",this.conversation.activeChannelSessions)
-        
+        console.log("fb channel session ,", this.conversation.activeChannelSessions);
+
+        this.openQuotedReplyArea(message);
+
       } else {
 
         this._snackbarService.open("Requested session not available at the moment", "succ");
@@ -231,7 +236,7 @@ export class InteractionsComponent implements OnInit {
       panelClass: "wrap-dialog"
     });
   }
-  quotedReply(e) {
+  openQuotedReplyArea(e) {
     console.log(e, 'quoted reply text main');
     this.quotedMessage = e;
   }
@@ -461,116 +466,85 @@ export class InteractionsComponent implements OnInit {
   }
 
   constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?, wrapups?, note?) {
+
     if (this._socketService.isSocketConnected) {
-      let message: any = {
-        id: "",
-        header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
-        body: { markdownText: "", type: "" }
-      };
-      let lastActiveChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
-      let firstChannelSession = this.conversation.firstChannelSession;
-      if (lastActiveChannelSession) {
-        let isFbChannel;
-        lastActiveChannelSession.channelData.additionalAttributes.find((attr)=>
-        {
-          if(attr.key=='comment_id')
-          {
-            attr.value=this.fbCommentId;
-            isFbChannel=true;
+
+      let message = this.getCimMessage();
+
+
+      if (msgType.toLowerCase() == "wrapup") {
+
+
+
+        message = this.constructWrapUpEvent(message, wrapups, note, this.conversation.firstChannelSession);
+
+        this.emitCimEvent(message);
+
+
+      } else {
+
+        let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
+
+        if (selectedChannelSession) {
+
+          if (selectedChannelSession.channel.channelType.name.toLowerCase() == "facebook") {
+
+            // channel session is facebook
+
+            message = this.constructFbCommentEvent(message, text, selectedChannelSession);
+
+            this.emitCimEvent(message);
+
+
+
+          } else {
+
+            // channel is web or whatsApp
+
+
+            let sendingActiveChannelSession = JSON.parse(JSON.stringify(selectedChannelSession));
+
+            delete sendingActiveChannelSession["webChannelData"];
+            delete sendingActiveChannelSession["isChecked"];
+            delete sendingActiveChannelSession["isDisabled"];
+
+            message.header.sender = this.conversation.topicParticipant;
+            message.header.channelSession = sendingActiveChannelSession;
+            message.header.channelData = sendingActiveChannelSession.channelData;
+
+            if (msgType.toLowerCase() == "plain") {
+              message.body.type = "PLAIN";
+              message.body.markdownText = text.trim();
+            } else if (msgType.toLowerCase() == "application" || msgType.toLowerCase() == "text") {
+              message.body.type = "FILE";
+              message.body["caption"] = "";
+              message.body["additionalDetails"] = { fileName: fileName };
+              message.body["attachment"] = {
+                mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
+                mimeType: fileMimeType,
+                size: fileSize
+              };
+            } else if (msgType.toLowerCase() == "image") {
+              message.body.type = "IMAGE";
+              message.body["caption"] = fileName;
+              message.body["additionalDetails"] = {};
+              message.body["attachment"] = {
+                mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
+                mimeType: fileMimeType,
+                size: fileSize,
+                thumbnail: ""
+              };
+            }
+
+            this.emitCimEvent(message);
           }
-        })
-        let sendingActiveChannelSession = JSON.parse(JSON.stringify(lastActiveChannelSession));
-        delete sendingActiveChannelSession["webChannelData"];
-        delete sendingActiveChannelSession["isChecked"];
-        delete sendingActiveChannelSession["isDisabled"];
-
-        message.id = uuidv4();
-        message.header.timestamp = Date.now();
-
-        message.header.sender = this.conversation.topicParticipant;
-        message.header.channelSession = sendingActiveChannelSession;
-        message.header.channelData = sendingActiveChannelSession.channelData;
-        console.log("last",lastActiveChannelSession)
-        if (isFbChannel) {
-          // message.header.channelData.additionalAttributes.forEach((attr) => {
-          //   if (attr.key == 'comment_id') {
-          //    attr.value= this.fbCommentId
-          //   }
-          // });
-          message.body.type = "COMMENT";
-          message.body.postId = this.fbPostId;
-          message.body.commentType = "PUBLIC";
-          message.body.itemType = "TEXT";
-          message.body.markdownText = text.trim();
-          message.header.replyToMessageId=this.replyToMessageId;
-          console.log("message",message)
-        }
-        else if (msgType.toLowerCase() == "plain") {
-          message.body.type = "PLAIN";
-          message.body.markdownText = text.trim();
-        } else if (msgType.toLowerCase() == "application" || msgType.toLowerCase() == "text") {
-          message.body.type = "FILE";
-          message.body["caption"] = "";
-          message.body["additionalDetails"] = { fileName: fileName };
-          message.body["attachment"] = {
-            mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
-            mimeType: fileMimeType,
-            size: fileSize
-          };
-        } else if (msgType.toLowerCase() == "image") {
-          message.body.type = "IMAGE";
-          message.body["caption"] = fileName;
-          message.body["additionalDetails"] = {};
-          message.body["attachment"] = {
-            mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
-            mimeType: fileMimeType,
-            size: fileSize,
-            thumbnail: ""
-          };
-        } else if (msgType.toLowerCase() == "wrapup") {
-          message.body.type = "WRAPUP";
-          message.body.markdownText = "";
-          message.body["wrapups"] = wrapups;
-          message.body["note"] = note;
         } else {
-          this._snackbarService.open("unable to process the file", "err");
-          return;
-        }
-      } else if (!lastActiveChannelSession && firstChannelSession) {
-        console.log("first active channel session found==>", firstChannelSession);
-        message.id = uuidv4();
-        message.header.timestamp = Date.now();
+          this._snackbarService.open("No channel session exists at the moment ", "err");
 
-        message.header.sender = this.conversation.topicParticipant;
-        message.header.channelSession = firstChannelSession;
-        message.header.channelData = firstChannelSession.channelData;
-
-        if (msgType.toLowerCase() == "wrapup") {
-          message.body.type = "WRAPUP";
-          message.body.markdownText = "";
-          message.body["wrapups"] = wrapups;
-          message.body["note"] = note;
         }
+
       }
 
-      let event: any = new CimEvent("AGENT_MESSAGE", "MESSAGE", this.conversation.conversationId, message);
-      this._socketService.emit("publishCimEvent", {
-        cimEvent: event,
-        agentId: this._cacheService.agent.id,
-        conversationId: this.conversation.conversationId
-      });
-
-
-        console.log("event data==>", event.data);
-        event.data.header["status"] = "sending";
-        this.conversation.messages.push(event.data);
-
-      setTimeout(() => {
-        this.message = "";
-        // this.fbPostId = null;
-        // this.fbCommentId = null;
-        this.quotedMessage=null;
-      }, 40);
     } else {
       this._snackbarService.open("Unable to send the message at the moment ", "err");
     }
@@ -694,6 +668,89 @@ export class InteractionsComponent implements OnInit {
     });
 
     return fbChannelSession;
+  }
+
+
+  getCimMessage() {
+
+
+    let message: any = {
+      id: "",
+      header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
+      body: { markdownText: "", type: "" }
+    };
+
+    message.id = uuidv4();
+    message.header.timestamp = Date.now();
+    message.header.sender = this.conversation.topicParticipant;
+
+    return message;
+
+  }
+
+
+  constructWrapUpEvent(message, wrapups, note, channelSession) {
+
+    let sendingActiveChannelSession = JSON.parse(JSON.stringify(channelSession));
+    delete sendingActiveChannelSession["webChannelData"];
+    delete sendingActiveChannelSession["isChecked"];
+    delete sendingActiveChannelSession["isDisabled"];
+
+    message.body.type = "WRAPUP";
+    message.body.markdownText = "";
+    message.body["wrapups"] = wrapups;
+    message.body["note"] = note;
+    message.header.channelSession = sendingActiveChannelSession;
+    message.header.channelData = sendingActiveChannelSession.channelData;
+
+    return message;
+  }
+
+
+  constructFbCommentEvent(message, text, channelSession) {
+
+    let sendingActiveChannelSession = JSON.parse(JSON.stringify(channelSession));
+    delete sendingActiveChannelSession["webChannelData"];
+    delete sendingActiveChannelSession["isChecked"];
+    delete sendingActiveChannelSession["isDisabled"];
+
+    let obj = sendingActiveChannelSession.channelData.additionalAttributes.find((attr) => {
+      return attr.name.toLowerCase() == 'comment_id';
+    });
+
+    obj["value"] = this.fbCommentId;
+
+    message.body.type = "COMMENT";
+    message.body.postId = this.fbPostId;
+    message.body.commentType = "PUBLIC";
+    message.body.itemType = "TEXT";
+    message.body.markdownText = text.trim();
+    message.header.replyToMessageId = this.replyToMessageId;
+    message.header.channelSession = sendingActiveChannelSession;
+    message.header.channelData = sendingActiveChannelSession.channelData;
+
+    return message;
+
+  }
+
+  emitCimEvent(message) {
+    let event: any = new CimEvent("AGENT_MESSAGE", "MESSAGE", this.conversation.conversationId, message);
+    this._socketService.emit("publishCimEvent", {
+      cimEvent: event,
+      agentId: this._cacheService.agent.id,
+      conversationId: this.conversation.conversationId
+    });
+
+
+    console.log("event data==>", event.data);
+    event.data.header["status"] = "sending";
+    this.conversation.messages.push(event.data);
+
+    setTimeout(() => {
+      this.message = "";
+
+      this.quotedMessage = null;
+    }, 40);
   }
 
 }
