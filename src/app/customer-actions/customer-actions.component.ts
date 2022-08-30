@@ -115,7 +115,7 @@ export class CustomerActionsComponent implements OnInit {
       this.getCustomerSchema();
     },(err)=>
     {
-      console.log("error getting customer by Id",err)
+      console.error("error getting customer by Id",err)
     });
   }
   getCustomerSchema() {

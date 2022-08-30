@@ -179,7 +179,7 @@ export class CustomerInfoComponent implements OnInit {
         (e) => {},
         (err) => {
           this._snackBarService.open("Error Starting Outbound Conversation","err");
-          console.log("Error Starting Outbound Conversation","err");
+          console.error("Error Starting Outbound Conversation","err");
         }
       );
     }

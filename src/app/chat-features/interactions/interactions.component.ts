@@ -186,7 +186,6 @@ export class InteractionsComponent implements OnInit {
   }
 
   replyToFbComment(message) {
-    console.log("fbmessage",message)
     this.fbPostId = message.body.postId;
     this.replyToMessageId = message.id;
 
@@ -196,7 +195,6 @@ export class InteractionsComponent implements OnInit {
       }
     });
 
-    console.log("fb fbPostId " + this.fbPostId + " fb fbCommentID " + this.fbCommentId);
 
     if (this.fbPostId && this.fbCommentId) {
 
@@ -213,7 +211,6 @@ export class InteractionsComponent implements OnInit {
         fbChannelSession.isChecked = true;
 
         this.conversation.activeChannelSessions = this.conversation.activeChannelSessions.concat([]);
-        console.log("fb channel session ,", this.conversation.activeChannelSessions);
 
         this.openQuotedReplyArea(message);
 
@@ -237,7 +234,6 @@ export class InteractionsComponent implements OnInit {
     });
   }
   openQuotedReplyArea(e) {
-    console.log(e, 'quoted reply text main');
     this.quotedMessage = e;
   }
   onTextAreaClick() {
@@ -539,7 +535,7 @@ export class InteractionsComponent implements OnInit {
             this.emitCimEvent(message);
           }
         } else {
-          this._snackbarService.open("No channel session exists at the moment ", "err");
+          this._snackbarService.open("No channel session selected at the moment ", "err");
 
         }
 
@@ -575,7 +571,7 @@ export class InteractionsComponent implements OnInit {
         }
       );
     } catch (e) {
-      console.log("[Load Past Activity] Error :", e);
+      console.error("[Load Past Activity] Error :", e);
     }
   }
 
@@ -610,7 +606,7 @@ export class InteractionsComponent implements OnInit {
       this.loadingPastActivity = false;
       this.upTheScrollAfterMilliSecs(0, "smooth");
     } catch (e) {
-      console.log("[Load Past Activity] Filter Error :", e);
+      console.error("[Load Past Activity] Filter Error :", e);
     }
   }
   onKeydown(event) {
@@ -651,7 +647,6 @@ export class InteractionsComponent implements OnInit {
 
         }
       }
-      console.log("active channel sessions ", this.conversation.activeChannelSessions);
 
     } catch (e) {
       console.error("[Error in Channel Switching] :", e);
@@ -710,7 +705,6 @@ export class InteractionsComponent implements OnInit {
   constructFbCommentEvent(message, text, channelSession) {
 
     let sendingActiveChannelSession = JSON.parse(JSON.stringify(channelSession));
-    console.log("sesndi",sendingActiveChannelSession);
     delete sendingActiveChannelSession["webChannelData"];
     delete sendingActiveChannelSession["isChecked"];
     delete sendingActiveChannelSession["isDisabled"];

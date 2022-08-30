@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
       this._httpService.updateAgentSettings({ theme: theme }, this._cacheService.agent.id).subscribe((e) => {
       });
     } catch (err) {
-      console.log(`error updating theme`, err);
+      console.error(`error updating theme`, err);
     }
   }
 
@@ -67,7 +67,6 @@ export class AppComponent implements OnInit {
     if (this.themeChange === true) {
       if(!e.onlySwitch)
       {
-        console.log("send request also")
       clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         this.updateTheme("dark");

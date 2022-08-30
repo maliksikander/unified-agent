@@ -97,7 +97,6 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
     this._httpService.getReasonCodes().subscribe(
       (e) => {
         this.reasonCodes = e;
-        console.log("reason",this.reasonCodes);
       },
       (err) => {
         console.error("error getting reason codes", err);
@@ -112,7 +111,7 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
         this.getAgentSettings();
       },
       (error) => {
-        console.log("error getting supported languages", error);
+        console.error("error getting supported languages", error);
       }
     );
   }
@@ -122,12 +121,12 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
       this._httpService.getAgentSettings(this._cacheService.agent.id).subscribe(
         (e) => {
           if (e.theme == "dark") {
-            this.themeSwitch("yes");
+            this.themeSwitch(true);
           }
           this.setAgentPreferedlanguage(e.language);
         },
         (error) => {
-          console.log("error getting user theme", error);
+          console.error("error getting user theme", error);
         }
       );
     }
@@ -178,7 +177,7 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
       try {
         this._httpService.updateAgentSettings({ language: "en" }, this._cacheService.agent.id).subscribe((e) => {});
       } catch (err) {
-        console.log(`error updating theme`, err);
+        console.error(`error updating theme`, err);
       }
     }
   }
@@ -192,7 +191,7 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
       try {
         this._httpService.updateAgentSettings({ language: languageCode }, this._cacheService.agent.id).subscribe((e) => {});
       } catch (err) {
-        console.log(`error updating theme`, err);
+        console.error(`error updating theme`, err);
       }
     }
   }
@@ -257,7 +256,7 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
       this.stateTrigger.closeMenu();
     }, 200);
   }
-
+//if onlySwitch flag true it will only switch the theme otherwise it will switch and also and update the theme in agentSettings
   themeSwitch(onlySwitch) {
     this.isdarkMode = !this.isdarkMode;
     this.themeSwitcher.emit({ isdarkMode: this.isdarkMode, onlySwitch: onlySwitch });
