@@ -329,7 +329,7 @@ export class httpService {
       })
     });
   }
-  getSupportedlanguages():Observable<any>{
+  getSupportedLanguages():Observable<any>{
     return this._httpClient.get<any>(`${this._appConfigService.config.UNIFIED_ADMIN_URL}/locale-setting`, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"

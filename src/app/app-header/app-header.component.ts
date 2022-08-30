@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
 import { cacheService } from "../services/cache.service";
 import { sharedService } from "../services/shared.service";
 import { socketService } from "../services/socket.service";
@@ -13,7 +13,7 @@ import { httpService } from "../services/http.service";
   templateUrl: "./app-header.component.html",
   styleUrls: ["./app-header.component.scss"]
 })
-export class AppHeaderComponent implements OnInit {
+export class AppHeaderComponent implements OnInit,AfterViewInit {
   @ViewChild("stateTrigger", { static: false }) stateTrigger: any;
   @Output() themeSwitcher = new EventEmitter<any>();
 
@@ -85,36 +85,52 @@ export class AppHeaderComponent implements OnInit {
         this._cacheService.agentPresence = e.data;
       }
     });
-    this._httpService.getSupportedlanguages().subscribe(
-      (e) => {
-        this.languages = e[0].supportedLanguages;
-        if (this._cacheService.agent.id) {
-          this._httpService.getAgentSettings(this._cacheService.agent.id).subscribe(
-            (e) => {
-              if (e.theme == "dark") {
-                this.themeSwitch("yes");
-              }
-              this.setAgentPreferedlanguage(e.language);
-            },
-            (error) => {
-              console.log("error getting user theme", error);
-            }
-          );
-        }
-      },
-      (error) => {
-        console.log("error getting supported languages", error);
-      }
-    );
+    
+  }
+  ngAfterViewInit()
+  {
+    this.getSupportedLanguages();
+    this.getReasonCodes();
+  }
+  getReasonCodes()
+  {
     this._httpService.getReasonCodes().subscribe(
       (e) => {
         this.reasonCodes = e;
-        console.log("rea",this.reasonCodes);
+        console.log("reason",this.reasonCodes);
       },
       (err) => {
         console.error("error getting reason codes", err);
       }
     );
+  }
+  getSupportedLanguages()
+  {
+    this._httpService.getSupportedLanguages().subscribe(
+      (e) => {
+        this.languages = e[0].supportedLanguages;
+        this.getAgentSettings();
+      },
+      (error) => {
+        console.log("error getting supported languages", error);
+      }
+    );
+  }
+  getAgentSettings()
+  {
+    if (this._cacheService.agent.id) {
+      this._httpService.getAgentSettings(this._cacheService.agent.id).subscribe(
+        (e) => {
+          if (e.theme == "dark") {
+            this.themeSwitch("yes");
+          }
+          this.setAgentPreferedlanguage(e.language);
+        },
+        (error) => {
+          console.log("error getting user theme", error);
+        }
+      );
+    }
   }
 
   reStartTimer() {
