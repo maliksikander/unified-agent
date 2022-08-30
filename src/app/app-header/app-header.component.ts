@@ -109,6 +109,7 @@ export class AppHeaderComponent implements OnInit {
     this._httpService.getReasonCodes().subscribe(
       (e) => {
         this.reasonCodes = e;
+        console.log("rea",this.reasonCodes);
       },
       (err) => {
         console.error("error getting reason codes", err);

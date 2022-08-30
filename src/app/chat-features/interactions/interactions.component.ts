@@ -39,6 +39,8 @@ export class InteractionsComponent implements OnInit {
   labels: Array<any> = [];
   quotedMessage: any;
   replyToMessageId: any;
+  viewFullCommentAction:boolean=false;
+  fullPostView:boolean=false;
 
 
   ngAfterViewInit() {

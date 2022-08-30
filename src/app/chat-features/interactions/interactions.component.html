@@ -1247,7 +1247,6 @@
         <button *ngIf="conversation.activeChannelSessions.length > 0" mat-button [matMenuTriggerFor]="channelSwitching"
           class="channel-switching-trigger">
           <ng-container *ngFor="let info of conversation.activeChannelSessions | getCheckedChannelSession">
-            {{channelSession}}
             <span class="channel-selected">
               <!-- <img [src]="conversation.activeChannelSessions[conversation.activeChannelSessions.length
         -1]?.channel.channelType.channelLogo | channelLogo | async" width="20"
