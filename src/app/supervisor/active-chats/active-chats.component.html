@@ -13,6 +13,7 @@
         </mat-form-field>
       </div>
     </div>
+    <div class="col">
     <table class="table">
       <thead>
         <tr>
@@ -28,7 +29,7 @@
           <tr *ngFor="let chat of data.chats">
             <td><span class="channel-icon {{chat.channelType}}"><img [src]="chat.channelType  | channelName  | channelLogo | async"></span>
               {{chat.customerName}} <small>({{chat.channelIdentity}})</small></td>
-            <td>{{chat.activeSince | amDuration:'seconds'}} <small>ago</small></td>
+            <td>{{chat.activeSince | amDuration:'seconds'}} <small>Ago</small></td>
             <td >{{data.botName}}</td>
             <span class="table-trigger">
               <button mat-mini-fab class="silent-monitor-btn" matTooltip="Silent Monitoring"><img
@@ -46,7 +47,7 @@
           <tr *ngFor="let chat of data.chats">
             <td><span class="channel-icon {{chat.channelType}}"><img [src]="chat.channelType  | channelName  | channelLogo | async"></span>
               {{chat.customerName}} <small>({{chat.channelIdentity}})</small></td>
-            <td>{{chat.activeSince | amDuration:'seconds'}} <small>ago</small> </td>
+            <td>{{chat.activeSince | amDuration:'seconds'}} <small>Ago</small> </td>
             <td >{{data.queueName}}</td>
             <td >{{chat.agentName}}</td>
             <span class="table-trigger">
@@ -62,6 +63,6 @@
         </ng-container>
       </tbody>
     </table>
-
+    </div>
   </div>
 </div>

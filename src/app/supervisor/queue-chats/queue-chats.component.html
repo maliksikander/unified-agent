@@ -13,7 +13,7 @@
         </mat-form-field>
       </div>
     </div>
-    <div class="data-table">
+    <div class="data-table col">
       <table class="table">
         <thead>
           <tr>
@@ -38,7 +38,7 @@
                 <li matTooltip="Product Support" style="background: #536ce8;"></li>
               </ul> -->
               </td>
-              <td>{{chat.waitingSince | amDuration:'seconds'}} <small>ago</small></td>
+              <td>{{chat.waitingSince | amDuration:'seconds'}} <small>Ago</small></td>
               <td>{{data.queueName}}</td>
               <span class="table-trigger">
                 <button mat-mini-fab class="chat-btn" matTooltip="Chat"><img src="assets/images/joinchat.svg"
