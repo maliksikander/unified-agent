@@ -12,7 +12,7 @@
     "domain": "${domain}",
     "subDomain" : "${subDomain}",
     "boshUrl": "${boshUrl}",
-    "subBoshUrl" : "${subBoshUrl}"
+    "subBoshUrl" : "${subBoshUrl}",
     "finesseFlavor": "${finesseFlavor}",
     "callVariable": "${callVariable}",
     "getQueuesDelay": ${getQueuesDelay},
@@ -33,6 +33,6 @@
     "consultTransferTypeCCX": "${consultTransferTypeCCX}",
     "conferenceType": "${conferenceType}",
     "silentMonitorType": "${silentMonitorType}",
-	  "bargeInType": "${bargeInType}"
+	  "bargeInType": "${bargeInType}",
     "ronaStateOnCisco":"${ronaStateOnCisco}"
 }
