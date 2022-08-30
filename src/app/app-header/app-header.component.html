@@ -60,7 +60,7 @@
 
       <div class="info">
         <span class="theme-switcher">
-          <mat-icon (click)="themeSwitch()"
+          <mat-icon (click)="themeSwitch('')"
             matTooltip="{{isdarkMode ? 'Switch to light mode' : 'Switch to dark mode'}}">
             {{isdarkMode ? 'brightness_7' : 'brightness_4'}}</mat-icon>
         </span>
@@ -153,14 +153,13 @@
                   <h4 [matTooltip]="_cacheService.agent.username">{{_cacheService.agent.username}}</h4>
                   <span>(Ext: {{agent.extension}})</span>
                 </div>
-
                 <p *ngIf="('state-change' | authPipe : 'view') as result" class="menu-trigger-custom state-trigger">
                   <span class="inner-btn">State</span>
 
-                  <button mat-button #stateTrigger="matMenuTrigger" [matMenuTriggerFor]="agentState"
+                  <button  mat-button #stateTrigger="matMenuTrigger" [matMenuTriggerFor]="agentState"
                     (click)="$event.stopPropagation()"
                     class="{{_cacheService.agentPresence.state.name | lowercase}} mat-menu-item-submenu-trigger">
-                    <span>{{(_cacheService.agentPresence.state.name | removeUnderscore | titlecase) +
+                    <span class="ellipsis">{{(_cacheService.agentPresence.state.name | removeUnderscore | titlecase) +
                       (_cacheService.agentPresence.state.reasonCode != null ?' - '+
                       _cacheService.agentPresence.state.reasonCode.name :
                       '') }}</span>
@@ -226,7 +225,7 @@
                 </p>
                 <div *ngFor="let reason of reasonCodes; let i = index">
                   <span *ngIf="(reason.type | lowercase ) == 'logout'" class="logout-reason-inner">
-                    <mat-checkbox [checked]="selected === i" (change)="selected = i; onChange(reason)" color="primary"
+                    <mat-checkbox [checked]="selected === i" (change)="selected = i; onChange(reason,$event)" color="primary"
                       labelPosition="after">{{reason.name}}</mat-checkbox>
                   </span>
                 </div>
@@ -242,13 +241,6 @@
               <mat-icon style="color: limegreen !important;">lens
               </mat-icon>
               Ready
-            </button>
-            <button (click)="changeState(0); $event.stopPropagation(); closeStateMenu(stateTrigger)" mat-menu-item
-              class="state-trigger">
-              <mat-icon style="color:#b4b4b4;">
-                lens
-              </mat-icon>
-              Not Ready
             </button>
             <div *ngFor="let reason of reasonCodes">
               <button *ngIf="(reason.type | lowercase) == 'not_ready'"

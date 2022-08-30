@@ -124,6 +124,7 @@ export class socketService {
     });
 
     this.socket.on("agentPresence", (res: any) => {
+      console.log("agent presence",res)
       this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: res.agentPresence });
     });
 
@@ -134,7 +135,7 @@ export class socketService {
 
     this.socket.on("taskRequest", (res: any) => {
       if (res.cisco_data) this.ciscoDialogId = res.cisco_data.response.dialog.id;
-      if (res.taskState && res.taskState.name.toLowerCase() == "started") {
+      if(res.taskState && res.taskState.name.toLowerCase() == "started"){
         this.emit("topicSubscription", {
           topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.conversationId, "PRIMARY", "SUBSCRIBED"),
           agentId: this._cacheService.agent.id,
@@ -142,10 +143,10 @@ export class socketService {
           taskId: res.taskId
         });
       }
-      else {
+      else
+      {
         this.triggerNewChatRequest(res);
       }
-
     });
 
     // this.socket.on("incomingCallAlertEvent", (res: any) => {
