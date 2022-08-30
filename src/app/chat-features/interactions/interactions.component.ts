@@ -184,9 +184,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   replyToFbComment(message) {
-
-    message.body.postId, message.header.channelData.additionalAttributes,message.id
-
+    console.log("fbmessage",message)
     this.fbPostId = message.body.postId;
     this.replyToMessageId = message.id;
 
@@ -710,12 +708,13 @@ export class InteractionsComponent implements OnInit {
   constructFbCommentEvent(message, text, channelSession) {
 
     let sendingActiveChannelSession = JSON.parse(JSON.stringify(channelSession));
+    console.log("sesndi",sendingActiveChannelSession);
     delete sendingActiveChannelSession["webChannelData"];
     delete sendingActiveChannelSession["isChecked"];
     delete sendingActiveChannelSession["isDisabled"];
 
     let obj = sendingActiveChannelSession.channelData.additionalAttributes.find((attr) => {
-      return attr.name.toLowerCase() == 'comment_id';
+      return attr.key.toLowerCase() == 'comment_id';
     });
 
     obj["value"] = this.fbCommentId;

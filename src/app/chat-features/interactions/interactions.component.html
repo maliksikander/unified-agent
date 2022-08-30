@@ -237,7 +237,7 @@
                       *ngFor="let referredMessage of message.header.replyToMessageId | getReferredMsg: conversation.messages">
                       <div [ngClass]="{
                           'file-type-message':
-                            (referredMessage.body.type | lowercase) != 'plain' && (referredMessage.body.type | lowercase) != 'button'
+                            (referredMessage.body.type | lowercase) != 'plain' && (referredMessage.body.type | lowercase) != 'comment' && (referredMessage.body.type | lowercase) != 'button'
                         }">
                         <!-- ---------------plain---------------------- -->
                         <!-- <p>{{referredMessage.body.type}}</p> -->
@@ -454,10 +454,10 @@
 
                   <div class="chat-message-content" [ngClass]="{
                       'replied-message': message.header.replyToMessageId != null,
-                      'file-type-message': (message.body.type | lowercase) != 'plain' && (message.body.type | lowercase) != 'button'
+                      'file-type-message': (message.body.type | lowercase) != 'plain' && (message.body.type | lowercase) != 'comment' && (message.body.type | lowercase) != 'button'
                     }">
                     <!-- ---------------plain---------------------- -->
-                    <div *ngIf="(message.body.type | lowercase) == 'plain'">
+                    <div *ngIf="(message.body.type | lowercase) == 'plain' || ((message.body.type | lowercase)=='comment' && (message.header.sender.type | lowercase)=='agent')">
                       <p
                         class="{{ (message.header.sender.type | lowercase) == 'customer' && message.botSuggestions ? 'plain-text-p' : '' }}">
                         <span [innerHTML]="message.body.markdownText | linkify | ibsformat"></span>
@@ -975,7 +975,7 @@
 
                     <!--Facebook post comment type-->
 
-                    <div class="post-message-main" *ngIf="(message.body.type | lowercase) == 'comment'">
+                    <div class="post-message-main" *ngIf="(message.body.type | lowercase) == 'comment' && (message.header.sender.type | lowercase) == 'customer'">
                       <div class="post-main-area">
                         <!-- <div class="post-message-header" *ngIf="fullPostView && con.body.mainPostData">
                           <div class="post-by">
@@ -1140,16 +1140,17 @@
                             <!-- <mat-icon>chat_bubble_outline</mat-icon>4 -->
                             <strong><span>Posted on</span><b (click)="fullPostView = true">Expertflow</b></strong>
                           </span>
-                          <!-- <span class="message-stamp">
-                            <span class="chat-time">12/12/34</span>
-                          </span> -->
+                          <span class="message-stamp">
+                            <span class="chat-time">{{ message.header.timestamp | date: "shortTime" }}</span>
+                          </span>
+                          
                         </div>
                       </div>
                     </div>
 
                     <!-- ---------------------------------- FB Comment Ended-------------------------------- -->
-
                     <span class="chat-time file-type-stamp">{{ message.header.timestamp | date: "shortTime" }}</span>
+                    
                   </div>
                 </div>
 
