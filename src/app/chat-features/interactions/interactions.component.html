@@ -120,8 +120,10 @@
               </span>
 
               <p>No active conversation</p>
-              <p *ngIf="'customer-conversation-view' | authPipe: 'manage' as result">Click <a routerLink=""
-                  (click)="loadPastActivities('FAKE_CONVERSATION')">here</a> to load the past conversations</p>
+              <p *ngIf="'customer-conversation-view' | authPipe: 'manage' as result">
+                Click <a routerLink="" (click)="loadPastActivities('FAKE_CONVERSATION')">here</a> to load the past
+                conversations
+              </p>
             </div>
           </div>
 
@@ -202,15 +204,15 @@
                 }} {{ message.header.sender.type | lowercase }}"
                 [ngClass]="(message.header.sender.type | lowercase) == 'customer' ? 'user-message slide-in-left' : 'agent-message '">
                 <div class="profile-pic">
-                  <div [ngClass]="{'wrapup-active-icon':message?.body?.type == 'WRAPUP'}"
+                  <div [ngClass]="{ 'wrapup-active-icon': message?.body?.type == 'WRAPUP' }"
                     class="active-channel channel-icon" *ngIf="(message.header.sender.type | lowercase) !== 'customer'">
                     <img *ngIf="message?.body?.type != 'WRAPUP'" width="20"
                       [src]="message.header.channelSession.channel.channelType.channelLogo | channelLogo | async" />
                     <img matTooltip="Wrap Up" class="wrap-up-icon" *ngIf="message?.body?.type == 'WRAPUP'" width="20"
-                      src="assets/images/wrap-up.svg">
+                      src="assets/images/wrap-up.svg" />
                   </div>
 
-                  <div matTooltip="{{message.header.sender | getSenderName:conversation.customer}}"
+                  <div matTooltip="{{ message.header.sender | getSenderName: conversation.customer }}"
                     *ngIf="(message.header.sender.type | lowercase) != 'bot' && (message.header.sender.type | lowercase) != 'customer'"
                     class="profile-pic-area user-img">
                     {{ message.header.sender | getSenderName: conversation.customer | getFirstTwoLetters }}
@@ -235,15 +237,17 @@
                       *ngFor="let referredMessage of message.header.replyToMessageId | getReferredMsg: conversation.messages">
                       <div [ngClass]="{
                           'file-type-message':
-                            (referredMessage.body.type | lowercase) != 'plain' && (referredMessage.body.type | lowercase) != 'button'
+                            (referredMessage.body.type | lowercase) != 'plain' && (referredMessage.body.type | lowercase) != 'comment' && (referredMessage.body.type | lowercase) != 'button'
                         }">
                         <!-- ---------------plain---------------------- -->
-                        <div *ngIf="(referredMessage.body.type | lowercase) == 'plain'">
+                        <!-- <p>{{referredMessage.body.type}}</p> -->
+                        <div
+                          *ngIf="(referredMessage.body.type | lowercase) == 'plain' || ((referredMessage.body.type | lowercase) == 'comment' && (referredMessage.body.itemType | lowercase) == 'text' )">
                           <p>
                             <span [innerHTML]="referredMessage.body.markdownText | linkify | ibsformat"></span>
-                            <!--                      <span class="message-stamp">-->
-                            <!--                         <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
-                            <!--                      </span>-->
+                            <span class="message-stamp">
+                              <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
+                            </span>
                           </p>
                         </div>
 
@@ -450,10 +454,10 @@
 
                   <div class="chat-message-content" [ngClass]="{
                       'replied-message': message.header.replyToMessageId != null,
-                      'file-type-message': (message.body.type | lowercase) != 'plain' && (message.body.type | lowercase) != 'button'
+                      'file-type-message': (message.body.type | lowercase) != 'plain' && (message.body.type | lowercase) != 'comment' && (message.body.type | lowercase) != 'button'
                     }">
                     <!-- ---------------plain---------------------- -->
-                    <div *ngIf="(message.body.type | lowercase) == 'plain'">
+                    <div *ngIf="(message.body.type | lowercase) == 'plain' || ((message.body.type | lowercase)=='comment' && (message.header.sender.type | lowercase)=='agent')">
                       <p
                         class="{{ (message.header.sender.type | lowercase) == 'customer' && message.botSuggestions ? 'plain-text-p' : '' }}">
                         <span [innerHTML]="message.body.markdownText | linkify | ibsformat"></span>
@@ -967,7 +971,186 @@
                     </div>
                     <!-- <--------------------------------------------Wrap Up MESSAGE END-------------------------------------------->
 
+                    <!-- ---------------------------------- FB Comment Started-------------------------------- -->
+
+                    <!--Facebook post comment type-->
+
+                    <div class="post-message-main" *ngIf="(message.body.type | lowercase) == 'comment' && (message.header.sender.type | lowercase) == 'customer'">
+                      <div class="post-main-area">
+                        <!-- <div class="post-message-header" *ngIf="fullPostView && con.body.mainPostData">
+                          <div class="post-by">
+                            <strong
+                              >{{ con.body.mainPostData.postedContent.postedBy }} <span>posted on</span>
+                              {{ con.body.mainPostData.postedContent.postedOn }}
+                            </strong>
+                          </div>
+                          <div class="post-info">
+                            <span><img src="assets/images/facebook-colored.svg" /> Expertflow</span>
+                            <mat-icon (click)="fullPostView = false">close</mat-icon>
+                          </div>
+                        </div> -->
+                        <!-- *ngIf="conversation.activeChannelSessions | checkActiveChannelSession: 'FACEBOOK' as result" -->
+                        <div *ngIf="(message.header.sender.type | lowercase) != 'agent'"
+                          class="comment-controlls post-controlls">
+                          <ul>
+                            <li>
+                              <mat-icon (click)="replyToFbComment(message);">
+                                chat_bubble_outline</mat-icon>
+                            </li>
+                            <li>
+                              <mat-icon
+                                (click)="fbCommentAction(message.body.postId, message.header.channelData.additionalAttributes, 'like')">
+                                thumb_up</mat-icon>
+                            </li>
+                            <li class="view-all-options">
+                              <ul *ngIf="viewFullCommentAction">
+                                <li>
+                                  <mat-icon
+                                    (click)="fbCommentAction(message.body.postId, message.header.channelData.additionalAttributes,'delete')">
+                                    delete</mat-icon>
+                                </li>
+                                <!-- <li>
+                                  <mat-icon>person_off</mat-icon>
+                                </li> -->
+                                <li>
+                                  <mat-icon
+                                    (click)="fbCommentAction(message.body.postId, message.header.channelData.additionalAttributes,'hide')">
+                                    visibility_off</mat-icon>
+                                </li>
+                                <!-- <li class="view-post" (click)="fullPostView = true; viewFullCommentAction = false">View full post</li> -->
+                              </ul>
+                            </li>
+                          </ul>
+                          <span
+                            class="view-all-options-icon {{ viewFullCommentAction ? 'arrow-forward' : 'arrow-back' }}"
+                            (click)="viewFullCommentAction = !viewFullCommentAction"><img
+                              src="assets/images/arrow-left.svg" /></span>
+                        </div>
+
+                        <!-- <div class="post-full-view" *ngIf="fullPostView && con.body.mainPostData">
+                          <div class="main-post-content">
+                            <div class="post-header">
+                              <span class="post-page-showcase"><img src="assets/images/user-picture/page-avatar.png" /></span>
+                              <span class="post-page-info"
+                                ><strong>{{ con.body.mainPostData.postedContent.postedOn }}</strong> <small>January 26, 2021 06:30PM</small></span
+                              >
+                            </div>
+                          </div>
+                        </div> -->
+
+                        <div class="main-comment">
+                          <div class="post-inner-content">
+                            <p>
+                              <span [innerHTML]="message.body.markdownText | linkify | ibsformat"></span>
+                              <!-- <span
+                                *ngIf="fullPostView && con.body.mainPostData"
+                                [innerHTML]="con.body.mainPostData.postedContent.postedSummery.postedText | linkify | ibsformat"
+                              ></span> -->
+                            </p>
+                          </div>
+                        </div>
+                        <!-- <div class="post-sub-comments-area"> -->
+                        <!-- <div class="total-comment-count">
+                            <span><mat-icon>chat_bubble_outline</mat-icon>16 </span>
+                          </div>
+
+                          <div class="post-sub-comments" *ngFor="let postComments of con.body.mainPostData.postComments">
+                            <div class="sub-profile-picture">
+                              <img [src]="postComments.userProfilePicture" />
+                            </div>
+
+                            <div class="sub-comment">
+                              <strong>{{ postComments.commentBy }}</strong>
+                              <p>{{ postComments.markdownText }}</p>
+                              <div class="message-footer">
+                                <span><mat-icon>chat_bubble_outline</mat-icon>4 </span>
+                                <span class="message-stamp">
+                                  <span class="chat-time">{{ postComments.postedTime }}</span>
+                                </span>
+                              </div>
+                            </div>
+
+                            <div class="post-sub-comments post-nested-comments" *ngFor="let nestedComments of postComments.linkedReplies">
+                              <div class="sub-profile-picture">
+                                <img [src]="nestedComments.userProfilePicture" />
+                              </div>
+
+                              <div class="sub-comment">
+                                <strong>{{ nestedComments.commentBy }}</strong>
+                                <p>{{ nestedComments.markdownText }}</p>
+
+                                <div class="message-footer">
+                                  <span><mat-icon>chat_bubble_outline</mat-icon>4 </span>
+                                  <span class="message-stamp">
+                                    <span class="chat-time">{{ con.body.commentDate }}</span>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="post-sub-comments original-comment" *ngIf="fullPostView && con.body.mainPostData">
+                            <div class="sub-profile-picture">
+                              <img [src]="con.body.userProfilePicture" />
+                            </div>
+
+                            <div class="sub-comment">
+                              <div class="comment-controlls sub-controlls" *ngIf="fullPostView">
+                                <ul>
+                                  <li>
+                                    <mat-icon>chat_bubble_outline </mat-icon>
+                                  </li>
+                                  <li>
+                                    <mat-icon>thumb_up</mat-icon>
+                                  </li>
+                                  <li class="view-all-options">
+                                    <ul *ngIf="viewFullCommentAction">
+                                      <li>
+                                        <mat-icon>delete </mat-icon>
+                                      </li>
+                                      <li>
+                                        <mat-icon>person_off </mat-icon>
+                                      </li>
+                                      <li>
+                                        <mat-icon>visibility_off </mat-icon>
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                                <span
+                                  class="view-all-options-icon {{ viewFullCommentAction ? 'arrow-forward' : 'arrow-back' }}"
+                                  (click)="viewFullCommentAction = !viewFullCommentAction"
+                                  ><img src="assets/images/arrow-left.svg"
+                                /></span>
+                              </div>
+                              <strong>{{ con.body.commentedBy }}</strong>
+                              <p [innerHTML]="con.body.markdownText | linkify | ibsformat"></p>
+                              <div class="message-footer">
+                                <span><mat-icon>chat_bubble_outline</mat-icon> {{ con.body.linkedReplies }} </span>
+                                <span class="message-stamp">
+                                  <span class="chat-time">{{ con.body.commentDate }}</span>
+                                </span>
+                              </div>
+                            </div>
+                          </div> -->
+                        <!-- </div> -->
+
+                        <div class="message-footer">
+                          <span>
+                            <!-- <mat-icon>chat_bubble_outline</mat-icon>4 -->
+                            <strong><span>Posted on</span><b (click)="fullPostView = true">Expertflow</b></strong>
+                          </span>
+                          <span class="message-stamp">
+                            <span class="chat-time">{{ message.header.timestamp | date: "shortTime" }}</span>
+                          </span>
+                          
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ---------------------------------- FB Comment Ended-------------------------------- -->
                     <span class="chat-time file-type-stamp">{{ message.header.timestamp | date: "shortTime" }}</span>
+                    
                   </div>
                 </div>
 
@@ -991,7 +1174,6 @@
                   <mat-icon>done</mat-icon>
                 </span> -->
               </div>
-
               <!-- ----------------------------------system Notifications started-------------------------------- -->
 
               <div *ngIf="(message.body.type | lowercase) == 'systemnotification'" class="system-notifs">
@@ -1015,6 +1197,33 @@
     <div class="chat-footer" [ngClass]="{
         'textarea-disable': !_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0 || !conversation.messageComposerState
       }">
+      <div class="quoted-message-selected-area" *ngIf="quotedMessage">
+        <div class="message-selected-inner">
+          <span
+            *ngIf="quotedMessage.header.sender.participant.customer">{{quotedMessage.header.sender.participant?.customer?.firstName}}
+            {{quotedMessage.header.sender.participant?.customer?.lastName}}</span>
+          <span *ngIf="quotedMessage.header.sender.participant.keycloakUser">
+            {{quotedMessage.header.sender.participant.keycloakUser.firstName}}
+            {{quotedMessage.header.sender.participant.keycloakUser.lastName}}</span>
+          <p>
+            <span *ngIf="quotedMessage.body.attachment" class="display-file display-image">
+              <img [src]="quotedMessage.body.attachment.mediaUrl | getFileUrl" />
+              {{quotedMessage.body.caption}}
+            </span>
+
+            <span *ngIf="quotedMessage.body.mediaUrl" class="display-file display-image">
+              <img src="assets/images/url.png" />
+              {{quotedMessage.body.mediaUrl}}
+            </span>
+            {{quotedMessage.body.markdownText}}
+          </p>
+
+          <button mat-icon-button class="quoted-message-cancel" (click)="quotedMessage = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+
       <div *ngIf="currentScrollPosition < 60 && showNewMessageNotif == false"
         (click)="downTheScrollAfterMilliSecs(0, 'smooth')" class="jump-bottom slide-in-bottom new-msg-notif">
         <span>
@@ -1037,33 +1246,35 @@
       <span class="selected-channel"><span>Selected Channel:</span>
         <button *ngIf="conversation.activeChannelSessions.length > 0" mat-button [matMenuTriggerFor]="channelSwitching"
           class="channel-switching-trigger">
-          <span class="channel-selected">
-            <img [src]="activeChannelSessionList[activeChannelSessionList.length
-          -1]?.channel.channelType.channelLogo | channelLogo | async" width="20"
-              onError="this.src='assets/flags/generic.png';">
-          </span>
-          {{activeChannelSessionList[activeChannelSessionList.length
-          -1]?.channel.channelType.name}} <i class="material-icons">
-            arrow_drop_down
-          </i></button>
-        <label *ngIf="activeChannelSessionList.length == 0" style="color:grey;padding-left: 2px">
-          None
-        </label>
+          <ng-container *ngFor="let info of conversation.activeChannelSessions | getCheckedChannelSession">
+            <span class="channel-selected">
+              <!-- <img [src]="conversation.activeChannelSessions[conversation.activeChannelSessions.length
+        -1]?.channel.channelType.channelLogo | channelLogo | async" width="20"
+              onError="this.src='assets/flags/generic.png';"> -->
+              <img [src]="info.logo | channelLogo | async" width="20" onError="this.src='assets/flags/generic.png';" />
+            </span>
 
+            <ng-container>{{ info.name}} </ng-container>
+
+            <!-- {{conversation.activeChannelSessions[conversation.activeChannelSessions.length
+        -1]?.channel.channelType.name}}  -->
+            <i class="material-icons"> arrow_drop_down </i>
+          </ng-container>
+        </button>
+        <label *ngIf="conversation.activeChannelSessions.length == 0" style="color: grey; padding-left: 2px"> None
+        </label>
       </span>
 
       <mat-menu #channelSwitching="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
-        <button [disabled]="channel?.channel?.channelType.name == 'VOICE'" mat-menu-item class="channel-selection-list"
-          (click)="switchChannelSession(channel,i)" *ngFor="let channel of activeChannelSessionList;let i = index">
-          <span class="channel-list"><img [src]="channel?.channel?.channelType.channelLogo | channelLogo | async"
-              width="20" onError="this.src='assets/flags/generic.png';"></span>{{channel?.channel?.channelType.name}}
-          <i class="material-icons" *ngIf="channel?.isChecked">
-            check
-          </i>
+        <button [disabled]="channelSession?.isDisabled == true" mat-menu-item class="channel-selection-list"
+          (click)="switchChannelSession(channelSession, i)"
+          *ngFor="let channelSession of conversation.activeChannelSessions; let i = index">
+          <span class="channel-list"><img [src]="channelSession?.channel?.channelType.channelLogo | channelLogo | async"
+              width="20" onError="this.src='assets/flags/generic.png';" /></span>{{
+          channelSession?.channel?.channelType.name }}
+          <i class="material-icons" *ngIf="channelSession?.isChecked"> check </i>
         </button>
       </mat-menu>
-
-
 
       <div class="message-composer">
         <form class="reply-form">

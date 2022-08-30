@@ -15,7 +15,7 @@ import { v4 as uuidv4 } from "uuid";
 import { AuthService } from "./auth.service";
 import { TopicParticipant } from "../models/User/Interfaces";
 import { E } from "@angular/cdk/keycodes";
-// const mockTopicData: any = require("../mocks/topicData.json");
+const mockTopicData: any = require("../mocks/topicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -129,6 +129,7 @@ export class socketService {
     });
 
     this.socket.on("agentPresence", (res: any) => {
+      console.log("agent presence", res);
       this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: res.agentPresence });
     });
 
@@ -139,7 +140,16 @@ export class socketService {
 
     this.socket.on("taskRequest", (res: any) => {
       if (res.cisco_data) this.ciscoDialogId = res.cisco_data.response.dialog.id;
-      this.triggerNewChatRequest(res);
+      if (res.taskState && res.taskState.name.toLowerCase() == "started") {
+        this.emit("topicSubscription", {
+          topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.conversationId, "PRIMARY", "SUBSCRIBED"),
+          agentId: this._cacheService.agent.id,
+          conversationId: res.conversationId,
+          taskId: res.taskId
+        });
+      } else {
+        this.triggerNewChatRequest(res);
+      }
     });
 
     // this.socket.on("incomingCallAlertEvent", (res: any) => {
@@ -169,8 +179,8 @@ export class socketService {
     });
 
     this.socket.on("onTopicData", (res: any, callback: any) => {
+      console.log("onTopicData", res);
       try {
-        console.log("onTopicData", res);
         this.onTopicData(res.topicData, res.conversationId, res.taskId);
         if (callback) {
           callback({ status: "ok" });
@@ -372,6 +382,7 @@ export class socketService {
 
     // feed the conversation with type "messages"
     let topicEvents = topicData.topicEvents ? topicData.topicEvents : [];
+
     // feed the conversation with type "messages"
     topicEvents.forEach((event, i) => {
       if (
@@ -386,6 +397,7 @@ export class socketService {
         conversation.messages.push(message);
       }
     });
+
     let participants = topicData.participants ? topicData.participants : [];
     // feed the active channel sessions
     participants.forEach((e) => {
@@ -400,15 +412,36 @@ export class socketService {
           participant["webChannelData"] = webChannelData.value;
         }
 
-        // if the channel session is of voice then we will not push that channel session in the last of the array
+        //feed the active channel session array
+        conversation.activeChannelSessions.push(participant);
+
+        // if the channel session is of voice or facebook then channel session should be disabled
         // because the channel session in the array is used to send the message to customer
-        if (
-          participant.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "pull" ||
-          participant.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "push"
-        ) {
-          conversation.activeChannelSessions.push(participant);
-        } else {
-          conversation.activeChannelSessions.unshift(participant);
+        conversation.activeChannelSessions.forEach((channelSession) => {
+          if (
+            channelSession.channel.channelType.name.toLowerCase() == "voice" ||
+            channelSession.channel.channelType.name.toLowerCase() == "facebook"
+          ) {
+            channelSession["isDisabled"] = true;
+          } else {
+            channelSession["isDisabled"] = false;
+          }
+          channelSession["isChecked"] = false;
+        });
+
+        // if the channel session is of web or whatsapp then channel session should be selected
+        // because the channel session in the array is used to send the message to customer
+        let repliedChannelSession = conversation.activeChannelSessions.find((channelSession) => {
+          if (
+            channelSession.channel.channelType.name.toLowerCase() != "voice" &&
+            channelSession.channel.channelType.name.toLowerCase() != "facebook"
+          ) {
+            return channelSession;
+          }
+        });
+
+        if (repliedChannelSession) {
+          repliedChannelSession["isChecked"] = true;
         }
       }
     });
@@ -427,7 +460,7 @@ export class socketService {
       // if that conversation already exists update it
       if (conversation.conversationId != "FAKE_CONVERSATION") {
         this.conversations[index] = conversation;
-        console.log("old convo ===>", oldConversation);
+        // console.log("old convo ===>", oldConversation);
       }
     } else {
       // else push that conversation
@@ -488,24 +521,53 @@ export class socketService {
   // }
 
   processActiveChannelSessions(conversation, incomingChannelSession) {
-    let matched: boolean = false;
-    let index = null;
+    // let matched: boolean = false;
+    // let index = null;
 
-    conversation.activeChannelSessions.forEach((activeChannelSession, i) => {
-      if (activeChannelSession.id === incomingChannelSession.id) {
-        matched = true;
-        index = i;
-        return;
+    // conversation.activeChannelSessions.forEach((activeChannelSession, i) => {
+    //   if (activeChannelSession.id === incomingChannelSession.id) {
+    //     matched = true;
+    //     index = i;
+    //     return;
+    //   }
+    // });
+
+    // if (matched && conversation.activeChannelSessions.length - 1 != index) {
+    //   // if matched and session is not at the last of the array then push that channel session to the last in array
+    //   // thats why first removing it from the array for removing duplicate entry
+    //   conversation.activeChannelSessions.splice(index, 1);
+
+    //   // pusing the incoming channel to the last in array
+    //   conversation.activeChannelSessions.push(incomingChannelSession);
+    // }
+    if (incomingChannelSession.channel.channelType.name.toLowerCase() == "web") {
+      let webChannelSession = conversation.activeChannelSessions.find((channelSession) => {
+        return channelSession.channel.channelType.name.toLowerCase() == "web";
+      });
+
+      if (webChannelSession["isChecked"] != true) {
+        conversation.activeChannelSessions.forEach((channelSession) => {
+          channelSession["isChecked"] = false;
+        });
+
+        webChannelSession["isChecked"] = true;
+
+        conversation.activeChannelSessions = conversation.activeChannelSessions.concat([]);
       }
-    });
+    } else if (incomingChannelSession.channel.channelType.name.toLowerCase() == "whatsapp") {
+      let whatsappChannelSession = conversation.activeChannelSessions.find((channelSession) => {
+        return channelSession.channel.channelType.name.toLowerCase() == "whatsapp";
+      });
 
-    if (matched && conversation.activeChannelSessions.length - 1 != index) {
-      // if matched and session is not at the last of the array then push that channel session to the last in array
-      // thats why first removing it from the array for removing duplicate entry
-      conversation.activeChannelSessions.splice(index, 1);
+      if (whatsappChannelSession["isChecked"] != true) {
+        conversation.activeChannelSessions.forEach((channelSession) => {
+          channelSession["isChecked"] = false;
+        });
 
-      // pusing the incoming channel to the last in array
-      conversation.activeChannelSessions.push(incomingChannelSession);
+        whatsappChannelSession["isChecked"] = true;
+
+        conversation.activeChannelSessions = conversation.activeChannelSessions.concat([]);
+      }
     }
   }
 
@@ -580,12 +642,38 @@ export class socketService {
       let message = this.createSystemNotificationMessage(cimEvent);
       conversation.messages.push(message);
 
-      let index = conversation.activeChannelSessions.findIndex((channelSession) => {
-        return channelSession.id === cimEvent.data.id;
+      let removedChannelSessionIndex = null;
+      let removedChannelSession;
+
+      conversation.activeChannelSessions.forEach((channelSession, index) => {
+        if (channelSession.id === cimEvent.data.id) {
+          removedChannelSessionIndex = index;
+          removedChannelSession = channelSession;
+        }
       });
 
-      if (index != -1) {
-        conversation.activeChannelSessions.splice(index, 1);
+      if (removedChannelSessionIndex != null) {
+        conversation.activeChannelSessions.splice(removedChannelSessionIndex, 1);
+
+        if (removedChannelSession["isChecked"] == true) {
+          // if the channel session is of web or whatsapp then channel session should be selected
+          // because the channel session in the array is used to send the message to customer
+          let repliedChannelSession = conversation.activeChannelSessions.find((channelSession) => {
+            if (
+              channelSession.channel.channelType.name.toLowerCase() != "voice" &&
+              channelSession.channel.channelType.name.toLowerCase() != "facebook"
+            ) {
+              return channelSession;
+            }
+          });
+
+          if (repliedChannelSession) {
+            repliedChannelSession["isChecked"] = true;
+          }
+        }
+
+        conversation.activeChannelSessions = conversation.activeChannelSessions.concat([]);
+
         conversation.messageComposerState = this.isNonVoiceChannelSessionExists(conversation.activeChannelSessions);
         console.log("channel session removed");
       } else {
@@ -602,16 +690,20 @@ export class socketService {
     if (conversation) {
       let message = this.createSystemNotificationMessage(cimEvent);
 
-      // if the channel session is of voice then we will not push that channel session in the last of the array
-      // because the channel session in the array is used to send the message to customer
-      if (
-        cimEvent.data.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "pull" ||
-        cimEvent.data.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "push"
-      ) {
-        conversation.activeChannelSessions.push(cimEvent.data);
+      if (cimEvent.data.channel.channelType.name.toLowerCase() == "facebook" || cimEvent.data.channel.channelType.name.toLowerCase() == "voice") {
+        cimEvent.data["isDisabled"] = true;
+        cimEvent.data["isChecked"] = false;
       } else {
-        conversation.activeChannelSessions.unshift(cimEvent.data);
+        conversation.activeChannelSessions.forEach((channelSession) => {
+          channelSession["isChecked"] = false;
+        });
+        cimEvent.data["isChecked"] = true;
+        cimEvent.data["isDisabled"] = false;
       }
+
+      conversation.activeChannelSessions.push(cimEvent.data);
+
+      conversation.activeChannelSessions = conversation.activeChannelSessions.concat([]);
 
       conversation.messages.push(message);
 
@@ -1012,6 +1104,7 @@ export class socketService {
     } else if (conversation.state === "CLOSED") {
       // if the topic state is 'CLOSED' it means agent is already unsubscribed by the agent manager
       // now it only needs to clear the conversation from conversations array
+
       if (conversation.conversationId == "FAKE_CONVERSATION") {
         this.removeConversation(conversation.customer._id);
       } else {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
 import { cacheService } from "../services/cache.service";
 import { sharedService } from "../services/shared.service";
 import { socketService } from "../services/socket.service";
@@ -13,7 +13,7 @@ import { httpService } from "../services/http.service";
   templateUrl: "./app-header.component.html",
   styleUrls: ["./app-header.component.scss"]
 })
-export class AppHeaderComponent implements OnInit {
+export class AppHeaderComponent implements OnInit,AfterViewInit {
   @ViewChild("stateTrigger", { static: false }) stateTrigger: any;
   @Output() themeSwitcher = new EventEmitter<any>();
 
@@ -31,37 +31,10 @@ export class AppHeaderComponent implements OnInit {
   changeLanguageCode = "en";
   languageFlag = "en.png";
   languageName = "English";
-  languages = [
-    { code: "en", name: "English", flag: "en.png" },
-    { code: "fr", name: "French", flag: "fr.png" }
-  ];
-  reasonCodes = [
-    {
-      id: "ef172d24-7b35-4c6d-ada5-41827034d306",
-      name: "Out of Office",
-      type: "LOGOUT"
-    },
-    {
-      id: "ef172d24-7b35-4c6d-ada5-41827034d307",
-      name: "End of Shift",
-      type: "LOGOUT"
-    },
-    {
-      id: "ef172d24-7b35-4c6d-ada5-41827034d308",
-      name: "Lunch Break",
-      type: "NOT_READY"
-    },
-    {
-      id: "ef172d24-7b35-4c6d-ada5-41827034d309",
-      name: "Short Break",
-      type: "NOT_READY"
-    },
-    {
-      id: "ef172d24-7b35-4c6d-ada5-41827034d301",
-      name: "Out of Office",
-      type: "NOT_READY"
-    }
-  ];
+  languages :
+    { _id:string, code: string, name: string, flag: string }[]
+  reasonCodes=[];
+;
   changeLanguage = false;
   logoutReasonList = false;
   stateView = true;
@@ -112,12 +85,46 @@ export class AppHeaderComponent implements OnInit {
         this._cacheService.agentPresence = e.data;
       }
     });
+    
+  }
+  ngAfterViewInit()
+  {
+    this.getSupportedLanguages();
+    this.getReasonCodes();
+  }
+  getReasonCodes()
+  {
+    this._httpService.getReasonCodes().subscribe(
+      (e) => {
+        this.reasonCodes = e;
+        console.log("reason",this.reasonCodes);
+      },
+      (err) => {
+        console.error("error getting reason codes", err);
+      }
+    );
+  }
+  getSupportedLanguages()
+  {
+    this._httpService.getSupportedLanguages().subscribe(
+      (e) => {
+        this.languages = e[0].supportedLanguages;
+        this.getAgentSettings();
+      },
+      (error) => {
+        console.log("error getting supported languages", error);
+      }
+    );
+  }
+  getAgentSettings()
+  {
     if (this._cacheService.agent.id) {
-      this._httpService.getUserTheme(this._cacheService.agent.id).subscribe(
+      this._httpService.getAgentSettings(this._cacheService.agent.id).subscribe(
         (e) => {
           if (e.theme == "dark") {
-            this.themeSwitch();
+            this.themeSwitch("yes");
           }
+          this.setAgentPreferedlanguage(e.language);
         },
         (error) => {
           console.log("error getting user theme", error);
@@ -149,6 +156,7 @@ export class AppHeaderComponent implements OnInit {
         state: { name: "READY", reasonCode: null }
       });
     } else {
+      console.log("state",state)
       this._socketService.emit("changeAgentState", {
         agentId: this._cacheService.agent.id,
         action: "agentState",
@@ -156,13 +164,36 @@ export class AppHeaderComponent implements OnInit {
       });
     }
   }
-
-  lang(lang) {
-    let selectedLanguage = this.languages.find((r) => r.code == lang);
+  setAgentPreferedlanguage(languageCode) {
+    let selectedLanguage = this.languages.find((r) => r.code == languageCode);
     if (selectedLanguage !== undefined) {
       this.languageName = selectedLanguage.name;
       this.languageFlag = selectedLanguage.flag;
-      this.changeLanguageCode = lang;
+      this.changeLanguageCode = languageCode;
+    } else {
+      selectedLanguage = this.languages.find((r) => r.code == "en");
+      this.languageName = selectedLanguage.name;
+      this.languageFlag = selectedLanguage.flag;
+      this.changeLanguageCode = languageCode;
+      try {
+        this._httpService.updateAgentSettings({ language: "en" }, this._cacheService.agent.id).subscribe((e) => {});
+      } catch (err) {
+        console.log(`error updating theme`, err);
+      }
+    }
+  }
+
+  lang(languageCode) {
+    let selectedLanguage = this.languages.find((r) => r.code == languageCode);
+    if (selectedLanguage !== undefined) {
+      this.languageName = selectedLanguage.name;
+      this.languageFlag = selectedLanguage.flag;
+      this.changeLanguageCode = languageCode;
+      try {
+        this._httpService.updateAgentSettings({ language: languageCode }, this._cacheService.agent.id).subscribe((e) => {});
+      } catch (err) {
+        console.log(`error updating theme`, err);
+      }
     }
   }
 
@@ -194,8 +225,15 @@ export class AppHeaderComponent implements OnInit {
 
   close() {}
 
-  onChange(reason) {
-    this.selectedReasonCode = reason;
+  onChange(reason,e) {
+    if(e.checked)
+    {
+      this.selectedReasonCode = reason;
+    }
+    else
+    {
+      this.selectedReasonCode=undefined;
+    }
   }
 
   moveToLogin() {
@@ -220,8 +258,8 @@ export class AppHeaderComponent implements OnInit {
     }, 200);
   }
 
-  themeSwitch() {
+  themeSwitch(onlySwitch) {
     this.isdarkMode = !this.isdarkMode;
-    this.themeSwitcher.emit(this.isdarkMode);
+    this.themeSwitcher.emit({ isdarkMode: this.isdarkMode, onlySwitch: onlySwitch });
   }
 }
