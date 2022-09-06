@@ -1429,4 +1429,10 @@ $theme: mat-light-theme($primary, $accent, $warn);
   ul.customer-labels li {
     border-color: mat-color($dark-primary) !important;
   }
+  span.comment-action {
+    background: #232f4f !important;
+  }
+  .quoted-message-selected-area {
+    background: #1b1b2d !important;
+}
 }

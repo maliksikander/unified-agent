@@ -88,6 +88,7 @@ export class InteractionsComponent implements OnInit {
   activeChannelSessionList: Array<any>;
   fbPostId: string = null;
   fbCommentId: string = null;
+  conversationSettings:any;
   constructor(
     private _sharedService: sharedService,
     public _cacheService: cacheService,
@@ -110,6 +111,7 @@ export class InteractionsComponent implements OnInit {
     this._finesseService._ciscoDialogID.subscribe((res) => {
       this.ciscoDialogId = res;
     });
+    this.conversationSettings=this._sharedService.conversationSettings
     this.loadLabels();
   }
   loadLabels() {
@@ -126,19 +128,21 @@ export class InteractionsComponent implements OnInit {
 
   }
 
-  fbCommentAction(fbPostId, additionalAttributes, action) {
-
-    if (this._socketService.isSocketConnected) {
-
+  fbCommentAction(message, action) {
+    if(action=='like' && message["isLiked"])
+    {
+    console.log("no action like")
+    }
+    else if (this._socketService.isSocketConnected) {
+      this.replyToMessageId = message.id;
       let fbCommentId;
-
-      additionalAttributes.forEach((attr) => {
-        if (attr.key == 'commentId') {
+      message.header.channelData.additionalAttributes.forEach((attr) => {
+        if (attr.key == 'comment_id') {
           fbCommentId = attr.value;
         }
       });
 
-      if (fbCommentId && fbPostId) {
+      if (fbCommentId && message.body.postId) {
 
         let fbChannelSession = this.getFaceBookChannelSession();
 
@@ -148,7 +152,7 @@ export class InteractionsComponent implements OnInit {
           delete originalFbChannelSession["isChecked"];
           delete originalFbChannelSession["isDisabled"];
 
-          this.constructAndSendFbAction(fbCommentId, fbPostId, originalFbChannelSession, action);
+          this.constructAndSendFbAction(fbCommentId, message.body.postId, originalFbChannelSession,message.id, action);
 
         } else {
           this._snackbarService.open("Requested session not available at the momnet", "succ");
@@ -165,19 +169,25 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  constructAndSendFbAction(commentId, postId, fbChannelSession, action) {
+  constructAndSendFbAction(commentId, postId, fbChannelSession,replyToMessageId, action) {
 
-    let message: any = {
-      id: "",
-      header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
-      body: { markdownText: "", type: "" }
-    };
+    let message=this.getCimMessage()
 
-    if (action == "like") {
+    let obj = fbChannelSession.channelData.additionalAttributes.find((attr) => {
+      return attr.key.toLowerCase() == 'comment_id';
+    });
 
-    } else if (action == "delete") {
-
-    } else if (action == "hide") {
+    obj["value"] = commentId;
+    message.body.postId = postId;
+    message.body.type = "COMMENT";
+    message.body.commentType = "PUBLIC";
+    // message.header.replyToMessageId = this.replyToMessageId;
+    message.header.channelSession = fbChannelSession;
+    message.header.channelData = fbChannelSession.channelData;
+    message.header.replyToMessageId=replyToMessageId;
+    if (action == "like" || action == "delete" || action == "hide") {
+      message.body.itemType = action.toUpperCase();
+      this.emitFBActionEvent(message);
 
     }
 
@@ -656,8 +666,9 @@ export class InteractionsComponent implements OnInit {
 
 
   getFaceBookChannelSession() {
-
+    console.log("kkk",this.conversation.activeChannelSessions)
     let fbChannelSession = this.conversation.activeChannelSessions.find((channelSession) => {
+      console.log("kkk",channelSession.channel.channelType.name)
 
       return channelSession.channel.channelType.name.toLowerCase() == "facebook";
     });
@@ -741,6 +752,22 @@ export class InteractionsComponent implements OnInit {
     event.data.header["status"] = "sending";
     this.conversation.messages.push(event.data);
 
+    setTimeout(() => {
+      this.message = "";
+
+      this.quotedMessage = null;
+    }, 40);
+  }
+  emitFBActionEvent(message) {
+    let event: any = new CimEvent("AGENT_MESSAGE", "MESSAGE", this.conversation.conversationId, message);
+    this._socketService.emit("publishCimEvent", {
+      cimEvent: event,
+      agentId: this._cacheService.agent.id,
+      conversationId: this.conversation.conversationId
+    });
+
+
+    console.log("event data==>", event.data);
     setTimeout(() => {
       this.message = "";
 

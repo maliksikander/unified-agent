@@ -1,4 +1,4 @@
-<app-header (themeSwitcher)="switchTheme($event)" *ngIf="currentRoute != '/login' && _cacheService.agent.id">
+<app-header (themeSwitcher)="switchTheme($event)" (languageSwitcher)="switchLanguage($event)" *ngIf="currentRoute != '/login' && _cacheService.agent.id">
 </app-header>
 <div class="parent-notification">
   <div class="child-notification">

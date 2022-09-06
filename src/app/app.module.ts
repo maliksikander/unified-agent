@@ -39,6 +39,9 @@ import _configService from "../assets/config.json";
 import { GrafanaComponent } from "./supervisor/grafana/grafana.component";
 import { ActiveChatsComponent } from "./supervisor/active-chats/active-chats.component";
 import { QueueChatsComponent } from "./supervisor/queue-chats/queue-chats.component";
+import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
+import { HttpClient } from "@angular/common/http";
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 // import { ActiveChatsComponent } from "./supervisor/active-chats/active-chats.component";
 // import { QueueChatsComponent } from "./supervisor/queue-chats/queue-chats.component";
 
@@ -64,7 +67,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsType: SPINNER.chasingDots,
   bgsPosition: POSITION.centerCenter
 };
-
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
@@ -102,6 +107,13 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     CommonModule,
     BrowserAnimationsModule,
     SharedModule,
+    TranslateModule.forRoot({
+      loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+      }
+  }),
     NgxUiLoaderHttpModule.forRoot({
       exclude: [
         `${_configService.FILE_SERVER_URL}/api/downloadFileStream`,

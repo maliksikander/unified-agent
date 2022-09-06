@@ -6,6 +6,7 @@ import { sharedService } from "./services/shared.service";
 import { OverlayContainer } from "@angular/cdk/overlay";
 import { httpService } from "./services/http.service";
 import { cacheService } from "./services/cache.service";
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: "app-root",
@@ -27,16 +28,25 @@ export class AppComponent implements OnInit {
     private _router: Router,
     private _httpService: httpService,
     private _isLoggedInservice: isLoggedInService,
-    private _sharedService: sharedService
+    private _sharedService: sharedService,
+    private _translateService: TranslateService
   ) {}
   isdarkMode = false;
 
   ngOnInit() {
+    this._translateService.setDefaultLang('en');
     this._router.events.subscribe((event: any) => {
       if (event.url) {
         this.currentRoute = event.url;
       }
     });
+    this._httpService.getConversationSettings().subscribe((data)=>
+    {
+      this._sharedService.setConversationSettings(data[0]);
+    },(err)=>
+    {
+      console.error("unable to get conversation setting",err)
+    })
     let customerSchema: any;
     let channelTypes: any;
     try {
@@ -84,7 +94,11 @@ export class AppComponent implements OnInit {
       this.overlay.getContainerElement().classList.remove(darkClassName);
     }
   }
-
+  switchLanguage(e)
+  {
+    console.log("code",e.language)
+    this._translateService.use(e.language)
+  }
 
   // checks for the update of pwa app
   // checkForAppUpdates() {

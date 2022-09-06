@@ -15,42 +15,42 @@
         <!--        </button>-->
         <button *ngIf="('customer-conversation-view' | authPipe : 'view') as result" routerLink="/customers/chats"
           routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
-          <span>Customer Conversation View</span>
+          <span>{{'customer-conversation-view' | translate}}</span>
         </button>
         <button *ngIf="('customer-list' | authPipe : 'view') as result" routerLink="/customers/phonebook"
           routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
-          <span>Customer List View</span>
+          <span>{{'customer-list-view' | translate}}</span>
         </button>
         <button *ngIf="('customer-labels' | authPipe : 'view') as result" routerLink="/label" routerLinkActive="active"
           [routerLinkActiveOptions]="{exact:true}" [routerLinkActiveOptions]="{exact:true}" mat-menu-item
           class="main-menu-item">
-          <span>Customer Labels</span>
+          <span>{{'customer-labels' | translate}}</span>
         </button>
         <button *ngIf="('subscribed-list' | authPipe : 'view') as result" routerLink="/subscribed-list"
           routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
-          <span>Subscribed Lists</span>
+          <span>{{'subscribed-lists' | translate}}</span>
         </button>
         <button *ngIf="('customer-schema' | authPipe : 'view') as result" routerLink="/customer-schema"
           routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
-          <span>Customer Schema</span>
+          <span>{{'customer-schema' | translate}}</span>
         </button>
         <button mat-menu-item [matMenuTriggerFor]="supervisor"
           *ngIf="('supervisor-dashboard' | authPipe : 'view') as result" mat-menu-item class="main-menu-item">
-          <span>Dashboard</span>
+          <span>{{'dashboard' | translate}}</span>
         </button>
       </mat-menu>
       <mat-menu #supervisor="matMenu">
         <button routerLink="/supervisor/dashboards" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
           mat-menu-item class="main-menu-item">
-          <span>Summary Dashboard</span>
+          <span>{{'summary-dashboard' | translate}}</span>
         </button>
         <button routerLink="/supervisor/active-chats" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
           mat-menu-item class="main-menu-item">
-          <span>Active Conversations Detail</span>
+          <span>{{'active-conversations-detail' | translate}}</span>
         </button>
         <button routerLink="/supervisor/queue-chats" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
           mat-menu-item class="main-menu-item">
-          <span>Queued Conversations Detail
+          <span>{{'queued-conversations-detail' | translate}}
           </span>
         </button>
       </mat-menu>
@@ -174,7 +174,7 @@
 
                 <div *ngIf="('state-change' | authPipe : 'view') as result" class="mrd-states"
                   (click)="$event.stopPropagation()">
-                  <span class="mrd-text">Change MRD State</span>
+                  <span class="mrd-text">{{'change-mrd-state' | translate}}</span>
                   <div class="state-main-wrapper"
                     *ngFor="let agentMrdState of _cacheService.agentPresence.agentMrdStates">
                     <p class="menu-trigger-custom select-state {{agentMrdState.state | lowercase}}">
@@ -186,7 +186,7 @@
                 </div>
 
                 <p class="menu-trigger-custom select-language">
-                  <span class="inner-btn">Selected Language</span>
+                  <span class="inner-btn">{{'selected-language' | translate}}</span>
 
                   <!--                <button mat-menu-item [matMenuTriggerFor]="languageSelection" class="language-trigger">-->
                   <!--                  <img src="assets/flags/{{languageFlag}}" width="20"-->
@@ -220,7 +220,7 @@
 
               <!-- Language list -->
               <div *ngIf="changeLanguage" class="language-change-list" (click)="$event.stopPropagation()">
-                <p>Select language <mat-icon (click)="changeLanguage = false; stateView = true">close</mat-icon>
+                <p>{{'selected-language' | translate}}<mat-icon (click)="changeLanguage = false; stateView = true">close</mat-icon>
                 </p>
                 <button mat-menu-item class="language-selection"
                   [ngClass]="{'selected-language': language.code == changeLanguageCode}"
@@ -231,7 +231,7 @@
               </div>
 
               <div *ngIf="logoutReasonList" class="language-change-list" (click)="$event.stopPropagation()">
-                <p>Select Reason
+                <p>{{'select-reason' | translate}}
                   <mat-icon (click)="logoutReasonList = false; stateView = true">close</mat-icon>
                 </p>
                 <div *ngFor="let reason of reasonCodes; let i = index">
@@ -240,7 +240,7 @@
                       color="primary" labelPosition="after">{{reason.name}}</mat-checkbox>
                   </span>
                 </div>
-                <button (click)="logout()" mat-button class="main-logout">Logout</button>
+                <button (click)="logout()" mat-button class="main-logout">{{'logout' | translate}}</button>
               </div>
 
             </div>

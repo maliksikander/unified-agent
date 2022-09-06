@@ -9,7 +9,7 @@
     "ROUTING_ENGINE_URL": "https://cim.expertflow.com/routing-engine",
     "GRAFANA_DASHBOARD_URL":"https://cim.expertflow.com/grafana/d/0GEdiaunk/supervisor-dashboard-cim?orgId=1&from=1655186754072&to=1655208354072",
     "CIM_REPORTING_URL":"https://cim.expertflow.com/realtime-reports",
-    "UNIFIED_ADMIN_URL":"https://cim.expertflow.com/unified-admin",
+    "UNIFIED_ADMIN_URL":"http://localhost:3000",
     "ENV": "prod",
     "domain": "uccx12-5.ucce.ipcc",
     "subDomain" : "uccx12-5.ucce.ipcc",

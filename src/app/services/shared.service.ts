@@ -18,10 +18,26 @@ export class sharedService {
   channelLogoMapper = new Map();
   serviceCurrentMessage = new Subject();
   channelTypeList;
+  conversationSettings = {
+    isFileSharingEnabled: false,
+    isEmojisEnabled: false,
+    isConversationParticipantsEnabled: false,
+    isWrapUpTimerEnabled: false,
+    wrapUpTime: 15,
+    isMessageFormattingEnabled: false
+  };
+
   serviceChangeMessage(data: any) {
     this.serviceCurrentMessage.next(data);
   }
-
+  setConversationSettings(setting) {
+    this.conversationSettings.isConversationParticipantsEnabled = setting.conversationParticipants;
+    this.conversationSettings.isFileSharingEnabled = setting.fileSharing;
+    this.conversationSettings.isEmojisEnabled = setting.emojis;
+    this.conversationSettings.isWrapUpTimerEnabled = setting.wrapUp;
+    this.conversationSettings.wrapUpTime = setting.wrapUpTime;
+    this.conversationSettings.isMessageFormattingEnabled = setting.isMessageFormattingEnabled;
+  }
   getIndexFromConversationId(conversationId, array) {
     let index = array.findIndex((e) => {
       return e.conversationId == conversationId;

@@ -189,7 +189,7 @@
               <!-- -------------------------------------------------------- -->
 
               <div *ngIf="(message.body.type | lowercase) != 'systemnotification' && message.header.channelSession"
-                class="chat-message {{
+                class="chat-message {{message.isDeleted || message.isHidden ? 'deleted-hidden-comment' : ''}} {{
                   index == 0 ||
                   ((conversation.messages[index - 1].body.type | lowercase) != 'systemnotification' &&
                     (message.header.sender | getSenderId) == (conversation.messages[index - 1].header.sender | getSenderId) &&
@@ -244,7 +244,7 @@
                         <div
                           *ngIf="(referredMessage.body.type | lowercase) == 'plain' || ((referredMessage.body.type | lowercase) == 'comment' && (referredMessage.body.itemType | lowercase) == 'text' )">
                           <p>
-                            <span [innerHTML]="referredMessage.body.markdownText | linkify | ibsformat"></span>
+                            <span [innerHTML]="conversationSettings.isMessageFormattingEnabled?(referredMessage.body.markdownText | linkify | ibsformat) : (referredMessage.body.markdownText)" ></span>
                             <span class="message-stamp">
                               <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
                             </span>
@@ -451,7 +451,7 @@
                   </div>
                   <!-- <div *ngIf="message.header.replyToMessageId != null" class="clear clearfix"></div> -->
                   <!-- -----------------------referred reply message end---------------- -->
-
+                  <span *ngIf="message.isDeleted || message.isHidden" class="comment-action">{{message.isDeleted ? 'deleted Message' : 'Hidden Message'}}</span>
                   <div class="chat-message-content" [ngClass]="{
                       'replied-message': message.header.replyToMessageId != null,
                       'file-type-message': (message.body.type | lowercase) != 'plain' && (message.body.type | lowercase) != 'comment' && (message.body.type | lowercase) != 'button'
@@ -460,9 +460,9 @@
                     <div *ngIf="(message.body.type | lowercase) == 'plain' || ((message.body.type | lowercase)=='comment' && (message.header.sender.type | lowercase)=='agent')">
                       <p
                         class="{{ (message.header.sender.type | lowercase) == 'customer' && message.botSuggestions ? 'plain-text-p' : '' }}">
-                        <span [innerHTML]="message.body.markdownText | linkify | ibsformat"></span>
+                        <span [innerHTML]="conversationSettings.isMessageFormattingEnabled ? (message.body.markdownText | linkify | ibsformat) : (message.body.markdownText | ibsformat)"></span>
                         <span class="message-stamp">
-                          <span class="chat-time">{{ message.header.timestamp | date: "shortTime" }}</span>
+                          <span class="chat-time">{{ message.header.timestamp | date: "shortTime"  }}</span>
                         </span>
 
                         <!--                    <p [innerHTML]="message.body.markdownText | linkify | ibsformat"></p>-->
@@ -990,7 +990,7 @@
                           </div>
                         </div> -->
                         <!-- *ngIf="conversation.activeChannelSessions | checkActiveChannelSession: 'FACEBOOK' as result" -->
-                        <div *ngIf="(message.header.sender.type | lowercase) != 'agent'"
+                        <div *ngIf="!message.isDeleted && !message.isHidden"
                           class="comment-controlls post-controlls">
                           <ul>
                             <li>
@@ -998,15 +998,15 @@
                                 chat_bubble_outline</mat-icon>
                             </li>
                             <li>
-                              <mat-icon
-                                (click)="fbCommentAction(message.body.postId, message.header.channelData.additionalAttributes, 'like')">
+                              <mat-icon [ngClass]="{'liked':message.isLiked}"
+                                (click)="fbCommentAction(message, 'like')">
                                 thumb_up</mat-icon>
                             </li>
                             <li class="view-all-options">
                               <ul *ngIf="viewFullCommentAction">
                                 <li>
                                   <mat-icon
-                                    (click)="fbCommentAction(message.body.postId, message.header.channelData.additionalAttributes,'delete')">
+                                    (click)="fbCommentAction(message,'delete')">
                                     delete</mat-icon>
                                 </li>
                                 <!-- <li>
@@ -1014,7 +1014,7 @@
                                 </li> -->
                                 <li>
                                   <mat-icon
-                                    (click)="fbCommentAction(message.body.postId, message.header.channelData.additionalAttributes,'hide')">
+                                    (click)="fbCommentAction(message,'hide')">
                                     visibility_off</mat-icon>
                                 </li>
                                 <!-- <li class="view-post" (click)="fullPostView = true; viewFullCommentAction = false">View full post</li> -->
@@ -1394,10 +1394,11 @@
             </button>
 
             <button style="cursor: pointer" class="send-btn attachment-btn composer-trigger" mat-icon-button
-              *ngIf="replyInput.value.length < 1 && conversation.activeChannelSessions.length > 0 && conversation.messageComposerState">
+              *ngIf="replyInput.value.length < 1 && conversation.activeChannelSessions.length > 0 && conversation.messageComposerState && conversationSettings.isFileSharingEnabled" >
               <input accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx" #myFileInput type="file"
                 (change)="uploadFile($event.target.files); $event.target.value = ''" name="ef_chatbox_chat_file_upload"
                 id="uploadFileBtn" class="file-upload-input" />
+                
             </button>
 
             <!--            <span class="attachment-btn" >-->

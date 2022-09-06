@@ -2656,6 +2656,18 @@ background: #f6892c;
           top: 4px;
           color: $blue-text-color;
           cursor: pointer;
+
+          &.liked{
+            background: $blue-text-color;
+                color: #fff !important;
+                width: 22px;
+                height: 22px !important;
+                line-height: 22px !important;
+                text-align: center;
+                border-radius: 100%;
+                font-size: 13px !important;
+                top: 0px !important;
+            }
         }
       }
     }
@@ -2903,5 +2915,26 @@ background: #f6892c;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+}
+//Deleted/hidden comment
+
+.deleted-hidden-comment{
+  .combined-area{
+    position: relative;
+  }
+  span.comment-action {
+    position: absolute;
+    right: 0;
+    bottom: 7px;
+    z-index: 999;
+    color: #CC1414 !important;
+    text-transform: capitalize;
+    font-size: 12px;
+    background: #f3faea;
+    padding: 0 5px;
+  }
+  .profile-pic, .chat-message-content {
+    opacity: .5;
   }
 }

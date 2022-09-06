@@ -16,6 +16,7 @@ import { httpService } from "../services/http.service";
 export class AppHeaderComponent implements OnInit,AfterViewInit {
   @ViewChild("stateTrigger", { static: false }) stateTrigger: any;
   @Output() themeSwitcher = new EventEmitter<any>();
+  @Output() languageSwitcher = new EventEmitter<any>();
 
   isdarkMode = false;
 
@@ -169,6 +170,7 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
       this.languageName = selectedLanguage.name;
       this.languageFlag = selectedLanguage.flag;
       this.changeLanguageCode = languageCode;
+      this.changeAgentDeskLanguage(languageCode);
     } else {
       selectedLanguage = this.languages.find((r) => r.code == "en");
       this.languageName = selectedLanguage.name;
@@ -177,7 +179,7 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
       try {
         this._httpService.updateAgentSettings({ language: "en" }, this._cacheService.agent.id).subscribe((e) => {});
       } catch (err) {
-        console.error(`error updating theme`, err);
+        console.error(`error updating language`, err);
       }
     }
   }
@@ -188,6 +190,7 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
       this.languageName = selectedLanguage.name;
       this.languageFlag = selectedLanguage.flag;
       this.changeLanguageCode = languageCode;
+      this.changeAgentDeskLanguage(languageCode);
       try {
         this._httpService.updateAgentSettings({ language: languageCode }, this._cacheService.agent.id).subscribe((e) => {});
       } catch (err) {
@@ -260,5 +263,8 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
   themeSwitch(onlySwitch) {
     this.isdarkMode = !this.isdarkMode;
     this.themeSwitcher.emit({ isdarkMode: this.isdarkMode, onlySwitch: onlySwitch });
+  }
+  changeAgentDeskLanguage(languageCode) {
+    this.languageSwitcher.emit({ language: languageCode});
   }
 }
