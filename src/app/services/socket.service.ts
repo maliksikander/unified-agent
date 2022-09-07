@@ -82,12 +82,12 @@ export class socketService {
         } else {
           this._snackbarService.open(err.data && err.data.content ? err.data.content.msg : "unable to connect to chat", "err");
         }
-      } catch (err) {}
+      } catch (err) { }
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -119,7 +119,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -251,7 +251,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) {}
+    } catch (err) { }
   }
 
   listen(eventName: string) {
@@ -294,31 +294,23 @@ export class socketService {
           this.processActiveChannelSessions(sameTopicConversation, cimEvent.data.header.channelSession);
           ++sameTopicConversation.unReadCount;
         }
-        if (cimEvent.name.toLowerCase() == "agent_message" && cimEvent.data.body.type.toLowerCase()=='comment' && cimEvent.data.body.itemType.toLowerCase()!='text')
-        {
-          let fbComment =this.getMessageByMessageId(sameTopicConversation.messages,cimEvent.data.header.replyToMessageId);
-          if(fbComment)
-          {
-          if(cimEvent.data.body.itemType.toLowerCase()=='like')
-          {
-            fbComment["isLiked"]=true;
-            this._conversationsListener.next(this.conversations);
+        if (cimEvent.name.toLowerCase() == "agent_message" && cimEvent.data.body.type.toLowerCase() == 'comment' && cimEvent.data.body.itemType.toLowerCase() != 'text') {
+          let fbCommentMessage = this.getCimMessageByMessageId(sameTopicConversation.messages, cimEvent.data.header.replyToMessageId);
+          if (fbCommentMessage) {
+            if (cimEvent.data.body.itemType.toLowerCase() == 'like') {
+              fbCommentMessage["isLiked"] = true;
+            }
+            else if (cimEvent.data.body.itemType.toLowerCase() == 'hide') {
+              fbCommentMessage["isHidden"] = true;
+            }
+            else if (cimEvent.data.body.itemType.toLowerCase() == 'delete') {
+              fbCommentMessage["isDeleted"] = true;
+            }
           }
-          else if(cimEvent.data.body.itemType.toLowerCase()=='hide')
-          {
-            fbComment["isHidden"]=true;
-            this._conversationsListener.next(this.conversations);
-          }
-          else if(cimEvent.data.body.itemType.toLowerCase()=='delete')
-          {
-            fbComment["isDeleted"]=true;
-            this._conversationsListener.next(this.conversations);
-          }
-        }
-          
+
         }
         // for agent type message change the status of message
-       else if (cimEvent.name.toLowerCase() == "agent_message") {
+        else if (cimEvent.name.toLowerCase() == "agent_message") {
           // find the message is already located in the conversation
           let cimMessage = sameTopicConversation.messages.find((message) => {
             return message.id == cimEvent.data.id;
@@ -377,36 +369,24 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._snackbarService.open("you are logged In from another session", "err");
     alert("you are logged in from another session");
   }
-  getMessageByMessageId(messages,messageId)
-  {
-       return messages.find((msg)=>
-        {
-          return msg.id==messageId
-        })
-       
-  }
-  getMessageByMessage(messages,event)
-  {
-    if(event.name.toLowerCase() == "agent_message" && event.data.body.type.toLowerCase() == "comment"  )
-    {
-      if(event.data.body.itemType.toLowerCase() == "like")
-      {
-        messages.find((msg)=>
-        {
-          if(msg.id==event.data.header.replyToMessageId)
-          {
-            msg["isLiked"]=true;
+
+  getMessageByMessage(messages, event) {
+    if (event.name.toLowerCase() == "agent_message" && event.data.body.type.toLowerCase() == "comment") {
+      if (event.data.body.itemType.toLowerCase() == "like") {
+        messages.find((msg) => {
+          if (msg.id == event.data.header.replyToMessageId) {
+            msg["isLiked"] = true;
           }
         })
       }
-      
+
     }
-    
+
   }
   onTopicData(topicData, conversationId, taskId) {
     // this.removeConversation(conversationId);
@@ -431,44 +411,25 @@ export class socketService {
     let topicEvents = topicData.topicEvents ? topicData.topicEvents : [];
 
     // feed the conversation with type "messages"
-    console.log("topicEvents",topicEvents)
+    console.log("topicEvents", topicEvents)
     topicEvents.forEach((event, i) => {
       if (
         event.name.toLowerCase() == "agent_message" ||
         event.name.toLowerCase() == "bot_message" ||
         event.name.toLowerCase() == "customer_message"
       ) {
-        console.log("lkk",event)
 
-        if(event.data.body.type.toLowerCase() == "comment"&& event.data.body.itemType.toLowerCase() != "text"  )
-        {
-         
-          let fbComment=this.getMessageByMessageId(conversation.messages, event.data.header.replyToMessageId);
-          
-          if(fbComment)
-          {
-          if(event.data.body.itemType.toLowerCase()=='like')
-          {
-            fbComment["isLiked"]=true;
-            this._conversationsListener.next(this.conversations);
-          }
-          else if(event.data.body.itemType.toLowerCase()=='hide')
-          {
-            fbComment["isHidden"]=true;
-            this._conversationsListener.next(this.conversations);
-          }
-          else if(event.data.body.itemType.toLowerCase()=='delete')
-          {
-            fbComment["isDeleted"]=true;
-            this._conversationsListener.next(this.conversations);
-          }
+        if (event.name.toLowerCase() == "agent_message" && event.data.body.type.toLowerCase() == "comment" && event.data.body.type.toLowerCase() != "text") {
+
+          this.processFaceBookCommentActions(conversation, topicEvents, event);
+
+        } else {
+
+          event.data.header["status"] = "sent";
+          conversation.messages.push(event.data);
         }
-        }
-        else
-        {
-        event.data.header["status"] = "sent";
-        conversation.messages.push(event.data);
-        }
+
+
       } else if (["channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())) {
         let message = this.createSystemNotificationMessage(event);
         conversation.messages.push(message);
@@ -549,6 +510,8 @@ export class socketService {
     console.log("conversations==>", this.conversations);
     this._conversationsListener.next(this.conversations);
   }
+
+
   isVoiceChannelSessionExists(activeChannelSessions) {
     let voiceChannelSession = activeChannelSessions.find((channelSession) => {
       if (channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "external") {
@@ -860,7 +823,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
@@ -1213,5 +1176,38 @@ export class socketService {
     message.body["conversationData"] = cimEvent.data;
 
     return message;
+  }
+
+  getCimEventByMessageId(events, id) {
+    return events.find((event) => {
+      return event.data.id == id;
+    });
+  }
+
+  getCimMessageByMessageId(cimMessages, id) {
+    return cimMessages.find((cimMessage) => {
+      return cimMessage.id == id;
+    });
+  }
+
+  processFaceBookCommentActions(conversation, topicevents, event) {
+
+    if (["like", "hide", "delete"].includes(event.data.body.itemType.toLowerCase())) {
+
+      let fbCommentEvent = this.getCimEventByMessageId(topicevents, event.data.header.replyToMessageId);
+
+      if (fbCommentEvent) {
+
+        if (fbCommentEvent.data.body.itemType.toLowerCase() == 'like') {
+          fbCommentEvent.data["isLiked"] = true;
+        } else if (fbCommentEvent.data.body.itemType.toLowerCase() == 'hide') {
+          fbCommentEvent.data["isHidden"] = true;
+
+        } else if (fbCommentEvent.data.body.itemType.toLowerCase() == 'delete') {
+          fbCommentEvent.data["isDeleted"] = true;
+
+        }
+      }
+    }
   }
 }
