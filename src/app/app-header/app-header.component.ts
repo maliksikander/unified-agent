@@ -7,6 +7,8 @@ import { Router } from "@angular/router";
 import { finesseService } from "../services/finesse.service";
 import { fcmService } from "../services/fcm.service";
 import { httpService } from "../services/http.service";
+import { snackbarService } from "src/app/services/snackbar.service";
+
 
 @Component({
   selector: "app-header",
@@ -64,7 +66,8 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
     private _sharedService: sharedService,
     public _finesseService: finesseService,
     private _fcmService: fcmService,
-    private _httpService: httpService
+    private _httpService: httpService,
+    private _snackBarService: snackbarService
   ) {}
 
   ngOnInit() {
@@ -100,6 +103,7 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
         this.reasonCodes = e;
       },
       (err) => {
+        this._snackBarService.open("Error Getting Reason Codes","err");
         console.error("error getting reason codes", err);
       }
     );
@@ -112,6 +116,7 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
         this.getAgentSettings();
       },
       (error) => {
+        this._snackBarService.open("Error Getting Supported Languages","err");
         console.error("error getting supported languages", error);
       }
     );
@@ -127,7 +132,8 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
           this.setAgentPreferedlanguage(e.language);
         },
         (error) => {
-          console.error("error getting user theme", error);
+          this._snackBarService.open("Error Getting Agent Settings","err");
+          console.error("error getting agent settings", error);
         }
       );
     }
@@ -179,6 +185,7 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
       try {
         this._httpService.updateAgentSettings({ language: "en" }, this._cacheService.agent.id).subscribe((e) => {});
       } catch (err) {
+        this._snackBarService.open("Error Updating Agent Settings","err");
         console.error(`error updating language`, err);
       }
     }
@@ -194,6 +201,7 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
       try {
         this._httpService.updateAgentSettings({ language: languageCode }, this._cacheService.agent.id).subscribe((e) => {});
       } catch (err) {
+        this._snackBarService.open("Error Updating Agent Settings","err");
         console.error(`error updating theme`, err);
       }
     }

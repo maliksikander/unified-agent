@@ -6,8 +6,8 @@ import { ActivatedRoute } from "@angular/router";
 import * as _ from "lodash";
 import { Subscription, timer } from "rxjs";
 import { map, retry } from "rxjs/operators";
-import { sharedService } from "src/app/services/shared.service";
-// import { getChannelLogoByName }    from '../../shared/pipes/getChannelLogoByName.pipe'
+
+import { snackbarService } from "src/app/services/snackbar.service";
 
 @Component({
   selector: "app-active-chats",
@@ -35,6 +35,8 @@ export class ActiveChatsComponent implements OnInit {
         map(() => {
           this._httpService.getAllActiveChatsWithAgents().subscribe((e) => {
             this.activeChatListWithAgents = e;
+          },(err)=>
+          {
           });
           this._httpService.getAllActiveChatsWithBots().subscribe((e) => {
             this.activeChatListWithBots = e;

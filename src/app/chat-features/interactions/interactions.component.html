@@ -244,7 +244,7 @@
                         <div
                           *ngIf="(referredMessage.body.type | lowercase) == 'plain' || ((referredMessage.body.type | lowercase) == 'comment' && (referredMessage.body.itemType | lowercase) == 'text' )">
                           <p>
-                            <span [innerHTML]="conversationSettings.isMessageFormattingEnabled?(referredMessage.body.markdownText | linkify | ibsformat) : (referredMessage.body.markdownText)" ></span>
+                            <span [innerHTML]="conversationSettings.isMessageFormattingEnabled ? (referredMessage.body.markdownText | linkify | ibsformat) : (referredMessage.body.markdownText)" ></span>
                             <span class="message-stamp">
                               <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
                             </span>
@@ -258,10 +258,10 @@
 
                           <p>
                             <b
-                              [innerHTML]="referredMessage.body.additionalDetails.interactive.header.text | linkify | ibsformat"></b>
+                              [innerHTML]="conversationSettings.isMessageFormattingEnabled ? (referredMessage.body.additionalDetails.interactive.header.text | linkify | ibsformat) : (referredMessage.body.additionalDetails.interactive.header.text) "></b>
                             <br />
                             <span
-                              [innerHTML]="referredMessage.body.additionalDetails.interactive.body.text | linkify | ibsformat"></span>
+                              [innerHTML]="conversationSettings.isMessageFormattingEnabled ? (referredMessage.body.additionalDetails.interactive.body.text | linkify | ibsformat) : (referredMessage.body.additionalDetails.interactive.body.text)"></span>
                             <!--                      <span class="message-stamp">-->
                             <!--                         <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
                             <!--                      </span>-->
@@ -460,7 +460,7 @@
                     <div *ngIf="(message.body.type | lowercase) == 'plain' || ((message.body.type | lowercase)=='comment' && (message.header.sender.type | lowercase)=='agent')">
                       <p
                         class="{{ (message.header.sender.type | lowercase) == 'customer' && message.botSuggestions ? 'plain-text-p' : '' }}">
-                        <span [innerHTML]="conversationSettings.isMessageFormattingEnabled ? (message.body.markdownText | linkify | ibsformat) : (message.body.markdownText | ibsformat)"></span>
+                        <span [innerHTML]="conversationSettings.isMessageFormattingEnabled ? (message.body.markdownText | linkify | ibsformat) : (message.body.markdownText)"></span>
                         <span class="message-stamp">
                           <span class="chat-time">{{ message.header.timestamp | date: "shortTime"  }}</span>
                         </span>
@@ -481,10 +481,10 @@
 
                       <p>
                         <b
-                          [innerHTML]="message.body.additionalDetails.interactive.header.text | linkify | ibsformat"></b>
+                          [innerHTML]="conversationSettings.isMessageFormattingEnabled ? (message.body.additionalDetails.interactive.header.text | linkify | ibsformat) : (message.body.additionalDetails.interactive.header.text)"></b>
                         <br />
                         <span
-                          [innerHTML]="message.body.additionalDetails.interactive.body.text | linkify | ibsformat"></span>
+                          [innerHTML]="conversationSettings.isMessageFormattingEnabled ? (message.body.additionalDetails.interactive.body.text | linkify | ibsformat) : (message.body.additionalDetails.interactive.body.text)"></span>
                       </p>
 
                       <ul class="structured-actions">
@@ -1041,7 +1041,7 @@
                         <div class="main-comment">
                           <div class="post-inner-content">
                             <p>
-                              <span [innerHTML]="message.body.markdownText | linkify | ibsformat"></span>
+                              <span [innerHTML]="conversationSettings.isMessageFormattingEnabled ? (message.body.markdownText | linkify | ibsformat) : (message.body.markdownText)"></span>
                               <!-- <span
                                 *ngIf="fullPostView && con.body.mainPostData"
                                 [innerHTML]="con.body.mainPostData.postedContent.postedSummery.postedText | linkify | ibsformat"

@@ -22,7 +22,7 @@ export class sharedService {
     isFileSharingEnabled: false,
     isEmojisEnabled: false,
     isConversationParticipantsEnabled: false,
-    isWrapUpTimerEnabled: false,
+    isWrapUpEnabled: false,
     wrapUpTime: 15,
     isMessageFormattingEnabled: false
   };
@@ -31,10 +31,10 @@ export class sharedService {
     this.serviceCurrentMessage.next(data);
   }
   setConversationSettings(setting) {
-    this.conversationSettings.isConversationParticipantsEnabled = setting.conversationParticipants;
-    this.conversationSettings.isFileSharingEnabled = setting.fileSharing;
-    this.conversationSettings.isEmojisEnabled = setting.emojis;
-    this.conversationSettings.isWrapUpTimerEnabled = setting.wrapUp;
+    this.conversationSettings.isConversationParticipantsEnabled = setting.isConversationParticipantsEnabled;
+    this.conversationSettings.isFileSharingEnabled = setting.isFileSharingEnabled;
+    this.conversationSettings.isEmojisEnabled = setting.isEmojisEnabled;
+    this.conversationSettings.isWrapUpEnabled = setting.isWrapUpEnabled;
     this.conversationSettings.wrapUpTime = setting.wrapUpTime;
     this.conversationSettings.isMessageFormattingEnabled = setting.isMessageFormattingEnabled;
   }
