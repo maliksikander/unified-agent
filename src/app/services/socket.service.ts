@@ -295,18 +295,9 @@ export class socketService {
           ++sameTopicConversation.unReadCount;
         }
         if (cimEvent.name.toLowerCase() == "agent_message" && cimEvent.data.body.type.toLowerCase() == 'comment' && cimEvent.data.body.itemType.toLowerCase() != 'text') {
-          let fbCommentMessage = this.getCimMessageByMessageId(sameTopicConversation.messages, cimEvent.data.header.replyToMessageId);
-          if (fbCommentMessage) {
-            if (cimEvent.data.body.itemType.toLowerCase() == 'like') {
-              fbCommentMessage["isLiked"] = true;
-            }
-            else if (cimEvent.data.body.itemType.toLowerCase() == 'hide') {
-              fbCommentMessage["isHidden"] = true;
-            }
-            else if (cimEvent.data.body.itemType.toLowerCase() == 'delete') {
-              fbCommentMessage["isDeleted"] = true;
-            }
-          }
+          this.processFaceBookCommentActions(sameTopicConversation.messages,cimEvent);
+          
+         
 
         }
         // for agent type message change the status of message
@@ -351,17 +342,6 @@ export class socketService {
         conversationId: conversationId,
         agentId: this._cacheService.agent.id
       });
-      // console.log("Topic data not available for this cimEvent, creating...");
-      // this.conversations.push({
-      //   conversationId: conversationId,
-      //   messages: [cimEvent.data],
-      //   activeChannelSessions: [cimEvent.data.header.channelSession],
-      //   unReadCount: undefined,
-      //   index: ++this.conversationIndex,
-      //   state: "ACTIVE",
-      //   customerSuggestions: cimEvent.data.header.channelSession.customerSuggestions,
-      //   firstChannelSession: cimEvent.data.header.channelSession
-      // });
     }
   }
 
@@ -373,20 +353,6 @@ export class socketService {
     this._cacheService.resetCache();
     this._snackbarService.open("you are logged In from another session", "err");
     alert("you are logged in from another session");
-  }
-
-  getMessageByMessage(messages, event) {
-    if (event.name.toLowerCase() == "agent_message" && event.data.body.type.toLowerCase() == "comment") {
-      if (event.data.body.itemType.toLowerCase() == "like") {
-        messages.find((msg) => {
-          if (msg.id == event.data.header.replyToMessageId) {
-            msg["isLiked"] = true;
-          }
-        })
-      }
-
-    }
-
   }
   onTopicData(topicData, conversationId, taskId) {
     // this.removeConversation(conversationId);
@@ -419,10 +385,9 @@ export class socketService {
         event.name.toLowerCase() == "customer_message"
       ) {
 
-        if (event.name.toLowerCase() == "agent_message" && event.data.body.type.toLowerCase() == "comment" && event.data.body.type.toLowerCase() != "text") {
+        if (event.name.toLowerCase() == "agent_message" && event.data.body.type.toLowerCase() == "comment" && event.data.body.itemType.toLowerCase() != "text") {
 
-          this.processFaceBookCommentActions(conversation, topicEvents, event);
-
+          this.processFaceBookCommentActions(conversation.messages, event);
         } else {
 
           event.data.header["status"] = "sent";
@@ -1178,33 +1143,31 @@ export class socketService {
     return message;
   }
 
-  getCimEventByMessageId(events, id) {
-    return events.find((event) => {
-      return event.data.id == id;
-    });
-  }
-
   getCimMessageByMessageId(cimMessages, id) {
     return cimMessages.find((cimMessage) => {
       return cimMessage.id == id;
     });
   }
 
-  processFaceBookCommentActions(conversation, topicevents, event) {
-
+  processFaceBookCommentActions(cimMessages, event) {
+    console.log("proceess called")
     if (["like", "hide", "delete"].includes(event.data.body.itemType.toLowerCase())) {
 
-      let fbCommentEvent = this.getCimEventByMessageId(topicevents, event.data.header.replyToMessageId);
+      let fbCommentMessage = this.getCimMessageByMessageId(cimMessages, event.data.header.replyToMessageId);
+      if (fbCommentMessage) {
+        console.log("event found",fbCommentMessage);
+        if (event.data.body.itemType.toLowerCase() == 'like') {
+          console.log("liked true",fbCommentMessage)
 
-      if (fbCommentEvent) {
+          fbCommentMessage["isLiked"] = true;
+        } else if (event.data.body.itemType.toLowerCase() == 'hide') {
+          console.log("liked true",fbCommentMessage)
 
-        if (fbCommentEvent.data.body.itemType.toLowerCase() == 'like') {
-          fbCommentEvent.data["isLiked"] = true;
-        } else if (fbCommentEvent.data.body.itemType.toLowerCase() == 'hide') {
-          fbCommentEvent.data["isHidden"] = true;
+          fbCommentMessage["isHidden"] = true;
 
-        } else if (fbCommentEvent.data.body.itemType.toLowerCase() == 'delete') {
-          fbCommentEvent.data["isDeleted"] = true;
+        } else if (event.data.body.itemType.toLowerCase() == 'delete') {
+          console.log("liked true",fbCommentMessage)
+          fbCommentMessage["isDeleted"] = true;
 
         }
       }

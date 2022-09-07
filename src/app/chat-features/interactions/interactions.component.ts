@@ -131,10 +131,9 @@ export class InteractionsComponent implements OnInit {
   fbCommentAction(message, action) {
     if(action=='like' && message["isLiked"])
     {
-    console.log("no action like")
+    console.log("message already liked")
     }
     else if (this._socketService.isSocketConnected) {
-      this.replyToMessageId = message.id;
       let fbCommentId;
       message.header.channelData.additionalAttributes.forEach((attr) => {
         if (attr.key == 'comment_id') {
@@ -181,7 +180,6 @@ export class InteractionsComponent implements OnInit {
     message.body.postId = postId;
     message.body.type = "COMMENT";
     message.body.commentType = "PUBLIC";
-    // message.header.replyToMessageId = this.replyToMessageId;
     message.header.channelSession = fbChannelSession;
     message.header.channelData = fbChannelSession.channelData;
     message.header.replyToMessageId=replyToMessageId;

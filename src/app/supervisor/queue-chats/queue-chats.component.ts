@@ -5,6 +5,7 @@ import { httpService } from "../../services/http.service";
 import { ActivatedRoute } from "@angular/router";
 import { Subscription, timer } from "rxjs";
 import { map, retry } from "rxjs/operators";
+import { snackbarService } from "src/app/services/snackbar.service";
 
 @Component({
   selector: "app-queue-chats",
@@ -18,7 +19,7 @@ export class QueueChatsComponent implements OnInit {
   queueId: string;
   filteredData = [];
 
-  constructor(private dialog: MatDialog, private _httpService: httpService, private route: ActivatedRoute) {}
+  constructor(private dialog: MatDialog, private _httpService: httpService, private route: ActivatedRoute,private _snackBarService :snackbarService) {}
 
   ngOnInit(): void {
     this.queueId = this.route.snapshot.queryParamMap.get("queueId");
@@ -46,6 +47,9 @@ export class QueueChatsComponent implements OnInit {
             } else {
               this.filterData();
             }
+          },(err)=>
+          {
+            this._snackBarService.open("Error Getting Active Chats with Agents",'err');
           }); // load data contains the http request
         }, retry())
       )

@@ -22,7 +22,7 @@ export class ActiveChatsComponent implements OnInit {
   activeChatListWithAgents: [];
   activeChatListWithBots: [];
 
-  constructor(private dialog: MatDialog, private _httpService: httpService, private route: ActivatedRoute) {}
+  constructor(private dialog: MatDialog, private _httpService: httpService, private route: ActivatedRoute , private _snackBarService : snackbarService) {}
   ngOnInit(): void {
     this.filter = this.route.snapshot.queryParamMap.get("filter") ? this.route.snapshot.queryParamMap.get("filter") : "agents";
     if (this.filter == "agents") {
@@ -37,9 +37,13 @@ export class ActiveChatsComponent implements OnInit {
             this.activeChatListWithAgents = e;
           },(err)=>
           {
+            this._snackBarService.open("Error Getting Active Chats with Agents",'err');
           });
           this._httpService.getAllActiveChatsWithBots().subscribe((e) => {
             this.activeChatListWithBots = e;
+          },(err)=>
+          {
+            this._snackBarService.open("Error Getting Active Chats with Bots",'err');
           });
         }, retry())
       )
