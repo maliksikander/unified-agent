@@ -30,7 +30,7 @@
                 </button>
               </li>
 
-              <li class="list-group-item">
+              <!-- <li class="list-group-item">
                 <button mat-icon-button>
                   <mat-icon>group</mat-icon>
                 </button>
@@ -39,8 +39,8 @@
                 <button mat-icon-button>
                   <mat-icon>history</mat-icon>
                 </button>
-              </li>
-              <li class="list-group-item">
+              </li> -->
+              <!-- <li class="list-group-item">
                 <button mat-icon-button>
                   <mat-icon>chat_bubble</mat-icon>
                   <i class="material-icons arrow-red arrow-gray">arrow_forward</i>
@@ -50,12 +50,12 @@
                 <button mat-icon-button>
                   <mat-icon>person_add</mat-icon>
                 </button>
-              </li>
-              <li class="list-group-item">
+              </li> -->
+              <!-- <li class="list-group-item">
                 <button mat-icon-button>
                   <mat-icon>pan_tool</mat-icon>
                 </button>
-              </li>
+              </li> -->
             </ng-container>
             <li *ngIf="'leave-chat' | authPipe: 'view' as result" class="list-group-item">
               <button mat-icon-button>
@@ -1143,14 +1143,14 @@
                           <span class="message-stamp">
                             <span class="chat-time">{{ message.header.timestamp | date: "shortTime" }}</span>
                           </span>
-                          
+
                         </div>
                       </div>
                     </div>
 
                     <!-- ---------------------------------- FB Comment Ended-------------------------------- -->
                     <span class="chat-time file-type-stamp">{{ message.header.timestamp | date: "shortTime" }}</span>
-                    
+
                   </div>
                 </div>
 
