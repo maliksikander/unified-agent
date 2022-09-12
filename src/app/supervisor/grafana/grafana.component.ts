@@ -11,8 +11,9 @@ export class GrafanaComponent implements OnInit {
   constructor(public sanitizer: DomSanitizer, private _appConfigService: appConfigService) {}
 
   ngOnInit() {
-    this.grafanaUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this._appConfigService.config.GRAFANA_DASHBOARD_URL);
+    this.grafanaUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+      new URL(this._appConfigService.config.GAT_URL).origin + "/grafana/d/0GEdiaunk/supervisor_dashboard_cim?orgId=1&refresh=10s"
+    );
   }
   grafanaUrl: SafeResourceUrl;
-  // url: string = "https://cim.expertflow.com/grafana/d/OAdgP4onz/grafana-supervisor-dash?orgId=1&from=1640493464169&to=1640579864169";
 }
