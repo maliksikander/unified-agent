@@ -96,7 +96,6 @@ export class AppComponent implements OnInit {
   }
   switchLanguage(e)
   {
-    console.log("code",e.language)
     this._translateService.use(e.language)
   }
 
