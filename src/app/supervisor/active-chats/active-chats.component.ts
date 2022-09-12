@@ -6,8 +6,8 @@ import { ActivatedRoute } from "@angular/router";
 import * as _ from "lodash";
 import { Subscription, timer } from "rxjs";
 import { map, retry } from "rxjs/operators";
-import { sharedService } from "src/app/services/shared.service";
-// import { getChannelLogoByName }    from '../../shared/pipes/getChannelLogoByName.pipe'
+
+import { snackbarService } from "src/app/services/snackbar.service";
 
 @Component({
   selector: "app-active-chats",
@@ -22,7 +22,7 @@ export class ActiveChatsComponent implements OnInit {
   activeChatListWithAgents: [];
   activeChatListWithBots: [];
 
-  constructor(private dialog: MatDialog, private _httpService: httpService, private route: ActivatedRoute) {}
+  constructor(private dialog: MatDialog, private _httpService: httpService, private route: ActivatedRoute , private _snackBarService : snackbarService) {}
   ngOnInit(): void {
     this.filter = this.route.snapshot.queryParamMap.get("filter") ? this.route.snapshot.queryParamMap.get("filter") : "agents";
     if (this.filter == "agents") {
@@ -35,9 +35,15 @@ export class ActiveChatsComponent implements OnInit {
         map(() => {
           this._httpService.getAllActiveChatsWithAgents().subscribe((e) => {
             this.activeChatListWithAgents = e;
+          },(err)=>
+          {
+            this._snackBarService.open("Error Getting Active Chats with Agents",'err');
           });
           this._httpService.getAllActiveChatsWithBots().subscribe((e) => {
             this.activeChatListWithBots = e;
+          },(err)=>
+          {
+            this._snackBarService.open("Error Getting Active Chats with Bots",'err');
           });
         }, retry())
       )

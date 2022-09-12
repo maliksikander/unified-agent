@@ -1,0 +1,19 @@
+{
+    "start":"Start a New Conversation",
+    "customer-conversation-view":"Customer Conversation View",
+    "customer-list-view":"Customer List View",
+    "customer-labels":"Customer Labels",
+    "subscribed-ists":"Subscribed Lists",
+    "customer-Schema":"Customer Schema",
+    "dashboard":"Dashboard",
+    "summary-dashboard":"Summary Dashboard",
+    "active-conversations-detail":"Active Conversations Detail",
+    "queued-conversations-detail":"Queued Conversations Detail",
+    "change-mrd-state":"Change MRD State",
+    "selected-language":"Selected Language",
+    "select-reason":"Select Reason",
+    "ready":"Ready",
+    "logout":"Logout"
+
+
+}

@@ -66,6 +66,6 @@
 
     <p>{{ _sharedService.mainPagetile | titlecase }}</p>
     <button *ngIf="('customer-list' | authPipe : 'view') as result" routerLink="/customers/phonebook"
-    routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-button color="primary">Start a new conversation</button>
+    routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-button color="primary">{{'start' | translate}}</button>
   </div>
 </div>

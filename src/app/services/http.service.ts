@@ -343,4 +343,11 @@ export class httpService {
       })
     });
   }
+  getConversationSettings():Observable<any>{
+    return this._httpClient.get<any>(`${this._appConfigService.config.UNIFIED_ADMIN_URL}/agent-desk-settings`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
 }

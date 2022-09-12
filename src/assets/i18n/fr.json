@@ -1,0 +1,19 @@
+{
+    "start":"Démarrer une Nouvelle Conversation",
+    "customer-conversation-view":"Vue Conversation client",
+    "customer-list-view":"Affichage de la liste des clients",
+    "customer-labels":"Étiquettes client",
+    "subscribed-ists":"Listes abonnées",
+    "customer-Schema":"Schéma client",
+    "dashboard":"Tableau de bord",
+    "summary-dashboard":"Tableau de bord récapitulatif",
+    "active-conversations-detail":"Détail des conversations actives",
+    "queued-conversations-detail":"Détail des conversations en file d'attente",
+    "change-mrd-state":"Modifier l'état du MRD",
+    "selected-language":"Langue sélectionnée",
+    "select-reason":"Sélectionnez la raison",
+    "ready":"Prêt",
+    "logout":"Se déconnecter"
+
+
+}

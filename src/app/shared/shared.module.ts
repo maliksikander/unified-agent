@@ -85,6 +85,7 @@ import { AuthPipe } from "./pipes/auth.pipe";
 import { timeDurationPipe } from "./pipes/timeDuration.pipe";
 import { timeDurationFromParticipantPipe } from "./pipes/timeDurationFromParticipant.pipe";
 import { getCheckedChannelSessionPipe } from "./pipes/getCheckedChannelSession.pipe";
+import { TranslateModule } from "@ngx-translate/core";
 
 @NgModule({
   declarations: [
@@ -185,7 +186,8 @@ import { getCheckedChannelSessionPipe } from "./pipes/getCheckedChannelSession.p
     OwlNativeDateTimeModule,
     AngularMultiSelectModule,
     NgScrollbarModule,
-    NgxTimerModule
+    NgxTimerModule,
+    TranslateModule
   ],
   exports: [
     NgxTimerModule,
@@ -278,7 +280,8 @@ import { getCheckedChannelSessionPipe } from "./pipes/getCheckedChannelSession.p
     timeDurationPipe,
     AuthPipe,
     getCheckedChannelSessionPipe,
-    timeDurationFromParticipantPipe
+    timeDurationFromParticipantPipe,
+    TranslateModule
   ]
 })
 export class SharedModule {}
