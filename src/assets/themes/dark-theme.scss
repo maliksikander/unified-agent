@@ -380,9 +380,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
         border: 1px solid #2E56A0 !important;
       }
 
-      span {
-        //color:  mat-contrast($dark-primary, 600) !important;
-      }
+
     }
 
     button.add-customer{
@@ -440,8 +438,8 @@ $theme: mat-light-theme($primary, $accent, $warn);
       border-color: #1A50A3 !important;
     }
 
-    .agent-actions {
-    }
+    // .agent-actions {
+    // }
   }
 
   .profile-detail,
@@ -921,38 +919,38 @@ $theme: mat-light-theme($primary, $accent, $warn);
     }
   }
 
-  .manage-dashboard {
-    .active-subscribed-list-area {
-      //.table {
-      //  border: 1px solid mat-color($dark-primary, 400);
-      //
-      //  thead {
-      //    th {
-      //      background: mat-color($dark-primary) !important;
-      //      color: mat-contrast($dark-primary, 600) !important;
-      //    }
-      //  }
-      //
-      //  tbody {
-      //    tr {
-      //      background: mat-color($dark-primary, 400) !important;
-      //
-      //      td {
-      //        color: mat-contrast($dark-primary, 600) !important;
-      //      }
-      //
-      //      &:nth-child(even) {
-      //        background: mat-color($dark-primary) !important;
-      //      }
-      //
-      //      &:hover {
-      //        background: mat-color($dark-primary, 800) !important;
-      //      }
-      //    }
-      //  }
-      //}
-    }
-  }
+  // .manage-dashboard {
+  //   .active-subscribed-list-area {
+  //     //.table {
+  //     //  border: 1px solid mat-color($dark-primary, 400);
+  //     //
+  //     //  thead {
+  //     //    th {
+  //     //      background: mat-color($dark-primary) !important;
+  //     //      color: mat-contrast($dark-primary, 600) !important;
+  //     //    }
+  //     //  }
+  //     //
+  //     //  tbody {
+  //     //    tr {
+  //     //      background: mat-color($dark-primary, 400) !important;
+  //     //
+  //     //      td {
+  //     //        color: mat-contrast($dark-primary, 600) !important;
+  //     //      }
+  //     //
+  //     //      &:nth-child(even) {
+  //     //        background: mat-color($dark-primary) !important;
+  //     //      }
+  //     //
+  //     //      &:hover {
+  //     //        background: mat-color($dark-primary, 800) !important;
+  //     //      }
+  //     //    }
+  //     //  }
+  //     //}
+  //   }
+  // }
 
   //  Dialog
   .dialog-header {
@@ -1453,9 +1451,6 @@ button.channel-selection-list {
 }
 
 em{
-  // background: #f8f8f8 !important;
-  // font-family: "Roboto Mono",monospace;
   color: #000 !important;
-  // border-radius: 2px;
 }
 }
