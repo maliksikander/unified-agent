@@ -232,7 +232,7 @@
                   <!-- -----------------------referred reply message---------------- -->
 
                   <div class="chat-message-content referred-message-content"
-                    *ngIf="message.header.replyToMessageId != null">
+                    *ngIf="message.header.replyToMessageId != null && message.header.replyToMessageId != ''">
                     <div class="main-quoted-reply"
                       *ngFor="let referredMessage of message.header.replyToMessageId | getReferredMsg: conversation.messages">
                       <div [ngClass]="{

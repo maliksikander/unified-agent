@@ -79,7 +79,7 @@ export class InteractionsComponent implements OnInit {
   displaySuggestionsArea = false;
   cannedTabOpen = false;
   quickReplies = true;
-  viewHeight = "132px";
+  viewHeight = "138px";
   noMoreConversation = false;
   pastCimEventsOffsetLimit: number = 0;
   loadingPastActivity: boolean = false;
@@ -265,7 +265,7 @@ export class InteractionsComponent implements OnInit {
       this.quickReplies = false;
 
       setTimeout(() => {
-        this.viewHeight = this.elementViewSuggestions.nativeElement.offsetHeight + 123 + "px";
+        this.viewHeight = this.elementViewSuggestions.nativeElement.offsetHeight + 138 + "px";
         this.downTheScrollAfterMilliSecs(0, "smooth");
         // this.viewHeight = this.mainHeight + 180 + 'px';
         // this.scrollToBottom();
@@ -275,7 +275,7 @@ export class InteractionsComponent implements OnInit {
     } else {
       this.cannedTabOpen = false;
       this.quickReplies = true;
-      this.viewHeight = "123px";
+      this.viewHeight = "138px";
     }
     // if (this.message[0] === '.') {
     //     console.log('value is 0')
