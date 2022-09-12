@@ -11,7 +11,7 @@ export class appConfigService {
     ENV: "",
     FILE_SERVER_URL: "",
     CIM_CUSTOMER_URL: "",
-    BOT_FRAMEWORK_URL: "",
+    CONVERSATION_MANAGER_URL: "",
     GRAFANA_DASHBOARD_URL: "",
     Rona_State_On_Cisco: "",
     ROUTING_ENGINE_URL: "",
@@ -32,7 +32,7 @@ export class appConfigService {
         this.config.ENV = e.ENV;
         this.config.FILE_SERVER_URL = e.FILE_SERVER_URL;
         this.config.CIM_CUSTOMER_URL = e.CIM_CUSTOMER_URL;
-        this.config.BOT_FRAMEWORK_URL = e.BOT_FRAMEWORK_URL;
+        this.config.CONVERSATION_MANAGER_URL = e.CONVERSATION_MANAGER_URL;
         this.config.GRAFANA_DASHBOARD_URL = e.GRAFANA_DASHBOARD_URL;
         this.config.Rona_State_On_Cisco = e.ronaStateOnCisco;
         this.config.ROUTING_ENGINE_URL = e.ROUTING_ENGINE_URL;

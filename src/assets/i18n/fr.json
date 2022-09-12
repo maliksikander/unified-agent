@@ -1,19 +1,17 @@
 {
-    "start":"Démarrer une Nouvelle Conversation",
-    "customer-conversation-view":"Vue Conversation client",
-    "customer-list-view":"Affichage de la liste des clients",
-    "customer-labels":"Étiquettes client",
-    "subscribed-ists":"Listes abonnées",
-    "customer-Schema":"Schéma client",
-    "dashboard":"Tableau de bord",
-    "summary-dashboard":"Tableau de bord récapitulatif",
-    "active-conversations-detail":"Détail des conversations actives",
-    "queued-conversations-detail":"Détail des conversations en file d'attente",
-    "change-mrd-state":"Modifier l'état du MRD",
-    "selected-language":"Langue sélectionnée",
-    "select-reason":"Sélectionnez la raison",
-    "ready":"Prêt",
-    "logout":"Se déconnecter"
-
-
+  "start":"Start a New Conversation",
+  "customer-conversation-view":"Customer Conversation View",
+  "customer-list-view":"Customer List View",
+  "customer-labels":"Customer Labels",
+  "subscribed-lists":"Subscribed Lists",
+  "customer-schema":"Customer Schema",
+  "dashboard":"Dashboard",
+  "summary-dashboard":"Summary Dashboard",
+  "active-conversations-detail":"Active Conversations Detail",
+  "queued-conversations-detail":"Queued Conversations Detail",
+  "change-mrd-state":"Change MRD State",
+  "selected-language":"Selected Language",
+  "select-reason":"Select Reason",
+  "ready":"Ready",
+  "logout":"Logout"
 }

@@ -103,7 +103,7 @@ export class httpService {
     });
   }
   getActiveConversationData(conversationId): Observable<any> {
-    return this._httpClient.get<any>(`${this._appConfigService.config.BOT_FRAMEWORK_URL}/customer-topics/${conversationId}/conversation-data`, {
+    return this._httpClient.get<any>(`${this._appConfigService.config.CONVERSATION_MANAGER_URL}/customer-topics/${conversationId}/conversation-data`, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
@@ -228,7 +228,7 @@ export class httpService {
   ////////////////////////////////////////////
   updateConversationCustomer(conversationId, customer): Observable<any> {
     return this._httpClient.put<any>(
-      this._appConfigService.config.BOT_FRAMEWORK_URL + "/customer-topics/" + conversationId + "/update-customer",
+      this._appConfigService.config.CONVERSATION_MANAGER_URL + "/customer-topics/" + conversationId + "/update-customer",
       customer,
       {
         headers: new HttpHeaders({
@@ -240,7 +240,7 @@ export class httpService {
   }
 
   updatePastConversationCustomer(object): Observable<any> {
-    return this._httpClient.put<any>(`${this._appConfigService.config.BOT_FRAMEWORK_URL}/customer-topics/update-past-conversations`, object, {
+    return this._httpClient.put<any>(`${this._appConfigService.config.CONVERSATION_MANAGER_URL}/customer-topics/update-past-conversations`, object, {
       headers: new HttpHeaders({
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*"
@@ -252,7 +252,7 @@ export class httpService {
 
   getPastActivities(id, limit, offset): Observable<any> {
     return this._httpClient.get<any>(
-      `${this._appConfigService.config.BOT_FRAMEWORK_URL}${this.apiEndpoints.activities}/${id}/past-events?limit=${limit}&offset=${offset}`,
+      `${this._appConfigService.config.CONVERSATION_MANAGER_URL}${this.apiEndpoints.activities}/${id}/past-events?limit=${limit}&offset=${offset}`,
       {
         headers: new HttpHeaders({
           "Content-Type": "application/json"

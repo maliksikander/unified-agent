@@ -1435,4 +1435,22 @@ $theme: mat-light-theme($primary, $accent, $warn);
   .quoted-message-selected-area {
     background: #1b1b2d !important;
 }
+.post-message-main{
+  .comment-controlls{
+    background: #DEAC2B !important;
+    box-shadow: none !important;
+
+    mat-icon{
+      color: #16162C !important;
+    }
+    img{
+      filter: brightness(.1);
+    }
+  }
+}
+button.channel-selection-list {
+  color: #d3d3d3 !important;
+}
+
+
 }

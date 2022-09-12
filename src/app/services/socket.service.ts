@@ -75,19 +75,19 @@ export class socketService {
       this.isSocketConnected = false;
       this.ngxService.stop();
       try {
-        console.log(err.data);
+        console.error(err.data);
         console.error("socket connect_error ", err.data && err.data.content ? err.data.content : err);
         if (err.data && err.data.content && err.data.content && err.data.content.key == "LM" && err.data.content.licStatus) {
           this._snackbarService.open("The license is :" + err.data.content.licStatus, "err");
         } else {
           this._snackbarService.open(err.data && err.data.content ? err.data.content.msg : "unable to connect to chat", "err");
         }
-      } catch (err) { }
+      } catch (err) {}
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) { }
+        } catch (e) {}
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -119,7 +119,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) { }
+        } catch (e) {}
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -251,7 +251,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) { }
+    } catch (err) {}
   }
 
   listen(eventName: string) {
@@ -294,11 +294,12 @@ export class socketService {
           this.processActiveChannelSessions(sameTopicConversation, cimEvent.data.header.channelSession);
           ++sameTopicConversation.unReadCount;
         }
-        if (cimEvent.name.toLowerCase() == "agent_message" && cimEvent.data.body.type.toLowerCase() == 'comment' && cimEvent.data.body.itemType.toLowerCase() != 'text') {
-          this.processFaceBookCommentActions(sameTopicConversation.messages,cimEvent);
-          
-         
-
+        if (
+          cimEvent.name.toLowerCase() == "agent_message" &&
+          cimEvent.data.body.type.toLowerCase() == "comment" &&
+          cimEvent.data.body.itemType.toLowerCase() != "text"
+        ) {
+          this.processFaceBookCommentActions(sameTopicConversation.messages, cimEvent.data);
         }
         // for agent type message change the status of message
         else if (cimEvent.name.toLowerCase() == "agent_message") {
@@ -349,7 +350,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) { }
+    } catch (e) {}
     this._cacheService.resetCache();
     this._snackbarService.open("you are logged In from another session", "err");
     alert("you are logged in from another session");
@@ -377,24 +378,23 @@ export class socketService {
     let topicEvents = topicData.topicEvents ? topicData.topicEvents : [];
 
     // feed the conversation with type "messages"
-    console.log("topicEvents", topicEvents)
+    console.log("topicEvents", topicEvents);
     topicEvents.forEach((event, i) => {
       if (
         event.name.toLowerCase() == "agent_message" ||
         event.name.toLowerCase() == "bot_message" ||
         event.name.toLowerCase() == "customer_message"
       ) {
-
-        if (event.name.toLowerCase() == "agent_message" && event.data.body.type.toLowerCase() == "comment" && event.data.body.itemType.toLowerCase() != "text") {
-
-          this.processFaceBookCommentActions(conversation.messages, event);
+        if (
+          event.name.toLowerCase() == "agent_message" &&
+          event.data.body.type.toLowerCase() == "comment" &&
+          event.data.body.itemType.toLowerCase() != "text"
+        ) {
+          this.processFaceBookCommentActions(conversation.messages, event.data);
         } else {
-
           event.data.header["status"] = "sent";
           conversation.messages.push(event.data);
         }
-
-
       } else if (["channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())) {
         let message = this.createSystemNotificationMessage(event);
         conversation.messages.push(message);
@@ -475,7 +475,6 @@ export class socketService {
     console.log("conversations==>", this.conversations);
     this._conversationsListener.next(this.conversations);
   }
-
 
   isVoiceChannelSessionExists(activeChannelSessions) {
     let voiceChannelSession = activeChannelSessions.find((channelSession) => {
@@ -788,7 +787,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) { }
+    } catch (e) {}
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
@@ -1055,7 +1054,7 @@ export class socketService {
         },
         (error) => {
           this._sharedService.Interceptor(error.error, "err");
-          console.log("[Load Past Activity] Error :", error);
+          console.error("[Load Past Activity] Error :", error);
         }
       );
     } catch (e) {
@@ -1149,26 +1148,16 @@ export class socketService {
     });
   }
 
-  processFaceBookCommentActions(cimMessages, event) {
-    console.log("proceess called")
-    if (["like", "hide", "delete"].includes(event.data.body.itemType.toLowerCase())) {
-
-      let fbCommentMessage = this.getCimMessageByMessageId(cimMessages, event.data.header.replyToMessageId);
+  processFaceBookCommentActions(cimMessages, message) {
+    if (["like", "hide", "delete"].includes(message.body.itemType.toLowerCase())) {
+      let fbCommentMessage = this.getCimMessageByMessageId(cimMessages, message.header.replyToMessageId);
       if (fbCommentMessage) {
-        console.log("event found",fbCommentMessage);
-        if (event.data.body.itemType.toLowerCase() == 'like') {
-          console.log("liked true",fbCommentMessage)
-
+        if (message.body.itemType.toLowerCase() == "like") {
           fbCommentMessage["isLiked"] = true;
-        } else if (event.data.body.itemType.toLowerCase() == 'hide') {
-          console.log("liked true",fbCommentMessage)
-
+        } else if (message.body.itemType.toLowerCase() == "hide") {
           fbCommentMessage["isHidden"] = true;
-
-        } else if (event.data.body.itemType.toLowerCase() == 'delete') {
-          console.log("liked true",fbCommentMessage)
+        } else if (message.body.itemType.toLowerCase() == "delete") {
           fbCommentMessage["isDeleted"] = true;
-
         }
       }
     }
