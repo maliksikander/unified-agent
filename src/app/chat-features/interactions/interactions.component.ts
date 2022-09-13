@@ -153,12 +153,7 @@ export class InteractionsComponent implements OnInit {
 
   constructAndSendFbAction(commentId, postId, fbChannelSession, replyToMessageId, action) {
     let message = this.getCimMessage();
-
-    let obj = fbChannelSession.channelData.additionalAttributes.find((attr) => {
-      return attr.key.toLowerCase() == "comment_id";
-    });
-
-    obj["value"] = commentId;
+    message.header.providerMessageId = commentId;
     message.body.postId = postId;
     message.body.type = "COMMENT";
     message.header.channelSession = fbChannelSession;
@@ -176,11 +171,7 @@ export class InteractionsComponent implements OnInit {
     this.fbPostId = message.body.postId;
     this.replyToMessageId = message.id;
 
-    message.header.channelData.additionalAttributes.forEach((attr) => {
-      if (attr.key == "comment_id") {
-        this.fbCommentId = attr.value;
-      }
-    });
+    this.fbCommentId = message.header.providerMessageId;
 
     if (this.fbPostId && this.fbCommentId) {
       let fbChannelSession = this.getFaceBookChannelSession();
@@ -611,10 +602,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   getFaceBookChannelSession() {
-    console.log("kkk", this.conversation.activeChannelSessions);
     let fbChannelSession = this.conversation.activeChannelSessions.find((channelSession) => {
-      console.log("kkk", channelSession.channel.channelType.name);
-
       return channelSession.channel.channelType.name.toLowerCase() == "facebook";
     });
 
