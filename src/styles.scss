@@ -141,13 +141,32 @@ mat-tab-group.chat-tab-area {
         opacity: 1;
         border-radius: 5px;
 
+        .user-badge{
+          //box-shadow: inset 1.5px 0 0 #f3f6f8, inset 0 1.5px 0 #f3f6f8, inset 0 -1.5px 0 #f3f6f8, inset -1.5px 0 0 #f3f6f8;
+          background: transparent;
+          border-radius: 5px;
+          &.consult-monitor{
+            box-shadow: inset 1.5px 0 0 #f6bf2c26, inset 0 1.5px 0 #f6bf2c26, inset 0 -1.5px 0 #f6bf2c26, inset -1.5px 0 0 #f6bf2c26 !important;
+            svg path {
+              stroke: #F6BF2C !important;
+            }
+          }
+        }
+
         &.mat-tab-label-active {
-          background: $bubble-background;
-          box-shadow: inset 1.5px 0 0 lighten($main-color, 15%), inset 0 1.5px 0 lighten($main-color, 15%), inset 0 -1.5px 0 lighten($main-color, 15%),
+          .user-badge {
+            background: $bubble-background;
+            box-shadow: inset 1.5px 0 0 lighten($main-color, 15%), inset 0 1.5px 0 lighten($main-color, 15%), inset 0 -1.5px 0 lighten($main-color, 15%),
             inset -1.5px 0 0 lighten($main-color, 15%);
 
-          svg circle:nth-child(3) {
-            fill: white;
+            svg circle:nth-child(3) {
+              fill: white;
+            }
+            &.consult-monitor{
+              background: #f6bf2c26;
+              box-shadow: inset 1.5px 0 0 #F6BF2C, inset 0 1.5px 0 #F6BF2C, inset 0 -1.5px 0 #F6BF2C,
+              inset -1.5px 0 0 #F6BF2C;
+            }
           }
         }
 
@@ -265,6 +284,12 @@ mat-sidenav.mat-drawer.mat-sidenav {
 
 //right-bar
 .right-drag-accordion {
+
+  .mat-expanded{
+    mat-panel-title{
+      color: $blue-text-color;
+    }
+  }
   .mat-expansion-panel-body {
     padding: 0 5px;
     border-top-width: 0 !important;
@@ -402,6 +427,11 @@ snack-bar-container{
   width: 100% !important;
   max-width: 800px !important;
 }
+.consult-dialog {
+  width: 100% !important;
+  max-width: 400px !important;
+}
+
 .dialog-header {
   background: $blue-text-color;
   height: 38px;
@@ -1841,16 +1871,32 @@ ul.customer-labels {
 
 //Chat Transfer Snackbar
 .chat-success-snackbar {
-  background: rgba(10, 188, 2, 0.8);
+  background: #83A140 !important;
   min-width: 340px;
-  padding: 10px 16px;
+  padding: 10px 16px !important;
 
   button {
-    background: #fff;
+    background: transparent;
     color: #2e2e2e;
     height: 30px;
     line-height: 30px;
     font-size: 12px;
+    &:before{
+      content: 'close';
+      font-family: 'Material Icons';
+      font-size: 16px;
+      width: 26px;
+      height: 26px;
+      border: 2px solid #00000045;
+      border-radius: 100%;
+      display: inline-block;
+      line-height: 23px;
+      color: #00000045;
+      position: absolute;
+      right: 3px;
+      top: 2px;
+    }
+
   }
   simple-snack-bar {
     color: #fff;
@@ -1866,6 +1912,48 @@ ul.customer-labels {
       border-radius: 100%;
       margin-right: 8px;
     }
+    span{
+      font-size: 13px;
+    }
+  }
+}
+
+.consult-success-snackbar {
+  padding: 0 10px !important;
+  background: #D5E6FF !important;
+  border: 1px solid #A7C5EF !important;
+  min-height: 38px !important;
+
+  simple-snack-bar {
+    color: #000;
+    min-height: 38px;
+
+    span{
+      text-align: left;
+      color: #1D1D1D !important;
+    }
+    button{
+      padding: 0 10px;
+    }
+
+    &:before {
+      content: "error";
+      font-family: "Material Icons";
+      text-align: center;
+      margin-right: 5px;
+      font-size: 28px;
+      color: #4773B5;
+      border-right: 1px solid #A7C5EF;
+      padding-right: 5px;
+      line-height: 38px;
+    }
+  }
+  span.mat-button-wrapper:before {
+    content: 'highlight_off';
+    font-family: 'Material Icons';
+    font-size: 28px;
+    font-weight: 100;
+    color: #A7C5EF;
   }
 }
 
@@ -2205,7 +2293,7 @@ tspan {
     color: #5c5c5c;
   }
   .list-filter {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #67676766;
     position: relative;
     padding-left: 35px;
     height: auto;
@@ -2956,6 +3044,10 @@ body .ui-paginator {
 
     input{
       height: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      position: relative;
+      top: 1px;
     }
 
   }
@@ -3179,6 +3271,37 @@ span.note-icon {
   }
   }
 }
+
+//Transfer, consult chat
+
+.consultants-list{
+  mat-expansion-panel-header{
+    padding: 0 10px;
+    .mat-expansion-panel-header-title {
+      color: #000;
+      font-size: 12px;
+      font-weight: normal;
+      justify-content: space-between;
+    }
+  }
+
+  &.mat-expanded{
+    background: $header-gray-color !important;
+  }
+  .mat-expansion-panel-content{
+    background: $header-gray-color  !important;
+
+    .mat-expansion-panel-body {
+      padding: 10px;
+    }
+  }
+}
+
+//Consult Dialog
+.consult-dialog{
+  min-width: 400px;
+}
+
 
 em{
   background: #f8f8f8 !important;

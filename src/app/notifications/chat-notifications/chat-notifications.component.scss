@@ -2,7 +2,8 @@
   position: fixed;
   z-index: 9999;
   right: 2em;
-  width: 360px;
+  max-width: 490px;
+  //width: 100%;
 
   .notification-panel {
     margin: 0 0 5px;
@@ -13,8 +14,9 @@
     display: table;
     float: right;
     clear: both;
-    min-width: 320px;
+    min-width: 360px;
     text-align: left;
+    max-width: 490px;
   }
 
   mat-card {
@@ -24,10 +26,11 @@
       display: flex !important;
       height: 100%;
       border-radius: 3px;
+      border: 1px solid rgba(0,0,0,.2);
 
       .chat-request {
         width: 50px;
-        border-right: 1px solid #ccc;
+        border-right: 1px solid rgba(0,0,0,.2);
         display: inline-flex;
         justify-content: center;
         //border-radius: 120px;
@@ -42,9 +45,9 @@
           justify-content: center;
 
           img{
-            max-height: 30px;
+            max-height: 15px;
             width: 100%;
-            max-width: 30px;
+            max-width: 15px;
             align-self: center;
 
           }
@@ -55,14 +58,16 @@
           flex: 2;
           margin: 0 5px;
           align-self: center;
+          padding: 5px;
         p {
           margin: 0;
           font-size: 12px;
           color: #fff;
-          max-width: 235px;
+          //max-width: 235px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: pre-line;
+          font-weight: normal;
         }
       }
       .notification-trigger {
@@ -76,6 +81,70 @@
           width: 75px;
           line-height: 30px;
           margin: 5px;
+        }
+      }
+
+      &.consult-notification {
+        background: #F6BF2C;
+        &.conference-request{
+          background: #9BD9DE !important;
+        }
+
+        &.transfer-notification{
+          background: #66B254;
+
+          strong, p{
+            color: #fff !important;
+          }
+          .channel-icon {
+            background: #3e3e3ea1 !important;
+          }
+        }
+        .channel-icon{
+          background: #3E3E3E;
+          mat-icon{
+            color: #fff;
+            font-size: 20px;
+            line-height: 30px;
+          }
+        }
+        strong {
+          //white-space: pre;
+          font-size: 12px;
+          font-weight: 600;
+          color: #000000;
+          max-width: 330px;
+          display: inline-block;
+          //overflow: hidden;
+          //text-overflow: ellipsis;
+        }
+
+        .requested-name p {
+          color: #000000;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          display: -webkit-box;
+          position: relative;
+
+          &:before{
+            content: open-quote;
+          }
+          &:after{
+            content: close-quote;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+          }
+
+          span {
+            display: block;
+          }
+        }
+
+        .notification-trigger {
+          button {
+            background: #3E3E3E;
+          }
         }
       }
 

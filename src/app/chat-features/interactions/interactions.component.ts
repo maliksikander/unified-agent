@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Outpu
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
-import { MatDialog, MatDialogRef } from "@angular/material";
+import { MatDialog,MatSnackBar, MatDialogRef } from "@angular/material";
 import { CimEvent } from "../../models/Event/cimEvent";
 import { v4 as uuidv4 } from "uuid";
 import { NgScrollbar } from "ngx-scrollbar";
@@ -33,7 +33,11 @@ export class InteractionsComponent implements OnInit {
   @ViewChild(NgScrollbar, { static: true }) scrollbarRef: NgScrollbar;
   @ViewChild("media", { static: false }) media: ElementRef;
   @ViewChild("mainScreen", { static: false }) elementViewSuggestions: ElementRef;
+  @ViewChild("ConsultTransferTrigger", { static: false }) ConsultTransferTrigger: any;
 
+
+
+  whisper = true;
   dispayVideoPIP = true;
   scrollSubscriber;
   labels: Array<any> = [];
@@ -41,6 +45,10 @@ export class InteractionsComponent implements OnInit {
   replyToMessageId: any;
   viewFullCommentAction: boolean = false;
   fullPostView: boolean = false;
+
+  isTransfer = false;
+  isConsult = false;
+  requestAction = '';
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -68,7 +76,7 @@ export class InteractionsComponent implements OnInit {
   isConnected = true;
   popTitle = "Notes";
   expanedHeight = 0;
-
+  ConsultSearch = '';
   message = "";
   convers: any[];
   ringing = false;
@@ -88,6 +96,136 @@ export class InteractionsComponent implements OnInit {
   fbPostId: string = null;
   fbCommentId: string = null;
   conversationSettings: any;
+
+  chatConsultTo;
+  userList = [
+    {
+      team: 'Technical Support',
+      availableAgents : [
+        {
+          name: 'Ev Gayforth',
+          role: 'supervisor',
+          currentTeam: 'Technical Support'
+
+
+        }, {
+          name: 'Doy Ortelt',
+          role: 'supervisor',
+          currentTeam: 'Technical Support',
+          isDisabled: true
+        }, {
+          name: 'stanler',
+          role: 'supervisor',
+          currentTeam: 'Technical Support'
+        },  {
+          name: 'Ortelt',
+          role: 'supervisor',
+          currentTeam: 'Technical Support'
+        }, {
+          name: 'Joe Stanler',
+          role: 'supervisor',
+          currentTeam: 'Technical Support',
+          isDisabled: true
+        }
+      ]
+
+    },
+    {
+      team: 'Customer Support',
+      availableAgents : [
+        {
+          name: 'Ev Gayforth',
+          role: 'supervisor',
+          currentTeam: 'Customer Support'
+
+        }, {
+          name: 'Doy Ortelt',
+          role: 'supervisor',
+          currentTeam: 'Customer Support',
+          isDisabled: true
+
+        }, {
+          name: 'stanler',
+          role: 'supervisor',
+          currentTeam: 'Customer Support'
+
+        }, {
+          name: 'Ev Gayforth',
+          role: 'supervisor',
+          currentTeam: 'Customer Support'
+
+        }, {
+          name: 'Ortelt',
+          role: 'supervisor',
+          currentTeam: 'Customer Support'
+
+        }, {
+          name: 'Joe Stanler',
+          role: 'supervisor',
+          currentTeam: 'Customer Support'
+
+        }, {
+          name: 'Adam',
+          role: 'supervisor',
+          currentTeam: 'Customer Support'
+
+        },
+      ]
+
+    },
+    {
+      team: 'Marketing Support',
+      availableAgents : [
+        {
+          name: 'Ev Gayforth',
+          role: 'supervisor',
+          currentTeam: 'Marketing Support'
+
+        }, {
+          name: 'Doy Ortelt',
+          role: 'supervisor',
+          currentTeam: 'Marketing Support'
+
+        }, {
+          name: 'stanler',
+          role: 'supervisor',
+          currentTeam: 'Marketing Support'
+
+        }, {
+          name: 'Ev Gayforth',
+          role: 'supervisor',
+          currentTeam: 'Marketing Support',
+          isDisabled: true
+
+        }, {
+          name: 'Ortelt',
+          role: 'supervisor',
+          currentTeam: 'Marketing Support'
+
+        }, {
+          name: 'Joe Stanler',
+          role: 'supervisor',
+          currentTeam: 'Marketing Support'
+
+        }
+      ]
+
+    }
+  ];
+  consultantsList = [
+    {
+      name: 'Doy Ortelt',
+      role: 'supervisor',
+      team: 'marketing'
+
+    },{
+      name: 'Ev Gayforth',
+      role: 'supervisor',
+      team: 'technical',
+      isWhisper: true
+
+    }
+  ];
   constructor(
     private _sharedService: sharedService,
     public _cacheService: cacheService,
@@ -96,7 +234,9 @@ export class InteractionsComponent implements OnInit {
     private _snackbarService: snackbarService,
     public _appConfigService: appConfigService,
     private _httpService: httpService,
-    private _finesseService: finesseService
+    private _finesseService: finesseService,
+    private snackBar: MatSnackBar,
+
   ) {}
   ngOnInit() {
     //  console.log("i am called hello")
@@ -691,5 +831,57 @@ export class InteractionsComponent implements OnInit {
 
       this.quotedMessage = null;
     }, 40);
+  }
+
+
+  transferOrConsult(templateRef, e, action ): void {
+    this.chatConsultTo = e;
+    this.requestAction = action;
+
+    const dialogRef = this.dialog.open(templateRef, {
+      panelClass: 'consult-dialog'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+
+    this.ConsultTransferTrigger.closeMenu();
+  }
+
+  consultRequest(message: string, action: string, e) {
+    setTimeout(() => {
+      this.snackBar.open(e + ' request sent successfully to ' + message, action, {
+        duration: 8000,
+        panelClass: 'chat-success-snackbar',
+        horizontalPosition: 'right',
+        verticalPosition: 'bottom',
+      });
+
+      setTimeout(() => {
+        this._sharedService.isConsultRequestSend(true, e);
+
+      }, 5000);
+    }, 2000);
+
+  }
+
+  transferRequest(message: string, action: string) {
+    setTimeout(() => {
+      this._sharedService.isTransferRequestSend(true);
+
+    }, 2000);
+
+  }
+  ConsultTransfer(message: string, action: string) {
+    setTimeout(() => {
+      this.snackBar.open( message, ' ', {
+        duration: 50000,
+        panelClass: 'consult-success-snackbar',
+        horizontalPosition: 'right',
+        verticalPosition: 'bottom'
+      });
+    }, 2000);
+
   }
 }

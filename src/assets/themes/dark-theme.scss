@@ -285,7 +285,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
         .customer-name,
         .customer-highlight {
-          color: mat-color($ef-red, 700) !important;
+          color: #D0D0D4 !important;
         }
       }
     }
@@ -321,6 +321,21 @@ $theme: mat-light-theme($primary, $accent, $warn);
         path {
           stroke: #1A50A3;
         }
+
+        .user-badge {
+          background: transparent !important;
+          box-shadow: inset 1.5px 0 0 #283F6A, inset 0 1.5px 0 #283F6A, inset 0 -1.5px 0 #283F6A, inset -1.5px 0 0 #283F6A !important;
+
+          &.consult-monitor {
+            background: #f6bf2c26 !important;
+            box-shadow: inset 1.5px 0 0 #f6bf2c, inset 0 1.5px 0 #f6bf2c, inset 0 -1.5px 0 #f6bf2c, inset -1.5px 0 0 #f6bf2c !important;
+
+            svg path {
+              stroke: #F6BF2C !important;
+            }
+          }
+
+        }
       }
     }
 
@@ -338,8 +353,8 @@ $theme: mat-light-theme($primary, $accent, $warn);
       background: mat-color($dark-primary);
 
       .jump-bottom {
-        background: #4370C3 !important;
-        border: 1px solid #2E56A0 !important;
+        background: #1d3a73 !important;
+        border: 1px solid #1d3a73 !important;
       }
 
       .selected-channel {
@@ -349,6 +364,10 @@ $theme: mat-light-theme($primary, $accent, $warn);
       .reply-form {
         border-top: 1px solid mat-color($dark-primary, 800) !important;
         background: mat-color($dark-primary, 400) !important;
+
+        &.whisper-mode {
+          background: #033049 !important;
+        }
 
         textarea {
           color: mat-contrast($dark-primary, 600);
@@ -376,8 +395,8 @@ $theme: mat-light-theme($primary, $accent, $warn);
       border: 1px solid #35354D;
 
       &.load-more {
-        background: #4370C3 !important;
-        border: 1px solid #2E56A0 !important;
+        background: #1d3a73 !important;
+        border: 1px solid #1d3a73 !important;
       }
 
 
@@ -435,7 +454,8 @@ $theme: mat-light-theme($primary, $accent, $warn);
   .main-chat-bar {
     .customer-highlight {
       background: mat-color($dark-primary, 800) !important;
-      border-color: #1A50A3 !important;
+      border-color: #1A5ec7 !important;
+      color: #D0D0D4 !important;
     }
 
     // .agent-actions {
@@ -1021,6 +1041,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
     &.add-field {
       background: mat-color($dark-primary, 800);
+      box-shadow: none !important;
     }
 
     &.remove-field {
@@ -1381,7 +1402,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
     .list-area {
       border: 1px solid rgba(255, 255, 255, 0.3) !important;
       background: mat-color($dark-primary, 400) !important;
-      box-shadow: 0 1px 5px rgba(255, 255, 255, 0.5) !important;
+      box-shadow: 0 1px 5px rgba(29, 29, 29, 0.5) !important;
     }
 
     li {
@@ -1427,12 +1448,131 @@ $theme: mat-light-theme($primary, $accent, $warn);
   ul.customer-labels li {
     border-color: mat-color($dark-primary) !important;
   }
+
+  //Transfer, consult
+  .chat-transfer-main {
+
+    .mat-expansion-panel {
+      background: mat-color($dark-primary) !important;
+      //border-color: mat-color($dark-primary, 400) !important;
+
+      mat-expansion-panel-header {
+        &:hover {
+          background: rgba(0, 0, 0, .2) !important;
+        }
+      }
+
+      .mat-expansion-panel-body {
+        background: mat-color($dark-primary) !important;
+      }
+
+      .mat-expansion-panel-header-title, button {
+        color: mat-contrast($dark-primary, 600) !important;
+
+      }
+
+      .mat-expansion-indicator::after {
+        color: rgb(255 255 255 / 20%) !important;
+      }
+    }
+
+    input {
+      background: mat-color($dark-primary, 800) !important;
+      color: mat-contrast($dark-primary, 600) !important;
+      border-color: mat-color($dark-primary, 400) !important;
+
+    }
+  }
+  .whisper-selection {
+    button {
+      background: mat-color($dark-primary, 400) !important;
+
+      &.whisper-mode {
+        background: #033049 !important;
+
+        span {
+          color: #fff !important;
+        }
+      }
+    }
+  }
+  .chat-messages-main {
+
+    .agent-message.whisper-body {
+      .profile-pic-area {
+        background: #033049 !important;
+      }
+
+      .profile-pic-area, .chat-message-content {
+        background: #033049 !important;
+
+        &:before {
+          border-top-color: #033049 !important;
+        }
+      }
+    }
+  }
+  .main-notification-area {
+
+    mat-card-content.consult-notification {
+      background: #D09904 !important;
+
+      .requested-name p {
+        color: #000 !important;
+      }
+
+      &.transfer-notification {
+        background: #457B39 !important;
+
+        .requested-name p {
+          color: #fff !important;
+        }
+      }
+    }
+  }
+
+  .chat-success-snackbar {
+    background: #63890E !important;
+
+    simple-snack-bar:before {
+      background: #ffffff0f;
+    }
+
+    button:before {
+      border: 2px solid #ffffff85;
+      color: #ffffff85;
+    }
+
+    span {
+      color: #fff !important;
+
+      em {
+        color: #000 !important;
+      }
+
+      .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+        color: #b8b8b8;
+      }
+
+      .confirmation-action {
+        button {
+          background: #2F2F3E !important;
+
+
+        }
+      }
+    }
+  }
+
+
   span.comment-action {
     background: #232f4f !important;
   }
   .quoted-message-selected-area {
     background: #1b1b2d !important;
 }
+
+
 .post-message-main{
   .comment-controlls{
     background: #DEAC2B !important;

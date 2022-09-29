@@ -129,4 +129,9 @@ export class ChatNotificationsComponent implements OnInit {
     });
     this._soundService.stopRing();
   }
+
+  consultRequestAccept(){
+    this._sharedService.isConsultRequestAccept(true);
+
+  }
 }
