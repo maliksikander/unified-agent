@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Outpu
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
-import { MatDialog, MatDialogRef } from "@angular/material";
+import {MatDialog, MatDialogRef, MatSnackBar} from '@angular/material';
 import { CimEvent } from "../../models/Event/cimEvent";
 import { v4 as uuidv4 } from "uuid";
 import { NgScrollbar } from "ngx-scrollbar";
@@ -33,6 +33,7 @@ export class InteractionsComponent implements OnInit {
   @ViewChild(NgScrollbar, { static: true }) scrollbarRef: NgScrollbar;
   @ViewChild("media", { static: false }) media: ElementRef;
   @ViewChild("mainScreen", { static: false }) elementViewSuggestions: ElementRef;
+  @Output() isWrapUpTimer = new EventEmitter<boolean>();
 
   dispayVideoPIP = true;
   scrollSubscriber;
@@ -88,6 +89,7 @@ export class InteractionsComponent implements OnInit {
   fbPostId: string = null;
   fbCommentId: string = null;
   conversationSettings: any;
+  // isWrapUpTimer = false;
   constructor(
     private _sharedService: sharedService,
     public _cacheService: cacheService,
@@ -96,9 +98,11 @@ export class InteractionsComponent implements OnInit {
     private _snackbarService: snackbarService,
     public _appConfigService: appConfigService,
     private _httpService: httpService,
-    private _finesseService: finesseService
+    private _finesseService: finesseService,
+    private snackBar: MatSnackBar
   ) {}
   ngOnInit() {
+    this.isWrapUpTimer.emit(true);
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
@@ -271,9 +275,36 @@ export class InteractionsComponent implements OnInit {
     if (this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
       this.closeConversationConfirmation();
     } else {
-      this._socketService.topicUnsub(this.conversation);
+      // this._socketService.topicUnsub(this.conversation);
+
+      if(this.isWrapUpTimer){
+          const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: "490px",
+            panelClass: "confirm-dialog",
+            data: { header: "Leave Conversation", message: `Are you sure you want to leave conversation with ‘John Taylor’?` }
+          });
+          dialogRef.afterClosed().subscribe((result) => {
+            if (result && result.event == "confirm") {
+              this.openWrapUpDialog('Wrap-up');
+            }
+          });
+      } else{
+        this._socketService.topicUnsub(this.conversation);
+      }
     }
   }
+
+  // customerLeft(message: string, action: string) {
+  //   setTimeout(() => {
+  //     this.snackBar.open( message, ' ', {
+  //       duration: 5000,
+  //       panelClass: 'chat-success-snackbar',
+  //       horizontalPosition: 'right',
+  //       verticalPosition: 'bottom'
+  //     });
+  //   }, 1000);
+  //
+  // }
 
   closeConversationConfirmation() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -573,12 +604,21 @@ export class InteractionsComponent implements OnInit {
   openWrapUpDialog(e): void {
     const dialogRef = this.dialog.open(WrapUpFormComponent, {
       panelClass: "wrap-dialog",
-      data: { header: e, conversation: this.conversation }
+      disableClose: true,
+      data: { header: e, conversation: this.conversation, isWrapUpTimer: this.isWrapUpTimer }
     });
 
     dialogRef.afterClosed().subscribe((res) => {
       if (res.event == "apply") {
         this.constructAndSendCimEvent("wrapup", "", "", "", "", res.data.wrapups, res.data.note);
+        if(this.isWrapUpTimer == true){
+          this._socketService.topicUnsub(this.conversation);
+        }
+
+      } else{
+        if(this.isWrapUpTimer == true){
+          this._socketService.topicUnsub(this.conversation);
+        }
       }
     });
   }

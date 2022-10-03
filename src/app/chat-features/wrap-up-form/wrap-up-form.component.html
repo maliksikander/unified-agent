@@ -1,8 +1,30 @@
 <div class="note-dialog-main">
   <div class="dialog-header">
-    <h4 mat-dialog-title>{{wrapUpData.header}} <button mat-button (click)="closeDialog()">
+    <h4 mat-dialog-title>{{wrapUpData.header}}
+      <button *ngIf="wrapUpData.isWrapUpTimer == false" mat-button (click)="closeDialog()">
         <mat-icon>close</mat-icon>
-      </button></h4>
+      </button>
+      <span *ngIf="wrapUpData.isWrapUpTimer" class="wrap-timer"> <span class="wrap-time-count">{{timeLeft }}</span>
+      <circle-progress
+        class="laft-bar-data"
+        [percent]="100"
+        [radius]="15"
+        [outerStrokeWidth]="2"
+        [innerStrokeWidth]="2"
+        [outerStrokeColor]="'#DB2323'"
+        [innerStrokeColor]="'#ffffff66'"
+        [space]="-2"
+        [animationDuration]="timeProgress * 1000"
+        [title]="52"
+        [titleFontSize]="10"
+        [showSubtitle]="false"
+        [showTitle]="false"
+        [showUnits]="false"
+        [renderOnClick]="false">
+    </circle-progress>
+    </span>
+    </h4>
+
   </div>
   <div class="dialog-main-content">
     <div class="row m-0">

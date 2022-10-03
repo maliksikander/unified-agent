@@ -1,5 +1,12 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from "@angular/core";
-import { MAT_DIALOG_DATA, MatAutocompleteSelectedEvent, MatDialogRef } from "@angular/material";
+import {
+  MAT_DIALOG_DATA,
+  MatAutocompleteSelectedEvent,
+  MatDialogRef,
+  MatSnackBar,
+  ProgressSpinnerMode,
+  ThemePalette
+} from '@angular/material';
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { FormControl } from "@angular/forms";
 import { Observable } from "rxjs";
@@ -27,12 +34,16 @@ export class WrapUpFormComponent implements OnInit {
   categoryList: any = [];
   wrapUpData;
   categoryOptions;
+  timeLeft: number = 30;
+  timeProgress: number = this.timeLeft;
+  interval;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _httpService: httpService,
     private _sharedService: sharedService,
-    private dialogRef: MatDialogRef<WrapUpFormComponent>
+    private dialogRef: MatDialogRef<WrapUpFormComponent>,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -106,6 +117,8 @@ export class WrapUpFormComponent implements OnInit {
         this._sharedService.Interceptor(error.error, "err");
       }
     );
+
+    this.startWrapUpTimer();
   }
 
   //to get filtered wrap up codes
@@ -145,5 +158,50 @@ export class WrapUpFormComponent implements OnInit {
       note: this.notesFormCtrl.value ? this.notesFormCtrl.value : ""
     };
     this.dialogRef.close({ event: "apply", data });
+
+    setTimeout(() => {
+      this.snackBar.open( '‘Jason Stallberg’ left the conversation', ' ', {
+        duration: 5000,
+        panelClass: 'chat-success-snackbar',
+        horizontalPosition: 'right',
+        verticalPosition: 'bottom'
+      });
+    }, 1000);
+    this.stopTimer();
+  }
+
+  startWrapUpTimer() {
+    this.interval = setInterval(() => {
+      if (this.timeLeft > 0) {
+        this.timeLeft--;
+
+      } else {
+        if (this.timeLeft == 0 && this.wrapUpData.isWrapUpTimer) {
+          this.closeDialog();
+
+
+          this.customerLeft('Wrap-up time for the conversation with ‘Jason Slayer’ has expired.', '');
+          this.stopTimer();
+        }
+        this.timeLeft = 0;
+      }
+    }, 1000);
+  }
+
+  stopTimer() {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+  }
+  customerLeft(message: string, action: string) {
+    setTimeout(() => {
+      this.snackBar.open( message, ' ', {
+        duration: 8000,
+        panelClass: 'chat-fail-snackbar',
+        horizontalPosition: 'right',
+        verticalPosition: 'bottom'
+      });
+    }, 1000);
+
   }
 }

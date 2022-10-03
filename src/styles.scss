@@ -1841,16 +1841,32 @@ ul.customer-labels {
 
 //Chat Transfer Snackbar
 .chat-success-snackbar {
-  background: rgba(10, 188, 2, 0.8);
+  background: #83A140 !important;
   min-width: 340px;
-  padding: 10px 16px;
+  padding: 10px 16px !important;
 
   button {
-    background: #fff;
+    background: transparent;
     color: #2e2e2e;
     height: 30px;
     line-height: 30px;
     font-size: 12px;
+    &:before{
+      content: 'close';
+      font-family: 'Material Icons';
+      font-size: 16px;
+      width: 26px;
+      height: 26px;
+      border: 2px solid #00000045;
+      border-radius: 100%;
+      display: inline-block;
+      line-height: 23px;
+      color: #00000045;
+      position: absolute;
+      right: 3px;
+      top: 2px;
+    }
+
   }
   simple-snack-bar {
     color: #fff;
@@ -1865,6 +1881,58 @@ ul.customer-labels {
       text-align: center;
       border-radius: 100%;
       margin-right: 8px;
+    }
+    span{
+      font-size: 13px;
+    }
+  }
+}
+
+
+.chat-fail-snackbar {
+  background: #f55337 !important;
+  min-width: 340px;
+  padding: 10px 16px !important;
+
+  button {
+    background: transparent;
+    color: #2e2e2e;
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+    &:before{
+      content: 'close';
+      font-family: 'Material Icons';
+      font-size: 16px;
+      width: 26px;
+      height: 26px;
+      border: 2px solid #00000045;
+      border-radius: 100%;
+      display: inline-block;
+      line-height: 23px;
+      color: #00000045;
+      position: absolute;
+      right: 3px;
+      top: 2px;
+    }
+
+  }
+  simple-snack-bar {
+    color: #fff;
+    &:before {
+      content: "check";
+      font-family: "Material Icons";
+      font-weight: 900;
+      background: rgb(0 0 0 / 42%);
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      border-radius: 100%;
+      margin-right: 8px;
+    }
+    span{
+      font-size: 13px;
     }
   }
 }

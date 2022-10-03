@@ -12,6 +12,7 @@ import { socketService } from "src/app/services/socket.service";
 export class ChatsComponent implements OnInit {
   // conversations = [];
   barExpand = false;
+  isWrapUpTimer = false;
   // labels :Array<any>=[];
   constructor(private _httpService:httpService,
     public _socketService: socketService, public _sharedService: sharedService) {}
@@ -23,6 +24,9 @@ export class ChatsComponent implements OnInit {
   //     this.labels = e;
   //   });
   // }
+  isWrapUp(data) {
+    this.isWrapUpTimer = data;
+  }
   currentTabIndex;
   tabChanged(event: MatTabChangeEvent) {
     let index = event.index;

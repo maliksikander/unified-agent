@@ -20,11 +20,11 @@
                       [radius]="15"
                       [outerStrokeWidth]="2"
                       [innerStrokeWidth]="2"
-                      [outerStrokeColor]="conversation.activeChannelSessions.length > 0 ? '#3f51b5' : 'grey'"
+                      [outerStrokeColor]="conversation.activeChannelSessions.length > 0 && !isWrapUpTimer ? '#3f51b5' : isWrapUpTimer ? '#f00' : 'grey'"
                       [innerStrokeColor]="conversation.state == 'ACTIVE' ? '#F3F6F8' : 'grey'"
                       [space]="-1"
                       [animation]="conversation.animation"
-                      [animationDuration]="600"
+                      [animationDuration]="isWrapUpTimer ? 30000 : 600"
                       [title]="conversation.customer.firstName | getFirstTwoLetters"
                       [titleFontSize]="10"
                       [showSubtitle]="false"
@@ -33,6 +33,8 @@
                     >
                     </circle-progress>
                     <span class="badge1" [hidden]="conversation.unReadCount == 0">{{ conversation.unReadCount }}</span>
+                    <span *ngIf="isWrapUpTimer == true" class="badge1 channel-badge"><img src="assets/images/clock-time.svg"> </span>
+
                   </div>
                   <span class="user-name">{{ conversation.customer.firstName }}</span>
                 </span>
@@ -44,7 +46,7 @@
                   [currentTabIndex]="currentTabIndex"
                   [changeDetecter]="conversation.messages[conversation.messages.length - 1]"
                   [conversation]="conversation"
-                  [customerBar]="barExpand"
+                  [customerBar]="barExpand"  (isWrapUpTimer)="isWrapUp($event)"
                 ></app-interactions>
               </div>
             </div>
