@@ -33,7 +33,7 @@ export class InteractionsComponent implements OnInit {
   @ViewChild(NgScrollbar, { static: true }) scrollbarRef: NgScrollbar;
   @ViewChild("media", { static: false }) media: ElementRef;
   @ViewChild("mainScreen", { static: false }) elementViewSuggestions: ElementRef;
-  @Output() isWrapUpTimer = new EventEmitter<boolean>();
+  // @Output() isWrapUpTimer = new EventEmitter<boolean>();
 
   dispayVideoPIP = true;
   scrollSubscriber;
@@ -89,7 +89,7 @@ export class InteractionsComponent implements OnInit {
   fbPostId: string = null;
   fbCommentId: string = null;
   conversationSettings: any;
-  // isWrapUpTimer = false;
+  isWrapUpTimer: boolean = false;;
   constructor(
     private _sharedService: sharedService,
     public _cacheService: cacheService,
@@ -102,7 +102,9 @@ export class InteractionsComponent implements OnInit {
     private snackBar: MatSnackBar
   ) {}
   ngOnInit() {
-    this.isWrapUpTimer.emit(true);
+    this.isWrapUpTimer = this._socketService.isWrapUpTimer
+    // this.isWrapUpTimer.emit(true);
+    // this.wrapTime = this.isWrapUpTimer;
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
@@ -280,7 +282,7 @@ export class InteractionsComponent implements OnInit {
       if(this.isWrapUpTimer){
           const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             width: "490px",
-            panelClass: "confirm-dialog",
+            panelClass: "confirm-dialog-wrapup",
             data: { header: "Leave Conversation", message: `Are you sure you want to leave conversation with ‘John Taylor’?` }
           });
           dialogRef.afterClosed().subscribe((result) => {

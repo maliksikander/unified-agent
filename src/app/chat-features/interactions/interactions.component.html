@@ -1045,6 +1045,45 @@
                             <p>
                               <span
                                 [innerHTML]="conversationSettings.isMessageFormattingEnabled ? (message.body.markdownText | linkify | ibsformat) : (message.body.markdownText)"></span>
+                            </p>
+
+                            <div class="shared-url shared-card-content video-player p-0" *ngIf="message.body.commentType == 'video'">
+                              <div class="media-main">
+                                <vg-player>
+                                  <vg-overlay-play></vg-overlay-play>
+                                  <vg-buffering></vg-buffering>
+                                  <vg-controls [vgAutohide]="true" [vgAutohideTime]="3">
+                                    <vg-play-pause></vg-play-pause>
+                                    <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+                                    <vg-volume></vg-volume>
+                                    <vg-mute></vg-mute>
+                                    <vg-fullscreen></vg-fullscreen>
+                                    <mat-icon *ngIf="dispayVideoPIP" (click)="videoPIP(message.id)">picture_in_picture_alt
+                                    </mat-icon>
+                                    <vg-scrub-bar>
+                                      <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                                      <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+                                    </vg-scrub-bar>
+                                    <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+                                  </vg-controls>
+                                  <video #media [vgMedia]="media" id="{{ message.id }}" preload="auto">
+                                    <source [src]="message.body.attachment" />
+                                  </video>
+                                </vg-player>
+                              </div>
+                            </div>
+
+
+
+                            <p>
+                              <a style="cursor: pointer" *ngIf="message.body.attachment?.mediaUrl.length> 0"
+                                 (click)="filePreviewOpener('', message.body.caption, 'image')"
+                                 class="display-file display-image" [ngClass]="{'pt-2' : message.body.markdownText.length > 0}">
+                                  <img
+                                    src="assets/images/steve-quote.png"
+                                    alt="image"/>
+                                                    <!--                                {{quotedMessage.body.caption}}-->
+                                </a>
                               <!-- <span
                                 *ngIf="fullPostView && con.body.mainPostData"
                                 [innerHTML]="con.body.mainPostData.postedContent.postedSummery.postedText | linkify | ibsformat"

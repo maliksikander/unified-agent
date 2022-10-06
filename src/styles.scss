@@ -1890,7 +1890,7 @@ ul.customer-labels {
 
 
 .chat-fail-snackbar {
-  background: #f55337 !important;
+  background: #AF2D2D !important;
   min-width: 340px;
   padding: 10px 16px !important;
 
@@ -3253,4 +3253,15 @@ em{
   font-family: "Roboto Mono",monospace;
   border-radius: 2px;
   padding: 2px 5px;
+}
+
+//Confirmation dialog for wrap-up timer
+
+.confirm-dialog-wrapup{
+  .confirmation-header, .confirm-btn{
+    background: $blue-text-color !important;
+  }
+
+
+
 }
