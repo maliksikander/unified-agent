@@ -516,6 +516,7 @@
               max-width: inherit;
               max-height: 200px;
               min-width: 165px;
+
             }
           }
         }
@@ -2577,6 +2578,10 @@ background: #f6892c;
       max-width: inherit;
       max-height: 200px;
       min-width: 165px;
+
+      &.full-post-media{
+        max-height: 450px;
+      }
     }
   }
   .post-main-area{
@@ -2592,7 +2597,9 @@ background: #f6892c;
   }
 
   &.full-post-view {
-
+.comment-controlls{
+  display: none !important;
+}
     .active-channel{
       display: none !important;
     }

@@ -201,7 +201,7 @@
                     : ''
                 }} {{ message.header.status == 'sending' ? 'low-opacity' : '' }}  {{ message.body.type | lowercase }} {{
                   message.header.replyToMessageId != null ? 'quoted-message-main' : ''
-                }} {{ message.header.sender.type | lowercase }}"
+                }} {{ message.header.sender.type | lowercase }} {{(fullPostView && message.body.mainPostData) ? 'full-post-view': ''}} "
                 [ngClass]="(message.header.sender.type | lowercase) == 'customer' ? 'user-message slide-in-left' : 'agent-message '">
                 <div class="profile-pic">
                   <div [ngClass]="{ 'wrapup-active-icon': message?.body?.type == 'WRAPUP' }"
@@ -982,20 +982,20 @@
                     <div class="post-message-main"
                       *ngIf="(message.body.type | lowercase) == 'comment' && (message.header.sender.type | lowercase) == 'customer'">
                       <div class="post-main-area">
-                        <!-- <div class="post-message-header" *ngIf="fullPostView && con.body.mainPostData">
+                         <div class="post-message-header" *ngIf="fullPostView && message.body.mainPostData">
                           <div class="post-by">
                             <strong
-                              >{{ con.body.mainPostData.postedContent.postedBy }} <span>posted on</span>
-                              {{ con.body.mainPostData.postedContent.postedOn }}
+                              >{{ message.body.mainPostData.postedContent.postedBy }} <span>posted on</span>
+                              {{ message.body.mainPostData.postedContent.postedOn }}
                             </strong>
                           </div>
                           <div class="post-info">
                             <span><img src="assets/images/facebook-colored.svg" /> Expertflow</span>
                             <mat-icon (click)="fullPostView = false">close</mat-icon>
                           </div>
-                        </div> -->
+                        </div>
                         <!-- *ngIf="conversation.activeChannelSessions | checkActiveChannelSession: 'FACEBOOK' as result" -->
-                        <div *ngIf="!message.isDeleted && !message.isHidden" class="comment-controlls post-controlls">
+                        <div *ngIf="(!message.isDeleted && !message.isHidden)" class="comment-controlls post-controlls">
                           <ul>
                             <li>
                               <mat-icon (click)="replyToFbComment(message);">
@@ -1019,7 +1019,7 @@
                                   <mat-icon (click)="fbCommentAction(message,'hide')">
                                     visibility_off</mat-icon>
                                 </li>
-                                <!-- <li class="view-post" (click)="fullPostView = true; viewFullCommentAction = false">View full post</li> -->
+                                 <li class="view-post" (click)="fullPostView = true; viewFullCommentAction = false">View full post</li>
                               </ul>
                             </li>
                           </ul>
@@ -1029,19 +1029,22 @@
                               src="assets/images/arrow-left.svg" /></span>
                         </div>
 
-                        <!-- <div class="post-full-view" *ngIf="fullPostView && con.body.mainPostData">
+
+                         <div class="post-full-view" *ngIf="fullPostView && message.body.mainPostData">
                           <div class="main-post-content">
                             <div class="post-header">
                               <span class="post-page-showcase"><img src="assets/images/user-picture/page-avatar.png" /></span>
                               <span class="post-page-info"
-                                ><strong>{{ con.body.mainPostData.postedContent.postedOn }}</strong> <small>January 26, 2021 06:30PM</small></span
+                                ><strong>{{ message.body.mainPostData?.postedContent?.postedOn }}</strong> <small>January 26, 2021 06:30PM</small></span
                               >
                             </div>
                           </div>
-                        </div> -->
+                        </div>
 
                         <div class="main-comment">
                           <div class="post-inner-content">
+
+
                             <p>
                               <span
                                 [innerHTML]="conversationSettings.isMessageFormattingEnabled ? (message.body.markdownText | linkify | ibsformat) : (message.body.markdownText)"></span>
@@ -1073,14 +1076,12 @@
                               </div>
                             </div>
 
-
-
                             <p>
                               <a style="cursor: pointer" *ngIf="message.body.attachment?.mediaUrl.length> 0"
                                  (click)="filePreviewOpener('', message.body.caption, 'image')"
                                  class="display-file display-image" [ngClass]="{'pt-2' : message.body.markdownText.length > 0}">
-                                  <img
-                                    src="assets/images/steve-quote.png"
+                                  <img class="full-post-media"
+                                    src="assets/images/{{fullPostView &&  message.body.mainPostData ? 'user-picture/banner-image.png' : 'steve-quote.png'}}"
                                     alt="image"/>
                                                     <!--                                {{quotedMessage.body.caption}}-->
                                 </a>
@@ -1091,56 +1092,61 @@
                             </p>
                           </div>
                         </div>
-                        <!-- <div class="post-sub-comments-area"> -->
-                        <!-- <div class="total-comment-count">
+                        <div class="post-sub-comments-area" *ngIf="fullPostView && message.body?.mainPostData">
+                          <div class="total-comment-count">
                             <span><mat-icon>chat_bubble_outline</mat-icon>16 </span>
                           </div>
 
-                          <div class="post-sub-comments" *ngFor="let postComments of con.body.mainPostData.postComments">
+                          <div class="post-sub-comments"
+                               *ngFor="let postComments of message.body?.mainPostData?.postComments">
                             <div class="sub-profile-picture">
-                              <img [src]="postComments.userProfilePicture" />
+                              <img [src]="postComments.userProfilePicture">
                             </div>
 
                             <div class="sub-comment">
-                              <strong>{{ postComments.commentBy }}</strong>
-                              <p>{{ postComments.markdownText }}</p>
+                              <strong>{{postComments.commentBy}}</strong>
+                              <p>{{postComments.markdownText}}</p>
                               <div class="message-footer">
                                 <span><mat-icon>chat_bubble_outline</mat-icon>4 </span>
                                 <span class="message-stamp">
-                                  <span class="chat-time">{{ postComments.postedTime }}</span>
-                                </span>
+                                   <span class="chat-time">{{postComments.postedTime}}</span>
+                                  </span>
                               </div>
+
                             </div>
 
-                            <div class="post-sub-comments post-nested-comments" *ngFor="let nestedComments of postComments.linkedReplies">
+                            <div class="post-sub-comments post-nested-comments"
+                                 *ngFor="let nestedComments of postComments.linkedReplies">
                               <div class="sub-profile-picture">
-                                <img [src]="nestedComments.userProfilePicture" />
+                                <img [src]="nestedComments.userProfilePicture">
                               </div>
 
                               <div class="sub-comment">
-                                <strong>{{ nestedComments.commentBy }}</strong>
-                                <p>{{ nestedComments.markdownText }}</p>
+                                <strong>{{nestedComments.commentBy}}</strong>
+                                <p>{{nestedComments.markdownText}}</p>
 
                                 <div class="message-footer">
                                   <span><mat-icon>chat_bubble_outline</mat-icon>4 </span>
                                   <span class="message-stamp">
-                                    <span class="chat-time">{{ con.body.commentDate }}</span>
+                                   <span class="chat-time">{{message.body.commentDate}}</span>
                                   </span>
                                 </div>
                               </div>
                             </div>
+
+
                           </div>
 
-                          <div class="post-sub-comments original-comment" *ngIf="fullPostView && con.body.mainPostData">
+                          <div class="post-sub-comments original-comment"
+                               *ngIf="fullPostView && message.body.mainPostData">
                             <div class="sub-profile-picture">
-                              <img [src]="con.body.userProfilePicture" />
+                              <img [src]="message.body.userProfilePicture">
                             </div>
-
                             <div class="sub-comment">
                               <div class="comment-controlls sub-controlls" *ngIf="fullPostView">
                                 <ul>
                                   <li>
-                                    <mat-icon>chat_bubble_outline </mat-icon>
+                                    <mat-icon>chat_bubble_outline</mat-icon>
                                   </li>
                                   <li>
                                     <mat-icon>thumb_up</mat-icon>
@@ -1148,34 +1154,41 @@
                                   <li class="view-all-options">
                                     <ul *ngIf="viewFullCommentAction">
                                       <li>
-                                        <mat-icon>delete </mat-icon>
+                                        <mat-icon>delete</mat-icon>
                                       </li>
                                       <li>
-                                        <mat-icon>person_off </mat-icon>
+                                        <mat-icon>person_off</mat-icon>
                                       </li>
                                       <li>
-                                        <mat-icon>visibility_off </mat-icon>
+                                        <mat-icon>visibility_off</mat-icon>
                                       </li>
                                     </ul>
                                   </li>
                                 </ul>
-                                <span
-                                  class="view-all-options-icon {{ viewFullCommentAction ? 'arrow-forward' : 'arrow-back' }}"
-                                  (click)="viewFullCommentAction = !viewFullCommentAction"
-                                  ><img src="assets/images/arrow-left.svg"
-                                /></span>
+                                <span class="view-all-options-icon {{viewFullCommentAction ? 'arrow-forward' : 'arrow-back'}}"
+                                      (click)="viewFullCommentAction = !viewFullCommentAction"><img
+                                  src="assets/images/arrow-left.svg"></span>
                               </div>
-                              <strong>{{ con.body.commentedBy }}</strong>
-                              <p [innerHTML]="con.body.markdownText | linkify | ibsformat"></p>
+                              <strong>{{message.body.commentedBy}}</strong>
+                              <p [innerHTML]="message.body.markdownText | linkify | ibsformat"></p>
+                              <a style="cursor: pointer"
+                                 (click)="filePreviewOpener('', message.body.caption, 'image')"
+                                 class="display-file display-image" [ngClass]="{'pt-2' : message.body.markdownText.length > 0}">
+                                <img
+                                  src="assets/images/steve-quote.png"
+                                  alt="image"/>
+                                <!--                                {{quotedMessage.body.caption}}-->
+                              </a>
                               <div class="message-footer">
-                                <span><mat-icon>chat_bubble_outline</mat-icon> {{ con.body.linkedReplies }} </span>
+                              <span><mat-icon>chat_bubble_outline</mat-icon>
+                                {{message.body.linkedReplies}} </span>
                                 <span class="message-stamp">
-                                  <span class="chat-time">{{ con.body.commentDate }}</span>
-                                </span>
+                                   <span class="chat-time">{{message.body.commentDate}}</span>
+                                  </span>
                               </div>
                             </div>
-                          </div> -->
-                        <!-- </div> -->
+                          </div>
+                        </div>
 
                         <div class="message-footer">
                           <span>
