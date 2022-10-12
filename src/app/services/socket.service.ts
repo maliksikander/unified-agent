@@ -14,7 +14,6 @@ import { httpService } from "./http.service";
 import { v4 as uuidv4 } from "uuid";
 import { AuthService } from "./auth.service";
 import { TopicParticipant } from "../models/User/Interfaces";
-import { E } from "@angular/cdk/keycodes";
 const mockTopicData: any = require("../mocks/topicData.json");
 
 @Injectable({

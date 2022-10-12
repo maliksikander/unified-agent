@@ -33,12 +33,14 @@
 
             </ng-container>
             <li class="list-group-item">
-              <button mat-icon-button [matMenuTriggerFor]="ParticipantsList" matTooltip="Participants" aria-label="Participants">
+              <button mat-icon-button [matMenuTriggerFor]="ParticipantsList" matTooltip="Participants"
+                aria-label="Participants">
                 <mat-icon>group</mat-icon>
               </button>
             </li>
             <li class="list-group-item">
-              <button mat-icon-button [matMenuTriggerFor]="ConsultTransferConversation" (click)="isTransfer = false;  isConsult = true" matTooltip="Consult Chat" aria-label="Consult Chat">
+              <button mat-icon-button [matMenuTriggerFor]="ConsultTransferConversation"
+                (click)="isTransfer = false;  isConsult = true" matTooltip="Agent Assistance" aria-label="Consult Chat">
                 <mat-icon>person_add</mat-icon>
               </button>
             </li>
@@ -52,7 +54,8 @@
             <div class="chat-transfer-main" (click)="$event.stopPropagation()">
               <span class="transfer-heading">Consult / Transfer / Conference</span>
               <div class="search-wrapper">
-                <input type="text" placeholder="search..." (click)="$event.stopPropagation()" [(ngModel)]="ConsultSearch">
+                <input type="text" placeholder="search..." (click)="$event.stopPropagation()"
+                  [(ngModel)]="ConsultSearch">
                 <mat-icon>search</mat-icon>
               </div>
 
@@ -65,18 +68,22 @@
                       {{option.team}} ({{option.availableAgents.length}})
                       <!--                      <span class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, option)">Consult</span>-->
                       <div class="consult-action-main">
-                        <span class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, option, 'Consult to Queue')"><img src="assets/images/consult-colored.svg" alt="consult"/> </span>
-                        <span class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, option, 'Transfer to Queue')"><img src="assets/images/transfer-colored.svg" alt="transfer"/></span>
+                        <span matTooltip="Queue Consult" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, option, 'Consult to Queue')"><img src="assets/images/consult-colored.svg" alt="consult"/> </span>
+                        <span matTooltip="Queue Transfer" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, option, 'Transfer to Queue')"><img src="assets/images/transfer-colored.svg" alt="transfer"/></span>
                       </div>
                     </mat-panel-title>
                   </mat-expansion-panel-header>
-                  <input type="text" placeholder="search agent" (click)="$event.stopPropagation()" [(ngModel)]="option.i">
-                  <button mat-menu-item *ngFor="let list of option.availableAgents | LockFilter:option.i" [ngClass]="{'last-team': list.activeCount}" [disabled]="list.isDisabled" >
+                  <input type="text" placeholder="search agent" (click)="$event.stopPropagation()"
+                    [(ngModel)]="option.i">
+                  <button mat-menu-item *ngFor="let list of option.availableAgents | LockFilter:option.i"
+                    [ngClass]="{'last-team': list.activeCount}" [disabled]="list.isDisabled">
                     {{list.name}}
                     <div class="consult-action-main">
-                      <span class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, list, 'Consult')"><img src="assets/images/consult-colored.svg" alt="consult"/> </span>
-                      <span class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, list, 'Transfer')"><img src="assets/images/transfer-colored.svg" alt="transfer"/></span>
-                      <span class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, list, 'Conference')"><img src="assets/images/conference-colored.svg" alt="conference"/></span>
+                      <span matTooltip="Agent Consult" class="transfer-selection"
+                        (click)="agentAssistanceRequest(chatConsultTemplate, list, 'Consult')"><img
+                          src="assets/images/consult-colored.svg" alt="consult" /> </span>
+                      <span matTooltip="Direct Transfer" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, list, 'Transfer')"><img src="assets/images/transfer-colored.svg" alt="transfer"/></span>
+                      <span matTooltip="Conference" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, list, 'Conference')"><img src="assets/images/conference-colored.svg" alt="conference"/></span>
                     </div>
 
                   </button>
@@ -95,16 +102,16 @@
               <h5 class="transfer-heading participants-heading">Participants</h5>
               <button mat-menu-item>
 
-                  <span class="agent-detail">
+                <span class="agent-detail">
                   <span>John Taylor</span>
-                <small class="joined-customer">Customer</small>
+                  <small class="joined-customer">Customer</small>
                 </span>
               </button>
               <button mat-menu-item class="current-primary-user">
-                  <span class="agent-detail">
+                <span class="agent-detail">
                   <span>Adam Miller</span>
-                <small class="agent-roll">Primary Agent</small>
-                 <small>(Technical)</small>
+                  <small class="agent-roll">Primary Agent</small>
+                  <small>(Technical)</small>
                 </span>
               </button>
               <span class="transfer-heading">Consultants</span>
@@ -115,8 +122,8 @@
               <button mat-menu-item *ngFor="let option of consultantsList">
                 <span class="agent-detail">
                   <span>{{option.name}}</span>
-                <small class="agent-roll">{{option.role}}</small>
-                                    <small *ngIf="option.team">({{option.team}})</small>
+                  <small class="agent-roll">{{option.role}}</small>
+                  <small *ngIf="option.team">({{option.team}})</small>
                 </span>
 
                 <!--                <span class="participants-action">-->
@@ -125,8 +132,12 @@
                 <!--                </span>-->
 
                 <div class="consult-action-main">
-                  <span class="transfer-selection" (click)="ConsultTransfer('A1 has transferred John Taylor\'s request to you.', '')"><img src="assets/images/transfer-colored.svg" alt="transfer"/></span>
-                  <span class="transfer-selection" (click)="ConsultTransfer('A1 has added you to the conference with John Taylor', ''); whisper = false"><img src="assets/images/conference-colored.svg" alt="conference"/> </span>
+                  <span matTooltip="Consult Transfer" class="transfer-selection"
+                    (click)="consultTransferORConferenceRequest(option,'Transfer')"><img
+                      src="assets/images/transfer-colored.svg" alt="consult_transfer" /></span>
+                  <span matTooltip="Consult Conference" class="transfer-selection"
+                    (click)="consultTransferORConferenceRequest(option,'Conference'); whisper = false"><img
+                      src="assets/images/conference-colored.svg" alt="consult_conference" /> </span>
                 </div>
               </button>
             </div>
@@ -1348,8 +1359,10 @@
 
 
       <div class="whisper-selection" *ngIf="_sharedService.consultRequestAccept == true">
-        <button (click)="whisper = false" [ngClass]="{'customer-select': !whisper}" class="customer-mode message-mode" mat-button>Adam</button>
-        <button (click)="whisper = true"  [ngClass]="{'whisper-select': whisper}" class="whisper-mode message-mode" mat-button>Whisper</button>
+        <button (click)="whisper = false" [ngClass]="{'customer-select': !whisper}" class="customer-mode message-mode"
+          mat-button>Adam</button>
+        <button (click)="whisper = true" [ngClass]="{'whisper-select': whisper}" class="whisper-mode message-mode"
+          mat-button>Whisper</button>
       </div>
       <div class="message-composer">
         <form class="reply-form" [ngClass]="{'whisper-mode': whisper && _sharedService.consultRequestAccept == true}">
@@ -1569,7 +1582,8 @@
 <ng-template #chatConsultTemplate>
   <div class="note-dialog-main transfer-dialog">
     <div class="dialog-header">
-      <h4 mat-dialog-title>{{requestAction ? requestAction + ' Request' : chatConsultTo.team && isTransfer ? 'Transfer to Queue' : 'Conversation Transfer'}}
+      <h4 mat-dialog-title>{{requestAction ? requestAction + ' Request' : requestedAgentForAssistance.team && isTransfer
+        ? 'Transfer to Queue' : 'Conversation Transfer'}}
         <button mat-button mat-dialog-close>
           <mat-icon>close</mat-icon>
         </button>
@@ -1578,16 +1592,17 @@
     <div class="dialog-main-content">
       <div class="row m-0">
         <div class="transfer-to text-center col">
-<!--          <div class="support-showcase">-->
-<!--            <img src="assets/images/{{chatConsultTo.team ? 'technical-support.svg': 'user-light.svg'}}">-->
-<!--          </div>-->
-          <h3>{{chatConsultTo.name ? chatConsultTo.name : chatConsultTo.team}}</h3>
-          <p *ngIf="chatConsultTo.team" class="consult-team">(6 agents available)</p>
-          <p *ngIf="chatConsultTo.currentTeam && chatConsultTo.team">({{chatConsultTo.currentTeam}})</p>
+          <!--          <div class="support-showcase">-->
+          <!--            <img src="assets/images/{{chatConsultTo.team ? 'technical-support.svg': 'user-light.svg'}}">-->
+          <!--          </div>-->
+          <h3>{{requestedAgentForAssistance.name ? requestedAgentForAssistance.name : chatConsultTo.team}}</h3>
+          <p *ngIf="requestedAgentForAssistance.team" class="consult-team">(6 agents available)</p>
+          <p *ngIf="requestedAgentForAssistance.currentTeam && requestedAgentForAssistance.team">
+            ({{requestedAgentForAssistance.currentTeam}})</p>
         </div>
         <div class="note-area col-md-12">
           <h4>Message</h4>
-          <textarea rows="5"></textarea>
+          <textarea [(ngModel)]="assistanceRequestNote" rows="5"></textarea>
         </div>
       </div>
     </div>
@@ -1595,11 +1610,11 @@
     <div class="action-trigger text-right">
       <button mat-button mat-dialog-close class="close-btn">Cancel</button>
       <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial
-              (click)="consultRequest(chatConsultTo.name, '', requestAction)">{{requestAction}}
+        (click)="consultRequest('')">{{requestAction}}
       </button>
-<!--      <button mat-button *ngIf="isTransfer" [mat-dialog-close]="true" class="success-btn" cdkFocusInitial-->
-<!--              (click)="transferRequest(chatConsultTo.name, ' ')">Transfer-->
-<!--      </button>-->
+      <!--      <button mat-button *ngIf="isTransfer" [mat-dialog-close]="true" class="success-btn" cdkFocusInitial-->
+      <!--              (click)="transferRequest(chatConsultTo.name, ' ')">Transfer-->
+      <!--      </button>-->
     </div>
   </div>
 </ng-template>
