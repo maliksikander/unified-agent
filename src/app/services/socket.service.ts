@@ -14,7 +14,7 @@ import { httpService } from "./http.service";
 import { v4 as uuidv4 } from "uuid";
 import { AuthService } from "./auth.service";
 import { TopicParticipant } from "../models/User/Interfaces";
-const mockTopicData: any = require("../mocks/topicData.json");
+//const mockTopicData: any = require("../mocks/topicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -334,6 +334,10 @@ export class socketService {
         this.handleAgentSubscription(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
         this.handleAgentSubscription(cimEvent, conversationId);
+      } else if (cimEvent.name.toLowerCase() == "task_enqueued") {
+        this.handleTaskEnqueuedEvent(cimEvent, conversationId);
+      } else if (cimEvent.name.toLowerCase() == "no_agent_available") {
+        this.handleNoAgentEvent(cimEvent, conversationId);
       }
     } else {
       this._snackbarService.open("Unable to process event, unsubscribing...", "err");
@@ -393,7 +397,7 @@ export class socketService {
           event.data.header["status"] = "sent";
           conversation.messages.push(event.data);
         }
-      } else if (["channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())) {
+      } else if (["task_enqueued", "no_agent_available", "channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())) {
         let message = this.createSystemNotificationMessage(event);
         conversation.messages.push(message);
       }
@@ -687,6 +691,30 @@ export class socketService {
       } else {
         console.error("channelSessionId not found to removed");
       }
+    }
+  }
+
+  handleTaskEnqueuedEvent(cimEvent, conversationId) {
+
+    let conversation = this.conversations.find((e) => {
+      return e.conversationId == conversationId;
+    });
+
+    if (conversation) {
+      let message = this.createSystemNotificationMessage(cimEvent);
+      conversation.messages.push(message);
+    }
+
+  }
+
+  handleNoAgentEvent(cimEvent, conversationId) {
+    let conversation = this.conversations.find((e) => {
+      return e.conversationId == conversationId;
+    });
+
+    if (conversation) {
+      let message = this.createSystemNotificationMessage(cimEvent);
+      conversation.messages.push(message);
     }
   }
 
@@ -1099,6 +1127,43 @@ export class socketService {
     } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
       message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
       message.body.markdownText = "left the conversation";
+    } else if (cimEvent.name.toLowerCase() == "task_enqueued") {
+      let mode;
+      if (cimEvent.data.task.type.mode.toLowerCase() == "agent") {
+        mode = "Agent";
+      } else if (cimEvent.data.task.type.mode.toLowerCase() == "queue") {
+        mode = "Queue";
+      }
+      if (cimEvent.data.task.type.direction == "DIRECT_TRANSFER") {
+        let string = mode + " transfer request has been placed by " + cimEvent.data.task.type.metadata.requestedBy;
+        message.body["displayText"] = "";
+        message.body.markdownText = string;
+      } else if (cimEvent.data.task.type.direction == "DIRECT_CONFERENCE") {
+        let string = mode + " conference request has been placed by " + cimEvent.data.task.type.metadata.requestedBy;
+        message.body["displayText"] = "";
+        message.body.markdownText = string;
+      }
+    } else if (cimEvent.name.toLowerCase() == "no_agent_available") {
+
+      let mode;
+      let direction;
+
+      if (cimEvent.data.requestType.mode.toLowerCase() == "agent") {
+        mode = "Agent";
+      } else if (cimEvent.data.requestType.mode.toLowerCase() == "queue") {
+        mode = "Queue";
+      }
+
+      if (cimEvent.data.requestType.direction.toLowerCase() == "direct_transfer") {
+        direction = "transfer";
+      } else if (cimEvent.data.requestType.direction.toLowerCase() == "direct_conference") {
+        direction = "conference";
+      }
+
+      let string = "No agent is available for " + mode + " " + direction;
+      message.body["displayText"] = "";
+      message.body.markdownText = string;
+
     }
 
     return message;
