@@ -41,7 +41,7 @@ export class socketService {
     private _httpService: httpService,
     private _authService: AuthService
   ) {
-    // this.onTopicData(mockTopicData, "12345","");
+    // this.onTopicData(mockTopicData, "12345", "");
   }
 
   connectToSocket() {
@@ -81,12 +81,12 @@ export class socketService {
         } else {
           this._snackbarService.open(err.data && err.data.content ? err.data.content.msg : "unable to connect to chat", "err");
         }
-      } catch (err) {}
+      } catch (err) { }
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -118,7 +118,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -165,15 +165,13 @@ export class socketService {
       try {
         this.onCimEventHandler(JSON.parse(res.cimEvent), res.conversationId);
       } catch (err) {
-        console.log("error on onCimEvent ==>" + err);
         console.error("error on onCimEvent ==>" + err);
-        console.log("error on onCimEvent ==>" + err);
         // If got any error while receiving cimEvent then simply unsubscribe to the topic
-        this._snackbarService.open("Unable to process event, unsubscribing...", "err");
-        this.emit("topicUnsubscription", {
-          conversationId: res.conversationId,
-          agentId: this._cacheService.agent.id
-        });
+        this._snackbarService.open("A Malfunction event", "err");
+        // this.emit("topicUnsubscription", {
+        //   conversationId: res.conversationId,
+        //   agentId: this._cacheService.agent.id
+        // });
       }
     });
 
@@ -197,13 +195,14 @@ export class socketService {
 
     this.socket.on("topicUnsubscription", (res: any) => {
       console.log("topicUnsubscription", res);
+      if (res.reason.toUpperCase() != "UNSUBSCRIBED") {
+
+        this._snackbarService.open("Conversation is closed due to " + res.reason, "err");
+      }
+
       this.removeConversation(res.conversationId);
     });
 
-    this.socket.on("topicClosed", (res: any) => {
-      console.log("topicClosed", res);
-      this.changeTopicStateToClose(res.conversationId);
-    });
 
     this.socket.on("socketSessionRemoved", (res: any) => {
       console.log("socketSessionRemoved", res);
@@ -250,7 +249,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) {}
+    } catch (err) { }
   }
 
   listen(eventName: string) {
@@ -349,7 +348,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._snackbarService.open("you are logged In from another session", "err");
     alert("you are logged in from another session");
@@ -370,14 +369,14 @@ export class socketService {
       topicParticipant: topicData.topicParticipant ? topicData.topicParticipant : "",
       firstChannelSession: topicData.channelSession ? topicData.channelSession : "",
       ciscoDialogId: this.ciscoDialogId,
-      messageComposerState: false
+      messageComposerState: false,
+      agentParticipants: [],
     };
 
     // feed the conversation with type "messages"
     let topicEvents = topicData.topicEvents ? topicData.topicEvents : [];
 
     // feed the conversation with type "messages"
-    console.log("topicEvents", topicEvents);
     topicEvents.forEach((event, i) => {
       if (
         event.name.toLowerCase() == "agent_message" ||
@@ -445,6 +444,12 @@ export class socketService {
         if (repliedChannelSession) {
           repliedChannelSession["isChecked"] = true;
         }
+      } else if (e.type.toLowerCase() == "agent") {
+
+        if (e.participant.keycloakUser.id != conversation.topicParticipant.participant.keycloakUser.id) {
+          conversation.agentParticipants.push(e);
+        }
+
       }
     });
 
@@ -732,24 +737,28 @@ export class socketService {
     });
 
     if (conversation) {
+
+      if (cimEvent.name.toLowerCase() == "agent_subscribed") {
+
+        if (cimEvent.data.agentParticipant.participant.keycloakUser.id != conversation.topicParticipant.participant.keycloakUser.id) {
+          conversation.agentParticipants.push(cimEvent.data.agentParticipant);
+          conversation.agentParticipants = conversation.agentParticipants.concat([]);
+        }
+      } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
+
+        conversation.agentParticipants = conversation.agentParticipants.filter((participant) => {
+
+          return participant.participant.keycloakUser.id != cimEvent.data.agentParticipant.participant.keycloakUser.id;
+        });
+
+      }
+
       let message = this.createSystemNotificationMessage(cimEvent);
+
       conversation.messages.push(message);
     }
   }
 
-  changeTopicStateToClose(conversationId) {
-    // // find the conversation
-    // let conversation = this.conversations.find((e) => {
-    //   return e.conversationId == conversationId;
-    // });
-    // // change the conversation state to "CLOSED"
-    // conversation.state = "CLOSED";
-    this._snackbarService.open("A conversation is removed", "err");
-    this.removeConversation(conversationId);
-
-    // // in case of pull mode request, the conversationId is the id of that request
-    // this._pullModeService.deleteRequestByRequestId(conversationId);
-  }
 
   onSocketErrors(res) {
     this._snackbarService.open("on " + res.task + " " + res.msg, "err");
@@ -786,7 +795,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
@@ -1085,10 +1094,10 @@ export class socketService {
       message.body.markdownText = "session ended";
     }
     if (cimEvent.name.toLowerCase() == "agent_subscribed") {
-      message.body["displayText"] = cimEvent.data.ccUser.keycloakUser.username;
+      message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
       message.body.markdownText = "has joined the conversation";
     } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
-      message.body["displayText"] = cimEvent.data.ccUser.keycloakUser.username;
+      message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
       message.body.markdownText = "left the conversation";
     }
 

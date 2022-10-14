@@ -721,20 +721,6 @@ export class InteractionsComponent implements OnInit {
     }
   ];
 
-  consultantsList = [
-    {
-      name: "Doy Ortelt",
-      role: "supervisor",
-      team: "marketing"
-    },
-    {
-      name: "Ev Gayforth",
-      role: "supervisor",
-      team: "technical",
-      isWhisper: true
-    }
-  ];
-
   queueSearch = "";
 
   agentAssistanceRequest(templateRef, e, action): void {
