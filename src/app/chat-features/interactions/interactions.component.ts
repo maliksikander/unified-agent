@@ -73,7 +73,7 @@ export class InteractionsComponent implements OnInit {
   isConnected = true;
   popTitle = "Notes";
   expanedHeight = 0;
-  ConsultSearch = "";
+
   message = "";
   convers: any[];
   ringing = false;
@@ -700,117 +700,27 @@ export class InteractionsComponent implements OnInit {
     }, 40);
   }
 
-  userList = [
+  queueList = [
     {
-      team: "Technical Support",
-      availableAgents: [
-        {
-          name: "Ev Gayforth",
-          role: "supervisor",
-          currentTeam: "Technical Support"
-        },
-        {
-          name: "Doy Ortelt",
-          role: "supervisor",
-          currentTeam: "Technical Support",
-          isDisabled: true
-        },
-        {
-          name: "stanler",
-          role: "supervisor",
-          currentTeam: "Technical Support"
-        },
-        {
-          name: "Ortelt",
-          role: "supervisor",
-          currentTeam: "Technical Support"
-        },
-        {
-          name: "Joe Stanler",
-          role: "supervisor",
-          currentTeam: "Technical Support",
-          isDisabled: true
-        }
-      ]
+      queueId: "63452c2a2fa22f132bdc72bb",
+      queueName: "facebook",
+      totalAvailableAgents: 0,
+      availableAgents: []
     },
     {
-      team: "Customer Support",
-      availableAgents: [
-        {
-          name: "Ev Gayforth",
-          role: "supervisor",
-          currentTeam: "Customer Support"
-        },
-        {
-          name: "Doy Ortelt",
-          role: "supervisor",
-          currentTeam: "Customer Support",
-          isDisabled: true
-        },
-        {
-          name: "stanler",
-          role: "supervisor",
-          currentTeam: "Customer Support"
-        },
-        {
-          name: "Ev Gayforth",
-          role: "supervisor",
-          currentTeam: "Customer Support"
-        },
-        {
-          name: "Ortelt",
-          role: "supervisor",
-          currentTeam: "Customer Support"
-        },
-        {
-          name: "Joe Stanler",
-          role: "supervisor",
-          currentTeam: "Customer Support"
-        },
-        {
-          name: "Adam",
-          role: "supervisor",
-          currentTeam: "Customer Support"
-        }
-      ]
+      queueId: "633bfe7fadce8108c912d490",
+      queueName: "web queue",
+      totalAvailableAgents: 0,
+      availableAgents: []
     },
     {
-      team: "Marketing Support",
-      availableAgents: [
-        {
-          name: "Ev Gayforth",
-          role: "supervisor",
-          currentTeam: "Marketing Support"
-        },
-        {
-          name: "Doy Ortelt",
-          role: "supervisor",
-          currentTeam: "Marketing Support"
-        },
-        {
-          name: "stanler",
-          role: "supervisor",
-          currentTeam: "Marketing Support"
-        },
-        {
-          name: "Ev Gayforth",
-          role: "supervisor",
-          currentTeam: "Marketing Support",
-          isDisabled: true
-        },
-        {
-          name: "Ortelt",
-          role: "supervisor",
-          currentTeam: "Marketing Support"
-        },
-        {
-          name: "Joe Stanler",
-          role: "supervisor",
-          currentTeam: "Marketing Support"
-        }
-      ]
+      queueId: "633cc698adce8108c912d678",
+      queueName: "Ahmad Queue",
+      totalAvailableAgents: 0,
+      availableAgents: []
     }
   ];
+
   consultantsList = [
     {
       name: "Doy Ortelt",
@@ -824,6 +734,8 @@ export class InteractionsComponent implements OnInit {
       isWhisper: true
     }
   ];
+
+  queueSearch = "";
 
   agentAssistanceRequest(templateRef, e, action): void {
     try {
@@ -903,5 +815,22 @@ export class InteractionsComponent implements OnInit {
       verticalPosition: "bottom"
     });
     // }, 2000);
+  }
+
+
+  getAgentsInQueue() {
+    try {
+      this._httpService.getAgentsInQueue(this.conversation.conversationId).subscribe(
+        (res: any) => {
+          console.log("getting agents in queue res==>", res);
+          this.queueList = res;
+        },
+        (error) => {
+          this._sharedService.Interceptor(error.error, "err");
+        }
+      );
+    } catch (e) {
+      console.error("[getAgentsInQueue] Error :", e);
+    }
   }
 }

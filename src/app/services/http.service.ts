@@ -23,7 +23,8 @@ export class httpService {
       uploadFile: "/api/uploadFileStream",
       activities: "/customer-topics/customer",
       agentSetting: "/agentSetting",
-      forms: "/forms"
+      forms: "/forms",
+      agentInQueueList:"/precision-queues/available-agents"
     };
   }
 
@@ -350,4 +351,14 @@ export class httpService {
       })
     });
   }
+
+  getAgentsInQueue(conversationId): Observable<any> {
+    return this._httpClient.get<any>(`${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.agentInQueueList}&conversationId=${conversationId}`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+
 }

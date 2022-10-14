@@ -3306,3 +3306,9 @@ background: #f6892c;
     }
   }
 }
+
+.consultants-list{
+  .mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-title, .mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-description {
+    color: #000 !important;
+  }
+}

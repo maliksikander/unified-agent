@@ -40,7 +40,7 @@
             </li>
             <li class="list-group-item">
               <button mat-icon-button [matMenuTriggerFor]="ConsultTransferConversation"
-                (click)="isTransfer = false;  isConsult = true" matTooltip="Agent Assistance" aria-label="Consult Chat">
+                (click)="getAgentsInQueue()" matTooltip="Agent Assistance" aria-label="Consult Chat">
                 <mat-icon>person_add</mat-icon>
               </button>
             </li>
@@ -54,28 +54,29 @@
             <div class="chat-transfer-main" (click)="$event.stopPropagation()">
               <span class="transfer-heading">Consult / Transfer / Conference</span>
               <div class="search-wrapper">
-                <input type="text" placeholder="search..." (click)="$event.stopPropagation()"
-                  [(ngModel)]="ConsultSearch">
+                <input type="text" placeholder="Search Queue" (click)="$event.stopPropagation()"
+                  [(ngModel)]="queueSearch">
                 <mat-icon>search</mat-icon>
               </div>
 
 
 
               <mat-accordion>
-                <mat-expansion-panel class="consultants-list" *ngFor="let option of userList; let i = index ">
+                <mat-expansion-panel [disabled]="true" class="consultants-list" *ngFor="let queue of queueList | LockFilter: queueSearch; let i = index " >
                   <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
                     <mat-panel-title>
-                      {{option.team}} ({{option.availableAgents.length}})
+                      {{queue?.queueName}} ({{queue?.totalAvailableAgents}})
                       <!--                      <span class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, option)">Consult</span>-->
                       <div class="consult-action-main">
-                        <span matTooltip="Queue Consult" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, option, 'Consult to Queue')"><img src="assets/images/consult-colored.svg" alt="consult"/> </span>
-                        <span matTooltip="Queue Transfer" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, option, 'Transfer to Queue')"><img src="assets/images/transfer-colored.svg" alt="transfer"/></span>
+                        <!-- <span matTooltip="Queue Consult" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, option, 'Consult to Queue')"><img src="assets/images/consult-colored.svg" alt="consult"/> </span> -->
+                        <span matTooltip="Queue Transfer" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, queue, 'Transfer to Queue')"><img src="assets/images/transfer-colored.svg" alt="transfer"/></span>
+                        <span matTooltip="Queue Conference" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, list, 'Conference')"><img src="assets/images/conference-colored.svg" alt="conference"/></span>
                       </div>
                     </mat-panel-title>
                   </mat-expansion-panel-header>
-                  <input type="text" placeholder="search agent" (click)="$event.stopPropagation()"
-                    [(ngModel)]="option.i">
-                  <button mat-menu-item *ngFor="let list of option.availableAgents | LockFilter:option.i"
+                  <!-- <input type="text" placeholder="search agent" (click)="$event.stopPropagation()"
+                    [(ngModel)]="queue.i">
+                  <button mat-menu-item *ngFor="let list of queue?.totalAvailableAgents | LockFilter:option.i"
                     [ngClass]="{'last-team': list.activeCount}" [disabled]="list.isDisabled">
                     {{list.name}}
                     <div class="consult-action-main">
@@ -84,9 +85,9 @@
                           src="assets/images/consult-colored.svg" alt="consult" /> </span>
                       <span matTooltip="Direct Transfer" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, list, 'Transfer')"><img src="assets/images/transfer-colored.svg" alt="transfer"/></span>
                       <span matTooltip="Conference" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, list, 'Conference')"><img src="assets/images/conference-colored.svg" alt="conference"/></span>
-                    </div>
+                    </div> -->
 
-                  </button>
+                  <!-- </button> -->
                 </mat-expansion-panel>
               </mat-accordion>
 
@@ -132,12 +133,12 @@
                 <!--                </span>-->
 
                 <div class="consult-action-main">
-                  <span matTooltip="Consult Transfer" class="transfer-selection"
+                  <!-- <span matTooltip="Consult Transfer" class="transfer-selection"
                     (click)="consultTransferORConferenceRequest(option,'Transfer')"><img
                       src="assets/images/transfer-colored.svg" alt="consult_transfer" /></span>
                   <span matTooltip="Consult Conference" class="transfer-selection"
                     (click)="consultTransferORConferenceRequest(option,'Conference'); whisper = false"><img
-                      src="assets/images/conference-colored.svg" alt="consult_conference" /> </span>
+                      src="assets/images/conference-colored.svg" alt="consult_conference" /> </span> -->
                 </div>
               </button>
             </div>
