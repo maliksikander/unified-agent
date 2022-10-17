@@ -35,7 +35,7 @@ export class InteractionsComponent implements OnInit {
   @ViewChild("mainScreen", { static: false }) elementViewSuggestions: ElementRef;
   @ViewChild("ConsultTransferTrigger", { static: false }) ConsultTransferTrigger: any;
 
-  whisper = true;
+  whisper = false;
   dispayVideoPIP = true;
   scrollSubscriber;
   labels: Array<any> = [];
@@ -44,8 +44,8 @@ export class InteractionsComponent implements OnInit {
   viewFullCommentAction: boolean = false;
   fullPostView: boolean = false;
 
-  isTransfer = false;
-  isConsult = false;
+  // isTransfer = false;
+  // isConsult = false;
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -666,7 +666,13 @@ export class InteractionsComponent implements OnInit {
   }
 
   emitCimEvent(message) {
-    let event: any = new CimEvent("AGENT_MESSAGE", "MESSAGE", this.conversation.conversationId, message);
+    let event: any;
+    if (this.conversation.agentParticipants && this.conversation.agentParticipants.length > 0 && this.whisper) {
+      event = new CimEvent("WHISPER_MESSAGE", "MESSAGE", this.conversation.conversationId, message);
+    } else {
+      event = new CimEvent("AGENT_MESSAGE", "MESSAGE", this.conversation.conversationId, message);
+    }
+
     this._socketService.emit("publishCimEvent", {
       cimEvent: event,
       agentId: this._cacheService.agent.id,
@@ -736,18 +742,35 @@ export class InteractionsComponent implements OnInit {
   ];
 
   queueSearch = "";
+  requestedQueue: any;
+  requestTitle: string;
+  requestType: string;
+  noteDialogBtnText: string;
 
-  agentAssistanceRequest(templateRef, e, action): void {
+  agentAssistanceRequest(templateRef, data, action, requestType): void {
     try {
-      this.requestedAgentForAssistance = e;
+      this.requestType = requestType;
       this.requestAction = action;
+
+      if (requestType == "queue") {
+        this.requestedQueue = data;
+        if (action == "transfer") {
+          this.requestTitle = "Transfer To Queue";
+          this.noteDialogBtnText = "Transfer";
+        } else if (action == "conference") {
+          this.requestTitle = "Conference Request";
+          this.noteDialogBtnText = "Add To Conference";
+        }
+      }
+
+      // this.requestAction = action;
 
       const dialogRef = this.dialog.open(templateRef, {
         panelClass: "consult-dialog"
       });
 
       dialogRef.afterClosed().subscribe((result) => {
-        console.log("The dialog was closed==>", result);
+        // console.log("The dialog was closed==>", result);
       });
 
       // this.ConsultTransferTrigger.closeMenu();
@@ -755,68 +778,41 @@ export class InteractionsComponent implements OnInit {
       console.error("[Error] on Agent Assitance", e);
     }
   }
+
   assistanceRequestNote: string;
   requestedAgentForAssistance;
   requestAction: string;
-  requestedQueue;
 
-  consultRequest(action: string) {
-    // console.log("test==>", this.assistanceRequestNote);
-    // console.log("conversation==>", this.conversation);
-    let data = {
-      channelSession: this.conversation.firstChannelSession,
-      agentParticipant: this._cacheService.agent,
-      requestedAgentId: this.requestedAgentForAssistance,
-      conversationId: this.conversation.conversationId,
-      queueId: this.requestedQueue.queueId,
-      note: this.assistanceRequestNote
-    };
-    // this._socketService.emit("consultRequest", data);
-    setTimeout(() => {
-      this.snackBar.open(`${this.requestAction} request sent successfully to  ${this.requestedAgentForAssistance.name}`, action, {
-        duration: 8000,
-        panelClass: "chat-success-snackbar",
-        horizontalPosition: "right",
-        verticalPosition: "bottom"
-      });
-
-      // setTimeout(() => {
-      //   this._sharedService.isConsultRequestSend(true, e);
-      // }, 5000);
-    }, 2000);
-  }
-
-  transferRequest(message: string, action: string) {
-    setTimeout(() => {
-      this._sharedService.isTransferRequestSend(true);
-    }, 2000);
-  }
-
-  consultTransferORConferenceRequest(requestedConsultant, action: string) {
-    let message: string;
-    let data: any = {
-      agentId: this._cacheService.agent.id,
-      requestesAgentId: requestedConsultant,
-      conversationId: this.conversation.conversationId
-    };
-    if (action == "Transfer") {
-      // this._socketService.emit("consultTransferRequest", data);
-      message = `Request sent to transfer the chat to ${this.requestedAgentForAssistance.username}`;
-    } else {
-      // this._socketService.emit("consultConferenceRequest", data);
-      message = `Request sent to add ${this.requestedAgentForAssistance.username} in conference chat`;
+  sendAssitanceRequest() {
+    if (this.requestType == "queue") {
+      this.sendQueueRequest();
     }
 
     // setTimeout(() => {
-    this.snackBar.open(message, " ", {
-      duration: 50000,
-      panelClass: "consult-success-snackbar",
-      horizontalPosition: "right",
-      verticalPosition: "bottom"
-    });
+    //   this.snackBar.open(`${this.requestAction} request sent successfully to  ${this.requestedAgentForAssistance.name}`, action, {
+    //     duration: 8000,
+    //     panelClass: "chat-success-snackbar",
+    //     horizontalPosition: "right",
+    //     verticalPosition: "bottom"
+    //   });
+
+    //   // setTimeout(() => {
+    //   //   this._sharedService.isConsultRequestSend(true, e);
+    //   // }, 5000);
     // }, 2000);
   }
 
+  sendQueueRequest() {
+    let data = {
+      channelSession: this.conversation.firstChannelSession,
+      agentParticipant: this.conversation.topicParticipant,
+      mode: "queue",
+      queueId: this.requestedQueue.queueId,
+      note: this.assistanceRequestNote
+    };
+    if (this.requestAction == "transfer") this._socketService.emit("directTransferRequest", data);
+    else if (this.requestAction == "conference") this._socketService.emit("directConferenceRequest", data);
+  }
 
   getAgentsInQueue() {
     try {
@@ -833,4 +829,35 @@ export class InteractionsComponent implements OnInit {
       console.error("[getAgentsInQueue] Error :", e);
     }
   }
+
+  // transferRequest(message: string, action: string) {
+  //   setTimeout(() => {
+  //     this._sharedService.isTransferRequestSend(true);
+  //   }, 2000);
+  // }
+
+  // consultTransferORConferenceRequest(requestedConsultant, action: string) {
+  //   let message: string;
+  //   let data: any = {
+  //     agentId: this._cacheService.agent.id,
+  //     requestesAgentId: requestedConsultant,
+  //     conversationId: this.conversation.conversationId
+  //   };
+  //   if (action == "Transfer") {
+  //     // this._socketService.emit("consultTransferRequest", data);
+  //     message = `Request sent to transfer the chat to ${this.requestedAgentForAssistance.username}`;
+  //   } else {
+  //     // this._socketService.emit("consultConferenceRequest", data);
+  //     message = `Request sent to add ${this.requestedAgentForAssistance.username} in conference chat`;
+  //   }
+
+  //   // setTimeout(() => {
+  //   this.snackBar.open(message, " ", {
+  //     duration: 50000,
+  //     panelClass: "consult-success-snackbar",
+  //     horizontalPosition: "right",
+  //     verticalPosition: "bottom"
+  //   });
+  //   // }, 2000);
+  // }
 }

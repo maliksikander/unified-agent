@@ -39,8 +39,8 @@
               </button>
             </li>
             <li class="list-group-item">
-              <button mat-icon-button [matMenuTriggerFor]="ConsultTransferConversation"
-                (click)="getAgentsInQueue()" matTooltip="Agent Assistance" aria-label="Consult Chat">
+              <button mat-icon-button [matMenuTriggerFor]="ConsultTransferConversation" (click)="getAgentsInQueue()"
+                matTooltip="Agent Assistance" aria-label="Consult Chat">
                 <mat-icon>person_add</mat-icon>
               </button>
             </li>
@@ -62,15 +62,20 @@
 
 
               <mat-accordion>
-                <mat-expansion-panel [disabled]="true" class="consultants-list" *ngFor="let queue of queueList | LockFilter: queueSearch; let i = index " >
+                <mat-expansion-panel [disabled]="true" class="consultants-list"
+                  *ngFor="let queue of queueList | LockFilter: queueSearch; let i = index ">
                   <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
                     <mat-panel-title>
                       {{queue?.queueName}} ({{queue?.totalAvailableAgents}})
                       <!--                      <span class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, option)">Consult</span>-->
                       <div class="consult-action-main">
                         <!-- <span matTooltip="Queue Consult" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, option, 'Consult to Queue')"><img src="assets/images/consult-colored.svg" alt="consult"/> </span> -->
-                        <span matTooltip="Queue Transfer" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, queue, 'Transfer to Queue')"><img src="assets/images/transfer-colored.svg" alt="transfer"/></span>
-                        <span matTooltip="Queue Conference" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, list, 'Conference')"><img src="assets/images/conference-colored.svg" alt="conference"/></span>
+                        <span matTooltip="Queue Transfer" class="transfer-selection"
+                          (click)="agentAssistanceRequest(chatConsultTemplate, queue, 'transfer','queue')"><img
+                            src="assets/images/transfer-colored.svg" alt="transfer" /></span>
+                        <span matTooltip="Queue Conference" class="transfer-selection"
+                          (click)="agentAssistanceRequest(chatConsultTemplate, queue,'conference','queue')"><img
+                            src="assets/images/conference-colored.svg" alt="conference" /></span>
                       </div>
                     </mat-panel-title>
                   </mat-expansion-panel-header>
@@ -1359,15 +1364,16 @@
       </mat-menu>
 
 
-      <div class="whisper-selection" *ngIf="_sharedService.consultRequestAccept == true">
+      <div class="whisper-selection" *ngIf="conversation?.agentParticipants?.length > 0">
         <button (click)="whisper = false" [ngClass]="{'customer-select': !whisper}" class="customer-mode message-mode"
-          mat-button>Adam</button>
+          mat-button>{{conversation.customer?.firstName ? conversation.customer.firstName : 'N/A'}}</button>
         <button (click)="whisper = true" [ngClass]="{'whisper-select': whisper}" class="whisper-mode message-mode"
           mat-button>Whisper</button>
       </div>
       <div class="message-composer">
-        <form class="reply-form" [ngClass]="{'whisper-mode': whisper && _sharedService.consultRequestAccept == true}">
-          <label class="count-reply">{{ replyInput.value.length }}/1000</label>
+        <form class="reply-form" [ngClass]="{'whisper-mode': whisper}">
+          <label [ngStyle]="{'top':conversation?.agentParticipants?.length > 0 ? '-15px' : '2px' }" class="count-reply">{{
+            replyInput.value.length }}/1000</label>
           <div class="mat-form-field chat-area" [ngClass]="{ 'expand-area-height': expanedHeight > 50 }">
             <textarea maxlength="1000"
               [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0 || !conversation.messageComposerState"
@@ -1583,8 +1589,9 @@
 <ng-template #chatConsultTemplate>
   <div class="note-dialog-main transfer-dialog">
     <div class="dialog-header">
-      <h4 mat-dialog-title>{{requestAction ? requestAction + ' Request' : requestedAgentForAssistance.team && isTransfer
-        ? 'Transfer to Queue' : 'Conversation Transfer'}}
+      <!-- <h4 mat-dialog-title>{{requestAction ? requestAction + ' Request' : requestedAgentForAssistance.team && isTransfer
+        ? 'Transfer to Queue' : 'Conversation Transfer'}} -->
+      <h4 mat-dialog-title>{{requestTitle}}
         <button mat-button mat-dialog-close>
           <mat-icon>close</mat-icon>
         </button>
@@ -1596,10 +1603,11 @@
           <!--          <div class="support-showcase">-->
           <!--            <img src="assets/images/{{chatConsultTo.team ? 'technical-support.svg': 'user-light.svg'}}">-->
           <!--          </div>-->
-          <h3>{{requestedAgentForAssistance.name ? requestedAgentForAssistance.name : chatConsultTo.team}}</h3>
-          <p *ngIf="requestedAgentForAssistance.team" class="consult-team">(6 agents available)</p>
-          <p *ngIf="requestedAgentForAssistance.currentTeam && requestedAgentForAssistance.team">
-            ({{requestedAgentForAssistance.currentTeam}})</p>
+          <h3>{{requestedQueue?.queueName ? requestedQueue?.queueName : 'N/A'}}</h3>
+          <p class="consult-team">({{requestedQueue?.totalAvailableAgents ? requestedQueue?.totalAvailableAgents : 0 }}
+            agents available)</p>
+          <!-- <p *ngIf="requestedQueue?.queueName">
+            ({{requestedQueue?.queueName}})</p> -->
         </div>
         <div class="note-area col-md-12">
           <h4>Message</h4>
@@ -1611,7 +1619,7 @@
     <div class="action-trigger text-right">
       <button mat-button mat-dialog-close class="close-btn">Cancel</button>
       <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial
-        (click)="consultRequest('')">{{requestAction}}
+        (click)="sendAssitanceRequest()">{{noteDialogBtnText}}
       </button>
       <!--      <button mat-button *ngIf="isTransfer" [mat-dialog-close]="true" class="success-btn" cdkFocusInitial-->
       <!--              (click)="transferRequest(chatConsultTo.name, ' ')">Transfer-->

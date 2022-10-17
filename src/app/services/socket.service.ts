@@ -370,7 +370,8 @@ export class socketService {
       topicParticipant: topicData.topicParticipant ? topicData.topicParticipant : "",
       firstChannelSession: topicData.channelSession ? topicData.channelSession : "",
       ciscoDialogId: this.ciscoDialogId,
-      messageComposerState: false
+      messageComposerState: false,
+      agentParticipants:[1] //dummy variable
     };
 
     // feed the conversation with type "messages"
