@@ -14,7 +14,7 @@ import { httpService } from "./http.service";
 import { v4 as uuidv4 } from "uuid";
 import { AuthService } from "./auth.service";
 import { TopicParticipant } from "../models/User/Interfaces";
-//const mockTopicData: any = require("../mocks/topicData.json");
+const mockTopicData: any = require("../mocks/topicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -41,7 +41,7 @@ export class socketService {
     private _httpService: httpService,
     private _authService: AuthService
   ) {
-    // this.onTopicData(mockTopicData, "12345", "");
+    this.onTopicData(mockTopicData, "12345", "");
   }
 
   connectToSocket() {
@@ -300,17 +300,20 @@ export class socketService {
           this.processFaceBookCommentActions(sameTopicConversation.messages, cimEvent.data);
         }
         // for agent type message change the status of message
-        else if (cimEvent.name.toLowerCase() == "agent_message") {
+        else if (cimEvent.name.toLowerCase() == "agent_message" || cimEvent.name.toLowerCase() == "whisper_message") {
           // find the message is already located in the conversation
           let cimMessage = sameTopicConversation.messages.find((message) => {
             return message.id == cimEvent.data.id;
           });
+
           // if yes, only update the staus
           if (cimMessage) {
             cimMessage.header["status"] = "sent";
+            cimMessage.body["isWhisper"] = cimEvent.name.toLowerCase() == "whisper_message" ? true : false;
           } else {
             // if no, marked staus as sent and push in the conversation
             cimEvent.data.header["status"] = "sent";
+            cimEvent.data.body["isWhisper"] = cimEvent.name.toLowerCase() == "whisper_message" ? true : false;
             sameTopicConversation.messages.push(cimEvent.data);
           }
         } else {
@@ -400,6 +403,10 @@ export class socketService {
       } else if (["task_enqueued", "no_agent_available", "channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())) {
         let message = this.createSystemNotificationMessage(event);
         conversation.messages.push(message);
+      } else if (event.name.toLowerCase() == "whisper_message") {
+        event.data.header["status"] = "sent";
+        event.data.body["isWhisper"] = true;
+        conversation.messages.push(event.data);
       }
     });
 

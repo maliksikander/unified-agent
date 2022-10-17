@@ -548,6 +548,10 @@ export class InteractionsComponent implements OnInit {
         } else if (event.name.toLowerCase() == "conversation_data_changed") {
           let message = this._socketService.createConversationDataMessage(event);
           msgs.push(message);
+        } else if (event.name.toLowerCase() == "whisper_message") {
+          event.data.header["status"] = "sent";
+          event.data.body["isWhisper"] = true;
+          msgs.push(event.data);
         }
       });
 
@@ -675,6 +679,7 @@ export class InteractionsComponent implements OnInit {
 
     console.log("event data==>", event.data);
     event.data.header["status"] = "sending";
+    // event.data.body["isWhisper"] = msgType == "whisper" ? true : false;
     this.conversation.messages.push(event.data);
 
     setTimeout(() => {
