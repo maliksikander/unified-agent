@@ -84,17 +84,20 @@ export class ChatNotificationsComponent implements OnInit {
     this.removePushModeRequestFromRequestArray(conversationId);
   }
 
-  onAcceptCallback(conversationId, taskId, ciscoData = null) {
+  onAcceptCallback(conversationId, taskId, ciscoData = null, taskType = null) {
     if (ciscoData) {
       this.acceptCall(conversationId, ciscoData);
     } else {
-      this.getTopicSubscription(conversationId, taskId);
+      this.getTopicSubscription(conversationId, taskId, taskType);
     }
   }
 
-  getTopicSubscription(conversationId, taskId) {
+  getTopicSubscription(conversationId, taskId, taskType) {
+    let participantRole = "PRIMARY";
+    if (taskType) if (taskType == "CONSULT") participantRole = "ASSISTANT";
+
     this._socketService.emit("topicSubscription", {
-      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, conversationId, "PRIMARY", "SUBSCRIBED"),
+      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, conversationId, participantRole, "SUBSCRIBED"),
       agentId: this._cacheService.agent.id,
       conversationId: conversationId,
       taskId: taskId

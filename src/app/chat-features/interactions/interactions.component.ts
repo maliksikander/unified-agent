@@ -787,19 +787,6 @@ export class InteractionsComponent implements OnInit {
     if (this.requestType == "queue") {
       this.sendQueueRequest();
     }
-
-    // setTimeout(() => {
-    //   this.snackBar.open(`${this.requestAction} request sent successfully to  ${this.requestedAgentForAssistance.name}`, action, {
-    //     duration: 8000,
-    //     panelClass: "chat-success-snackbar",
-    //     horizontalPosition: "right",
-    //     verticalPosition: "bottom"
-    //   });
-
-    //   // setTimeout(() => {
-    //   //   this._sharedService.isConsultRequestSend(true, e);
-    //   // }, 5000);
-    // }, 2000);
   }
 
   sendQueueRequest() {
@@ -812,6 +799,8 @@ export class InteractionsComponent implements OnInit {
     };
     if (this.requestAction == "transfer") this._socketService.emit("directTransferRequest", data);
     else if (this.requestAction == "conference") this._socketService.emit("directConferenceRequest", data);
+
+    this.openAssistanceRequestSnackbar();
   }
 
   getAgentsInQueue() {
@@ -828,6 +817,21 @@ export class InteractionsComponent implements OnInit {
     } catch (e) {
       console.error("[getAgentsInQueue] Error :", e);
     }
+  }
+
+  openAssistanceRequestSnackbar() {
+    let msg: string;
+    if (this.requestAction == "transfer") msg = `Transfer request placed successfully`;
+    else if (this.requestAction == "conference") msg = `Conference request placed successfully`;
+
+    setTimeout(() => {
+      this.snackBar.open(msg, "", {
+        duration: 8000,
+        panelClass: "chat-success-snackbar",
+        horizontalPosition: "right",
+        verticalPosition: "bottom"
+      });
+    }, 1000);
   }
 
   // transferRequest(message: string, action: string) {

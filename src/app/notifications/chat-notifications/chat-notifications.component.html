@@ -30,9 +30,13 @@
 
     </div>
 
-    <div *ngIf="request?.taskType && taskType == 'DIRECT_TRANSFER'" class="row main-panel m-0">
+    <div
+      *ngIf="request?.taskType && (request?.taskType == 'DIRECT_TRANSFER' || request?.taskType == 'DIRECT_CONFERENCE')"
+      class="row main-panel m-0">
       <mat-card class="notification-panel mat-card">
-        <mat-card-content class="mat-card-content identified consult-notification transfer-notification">
+        <mat-card-content class="mat-card-content identified consult-notification "
+          [ngClass]="{'conference-request': request?.taskType == 'DIRECT_CONFERENCE'}"
+          [ngClass]="{'transfer-notification': request?.taskType == 'DIRECT_TRANSFER'}">
           <div class="chat-request">
             <p class="channel-icon">
               <img [src]="request.channelSession.channel.channelType.channelLogo | channelLogo | async">
@@ -55,65 +59,6 @@
 
     </div>
   </div>
-
-  <!--  Consult request notifications-->
-  <div class="notification-area" *ngIf="_sharedService.consultRequestSend == true">
-    <div class="row main-panel m-0">
-      <mat-card class="notification-panel mat-card">
-        <mat-card-content class="mat-card-content identified consult-notification"
-          [ngClass]="{'conference-request': (_sharedService.requestAction | lowercase) == 'conference'}">
-          <div class="chat-request">
-            <p class="channel-icon">
-              <mat-icon *ngIf="(_sharedService.requestAction | lowercase) !== 'conference'">question_answer</mat-icon>
-              <img *ngIf="(_sharedService.requestAction | lowercase) == 'conference'" src="assets/images/facebook.svg"
-                alt="facebook">
-
-            </p>
-          </div>
-          <div class="requested-name">
-            <strong>{{_sharedService.requestAction}} request from 'Henry Williams' with customer 'John Taylor'</strong>
-            <p>
-              Hello Adam. I need your assistance regarding upgrade of the customers account. Can you please guide
-              through the process.
-            </p>
-          </div>
-          <div class="notification-trigger">
-            <button (click)="_sharedService.consultRequestSend = false; consultRequestAccept()" class="mat-flat-button"
-              mat-button>Accept</button>
-          </div>
-        </mat-card-content>
-      </mat-card>
-
-    </div>
-  </div>
-
-  <!--  Transfer request notifications-->
-  <!-- <div class="notification-area" *ngIf="_sharedService.transferRequestSend == true">
-    <div class="row main-panel m-0">
-      <mat-card class="notification-panel mat-card">
-        <mat-card-content
-          class="mat-card-content identified consult-notification transfer-notification">
-          <div class="chat-request">
-            <p class="channel-icon"><mat-icon>question_answer</mat-icon>
-            </p>
-          </div>
-          <div class="requested-name">
-            <strong>Chat transfer request from Henry Williams</strong>
-            <p>
-              Hello. I customer query needs to be addressed by the marketing department . Can you please guide the customer through the process.
-            </p>
-          </div>
-          <div class="notification-trigger">
-            <button (click)="_sharedService.transferRequestSend = false" class="mat-flat-button"
-                    mat-button>Accept</button>
-          </div>
-        </mat-card-content>
-      </mat-card>
-
-    </div>
-  </div> -->
-
-
 
   <!--  Pull mode notifications-->
   <div *ngIf="pullModeRequests.length > 0" class="pull-notification-main"
@@ -153,6 +98,61 @@
 
   </div>
 
+  <!--  Consult/Conference request notifications-->
+  <!-- <div class="notification-area" *ngIf="_sharedService.consultRequestSend == true">
+    <div class="row main-panel m-0">
+      <mat-card class="notification-panel mat-card">
+        <mat-card-content class="mat-card-content identified consult-notification"
+          [ngClass]="{'conference-request': (_sharedService.requestAction | lowercase) == 'conference'}">
+          <div class="chat-request">
+            <p class="channel-icon">
+              <mat-icon *ngIf="(_sharedService.requestAction | lowercase) !== 'conference'">question_answer</mat-icon>
+              <img *ngIf="(_sharedService.requestAction | lowercase) == 'conference'" src="assets/images/facebook.svg"
+                alt="facebook">
 
+            </p>
+          </div>
+          <div class="requested-name">
+            <strong>{{_sharedService.requestAction}} request from 'Henry Williams' with customer 'John Taylor'</strong>
+            <p>
+              Hello Adam. I need your assistance regarding upgrade of the customers account. Can you please guide
+              through the process.
+            </p>
+          </div>
+          <div class="notification-trigger">
+            <button (click)="_sharedService.consultRequestSend = false; consultRequestAccept()" class="mat-flat-button"
+              mat-button>Accept</button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+  </div> -->
+
+  <!--  Transfer request notifications-->
+  <!-- <div class="notification-area" *ngIf="_sharedService.transferRequestSend == true">
+    <div class="row main-panel m-0">
+      <mat-card class="notification-panel mat-card">
+        <mat-card-content
+          class="mat-card-content identified consult-notification transfer-notification">
+          <div class="chat-request">
+            <p class="channel-icon"><mat-icon>question_answer</mat-icon>
+            </p>
+          </div>
+          <div class="requested-name">
+            <strong>Chat transfer request from Henry Williams</strong>
+            <p>
+              Hello. I customer query needs to be addressed by the marketing department . Can you please guide the customer through the process.
+            </p>
+          </div>
+          <div class="notification-trigger">
+            <button (click)="_sharedService.transferRequestSend = false" class="mat-flat-button"
+                    mat-button>Accept</button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+  </div> -->
 
 </div>
