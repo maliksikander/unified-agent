@@ -26,10 +26,6 @@ export class sharedService {
     wrapUpTime: 15,
     isMessageFormattingEnabled: false
   };
-  // @Output() consultRequestSend = new EventEmitter<boolean>();
-  // @Output() requestAction = new EventEmitter<any>();
-  // @Output() transferRequestSend = new EventEmitter<boolean>();
-  // @Output() consultRequestAccept = new EventEmitter<boolean>();
 
   serviceChangeMessage(data: any) {
     this.serviceCurrentMessage.next(data);
@@ -130,20 +126,5 @@ export class sharedService {
   snackErrorMessage(msg) {
     this._snackbarService.open(msg, "err");
   }
-
-  // isConsultRequestSend(e, action) {
-  //   this.consultRequestSend = e;
-  //   this.requestAction = action;
-
-  //   console.log(this.consultRequestSend, 'service call');
-  // }
-  // isTransferRequestSend(e) {
-  //   this.transferRequestSend = e;
-  // }
-  // isConsultRequestAccept(e) {
-  //   this.consultRequestAccept = e;
-
-  //   console.log(this.consultRequestAccept, 'accept service call');
-  // }
 
 }

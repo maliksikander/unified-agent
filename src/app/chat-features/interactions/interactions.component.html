@@ -1365,13 +1365,13 @@
 
 
       <div class="whisper-selection" *ngIf="conversation?.agentParticipants?.length > 0">
-        <button (click)="whisper = false" [ngClass]="{'customer-select': !whisper}" class="customer-mode message-mode"
+        <button (click)="isWhisperMode = false" [ngClass]="{'customer-select': !isWhisperMode}" class="customer-mode message-mode"
           mat-button>{{conversation.customer?.firstName ? conversation.customer.firstName : 'N/A'}}</button>
-        <button (click)="whisper = true" [ngClass]="{'whisper-select': whisper}" class="whisper-mode message-mode"
+        <button (click)="isWhisperMode = true" [ngClass]="{'whisper-select': isWhisperMode}" class="whisper-mode message-mode"
           mat-button>Whisper</button>
       </div>
       <div class="message-composer">
-        <form class="reply-form" [ngClass]="{'whisper-mode': whisper}">
+        <form class="reply-form" [ngClass]="{'whisper-mode': isWhisperMode}">
           <label [ngStyle]="{'top':conversation?.agentParticipants?.length > 0 ? '-15px' : '2px' }" class="count-reply">{{
             replyInput.value.length }}/1000</label>
           <div class="mat-form-field chat-area" [ngClass]="{ 'expand-area-height': expanedHeight > 50 }">
@@ -1619,7 +1619,7 @@
     <div class="action-trigger text-right">
       <button mat-button mat-dialog-close class="close-btn">Cancel</button>
       <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial
-        (click)="sendAssitanceRequest()">{{noteDialogBtnText}}
+        (click)="sendAssistanceRequest()">{{noteDialogBtnText}}
       </button>
       <!--      <button mat-button *ngIf="isTransfer" [mat-dialog-close]="true" class="success-btn" cdkFocusInitial-->
       <!--              (click)="transferRequest(chatConsultTo.name, ' ')">Transfer-->

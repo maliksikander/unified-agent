@@ -35,7 +35,7 @@ export class InteractionsComponent implements OnInit {
   @ViewChild("mainScreen", { static: false }) elementViewSuggestions: ElementRef;
   @ViewChild("ConsultTransferTrigger", { static: false }) ConsultTransferTrigger: any;
 
-  whisper = false;
+  isWhisperMode: boolean = false;
   dispayVideoPIP = true;
   scrollSubscriber;
   labels: Array<any> = [];
@@ -440,7 +440,7 @@ export class InteractionsComponent implements OnInit {
       if (msgType.toLowerCase() == "wrapup") {
         message = this.constructWrapUpEvent(message, wrapups, note, this.conversation.firstChannelSession);
 
-        this.emitCimEvent(message);
+        this.emitCimEvent(message, "AGENT_MESSAGE");
       } else {
         let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
 
@@ -450,7 +450,7 @@ export class InteractionsComponent implements OnInit {
 
             message = this.constructFbCommentEvent(message, text, selectedChannelSession);
 
-            this.emitCimEvent(message);
+            this.emitCimEvent(message, "AGENT_MESSAGE");
           } else {
             // channel is web or whatsApp
 
@@ -488,7 +488,7 @@ export class InteractionsComponent implements OnInit {
               };
             }
 
-            this.emitCimEvent(message);
+            this.emitCimEvent(message, this.conversation.agentParticipants.length > 0 && this.isWhisperMode ? "WHISPER_MESSAGE" : "AGENT_MESSAGE");
           }
         } else {
           this._snackbarService.open("No channel session selected at the moment ", "err");
@@ -665,21 +665,15 @@ export class InteractionsComponent implements OnInit {
     return message;
   }
 
-  emitCimEvent(message) {
-    let event: any;
-    if (this.conversation.agentParticipants && this.conversation.agentParticipants.length > 0 && this.whisper) {
-      event = new CimEvent("WHISPER_MESSAGE", "MESSAGE", this.conversation.conversationId, message);
-    } else {
-      event = new CimEvent("AGENT_MESSAGE", "MESSAGE", this.conversation.conversationId, message);
-    }
-
+  emitCimEvent(message, eventName) {
+    // let event: any;
+    let event: any = new CimEvent(eventName, "MESSAGE", this.conversation.conversationId, message);
     this._socketService.emit("publishCimEvent", {
       cimEvent: event,
       agentId: this._cacheService.agent.id,
       conversationId: this.conversation.conversationId
     });
 
-    console.log("event data==>", event.data);
     event.data.header["status"] = "sending";
     this.conversation.messages.push(event.data);
 
@@ -706,26 +700,7 @@ export class InteractionsComponent implements OnInit {
     }, 40);
   }
 
-  queueList = [
-    {
-      queueId: "63452c2a2fa22f132bdc72bb",
-      queueName: "facebook",
-      totalAvailableAgents: 0,
-      availableAgents: []
-    },
-    {
-      queueId: "633bfe7fadce8108c912d490",
-      queueName: "web queue",
-      totalAvailableAgents: 0,
-      availableAgents: []
-    },
-    {
-      queueId: "633cc698adce8108c912d678",
-      queueName: "Ahmad Queue",
-      totalAvailableAgents: 0,
-      availableAgents: []
-    }
-  ];
+  queueList: any = [];
 
   consultantsList = [
     {
@@ -737,7 +712,7 @@ export class InteractionsComponent implements OnInit {
       name: "Ev Gayforth",
       role: "supervisor",
       team: "technical",
-      isWhisper: true
+      isWhisperMode: true
     }
   ];
 
@@ -783,10 +758,11 @@ export class InteractionsComponent implements OnInit {
   requestedAgentForAssistance;
   requestAction: string;
 
-  sendAssitanceRequest() {
+  sendAssistanceRequest() {
     if (this.requestType == "queue") {
       this.sendQueueRequest();
     }
+    this.assistanceRequestNote = "";
   }
 
   sendQueueRequest() {
@@ -800,14 +776,13 @@ export class InteractionsComponent implements OnInit {
     if (this.requestAction == "transfer") this._socketService.emit("directTransferRequest", data);
     else if (this.requestAction == "conference") this._socketService.emit("directConferenceRequest", data);
 
-    this.openAssistanceRequestSnackbar();
+    this.showRequestNotification();
   }
 
   getAgentsInQueue() {
     try {
       this._httpService.getAgentsInQueue(this.conversation.conversationId).subscribe(
         (res: any) => {
-          console.log("getting agents in queue res==>", res);
           this.queueList = res;
         },
         (error) => {
@@ -819,7 +794,7 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  openAssistanceRequestSnackbar() {
+  showRequestNotification() {
     let msg: string;
     if (this.requestAction == "transfer") msg = `Transfer request placed successfully`;
     else if (this.requestAction == "conference") msg = `Conference request placed successfully`;
@@ -833,35 +808,4 @@ export class InteractionsComponent implements OnInit {
       });
     }, 1000);
   }
-
-  // transferRequest(message: string, action: string) {
-  //   setTimeout(() => {
-  //     this._sharedService.isTransferRequestSend(true);
-  //   }, 2000);
-  // }
-
-  // consultTransferORConferenceRequest(requestedConsultant, action: string) {
-  //   let message: string;
-  //   let data: any = {
-  //     agentId: this._cacheService.agent.id,
-  //     requestesAgentId: requestedConsultant,
-  //     conversationId: this.conversation.conversationId
-  //   };
-  //   if (action == "Transfer") {
-  //     // this._socketService.emit("consultTransferRequest", data);
-  //     message = `Request sent to transfer the chat to ${this.requestedAgentForAssistance.username}`;
-  //   } else {
-  //     // this._socketService.emit("consultConferenceRequest", data);
-  //     message = `Request sent to add ${this.requestedAgentForAssistance.username} in conference chat`;
-  //   }
-
-  //   // setTimeout(() => {
-  //   this.snackBar.open(message, " ", {
-  //     duration: 50000,
-  //     panelClass: "consult-success-snackbar",
-  //     horizontalPosition: "right",
-  //     verticalPosition: "bottom"
-  //   });
-  //   // }, 2000);
-  // }
 }
