@@ -282,7 +282,8 @@ export class socketService {
       if (
         cimEvent.name.toLowerCase() == "agent_message" ||
         cimEvent.name.toLowerCase() == "bot_message" ||
-        cimEvent.name.toLowerCase() == "customer_message"
+        cimEvent.name.toLowerCase() == "customer_message" ||
+        cimEvent.name.toLowerCase() == "whisper_message"
       ) {
         if (cimEvent.name.toLowerCase() != "agent_message") {
           this.playSoundAndBrowserNotification(sameTopicConversation, cimEvent);
