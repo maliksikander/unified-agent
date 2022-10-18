@@ -109,15 +109,25 @@
               <button mat-menu-item>
 
                 <span class="agent-detail">
-                  <span>John Taylor</span>
+                  <span>{{conversation.customer.firstName}} {{conversation.customer.lastName}}</span>
                   <small class="joined-customer">Customer</small>
                 </span>
               </button>
+
               <button mat-menu-item class="current-primary-user">
                 <span class="agent-detail">
-                  <span>Adam Miller</span>
-                  <small class="agent-roll">Primary Agent</small>
-                  <small>(Technical)</small>
+                  <span>{{conversation.topicParticipant.participant.keycloakUser.username}}</span>
+                  <small class="agent-roll">{{conversation.topicParticipant.role | titlecase}}</small>
+                  <small>you</small>
+                </span>
+              </button>
+
+              <button *ngFor="let participant of conversation.agentParticipants | filterAgentParticipants:'primary'"
+                mat-menu-item class="current-primary-user">
+                <span class="agent-detail">
+                  <span>{{participant.participant.keycloakUser.username}}</span>
+                  <small class="agent-roll">{{participant.role | titlecase}}</small>
+                  <!-- <small>(Technical)</small> -->
                 </span>
               </button>
               <span class="transfer-heading">Consultants</span>
@@ -125,11 +135,12 @@
               <!--                <input type="text" placeholder="search..." (click)="$event.stopPropagation()" [(ngModel)]="ConsultSearch">-->
               <!--                <mat-icon>search</mat-icon>-->
               <!--              </div>-->
-              <button mat-menu-item *ngFor="let option of consultantsList">
+              <button mat-menu-item
+                *ngFor="let participant of conversation.agentParticipants | filterAgentParticipants:'assistant'">
                 <span class="agent-detail">
-                  <span>{{option.name}}</span>
-                  <small class="agent-roll">{{option.role}}</small>
-                  <small *ngIf="option.team">({{option.team}})</small>
+                  <span>{{participant.participant.keycloakUser.username}}</span>
+                  <small class="agent-roll">{{participant.role | titlecase}}</small>
+                  <!-- <small *ngIf="option.team">({{option.team}})</small> -->
                 </span>
 
                 <!--                <span class="participants-action">-->

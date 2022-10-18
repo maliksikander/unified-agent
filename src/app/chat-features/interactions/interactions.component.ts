@@ -13,7 +13,6 @@ import { httpService } from "src/app/services/http.service";
 import { finesseService } from "src/app/services/finesse.service";
 import { ConfirmationDialogComponent } from "src/app/new-components/confirmation-dialog/confirmation-dialog.component";
 import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
-import { stringLength } from "@firebase/util";
 
 declare var EmojiPicker: any;
 
@@ -104,7 +103,7 @@ export class InteractionsComponent implements OnInit {
     private _httpService: httpService,
     private _finesseService: finesseService,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
   ngOnInit() {
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
@@ -125,7 +124,7 @@ export class InteractionsComponent implements OnInit {
       this.labels = e;
     });
   }
-  emoji() {}
+  emoji() { }
 
   onSend(text) {
     text = text.trim();
@@ -312,7 +311,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -320,7 +319,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -399,7 +398,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
 
   uploadFile(files) {
@@ -541,13 +540,17 @@ export class InteractionsComponent implements OnInit {
           event.data.header["status"] = "sent";
           msgs.push(event.data);
         } else if (
-          ["channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())
+          ["task_enqueued", "no_agent_available", "channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())
         ) {
           let message = this._socketService.createSystemNotificationMessage(event);
           msgs.push(message);
         } else if (event.name.toLowerCase() == "conversation_data_changed") {
           let message = this._socketService.createConversationDataMessage(event);
           msgs.push(message);
+        } else if (event.name.toLowerCase() == "whisper_message") {
+          event.data.header["status"] = "sent";
+          event.data.body["isWhisper"] = true;
+          msgs.push(event.data);
         }
       });
 
@@ -666,7 +669,6 @@ export class InteractionsComponent implements OnInit {
   }
 
   emitCimEvent(message, eventName) {
-    // let event: any;
     let event: any = new CimEvent(eventName, "MESSAGE", this.conversation.conversationId, message);
     this._socketService.emit("publishCimEvent", {
       cimEvent: event,
@@ -675,6 +677,7 @@ export class InteractionsComponent implements OnInit {
     });
 
     event.data.header["status"] = "sending";
+    event.data.body["isWhisper"] = eventName == "WHISPER_MESSAGE" ? true : false;
     this.conversation.messages.push(event.data);
 
     setTimeout(() => {
@@ -701,20 +704,6 @@ export class InteractionsComponent implements OnInit {
   }
 
   queueList: any = [];
-
-  consultantsList = [
-    {
-      name: "Doy Ortelt",
-      role: "supervisor",
-      team: "marketing"
-    },
-    {
-      name: "Ev Gayforth",
-      role: "supervisor",
-      team: "technical",
-      isWhisperMode: true
-    }
-  ];
 
   queueSearch = "";
   requestedQueue: any;

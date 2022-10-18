@@ -14,7 +14,7 @@ import { httpService } from "./http.service";
 import { v4 as uuidv4 } from "uuid";
 import { AuthService } from "./auth.service";
 import { TopicParticipant } from "../models/User/Interfaces";
-const mockTopicData: any = require("../mocks/topicData.json");
+// const mockTopicData: any = require("../mocks/topicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -41,7 +41,7 @@ export class socketService {
     private _httpService: httpService,
     private _authService: AuthService
   ) {
-    // this.onTopicData(mockTopicData, "12345","");
+    // this.onTopicData(mockTopicData, "12345", "");
   }
 
   connectToSocket() {
@@ -81,12 +81,12 @@ export class socketService {
         } else {
           this._snackbarService.open(err.data && err.data.content ? err.data.content.msg : "unable to connect to chat", "err");
         }
-      } catch (err) {}
+      } catch (err) { }
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -118,7 +118,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -165,15 +165,13 @@ export class socketService {
       try {
         this.onCimEventHandler(JSON.parse(res.cimEvent), res.conversationId);
       } catch (err) {
-        console.log("error on onCimEvent ==>" + err);
         console.error("error on onCimEvent ==>" + err);
-        console.log("error on onCimEvent ==>" + err);
         // If got any error while receiving cimEvent then simply unsubscribe to the topic
-        this._snackbarService.open("Unable to process event, unsubscribing...", "err");
-        this.emit("topicUnsubscription", {
-          conversationId: res.conversationId,
-          agentId: this._cacheService.agent.id
-        });
+        this._snackbarService.open("A Malfunction event", "err");
+        // this.emit("topicUnsubscription", {
+        //   conversationId: res.conversationId,
+        //   agentId: this._cacheService.agent.id
+        // });
       }
     });
 
@@ -197,13 +195,14 @@ export class socketService {
 
     this.socket.on("topicUnsubscription", (res: any) => {
       console.log("topicUnsubscription", res);
+      if (res.reason.toUpperCase() != "UNSUBSCRIBED") {
+
+        this._snackbarService.open("Conversation is closed due to " + res.reason, "err");
+      }
+
       this.removeConversation(res.conversationId);
     });
 
-    this.socket.on("topicClosed", (res: any) => {
-      console.log("topicClosed", res);
-      this.changeTopicStateToClose(res.conversationId);
-    });
 
     this.socket.on("socketSessionRemoved", (res: any) => {
       console.log("socketSessionRemoved", res);
@@ -250,7 +249,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) {}
+    } catch (err) { }
   }
 
   listen(eventName: string) {
@@ -301,17 +300,20 @@ export class socketService {
           this.processFaceBookCommentActions(sameTopicConversation.messages, cimEvent.data);
         }
         // for agent type message change the status of message
-        else if (cimEvent.name.toLowerCase() == "agent_message") {
+        else if (cimEvent.name.toLowerCase() == "agent_message" || cimEvent.name.toLowerCase() == "whisper_message") {
           // find the message is already located in the conversation
           let cimMessage = sameTopicConversation.messages.find((message) => {
             return message.id == cimEvent.data.id;
           });
+
           // if yes, only update the staus
           if (cimMessage) {
             cimMessage.header["status"] = "sent";
+            cimMessage.body["isWhisper"] = cimEvent.name.toLowerCase() == "whisper_message" ? true : false;
           } else {
             // if no, marked staus as sent and push in the conversation
             cimEvent.data.header["status"] = "sent";
+            cimEvent.data.body["isWhisper"] = cimEvent.name.toLowerCase() == "whisper_message" ? true : false;
             sameTopicConversation.messages.push(cimEvent.data);
           }
         } else {
@@ -335,6 +337,10 @@ export class socketService {
         this.handleAgentSubscription(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
         this.handleAgentSubscription(cimEvent, conversationId);
+      } else if (cimEvent.name.toLowerCase() == "task_enqueued") {
+        this.handleTaskEnqueuedEvent(cimEvent, conversationId);
+      } else if (cimEvent.name.toLowerCase() == "no_agent_available") {
+        this.handleNoAgentEvent(cimEvent, conversationId);
       }
     } else {
       this._snackbarService.open("Unable to process event, unsubscribing...", "err");
@@ -349,7 +355,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._snackbarService.open("you are logged In from another session", "err");
     alert("you are logged in from another session");
@@ -371,13 +377,13 @@ export class socketService {
       firstChannelSession: topicData.channelSession ? topicData.channelSession : "",
       ciscoDialogId: this.ciscoDialogId,
       messageComposerState: false,
+      agentParticipants: [],
     };
 
     // feed the conversation with type "messages"
     let topicEvents = topicData.topicEvents ? topicData.topicEvents : [];
 
     // feed the conversation with type "messages"
-    console.log("topicEvents", topicEvents);
     topicEvents.forEach((event, i) => {
       if (
         event.name.toLowerCase() == "agent_message" ||
@@ -394,9 +400,13 @@ export class socketService {
           event.data.header["status"] = "sent";
           conversation.messages.push(event.data);
         }
-      } else if (["channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())) {
+      } else if (["task_enqueued", "no_agent_available", "channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())) {
         let message = this.createSystemNotificationMessage(event);
         conversation.messages.push(message);
+      } else if (event.name.toLowerCase() == "whisper_message") {
+        event.data.header["status"] = "sent";
+        event.data.body["isWhisper"] = true;
+        conversation.messages.push(event.data);
       }
     });
 
@@ -445,6 +455,12 @@ export class socketService {
         if (repliedChannelSession) {
           repliedChannelSession["isChecked"] = true;
         }
+      } else if (e.type.toLowerCase() == "agent") {
+
+        if (e.participant.keycloakUser.id != conversation.topicParticipant.participant.keycloakUser.id) {
+          conversation.agentParticipants.push(e);
+        }
+
       }
     });
 
@@ -685,6 +701,30 @@ export class socketService {
     }
   }
 
+  handleTaskEnqueuedEvent(cimEvent, conversationId) {
+
+    let conversation = this.conversations.find((e) => {
+      return e.conversationId == conversationId;
+    });
+
+    if (conversation) {
+      let message = this.createSystemNotificationMessage(cimEvent);
+      conversation.messages.push(message);
+    }
+
+  }
+
+  handleNoAgentEvent(cimEvent, conversationId) {
+    let conversation = this.conversations.find((e) => {
+      return e.conversationId == conversationId;
+    });
+
+    if (conversation) {
+      let message = this.createSystemNotificationMessage(cimEvent);
+      conversation.messages.push(message);
+    }
+  }
+
   addChannelSession(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
       return e.conversationId == conversationId;
@@ -732,24 +772,28 @@ export class socketService {
     });
 
     if (conversation) {
+
+      if (cimEvent.name.toLowerCase() == "agent_subscribed") {
+
+        if (cimEvent.data.agentParticipant.participant.keycloakUser.id != conversation.topicParticipant.participant.keycloakUser.id) {
+          conversation.agentParticipants.push(cimEvent.data.agentParticipant);
+          conversation.agentParticipants = conversation.agentParticipants.concat([]);
+        }
+      } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
+
+        conversation.agentParticipants = conversation.agentParticipants.filter((participant) => {
+
+          return participant.participant.keycloakUser.id != cimEvent.data.agentParticipant.participant.keycloakUser.id;
+        });
+
+      }
+
       let message = this.createSystemNotificationMessage(cimEvent);
+
       conversation.messages.push(message);
     }
   }
 
-  changeTopicStateToClose(conversationId) {
-    // // find the conversation
-    // let conversation = this.conversations.find((e) => {
-    //   return e.conversationId == conversationId;
-    // });
-    // // change the conversation state to "CLOSED"
-    // conversation.state = "CLOSED";
-    this._snackbarService.open("A conversation is removed", "err");
-    this.removeConversation(conversationId);
-
-    // // in case of pull mode request, the conversationId is the id of that request
-    // this._pullModeService.deleteRequestByRequestId(conversationId);
-  }
 
   onSocketErrors(res) {
     this._snackbarService.open("on " + res.task + " " + res.msg, "err");
@@ -786,7 +830,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
@@ -1085,11 +1129,48 @@ export class socketService {
       message.body.markdownText = "session ended";
     }
     if (cimEvent.name.toLowerCase() == "agent_subscribed") {
-      message.body["displayText"] = cimEvent.data.ccUser.keycloakUser.username;
+      message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
       message.body.markdownText = "has joined the conversation";
     } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
-      message.body["displayText"] = cimEvent.data.ccUser.keycloakUser.username;
+      message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
       message.body.markdownText = "left the conversation";
+    } else if (cimEvent.name.toLowerCase() == "task_enqueued") {
+      let mode;
+      if (cimEvent.data.task.type.mode.toLowerCase() == "agent") {
+        mode = "Agent";
+      } else if (cimEvent.data.task.type.mode.toLowerCase() == "queue") {
+        mode = "Queue";
+      }
+      if (cimEvent.data.task.type.direction == "DIRECT_TRANSFER") {
+        let string = mode + " transfer request has been placed by " + cimEvent.data.task.type.metadata.requestedBy;
+        message.body["displayText"] = "";
+        message.body.markdownText = string;
+      } else if (cimEvent.data.task.type.direction == "DIRECT_CONFERENCE") {
+        let string = mode + " conference request has been placed by " + cimEvent.data.task.type.metadata.requestedBy;
+        message.body["displayText"] = "";
+        message.body.markdownText = string;
+      }
+    } else if (cimEvent.name.toLowerCase() == "no_agent_available") {
+
+      let mode;
+      let direction;
+
+      if (cimEvent.data.requestType.mode.toLowerCase() == "agent") {
+        mode = "Agent";
+      } else if (cimEvent.data.requestType.mode.toLowerCase() == "queue") {
+        mode = "Queue";
+      }
+
+      if (cimEvent.data.requestType.direction.toLowerCase() == "direct_transfer") {
+        direction = "transfer";
+      } else if (cimEvent.data.requestType.direction.toLowerCase() == "direct_conference") {
+        direction = "conference";
+      }
+
+      let string = "No agent is available for " + mode + " " + direction;
+      message.body["displayText"] = "";
+      message.body.markdownText = string;
+
     }
 
     return message;
