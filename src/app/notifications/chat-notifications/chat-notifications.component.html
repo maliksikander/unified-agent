@@ -2,7 +2,7 @@
 
   <!--  Push mode notifications-->
   <div class="notification-area" *ngFor="let request of pushModeRequests">
-    <div *ngIf="request?.taskDirection != 'DIRECT_TRANSFER' && !request?.taskDirection != 'DIRECT_CONFERENCE'"
+    <div *ngIf="request?.taskDirection != 'DIRECT_TRANSFER' && request?.taskDirection != 'DIRECT_CONFERENCE'"
       class="row main-panel">
       <mat-card class="notification-panel mat-card">
         <mat-card-content
