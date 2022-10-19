@@ -50,7 +50,7 @@
               </button>
             </li>
           </ul>
-          <mat-menu *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'" #ConsultTransferConversation="matMenu" xPosition="before">
+          <mat-menu #ConsultTransferConversation="matMenu" xPosition="before">
             <div class="chat-transfer-main" (click)="$event.stopPropagation()">
               <span class="transfer-heading">Consult / Transfer / Conference</span>
               <div class="search-wrapper">
@@ -103,8 +103,8 @@
             </div>
           </mat-menu>
 
-          <mat-menu *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'" #ParticipantsList="matMenu" xPosition="before">
-            <div class="chat-transfer-main participants-list">
+          <mat-menu  #ParticipantsList="matMenu" xPosition="before">
+            <div *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'" class="chat-transfer-main participants-list">
               <h5 class="transfer-heading participants-heading">Participants</h5>
               <button mat-menu-item>
 
