@@ -4,7 +4,7 @@
     "FILE_SERVER_URL": "https://cim.expertflow.com/file-engine",
     "CCM_URL": "https://cim.expertflow.com/ccm",
     "CIM_CUSTOMER_URL": "https://cim.expertflow.com/cim",
-    "BOT_FRAMEWORK_URL": "https://cim.expertflow.com/bot-framework",
+    "CONVERSATION_MANAGER_URL": "https://cim.expertflow.com/conversation-manager",
     "ROUTING_ENGINE_URL": "https://cim.expertflow.com/routing-engine",
     "CIM_REPORTING_URL":"https://cim.expertflow.com/realtime-reports",
     "UNIFIED_ADMIN_URL":"https://cim.expertflow.com/unified-admin",
@@ -36,3 +36,4 @@
 	  "bargeInType": "BARGE_IN_CONSULT",
     "ronaStateOnCisco":"Call Not Answered"
 }
+

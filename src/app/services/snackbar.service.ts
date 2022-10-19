@@ -9,7 +9,7 @@ export class snackbarService {
 
   open(message: string, status: string, duration?, buttonText = null) {
     let config: MatSnackBarConfig = new MatSnackBarConfig();
-    config.duration = duration ? duration : 3000;
+    config.duration = duration ? duration : 7000;
     config.panelClass = status == "err" ? ["err-class"] : ["success-snackbar"];
     config.verticalPosition = "top";
     this.snackBar.open(message, buttonText, config);

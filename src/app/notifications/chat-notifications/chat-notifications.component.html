@@ -23,7 +23,7 @@
               request.channelSession.channelData.channelCustomerIdentifier : 'N/A' }}</p>
           </div>
           <div class="notification-trigger">
-            <button (click)="onAcceptCallback(request?.conversationId,request?.taskId,request?.cisco_data)"
+            <button (click)="onAcceptCallback(request?.conversationId,request?.taskId,request?.cisco_data,null)"
               class="mat-flat-button" mat-button>Accept</button>
           </div>
         </mat-card-content>
@@ -44,14 +44,15 @@
             </p>
           </div>
           <div class="requested-name">
-            <strong>Chat transfer request from {{request?.ccUser?.keycloakUser?.username}} with customer
+            <strong>Chat {{request?.taskDirection == 'DIRECT_CONFERENCE' ? 'conference' : 'transfer'}} request from
+              {{request?.requestedBy}} with customer
               {{request?.channelSession?.customer?.firstName}}</strong>
             <p>
               {{request?.note}}
             </p>
           </div>
           <div class="notification-trigger">
-            <button (click)="onAcceptCallback(request?.conversationId,request?.taskId,request?.taskDirection)"
+            <button (click)="onAcceptCallback(request?.conversationId, request?.taskId, null, request?.taskDirection)"
               class="mat-flat-button" mat-button>Accept</button>
           </div>
         </mat-card-content>

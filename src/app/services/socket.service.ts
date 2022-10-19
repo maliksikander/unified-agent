@@ -138,6 +138,7 @@ export class socketService {
     });
 
     this.socket.on("taskRequest", (res: any) => {
+      console.log("taskRequest ",res);
       if (res.cisco_data) this.ciscoDialogId = res.cisco_data.response.dialog.id;
       if (res.taskState && res.taskState.name.toLowerCase() == "started") {
         this.emit("topicSubscription", {

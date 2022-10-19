@@ -7,7 +7,7 @@
     "CIM_REPORTING_URL":"${CIM_REPORTING_URL}",
     "UNIFIED_ADMIN_URL":"${UNIFIED_ADMIN_URL}",
     "ENV" : "${ENV}",
-    "BOT_FRAMEWORK_URL":"${BOT_FRAMEWORK_URL}",
+    "CONVERSATION_MANAGER_URL":"${CONVERSATION_MANAGER_URL}",
     "domain": "${domain}",
     "subDomain" : "${subDomain}",
     "boshUrl": "${boshUrl}",
