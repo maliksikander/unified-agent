@@ -32,13 +32,13 @@
 
 
             </ng-container>
-            <li class="list-group-item">
+            <li class="list-group-item" *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
               <button mat-icon-button [matMenuTriggerFor]="ParticipantsList" matTooltip="Participants"
                 aria-label="Participants">
                 <mat-icon>group</mat-icon>
               </button>
             </li>
-            <li class="list-group-item">
+            <li class="list-group-item" *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
               <button mat-icon-button [matMenuTriggerFor]="ConsultTransferConversation" (click)="getAgentsInQueue()"
                 matTooltip="Agent Assistance" aria-label="Consult Chat">
                 <mat-icon>person_add</mat-icon>
@@ -50,7 +50,7 @@
               </button>
             </li>
           </ul>
-          <mat-menu #ConsultTransferConversation="matMenu" xPosition="before">
+          <mat-menu *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'" #ConsultTransferConversation="matMenu" xPosition="before">
             <div class="chat-transfer-main" (click)="$event.stopPropagation()">
               <span class="transfer-heading">Consult / Transfer / Conference</span>
               <div class="search-wrapper">
@@ -103,7 +103,7 @@
             </div>
           </mat-menu>
 
-          <mat-menu #ParticipantsList="matMenu" xPosition="before">
+          <mat-menu *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'" #ParticipantsList="matMenu" xPosition="before">
             <div class="chat-transfer-main participants-list">
               <h5 class="transfer-heading participants-heading">Participants</h5>
               <button mat-menu-item>
