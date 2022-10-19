@@ -792,7 +792,7 @@ export class InteractionsComponent implements OnInit {
 
     setTimeout(() => {
       this.snackBar.open(msg, "", {
-        duration: 8000,
+        duration: 4000,
         panelClass: "chat-success-snackbar",
         horizontalPosition: "right",
         verticalPosition: "bottom"
