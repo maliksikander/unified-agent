@@ -13,7 +13,8 @@
             <div class="chat-contacts left-bar-contacts">
               <ng-template mat-tab-label>
                 <span class="get-events">
-                  <div class="user-badge" [ngClass]="{'consult-monitor':conversation.customer.isConsultMonitor && _sharedService.consultRequestAccept == true && (_sharedService.requestAction | lowercase) !== 'conference'}">
+                  <div class="user-badge" >
+                    <!-- [ngClass]="{'consult-monitor':conversation.customer.isConsultMonitor && _sharedService.consultRequestAccept == true && (_sharedService.requestAction | lowercase) !== 'conference'}" -->
                     <circle-progress
                       class="laft-bar-data"
                       [percent]="100"
@@ -33,7 +34,7 @@
                     >
                     </circle-progress>
                     <span class="badge1" [hidden]="conversation.unReadCount == 0">{{ conversation.unReadCount }}</span>
-                    <span *ngIf="conversation.customer.isConsultMonitor && _sharedService.consultRequestAccept == true" class="badge1 channel-badge"><img src="assets/images/{{(_sharedService.requestAction | lowercase) == 'conference' ? 'conference.svg' : 'consult.svg'}}"> </span>
+                    <!-- <span *ngIf="conversation.customer.isConsultMonitor && _sharedService.consultRequestAccept == true" class="badge1 channel-badge"><img src="assets/images/{{(_sharedService.requestAction | lowercase) == 'conference' ? 'conference.svg' : 'consult.svg'}}"> </span> -->
 
                   </div>
                   <span class="user-name">{{ conversation.customer.firstName }}</span>
