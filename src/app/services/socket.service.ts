@@ -138,7 +138,7 @@ export class socketService {
     });
 
     this.socket.on("taskRequest", (res: any) => {
-      console.log("taskRequest ",res);
+      console.log("taskRequest ", res);
       if (res.cisco_data) this.ciscoDialogId = res.cisco_data.response.dialog.id;
       if (res.taskState && res.taskState.name.toLowerCase() == "started") {
         this.emit("topicSubscription", {
@@ -404,7 +404,9 @@ export class socketService {
         }
       } else if (["task_enqueued", "no_agent_available", "channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())) {
         let message = this.createSystemNotificationMessage(event);
-        conversation.messages.push(message);
+        if (message) {
+          conversation.messages.push(message);
+        }
       } else if (event.name.toLowerCase() == "whisper_message") {
         event.data.header["status"] = "sent";
         event.data.body["isWhisper"] = true;
@@ -711,7 +713,9 @@ export class socketService {
 
     if (conversation) {
       let message = this.createSystemNotificationMessage(cimEvent);
-      conversation.messages.push(message);
+      if (message) {
+        conversation.messages.push(message);
+      }
     }
 
   }
@@ -723,7 +727,9 @@ export class socketService {
 
     if (conversation) {
       let message = this.createSystemNotificationMessage(cimEvent);
-      conversation.messages.push(message);
+      if (message) {
+        conversation.messages.push(message);
+      }
     }
   }
 
@@ -1151,7 +1157,11 @@ export class socketService {
         let string = mode + " conference request has been placed by " + cimEvent.data.task.type.metadata.requestedBy;
         message.body["displayText"] = "";
         message.body.markdownText = string;
+      } else {
+        message = null;
       }
+
+
     } else if (cimEvent.name.toLowerCase() == "no_agent_available") {
 
       let mode;
@@ -1165,13 +1175,19 @@ export class socketService {
 
       if (cimEvent.data.requestType.direction.toLowerCase() == "direct_transfer") {
         direction = "transfer";
+        let string = "No agent is available for " + mode + " " + direction;
+        message.body["displayText"] = "";
+        message.body.markdownText = string;
       } else if (cimEvent.data.requestType.direction.toLowerCase() == "direct_conference") {
         direction = "conference";
+        let string = "No agent is available for " + mode + " " + direction;
+        message.body["displayText"] = "";
+        message.body.markdownText = string;
+      } else {
+        message = null;
       }
 
-      let string = "No agent is available for " + mode + " " + direction;
-      message.body["displayText"] = "";
-      message.body.markdownText = string;
+
 
     }
 

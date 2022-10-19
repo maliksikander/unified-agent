@@ -543,7 +543,9 @@ export class InteractionsComponent implements OnInit {
           ["task_enqueued", "no_agent_available", "channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())
         ) {
           let message = this._socketService.createSystemNotificationMessage(event);
-          msgs.push(message);
+          if (message) {
+            msgs.push(message);
+          }
         } else if (event.name.toLowerCase() == "conversation_data_changed") {
           let message = this._socketService.createConversationDataMessage(event);
           msgs.push(message);
