@@ -2342,6 +2342,7 @@ vg-controls.hide {
       text-align: center;
       display: inline-block;
       margin-left: 5px;
+      cursor: pointer;
       img{
         vertical-align: middle;
         width: 13px;
@@ -2350,6 +2351,21 @@ vg-controls.hide {
     }
 
   }
+  .queue-name{
+    display: inline-block;
+    font-size: 12px;
+    line-height: 16px;
+     span {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 130px;
+      white-space: pre-line;
+      float: left;
+      margin-right: 5px;
+    }
+
+  }
+
 
 }
 
@@ -2430,6 +2446,7 @@ vg-controls.hide {
       text-align: center;
       display: inline-block;
       margin-left: 5px;
+      cursor: pointer;
       opacity: 0;
       img{
         vertical-align: middle;

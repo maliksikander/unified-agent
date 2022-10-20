@@ -35,8 +35,7 @@
       class="row main-panel m-0">
       <mat-card class="notification-panel mat-card">
         <mat-card-content class="mat-card-content identified consult-notification "
-          [ngClass]="{'conference-request': request?.taskDirection == 'DIRECT_CONFERENCE'}"
-          [ngClass]="{'transfer-notification': request?.taskDirection == 'DIRECT_TRANSFER'}">
+          [ngClass]="{'conference-request': request?.taskDirection == 'DIRECT_CONFERENCE','transfer-notification': request?.taskDirection == 'DIRECT_TRANSFER'}">
           <div class="chat-request">
             <p class="channel-icon">
               <img [src]="request.channelSession.channel.channelType.channelLogo | channelLogo | async">
@@ -45,9 +44,9 @@
           </div>
           <div class="requested-name">
             <strong>Chat {{request?.taskDirection == 'DIRECT_CONFERENCE' ? 'conference' : 'transfer'}} request from
-              {{request?.requestedBy}} with customer
-              {{request?.channelSession?.customer?.firstName}}</strong>
-            <p>
+              '{{request?.requestedBy | titlecase}}' with customer
+              '{{request?.channelSession?.customer?.firstName | titlecase }}'</strong>
+            <p *ngIf="request?.note">
               {{request?.note}}
             </p>
           </div>

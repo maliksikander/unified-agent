@@ -39,7 +39,8 @@
               </button>
             </li>
             <li class="list-group-item" *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
-              <button mat-icon-button [matMenuTriggerFor]="ConsultTransferConversation" (click)="getAgentsInQueue()"
+              <button mat-icon-button #consultTransferTrigger="matMenuTrigger"
+                [matMenuTriggerFor]="ConsultTransferConversation" (click)="getAgentsInQueue()"
                 matTooltip="Agent Assistance" aria-label="Consult Chat">
                 <mat-icon>person_add</mat-icon>
               </button>
@@ -66,7 +67,9 @@
                   *ngFor="let queue of queueList | LockFilter: queueSearch; let i = index ">
                   <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
                     <mat-panel-title>
-                      {{queue?.queueName}} ({{queue?.totalAvailableAgents}})
+
+                      <span class="queue-name"><span>{{queue?.queueName}}</span>
+                        ({{queue?.totalAvailableAgents}}) </span>
                       <!--                      <span class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, option)">Consult</span>-->
                       <div class="consult-action-main">
                         <!-- <span matTooltip="Queue Consult" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, option, 'Consult to Queue')"><img src="assets/images/consult-colored.svg" alt="consult"/> </span> -->
@@ -103,8 +106,9 @@
             </div>
           </mat-menu>
 
-          <mat-menu  #ParticipantsList="matMenu" xPosition="before">
-            <div *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'" class="chat-transfer-main participants-list">
+          <mat-menu #ParticipantsList="matMenu" xPosition="before">
+            <div *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'"
+              class="chat-transfer-main participants-list">
               <h5 class="transfer-heading participants-heading">Participants</h5>
               <button mat-menu-item>
 
@@ -130,7 +134,7 @@
                   <!-- <small>(Technical)</small> -->
                 </span>
               </button>
-              <span class="transfer-heading">Consultants</span>
+              <!-- <span class="transfer-heading">Consultants</span> -->
               <!--              <div class="search-wrapper">-->
               <!--                <input type="text" placeholder="search..." (click)="$event.stopPropagation()" [(ngModel)]="ConsultSearch">-->
               <!--                <mat-icon>search</mat-icon>-->
@@ -1281,7 +1285,7 @@
                 <!--                </span>-->
                 <span class="inner-text">
                   <span>{{ message.body.displayText }}</span> <span>{{ " " + message.body.markdownText }}</span>
-                  <span class="notification-time">{{ message.header.timestamp | date: "hh:mm:ss" }}</span>
+                  <span class="notification-time">{{ message.header.timestamp | date: "HH:MM:SS" }}</span>
                 </span>
               </div>
               <!-- ----------------------------------system Notifications ended-------------------------------- -->
@@ -1376,14 +1380,17 @@
 
 
       <div class="whisper-selection" *ngIf="conversation?.agentParticipants?.length > 0">
-        <button (click)="isWhisperMode = false" [ngClass]="{'customer-select': !isWhisperMode}" class="customer-mode message-mode"
-          mat-button>{{conversation.customer?.firstName ? conversation.customer.firstName : 'N/A'}}</button>
-        <button (click)="isWhisperMode = true" [ngClass]="{'whisper-select': isWhisperMode}" class="whisper-mode message-mode"
-          mat-button>Whisper</button>
+        <button (click)="isWhisperMode = false" [ngClass]="{'customer-select': !isWhisperMode}"
+          class="customer-mode message-mode" mat-button>{{conversation.customer?.firstName ?
+          conversation.customer.firstName : 'N/A'}}</button>
+        <button (click)="isWhisperMode = true" [ngClass]="{'whisper-select': isWhisperMode}"
+          class="whisper-mode message-mode" mat-button>Whisper</button>
       </div>
       <div class="message-composer">
-        <form class="reply-form" [ngClass]="{'whisper-mode': conversation?.agentParticipants?.length > 0 && isWhisperMode}">
-          <label [ngStyle]="{'top':conversation?.agentParticipants?.length > 0 ? '-15px' : '2px' }" class="count-reply">{{
+        <form class="reply-form"
+          [ngClass]="{'whisper-mode': conversation?.agentParticipants?.length > 0 && isWhisperMode}">
+          <label [ngStyle]="{'top':conversation?.agentParticipants?.length > 0 ? '-15px' : '2px' }"
+            class="count-reply">{{
             replyInput.value.length }}/1000</label>
           <div class="mat-form-field chat-area" [ngClass]="{ 'expand-area-height': expanedHeight > 50 }">
             <textarea maxlength="1000"
@@ -1616,7 +1623,7 @@
           <!--          </div>-->
           <h3>{{requestedQueue?.queueName ? requestedQueue?.queueName : 'N/A'}}</h3>
           <p class="consult-team">({{requestedQueue?.totalAvailableAgents ? requestedQueue?.totalAvailableAgents : 0 }}
-            agents available)</p>
+            {{requestedQueue?.totalAvailableAgents > 1 ? 'agents' :'agent'}} available)</p>
           <!-- <p *ngIf="requestedQueue?.queueName">
             ({{requestedQueue?.queueName}})</p> -->
         </div>
