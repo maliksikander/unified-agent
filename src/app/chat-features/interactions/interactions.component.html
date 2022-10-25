@@ -345,9 +345,9 @@
                           <p>
                             <span
                               [innerHTML]="conversationSettings.isMessageFormattingEnabled ? (referredMessage.body.markdownText | linkify | ibsformat) : (referredMessage.body.markdownText)"></span>
-                            <span class="message-stamp yellow">
-                              <span class="chat-time red">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
-                            </span>
+<!--                            <span class="message-stamp yellow">-->
+<!--                              <span class="chat-time red">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
+<!--                            </span>-->
                           </p>
                         </div>
 
@@ -386,7 +386,7 @@
 
                         <!-- --------------------image--------------------- -->
 
-                        <div *ngIf="(referredMessage.body.type | lowercase) == 'image' || ((referredMessage.body.type | lowercase) == 'comment' && (referredMessage.body.itemType | lowercase) == 'image')" 
+                        <div *ngIf="(referredMessage.body.type | lowercase) == 'image' || ((referredMessage.body.type | lowercase) == 'comment' && (referredMessage.body.itemType | lowercase) == 'image')"
                           class="file-type-content image-content">
                           <a style="cursor: pointer"
                             (click)="filePreviewOpener(referredMessage.body.attachment.mediaUrl, referredMessage.body.caption, 'image')"
@@ -550,6 +550,9 @@
                           <!--                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
                         </div>
                       </div>
+                      <span class="message-stamp quoted-reply-time">
+                              <span class="chat-time red">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
+                            </span>
                     </div>
                   </div>
                   <!-- <div *ngIf="message.header.replyToMessageId != null" class="clear clearfix"></div> -->
@@ -620,8 +623,8 @@
                         class="display-file display-image">
                         <img [src]="message.body.attachment?.mediaUrl | getFileUrl" />
                       </a>
-                      
-                      
+
+
                       <!--                      <div class="shared-url shared-card-content">-->
                       <!--                        <span class="url-title card-title"-->
                       <!--                          [matTooltip]="message.body.caption">{{message.body.caption}}</span>-->
@@ -770,234 +773,6 @@
                       <!--                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                     </div>
 
-                    <!-- <-------------------------------------VOICE MESSAGE START--------------------------------------------------->
-                    <!--                    <div class="wrap-up-main panel-divider user-data customer-side voice-activity-main"-->
-                    <!--                      *ngIf="(message.body.type | lowercase) == 'voice' && (message.header.intent | lowercase) == 'end_voice'">-->
-                    <!--                      <mat-expansion-panel>-->
-
-                    <!--                        <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">-->
-                    <!--                          <mat-panel-title>-->
-                    <!--                            <div class="panel-header">-->
-                    <!--                              <ul>-->
-                    <!--                                <li class="agent-pic call-services">-->
-                    <!--                                  <p><span>{{_cacheService.agent.username}}</span></p>-->
-                    <!--                                </li>-->
-                    <!--                                <li class="section-duration">-->
-                    <!--                                  <time>-->
-
-                    <!--                                    {{message.body.dialog.dialog.participants | timeDurationFromParticipant }}-->
-
-                    <!--                                    &lt;!&ndash; {{message?.body?.dialog?.dialog?.participants?.Participant[0]?.startTime ?-->
-                    <!--                                    message?.body?.dialog?.dialog?.participants?.Participant[0]?.startTime :-->
-                    <!--                                    message?.body?.dialog?.participants?.Participant[0]?.startTime |-->
-                    <!--                                    timeDuration:-->
-                    <!--                                    message?.body?.dialog?.dialog?.participants?.Participant[0]?.stateChangeTime ?-->
-                    <!--                                    message?.body?.dialog?.dialog?.participants?.Participant[0]?.stateChangeTime :-->
-                    <!--                                    message?.body?.dialog?.participants?.Participant[0]?.stateChangeTime-->
-                    <!--                                    }} &ndash;&gt;-->
-
-                    <!--                                    &lt;!&ndash; {{message.body.dialog.dialog.participants.Participant[0].startTime |-->
-                    <!--                                      timeDuration:message.body.dialog.dialog.participants.Participant[0].stateChangeTime-->
-                    <!--                                      }} &ndash;&gt;-->
-
-                    <!--                                  </time>-->
-
-                    <!--                                </li>-->
-                    <!--                                &lt;!&ndash; <li class="section-tags">-->
-                    <!--                                  <span>Tag A</span>-->
-                    <!--                                  <span>Tag B</span>-->
-                    <!--                                </li> &ndash;&gt;-->
-                    <!--                                <li>-->
-                    <!--                                  <time>{{message.header.timestamp | date:'shortTime'}}</time>-->
-                    <!--                                </li>-->
-                    <!--                              </ul>-->
-                    <!--                            </div>-->
-                    <!--                          </mat-panel-title>-->
-                    <!--                        </mat-expansion-panel-header>-->
-
-                    <!--                        <div class="panel-header call-history-panel inner-detail">-->
-                    <!--                          <div class="history-time">-->
-                    <!--                            <time>{{message.header.timestamp | date:'shortTime'}}</time>-->
-                    <!--                          </div>-->
-                    <!--                          <div class="history-detail inner-detail-history">-->
-                    <!--                            <mat-expansion-panel>-->
-
-                    <!--                              <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">-->
-                    <!--                                <mat-panel-title>-->
-                    <!--                                  <div class="panel-header">-->
-                    <!--                                    <ul>-->
-                    <!--                                      <li><span class="phone-number">-->
-                    <!--                                          {{message.body.dialog.dialog.ani ? message.body.dialog.dialog.ani :-->
-                    <!--                                          message.body.dialog.dialog.fromAddress}}-->
-                    <!--                                        </span>-->
-                    <!--                                      </li>-->
-                    <!--                                      <li class="agent-pic call-notify">-->
-                    <!--                                        <span><img src="assets/images/incoming-call.svg"> </span>-->
-                    <!--                                      </li>-->
-                    <!--                                      <li class="section-duration">-->
-                    <!--                                        <time>-->
-                    <!--                                          {{message.body.dialog.dialog.participants | timeDurationFromParticipant }}-->
-                    <!--                                        </time>-->
-                    <!--                                      </li>-->
-                    <!--                                      <li class="agent-pic call-notify">-->
-                    <!--                                        <span><img src="assets/images/call-end.svg"> </span>-->
-                    <!--                                      </li>-->
-                    <!--                                    </ul>-->
-                    <!--                                  </div>-->
-                    <!--                                </mat-panel-title>-->
-                    <!--                              </mat-expansion-panel-header>-->
-
-                    <!--                              <div class="summary-detail">-->
-                    <!--                                <ul>-->
-                    <!--                                  <li><label>Agent</label>:<span>{{_cacheService.agent.username}}</span></li>-->
-                    <!--                                  <li><label>CSQ </label>:<span>CSQ</span></li>-->
-                    <!--                                  <li><label>Call-->
-                    <!--                                      Duration</label>:<span>-->
-
-                    <!--                                      {{message.body.dialog.dialog.participants | timeDurationFromParticipant }}-->
-
-                    <!--                                      &lt;!&ndash; {{message.body.dialog.dialog.participants.Participant[0].startTime |-->
-                    <!--                                      timeDuration:message.body.dialog.dialog.participants.Participant[0].stateChangeTime-->
-                    <!--                                      }} &ndash;&gt;-->
-
-                    <!--                                      &lt;!&ndash; {{message.body?.dialog?.dialog?.participants?.Participant[0]?.startTime-->
-                    <!--                                      ? message.body?.dialog?.dialog?.participants?.Participant[0]?.startTime :-->
-                    <!--                                      message.body?.dialog?.participants?.Participant[0]?.startTime-->
-                    <!--                                      |-->
-                    <!--                                      timeDuration:-->
-                    <!--                                      message.body?.dialog?.dialog?.participants?.Participant[0]?.stateChangeTime ?-->
-                    <!--                                      message.body?.dialog?.dialog?.participants?.Participant[0]?.stateChangeTime :-->
-                    <!--                                      message.body?.dialog?.participants?.Participant[0]?.stateChangeTime-->
-                    <!--                                      }} &ndash;&gt;-->
-                    <!--                                    </span></li>-->
-                    <!--                                  <li><label>Form UR</label>:<span>N/A</span></li>-->
-                    <!--                                  <li><label>Wrap-Up</label>:<span>N/A</span></li>-->
-                    <!--                                  <li><label>Recording URL</label>:<span>N/A</span></li>-->
-                    <!--                                </ul>-->
-                    <!--                              </div>-->
-                    <!--                            </mat-expansion-panel>-->
-
-                    <!--                          </div>-->
-                    <!--                        </div>-->
-                    <!--                      </mat-expansion-panel>-->
-                    <!--                    </div>-->
-                    <!-- <--------------------------------------------VOICE MESSAGE END-------------------------------------------->
-
-                    <!-- Voice call multi activity-->
-
-                    <!--                    <div *ngIf="(message.body.type | lowercase) == 'voice' && message.body.transfer !== true" class="voice-activity-main panel-divider user-data customer-side">-->
-                    <!--                      <mat-expansion-panel>-->
-
-                    <!--                        <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">-->
-                    <!--                          <mat-panel-title>-->
-                    <!--                            <div class="panel-header">-->
-                    <!--                              <ul>-->
-                    <!--                                <li><span class="phone-number">+15632148756</span></li>-->
-
-                    <!--                                <li class="agent-pic call-services">-->
-                    <!--                                  <span><img src="assets/images/cs1.png" alt="participant" matTooltip="Agent"></span>-->
-                    <!--                                </li>-->
-                    <!--                                <li class="section-duration">-->
-                    <!--                                  <time>02min 20sec</time>-->
-                    <!--                                </li>-->
-                    <!--                                &lt;!&ndash;                                <li class="section-tags">&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                  <span>Broadband Disconnection</span>&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                  <span>Slow internet</span>&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                  <span class="sub-tags" (click)="$event.stopPropagation()" [matMenuTriggerFor]="voiceTags">3+</span>&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                </li>&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                <li class="agent-pic">&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                  <span><img src="assets/images/call-record.svg"> </span>&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                </li>&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                <li class="agent-pic call-transcript">&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                  <span><img src="assets/images/call-transcript.svg"> </span>&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                </li>&ndash;&gt;-->
-                    <!--                                <li>-->
-                    <!--                                  <time>11:45 AM</time>-->
-                    <!--                                </li>-->
-                    <!--                              </ul>-->
-                    <!--                            </div>-->
-                    <!--                          </mat-panel-title>-->
-                    <!--                        </mat-expansion-panel-header>-->
-                    <!--                        <div class="panel-header call-history-panel inner-detail">-->
-                    <!--                          <div class="history-detail inner-detail-history">-->
-                    <!--                            <div class="panel-header">-->
-                    <!--                              <ul>-->
-                    <!--                                <li class="agent-pic call-services">-->
-                    <!--                                  <p>Customer Services</p>-->
-                    <!--                                </li>-->
-                    <!--                                <li class="agent-pic call-services">-->
-                    <!--                                  <span><img src="assets/images/cs1.png" alt="participant" matTooltip="Agent"></span>-->
-                    <!--                                </li>-->
-                    <!--                                <li class="agent-pic call-notify">-->
-                    <!--                                  <span><img src="assets/images/incoming-call.svg" alt="incoming call"> </span>-->
-                    <!--                                </li>-->
-
-                    <!--                                <li class="section-duration">-->
-                    <!--                                  <time>02min 20sec</time>-->
-                    <!--                                </li>-->
-                    <!--                                &lt;!&ndash;                                <li class="section-tags">&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                  <span>slow internet</span>&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                  <span>Bill information</span>&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                  <span class="sub-tags" [matMenuTriggerFor]="voiceTags">3+</span>&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                </li>&ndash;&gt;-->
-                    <!--                                <li class="agent-pic call-notify">-->
-                    <!--                                  <span><img src="assets/images/call-transfer.svg"> </span>-->
-                    <!--                                </li>-->
-                    <!--                                &lt;!&ndash;                                <li class="agent-pic">&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                  <span><img src="assets/images/call-record.svg"> </span>&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                </li>&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                <li class="agent-pic call-transcript">&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                  <span><img src="assets/images/call-transcript.svg"> </span>&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                </li>&ndash;&gt;-->
-                    <!--                              </ul>-->
-                    <!--                            </div>-->
-                    <!--                          </div>-->
-                    <!--                        </div>-->
-                    <!--                        <div class="panel-header call-history-panel inner-detail">-->
-                    <!--                          <div class="history-detail inner-detail-history">-->
-                    <!--                            <div class="panel-header">-->
-                    <!--                              <ul>-->
-                    <!--                                <li class="agent-pic call-services">-->
-                    <!--                                  <p> Customer Services</p>-->
-                    <!--                                </li>-->
-                    <!--                                <li class="agent-pic call-services">-->
-                    <!--                                  <span><img src="assets/images/cs1.png" alt="participant" matTooltip="Agent"></span>-->
-                    <!--                                </li>-->
-                    <!--                                <li class="agent-pic call-notify">-->
-                    <!--                                  <span><img src="assets/images/incoming-call.svg"> </span>-->
-                    <!--                                </li>-->
-
-                    <!--                                <li class="section-duration">-->
-                    <!--                                  <time>02min 20sec</time>-->
-                    <!--                                </li>-->
-                    <!--                                &lt;!&ndash;                                <li class="section-tags">&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                  <span>slow internet</span>&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                  <span>Bill information</span>&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                  <span class="sub-tags" [matMenuTriggerFor]="voiceTags">3+</span>&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                </li>&ndash;&gt;-->
-                    <!--                                <li class="agent-pic call-notify">-->
-                    <!--                                  <span><img src="assets/images/call-end.svg"> </span>-->
-                    <!--                                </li>-->
-                    <!--                                &lt;!&ndash;                                <li class="agent-pic">&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                  <span><img src="assets/images/call-record.svg"> </span>&ndash;&gt;-->
-                    <!--                                &lt;!&ndash;                                </li>&ndash;&gt;-->
-                    <!--                              </ul>-->
-                    <!--                            </div>-->
-                    <!--                          </div>-->
-                    <!--                        </div>-->
-
-                    <!--                      </mat-expansion-panel>-->
-                    <!--                    </div>-->
-
-                    <!--                    <mat-menu #voiceTags="matMenu">-->
-                    <!--                      <div class="more-section-tags">-->
-                    <!--                        <span>Broadband Disconnection</span>-->
-                    <!--                        <span>Billing Information</span>-->
-                    <!--                        <span>Customer update</span>-->
-                    <!--                        <span>Payment due date</span>-->
-                    <!--                        <span>Slow internet</span>-->
-                    <!--                      </div>-->
-                    <!--                    </mat-menu>-->
                     <!-- ./Voice call multi activity-->
 
                     <!-- Voice call single activity-->
@@ -1190,7 +965,7 @@
 
                           </div>
                         </div>
-                        
+
                         <!-- <div class="post-sub-comments-area"> -->
                         <!-- <div class="total-comment-count">
                             <span><mat-icon>chat_bubble_outline</mat-icon>16 </span>
@@ -1293,6 +1068,9 @@
                     <!-- ---------------------------------- FB Comment Ended-------------------------------- -->
                     <span class="chat-time file-type-stamp">{{ message.header.timestamp | date: "shortTime" }}</span>
 
+                    <span class="message-stamp yellow" *ngIf="((message.body.type | lowercase) != 'plain' && (message.header.sender.type | lowercase) != 'customer') || ((message.body.type | lowercase) != 'plain' && (message.body.type | lowercase) != 'comment')">
+                              <span class="chat-time red">{{message.header.timestamp | date:'shortTime'}}</span>
+                            </span>
                   </div>
                 </div>
 
@@ -1351,8 +1129,8 @@
             <span *ngIf="quotedMessage.body.attachment" class="display-file display-image">
               <img [src]="quotedMessage.body.attachment.mediaUrl | getFileUrl" />
               {{quotedMessage.body.caption}}
-              
-             
+
+
             </span>
 
             <span *ngIf="quotedMessage.body.mediaUrl" class="display-file display-image">

@@ -2325,6 +2325,15 @@ vg-controls.hide {
   }
 }
 
+.quoted-reply-time{
+  display: inline-block;
+  width: 100%;
+  text-align: right;
+  float: none;
+  .chat-time{
+    float: none;
+  }
+}
 //Transfer, consult chat
 
 .consultants-list{
