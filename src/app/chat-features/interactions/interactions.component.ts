@@ -207,6 +207,7 @@ export class InteractionsComponent implements OnInit {
       panelClass: "wrap-dialog"
     });
   }
+  
   openQuotedReplyArea(e) {
     this.quotedMessage = e;
   }
@@ -402,7 +403,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   uploadFile(files) {
-    let availableExtentions: any = ["txt", "png", "jpg", "jpeg", "pdf", "ppt", "xlsx", "xls", "doc", "docx", "rtf"];
+    let availableExtentions: any = ["txt", "png", "jpg", "jpeg", "pdf", "ppt", "xlsx", "xls", "doc", "docx", "rtf","mp4"];
     let ln = files.length;
     if (ln > 0) {
       for (var i = 0; i < ln; i++) {
@@ -416,6 +417,7 @@ export class InteractionsComponent implements OnInit {
             fd.append("conversationId", `${Math.floor(Math.random() * 90000) + 10000}`);
             this._httpService.uploadToFileEngine(fd).subscribe(
               (e) => {
+                console.log("e.type",e.type.split("/")[0])
                 this.constructAndSendCimEvent(e.type.split("/")[0], e.type, e.name, e.size);
               },
               (error) => {
@@ -447,7 +449,7 @@ export class InteractionsComponent implements OnInit {
           if (selectedChannelSession.channel.channelType.name.toLowerCase() == "facebook") {
             // channel session is facebook
 
-            message = this.constructFbCommentEvent(message, text, selectedChannelSession);
+            message = this.constructFbCommentEvent(message,msgType, selectedChannelSession, fileMimeType, fileName, fileSize, text);
 
             this.emitCimEvent(message, "AGENT_MESSAGE");
           } else {
@@ -462,7 +464,7 @@ export class InteractionsComponent implements OnInit {
             message.header.sender = this.conversation.topicParticipant;
             message.header.channelSession = sendingActiveChannelSession;
             message.header.channelData = sendingActiveChannelSession.channelData;
-
+            console.log("ll",message.body)
             if (msgType.toLowerCase() == "plain") {
               message.body.type = "PLAIN";
               message.body.markdownText = text.trim();
@@ -477,6 +479,17 @@ export class InteractionsComponent implements OnInit {
               };
             } else if (msgType.toLowerCase() == "image") {
               message.body.type = "IMAGE";
+              message.body["caption"] = fileName;
+              message.body["additionalDetails"] = {};
+              message.body["attachment"] = {
+                mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
+                mimeType: fileMimeType,
+                size: fileSize,
+                thumbnail: ""
+              };
+            }
+            else if (msgType.toLowerCase() == "video") {
+              message.body.type = "VIDEO";
               message.body["caption"] = fileName;
               message.body["additionalDetails"] = {};
               message.body["attachment"] = {
@@ -568,7 +581,11 @@ export class InteractionsComponent implements OnInit {
         if (
           msg.header.sender.type.toLowerCase() == "agent" &&
           msg.body.type.toLowerCase() == "comment" &&
-          msg.body.itemType.toLowerCase() != "text"
+          msg.body.itemType.toLowerCase() != "text" &&
+          msg.body.itemType.toLowerCase() != "video" &&
+          msg.body.itemType.toLowerCase() != "image"
+
+
         ) {
           this._socketService.processFaceBookCommentActions(msgs, msg);
         } else {
@@ -658,21 +675,47 @@ export class InteractionsComponent implements OnInit {
     return message;
   }
 
-  constructFbCommentEvent(message, text, channelSession) {
+  constructFbCommentEvent(message,msgType,channelSession , fileMimeType?, fileName?, fileSize?, text?) {
     let sendingActiveChannelSession = JSON.parse(JSON.stringify(channelSession));
     delete sendingActiveChannelSession["webChannelData"];
     delete sendingActiveChannelSession["isChecked"];
     delete sendingActiveChannelSession["isDisabled"];
 
     message.header.providerMessageId = this.fbCommentId;
-
+    console.log("message",message.body)
     message.body.type = "COMMENT";
     message.body.postId = this.fbPostId;
-    message.body.itemType = "TEXT";
-    message.body.markdownText = text.trim();
     message.header.replyToMessageId = this.replyToMessageId;
     message.header.channelSession = sendingActiveChannelSession;
     message.header.channelData = sendingActiveChannelSession.channelData;
+    
+    if (msgType.toLowerCase() == "plain") {
+      message.body.itemType = "TEXT";
+      message.body.markdownText = text.trim();
+    }
+    else if (msgType.toLowerCase() == "image") {
+      message.body.itemType = "IMAGE";
+      // message.body["caption"] = fileName;
+      // message.body["additionalDetails"] = {};
+      message.body["attachment"] = {
+        mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
+        mimeType: fileMimeType,
+        size: fileSize,
+        thumbnail: ""
+      };
+    }
+    else if (msgType.toLowerCase() == "video") {
+      message.body.itemType = "VIDEO";
+      // message.body["caption"] = fileName;
+      // message.body["additionalDetails"] = {};
+      message.body["attachment"] = {
+        mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
+        mimeType: fileMimeType,
+        size: fileSize,
+        thumbnail: ""
+      };
+    }
+   
 
     return message;
   }

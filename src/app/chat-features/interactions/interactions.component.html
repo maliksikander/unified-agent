@@ -345,8 +345,8 @@
                           <p>
                             <span
                               [innerHTML]="conversationSettings.isMessageFormattingEnabled ? (referredMessage.body.markdownText | linkify | ibsformat) : (referredMessage.body.markdownText)"></span>
-                            <span class="message-stamp">
-                              <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
+                            <span class="message-stamp yellow">
+                              <span class="chat-time red">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
                             </span>
                           </p>
                         </div>
@@ -386,13 +386,16 @@
 
                         <!-- --------------------image--------------------- -->
 
-                        <div *ngIf="(referredMessage.body.type | lowercase) == 'image'"
+                        <div *ngIf="(referredMessage.body.type | lowercase) == 'image' || ((referredMessage.body.type | lowercase) == 'comment' && (referredMessage.body.itemType | lowercase) == 'image')" 
                           class="file-type-content image-content">
                           <a style="cursor: pointer"
                             (click)="filePreviewOpener(referredMessage.body.attachment.mediaUrl, referredMessage.body.caption, 'image')"
                             class="display-file display-image">
-                            <img [src]="referredMessage.body.attachment.mediaUrl | getFileUrl" />
+                            <img [src]="referredMessage.body.attachment?.mediaUrl | getFileUrl" />
                           </a>
+                          <!-- <span class="message-stamp rklrlk">
+                            <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>
+                          </span> -->
                           <!--                          <div class="shared-url shared-card-content">-->
                           <!--                            <span class="url-title card-title"-->
                           <!--                              [matTooltip]="referredMessage.body.caption">{{referredMessage.body.caption}}</span>-->
@@ -496,7 +499,7 @@
 
                         <!-- -------------------------video------------------------------- -->
 
-                        <div *ngIf="(referredMessage.body.type | lowercase) == 'video'" class="file-type-content">
+                        <div *ngIf="(referredMessage.body.type | lowercase) == 'video' || ((referredMessage.body.type | lowercase) == 'comment' && (referredMessage.body.itemType | lowercase) == 'video')" class="file-type-content">
                           <div class="shared-url shared-card-content video-player p-0">
                             <div class="media-main">
                               <vg-player>
@@ -517,7 +520,7 @@
                                   <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
                                 </vg-controls>
                                 <video #media [vgMedia]="media" id="{{ referredMessage.id }}" preload="auto">
-                                  <source [src]="referredMessage.body.attachment.mediaUrl | getFileUrl" />
+                                  <source [src]="referredMessage.body.attachment?.mediaUrl | getFileUrl" />
                                 </video>
                               </vg-player>
                             </div>
@@ -559,12 +562,12 @@
                     }">
                     <!-- ---------------plain---------------------- -->
                     <div
-                      *ngIf="(message.body.type | lowercase) == 'plain' || ((message.body.type | lowercase)=='comment' && (message.header.sender.type | lowercase)=='agent')">
+                      *ngIf="(message.body.type | lowercase) == 'plain' || ((message.body.type | lowercase)=='comment' && (message.body.itemType | lowercase)=='text' && (message.header.sender.type | lowercase)=='agent')">
                       <p
                         class="{{ (message.header.sender.type | lowercase) == 'customer' && message.botSuggestions ? 'plain-text-p' : '' }}">
                         <span
                           [innerHTML]="conversationSettings.isMessageFormattingEnabled ? (message.body.markdownText | linkify | ibsformat) : (message.body.markdownText)"></span>
-                        <span class="message-stamp">
+                        <span class="message-stamp green">
                           <span class="chat-time">{{ message.header.timestamp | date: "shortTime" }}</span>
                         </span>
 
@@ -593,7 +596,7 @@
                       <ul class="structured-actions">
                         <li *ngFor="let button of message.body.buttons">{{ button.title }}</li>
                       </ul>
-                      <span class="message-stamp">
+                      <span class="message-stamp white">
                         <span class="chat-time">{{ message.header.timestamp | date: "shortTime" }}</span>
                       </span>
                       <button mat-icon-button class="user_settings"
@@ -611,12 +614,14 @@
 
                     <!-- --------------------image--------------------- -->
 
-                    <div *ngIf="(message.body.type | lowercase) == 'image'" class="file-type-content image-content">
+                    <div *ngIf="(message.body.type | lowercase) == 'image' || ((message.body.type | lowercase)=='comment' && (message.body.itemType | lowercase)=='image' && (message.header.sender.type | lowercase)=='agent')" class="file-type-content image-content">
                       <a style="cursor: pointer"
                         (click)="filePreviewOpener(message.body.attachment.mediaUrl, message.body.caption, 'image')"
                         class="display-file display-image">
-                        <img [src]="message.body.attachment.mediaUrl | getFileUrl" />
+                        <img [src]="message.body.attachment?.mediaUrl | getFileUrl" />
                       </a>
+                      
+                      
                       <!--                      <div class="shared-url shared-card-content">-->
                       <!--                        <span class="url-title card-title"-->
                       <!--                          [matTooltip]="message.body.caption">{{message.body.caption}}</span>-->
@@ -714,7 +719,7 @@
 
                     <!-- -------------------------video------------------------------- -->
 
-                    <div *ngIf="(message.body.type | lowercase) == 'video'" class="file-type-content">
+                    <div *ngIf="(message.body.type | lowercase) == 'video'  || ((message.body.type | lowercase)=='comment' && (message.body.itemType | lowercase)=='video' && (message.header.sender.type | lowercase)=='agent')" class="file-type-content">
                       <div class="shared-url shared-card-content video-player p-0">
                         <div class="media-main">
                           <vg-player>
@@ -734,6 +739,7 @@
                               </vg-scrub-bar>
                               <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
                             </vg-controls>
+                            <p>{{message.body.attachment.mediaUrl | getFileUrl}}</p>
                             <video #media [vgMedia]="media" id="{{ message.id }}" preload="auto">
                               <source [src]="message.body.attachment.mediaUrl | getFileUrl" />
                             </video>
@@ -1174,16 +1180,17 @@
                             </div>
 
                             <p *ngIf="message.body.itemType == 'IMAGE'">
-                              <a style="cursor: pointer" *ngIf="message.body.attachment?.mediaUrl.length> 0"
+                              <a style="cursor: pointer" *ngIf="message.body.attachment?.mediaUrl?.length> 0"
                                 (click)="filePreviewOpener(message.body.attachment?.mediaUrl, message.body.attachment?.thumbnail, 'image')"
                                 class="display-file display-image"
-                                [ngClass]="{'pt-2' : message.body.markdownText.length > 0}">
+                                [ngClass]="{'pt-2' : message.body.markdownText?.length > 0}">
                                 <img src="{{message.body.attachment?.mediaUrl}}" alt="image" />
                               </a>
                             </p>
 
                           </div>
                         </div>
+                        
                         <!-- <div class="post-sub-comments-area"> -->
                         <!-- <div class="total-comment-count">
                             <span><mat-icon>chat_bubble_outline</mat-icon>16 </span>
@@ -1275,7 +1282,7 @@
                             <!-- <mat-icon>chat_bubble_outline</mat-icon>4 -->
                             <strong><span>Posted on</span><b (click)="fullPostView = true">Expertflow</b></strong>
                           </span>
-                          <span class="message-stamp">
+                          <span class="message-stamp blue">
                             <span class="chat-time">{{ message.header.timestamp | date: "shortTime" }}</span>
                           </span>
 
@@ -1344,6 +1351,8 @@
             <span *ngIf="quotedMessage.body.attachment" class="display-file display-image">
               <img [src]="quotedMessage.body.attachment.mediaUrl | getFileUrl" />
               {{quotedMessage.body.caption}}
+              
+             
             </span>
 
             <span *ngIf="quotedMessage.body.mediaUrl" class="display-file display-image">
@@ -1541,7 +1550,7 @@
 
             <button style="cursor: pointer" class="send-btn attachment-btn composer-trigger" mat-icon-button
               *ngIf="replyInput.value.length < 1 && conversation.activeChannelSessions.length > 0 && conversation.messageComposerState && conversationSettings.isFileSharingEnabled">
-              <input accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx" #myFileInput type="file"
+              <input accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx,.mp4" #myFileInput type="file"
                 (change)="uploadFile($event.target.files); $event.target.value = ''" name="ef_chatbox_chat_file_upload"
                 id="uploadFileBtn" class="file-upload-input" />
 

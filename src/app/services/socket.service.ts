@@ -297,7 +297,9 @@ export class socketService {
         if (
           cimEvent.name.toLowerCase() == "agent_message" &&
           cimEvent.data.body.type.toLowerCase() == "comment" &&
-          cimEvent.data.body.itemType.toLowerCase() != "text"
+          cimEvent.data.body.itemType.toLowerCase() != "text" &&
+          cimEvent.data.body.itemType.toLowerCase() != "video"&&
+          cimEvent.data.body.itemType.toLowerCase() != "image"
         ) {
           this.processFaceBookCommentActions(sameTopicConversation.messages, cimEvent.data);
         }
@@ -307,12 +309,15 @@ export class socketService {
           let cimMessage = sameTopicConversation.messages.find((message) => {
             return message.id == cimEvent.data.id;
           });
-
+          console.log("true9")
           // if yes, only update the staus
           if (cimMessage) {
+            console.log("true")
             cimMessage.header["status"] = "sent";
             cimMessage.body["isWhisper"] = cimEvent.name.toLowerCase() == "whisper_message" ? true : false;
           } else {
+            console.log("true3")
+
             // if no, marked staus as sent and push in the conversation
             cimEvent.data.header["status"] = "sent";
             cimEvent.data.body["isWhisper"] = cimEvent.name.toLowerCase() == "whisper_message" ? true : false;
@@ -395,7 +400,9 @@ export class socketService {
         if (
           event.name.toLowerCase() == "agent_message" &&
           event.data.body.type.toLowerCase() == "comment" &&
-          event.data.body.itemType.toLowerCase() != "text"
+          event.data.body.itemType.toLowerCase() != "text"&&
+          event.data.body.itemType.toLowerCase() != "video"&&
+          event.data.body.itemType.toLowerCase() != "image" 
         ) {
           this.processFaceBookCommentActions(conversation.messages, event.data);
         } else {
