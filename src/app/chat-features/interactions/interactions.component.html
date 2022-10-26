@@ -1068,7 +1068,7 @@
                     <!-- ---------------------------------- FB Comment Ended-------------------------------- -->
                     <span class="chat-time file-type-stamp">{{ message.header.timestamp | date: "shortTime" }}</span>
 
-                    <span class="message-stamp yellow" *ngIf="((message.body.type | lowercase) != 'plain' && (message.header.sender.type | lowercase) != 'customer') || ((message.body.type | lowercase) != 'plain' && (message.body.type | lowercase) != 'comment')">
+                    <span class="message-stamp yellow" *ngIf="((message.header.sender.type | lowercase) != 'customer' || (message.body.type | lowercase) != 'comment') && ((message.body.type | lowercase) != 'plain' && (message.body.itemType | lowercase) != 'text')">
                               <span class="chat-time red">{{message.header.timestamp | date:'shortTime'}}</span>
                             </span>
                   </div>
@@ -1127,7 +1127,10 @@
             {{quotedMessage.header.sender.participant.keycloakUser.lastName}}</span>
           <p>
             <span *ngIf="quotedMessage.body.attachment" class="display-file display-image">
-              <img [src]="quotedMessage.body.attachment.mediaUrl | getFileUrl" />
+              
+              <img *ngIf="(quotedMessage.body.type | lowercase)=='image' || (quotedMessage.body.itemType | lowercase)=='image'" [src]="quotedMessage.body.attachment.mediaUrl | getFileUrl" />
+              <img *ngIf="(quotedMessage.body.type | lowercase)=='video' || (quotedMessage.body.itemType | lowercase)=='video'" src="assets/file-types/video.svg">
+
               {{quotedMessage.body.caption}}
 
 
