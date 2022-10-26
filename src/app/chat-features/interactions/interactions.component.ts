@@ -42,7 +42,6 @@ export class InteractionsComponent implements OnInit {
   replyToMessageId: any;
   viewFullCommentAction: boolean = false;
   fullPostView: boolean = false;
-
   // isTransfer = false;
   // isConsult = false;
 
