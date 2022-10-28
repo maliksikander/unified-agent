@@ -998,11 +998,11 @@
                       *ngIf="(message.body.type | lowercase) == 'comment' && (message.header.sender.type | lowercase) == 'customer'"
                     >
                       <div class="post-main-area">
-                        <div class="post-message-header" *ngIf="fullPostView && message.body.mainPostData">
+                        <div class="post-message-header" *ngIf="fullPostView && FBPostData && message.id==selectedCommentId">
                           <div class="post-by">
                             <strong
-                              >{{ message.body.mainPostData.postedContent.postedBy }} <span>posted on</span>
-                              {{ message.body.mainPostData.postedContent.postedOn }}
+                              >Faizan <span>posted on</span>
+                              {{ FBPostData.createdTime }}
                             </strong>
                           </div>
                           <div class="post-info">
@@ -1010,23 +1010,11 @@
                             <mat-icon (click)="fullPostView = false">close</mat-icon>
                           </div>
                         </div>
-                        <!-- <div class="post-message-header" *ngIf="fullPostView && con.body.mainPostData">
-                          <div class="post-by">
-                            <strong
-                              >{{ con.body.mainPostData.postedContent.postedBy }} <span>posted on</span>
-                              {{ con.body.mainPostData.postedContent.postedOn }}
-                            </strong>
-                          </div>
-                          <div class="post-info">
-                            <span><img src="assets/images/facebook-colored.svg" /> Expertflow</span>
-                            <mat-icon (click)="fullPostView = false">close</mat-icon>
-                          </div>
-                        </div> -->
-                        <!-- *ngIf="conversation.activeChannelSessions | checkActiveChannelSession: 'FACEBOOK' as result" -->
+                  
                         <div *ngIf="!message.isDeleted && !message.isHidden" class="comment-controlls post-controlls">
                           <ul>
                             <li>
-                              <mat-icon (click)="replyToFbComment(message)"> chat_bubble_outline</mat-icon>
+                              <mat-icon (click)="filePreviewOpener(message)"> chat_bubble_outline</mat-icon>
                             </li>
                             <li>
                               <mat-icon [ngClass]="{ liked: message.isLiked }" (click)="fbCommentAction(message, 'like')"> thumb_up</mat-icon>
@@ -1042,7 +1030,9 @@
                                 <li>
                                   <mat-icon (click)="fbCommentAction(message, 'hide')"> visibility_off</mat-icon>
                                 </li>
-                                <li class="view-post" (click)="fullPostView = true; viewFullCommentAction = false">View full post</li>
+                                <!-- <li class="view-post" (click)="fullPostView = true; viewFullCommentAction = false; getPostData(message.body.postId)">View full post</li> -->
+                                <li class="view-post" (click)=" getPostData(message.body.postId,message.id)">View full post</li>
+
                               </ul>
                             </li>
                           </ul>
@@ -1053,17 +1043,29 @@
                           /></span>
                         </div>
 
-                        <div class="post-full-view" *ngIf="fullPostView && con.body.mainPostData">
+
+
+
+                        <!--------------------------  FB POST ------------------------------------>
+                        
+                        <div class="post-full-view" *ngIf="fullPostView && FBPostData && message.id==selectedCommentId ">
+                          
                           <div class="main-post-content">
                             <div class="post-header">
                               <span class="post-page-showcase"><img src="assets/images/user-picture/page-avatar.png" /></span>
                               <span class="post-page-info"
-                                ><strong>{{ con.body.mainPostData.postedContent.postedOn }}</strong> <small>January 26, 2021 06:30PM</small></span
+                                ><strong>{{ FBPostData.created_time }}</strong> <small>January 26, 2021 06:30PM</small></span
                               >
                             </div>
+                            
                           </div>
                         </div>
-                        <!-------------------------- MAIN FB COMMENTS -------------------------------->
+                        <!--------------------------  FB POST END -------------------------------->
+
+
+
+
+                        <!-------------------------- MAIN FB COMMENT STARTED -------------------------------->
 
                         <div class="main-comment">
                           <div class="post-inner-content">
@@ -1101,7 +1103,8 @@
                               </div>
                             </div>
 
-                            <p *ngIf="message.body.itemType == 'IMAGE'">
+                            <p class="asdfg" *ngIf="message.body.itemType == 'IMAGE'">
+                              
                               <a
                                 style="cursor: pointer"
                                 *ngIf="message.body.attachment?.mediaUrl?.length > 0"
@@ -1114,45 +1117,55 @@
                             </p>
                           </div>
                         </div>
+
+                        <!-------------------------- MAIN FB COMMENT ENDED-------------------------------->
+
+
+
                         <!-------------------------- SUB COMMENTS -------------------------------->
-                        <div class="post-sub-comments-area" *ngIf="fullPostView && message.body?.mainPostData">
+
+                        <div class="post-sub-comments-area" *ngIf="fullPostView && FBPostComments && message.id==selectedCommentId">
                           <div class="total-comment-count">
                             <span><mat-icon>chat_bubble_outline</mat-icon>16 </span>
                           </div>
-                          <div class="post-sub-comments" *ngFor="let postComments of message.body?.mainPostData?.postComments">
+                          <div class="post-sub-comments" *ngFor="let postComments of FBPostComments?.data">
                             <div class="sub-profile-picture">
-                              <img [src]="postComments.userProfilePicture" />
+                              <!-- <img [src]="postComments.userProfilePicture" /> -->
                             </div>
-
                             <div class="sub-comment">
-                              <strong>{{ postComments.commentBy }}</strong>
-                              <p>{{ postComments.markdownText }}</p>
+                              <!-- <strong>{{ postComments.from.name }}</strong> -->
+                              <p>{{ postComments.message }}</p>
+                              <img *ngIf="postComments.attachment?.type=='photo' " [src]="postComments.attachment?.media.image.src">
+
                               <div class="message-footer">
                                 <span><mat-icon>chat_bubble_outline</mat-icon>4 </span>
                                 <span class="message-stamp">
-                                  <span class="chat-time">{{ postComments.postedTime }}</span>
+                                  <span class="chat-time">{{ postComments.created_time }}</span>
                                 </span>
                               </div>
                             </div>
 
-                            <div class="post-sub-comments post-nested-comments" *ngFor="let nestedComments of postComments.linkedReplies">
+                            <div class="post-sub-comments post-nested-comments" *ngFor="let nestedComments of postComments.comments?.data">
                               <div class="sub-profile-picture">
-                                <img [src]="nestedComments.userProfilePicture" />
+                                <!-- <img [src]="nestedComments.comments.data.message" /> -->
                               </div>
 
                               <div class="sub-comment">
-                                <strong>{{ nestedComments.commentBy }}</strong>
-                                <p>{{ nestedComments.markdownText }}</p>
+                                <!-- <strong>{{ nestedComments.commentBy }}</strong> -->
+                                <img *ngIf="postComments.attachment?.type=='photo' " [src]="nestedComments.attachment?.media.image.src">
+                                <p>{{ nestedComments.message }}</p>
 
                                 <div class="message-footer">
                                   <span><mat-icon>chat_bubble_outline</mat-icon>4 </span>
                                   <span class="message-stamp">
-                                    <span class="chat-time">{{ message.body.commentDate }}</span>
+                                    <span class="chat-time">{{ nestedComments.created_time }}</span>
                                   </span>
                                 </div>
                               </div>
                             </div>
                           </div>
+
+
                         <!-------------------------- ORIGINAL SUB COMMENT -------------------------------->
 
                           <div class="post-sub-comments original-comment" *ngIf="fullPostView && message.body.mainPostData">

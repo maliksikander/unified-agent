@@ -42,6 +42,7 @@ export class InteractionsComponent implements OnInit {
   replyToMessageId: any;
   viewFullCommentAction: boolean = false;
   fullPostView: boolean = false;
+  selectedCommentId:string;
   // isTransfer = false;
   // isConsult = false;
 
@@ -91,6 +92,8 @@ export class InteractionsComponent implements OnInit {
   fbPostId: string = null;
   fbCommentId: string = null;
   conversationSettings: any;
+  FBPostData:any;
+  FBPostComments:any;
 
   constructor(
     private _sharedService: sharedService,
@@ -848,4 +851,33 @@ export class InteractionsComponent implements OnInit {
       });
     }, 1000);
   }
+  getFBPostAndComments(postId)
+  {
+    this._httpService.getFBPostData(postId).subscribe(
+      (res: any) => {
+        this.FBPostData = res;
+        this._httpService.getFBPostComments(postId).subscribe(
+          (res: any) => {
+            this.FBPostComments = res;
+            console.log("ll",this.FBPostComments)
+          },
+          (error) => {
+            this._sharedService.Interceptor(error.error, "err");
+          }
+        );
+      },
+      (error) => {
+        this._sharedService.Interceptor(error.error, "err");
+      }
+    );
+    
+  }
+  getPostData(postId,selectedCommentId)
+{
+  this.selectedCommentId=selectedCommentId
+  this.fullPostView = true;
+  console.log({selectedCommentId})
+  this.getFBPostAndComments(postId)
+  console.log({postId})
+}
 }
