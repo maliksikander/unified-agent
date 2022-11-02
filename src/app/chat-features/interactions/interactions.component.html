@@ -558,13 +558,14 @@
                       'file-type-message': (message.body.type | lowercase) != 'plain' && (message.body.type | lowercase) != 'comment' && (message.body.type | lowercase) != 'button'
                     }">
                     <!-- ---------------plain---------------------- -->
+
                     <div
-                      *ngIf="(message.body.type | lowercase) == 'plain' || ((message.body.type | lowercase)=='comment' && (message.header.sender.type | lowercase)=='agent')">
+                      *ngIf="message.body.markdownText || ((message.body.type | lowercase)=='comment' && (message.header.sender.type | lowercase)=='agent')">
                       <p
                         class="{{ (message.header.sender.type | lowercase) == 'customer' && message.botSuggestions ? 'plain-text-p' : '' }}">
                         <span
                           [innerHTML]="conversationSettings.isMessageFormattingEnabled ? (message.body.markdownText | linkify | ibsformat) : (message.body.markdownText)"></span>
-                        <span class="message-stamp">
+                        <span *ngIf="(message.body.type | lowercase) == 'plain' || ((message.body.type | lowercase)=='comment' && (message.header.sender.type | lowercase)=='agent')" class="message-stamp">
                           <span class="chat-time">{{ message.header.timestamp | date: "shortTime" }}</span>
                         </span>
 
