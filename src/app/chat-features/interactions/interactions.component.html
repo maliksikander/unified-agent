@@ -73,12 +73,18 @@
                       <!--                      <span class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, option)">Consult</span>-->
                       <div class="consult-action-main">
                         <!-- <span matTooltip="Queue Consult" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, option, 'Consult to Queue')"><img src="assets/images/consult-colored.svg" alt="consult"/> </span> -->
-                        <span matTooltip="Queue Transfer" class="transfer-selection"
+
+                        <button
+                          [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0"
+                          mat-icon-button matTooltip="Queue Transfer" class="transfer-selection"
                           (click)="agentAssistanceRequest(chatConsultTemplate, queue, 'transfer','queue')"><img
-                            src="assets/images/transfer-colored.svg" alt="transfer" /></span>
-                        <span matTooltip="Queue Conference" class="transfer-selection"
+                            src="assets/images/transfer-colored.svg" alt="transfer" /></button>
+
+                        <button
+                          [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0"
+                          mat-icon-button matTooltip="Queue Conference" class="transfer-selection"
                           (click)="agentAssistanceRequest(chatConsultTemplate, queue,'conference','queue')"><img
-                            src="assets/images/conference-colored.svg" alt="conference" /></span>
+                            src="assets/images/conference-colored.svg" alt="conference" /></button>
                       </div>
                     </mat-panel-title>
                   </mat-expansion-panel-header>
@@ -565,7 +571,9 @@
                         class="{{ (message.header.sender.type | lowercase) == 'customer' && message.botSuggestions ? 'plain-text-p' : '' }}">
                         <span
                           [innerHTML]="conversationSettings.isMessageFormattingEnabled ? (message.body.markdownText | linkify | ibsformat) : (message.body.markdownText)"></span>
-                        <span *ngIf="(message.body.type | lowercase) == 'plain' || ((message.body.type | lowercase)=='comment' && (message.header.sender.type | lowercase)=='agent')" class="message-stamp">
+                        <span
+                          *ngIf="(message.body.type | lowercase) == 'plain' || ((message.body.type | lowercase)=='comment' && (message.header.sender.type | lowercase)=='agent')"
+                          class="message-stamp">
                           <span class="chat-time">{{ message.header.timestamp | date: "shortTime" }}</span>
                         </span>
 
@@ -1286,7 +1294,7 @@
                 <!--                </span>-->
                 <span class="inner-text">
                   <span>{{ message.body.displayText }}</span> <span>{{ " " + message.body.markdownText }}</span>
-                  <span class="notification-time">{{ message.header.timestamp | date: "HH:MM:SS" }}</span>
+                  <span class="notification-time">{{ message.header.timestamp | date: "H:mm:ss" }}</span>
                 </span>
               </div>
               <!-- ----------------------------------system Notifications ended-------------------------------- -->

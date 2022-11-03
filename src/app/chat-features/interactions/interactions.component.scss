@@ -2342,11 +2342,15 @@ vg-controls.hide {
       text-align: center;
       display: inline-block;
       margin-left: 5px;
+      max-height: 22px;
+      min-height: 22px;
       cursor: pointer;
       img{
         vertical-align: middle;
         width: 13px;
         display: inline-block;
+        position: relative;
+        left: 1px;
       }
     }
 

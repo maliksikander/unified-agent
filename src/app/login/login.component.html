@@ -14,9 +14,11 @@
             <label class="text-left">Username</label>
             <input formControlName="username" id="username" type="text" class="form-control" name="agentId">
           </div>
-          <div class="form-group">
+          <div class="form-group password-privacy-icon">
             <label class="text-left">Password</label>
-            <input formControlName="password" id="password" type="password" class="form-control" name="password">
+            <input [type]="hide ? 'password' : 'text'" formControlName="password" id="password" class="form-control"
+            name="password">
+            <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
           </div>
           <!-- <div class="form-group">
             <label class="text-left">Extension</label>
