@@ -360,15 +360,15 @@ export class httpService {
     });
   }
 
-getFBPostData(postId): Observable<any> {
-  return this._httpClient.get<any>(`https://graph.facebook.com/v15.0/${postId}?access_token=EAAI6lyFwcZB8BAKeanHiXzy0WSmbm7U9bZCwvUyHvkUT7lBimhZBOCltGMtIn6gtJCH7PQolK4ZABTwcfHdNfWDUyykS0IMqHkMBikkYXOQvhRJOYbqrHjlRH2NbR4D33S7iTT2WTMmR16XXWXtmg4MAOqfM32ppZCUnZAFVOzQOFugLTTTS4GTijQYzBbfcQZD&fields=attachments,created_time,story,message`, {
+getFBPostData(postId,accessToken,FBHOSTAPI): Observable<any> {
+  return this._httpClient.get<any>(`${FBHOSTAPI}${postId}?access_token=${accessToken}&fields=attachments,from,created_time,story,message`, {
     headers: new HttpHeaders({
       "Content-Type": "application/json"
     })
   });
 }
-getFBPostComments(postId): Observable<any> {
-  return this._httpClient.get<any>(`https://graph.facebook.com/v15.0/${postId}/comments?access_token=EAAI6lyFwcZB8BAKeanHiXzy0WSmbm7U9bZCwvUyHvkUT7lBimhZBOCltGMtIn6gtJCH7PQolK4ZABTwcfHdNfWDUyykS0IMqHkMBikkYXOQvhRJOYbqrHjlRH2NbR4D33S7iTT2WTMmR16XXWXtmg4MAOqfM32ppZCUnZAFVOzQOFugLTTTS4GTijQYzBbfcQZD&limit=2&order=reverse_chronological&fields=created_time,name,from,message,attachment,comments.filter(stream)`, {
+getFBPostComments(postId,accessToken,FBHOSTAPI): Observable<any> {
+  return this._httpClient.get<any>(`${FBHOSTAPI}${postId}/comments?access_token=${accessToken}&limit=2&order=reverse_chronological&fields=created_time,name,from,message,attachment,comments.filter(stream)`, {
     headers: new HttpHeaders({
       "Content-Type": "application/json"
     })

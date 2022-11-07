@@ -2974,9 +2974,14 @@ background: #f6892c;
   }
 
 
-
+  .chat-message-content {
+    min-width: 280px !important;
+  }
 
   &.full-post-view {
+    .combined-area{
+      width: 100%;
+    }
 
     .active-channel{
       display: none !important;
@@ -2987,6 +2992,7 @@ background: #f6892c;
 
     .chat-message-content {
       background: #F5F5F5 !important;
+      display: block !important;
 
       &:before {
         border-top-color: #f5f5f5 !important;
@@ -3167,6 +3173,7 @@ background: #f6892c;
       float: left;
       color: #8E8E8E;
     }
+
 
     strong{
       // border-left: 1px solid #fff;
@@ -3364,4 +3371,7 @@ background: #f6892c;
   .mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-title, .mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-description {
     color: #000 !important;
   }
+}
+.deleted-hidden-original-comment {
+  opacity: .5 !important;
 }

@@ -92,8 +92,8 @@ export class InteractionsComponent implements OnInit {
   fbPostId: string = null;
   fbCommentId: string = null;
   conversationSettings: any;
-  FBPostData:any;
-  FBPostComments:any;
+  FBPostData:[];
+  FBPostComments:[];
 
   constructor(
     private _sharedService: sharedService,
@@ -393,6 +393,17 @@ export class InteractionsComponent implements OnInit {
 
   filePreviewOpener(url, fileName, type) {
     url = this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream" + new URL(url).search;
+
+    const dialogRef = this.dialog.open(FilePreviewComponent, {
+      maxHeight: "100vh",
+      maxWidth: "100%",
+      height: "auto",
+      width: "auto",
+      data: { fileName: fileName, url: url, type: type }
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {});
+  }
+  externalfilePreviewOpener(url, fileName, type) {
 
     const dialogRef = this.dialog.open(FilePreviewComponent, {
       maxHeight: "100vh",
@@ -851,33 +862,67 @@ export class InteractionsComponent implements OnInit {
       });
     }, 1000);
   }
-  getFBPostAndComments(postId)
+  getFBPostAndComments(postId,selectedCommentId,accessToken,FBHOSTAPI)
   {
-    this._httpService.getFBPostData(postId).subscribe(
+    this._httpService.getFBPostData(postId,accessToken,FBHOSTAPI).subscribe(
       (res: any) => {
         this.FBPostData = res;
-        this._httpService.getFBPostComments(postId).subscribe(
-          (res: any) => {
-            this.FBPostComments = res;
-            console.log("ll",this.FBPostComments)
-          },
-          (error) => {
-            this._sharedService.Interceptor(error.error, "err");
-          }
-        );
+        this.fullPostView = true;
+        this.selectedCommentId=selectedCommentId;
+
+
       },
       (error) => {
-        this._sharedService.Interceptor(error.error, "err");
+        this._sharedService.Interceptor('Error fetching post data', "err");
+        console.error('err',error.error)
+      }
+    );
+
+    this._httpService.getFBPostComments(postId,accessToken,FBHOSTAPI).subscribe(
+      (res: any) => {
+        this.FBPostComments = res;
+        this.fullPostView = true;
+        this.selectedCommentId=selectedCommentId;
+
+
+        console.log("FBPostData",this.FBPostData)
+      },
+      (error) => {
+        this._sharedService.Interceptor('Error fetching post comments', "err");
+        console.error('err',error.error)
+
       }
     );
     
   }
-  getPostData(postId,selectedCommentId)
+  getFullViewPostData(channelSession,postId,selectedCommentId)
 {
-  this.selectedCommentId=selectedCommentId
-  this.fullPostView = true;
-  console.log({selectedCommentId})
-  this.getFBPostAndComments(postId)
-  console.log({postId})
+  console.log('kk',channelSession.channel)
+  let accessToken=null;
+  let FBHOSTAPI=null;
+  channelSession.channel.channelConnector.channelProviderConfigs.forEach((item)=>
+  {    console.log(item.key)
+        if(item.key=="FACEBOOK-API-KEY")
+        {
+          accessToken=item.value
+        }
+        if(item.key=="FACEBOOK-HOST-URL")
+        {
+          FBHOSTAPI=item.value
+        }
+  })
+  if(accessToken && FBHOSTAPI)
+  {
+    this.FBPostComments = null;
+  this.FBPostData = null;
+  this.fullPostView = false;
+  this.selectedCommentId=null;
+  this.getFBPostAndComments(postId,selectedCommentId,accessToken,FBHOSTAPI)
+  }
+  else{
+    this._sharedService.Interceptor('Access Token or FB Host API for FB is missing', "err");
+        console.error('err',"accessToken or FB Host API for FB is missing")
+  }
+  
 }
 }
