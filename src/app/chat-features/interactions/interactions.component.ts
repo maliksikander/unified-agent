@@ -92,8 +92,8 @@ export class InteractionsComponent implements OnInit {
   fbPostId: string = null;
   fbCommentId: string = null;
   conversationSettings: any;
-  FBPostData:null;
-  FBPostComments:null;
+  FBPostData:any=null;
+  FBPostComments:any=null;
 
   constructor(
     private _sharedService: sharedService,
