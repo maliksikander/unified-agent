@@ -13,6 +13,14 @@ describe("InteractionsComponent", () => {
   let _snackBarService: any;
   let _appConfigService:any;
   let snackBar:any;
+  let channelSession={
+    "channel":{
+      "channelConnector":{
+        "channelProviderConfigs":[{"key":"FACEBOOK-API-KEY","value":"qq"},{"key":"FACEBOOK-HOST-URL","value":"qq"}]
+      }
+    }
+
+  }
 
   describe('when only post data api returns data ', () => {
     beforeEach(async () => {
@@ -35,7 +43,7 @@ describe("InteractionsComponent", () => {
       expect(component).toBeTruthy();
       let postId=1;
       let selectedCommentId=2;
-      component.getFullViewPostData(postId,selectedCommentId);
+      component.getFullViewPostData(channelSession,postId,selectedCommentId);
       expect(component.selectedCommentId).toBe(2);
       expect(component.FBPostData).toBeDefined();
       expect(component.FBPostComments).toBe(null);
@@ -45,7 +53,7 @@ describe("InteractionsComponent", () => {
     it('fullPostView should be truthy', () => {
       let postId=9;
       let selectedCommentId=10;
-      component.getFullViewPostData(postId,selectedCommentId);
+      component.getFullViewPostData(channelSession,postId,selectedCommentId);
       expect(component.fullPostView).toBeTruthy();
 
     });
@@ -65,7 +73,7 @@ describe("InteractionsComponent", () => {
       expect(component).toBeTruthy();
       let postId=1;
       let selectedCommentId=2;
-      component.getFullViewPostData(postId,selectedCommentId);
+      component.getFullViewPostData(channelSession,postId,selectedCommentId);
       expect(component.selectedCommentId).toBe(selectedCommentId);
       expect(component.FBPostData).toBeDefined();
       expect(component.FBPostComments).toBeDefined();
@@ -75,7 +83,7 @@ describe("InteractionsComponent", () => {
     it('fullPostView should be truthy',() => {
       let postId=9;
       let selectedCommentId=10;
-       component.getFullViewPostData(postId,selectedCommentId);
+       component.getFullViewPostData(channelSession,postId,selectedCommentId);
       expect(component.fullPostView).toBeTruthy();
 
     });
@@ -101,7 +109,7 @@ describe("InteractionsComponent", () => {
       expect(component).toBeTruthy();
       let postId=1;
       let selectedCommentId=2;
-      component.getFullViewPostData(postId,selectedCommentId);
+      component.getFullViewPostData(channelSession,postId,selectedCommentId);
       expect(component.selectedCommentId).toBe(null);
       expect(component.FBPostData).toBe(null);
       expect(component.fullPostView).toBeFalsy();
@@ -112,7 +120,7 @@ describe("InteractionsComponent", () => {
     it('fullPostView should be falsy', () => {
       let postId=9;
       let selectedCommentId=10;
-      component.getFullViewPostData(postId,selectedCommentId);
+      component.getFullViewPostData(channelSession,postId,selectedCommentId);
       expect(component.fullPostView).toBeFalsy();
 
     });

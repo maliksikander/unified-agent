@@ -368,7 +368,7 @@ getFBPostData(postId,accessToken,FBHOSTAPI): Observable<any> {
   });
 }
 getFBPostComments(postId,accessToken,FBHOSTAPI): Observable<any> {
-  return this._httpClient.get<any>(`${FBHOSTAPI}${postId}/comments?access_token=${accessToken}&limit=2&order=reverse_chronological&fields=created_time,name,from,message,attachment,comments.filter(stream)`, {
+  return this._httpClient.get<any>(`${FBHOSTAPI}${postId}/comments?access_token=${accessToken}&limit=4&order=reverse_chronological&fields=created_time,name,from,message,attachment,comments.filter(stream)`, {
     headers: new HttpHeaders({
       "Content-Type": "application/json"
     })

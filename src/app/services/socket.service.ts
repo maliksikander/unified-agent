@@ -309,14 +309,11 @@ export class socketService {
           let cimMessage = sameTopicConversation.messages.find((message) => {
             return message.id == cimEvent.data.id;
           });
-          console.log("true9")
           // if yes, only update the staus
           if (cimMessage) {
-            console.log("true")
             cimMessage.header["status"] = "sent";
             cimMessage.body["isWhisper"] = cimEvent.name.toLowerCase() == "whisper_message" ? true : false;
           } else {
-            console.log("true3")
 
             // if no, marked staus as sent and push in the conversation
             cimEvent.data.header["status"] = "sent";

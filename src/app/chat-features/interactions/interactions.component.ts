@@ -42,7 +42,7 @@ export class InteractionsComponent implements OnInit {
   replyToMessageId: any;
   viewFullCommentAction: boolean = false;
   fullPostView: boolean = false;
-  selectedCommentId:string;
+  selectedCommentId: string;
   // isTransfer = false;
   // isConsult = false;
 
@@ -92,8 +92,8 @@ export class InteractionsComponent implements OnInit {
   fbPostId: string = null;
   fbCommentId: string = null;
   conversationSettings: any;
-  FBPostData:[];
-  FBPostComments:[];
+  FBPostData: [];
+  FBPostComments: [];
 
   constructor(
     private _sharedService: sharedService,
@@ -149,7 +149,7 @@ export class InteractionsComponent implements OnInit {
 
           this.constructAndSendFbAction(fbCommentId, message.body.postId, originalFbChannelSession, message.id, action);
         } else {
-          this._snackbarService.open("Requested session not available at the momnet", "succ");
+          this._snackbarService.open("Requested session not available at the moment", "err");
         }
       } else {
         this._snackbarService.open("unable to process the request", "err");
@@ -195,7 +195,7 @@ export class InteractionsComponent implements OnInit {
 
         this.openQuotedReplyArea(message);
       } else {
-        this._snackbarService.open("Requested session not available at the moment", "succ");
+        this._snackbarService.open("Requested session not available at the moment", "err");
       }
     } else {
       this._snackbarService.open("unable to process the request", "err");
@@ -209,7 +209,7 @@ export class InteractionsComponent implements OnInit {
       panelClass: "wrap-dialog"
     });
   }
-  
+
   openQuotedReplyArea(e) {
     this.quotedMessage = e;
   }
@@ -404,7 +404,6 @@ export class InteractionsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {});
   }
   externalfilePreviewOpener(url, fileName, type) {
-
     const dialogRef = this.dialog.open(FilePreviewComponent, {
       maxHeight: "100vh",
       maxWidth: "100%",
@@ -416,7 +415,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   uploadFile(files) {
-    let availableExtentions: any = ["txt", "png", "jpg", "jpeg", "pdf", "ppt", "xlsx", "xls", "doc", "docx", "rtf","mp4"];
+    let availableExtentions: any = ["txt", "png", "jpg", "jpeg", "pdf", "ppt", "xlsx", "xls", "doc", "docx", "rtf", "mp4"];
     let ln = files.length;
     if (ln > 0) {
       for (var i = 0; i < ln; i++) {
@@ -430,7 +429,7 @@ export class InteractionsComponent implements OnInit {
             fd.append("conversationId", `${Math.floor(Math.random() * 90000) + 10000}`);
             this._httpService.uploadToFileEngine(fd).subscribe(
               (e) => {
-                console.log("e.type",e.type.split("/")[0])
+                console.log("e.type", e.type.split("/")[0]);
                 this.constructAndSendCimEvent(e.type.split("/")[0], e.type, e.name, e.size);
               },
               (error) => {
@@ -462,7 +461,7 @@ export class InteractionsComponent implements OnInit {
           if (selectedChannelSession.channel.channelType.name.toLowerCase() == "facebook") {
             // channel session is facebook
 
-            message = this.constructFbCommentEvent(message,msgType, selectedChannelSession, fileMimeType, fileName, fileSize, text);
+            message = this.constructFbCommentEvent(message, msgType, selectedChannelSession, fileMimeType, fileName, fileSize, text);
 
             this.emitCimEvent(message, "AGENT_MESSAGE");
           } else {
@@ -477,7 +476,6 @@ export class InteractionsComponent implements OnInit {
             message.header.sender = this.conversation.topicParticipant;
             message.header.channelSession = sendingActiveChannelSession;
             message.header.channelData = sendingActiveChannelSession.channelData;
-            console.log("ll",message.body)
             if (msgType.toLowerCase() == "plain") {
               message.body.type = "PLAIN";
               message.body.markdownText = text.trim();
@@ -500,8 +498,7 @@ export class InteractionsComponent implements OnInit {
                 size: fileSize,
                 thumbnail: ""
               };
-            }
-            else if (msgType.toLowerCase() == "video") {
+            } else if (msgType.toLowerCase() == "video") {
               message.body.type = "VIDEO";
               message.body["caption"] = fileName;
               message.body["additionalDetails"] = {};
@@ -597,8 +594,6 @@ export class InteractionsComponent implements OnInit {
           msg.body.itemType.toLowerCase() != "text" &&
           msg.body.itemType.toLowerCase() != "video" &&
           msg.body.itemType.toLowerCase() != "image"
-
-
         ) {
           this._socketService.processFaceBookCommentActions(msgs, msg);
         } else {
@@ -688,25 +683,23 @@ export class InteractionsComponent implements OnInit {
     return message;
   }
 
-  constructFbCommentEvent(message,msgType,channelSession , fileMimeType?, fileName?, fileSize?, text?) {
+  constructFbCommentEvent(message, msgType, channelSession, fileMimeType?, fileName?, fileSize?, text?) {
     let sendingActiveChannelSession = JSON.parse(JSON.stringify(channelSession));
     delete sendingActiveChannelSession["webChannelData"];
     delete sendingActiveChannelSession["isChecked"];
     delete sendingActiveChannelSession["isDisabled"];
 
     message.header.providerMessageId = this.fbCommentId;
-    console.log("message",message.body)
     message.body.type = "COMMENT";
     message.body.postId = this.fbPostId;
     message.header.replyToMessageId = this.replyToMessageId;
     message.header.channelSession = sendingActiveChannelSession;
     message.header.channelData = sendingActiveChannelSession.channelData;
-    
+
     if (msgType.toLowerCase() == "plain") {
       message.body.itemType = "TEXT";
       message.body.markdownText = text.trim();
-    }
-    else if (msgType.toLowerCase() == "image") {
+    } else if (msgType.toLowerCase() == "image") {
       message.body.itemType = "IMAGE";
       // message.body["caption"] = fileName;
       // message.body["additionalDetails"] = {};
@@ -716,8 +709,7 @@ export class InteractionsComponent implements OnInit {
         size: fileSize,
         thumbnail: ""
       };
-    }
-    else if (msgType.toLowerCase() == "video") {
+    } else if (msgType.toLowerCase() == "video") {
       message.body.itemType = "VIDEO";
       // message.body["caption"] = fileName;
       // message.body["additionalDetails"] = {};
@@ -728,7 +720,6 @@ export class InteractionsComponent implements OnInit {
         thumbnail: ""
       };
     }
-   
 
     return message;
   }
@@ -862,67 +853,71 @@ export class InteractionsComponent implements OnInit {
       });
     }, 1000);
   }
-  getFBPostAndComments(postId,selectedCommentId,accessToken,FBHOSTAPI)
-  {
-    this._httpService.getFBPostData(postId,accessToken,FBHOSTAPI).subscribe(
+
+  getFBPost(postId, selectedCommentId, accessToken, FBHOSTAPI) {
+    this._httpService.getFBPostData(postId, accessToken, FBHOSTAPI).subscribe(
       (res: any) => {
         this.FBPostData = res;
         this.fullPostView = true;
-        this.selectedCommentId=selectedCommentId;
-
-
+        this.selectedCommentId = selectedCommentId;
       },
       (error) => {
-        this._sharedService.Interceptor('Error fetching post data', "err");
-        console.error('err',error.error)
+        this._sharedService.Interceptor("Error fetching post data", "err");
+        console.error("err [getFBPost]", error.error);
       }
     );
+  }
 
-    this._httpService.getFBPostComments(postId,accessToken,FBHOSTAPI).subscribe(
+  getFBComments(postId, selectedCommentId, accessToken, FBHOSTAPI) {
+    this._httpService.getFBPostComments(postId, accessToken, FBHOSTAPI).subscribe(
       (res: any) => {
         this.FBPostComments = res;
         this.fullPostView = true;
-        this.selectedCommentId=selectedCommentId;
-
-
-        console.log("FBPostData",this.FBPostData)
+        this.selectedCommentId = selectedCommentId;
       },
       (error) => {
-        this._sharedService.Interceptor('Error fetching post comments', "err");
-        console.error('err',error.error)
-
+        this._sharedService.Interceptor("Error fetching post comments", "err");
+        console.error("err [getFBComments]", error.error);
       }
     );
-    
   }
-  getFullViewPostData(channelSession,postId,selectedCommentId)
-{
-  console.log('kk',channelSession.channel)
-  let accessToken=null;
-  let FBHOSTAPI=null;
-  channelSession.channel.channelConnector.channelProviderConfigs.forEach((item)=>
-  {    console.log(item.key)
-        if(item.key=="FACEBOOK-API-KEY")
-        {
-          accessToken=item.value
-        }
-        if(item.key=="FACEBOOK-HOST-URL")
-        {
-          FBHOSTAPI=item.value
-        }
-  })
-  if(accessToken && FBHOSTAPI)
-  {
+
+  //the function will fetch fb post and comments API parallel
+  getFBPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI) {
+    try {
+      this.getFBPost(postId, selectedCommentId, accessToken, FBHOSTAPI);
+      this.getFBComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
+    } catch (err) {
+      console.error("err [ getFBPostAndComments ] error while fetching post and comments", err);
+    }
+  }
+
+  //the below function will check for some keys and call another function which will fetch post data with comments
+  getFullViewPostData(channelSession, postId, selectedCommentId) {
+    let accessToken = null;
+    let FBHOSTAPI = null;
     this.FBPostComments = null;
-  this.FBPostData = null;
-  this.fullPostView = false;
-  this.selectedCommentId=null;
-  this.getFBPostAndComments(postId,selectedCommentId,accessToken,FBHOSTAPI)
+    this.FBPostData = null;
+    this.fullPostView = false;
+    this.selectedCommentId = null;
+    if (channelSession) {
+      channelSession.channel.channelConnector.channelProviderConfigs.forEach((item) => {
+        if (item.key == "FACEBOOK-API-KEY") {
+          accessToken = item.value;
+        }
+        if (item.key == "FACEBOOK-HOST-URL") {
+          FBHOSTAPI = item.value;
+        }
+      });
+      if (accessToken && FBHOSTAPI) {
+        this.getFBPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
+      } else {
+        this._sharedService.Interceptor("Access Token or FB Host API for FB is missing", "err");
+        console.error("err [getFullViewPostData] accessToken or FB Host API for FB is missing");
+      }
+    } else {
+      this._sharedService.Interceptor("Channel session not found", "err");
+      console.error("err [getFullViewPostData] Channel session not found");
+    }
   }
-  else{
-    this._sharedService.Interceptor('Access Token or FB Host API for FB is missing', "err");
-        console.error('err',"accessToken or FB Host API for FB is missing")
-  }
-  
-}
 }

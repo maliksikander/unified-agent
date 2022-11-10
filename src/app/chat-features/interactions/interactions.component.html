@@ -637,7 +637,7 @@
                   </div>
                   <!-- <div *ngIf="message.header.replyToMessageId != null" class="clear clearfix"></div> -->
                   <!-- -----------------------referred reply message end---------------- -->
-                  <span *ngIf="(message.id != selectedCommentId && message.isDeleted) || message.isHidden" class="comment-action">{{
+                  <span *ngIf="(message.id != selectedCommentId) && (message.isDeleted || message.isHidden)" class="comment-action">{{
                     message.isDeleted ? "deleted Message" : "Hidden Message"
                   }}</span>
                   <div
@@ -999,9 +999,9 @@
                     >
                       <div class="post-main-area">
                         <div class="post-message-header" *ngIf="fullPostView && FBPostData && message.id == selectedCommentId">
-                          <!-- <div class="post-by">
-                            <strong>{{ FBPostData?.from?.name }} <span>Posted on {{ FBPostData?.from?.name }}</span> </strong>
-                          </div> -->
+                          <div class="post-by">
+                            <!-- <strong>{{ FBPostData?.from?.name }} <span>Posted on {{ FBPostData?.from?.name }}</span> </strong> -->
+                          </div>
                           <div class="post-info">
                             <span><img src="assets/images/facebook-colored.svg" /> {{ FBPostData?.from?.name }}</span>
                             <mat-icon (click)="fullPostView = false; selectedCommentId = null">close</mat-icon>
@@ -1424,7 +1424,7 @@
 
                         <div class="message-footer">
                           <span>
-                            <strong><span>Posted on</span><b (click)="getFullViewPostData(message.header.channelSession,message.body.postId, message.id)">{{ FBPostData?.from?.name }}</b></strong>
+                            <!-- <strong *ngIf="FBPostData"><span>Posted on</span><b (click)="getFullViewPostData(message.header.channelSession,message.body.postId, message.id)">{{ FBPostData?.from?.name }}</b></strong> -->
                           </span>
                           <span class="message-stamp">
                             <span class="chat-time">{{ message.header.timestamp | date: "shortTime" }}</span>
