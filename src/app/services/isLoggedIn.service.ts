@@ -88,6 +88,13 @@ export class isLoggedInService {
   fetchCCuserAndMoveToLogin(obj) {
     this._httpService.login(obj).subscribe(
       (e) => {
+        window['dataLayer'].push({
+          'event': 'login',
+          'data': {
+            'agent_name': e.data.keycloak_User.username,
+            'message': 'Agent Logged In Successfully'
+          }});
+
         console.log("this is login resp ", e.data);
 
         this._cacheService.agent = e.data.keycloak_User;
@@ -98,6 +105,13 @@ export class isLoggedInService {
         this.validateFcmKeyAndConnectToSocket(false);
       },
       (error) => {
+        window['dataLayer'].push({
+          'event': 'error',
+          'data': {
+            'message': 'error on login request',
+            'error' : error.error
+          }});
+
         this._sharedService.Interceptor(error.error, "err");
         this._router.navigate(["login"]);
       }
