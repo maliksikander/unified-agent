@@ -92,8 +92,8 @@ export class InteractionsComponent implements OnInit {
   fbPostId: string = null;
   fbCommentId: string = null;
   conversationSettings: any;
-  FBPostData: [];
-  FBPostComments: [];
+  FBPostData:null;
+  FBPostComments:null;
 
   constructor(
     private _sharedService: sharedService,
@@ -140,6 +140,7 @@ export class InteractionsComponent implements OnInit {
       let fbCommentId = message.header.providerMessageId;
 
       if (fbCommentId && message.body.postId) {
+        console.log("likk")
         let fbChannelSession = this.getFaceBookChannelSession();
 
         if (fbChannelSession) {

@@ -3309,3 +3309,13 @@ em{
   border-radius: 2px;
   padding: 2px 5px;
 }
+
+.password-privacy-icon {
+  mat-icon {
+    position: relative;
+    right: 5px;
+    float: right;
+    position: relative;
+    top: -32px;
+  }
+}

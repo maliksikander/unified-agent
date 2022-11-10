@@ -9,6 +9,7 @@ import { isLoggedInService } from "../services/isLoggedIn.service";
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  hide = true;
 
   constructor(private fb: FormBuilder, private _isLoggedInservice: isLoggedInService) {
     this.loginForm = this.fb.group({

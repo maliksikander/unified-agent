@@ -89,7 +89,7 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
         this._cacheService.agentPresence = e.data;
       }
     });
-    
+
   }
   ngAfterViewInit()
   {
@@ -214,9 +214,23 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
   async logout() {
     await this._fcmService.deleteFcmToken();
     try {
+      window['dataLayer'].push({
+        'event': 'logout',
+        'data': {
+          'message': 'Agent Logged Out Successfully'
+        }});
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) {
+      window['dataLayer'].push({
+        'event': 'error',
+        'data': {
+          'message': 'error on logout request',
+          'error' : e.error
+        }});
+
+    }
+
     this._socketService.emit("changeAgentState", {
       agentId: this._cacheService.agent.id,
       action: "agentState",
