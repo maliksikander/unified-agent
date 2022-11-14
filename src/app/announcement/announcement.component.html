@@ -1,19 +1,19 @@
 <div class="table-area announcement-table-area container-fluid ">
   <div class="row m-0">
     <div class="col-md-6 announcement-heading p-0">
-      <h4>Team Announcement</h4>
+      <h4>{{'team-announcement' | translate}}</h4>
     </div>
     <div class="col-md-6 announcement-selection-area">
       <mat-form-field appearance="outline" class="selection-trigger">
         <mat-select [(value)]="FilterSelected">
-          <mat-option value="all" > All Announcements</mat-option>
-          <mat-option value="active" >Active Announcements</mat-option>
-          <mat-option value="expired">Expired Announcements</mat-option>
+          <mat-option value="all" > {{'announcements.all-announcements' | translate}}</mat-option>
+          <mat-option value="active" >{{'announcements.active-announcements' | translate}}</mat-option>
+          <mat-option value="expired">{{'announcements.expired-announcements' | translate}}</mat-option>
         </mat-select>
       </mat-form-field>
 
       <button mat-button class="new-announcement" (click)="onCreateAnnouncement()"><span
-        class="announcement-icon"><img src="assets/images/promotion.svg"> </span>New Announcement
+        class="announcement-icon"><img src="assets/images/promotion.svg"> </span>{{'announcements.new-announcement' | translate}}
       </button>
     </div>
     <div class="table-container manage-dashboard">
@@ -21,9 +21,9 @@
         <table class="table">
           <thead>
           <tr>
-            <th scope="col">Announcement</th>
-            <th scope="col">Created by</th>
-            <th scope="col">Expiry</th>
+            <th scope="col">{{'announcements.announcement' | translate}}</th>
+            <th scope="col">{{'announcements.created-by' | translate}}</th>
+            <th scope="col">{{'announcements.expiry' | translate}}</th>
           </tr>
           </thead>
           <tbody>
@@ -34,9 +34,9 @@
             <td>{{announcement.expiry_time}}</td>
             <span class="table-trigger">
 <button mat-mini-fab (click)="onUpdateAnnouncement()"><i
-  class="material-icons">edit</i></button>
+  class="material-icons">{{'announcements.edit' | translate}}</i></button>
 <button mat-mini-fab (click)="confirmationDialog(isConfirm, announcement)"><i
-  class="material-icons">delete</i></button>
+  class="material-icons">{{'announcements.delete' | translate}}</i></button>
 </span>
           </tr>
           </tbody>
@@ -57,13 +57,13 @@
 <ng-template #isConfirm>
   <div class="confirmation-dialog">
     <div class="confirmation-header">
-      <h3>Delete Announcement</h3>
+      <h3>{{'announcements.delete-announcement' | translate}}</h3>
     </div>
     <div class="confirmation-content">
-      <p>Are you sure You want to delete Announcement</p>
+      <p>{{'announcements.sure-delete-announcement' | translate}}</p>
       <div class="confirmation-action">
-        <button mat-raised-button class="close-btn" mat-dialog-close>Cancel</button>
-        <button mat-raised-button class="confirm-btn">Confirm</button>
+        <button mat-raised-button class="announcements.close-btn" mat-dialog-close>{{'announcements.cancel' | translate}}</button>
+        <button mat-raised-button class="announcements.confirm-btn">{{'announcements.confirm' | translate}}</button>
       </div>
     </div>
   </div>

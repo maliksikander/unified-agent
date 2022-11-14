@@ -7,7 +7,7 @@
 <div class="label-create-area">
   <div class="row m-0">
   <div class="form-group">
-    <label class="text-left">Label</label>
+    <label class="text-left">{{'labels.label'  | translate }}</label>
     <mat-form-field class="field label-name" appearance="outline">
       <input matInput [formControl]="name">
       <!-- <mat-error class="mrg-top" *ngIf="name.hasError('required')">
@@ -21,13 +21,13 @@
       </mat-error> -->
       <mat-error>
         <div *ngIf="name.hasError('required')">
-          *Field is required
+          {{'labels.required'  | translate }}
         </div>
         <div *ngIf="name.hasError('maxlength')">
-          Range should be 1 - 100
+          {{'labels.range'  | translate }}
         </div>
         <div *ngIf="name.hasError('validName')">
-          That name Already Exists
+          {{'labels.already-exists'  | translate }}
         </div>
       </mat-error>
     </mat-form-field>
@@ -71,7 +71,7 @@
 <!--  </div>-->
 
   <div class="button-area">
-    <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
+    <button (click)="onNoClick()" class="cancel-btn">{{'labels.cancel'  | translate }}</button>
     <button *ngIf="name.valid" (click)="onSaveLabel()" class="save-btn">{{buttonTitle}}</button>
   </div>
 

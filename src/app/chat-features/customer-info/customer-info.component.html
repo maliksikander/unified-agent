@@ -113,7 +113,7 @@
                   <!--                  <h3>{{customer.firstName | getFirstTwoLetters}}-->
                   <!--                  </h3>-->
                   <h5 class="user-name">
-                    Customer Info
+                    {{'chat-features.customer-info.info' | translate}}Customer Info
                     <!--                    <p class="user-from">London, United Kingdom</p>-->
                   </h5>
                 </div>
@@ -129,10 +129,10 @@
             <div class="custom-tab-area">
               <ul>
                 <li (click)="displayProfile = true; displayCustomerChannels = false" [ngClass]="{ 'tab-active': displayProfile }">
-                  Customer Profile
+                  {{'chat-features.customer-info.customer-profile' | translate}} Customer Profile
                 </li>
                 <li (click)="displayProfile = false; displayCustomerChannels = true" [ngClass]="{ 'tab-active': displayCustomerChannels }">
-                  Media Channels
+                  {{'chat-features.customer-info.media-channels' | translate}}Media Channels
                 </li>
               </ul>
             </div>
@@ -146,8 +146,8 @@
               <ng-container *ngIf="conversationId != 'FAKE_CONVERSATION'">
                 <div *ngIf="'customer-list' | authPipe: 'manage' as result" class="crm-trigger">
                   <!-- <p>Not a correct customer profile?</p> -->
-                  <button mat-raised-button (click)="gotoEmbedView()">link Profile</button>
-                  <button (click)="updateProfile()" mat-raised-button>Update Profile</button>
+                  <button mat-raised-button (click)="gotoEmbedView()">{{'chat-features.customer-info.link-profile' | translate}}Link Profile</button>
+                  <button (click)="updateProfile()" mat-raised-button>{{'chat-features.customer-info.update-profile' | translate}}Update Profile</button>
                 </div>
               </ng-container>
             </div>
@@ -194,11 +194,11 @@
           <!-- customer Suggestions Tab start-->
           <mat-expansion-panel class="drag-expansion-panel" *ngIf="customerSuggestions.length !== 0">
             <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
-              <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Link Profile </mat-panel-title>
+              <mat-panel-title><span class="material-icons drag-icon">more_vert</span>{{'chat-features.customer-info.link-profile' | translate}}Link Profile </mat-panel-title>
             </mat-expansion-panel-header>
 
             <div class="linked-area">
-              <h5>{{ customerSuggestions.length }} profiles matches this customer data.</h5>
+              <h5>{{ customerSuggestions.length }}{{'chat-features.customer-info.profile-matched' | translate}} profiles matches this customer data.</h5>
               <ul class="match-content">
                 <div *ngFor="let customer of customerSuggestions; let i = index">
                   <li *ngIf="i < 15">
@@ -216,7 +216,7 @@
               </ul>
 
               <div class="linked-action">
-                <button mat-button *ngIf="'customer-list' | authPipe: 'view' as result" (click)="viewAllMatches()">View all Matches</button>
+                <button mat-button *ngIf="'customer-list' | authPipe: 'view' as result" (click)="viewAllMatches()">{{'chat-features.customer-info.' | translate}}View all Matches</button>
               </div>
             </div>
           </mat-expansion-panel>
@@ -225,7 +225,7 @@
 
           <mat-expansion-panel class="drag-expansion-panel">
             <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
-              <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Active Channels </mat-panel-title>
+              <mat-panel-title><span class="material-icons drag-icon">more_vert</span>{{'chat-features.customer-info.' | translate}}Active Channels </mat-panel-title>
             </mat-expansion-panel-header>
 
             <div class="profile-area multi-channel-area">
@@ -300,11 +300,11 @@
                   </mat-expansion-panel-header>
                   <ul class="requested-channel-content">
                     <li>
-                      <label>Customer Identifier</label>
+                      <label>{{'chat-features.customer-info.customer-identifier' | translate}}Customer Identifier</label>
                       {{ channelSession.channelData.channelCustomerIdentifier }}
                     </li>
                     <li>
-                      <label>Service Identifier</label>
+                      <label>{{'chat-features.customer-info.service-identifier' | translate}}Service Identifier</label>
                       {{ channelSession.channelData.serviceIdentifier }}
                     </li>
                     <div *ngFor="let attr of channelSession.channelData.additionalAttributes">
@@ -323,7 +323,7 @@
                     <mat-expansion-panel *ngIf="(additionalAttribute.type | lowercase) == 'webchanneldata'">
                       <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                         <div class="channel-icon-area web-channel-inner">
-                          <label>Form Data</label>
+                          <label>{{'chat-features.customer-info.form-data' | translate}}Form Data</label>
                         </div>
                       </mat-expansion-panel-header>
 
@@ -380,7 +380,7 @@
           <mat-expansion-panel class="drag-expansion-panel conversation-data-panel">
             <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
               <mat-panel-title
-                ><span class="material-icons drag-icon">more_vert</span>Conversation Data <small>(Active Conversation)</small>
+                ><span class="material-icons drag-icon">more_vert</span>{{'chat-features.customer-info.conversation-data' | translate}}Conversation Data <small>{{'chat-features.customer-info.active-conversation' | translate}}(Active Conversation)</small>
               </mat-panel-title>
             </mat-expansion-panel-header>
 
@@ -393,7 +393,7 @@
                 </ul>
                 <ng-template #notFound>
                   <ul>
-                    <li><label>Data</label><span>Not Found</span></li>
+                    <li><label>{{'chat-features.customer-info.data' | translate}}Data</label><span>{{'chat-features.customer-info.not-found' | translate}}Not Found</span></li>
                   </ul>
                 </ng-template>
               </div>
@@ -428,8 +428,8 @@
     </div>
 
     <div class="call-trigger">
-      <button mat-button [mat-dialog-close]="true" class="call-btn" cdkFocusInitial>Call</button>
-      <button mat-button mat-dialog-close class="cancel-call">Cancel</button>
+      <button mat-button [mat-dialog-close]="true" class="call-btn" cdkFocusInitial>{{'chat-features.customer-info.' | translate}}Call</button>
+      <button mat-button mat-dialog-close class="cancel-call">{{'chat-features.customer-info.cancel' | translate}}Cancel</button>
     </div>
   </div>
 </ng-template>
@@ -437,7 +437,7 @@
 <ng-template #reRouteSessionConfirmation>
   <div class="confirmation-dialog">
     <div class="confirmation-header">
-      <h3>{{ reRouteText }} Chat Session</h3>
+      <h3>{{ reRouteText }}{{'chat-features.customer-info.chat-session' | translate}} Chat Session</h3>
     </div>
     <div class="confirmation-content">
       <p>
