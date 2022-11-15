@@ -6,16 +6,16 @@
     <div class="main-inner-section login-area form-section valign-wrapper col-md-6">
       <div class="login-inner">
         <div class="login-heading">
-          <h3>LOGIN</h3>
-          <span>Please provide a valid username and password to login to your account.</span>
+          <h3>{{'login.login'  | translate }}</h3>
+          <span>{{'login.valid-credentials'  | translate }}</span>
         </div>
         <form [formGroup]="loginForm">
           <div class="form-group">
-            <label class="text-left">Username</label>
+            <label class="text-left">{{'login.username'  | translate }}</label>
             <input formControlName="username" id="username" type="text" class="form-control" name="agentId">
           </div>
           <div class="form-group password-privacy-icon">
-            <label class="text-left">Password</label>
+            <label class="text-left">{{'login.password'  | translate }}</label>
             <input [type]="hide ? 'password' : 'text'" formControlName="password" id="password" class="form-control"
             name="password">
             <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -29,7 +29,7 @@
           <mat-checkbox >Keep me logged in</mat-checkbox>
       </div> -->
           <div class="form-group login-trigger">
-            <button [disabled]="!loginForm.valid" (click)="login()" class="button flip-in-ver-right form-control">LOGIN</button>
+            <button [disabled]="!loginForm.valid" (click)="login()" class="button flip-in-ver-right form-control">{{'login.login'  | translate }}</button>
           </div>
         </form>
         <!-- <button *ngIf="_appConfigService.config.ENV == 'development'" (click)="bypassLogin()">bypass Login</button> -->
@@ -41,8 +41,8 @@
       <div class="main-area-right">
         <img src="assets/images/chat-logo.png" alt="Agent Gadget">
         <div class="heading-area">
-          <h2>Agent Desk</h2>
-          <p>Your Call Center Experts.</p>
+          <h2>{{'login.agent-desk'  | translate }}</h2>
+          <p>{{'login.call-Center-xperts'  | translate }}</p>
         </div>
 
       </div>

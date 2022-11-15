@@ -1,10 +1,10 @@
 <div class="label-main page-header row m-0">
   <div class="customer-heading page-heading col-md-6 col-sm-5">
-    <h4>Customer Attributes</h4>
+    <h4>{{'customer-schema.customer-attributes' | translate}}</h4>
   </div>
   <div *ngIf="('customer-schema' | authPipe : 'manage') as result"
     class="customer-heading page-heading col-md-6 col-sm-7 text-right">
-    <button mat-button (click)="addAttr()" class="create-new-attribute">Create New Attribute</button>
+    <button mat-button (click)="addAttr()" class="create-new-attribute">{{'customer-schema.create-new-ttribute' | translate}}</button>
   </div>
 
 </div>
@@ -33,11 +33,11 @@
             <mat-menu  #menu="matMenu"
               yPosition="below" panelClass="custom" [overlapTrigger]="false">
               <button mat-menu-item class="channel-selection-list" (click)="edit(item)">
-                Edit
+                {{'customer-schema.edit' | translate}}
               </button>
               <button *ngIf="item.isDeleteAble" mat-menu-item class="channel-selection-list"
                 (click)="deleteAttribute(item)">
-                Delete
+                {{'customer-schema.delete' | translate}}
               </button>
 
             </mat-menu>
@@ -47,22 +47,22 @@
           <div class="schema-details" *ngIf="showDetails && divId == item._id">
             <div class="row m-0">
               <div class="input-align col-md-6 pr-0">
-                <strong> Label </strong> : <span class="un-edit">{{item.label}}</span>
+                <strong>{{'customer-schema.label' | translate}} </strong> : <span class="un-edit">{{item.label}}</span>
               </div>
               <div class="input-align col-md-6 pr-0">
-                <strong> Type </strong> : <span class="un-edit"> {{ item.type}}</span>
+                <strong>{{'customer-schema.type' | translate}} </strong> : <span class="un-edit"> {{ item.type}}</span>
               </div>
               <div *ngIf="item.type == 'string'" class="input-align col-md-6 pr-0">
-                <strong> Range </strong>:<span class="un-edit"> {{item.length}}</span>
+                <strong>{{'customer-schema.range' | translate}} </strong>:<span class="un-edit"> {{item.length}}</span>
               </div>
               <div class="input-align col-md-6 pr-0">
-                <strong> Mandatory </strong>:<span class="un-edit">{{item.isRequired}}</span>
+                <strong> {{'customer-schema.mandatory' | translate}} </strong>:<span class="un-edit">{{item.isRequired}}</span>
               </div>
               <div class="input-align col-md-6 pr-0">
-                <strong> Channel Identifier </strong>:<span class="un-edit">{{item.isChannelIdentifier}}</span>
+                <strong> {{'customer-schema.channel-identifier' | translate}} </strong>:<span class="un-edit">{{item.isChannelIdentifier}}</span>
               </div>
               <div class="input-align col-md-6 pr-0">
-                <strong> Description </strong>:<span class="un-edit">{{item.description ? item.description :
+                <strong>{{'customer-schema.description' | translate}} </strong>:<span class="un-edit">{{item.description ? item.description :
                   'N/A'}}</span>
               </div>
             </div>
@@ -91,11 +91,11 @@
 
             <mat-menu #searchChannelSelection="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
               <button mat-menu-item class="channel-selection-list" (click)="edit(item)">
-                Edit
+                {{'customer-schema.edit' | translate}}
               </button>
               <button *ngIf="item.isDeleteAble" mat-menu-item class="channel-selection-list"
                 (click)="deleteAttribute(item)">
-                Delete
+                {{'customer-schema.Delete' | translate}}
               </button>
 
             </mat-menu>
@@ -104,25 +104,25 @@
           <div class="schema-details" *ngIf="showDetails && divId == item._id">
             <div class="row m-0">
               <div class="input-align col-md-6 pr-0">
-                <strong> Label </strong> : <span class="un-edit">{{item.label}}</span>
+                <strong>{{'customer-schema.label' | translate}} </strong> : <span class="un-edit">{{item.label}}</span>
               </div>
 
               <div class="input-align col-md-6 pr-0">
-                <strong> Type </strong> : <span class="un-edit"> {{ item.type}}</span>
+                <strong> {{'customer-schema.type' | translate}} </strong> : <span class="un-edit"> {{ item.type}}</span>
               </div>
               <div *ngIf="item.type == 'string'" class="input-align col-md-6 pr-0">
-                <strong> Range </strong>:<span class="un-edit">{{ item.length}}</span>
+                <strong>{{'customer-schema.range' | translate}} </strong>:<span class="un-edit">{{ item.length}}</span>
               </div>
 
               <div class="input-align col-md-6 pr-0">
-                <strong> Mandatory </strong>:<span class="un-edit">{{item.isRequired}}</span>
+                <strong> {{'customer-schema.mandatory' | translate}} </strong>:<span class="un-edit">{{item.isRequired}}</span>
               </div>
               <div class="input-align col-md-6 pr-0">
-                <strong> Channel Identifier </strong>:<span class="un-edit">{{
+                <strong> {{'customer-schema.channel-identifier' | translate}} </strong>:<span class="un-edit">{{
                   item.isChannelIdentifier}}</span>
               </div>
               <div class="input-align col-md-6 pr-0">
-                <strong> Description </strong>:<span class="un-edit">{{item.description ? item.description :
+                <strong> {{'customer-schema.description' | translate}} </strong>:<span class="un-edit">{{item.description ? item.description :
                   'N/A'}}</span>
               </div>
             </div>
@@ -132,7 +132,7 @@
     </div>
   </div>
   <div *ngIf="showsaveOrder" class="create-attribute">
-    <button mat-button (click)="changeOrder(null)" class="float-right">Save Order</button>
+    <button mat-button (click)="changeOrder(null)" class="float-right">{{'customer-schema.save-order' | translate}}</button>
   </div>
 
 </div>

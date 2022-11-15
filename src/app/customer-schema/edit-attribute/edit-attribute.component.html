@@ -1,5 +1,5 @@
 <div class="dialog-header">
-  <h4>Edit Attribute</h4>
+  <h4>{{'customer-schema.edit-attribute' | translate}}</h4>
   <button (click)="onNoClick()" mat-button mat-dialog-close>
     <mat-icon>close</mat-icon>
   </button>
@@ -11,29 +11,28 @@
 
       <div class="left-area row m-0">
         <div class="form-group label-name col-md-6">
-          <label class="text-left">Label <span class="mandatory-steric">*</span></label>
+          <label class="text-left">{{'customer-schema.label' | translate}} <span class="mandatory-steric">*</span></label>
           <mat-form-field appearance="outline">
             <input [ngClass]="{'not-allowed' : editAttributeForm.value.key=='labels'}" [readonly]="editAttributeForm.value.key=='labels'" formControlName="label" matInput>
             <mat-error *ngIf="editAttributeForm.get('label')?.errors?.required">
-              *Field is required
+              {{'customer-schema.required' | translate}}
             </mat-error>
             <mat-error
               *ngIf="editAttributeForm.get('label')?.errors?.minlength || editAttributeForm.get('label')?.errors?.maxlength">
-              *Length should be between 1 - 50 characters
+              {{'customer-schema.length-range-1-50' | translate}}
             </mat-error>
             <mat-error *ngIf="editAttributeForm.get('label')?.errors?.validName">
-              *Label already exists
+              {{'customer-schema.label-already-exists' | translate}}
             </mat-error>
           </mat-form-field>
         </div>
 
         <div class="form-group label-name col-md-6">
-          <label class="text-left">Description</label>
+          <label class="text-left">{{'customer-schema.description' | translate}}</label>
           <mat-form-field appearance="outline">
             <input formControlName="description" matInput>
             <mat-error *ngIf="editAttributeForm.get('description')?.errors?.maxlength">
-              *Length should be between 1 - 100 characters
-            </mat-error>
+              {{'customer-schema.length-range-1-100' | translate}}
           </mat-form-field>
         </div>
 
@@ -42,7 +41,7 @@
       <div class="left-area row m-0">
 
         <div class="form-group label-name col-md-4 pr-2">
-          <label class="text-left">Field Type</label>
+          <label class="text-left">{{'customer-schema.field-type' | translate}}</label>
           <div class="select-list">
             <mat-form-field appearance="outline">
               <mat-select class="selected-channels not-allowed" [disabled]="true" formControlName="type"
@@ -51,24 +50,23 @@
                   {{attributeType.type}}</mat-option>
               </mat-select>
               <mat-error *ngIf="editAttributeForm.get('type')?.errors?.required">
-                *Field is required
+                {{'customer-schema.required' | translate}}
               </mat-error>
             </mat-form-field>
           </div>
         </div>
         <div *ngIf="editAttributeForm.value.type == 'string'" class="form-group label-name col-md-3 characters-length">
-          <label class="text-left">Number of Characters</label>
+          <label class="text-left">{{'customer-schema.no-of-characters' | translate}}</label>
           <mat-form-field appearance="outline">
             <input [ngClass]="{'not-allowed' : editAttributeForm.value.key=='labels'}" [readonly]="editAttributeForm.value.key=='labels'" (keyup)="onLengthChange()" type="number" matInput formControlName="length">
             <mat-error *ngIf="editAttributeForm.get('length')?.errors?.required">
-              *Field is required
+              {{'customer-schema.required' | translate}}
             </mat-error>
             <mat-error
               *ngIf="editAttributeForm.get('length')?.errors?.min || editAttributeForm.get('length')?.errors?.max">
-              *Number should be between 1 - 1000
-            </mat-error>
+              {{'customer-schema.no-of-characters' | translate}}
             <mat-error *ngIf="editAttributeForm.get('length')?.errors?.pattern">
-              *Must Enter a Numeric Value
+              {{'customer-schema.numeric-value' | translate}}
             </mat-error>
           </mat-form-field>
         </div>
@@ -78,28 +76,26 @@
         <div class="check-box form-group col-md-3 mandatory-attribute">
           <mat-checkbox
             [disabled]="editAttributeForm.value.key == 'firstName' || editAttributeForm.value.key == 'isAnonymous'"
-            formControlName="isRequired" (change)="onRequiredValueChange($event)" color="primary">Mandatory
-            Attribute</mat-checkbox>
+            formControlName="isRequired" (change)="onRequiredValueChange($event)" color="primary">{{'customer-schema.mandatory-attribute' | translate}}</mat-checkbox>
         </div>
         <div class="form-group label-name  default-value" [hidden]="editAttributeForm.value.key == 'labels'" *ngIf="editAttributeForm.value.isRequired">
-          <label class="text-left">Default Value <span class="mandatory-steric">*</span></label>
+          <label class="text-left">{{'customer-schema.default-value' | translate}}<span class="mandatory-steric">*</span></label>
           <mat-form-field appearance="outline">
             <input formControlName="defaultValue" matInput>
             <mat-error *ngIf="editAttributeForm.get('defaultValue')?.errors?.required">
-              *Field is mandatory
+              {{'customer-schema.required' | translate}}
             </mat-error>
             <mat-error
               *ngIf="editAttributeForm.get('defaultValue')?.errors?.minLength || editAttributeForm.get('defaultValue')?.errors?.maxLength">
-              *Length should be according to the given limit
+              {{'customer-schema.given-limit' | translate}}
             </mat-error>
             <mat-error *ngIf="editAttributeForm.get('defaultValue')?.errors?.pattern">
-              *Value does not match the selected type format
-            </mat-error>
+              {{'customer-schema.value-not-match' | translate}}
             <mat-error *ngIf="editAttributeForm.get('defaultValue')?.errors?.validName">
-              *That name Already Exists
+              {{'customer-schema.name-already-exists' | translate}}
             </mat-error>
           </mat-form-field>
-          <small>(Please specify a default value) </small>
+          <small>{{'customer-schema.specify-default-value' | translate}}</small>
         </div>
         <!--        <div class="schema-check-box form-group">-->
         <!--          <mat-checkbox  color="primary">Personal Identifiable Information</mat-checkbox>-->
@@ -109,8 +105,7 @@
       </div>
       <div class="left-area row m-0">
         <div class="check-box form-group pii-info">
-          <mat-checkbox formControlName="isPii" color="primary">PII</mat-checkbox> <a href="">(More information about
-            PII)</a>
+          <mat-checkbox formControlName="isPii" color="primary">{{'customer-schema.PII' | translate}}</mat-checkbox> <a href="">{{'customer-schema.more-info-PII' | translate}}</a>
         </div>
       </div>
 
@@ -122,13 +117,13 @@
 
       <div class="footer-actions row m-0">
         <div class="check-box channel-identifier form-group">
-          <label>Channel Identifier</label>
+          <label>{{'customer-schema.channel-identifier' | translate}}</label>
           <mat-checkbox class="not-allowed" style="cursor:not-allowed" [disabled]="true" (change)="onChannelIdentifierChange($event)"
             formControlName="isChannelIdentifier" color="primary">Yes</mat-checkbox>
         </div>
 
         <div *ngIf="editAttributeForm.value.isChannelIdentifier" class="form-group label-name select-channel pr-2">
-          <label class="text-left">Select Channel</label>
+          <label class="text-left">{{'customer-schema.select-channel' | translate}}</label>
           <div class="select-list">
             <mat-form-field appearance="outline">
               <mat-select [disabled]="true" formControlName="channelTypes" multiple class="selected-channels not-allowed">
@@ -137,7 +132,7 @@
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="editAttributeForm.get('channelTypes')?.errors?.required">
-                *Field is required
+                {{'customer-schema.required' | translate}}
               </mat-error>
             </mat-form-field>
           </div>
@@ -146,9 +141,8 @@
 
         <div class="action-right">
 
-          <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
-          <button *ngIf="editAttributeForm.valid" (click)="onSave()" class="save-btn">Update
-            Attribute</button>
+          <button (click)="onNoClick()" class="cancel-btn">{{'customer-schema.cancel' | translate}}</button>
+          <button *ngIf="editAttributeForm.valid" (click)="onSave()" class="save-btn">{{'customer-schema.update-attribute' | translate}}</button>
         </div>
       </div>
 

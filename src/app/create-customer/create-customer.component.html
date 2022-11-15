@@ -1,5 +1,5 @@
 <div class="dialog-header">
-  <h4 mat-dialog-title>Create New Customer
+  <h4 mat-dialog-title>{{'create-customer.create-new-customer' | translate}}
     <!-- <span class="validate-span" (click)="validateForm()">Validate</span> -->
     <button mat-button mat-dialog-close>
       <mat-icon (click)="onNoClick()">close</mat-icon>
@@ -34,13 +34,13 @@
                   <input formControlName="{{schemaAttribute.key}}" matInput>
                   <mat-error>
                     <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.required">
-                      *Field is required
+                      {{'create-customer.required' | translate}}
                     </div>
                     <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.pattern">
-                      *Invalid Pattern
+                      {{'create-customer.invalid' | translate}}
                     </div>
                     <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.maxlength">
-                      *Max. {{schemaAttribute.length}} characters are allowed
+                      {{'create-customer.max' | translate}} {{schemaAttribute.length}} {{'create-customer.characters-allowed' | translate}}
                     </div>
                   </mat-error>
                 </mat-form-field>
@@ -59,13 +59,13 @@
                     <input matInput [formControlName]="i">
                     <mat-error>
                       <span *ngIf="attr?.errors?.required">
-                        *Field is required
+                        {{'create-customer.required' | translate}}
                       </span>
                       <span *ngIf="attr?.errors?.pattern">
-                        *Invalid Pattern
+                        {{'create-customer.invalid' | translate}}
                       </span>
                       <span *ngIf="attr?.errors?.maxlength">
-                        *Max.{{schemaAttribute.length}} characters are allowed
+                        {{'create-customer.max' | translate}}{{schemaAttribute.length}} {{'create-customer.characters-allowed' | translate}}
                       </span>
                     </mat-error>
                     <div class="btn-test">
@@ -220,7 +220,7 @@
 <mat-dialog-actions>
 
   <div class="footer-buttons">
-    <button (click)="onNoClick()" class="cancel-btn">Cancel</button>
-    <button *ngIf="customerForm.valid" (click)="onSave()" class="save-btn">Create</button>
+    <button (click)="onNoClick()" class="cancel-btn">{{'create-customer.cancel' | translate}}</button>
+    <button *ngIf="customerForm.valid" (click)="onSave()" class="save-btn">{{'create-customer.create' | translate}}</button>
   </div>
 </mat-dialog-actions>

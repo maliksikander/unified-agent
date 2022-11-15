@@ -10,10 +10,10 @@
         <div class="wrap-up-area divider-content">
           <div class="row">
             <div class="col-md-6 selected-wrap-code">
-              <label>Wrap-Up Codes</label>
+              <label>{{'chat-features.wrap-up-form.wrap-up-codes' | translate}}</label>
             </div>
             <div class="col-md-6 selected-wrap-code text-right">
-              <span>Selected <strong>{{selectedWrapUpList.length}} - 5</strong> </span>
+              <span>{{'chat-features.wrap-up-form.selected' | translate}} <strong>{{selectedWrapUpList.length}} - 5</strong> </span>
             </div>
           </div>
 
@@ -70,7 +70,7 @@
       </div>
 
       <div class="note-area col-md-12">
-        <label>Notes</label>
+        <label>{{'chat-features.wrap-up-form.notes' | translate}}</label>
         <textarea [formControl]="notesFormCtrl"></textarea>
 
       </div>
@@ -78,9 +78,9 @@
   </div>
 
   <div class="action-trigger text-right">
-    <button mat-button (click)="closeDialog()" class="close-btn mat-button mat-button-base">Cancel</button>
+    <button mat-button (click)="closeDialog()" class="close-btn mat-button mat-button-base">{{'chat-features.wrap-up-form.cancel' | translate}}</button>
     <button mat-button [disabled]="selectedWrapUpList.length == 0 && !notesFormCtrl.value"
       [ngClass]="{'btn-disable-background':selectedWrapUpList.length == 0 && !notesFormCtrl.value}"
-      class="success-btn mat-button mat-button-base" (click)="onSave()" cdkFocusInitial>Apply</button>
+      class="success-btn mat-button mat-button-base" (click)="onSave()" cdkFocusInitial>{{'chat-features.wrap-up-form.apply' | translate}}</button>
   </div>
 </div>

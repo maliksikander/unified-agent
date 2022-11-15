@@ -113,11 +113,11 @@
 
           <mat-menu #ParticipantsList="matMenu" xPosition="before">
             <div *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'" class="chat-transfer-main participants-list">
-              <h5 class="transfer-heading participants-heading">Participants</h5>
+              <h5 class="transfer-heading participants-heading">{{'chat-features.interactions.participants' | translate}}</h5>
               <button mat-menu-item>
                 <span class="agent-detail">
                   <span>{{ conversation.customer.firstName }} {{ conversation.customer.lastName }}</span>
-                  <small class="joined-customer">Customer</small>
+                  <small class="joined-customer">{{'chat-features.interactions.customer' | translate}}</small>
                 </span>
               </button>
 
@@ -226,10 +226,9 @@
                 <mat-icon>question_answer</mat-icon>
               </span>
 
-              <p>No active conversation</p>
+              <p>{{'chat-features.interactions.no-active' | translate}}</p>
               <p *ngIf="'customer-conversation-view' | authPipe: 'manage' as result">
-                Click <a routerLink="" (click)="loadPastActivities('FAKE_CONVERSATION')">here</a> to load the past conversations
-              </p>
+                {{'chat-features.interactions.click' | translate}} <a routerLink="" (click)="loadPastActivities('FAKE_CONVERSATION')">{{'chat-features.interactions.here' | translate}}</a> {{'chat-features.interactions.to-load' | translate}}
             </div>
           </div>
 
@@ -249,10 +248,10 @@
                   *ngIf="!loadingPastActivity"
                   (click)="loadPastActivities('')"
                 >
-                  <mat-icon>arrow_upward</mat-icon>{{ noMoreConversation ? "Start of Conversation" : "Load More" }}
+                  <mat-icon>arrow_upward</mat-icon>{{ noMoreConversation ? {{'chat-features.interactions.start-of-conversation' | translate}}: {{'chat-features.interactions.load-more' | translate}} }}
                 </span>
                 <span *ngIf="loadingPastActivity">
-                  <mat-icon>hourglass_empty</mat-icon>{{ noMoreConversation ? "Start of Conversation" : "Loading..." }}
+                  <mat-icon>hourglass_empty</mat-icon>{{ noMoreConversation ? {{'chat-features.interactions.start-of-conversation' | translate}} : {{'chat-features.interactions.loading' | translate}} }}
                 </span>
               </div>
             </ng-container>
@@ -282,14 +281,14 @@
               <!-- -----------------------Conversation Data---------------- -->
               <div *ngIf="(message.body.type | lowercase) == 'conversationdata'" class="system-notifs conversation-data">
                 <span class="inner-text" [matMenuTriggerFor]="conversationData">
-                  <span>Conversation Data <mat-icon>arrow_drop_down</mat-icon></span>
+                  <span>{{'chat-features.interactions.conversation-data' | translate}} <mat-icon>arrow_drop_down</mat-icon></span>
                 </span>
 
                 <mat-menu #conversationData="matMenu">
                   <div class="conversation-data-main">
                     <div class="conversation-data">
                       <div class="conversation-data-header">
-                        <h5>Conversation Data</h5>
+                        <h5>{{'chat-features.interactions.conversation-data' | translate}}</h5>
                         <mat-icon>close</mat-icon>
                       </div>
                       <ul (click)="$event.stopPropagation()">
@@ -497,7 +496,7 @@
                               #dwld="wmDownload"
                               download
                             >
-                              Download
+                            {{'chat-features.interactions.download' | translate}}
                             </a>
                           </span>
                           <!--                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
@@ -1023,7 +1022,7 @@
                                 <li>
                                   <mat-icon (click)="fbCommentAction(message, 'hide')"> visibility_off</mat-icon>
                                 </li>
-                                <li class="view-post" (click)="getFullViewPostData(message.header.channelSession,message.body.postId, message.id)">View full post</li>
+                                <li class="view-post" (click)="getFullViewPostData(message.header.channelSession,message.body.postId, message.id)">{{'chat-features.interactions.view-full-post' | translate}}</li>
                               </ul>
                             </li>
                           </ul>
@@ -1453,7 +1452,7 @@
                         class="canned-trigger send-suggestion"
                         (click)="onSend(botSuggestion.messageBody.markdownText); replyInput.value = null"
                       >
-                        <i class="material-icons"> send </i>
+                        <i class="material-icons">{{'chat-features.interactions.send' | translate}}</i>
                       </button>
                     </p>
                   </div>
@@ -1531,11 +1530,11 @@
         (click)="downTheScrollAfterMilliSecs(0, 'smooth')"
         class="jump-bottom slide-in-bottom new-msg-notif"
       >
-        <span> <mat-icon>arrow_downward</mat-icon>Jump to bottom </span>
+        <span> <mat-icon>arrow_downward</mat-icon>{{'chat-features.interactions.jump-bottom' | translate}}</span>
       </div>
 
       <div class="slide-in-bottom new-msg-notif" *ngIf="showNewMessageNotif" (click)="downTheScrollAfterMilliSecs(0, 'smooth')">
-        New Message
+        {{'chat-features.interactions.new-message' | translate}}
         <span class="material-icons"> arrow_drop_down </span>
       </div>
       <!-- <span class="selected-channel">Selected Channel:
@@ -1546,7 +1545,7 @@
       </span> -->
 
       <span class="selected-channel"
-        ><span>Selected Channel:</span>
+        ><span>{{'chat-features.interactions.selected-channel' | translate}}</span>
         <button
           *ngIf="conversation.activeChannelSessions.length > 0"
           mat-button
@@ -1568,7 +1567,7 @@
             <i class="material-icons"> arrow_drop_down </i>
           </ng-container>
         </button>
-        <label *ngIf="conversation.activeChannelSessions.length == 0" style="color: grey; padding-left: 2px"> None </label>
+        <label *ngIf="conversation.activeChannelSessions.length == 0" style="color: grey; padding-left: 2px">{{'chat-features.interactions.send' | translate}} None </label>
       </span>
 
       <mat-menu #channelSwitching="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
@@ -1585,7 +1584,7 @@
               width="20"
               onError="this.src='assets/flags/generic.png';" /></span
           >{{ channelSession?.channel?.channelType.name }}
-          <i class="material-icons" *ngIf="channelSession?.isChecked"> check </i>
+          <i class="material-icons" *ngIf="channelSession?.isChecked"> {{'chat-features.interactions.check' | translate}}check </i>
         </button>
       </mat-menu>
 
@@ -1714,10 +1713,10 @@
                             class="canned-trigger edit-trigger"
                             (click)="replyInput.value = botSuggestion.messageBody.markdownText"
                           >
-                            <i class="material-icons"> edit </i>
+                            <i class="material-icons"> {{'chat-features.interactions.edit' | translate}} </i>
                           </button>
                           <button (click)="onSend(botSuggestion.messageBody.markdownText)" mat-mini-fab class="canned-trigger send-suggestion">
-                            <i class="material-icons"> send </i>
+                            <i class="material-icons">{{'chat-features.interactions.send' | translate}} </i>
                           </button>
                         </mat-option>
                       </ng-container>
@@ -1790,7 +1789,7 @@
           <div class="row m-0">
             <div class="col-md-4">
               <div class="categories-area divider-content">
-                <h4>Categories</h4>
+                <h4>{{'chat-features.interactions.categories' | translate}}</h4>
                 <div class="selected-area">
                   <div class="select-categories">
                     <mat-chip-list>
@@ -1809,7 +1808,7 @@
             </div>
             <div class="col-md-8">
               <div class="wrap-up-area divider-content">
-                <h4>Wrap-Up Codes</h4>
+                <h4>{{'chat-features.interactions.wrap-up-codes' | translate}}</h4>
                 <div class="selected-area">
                   <div class="select-categories">
                     <mat-chip-list>
@@ -1828,15 +1827,15 @@
             </div>
 
             <div class="note-area col-md-12">
-              <h4>Notes</h4>
+              <h4>{{'chat-features.interactions.notes' | translate}}</h4>
               <textarea></textarea>
             </div>
           </div>
         </div>
 
         <div class="action-trigger text-right">
-          <button mat-button mat-dialog-close class="close-btn">Cancel</button>
-          <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial>Apply</button>
+          <button mat-button mat-dialog-close class="close-btn">{{'chat-features.interactions.cancel' | translate}}</button>
+          <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial>{{'chat-features.interactions.apply' | translate}}</button>
         </div>
       </div>
     </ng-template>
@@ -1879,20 +1878,20 @@
           <h3>{{ requestedQueue?.queueName ? requestedQueue?.queueName : "N/A" }}</h3>
           <p class="consult-team">
             ({{ requestedQueue?.totalAvailableAgents ? requestedQueue?.totalAvailableAgents : 0 }}
-            {{ requestedQueue?.totalAvailableAgents > 1 ? "agents" : "agent" }} available)
+            {{ requestedQueue?.totalAvailableAgents > 1 ? "agents" : "agent" }}{{'chat-features.interactions.available' | translate}} )
           </p>
           <!-- <p *ngIf="requestedQueue?.queueName">
             ({{requestedQueue?.queueName}})</p> -->
         </div>
         <div class="note-area col-md-12">
-          <h4>Message</h4>
+          <h4>{{'chat-features.interactions.message' | translate}}</h4>
           <textarea [(ngModel)]="assistanceRequestNote" rows="5"></textarea>
         </div>
       </div>
     </div>
 
     <div class="action-trigger text-right">
-      <button mat-button mat-dialog-close class="close-btn">Cancel</button>
+      <button mat-button mat-dialog-close class="close-btn">{{'chat-features.interactions.cancel' | translate}}</button>
       <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial (click)="sendAssistanceRequest()">
         {{ noteDialogBtnText }}
       </button>
