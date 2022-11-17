@@ -12,14 +12,14 @@
           <input matInput placeholder="Search" [(ngModel)]="filterValue"
           (keyup.enter)="filter(selectedSearchField) ; this.isFilterListOpened=false" >
           <span *ngIf="selectedSearchLabel.length > 0" matPrefix>{{selectedSearchLabel}}:</span>
-          <mat-icon matSuffix matSuffix *ngIf="selectedSearchLabel.length == 0">search</mat-icon>
-          <mat-icon  matSuffix *ngIf="selectedSearchLabel.length > 0" (click)="cancelFilter()">close</mat-icon>
+          <mat-icon matSuffix matSuffix *ngIf="selectedSearchLabel.length == 0">{{'gloabals.search'  | translate }}</mat-icon>
+          <mat-icon  matSuffix *ngIf="selectedSearchLabel.length > 0" (click)="cancelFilter()">{{'gloabals.close'  | translate }}</mat-icon>
         </mat-form-field>
         <button class="filter-action-trigger" [ngClass]="{'clicked' : isFilterListOpened}" (click)="isFilterList()" mat-icon-button><mat-icon>{{isFilterListOpened ? 'filter_list': 'filter_list'}} </mat-icon></button>
 
 
         <div class="filter-list-main" *ngIf="isFilterListOpened">
-          <h5>Select Column(s)</h5>
+          <h5>{{'gloabals.select-columns'  | translate }}</h5>
           <div class="filter-list-selection">
             <mat-radio-group aria-label="Select an option">
               <mat-radio-button value="{{col.header}}" *ngFor="let col of cols" (change)="selectedFilter($event,col.field)">{{col.header}}</mat-radio-button>
@@ -27,8 +27,8 @@
           </div>
 
           <div class="footer-buttons">
-            <button class="cancel-btn" (click)="isFilterList()" mat-button>Cancel</button>
-            <button class="save-btn" (click)="filter(selectedSearchField);  isFilterList()" mat-button>Done</button>
+            <button class="cancel-btn" (click)="isFilterList()" mat-button>{{'gloabals.Cancel'  | translate }}</button>
+            <button class="save-btn" (click)="filter(selectedSearchField);  isFilterList()" mat-button>{{'gloabals.Done'  | translate }}</button>
           </div>
         </div>
       </div>
@@ -53,7 +53,7 @@
     </div>
 
     <div *ngIf="('customer-list' | authPipe : 'manage') as result" class="right-actions text-right">
-      <button mat-button class="btn-action add-new " (click)="actions()">Column Preference</button>
+      <button mat-button class="btn-action add-new " (click)="actions()">{{'gloabals.column-preference'  | translate }}</button>
       <mat-menu #columnMenu="matMenu">
         <div class="check-menu" (click)="$event.stopPropagation();">
           <p class="col-list" *ngFor="let col of cols">
@@ -65,7 +65,7 @@
 
       <div *ngIf="labels" class="lbl-filter-search custom-dropdown">
         <span (click)="lblSearch = !lblSearch" class="lbl-search-lbl">
-          Filter Across Labels
+          {{'gloabals.filter-across-labels'  | translate }} 
         </span>
         <angular2-multiselect  [data]="labels" [settings]="labelSettings" (onSelect)="onItemSelect($event)"
           (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
@@ -89,8 +89,7 @@
       <!--        <mat-option value="linked">Linked</mat-option>-->
       <!--      </mat-select>-->
       <!--    </mat-form-field>-->
-      <button *ngIf="!isEmbededView" (click)="createCustomer()" mat-button class="btn-create">Create New
-        Customer</button>
+      <button *ngIf="!isEmbededView" (click)="createCustomer()" mat-button class="btn-create">{{'gloabals.create-new-customer'  | translate }}</button>
       <!--        <button mat-button class="">Close</button>-->
     </div>
   </div>
@@ -152,7 +151,7 @@
                 <input class="filter" type="text" [(ngModel)]="filterValue"
                   (keyup.enter)="filter(col.field)">
                 <div class="close-filter">
-                  <mat-icon (click)="cancelFilter()" class="closeIcon">cancel</mat-icon>
+                  <mat-icon (click)="cancelFilter()" class="closeIcon">{{'gloabals.Cancel'  | translate }}</mat-icon>
                 </div>
               </div>
 

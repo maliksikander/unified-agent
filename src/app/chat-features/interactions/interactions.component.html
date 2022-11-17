@@ -248,10 +248,12 @@
                   *ngIf="!loadingPastActivity"
                   (click)="loadPastActivities('')"
                 >
-                  <mat-icon>arrow_upward</mat-icon>{{ noMoreConversation ? {{'chat-features.interactions.start-of-conversation' | translate}}: {{'chat-features.interactions.load-more' | translate}} }}
+                  <mat-icon>arrow_upward</mat-icon>
+                  {{ (noMoreConversation ? 'chat-features.interactions.start-of-conversation':'chat-features.interactions.load-more') | translate }}
                 </span>
                 <span *ngIf="loadingPastActivity">
-                  <mat-icon>hourglass_empty</mat-icon>{{ noMoreConversation ? {{'chat-features.interactions.start-of-conversation' | translate}} : {{'chat-features.interactions.loading' | translate}} }}
+                  <mat-icon>hourglass_empty</mat-icon>
+                  {{ (noMoreConversation ?'chat-features.interactions.start-of-conversation' : 'chat-features.interactions.loading') | translate }}
                 </span>
               </div>
             </ng-container>
@@ -1878,7 +1880,7 @@
           <h3>{{ requestedQueue?.queueName ? requestedQueue?.queueName : "N/A" }}</h3>
           <p class="consult-team">
             ({{ requestedQueue?.totalAvailableAgents ? requestedQueue?.totalAvailableAgents : 0 }}
-            {{ requestedQueue?.totalAvailableAgents > 1 ? "agents" : "agent" }}{{'chat-features.interactions.available' | translate}} )
+            {{ (requestedQueue?.totalAvailableAgents > 1 ? "globals.agents" : "globals.agent") | translate }}{{'chat-features.interactions.available' | translate}} )
           </p>
           <!-- <p *ngIf="requestedQueue?.queueName">
             ({{requestedQueue?.queueName}})</p> -->

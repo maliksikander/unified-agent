@@ -2,13 +2,13 @@
   <div class="active-chat-list-area">
     <div class="page-header row m-0">
       <div class="col-md-6 page-heading">
-        <h4>Active Conversations Detail</h4>
+        <h4>{{'supervisor.active-conversations-detail'  | translate }}</h4>
       </div>
       <div class="col-md-6 text-right page-action">
         <mat-form-field appearance="outline" class="selection-trigger">
           <mat-select [(value)]="FilterSelected">
-            <mat-option value="agents">Answered by Agents</mat-option>
-            <mat-option value="bots">Answered by Bot</mat-option>
+            <mat-option value="agents">{{'supervisor.answered-by-agents'  | translate }}</mat-option>
+            <mat-option value="bots">{{'supervisor.answered-by-bot'  | translate }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -17,9 +17,9 @@
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">Customer</th>
-          <th scope="col">Active Since</th>
-          <th *ngIf="FilterSelected=='agents'" scope="col">Queue</th>
+          <th scope="col">{{'supervisor.customer'  | translate }}</th>
+          <th scope="col">{{'supervisor.active-since'  | translate }}</th>
+          <th *ngIf="FilterSelected=='agents'" scope="col">{{'supervisor.queue'  | translate }}</th>
           <th scope="col">{{FilterSelected | titlecase}}</th>
         </tr>
       </thead>
@@ -29,7 +29,7 @@
           <tr *ngFor="let chat of data.chats">
             <td><span class="channel-icon {{chat.channelType}}"><img [src]="chat.channelType  | channelName  | channelLogo | async"></span>
               {{chat.customerName}} <small>({{chat.channelIdentity}})</small></td>
-            <td>{{chat.activeSince | amDuration:'seconds'}} <small>Ago</small></td>
+            <td>{{chat.activeSince | amDuration:'seconds'}} <small>{{'supervisor.ago'  | translate }}</small></td>
             <td >{{data.botName}}</td>
             <!-- <span class="table-trigger">
               <button mat-mini-fab class="silent-monitor-btn" matTooltip="Silent Monitoring"><img
@@ -47,7 +47,7 @@
           <tr *ngFor="let chat of data.chats">
             <td><span class="channel-icon {{chat.channelType}}"><img [src]="chat.channelType  | channelName  | channelLogo | async"></span>
               {{chat.customerName}} <small>({{chat.channelIdentity}})</small></td>
-            <td>{{chat.activeSince | amDuration:'seconds'}} <small>Ago</small> </td>
+            <td>{{chat.activeSince | amDuration:'seconds'}} <small>{{'supervisor.joined'  | translate }}</small> </td>
             <td >{{data.queueName}}</td>
             <td >{{chat.agentName}}</td>
             <!-- <span class="table-trigger">

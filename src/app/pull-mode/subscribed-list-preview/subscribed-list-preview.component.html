@@ -1,15 +1,15 @@
 <div class="page-header row m-0">
     <button mat-button class="back-to-chat" (click)="listPreviewToggle()"></button>
     <div class="page-heading col-md-6 col-sm-4">
-        <h4>Inbox</h4>
+        <h4>{{'pull-mode.inbox'  | translate }}</h4>
     </div>
     <div class="create-label col-md-6 text-right">
         <mat-form-field appearance="outline" class="selection-trigger chat-selection">
             <mat-select [(value)]="filterStatus">
-                <mat-option class="all-chats chat-selection-option" value="all">All Chats</mat-option>
-                <mat-option class="active-chats chat-selection-option" value="active">Active</mat-option>
-                <mat-option class="inactive-chats chat-selection-option" value="inactive">Inactive</mat-option>
-                <mat-option class="unread-chats chat-selection-option" value="created">Unread</mat-option>
+                <mat-option class="all-chats chat-selection-option" value="all">{{'pull-mode.all-chats'  | translate }}</mat-option>
+                <mat-option class="active-chats chat-selection-option" value="active">{{'pull-mode.active'  | translate }}</mat-option>
+                <mat-option class="inactive-chats chat-selection-option" value="inactive">{{'pull-mode.inactive'  | translate }}</mat-option>
+                <mat-option class="unread-chats chat-selection-option" value="created">{{'pull-mode.unread'  | translate }}</mat-option>
             </mat-select>
         </mat-form-field>
 
@@ -47,10 +47,10 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th class="status-data" scope="col">Status</th>
-                        <th scope="col">Customer</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">List</th>
+                        <th class="status-data" scope="col">{{'pull-mode.status'  | translate }}</th>
+                        <th scope="col">{{'pull-mode.customer'  | translate }}</th>
+                        <th scope="col">{{'pull-mode.time'  | translate }}</th>
+                        <th scope="col">{{'pull-mode.list'  | translate }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -90,16 +90,16 @@
                             </div> -->
 
 
-                            <span *ngIf="request.id | isAlreadyJoined" class="joined">(Joined)</span>
+                            <span *ngIf="request.id | isAlreadyJoined" class="joined">{{'pull-mode.joined'  | translate }}</span>
                         </td>
-                        <td>{{request.time | amTimeAgo:true}}<small> Ago</small></td>
+                        <td>{{request.time | amTimeAgo:true}}<small> {{'pull-mode.ago'  | translate }}</small></td>
                         <td>{{_pullModeservice.listNames[request.listId] ? _pullModeservice.listNames[request.listId] :
                             '-'}}</td>
                         <span class="table-trigger">
                             <button mat-button *ngIf="!(request.id | isAlreadyJoined)" (click)="joinChat(request)"
-                                class="chat-btn" matTooltip="Chat">Join</button>
+                                class="chat-btn" matTooltip="Chat">{{'pull-mode.join'  | translate }}</button>
                             <button *ngIf="('subscribed-list' | authPipe : 'manage') as result" mat-button
-                                class="close-btn" (click)="closeChat(request)" matTooltip="Close">End</button>
+                                class="close-btn" (click)="closeChat(request)" matTooltip="Close">{{'pull-mode.end'  | translate }}</button>
                         </span>
                     </tr>
                 </tbody>

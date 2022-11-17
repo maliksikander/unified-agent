@@ -1,12 +1,12 @@
 <div class="container-fluid main-supervisor-area">
   <div class="supervisor row">
     <div class="supervisor-table active-chat col-md-12">
-      <h4>Active Chat</h4>
+      <h4>{{'supervisor.active-chat'  | translate }}</h4>
 
       <div class="main-table supervisor-table-search">
         <mat-form-field class="col search-field" appearance="outline">
           <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
-          <mat-icon matSuffix>search</mat-icon>
+          <mat-icon matSuffix>{{'supervisor.search'  | translate }}</mat-icon>
         </mat-form-field>
 
         <table mat-table [dataSource]="dataSource" class="col">
@@ -24,27 +24,27 @@
           </ng-container>
 
           <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef> Title</th>
+            <th mat-header-cell *matHeaderCellDef>{{'supervisor.title'  | translate }}</th>
             <td mat-cell *matCellDef="let element"> {{element.title}} </td>
           </ng-container>
 
           <ng-container matColumnDef="agent">
-            <th mat-header-cell *matHeaderCellDef> Agent</th>
+            <th mat-header-cell *matHeaderCellDef>{{'supervisor.agent'  | translate }}</th>
             <td mat-cell *matCellDef="let element"> {{element.agent}} </td>
           </ng-container>
 
           <ng-container matColumnDef="team">
-            <th mat-header-cell *matHeaderCellDef> Team</th>
+            <th mat-header-cell *matHeaderCellDef>{{'supervisor.team'  | translate }}</th>
             <td mat-cell *matCellDef="let element"> {{element.team}} </td>
           </ng-container>
 
           <ng-container matColumnDef="time">
-            <th mat-header-cell *matHeaderCellDef> Time</th>
+            <th mat-header-cell *matHeaderCellDef>{{'supervisor.time'  | translate }}</th>
             <td mat-cell *matCellDef="let element"> {{element.time}} </td>
           </ng-container>
 
           <ng-container matColumnDef="channel">
-            <th mat-header-cell *matHeaderCellDef> Channel</th>
+            <th mat-header-cell *matHeaderCellDef> {{'supervisor.channel'  | translate }}</th>
             <td mat-cell *matCellDef="let element"> {{element.channel}} </td>
           </ng-container>
 
@@ -61,7 +61,7 @@
         <div class="table-container">
           <div class="supervisor-table search-table queue-stats">
             <div class="expand-area" [ngClass]="{'info-expanded': queueStatsInfo}">
-              <h4>Queue Stats <span class="info-icon"
+              <h4>{{'supervisor.queue-stats'  | translate }}<span class="info-icon"
                                     (click)="infoBar('queueStats')"><img
                 src="assets/images/information-button.svg"></span>
               </h4>
@@ -70,13 +70,13 @@
                         <mat-icon>close</mat-icon>
                     </span>
                 <ul class="info-list">
-                  <li><span>Name</span> - Name of the queue</li>
-                  <li><span>Chats</span> - No of chats in the queue</li>
-                  <li><span>Max Time</span> - Max time for a chat in the queue</li>
-                  <li><span>Active</span> - Agents in active state</li>
-                  <li><span>Busy</span> - Agents in busy state</li>
-                  <li><span>Ready</span> - Agents in ready state</li>
-                  <li><span>Not Ready</span> - Agents in not ready state</li>
+                  <li><span>{{'supervisor.name'  | translate }} - </span>{{'supervisor.name-of-the-queue'  | translate }}</li>
+                  <li><span>{{'supervisor.chats'  | translate }} - </span>{{'supervisor.no-of-chats-in-queue'  | translate }}</li>
+                  <li><span>{{'supervisor.max-time'  | translate }} - </span> {{'supervisor.max-time-for-chat-in-queue'  | translate }}</li>
+                  <li><span>{{'supervisor.active'  | translate }} - </span>{{'supervisor.agents-in-active-state'  | translate }}</li>
+                  <li><span>{{'supervisor.busy'  | translate }} - </span>{{'supervisor.agents-in-busy-state'  | translate }}</li>
+                  <li><span>{{'supervisor.ready'  | translate }} - </span>{{'supervisor.agents-in-ready-state'  | translate }}</li>
+                  <li><span>{{'supervisor.not-ready'  | translate }} - </span> {{'supervisor.agents-in-not-ready-state'  | translate }}</li>
                 </ul>
               </div>
               <button mat-button (click)="toggleExpand()"
@@ -90,14 +90,14 @@
                     <table>
                       <thead>
                       <tr>
-                        <td>No</td>
-                        <td>Name</td>
-                        <td>Count</td>
-                        <td>Max Time</td>
-                        <td>Active</td>
-                        <td>Busy</td>
-                        <td>Ready</td>
-                        <td>Not Ready</td>
+                        <td>{{'supervisor.no'  | translate }}</td>
+                        <td>{{'supervisor.name'  | translate }}</td>
+                        <td>{{'supervisor.count'  | translate }}</td>
+                        <td>{{'supervisor.max-time'  | translate }}</td>
+                        <td>{{'supervisor.active'  | translate }}</td>
+                        <td>{{'supervisor.busy'  | translate }}</td>
+                        <td>{{'supervisor.ready'  | translate }}</td>
+                        <td>{{'supervisor.not-ready'  | translate }}</td>
                       </tr>
                       </thead>
                     </table>

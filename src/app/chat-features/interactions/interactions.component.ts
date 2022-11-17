@@ -430,7 +430,6 @@ export class InteractionsComponent implements OnInit {
             fd.append("conversationId", `${Math.floor(Math.random() * 90000) + 10000}`);
             this._httpService.uploadToFileEngine(fd).subscribe(
               (e) => {
-                console.log("e.type", e.type.split("/")[0]);
                 this.constructAndSendCimEvent(e.type.split("/")[0], e.type, e.name, e.size);
               },
               (error) => {

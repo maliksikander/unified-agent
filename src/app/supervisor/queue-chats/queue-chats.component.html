@@ -2,12 +2,12 @@
   <div class="active-chat-list-area">
     <div class="page-header row m-0">
       <div class="col-md-6 page-heading">
-        <h4>Queued Conversations Detail</h4>
+        <h4>{{'supervisor.queued-conversations-detail'  | translate }}</h4>
       </div>
       <div class="col-md-6 text-right  page-action">
         <mat-form-field appearance="outline" class="selection-trigger">
           <mat-select [(value)]="FilterSelected" (selectionChange)="filterData()">
-            <mat-option value="all">All Queues</mat-option>
+            <mat-option value="all">{{'supervisor.all-queues'  | translate }}</mat-option>
             <mat-option *ngFor="let item of queuedChatList; index as i" [value]="i">{{item.queueName}}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -17,12 +17,12 @@
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">Customer</th>
+            <th scope="col">{{'supervisor.customer'  | translate }}</th>
             <th scope="col">
               <!-- <mat-icon>keyboard_backspace</mat-icon> -->
-              Waiting Since
+              {{'supervisor.waiting-since'  | translate }}
             </th>
-            <th scope="col">Queue</th>
+            <th scope="col">{{'supervisor.queue'  | translate }}</th>
           </tr>
         </thead>
         <tbody>
@@ -38,7 +38,7 @@
                 <li matTooltip="Product Support" style="background: #536ce8;"></li>
               </ul> -->
               </td>
-              <td>{{chat.waitingSince | amDuration:'seconds'}} <small>Ago</small></td>
+              <td>{{chat.waitingSince | amDuration:'seconds'}} <small>{{'supervisor.ago'  | translate }}</small></td>
               <td>{{data.queueName}}</td>
               <!-- <span class="table-trigger">
                 <button mat-mini-fab class="chat-btn" matTooltip="Chat"><img src="assets/images/joinchat.svg"
@@ -61,7 +61,7 @@
 <ng-template #reQueueTemplate>
   <div class="note-dialog-main transfer-dialog">
     <div class="dialog-header">
-      <h4 mat-dialog-title>Re-Queue
+      <h4 mat-dialog-title>{{'supervisor.re-queue'  | translate }}
         <button mat-button mat-dialog-close>
           <mat-icon>close</mat-icon>
         </button>
@@ -70,27 +70,27 @@
     <div class="dialog-main-content">
       <div class="row m-0">
         <div class="form-group queue-transfer-to col-md-12">
-          <label>Select queue to re-queue chat</label>
+          <label>{{'supervisor.select-queue-to-re-queue-chat'  | translate }}</label>
           <mat-form-field appearance="outline" class="selection-trigger">
             <mat-select [(value)]="FilterSelected">
-              <mat-option value="all">All Queues</mat-option>
-              <mat-option value="software">Software Queue</mat-option>
-              <mat-option value="marketing">Marketing Queue</mat-option>
-              <mat-option value="sales">Sales Queue</mat-option>
+              <mat-option value="all">{{'supervisor.queues'  | translate }}</mat-option>
+              <mat-option value="software">{{'supervisor.software-queue'  | translate }}</mat-option>
+              <mat-option value="marketing">{{'supervisor.marketing-queue'  | translate }}</mat-option>
+              <mat-option value="sales">{{'supervisor.sales-queue'  | translate }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
 
         <div class="form-group col-md-12">
-          <label>Notes</label>
+          <label>{{'supervisor.notes'  | translate }}</label>
           <textarea rows="3"></textarea>
         </div>
       </div>
     </div>
 
     <div class="action-trigger text-right">
-      <button mat-button mat-dialog-close class="close-btn">Cancel</button>
-      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial>Done
+      <button mat-button mat-dialog-close class="close-btn">{{'supervisor.cancel'  | translate }}</button>
+      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial>{{'supervisor.done'  | translate }}
       </button>
     </div>
   </div>
