@@ -254,7 +254,7 @@
                         matTooltip="Device: {{
                           channelSession.webChannelData.browserDeviceInfo.deviceType
                             ? channelSession.webChannelData.browserDeviceInfo.deviceType
-                            : 'UNKNOWN'
+                            : ('chat-features.customer-info.unknown' | translate)
                         }}"
                       >
                         <!--                        <mat-icon>{{channelSession.webChannelData.browserDeviceInfo.deviceType |-->
@@ -271,7 +271,7 @@
                         matTooltip="Browser: {{
                           channelSession.webChannelData.browserDeviceInfo.browserName
                             ? channelSession.webChannelData.browserDeviceInfo.browserName
-                            : 'UNKNOWN'
+                            : ('chat-features.customer-info.unknown' | translate)
                         }}"
                       >
                         <img
@@ -281,7 +281,7 @@
                       </li>
                       <li
                         matTooltip="Country: {{
-                          channelSession.webChannelData.locale.country ? channelSession.webChannelData.locale.country : 'UNKNOWN'
+                          channelSession.webChannelData.locale.country ? channelSession.webChannelData.locale.country : ('chat-features.customer-info.unknown' | translate)
                         }}"
                       >
                         <img src="assets/flags/{{ channelSession.webChannelData.locale.country | webChannelData: 'country' }}.svg" alt="country" />
@@ -289,7 +289,7 @@
                       <li
                         class="lang-bar"
                         matTooltip="Language: {{
-                          channelSession.webChannelData.locale.language ? channelSession.webChannelData.locale.language : 'UNKNOWN'
+                          channelSession.webChannelData.locale.language ? channelSession.webChannelData.locale.language : ('chat-features.customer-info.unknown' | translate)
                         }}"
                       >
                         {{
@@ -418,10 +418,10 @@
             <mat-icon>phone</mat-icon>
           </div>
           <div class="call-detail">
-            <p>initiate outgoing call to</p>
-            <h4>Stacy Miller</h4>
+            <p>{{'chat-features.customer-info.initiate-outgoing-call-to' | translate}}</p>
+            <h4>{{'chat-features.customer-info.stacy-miller' | translate}}</h4>
             <strong>{{ outgoingCallingNumber }}</strong>
-            <small>(Mobile)</small>
+            <small>{{'chat-features.customer-info.mobile' | translate}}</small>
           </div>
         </div>
       </div>
@@ -429,7 +429,7 @@
 
     <div class="call-trigger">
       <button mat-button [mat-dialog-close]="true" class="call-btn" cdkFocusInitial>{{'chat-features.customer-info.call' | translate}}</button>
-      <button mat-button mat-dialog-close class="cancel-call">{{'chat-features.customer-info.cancel' | translate}}</button>
+      <button mat-button mat-dialog-close class="cancel-call">{{'globals.Cancel' | translate}}</button>
     </div>
   </div>
 </ng-template>
@@ -437,20 +437,19 @@
 <ng-template #reRouteSessionConfirmation>
   <div class="confirmation-dialog">
     <div class="confirmation-header">
-      <h3>{{ reRouteText }}{{'chat-features.customer-info.chat-session' | translate}}</h3>
+      <h3>{{ reRouteText }}</h3>
     </div>
     <div class="confirmation-content">
       <p>
         {{
-          reRouteText == "re-assign"
-            ? "Are you sure You want re-assign chat session to your self?"
-            : "Are you sure You
-        want re-route Whatsapp chat session to another agent?"
+          (reRouteText == "re-assign"
+            ? 'chat-features.customer-info.re-assign-chat-session-to-your-self?'
+            : 'chat-features.customer-info.re-route-Whatsapp-chat session-to-another-agent?') |translate
         }}
       </p>
       <div class="confirmation-action">
-        <button mat-raised-button class="close-btn" mat-dialog-close>Cancel</button>
-        <button mat-raised-button class="confirm-btn">Confirm</button>
+        <button mat-raised-button class="close-btn" mat-dialog-close>{{'globals.Cancel' | translate}}</button>
+        <button mat-raised-button class="confirm-btn">{{'globals.Confirm' | translate}}</button>
       </div>
     </div>
   </div>

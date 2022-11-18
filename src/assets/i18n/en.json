@@ -1,19 +1,26 @@
 {
     "start":"Start a New Conversation",
-    "customer-conversation-view":"Customer Conversation View",
-    "customer-list-view":"Customer List View",
-    "customer-labels":"Customer Labels",
-    "subscribed-lists":"Subscribed Lists",
-    "customer-schema":"Customer Schema",
-    "dashboard":"Dashboard",
-    "summary-dashboard":"Summary Dashboard",
-    "active-conversations-detail":"Active Conversations Detail",
-    "queued-conversations-detail":"Queued Conversations Detail",
-    "change-mrd-state":"Change MRD State",
+    "app-header":
+    {
+      "customer-conversation-view":"Customer Conversation View",
+      "customer-list-view":"Customer List View",
+      "customer-labels":"Customer Labels",
+      "subscribed-lists":"Subscribed Lists",
+      "customer-schema":"Customer Schema",
+      "dashboard":"Dashboard",
+      "summary-dashboard":"Summary Dashboard",
+      "active-conversations-detail":"Active Conversations Detail",
+      "queued-conversations-detail":"Queued Conversations Detail",
+      "change-mrd-state":"Change MRD State",
     "selected-language":"Selected Language",
     "select-reason":"Select Reason",
     "ready":"Ready",
-    "logout":"Logout",
+    "switch-light":"Switch to light mode",
+    "switch-dark":"Switch to dark mode",
+    "light-dark":"(Light or dark)",
+    "theme":"Theme",
+    "logout":"Logout"
+    },
     "announcements":{
       "team-announcement":"Team Announcement",
       "all-announcements":"All Announcements",
@@ -55,7 +62,6 @@
         "data":"Data",
         "not-found":"Not Found",
         "chat-session":"Chat Session",
-        "cancel":"Cancel",
         "active-conversation":"(Active Conversation)",
         "call":"Call",
         "link-profile":"Link Profile",
@@ -66,10 +72,21 @@
         "customer-identifier":"Customer Identifier",
         "service-identifier":"Service Identifier",
         "form-data":"Form Data",
-        "conversation-data":"Conversation Data"
+        "conversation-data":"Conversation Data",
+        "re-assign-chat-session-to-your-self?":"Are you sure You want re-assign chat session to your self?",
+        "re-route-Whatsapp-chat session-to-another-agent?":"Are you sure You want re-route Whatsapp chat session to another agent?",
+        "initiate-outgoing-call-to":"initiate outgoing call to",
+        "stacy-miller":"Stacy Miller",
+        "mobile":"(Mobile)",
+        "unknown":"UNKNOWN"
       },
+      
       "interactions":
       {
+        "whisper":"Whisper",
+        "bot-suggestions-available":"Bot suggestions are available type / for viewing",
+        "type-a-message":"Type a message here...",
+        "you":"you",
         "cancel":"Cancel",
         "message":"Message",
         "available":"available",
@@ -138,7 +155,7 @@
       "characters-allowed":"characters are allowed",
       "cancel":"CANCEL",
       "save":"SAVE",
-      "":""
+      "edit-customer":"Edit Customer"
     },
     "customer-schema":{
       "create-attribute":"Create Attribute",
@@ -200,6 +217,11 @@
     },
     "globals":
     {
+      "chat":"Chat",
+      "conference":"conference",
+      "transfer":"transfer",
+      "to":"to",
+      "yes":"Yes",
       "page-not-found":"The page you are looking for is not found",
       "agents":"agents",
       "agent":"agent",
@@ -219,11 +241,13 @@
       "create-new-customer":"Create New Customer",
       "unable-connect-finesse":"Unable to connect with finesse, try refreshing may resolve the problem",
       "enable-javascript":"Please enable JavaScript to continue using this application.",
-      "":"",
-      "":""
+      "agent-desk":"Agent Desk",
+      "Confirm":"Confirm",
+      "not-applicable":"N/A"
     },
     "pull-mode":
     {
+      "all-list":"All List",
       "subscribed-lists":"Subscribed Lists",
       "name":"Name",
       "manage-subscriptions":"Manage Subscriptions",

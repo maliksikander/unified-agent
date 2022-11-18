@@ -125,7 +125,7 @@
                 <span class="agent-detail">
                   <span>{{ conversation.topicParticipant.participant.keycloakUser.username }}</span>
                   <small class="agent-roll">{{ conversation.topicParticipant.role | titlecase }}</small>
-                  <small>you</small>
+                  <small>{{'chat-features.interactions.you' | translate}}</small>
                 </span>
               </button>
 
@@ -321,7 +321,7 @@
                 }} {{ message.header.status == 'sending' ? 'low-opacity' : '' }}  {{ message.body.type | lowercase }} {{
                   message.header.replyToMessageId != null ? 'quoted-message-main' : ''
                 }} {{ message.header.sender.type | lowercase }} {{ fullPostView && message.id == selectedCommentId ? 'full-post-view' : '' }}"
-                [ngClass]="(message.header.sender.type | lowercase) == 'customer' ? 'user-message slide-in-left' : 'agent-message '"
+                [ngClass]="(message.header.sender.type | lowercase) == 'customer' ? 'user-message slide-in-left' : 'agent-message'"
               >
                 <div class="profile-pic">
                   <div
@@ -1447,14 +1447,14 @@
                     <p *ngFor="let botSuggestion of message.botSuggestions">
                       {{ botSuggestion.messageBody.markdownText }}
                       <button mat-mini-fab class="canned-trigger edit-trigger" (click)="replyInput.value = botSuggestion.messageBody.markdownText">
-                        <i class="material-icons"> edit </i>
+                        <i class="material-icons">edit </i>
                       </button>
                       <button
                         mat-mini-fab
                         class="canned-trigger send-suggestion"
                         (click)="onSend(botSuggestion.messageBody.markdownText); replyInput.value = null"
                       >
-                        <i class="material-icons">{{'chat-features.interactions.send' | translate}}</i>
+                        <i class="material-icons">send</i>
                       </button>
                     </p>
                   </div>
@@ -1586,16 +1586,16 @@
               width="20"
               onError="this.src='assets/flags/generic.png';" /></span
           >{{ channelSession?.channel?.channelType.name }}
-          <i class="material-icons" *ngIf="channelSession?.isChecked"> {{'chat-features.interactions.check' | translate}}check </i>
+          <i class="material-icons" *ngIf="channelSession?.isChecked"> {{'chat-features.interactions.check' | translate}} </i>
         </button>
       </mat-menu>
 
       <div class="whisper-selection" *ngIf="conversation?.agentParticipants?.length > 0">
         <button (click)="isWhisperMode = false" [ngClass]="{ 'customer-select': !isWhisperMode }" class="customer-mode message-mode" mat-button>
-          {{ conversation.customer?.firstName ? conversation.customer.firstName : "N/A" }}
+          {{ conversation.customer?.firstName ? conversation.customer.firstName : (globals.not-applicable) | translate}}
         </button>
         <button (click)="isWhisperMode = true" [ngClass]="{ 'whisper-select': isWhisperMode }" class="whisper-mode message-mode" mat-button>
-          Whisper
+          {{'chat-features.interactions.whisper' | translate}}
         </button>
       </div>
       <div class="message-composer">
@@ -1624,9 +1624,9 @@
               #replyInput
               name="message"
               placeholder="{{
-                conversation.messages[conversation.messages.length - 1]?.botSuggestions
-                  ? 'Bot suggestions are available type / for viewing'
-                  : 'Type a message here...'
+                (conversation.messages[conversation.messages.length - 1]?.botSuggestions
+                  ? 'chat-features.interactions.bot-suggestions-available'
+                  : 'chat-features.interactions.type-a-message') | translate
               }}"
             ></textarea>
             <!-- [ngClass]="{'animate-content': displaySuggestionsAnimation}" -->
@@ -1715,10 +1715,10 @@
                             class="canned-trigger edit-trigger"
                             (click)="replyInput.value = botSuggestion.messageBody.markdownText"
                           >
-                            <i class="material-icons"> {{'chat-features.interactions.edit' | translate}} </i>
+                            <i class="material-icons">edit </i>
                           </button>
                           <button (click)="onSend(botSuggestion.messageBody.markdownText)" mat-mini-fab class="canned-trigger send-suggestion">
-                            <i class="material-icons">{{'chat-features.interactions.send' | translate}} </i>
+                            <i class="material-icons">send </i>
                           </button>
                         </mat-option>
                       </ng-container>

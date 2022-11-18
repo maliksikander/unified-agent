@@ -1,6 +1,6 @@
 <div class="dialog-header">
   <h4 *ngIf="userIni && schemaIni">
-    {{ editTab ? "Edit Customer" : userInfo.firstName }}
+    {{ editTab ? ('customer-actions.edit-customer' | translate) : userInfo.firstName }}
     <!-- <span *ngIf="editTab" class="validate-span" (click)="validateForm()">Validate</span> -->
   </h4>
   <!-- <button *ngIf="!editTab" (click)="editClick()" class="cstmBtn slide-in-left whiteClass">

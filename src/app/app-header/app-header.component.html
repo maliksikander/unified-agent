@@ -15,42 +15,42 @@
         <!--        </button>-->
         <button *ngIf="('customer-conversation-view' | authPipe : 'view') as result" routerLink="/customers/chats"
           routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
-          <span>{{'customer-conversation-view' | translate}}</span>
+          <span>{{'app-header.customer-conversation-view' | translate}}</span>
         </button>
         <button *ngIf="('customer-list' | authPipe : 'view') as result" routerLink="/customers/phonebook"
           routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
-          <span>{{'customer-list-view' | translate}}</span>
+          <span>{{'app-header.customer-list-view' | translate}}</span>
         </button>
         <button *ngIf="('customer-labels' | authPipe : 'view') as result" routerLink="/label" routerLinkActive="active"
           [routerLinkActiveOptions]="{exact:true}" [routerLinkActiveOptions]="{exact:true}" mat-menu-item
           class="main-menu-item">
-          <span>{{'customer-labels' | translate}}</span>
+          <span>{{'app-header.customer-labels' | translate}}</span>
         </button>
         <button *ngIf="('subscribed-list' | authPipe : 'view') as result" routerLink="/subscribed-list"
           routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
-          <span>{{'subscribed-lists' | translate}}</span>
+          <span>{{'app-header.subscribed-lists' | translate}}</span>
         </button>
         <button *ngIf="('customer-schema' | authPipe : 'view') as result" routerLink="/customer-schema"
           routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
-          <span>{{'customer-schema' | translate}}</span>
+          <span>{{'app-header.customer-schema' | translate}}</span>
         </button>
         <button mat-menu-item [matMenuTriggerFor]="supervisor"
           *ngIf="('supervisor-dashboard' | authPipe : 'view') as result" mat-menu-item class="main-menu-item">
-          <span>{{'dashboard' | translate}}</span>
+          <span>{{'app-header.dashboard' | translate}}</span>
         </button>
       </mat-menu>
       <mat-menu #supervisor="matMenu">
         <button routerLink="/supervisor/dashboards" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
           mat-menu-item class="main-menu-item">
-          <span>{{'summary-dashboard' | translate}}</span>
+          <span>{{'app-header.summary-dashboard' | translate}}</span>
         </button>
         <button routerLink="/supervisor/active-chats" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
           mat-menu-item class="main-menu-item">
-          <span>{{'active-conversations-detail' | translate}}</span>
+          <span>{{'app-header.active-conversations-detail' | translate}}</span>
         </button>
         <button routerLink="/supervisor/queue-chats" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
           mat-menu-item class="main-menu-item">
-          <span>{{'queued-conversations-detail' | translate}}
+          <span>{{'app-header.queued-conversations-detail' | translate}}
           </span>
         </button>
       </mat-menu>
@@ -174,7 +174,7 @@
 
                 <div *ngIf="('state-change' | authPipe : 'view') as result" class="mrd-states"
                   (click)="$event.stopPropagation()">
-                  <span class="mrd-text">{{'change-mrd-state' | translate}}</span>
+                  <span class="mrd-text">{{'app-header.change-mrd-state' | translate}}</span>
                   <div class="state-main-wrapper"
                     *ngFor="let agentMrdState of _cacheService.agentPresence.agentMrdStates">
                     <p class="menu-trigger-custom select-state {{agentMrdState.state | lowercase}}">
@@ -186,7 +186,7 @@
                 </div>
 
                 <p class="menu-trigger-custom select-language">
-                  <span class="inner-btn">{{'selected-language' | translate}}</span>
+                  <span class="inner-btn">{{'app-header.selected-language' | translate}}</span>
 
                   <!--                <button mat-menu-item [matMenuTriggerFor]="languageSelection" class="language-trigger">-->
                   <!--                  <img src="assets/flags/{{languageFlag}}" width="20"-->
@@ -202,8 +202,8 @@
 
                 <p class="menu-trigger-custom logged-out-trigger">
                   <button mat-menu-item class="theme-switcher" (click)="themeSwitch(false)"
-                    matTooltip="{{isdarkMode ? 'Switch to light mode' : 'Switch to dark mode'}}">
-                    <span class="theme-sub-text">Theme<small>(Light or dark)</small></span>
+                    matTooltip="{{(isdarkMode ? 'app-header.switch-light' : 'app-header.switch-dark') | translate}}">
+                    <span class="theme-sub-text">{{'app-header.theme' | translate}}<small>{{'app-header.light-dark' | translate}}</small></span>
                     <mat-icon>
                       {{isdarkMode ? 'brightness_7' : 'brightness_6'}}</mat-icon>
                   </button>
@@ -212,7 +212,7 @@
 
                 <p *ngIf="_finesseService.finesseAgent.loginId == ''" class="menu-trigger-custom logged-out-trigger">
                   <button mat-menu-item (click)="logoutReasonList = true; stateView = false;">
-                    Logout
+                    {{'app-header.logout' | translate}}
                     <mat-icon style="color: gray;font-size: 20px;">exit_to_app</mat-icon>
                   </button>
                 </p>
@@ -220,7 +220,7 @@
 
               <!-- Language list -->
               <div *ngIf="changeLanguage" class="language-change-list" (click)="$event.stopPropagation()">
-                <p>{{'selected-language' | translate}}<mat-icon (click)="changeLanguage = false; stateView = true">close</mat-icon>
+                <p>{{'app-header.selected-language' | translate}}<mat-icon (click)="changeLanguage = false; stateView = true">close</mat-icon>
                 </p>
                 <button mat-menu-item class="language-selection"
                   [ngClass]="{'selected-language': language.code == changeLanguageCode}"
@@ -231,7 +231,7 @@
               </div>
 
               <div *ngIf="logoutReasonList" class="language-change-list" (click)="$event.stopPropagation()">
-                <p>{{'select-reason' | translate}}
+                <p>{{'app-header.select-reason' | translate}}
                   <mat-icon (click)="logoutReasonList = false; stateView = true">close</mat-icon>
                 </p>
                 <div *ngFor="let reason of reasonCodes; let i = index">
@@ -240,7 +240,7 @@
                       color="primary" labelPosition="after">{{reason.name}}</mat-checkbox>
                   </span>
                 </div>
-                <button (click)="logout()" mat-button class="main-logout">{{'logout' | translate}}</button>
+                <button (click)="logout()" mat-button class="main-logout">{{'app-header.logout' | translate}}</button>
               </div>
 
             </div>
@@ -251,7 +251,7 @@
 
               <mat-icon style="color: #79a31d !important;">lens
               </mat-icon>
-              Ready
+              {{'app-header.ready' | translate}}
             </button>
             <div *ngFor="let reason of reasonCodes">
               <button *ngIf="(reason.type | lowercase) == 'not_ready'"

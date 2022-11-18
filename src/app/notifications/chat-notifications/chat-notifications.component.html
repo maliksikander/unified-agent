@@ -20,11 +20,11 @@
             </p>
             <p *ngIf="request?.cisco_data">
               {{request.channelSession.channelData.channelCustomerIdentifier ?
-              request.channelSession.channelData.channelCustomerIdentifier : 'N/A' }}</p>
+              request.channelSession.channelData.channelCustomerIdentifier : ('globals.not-applicable' | translate) }}</p>
           </div>
           <div class="notification-trigger">
             <button (click)="onAcceptCallback(request?.conversationId,request?.taskId,request?.cisco_data,null)"
-              class="mat-flat-button" mat-button>{{'gloabals.accept'  | translate }}</button>
+              class="mat-flat-button" mat-button>{{'globals.accept'  | translate }}</button>
           </div>
         </mat-card-content>
       </mat-card>
@@ -43,8 +43,8 @@
             </p>
           </div>
           <div class="requested-name">
-            <strong>Chat {{request?.taskDirection == 'DIRECT_CONFERENCE' ? 'conference' : 'transfer'}} {{'gloabals.request-from'  | translate }}
-              '{{request?.requestedBy | titlecase}}' {{'gloabals.with-customer'  | translate }}
+            <strong>{{'globals.chat'}} {{ (request?.taskDirection == 'DIRECT_CONFERENCE' ? 'globals.conference' : 'globals.transfer') | translate}} {{'globals.request-from'  | translate }}
+              '{{request?.requestedBy | titlecase}}' {{'globals.with-customer'  | translate }}
               '{{request?.channelSession?.customer?.firstName | titlecase }}'</strong>
             <p *ngIf="request?.note">
               {{request?.note}}
@@ -52,7 +52,7 @@
           </div>
           <div class="notification-trigger">
             <button (click)="onAcceptCallback(request?.conversationId, request?.taskId, null, request?.taskDirection)"
-              class="mat-flat-button" mat-button>{{'gloabals.accept'  | translate }}</button>
+              class="mat-flat-button" mat-button>{{'globals.accept'  | translate }}</button>
           </div>
         </mat-card-content>
       </mat-card>
@@ -73,7 +73,7 @@
                     [src]="request.channelSession.channel.channelType.channelLogo | channelLogo | async"></p>
               </div>
               <div class="requested-name">
-                <p>{{'gloabals.new-chat-message'  | translate }} <span>{{request.channelSession.customer.firstName}}</span> {{'gloabals.in'  | translate }}
+                <p>{{'globals.new-chat-message'  | translate }} <span>{{request.channelSession.customer.firstName}}</span> {{'globals.in'  | translate }}
                   <span>'{{_pullModeservice.listNames[request.listId] ? _pullModeservice.listNames[request.listId] :
                     '-'}}'</span>
                 </p>
@@ -82,7 +82,7 @@
 
                 <button (click)="removePullModeRequestFromRequestArray(request.id)" mat-icon-button
                   class="mat-flat-button" mat-button>
-                  <mat-icon>{{'gloabals.close'  | translate }}</mat-icon>
+                  <mat-icon>{{'globals.close'  | translate }}</mat-icon>
                 </button>
               </div>
             </mat-card-content>
@@ -93,7 +93,7 @@
     </div>
     <button *ngIf="pullModeRequests.length > 1" (mouseenter)="notificationArea = true"
       (mouseleave)="notificationArea = false" (click)="pullModeRequests = []; "
-      class="dismiss-notifications mat-flat-button" mat-button>{{'gloabals.dismiss-all'  | translate }}
+      class="dismiss-notifications mat-flat-button" mat-button>{{'globals.dismiss-all'  | translate }}
     </button>
 
   </div>
