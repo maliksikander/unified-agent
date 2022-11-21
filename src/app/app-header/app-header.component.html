@@ -156,7 +156,7 @@
                   <span>(Ext: {{agent.extension}})</span>
                 </div>
                 <p *ngIf="('state-change' | authPipe : 'view') as result" class="menu-trigger-custom state-trigger">
-                  <span class="inner-btn">State</span>
+                  <span class="inner-btn">{{'globals.state' | translate}}</span>
 
                   <button mat-button #stateTrigger="matMenuTrigger" [matMenuTriggerFor]="agentState"
                     (click)="$event.stopPropagation()"
