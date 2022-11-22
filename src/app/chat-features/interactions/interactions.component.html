@@ -1592,7 +1592,7 @@
 
       <div class="whisper-selection" *ngIf="conversation?.agentParticipants?.length > 0">
         <button (click)="isWhisperMode = false" [ngClass]="{ 'customer-select': !isWhisperMode }" class="customer-mode message-mode" mat-button>
-          {{ conversation.customer?.firstName ? conversation.customer.firstName : (globals.not-applicable) | translate}}
+          {{ conversation.customer?.firstName ? conversation.customer.firstName : ('globals.not-applicable') | translate}}
         </button>
         <button (click)="isWhisperMode = true" [ngClass]="{ 'whisper-select': isWhisperMode }" class="whisper-mode message-mode" mat-button>
           {{'chat-features.interactions.whisper' | translate}}
