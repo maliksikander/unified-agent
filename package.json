@@ -15,6 +15,7 @@
     "e2e": "ng e2e",
     "test": "jest",
     
+    
     "test:watch": "jest --watch",
     "coverage": "jest -i --coverage",
     "format:check": "prettier --check **/*.ts",
