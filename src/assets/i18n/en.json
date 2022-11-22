@@ -43,11 +43,18 @@
     "customer-labels": "Customer Labels",
     "updatedBy": "Updated By :",
     "updatedAt": "Updated At :",
-    "delete": "delete",
+    "delete": "Delete",
     "createdBy": "Created By :",
     "edit": "Edit",
     "createdAt": "Created At :",
-    "": ""
+    "add-label": "Add Label",
+    "create": "Create",
+    "update-label": "Update label",
+    "update": "Update",
+    "select-all": "Select all",
+    "unselect-all": "Unselect all",
+    "search": "Search",
+    "no-data-available": "No Data Available"
   },
   "chat-features": {
     "customer-info": {
@@ -232,7 +239,8 @@
     "enable-javascript": "Please enable JavaScript to continue using this application.",
     "agent-desk": "Agent Desk",
     "Confirm": "Confirm",
-    "not-applicable": "N/A"
+    "not-applicable": "N/A",
+    "no-new-conversation": "No New Conversation"
   },
   "pull-mode": {
     "all-list": "All List",
@@ -240,7 +248,7 @@
     "name": "Name",
     "manage-subscriptions": "Manage Subscriptions",
     "select-a-list-to-subscribe": "Select a list to subscribe",
-    "Inbox": "Inbox",
+    "inbox": "Inbox",
     "all-chats": "All Chats",
     "active": "Active",
     "inactive": "Inactive",

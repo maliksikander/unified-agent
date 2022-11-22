@@ -6,6 +6,7 @@ import { sharedService } from "../services/shared.service";
 import { cacheService } from "../services/cache.service";
 import { snackbarService } from "../services/snackbar.service";
 import { AngularMultiSelect } from "angular2-multiselect-dropdown";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-create-customer",
@@ -26,6 +27,7 @@ export class CreateCustomerComponent implements OnInit {
     private fb: FormBuilder,
     private _httpService: httpService,
     private _sharedService: sharedService,
+    private _translateService:TranslateService,
     private _cacheService: cacheService,
     private cd: ChangeDetectorRef,
     private snackbarService: snackbarService
@@ -36,6 +38,7 @@ export class CreateCustomerComponent implements OnInit {
 
   schemaAttributes;
 
+
   fieldArray = [];
   dataReady: boolean = false;
   customerForm: FormGroup;
@@ -44,12 +47,12 @@ export class CreateCustomerComponent implements OnInit {
   labelSettings = {
     singleSelection: false,
     text: "",
-    filterSelectAllText: "Select all",
-    filterUnSelectAllText: "Unselect all",
-    searchPlaceholderText: "Search",
-    selectAllText: "Select all",
-    unSelectAllText: "Unselect all",
-    noDataLabel: "No Data Available",
+    filterSelectAllText: this._translateService.instant('globals.select-all'),
+    filterUnSelectAllText: this._translateService.instant('globals.unselect-all'),
+    searchPlaceholderText: this._translateService.instant('globals.Search'),
+    selectAllText: this._translateService.instant('globals.select-all'),
+    unSelectAllText: this._translateService.instant('globals.unselect-all'),
+    noDataLabel: this._translateService.instant('globals.no-data-available'),
     enableSearchFilter: true,
     addNewItemOnFilter: true,
     primaryKey: "_id"

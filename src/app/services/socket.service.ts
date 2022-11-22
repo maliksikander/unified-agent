@@ -212,7 +212,7 @@ export class socketService {
 
     this.socket.on("onPullModeSubscribedList", (res: any) => {
       console.log("onPullModeSubscribedList", res);
-      this._sharedService.mainPagetile = "NO NEW CONVERSATION";
+      this._sharedService.mainPagetile = "{{globals.no-new-conversation}}";
       this._pullModeService.updateSubscribedList(res);
     });
 

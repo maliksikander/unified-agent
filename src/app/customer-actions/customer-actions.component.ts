@@ -9,6 +9,7 @@ import { ConfirmationDialogComponent } from "../new-components/confirmation-dial
 import { snackbarService } from "../services/snackbar.service";
 import { AngularMultiSelect } from "angular2-multiselect-dropdown";
 import { socketService } from "../services/socket.service";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-customer-actions",
@@ -25,12 +26,12 @@ export class CustomerActionsComponent implements OnInit {
   labelSettings = {
     singleSelection: false,
     text: "",
-    filterSelectAllText: "Select all",
-    filterUnSelectAllText: "Unselect all",
-    searchPlaceholderText: "Search",
-    selectAllText: "Select all",
-    unSelectAllText: "Unselect all",
-    noDataLabel: "No Data Available",
+    filterSelectAllText: this._translateService.instant('globals.select-all'),
+    filterUnSelectAllText: this._translateService.instant('globals.unselect-all'),
+    searchPlaceholderText: this._translateService.instant('globals.Search'),
+    selectAllText: this._translateService.instant('globals.select-all'),
+    unSelectAllText: this._translateService.instant('globals.unselect-all'),
+    noDataLabel: this._translateService.instant('globals.no-data-available'),
     enableSearchFilter: true,
     addNewItemOnFilter: true,
     primaryKey: "_id"
@@ -48,6 +49,7 @@ export class CustomerActionsComponent implements OnInit {
     private _socketService: socketService,
     private dateAdapter: DateAdapter<any>,
     private dialog: MatDialog,
+    private _translateService:TranslateService,
     private _cacheService: cacheService,
     private _router: Router,
     public snackBar: MatSnackBar,
