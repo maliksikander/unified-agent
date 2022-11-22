@@ -43,11 +43,14 @@
     "customer-labels": "Customer Labels --ita",
     "updatedBy": "Updated By : --ita",
     "updatedAt": "Updated At : --ita",
-    "delete": "delete --ita",
+    "delete": "Delete --ita",
     "createdBy": "Created By : --ita",
     "edit": "Edit --ita",
     "createdAt": "Created At : --ita",
-    "": ""
+    "add-label": "Add Label --ita",
+    "create": "Create --ita",
+    "update-label":"Update label --ita",
+    "update":"Update --ita"
   },
   "chat-features": {
     "customer-info": {
@@ -211,6 +214,7 @@
     "transfer": "transfer --ita",
     "to": "to --ita",
     "yes": "Yes --ita",
+    "no-new-conversation": "No New Conversation --ita",
     "page-not-found": "The page you are looking for is not found --ita",
     "agents": "agents --ita",
     "agent": "agent --ita",
@@ -232,7 +236,11 @@
     "enable-javascript": "Please enable JavaScript to continue using this application. --ita",
     "agent-desk": "Agent Desk --ita",
     "Confirm": "Confirm --ita",
-    "not-applicable": "N/A --ita"
+    "not-applicable": "N/A --ita",
+    "select-all": "Select all --ita",
+    "unselect-all": "Unselect all --ita",
+    "Search": "Search --ita",
+    "no-data-available": "No Data Available --ita"
   },
   "pull-mode": {
     "all-list": "All List --ita",

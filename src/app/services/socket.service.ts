@@ -14,6 +14,7 @@ import { httpService } from "./http.service";
 import { v4 as uuidv4 } from "uuid";
 import { AuthService } from "./auth.service";
 import { TopicParticipant } from "../models/User/Interfaces";
+import { TranslateService } from "@ngx-translate/core";
 // const mockTopicData: any = require("../mocks/topicData.json");
 
 @Injectable({
@@ -39,7 +40,8 @@ export class socketService {
     private _soundService: soundService,
     private ngxService: NgxUiLoaderService,
     private _httpService: httpService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _translateService:TranslateService
   ) {
     // this.onTopicData(mockTopicData, "12345", "");
   }
@@ -212,7 +214,14 @@ export class socketService {
 
     this.socket.on("onPullModeSubscribedList", (res: any) => {
       console.log("onPullModeSubscribedList", res);
-      this._sharedService.mainPagetile = "{{globals.no-new-conversation}}";
+      this._translateService.stream('globals.no-new-conversation').subscribe((text:string)=>
+      {
+        this._sharedService.mainPagetile = text;
+      },
+      (err)=>
+      {
+        console.error("Error translating key 'globals.no-new-conversation'",err)
+      })
       this._pullModeService.updateSubscribedList(res);
     });
 

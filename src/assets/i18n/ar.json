@@ -237,9 +237,10 @@
     "Confirm": "Confirm --ar",
     "not-applicable": "N/A --ar",
     "select-all": "Select all --ar",
-    "unselect-all": "Unselect all --ar",
+    "unselect-all": "Unselect all_ar",
     "Search": "Search --ar",
-    "no-data-available": "No Data Available --ar"
+    "no-data-available": "No Data Available --ar",
+    "no-new-conversation": "No New Conversation --ar"
   },
   "pull-mode": {
     "all-list": "All List --ar",

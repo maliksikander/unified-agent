@@ -9,6 +9,7 @@ describe("createLabel component", () => {
     let _cacheService: cacheService
     let _sharedService: sharedService
     let snackBar: MatSnackBar
+    let _translateService:any
     let dialogRef: MatDialogRef<CreateLabelComponent>
     describe("testing create label validators", () => {
         beforeEach(() => {
@@ -19,6 +20,7 @@ describe("createLabel component", () => {
             fixture = new CreateLabelComponent(
                 _httpService,
                 _cacheService,
+                _translateService,
                 _sharedService,
                 snackBar,
                 dialogRef,

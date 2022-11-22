@@ -12,8 +12,8 @@
           <input matInput placeholder="Search" [(ngModel)]="filterValue"
           (keyup.enter)="filter(selectedSearchField) ; this.isFilterListOpened=false" >
           <span *ngIf="selectedSearchLabel.length > 0" matPrefix>{{selectedSearchLabel}}:</span>
-          <mat-icon matSuffix matSuffix *ngIf="selectedSearchLabel.length == 0">{{'globals.search'  | translate }}</mat-icon>
-          <mat-icon  matSuffix *ngIf="selectedSearchLabel.length > 0" (click)="cancelFilter()">{{'globals.close'  | translate }}</mat-icon>
+          <mat-icon matSuffix matSuffix *ngIf="selectedSearchLabel.length == 0">search</mat-icon>
+          <mat-icon  matSuffix *ngIf="selectedSearchLabel.length > 0" (click)="cancelFilter()">close</mat-icon>
         </mat-form-field>
         <button class="filter-action-trigger" [ngClass]="{'clicked' : isFilterListOpened}" (click)="isFilterList()" mat-icon-button><mat-icon>{{isFilterListOpened ? 'filter_list': 'filter_list'}} </mat-icon></button>
 
@@ -151,7 +151,7 @@
                 <input class="filter" type="text" [(ngModel)]="filterValue"
                   (keyup.enter)="filter(col.field)">
                 <div class="close-filter">
-                  <mat-icon (click)="cancelFilter()" class="closeIcon">{{'globals.Cancel'  | translate }}</mat-icon>
+                  <mat-icon (click)="cancelFilter()" class="closeIcon">Cancel</mat-icon>
                 </div>
               </div>
 

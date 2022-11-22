@@ -43,11 +43,14 @@
     "customer-labels": "Customer Labels --ger",
     "updatedBy": "Updated By : --ger",
     "updatedAt": "Updated At : --ger",
-    "delete": "delete --ger",
+    "delete": "Delete --ger",
     "createdBy": "Created By : --ger",
     "edit": "Edit --ger",
     "createdAt": "Created At : --ger",
-    "": ""
+    "add-label": "Add Label --ger",
+    "create": "Create --ger",
+    "update-label":"Update label --ger",
+    "update":"Update --ger"
   },
   "chat-features": {
     "customer-info": {
@@ -217,6 +220,7 @@
     "with-customer": "with customer --ger",
     "accept": "Accept --ger",
     "new-chat-message": "New Chat message from --ger",
+    "no-new-conversation": "No New Conversation --gerr",
     "close": "close --ger",
     "dismiss-all": "Dismiss all --ger",
     "in": "in --ger",
@@ -232,7 +236,11 @@
     "enable-javascript": "Please enable JavaScript to continue using this application. --ger",
     "agent-desk": "Agent Desk --ger",
     "Confirm": "Confirm --ger",
-    "not-applicable": "N/A --ger"
+    "not-applicable": "N/A --ger",
+    "select-all": "Select all --ger",
+    "unselect-all": "Unselect all --ger",
+    "Search": "Search --ger",
+    "no-data-available": "No Data Available --ger"
   },
   "pull-mode": {
     "all-list": "All List --ger",

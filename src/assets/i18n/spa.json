@@ -43,11 +43,14 @@
     "customer-labels": "Customer Labels --spa",
     "updatedBy": "Updated By : --spa",
     "updatedAt": "Updated At : --spa",
-    "delete": "delete --spa",
+    "delete": "Delete --spa",
     "createdBy": "Created By : --spa",
     "edit": "Edit --spa",
     "createdAt": "Created At : --spa",
-    "": ""
+    "add-label": "Add Label --spa",
+    "create": "Create --spa",
+    "update-label":"Update label --spa",
+    "update":"Update --spa"
   },
   "chat-features": {
     "customer-info": {
@@ -213,6 +216,7 @@
     "yes": "Yes --spa",
     "page-not-found": "The page you are looking for is not found --spa",
     "agents": "agents --spa",
+    "no-new-conversation": "No New Conversation --spa",
     "agent": "agent --spa",
     "with-customer": "with customer --spa",
     "accept": "Accept --spa",
@@ -232,7 +236,11 @@
     "enable-javascript": "Please enable JavaScript to continue using this application. --spa",
     "agent-desk": "Agent Desk --spa",
     "Confirm": "Confirm --spa",
-    "not-applicable": "N/A --spa"
+    "not-applicable": "N/A --spa",
+    "select-all": "Select all --spa",
+    "unselect-all": "Unselect all --spa",
+    "Search": "Search --spa",
+    "no-data-available": "No Data Available --spa"
   },
   "pull-mode": {
     "all-list": "All List --spa",

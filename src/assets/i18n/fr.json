@@ -43,11 +43,14 @@
     "customer-labels": "Customer Labels --fr",
     "updatedBy": "Updated By : --fr",
     "updatedAt": "Updated At : --fr",
-    "delete": "delete --fr",
+    "delete": "Delete --fr",
     "createdBy": "Created By : --fr",
     "edit": "Edit --fr",
     "createdAt": "Created At : --fr",
-    "": ""
+    "add-label": "Add Label --fr",
+    "create": "Create --fr",
+    "update-label":"Update label --fr",
+    "update":"Update --fr"
   },
   "chat-features": {
     "customer-info": {
@@ -215,6 +218,7 @@
     "agents": "agents --fr",
     "agent": "agent --fr",
     "with-customer": "with customer --fr",
+    "no-new-conversation": "No New Conversation --fr",
     "accept": "Accept --fr",
     "new-chat-message": "New Chat message from --fr",
     "close": "close --fr",
@@ -232,7 +236,11 @@
     "enable-javascript": "Please enable JavaScript to continue using this application. --fr",
     "agent-desk": "Agent Desk --fr",
     "Confirm": "Confirm --fr",
-    "not-applicable": "N/A --fr"
+    "not-applicable": "N/A --fr",
+    "select-all": "Select all --fr",
+    "unselect-all": "Unselect all --fr",
+    "Search": "Search --fr",
+    "no-data-available": "No Data Available --fr"
   },
   "pull-mode": {
     "all-list": "All List --fr",

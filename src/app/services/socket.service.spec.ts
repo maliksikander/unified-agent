@@ -17,6 +17,7 @@ describe("Socket service", () => {
   let ngxService: any;
   let _httpService: any;
   let _authService: any;
+  let _translateService:any;
 
   const mockConversation = {
     conversationId: "12345",
@@ -45,7 +46,8 @@ describe("Socket service", () => {
       _soundService,
       ngxService,
       _httpService,
-      _authService
+      _authService,
+      _translateService
     );
     component.conversations.push(mockConversation);
   });

@@ -238,6 +238,10 @@
     "unable-connect-finesse": "Unable to connect with finesse, try refreshing may resolve the problem",
     "enable-javascript": "Please enable JavaScript to continue using this application.",
     "agent-desk": "Agent Desk",
+    "select-all": "Select all ",
+    "unselect-all": "Unselect all",
+    "Search": "Search ",
+    "no-data-available": "No Data Available",
     "Confirm": "Confirm",
     "not-applicable": "N/A",
     "no-new-conversation": "No New Conversation"
