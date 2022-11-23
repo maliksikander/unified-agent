@@ -125,4 +125,26 @@ describe("InteractionsComponent", () => {
 
     });
   });
+
+  describe('Quoted Reply', () => {
+
+    beforeEach(async () => {
+     component = new InteractionsComponent(_shareredService,_cacheService,_socketService,dialogMock,_snackBarService,_appConfigService,_httpService,_finneseService,snackBar);
+    });
+
+    it('replyToMessageId should be defined', () => {
+      let message={
+        id:"123"
+      }
+      component.quotedReply(message);
+      expect(component.replyToMessageId).toEqual(message.id)
+    });
+    it('quoted message should be defined', () => {
+      let message={
+        id:"123"
+      }
+      component.quotedReply(message);
+      expect(component.quotedMessage).toEqual(message)
+    });
+  });
 })

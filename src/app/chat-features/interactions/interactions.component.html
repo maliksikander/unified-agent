@@ -370,6 +370,17 @@
                       class="main-quoted-reply"
                       *ngFor="let referredMessage of message.header.replyToMessageId | getReferredMsg: conversation.messages"
                     >
+                    <strong class="message-author" [ngClass]="referredMessage.header.sender.participant.customer?'':'current-agents'">
+
+                    <span *ngIf="referredMessage.header.sender.participant.customer"
+                    >{{ referredMessage.header.sender.participant?.customer?.firstName | titlecase}}
+                    {{ referredMessage.header.sender.participant?.customer?.lastName | titlecase}} </span
+                  >
+                  <span *ngIf="referredMessage.header.sender.participant.keycloakUser">
+                    {{ referredMessage.header.sender.participant.keycloakUser.firstName | titlecase}}
+                    {{ referredMessage.header.sender.participant.keycloakUser.lastName | titlecase}}</span
+                  >
+                </strong>
                       <div
                         [ngClass]="{
                           'file-type-message':
@@ -379,13 +390,7 @@
                         }"
                       >
                         <!-- ---------------plain---------------------- -->
-                        <!-- <p>{{referredMessage.body.type}}</p> -->
-                        <div
-                          *ngIf="
-                            (referredMessage.body.type | lowercase) == 'plain' ||
-                            ((referredMessage.body.type | lowercase) == 'comment' && (referredMessage.body.itemType | lowercase) == 'text')
-                          "
-                        >
+                        <div>
                           <p>
                             <span
                               [innerHTML]="
@@ -638,7 +643,12 @@
                     </div>
                   </div>
                   <!-- <div *ngIf="message.header.replyToMessageId != null" class="clear clearfix"></div> -->
+
+
+
                   <!-- -----------------------referred reply message end---------------- -->
+
+
                   <span *ngIf="(message.id != selectedCommentId) && (message.isDeleted || message.isHidden)" class="comment-action">{{
                     message.isDeleted ? "deleted Message" : "Hidden Message"
                   }}</span>
@@ -649,11 +659,22 @@
                       'file-type-message':
                         (message.body.type | lowercase) != 'plain' &&
                         (message.body.type | lowercase) != 'comment' &&
-                        (message.body.type | lowercase) != 'button'
+                        (message.body.type | lowercase) != 'button',
+                      'comment-message':(message.body.type | lowercase) == 'comment'
                     }"
                   >
-                    <!-- ---------------plain---------------------- -->
 
+
+                                             <!-- ---------------SIMPLE PLAIN---------------------- -->
+
+
+                    <button *ngIf="(message.body.type | lowercase)!='wrapup' && (message.body.type | lowercase)!='comment' " class="reply-quoted" mat-icon-button [matMenuTriggerFor]="menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                      <button mat-menu-item class="reply-trigger" (click)="onQuotedReply(message)">reply</button>
+                    
+                    </mat-menu>
                     <div
                       *ngIf="((message.body.type | lowercase)!='comment' && message.body.markdownText) || ((message.body.type | lowercase)=='comment' && (message.body.itemType | lowercase)=='text' && (message.header.sender.type | lowercase)=='agent')">
                       <p
@@ -678,7 +699,9 @@
                       </p>
                     </div>
 
-                    <!-- ---------------button---------------------- -->
+                                            <!-- ---------------button---------------------- -->
+
+
                     <div *ngIf="(message.body.type | lowercase) == 'button'">
                       <!--                    <p [innerHTML]="message.body.markdownText | linkify | ibsformat"></p>-->
                       <!--                    <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
@@ -715,7 +738,12 @@
                       ></button>
                     </div>
 
-                    <!-- --------------------sticker--------------------- -->
+
+
+                                          <!-- --------------------sticker--------------------- -->
+
+
+
                     <div *ngIf="(message.body.type | lowercase) == 'sticker'" class="file-type-content">
                       <span class="display-file display-image">
                         <img [src]="message.body.mediaUrl | getFileUrl" />
@@ -723,7 +751,11 @@
                       <!--                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                     </div>
 
-                    <!-- --------------------image--------------------- -->
+
+
+                                           <!-- --------------------image--------------------- -->
+
+
 
                     <div
                       *ngIf="
@@ -752,7 +784,11 @@
                       <!--                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                     </div>
 
-                    <!-- ---------------------file-------------------------------- -->
+
+
+                                      <!-- ---------------------file-------------------------------- -->
+
+
 
                     <div
                       style="cursor: pointer"
@@ -783,7 +819,11 @@
                       <!--                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                     </div>
 
-                    <!-- -----------------------contact---------------------------- -->
+
+
+                                   <!-- -----------------------contact---------------------------- -->
+
+
 
                     <div *ngIf="(message.body.type | lowercase) == 'contact'" class="file-type-content contact-type">
                       <span class="display-file contact-logo">
@@ -799,7 +839,11 @@
                       <!--                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                     </div>
 
+
+
                     <!-- ------------------------------url------------------------------- -->
+
+
 
                     <div *ngIf="(message.body.type | lowercase) == 'url'" class="file-type-content url-content">
                       <a class="display-file url-image" href="{{ message.body.mediaUrl }}" target="_blank">
@@ -815,7 +859,11 @@
                       <!--                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                     </div>
 
+
+
                     <!-- -----------------------------audio--------------------------------------- -->
+
+
 
                     <div *ngIf="(message.body.type | lowercase) == 'audio'" class="file-type-content audio-file">
                       <div class="shared-url shared-card-content audio-player video-player p-0">
@@ -840,6 +888,7 @@
                         <!--                        <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                       </div>
                     </div>
+                    
 
                     <!-- -------------------------video------------------------------- -->
 
@@ -870,7 +919,6 @@
                               </vg-scrub-bar>
                               <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
                             </vg-controls>
-                            <p>{{ message.body.attachment.mediaUrl | getFileUrl }}</p>
                             <video #media [vgMedia]="media" id="{{ message.id }}" preload="auto">
                               <source [src]="message.body.attachment.mediaUrl | getFileUrl" />
                             </video>
@@ -986,7 +1034,7 @@
 
                     <!-- ---------------------------------- FB COMMENT STARTED -------------------------------- -->
 
-                    <!--Facebook post comment type-->
+                    <!------------------------------------Facebook post comment type------------------------------------->
 
                     <div
                       class="post-message-main"
@@ -1494,12 +1542,12 @@
       <div class="quoted-message-selected-area" *ngIf="quotedMessage">
         <div class="message-selected-inner">
           <span *ngIf="quotedMessage.header.sender.participant.customer"
-            >{{ quotedMessage.header.sender.participant?.customer?.firstName }}
-            {{ quotedMessage.header.sender.participant?.customer?.lastName }}</span
+            >{{ quotedMessage.header.sender.participant?.customer?.firstName | titlecase}}
+            {{ quotedMessage.header.sender.participant?.customer?.lastName | titlecase }}</span
           >
           <span *ngIf="quotedMessage.header.sender.participant.keycloakUser">
-            {{ quotedMessage.header.sender.participant.keycloakUser.firstName }}
-            {{ quotedMessage.header.sender.participant.keycloakUser.lastName }}</span
+            {{ quotedMessage.header.sender.participant.keycloakUser.firstName | titlecase}}
+            {{ quotedMessage.header.sender.participant.keycloakUser.lastName | titlecase }}</span
           >
           <p>
             <span *ngIf="quotedMessage.body.attachment" class="display-file display-image">
@@ -1511,6 +1559,12 @@
                 *ngIf="(quotedMessage.body.type | lowercase) == 'video' || (quotedMessage.body.itemType | lowercase) == 'video'"
                 src="assets/file-types/video.svg"
               />
+              <img
+                *ngIf="(quotedMessage.body.type | lowercase) == 'audio'"
+                src="assets/file-types/audio.svg"
+              />
+              <img *ngIf="(quotedMessage.body.type | lowercase) == 'file'" src="assets/file-types/{{ quotedMessage.body.attachment.mimeType | getFileExt }}.svg" />
+
 
               {{ quotedMessage.body.caption }}
             </span>

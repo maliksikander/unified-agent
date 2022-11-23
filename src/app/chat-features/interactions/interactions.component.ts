@@ -94,8 +94,8 @@ export class InteractionsComponent implements OnInit {
   fbPostId: string = null;
   fbCommentId: string = null;
   conversationSettings: any;
-  FBPostData:any=null;
-  FBPostComments:any=null;
+  FBPostData: any = null;
+  FBPostComments: any = null;
 
   constructor(
     private _sharedService: sharedService,
@@ -123,14 +123,12 @@ export class InteractionsComponent implements OnInit {
     this.conversationSettings = this._sharedService.conversationSettings;
     this.loadLabels();
 
-
     //to get the language saved in prefrence of the agent
-    this.selectedLanguage=this._sharedService.prefferedLanguageCode;
+    this.selectedLanguage = this._sharedService.prefferedLanguageCode;
 
     //listen to the change of the language preference
-     this._sharedService.selectedlangugae.subscribe((data:string)=>
-    {
-      this.selectedLanguage = data
+    this._sharedService.selectedlangugae.subscribe((data: string) => {
+      this.selectedLanguage = data;
     });
 
     if (this.selectedLanguage == "ar") {
@@ -156,7 +154,6 @@ export class InteractionsComponent implements OnInit {
       let fbCommentId = message.header.providerMessageId;
 
       if (fbCommentId && message.body.postId) {
-        console.log("likk")
         let fbChannelSession = this.getFaceBookChannelSession();
 
         if (fbChannelSession) {
@@ -188,8 +185,6 @@ export class InteractionsComponent implements OnInit {
       message.body.itemType = action.toUpperCase();
       this.emitFBActionEvent(message);
     }
-
-    // do whatever you want here for these three actions and remove their implementation from the 'constructAndSendCimEvent' function also
   }
 
   replyToFbComment(message) {
@@ -209,7 +204,7 @@ export class InteractionsComponent implements OnInit {
         fbChannelSession.isChecked = true;
 
         this.conversation.activeChannelSessions = this.conversation.activeChannelSessions.concat([]);
-
+        
         this.openQuotedReplyArea(message);
       } else {
         this._snackbarService.open("Requested session not available at the moment", "err");
@@ -219,6 +214,13 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
+//Quoted Reply
+  onQuotedReply(message) {
+    this.replyToMessageId = message.id;
+    this.openQuotedReplyArea(message);
+  }
+
+
   openDialog(templateRef, e): void {
     this.popTitle = e;
 
@@ -227,6 +229,7 @@ export class InteractionsComponent implements OnInit {
     });
   }
 
+  //To open the quoted area
   openQuotedReplyArea(e) {
     this.quotedMessage = e;
   }
@@ -471,6 +474,10 @@ export class InteractionsComponent implements OnInit {
 
         this.emitCimEvent(message, "AGENT_MESSAGE");
       } else {
+        if (this.replyToMessageId) {
+          message.header.replyToMessageId = this.replyToMessageId;
+          this.replyToMessageId = null;
+        }
         let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
 
         if (selectedChannelSession) {
@@ -716,7 +723,6 @@ export class InteractionsComponent implements OnInit {
     message.header.providerMessageId = this.fbCommentId;
     message.body.type = "COMMENT";
     message.body.postId = this.fbPostId;
-    message.header.replyToMessageId = this.replyToMessageId;
     message.header.channelSession = sendingActiveChannelSession;
     message.header.channelData = sendingActiveChannelSession.channelData;
 
