@@ -7,6 +7,7 @@
     "nolive": "ng serve --no-live-reload",
     
     "g": "ng serve --host 0.0.0.0 --disableHostCheck",
+    
     "build": "ng build --prod --base-href /unified-agent/ && node ./replacefile.js",
 
 
@@ -16,6 +17,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "coverage": "jest -i --coverage",
+
     "format:check": "prettier --check **/*.ts",
     
     "format:fix": "prettier --write **/*.ts",

@@ -136,14 +136,14 @@ describe("InteractionsComponent", () => {
       let message={
         id:"123"
       }
-      component.quotedReply(message);
+      component.onQuotedReply(message);
       expect(component.replyToMessageId).toEqual(message.id)
     });
     it('quoted message should be defined', () => {
       let message={
         id:"123"
       }
-      component.quotedReply(message);
+      component.onQuotedReply(message);
       expect(component.quotedMessage).toEqual(message)
     });
   });
