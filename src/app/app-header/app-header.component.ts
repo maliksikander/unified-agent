@@ -287,6 +287,13 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
     this.themeSwitcher.emit({ isdarkMode: this.isdarkMode, onlySwitch: onlySwitch });
   }
   changeAgentDeskLanguage(languageCode) {
+    
+    //subject change languae emit to be listen by subscribers
+    this._sharedService.changelanguage(languageCode);
+
+    //save the preffered language code in shared service
+    this._sharedService.prefferedLanguageCode=languageCode
     this.languageSwitcher.emit({ language: languageCode});
+
   }
 }

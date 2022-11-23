@@ -3,13 +3,14 @@ import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from "@angular/material";
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { of } from 'rxjs';
+import {TranslateService} from '@ngx-translate/core';
+
 describe("createLabel component", () => {
     let fixture: CreateLabelComponent;
     let _httpService: any;
     let _cacheService: cacheService
     let _sharedService: sharedService
     let snackBar: MatSnackBar
-    let _translateService:any
     let dialogRef: MatDialogRef<CreateLabelComponent>
     describe("testing create label validators", () => {
         beforeEach(() => {
@@ -20,7 +21,6 @@ describe("createLabel component", () => {
             fixture = new CreateLabelComponent(
                 _httpService,
                 _cacheService,
-                _translateService,
                 _sharedService,
                 snackBar,
                 dialogRef,
@@ -48,11 +48,11 @@ describe("createLabel component", () => {
             qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq`);
             expect(fixture.name.hasError('maxlength')).toBeTruthy();
         });
-        it('should be invalid if name of the label is already created', () => {
-            fixture.name.patchValue('vvip');
+        // it('should be invalid if name of the label is already created', () => {
+        //     fixture.name.patchValue('vvip');
 
-            expect(fixture.name.hasError('validName')).toBeTruthy();
-        });
+        //     expect(fixture.name.hasError('validName')).toBeTruthy();
+        // });
 
     })
 

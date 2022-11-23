@@ -1,4 +1,4 @@
-<div class="note-dialog-main">
+<div class="note-dialog-main"  [ngClass]="{'right-align-view': wrapUpData.RTLDirection}">
   <div class="dialog-header">
     <h4 mat-dialog-title>{{wrapUpData.header}} <button mat-button (click)="closeDialog()">
         <mat-icon>close</mat-icon>
@@ -8,7 +8,7 @@
     <div class="row m-0">
       <div class="col-md-12">
         <div class="wrap-up-area divider-content">
-          <div class="row">
+          <div class="row wrap-dialog-header">
             <div class="col-md-6 selected-wrap-code">
               <label>{{'chat-features.wrap-up-form.wrap-up-codes' | translate}}</label>
             </div>
@@ -21,7 +21,7 @@
             <div class="categories-search selected-area">
 
               <mat-form-field class="w-100" appearance="fill">
-                <mat-chip-list #chipList aria-label="Wrap-up selection">
+                <mat-chip-list #chipList aria-label="Wrap-up selection" class="wrap-code-selected">
                   <mat-chip *ngFor="let selectedWrapUps of selectedWrapUpList" [selectable]="selectable"
                     [removable]="removable" (removed)="remove(selectedWrapUps)">
                     {{selectedWrapUps.value}}
@@ -71,8 +71,7 @@
 
       <div class="note-area col-md-12">
         <label>{{'chat-features.wrap-up-form.notes' | translate}}</label>
-        <textarea [formControl]="notesFormCtrl"></textarea>
-
+        <textarea class="p-1" [formControl]="notesFormCtrl"></textarea>
       </div>
     </div>
   </div>

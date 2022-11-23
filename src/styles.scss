@@ -3319,3 +3319,26 @@ em{
     top: -32px;
   }
 }
+//Right Language direction, Arabic,urdu..
+.right-direction {
+  #chat-content{
+
+    .voice-activity-main{
+      .mat-expansion-panel-header{
+        padding-left: 15px;
+
+        .mat-content {
+          padding-right: 0;
+          padding-left: 6rem;
+
+          .panel-header{
+            li{
+              border-left: 1px solid #ccc;
+              border-right-width: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}

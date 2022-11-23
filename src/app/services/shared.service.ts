@@ -17,6 +17,7 @@ export class sharedService {
   matCurrentTabIndex = 0;
   channelLogoMapper = new Map();
   serviceCurrentMessage = new Subject();
+  selectedlangugae = new Subject();
   channelTypeList;
   conversationSettings = {
     isFileSharingEnabled: false,
@@ -26,6 +27,17 @@ export class sharedService {
     wrapUpTime: 15,
     isMessageFormattingEnabled: false
   };
+
+  //preffered language code of agent
+  //default is en/english
+  prefferedLanguageCode='en'
+
+  //emit the change of the language preference by agent
+  //code has the language code e.g: en/ar/fr
+  changelanguage(code:string)
+  {
+    this.selectedlangugae.next(code)
+  }
 
   serviceChangeMessage(data: any) {
     this.serviceCurrentMessage.next(data);

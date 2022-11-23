@@ -3379,3 +3379,30 @@ background: #f6892c;
 .deleted-hidden-original-comment {
   opacity: .5 !important;
 }
+
+//Right Language direction, Arabic,urdu..
+.right-direction {
+  #chat-content{
+    .chat-message-content {
+      direction: rtl;
+      text-align: right;
+
+      .message-stamp {
+        padding-left: inherit;
+        padding-right: 10px;
+        float: left;
+      }
+    }
+  }
+
+  .chat-footer{
+    textarea{
+      margin-left: inherit !important;
+      margin-right: 40px !important;
+      left: inherit;
+      right: -10px;
+      text-align: right;
+      direction: rtl;
+    }
+  }
+}

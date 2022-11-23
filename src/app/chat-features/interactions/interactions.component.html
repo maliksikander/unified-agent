@@ -1,4 +1,5 @@
-<div class="interaction-main" [ngClass]="{ 'customer-bar-opened': isBarOPened, 'unidentified-customer': conversation.customer.isAnonymous }">
+<div class="interaction-main"
+  [ngClass]="{ 'customer-bar-opened': isBarOPened, 'unidentified-customer': conversation.customer.isAnonymous, 'right-direction': selectedLanguage == 'ar' }">
   <div class="interaction-inner">
     <div class="container-fluid main-chat-bar">
       <div class="row">

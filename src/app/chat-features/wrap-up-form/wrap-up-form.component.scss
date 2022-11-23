@@ -159,3 +159,21 @@
   background: rgba(0, 0, 0, 0.26) !important;
 }
 
+.right-align-view{
+  .wrap-dialog-header{
+    direction: rtl;
+    text-align: right;
+
+    .selected-wrap-code{
+      text-align: right !important;
+      &.text-right{
+        text-align: left !important;
+      }
+    }
+  }
+
+  .wrap-code-selected, .note-area{
+    text-align: right;
+    direction: rtl;
+  }
+}

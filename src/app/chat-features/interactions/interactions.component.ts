@@ -72,6 +72,8 @@ export class InteractionsComponent implements OnInit {
   isConnected = true;
   popTitle = "Notes";
   expanedHeight = 0;
+  selectedLanguage = "";
+  isRTLView = false;
 
   message = "";
   convers: any[];
@@ -120,6 +122,20 @@ export class InteractionsComponent implements OnInit {
     });
     this.conversationSettings = this._sharedService.conversationSettings;
     this.loadLabels();
+
+
+    //to get the language saved in prefrence of the agent
+    this.selectedLanguage=this._sharedService.prefferedLanguageCode;
+
+    //listen to the change of the language preference
+     this._sharedService.selectedlangugae.subscribe((data:string)=>
+    {
+      this.selectedLanguage = data
+    });
+
+    if (this.selectedLanguage == "ar") {
+      this.isRTLView = true;
+    }
   }
   loadLabels() {
     this._httpService.getLabels().subscribe((e) => {
@@ -612,12 +628,20 @@ export class InteractionsComponent implements OnInit {
   onKeydown(event) {
     event.preventDefault();
   }
+  // loadBrowserLanguage() {
+  //   let browserLang = navigator.language;
+  //   console.log('Browser language is ' + browserLang);
+  //   // this.selectedLanguage = browserLang;
+  //   if (this.selectedLanguage == "ar") {
+  //     this.isRTLView = true;
+  //   }
+  // }
 
   // to open dialog form
   openWrapUpDialog(e): void {
     const dialogRef = this.dialog.open(WrapUpFormComponent, {
       panelClass: "wrap-dialog",
-      data: { header: e, conversation: this.conversation }
+      data: { header: e, conversation: this.conversation, RTLDirection: this.isRTLView }
     });
 
     dialogRef.afterClosed().subscribe((res) => {
