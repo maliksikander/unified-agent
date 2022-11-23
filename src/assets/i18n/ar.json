@@ -95,7 +95,7 @@
       "categories": "Categories_ar",
       "send": "send_ar",
       "edit": "edit_ar",
-      "Participants": "Participants_ar",
+      "participants": "Participants_ar",
       "customer": "Customer_ar",
       "no-active": "No active conversation_ar",
       "click": "Click_ar",
@@ -120,9 +120,7 @@
       "selected": "Selected_ar",
       "cancel": "Cancel_ar",
       "apply": "Apply_ar",
-      "notes": "Notes_ar",
-      "": ""
-    }
+      "notes": "Notes_ar"    }
   },
   "column-preferences": {
     "cancel": "Cancel_ar",
@@ -181,7 +179,7 @@
     "edit-attribute": "Edit Attribute_ar",
     "update-attribute": "Update Attribute_ar",
     "mandatory-attribute": "Mandatory Attribute_ar",
-    "save-Order": "Save Order_ar",
+    "save-order": "Save Order_ar",
     "range": "Range_ar",
     "type": "Type_ar",
     "edit": "Edit_ar",
@@ -205,7 +203,7 @@
     "username": "Username_ar",
     "password": "Password_ar",
     "agent-desk": "Agent Desk_ar",
-    "call-Center-xperts": "Your Call Center Experts._ar",
+    "call-center-experts": "Your Call Center Experts._ar",
     "": ""
   },
   "globals": {
@@ -240,7 +238,8 @@
     "unselect-all": "Unselect all_ar",
     "Search": "Search_ar",
     "no-data-available": "No Data Available_ar",
-    "no-new-conversation": "No New Conversation_ar"
+    "no-new-conversation": "No New Conversation_ar",
+    "state":"State_ar"
   },
   "pull-mode": {
     "all-list": "All List_ar",
@@ -248,7 +247,7 @@
     "name": "Name_ar",
     "manage-subscriptions": "Manage Subscriptions_ar",
     "select-a-list-to-subscribe": "Select a list to subscribe_ar",
-    "Inbox": "Inbox_ar",
+    "inbox": "Inbox_ar",
     "all-chats": "All Chats_ar",
     "active": "Active_ar",
     "inactive": "Inactive_ar",

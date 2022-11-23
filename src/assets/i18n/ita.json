@@ -95,7 +95,7 @@
       "categories": "Categories_ita",
       "send": "send_ita",
       "edit": "edit_ita",
-      "Participants": "Participants_ita",
+      "participants": "Participants_ita",
       "customer": "Customer_ita",
       "no-active": "No active conversation_ita",
       "click": "Click_ita",
@@ -120,9 +120,7 @@
       "selected": "Selected_ita",
       "cancel": "Cancel_ita",
       "apply": "Apply_ita",
-      "notes": "Notes_ita",
-      "": ""
-    }
+      "notes": "Notes_ita"    }
   },
   "column-preferences": {
     "cancel": "Cancel_ita",
@@ -181,7 +179,7 @@
     "edit-attribute": "Edit Attribute_ita",
     "update-attribute": "Update Attribute_ita",
     "mandatory-attribute": "Mandatory Attribute_ita",
-    "save-Order": "Save Order_ita",
+    "save-order": "Save Order_ita",
     "range": "Range_ita",
     "type": "Type_ita",
     "edit": "Edit_ita",
@@ -205,7 +203,7 @@
     "username": "Username_ita",
     "password": "Password_ita",
     "agent-desk": "Agent Desk_ita",
-    "call-Center-xperts": "Your Call Center Experts._ita",
+    "call-center-experts": "Your Call Center Experts._ita",
     "": ""
   },
   "globals": {
@@ -240,7 +238,8 @@
     "unselect-all": "Unselect all_ita",
     "Search": "Search_ita",
     "no-data-available": "No Data Available_ita",
-    "no-new-conversation": "No New Conversation_ita"
+    "no-new-conversation": "No New Conversation_ita",
+    "state":"State_ita"
   },
   "pull-mode": {
     "all-list": "All List_ita",
@@ -248,7 +247,7 @@
     "name": "Name_ita",
     "manage-subscriptions": "Manage Subscriptions_ita",
     "select-a-list-to-subscribe": "Select a list to subscribe_ita",
-    "Inbox": "Inbox_ita",
+    "inbox": "Inbox_ita",
     "all-chats": "All Chats_ita",
     "active": "Active_ita",
     "inactive": "Inactive_ita",

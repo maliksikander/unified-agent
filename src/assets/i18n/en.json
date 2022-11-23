@@ -99,7 +99,7 @@
       "categories": "Categories",
       "send": "send",
       "edit": "edit",
-      "Participants": "Participants",
+      "participants": "Participants",
       "customer": "Customer",
       "no-active": "No active conversation",
       "click": "Click",
@@ -185,7 +185,7 @@
     "edit-attribute": "Edit Attribute",
     "update-attribute": "Update Attribute",
     "mandatory-attribute": "Mandatory Attribute",
-    "save-Order": "Save Order",
+    "save-order": "Save Order",
     "range": "Range",
     "type": "Type",
     "edit": "Edit",
@@ -209,7 +209,7 @@
     "username": "Username",
     "password": "Password",
     "agent-desk": "Agent Desk",
-    "call-Center-xperts": "Your Call Center Experts.",
+    "call-center-experts": "Your Call Center Experts.",
     "": ""
   },
   "globals": {
@@ -244,7 +244,8 @@
     "no-data-available": "No Data Available",
     "Confirm": "Confirm",
     "not-applicable": "N/A",
-    "no-new-conversation": "No New Conversation"
+    "no-new-conversation": "No New Conversation",
+    "state":"State"
   },
   "pull-mode": {
     "all-list": "All List",
