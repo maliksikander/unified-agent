@@ -28,13 +28,13 @@
           <ul class="list-group list-group-horizontal agent-controls">
             <ng-container *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
               <li class="list-group-item">
-                <button mat-fab matTooltip="Wrapup" aria-label="WrapUp" (click)="openWrapUpDialog('Wrap-up')">
+                <button mat-fab matTooltip="{{'chat-features.interactions.wrapup' | translate}}" aria-label="WrapUp" (click)="openWrapUpDialog('Wrap-up')">
                   <img alt="Note" src="assets/images/note.svg" />
                 </button>
               </li>
             </ng-container>
             <li class="list-group-item" *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
-              <button mat-icon-button [matMenuTriggerFor]="ParticipantsList" matTooltip="Participants" aria-label="Participants">
+              <button mat-icon-button [matMenuTriggerFor]="ParticipantsList" matTooltip="{{'chat-features.interactions.participants' | translate}}" aria-label="Participants">
                 <mat-icon>group</mat-icon>
               </button>
             </li>
@@ -44,7 +44,7 @@
                 #consultTransferTrigger="matMenuTrigger"
                 [matMenuTriggerFor]="ConsultTransferConversation"
                 (click)="getAgentsInQueue()"
-                matTooltip="Agent Assistance"
+                matTooltip="{{'chat-features.interactions.agent-assistance' | translate}}"
                 aria-label="Consult Chat"
               >
                 <mat-icon>person_add</mat-icon>
@@ -81,13 +81,13 @@
 
                         <button
                           [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0"
-                          mat-icon-button matTooltip="Queue Transfer" class="transfer-selection"
+                          mat-icon-button matTooltip="{{'chat-features.interactions.queue-transfer' | translate}}" class="transfer-selection"
                           (click)="agentAssistanceRequest(chatConsultTemplate, queue, 'transfer','queue')"><img
                             src="assets/images/transfer-colored.svg" alt="transfer" /></button>
 
                         <button
                           [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0"
-                          mat-icon-button matTooltip="Queue Conference" class="transfer-selection"
+                          mat-icon-button matTooltip="{{'chat-features.interactions.queue-conference' | translate}}" class="transfer-selection"
                           (click)="agentAssistanceRequest(chatConsultTemplate, queue,'conference','queue')"><img
                             src="assets/images/conference-colored.svg" alt="conference" /></button>
                       </div>
@@ -336,7 +336,7 @@
                       [src]="message.header.channelSession.channel.channelType.channelLogo | channelLogo | async"
                     />
                     <img
-                      matTooltip="Wrap Up"
+                      matTooltip="{{'chat-features.interactions.wrapup' | translate}}"
                       class="wrap-up-icon"
                       *ngIf="message?.body?.type == 'WRAPUP'"
                       width="20"
@@ -1017,7 +1017,7 @@
                                 {{ message.body?.note }}
                               </p>
                               <span *ngIf="message.body?.wrapups?.length > 0 && message.body?.note?.length > 0" class="note-icon">
-                                <mat-icon matTooltip="Wrap-up Notes" matTooltipClass="wrap-tooltip">description </mat-icon>
+                                <mat-icon matTooltip="{{'chat-features.interactions.wrap-up-notes' | translate}}" matTooltipClass="wrap-tooltip">description </mat-icon>
                               </span>
                               <div class="wrap-time">
                                 <span>{{ message.header.timestamp | date: "shortTime" }}</span>

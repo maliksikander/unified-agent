@@ -924,7 +924,7 @@ export class socketService {
                   } else {
                     console.log("limit exceed");
                     this._snackbarService.open(
-                      `The conversation is going to linking with ${selectedCustomer.firstName}, However the channel identifier ${channelIdentifier} can't be added in ${selectedCustomer.firstName}'s ${attr} because space is unavailable, you may delete a channel identifer to add a new one`,
+                      `The conversation is going to linking with ${selectedCustomer.firstName}, However the channel identifier ${channelIdentifier} can't be added in ${selectedCustomer.firstName} ${attr} because space is unavailable, you may delete a channel identifer to add a new one`,
                       "succ",
                       20000,
                       "Ok"
@@ -975,7 +975,7 @@ export class socketService {
         //  this._socketService.linkCustomerWithInteraction(customerId, this.conversationId);
         console.log(selectedCustomer);
       } else {
-        this._snackbarService.open("unable to link customer", "err");
+        this._snackbarService.open("Unable to link customer", "err");
       }
     } catch (err) {
       console.log("err ", err);

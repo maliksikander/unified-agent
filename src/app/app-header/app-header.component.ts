@@ -8,6 +8,7 @@ import { finesseService } from "../services/finesse.service";
 import { fcmService } from "../services/fcm.service";
 import { httpService } from "../services/http.service";
 import { snackbarService } from "src/app/services/snackbar.service";
+import { TranslateService } from "@ngx-translate/core";
 
 
 @Component({
@@ -67,7 +68,9 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
     public _finesseService: finesseService,
     private _fcmService: fcmService,
     private _httpService: httpService,
-    private _snackBarService: snackbarService
+    private _snackBarService: snackbarService,
+    private _translateService: TranslateService
+
   ) {}
 
   ngOnInit() {
@@ -102,9 +105,9 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
       (e) => {
         this.reasonCodes = e;
       },
-      (err) => {
-        this._snackBarService.open("Error Getting Reason Codes","err");
-        console.error("error getting reason codes", err);
+      (error) => {
+        this._sharedService.Interceptor(error.error,"err");
+        console.error("error getting reason codes", error);
       }
     );
   }
@@ -116,7 +119,7 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
         this.getAgentSettings();
       },
       (error) => {
-        this._snackBarService.open("Error Getting Supported Languages","err");
+        this._sharedService.Interceptor(error.error,"err");
         console.error("error getting supported languages", error);
       }
     );
@@ -132,7 +135,7 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
           this.setAgentPreferedlanguage(e.language);
         },
         (error) => {
-          this._snackBarService.open("Error Getting Agent Settings","err");
+          this._sharedService.Interceptor(error.error,"err");
           console.error("error getting agent settings", error);
         }
       );
@@ -183,10 +186,11 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
       this.languageFlag = selectedLanguage.flag;
       this.changeLanguageCode = languageCode;
       try {
-        this._httpService.updateAgentSettings({ language: "en" }, this._cacheService.agent.id).subscribe((e) => {});
-      } catch (err) {
-        this._snackBarService.open("Error Updating Agent Settings","err");
-        console.error(`error updating language`, err);
+        this._httpService.updateAgentSettings({ language: "en" },
+         this._cacheService.agent.id).subscribe((e) => {});
+      } catch (error) {
+        this._sharedService.Interceptor(error.error,"err");
+        console.error(`error updating language`, error);
       }
     }
   }
@@ -200,9 +204,9 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
       this.changeAgentDeskLanguage(languageCode);
       try {
         this._httpService.updateAgentSettings({ language: languageCode }, this._cacheService.agent.id).subscribe((e) => {});
-      } catch (err) {
-        this._snackBarService.open("Error Updating Agent Settings","err");
-        console.error(`error updating theme`, err);
+      } catch (error) {
+        this._sharedService.Interceptor(error.error,"err");
+        console.error(`error updating theme`, error);
       }
     }
   }
@@ -217,7 +221,7 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
       window['dataLayer'].push({
         'event': 'logout',
         'data': {
-          'message': 'Agent Logged Out Successfully'
+          'message':this._translateService.instant('snackbar.Agent-Logged-Out-Successfully')
         }});
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
@@ -225,7 +229,7 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
       window['dataLayer'].push({
         'event': 'error',
         'data': {
-          'message': 'error on logout request',
+          'message': this._translateService.instant('snackbar.error-on-logout-request'),
           'error' : e.error
         }});
 

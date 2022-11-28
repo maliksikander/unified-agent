@@ -15,7 +15,7 @@
           </div>
           <div class="requested-name">
             <p
-              matTooltip="{{request.channelSession.customer.firstName ? request.channelSession.customer.firstName : 'UNIDENTIFIED CUSTOMER' }}">
+              matTooltip="{{request.channelSession.customer.firstName ? request.channelSession.customer.firstName : ('globals.UNIDENTIFIED-CUSTOMER' | translate) }}">
               {{request.channelSession.customer.firstName ? request.channelSession.customer.firstName : 'UNIDENTIFIED CUSTOMER' }}
             </p>
             <p *ngIf="request?.cisco_data">

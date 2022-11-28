@@ -1,4 +1,59 @@
 {
+  "snackbar":
+  {
+    
+    "error-on-logout-request":"'error on logout request'",
+    "Agent-Logged-Out-Successfully":"Agent Logged Out Successfully",
+    "Requested-session-not-available-at-the-moment":"Requested session not available at the moment",
+    "Unable-to-process-the-request":"Unable to process the request",
+    "Unable-to-connect-with-server":"Unable to connect with server",
+    "Channel-Identifier-Not-Found":"Channel Identifier Not Found",
+    "PIP-not-supported-in-this-browser":"PIP not supported in this browser",
+    "unsupported-type":"unsupported type",
+    "File-size-should-be-less-than-5MB":"File size should be less than 5MB",
+    "No-channel-session-selected-at-the-moment":"No channel session selected at the moment ",
+    "Unable-to-send-the-message-at-the-moment":"Unable to send the message at the moment ",
+    "":"No Preference Added",
+    "":"you will not receive browser notifications",
+    "":"UNAUTHORIZED USER",
+    "":"unable to fetch license status",
+    "":"Internal Server Error",
+    "":"Something went wrong",
+    "":"The license is :",
+    "":"A Malfunction even",
+    "":"Unable to process chat, unsubscribing...",
+    "":"Conversation is closed due to ",
+    "":"Unable to process event, unsubscribing...",
+    "":"you are logged In from another session",
+    "":"Profile linked successfully",
+    "":"CUSTOMER LINKED SUCCESSFULLY",
+    "":"on ",
+    "":"The conversation is going to linking with ",
+    "":"However the channel identifier",
+    "":"can't be added in",
+    "":"because space is unavailable, you may delete a channel identifer to add a new one",
+    "":"Unable to link customer",
+    "":"Error Getting Active Chats with Agents",
+    "":"Error Getting Active Chats with Bots",
+    "Channel-session-not-found":"Channel session not found",
+    "Access-Token-or-FB-Host-API-for-FB-is-missing":"Access Token or FB Host API for FB is missing",
+    "No-Conversation-Found":"No Conversation Found",
+    "No-settings-are-valid":"No settings are valid",
+    "Preference-Added":"Preference Added",
+    "Preference-Updated!":"Preference Updated!",
+    "CANNOT-ADD-MORE-FIELDS":"CANNOT ADD MORE FIELDS",
+    "Name-already-exists":"Name already exists",
+    "Max-100-characters-are-allowed":"Max 100 characters are allowed",
+    "New-Customer-Created":"New Customer Created",
+    "Customer-updated!":"Customer updated!",
+    "":"",
+    "":"",
+    "":"",
+    "":"",
+    "":"",
+    "":"",
+    "":""
+  },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View",
     "customer-list-view": "Customer List View",
@@ -80,7 +135,10 @@
       "initiate-outgoing-call-to": "initiate outgoing call to",
       "stacy-miller": "Stacy Miller",
       "mobile": "(Mobile)",
-      "unknown": "UNKNOWN"
+      "device": "Device:en",
+      "browser": "Browser:en",
+      "country": "Country:en",
+      "language": "Language:en"
     },
     "chats": {
       "start": "Start a New Conversation"
@@ -115,8 +173,11 @@
       "view-full-post": "View full post",
       "selected-channel": "Selected Channel:",
       "check": "check",
-      "": "",
-      "": "",
+      "wrapup": "Wrapupen",
+      "wrap-up-notes": "Wrap-up Notesen",
+      "agent-assistance": "Agent Assistance",
+      "queue-transfer": "Queue Transfer",
+      "queue-conference": "Queue Conference",
       "": ""
     },
     "wrap-up-form": {
@@ -192,7 +253,7 @@
     "delete": "Delete",
     "customer-attributes": "Customer Attributes",
     "create-new-ttribute": "Create New Attribute",
-    "": ""
+    "options": "Options"
   },
   "link-conversation": {
     "confirm": "Confirm",
@@ -245,7 +306,14 @@
     "Confirm": "Confirm",
     "not-applicable": "N/A",
     "no-new-conversation": "No New Conversation",
-    "state":"State"
+    "state":"State",
+    "UNIDENTIFIED-CUSTOMER":"UNIDENTIFIED CUSTOMER",
+    "filter":"Filter",
+    "drag-the-column":"Drag the column",
+    "decending":"Decending",
+    "ascending":"Ascending",
+    "edit":"Edit",
+    "start-conversation":"Start Conversation"
   },
   "pull-mode": {
     "all-list": "All List",
@@ -266,9 +334,9 @@
     "ago": "Ago",
     "join": "Join",
     "end": "End",
-    "": "",
-    "": "",
-    "": ""
+    "UNREAD": "UNREAD",
+    "chat": "Chat",
+    "close": "Close"
   },
   "supervisor": {
     "active-conversations-detail": "Active Conversations Detail",

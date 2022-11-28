@@ -84,7 +84,8 @@ export class CreateCustomerComponent implements OnInit {
         this.labelList = e;
       },
       (error) => {
-        this._sharedService.Interceptor(error.error, "error getting labels");
+        this._sharedService.Interceptor(error.error, "err");
+        console.error("Error Getting labels",error);
       }
     );
   }
@@ -184,7 +185,7 @@ export class CreateCustomerComponent implements OnInit {
         new FormControl(attribute.defaultValue ? attribute.defaultValue : "", validatorArray)
       );
     } else {
-      this.snackbarService.open("CANNOT_ADD_MORE_FIELDS", "err");
+      this.snackbarService.open(this._translateService.instant('snackbar.CANNOT-ADD_MORE_FIELDS'), "err");
     }
   }
 
@@ -216,7 +217,7 @@ export class CreateCustomerComponent implements OnInit {
     this._httpService.createCustomer(data).subscribe(
       (e) => {
         this.dialogRef.close({ event: "refresh" });
-        this._sharedService.Interceptor("New Customer Created", "succ");
+        this._sharedService.Interceptor(this._translateService.instant('snackbar.New-Customer-Created'), "succ");
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -242,9 +243,9 @@ export class CreateCustomerComponent implements OnInit {
         }
       });
       if (duplicate) {
-        this._sharedService.snackErrorMessage("Name already exists");
+        this._sharedService.snackErrorMessage(this._translateService.instant('snackbar.Name-already-exists'));
       } else if (data.length > 100) {
-        this._sharedService.snackErrorMessage("Max 100 characters are allowed");
+        this._sharedService.snackErrorMessage(this._translateService.instant('snackbar.Max-100-characters-are-allowed'));
       } else {
         let obj = {
           name: data,
@@ -267,7 +268,7 @@ export class CreateCustomerComponent implements OnInit {
           });
 
         }, (error) => {
-          this._sharedService.Interceptor(error, 'err');
+          this._sharedService.Interceptor(error.error, 'err');
         });
       }
     });

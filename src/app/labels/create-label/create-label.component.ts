@@ -5,6 +5,7 @@ import { map } from "rxjs/operators";
 import { cacheService } from "src/app/services/cache.service";
 import { httpService } from "src/app/services/http.service";
 import { sharedService } from "src/app/services/shared.service";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-create-label",
@@ -18,14 +19,16 @@ export class CreateLabelComponent implements OnInit {
     private _sharedService: sharedService,
     public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<CreateLabelComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private _translateService: TranslateService,
+
   ) {}
 
   name = new FormControl("", [Validators.required, Validators.maxLength(100)], this.ValidateNameDuplication.bind(this));
   open: boolean = false;
   nameToBeMatched;
-  formTitle:string='Add label'
-  buttonTitle:string='Create'
+  formTitle:string=''
+  buttonTitle:string=''
   currentColor = "#a9a9a9";
   labelColorCode = [
     "#f34f1b",
@@ -44,11 +47,28 @@ export class CreateLabelComponent implements OnInit {
 
   ngOnInit() {
     if (this.data.action == "update") {
+      this._translateService.stream('labels.update-label').subscribe((data:string)=>
+      {
+        this.formTitle=data;
+      })
+      this._translateService.stream('labels.update').subscribe((data:string)=>
+      {
+        this.buttonTitle=data;
+      })
       this.currentColor = this.data.label.colorCode;
       this.nameToBeMatched = this.data.label.name;
-      this.formTitle='Update Label'
-      this.buttonTitle='Update'
       this.name.patchValue(this.data.label.name);
+    }
+    else
+    {
+      this._translateService.stream('labels.add-label').subscribe((data:string)=>
+      {
+        this.formTitle=data;
+      })
+      this._translateService.stream('labels.create').subscribe((data:string)=>
+      {
+        this.buttonTitle=data;
+      })
     }
   }
 
