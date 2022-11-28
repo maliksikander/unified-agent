@@ -231,16 +231,24 @@
               </div>
 
               <div *ngIf="logoutReasonList" class="language-change-list" (click)="$event.stopPropagation()">
-                <p>{{'app-header.select-reason' | translate}}
-                  <mat-icon (click)="logoutReasonList = false; stateView = true">close</mat-icon>
+                <p>
+                  {{ "app-header.select-reason" | translate }}
+                  <mat-icon (click)="logoutReasonList = false; stateView = true" (click)="selected=null">close</mat-icon>
                 </p>
-                <div *ngFor="let reason of reasonCodes; let i = index">
+                <!-- <div *ngFor="let reason of reasonCodes; let i = index">
                   <span *ngIf="(reason.type | lowercase ) == 'logout'" class="logout-reason-inner">
                     <mat-checkbox [checked]="selected === i" (change)="selected = i; onChange(reason,$event)"
                       color="primary" labelPosition="after">{{reason.name}}</mat-checkbox>
                   </span>
-                </div>
-                <button (click)="logout()" mat-button class="main-logout">{{'app-header.logout' | translate}}</button>
+                </div> -->
+                <mat-radio-group aria-label="Select an option">
+                  <div *ngFor="let reason of reasonCodes; let i = index">
+                    <span *ngIf="(reason.type | lowercase) == 'logout'" class="logout-reason-inner">
+                      <mat-radio-button value="{{ reason }}" (change)="selected = i ; onChange(reason,$event)">{{ reason.name }}</mat-radio-button>
+                    </span>
+                  </div>
+                </mat-radio-group>
+                <button (click)="logout()" mat-button class="main-logout">{{ "app-header.logout" | translate }}</button>
               </div>
 
             </div>
