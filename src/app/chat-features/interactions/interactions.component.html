@@ -673,7 +673,7 @@
                     </button>
                     <mat-menu #menu="matMenu">
                       <button mat-menu-item class="reply-trigger" (click)="onQuotedReply(message)">reply</button>
-                    
+
                     </mat-menu>
                     <div
                       *ngIf="((message.body.type | lowercase)!='comment' && message.body.markdownText) || ((message.body.type | lowercase)=='comment' && (message.body.itemType | lowercase)=='text' && (message.header.sender.type | lowercase)=='agent')">
@@ -888,7 +888,7 @@
                         <!--                        <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                       </div>
                     </div>
-                    
+
 
                     <!-- -------------------------video------------------------------- -->
 
@@ -957,7 +957,7 @@
                     <!-- Voice call single activity-->
 
                     <div
-                      *ngIf="(message.body.type | lowercase) == 'voice' && (message.header.intent | lowercase) == 'end_voice'"
+                      *ngIf="(message.body.type | lowercase) == 'voice' && ((message.header.intent | lowercase) == 'end_voice' || (message.header.intent | lowercase) == 'call_leg_ended')"
                       class="voice-activity-main panel-divider user-data customer-side single"
                     >
                       <mat-expansion-panel hideToggle disabled>

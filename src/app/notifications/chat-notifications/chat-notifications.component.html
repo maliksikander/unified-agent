@@ -23,7 +23,7 @@
               request.channelSession.channelData.channelCustomerIdentifier : ('globals.not-applicable' | translate) }}</p>
           </div>
           <div class="notification-trigger">
-            <button (click)="onAcceptCallback(request?.conversationId,request?.taskId,request?.cisco_data,null)"
+            <button (click)="onAcceptCallback(request?.conversationId,request?.taskId,null)"
               class="mat-flat-button" mat-button>{{'globals.accept'  | translate }}</button>
           </div>
         </mat-card-content>
@@ -97,6 +97,36 @@
     </button>
 
   </div>
+
+    <!--  External/Voice mode notifications-->
+    <div class="notification-area" *ngFor="let request of externalModeRequests">
+      <div class="row main-panel">
+        <mat-card class="notification-panel mat-card">
+          <mat-card-content [ngClass]="request?.customer?.isAnonymous == true ? 'un-identified' : 'identified'"
+            class="mat-card-content">
+            <div class="chat-request">
+              <p class="channel-icon"><img [src]="voiceChannelType?.channelLogo | channelLogo | async">
+              </p>
+            </div>
+            <div class="requested-name">
+              <p matTooltip="{{request?.customer?.firstName ? request?.customer?.firstName : 'UNIDENTIFIED CUSTOMER' }}">
+                {{request?.customer?.firstName ? request?.customer?.firstName : 'UNIDENTIFIED CUSTOMER' }}</p>
+              <p>
+                {{request?.identifier ?
+                request?.identifier : 'N/A' }}</p>
+            </div>
+            <div class="notification-trigger">
+              <button (click)="onExternalRequestAccept(request)" class="mat-flat-button" mat-button>Accept</button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+      </div>
+    </div>
+
+
+
+
 
   <!--  Consult/Conference request notifications-->
   <!-- <div class="notification-area" *ngIf="_sharedService.consultRequestSend == true">

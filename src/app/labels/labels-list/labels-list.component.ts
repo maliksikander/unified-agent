@@ -60,11 +60,10 @@ export class LabelsListComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result && result.event == "confirm") {
         this.deleteLabel(id);
-
       }
     });
   }
-  deleteLabel(id){
+  deleteLabel(id) {
     this._httpService.deleteLabel(id).subscribe(
       (e) => {
         this._sharedService.Interceptor("Label Deleted", "succ");

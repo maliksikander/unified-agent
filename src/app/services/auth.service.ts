@@ -20,7 +20,7 @@ export class AuthService {
         ccUser = JSON.parse(ccUser ? atob(ccUser) : null);
       }
       let resources: Array<any> = ccUser.permittedResources.Resources;
-      let conversationResourceIndex = resources.findIndex((item) => item.rsname.includes("conversation"));
+      let conversationResourceIndex = resources.findIndex((item) => item.rsname.includes("conversation-view"));
 
       if (conversationResourceIndex != -1) {
         let scopes: Array<any> = resources[conversationResourceIndex].scopes;
@@ -84,7 +84,7 @@ export class AuthService {
       }
       if (ccUser != null) {
         let permittedResources: Array<any> = ccUser.permittedResources.Resources;
-  
+
         for (let i = 0; i < permittedResources.length; i++) {
           if (permittedResources[i].rsname.includes(resource)) {
             let resourceScopes: Array<any> = permittedResources[i].scopes;

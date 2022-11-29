@@ -99,7 +99,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     LinkConversationDialogComponent,
     GrafanaComponent,
     ActiveChatsComponent,
-    QueueChatsComponent,
+    QueueChatsComponent
   ],
   imports: [
     BrowserModule,
@@ -109,18 +109,18 @@ export function HttpLoaderFactory(http: HttpClient) {
     SharedModule,
     TranslateModule.forRoot({
       loader: {
-          provide: TranslateLoader,
-          useFactory: HttpLoaderFactory,
-          deps: [HttpClient]
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
       }
-  }),
+    }),
     NgxUiLoaderHttpModule.forRoot({
       exclude: [
         `${_configService.FILE_SERVER_URL}/api/downloadFileStream`,
         "/api/downloadFileStream",
         "/api/downloadFileStream?filename",
         `${_configService.CIM_REPORTING_URL}/queued-chats/detail`,
-        `${_configService.CIM_REPORTING_URL}/queue-active-chats/detail`,
+        `${_configService.CIM_REPORTING_URL}/queue-active-chats/detail`
       ]
     }),
     NgxUiLoaderHttpModule.forRoot({
@@ -128,8 +128,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         `${_configService.FILE_SERVER_URL}/api/downloadFileStream`,
         "/api/downloadFileStream",
         `${_configService.CIM_REPORTING_URL}/queued-chats/detail`,
-        `${_configService.CIM_REPORTING_URL}/queue-active-chats/detail`,
-
+        `${_configService.CIM_REPORTING_URL}/queue-active-chats/detail`
       ]
     }),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)

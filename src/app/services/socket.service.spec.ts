@@ -17,7 +17,7 @@ describe("Socket service", () => {
   let ngxService: any;
   let _httpService: any;
   let _authService: any;
-  let _translateService:any;
+  let _translateService: any;
 
   const mockConversation = {
     conversationId: "12345",

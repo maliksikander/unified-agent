@@ -11,6 +11,7 @@ import { httpService } from "./http.service";
 import { sharedService } from "./shared.service";
 import { snackbarService } from "./snackbar.service";
 import { socketService } from "./socket.service";
+import { AuthService } from "./auth.service";
 
 @Injectable({
   providedIn: "root"
@@ -28,7 +29,8 @@ export class isLoggedInService {
     private _fcmService: fcmService,
     private ngxService: NgxUiLoaderService,
     private _snackbarService: snackbarService,
-    private _location: Location
+    private _location: Location,
+    private _authService: AuthService,
   ) {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       this._cacheService.isMobileDevice = true;
@@ -75,7 +77,7 @@ export class isLoggedInService {
       authToken: authWithSSO == true ? authToken : "",
       authWithSSO: authWithSSO
     };
-    console.log("finesse user login==> ", obj);
+    // console.log("finesse user login==> ", obj);
     this.fetchCCuserAndMoveToLogin(obj);
     this._finesseService.finesseAgent.extension = extension;
     this._finesseService.finesseAgent.loginId = username;
@@ -88,14 +90,15 @@ export class isLoggedInService {
   fetchCCuserAndMoveToLogin(obj) {
     this._httpService.login(obj).subscribe(
       (e) => {
-        window['dataLayer'].push({
-          'event': 'login',
-          'data': {
-            'agent_name': e.data.keycloak_User.username,
-            'message': 'Agent Logged In Successfully'
-          }});
+        window["dataLayer"].push({
+          event: "login",
+          data: {
+            agent_name: e.data.keycloak_User.username,
+            message: "Agent Logged In Successfully"
+          }
+        });
 
-        console.log("this is login resp ", e.data);
+        console.log("this is login resp ==>", e.data);
 
         this._cacheService.agent = e.data.keycloak_User;
         try {
@@ -105,12 +108,13 @@ export class isLoggedInService {
         this.validateFcmKeyAndConnectToSocket(false);
       },
       (error) => {
-        window['dataLayer'].push({
-          'event': 'error',
-          'data': {
-            'message': 'error on login request',
-            'error' : error.error
-          }});
+        window["dataLayer"].push({
+          event: "error",
+          data: {
+            message: "error on login request",
+            error: error.error
+          }
+        });
 
         this._sharedService.Interceptor(error.error, "err");
         this._router.navigate(["login"]);
@@ -141,6 +145,9 @@ export class isLoggedInService {
 
   async validateFcmKeyAndConnectToSocket(params) {
     this.ngxService.start();
+    this._authService.moveToAuthorizedResourceOnLogin();
+
+
 
     // if (this._cacheService.isMobileDevice) {
 

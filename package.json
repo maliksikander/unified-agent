@@ -5,21 +5,14 @@
     "ng": "ng",
     "start": "ng serve",
     "nolive": "ng serve --no-live-reload",
-    
     "g": "ng serve --host 0.0.0.0 --disableHostCheck",
-    
     "build": "ng build --prod --base-href /unified-agent/ && node ./replacefile.js",
-
-
-    
     "lint": "ng lint",
     "e2e": "ng e2e",
     "test": "jest",
     "test:watch": "jest --watch",
     "coverage": "jest -i --coverage",
-
     "format:check": "prettier --check **/*.ts",
-    
     "format:fix": "prettier --write **/*.ts",
     "sonar": "node sonar-project.js"
   },
@@ -29,7 +22,7 @@
     "@angular/animations": "~8.2.14",
     "@angular/cdk": "~8.2.3",
     "@angular/common": "~8.2.14",
-    
+
     "@angular/compiler": "~8.2.14",
     "@angular/core": "~8.2.14",
     "@angular/fire": "^7.2.1",

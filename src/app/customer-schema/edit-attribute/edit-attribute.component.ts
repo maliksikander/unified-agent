@@ -24,7 +24,7 @@ export class EditAttributeComponent implements OnInit {
     private formBuilder: FormBuilder,
     private cd: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.editAttributeForm = this.formBuilder.group({
@@ -105,10 +105,9 @@ export class EditAttributeComponent implements OnInit {
   }
 
   onRequiredValueChange(e) {
-    if (this.editAttributeForm.value.key=='labels') {
-      this.editAttributeForm.get("defaultValue").setValue([])
-    }
-    else {
+    if (this.editAttributeForm.value.key == "labels") {
+      this.editAttributeForm.get("defaultValue").setValue([]);
+    } else {
       let schemaObj = this.editAttributeForm.value;
       let typeValue = { value: "" };
       typeValue.value = schemaObj.type;

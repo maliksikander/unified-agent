@@ -26,12 +26,12 @@ export class CustomerActionsComponent implements OnInit {
   labelSettings = {
     singleSelection: false,
     text: "",
-    filterSelectAllText: this._translateService.instant('globals.select-all'),
-    filterUnSelectAllText: this._translateService.instant('globals.unselect-all'),
-    searchPlaceholderText: this._translateService.instant('globals.Search'),
-    selectAllText: this._translateService.instant('globals.select-all'),
-    unSelectAllText: this._translateService.instant('globals.unselect-all'),
-    noDataLabel: this._translateService.instant('globals.no-data-available'),
+    filterSelectAllText: this._translateService.instant("globals.select-all"),
+    filterUnSelectAllText: this._translateService.instant("globals.unselect-all"),
+    searchPlaceholderText: this._translateService.instant("globals.Search"),
+    selectAllText: this._translateService.instant("globals.select-all"),
+    unSelectAllText: this._translateService.instant("globals.unselect-all"),
+    noDataLabel: this._translateService.instant("globals.no-data-available"),
     enableSearchFilter: true,
     addNewItemOnFilter: true,
     primaryKey: "_id"
@@ -42,14 +42,14 @@ export class CustomerActionsComponent implements OnInit {
   channelTypeList: any[] = [];
   // channelIdentifierKeys: Array<any> = [];
   // editActiveMode: boolean = true;
-  @ViewChild('dropdownRef', { static: false }) dropdownRef : AngularMultiSelect;
+  @ViewChild("dropdownRef", { static: false }) dropdownRef: AngularMultiSelect;
 
   constructor(
     private _httpService: httpService,
     private _socketService: socketService,
     private dateAdapter: DateAdapter<any>,
     private dialog: MatDialog,
-    private _translateService:TranslateService,
+    private _translateService: TranslateService,
     private _cacheService: cacheService,
     private _router: Router,
     public snackBar: MatSnackBar,
@@ -85,40 +85,37 @@ export class CustomerActionsComponent implements OnInit {
 
   ngOnInit() {
     this.customerForm = new FormGroup({});
-    this.getCustomerById()
+    this.getCustomerById();
     // let query = { field: "_id", value: this.data.id };
-
   }
-  getAllLabels()
-  {
+  getAllLabels() {
     this._httpService.getLabels().subscribe(
-    (e) => {
-     this.labelList=e;
-     if (Array.isArray(this.userInfo.labels))
-     {
-     this.fetchCustomerLabels();
-     }
-     else
-     {
-      this.userInfo.labels=[]
-     }
-    },
-    (error) => {
-      this._sharedService.Interceptor(error.error, "err");
-    }
-  );
+      (e) => {
+        this.labelList = e;
+        if (Array.isArray(this.userInfo.labels)) {
+          this.fetchCustomerLabels();
+        } else {
+          this.userInfo.labels = [];
+        }
+      },
+      (error) => {
+        this._sharedService.Interceptor(error.error, "err");
+      }
+    );
   }
 
   getCustomerById() {
-    this._httpService.getCustomerById(this.data.id).subscribe((res) => {
-      this.userInfo = res;
-      this.userIni = true;
-      this.getAllLabels();
-      this.getCustomerSchema();
-    },(err)=>
-    {
-      console.error("error getting customer by Id",err)
-    });
+    this._httpService.getCustomerById(this.data.id).subscribe(
+      (res) => {
+        this.userInfo = res;
+        this.userIni = true;
+        this.getAllLabels();
+        this.getCustomerSchema();
+      },
+      (err) => {
+        console.error("error getting customer by Id", err);
+      }
+    );
   }
   getCustomerSchema() {
     this._httpService.getCustomerSchema().subscribe((res) => {
@@ -173,7 +170,6 @@ export class CustomerActionsComponent implements OnInit {
       console.error("Error in converting array to object method :", e);
     }
   }
-
 
   // adding forms controls to existing form group using attributes in from schema as `attrSchema` parameter
   addFormControls(attrSchema: Array<any>) {
@@ -310,8 +306,7 @@ export class CustomerActionsComponent implements OnInit {
     let id = this.userInfo._id;
     this._httpService.updateCustomerById(id, customerObj).subscribe(
       (e) => {
-
-        this.dialogRef.close({ event: "refresh",data:this.labelList });
+        this.dialogRef.close({ event: "refresh", data: this.labelList });
         this._sharedService.Interceptor("Customer updated!", "succ");
       },
       (error) => {
@@ -396,7 +391,7 @@ export class CustomerActionsComponent implements OnInit {
 
   // save(a) {}
   onItemSelect(item: any) {
-    this.dropdownRef.clearSearch()
+    this.dropdownRef.clearSearch();
   }
   OnItemDeSelect(item: any) {
     this.dropdownRef.clearSearch();
@@ -426,13 +421,10 @@ export class CustomerActionsComponent implements OnInit {
           (e) => {
             this._httpService.getLabels().subscribe((ee) => {
               this.labelList = ee;
-              if(this.customerForm.get('labels').value)
-              {
-                this.customerForm.get('labels').value.push(e)
-              }
-              else
-              {
-                this.customerForm.get("labels").patchValue([e])
+              if (this.customerForm.get("labels").value) {
+                this.customerForm.get("labels").value.push(e);
+              } else {
+                this.customerForm.get("labels").patchValue([e]);
               }
               this.dropdownRef.clearSearch();
             });
@@ -446,16 +438,15 @@ export class CustomerActionsComponent implements OnInit {
   }
 
   fetchCustomerLabels() {
-    let customerLabels=[]
+    let customerLabels = [];
     this.userInfo.labels.forEach((id) => {
       let find = this.labelList.find((label) => {
-        return label._id == id
+        return label._id == id;
       });
-      if(find)
-      {
+      if (find) {
         customerLabels.push(find);
       }
     });
-    this.userInfo.labels=customerLabels;
+    this.userInfo.labels = customerLabels;
   }
 }

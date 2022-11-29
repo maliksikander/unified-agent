@@ -131,28 +131,32 @@ export class CustomerInfoComponent implements OnInit {
   }
 
   getMediaChannels() {
-    this.mediaChannelData = [];
-    let mediaChannelData = [];
-    this._sharedService.schema.forEach((e) => {
-      if (e.isChannelIdentifier == true && this.customer.hasOwnProperty(e.key)) {
-        this.customer[e.key].forEach((value) => {
-          mediaChannelData.push({
-            fieldType: e.type,
-            value: value,
-            label: e.label,
-            channelList: e.channelTypes
+    try {
+      this.mediaChannelData = [];
+      let mediaChannelData = [];
+      this._sharedService.schema.forEach((e) => {
+        if (e.isChannelIdentifier == true && this.customer.hasOwnProperty(e.key)) {
+          this.customer[e.key].forEach((value) => {
+            mediaChannelData.push({
+              fieldType: e.type,
+              value: value,
+              label: e.label,
+              channelList: e.channelTypes
+            });
           });
-        });
-      }
-    });
+        }
+      });
 
-    return mediaChannelData;
+      return mediaChannelData;
+    } catch (e) {
+      console.error("[getMedaiaChannels] Error:", e);
+    }
   }
   startOutBoundConversation(channelCustomerIdentifier, channelTypeName) {
     // mockTopicData.customer=this.customer
     //  this._socketService.onTopicData(mockTopicData, 12345,"");
     if (!channelCustomerIdentifier) {
-      this._snackBarService.open("Channel Identifier Not Found","err")
+      this._snackBarService.open("Channel Identifier Not Found", "err");
     } else {
       let cimMessage = {
         id: uuid.v4().toString(),
@@ -160,8 +164,10 @@ export class CustomerInfoComponent implements OnInit {
           channelData: {
             channelCustomerIdentifier: channelCustomerIdentifier,
             serviceIdentifier: channelTypeName,
-            additionalAttributes: [{ key: "agentId", type: "String100", value: this._cacheService.agent.id },
-            { key: "channelTypeName", type: "String100", value: channelTypeName }]
+            additionalAttributes: [
+              { key: "agentId", type: "String100", value: this._cacheService.agent.id },
+              { key: "channelTypeName", type: "String100", value: channelTypeName }
+            ]
           },
           language: {},
           timestamp: "",
@@ -178,8 +184,8 @@ export class CustomerInfoComponent implements OnInit {
       this._httpService.startOutboundConversation(cimMessage).subscribe(
         (e) => {},
         (err) => {
-          this._snackBarService.open("Error Starting Outbound Conversation","err");
-          console.error("Error Starting Outbound Conversation","err");
+          this._snackBarService.open("Error Starting Outbound Conversation", "err");
+          console.error("Error Starting Outbound Conversation", "err");
         }
       );
     }

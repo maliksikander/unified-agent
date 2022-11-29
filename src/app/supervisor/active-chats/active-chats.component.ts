@@ -22,7 +22,12 @@ export class ActiveChatsComponent implements OnInit {
   activeChatListWithAgents: [];
   activeChatListWithBots: [];
 
-  constructor(private dialog: MatDialog, private _httpService: httpService, private route: ActivatedRoute , private _snackBarService : snackbarService) {}
+  constructor(
+    private dialog: MatDialog,
+    private _httpService: httpService,
+    private route: ActivatedRoute,
+    private _snackBarService: snackbarService
+  ) {}
   ngOnInit(): void {
     this.filter = this.route.snapshot.queryParamMap.get("filter") ? this.route.snapshot.queryParamMap.get("filter") : "agents";
     if (this.filter == "agents") {
@@ -33,18 +38,22 @@ export class ActiveChatsComponent implements OnInit {
     this.timerSubscription = timer(0, 10000)
       .pipe(
         map(() => {
-          this._httpService.getAllActiveChatsWithAgents().subscribe((e) => {
-            this.activeChatListWithAgents = e;
-          },(err)=>
-          {
-            this._snackBarService.open("Error Getting Active Chats with Agents",'err');
-          });
-          this._httpService.getAllActiveChatsWithBots().subscribe((e) => {
-            this.activeChatListWithBots = e;
-          },(err)=>
-          {
-            this._snackBarService.open("Error Getting Active Chats with Bots",'err');
-          });
+          this._httpService.getAllActiveChatsWithAgents().subscribe(
+            (e) => {
+              this.activeChatListWithAgents = e;
+            },
+            (err) => {
+              this._snackBarService.open("Error Getting Active Chats with Agents", "err");
+            }
+          );
+          this._httpService.getAllActiveChatsWithBots().subscribe(
+            (e) => {
+              this.activeChatListWithBots = e;
+            },
+            (err) => {
+              this._snackBarService.open("Error Getting Active Chats with Bots", "err");
+            }
+          );
         }, retry())
       )
       .subscribe();

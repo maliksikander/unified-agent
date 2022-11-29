@@ -88,7 +88,7 @@ export class InteractionsComponent implements OnInit {
   noMoreConversation = false;
   pastCimEventsOffsetLimit: number = 0;
   loadingPastActivity: boolean = false;
-  ciscoDialogId;
+  // ciscoDialogId;
   activeChat = false;
   activeChannelSessionList: Array<any>;
   fbPostId: string = null;
@@ -117,9 +117,11 @@ export class InteractionsComponent implements OnInit {
     // setTimeout(() => {
     //   new EmojiPicker();
     // }, 500);
-    this._finesseService._ciscoDialogID.subscribe((res) => {
-      this.ciscoDialogId = res;
-    });
+
+    // this._finesseService._ciscoDialogID.subscribe((res) => {
+    //   this.ciscoDialogId = res;
+    // });
+
     this.conversationSettings = this._sharedService.conversationSettings;
     this.loadLabels();
 
@@ -204,7 +206,7 @@ export class InteractionsComponent implements OnInit {
         fbChannelSession.isChecked = true;
 
         this.conversation.activeChannelSessions = this.conversation.activeChannelSessions.concat([]);
-        
+
         this.openQuotedReplyArea(message);
       } else {
         this._snackbarService.open("Requested session not available at the moment", "err");
@@ -214,12 +216,11 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-//Quoted Reply
+  //Quoted Reply
   onQuotedReply(message) {
     this.replyToMessageId = message.id;
     this.openQuotedReplyArea(message);
   }
-
 
   openDialog(templateRef, e): void {
     this.popTitle = e;
@@ -312,10 +313,10 @@ export class InteractionsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.event == "confirm") {
-        this._finesseService.isLeaveButtonClicked = true;
+        // this._finesseService.isLeaveButtonClicked = true;
         this.endCallOnFinesse();
-        this._finesseService.emitEndChannelSessionEvent();
-        this._socketService.topicUnsub(this.conversation);
+        // this._finesseService.emitEndChannelSessionEvent();
+        // this._socketService.topicUnsub(this.conversation);
       }
     });
   }
@@ -327,7 +328,8 @@ export class InteractionsComponent implements OnInit {
         dialogId: this._socketService.ciscoDialogId ? this._socketService.ciscoDialogId : this.conversation.ciscoDialogId
       }
     };
-    this._finesseService.endCallOnFinesse(data);
+    console.log("end call data==>",data)
+    // this._finesseService.endCallOnFinesse(data);
   }
 
   downTheScrollAfterMilliSecs(milliseconds, behavior) {
@@ -381,7 +383,7 @@ export class InteractionsComponent implements OnInit {
     //       console.log("after",this.conversation.activeChannelSessions)
     // });
 
-    this._finesseService.currentConversation.next(this.conversation);
+    // this._finesseService.currentConversation.next(this.conversation);
   }
 
   ngOnDestroy() {

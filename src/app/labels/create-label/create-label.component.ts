@@ -24,8 +24,8 @@ export class CreateLabelComponent implements OnInit {
   name = new FormControl("", [Validators.required, Validators.maxLength(100)], this.ValidateNameDuplication.bind(this));
   open: boolean = false;
   nameToBeMatched;
-  formTitle:string='Add label'
-  buttonTitle:string='Create'
+  formTitle: string = "Add label";
+  buttonTitle: string = "Create";
   currentColor = "#a9a9a9";
   labelColorCode = [
     "#f34f1b",
@@ -46,8 +46,8 @@ export class CreateLabelComponent implements OnInit {
     if (this.data.action == "update") {
       this.currentColor = this.data.label.colorCode;
       this.nameToBeMatched = this.data.label.name;
-      this.formTitle='Update Label'
-      this.buttonTitle='Update'
+      this.formTitle = "Update Label";
+      this.buttonTitle = "Update";
       this.name.patchValue(this.data.label.name);
     }
   }
@@ -64,33 +64,30 @@ export class CreateLabelComponent implements OnInit {
 
     if (this.data.action == "update") {
       this.updateLabel(obj);
-
     } else {
       this.createLabel(obj);
     }
   }
-  createLabel(obj)
-  {
+  createLabel(obj) {
     obj["createdBy"] = this._cacheService.agent.username;
-      this._httpService.createLabel(obj).subscribe(
-        (e) => {
-          this._sharedService.Interceptor("Label Created", "succ");
-          this.dialogRef.close({ event: "refresh" });
-          this._sharedService.serviceChangeMessage({msg:"update-labels"});
-        },
-        (error) => {
-          this._sharedService.Interceptor(error.error, "err");
-        }
-      );
+    this._httpService.createLabel(obj).subscribe(
+      (e) => {
+        this._sharedService.Interceptor("Label Created", "succ");
+        this.dialogRef.close({ event: "refresh" });
+        this._sharedService.serviceChangeMessage({ msg: "update-labels" });
+      },
+      (error) => {
+        this._sharedService.Interceptor(error.error, "err");
+      }
+    );
   }
-  updateLabel(obj)
-  {
+  updateLabel(obj) {
     obj["updatedBy"] = this._cacheService.agent.username;
     this._httpService.updateLabel(this.data.label._id, obj).subscribe(
       (e) => {
         this._sharedService.Interceptor("Label Updated", "succ");
         this.dialogRef.close({ event: "refresh" });
-        this._sharedService.serviceChangeMessage({msg:"update-labels"});
+        this._sharedService.serviceChangeMessage({ msg: "update-labels" });
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -99,7 +96,6 @@ export class CreateLabelComponent implements OnInit {
   }
 
   ValidateNameDuplication(control: AbstractControl) {
-  
     return this._httpService.getLabels().pipe(
       map((e) => {
         const labels = e;
