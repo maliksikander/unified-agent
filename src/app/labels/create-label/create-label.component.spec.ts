@@ -12,6 +12,8 @@ describe("createLabel component", () => {
     let _sharedService: sharedService
     let snackBar: MatSnackBar
     let dialogRef: MatDialogRef<CreateLabelComponent>
+    let _translateService: TranslateService
+
     describe("testing create label validators", () => {
         beforeEach(() => {
 
@@ -29,7 +31,8 @@ describe("createLabel component", () => {
                     width: "568px",
                     label: 'vvip',
                     action: 'new'
-                }
+                },
+                _translateService
             );
         });
         it('should be invalid if name is empty', () => {

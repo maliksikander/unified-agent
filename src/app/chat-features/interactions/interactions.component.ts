@@ -315,7 +315,7 @@ export class InteractionsComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: "490px",
       panelClass: "confirm-dialog",
-      data: { header: "Close Conversation", message: `Call in progress,Are you sure you want to close this conversation?` }
+      data: { header: this._translateService.instant('snackbar.Close-Conversation'), message: this._translateService.instant('snackbar.Call-in-progress-sure-you-want-to-close-this-conversation') }
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.event == "confirm") {
@@ -879,8 +879,8 @@ export class InteractionsComponent implements OnInit {
 
   showRequestNotification() {
     let msg: string;
-    if (this.requestAction == "transfer") msg = `Transfer request placed successfully`;
-    else if (this.requestAction == "conference") msg = `Conference request placed successfully`;
+    if (this.requestAction == "transfer") msg =this._translateService.instant('snackbar.Transfer-request-placed-successfully');
+    else if (this.requestAction == "conference") msg = this._translateService.instant('snackbar.Conference-request-placed-successfully');
 
     setTimeout(() => {
       this.snackBar.open(msg, "", {

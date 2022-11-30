@@ -19,6 +19,8 @@ describe("Appheader component", () => {
   let fixture: AppHeaderComponent;
   let _cacheService: cacheService;
   let _sharedService: sharedService;
+  let _snackBarService:any;
+  let _translateService:any;
 
   describe("testing create label validators", () => {
     beforeEach(() => {
@@ -30,7 +32,10 @@ describe("Appheader component", () => {
         _sharedService,
         _finesseService,
         _fcmService,
-        _httpService
+        _httpService,
+        _snackBarService,
+        _translateService
+
               );
     });
     it("selectedReasonCode should be undefined on component initiation", () => {

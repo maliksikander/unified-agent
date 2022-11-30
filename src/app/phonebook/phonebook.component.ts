@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { socketService } from "../services/socket.service";
 import { snackbarService } from "../services/snackbar.service";
 import { AngularMultiSelect } from "angular2-multiselect-dropdown";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-phonebook",
@@ -20,6 +21,25 @@ import { AngularMultiSelect } from "angular2-multiselect-dropdown";
   styleUrls: ["./phonebook.component.scss"]
 })
 export class PhonebookComponent implements OnInit {
+  constructor(
+    private _translateService:TranslateService,
+    private dateAdapter: DateAdapter<any>,
+    private _sharedService: sharedService,
+    private _cacheService: cacheService,
+    private _httpService: httpService,
+    private dialog: MatDialog,
+    private _router: Router,
+    private route: ActivatedRoute,
+    private _socketService: socketService,
+    private _snackbarService: snackbarService,
+  ) {
+    this.dateAdapter.setLocale("en-GB");
+     this._translateService.stream('globals.Search').subscribe((data:string)=>
+    {
+      this.labelSettings.searchPlaceholderText=data;
+    })
+  }
+
   customers;
   topicCustomerId;
   paramsSubscription;
@@ -35,7 +55,7 @@ export class PhonebookComponent implements OnInit {
   labelSettings = {
     singleSelection: false,
     text: "",
-    searchPlaceholderText: "Search",
+    searchPlaceholderText:'Search',
     selectAllText: "Select All",
     unSelectAllText: "UnSelect All",
     enableSearchFilter: true,
@@ -62,19 +82,6 @@ export class PhonebookComponent implements OnInit {
   userPreferenceObj;
   @ViewChild('dropdownRef', { static: false }) dropdownRef : AngularMultiSelect;
 
-  constructor(
-    private dateAdapter: DateAdapter<any>,
-    private _sharedService: sharedService,
-    private _cacheService: cacheService,
-    private _httpService: httpService,
-    private dialog: MatDialog,
-    private _router: Router,
-    private route: ActivatedRoute,
-    private _socketService: socketService,
-    private _snackbarService: snackbarService
-  ) {
-    this.dateAdapter.setLocale("en-GB");
-  }
 
   ngOnInit() {
     this.processURLParams();
@@ -135,7 +142,7 @@ export class PhonebookComponent implements OnInit {
         this.getCustomerSchema(savedPref);
         this.getCustomers(limit, offSet, sort, query);
       } else {
-        this._snackbarService.open("No Preference Added", "err");
+        this._snackbarService.open(this._translateService.instant('snackbar.No-Preference-Added'), "err");
       }
 
       // this._httpService.getCustomers(limit, offSet, sort, query).subscribe((e) => {
@@ -283,7 +290,7 @@ export class PhonebookComponent implements OnInit {
   editPreference(obj, id) {
     this._httpService.updateUserPreference(obj, id).subscribe(
       (e) => {
-        this._sharedService.Interceptor("Preference Updated!", "succ");
+        this._sharedService.Interceptor(this._translateService.instant('snackbar.Preference Updated!'), "succ");
       },
       (error) => {
         this._sharedService.Interceptor(error, "err");
@@ -375,6 +382,5 @@ export class PhonebookComponent implements OnInit {
   selectedFilter(e,field){
     this.selectedSearchLabel = e.value;
     this.selectedSearchField = field;
-    console.log(e, 'valueee')
   }
 }

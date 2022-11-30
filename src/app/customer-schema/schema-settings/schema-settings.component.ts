@@ -1,11 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { moveItemInArray, CdkDragDrop, transferArrayItem } from "@angular/cdk/drag-drop";
-import { MatSnackBar, MatDialog } from "@angular/material";
+import {  MatDialog } from "@angular/material";
 import { httpService } from "src/app/services/http.service";
 import { CreateAttributeComponent } from "../create-attribute/create-attribute.component";
 import { EditAttributeComponent } from "../edit-attribute/edit-attribute.component";
 import { sharedService } from "src/app/services/shared.service";
 import { snackbarService } from "src/app/services/snackbar.service";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-schema-settings",
@@ -26,7 +27,9 @@ export class SchemaSettingsComponent implements OnInit {
     private _httpService: httpService,
     private dialog: MatDialog,
     public snackBar: snackbarService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private _translateService:TranslateService
+
   ) {
     this.loadSchemas(null);
   }
@@ -96,7 +99,8 @@ export class SchemaSettingsComponent implements OnInit {
   saveOrder(orderChangeCheck, finalSchema) {
     this._httpService.changeCustomerSchemaOrder(finalSchema).subscribe(
       (e) => {
-        if (orderChangeCheck != "delete") this._sharedService.Interceptor("SORT ORDER UPDATED SUCCESSFULLY", "succ");
+        if (orderChangeCheck != "delete")
+         this._sharedService.Interceptor(this._translateService.instant('snackbar.SORT-ORDER-UPDATED-SUCCESSFULLY'), "succ");
         this.showsaveOrder = false;
         this.loadSchemas(null);
       },
@@ -129,7 +133,7 @@ export class SchemaSettingsComponent implements OnInit {
   deleteAttribute(item) {
     if (item.isDeleteAble == false) {
       // to check if attribute is deleteable or not
-      this.snackBar.open("CANNOT_DELETE_DEFAULT_ATTRIBUTE", "err");
+      this.snackBar.open(this._translateService.instant('snackbar.CANNOT-DELETE-DEFAULT-ATTRIBUTE'), "err");
     } else {
       this._httpService.deleteCustomerSchema(item._id).subscribe(
         (e) => {

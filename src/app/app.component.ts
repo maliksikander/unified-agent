@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
   isdarkMode = false;
 
   ngOnInit() {
+    console.log("yruyuryu",this._cacheService.agent)
     this._translateService.setDefaultLang('en');
     this._router.events.subscribe((event: any) => {
       if (event.url) {
