@@ -28,7 +28,6 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
     extension: 1126
   };
   selectedReasonCode;
-  selected;
   stateChangedSubscription;
   isConnected = true;
   changeLanguageCode = "en";
@@ -249,15 +248,9 @@ export class AppHeaderComponent implements OnInit,AfterViewInit {
 
   close() {}
 
-  onChange(reason,e) {
-    if(e.checked)
-    {
+  onChange(reason) {
+   
       this.selectedReasonCode = reason;
-    }
-    else
-    {
-      this.selectedReasonCode=undefined;
-    }
   }
 
   moveToLogin() {

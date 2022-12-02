@@ -233,7 +233,7 @@
               <div *ngIf="logoutReasonList" class="language-change-list" (click)="$event.stopPropagation()">
                 <p>
                   {{ "app-header.select-reason" | translate }}
-                  <mat-icon (click)="logoutReasonList = false; stateView = true" (click)="selected=null">close</mat-icon>
+                  <mat-icon (click)="logoutReasonList = false; stateView = true" (click)="selectedReasonCode=null">close</mat-icon>
                 </p>
                 <!-- <div *ngFor="let reason of reasonCodes; let i = index">
                   <span *ngIf="(reason.type | lowercase ) == 'logout'" class="logout-reason-inner">
@@ -244,7 +244,7 @@
                 <mat-radio-group aria-label="Select an option">
                   <div *ngFor="let reason of reasonCodes; let i = index">
                     <span *ngIf="(reason.type | lowercase) == 'logout'" class="logout-reason-inner">
-                      <mat-radio-button value="{{ reason }}" (change)="selected = i ; onChange(reason,$event)">{{ reason.name }}</mat-radio-button>
+                      <mat-radio-button value="{{ reason.name }}" (change)="onChange(reason)">{{ reason.name }}</mat-radio-button>
                     </span>
                   </div>
                 </mat-radio-group>
