@@ -1624,7 +1624,7 @@
             <i class="material-icons"> arrow_drop_down </i>
           </ng-container>
         </button>
-        <label *ngIf="conversation.activeChannelSessions.length == 0" style="color: grey; padding-left: 2px">{{'chat-features.interactions.send' | translate}} None </label>
+        <label *ngIf="conversation.activeChannelSessions.length == 0" style="color: grey; padding-left: 2px">{{'chat-features.interactions.none' | translate}} </label>
       </span>
 
       <mat-menu #channelSwitching="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
