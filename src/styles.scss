@@ -66,13 +66,31 @@ button {
   .mat-primary .mat-pseudo-checkbox-checked,
   .mat-primary .mat-pseudo-checkbox-indeterminate,
   .mat-checkbox-checked.mat-primary .mat-checkbox-background,
-  .mat-checkbox-indeterminate.mat-primary .mat-checkbox-background {
+  .mat-checkbox-indeterminate.mat-primary .mat-checkbox-background,
+  .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-inner-circle {
     background: $theme-green;
   }
+  .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+    border-color: $theme-green;
+}
+.mat-radio-inner-circle,
+.mat-radio-outer-circle
+{
+height: 18px;
+width: 18px;
+}
+.mat-radio-container
+{
+  height: 18px;
+  width: 18px;
+}
+  
+  
 }
 .mat-checkbox-checked:not(.mat-checkbox-disabled).mat-primary .mat-ripple-element,
 .mat-checkbox:active:not(.mat-checkbox-disabled).mat-primary .mat-ripple-element {
   background: #269ec2;
+  
 }
 //Loading Area
 .loading-area {

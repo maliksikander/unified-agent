@@ -8,7 +8,7 @@
     "CONVERSATION_MANAGER_URL": "https://cim-dev.expertflow.com/conversation-manager",
     "ROUTING_ENGINE_URL": "https://cim-dev.expertflow.com/routing-engine",
     "CIM_REPORTING_URL":"https://cim-dev.expertflow.com/realtime-reports",
-    "UNIFIED_ADMIN_URL":"https://cim.expertflow.com/unified-admin",
+    "UNIFIED_ADMIN_URL":"https://cim-dev.expertflow.com/unified-admin",
     "ENV": "prod",
     "domain": "finesse12.ucce.ipcc",
     "subDomain" : "finesse12.ucce.ipcc",

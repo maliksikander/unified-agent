@@ -241,7 +241,7 @@
                       color="primary" labelPosition="after">{{reason.name}}</mat-checkbox>
                   </span>
                 </div> -->
-                <mat-radio-group aria-label="Select an option">
+                <mat-radio-group aria-label="Select an option" >
                   <div *ngFor="let reason of reasonCodes; let i = index">
                     <span *ngIf="(reason.type | lowercase) == 'logout'" class="logout-reason-inner">
                       <mat-radio-button value="{{ reason.name }}" (change)="onChange(reason)">{{ reason.name }}</mat-radio-button>
