@@ -12,9 +12,10 @@ import { VgControlsModule } from "videogular2/compiled/src/controls/controls";
 import { VgOverlayPlayModule } from "videogular2/compiled/src/overlay-play/overlay-play";
 import { VgBufferingModule } from "videogular2/compiled/src/buffering/buffering";
 import { WrapUpFormComponent } from "./wrap-up-form/wrap-up-form.component";
+import {MessageTypeViewComponent} from './message-type-view/message-type-view.component';
 
 @NgModule({
-  declarations: [ChatsComponent, InteractionsComponent, CustomerInfoComponent, WrapUpFormComponent],
+  declarations: [ChatsComponent, InteractionsComponent, CustomerInfoComponent, WrapUpFormComponent, MessageTypeViewComponent],
   imports: [
     AgmCoreModule.forRoot({
       apiKey: "AIzaSyA_dm2C9FEp26nXSEjfN9G76juYi-CtiLE"

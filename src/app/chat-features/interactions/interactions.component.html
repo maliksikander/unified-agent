@@ -1,3 +1,4 @@
+
 <div class="interaction-main"
   [ngClass]="{ 'customer-bar-opened': isBarOPened, 'unidentified-customer': conversation.customer.isAnonymous, 'right-direction': selectedLanguage == 'ar' }">
   <div class="interaction-inner">
@@ -381,7 +382,7 @@
                     {{ referredMessage.header.sender.participant.keycloakUser.lastName | titlecase}}</span
                   >
                 </strong>
-                      <div
+                      <div class="itv"
                         [ngClass]="{
                           'file-type-message':
                             (referredMessage.body.type | lowercase) != 'plain' &&
@@ -404,7 +405,7 @@
                             <!--                            </span>-->
                           </p>
                         </div>
-
+<app-message-type-view [messageType]="(referredMessage.body.type | lowercase)" [messageTypeData]="referredMessage" [messageBody]="referredMessage.body"></app-message-type-view>
                         <!-- ---------------button---------------------- -->
                         <div *ngIf="(referredMessage.body.type | lowercase) == 'button'">
                           <!--                    <p [innerHTML]="message.body.markdownText | linkify | ibsformat"></p>-->
@@ -666,14 +667,14 @@
 
 
                                              <!-- ---------------SIMPLE PLAIN---------------------- -->
-
+                    <app-message-type-view [messageType]="(message.body.type | lowercase)" [messageTypeData]="message" [messageBody]="message.body"></app-message-type-view>
 
                     <button *ngIf="(message.body.type | lowercase)!='wrapup' && (message.body.type | lowercase)!='comment' " class="reply-quoted" mat-icon-button [matMenuTriggerFor]="menu">
                       <mat-icon>more_vert</mat-icon>
                     </button>
                     <mat-menu #menu="matMenu">
                       <button mat-menu-item class="reply-trigger" (click)="onQuotedReply(message)">reply</button>
-                    
+
                     </mat-menu>
                     <div
                       *ngIf="((message.body.type | lowercase)!='comment' && message.body.markdownText) || ((message.body.type | lowercase)=='comment' && (message.body.itemType | lowercase)=='text' && (message.header.sender.type | lowercase)=='agent')">
@@ -769,7 +770,7 @@
                       <a
                         style="cursor: pointer"
                         (click)="filePreviewOpener(message.body.attachment.mediaUrl, message.body.caption, 'image')"
-                        class="display-file display-image"
+                        class="display-file display-image ccc"
                       >
                         <img [src]="message.body.attachment?.mediaUrl | getFileUrl" />
                       </a>
@@ -888,7 +889,7 @@
                         <!--                        <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                       </div>
                     </div>
-                    
+
 
                     <!-- -------------------------video------------------------------- -->
 
@@ -1107,6 +1108,11 @@
 
                         <div class="main-comment" *ngIf="!fullPostView || message.id != selectedCommentId">
                           <div class="post-inner-content">
+<!--                            <app-message-type-view [messageType]="(message.body.type | lowercase)" [messageTypeData]="message" [messageBody]="message.body"></app-message-type-view>-->
+
+
+
+
                             <p>
                               <span
                                 [innerHTML]="
@@ -1116,7 +1122,7 @@
                                 "
                               ></span>
                             </p>
-                            <div class="shared-url shared-card-content video-player p-0" *ngIf="message?.body.itemType == 'VIDEO'">
+                            <div class="shared-url shared-card-content video-player p-0 icv" *ngIf="message?.body.itemType == 'VIDEO'">
                               <div class="media-main" *ngIf="message.body.attachment?.mediaUrl.length > 0">
                                 <vg-player>
                                   <vg-overlay-play></vg-overlay-play>

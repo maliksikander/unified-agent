@@ -3117,6 +3117,17 @@ body .ui-paginator {
   }
 }
 
+.chat-message-content{
+  p {
+    font-size: 13px;
+    margin: 0;
+    line-height: 15px;
+    word-break: break-word;
+    clear: both;
+    white-space: pre-line;
+  }
+}
+
 //Wrap-up preview if single selection
 
 

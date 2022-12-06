@@ -1,0 +1,176 @@
+<p>message-type-view works!</p>
+
+<!--Plain-->
+<div
+  *ngIf="messageTypeData.body.markdownText">
+  <p
+    class="{{ (messageTypeData.header.sender.type | lowercase) == 'customer' && messageTypeData.botSuggestions ? 'plain-text-p' : '' }}">
+                        <span
+                          [innerHTML]="conversationSettings.isMessageFormattingEnabled ? (messageBody.markdownText | linkify | ibsformat) : (messageBody.markdownText)"></span>
+<!--    <span-->
+<!--      *ngIf="(messageType) == 'plain' || ((messageType)=='comment' && (messageTypeData.header.sender.type | lowercase)=='agent')"-->
+<!--      class="message-stamp">-->
+<!--                          <span class="chat-time">{{ messageTypeData.header.timestamp | date: "shortTime" }}</span>-->
+<!--                        </span>-->
+
+    <button
+      mat-icon-button
+      class="user_settings"
+      *ngIf="(messageTypeData.header.sender.type | lowercase) == 'customer' && messageTypeData.botSuggestions"
+      (click)="messageTypeData.showBotSuggestions = !messageTypeData.showBotSuggestions"
+    ></button>
+  </p>
+</div>
+
+<!--structured/button type-->
+<div *ngIf="messageType == 'button'">
+  <p>
+    <b
+      [innerHTML]="(messageBody.additionalDetails.interactive.header.text)"></b>
+    <br/>
+    <span
+      [innerHTML]="(messageBody.additionalDetails.interactive.body.text)"></span>
+  </p>
+  <ul class="structured-actions">
+    <li *ngFor="let button of messageBody.buttons">{{ button.title }}</li>
+  </ul>
+</div>
+
+<!--Image Type-->
+<div
+  *ngIf="messageType == 'image' || (messageType == 'comment' && (messageBody.itemType | lowercase) == 'image')"
+  class="file-type-content image-content">
+  <a style="cursor: pointer"
+     class="display-file display-image">
+    <img [src]="messageTypeData.body.attachment.mediaUrl"/>
+  </a>
+</div>
+
+<!--Sticker-->
+<div *ngIf="(messageBody.type | lowercase) == 'sticker'" class="file-type-content">
+<span class="display-file display-image">
+<img [src]="messageBody.mediaUrl | getFileUrl"/>
+</span>
+</div>
+
+<!--File type message-->
+<div style="cursor: pointer"
+     (click)="filePreviewOpener(messageBody.attachment.mediaUrl, messageBody.additionalDetails.fileName, 'file')"
+     *ngIf="messageType == 'file'" class="file-type-content">
+<span class="display-file">
+<img src="assets/file-types/{{ messageBody.attachment.mimeType | getFileExt }}.svg"/>
+</span>
+  <span class="display-file-name">
+<span class="show-file-name" [matTooltip]="messageBody.additionalDetails.fileName">{{
+    messageBody.additionalDetails.fileName
+  }}</span>
+<span class="file-size">{{messageBody.attachment.size | getFormattedBytes }}</span>
+<a (click)="$event.stopPropagation()" class="file-download"
+   href="{{messageBody.attachment.mediaUrl | getFileUrl }}"
+   [download]="messageBody.additionalDetails.fileName" [attr.disabled]="dwld.busy"
+   #dwld="wmDownload" download>
+Download
+</a>
+</span>
+  <!--                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
+</div>
+
+<!--video-->
+<div
+  *ngIf="messageType == 'video' || (messageType == 'comment' && (messageBody.itemType | lowercase) == 'video')"
+  class="file-type-content">
+  <div class="shared-url shared-card-content video-player p-0">
+    <div class="media-main">
+      <vg-player>
+        <vg-overlay-play></vg-overlay-play>
+        <vg-buffering></vg-buffering>
+        <vg-controls [vgAutohide]="true" [vgAutohideTime]="3">
+          <vg-play-pause></vg-play-pause>
+          <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+          <vg-volume></vg-volume>
+          <vg-mute></vg-mute>
+          <vg-fullscreen></vg-fullscreen>
+          <mat-icon *ngIf="dispayVideoPIP" (click)="videoPIP(messageTypeData?.id)">
+            picture_in_picture_alt
+          </mat-icon>
+          <vg-scrub-bar>
+            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+            <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+          </vg-scrub-bar>
+          <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+        </vg-controls>
+        <video #media [vgMedia]="media" id="{{messageTypeData?.id}}" preload="auto">
+          <source [src]="messageBody.attachment?.mediaUrl | getFileUrl"/>
+        </video>
+      </vg-player>
+    </div>
+  </div>
+</div>
+
+
+<!--Audio-->
+<div *ngIf="messageType == 'audio'"
+     class="file-type-content audio-file">
+  <div class="shared-url shared-card-content audio-player video-player p-0">
+    <div class="media-main" style="max-width: 300px">
+      <vg-player style="height: 50px">
+        <vg-controls>
+          <vg-play-pause></vg-play-pause>
+          <vg-scrub-bar>
+            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+            <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+          </vg-scrub-bar>
+          <div class="clearfix clear"></div>
+          <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+          <vg-time-display class="total-time" vgProperty="total" vgFormat="mm:ss">
+          </vg-time-display>
+        </vg-controls>
+
+        <audio #audio [vgMedia]="audio" id="myAudio" preload="auto">
+          <source [src]="messageBody.attachment.mediaUrl | getFileUrl"/>
+        </audio>
+      </vg-player>
+    </div>
+  </div>
+</div>
+
+<!--location-->
+<div *ngIf="messageType == 'location'" class="file-type-content location-type">
+  <div class="shared-url shared-card-content location-map">
+    <agm-map [zoom]="8" [latitude]="messageBody.location.latitude"
+             [longitude]="messageBody.location.longitude" controlSize="20">
+      <agm-marker [latitude]="messageBody.location.latitude"
+                  [longitude]="messageBody.location.longitude"></agm-marker>
+    </agm-map>
+  </div>
+</div>
+
+<!--Contacts-->
+<div *ngIf="messageType == 'contact'"
+     class="file-type-content contact-type">
+<span class="display-file contact-logo">
+<!--                      <img src="assets/images/contacts-logo.svg">-->
+<img src="assets/images/dummy-user.svg"/>
+</span>
+  <div class="contact-space shared-url shared-card-content">
+    <div class="contact-inner" *ngFor="let contact of messageBody.contacts">
+<span class="contact-name card-title" [matTooltip]="contact.name.formattedName">{{
+    contact.name.formattedName }}</span>
+      <span class="contact-number card-description">{{ contact.phones[0].phone }}</span>
+    </div>
+  </div>
+</div>
+
+<!--url-->
+<div *ngIf="messageType == 'url'" class="file-type-content url-content mtv">
+  <a class="display-file url-image" href="{{ messageBody.mediaUrl }}" target="_blank">
+    <img src="assets/images/url.png" />
+  </a>
+  <div class="shared-url shared-card-content">
+    <span class="url-title card-title" [matTooltip]="messageBody.markdownText">{{ messageBody.markdownText }}</span>
+    <span class="url-description card-description"></span>
+    <a class="url-link card-action" [matTooltip]="messageBody.mediaUrl" href="{{ messageBody.mediaUrl }}" target="_blank">{{
+        messageBody.mediaUrl
+      }}</a>
+  </div>
+</div>
