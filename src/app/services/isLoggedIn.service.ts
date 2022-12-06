@@ -61,6 +61,7 @@ export class isLoggedInService {
   }
 
   autoFinesseLogin(params) {
+    console.log("finesse auto==>")
     let username = decodeURIComponent(params.get("username"));
     let authToken = decodeURIComponent(params.get("authToken"));
     let password = decodeURIComponent(params.get("password"));
@@ -78,7 +79,7 @@ export class isLoggedInService {
       authWithSSO: authWithSSO
     };
     // console.log("finesse user login==> ", obj);
-    this.fetchCCuserAndMoveToLogin(obj);
+    this.fetchCCuserAndMoveToLogin(obj,"3rdparty");
     this._finesseService.finesseAgent.extension = extension;
     this._finesseService.finesseAgent.loginId = username;
     // this._finesseService.finesseAgent.password = password;
@@ -87,7 +88,7 @@ export class isLoggedInService {
     this._finesseService.initMe();
   }
 
-  fetchCCuserAndMoveToLogin(obj) {
+  fetchCCuserAndMoveToLogin(obj,loginType) {
     this._httpService.login(obj).subscribe(
       (e) => {
         window["dataLayer"].push({
@@ -101,6 +102,16 @@ export class isLoggedInService {
         console.log("this is login resp ==>", e.data);
 
         this._cacheService.agent = e.data.keycloak_User;
+
+        if(loginType == "3rdparty")
+        {
+          console.log("finesse auto 12==>")
+        this._finesseService.checkActiveTasks(e.data.keycloak_User.id);
+        }
+        // this._finesseService.checkActiveTasks(e.data.keycloak_User.id);
+
+
+
         try {
           localStorage.setItem("ccUser", btoa(JSON.stringify(e.data.keycloak_User)));
         } catch (e) {}

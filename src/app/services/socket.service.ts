@@ -108,7 +108,7 @@ export class socketService {
     this.subscribeToSocketEvents();
   }
 
-  ciscoDialogId;
+
   subscribeToSocketEvents() {
     this.socket.on("disconnect", (reason) => {
       console.error("socket disconnect " + reason);
@@ -142,9 +142,7 @@ export class socketService {
 
     this.socket.on("taskRequest", (res: any) => {
       console.log("taskRequest==>", res);
-      //
-      if (res.cisco_data) this.ciscoDialogId = res.cisco_data.response.dialog.id;
-      //
+
       if (res.taskState && res.taskState.name.toLowerCase() == "started") {
         this.emit("topicSubscription", {
           topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.conversationId, "PRIMARY", "SUBSCRIBED"),
@@ -389,7 +387,6 @@ export class socketService {
       customerSuggestions: topicData.channelSession ? topicData.channelSession.customerSuggestions : [],
       topicParticipant: topicData.topicParticipant ? topicData.topicParticipant : "",
       firstChannelSession: topicData.channelSession ? topicData.channelSession : "",
-      ciscoDialogId: this.ciscoDialogId,
       messageComposerState: false,
       agentParticipants: []
     };
@@ -1149,6 +1146,12 @@ export class socketService {
       message.body["displayText"] = cimEvent.data.channel.channelType.name;
       message.body.markdownText = "session ended";
     }
+    else if (cimEvent.name.toLowerCase() == "call_leg_ended") {
+      message.body.type = "VOICE";
+      // message.body["displayText"] = cimEvent.data.channel.channelType.name;
+      // message.body.markdownText = "call_leg_ended";
+      message.body.data= cimEvent.data;
+    }
     if (cimEvent.name.toLowerCase() == "agent_subscribed") {
       message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
       message.body.markdownText = "has joined the conversation";
@@ -1232,6 +1235,22 @@ export class socketService {
   }
 
   createConversationDataMessage(cimEvent) {
+    let message: any = {
+      id: "",
+      header: { timestamp: "", sender: {}, channelData: {} },
+      body: { markdownText: "", type: "" }
+    };
+
+    message.id = uuidv4();
+    message.header.timestamp = cimEvent.timestamp;
+    message.body.type = "conversationData";
+    message.header.sender.type = "system";
+    message.body["conversationData"] = cimEvent.data;
+
+    return message;
+  }
+
+  createVoiceMessage(cimEvent) {
     let message: any = {
       id: "",
       header: { timestamp: "", sender: {}, channelData: {} },

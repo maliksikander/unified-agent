@@ -10,6 +10,7 @@ import { finesseService } from "src/app/services/finesse.service";
 import { cacheService } from "src/app/services/cache.service";
 import * as uuid from "uuid";
 import { snackbarService } from "src/app/services/snackbar.service";
+import { start } from "repl";
 // const mockTopicData: any = require("../../../app/mocks/topicData.json");
 
 @Component({
@@ -31,6 +32,7 @@ export class CustomerInfoComponent implements OnInit {
   @Output() expandCustomerInfo = new EventEmitter<any>();
 
   customerProfileFormData: any;
+  timeoutId;
 
   // customArray = [
   //   // 'media_channel',
@@ -64,6 +66,7 @@ export class CustomerInfoComponent implements OnInit {
     " Ev Gayforth"
   ];
   timer = "00:00";
+  voiceSession;
 
   // drop(event: CdkDragDrop<string[]>) {
   //   moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
@@ -83,6 +86,8 @@ export class CustomerInfoComponent implements OnInit {
     this._finesseService.callTimer.subscribe((res) => {
       this.timer = res;
     });
+
+    if (this.activeChannelSessions) this.getVoiceChannelSession();
   }
 
   close() {
@@ -119,6 +124,7 @@ export class CustomerInfoComponent implements OnInit {
     } else if (changes.activeChannelSessions && changes.activeChannelSessions.currentValue != undefined) {
       this.activeChannelSessions = null;
       this.activeChannelSessions = changes.activeChannelSessions.currentValue;
+      this.getVoiceChannelSession();
     } else if (changes.customerSuggestions && changes.customerSuggestions.currentValue != undefined) {
       this.customerSuggestions = null;
       this.customerSuggestions = changes.activeChannelSessions.currentValue;
@@ -129,6 +135,68 @@ export class CustomerInfoComponent implements OnInit {
 
     // this._finesseService.conversationList.next(this.activeChannelSessions);
   }
+
+  getVoiceChannelSession() {
+    this.voiceSession = this.activeChannelSessions.find((channelSession) => {
+      if (channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "external") {
+        return channelSession;
+      }
+    });
+    let cacheId = `${this._cacheService.agent.id}:${this.voiceSession.id}`;
+    let cacheDialog: any = this._finesseService.getDialogFromCache(cacheId);
+
+    console.log("voice Session==>", this.voiceSession);
+    console.log("dialog in comp==>", cacheDialog);
+    let currentParticipant = this._finesseService.getCurrentAgentFromParticipantList(cacheDialog.dialog.participants.Participant);
+    console.log("currentparticipant in comp==>", currentParticipant);
+    let startTime = new Date(currentParticipant.startTime);
+
+    this._finesseService.timeoutId = setInterval(() => {
+      let currentTime = new Date();
+      let timedurationinMS = currentTime.getTime() - startTime.getTime();
+      this.msToHMS(timedurationinMS);
+    }, 1000);
+
+    if (!this.voiceSession) {
+      if (this._finesseService.timeoutId) {
+        clearInterval(this._finesseService.timeoutId);
+      }
+    }
+  }
+
+  msToHMS(ms) {
+    // 1- Convert to seconds:
+    let sec = ms / 1000;
+    // 2- Extract hours:
+    const hours = parseInt(JSON.stringify(sec / 3600)); // 3,600 seconds in 1 hour
+    sec = sec % 3600; // seconds remaining after extracting hours
+    // 3- Extract minutes:
+    const min = parseInt(JSON.stringify(sec / 60)); // 60 seconds in 1 minute
+    // 4- Keep only seconds not extracted to minutes:
+    sec = Math.floor(sec % 60);
+    // let a = (Math.round(seconds * 100) / 100).toFixed(2);
+    // this.startTimer(hours,)
+
+    if (hours > 0) {
+      this.timer = `${hours}:${min}:${sec}`;
+    } else {
+      if (min >= 10 && sec < 10) {
+        this.timer = `${min}:0${sec}`;
+      } else if (min < 10 && sec >= 10) {
+        this.timer = `0${min}:${sec}`;
+      } else if (min > 0 && min < 10 && sec < 10) {
+        this.timer = `0${min}:0${sec}`;
+      } else if (min == 0 && min < 10 && sec < 10) {
+        this.timer = `0${min}:0${sec}`;
+      } else {
+        this.timer = `${min}:${sec}`;
+      }
+      // this.timer = `${min}:${seconds}`;
+    }
+    console.log("Timer ==>" + hours + ":" + min + ":" + sec);
+  }
+
+  startTimer(h, m, s) {}
 
   getMediaChannels() {
     try {

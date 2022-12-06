@@ -312,10 +312,10 @@
                         <label>{{ attr.key | sentenceCase }}</label>
                         {{ attr.value | spaceInArray }}
                       </li>
-                      <li *ngIf="attr.key == 'callStartTime'">
+                      <!-- <li *ngIf="attr.key == 'callStartTime'">
                         <label>{{ attr.key | sentenceCase }}</label>
                         {{ attr.value | date: "hh:mm:ss" }}
-                      </li>
+                      </li> -->
                     </div>
                   </ul>
                   <div class="channel-inner-content" *ngFor="let additionalAttribute of channelSession.channelData.additionalAttributes">

@@ -88,7 +88,6 @@ export class InteractionsComponent implements OnInit {
   noMoreConversation = false;
   pastCimEventsOffsetLimit: number = 0;
   loadingPastActivity: boolean = false;
-  // ciscoDialogId;
   activeChat = false;
   activeChannelSessionList: Array<any>;
   fbPostId: string = null;
@@ -106,7 +105,8 @@ export class InteractionsComponent implements OnInit {
     public _appConfigService: appConfigService,
     private _httpService: httpService,
     private _finesseService: finesseService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private _snackBarService: snackbarService
   ) {}
   ngOnInit() {
     //  console.log("i am called hello")
@@ -118,9 +118,6 @@ export class InteractionsComponent implements OnInit {
     //   new EmojiPicker();
     // }, 500);
 
-    // this._finesseService._ciscoDialogID.subscribe((res) => {
-    //   this.ciscoDialogId = res;
-    // });
 
     this.conversationSettings = this._sharedService.conversationSettings;
     this.loadLabels();
@@ -322,14 +319,23 @@ export class InteractionsComponent implements OnInit {
   }
 
   endCallOnFinesse() {
-    let data = {
-      action: "releaseCall",
-      parameter: {
-        dialogId: this._socketService.ciscoDialogId ? this._socketService.ciscoDialogId : this.conversation.ciscoDialogId
-      }
-    };
-    console.log("end call data==>",data)
-    // this._finesseService.endCallOnFinesse(data);
+    let voiceSession = this.conversation.activeChannelSessions.find((item) => {
+      return item.channel.channelType.name.toLowerCase() == "voice";
+    });
+
+    console.log("VoiceSession==>", voiceSession);
+    if (voiceSession) {
+      let data = {
+        action: "releaseCall",
+        parameter: {
+          dialogId: voiceSession ? voiceSession.id : null
+        }
+      };
+      this._finesseService.endCallOnFinesse(data);
+      console.log("end call data==>", data);
+    } else {
+      this._snackBarService.open("No Active Voice Session Found", "err");
+    }
   }
 
   downTheScrollAfterMilliSecs(milliseconds, behavior) {
@@ -594,7 +600,8 @@ export class InteractionsComponent implements OnInit {
             "channel_session_started",
             "channel_session_ended",
             "agent_subscribed",
-            "agent_unsubscribed"
+            "agent_unsubscribed",
+            "call_leg_ended"
           ].includes(event.name.toLowerCase())
         ) {
           let message = this._socketService.createSystemNotificationMessage(event);
@@ -609,6 +616,10 @@ export class InteractionsComponent implements OnInit {
           event.data.body["isWhisper"] = true;
           msgs.push(event.data);
         }
+        // else if(event.name.toLowerCase() == "call_leg_ended"){
+        //   let message = this._socketService.createVoiceMessage(event);
+        //   msgs.push(message);
+        // }
       });
 
       // msgs.reverse();
