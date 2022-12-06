@@ -450,7 +450,7 @@
           clear: both;
           white-space: pre-line;
           &.plain-text-p {
-            padding-right: 2em;
+            padding-right: 3em;
           }
         }
         .message-stamp {
@@ -2108,6 +2108,11 @@ vg-controls.hide {
       background: #0000002b;
     }
   }
+  .file-type-message{
+    p{
+      padding-right: 3em;
+    }
+  }
 }
 
 //Quoted message
@@ -2291,8 +2296,10 @@ vg-controls.hide {
   width: 100%;
   text-align: right;
   float: none;
+  margin-bottom: 5px;
   .chat-time {
     float: none;
+    color: #6e6e6e !important;
   }
 }
 //Transfer, consult chat
@@ -3383,7 +3390,7 @@ vg-controls.hide {
           color: #6e6e6e !important;
           }
         }
-        
+
       }
       &.file-type-message{
         .chat-time{
@@ -3414,7 +3421,7 @@ vg-controls.hide {
   margin-bottom: 5px;
 
   &.current-agents span {
-    
+
     color: #4773b5 !important;
   }
 }
