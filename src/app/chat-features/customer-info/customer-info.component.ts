@@ -191,7 +191,7 @@ export class CustomerInfoComponent implements OnInit {
         this.timer = `${min}:${sec}`;
       }
     }
-    console.log("Timer ==>" + hours + ":" + min + ":" + sec);
+    // console.log("Timer ==>" + hours + ":" + min + ":" + sec);
   }
 
   hourTimer(hour, min, sec) {
