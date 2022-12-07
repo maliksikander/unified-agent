@@ -3,7 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+
+
     "start": "ng serve",
+
+    
     "nolive": "ng serve --no-live-reload",
     
     "g": "ng serve --host 0.0.0.0 --disableHostCheck",
