@@ -142,6 +142,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
   }
 
   changeState(state) {
+
     if (state == 0) {
       this._socketService.emit("changeAgentState", {
         agentId: this._cacheService.agent.id,
@@ -233,6 +234,9 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
   }
 
   changeMRD(event, agentMrdState) {
+
+    console.log("state==>", agentMrdState)
+
     this._socketService.emit("changeAgentState", {
       agentId: this._cacheService.agent.id,
       action: "agentMRDState",
