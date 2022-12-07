@@ -142,22 +142,22 @@ export class CustomerInfoComponent implements OnInit {
         return channelSession;
       }
     });
-    let cacheId = `${this._cacheService.agent.id}:${this.voiceSession.id}`;
-    let cacheDialog: any = this._finesseService.getDialogFromCache(cacheId);
+    if (this.voiceSession) {
+      let cacheId = `${this._cacheService.agent.id}:${this.voiceSession.id}`;
+      let cacheDialog: any = this._finesseService.getDialogFromCache(cacheId);
 
-    console.log("voice Session==>", this.voiceSession);
-    console.log("dialog in comp==>", cacheDialog);
-    let currentParticipant = this._finesseService.getCurrentAgentFromParticipantList(cacheDialog.dialog.participants.Participant);
-    console.log("currentparticipant in comp==>", currentParticipant);
-    let startTime = new Date(currentParticipant.startTime);
+      // console.log("voice Session==>", this.voiceSession);
+      // console.log("dialog in comp==>", cacheDialog);
+      let currentParticipant = this._finesseService.getCurrentAgentFromParticipantList(cacheDialog.dialog.participants.Participant);
+      // console.log("currentparticipant in comp==>", currentParticipant);
+      let startTime = new Date(currentParticipant.startTime);
 
-    this._finesseService.timeoutId = setInterval(() => {
-      let currentTime = new Date();
-      let timedurationinMS = currentTime.getTime() - startTime.getTime();
-      this.msToHMS(timedurationinMS);
-    }, 1000);
-
-    if (!this.voiceSession) {
+      this._finesseService.timeoutId = setInterval(() => {
+        let currentTime = new Date();
+        let timedurationinMS = currentTime.getTime() - startTime.getTime();
+        this.msToHMS(timedurationinMS);
+      }, 1000);
+    } else {
       if (this._finesseService.timeoutId) {
         clearInterval(this._finesseService.timeoutId);
       }
@@ -174,11 +174,10 @@ export class CustomerInfoComponent implements OnInit {
     const min = parseInt(JSON.stringify(sec / 60)); // 60 seconds in 1 minute
     // 4- Keep only seconds not extracted to minutes:
     sec = Math.floor(sec % 60);
-    // let a = (Math.round(seconds * 100) / 100).toFixed(2);
-    // this.startTimer(hours,)
 
     if (hours > 0) {
-      this.timer = `${hours}:${min}:${sec}`;
+      // this.timer = `${hours}:${min}:${sec}`;
+      this.hourTimer(hours, min, sec);
     } else {
       if (min >= 10 && sec < 10) {
         this.timer = `${min}:0${sec}`;
@@ -191,12 +190,37 @@ export class CustomerInfoComponent implements OnInit {
       } else {
         this.timer = `${min}:${sec}`;
       }
-      // this.timer = `${min}:${seconds}`;
     }
     console.log("Timer ==>" + hours + ":" + min + ":" + sec);
   }
 
-  startTimer(h, m, s) {}
+  hourTimer(hour, min, sec) {
+    if (hour > 0 && hour < 10) {
+      if (min >= 10 && sec < 10) {
+        this.timer = `0${hour}:${min}:0${sec}`;
+      } else if (min < 10 && sec >= 10) {
+        this.timer = `0${hour}0${min}:${sec}`;
+      } else if (min > 0 && min < 10 && sec < 10) {
+        this.timer = `0${hour}0${min}:0${sec}`;
+      } else if (min == 0 && min < 10 && sec < 10) {
+        this.timer = `0${hour}0${min}:0${sec}`;
+      } else {
+        this.timer = `${hour}:${min}:${sec}`;
+      }
+    } else {
+      if (min >= 10 && sec < 10) {
+        this.timer = `${hour}:${min}:0${sec}`;
+      } else if (min < 10 && sec >= 10) {
+        this.timer = `${hour}0${min}:${sec}`;
+      } else if (min > 0 && min < 10 && sec < 10) {
+        this.timer = `${hour}0${min}:0${sec}`;
+      } else if (min == 0 && min < 10 && sec < 10) {
+        this.timer = `${hour}0${min}:0${sec}`;
+      } else {
+        this.timer = `${hour}:${min}:${sec}`;
+      }
+    }
+  }
 
   getMediaChannels() {
     try {
