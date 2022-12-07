@@ -39,13 +39,12 @@ export class sharedService {
 
   //preffered language code of agent
   //default is en/english
-  prefferedLanguageCode='en'
+  prefferedLanguageCode = "en";
 
   //emit the change of the language preference by agent
   //code has the language code e.g: en/ar/fr
-  changelanguage(code:string)
-  {
-    this.selectedlangugae.next(code)
+  changelanguage(code: string) {
+    this.selectedlangugae.next(code);
   }
 
   serviceChangeMessage(data: any) {
@@ -147,5 +146,4 @@ export class sharedService {
   snackErrorMessage(msg) {
     this._snackbarService.open(msg, "err");
   }
-
 }

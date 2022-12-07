@@ -20,38 +20,46 @@ export class QueueChatsComponent implements OnInit {
   queueId: string;
   filteredData = [];
 
-  constructor(private dialog: MatDialog, private _translateService:TranslateService, private _httpService: httpService, private route: ActivatedRoute,private _snackBarService :snackbarService) {}
+  constructor(
+    private dialog: MatDialog,
+    private _translateService: TranslateService,
+    private _httpService: httpService,
+    private route: ActivatedRoute,
+    private _snackBarService: snackbarService
+  ) {}
 
   ngOnInit(): void {
     this.queueId = this.route.snapshot.queryParamMap.get("queueId");
     this.timerSubscription = timer(0, 10000)
       .pipe(
         map(() => {
-          this._httpService.getAllQueuedChats().subscribe((e) => {
-            this.queuedChatList = e;
-            if (!(this.FilterSelected + 1)) {
-              if (this.queueId) {
-                this.queuedChatList.forEach((item, index) => {
-                  if (item.queueId == this.queueId) {
-                    this.filteredData = [];
-                    this.filteredData.push(item);
-                    this.FilterSelected = index;
+          this._httpService.getAllQueuedChats().subscribe(
+            (e) => {
+              this.queuedChatList = e;
+              if (!(this.FilterSelected + 1)) {
+                if (this.queueId) {
+                  this.queuedChatList.forEach((item, index) => {
+                    if (item.queueId == this.queueId) {
+                      this.filteredData = [];
+                      this.filteredData.push(item);
+                      this.FilterSelected = index;
+                    }
+                  });
+                  if (!(this.FilterSelected + 1)) {
+                    this.FilterSelected = "all";
                   }
-                });
-                if (!(this.FilterSelected + 1)) {
+                } else {
+                  this.filteredData = e;
                   this.FilterSelected = "all";
                 }
               } else {
-                this.filteredData = e;
-                this.FilterSelected = "all";
+                this.filterData();
               }
-            } else {
-              this.filterData();
+            },
+            (err) => {
+              this._snackBarService.open(this._translateService.instant("snackbar.Error-Getting-Active-Chats-with-Agents"), "err");
             }
-          },(err)=>
-          {
-            this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Chats-with-Agents'),'err');
-          }); // load data contains the http request
+          ); // load data contains the http request
         }, retry())
       )
       .subscribe();
@@ -61,7 +69,10 @@ export class QueueChatsComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: "490px",
       panelClass: "confirm-dialog",
-      data: { header: this._translateService.instant('snackbar.Close-Topic'), message: this._translateService.instant('snackbar.sure-to-close-this-topic') }
+      data: {
+        header: this._translateService.instant("snackbar.Close-Topic"),
+        message: this._translateService.instant("snackbar.sure-to-close-this-topic")
+      }
     });
     dialogRef.afterClosed().subscribe((result) => {});
   }

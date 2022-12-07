@@ -118,7 +118,7 @@ export class lazyTranslateLoader implements TranslateLoader
     LinkConversationDialogComponent,
     GrafanaComponent,
     ActiveChatsComponent,
-    QueueChatsComponent,
+    QueueChatsComponent
   ],
   imports: [
     BrowserModule,
@@ -132,14 +132,14 @@ export class lazyTranslateLoader implements TranslateLoader
           useClass: lazyTranslateLoader,
           deps: [HttpClient]
       }
-  }),
+    }),
     NgxUiLoaderHttpModule.forRoot({
       exclude: [
         `${_configService.FILE_SERVER_URL}/api/downloadFileStream`,
         "/api/downloadFileStream",
         "/api/downloadFileStream?filename",
         `${_configService.CIM_REPORTING_URL}/queued-chats/detail`,
-        `${_configService.CIM_REPORTING_URL}/queue-active-chats/detail`,
+        `${_configService.CIM_REPORTING_URL}/queue-active-chats/detail`
       ]
     }),
     NgxUiLoaderHttpModule.forRoot({
@@ -147,8 +147,7 @@ export class lazyTranslateLoader implements TranslateLoader
         `${_configService.FILE_SERVER_URL}/api/downloadFileStream`,
         "/api/downloadFileStream",
         `${_configService.CIM_REPORTING_URL}/queued-chats/detail`,
-        `${_configService.CIM_REPORTING_URL}/queue-active-chats/detail`,
-
+        `${_configService.CIM_REPORTING_URL}/queue-active-chats/detail`
       ]
     }),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)

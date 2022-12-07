@@ -89,7 +89,6 @@ export class InteractionsComponent implements OnInit {
   noMoreConversation = false;
   pastCimEventsOffsetLimit: number = 0;
   loadingPastActivity: boolean = false;
-  ciscoDialogId;
   activeChat = false;
   activeChannelSessionList: Array<any>;
   fbPostId: string = null;
@@ -108,7 +107,7 @@ export class InteractionsComponent implements OnInit {
     private _httpService: httpService,
     private _finesseService: finesseService,
     private snackBar: MatSnackBar,
-    private _translateService:TranslateService
+    private _translateService:TranslateService,
   ) {}
   ngOnInit() {
     //  console.log("i am called hello")
@@ -119,9 +118,8 @@ export class InteractionsComponent implements OnInit {
     // setTimeout(() => {
     //   new EmojiPicker();
     // }, 500);
-    this._finesseService._ciscoDialogID.subscribe((res) => {
-      this.ciscoDialogId = res;
-    });
+
+
     this.conversationSettings = this._sharedService.conversationSettings;
     this.loadLabels();
 
@@ -211,7 +209,7 @@ export class InteractionsComponent implements OnInit {
         fbChannelSession.isChecked = true;
 
         this.conversation.activeChannelSessions = this.conversation.activeChannelSessions.concat([]);
-        
+
         this.openQuotedReplyArea(message);
       } else {
         this._snackbarService.open(this._translateService.instant('snackbar.Requested-session-not-available-at-the-moment"'), "err");
@@ -221,12 +219,11 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-//Quoted Reply
+  //Quoted Reply
   onQuotedReply(message) {
     this.replyToMessageId = message.id;
     this.openQuotedReplyArea(message);
   }
-
 
   openDialog(templateRef, e): void {
     this.popTitle = e;
@@ -319,22 +316,32 @@ export class InteractionsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.event == "confirm") {
-        this._finesseService.isLeaveButtonClicked = true;
+        // this._finesseService.isLeaveButtonClicked = true;
         this.endCallOnFinesse();
-        this._finesseService.emitEndChannelSessionEvent();
-        this._socketService.topicUnsub(this.conversation);
+        // this._finesseService.emitEndChannelSessionEvent();
+        // this._socketService.topicUnsub(this.conversation);
       }
     });
   }
 
   endCallOnFinesse() {
-    let data = {
-      action: "releaseCall",
-      parameter: {
-        dialogId: this._socketService.ciscoDialogId ? this._socketService.ciscoDialogId : this.conversation.ciscoDialogId
-      }
-    };
-    this._finesseService.endCallOnFinesse(data);
+    let voiceSession = this.conversation.activeChannelSessions.find((item) => {
+      return item.channel.channelType.name.toLowerCase() == "voice";
+    });
+
+    console.log("VoiceSession==>", voiceSession);
+    if (voiceSession) {
+      let data = {
+        action: "releaseCall",
+        parameter: {
+          dialogId: voiceSession ? voiceSession.id : null
+        }
+      };
+      this._finesseService.endCallOnFinesse(data);
+      console.log("end call data==>", data);
+    } else {
+      this._snackbarService.open("No Active Voice Session Found", "err");
+    }
   }
 
   downTheScrollAfterMilliSecs(milliseconds, behavior) {
@@ -388,7 +395,7 @@ export class InteractionsComponent implements OnInit {
     //       console.log("after",this.conversation.activeChannelSessions)
     // });
 
-    this._finesseService.currentConversation.next(this.conversation);
+    // this._finesseService.currentConversation.next(this.conversation);
   }
 
   ngOnDestroy() {
@@ -566,7 +573,7 @@ export class InteractionsComponent implements OnInit {
           if (docsLength > 0) {
             this.filterAndMergePastActivities(docs);
           } else {
-            if (conversation == "FAKE_CONVERSATION") 
+            if (conversation == "FAKE_CONVERSATION")
             this._snackbarService.open(this._translateService.instant('snackbar.No-Conversation-Found'), "succ");
             this.noMoreConversation = true;
           }
@@ -600,7 +607,8 @@ export class InteractionsComponent implements OnInit {
             "channel_session_started",
             "channel_session_ended",
             "agent_subscribed",
-            "agent_unsubscribed"
+            "agent_unsubscribed",
+            "call_leg_ended"
           ].includes(event.name.toLowerCase())
         ) {
           let message = this._socketService.createSystemNotificationMessage(event);
@@ -615,6 +623,10 @@ export class InteractionsComponent implements OnInit {
           event.data.body["isWhisper"] = true;
           msgs.push(event.data);
         }
+        // else if(event.name.toLowerCase() == "call_leg_ended"){
+        //   let message = this._socketService.createVoiceMessage(event);
+        //   msgs.push(message);
+        // }
       });
 
       // msgs.reverse();

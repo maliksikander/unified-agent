@@ -4,7 +4,7 @@ import { of, throwError } from "rxjs";
 import { InteractionsComponent } from "./interactions.component";
 
 describe("InteractionsComponent", () => {
-  let component: any
+  let component: any;
   let _socketService: any;
   let _shareredService: any;
   let dialogMock: any;
@@ -22,16 +22,14 @@ describe("InteractionsComponent", () => {
         "channelProviderConfigs":[{"key":"FACEBOOK-API-KEY","value":"qq"},{"key":"FACEBOOK-HOST-URL","value":"qq"}]
       }
     }
+  };
 
-  }
-
-  describe('when only post data api returns data ', () => {
+  describe("when only post data api returns data ", () => {
     beforeEach(async () => {
       const errorResponse = new HttpErrorResponse({
-        error:"test 404 error",
-        status:404
-
-      })
+        error: "test 404 error",
+        status: 404
+      });
 
       _httpService = {
         getFBPostComments:jest.fn((postId) => { return throwError(()=> errorResponse) }),
@@ -39,31 +37,28 @@ describe("InteractionsComponent", () => {
     }
 
      component = new InteractionsComponent(_shareredService,_cacheService,_socketService,dialogMock,_snackBarService,_appConfigService,_httpService,_finneseService,snackBar,translateService);
-    
+
     });
 
-    it('FBPostComments should be null', () => {
+    it("FBPostComments should be null", () => {
       expect(component).toBeTruthy();
-      let postId=1;
-      let selectedCommentId=2;
-      component.getFullViewPostData(channelSession,postId,selectedCommentId);
+      let postId = 1;
+      let selectedCommentId = 2;
+      component.getFullViewPostData(channelSession, postId, selectedCommentId);
       expect(component.selectedCommentId).toBe(2);
       expect(component.FBPostData).toBeDefined();
       expect(component.FBPostComments).toBe(null);
-
     });
 
-    it('fullPostView should be truthy', () => {
-      let postId=9;
-      let selectedCommentId=10;
-      component.getFullViewPostData(channelSession,postId,selectedCommentId);
+    it("fullPostView should be truthy", () => {
+      let postId = 9;
+      let selectedCommentId = 10;
+      component.getFullViewPostData(channelSession, postId, selectedCommentId);
       expect(component.fullPostView).toBeTruthy();
-
     });
-
   });
 
-  describe('when both post data and fb comments api returns data ', () => {
+  describe("when both post data and fb comments api returns data ", () => {
     beforeEach(async () => {
       _httpService = {
         getFBPostComments:jest.fn((postId) => { return of([{"data":"comments"}])}),
@@ -72,35 +67,30 @@ describe("InteractionsComponent", () => {
      component = new InteractionsComponent(_shareredService,_cacheService,_socketService,dialogMock,_snackBarService,_appConfigService,_httpService,_finneseService,snackBar,translateService);
     });
 
-    it('FBPostData and FBPostComments should be defined', () => {
+    it("FBPostData and FBPostComments should be defined", () => {
       expect(component).toBeTruthy();
-      let postId=1;
-      let selectedCommentId=2;
-      component.getFullViewPostData(channelSession,postId,selectedCommentId);
+      let postId = 1;
+      let selectedCommentId = 2;
+      component.getFullViewPostData(channelSession, postId, selectedCommentId);
       expect(component.selectedCommentId).toBe(selectedCommentId);
       expect(component.FBPostData).toBeDefined();
       expect(component.FBPostComments).toBeDefined();
-
     });
 
-    it('fullPostView should be truthy',() => {
-      let postId=9;
-      let selectedCommentId=10;
-       component.getFullViewPostData(channelSession,postId,selectedCommentId);
+    it("fullPostView should be truthy", () => {
+      let postId = 9;
+      let selectedCommentId = 10;
+      component.getFullViewPostData(channelSession, postId, selectedCommentId);
       expect(component.fullPostView).toBeTruthy();
-
     });
-
   });
 
-  describe('when both apis returns error', () => {
-
+  describe("when both apis returns error", () => {
     beforeEach(async () => {
       const errorResponse = new HttpErrorResponse({
-        error:"test 404 error",
-        status:404
-
-      })
+        error: "test 404 error",
+        status: 404
+      });
       _httpService = {
         getFBPostComments:jest.fn((postId) => { return throwError(()=> errorResponse) }),
         getFBPostData: jest.fn((postId) => { return throwError(()=> errorResponse)})
@@ -108,46 +98,43 @@ describe("InteractionsComponent", () => {
      component = new InteractionsComponent(_shareredService,_cacheService,_socketService,dialogMock,_snackBarService,_appConfigService,_httpService,_finneseService,snackBar,translateService);
     });
 
-    it('Both FBPostData and FBPostComments should be null', () => {
+    it("Both FBPostData and FBPostComments should be null", () => {
       expect(component).toBeTruthy();
-      let postId=1;
-      let selectedCommentId=2;
-      component.getFullViewPostData(channelSession,postId,selectedCommentId);
+      let postId = 1;
+      let selectedCommentId = 2;
+      component.getFullViewPostData(channelSession, postId, selectedCommentId);
       expect(component.selectedCommentId).toBe(null);
       expect(component.FBPostData).toBe(null);
       expect(component.fullPostView).toBeFalsy();
       expect(component.FBPostComments).toBe(null);
-
     });
 
-    it('fullPostView should be falsy', () => {
-      let postId=9;
-      let selectedCommentId=10;
-      component.getFullViewPostData(channelSession,postId,selectedCommentId);
+    it("fullPostView should be falsy", () => {
+      let postId = 9;
+      let selectedCommentId = 10;
+      component.getFullViewPostData(channelSession, postId, selectedCommentId);
       expect(component.fullPostView).toBeFalsy();
-
     });
   });
 
-  describe('Quoted Reply', () => {
-
+  describe("Quoted Reply", () => {
     beforeEach(async () => {
      component = new InteractionsComponent(_shareredService,_cacheService,_socketService,dialogMock,_snackBarService,_appConfigService,_httpService,_finneseService,snackBar,translateService);
     });
 
-    it('replyToMessageId should be defined', () => {
-      let message={
-        id:"123"
-      }
+    it("replyToMessageId should be defined", () => {
+      let message = {
+        id: "123"
+      };
       component.onQuotedReply(message);
-      expect(component.replyToMessageId).toEqual(message.id)
+      expect(component.replyToMessageId).toEqual(message.id);
     });
-    it('quoted message should be defined', () => {
-      let message={
-        id:"123"
-      }
+    it("quoted message should be defined", () => {
+      let message = {
+        id: "123"
+      };
       component.onQuotedReply(message);
-      expect(component.quotedMessage).toEqual(message)
+      expect(component.quotedMessage).toEqual(message);
     });
   });
-})
+});

@@ -35,7 +35,7 @@ export class SubscribedListPreviewComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadLabels()
+    this.loadLabels();
   }
   loadLabels() {
     this._httpService.getLabels().subscribe((e) => {

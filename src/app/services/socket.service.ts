@@ -41,7 +41,7 @@ export class socketService {
     private ngxService: NgxUiLoaderService,
     private _httpService: httpService,
     private _authService: AuthService,
-    private _translateService:TranslateService
+    private _translateService: TranslateService
   ) {
     // this.onTopicData(mockTopicData, "12345", "");
   }
@@ -76,19 +76,19 @@ export class socketService {
       this.isSocketConnected = false;
       this.ngxService.stop();
       try {
-        console.error(err.data);
+        console.log(err.data);
         console.error("socket connect_error ", err.data && err.data.content ? err.data.content : err);
         if (err.data && err.data.content && err.data.content && err.data.content.key == "LM" && err.data.content.licStatus) {
           this._snackbarService.open(this._translateService.instant('snackbar.The-license-is') + err.data.content.licStatus, "err");
         } else {
           this._snackbarService.open(err.data && err.data.content ? err.data.content.msg :this._translateService.instant('snackbar.unable to connect to chat'), "err");
         }
-      } catch (err) { }
+      } catch (err) {}
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) { }
+        } catch (e) {}
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -107,7 +107,8 @@ export class socketService {
 
     this.subscribeToSocketEvents();
   }
-  ciscoDialogId;
+
+
   subscribeToSocketEvents() {
     this.socket.on("disconnect", (reason) => {
       console.error("socket disconnect " + reason);
@@ -120,7 +121,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) { }
+        } catch (e) {}
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -140,8 +141,8 @@ export class socketService {
     });
 
     this.socket.on("taskRequest", (res: any) => {
-      console.log("taskRequest ", res);
-      if (res.cisco_data) this.ciscoDialogId = res.cisco_data.response.dialog.id;
+      console.log("taskRequest==>", res);
+
       if (res.taskState && res.taskState.name.toLowerCase() == "started") {
         this.emit("topicSubscription", {
           topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.conversationId, "PRIMARY", "SUBSCRIBED"),
@@ -166,6 +167,7 @@ export class socketService {
 
     this.socket.on("onCimEvent", (res: any) => {
       try {
+        console.log("cimEvent==>", res);
         this.onCimEventHandler(JSON.parse(res.cimEvent), res.conversationId);
       } catch (err) {
         console.error("error on onCimEvent ==>" + err);
@@ -206,7 +208,6 @@ export class socketService {
       this.removeConversation(res.conversationId);
     });
 
-
     this.socket.on("socketSessionRemoved", (res: any) => {
       console.log("socketSessionRemoved", res);
       this.onSocketSessionRemoved();
@@ -214,14 +215,14 @@ export class socketService {
 
     this.socket.on("onPullModeSubscribedList", (res: any) => {
       console.log("onPullModeSubscribedList", res);
-      this._translateService.stream('globals.no-new-conversation').subscribe((text:string)=>
-      {
-        this._sharedService.mainPagetile = text;
-      },
-      (err)=>
-      {
-        console.error("Error translating key 'globals.no-new-conversation'",err)
-      })
+      this._translateService.stream("globals.no-new-conversation").subscribe(
+        (text: string) => {
+          this._sharedService.mainPagetile = text;
+        },
+        (err) => {
+          console.error("Error translating key 'globals.no-new-conversation'", err);
+        }
+      );
       this._pullModeService.updateSubscribedList(res);
     });
 
@@ -259,7 +260,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) { }
+    } catch (err) {}
   }
 
   listen(eventName: string) {
@@ -307,7 +308,7 @@ export class socketService {
           cimEvent.name.toLowerCase() == "agent_message" &&
           cimEvent.data.body.type.toLowerCase() == "comment" &&
           cimEvent.data.body.itemType.toLowerCase() != "text" &&
-          cimEvent.data.body.itemType.toLowerCase() != "video"&&
+          cimEvent.data.body.itemType.toLowerCase() != "video" &&
           cimEvent.data.body.itemType.toLowerCase() != "image"
         ) {
           this.processFaceBookCommentActions(sameTopicConversation.messages, cimEvent.data);
@@ -323,7 +324,6 @@ export class socketService {
             cimMessage.header["status"] = "sent";
             cimMessage.body["isWhisper"] = cimEvent.name.toLowerCase() == "whisper_message" ? true : false;
           } else {
-
             // if no, marked staus as sent and push in the conversation
             cimEvent.data.header["status"] = "sent";
             cimEvent.data.body["isWhisper"] = cimEvent.name.toLowerCase() == "whisper_message" ? true : false;
@@ -368,7 +368,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) { }
+    } catch (e) {}
     this._cacheService.resetCache();
     this._snackbarService.open(this._translateService.instant('snackbar.you-are-logged-In-from-another-session'), "err");
     alert(this._translateService.instant('snackbar.you-are-logged-In-from-another-session'));
@@ -388,9 +388,8 @@ export class socketService {
       customerSuggestions: topicData.channelSession ? topicData.channelSession.customerSuggestions : [],
       topicParticipant: topicData.topicParticipant ? topicData.topicParticipant : "",
       firstChannelSession: topicData.channelSession ? topicData.channelSession : "",
-      ciscoDialogId: this.ciscoDialogId,
       messageComposerState: false,
-      agentParticipants: [],
+      agentParticipants: []
     };
 
     // feed the conversation with type "messages"
@@ -406,16 +405,25 @@ export class socketService {
         if (
           event.name.toLowerCase() == "agent_message" &&
           event.data.body.type.toLowerCase() == "comment" &&
-          event.data.body.itemType.toLowerCase() != "text"&&
-          event.data.body.itemType.toLowerCase() != "video"&&
-          event.data.body.itemType.toLowerCase() != "image" 
+          event.data.body.itemType.toLowerCase() != "text" &&
+          event.data.body.itemType.toLowerCase() != "video" &&
+          event.data.body.itemType.toLowerCase() != "image"
         ) {
           this.processFaceBookCommentActions(conversation.messages, event.data);
         } else {
           event.data.header["status"] = "sent";
           conversation.messages.push(event.data);
         }
-      } else if (["task_enqueued", "no_agent_available", "channel_session_started", "channel_session_ended", "agent_subscribed", "agent_unsubscribed"].includes(event.name.toLowerCase())) {
+      } else if (
+        [
+          "task_enqueued",
+          "no_agent_available",
+          "channel_session_started",
+          "channel_session_ended",
+          "agent_subscribed",
+          "agent_unsubscribed"
+        ].includes(event.name.toLowerCase())
+      ) {
         let message = this.createSystemNotificationMessage(event);
         if (message) {
           conversation.messages.push(message);
@@ -473,11 +481,9 @@ export class socketService {
           repliedChannelSession["isChecked"] = true;
         }
       } else if (e.type.toLowerCase() == "agent") {
-
         if (e.participant.keycloakUser.id != conversation.topicParticipant.participant.keycloakUser.id) {
           conversation.agentParticipants.push(e);
         }
-
       }
     });
 
@@ -719,7 +725,6 @@ export class socketService {
   }
 
   handleTaskEnqueuedEvent(cimEvent, conversationId) {
-
     let conversation = this.conversations.find((e) => {
       return e.conversationId == conversationId;
     });
@@ -730,7 +735,6 @@ export class socketService {
         conversation.messages.push(message);
       }
     }
-
   }
 
   handleNoAgentEvent(cimEvent, conversationId) {
@@ -793,20 +797,15 @@ export class socketService {
     });
 
     if (conversation) {
-
       if (cimEvent.name.toLowerCase() == "agent_subscribed") {
-
         if (cimEvent.data.agentParticipant.participant.keycloakUser.id != conversation.topicParticipant.participant.keycloakUser.id) {
           conversation.agentParticipants.push(cimEvent.data.agentParticipant);
           conversation.agentParticipants = conversation.agentParticipants.concat([]);
         }
       } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
-
         conversation.agentParticipants = conversation.agentParticipants.filter((participant) => {
-
           return participant.participant.keycloakUser.id != cimEvent.data.agentParticipant.participant.keycloakUser.id;
         });
-
       }
 
       let message = this.createSystemNotificationMessage(cimEvent);
@@ -814,7 +813,6 @@ export class socketService {
       conversation.messages.push(message);
     }
   }
-
 
   onSocketErrors(res) {
     this._snackbarService.open(this._translateService.instant('snackbar.on') + res.task + " " + res.msg, "err");
@@ -851,7 +849,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) { }
+    } catch (e) {}
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
@@ -1149,6 +1147,12 @@ export class socketService {
       message.body["displayText"] = cimEvent.data.channel.channelType.name;
       message.body.markdownText = "session ended";
     }
+    else if (cimEvent.name.toLowerCase() == "call_leg_ended") {
+      message.body.type = "VOICE";
+      // message.body["displayText"] = cimEvent.data.channel.channelType.name;
+      // message.body.markdownText = "call_leg_ended";
+      message.body.data= cimEvent.data;
+    }
     if (cimEvent.name.toLowerCase() == "agent_subscribed") {
       message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
       message.body.markdownText = "has joined the conversation";
@@ -1173,10 +1177,7 @@ export class socketService {
       } else {
         message = null;
       }
-
-
     } else if (cimEvent.name.toLowerCase() == "no_agent_available") {
-
       let mode;
       let direction;
 
@@ -1199,9 +1200,6 @@ export class socketService {
       } else {
         message = null;
       }
-
-
-
     }
 
     return message;
@@ -1238,6 +1236,22 @@ export class socketService {
   }
 
   createConversationDataMessage(cimEvent) {
+    let message: any = {
+      id: "",
+      header: { timestamp: "", sender: {}, channelData: {} },
+      body: { markdownText: "", type: "" }
+    };
+
+    message.id = uuidv4();
+    message.header.timestamp = cimEvent.timestamp;
+    message.body.type = "conversationData";
+    message.header.sender.type = "system";
+    message.body["conversationData"] = cimEvent.data;
+
+    return message;
+  }
+
+  createVoiceMessage(cimEvent) {
     let message: any = {
       id: "",
       header: { timestamp: "", sender: {}, channelData: {} },

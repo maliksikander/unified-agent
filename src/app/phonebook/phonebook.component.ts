@@ -62,7 +62,7 @@ export class PhonebookComponent implements OnInit {
     primaryKey: "_id"
   };
   labels = [];
-  selectedSearchField='';
+  selectedSearchField = "";
   rows: Array<any> = [];
   cols: Array<any> = [];
   limit = 25;
@@ -72,7 +72,7 @@ export class PhonebookComponent implements OnInit {
   query = {};
   filterQuery = [];
   enableTable: boolean = false;
-  selectedSearchLabel = '';
+  selectedSearchLabel = "";
   submitted: boolean;
   filterOnOff: boolean = false;
   isFilterListOpened: boolean = false;
@@ -80,7 +80,7 @@ export class PhonebookComponent implements OnInit {
   removable = true;
   schemaList: Array<any> = [];
   userPreferenceObj;
-  @ViewChild('dropdownRef', { static: false }) dropdownRef : AngularMultiSelect;
+  @ViewChild("dropdownRef", { static: false }) dropdownRef: AngularMultiSelect;
 
 
   ngOnInit() {
@@ -96,8 +96,8 @@ export class PhonebookComponent implements OnInit {
         this.conversationId = params["conversationId"];
         this.topicCustomerId = params["topicCustomerId"];
         if (params["filterKey"]) {
-          this.selectedSearchLabel=params["filterLabel"];
-          this.selectedSearchField=params["filterKey"];
+          this.selectedSearchLabel = params["filterLabel"];
+          this.selectedSearchField = params["filterKey"];
           this.filterValue = params["filterValue"];
           this.filter(params["filterKey"]);
         }
@@ -167,8 +167,7 @@ export class PhonebookComponent implements OnInit {
       if (schemaIndex != -1) {
         item.channelTypes = this.schemaList[schemaIndex].channelTypes;
         item.header = this.schemaList[schemaIndex].label;
-        if(item.field.toLowerCase()!=='labels')
-            finalArray.push(item);
+        if (item.field.toLowerCase() !== "labels") finalArray.push(item);
       }
     });
     this.cols = finalArray;
@@ -182,16 +181,15 @@ export class PhonebookComponent implements OnInit {
   // }
 
   filter(field) {
-    if(this.filterValue && field)
-    {
-    let filterVal = JSON.parse(JSON.stringify(this.filterValue));
-    filterVal = encodeURIComponent(filterVal);
-    this.query = { field: field, value: filterVal };
-    this.filterQuery = [];
-    this.filterQuery.push({ field: field, value: this.filterValue });
-    // this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
-    this.offSet=0;
-    this.loadCustomerOnSearchOp(this.limit, this.offSet, this.sort, this.query);
+    if (this.filterValue && field) {
+      let filterVal = JSON.parse(JSON.stringify(this.filterValue));
+      filterVal = encodeURIComponent(filterVal);
+      this.query = { field: field, value: filterVal };
+      this.filterQuery = [];
+      this.filterQuery.push({ field: field, value: this.filterValue });
+      // this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+      this.offSet = 0;
+      this.loadCustomerOnSearchOp(this.limit, this.offSet, this.sort, this.query);
     }
   }
 
@@ -202,8 +200,8 @@ export class PhonebookComponent implements OnInit {
     this.sort = {};
     this.rows = null;
     this.filterValue = null;
-    this.selectedSearchField='';
-    this.selectedSearchLabel='';
+    this.selectedSearchField = "";
+    this.selectedSearchLabel = "";
     this.sortArrowDown = false;
     this.sortArrowUp = false;
     this.filterQuery = [];
@@ -260,14 +258,13 @@ export class PhonebookComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if ((result && result.event && result.event == "refresh") || (result && result.event && result.event == "delete")) {
-       this.loadLabelsAndCustomer()
+        this.loadLabelsAndCustomer();
       }
     });
   }
   //to open conversation view for outbound chat
-  openCOnversationView(customer)
-  {
-    this._socketService.onTopicData({customer}, 'FAKE_CONVERSATION', '')
+  openCOnversationView(customer) {
+    this._socketService.onTopicData({ customer }, "FAKE_CONVERSATION", "");
     this._router.navigate(["customers"]);
   }
 
@@ -379,7 +376,7 @@ export class PhonebookComponent implements OnInit {
     this.isFilterListOpened = !this.isFilterListOpened;
   }
 
-  selectedFilter(e,field){
+  selectedFilter(e, field) {
     this.selectedSearchLabel = e.value;
     this.selectedSearchField = field;
   }

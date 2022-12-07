@@ -2,8 +2,8 @@ import { CreateLabelComponent } from "./create-label.component";
 import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from "@angular/material";
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
-import { of } from 'rxjs';
-import {TranslateService} from '@ngx-translate/core';
+import { of } from "rxjs";
+import { TranslateService } from "@ngx-translate/core";
 
 describe("createLabel component", () => {
     let fixture: CreateLabelComponent;
@@ -49,15 +49,12 @@ describe("createLabel component", () => {
             fixture.name.patchValue(`qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
             qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
             qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq`);
-            expect(fixture.name.hasError('maxlength')).toBeTruthy();
-        });
-        // it('should be invalid if name of the label is already created', () => {
-        //     fixture.name.patchValue('vvip');
+      expect(fixture.name.hasError("maxlength")).toBeTruthy();
+    });
+    // it('should be invalid if name of the label is already created', () => {
+    //     fixture.name.patchValue('vvip');
 
-        //     expect(fixture.name.hasError('validName')).toBeTruthy();
-        // });
-
-    })
-
-
-})
+    //     expect(fixture.name.hasError('validName')).toBeTruthy();
+    // });
+  });
+});

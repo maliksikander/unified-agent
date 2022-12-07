@@ -72,13 +72,11 @@ export class CreateLabelComponent implements OnInit {
 
     if (this.data.action == "update") {
       this.updateLabel(obj);
-
     } else {
       this.createLabel(obj);
     }
   }
-  createLabel(obj)
-  {
+  createLabel(obj) {
     obj["createdBy"] = this._cacheService.agent.username;
       this._httpService.createLabel(obj).subscribe(
         (e) => {
@@ -91,14 +89,13 @@ export class CreateLabelComponent implements OnInit {
         }
       );
   }
-  updateLabel(obj)
-  {
+  updateLabel(obj) {
     obj["updatedBy"] = this._cacheService.agent.username;
     this._httpService.updateLabel(this.data.label._id, obj).subscribe(
       (e) => {
         this._sharedService.Interceptor(this._translateService.instant('snackbar.Label-Updated'), "succ");
         this.dialogRef.close({ event: "refresh" });
-        this._sharedService.serviceChangeMessage({msg:"update-labels"});
+        this._sharedService.serviceChangeMessage({ msg: "update-labels" });
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -108,7 +105,6 @@ export class CreateLabelComponent implements OnInit {
   }
 
   ValidateNameDuplication(control: AbstractControl) {
-  
     return this._httpService.getLabels().pipe(
       map((e) => {
         const labels = e;

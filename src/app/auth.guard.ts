@@ -34,8 +34,7 @@ export class AuthGuard implements CanActivate {
         resPath = "customer-list";
       } else if (path.includes("customers")) {
         resPath = "conversation";
-      }
-      else if (path.includes("label")) {
+      } else if (path.includes("label")) {
         resPath = "customer-labels";
       }
       let value = this.checkResource(resPath, resources);

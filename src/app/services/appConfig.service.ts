@@ -15,8 +15,8 @@ export class appConfigService {
     Rona_State_On_Cisco: "",
     ROUTING_ENGINE_URL: "",
     CIM_REPORTING_URL: "",
-    UNIFIED_ADMIN_URL:"",
-    CCM_URL:""
+    UNIFIED_ADMIN_URL: "",
+    CCM_URL: ""
   };
 
   constructor(private _httpClient: HttpClient) {}

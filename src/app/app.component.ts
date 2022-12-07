@@ -6,7 +6,7 @@ import { sharedService } from "./services/shared.service";
 import { OverlayContainer } from "@angular/cdk/overlay";
 import { httpService } from "./services/http.service";
 import { cacheService } from "./services/cache.service";
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-root",
@@ -34,20 +34,21 @@ export class AppComponent implements OnInit {
   isdarkMode = false;
 
   ngOnInit() {
-    console.log("yruyuryu",this._cacheService.agent)
+    // console.log("yruyuryu",this._cacheService.agent)
     this._translateService.setDefaultLang('en');
     this._router.events.subscribe((event: any) => {
       if (event.url) {
         this.currentRoute = event.url;
       }
     });
-    this._httpService.getConversationSettings().subscribe((data)=>
-    {
-      this._sharedService.setConversationSettings(data[0]);
-    },(err)=>
-    {
-      console.error("unable to get conversation setting",err)
-    })
+    this._httpService.getConversationSettings().subscribe(
+      (data) => {
+        this._sharedService.setConversationSettings(data[0]);
+      },
+      (err) => {
+        console.error("unable to get conversation setting", err);
+      }
+    );
     let customerSchema: any;
     let channelTypes: any;
     try {
@@ -64,8 +65,7 @@ export class AppComponent implements OnInit {
 
   updateTheme(theme: string) {
     try {
-      this._httpService.updateAgentSettings({ theme: theme }, this._cacheService.agent.id).subscribe((e) => {
-      });
+      this._httpService.updateAgentSettings({ theme: theme }, this._cacheService.agent.id).subscribe((e) => {});
     } catch (err) {
       console.error(`error updating theme`, err);
     }
@@ -76,28 +76,25 @@ export class AppComponent implements OnInit {
     const darkClassName = "darkMode";
     this.className = this.themeChange ? darkClassName : "";
     if (this.themeChange === true) {
-      if(!e.onlySwitch)
-      {
-      clearTimeout(this.timer);
-      this.timer = setTimeout(() => {
-        this.updateTheme("dark");
-      }, 5000);
+      if (!e.onlySwitch) {
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+          this.updateTheme("dark");
+        }, 5000);
       }
       this.overlay.getContainerElement().classList.add(darkClassName);
     } else {
-      if(!e.onlySwitch)
-      {
-      clearTimeout(this.timer);
-      this.timer = setTimeout(() => {
-        this.updateTheme("light");
-      }, 5000);
-     }
+      if (!e.onlySwitch) {
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+          this.updateTheme("light");
+        }, 5000);
+      }
       this.overlay.getContainerElement().classList.remove(darkClassName);
     }
   }
-  switchLanguage(e)
-  {
-    this._translateService.use(e.language)
+  switchLanguage(e) {
+    this._translateService.use(e.language);
   }
 
   // checks for the update of pwa app

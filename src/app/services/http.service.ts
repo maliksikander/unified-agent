@@ -24,7 +24,9 @@ export class httpService {
       activities: "/customer-topics/customer",
       agentSetting: "/agentSetting",
       forms: "/forms",
-      agentInQueueList:"/precision-queues/available-agents"
+      agentInQueueList: "/precision-queues/available-agents",
+      ccmChannelSession: "/message/receive",
+      tasks:"/tasks"
     };
   }
 
@@ -104,11 +106,14 @@ export class httpService {
     });
   }
   getActiveConversationData(conversationId): Observable<any> {
-    return this._httpClient.get<any>(`${this._appConfigService.config.CONVERSATION_MANAGER_URL}/customer-topics/${conversationId}/conversation-data`, {
-      headers: new HttpHeaders({
-        "Content-Type": "application/json"
-      })
-    });
+    return this._httpClient.get<any>(
+      `${this._appConfigService.config.CONVERSATION_MANAGER_URL}/customer-topics/${conversationId}/conversation-data`,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }
+    );
   }
   getQueuedChats(queueId): Observable<any> {
     return this._httpClient.get<any>(`https://a25b1bfb-39a5-45af-8ebb-e79a6dad8273.mock.pstmn.io/queued-requests-detail/${queueId}`, {
@@ -324,27 +329,27 @@ export class httpService {
     });
   }
   startOutboundConversation(cimMessage): Observable<any> {
-    return this._httpClient.post<any>(this._appConfigService.config.CCM_URL + '/message/receive', cimMessage, {
+    return this._httpClient.post<any>(this._appConfigService.config.CCM_URL + "/message/receive", cimMessage, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
     });
   }
-  getSupportedLanguages():Observable<any>{
+  getSupportedLanguages(): Observable<any> {
     return this._httpClient.get<any>(`${this._appConfigService.config.UNIFIED_ADMIN_URL}/locale-setting`, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
     });
   }
-  getReasonCodes():Observable<any>{
+  getReasonCodes(): Observable<any> {
     return this._httpClient.get<any>(`${this._appConfigService.config.UNIFIED_ADMIN_URL}/reasons`, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
     });
   }
-  getConversationSettings():Observable<any>{
+  getConversationSettings(): Observable<any> {
     return this._httpClient.get<any>(`${this._appConfigService.config.UNIFIED_ADMIN_URL}/agent-desk-settings`, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
@@ -353,25 +358,61 @@ export class httpService {
   }
 
   getAgentsInQueue(conversationId): Observable<any> {
-    return this._httpClient.get<any>(`${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.agentInQueueList}?conversationId=${conversationId}`, {
+    return this._httpClient.get<any>(
+      `${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.agentInQueueList}?conversationId=${conversationId}`,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }
+    );
+  }
+
+  getCustomerByChannelTypeAndIdentifier(channelType, customerChannelIdentifier): Observable<any> {
+    return this._httpClient.get<any>(
+      `${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.customers}?channelType=${channelType}&customerChannelIdentifier=${customerChannelIdentifier}`,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }
+    );
+  }
+
+  getFBPostData(postId, accessToken, FBHOSTAPI): Observable<any> {
+    return this._httpClient.get<any>(`${FBHOSTAPI}${postId}?access_token=${accessToken}&fields=attachments,from,created_time,story,message`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+  getFBPostComments(postId, accessToken, FBHOSTAPI): Observable<any> {
+    return this._httpClient.get<any>(
+      `${FBHOSTAPI}${postId}/comments?access_token=${accessToken}&limit=4&order=reverse_chronological&fields=created_time,name,from,message,attachment,comments.filter(stream)`,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }
+    );
+  }
+
+  ccmVOICEChannelSession(data): Observable<any> {
+    return this._httpClient.post<any>(`${this._appConfigService.config.CCM_URL}${this.apiEndpoints.ccmChannelSession}`, data, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
     });
   }
 
-getFBPostData(postId,accessToken,FBHOSTAPI): Observable<any> {
-  return this._httpClient.get<any>(`${FBHOSTAPI}${postId}?access_token=${accessToken}&fields=attachments,from,created_time,story,message`, {
-    headers: new HttpHeaders({
-      "Content-Type": "application/json"
-    })
-  });
-}
-getFBPostComments(postId,accessToken,FBHOSTAPI): Observable<any> {
-  return this._httpClient.get<any>(`${FBHOSTAPI}${postId}/comments?access_token=${accessToken}&limit=4&order=reverse_chronological&fields=created_time,name,from,message,attachment,comments.filter(stream)`, {
-    headers: new HttpHeaders({
-      "Content-Type": "application/json"
-    })
-  });
-}
+  getRETasksList(agentId): Observable<any> {
+    return this._httpClient.get<any>(
+      `${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.tasks}?agentId=${agentId}`,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }
+    );
+  }
 }

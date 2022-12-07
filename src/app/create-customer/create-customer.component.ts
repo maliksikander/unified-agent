@@ -17,7 +17,7 @@ export class CreateCustomerComponent implements OnInit {
   formValidation = {};
   attributeTypes: any[] = [];
   channelTypeList: any[] = [];
-  @ViewChild('dropdownRef', { static: false }) dropdownRef: AngularMultiSelect;
+  @ViewChild("dropdownRef", { static: false }) dropdownRef: AngularMultiSelect;
 
   constructor(
     private dateAdapter: DateAdapter<any>,
@@ -27,7 +27,7 @@ export class CreateCustomerComponent implements OnInit {
     private fb: FormBuilder,
     private _httpService: httpService,
     private _sharedService: sharedService,
-    private _translateService:TranslateService,
+    private _translateService: TranslateService,
     private _cacheService: cacheService,
     private cd: ChangeDetectorRef,
     private snackbarService: snackbarService
@@ -38,7 +38,6 @@ export class CreateCustomerComponent implements OnInit {
 
   schemaAttributes;
 
-
   fieldArray = [];
   dataReady: boolean = false;
   customerForm: FormGroup;
@@ -47,12 +46,12 @@ export class CreateCustomerComponent implements OnInit {
   labelSettings = {
     singleSelection: false,
     text: "",
-    filterSelectAllText: this._translateService.instant('globals.select-all'),
-    filterUnSelectAllText: this._translateService.instant('globals.unselect-all'),
-    searchPlaceholderText: this._translateService.instant('globals.Search'),
-    selectAllText: this._translateService.instant('globals.select-all'),
-    unSelectAllText: this._translateService.instant('globals.unselect-all'),
-    noDataLabel: this._translateService.instant('globals.no-data-available'),
+    filterSelectAllText: this._translateService.instant("globals.select-all"),
+    filterUnSelectAllText: this._translateService.instant("globals.unselect-all"),
+    searchPlaceholderText: this._translateService.instant("globals.Search"),
+    selectAllText: this._translateService.instant("globals.select-all"),
+    unSelectAllText: this._translateService.instant("globals.unselect-all"),
+    noDataLabel: this._translateService.instant("globals.no-data-available"),
     enableSearchFilter: true,
     addNewItemOnFilter: true,
     primaryKey: "_id"
@@ -62,7 +61,7 @@ export class CreateCustomerComponent implements OnInit {
     this.customerForm = new FormGroup({});
 
     this.getCustomerSchema();
-    this.getAllLabels()
+    this.getAllLabels();
     this.cd.detectChanges();
   }
 
@@ -194,11 +193,9 @@ export class CreateCustomerComponent implements OnInit {
     control.removeAt(i);
   }
 
-
   onSave() {
     let data = this.customerForm.value;
-    if (data.labels == "")
-      data.labels = []
+    if (data.labels == "") data.labels = [];
     data = this.fetchTheIdsOfLabels(data);
     data.isAnonymous = false;
     // console.log("save result==>", data);
@@ -280,8 +277,8 @@ export class CreateCustomerComponent implements OnInit {
   OnItemDeSelect(item: any) {
     this.dropdownRef.clearSearch();
   }
-  onSelectAll(items: any) { }
-  onDeSelectAll(items: any) { }
+  onSelectAll(items: any) {}
+  onDeSelectAll(items: any) {}
 
   // addPhone(): void {
   //   // (this.userForm.get('phones') as FormArray).push(
