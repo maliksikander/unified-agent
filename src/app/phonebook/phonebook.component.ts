@@ -290,7 +290,7 @@ export class PhonebookComponent implements OnInit {
   editPreference(obj, id) {
     this._httpService.updateUserPreference(obj, id).subscribe(
       (e) => {
-        this._sharedService.Interceptor(this._translateService.instant('snackbar.Preference Updated!'), "succ");
+        this._sharedService.Interceptor(this._translateService.instant('snackbar.Preference-Updated!'), "succ");
       },
       (error) => {
         this._sharedService.Interceptor(error, "err");
