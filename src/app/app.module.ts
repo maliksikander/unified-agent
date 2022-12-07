@@ -44,6 +44,7 @@ import { TranslateLoader, TranslateModule, TranslateService } from "@ngx-transla
 import { HttpClient } from "@angular/common/http";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { cacheService } from "./services/cache.service";
+import { Observable,from } from "rxjs";
 // import { ActiveChatsComponent } from "./supervisor/active-chats/active-chats.component";
 // import { QueueChatsComponent } from "./supervisor/queue-chats/queue-chats.component";
 
@@ -82,8 +83,11 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsType: SPINNER.chasingDots,
   bgsPosition: POSITION.centerCenter
 };
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http);
+export class lazyTranslateLoader implements TranslateLoader
+{
+  getTranslation(lang: string): Observable<any> {
+    return from(import(`../assets/i18n/${lang}.json`));
+  }
 }
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -125,7 +129,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TranslateModule.forRoot({
       loader: {
           provide: TranslateLoader,
-          useFactory: HttpLoaderFactory,
+          useClass: lazyTranslateLoader,
           deps: [HttpClient]
       }
   }),
