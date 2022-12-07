@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable, Output } from "@angular/core";
 import { MatDialog } from "@angular/material";
+import { TranslateService } from "@ngx-translate/core";
 import { Subject } from "rxjs";
 import { LinkConversationDialogComponent } from "../dialogs/link-conversation-dialog/link-conversation-dialog.component";
 import { ConfirmationDialogComponent } from "../new-components/confirmation-dialog/confirmation-dialog.component";
@@ -10,10 +11,18 @@ import { snackbarService } from "./snackbar.service";
   providedIn: "root"
 })
 export class sharedService {
-  constructor(private dialog: MatDialog, private _snackbarService: snackbarService, private _httpService: httpService) {}
+  constructor(private dialog: MatDialog,private _translateService:TranslateService, private _snackbarService: snackbarService, private _httpService: httpService) {
+
+    this._translateService.stream('snackbar.FETCHING-CHATS').subscribe((data:string)=>
+    {
+      this.mainPagetile =data;
+    }
+    )
+  }
+
 
   schema;
-  mainPagetile = "FETCHING CHATS ...";
+  mainPagetile:any
   matCurrentTabIndex = 0;
   channelLogoMapper = new Map();
   serviceCurrentMessage = new Subject();
@@ -115,19 +124,19 @@ export class sharedService {
     if (res == "err") {
       console.log("[Error]:", e);
       if (e.statusCode == 401) {
-        this._snackbarService.open("UNAUTHORIZED USER", "err");
+        this._snackbarService.open(this._translateService.instant('snackbar.UNAUTHORIZED-USER'), "err");
       } else if (e.statusCode == 400) {
-        this._snackbarService.open(e.msg.error.attribute ? e.msg.error.attribute + " is " + e.msg.error.validation : "Bad Request", "err");
+        this._snackbarService.open(e.msg.error.attribute ? e.msg.error.attribute + this._translateService.instant('snackbar.is') + e.msg.error.validation :this._translateService.instant('snackbar.Bad-Request'), "err");
       } else if (e.statusCode == 412) {
-        this._snackbarService.open("unable to fetch license status", "err");
+        this._snackbarService.open(this._translateService.instant('snackbar.unable-to-fetch-license-status'), "err");
       } else if (e.statusCode == 500) {
-        this._snackbarService.open("Internal Server Error", "err");
+        this._snackbarService.open(this._translateService.instant('snackbar.Internal-Server-Error'), "err");
       } else if (e.statusCode == 408) {
         this._snackbarService.open(e.msg, "err");
       } else if (e.error) {
         this._snackbarService.open(e.error.msg, "err");
       } else {
-        this._snackbarService.open("Something went wrong", "err");
+        this._snackbarService.open(this._translateService.instant('snackbar.Something-went-wrong'), "err");
       }
     }
     if (res == "succ") {

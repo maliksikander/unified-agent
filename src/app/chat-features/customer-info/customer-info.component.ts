@@ -10,6 +10,7 @@ import { finesseService } from "src/app/services/finesse.service";
 import { cacheService } from "src/app/services/cache.service";
 import * as uuid from "uuid";
 import { snackbarService } from "src/app/services/snackbar.service";
+import { TranslateService } from "@ngx-translate/core";
 // const mockTopicData: any = require("../../../app/mocks/topicData.json");
 
 @Component({
@@ -76,7 +77,8 @@ export class CustomerInfoComponent implements OnInit {
     private _httpService: httpService,
     private _finesseService: finesseService,
     private _cacheService: cacheService,
-    private _snackBarService: snackbarService
+    private _snackBarService: snackbarService,
+    private _translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -152,7 +154,7 @@ export class CustomerInfoComponent implements OnInit {
     // mockTopicData.customer=this.customer
     //  this._socketService.onTopicData(mockTopicData, 12345,"");
     if (!channelCustomerIdentifier) {
-      this._snackBarService.open("Channel Identifier Not Found","err")
+      this._snackBarService.open(this._translateService.instant('snackbar.Channel-Identifier-Not-Found'),"err")
     } else {
       let cimMessage = {
         id: uuid.v4().toString(),
@@ -178,8 +180,8 @@ export class CustomerInfoComponent implements OnInit {
       this._httpService.startOutboundConversation(cimMessage).subscribe(
         (e) => {},
         (err) => {
-          this._snackBarService.open("Error Starting Outbound Conversation","err");
-          console.error("Error Starting Outbound Conversation","err");
+          this._sharedService.Interceptor(err.error,"err");
+          console.error("Error Starting Outbound Conversation",err);
         }
       );
     }
@@ -232,7 +234,10 @@ export class CustomerInfoComponent implements OnInit {
           (customer) => {
             this._httpService.updateConversationCustomer(this.conversationId, customer).subscribe();
           },
-          (error) => {}
+          (error) => {
+            this._sharedService.Interceptor(error.error,"err");
+            console.error("Error Starting Outbound Conversation",error);
+          }
         );
       }
     });

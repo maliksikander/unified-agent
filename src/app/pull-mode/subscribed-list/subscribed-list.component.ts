@@ -2,9 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { MatCheckboxChange, MatDialog } from "@angular/material";
 import { TopicParticipant } from "src/app/models/User/Interfaces";
 import { cacheService } from "src/app/services/cache.service";
-import { httpService } from "src/app/services/http.service";
 import { pullModeService } from "src/app/services/pullMode.service";
-import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
 
 @Component({

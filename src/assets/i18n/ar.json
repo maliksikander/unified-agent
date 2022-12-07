@@ -1,4 +1,78 @@
 {
+  "snackbar":
+  {
+    "error-on-logout-request":"'error on logout request'_ar",
+    "Agent-Logged-Out-Successfully":"Agent Logged Out Successfully_ar",
+    "Requested-session-not-available-at-the-moment":"Requested session not available at the moment_ar",
+    "Unable-to-process-the-request":"Unable to process the request_ar",
+    "Unable-to-connect-with-server":"Unable to connect with server_ar",
+    "Channel-Identifier-Not-Found":"Channel Identifier Not Found_ar",
+    "PIP-not-supported-in-this-browser":"PIP not supported in this browser_ar",
+    "unsupported-type":"unsupported type_ar",
+    "File-size-should-be-less-than-5MB":"File size should be less than 5MB_ar",
+    "No-channel-session-selected-at-the-moment":"No channel session selected at the moment _ar",
+    "Unable-to-send-the-message-at-the-moment":"Unable to send the message at the moment _ar",
+    "No-Preference-Added":"No Preference Added_ar",
+    "you-will-not-receive-browser-notifications":"you will not receive browser notifications_ar",
+    "UNAUTHORIZED-USER":"UNAUTHORIZED USER_ar",
+    "unable-to-fetch-license-status":"unable to fetch license status_ar",
+    "Internal-Server-Error":"Internal Server Error_ar",
+    "Something-went-wrong":"Something went wrong_ar",
+    "The-license-is":"The license is :_ar",
+    "Unable-to-process-chat-unsubscribing":"Unable to process chat, unsubscribing..._ar",
+    "Conversation-is-closed-due-to":"Conversation is closed due to _ar",
+    "Unable-to-process-event-unsubscribing":"Unable to process event, unsubscribing..._ar",
+    "you-are-logged-In-from-another-session":"you are logged In from another session_ar",
+    "Profile-linked-successfully":"Profile linked successfully_ar",
+    "CUSTOMER-LINKED-SUCCESSFULLY":"CUSTOMER LINKED SUCCESSFULLY_ar",
+    "on":"on _ar",
+    "The-conversation-is-going-to-linking-with":"The conversation is going to linking with _ar",
+    "However-the-channel-identifier":"However the channel identifier _ar",
+    "can-not-be-added-in":"can't be added in _ar",
+    "space-unavailable-may-delete-channel-identifer":"because space is unavailable, you may delete a channel identifer to add a new one_ar",
+    "Unable-to-link-customer":"Unable to link customer_ar",
+    "Error-Getting-Active-Chats-with-Agents":"Error Getting Active Chats with Agents_ar",
+    "Error-Getting-Active-Chats-with-Bots":"Error Getting Active Chats with Bots_ar",
+    "Channel-session-not-found":"Channel session not found_ar",
+    "Access-Token-or-FB-Host-API-for-FB-is-missing":"Access Token or FB Host API for FB is missing_ar",
+    "No-Conversation-Found":"No Conversation Found_ar",
+    "No-settings-are-valid":"No settings are valid_ar",
+    "Preference-Added":"Preference Added_ar",
+    "Preference-Updated!":"Preference Updated!_ar",
+    "CANNOT-ADD-MORE-FIELDS":"CANNOT ADD MORE FIELDS_ar",
+    "Name-already-exists":"Name already exists_ar",
+    "Max-100-characters-are-allowed":"Max 100 characters are allowed_ar",
+    "New-Customer-Created":"New Customer Created_ar",
+    "Customer-updated!":"Customer updated!_ar",
+    "CANNOT-DELETE-DEFAULT-ATTRIBUTE":"CANNOT DELETE DEFAULT ATTRIBUTE_ar",
+    "Label-Created":"Label Created_ar",
+    "Label-Updated":"Label Updated_ar",
+    "Delete-Label":"Delete Label_ar",
+    "Are-you-sure-you-want-to-delete-the-label?":"Are you sure you want to delete the label?_ar",
+    "SORT-ORDER-UPDATED-SUCCESSFULLY":"SORT ORDER UPDATED SUCCESSFULLY_ar",
+    "Label-Deleted":"Label Deleted_ar",
+    "Confirm":"Confirm_ar",
+    "Cancel":"Cancel_ar",
+    "Incoming-Call-Alert":"Incoming Call Alert_ar",
+    "Incoming-call-alert-request":"Incoming call alert request : _ar",
+    "CHAT-REQUESTED":"CHAT REQUESTED_ar",
+    "Incoming-chat-request-on-push-mode-on":"Incoming chat request on push mode on _ar",
+    "Incoming-chat-request-on-pull-mode-on":"Incoming chat request on pull mode on _ar",
+    "Close-Chat":"Close Chat_ar",
+    "Are-you-sure-you-want-to-close-this-Chat?":"Are you sure you want to close this Chat?_ar",
+    "Agent-Logged-In-Successfully":"Agent Logged In Successfully_ar",
+    "error-on-login-request":"error on login request_ar",
+    "is":"is _ar",
+    "Bad-Request":"Bad-Request_ar",
+    "FETCHING-CHATS":"FETCHING CHATS ..._ar",
+    "Malfunction-event":"A Malfunction event_ar",
+    "Close-Topic":"Close Topic_ar",
+    "sure-to-close-this-topic":"Are you sure you want to close this topic?_ar",
+    "Close-Conversation":"Close Conversation_ar",
+    "Call-in-progress-sure-you-want-to-close-this-conversation":"Call in progress, Are you sure you want to close this conversation?_ar",
+    "Transfer-request-placed-successfully":"Transfer request placed successfully_ar",
+    "Conference-request-placed-successfully":"Conference request placed successfully_ar"
+  },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ar",
     "customer-list-view": "Customer List View_ar",
@@ -49,8 +123,12 @@
     "createdAt": "Created At :_ar",
     "add-label": "Add Label_ar",
     "create": "Create_ar",
-    "update-label":"Update label_ar",
-    "update":"Update_ar"
+    "update-label": "Update label_ar",
+    "update": "Update_ar",
+    "select-all": "Select all_ar",
+    "unselect-all": "Unselect all_ar",
+    "search": "Search_ar",
+    "no-data-available": "No Data Available_ar"
   },
   "chat-features": {
     "customer-info": {
@@ -76,7 +154,10 @@
       "initiate-outgoing-call-to": "initiate outgoing call to_ar",
       "stacy-miller": "Stacy Miller_ar",
       "mobile": "(Mobile)_ar",
-      "unknown": "UNKNOWN_ar"
+      "device": "Device:_ar",
+      "browser": "Browser:_ar",
+      "country": "Country:_ar",
+      "language": "Language:_ar"
     },
     "chats": {
       "start": "Start a New Conversation_ar"
@@ -94,6 +175,7 @@
       "wrap-up-codes": "Wrap-Up Codes_ar",
       "categories": "Categories_ar",
       "send": "send_ar",
+      "none":"None_ar",
       "edit": "edit_ar",
       "participants": "Participants_ar",
       "customer": "Customer_ar",
@@ -111,25 +193,27 @@
       "view-full-post": "View full post_ar",
       "selected-channel": "Selected Channel:_ar",
       "check": "check_ar",
-      "": "_ar",
-      "": "_ar",
-      "": ""
+      "wrapup": "Wrapupen_ar",
+      "wrap-up-notes": "Wrap-up Notesen_ar",
+      "agent-assistance": "Agent Assistance_ar",
+      "queue-transfer": "Queue Transfer_ar",
+      "queue-conference": "Queue Conference_ar"
     },
     "wrap-up-form": {
       "wrap-up-codes": "Wrap-Up Codes_ar",
       "selected": "Selected_ar",
       "cancel": "Cancel_ar",
       "apply": "Apply_ar",
-      "notes": "Notes_ar"    }
+      "notes": "Notes_ar"
+    }
   },
   "column-preferences": {
     "cancel": "Cancel_ar",
     "column-preferences": "Column Preferences_ar",
     "columns": "Columns_ar",
     "selected-columns": "Selected Columns_ar",
-    "save": "Save_ar",
-    "": ""
-  },
+    "save": "Save_ar"
+    },
   "create-customer": {
     "create-new-customer": "Create New Customer_ar",
     "required": "*Field is required_ar",
@@ -137,9 +221,7 @@
     "max": "*Max._ar",
     "characters-allowed": "characters are allowed_ar",
     "cancel": "Cancel_ar",
-    "create": "Create_ar",
-    "": "_ar",
-    "": ""
+    "create": "Create_ar"
   },
   "customer-actions": {
     "required": "*Field is required_ar",
@@ -186,16 +268,14 @@
     "delete": "Delete_ar",
     "customer-attributes": "Customer Attributes_ar",
     "create-new-ttribute": "Create New Attribute_ar",
-    "": ""
+    "options": "Options_ar"
   },
   "link-conversation": {
     "confirm": "Confirm_ar",
     "add-channel-identifeir": "Add channel Identifer_ar",
     "cancel": "Cancel_ar",
     "like-to-link-conversation": "Would you like to link conversation with _ar",
-    "link-conversation": "Link conversation_ar",
-    "": "_ar",
-    "": ""
+    "link-conversation": "Link conversation to_ar "
   },
   "login": {
     "login": "Login_ar",
@@ -232,14 +312,21 @@
     "unable-connect-finesse": "Unable to connect with finesse, try refreshing may resolve the problem_ar",
     "enable-javascript": "Please enable JavaScript to continue using this application._ar",
     "agent-desk": "Agent Desk_ar",
-    "Confirm": "Confirm_ar",
-    "not-applicable": "N/A_ar",
-    "select-all": "Select all_ar",
+    "select-all": "Select all _ar",
     "unselect-all": "Unselect all_ar",
     "Search": "Search_ar",
     "no-data-available": "No Data Available_ar",
+    "Confirm": "Confirm_ar",
+    "not-applicable": "N/A_ar",
     "no-new-conversation": "No New Conversation_ar",
-    "state":"State_ar"
+    "state":"State_ar",
+    "UNIDENTIFIED-CUSTOMER":"UNIDENTIFIED CUSTOMER_ar",
+    "filter":"Filter_ar",
+    "drag-the-column":"Drag the column_ar",
+    "decending":"Decending_ar",
+    "ascending":"Ascending_ar",
+    "edit":"Edit_ar",
+    "start-conversation":"Start Conversation_ar"
   },
   "pull-mode": {
     "all-list": "All List_ar",
@@ -260,9 +347,9 @@
     "ago": "Ago_ar",
     "join": "Join_ar",
     "end": "End_ar",
-    "": "_ar",
-    "": "_ar",
-    "": ""
+    "UNREAD": "UNREAD_ar",
+    "chat": "Chat_ar",
+    "close": "Close_ar"
   },
   "supervisor": {
     "active-conversations-detail": "Active Conversations Detail_ar",

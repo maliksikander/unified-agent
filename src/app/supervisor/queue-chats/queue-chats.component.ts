@@ -6,6 +6,7 @@ import { ActivatedRoute } from "@angular/router";
 import { Subscription, timer } from "rxjs";
 import { map, retry } from "rxjs/operators";
 import { snackbarService } from "src/app/services/snackbar.service";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-queue-chats",
@@ -19,7 +20,7 @@ export class QueueChatsComponent implements OnInit {
   queueId: string;
   filteredData = [];
 
-  constructor(private dialog: MatDialog, private _httpService: httpService, private route: ActivatedRoute,private _snackBarService :snackbarService) {}
+  constructor(private dialog: MatDialog, private _translateService:TranslateService, private _httpService: httpService, private route: ActivatedRoute,private _snackBarService :snackbarService) {}
 
   ngOnInit(): void {
     this.queueId = this.route.snapshot.queryParamMap.get("queueId");
@@ -49,7 +50,7 @@ export class QueueChatsComponent implements OnInit {
             }
           },(err)=>
           {
-            this._snackBarService.open("Error Getting Active Chats with Agents",'err');
+            this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Chats-with-Agents'),'err');
           }); // load data contains the http request
         }, retry())
       )
@@ -60,7 +61,7 @@ export class QueueChatsComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: "490px",
       panelClass: "confirm-dialog",
-      data: { header: "Close Topic", message: `Are you sure you want to close this topic?` }
+      data: { header: this._translateService.instant('snackbar.Close-Topic'), message: this._translateService.instant('snackbar.sure-to-close-this-topic') }
     });
     dialogRef.afterClosed().subscribe((result) => {});
   }

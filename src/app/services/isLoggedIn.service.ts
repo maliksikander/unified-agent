@@ -1,8 +1,7 @@
-import { ThrowStmt } from "@angular/compiler";
 import { Injectable } from "@angular/core";
 import { Location } from "@angular/common";
 
-import { ActivatedRouteSnapshot, Router } from "@angular/router";
+import {  Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { cacheService } from "./cache.service";
 import { fcmService } from "./fcm.service";
@@ -11,6 +10,7 @@ import { httpService } from "./http.service";
 import { sharedService } from "./shared.service";
 import { snackbarService } from "./snackbar.service";
 import { socketService } from "./socket.service";
+import { TranslateService } from "@ngx-translate/core";
 
 @Injectable({
   providedIn: "root"
@@ -28,7 +28,8 @@ export class isLoggedInService {
     private _fcmService: fcmService,
     private ngxService: NgxUiLoaderService,
     private _snackbarService: snackbarService,
-    private _location: Location
+    private _location: Location,
+    private _translateService:TranslateService
   ) {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       this._cacheService.isMobileDevice = true;
@@ -92,7 +93,7 @@ export class isLoggedInService {
           'event': 'login',
           'data': {
             'agent_name': e.data.keycloak_User.username,
-            'message': 'Agent Logged In Successfully'
+            'message': this._translateService.instant('Agent-Logged-In-Successfully')
           }});
 
         console.log("this is login resp ", e.data);
@@ -108,7 +109,7 @@ export class isLoggedInService {
         window['dataLayer'].push({
           'event': 'error',
           'data': {
-            'message': 'error on login request',
+            'message': this._translateService.instant('snackbar.error-on-login-request'),
             'error' : error.error
           }});
 
@@ -119,6 +120,7 @@ export class isLoggedInService {
   }
 
   autoLogin() {
+    console.log("uto ogin")
     const params = new URLSearchParams(window.location.search);
     if (params.has("username") && params.has("authWithSSO") && params.has("ext") && (params.has("password") || params.has("authToken"))) {
       this.autoFinesseLogin(params);
@@ -160,7 +162,7 @@ export class isLoggedInService {
       }
       this._socketService.connectToSocket();
     } catch (err) {
-      this._snackbarService.open("you will not receive browser notifications", "err");
+      this._snackbarService.open(this._translateService.instant('snackbar.you-will-not-receive-browser-notifications'), "err");
       this._socketService.connectToSocket();
     }
 

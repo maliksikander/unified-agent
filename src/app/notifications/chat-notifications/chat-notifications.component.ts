@@ -8,6 +8,7 @@ import { sharedService } from "src/app/services/shared.service";
 import { pullModeService } from "src/app/services/pullMode.service";
 import { soundService } from "src/app/services/sounds.service";
 import { finesseService } from "src/app/services/finesse.service";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-chat-notifications",
@@ -26,7 +27,8 @@ export class ChatNotificationsComponent implements OnInit {
     private _cacheService: cacheService,
     private _router: Router,
     private _soundService: soundService,
-    private _finesseService: finesseService
+    private _finesseService: finesseService,
+    private _translateService:TranslateService
   ) {
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       console.log("e==>", e);
@@ -35,8 +37,8 @@ export class ChatNotificationsComponent implements OnInit {
         this._soundService.playRing();
         if (e.data.cisco_data) {
           this._soundService.openBrowserNotification(
-            "Incoming Call Alert",
-            "Incoming call alert request : " + e.data.channelSession.channel.channelType.name
+            this._translateService.instant('snackbar.Incoming-Call-Alert'),
+            this._translateService.instant('snackbar.Incoming-call-alert-request') + e.data.channelSession.channel.channelType.name
           );
           this._finesseService.voiceChannelSessionSubject.next({
             conversationId: e.data.conversationId,
@@ -44,8 +46,8 @@ export class ChatNotificationsComponent implements OnInit {
           });
         } else {
           this._soundService.openBrowserNotification(
-            "CHAT REQUESTED",
-            "Incoming chat request on push mode on " + e.data.channelSession.channel.channelType.name
+            this._translateService.instant('snackbar.CHAT-REQUESTED'),
+            this._translateService.instant('snackbar.Incoming-chat-request-on-push-mode-on') + e.data.channelSession.channel.channelType.name
           );
         }
       } else if (e.msg == "closePushModeRequestHeader") {
@@ -54,8 +56,8 @@ export class ChatNotificationsComponent implements OnInit {
         this.pullModeRequests.push(e.data);
         this._soundService.playRing();
         this._soundService.openBrowserNotification(
-          "CHAT REQUESTED",
-          "Incoming chat request on pull mode on " + this._pullModeservice.listNames[e.data.listId]
+          this._translateService.instant('snackbar.CHAT-REQUESTED'),
+          this._translateService.instant('snackbar.Incoming-chat-request-on-pull-mode-on') + this._pullModeservice.listNames[e.data.listId]
         );
       } else if (e.msg == "closePullModeRequestHeader") {
         this.removePullModeRequestFromRequestArray(e.data);

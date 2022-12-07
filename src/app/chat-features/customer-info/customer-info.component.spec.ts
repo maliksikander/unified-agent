@@ -1,5 +1,6 @@
 import { CustomerInfoComponent } from "./customer-info.component";
 import { sharedService } from "src/app/services/shared.service";
+import { TranslateService } from "@ngx-translate/core";
 const mockCustomerSchema: any = require("../../mocks/customerSchema.json");
 const mockTopicData: any = require("../../mocks/topicData.json");
 
@@ -13,12 +14,14 @@ describe("CustomerInfoComponent", () => {
   let _finneseService: any;
   let _cacheService: any;
   let _snackBarService: any;
+  let _translateService: TranslateService;
+
 
   beforeEach(() => {
     _shareredService = sharedService;
     _shareredService.schema = mockCustomerSchema;
 
-    component = new CustomerInfoComponent(routerMock, _shareredService, _socketService, dialogMock, _httpService,_finneseService,_cacheService,_snackBarService);
+    component = new CustomerInfoComponent(routerMock, _shareredService, _socketService, dialogMock, _httpService,_finneseService,_cacheService,_snackBarService,_translateService);
   });
 
   describe("Test: Get media channels", () => {

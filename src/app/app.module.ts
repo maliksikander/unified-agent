@@ -3,6 +3,7 @@ import { NgModule, APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core
 import { CommonModule, HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
+
 import { AppRoutingModule } from "./app-routing.module";
 
 import { LoginComponent } from "./login/login.component";
@@ -39,9 +40,11 @@ import _configService from "../assets/config.json";
 import { GrafanaComponent } from "./supervisor/grafana/grafana.component";
 import { ActiveChatsComponent } from "./supervisor/active-chats/active-chats.component";
 import { QueueChatsComponent } from "./supervisor/queue-chats/queue-chats.component";
-import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
+import { TranslateLoader, TranslateModule, TranslateService } from "@ngx-translate/core";
 import { HttpClient } from "@angular/common/http";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { cacheService } from "./services/cache.service";
+import { Observable,from } from "rxjs";
 // import { ActiveChatsComponent } from "./supervisor/active-chats/active-chats.component";
 // import { QueueChatsComponent } from "./supervisor/queue-chats/queue-chats.component";
 
@@ -62,13 +65,29 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 }
 
 initializeApp(environment.firebaseConfig);
+export function appInitializerFactory(translate: TranslateService) {
+  return () => new Promise<any>((resolve: any) => {
+      const langToSet = 'en'
+      translate.setDefaultLang('en');
+      translate.use(langToSet).subscribe(() => {
+        console.info(`Successfully initialized '${langToSet}' language.'`);
+      }, err => {
+        console.error(`Problem with '${langToSet}' language initialization.'`);
+      }, () => {
+        resolve(null);
+      });
+    });
+}
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsType: SPINNER.chasingDots,
   bgsPosition: POSITION.centerCenter
 };
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http);
+export class lazyTranslateLoader implements TranslateLoader
+{
+  getTranslation(lang: string): Observable<any> {
+    return from(import(`../assets/i18n/${lang}.json`));
+  }
 }
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -110,7 +129,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TranslateModule.forRoot({
       loader: {
           provide: TranslateLoader,
-          useFactory: HttpLoaderFactory,
+          useClass: lazyTranslateLoader,
           deps: [HttpClient]
       }
   }),
@@ -154,11 +173,18 @@ export function HttpLoaderFactory(http: HttpClient) {
     },
     appConfigService,
     MessageService,
+    TranslateService,
     ConfirmationService,
     {
       provide: APP_INITIALIZER,
       useFactory: (_appConfigService: appConfigService) => () => _appConfigService.loadConfig(),
       deps: [appConfigService],
+      multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializerFactory,
+      deps: [TranslateService],
       multi: true
     }
   ],

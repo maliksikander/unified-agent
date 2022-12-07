@@ -1,8 +1,6 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from "@angular/core";
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import {  FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from "@angular/material";
-import { map } from "rxjs/operators";
-import { appConfigService } from "src/app/services/appConfig.service";
 import { httpService } from "src/app/services/http.service";
 import { sharedService } from "src/app/services/shared.service";
 

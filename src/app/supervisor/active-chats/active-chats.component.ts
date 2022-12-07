@@ -8,6 +8,7 @@ import { Subscription, timer } from "rxjs";
 import { map, retry } from "rxjs/operators";
 
 import { snackbarService } from "src/app/services/snackbar.service";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-active-chats",
@@ -22,7 +23,7 @@ export class ActiveChatsComponent implements OnInit {
   activeChatListWithAgents: [];
   activeChatListWithBots: [];
 
-  constructor(private dialog: MatDialog, private _httpService: httpService, private route: ActivatedRoute , private _snackBarService : snackbarService) {}
+  constructor(private dialog: MatDialog,private _translateService:TranslateService, private _httpService: httpService, private route: ActivatedRoute , private _snackBarService : snackbarService) {}
   ngOnInit(): void {
     this.filter = this.route.snapshot.queryParamMap.get("filter") ? this.route.snapshot.queryParamMap.get("filter") : "agents";
     if (this.filter == "agents") {
@@ -37,13 +38,13 @@ export class ActiveChatsComponent implements OnInit {
             this.activeChatListWithAgents = e;
           },(err)=>
           {
-            this._snackBarService.open("Error Getting Active Chats with Agents",'err');
+            this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Chats-with-Agents'),'err');
           });
           this._httpService.getAllActiveChatsWithBots().subscribe((e) => {
             this.activeChatListWithBots = e;
           },(err)=>
           {
-            this._snackBarService.open("Error Getting Active Chats with Bots",'err');
+            this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Chats-with-Bots'),'err');
           });
         }, retry())
       )
@@ -54,7 +55,7 @@ export class ActiveChatsComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: "490px",
       panelClass: "confirm-dialog",
-      data: { header: "Close Topic", message: `Are you sure you want to close this topic?` }
+      data: { header: this._translateService.instant('snackbar.Close-Topic'), message: this._translateService.instant('snackbar.sure-to-close-this-topic') }
     });
     dialogRef.afterClosed().subscribe((result) => {});
   }

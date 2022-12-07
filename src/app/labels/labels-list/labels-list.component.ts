@@ -4,6 +4,7 @@ import { ConfirmationDialogComponent } from "src/app/new-components/confirmation
 import { CreateLabelComponent } from "src/app/labels/create-label/create-label.component";
 import { httpService } from "src/app/services/http.service";
 import { sharedService } from "src/app/services/shared.service";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-labels-list",
@@ -11,7 +12,12 @@ import { sharedService } from "src/app/services/shared.service";
   styleUrls: ["./labels-list.component.scss"]
 })
 export class LabelsListComponent implements OnInit {
-  constructor(private _sharedService: sharedService, private dialog: MatDialog, private _httpService: httpService) {}
+  constructor(
+    private _sharedService: sharedService,
+     private dialog: MatDialog,
+      private _httpService: httpService,
+      private _translateService:TranslateService
+      ) {}
 
   showMetaDIv: boolean = false;
   metaDivId;
@@ -28,6 +34,7 @@ export class LabelsListComponent implements OnInit {
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
+        console.error("Error loading labaels",error)
       }
     );
   }
@@ -55,7 +62,7 @@ export class LabelsListComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: "490px",
       panelClass: "confirm-dialog",
-      data: { header: "Delete Label", message: `Are you sure you want to delete the label?` }
+      data: { header: this._translateService.instant('snackbar.Delete-Label'), message: this._translateService.instant('snackbar.Are-you-sure-you-want-to-delete-the-label?') }
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result && result.event == "confirm") {
@@ -67,7 +74,7 @@ export class LabelsListComponent implements OnInit {
   deleteLabel(id){
     this._httpService.deleteLabel(id).subscribe(
       (e) => {
-        this._sharedService.Interceptor("Label Deleted", "succ");
+        this._sharedService.Interceptor(this._translateService.instant('snackbar.Label-Deleted'), "succ");
         this.loadLabels();
       },
       (error) => {

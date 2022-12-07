@@ -3,18 +3,20 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+
+
     "start": "ng serve",
+
+    
     "nolive": "ng serve --no-live-reload",
     
     "g": "ng serve --host 0.0.0.0 --disableHostCheck",
     
     "build": "ng build --prod --base-href /unified-agent/ && node ./replacefile.js",
-
-
-    
     "lint": "ng lint",
     "e2e": "ng e2e",
     "test": "jest",
+    
     "test:watch": "jest --watch",
     "coverage": "jest -i --coverage",
 
@@ -74,8 +76,12 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.23",
     "@angular/cli": "~8.3.23",
+
+
     "@angular/compiler-cli": "~8.2.14",
     "@angular/language-service": "~8.2.14",
+
+
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/jest": "^26.0.24",
@@ -103,6 +109,8 @@
   },
   "jestSonar": {
     "reportPath": "coverage",
+
+    
     "reportFile": "test-report.xml",
     "indent": 4,
     "sonar56x": true

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { MatDialog } from "@angular/material";
 import { Router } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
 import { TopicParticipant } from "src/app/models/User/Interfaces";
 import { cacheService } from "src/app/services/cache.service";
 import { httpService } from "src/app/services/http.service";
@@ -29,7 +30,8 @@ export class SubscribedListPreviewComponent implements OnInit {
     public _pullModeservice: pullModeService,
     private _cacheService: cacheService,
     private _socketService: socketService,
-    private _router: Router
+    private _router: Router,
+    private _translateService:TranslateService
   ) {}
 
   ngOnInit() {
@@ -48,7 +50,7 @@ export class SubscribedListPreviewComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: "490px",
       panelClass: "confirm-dialog",
-      data: { header: "Close Chat", message: `Are you sure you want to close this Chat?` }
+      data: { header: this._translateService.instant('snackbar.Close-Chat'), message: this._translateService.instant('snackbar.Are-you-sure-you-want-to-close-this-Chat?') }
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.event == "confirm") {

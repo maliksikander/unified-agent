@@ -79,9 +79,9 @@ export class socketService {
         console.error(err.data);
         console.error("socket connect_error ", err.data && err.data.content ? err.data.content : err);
         if (err.data && err.data.content && err.data.content && err.data.content.key == "LM" && err.data.content.licStatus) {
-          this._snackbarService.open("The license is :" + err.data.content.licStatus, "err");
+          this._snackbarService.open(this._translateService.instant('snackbar.The-license-is') + err.data.content.licStatus, "err");
         } else {
-          this._snackbarService.open(err.data && err.data.content ? err.data.content.msg : "unable to connect to chat", "err");
+          this._snackbarService.open(err.data && err.data.content ? err.data.content.msg :this._translateService.instant('snackbar.unable to connect to chat'), "err");
         }
       } catch (err) { }
       if (err.message == "login-failed") {
@@ -170,7 +170,7 @@ export class socketService {
       } catch (err) {
         console.error("error on onCimEvent ==>" + err);
         // If got any error while receiving cimEvent then simply unsubscribe to the topic
-        this._snackbarService.open("A Malfunction event", "err");
+        this._snackbarService.open(this._translateService.instant('snackbar.Malfunction-event'), "err");
         // this.emit("topicUnsubscription", {
         //   conversationId: res.conversationId,
         //   agentId: this._cacheService.agent.id
@@ -187,7 +187,7 @@ export class socketService {
         }
       } catch (err) {
         console.error("error on onTopicData ", err);
-        this._snackbarService.open("Unable to process chat, unsubscribing...", "err");
+        this._snackbarService.open(this._translateService.instant('snackbar.Unable-to-process-chat-unsubscribing'), "err");
         // If got any error while receiving topicData then simply unsubscribe to the topic
         this.emit("topicUnsubscription", {
           conversationId: res.conversationId,
@@ -200,7 +200,7 @@ export class socketService {
       console.log("topicUnsubscription", res);
       if (res.reason.toUpperCase() != "UNSUBSCRIBED") {
 
-        this._snackbarService.open("Conversation is closed due to " + res.reason, "err");
+        this._snackbarService.open(this._translateService.instant('snackbar.Conversation-is-closed-due-to') + res.reason, "err");
       }
 
       this.removeConversation(res.conversationId);
@@ -356,7 +356,7 @@ export class socketService {
         this.handleNoAgentEvent(cimEvent, conversationId);
       }
     } else {
-      this._snackbarService.open("Unable to process event, unsubscribing...", "err");
+      this._snackbarService.open(this._translateService.instant('snackbar.Unable-to-process-event-unsubscribing'), "err");
       this.emit("topicUnsubscription", {
         conversationId: conversationId,
         agentId: this._cacheService.agent.id
@@ -370,8 +370,8 @@ export class socketService {
       localStorage.removeItem("ccUser");
     } catch (e) { }
     this._cacheService.resetCache();
-    this._snackbarService.open("you are logged In from another session", "err");
-    alert("you are logged in from another session");
+    this._snackbarService.open(this._translateService.instant('snackbar.you-are-logged-In-from-another-session'), "err");
+    alert(this._translateService.instant('snackbar.you-are-logged-In-from-another-session'));
   }
   onTopicData(topicData, conversationId, taskId) {
     // this.removeConversation(conversationId);
@@ -614,7 +614,7 @@ export class socketService {
 
     if (conversation) {
       conversation.customer = cimEvent.data;
-      this._snackbarService.open("Profile linked successfully", "succ");
+      this._snackbarService.open(this._translateService.instant('snackbar.Profile-linked-successfully'), "succ");
     }
   }
 
@@ -666,7 +666,7 @@ export class socketService {
       agentId: this._cacheService.agent.id,
       conversationId: conversationId
     });
-    this._snackbarService.open("CUSTOMER LINKED SUCCESSFULLY", "succ");
+    this._snackbarService.open(this._translateService.instant('snackbar.CUSTOMER-LINKED-SUCCESSFULLY'), "succ");
   }
 
   removeChannelSession(cimEvent, conversationId) {
@@ -817,7 +817,7 @@ export class socketService {
 
 
   onSocketErrors(res) {
-    this._snackbarService.open("on " + res.task + " " + res.msg, "err");
+    this._snackbarService.open(this._translateService.instant('snackbar.on') + res.task + " " + res.msg, "err");
   }
 
   playSoundAndBrowserNotification(conversation, cimEvent) {
@@ -924,7 +924,7 @@ export class socketService {
                   } else {
                     console.log("limit exceed");
                     this._snackbarService.open(
-                      `The conversation is going to linking with ${selectedCustomer.firstName}, However the channel identifier ${channelIdentifier} can't be added in ${selectedCustomer.firstName}'s ${attr} because space is unavailable, you may delete a channel identifer to add a new one`,
+                      this._translateService.instant('snackbar.The-conversation-is-going-to-linking-with') + selectedCustomer.firstName +  this._translateService.instant('snackbar.However-the-channel-identifier') + channelIdentifier + this._translateService.instant('snackbar.can-not-be-added-in') + selectedCustomer.firstName +attr + this._translateService.instant('snackbar.space-unavailable-may-delete-channel-identifer'),
                       "succ",
                       20000,
                       "Ok"
@@ -975,11 +975,11 @@ export class socketService {
         //  this._socketService.linkCustomerWithInteraction(customerId, this.conversationId);
         console.log(selectedCustomer);
       } else {
-        this._snackbarService.open("unable to link customer", "err");
+        this._snackbarService.open(this._translateService.instant('snackbar.Unable-to-link-customer'), "err");
       }
     } catch (err) {
       console.log("err ", err);
-      this._snackbarService.open("unable to link customer", "err");
+      this._snackbarService.open(this._translateService.instant('snackbar.Unable-to-link-customer'), "err");
     }
   }
 
@@ -1024,13 +1024,13 @@ export class socketService {
               }
             },
             (error) => {
-              this._snackbarService.open("unable to link customer", "err");
-              console.error("error while updating topic customer ", error);
+              this._snackbarService.open(this._translateService.instant('snackbar.Unable-to-link-customer'), "err");
+              console.error("error while updating topic customer", error);
             }
           );
         },
         (error) => {
-          this._snackbarService.open("unable to link customer", "err");
+          this._snackbarService.open(this._translateService.instant('snackbar.Unable-to-link-customer'), "err");
           console.error("error while updating customer ", error);
         }
       );
@@ -1047,7 +1047,7 @@ export class socketService {
           }
         },
         (error) => {
-          this._snackbarService.open("unable to link customer", "err");
+          this._snackbarService.open(this._translateService.instant('snackbar.Unable-to-link-customer'), "err");
           console.error("error while updating topic customer ", error);
         }
       );

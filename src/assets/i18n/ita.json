@@ -1,4 +1,78 @@
 {
+  "snackbar":
+  {
+    "error-on-logout-request":"'error on logout request'_ita",
+    "Agent-Logged-Out-Successfully":"Agent Logged Out Successfully_ita",
+    "Requested-session-not-available-at-the-moment":"Requested session not available at the moment_ita",
+    "Unable-to-process-the-request":"Unable to process the request_ita",
+    "Unable-to-connect-with-server":"Unable to connect with server_ita",
+    "Channel-Identifier-Not-Found":"Channel Identifier Not Found_ita",
+    "PIP-not-supported-in-this-browser":"PIP not supported in this browser_ita",
+    "unsupported-type":"unsupported type_ita",
+    "File-size-should-be-less-than-5MB":"File size should be less than 5MB_ita",
+    "No-channel-session-selected-at-the-moment":"No channel session selected at the moment _ita",
+    "Unable-to-send-the-message-at-the-moment":"Unable to send the message at the moment _ita",
+    "No-Preference-Added":"No Preference Added_ita",
+    "you-will-not-receive-browser-notifications":"you will not receive browser notifications_ita",
+    "UNAUTHORIZED-USER":"UNAUTHORIZED USER_ita",
+    "unable-to-fetch-license-status":"unable to fetch license status_ita",
+    "Internal-Server-Error":"Internal Server Error_ita",
+    "Something-went-wrong":"Something went wrong_ita",
+    "The-license-is":"The license is :_ita",
+    "Unable-to-process-chat-unsubscribing":"Unable to process chat, unsubscribing..._ita",
+    "Conversation-is-closed-due-to":"Conversation is closed due to _ita",
+    "Unable-to-process-event-unsubscribing":"Unable to process event, unsubscribing..._ita",
+    "you-are-logged-In-from-another-session":"you are logged In from another session_ita",
+    "Profile-linked-successfully":"Profile linked successfully_ita",
+    "CUSTOMER-LINKED-SUCCESSFULLY":"CUSTOMER LINKED SUCCESSFULLY_ita",
+    "on":"on _ita",
+    "The-conversation-is-going-to-linking-with":"The conversation is going to linking with _ita",
+    "However-the-channel-identifier":"However the channel identifier _ita",
+    "can-not-be-added-in":"can't be added in _ita",
+    "space-unavailable-may-delete-channel-identifer":"because space is unavailable, you may delete a channel identifer to add a new one_ita",
+    "Unable-to-link-customer":"Unable to link customer_ita",
+    "Error-Getting-Active-Chats-with-Agents":"Error Getting Active Chats with Agents_ita",
+    "Error-Getting-Active-Chats-with-Bots":"Error Getting Active Chats with Bots_ita",
+    "Channel-session-not-found":"Channel session not found_ita",
+    "Access-Token-or-FB-Host-API-for-FB-is-missing":"Access Token or FB Host API for FB is missing_ita",
+    "No-Conversation-Found":"No Conversation Found_ita",
+    "No-settings-are-valid":"No settings are valid_ita",
+    "Preference-Added":"Preference Added_ita",
+    "Preference-Updated!":"Preference Updated!_ita",
+    "CANNOT-ADD-MORE-FIELDS":"CANNOT ADD MORE FIELDS_ita",
+    "Name-already-exists":"Name already exists_ita",
+    "Max-100-characters-are-allowed":"Max 100 characters are allowed_ita",
+    "New-Customer-Created":"New Customer Created_ita",
+    "Customer-updated!":"Customer updated!_ita",
+    "CANNOT-DELETE-DEFAULT-ATTRIBUTE":"CANNOT DELETE DEFAULT ATTRIBUTE_ita",
+    "Label-Created":"Label Created_ita",
+    "Label-Updated":"Label Updated_ita",
+    "Delete-Label":"Delete Label_ita",
+    "Are-you-sure-you-want-to-delete-the-label?":"Are you sure you want to delete the label?_ita",
+    "SORT-ORDER-UPDATED-SUCCESSFULLY":"SORT ORDER UPDATED SUCCESSFULLY_ita",
+    "Label-Deleted":"Label Deleted_ita",
+    "Confirm":"Confirm_ita",
+    "Cancel":"Cancel_ita",
+    "Incoming-Call-Alert":"Incoming Call Alert_ita",
+    "Incoming-call-alert-request":"Incoming call alert request : _ita",
+    "CHAT-REQUESTED":"CHAT REQUESTED_ita",
+    "Incoming-chat-request-on-push-mode-on":"Incoming chat request on push mode on _ita",
+    "Incoming-chat-request-on-pull-mode-on":"Incoming chat request on pull mode on _ita",
+    "Close-Chat":"Close Chat_ita",
+    "Are-you-sure-you-want-to-close-this-Chat?":"Are you sure you want to close this Chat?_ita",
+    "Agent-Logged-In-Successfully":"Agent Logged In Successfully_ita",
+    "error-on-login-request":"error on login request_ita",
+    "is":"is _ita",
+    "Bad-Request":"Bad-Request_ita",
+    "FETCHING-CHATS":"FETCHING CHATS ..._ita",
+    "Malfunction-event":"A Malfunction event_ita",
+    "Close-Topic":"Close Topic_ita",
+    "sure-to-close-this-topic":"Are you sure you want to close this topic?_ita",
+    "Close-Conversation":"Close Conversation_ita",
+    "Call-in-progress-sure-you-want-to-close-this-conversation":"Call in progress, Are you sure you want to close this conversation?_ita",
+    "Transfer-request-placed-successfully":"Transfer request placed successfully_ita",
+    "Conference-request-placed-successfully":"Conference request placed successfully_ita"
+  },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ita",
     "customer-list-view": "Customer List View_ita",
@@ -49,8 +123,12 @@
     "createdAt": "Created At :_ita",
     "add-label": "Add Label_ita",
     "create": "Create_ita",
-    "update-label":"Update label_ita",
-    "update":"Update_ita"
+    "update-label": "Update label_ita",
+    "update": "Update_ita",
+    "select-all": "Select all_ita",
+    "unselect-all": "Unselect all_ita",
+    "search": "Search_ita",
+    "no-data-available": "No Data Available_ita"
   },
   "chat-features": {
     "customer-info": {
@@ -76,7 +154,10 @@
       "initiate-outgoing-call-to": "initiate outgoing call to_ita",
       "stacy-miller": "Stacy Miller_ita",
       "mobile": "(Mobile)_ita",
-      "unknown": "UNKNOWN_ita"
+      "device": "Device:_ita",
+      "browser": "Browser:_ita",
+      "country": "Country:_ita",
+      "language": "Language:_ita"
     },
     "chats": {
       "start": "Start a New Conversation_ita"
@@ -94,6 +175,7 @@
       "wrap-up-codes": "Wrap-Up Codes_ita",
       "categories": "Categories_ita",
       "send": "send_ita",
+      "none":"None_ita",
       "edit": "edit_ita",
       "participants": "Participants_ita",
       "customer": "Customer_ita",
@@ -111,25 +193,27 @@
       "view-full-post": "View full post_ita",
       "selected-channel": "Selected Channel:_ita",
       "check": "check_ita",
-      "": "_ita",
-      "": "_ita",
-      "": ""
+      "wrapup": "Wrapupen_ita",
+      "wrap-up-notes": "Wrap-up Notesen_ita",
+      "agent-assistance": "Agent Assistance_ita",
+      "queue-transfer": "Queue Transfer_ita",
+      "queue-conference": "Queue Conference_ita"
     },
     "wrap-up-form": {
       "wrap-up-codes": "Wrap-Up Codes_ita",
       "selected": "Selected_ita",
       "cancel": "Cancel_ita",
       "apply": "Apply_ita",
-      "notes": "Notes_ita"    }
+      "notes": "Notes_ita"
+    }
   },
   "column-preferences": {
     "cancel": "Cancel_ita",
     "column-preferences": "Column Preferences_ita",
     "columns": "Columns_ita",
     "selected-columns": "Selected Columns_ita",
-    "save": "Save_ita",
-    "": ""
-  },
+    "save": "Save_ita"
+    },
   "create-customer": {
     "create-new-customer": "Create New Customer_ita",
     "required": "*Field is required_ita",
@@ -137,9 +221,7 @@
     "max": "*Max._ita",
     "characters-allowed": "characters are allowed_ita",
     "cancel": "Cancel_ita",
-    "create": "Create_ita",
-    "": "_ita",
-    "": ""
+    "create": "Create_ita"
   },
   "customer-actions": {
     "required": "*Field is required_ita",
@@ -186,16 +268,14 @@
     "delete": "Delete_ita",
     "customer-attributes": "Customer Attributes_ita",
     "create-new-ttribute": "Create New Attribute_ita",
-    "": ""
+    "options": "Options_ita"
   },
   "link-conversation": {
     "confirm": "Confirm_ita",
     "add-channel-identifeir": "Add channel Identifer_ita",
     "cancel": "Cancel_ita",
     "like-to-link-conversation": "Would you like to link conversation with _ita",
-    "link-conversation": "Link conversation_ita",
-    "": "_ita",
-    "": ""
+    "link-conversation": "Link conversation to_ita "
   },
   "login": {
     "login": "Login_ita",
@@ -232,14 +312,21 @@
     "unable-connect-finesse": "Unable to connect with finesse, try refreshing may resolve the problem_ita",
     "enable-javascript": "Please enable JavaScript to continue using this application._ita",
     "agent-desk": "Agent Desk_ita",
+    "select-all": "Select all _ita",
+    "unselect-all": "Unselect all_ita",
+    "Search": "Search _ita",
+    "no-data-available": "No Data Available_ita",
     "Confirm": "Confirm_ita",
     "not-applicable": "N/A_ita",
-    "select-all": "Select all_ita",
-    "unselect-all": "Unselect all_ita",
-    "Search": "Search_ita",
-    "no-data-available": "No Data Available_ita",
     "no-new-conversation": "No New Conversation_ita",
-    "state":"State_ita"
+    "state":"State_ita",
+    "UNIDENTIFIED-CUSTOMER":"UNIDENTIFIED CUSTOMER_ita",
+    "filter":"Filter_ita",
+    "drag-the-column":"Drag the column_ita",
+    "decending":"Decending_ita",
+    "ascending":"Ascending_ita",
+    "edit":"Edit_ita",
+    "start-conversation":"Start Conversation_ita"
   },
   "pull-mode": {
     "all-list": "All List_ita",
@@ -260,9 +347,9 @@
     "ago": "Ago_ita",
     "join": "Join_ita",
     "end": "End_ita",
-    "": "_ita",
-    "": "_ita",
-    "": ""
+    "UNREAD": "UNREAD_ita",
+    "chat": "Chat_ita",
+    "close": "Close_ita"
   },
   "supervisor": {
     "active-conversations-detail": "Active Conversations Detail_ita",

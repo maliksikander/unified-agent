@@ -58,7 +58,7 @@
                     <tr
                         *ngFor="let request of _pullModeservice.subscribedListRequests | filterPullModeRequests:filterStatus:filterListId">
                         <td class="status-data"><span class="status-icon"
-                                matTooltip="{{(request.status | lowercase) == 'created' ? 'UNREAD' : (request.status | uppercase) }}"
+                                matTooltip="{{(request.status | lowercase) == 'created' ? ('pull-mode.UNREAD'  | translate ) : (request.status | uppercase) }}"
                                 [style.backgroundColor]="(request.status | lowercase) == 'active' ? '#29C671' : ((request.status | lowercase) == 'inactive' ? '#ccc' : 'red')"></span>
                         </td>
                         <td #customerCell><span class="channel-icon"><img
@@ -97,9 +97,9 @@
                             '-'}}</td>
                         <span class="table-trigger">
                             <button mat-button *ngIf="!(request.id | isAlreadyJoined)" (click)="joinChat(request)"
-                                class="chat-btn" matTooltip="Chat">{{'pull-mode.join'  | translate }}</button>
+                                class="chat-btn" matTooltip="{{'pull-mode.chat'  | translate }}">{{'pull-mode.join'  | translate }}</button>
                             <button *ngIf="('subscribed-list' | authPipe : 'manage') as result" mat-button
-                                class="close-btn" (click)="closeChat(request)" matTooltip="Close">{{'pull-mode.end'  | translate }}</button>
+                                class="close-btn" (click)="closeChat(request)" matTooltip="{{'pull-mode.close'  | translate }}">{{'pull-mode.end'  | translate }}</button>
                         </span>
                     </tr>
                 </tbody>

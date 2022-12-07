@@ -4,6 +4,7 @@ import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { httpService } from "../services/http.service";
 import { cacheService } from "../services/cache.service";
 import { sharedService } from "../services/shared.service";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-phonebook",
@@ -22,7 +23,8 @@ export class columnPreferences implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _httpService: httpService,
     private _cacheService: cacheService,
-    private _sharedService: sharedService
+    private _sharedService: sharedService,
+    private _translateService:TranslateService
   ) {}
 
   ngOnInit() {
@@ -56,6 +58,11 @@ export class columnPreferences implements OnInit {
       // else{
 
       // }
+    },
+    (error)=>
+    {
+      this._sharedService.Interceptor(error.error,"err")
+      console.error("Error getting user preference",error)
     });
   }
 
@@ -88,7 +95,7 @@ export class columnPreferences implements OnInit {
 
   save() {
     if (this.checkedColumns.length == 0) {
-      this._sharedService.Interceptor("No settings are valid", "succ");
+      this._sharedService.Interceptor(this._translateService.instant('snackbar.No-settings-are-valid'), "succ");
     } else {
       let prefObj = {
         user_Id: this._cacheService.agent.id,
@@ -117,7 +124,7 @@ export class columnPreferences implements OnInit {
     this._httpService.createUserPreference(obj).subscribe(
       (e) => {
         this.dialogRef.close({ event: "refresh" });
-        this._sharedService.Interceptor("Preference Added", "succ");
+        this._sharedService.Interceptor(this._translateService.instant('snackbar.Preference-Added'), "succ");
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -129,7 +136,7 @@ export class columnPreferences implements OnInit {
     this._httpService.updateUserPreference(obj, id).subscribe(
       (e) => {
         this.dialogRef.close({ event: "refresh" });
-        this._sharedService.Interceptor("Preference Updated!", "succ");
+        this._sharedService.Interceptor(this._translateService.instant('snackbar.Preference-Updated!'), "succ");
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");

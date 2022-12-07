@@ -15,18 +15,18 @@ Would you like to link conversation with {{data.customerName}}
 
 <div class="confirmation-dialog">
     <div class="confirmation-header">
-        <h3>{{'customer-schema.link-conversation' | translate}}{{data.customerName}}?</h3>
+        <h3>{{'link-conversation.link-conversation' | translate}}{{data.customerName}}?</h3>
     </div>
     <div class="confirmation-content">
-        <p>{{'customer-schema.like-to-link-conversation' | translate}}{{data.customerName}}</p>
+        <p>{{'link-conversation.like-to-link-conversation' | translate}}{{data.customerName}}</p>
         <p *ngIf="data.isMergeAble == true">
-            <input type="checkbox" [(ngModel)]="isAttributeMerge" /> {{'customer-schema.add-channel-identifeir' | translate}} {{data.channelIdentifier}}
+            <input type="checkbox" [(ngModel)]="isAttributeMerge" /> {{'link-conversation.add-channel-identifeir' | translate}} {{data.channelIdentifier}}
            {{ 'globals.to' | translate }}  {{data.customerName}}'s {{data.attr}}
         </p>
         <div class="confirmation-action">
-            <button mat-raised-button class="close-btn" mat-dialog-close (click)="sendResponse()">{{'customer-schema.cancel' | translate}}</button>
+            <button mat-raised-button class="close-btn" mat-dialog-close (click)="sendResponse()">{{'link-conversation.cancel' | translate}}</button>
             <button mat-raised-button class="confirm-btn" mat-dialog-close
-                (click)="decisionIs = true ; sendResponse()">{{'customer-schema.confirm' | translate}}</button>
+                (click)="decisionIs = true ; sendResponse()">{{'link-conversation.confirm' | translate}}</button>
         </div>
     </div>
 </div>

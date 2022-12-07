@@ -26,7 +26,7 @@
               </li>
             </ul>
             <span class="field-type">({{item.type}})</span>
-            <mat-icon *ngIf="('customer-schema' | authPipe : 'manage') as result" matTooltip="Options" class="delete-btn box-options" [matMenuTriggerFor]="menu"
+            <mat-icon *ngIf="('customer-schema' | authPipe : 'manage') as result" matTooltip="{{'customer-schema.options' | translate}}" class="delete-btn box-options" [matMenuTriggerFor]="menu"
               (click)="displayMenu($event)">more_vert
             </mat-icon>
 
@@ -85,7 +85,7 @@
             </ul>
             <span class="field-type">({{item.type}})</span>
 
-            <mat-icon matTooltip="Options" class="delete-btn box-options" [matMenuTriggerFor]="searchChannelSelection"
+            <mat-icon matTooltip="{{'customer-schema.options' | translate}}" class="delete-btn box-options" [matMenuTriggerFor]="searchChannelSelection"
               (click)="displayMenu($event)">more_vert
             </mat-icon>
 
