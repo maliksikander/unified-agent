@@ -1,6 +1,5 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatDialog, MatSidenav } from "@angular/material";
-// import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { socketService } from "src/app/services/socket.service";
 import { sharedService } from "src/app/services/shared.service";
 import { NavigationExtras, Router } from "@angular/router";
@@ -11,7 +10,6 @@ import { cacheService } from "src/app/services/cache.service";
 import * as uuid from "uuid";
 import { snackbarService } from "src/app/services/snackbar.service";
 import { TranslateService } from "@ngx-translate/core";
-// const mockTopicData: any = require("../../../app/mocks/topicData.json");
 
 @Component({
   selector: "app-customer-info",
@@ -84,10 +82,6 @@ export class CustomerInfoComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this._finesseService.callTimer.subscribe((res) => {
-      this.timer = res;
-    });
-
     if (this.activeChannelSessions) this.getVoiceChannelSession();
   }
 
@@ -133,8 +127,6 @@ export class CustomerInfoComponent implements OnInit {
       this.firstChannelSession = null;
       this.firstChannelSession = changes.activeChannelSessions.currentValue;
     }
-
-    // this._finesseService.conversationList.next(this.activeChannelSessions);
   }
 
   getVoiceChannelSession() {
@@ -146,11 +138,7 @@ export class CustomerInfoComponent implements OnInit {
     if (this.voiceSession) {
       let cacheId = `${this._cacheService.agent.id}:${this.voiceSession.id}`;
       let cacheDialog: any = this._finesseService.getDialogFromCache(cacheId);
-
-      // console.log("voice Session==>", this.voiceSession);
-      // console.log("dialog in comp==>", cacheDialog);
       let currentParticipant = this._finesseService.getCurrentAgentFromParticipantList(cacheDialog.dialog.participants.Participant);
-      // console.log("currentparticipant in comp==>", currentParticipant);
       let startTime = new Date(currentParticipant.startTime);
 
       this._finesseService.timeoutId = setInterval(() => {
@@ -192,7 +180,6 @@ export class CustomerInfoComponent implements OnInit {
         this.timer = `${min}:${sec}`;
       }
     }
-    // console.log("Timer ==>" + hours + ":" + min + ":" + sec);
   }
 
   hourTimer(hour, min, sec) {
