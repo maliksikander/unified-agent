@@ -212,10 +212,10 @@ export class InteractionsComponent implements OnInit {
 
         this.openQuotedReplyArea(message);
       } else {
-        this._snackbarService.open(this._translateService.instant('snackbar.Requested-session-not-available-at-the-moment"'), "err");
+        this._snackbarService.open(this._translateService.instant('snackbar.Requested-session-not-available-at-the-moment'), "err");
       }
     } else {
-      this._snackbarService.open(this._translateService.instant('snackbar.Unable to process the request'), "err");
+      this._snackbarService.open(this._translateService.instant('snackbar.Unable-to-process-the-request'), "err");
     }
   }
 

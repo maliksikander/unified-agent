@@ -1,6 +1,7 @@
 {
   "snackbar":
   {
+    "unable-to-connect-to-chat_ger":"unable to connect to chat",
     "error-on-logout-request":"'error on logout request'_ger",
     "Agent-Logged-Out-Successfully":"Agent Logged Out Successfully_ger",
     "Requested-session-not-available-at-the-moment":"Requested session not available at the moment_ger",

@@ -81,7 +81,7 @@ export class socketService {
         if (err.data && err.data.content && err.data.content && err.data.content.key == "LM" && err.data.content.licStatus) {
           this._snackbarService.open(this._translateService.instant('snackbar.The-license-is') + err.data.content.licStatus, "err");
         } else {
-          this._snackbarService.open(err.data && err.data.content ? err.data.content.msg :this._translateService.instant('snackbar.unable to connect to chat'), "err");
+          this._snackbarService.open(err.data && err.data.content ? err.data.content.msg :this._translateService.instant('snackbar.unable-to-connect-to-chat'), "err");
         }
       } catch (err) {}
       if (err.message == "login-failed") {

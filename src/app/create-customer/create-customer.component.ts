@@ -184,7 +184,7 @@ export class CreateCustomerComponent implements OnInit {
         new FormControl(attribute.defaultValue ? attribute.defaultValue : "", validatorArray)
       );
     } else {
-      this.snackbarService.open(this._translateService.instant('snackbar.CANNOT-ADD_MORE_FIELDS'), "err");
+      this.snackbarService.open(this._translateService.instant('snackbar.CANNOT-ADD-MORE-FIELDS'), "err");
     }
   }
 

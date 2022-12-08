@@ -376,7 +376,7 @@
                             <span [innerHTML]="
                                 conversationSettings.isMessageFormattingEnabled
                                   ? (referredMessage.body.markdownText | linkify | ibsformat)
-                                  : referredMessage.body.markdownText
+                                  : (referredMessage.body.markdownText | linkify)
                               "></span>
                             <!--                            <span class="message-stamp yellow">-->
                             <!--                              <span class="chat-time red">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
@@ -393,13 +393,13 @@
                             <b [innerHTML]="
                                 conversationSettings.isMessageFormattingEnabled
                                   ? (referredMessage.body.additionalDetails.interactive.header.text | linkify | ibsformat)
-                                  : referredMessage.body.additionalDetails.interactive.header.text
+                                  : (referredMessage.body.additionalDetails.interactive.header.text | linkify)
                               "></b>
                             <br />
                             <span [innerHTML]="
                                 conversationSettings.isMessageFormattingEnabled
                                   ? (referredMessage.body.additionalDetails.interactive.body.text | linkify | ibsformat)
-                                  : referredMessage.body.additionalDetails.interactive.body.text
+                                  : (referredMessage.body.additionalDetails.interactive.body.text | linkify)
                               "></span>
                             <!--                      <span class="message-stamp">-->
                             <!--                         <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
@@ -637,7 +637,7 @@
                       <p
                         class="{{ (message.header.sender.type | lowercase) == 'customer' && message.botSuggestions ? 'plain-text-p' : '' }}">
                         <span
-                          [innerHTML]="conversationSettings.isMessageFormattingEnabled ? (message.body.markdownText | linkify | ibsformat) : (message.body.markdownText)"></span>
+                          [innerHTML]="conversationSettings.isMessageFormattingEnabled ? (message.body.markdownText | linkify | ibsformat) : (message.body.markdownText | linkify)"></span>
                         <span
                           *ngIf="(message.body.type | lowercase) == 'plain' || ((message.body.type | lowercase)=='comment' && (message.header.sender.type | lowercase)=='agent')"
                           class="message-stamp">
@@ -664,13 +664,13 @@
                         <b [innerHTML]="
                             conversationSettings.isMessageFormattingEnabled
                               ? (message.body.additionalDetails.interactive.header.text | linkify | ibsformat)
-                              : message.body.additionalDetails.interactive.header.text
+                              : (message.body.additionalDetails.interactive.header.text | linkify)
                           "></b>
                         <br />
                         <span [innerHTML]="
                             conversationSettings.isMessageFormattingEnabled
                               ? (message.body.additionalDetails.interactive.body.text | linkify | ibsformat)
-                              : message.body.additionalDetails.interactive.body.text
+                              : (message.body.additionalDetails.interactive.body.text | linkify)
                           "></span>
                       </p>
 
@@ -1042,7 +1042,7 @@
                               <span [innerHTML]="
                                   conversationSettings.isMessageFormattingEnabled
                                     ? (message.body.markdownText | linkify | ibsformat)
-                                    : message.body.markdownText
+                                    : (message.body.markdownText | linkify)
                                 "></span>
                             </p>
                             <div class="shared-url shared-card-content video-player p-0"
@@ -1091,7 +1091,7 @@
                           <div class="post-inner-content">
                             <p>
                               <span [innerHTML]="
-                                  conversationSettings.isMessageFormattingEnabled ? (FBPostData?.message | linkify | ibsformat) : FBPostData?.message
+                                  conversationSettings.isMessageFormattingEnabled ? (FBPostData?.message | linkify | ibsformat) : (FBPostData?.message | linkify)
                                 "></span>
                             </p>
                             <div *ngFor="let post of FBPostData?.attachments?.data">
@@ -1164,7 +1164,7 @@
                                     <span [innerHTML]="
                                         conversationSettings.isMessageFormattingEnabled
                                           ? (postComments.message | linkify | ibsformat)
-                                          : postComments.message
+                                          : (postComments.message | linkify)
                                       "></span>
                                   </p>
                                   <div class="shared-url shared-card-content video-player p-0"
@@ -1229,7 +1229,7 @@
                                   <span [innerHTML]="
                                       conversationSettings.isMessageFormattingEnabled
                                         ? (nestedComments.message | linkify | ibsformat)
-                                        : nestedComments.message
+                                        : (nestedComments.message | linkify)
                                     "></span>
                                 </p>
                                 <div class="shared-url shared-card-content video-player p-0"
@@ -1328,7 +1328,7 @@
                                   <span [innerHTML]="
                                       conversationSettings.isMessageFormattingEnabled
                                         ? (message.body.markdownText | linkify | ibsformat)
-                                        : message.body.markdownText
+                                        : (message.body.markdownText | linkify)
                                     "></span>
                                 </p>
                                 <div class="shared-url shared-card-content video-player p-0"
