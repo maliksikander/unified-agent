@@ -482,6 +482,7 @@
               width: 100% !important;
               max-width: 500px;
               align-self: start;
+              min-width: 500px;
             }
 
             &.location-map {
@@ -3383,7 +3384,7 @@ vg-controls.hide {
           color: #6e6e6e !important;
           }
         }
-        
+
       }
       &.file-type-message{
         .chat-time{
@@ -3414,7 +3415,7 @@ vg-controls.hide {
   margin-bottom: 5px;
 
   &.current-agents span {
-    
+
     color: #4773b5 !important;
   }
 }

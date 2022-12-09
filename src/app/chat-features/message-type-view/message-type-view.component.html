@@ -1,4 +1,4 @@
-<p>message-type-view works!</p>
+<!--<p>message-type-view works!</p>-->
 
 <!--Plain-->
 <div
@@ -174,3 +174,7 @@ Download
       }}</a>
   </div>
 </div>
+
+      <span class="message-stamp {{messageType == 'image' || messageType == 'location' || messageType == 'video' ? 'file-type-stamp' : ''}}">
+         <span class="chat-time">{{ messageTypeData.header.timestamp | date: "shortTime" }}</span>
+      </span>

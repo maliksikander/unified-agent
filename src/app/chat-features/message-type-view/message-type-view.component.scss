@@ -225,3 +225,20 @@ agm-map{
     }
   }
 }
+
+//message time stamp
+
+.message-stamp{
+  .chat-time {
+    color: #6e6e6e;
+    margin-left: 5px;
+    vertical-align: middle;
+    align-self: center;
+    font-weight: normal;
+    font-size: 10px;
+    position: relative;
+    top: 5px;
+    float: right;
+    white-space: nowrap;
+  }
+}
