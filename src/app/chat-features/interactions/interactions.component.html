@@ -2137,7 +2137,7 @@ Download
     </div>
   </div>
 
-  <span class="message-stamp {{messageType == 'image' || messageType == 'location' || messageType == 'video' ? 'file-type-stamp' : ''}}">
+  <span class="message-stamp {{messageType == 'image' || messageType == 'location' || messageType == 'video' ? 'file-type-stamp' : ''}}" *ngIf="messageType != 'comment'">
          <span class="chat-time">{{ messageTypeData.header.timestamp | date: "shortTime" }}</span>
       </span>
 

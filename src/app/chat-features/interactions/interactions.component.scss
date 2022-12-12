@@ -563,7 +563,9 @@
             border-left: 0;
             border-bottom: 0;
             box-shadow: 1px 0 0 #d3dec5, 0px -1px 0 #d3dec5;
-            left: -11.5px;
+            left: -6px;
+            transform: translate(-6px, 0px);
+
           }
 
           //&:before,&:after{
@@ -740,9 +742,10 @@
               right: -9px;
             }
             &:after {
-              right: -12px;
+              right: -6px;
               left: inherit;
               box-shadow: -1px -1px 0 #d9dbdf, -1px 0px 0 #d9dbdf;
+              transform: translate(6px, 0px);
             }
 
             //.display-file {
