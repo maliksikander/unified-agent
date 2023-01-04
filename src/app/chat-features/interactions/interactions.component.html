@@ -25,25 +25,22 @@
           <ul class="list-group list-group-horizontal agent-controls">
             <ng-container *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
               <li class="list-group-item">
-                <button mat-fab matTooltip="{{'chat-features.interactions.wrapup' | translate}}" aria-label="WrapUp" (click)="openWrapUpDialog('Wrap-up')">
+                <button mat-fab matTooltip="{{'chat-features.interactions.wrapup' | translate}}" aria-label="WrapUp"
+                  (click)="openWrapUpDialog('Wrap-up')">
                   <img alt="Note" src="assets/images/note.svg" />
                 </button>
               </li>
             </ng-container>
             <li class="list-group-item" *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
-              <button mat-icon-button [matMenuTriggerFor]="ParticipantsList" matTooltip="{{'chat-features.interactions.participants' | translate}}" aria-label="Participants">
+              <button mat-icon-button [matMenuTriggerFor]="ParticipantsList"
+                matTooltip="{{'chat-features.interactions.participants' | translate}}" aria-label="Participants">
                 <mat-icon>group</mat-icon>
               </button>
             </li>
             <li class="list-group-item" *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
-              <button
-                mat-icon-button
-                #consultTransferTrigger="matMenuTrigger"
-                [matMenuTriggerFor]="ConsultTransferConversation"
-                (click)="getAgentsInQueue()"
-                matTooltip="{{'chat-features.interactions.agent-assistance' | translate}}"
-                aria-label="Consult Chat"
-              >
+              <button mat-icon-button #consultTransferTrigger="matMenuTrigger"
+                [matMenuTriggerFor]="ConsultTransferConversation" (click)="getAgentsInQueue()"
+                matTooltip="{{'chat-features.interactions.agent-assistance' | translate}}" aria-label="Consult Chat">
                 <mat-icon>person_add</mat-icon>
               </button>
             </li>
@@ -75,13 +72,15 @@
 
                         <button
                           [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0"
-                          mat-icon-button matTooltip="{{'chat-features.interactions.queue-transfer' | translate}}" class="transfer-selection"
+                          mat-icon-button matTooltip="{{'chat-features.interactions.queue-transfer' | translate}}"
+                          class="transfer-selection"
                           (click)="agentAssistanceRequest(chatConsultTemplate, queue, 'transfer','queue')"><img
                             src="assets/images/transfer-colored.svg" alt="transfer" /></button>
 
                         <button
                           [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0"
-                          mat-icon-button matTooltip="{{'chat-features.interactions.queue-conference' | translate}}" class="transfer-selection"
+                          mat-icon-button matTooltip="{{'chat-features.interactions.queue-conference' | translate}}"
+                          class="transfer-selection"
                           (click)="agentAssistanceRequest(chatConsultTemplate, queue,'conference','queue')"><img
                             src="assets/images/conference-colored.svg" alt="conference" /></button>
                       </div>
@@ -311,23 +310,13 @@
                 }} {{ message.header.sender.type | lowercase }} {{ fullPostView && message.id == selectedCommentId ? 'full-post-view' : '' }}"
                 [ngClass]="(message.header.sender.type | lowercase) == 'customer' || (message.body.type | lowercase) == 'voice' ? 'user-message slide-in-left' : 'agent-message'">
                 <div class="profile-pic">
-                  <div
-                    [ngClass]="{ 'wrapup-active-icon': message?.body?.type == 'WRAPUP' }"
+                  <div [ngClass]="{ 'wrapup-active-icon': message?.body?.type == 'WRAPUP' }"
                     class="active-channel channel-icon"
-                    *ngIf="(message.header.sender.type | lowercase) !== 'customer' && (message.body.type | lowercase) !== 'voice'"
-                  >
-                    <img
-                      *ngIf="message?.body?.type != 'WRAPUP'"
-                      width="20"
-                      [src]="message.header.channelSession.channel.channelType.channelLogo | channelLogo | async"
-                    />
-                    <img
-                      matTooltip="{{'chat-features.interactions.wrapup' | translate}}"
-                      class="wrap-up-icon"
-                      *ngIf="message?.body?.type == 'WRAPUP'"
-                      width="20"
-                      src="assets/images/wrap-up.svg"
-                    />
+                    *ngIf="(message.header.sender.type | lowercase) !== 'customer' && (message.body.type | lowercase) !== 'voice'">
+                    <img *ngIf="message?.body?.type != 'WRAPUP'" width="20"
+                      [src]="message.header.channelSession.channel.channelType.channelLogo | channelLogo | async" />
+                    <img matTooltip="{{'chat-features.interactions.wrapup' | translate}}" class="wrap-up-icon"
+                      *ngIf="message?.body?.type == 'WRAPUP'" width="20" src="assets/images/wrap-up.svg" />
                   </div>
 
                   <div matTooltip="{{ message.header.sender | getSenderName: conversation.customer }}"
@@ -339,12 +328,13 @@
                     <img src="assets/images/robot-dark.svg" />
                   </div>
 
-                  <div *ngIf="(message.header.sender.type | lowercase) == 'customer' || (message.body.type | lowercase) == 'voice'"
+                  <div
+                    *ngIf="(message.header.sender.type | lowercase) == 'customer' || (message.body.type | lowercase) == 'voice'"
                     class="profile-pic-area user-img customer-channel-showcase">
                     <img *ngIf="message?.body?.type != 'VOICE'" width="20"
                       [src]="message.header.channelSession.channel.channelType.channelLogo | channelLogo | async"
                       alt="Channel Icon" />
-                      <img *ngIf="message?.body?.type == 'VOICE'" width="20" src="assets/images/incoming-call.svg" />
+                    <img *ngIf="message?.body?.type == 'VOICE'" width="20" src="assets/images/incoming-call.svg" />
                   </div>
                 </div>
                 <div class="combined-area">
@@ -947,8 +937,10 @@
                               <p *ngIf="message.body?.wrapups?.length == 0 && message.body?.note?.length > 0">
                                 {{ message.body?.note }}
                               </p>
-                              <span *ngIf="message.body?.wrapups?.length > 0 && message.body?.note?.length > 0" class="note-icon">
-                                <mat-icon matTooltip="{{'chat-features.interactions.wrap-up-notes' | translate}}" matTooltipClass="wrap-tooltip">description </mat-icon>
+                              <span *ngIf="message.body?.wrapups?.length > 0 && message.body?.note?.length > 0"
+                                class="note-icon">
+                                <mat-icon matTooltip="{{'chat-features.interactions.wrap-up-notes' | translate}}"
+                                  matTooltipClass="wrap-tooltip">description </mat-icon>
                               </span>
                               <div class="wrap-time">
                                 <span>{{ message.header.timestamp | date: "shortTime" }}</span>
@@ -1522,7 +1514,8 @@
             <i class="material-icons"> arrow_drop_down </i>
           </ng-container>
         </button>
-        <label *ngIf="conversation.activeChannelSessions.length == 0" style="color: grey; padding-left: 2px">{{'chat-features.interactions.none' | translate}} </label>
+        <label *ngIf="conversation.activeChannelSessions.length == 0"
+          style="color: grey; padding-left: 2px">{{'chat-features.interactions.none' | translate}} </label>
       </span>
 
       <mat-menu #channelSwitching="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
@@ -1571,8 +1564,7 @@
             <mat-autocomplete #auto="matAutocomplete"
               class="suggested-answer answer-autocomplete {{ isBarOPened ? 'customer-right-bar' : customerBar ? 'customer-left-bar' : '' }}">
               <div class="suggested-content" #mainScreen
-                [ngClass]="{ 'content-display': cannedTabOpen || displaySuggestionsArea }"
-                *ngIf="conversation.messages[conversation.messages.length - 1]?.botSuggestions">
+                [ngClass]="{ 'content-display': cannedTabOpen || displaySuggestionsArea }">
                 <!-- <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies"
                   >
                   <ng-container
@@ -1598,9 +1590,9 @@
                     </ng-container>
                   </ng-container>
                 </div> -->
-
-                <mat-tab-group animationDuration="0ms" *ngIf="!displaySuggestionsArea && cannedTabOpen">
-                  <!-- <mat-tab label="Canned Messages">
+                <ng-container *ngIf="conversation.messages[conversation.messages.length - 1]?.botSuggestions">
+                  <mat-tab-group animationDuration="0ms" *ngIf="!displaySuggestionsArea && cannedTabOpen">
+                    <!-- <mat-tab label="Canned Messages">
                     <div class="right-canned-message-list main-canned-message-area">
                       <div class="bar-content">
 
@@ -1631,27 +1623,28 @@
                     </div>
                   </mat-tab> -->
 
-                  <mat-tab label="Bot Suggestions">
-                    <ng-container
-                      *ngFor="let botSuggestion of conversation.messages[conversation.messages.length - 1]?.botSuggestions | LockFilter: message">
-                      <ng-container *ngIf="botSuggestion?.messageBody.type == 'PLAIN'">
-                        <mat-option [value]="botSuggestion?.messageBody.markdownText"
-                          (click)="replyInput.value = botSuggestion?.messageBody.markdownText"
-                          *ngIf="botSuggestion.messageBody.markdownText != undefined">
-                          {{ botSuggestion.messageBody.markdownText }}
-                          <button mat-mini-fab class="canned-trigger edit-trigger"
-                            (click)="replyInput.value = botSuggestion.messageBody.markdownText">
-                            <i class="material-icons">edit </i>
-                          </button>
-                          <button (click)="onSend(botSuggestion.messageBody.markdownText)" mat-mini-fab
-                            class="canned-trigger send-suggestion">
-                            <i class="material-icons">send </i>
-                          </button>
-                        </mat-option>
+                    <mat-tab label="Bot Suggestions">
+                      <ng-container
+                        *ngFor="let botSuggestion of conversation.messages[conversation.messages.length - 1]?.botSuggestions | LockFilter: message">
+                        <ng-container *ngIf="botSuggestion?.messageBody.type == 'PLAIN'">
+                          <mat-option [value]="botSuggestion?.messageBody.markdownText"
+                            (click)="replyInput.value = botSuggestion?.messageBody.markdownText"
+                            *ngIf="botSuggestion.messageBody.markdownText != undefined">
+                            {{ botSuggestion.messageBody.markdownText }}
+                            <button mat-mini-fab class="canned-trigger edit-trigger"
+                              (click)="replyInput.value = botSuggestion.messageBody.markdownText">
+                              <i class="material-icons">edit </i>
+                            </button>
+                            <button (click)="onSend(botSuggestion.messageBody.markdownText)" mat-mini-fab
+                              class="canned-trigger send-suggestion">
+                              <i class="material-icons">send </i>
+                            </button>
+                          </mat-option>
+                        </ng-container>
                       </ng-container>
-                    </ng-container>
-                  </mat-tab>
-                </mat-tab-group>
+                    </mat-tab>
+                  </mat-tab-group>
+                </ng-container>
               </div>
             </mat-autocomplete>
           </div>

@@ -133,7 +133,7 @@ export class isLoggedInService {
   }
 
   autoLogin() {
-    console.log("uto ogin")
+    console.log("auto login")
     const params = new URLSearchParams(window.location.search);
     if (params.has("username") && params.has("authWithSSO") && params.has("ext") && (params.has("password") || params.has("authToken"))) {
       this.autoFinesseLogin(params);

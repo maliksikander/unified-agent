@@ -417,6 +417,7 @@ export class finesseService {
     try {
       this._httpService.ccmVOICEChannelSession(data).subscribe(
         (res) => {
+          console.log("res==>",res)
           if (methodCalledOn == "onRefresh") {
             if (event) this.handleCallActiveEvent(event, event.response);
             else this.clearLocalDialogCache(cacheId);
