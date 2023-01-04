@@ -327,7 +327,7 @@ anchore_scan_branch:
     ANCHORE_CLI_USER: "admin"
     ANCHORE_CLI_PASS: "foobar"
     ANCHORE_CLI_SSL_VERIFY: "false"
-    ANCHORE_TIMEOUT: 900
+    ANCHORE_TIMEOUT: 1500
     ANCHORE_FAIL_ON_POLICY: "false"
   script:
     - echo "Adding image to Anchore engine at ${ANCHORE_CLI_URL}"
