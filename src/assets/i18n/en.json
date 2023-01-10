@@ -92,7 +92,8 @@
     "switch-dark": "Switch to dark mode",
     "light-dark": "(Light or dark)",
     "theme": "Theme",
-    "logout": "Logout"
+    "logout": "Logout",
+    "active-agents-detail":"Active agents detail"
   },
   "announcements": {
     "team-announcement": "Team Announcement",

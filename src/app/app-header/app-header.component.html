@@ -53,6 +53,12 @@
           <span>{{'app-header.queued-conversations-detail' | translate}}
           </span>
         </button>
+        <button routerLink="/supervisor/active-agents-detail" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+          mat-menu-item class="main-menu-item">
+          <span>{{'app-header.active-agents-detail' | translate}}
+          </span>
+        </button>
+
       </mat-menu>
 
       <img src="assets/images/expertflow-logo.png">
