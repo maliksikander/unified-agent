@@ -288,12 +288,22 @@
     "call-center-experts": "Your Call Center Experts._fr",
     "": ""
   },
+  "socket-service":{
+    "has-joined-the-conversation":"has joined the conversation_fr",
+   "session-started":"session started_fr",
+   "session-ended":"session ended_fr",
+   "left-the-conversation":"left the conversation_fr",
+   "transfer-request-has-been-placed-by":"transfer request has been placed by_fr",
+   "conference-request-has-been-placed-by":"conference request has been placed by_fr",
+   "No-agent-is-available-for":"No agent is available for_fr"
+   },
   "globals": {
     "chat": "Chat_fr",
     "conference": "conference_fr",
     "transfer": "transfer_fr",
     "to": "to_fr",
     "yes": "Yes_fr",
+    "columns":"Columns_fr",
     "page-not-found": "The page you are looking for is not found_fr",
     "agents": "agents_fr",
     "agent": "agent_fr",

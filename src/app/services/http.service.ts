@@ -25,6 +25,7 @@ export class httpService {
       agentSetting: "/agentSetting",
       forms: "/forms",
       agentInQueueList: "/precision-queues/available-agents",
+      queueList:"/precision-queues",
       ccmChannelSession: "/message/receive",
       tasks:"/tasks"
     };
@@ -360,6 +361,16 @@ export class httpService {
   getAgentsInQueue(conversationId): Observable<any> {
     return this._httpClient.get<any>(
       `${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.agentInQueueList}?conversationId=${conversationId}`,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }
+    );
+  }
+  getAllQueues(): Observable<any> {
+    return this._httpClient.get<any>(
+      `${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.queueList}`,
       {
         headers: new HttpHeaders({
           "Content-Type": "application/json"

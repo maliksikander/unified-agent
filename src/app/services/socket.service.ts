@@ -1142,9 +1142,22 @@ export class socketService {
       // } else {
       message.body["displayText"] = cimEvent.data.channel.channelType.name;
       // }
-      message.body.markdownText = "session started";
+
+      this._translateService.stream('socket-service.session-started')
+      .subscribe((data:string)=>
+      {
+        message.body.markdownText =data;
+      })
+
     } else if (cimEvent.name.toLowerCase() == "channel_session_ended") {
       message.body["displayText"] = cimEvent.data.channel.channelType.name;
+
+
+      this._translateService.stream('socket-service.session-ended')
+      .subscribe((data:string)=>
+      {
+        message.body.markdownText =data;
+      })
       message.body.markdownText = "session ended";
     }
     else if (cimEvent.name.toLowerCase() == "call_leg_ended") {
@@ -1155,10 +1168,21 @@ export class socketService {
     }
     if (cimEvent.name.toLowerCase() == "agent_subscribed") {
       message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
-      message.body.markdownText = "has joined the conversation";
+      this._translateService.stream('socket-service.has-joined-the-conversation')
+      .subscribe((data:string)=>
+      {
+        message.body.markdownText =data;
+      })
+
     } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
       message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
-      message.body.markdownText = "left the conversation";
+
+      this._translateService.stream('socket-service.left-the-conversation')
+      .subscribe((data:string)=>
+      {
+        message.body.markdownText =data;
+      })
+
     } else if (cimEvent.name.toLowerCase() == "task_enqueued") {
       let mode;
       if (cimEvent.data.task.type.mode.toLowerCase() == "agent") {
@@ -1167,13 +1191,28 @@ export class socketService {
         mode = "Queue";
       }
       if (cimEvent.data.task.type.direction == "DIRECT_TRANSFER") {
-        let string = mode + " transfer request has been placed by " + cimEvent.data.task.type.metadata.requestedBy;
+        let text=" transfer request has been placed by ";
+        this._translateService.stream('socket-service.transfer-request-has-been-placed-by')
+        .subscribe((data:string)=>
+        {
+          text=data;
+        })
+
+        let string = mode + " "+text+" " + cimEvent.data.task.type.metadata.requestedBy;
         message.body["displayText"] = "";
         message.body.markdownText = string;
+
       } else if (cimEvent.data.task.type.direction == "DIRECT_CONFERENCE") {
-        let string = mode + " conference request has been placed by " + cimEvent.data.task.type.metadata.requestedBy;
+        let text="conference request has been placed by";
+        this._translateService.stream('socket-service.conference-request-has-been-placed-by')
+        .subscribe((data:string)=>
+        {
+          text=data;
+        })
+        let string = mode + " "+text+" " + cimEvent.data.task.type.metadata.requestedBy;
         message.body["displayText"] = "";
         message.body.markdownText = string;
+
       } else {
         message = null;
       }
@@ -1189,12 +1228,26 @@ export class socketService {
 
       if (cimEvent.data.requestType.direction.toLowerCase() == "direct_transfer") {
         direction = "transfer";
-        let string = "No agent is available for " + mode + " " + direction;
+        let text="No agent is available for";
+        this._translateService.stream('socket-service.No-agent-is-available-for')
+        .subscribe((data:string)=>
+        {
+          text=data;
+        })
+        let string = text+" " + mode + " " + direction;
         message.body["displayText"] = "";
         message.body.markdownText = string;
+
       } else if (cimEvent.data.requestType.direction.toLowerCase() == "direct_conference") {
         direction = "conference";
-        let string = "No agent is available for " + mode + " " + direction;
+
+        let text="No agent is available for";
+        this._translateService.stream('socket-service.No-agent-is-available-for')
+        .subscribe((data:string)=>
+        {
+          text=data;
+        })
+        let string = text+" " + mode + " " + direction;
         message.body["displayText"] = "";
         message.body.markdownText = string;
       } else {

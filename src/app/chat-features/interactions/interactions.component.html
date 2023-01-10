@@ -1456,6 +1456,12 @@
               <img
                 *ngIf="(quotedMessage.body.type | lowercase) == 'video' || (quotedMessage.body.itemType | lowercase) == 'video'"
                 src="assets/file-types/video.svg" />
+                <img
+                *ngIf="(quotedMessage.body.type | lowercase) == 'contact' || (quotedMessage.body.itemType | lowercase) == 'video'"
+                src="assets/file-types/contact.png" />
+                <img
+                *ngIf="(quotedMessage.body.type | lowercase) == 'location' || (quotedMessage.body.itemType | lowercase) == 'video'"
+                src="assets/file-types/location.png" />
               <img *ngIf="(quotedMessage.body.type | lowercase) == 'audio'" src="assets/file-types/audio.svg" />
               <img *ngIf="(quotedMessage.body.type | lowercase) == 'file'"
                 src="assets/file-types/{{ quotedMessage.body.attachment.mimeType | getFileExt }}.svg" />
