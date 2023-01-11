@@ -41,13 +41,15 @@
               <tr *ngFor="let chat of data.chats">
                 <td>
                   <span class="channel-icon {{ chat.channelType }}"><img [src]="chat.channelType | channelName | channelLogo | async" /></span>
+                  <span class="material-icons">
+                    call_received
+                    </span>
                   {{ chat.customerName }} <small matTooltip="{{'globals.channel-identifier' | translate}}" >({{ chat.channelIdentity }})</small>
                 </td>
                 <td>
                   {{ chat.activeSince | amDuration: "seconds" }} <small>{{ "supervisor.ago" | translate }}</small>
                 </td>
                 <td>{{ data.botName }}</td>
-                <td>{{ data.conversationDirection }}</td>
                 <!-- <span class="table-trigger">
               <button mat-mini-fab class="silent-monitor-btn" matTooltip="Silent Monitoring"><img
                   src="assets/images/eye.svg" alt="Silent Monitoring"></button>
@@ -64,6 +66,9 @@
               <tr *ngFor="let chat of data.chats">
                 <td>
                   <span class="channel-icon {{ chat.channelType }}"><img [src]="chat.channelType | channelName | channelLogo | async" /></span>
+                  <span class="material-icons" style="margin-top: 10px;">
+                    call_received
+                    </span>
                   {{ chat.customerName }} <small  matTooltip="{{'globals.channel-identifier' | translate}}">({{ chat.channelIdentity }})</small>
                 </td>
                 <td>
@@ -72,8 +77,7 @@
                 <td>
                   {{ chat.agentName }}<small matTooltip="{{'globals.agent-id'  | translate}}">({{ chat.agentId }})</small>
                 </td>
-                <td>{{ data.direction }}</td>
-                <td>{{ data.queueName }}</td>
+                                <td>{{ data.queueName }}</td>
                 <!-- <span class="table-trigger">
               <button mat-mini-fab class="silent-monitor-btn" matTooltip="Silent Monitoring"><img
                   src="assets/images/eye.svg" alt="Silent Monitoring"></button>
