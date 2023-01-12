@@ -1,4 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
+import { snackbarService } from "src/app/services/snackbar.service";
+import { TranslateService } from "@ngx-translate/core";
+import { httpService } from "../../services/http.service";
+import { Subscription, timer } from "rxjs";
+import { map, retry } from "rxjs/operators";
 
 @Component({
   selector: 'app-active-agent-details',
@@ -6,95 +11,72 @@ import {Component, Input, OnInit} from '@angular/core';
   styleUrls: ['./active-agent-details.component.scss']
 })
 export class ActiveAgentDetailsComponent implements OnInit {
+  timerSubscription:Subscription
   agentSearch = "";
-  filterQueue = "all";
+  queueSelected = "all";
+  queuesList:Array<any>=[];
+  filteredData = [];
   labels: Array<any> = [];
- agentMRD = ['chat', 'voice', 'video', 'email']
-  agentList = [{
-    agentName: 'Albert King',
-    agentState: 'ready',
-    agentQueues: ['marketing', 'Sales', 'products'],
-    activeConversations: 3,
-    agentMrdStates: [{
-      mrdState: 'chat',
-      status: 'ready'
-    },
-      {
-        mrdState: 'voice',
-        status: 'busy'
-      },
-  {
-    mrdState: 'video',
-    status: 'not_ready'
-  }, {
-  mrdState: 'email',
-  status: 'active',
-}]
-}, {
-    agentName: 'john miller',
-    agentState: 'not_ready',
-    agentQueues: ['marketing', 'Sales', 'products'],
-    activeConversations: 4,
-    agentMrdStates: [ {
-      mrdState: 'chat',
-      status: 'active'
-    },
-      {
-        mrdState: 'voice',
-        status: 'busy'
-      },
-      {
-        mrdState: 'video',
-        status: 'not_ready'
-      }, {
-        mrdState: 'email',
-        status: 'busy',
-      }]
-  },
-    {
-  agentName: 'Michael John',
-    agentState: 'busy',
-    agentQueues: ['Sales', 'products'],
-    activeConversations: 2,
-    agentMrdStates: [{
-    mrdState: 'chat',
-    status: 'pending_not_ready'
-  },
-    {
-      mrdState: 'voice',
-      status: 'busy'
-    },
-    {
-      mrdState: 'video',
-      status: 'ready'
-    }, {
-      mrdState: 'email',
-      status: 'pending_not_ready',
-    }]
-  }, {
-    agentName: 'Joey Bing',
-    agentState: 'ready',
-    agentQueues: ['marketing'],
-    activeConversations: 3,
-    agentMrdStates: [{
-      mrdState: 'chat',
-      status: 'pending_not_ready'
-    },
-      {
-        mrdState: 'voice',
-        status: 'ready'
-      },
-      {
-        mrdState: 'video',
-        status: 'busy'
-      }, {
-        mrdState: 'email',
-        status: 'not_ready ',
-      },
-    ]
-}];
-  constructor() { }
+  agentMRD = ['chat', 'voice', 'video', 'email']
+  activeAgentsDetails:Object ={}
+  constructor(private _translateService:TranslateService, private _httpService: httpService,private _snackBarService:snackbarService) { }
 
   ngOnInit() {
+
+    this._httpService.getAllQueues().subscribe((e) => {
+      this.queuesList = e;
+    },(err)=>
+    {
+      this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Queues-List'),'err');
+    });
+
+    this.timerSubscription = timer(0, 50000)
+    .pipe(
+      map(() => {
+        if(this.queueSelected=='all')
+        {
+          this._httpService.getAllActiveAgentsDetails().subscribe((e) => {
+            this.activeAgentsDetails = e;
+          },(err)=>
+          {
+            this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Agent-Details'),'err');
+          });
+        }
+        else
+        {
+          this._httpService.getAllActiveAgentsDetailsOnQueue(this.queueSelected).subscribe((e) => {
+            this.activeAgentsDetails = e;
+          },(err)=>
+          {
+            this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Agent-Details'),'err');
+          });
+        }
+   
+  }, retry())
+  )
+  .subscribe();
+  }
+  filterData() {
+    // console.log("Filter Selected for Queued Chats", this.FilterSelected);
+    if (this.queueSelected == "all") {
+      this._httpService.getAllActiveAgentsDetails().subscribe((e) => {
+        this.activeAgentsDetails = e;
+      },(err)=>
+      {
+        this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Agent-Details'),'err');
+      });
+    } else {
+      this._httpService.getAllActiveAgentsDetailsOnQueue(this.queueSelected).subscribe((e) => {
+        this.activeAgentsDetails = e;
+      },(err)=>
+      {
+        this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Agent-Details'),'err');
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    this.timerSubscription.unsubscribe();
   }
 }
+

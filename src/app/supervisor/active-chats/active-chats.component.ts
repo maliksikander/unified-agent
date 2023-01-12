@@ -3,7 +3,6 @@ import { ConfirmationDialogComponent } from "../../new-components/confirmation-d
 import { MatDialog } from "@angular/material";
 import { httpService } from "../../services/http.service";
 import { ActivatedRoute } from "@angular/router";
-import * as _ from "lodash";
 import { Subscription, timer } from "rxjs";
 import { map, retry } from "rxjs/operators";
 
@@ -23,7 +22,13 @@ export class ActiveChatsComponent implements OnInit {
   activeChatListWithAgents: [];
   activeChatListWithBots: [];
 
-  constructor(private dialog: MatDialog,private _translateService:TranslateService, private _httpService: httpService, private route: ActivatedRoute , private _snackBarService : snackbarService) {}
+  constructor(
+    private dialog: MatDialog,
+    private _translateService: TranslateService,
+    private _httpService: httpService,
+    private route: ActivatedRoute,
+    private _snackBarService: snackbarService
+  ) {}
   ngOnInit(): void {
     this.filter = this.route.snapshot.queryParamMap.get("filter") ? this.route.snapshot.queryParamMap.get("filter") : "agents";
     if (this.filter == "agents") {
@@ -34,18 +39,22 @@ export class ActiveChatsComponent implements OnInit {
     this.timerSubscription = timer(0, 10000)
       .pipe(
         map(() => {
-          this._httpService.getAllActiveChatsWithAgents().subscribe((e) => {
-            this.activeChatListWithAgents = e;
-          },(err)=>
-          {
-            this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Chats-with-Agents'),'err');
-          });
-          this._httpService.getAllActiveChatsWithBots().subscribe((e) => {
-            this.activeChatListWithBots = e;
-          },(err)=>
-          {
-            this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Chats-with-Bots'),'err');
-          });
+          this._httpService.getAllActiveChatsWithAgents().subscribe(
+            (e) => {
+              this.activeChatListWithAgents = e;
+            },
+            (err) => {
+              this._snackBarService.open(this._translateService.instant("snackbar.Error-Getting-Active-Chats-with-Agents"), "err");
+            }
+          );
+          this._httpService.getAllActiveChatsWithBots().subscribe(
+            (e) => {
+              this.activeChatListWithBots = e;
+            },
+            (err) => {
+              this._snackBarService.open(this._translateService.instant("snackbar.Error-Getting-Active-Chats-with-Bots"), "err");
+            }
+          );
         }, retry())
       )
       .subscribe();
@@ -55,7 +64,10 @@ export class ActiveChatsComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: "490px",
       panelClass: "confirm-dialog",
-      data: { header: this._translateService.instant('snackbar.Close-Topic'), message: this._translateService.instant('snackbar.sure-to-close-this-topic') }
+      data: {
+        header: this._translateService.instant("snackbar.Close-Topic"),
+        message: this._translateService.instant("snackbar.sure-to-close-this-topic")
+      }
     });
     dialogRef.afterClosed().subscribe((result) => {});
   }

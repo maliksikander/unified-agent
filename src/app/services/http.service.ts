@@ -25,6 +25,7 @@ export class httpService {
       agentSetting: "/agentSetting",
       forms: "/forms",
       agentInQueueList: "/precision-queues/available-agents",
+      queueList:"/precision-queues",
       ccmChannelSession: "/message/receive",
       tasks:"/tasks"
     };
@@ -138,6 +139,20 @@ export class httpService {
   }
   getAllActiveChatsWithAgents(): Observable<any> {
     return this._httpClient.get<any>(`${this._appConfigService.config.CIM_REPORTING_URL}/queue-active-chats/detail`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+  getAllActiveAgentsDetails(): Observable<any> {
+    return this._httpClient.get<any>(`${this._appConfigService.config.CIM_REPORTING_URL}/agent-activity/detail`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+  getAllActiveAgentsDetailsOnQueue(queueId): Observable<any> {
+    return this._httpClient.get<any>(`${this._appConfigService.config.CIM_REPORTING_URL}/agent-activity/detail?${queueId}`, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
@@ -367,7 +382,16 @@ export class httpService {
       }
     );
   }
-
+  getAllQueues(): Observable<any> {
+    return this._httpClient.get<any>(
+      `${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.queueList}`,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }
+    );
+  }
   getCustomerByChannelTypeAndIdentifier(channelType, customerChannelIdentifier): Observable<any> {
     return this._httpClient.get<any>(
       `${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.customers}?channelType=${channelType}&customerChannelIdentifier=${customerChannelIdentifier}`,

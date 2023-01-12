@@ -5,7 +5,6 @@
 </div>
 
 <div class="container-fluid">
-
   <div class="table-container manage-dashboard">
     <div class="active-chat-list-area">
       <div class="filter-area d-flex">
@@ -15,72 +14,63 @@
             <mat-icon>search</mat-icon>
           </div>
 
-
           <mat-form-field appearance="outline" class="selection-trigger chat-selection">
-            <mat-select [(value)]="filterQueue">
-              <mat-option class="chat-selection-option" value="all">All Queues</mat-option>
-              <mat-option class="chat-selection-option" value="marketing">Marketing</mat-option>
-              <mat-option class="chat-selection-option" value="sales">Sales</mat-option>
-              <mat-option class="chat-selection-option" value="product">Products</mat-option>
-              <mat-option class="chat-selection-option" value="support">Support</mat-option>
+            <mat-select [(value)]="queueSelected" (selectionChange)="filterData()">
+              <mat-option value="all">{{ "supervisor.all-queues" | translate }}</mat-option>
+              <mat-option *ngFor="let item of queuesList" [value]="item.id">{{ item.name }} </mat-option>
             </mat-select>
           </mat-form-field>
 
-<!--          <mat-form-field appearance="outline" class="selection-trigger chat-selection">-->
-<!--            <mat-select [(ngModel)]="filterAgenStates">-->
-<!--              <mat-option value='all'>All Agents State</mat-option>-->
-<!--              <mat-option value="ready">Ready</mat-option>-->
-<!--              <mat-option value="not_ready">Not Ready</mat-option>-->
-<!--              <mat-option value="busy">Busy</mat-option>-->
-<!--            </mat-select>-->
-<!--          </mat-form-field>-->
+          <!--          <mat-form-field appearance="outline" class="selection-trigger chat-selection">-->
+          <!--            <mat-select [(ngModel)]="filterAgenStates">-->
+          <!--              <mat-option value='all'>All Agents State</mat-option>-->
+          <!--              <mat-option value="ready">Ready</mat-option>-->
+          <!--              <mat-option value="not_ready">Not Ready</mat-option>-->
+          <!--              <mat-option value="busy">Busy</mat-option>-->
+          <!--            </mat-select>-->
+          <!--          </mat-form-field>-->
         </div>
 
         <div class="mrd-stats-label">
           <span>MRD States</span>
           <ul>
             <li><span class="busy-label"></span> Busy</li>
-            <li><span  class="active-label"></span> Active</li>
-            <li><span  class="ready-label"></span> Ready</li>
-            <li><span  class="p-not-ready-label"></span> Pending-Not Ready</li>
-            <li><span  class="not-ready-label"></span> Not Ready</li>
+            <li><span class="active-label"></span> Active</li>
+            <li><span class="ready-label"></span> Ready</li>
+            <li><span class="p-not-ready-label"></span> Pending-Not Ready</li>
+            <li><span class="not-ready-label"></span> Not Ready</li>
           </ul>
         </div>
-
       </div>
 
       <table class="table">
         <thead>
-        <tr>
-          <th class="status-data" scope="col">Agent(s)</th>
-          <th scope="col">Active Conversation</th>
-<!--          <th scope="col">Queue(s)</th>-->
-          <th scope="col" class="mrd-status-cell" *ngFor="let mrds of agentMRD">
-            {{mrds}}
-         </th>
-        </tr>
+          <tr>
+            <th class="status-data" scope="col">Agent(s)</th>
+            <th scope="col">Active Conversation</th>
+            <!--          <th scope="col">Queue(s)</th>-->
+            <th scope="col" class="mrd-status-cell"  *ngFor="let mrd of (activeAgentsDetails.agents ? activeAgentsDetails.agents[0].mrdStates:[] ) | keyvalue">
+              {{ mrd.key }}
+            </th>
+          </tr>
         </thead>
         <tbody>
-
-        <tr
-          *ngFor="let agent of agentList  | LockFilter: agentSearch">
-          <td class="stats-agent-name {{agent.agentState}}">
-            {{agent.agentName}}
-
-          </td>
-          <td>
-            {{agent.activeConversations}}
-          </td>
-<!--          <td>-->
-<!--            <span class="agent-current-queue" *ngFor="let agentQueue of agent.agentQueues">{{agentQueue}}</span>-->
-<!--          </td>-->
-          <td class="mrd-status-cell" *ngFor="let medState of agent.agentMrdStates"> <span class="mrd-current-status {{medState.status}}"></span></td>
-        </tr>
+          <tr *ngFor="let agent of activeAgentsDetails.agents | LockFilter: agentSearch">
+            <td class="stats-agent-name {{ agent.state }}">
+              {{ agent.name }}
+            </td>
+            <td>
+              {{ agent.activeConversations }}
+            </td>
+            <!--          <td>-->
+            <!--            <span class="agent-current-queue" *ngFor="let agentQueue of agent.agentQueues">{{agentQueue}}</span>-->
+            <!--          </td>-->
+            <td class="mrd-status-cell" *ngFor="let mrd of agent.mrdStates | keyvalue">
+              <span class="mrd-current-status {{ mrd.value | lowercase }}"></span>
+            </td>
+          </tr>
         </tbody>
       </table>
-
     </div>
   </div>
-
-
 </div>
