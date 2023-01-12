@@ -47,6 +47,7 @@
         <thead>
           <tr>
             <th class="status-data" scope="col">Agent(s)</th>
+            <th scope="col">State</th>
             <th scope="col">Active Conversation</th>
             <!--          <th scope="col">Queue(s)</th>-->
             <th scope="col" class="mrd-status-cell"  *ngFor="let mrd of (activeAgentsDetails.agents ? activeAgentsDetails.agents[0].mrdStates:[] ) | keyvalue">
@@ -58,6 +59,9 @@
           <tr *ngFor="let agent of activeAgentsDetails.agents | LockFilter: agentSearch">
             <td class="stats-agent-name {{ agent.state }}">
               {{ agent.name }}
+            </td>
+            <td>
+              {{ agent.state }}
             </td>
             <td>
               {{ agent.activeConversations }}
