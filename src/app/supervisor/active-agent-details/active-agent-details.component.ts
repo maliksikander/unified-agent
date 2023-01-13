@@ -15,6 +15,7 @@ export class ActiveAgentDetailsComponent implements OnInit {
   agentSearch = "";
   queueSelected = "all";
   queuesList:Array<any>=[];
+  MRDsList:Array<any>=[];
   filteredData = [];
   labels: Array<any> = [];
   agentMRD = ['chat', 'voice', 'video', 'email']
@@ -28,6 +29,12 @@ export class ActiveAgentDetailsComponent implements OnInit {
     },(err)=>
     {
       this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Queues-List'),'err');
+    });
+    this._httpService.getAllMRDs().subscribe((e) => {
+      this.MRDsList = e;
+    },(err)=>
+    {
+      this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-MRDs-List'),'err');
     });
 
     this.timerSubscription = timer(0, 50000)

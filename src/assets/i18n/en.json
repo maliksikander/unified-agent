@@ -35,6 +35,7 @@
     "Error-Getting-Active-Chats-with-Agents":"Error Getting Active Chats with Agents",
     "Error-Getting-Active-Chats-with-Bots":"Error Getting Active Chats with Bots",
     "Error-Getting-Active-Agent-Details":"Error Getting Active Agent Details",
+    "Error-Getting-MRDs-List":"Error Getting MRDs List",
     "Channel-session-not-found":"Channel session not found",
     "Access-Token-or-FB-Host-API-for-FB-is-missing":"Access Token or FB Host API for FB is missing",
     "No-Conversation-Found":"No Conversation Found",

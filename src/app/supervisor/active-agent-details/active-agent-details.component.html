@@ -50,13 +50,13 @@
             <th scope="col">State</th>
             <th scope="col">Active Conversation</th>
             <!--          <th scope="col">Queue(s)</th>-->
-            <th scope="col" class="mrd-status-cell"  *ngFor="let mrd of (activeAgentsDetails.agents ? activeAgentsDetails.agents[0].mrdStates:[] ) | keyvalue">
-              {{ mrd.key }}
+            <th scope="col" class="mrd-status-cell"  *ngFor="let mrd of MRDsList">
+              {{ mrd.name }}
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let agent of activeAgentsDetails.agents | LockFilter: agentSearch">
+          <tr *ngFor="let agent of (activeAgentsDetails.agents ? activeAgentsDetails.agents:[] ) | LockFilter: agentSearch">
             <td class="stats-agent-name {{ agent.state }}">
               {{ agent.name }}
             </td>
@@ -64,13 +64,13 @@
               {{ agent.state }}
             </td>
             <td>
-              {{ agent.activeConversations }}
+              {{ agent.activeChatsCount }}
             </td>
             <!--          <td>-->
             <!--            <span class="agent-current-queue" *ngFor="let agentQueue of agent.agentQueues">{{agentQueue}}</span>-->
             <!--          </td>-->
-            <td class="mrd-status-cell" *ngFor="let mrd of agent.mrdStates | keyvalue">
-              <span class="mrd-current-status {{ mrd.value | lowercase }}"></span>
+            <td class="mrd-status-cell" *ngFor="let mrd of (agent.mrds ? agent.mrds:[])">
+              <span class="mrd-current-status {{ mrd.state | lowercase }}"></span>
             </td>
           </tr>
         </tbody>

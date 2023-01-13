@@ -27,7 +27,8 @@ export class httpService {
       agentInQueueList: "/precision-queues/available-agents",
       queueList:"/precision-queues",
       ccmChannelSession: "/message/receive",
-      tasks:"/tasks"
+      tasks:"/tasks",
+      getAllMRDs:"/media-routing-domains"
     };
   }
 
@@ -385,6 +386,16 @@ export class httpService {
   getAllQueues(): Observable<any> {
     return this._httpClient.get<any>(
       `${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.queueList}`,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }
+    );
+  }
+  getAllMRDs(): Observable<any> {
+    return this._httpClient.get<any>(
+      `${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.getAllMRDs}`,
       {
         headers: new HttpHeaders({
           "Content-Type": "application/json"

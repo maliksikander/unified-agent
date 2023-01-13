@@ -176,6 +176,9 @@ export class isLoggedInService {
       } else if (url.includes("/queue-chats")) {
         this._router.navigate([`supervisor/queue-chats`]); // pass queue id
       }
+      else if (url.includes("/active-agents-detail")) {
+        this._router.navigate([`supervisor/active-agents-detail`]); // pass queue id
+      }
       this._socketService.connectToSocket();
     } catch (err) {
       this._snackbarService.open(this._translateService.instant('snackbar.you-will-not-receive-browser-notifications'), "err");
