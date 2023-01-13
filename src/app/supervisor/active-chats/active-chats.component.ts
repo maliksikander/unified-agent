@@ -19,6 +19,7 @@ export class ActiveChatsComponent implements OnInit {
   timerSubscription: Subscription;
   filter: string;
   filteredData = [];
+  QueueSelected="all";
   activeChatListWithAgents: [];
   activeChatListWithBots: [];
 
@@ -59,7 +60,22 @@ export class ActiveChatsComponent implements OnInit {
       )
       .subscribe();
   }
-
+  filterData() {
+    // console.log("Filter Selected for Queued Chats", this.FilterSelected);
+    if (this.QueueSelected == "all") {
+      this.filteredData = this.activeChatListWithAgents;
+    } else {
+      this.activeChatListWithAgents.forEach((value:any)=>{
+        if(value.queueId==this.QueueSelected)
+        {
+          this.filteredData=[]
+  
+          this.filteredData.push(value);
+        }
+        
+      });
+    }
+  }
   closeChat() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: "490px",
