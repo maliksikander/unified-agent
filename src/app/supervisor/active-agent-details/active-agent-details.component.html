@@ -47,7 +47,7 @@
         <thead>
           <tr>
             <th class="status-data" scope="col">Agent(s)</th>
-            <th scope="col">State</th>
+            <!-- <th scope="col">State</th> -->
             <th scope="col">Active Conversation</th>
             <!--          <th scope="col">Queue(s)</th>-->
             <th scope="col" class="mrd-status-cell"  *ngFor="let mrd of MRDsList">
@@ -57,20 +57,20 @@
         </thead>
         <tbody>
           <tr *ngFor="let agent of (activeAgentsDetails.agents ? activeAgentsDetails.agents:[] ) | LockFilter: agentSearch">
-            <td class="stats-agent-name {{ agent.state }}">
+            <td class="stats-agent-name {{ agent.state | lowercase }}">
               {{ agent.name }}
             </td>
-            <td>
-              {{ agent.state }}
-            </td>
+            <!-- <td>
+              {{ agent.state.replace('_',' ') | titlecase }}
+            </td> -->
             <td>
               {{ agent.activeChatsCount }}
             </td>
             <!--          <td>-->
             <!--            <span class="agent-current-queue" *ngFor="let agentQueue of agent.agentQueues">{{agentQueue}}</span>-->
             <!--          </td>-->
-            <td class="mrd-status-cell" *ngFor="let mrd of (agent.mrds ? agent.mrds:[])">
-              <span class="mrd-current-status {{ mrd.state | lowercase }}"></span>
+            <td class="mrd-status-cell" *ngFor="let agentMRD of (agent.mrds ? agent.mrds:[])">
+              <span *ngFor="let MRD of MRDsList" class="mrd-current-status {{ agentMRD[MRD.id] | lowercase }}"></span>
             </td>
           </tr>
         </tbody>

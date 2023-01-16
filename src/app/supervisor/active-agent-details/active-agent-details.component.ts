@@ -16,7 +16,6 @@ export class ActiveAgentDetailsComponent implements OnInit {
   queueSelected = "all";
   queuesList:Array<any>=[];
   MRDsList:Array<any>=[];
-  filteredData = [];
   labels: Array<any> = [];
   agentMRD = ['chat', 'voice', 'video', 'email']
   activeAgentsDetails:Object ={}
@@ -37,48 +36,47 @@ export class ActiveAgentDetailsComponent implements OnInit {
       this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-MRDs-List'),'err');
     });
 
-    this.timerSubscription = timer(0, 50000)
+    this.timerSubscription = timer(0, 5000)
     .pipe(
       map(() => {
         if(this.queueSelected=='all')
         {
-          this._httpService.getAllActiveAgentsDetails().subscribe((e) => {
-            this.activeAgentsDetails = e;
-          },(err)=>
-          {
-            this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Agent-Details'),'err');
-          });
+          this.getAllActiveAgentDetails();
         }
         else
         {
-          this._httpService.getAllActiveAgentsDetailsOnQueue(this.queueSelected).subscribe((e) => {
-            this.activeAgentsDetails = e;
-          },(err)=>
-          {
-            this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Agent-Details'),'err');
-          });
+          this.getAllActiveAgentsDetailsOnQueue(this.queueSelected);
         }
    
   }, retry())
   )
   .subscribe();
   }
+
+  getAllActiveAgentDetails()
+  {
+    this._httpService.getAllActiveAgentsDetails().subscribe((e) => {
+      this.activeAgentsDetails = e;
+    },(err)=>
+    {
+      this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Agent-Details'),'err');
+    });
+  }
+  getAllActiveAgentsDetailsOnQueue(queueId)
+  {
+    this._httpService.getAllActiveAgentsDetailsOnQueue(queueId).subscribe((e) => {
+      this.activeAgentsDetails = e;
+    },(err)=>
+    {
+      this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Agent-Details'),'err');
+    });
+  }
   filterData() {
     // console.log("Filter Selected for Queued Chats", this.FilterSelected);
     if (this.queueSelected == "all") {
-      this._httpService.getAllActiveAgentsDetails().subscribe((e) => {
-        this.activeAgentsDetails = e;
-      },(err)=>
-      {
-        this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Agent-Details'),'err');
-      });
+      this.getAllActiveAgentDetails();
     } else {
-      this._httpService.getAllActiveAgentsDetailsOnQueue(this.queueSelected).subscribe((e) => {
-        this.activeAgentsDetails = e;
-      },(err)=>
-      {
-        this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Agent-Details'),'err');
-      });
+      this.getAllActiveAgentsDetailsOnQueue(this.queueSelected);
     }
   }
 
