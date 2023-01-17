@@ -1488,7 +1488,7 @@
       </div>
 
       <div class="slide-in-bottom new-msg-notif" *ngIf="showNewMessageNotif"
-        (click)="downTheScrollAfterMilliSecs(0, 'smooth')">
+        (click)="goToLatestMessage()">
         {{'chat-features.interactions.new-message' | translate}}
         <span class="material-icons"> arrow_drop_down </span>
       </div>

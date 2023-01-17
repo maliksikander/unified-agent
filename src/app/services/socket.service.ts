@@ -413,7 +413,7 @@ export class socketService {
         ) {
           this.processFaceBookCommentActions(conversation.messages, event.data);
         } else {
-          event.data.header["status"] = "seen";
+          event.data.header["status"] = "sent";
           conversation.messages.push(event.data);
         }
       } else if (
@@ -431,11 +431,13 @@ export class socketService {
           conversation.messages.push(message);
         }
       } else if (event.name.toLowerCase() == "whisper_message") {
-        event.data.header["status"] = "seen";
+        event.data.header["status"] = "sent";
         event.data.body["isWhisper"] = true;
         conversation.messages.push(event.data);
       }
     });
+
+    this.processSeenMessages(conversation.messages, topicEvents);
 
     let participants = topicData.participants ? topicData.participants : [];
     // feed the active channel sessions
@@ -514,6 +516,23 @@ export class socketService {
 
     console.log("conversations==>", this.conversations);
     this._conversationsListener.next(this.conversations);
+  }
+
+  processSeenMessages(messages, events) {
+    let latestDeliveryEventMessage = this.getLatestDeliveryEventMessage(events);
+
+    if (latestDeliveryEventMessage && latestDeliveryEventMessage.body.status.toLowerCase() == "read") {
+      this.markAgentMessagesToSeenTillId(messages, latestDeliveryEventMessage.body.messageId);
+    }
+  }
+
+  getLatestDeliveryEventMessage(events) {
+    for (let index = events.length - 1; index >= 0; index--) {
+      const event = events[index];
+      if (event.name.toLowerCase() == "message_delivery_notification" && event.data.header.sender.type.toLowerCase() == "customer") {
+        return event.data;
+      }
+    }
   }
 
   isVoiceChannelSessionExists(activeChannelSessions) {
