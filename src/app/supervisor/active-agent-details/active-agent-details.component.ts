@@ -36,7 +36,7 @@ export class ActiveAgentDetailsComponent implements OnInit {
       this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-MRDs-List'),'err');
     });
 
-    this.timerSubscription = timer(0, 5000)
+    this.timerSubscription = timer(0, 10000)
     .pipe(
       map(() => {
         if(this.queueSelected=='all')
@@ -60,6 +60,7 @@ export class ActiveAgentDetailsComponent implements OnInit {
     },(err)=>
     {
       this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Agent-Details'),'err');
+      this.activeAgentsDetails ={};
     });
   }
   getAllActiveAgentsDetailsOnQueue(queueId)
@@ -69,6 +70,7 @@ export class ActiveAgentDetailsComponent implements OnInit {
     },(err)=>
     {
       this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Agent-Details'),'err');
+      this.activeAgentsDetails ={};
     });
   }
   filterData() {

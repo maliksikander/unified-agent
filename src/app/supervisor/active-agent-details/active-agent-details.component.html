@@ -69,9 +69,15 @@
             <!--          <td>-->
             <!--            <span class="agent-current-queue" *ngFor="let agentQueue of agent.agentQueues">{{agentQueue}}</span>-->
             <!--          </td>-->
-            <td class="mrd-status-cell" *ngFor="let agentMRD of (agent.mrds ? agent.mrds:[])">
-              <span *ngFor="let MRD of MRDsList" class="mrd-current-status {{ agentMRD[MRD.id] | lowercase }}"></span>
-            </td>
+
+            <ng-container *ngFor="let col of MRDsList">
+              <ng-container *ngFor="let agentMRD of agent.mrds">
+                <td class="mrd-status-cell" *ngIf="col.id==agentMRD.id">
+                  <span class="mrd-current-status {{ agentMRD.state | lowercase }}"></span>
+                </td>
+              </ng-container>
+            </ng-container>
+            
           </tr>
         </tbody>
       </table>

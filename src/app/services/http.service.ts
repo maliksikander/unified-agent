@@ -153,7 +153,7 @@ export class httpService {
     });
   }
   getAllActiveAgentsDetailsOnQueue(queueId): Observable<any> {
-    return this._httpClient.get<any>(`${this._appConfigService.config.CIM_REPORTING_URL}/agent-activity/detail?${queueId}`, {
+    return this._httpClient.get<any>(`${this._appConfigService.config.CIM_REPORTING_URL}/agent-activity/detail?queueId=${queueId}`, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
