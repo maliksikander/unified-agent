@@ -163,6 +163,15 @@
     "chats": {
       "start": "Start a New Conversation_ar"
     },
+    "socket-service":{
+      "has-joined-the-conversation":"has joined the conversation_ar",
+      "session-started":"session started_ar",
+      "session-ended":"session ended_ar",
+      "left-the-conversation":"left the conversation_ar",
+      "transfer-request-has-been-placed-by":"transfer request has been placed by_ar",
+      "conference-request-has-been-placed-by":"conference request has been placed by_ar",
+      "No-agent-is-available-for":"No agent is available for_ar"
+     },
     "interactions": {
       "whisper": "Whisper_ar",
       "bot-suggestions-available": "Bot suggestions are available type / for viewing_ar",
@@ -292,6 +301,7 @@
     "conference": "conference_ar",
     "transfer": "transfer_ar",
     "to": "to_ar",
+    "columns":"Columns_ar",
     "yes": "Yes_ar",
     "page-not-found": "The page you are looking for is not found_ar",
     "agents": "agents_ar",

@@ -5,12 +5,10 @@
         <h4>{{ "supervisor.active-conversations-detail" | translate }}</h4>
       </div>
       <div class="col-md-6 text-right page-action">
-
-        <mat-form-field *ngIf="FilterSelected=='agents'" appearance="outline" class="selection-trigger mr-2">
+        <mat-form-field *ngIf="FilterSelected == 'agents'" appearance="outline" class="selection-trigger mr-2">
           <mat-select [(value)]="QueueSelected" (selectionChange)="filterData()">
             <mat-option value="all">{{ "supervisor.all-queues" | translate }}</mat-option>
-            <mat-option *ngFor="let item of queuesList; " [value]="item.id">{{ item.name }}
-            </mat-option>
+            <mat-option *ngFor="let item of queuesList" [value]="item.id">{{ item.name }} </mat-option>
           </mat-select>
         </mat-form-field>
 
@@ -20,18 +18,18 @@
             <mat-option value="bots">{{ "supervisor.answered-by-bot" | translate }}</mat-option>
           </mat-select>
         </mat-form-field>
-        
       </div>
-
     </div>
     <div class="col">
       <table class="table">
         <thead>
           <tr>
+            <th *ngIf="FilterSelected == 'agents'" scope="col">{{ "globals.direction" | translate }}</th>
+            <th scope="col">{{ "globals.channel" | translate }}</th>
+
             <th scope="col">{{ "supervisor.customer" | translate }}</th>
             <th scope="col">{{ "supervisor.active-since" | translate }}</th>
             <th scope="col">{{ (FilterSelected == "agents" ? "supervisor.agent" : "supervisor.bot") | translate | titlecase }}</th>
-            <th scope="col">{{ "supervisor.conversation-direction" | translate }}</th>
             <th *ngIf="FilterSelected == 'agents'" scope="col">{{ "supervisor.queue" | translate }}</th>
           </tr>
         </thead>
@@ -41,10 +39,9 @@
               <tr *ngFor="let chat of data.chats">
                 <td>
                   <span class="channel-icon {{ chat.channelType }}"><img [src]="chat.channelType | channelName | channelLogo | async" /></span>
-                  <span class="material-icons">
-                    call_received
-                    </span>
-                  {{ chat.customerName }} <small matTooltip="{{'globals.channel-identifier' | translate}}" >({{ chat.channelIdentity }})</small>
+                </td>
+                <td>
+                  {{ chat.customerName }} <small matTooltip="{{ 'globals.channel-identifier' | translate }}">({{ chat.channelIdentity }})</small>
                 </td>
                 <td>
                   {{ chat.activeSince | amDuration: "seconds" }} <small>{{ "supervisor.ago" | translate }}</small>
@@ -65,19 +62,20 @@
             <ng-container *ngFor="let data of filteredData">
               <tr *ngFor="let chat of data.chats">
                 <td>
+                  <span *ngIf="(chat.direction | lowercase) == inbound || (chat.direction | lowercase) == outbound " class="material-icons direction-icon {{chat.direction | lowercase}}"> call_received </span>                </td>
+                <td>
                   <span class="channel-icon {{ chat.channelType }}"><img [src]="chat.channelType | channelName | channelLogo | async" /></span>
-                  <span class="material-icons" style="margin-top: 10px;">
-                    call_received
-                    </span>
-                  {{ chat.customerName }} <small  matTooltip="{{'globals.channel-identifier' | translate}}">({{ chat.channelIdentity }})</small>
+                </td>
+                <td>
+                  {{ chat.customerName }} <small matTooltip="{{ 'globals.channel-identifier' | translate }}">({{ chat.channelIdentity }})</small>
                 </td>
                 <td>
                   {{ chat.activeSince | amDuration: "seconds" }} <small>{{ "supervisor.joined" | translate }}</small>
                 </td>
                 <td>
-                  {{ chat.agentName }}<small matTooltip="{{'globals.agent-id'  | translate}}">({{ chat.agentId }})</small>
+                  {{ chat.agentName }}<small matTooltip="{{ 'globals.agent-id' | translate }}">({{ chat.agentId }})</small>
                 </td>
-                                <td>{{ data.queueName }}</td>
+                <td>{{ data.queueName }}</td>
                 <!-- <span class="table-trigger">
               <button mat-mini-fab class="silent-monitor-btn" matTooltip="Silent Monitoring"><img
                   src="assets/images/eye.svg" alt="Silent Monitoring"></button>

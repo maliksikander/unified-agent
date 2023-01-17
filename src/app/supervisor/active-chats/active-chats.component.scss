@@ -143,3 +143,18 @@
   }
 
 }
+.direction-icon 
+{
+  vertical-align: middle;
+    border-radius: 100%;
+    background-color: rgb(113, 189, 113);
+    color: white;
+  &.inbound {
+    background-color: rgb(113, 189, 113);
+  }
+  &.outbound {
+    transform:rotate(90deg);
+    background-color: rgb(81, 135, 214);
+  }
+
+}

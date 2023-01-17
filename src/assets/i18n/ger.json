@@ -74,6 +74,15 @@
     "Transfer-request-placed-successfully":"Transfer request placed successfully_ger",
     "Conference-request-placed-successfully":"Conference request placed successfully_ger"
   },
+  "socket-service":{
+    "has-joined-the-conversation":"has joined the conversation_ger",
+    "session-started":"session started_ger",
+    "session-ended":"session ended_ger",
+    "left-the-conversation":"left the conversation_ger",
+    "transfer-request-has-been-placed-by":"transfer request has been placed by_ger",
+    "conference-request-has-been-placed-by":"conference request has been placed by_ger",
+    "No-agent-is-available-for":"No agent is available for_ger"
+   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ger",
     "customer-list-view": "Customer List View_ger",
@@ -291,6 +300,7 @@
     "chat": "Chat_ger",
     "conference": "conference_ger",
     "transfer": "transfer_ger",
+    "columns":"Columns_ger",
     "to": "to_ger",
     "yes": "Yes_ger",
     "page-not-found": "The page you are looking for is not found_ger",

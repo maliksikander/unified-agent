@@ -65,9 +65,14 @@ export class ActiveChatsComponent implements OnInit {
     if (this.QueueSelected == "all") {
       this.filteredData = this.activeChatListWithAgents;
     } else {
-      this.activeChatListWithAgents.every((value:any)=>{
-        this.filteredData=[]
-        this.filteredData.push(value.queueId=this.FilterSelected);
+      this.activeChatListWithAgents.forEach((value:any)=>{
+        if(value.queueId==this.QueueSelected)
+        {
+          this.filteredData=[]
+  
+          this.filteredData.push(value);
+        }
+        
       });
     }
   }
