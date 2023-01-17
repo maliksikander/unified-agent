@@ -26,7 +26,7 @@ export class httpService {
       forms: "/forms",
       agentInQueueList: "/precision-queues/available-agents",
       ccmChannelSession: "/message/receive",
-      tasks:"/tasks"
+      tasks: "/tasks"
     };
   }
 
@@ -406,13 +406,10 @@ export class httpService {
   }
 
   getRETasksList(agentId): Observable<any> {
-    return this._httpClient.get<any>(
-      `${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.tasks}?agentId=${agentId}`,
-      {
-        headers: new HttpHeaders({
-          "Content-Type": "application/json"
-        })
-      }
-    );
+    return this._httpClient.get<any>(`${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.tasks}?agentId=${agentId}`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
   }
 }

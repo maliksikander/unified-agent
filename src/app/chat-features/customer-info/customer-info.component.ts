@@ -236,7 +236,7 @@ export class CustomerInfoComponent implements OnInit {
     // mockTopicData.customer=this.customer
     //  this._socketService.onTopicData(mockTopicData, 12345,"");
     if (!channelCustomerIdentifier) {
-      this._snackBarService.open(this._translateService.instant('snackbar.Channel-Identifier-Not-Found'),"err")
+      this._snackBarService.open(this._translateService.instant("snackbar.Channel-Identifier-Not-Found"), "err");
     } else {
       let cimMessage = {
         id: uuid.v4().toString(),
@@ -264,8 +264,8 @@ export class CustomerInfoComponent implements OnInit {
       this._httpService.startOutboundConversation(cimMessage).subscribe(
         (e) => {},
         (err) => {
-          this._sharedService.Interceptor(err.error,"err");
-          console.error("Error Starting Outbound Conversation",err);
+          this._sharedService.Interceptor(err.error, "err");
+          console.error("Error Starting Outbound Conversation", err);
         }
       );
     }
@@ -319,8 +319,8 @@ export class CustomerInfoComponent implements OnInit {
             this._httpService.updateConversationCustomer(this.conversationId, customer).subscribe();
           },
           (error) => {
-            this._sharedService.Interceptor(error.error,"err");
-            console.error("Error Starting Outbound Conversation",error);
+            this._sharedService.Interceptor(error.error, "err");
+            console.error("Error Starting Outbound Conversation", error);
           }
         );
       }

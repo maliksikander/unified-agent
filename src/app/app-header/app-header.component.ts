@@ -67,7 +67,6 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     private _httpService: httpService,
     private _snackBarService: snackbarService,
     private _translateService: TranslateService
-
   ) {}
 
   ngOnInit() {
@@ -100,7 +99,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
         this.reasonCodes = e;
       },
       (error) => {
-        this._sharedService.Interceptor(error.error,"err");
+        this._sharedService.Interceptor(error.error, "err");
         console.error("error getting reason codes", error);
       }
     );
@@ -112,7 +111,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
         this.getAgentSettings();
       },
       (error) => {
-        this._sharedService.Interceptor(error.error,"err");
+        this._sharedService.Interceptor(error.error, "err");
         console.error("error getting supported languages", error);
       }
     );
@@ -127,7 +126,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
           this.setAgentPreferedlanguage(e.language);
         },
         (error) => {
-          this._sharedService.Interceptor(error.error,"err");
+          this._sharedService.Interceptor(error.error, "err");
           console.error("error getting agent settings", error);
         }
       );
@@ -144,7 +143,6 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
   }
 
   changeState(state) {
-
     if (state == 0) {
       this._socketService.emit("changeAgentState", {
         agentId: this._cacheService.agent.id,
@@ -179,10 +177,9 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
       this.languageFlag = selectedLanguage.flag;
       this.changeLanguageCode = languageCode;
       try {
-        this._httpService.updateAgentSettings({ language: "en" },
-         this._cacheService.agent.id).subscribe((e) => {});
+        this._httpService.updateAgentSettings({ language: "en" }, this._cacheService.agent.id).subscribe((e) => {});
       } catch (error) {
-        this._sharedService.Interceptor(error.error,"err");
+        this._sharedService.Interceptor(error.error, "err");
         console.error(`error updating language`, error);
       }
     }
@@ -198,7 +195,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
       try {
         this._httpService.updateAgentSettings({ language: languageCode }, this._cacheService.agent.id).subscribe((e) => {});
       } catch (error) {
-        this._sharedService.Interceptor(error.error,"err");
+        this._sharedService.Interceptor(error.error, "err");
         console.error(`error updating theme`, error);
       }
     }
@@ -211,21 +208,22 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
   async logout() {
     await this._fcmService.deleteFcmToken();
     try {
-      window['dataLayer'].push({
-        'event': 'logout',
-        'data': {
-          'message':this._translateService.instant('snackbar.Agent-Logged-Out-Successfully')
-        }});
+      window["dataLayer"].push({
+        event: "logout",
+        data: {
+          message: this._translateService.instant("snackbar.Agent-Logged-Out-Successfully")
+        }
+      });
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
     } catch (e) {
-      window['dataLayer'].push({
-        'event': 'error',
-        'data': {
-          'message': this._translateService.instant('snackbar.error-on-logout-request'),
-          'error' : e.error
-        }});
-
+      window["dataLayer"].push({
+        event: "error",
+        data: {
+          message: this._translateService.instant("snackbar.error-on-logout-request"),
+          error: e.error
+        }
+      });
     }
 
     this._socketService.emit("changeAgentState", {
@@ -236,8 +234,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
   }
 
   changeMRD(event, agentMrdState) {
-
-    console.log("state==>", agentMrdState)
+    console.log("state==>", agentMrdState);
 
     this._socketService.emit("changeAgentState", {
       agentId: this._cacheService.agent.id,
@@ -250,8 +247,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
   close() {}
 
   onChange(reason) {
-
-      this.selectedReasonCode = reason;
+    this.selectedReasonCode = reason;
   }
 
   moveToLogin() {

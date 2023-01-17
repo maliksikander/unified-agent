@@ -16,12 +16,21 @@ describe("CustomerInfoComponent", () => {
   let _snackBarService: any;
   let _translateService: TranslateService;
 
-
   beforeEach(() => {
     _shareredService = sharedService;
     _shareredService.schema = mockCustomerSchema;
 
-    component = new CustomerInfoComponent(routerMock, _shareredService, _socketService, dialogMock, _httpService,_finneseService,_cacheService,_snackBarService,_translateService);
+    component = new CustomerInfoComponent(
+      routerMock,
+      _shareredService,
+      _socketService,
+      dialogMock,
+      _httpService,
+      _finneseService,
+      _cacheService,
+      _snackBarService,
+      _translateService
+    );
   });
 
   describe("Test: Get media channels", () => {

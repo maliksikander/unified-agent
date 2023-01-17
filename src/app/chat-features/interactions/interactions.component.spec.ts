@@ -12,14 +12,17 @@ describe("InteractionsComponent", () => {
   let _finneseService: any;
   let _cacheService: any;
   let _snackBarService: any;
-  let _appConfigService:any;
-  let snackBar:any;
-  let translateService:TranslateService
+  let _appConfigService: any;
+  let snackBar: any;
+  let translateService: TranslateService;
 
-  let channelSession={
-    "channel":{
-      "channelConnector":{
-        "channelProviderConfigs":[{"key":"FACEBOOK-API-KEY","value":"qq"},{"key":"FACEBOOK-HOST-URL","value":"qq"}]
+  let channelSession = {
+    channel: {
+      channelConnector: {
+        channelProviderConfigs: [
+          { key: "FACEBOOK-API-KEY", value: "qq" },
+          { key: "FACEBOOK-HOST-URL", value: "qq" }
+        ]
       }
     }
   };
@@ -32,12 +35,28 @@ describe("InteractionsComponent", () => {
       });
 
       _httpService = {
-        getFBPostComments:jest.fn((postId) => { return throwError(()=> errorResponse) }),
-        getFBPostData: jest.fn((postId) => { return of(()=>{throw HttpErrorResponse}) })
-    }
+        getFBPostComments: jest.fn((postId) => {
+          return throwError(() => errorResponse);
+        }),
+        getFBPostData: jest.fn((postId) => {
+          return of(() => {
+            throw HttpErrorResponse;
+          });
+        })
+      };
 
-     component = new InteractionsComponent(_shareredService,_cacheService,_socketService,dialogMock,_snackBarService,_appConfigService,_httpService,_finneseService,snackBar,translateService);
-
+      component = new InteractionsComponent(
+        _shareredService,
+        _cacheService,
+        _socketService,
+        dialogMock,
+        _snackBarService,
+        _appConfigService,
+        _httpService,
+        _finneseService,
+        snackBar,
+        translateService
+      );
     });
 
     it("FBPostComments should be null", () => {
@@ -61,10 +80,25 @@ describe("InteractionsComponent", () => {
   describe("when both post data and fb comments api returns data ", () => {
     beforeEach(async () => {
       _httpService = {
-        getFBPostComments:jest.fn((postId) => { return of([{"data":"comments"}])}),
-        getFBPostData: jest.fn((postId) => { return of([{"data":"comments"}])})
-      }
-     component = new InteractionsComponent(_shareredService,_cacheService,_socketService,dialogMock,_snackBarService,_appConfigService,_httpService,_finneseService,snackBar,translateService);
+        getFBPostComments: jest.fn((postId) => {
+          return of([{ data: "comments" }]);
+        }),
+        getFBPostData: jest.fn((postId) => {
+          return of([{ data: "comments" }]);
+        })
+      };
+      component = new InteractionsComponent(
+        _shareredService,
+        _cacheService,
+        _socketService,
+        dialogMock,
+        _snackBarService,
+        _appConfigService,
+        _httpService,
+        _finneseService,
+        snackBar,
+        translateService
+      );
     });
 
     it("FBPostData and FBPostComments should be defined", () => {
@@ -92,10 +126,25 @@ describe("InteractionsComponent", () => {
         status: 404
       });
       _httpService = {
-        getFBPostComments:jest.fn((postId) => { return throwError(()=> errorResponse) }),
-        getFBPostData: jest.fn((postId) => { return throwError(()=> errorResponse)})
-      }
-     component = new InteractionsComponent(_shareredService,_cacheService,_socketService,dialogMock,_snackBarService,_appConfigService,_httpService,_finneseService,snackBar,translateService);
+        getFBPostComments: jest.fn((postId) => {
+          return throwError(() => errorResponse);
+        }),
+        getFBPostData: jest.fn((postId) => {
+          return throwError(() => errorResponse);
+        })
+      };
+      component = new InteractionsComponent(
+        _shareredService,
+        _cacheService,
+        _socketService,
+        dialogMock,
+        _snackBarService,
+        _appConfigService,
+        _httpService,
+        _finneseService,
+        snackBar,
+        translateService
+      );
     });
 
     it("Both FBPostData and FBPostComments should be null", () => {
@@ -119,7 +168,18 @@ describe("InteractionsComponent", () => {
 
   describe("Quoted Reply", () => {
     beforeEach(async () => {
-     component = new InteractionsComponent(_shareredService,_cacheService,_socketService,dialogMock,_snackBarService,_appConfigService,_httpService,_finneseService,snackBar,translateService);
+      component = new InteractionsComponent(
+        _shareredService,
+        _cacheService,
+        _socketService,
+        dialogMock,
+        _snackBarService,
+        _appConfigService,
+        _httpService,
+        _finneseService,
+        snackBar,
+        translateService
+      );
     });
 
     it("replyToMessageId should be defined", () => {

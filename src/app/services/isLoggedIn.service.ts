@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Location } from "@angular/common";
 
-import {  Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { cacheService } from "./cache.service";
 import { fcmService } from "./fcm.service";
@@ -30,8 +30,8 @@ export class isLoggedInService {
     private ngxService: NgxUiLoaderService,
     private _snackbarService: snackbarService,
     private _location: Location,
-    private _translateService:TranslateService,
-    private _authService: AuthService,
+    private _translateService: TranslateService,
+    private _authService: AuthService
   ) {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       this._cacheService.isMobileDevice = true;
@@ -62,7 +62,7 @@ export class isLoggedInService {
   }
 
   autoFinesseLogin(params) {
-    console.log("finesse auto==>")
+    console.log("finesse auto==>");
     let username = decodeURIComponent(params.get("username"));
     let authToken = decodeURIComponent(params.get("authToken"));
     let password = decodeURIComponent(params.get("password"));
@@ -80,7 +80,7 @@ export class isLoggedInService {
       authWithSSO: authWithSSO
     };
     // console.log("finesse user login==> ", obj);
-    this.fetchCCuserAndMoveToLogin(obj,"3rdparty");
+    this.fetchCCuserAndMoveToLogin(obj, "3rdparty");
     this._finesseService.finesseAgent.extension = extension;
     this._finesseService.finesseAgent.loginId = username;
     // this._finesseService.finesseAgent.password = password;
@@ -89,28 +89,26 @@ export class isLoggedInService {
     this._finesseService.initMe();
   }
 
-  fetchCCuserAndMoveToLogin(obj,loginType) {
+  fetchCCuserAndMoveToLogin(obj, loginType) {
     this._httpService.login(obj).subscribe(
       (e) => {
-        window['dataLayer'].push({
-          'event': 'login',
-          'data': {
-            'agent_name': e.data.keycloak_User.username,
-            'message': this._translateService.instant('Agent-Logged-In-Successfully')
-          }});
+        window["dataLayer"].push({
+          event: "login",
+          data: {
+            agent_name: e.data.keycloak_User.username,
+            message: this._translateService.instant("Agent-Logged-In-Successfully")
+          }
+        });
 
         console.log("this is login resp ==>", e.data);
 
         this._cacheService.agent = e.data.keycloak_User;
 
-        if(loginType == "3rdparty")
-        {
-          console.log("finesse auto 12==>")
-        this._finesseService.checkActiveTasks(e.data.keycloak_User.id);
+        if (loginType == "3rdparty") {
+          console.log("finesse auto 12==>");
+          this._finesseService.checkActiveTasks(e.data.keycloak_User.id);
         }
         // this._finesseService.checkActiveTasks(e.data.keycloak_User.id);
-
-
 
         try {
           localStorage.setItem("ccUser", btoa(JSON.stringify(e.data.keycloak_User)));
@@ -119,12 +117,13 @@ export class isLoggedInService {
         this.validateFcmKeyAndConnectToSocket(false);
       },
       (error) => {
-        window['dataLayer'].push({
-          'event': 'error',
-          'data': {
-            'message': this._translateService.instant('snackbar.error-on-login-request'),
-            'error' : error.error
-          }});
+        window["dataLayer"].push({
+          event: "error",
+          data: {
+            message: this._translateService.instant("snackbar.error-on-login-request"),
+            error: error.error
+          }
+        });
 
         this._sharedService.Interceptor(error.error, "err");
         this._router.navigate(["login"]);
@@ -133,7 +132,7 @@ export class isLoggedInService {
   }
 
   autoLogin() {
-    console.log("auto login")
+    console.log("auto login");
     const params = new URLSearchParams(window.location.search);
     if (params.has("username") && params.has("authWithSSO") && params.has("ext") && (params.has("password") || params.has("authToken"))) {
       this.autoFinesseLogin(params);
@@ -158,8 +157,6 @@ export class isLoggedInService {
     this.ngxService.start();
     this._authService.moveToAuthorizedResourceOnLogin();
 
-
-
     // if (this._cacheService.isMobileDevice) {
 
     //   // for a mobile device the fcm is coming from url
@@ -178,7 +175,7 @@ export class isLoggedInService {
       }
       this._socketService.connectToSocket();
     } catch (err) {
-      this._snackbarService.open(this._translateService.instant('snackbar.you-will-not-receive-browser-notifications'), "err");
+      this._snackbarService.open(this._translateService.instant("snackbar.you-will-not-receive-browser-notifications"), "err");
       this._socketService.connectToSocket();
     }
 
