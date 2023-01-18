@@ -175,7 +175,7 @@
                               <button
                                 mat-icon-button
                                 (click)="startOutBoundConversation(channel.value, activeChannel)"
-                                *ngIf="activeChannel == 'WHATSAPP'"
+                                *ngIf="(activeChannel | lowercase) == 'whatsapp' || (activeChannel | lowercase) == 'twitter'"
                               >
                                 <mat-icon>message</mat-icon>
                               </button>
