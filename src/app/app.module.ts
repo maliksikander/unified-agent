@@ -3,7 +3,6 @@ import { NgModule, APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core
 import { CommonModule, HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
-
 import { AppRoutingModule } from "./app-routing.module";
 
 import { LoginComponent } from "./login/login.component";
@@ -67,16 +66,21 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 
 initializeApp(environment.firebaseConfig);
 export function appInitializerFactory(translate: TranslateService) {
-  return () => new Promise<any>((resolve: any) => {
-      const langToSet = 'en'
-      translate.setDefaultLang('en');
-      translate.use(langToSet).subscribe(() => {
-        console.info(`Successfully initialized '${langToSet}' language.'`);
-      }, err => {
-        console.error(`Problem with '${langToSet}' language initialization.'`);
-      }, () => {
-        resolve(null);
-      });
+  return () =>
+    new Promise<any>((resolve: any) => {
+      const langToSet = "en";
+      translate.setDefaultLang("en");
+      translate.use(langToSet).subscribe(
+        () => {
+          console.info(`Successfully initialized '${langToSet}' language.'`);
+        },
+        (err) => {
+          console.error(`Problem with '${langToSet}' language initialization.'`);
+        },
+        () => {
+          resolve(null);
+        }
+      );
     });
 }
 
@@ -84,8 +88,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsType: SPINNER.chasingDots,
   bgsPosition: POSITION.centerCenter
 };
-export class lazyTranslateLoader implements TranslateLoader
-{
+export class lazyTranslateLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<any> {
     return from(import(`../assets/i18n/${lang}.json`));
   }
@@ -130,9 +133,9 @@ export class lazyTranslateLoader implements TranslateLoader
     SharedModule,
     TranslateModule.forRoot({
       loader: {
-          provide: TranslateLoader,
-          useClass: lazyTranslateLoader,
-          deps: [HttpClient]
+        provide: TranslateLoader,
+        useClass: lazyTranslateLoader,
+        deps: [HttpClient]
       }
     }),
     NgxUiLoaderHttpModule.forRoot({

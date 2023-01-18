@@ -24,7 +24,7 @@ export class columnPreferences implements OnInit {
     public _httpService: httpService,
     private _cacheService: cacheService,
     private _sharedService: sharedService,
-    private _translateService:TranslateService
+    private _translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -48,22 +48,23 @@ export class columnPreferences implements OnInit {
   }
 
   getUserPreference() {
-    this._httpService.getUserPreference(this._cacheService.agent.id).subscribe((res) => {
-      if (res.docs.length > 0 && res.docs[0].columns != null) {
-        let arr = res.docs[0].columns;
-        this.checkForSchemaConsistency(arr);
-        this.editObj = res.docs[0];
-        // this.checkedColumns = arr;
-      }
-      // else{
+    this._httpService.getUserPreference(this._cacheService.agent.id).subscribe(
+      (res) => {
+        if (res.docs.length > 0 && res.docs[0].columns != null) {
+          let arr = res.docs[0].columns;
+          this.checkForSchemaConsistency(arr);
+          this.editObj = res.docs[0];
+          // this.checkedColumns = arr;
+        }
+        // else{
 
-      // }
-    },
-    (error)=>
-    {
-      this._sharedService.Interceptor(error.error,"err")
-      console.error("Error getting user preference",error)
-    });
+        // }
+      },
+      (error) => {
+        this._sharedService.Interceptor(error.error, "err");
+        console.error("Error getting user preference", error);
+      }
+    );
   }
 
   checkForSchemaConsistency(savedPref: Array<any>) {
@@ -95,7 +96,7 @@ export class columnPreferences implements OnInit {
 
   save() {
     if (this.checkedColumns.length == 0) {
-      this._sharedService.Interceptor(this._translateService.instant('snackbar.No-settings-are-valid'), "succ");
+      this._sharedService.Interceptor(this._translateService.instant("snackbar.No-settings-are-valid"), "succ");
     } else {
       let prefObj = {
         user_Id: this._cacheService.agent.id,
@@ -124,7 +125,7 @@ export class columnPreferences implements OnInit {
     this._httpService.createUserPreference(obj).subscribe(
       (e) => {
         this.dialogRef.close({ event: "refresh" });
-        this._sharedService.Interceptor(this._translateService.instant('snackbar.Preference-Added'), "succ");
+        this._sharedService.Interceptor(this._translateService.instant("snackbar.Preference-Added"), "succ");
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -136,7 +137,7 @@ export class columnPreferences implements OnInit {
     this._httpService.updateUserPreference(obj, id).subscribe(
       (e) => {
         this.dialogRef.close({ event: "refresh" });
-        this._sharedService.Interceptor(this._translateService.instant('snackbar.Preference-Updated!'), "succ");
+        this._sharedService.Interceptor(this._translateService.instant("snackbar.Preference-Updated!"), "succ");
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");

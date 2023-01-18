@@ -20,15 +20,14 @@ export class CreateLabelComponent implements OnInit {
     public snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<CreateLabelComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private _translateService: TranslateService,
-
+    private _translateService: TranslateService
   ) {}
 
   name = new FormControl("", [Validators.required, Validators.maxLength(100)], this.ValidateNameDuplication.bind(this));
   open: boolean = false;
   nameToBeMatched;
-  formTitle:string=''
-  buttonTitle:string=''
+  formTitle: string = "";
+  buttonTitle: string = "";
   currentColor = "#a9a9a9";
   labelColorCode = [
     "#f34f1b",
@@ -47,16 +46,14 @@ export class CreateLabelComponent implements OnInit {
 
   ngOnInit() {
     if (this.data.action == "update") {
-      this.formTitle= this._translateService.instant('labels.update-label');
-      this.buttonTitle=this._translateService.instant('labels.update');
+      this.formTitle = this._translateService.instant("labels.update-label");
+      this.buttonTitle = this._translateService.instant("labels.update");
       this.currentColor = this.data.label.colorCode;
       this.nameToBeMatched = this.data.label.name;
       this.name.patchValue(this.data.label.name);
-    }
-    else
-    {
-      this.formTitle=this._translateService.instant('labels.add-label');
-      this.buttonTitle=this._translateService.instant('labels.create');
+    } else {
+      this.formTitle = this._translateService.instant("labels.add-label");
+      this.buttonTitle = this._translateService.instant("labels.create");
     }
   }
 
@@ -78,28 +75,28 @@ export class CreateLabelComponent implements OnInit {
   }
   createLabel(obj) {
     obj["createdBy"] = this._cacheService.agent.username;
-      this._httpService.createLabel(obj).subscribe(
-        (e) => {
-          this._sharedService.Interceptor(this._translateService.instant('snackbar.Label-Created'), "succ");
-          this.dialogRef.close({ event: "refresh" });
-          this._sharedService.serviceChangeMessage({msg:"update-labels"});
-        },
-        (error) => {
-          this._sharedService.Interceptor(error.error, "err");
-        }
-      );
-  }
-  updateLabel(obj) {
-    obj["updatedBy"] = this._cacheService.agent.username;
-    this._httpService.updateLabel(this.data.label._id, obj).subscribe(
+    this._httpService.createLabel(obj).subscribe(
       (e) => {
-        this._sharedService.Interceptor(this._translateService.instant('snackbar.Label-Updated'), "succ");
+        this._sharedService.Interceptor(this._translateService.instant("snackbar.Label-Created"), "succ");
         this.dialogRef.close({ event: "refresh" });
         this._sharedService.serviceChangeMessage({ msg: "update-labels" });
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
-        console.error("Error Updating labels",error)
+      }
+    );
+  }
+  updateLabel(obj) {
+    obj["updatedBy"] = this._cacheService.agent.username;
+    this._httpService.updateLabel(this.data.label._id, obj).subscribe(
+      (e) => {
+        this._sharedService.Interceptor(this._translateService.instant("snackbar.Label-Updated"), "succ");
+        this.dialogRef.close({ event: "refresh" });
+        this._sharedService.serviceChangeMessage({ msg: "update-labels" });
+      },
+      (error) => {
+        this._sharedService.Interceptor(error.error, "err");
+        console.error("Error Updating labels", error);
       }
     );
   }

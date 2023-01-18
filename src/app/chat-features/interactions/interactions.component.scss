@@ -674,6 +674,25 @@
       &.agent-message {
         flex-direction: row-reverse;
 
+        &.delivered .chat-time:after {
+          content: "done_all";
+    font-family: "Material Icons";
+    font-size: 15px;
+    margin: 0 5px;
+    position: relative;
+    top: 3px;
+    color: #939393;
+      }
+
+      &.seen .chat-time:after {
+        content: "done_all";
+    font-family: "Material Icons";
+    font-size: 15px;
+    margin: 0 5px;
+    position: relative;
+    top: 3px;
+    color: #21a755;
+    }
         .profile-pic {
           margin-left: 6px;
           margin-right: inherit;
@@ -2300,6 +2319,11 @@ vg-controls.hide {
   .chat-time {
     float: none;
     color: #6e6e6e !important;
+
+    &:after{
+      content: '';
+      display: none;
+    }
   }
 }
 //Transfer, consult chat

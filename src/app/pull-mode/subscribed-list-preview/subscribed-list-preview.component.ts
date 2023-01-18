@@ -31,7 +31,7 @@ export class SubscribedListPreviewComponent implements OnInit {
     private _cacheService: cacheService,
     private _socketService: socketService,
     private _router: Router,
-    private _translateService:TranslateService
+    private _translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -50,7 +50,10 @@ export class SubscribedListPreviewComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: "490px",
       panelClass: "confirm-dialog",
-      data: { header: this._translateService.instant('snackbar.Close-Chat'), message: this._translateService.instant('snackbar.Are-you-sure-you-want-to-close-this-Chat?') }
+      data: {
+        header: this._translateService.instant("snackbar.Close-Chat"),
+        message: this._translateService.instant("snackbar.Are-you-sure-you-want-to-close-this-Chat?")
+      }
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.event == "confirm") {

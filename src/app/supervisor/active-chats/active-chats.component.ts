@@ -25,7 +25,13 @@ export class ActiveChatsComponent implements OnInit {
   activeChatListWithAgents: [];
   activeChatListWithBots: [];
 
-  constructor(private dialog: MatDialog,private _translateService:TranslateService, private _httpService: httpService, private route: ActivatedRoute , private _snackBarService : snackbarService) {}
+  constructor(
+    private dialog: MatDialog,
+    private _translateService: TranslateService,
+    private _httpService: httpService,
+    private route: ActivatedRoute,
+    private _snackBarService: snackbarService
+  ) {}
   ngOnInit(): void {
     this._httpService.getAllQueues().subscribe((e) => {
       this.queuesList = e;
@@ -73,10 +79,10 @@ export class ActiveChatsComponent implements OnInit {
         if(value.queueId==this.QueueSelected)
         {
           this.filteredData=[]
-  
+
           this.filteredData.push(value);
         }
-        
+
       });
     }
   }
@@ -84,7 +90,10 @@ export class ActiveChatsComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: "490px",
       panelClass: "confirm-dialog",
-      data: { header: this._translateService.instant('snackbar.Close-Topic'), message: this._translateService.instant('snackbar.sure-to-close-this-topic') }
+      data: {
+        header: this._translateService.instant("snackbar.Close-Topic"),
+        message: this._translateService.instant("snackbar.sure-to-close-this-topic")
+      }
     });
     dialogRef.afterClosed().subscribe((result) => {});
   }

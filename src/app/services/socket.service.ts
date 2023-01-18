@@ -79,9 +79,12 @@ export class socketService {
         console.log(err.data);
         console.error("socket connect_error ", err.data && err.data.content ? err.data.content : err);
         if (err.data && err.data.content && err.data.content && err.data.content.key == "LM" && err.data.content.licStatus) {
-          this._snackbarService.open(this._translateService.instant('snackbar.The-license-is') + err.data.content.licStatus, "err");
+          this._snackbarService.open(this._translateService.instant("snackbar.The-license-is") + err.data.content.licStatus, "err");
         } else {
-          this._snackbarService.open(err.data && err.data.content ? err.data.content.msg :this._translateService.instant('snackbar.unable-to-connect-to-chat'), "err");
+          this._snackbarService.open(
+            err.data && err.data.content ? err.data.content.msg : this._translateService.instant("snackbar.unable-to-connect-to-chat"),
+            "err"
+          );
         }
       } catch (err) {}
       if (err.message == "login-failed") {
@@ -107,7 +110,6 @@ export class socketService {
 
     this.subscribeToSocketEvents();
   }
-
 
   subscribeToSocketEvents() {
     this.socket.on("disconnect", (reason) => {
@@ -167,12 +169,11 @@ export class socketService {
 
     this.socket.on("onCimEvent", (res: any) => {
       try {
-        console.log("cimEvent==>", res);
         this.onCimEventHandler(JSON.parse(res.cimEvent), res.conversationId);
       } catch (err) {
         console.error("error on onCimEvent ==>" + err);
         // If got any error while receiving cimEvent then simply unsubscribe to the topic
-        this._snackbarService.open(this._translateService.instant('snackbar.Malfunction-event'), "err");
+        this._snackbarService.open(this._translateService.instant("snackbar.Malfunction-event"), "err");
         // this.emit("topicUnsubscription", {
         //   conversationId: res.conversationId,
         //   agentId: this._cacheService.agent.id
@@ -189,7 +190,7 @@ export class socketService {
         }
       } catch (err) {
         console.error("error on onTopicData ", err);
-        this._snackbarService.open(this._translateService.instant('snackbar.Unable-to-process-chat-unsubscribing'), "err");
+        this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-chat-unsubscribing"), "err");
         // If got any error while receiving topicData then simply unsubscribe to the topic
         this.emit("topicUnsubscription", {
           conversationId: res.conversationId,
@@ -201,8 +202,7 @@ export class socketService {
     this.socket.on("topicUnsubscription", (res: any) => {
       console.log("topicUnsubscription", res);
       if (res.reason.toUpperCase() != "UNSUBSCRIBED") {
-
-        this._snackbarService.open(this._translateService.instant('snackbar.Conversation-is-closed-due-to') + res.reason, "err");
+        this._snackbarService.open(this._translateService.instant("snackbar.Conversation-is-closed-due-to") + res.reason, "err");
       }
 
       this.removeConversation(res.conversationId);
@@ -354,9 +354,11 @@ export class socketService {
         this.handleTaskEnqueuedEvent(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "no_agent_available") {
         this.handleNoAgentEvent(cimEvent, conversationId);
+      } else if (cimEvent.name.toLowerCase() == "message_delivery_notification") {
+        this.handleDeliveryNotification(cimEvent, conversationId);
       }
     } else {
-      this._snackbarService.open(this._translateService.instant('snackbar.Unable-to-process-event-unsubscribing'), "err");
+      this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-event-unsubscribing"), "err");
       this.emit("topicUnsubscription", {
         conversationId: conversationId,
         agentId: this._cacheService.agent.id
@@ -370,8 +372,8 @@ export class socketService {
       localStorage.removeItem("ccUser");
     } catch (e) {}
     this._cacheService.resetCache();
-    this._snackbarService.open(this._translateService.instant('snackbar.you-are-logged-In-from-another-session'), "err");
-    alert(this._translateService.instant('snackbar.you-are-logged-In-from-another-session'));
+    this._snackbarService.open(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"), "err");
+    alert(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"));
   }
   onTopicData(topicData, conversationId, taskId) {
     // this.removeConversation(conversationId);
@@ -434,6 +436,8 @@ export class socketService {
         conversation.messages.push(event.data);
       }
     });
+
+    this.processSeenMessages(conversation.messages, topicEvents);
 
     let participants = topicData.participants ? topicData.participants : [];
     // feed the active channel sessions
@@ -512,6 +516,23 @@ export class socketService {
 
     console.log("conversations==>", this.conversations);
     this._conversationsListener.next(this.conversations);
+  }
+
+  processSeenMessages(messages, events) {
+    let latestDeliveryEventMessage = this.getLatestDeliveryEventMessage(events);
+
+    if (latestDeliveryEventMessage && latestDeliveryEventMessage.body.status.toLowerCase() == "read") {
+      this.markAgentMessagesToSeenTillId(messages, latestDeliveryEventMessage.body.messageId);
+    }
+  }
+
+  getLatestDeliveryEventMessage(events) {
+    for (let index = events.length - 1; index >= 0; index--) {
+      const event = events[index];
+      if (event.name.toLowerCase() == "message_delivery_notification" && event.data.header.sender.type.toLowerCase() == "customer") {
+        return event.data;
+      }
+    }
   }
 
   isVoiceChannelSessionExists(activeChannelSessions) {
@@ -620,7 +641,7 @@ export class socketService {
 
     if (conversation) {
       conversation.customer = cimEvent.data;
-      this._snackbarService.open(this._translateService.instant('snackbar.Profile-linked-successfully'), "succ");
+      this._snackbarService.open(this._translateService.instant("snackbar.Profile-linked-successfully"), "succ");
     }
   }
 
@@ -672,7 +693,7 @@ export class socketService {
       agentId: this._cacheService.agent.id,
       conversationId: conversationId
     });
-    this._snackbarService.open(this._translateService.instant('snackbar.CUSTOMER-LINKED-SUCCESSFULLY'), "succ");
+    this._snackbarService.open(this._translateService.instant("snackbar.CUSTOMER-LINKED-SUCCESSFULLY"), "succ");
   }
 
   removeChannelSession(cimEvent, conversationId) {
@@ -735,6 +756,30 @@ export class socketService {
         conversation.messages.push(message);
       }
     }
+  }
+
+  handleDeliveryNotification(cimEvent, conversationId) {
+    if (cimEvent.data.header.sender.type.toLowerCase() == "customer" && cimEvent.data.body.status.toLowerCase() == "read") {
+      let conversation = this.conversations.find((e) => {
+        return e.conversationId == conversationId;
+      });
+
+      if (conversation) {
+        this.markAgentMessagesToSeenTillId(conversation.messages, cimEvent.data.body.messageId);
+      }
+    }
+  }
+
+  markAgentMessagesToSeenTillId(messages, id) {
+    // find index of the message for the delivery notification
+    let index = messages.findIndex((message) => message.id == id);
+
+    // mark all the previous messages as 'seen' before that message
+    messages.forEach((message, i) => {
+      if (i <= index && (message.header.sender.type.toLowerCase() == "agent" || message.header.sender.type.toLowerCase() == "bot")) {
+        messages[i]["header"]["status"] = "seen";
+      }
+    });
   }
 
   handleNoAgentEvent(cimEvent, conversationId) {
@@ -815,7 +860,7 @@ export class socketService {
   }
 
   onSocketErrors(res) {
-    this._snackbarService.open(this._translateService.instant('snackbar.on') + res.task + " " + res.msg, "err");
+    this._snackbarService.open(this._translateService.instant("snackbar.on") + res.task + " " + res.msg, "err");
   }
 
   playSoundAndBrowserNotification(conversation, cimEvent) {
@@ -922,7 +967,14 @@ export class socketService {
                   } else {
                     console.log("limit exceed");
                     this._snackbarService.open(
-                      this._translateService.instant('snackbar.The-conversation-is-going-to-linking-with') + selectedCustomer.firstName +  this._translateService.instant('snackbar.However-the-channel-identifier') + channelIdentifier + this._translateService.instant('snackbar.can-not-be-added-in') + selectedCustomer.firstName +attr + this._translateService.instant('snackbar.space-unavailable-may-delete-channel-identifer'),
+                      this._translateService.instant("snackbar.The-conversation-is-going-to-linking-with") +
+                        selectedCustomer.firstName +
+                        this._translateService.instant("snackbar.However-the-channel-identifier") +
+                        channelIdentifier +
+                        this._translateService.instant("snackbar.can-not-be-added-in") +
+                        selectedCustomer.firstName +
+                        attr +
+                        this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
                       "succ",
                       20000,
                       "Ok"
@@ -973,11 +1025,11 @@ export class socketService {
         //  this._socketService.linkCustomerWithInteraction(customerId, this.conversationId);
         console.log(selectedCustomer);
       } else {
-        this._snackbarService.open(this._translateService.instant('snackbar.Unable-to-link-customer'), "err");
+        this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-link-customer"), "err");
       }
     } catch (err) {
       console.log("err ", err);
-      this._snackbarService.open(this._translateService.instant('snackbar.Unable-to-link-customer'), "err");
+      this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-link-customer"), "err");
     }
   }
 
@@ -1022,13 +1074,13 @@ export class socketService {
               }
             },
             (error) => {
-              this._snackbarService.open(this._translateService.instant('snackbar.Unable-to-link-customer'), "err");
+              this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-link-customer"), "err");
               console.error("error while updating topic customer", error);
             }
           );
         },
         (error) => {
-          this._snackbarService.open(this._translateService.instant('snackbar.Unable-to-link-customer'), "err");
+          this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-link-customer"), "err");
           console.error("error while updating customer ", error);
         }
       );
@@ -1045,7 +1097,7 @@ export class socketService {
           }
         },
         (error) => {
-          this._snackbarService.open(this._translateService.instant('snackbar.Unable-to-link-customer'), "err");
+          this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-link-customer"), "err");
           console.error("error while updating topic customer ", error);
         }
       );
@@ -1159,12 +1211,11 @@ export class socketService {
         message.body.markdownText =data;
       })
       message.body.markdownText = "session ended";
-    }
-    else if (cimEvent.name.toLowerCase() == "call_leg_ended") {
+    } else if (cimEvent.name.toLowerCase() == "call_leg_ended") {
       message.body.type = "VOICE";
       // message.body["displayText"] = cimEvent.data.channel.channelType.name;
       // message.body.markdownText = "call_leg_ended";
-      message.body.data= cimEvent.data;
+      message.body.data = cimEvent.data;
     }
     if (cimEvent.name.toLowerCase() == "agent_subscribed") {
       message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;

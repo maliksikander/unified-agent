@@ -44,6 +44,7 @@ export class InteractionsComponent implements OnInit {
   viewFullCommentAction: boolean = false;
   fullPostView: boolean = false;
   selectedCommentId: string;
+  lastSeenMessageId;
   // isTransfer = false;
   // isConsult = false;
 
@@ -107,7 +108,7 @@ export class InteractionsComponent implements OnInit {
     private _httpService: httpService,
     private _finesseService: finesseService,
     private snackBar: MatSnackBar,
-    private _translateService:TranslateService,
+    private _translateService: TranslateService
   ) {}
   ngOnInit() {
     //  console.log("i am called hello")
@@ -118,7 +119,6 @@ export class InteractionsComponent implements OnInit {
     // setTimeout(() => {
     //   new EmojiPicker();
     // }, 500);
-
 
     this.conversationSettings = this._sharedService.conversationSettings;
     this.loadLabels();
@@ -136,21 +136,24 @@ export class InteractionsComponent implements OnInit {
     }
   }
   loadLabels() {
-    this._httpService.getLabels().subscribe((e) => {
-      this.labels = e;
-    },
-    (err)=>
-    {
-      this._sharedService.Interceptor(err.error,"err")
-      console.error("Error getting Labels",err);
-    });
+    this._httpService.getLabels().subscribe(
+      (e) => {
+        this.labels = e;
+      },
+      (err) => {
+        this._sharedService.Interceptor(err.error, "err");
+        console.error("Error getting Labels", err);
+      }
+    );
   }
   emoji() {}
 
   onSend(text) {
     text = text.trim();
 
-    this.constructAndSendCimEvent("plain", "", "", "", text);
+    if (text) {
+      this.constructAndSendCimEvent("plain", "", "", "", text);
+    }
   }
 
   fbCommentAction(message, action) {
@@ -168,13 +171,13 @@ export class InteractionsComponent implements OnInit {
 
           this.constructAndSendFbAction(fbCommentId, message.body.postId, originalFbChannelSession, message.id, action);
         } else {
-          this._snackbarService.open(this._translateService.instant('snackbar.Requested-session-not-available-at-the-moment'), "err");
+          this._snackbarService.open(this._translateService.instant("snackbar.Requested-session-not-available-at-the-moment"), "err");
         }
       } else {
-        this._snackbarService.open(this._translateService.instant('snackbar.Unable-to-process-the-request'), "err");
+        this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-the-request"), "err");
       }
     } else {
-      this._snackbarService.open(this._translateService.instant('snackbar.Unable-to-connect-with-server'), "err");
+      this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-connect-with-server"), "err");
     }
   }
 
@@ -212,10 +215,10 @@ export class InteractionsComponent implements OnInit {
 
         this.openQuotedReplyArea(message);
       } else {
-        this._snackbarService.open(this._translateService.instant('snackbar.Requested-session-not-available-at-the-moment'), "err");
+        this._snackbarService.open(this._translateService.instant("snackbar.Requested-session-not-available-at-the-moment"), "err");
       }
     } else {
-      this._snackbarService.open(this._translateService.instant('snackbar.Unable-to-process-the-request'), "err");
+      this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-the-request"), "err");
     }
   }
 
@@ -237,9 +240,65 @@ export class InteractionsComponent implements OnInit {
   openQuotedReplyArea(e) {
     this.quotedMessage = e;
   }
-  onTextAreaClick() {
-    this.conversation.unReadCount = 0;
+  onTextAreaFocus() {
+    this.publishLatestMessageSeenEvent();
   }
+
+  publishLatestMessageSeenEvent() {
+    let latestCustomerMessage = this.getLatestCustomerMessage();
+    this.publishMessageSeenEvent(latestCustomerMessage);
+  }
+
+  getLatestCustomerMessage() {
+    for (let index = this.conversation.messages.length - 1; index >= 0; index--) {
+      const message = this.conversation.messages[index];
+      if (message.header.sender.type.toLowerCase() == "customer") {
+        return message;
+      }
+    }
+  }
+
+  publishMessageSeenEvent(messageForSeenNotification) {
+    this.conversation.unReadCount = 0;
+
+    if (messageForSeenNotification && messageForSeenNotification.id != this.lastSeenMessageId) {
+      const data = {
+        id: uuidv4(),
+        header: {
+          channelData: {
+            channelCustomerIdentifier: messageForSeenNotification.header.channelData.channelCustomerIdentifier,
+            serviceIdentifier: messageForSeenNotification.header.channelData.serviceIdentifier
+          },
+          sender: this.conversation.topicParticipant,
+          channelSession: messageForSeenNotification.header.channelSession,
+          language: {},
+          timestamp: "",
+          securityInfo: {},
+          stamps: [],
+          intent: null,
+          entities: {}
+        },
+        body: {
+          type: "DELIVERYNOTIFICATION",
+          markdownText: "",
+          messageId: messageForSeenNotification.id,
+          status: "READ",
+          reasonCode: 200
+        }
+      };
+
+      let event: any = new CimEvent("MESSAGE_DELIVERY_NOTIFICATION", "NOTIFICATION", this.conversation.conversationId, data);
+
+      this._socketService.emit("publishCimEvent", {
+        cimEvent: event,
+        agentId: this._cacheService.agent.id,
+        conversationId: this.conversation.conversationId
+      });
+
+      this.lastSeenMessageId = messageForSeenNotification.id;
+    }
+  }
+
   // textChanged(event) {
   //   const el: any = document.getElementById("messageTextarea");
   //   this.message = el.value;
@@ -312,7 +371,10 @@ export class InteractionsComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: "490px",
       panelClass: "confirm-dialog",
-      data: { header: this._translateService.instant('snackbar.Close-Conversation'), message: this._translateService.instant('snackbar.Call-in-progress-sure-you-want-to-close-this-conversation') }
+      data: {
+        header: this._translateService.instant("snackbar.Close-Conversation"),
+        message: this._translateService.instant("snackbar.Call-in-progress-sure-you-want-to-close-this-conversation")
+      }
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.event == "confirm") {
@@ -373,11 +435,16 @@ export class InteractionsComponent implements OnInit {
           this.showNewMessageNotif = true;
         } else {
           this.downTheScrollAfterMilliSecs(50, "smooth");
+
+          if (changes.changeDetecter.currentValue.header.sender.type.toLowerCase() == "customer") {
+            this.publishMessageSeenEvent(changes.changeDetecter.currentValue);
+          }
         }
       }
     }
     if (changes.currentTabIndex) {
       this.downTheScrollAfterMilliSecs(500, "auto");
+      //this.publishLatestMessageSeenEvent();
     }
     // console.log("before",this.conversation.activeChannelSessions)
     //     this.activeChannelSessionList = this.conversation.activeChannelSessions;
@@ -408,6 +475,11 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
+  goToLatestMessage() {
+    this.downTheScrollAfterMilliSecs(0, "smooth");
+    this.publishLatestMessageSeenEvent();
+  }
+
   videoPIP(id) {
     try {
       const video: any = document.getElementById(id);
@@ -415,7 +487,7 @@ export class InteractionsComponent implements OnInit {
         pictureInPictureWindow.addEventListener("resize", () => false);
       });
     } catch (err) {
-      this._snackbarService.open(this._translateService.instant('snackbar.PIP-not-supported-in-this-browser'), "succ");
+      this._snackbarService.open(this._translateService.instant("snackbar.PIP-not-supported-in-this-browser"), "succ");
       console.error(err);
     }
   }
@@ -470,10 +542,10 @@ export class InteractionsComponent implements OnInit {
               }
             );
           } else {
-            this._snackbarService.open(files[i].name + this._translateService.instant('snackbar.unsupported-type'), "err");
+            this._snackbarService.open(files[i].name + this._translateService.instant("snackbar.unsupported-type"), "err");
           }
         } else {
-          this._snackbarService.open(files[i].name + this._translateService.instant('snackbar.File-size-should-be-less-than-5MB'), "err");
+          this._snackbarService.open(files[i].name + this._translateService.instant("snackbar.File-size-should-be-less-than-5MB"), "err");
         }
       }
     }
@@ -550,11 +622,11 @@ export class InteractionsComponent implements OnInit {
             this.emitCimEvent(message, this.conversation.agentParticipants.length > 0 && this.isWhisperMode ? "WHISPER_MESSAGE" : "AGENT_MESSAGE");
           }
         } else {
-          this._snackbarService.open(this._translateService.instant('snackbar.No-channel-session-selected-at-the-moment'), "err");
+          this._snackbarService.open(this._translateService.instant("snackbar.No-channel-session-selected-at-the-moment"), "err");
         }
       }
     } else {
-      this._snackbarService.open(this._translateService.instant('snackbar.Unable-to-send-the-message-at-the-moment'), "err");
+      this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-send-the-message-at-the-moment"), "err");
     }
   }
 
@@ -574,7 +646,7 @@ export class InteractionsComponent implements OnInit {
             this.filterAndMergePastActivities(docs);
           } else {
             if (conversation == "FAKE_CONVERSATION")
-            this._snackbarService.open(this._translateService.instant('snackbar.No-Conversation-Found'), "succ");
+              this._snackbarService.open(this._translateService.instant("snackbar.No-Conversation-Found"), "succ");
             this.noMoreConversation = true;
           }
         },
@@ -598,7 +670,7 @@ export class InteractionsComponent implements OnInit {
           event.name.toLowerCase() == "bot_message" ||
           event.name.toLowerCase() == "customer_message"
         ) {
-          event.data.header["status"] = "sent";
+          event.data.header["status"] = "seen";
           msgs.push(event.data);
         } else if (
           [
@@ -891,8 +963,8 @@ export class InteractionsComponent implements OnInit {
 
   showRequestNotification() {
     let msg: string;
-    if (this.requestAction == "transfer") msg =this._translateService.instant('snackbar.Transfer-request-placed-successfully');
-    else if (this.requestAction == "conference") msg = this._translateService.instant('snackbar.Conference-request-placed-successfully');
+    if (this.requestAction == "transfer") msg = this._translateService.instant("snackbar.Transfer-request-placed-successfully");
+    else if (this.requestAction == "conference") msg = this._translateService.instant("snackbar.Conference-request-placed-successfully");
 
     setTimeout(() => {
       this.snackBar.open(msg, "", {
@@ -962,11 +1034,11 @@ export class InteractionsComponent implements OnInit {
       if (accessToken && FBHOSTAPI) {
         this.getFBPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
       } else {
-        this._snackbarService.open(this._translateService.instant('snackbar.Access-Token-or-FB-Host-API-for-FB-is-missing'), "err");
+        this._snackbarService.open(this._translateService.instant("snackbar.Access-Token-or-FB-Host-API-for-FB-is-missing"), "err");
         console.error("err [getFullViewPostData] accessToken or FB Host API for FB is missing");
       }
     } else {
-      this._snackbarService.open(this._translateService.instant('snackbar.Channel-session-not-found'), "err");
+      this._snackbarService.open(this._translateService.instant("snackbar.Channel-session-not-found"), "err");
       console.error("err [getFullViewPostData] Channel session not found");
     }
   }

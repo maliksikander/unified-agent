@@ -279,7 +279,7 @@ export class CustomerActionsComponent implements OnInit {
         new FormControl(attribute.defaultValue ? attribute.defaultValue : "", validatorArray)
       );
     } else {
-      this.snackbarService.open(this._translateService.instant('snackbar.CANNOT-ADD-MORE-FIELDS'), "err");
+      this.snackbarService.open(this._translateService.instant("snackbar.CANNOT-ADD-MORE-FIELDS"), "err");
     }
   }
 
@@ -306,9 +306,8 @@ export class CustomerActionsComponent implements OnInit {
     let id = this.userInfo._id;
     this._httpService.updateCustomerById(id, customerObj).subscribe(
       (e) => {
-
-        this.dialogRef.close({ event: "refresh",data:this.labelList });
-        this._sharedService.Interceptor(this._translateService.instant('snackbar.Customer-updated!'), "succ");
+        this.dialogRef.close({ event: "refresh", data: this.labelList });
+        this._sharedService.Interceptor(this._translateService.instant("snackbar.Customer-updated!"), "succ");
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -409,9 +408,9 @@ export class CustomerActionsComponent implements OnInit {
         }
       });
       if (duplicate) {
-        this._sharedService.snackErrorMessage(this._translateService.instant('snackbar.Name-already-exists'));
+        this._sharedService.snackErrorMessage(this._translateService.instant("snackbar.Name-already-exists"));
       } else if (data.length > 100) {
-        this._sharedService.snackErrorMessage(this._translateService.instant('snackbar.Max-100-characters-are-allowed'));
+        this._sharedService.snackErrorMessage(this._translateService.instant("snackbar.Max-100-characters-are-allowed"));
       } else {
         let obj = {
           name: data,
@@ -432,7 +431,7 @@ export class CustomerActionsComponent implements OnInit {
           },
           (error) => {
             this._sharedService.Interceptor(error.error, "err");
-            console.error("Error getting labels",error);
+            console.error("Error getting labels", error);
           }
         );
       }

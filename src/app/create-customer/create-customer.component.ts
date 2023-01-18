@@ -84,7 +84,7 @@ export class CreateCustomerComponent implements OnInit {
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
-        console.error("Error Getting labels",error);
+        console.error("Error Getting labels", error);
       }
     );
   }
@@ -184,7 +184,7 @@ export class CreateCustomerComponent implements OnInit {
         new FormControl(attribute.defaultValue ? attribute.defaultValue : "", validatorArray)
       );
     } else {
-      this.snackbarService.open(this._translateService.instant('snackbar.CANNOT-ADD-MORE-FIELDS'), "err");
+      this.snackbarService.open(this._translateService.instant("snackbar.CANNOT-ADD-MORE-FIELDS"), "err");
     }
   }
 
@@ -214,7 +214,7 @@ export class CreateCustomerComponent implements OnInit {
     this._httpService.createCustomer(data).subscribe(
       (e) => {
         this.dialogRef.close({ event: "refresh" });
-        this._sharedService.Interceptor(this._translateService.instant('snackbar.New-Customer-Created'), "succ");
+        this._sharedService.Interceptor(this._translateService.instant("snackbar.New-Customer-Created"), "succ");
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -240,33 +240,32 @@ export class CreateCustomerComponent implements OnInit {
         }
       });
       if (duplicate) {
-        this._sharedService.snackErrorMessage(this._translateService.instant('snackbar.Name-already-exists'));
+        this._sharedService.snackErrorMessage(this._translateService.instant("snackbar.Name-already-exists"));
       } else if (data.length > 100) {
-        this._sharedService.snackErrorMessage(this._translateService.instant('snackbar.Max-100-characters-are-allowed'));
+        this._sharedService.snackErrorMessage(this._translateService.instant("snackbar.Max-100-characters-are-allowed"));
       } else {
         let obj = {
           name: data,
           createdBy: this._cacheService.agent.firstName,
           colorCode: "#a9a9a9"
         };
-        this._httpService.createLabel(obj).subscribe((e) => {
-
-          this._httpService.getLabels().subscribe((ee) => {
-            this.labelList = ee;
-            if (this.customerForm.get('labels').value) {
-              this.customerForm.get('labels').value.push(e)
-            }
-            else {
-              this.customerForm.get("labels").patchValue([e])
-            }
-            // this._sharedService.serviceChangeMessage("update-labels");
-            this.dropdownRef.clearSearch();
-
-          });
-
-        }, (error) => {
-          this._sharedService.Interceptor(error.error, 'err');
-        });
+        this._httpService.createLabel(obj).subscribe(
+          (e) => {
+            this._httpService.getLabels().subscribe((ee) => {
+              this.labelList = ee;
+              if (this.customerForm.get("labels").value) {
+                this.customerForm.get("labels").value.push(e);
+              } else {
+                this.customerForm.get("labels").patchValue([e]);
+              }
+              // this._sharedService.serviceChangeMessage("update-labels");
+              this.dropdownRef.clearSearch();
+            });
+          },
+          (error) => {
+            this._sharedService.Interceptor(error.error, "err");
+          }
+        );
       }
     });
   }

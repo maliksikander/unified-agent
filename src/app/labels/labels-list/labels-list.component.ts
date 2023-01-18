@@ -14,10 +14,10 @@ import { TranslateService } from "@ngx-translate/core";
 export class LabelsListComponent implements OnInit {
   constructor(
     private _sharedService: sharedService,
-     private dialog: MatDialog,
-      private _httpService: httpService,
-      private _translateService:TranslateService
-      ) {}
+    private dialog: MatDialog,
+    private _httpService: httpService,
+    private _translateService: TranslateService
+  ) {}
 
   showMetaDIv: boolean = false;
   metaDivId;
@@ -34,7 +34,7 @@ export class LabelsListComponent implements OnInit {
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
-        console.error("Error loading labaels",error)
+        console.error("Error loading labaels", error);
       }
     );
   }
@@ -62,7 +62,10 @@ export class LabelsListComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: "490px",
       panelClass: "confirm-dialog",
-      data: { header: this._translateService.instant('snackbar.Delete-Label'), message: this._translateService.instant('snackbar.Are-you-sure-you-want-to-delete-the-label?') }
+      data: {
+        header: this._translateService.instant("snackbar.Delete-Label"),
+        message: this._translateService.instant("snackbar.Are-you-sure-you-want-to-delete-the-label?")
+      }
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result && result.event == "confirm") {
@@ -73,7 +76,7 @@ export class LabelsListComponent implements OnInit {
   deleteLabel(id) {
     this._httpService.deleteLabel(id).subscribe(
       (e) => {
-        this._sharedService.Interceptor(this._translateService.instant('snackbar.Label-Deleted'), "succ");
+        this._sharedService.Interceptor(this._translateService.instant("snackbar.Label-Deleted"), "succ");
         this.loadLabels();
       },
       (error) => {

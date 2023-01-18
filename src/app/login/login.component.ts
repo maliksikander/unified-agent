@@ -21,6 +21,6 @@ export class LoginComponent implements OnInit {
   ngOnInit() {}
 
   login() {
-    this._isLoggedInservice.fetchCCuserAndMoveToLogin(this.loginForm.value,"");
+    this._isLoggedInservice.fetchCCuserAndMoveToLogin(this.loginForm.value, "");
   }
 }
