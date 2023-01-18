@@ -70,7 +70,7 @@
                   {{ chat.customerName }} <small matTooltip="{{ 'globals.channel-identifier' | translate }}">({{ chat.channelIdentity }})</small>
                 </td>
                 <td>
-                  {{ chat.activeSince | amDuration: "seconds" }} <small>{{ "supervisor.joined" | translate }}</small>
+                  {{ chat.activeSince | amDuration: "seconds" }} <small>{{ "supervisor.ago" | translate }}</small>
                 </td>
                 <td>
                   {{ chat.agentName }}<small matTooltip="{{ 'globals.agent-id' | translate }}">({{ chat.agentId }})</small>

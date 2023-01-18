@@ -327,7 +327,9 @@
     "decending":"Decending_spa",
     "ascending":"Ascending_spa",
     "edit":"Edit_spa",
-    "start-conversation":"Start Conversation_spa"
+    "start-conversation":"Start Conversation_spa",
+    "agent-id":"Agent Id_spa"
+
   },
   "pull-mode": {
     "all-list": "All List_spa",
@@ -405,6 +407,7 @@
     "notes": "Notes_spa",
     "cancel": "Cancel_spa",
     "done": "Done_spa",
-    "state": "State_spa"
+    "state": "State_spa",
+    "joined":"joined_spa"
   }
 }
