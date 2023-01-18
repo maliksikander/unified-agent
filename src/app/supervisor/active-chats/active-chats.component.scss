@@ -1,12 +1,12 @@
-.active-chat-list-area{
-  .channel-icon{
+.active-chat-list-area {
+  .channel-icon {
     width: 20px;
     height: 20px;
     text-align: center;
     border-radius: 100%;
     margin-right: 6px;
 
-    img{
+    img {
       width: 20px;
       max-height: 25px;
     }
@@ -15,7 +15,7 @@
 
 .manage-dashboard {
   width: 100%;
-  .page-action{
+  .page-action {
     align-self: center;
   }
 
@@ -26,20 +26,19 @@
       position: relative;
       cursor: default;
 
-      &:nth-of-type(even){
-        background: #F7F7F7;
+      &:nth-of-type(even) {
+        background: #f7f7f7;
       }
     }
 
     thead {
-
       th {
         color: #434343;
         height: 38px;
         line-height: 38px;
         padding: 0 15px;
         font-size: 13px;
-        background: #F7F7F7;
+        background: #f7f7f7;
         border: 0;
       }
     }
@@ -91,47 +90,45 @@
     //}
   }
   tbody {
-
-    .table-trigger{
+    .table-trigger {
       opacity: 0;
       visibility: hidden;
-      transition: all .3s;
+      transition: all 0.3s;
       position: absolute;
       right: 15px;
       z-index: 2;
       top: 4px;
-      button{
+      button {
         height: 24px;
         margin: 0 5px;
         width: 24px;
         line-height: 24px;
         background: #919191;
-        img{
+        img {
           height: 11px;
           max-width: 15px;
         }
 
-
-        &.silent-monitor-btn{
-          &:hover{
-            background: #FDBC53;
+        &.silent-monitor-btn {
+          &:hover {
+            background: #fdbc53;
           }
         }
-        &.barge-in-btn{
+        &.barge-in-btn {
           &:hover {
-            background: #3DD6FA;
+            background: #3dd6fa;
           }
         }
-        &.close-btn{
+        &.close-btn {
           &:hover {
-            background: #FC2A49;
+            background: #fc2a49;
           }
         }
       }
     }
     tr {
       &:hover {
-        background: #EAEAEA;
+        background: #eaeaea;
 
         .table-trigger {
           display: inline-block;
@@ -141,20 +138,20 @@
       }
     }
   }
-
 }
-.direction-icon 
-{
+.direction-icon {
   vertical-align: middle;
-    border-radius: 100%;
-    background-color: rgb(113, 189, 113);
-    color: white;
+  border-radius: 100%;
+  padding: 3px;
+  font-size: 13px;
+  line-height: 1 !important;
+  background-color: rgb(113, 189, 113);
+  color: white;
   &.inbound {
     background-color: rgb(113, 189, 113);
   }
   &.outbound {
-    transform:rotate(90deg);
+    transform: rotate(180deg);
     background-color: rgb(81, 135, 214);
   }
-
 }
