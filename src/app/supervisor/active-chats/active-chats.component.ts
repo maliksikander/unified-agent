@@ -48,6 +48,8 @@ export class ActiveChatsComponent implements OnInit {
             this.filterData();
           },(err)=>
           {
+            this.filteredData=[]
+            this.activeChatListWithAgents=[];
             this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Chats-with-Agents'),'err');
           });
           this._httpService.getAllActiveChatsWithBots().subscribe((e) => {
@@ -55,6 +57,8 @@ export class ActiveChatsComponent implements OnInit {
           },(err)=>
           {
             this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Chats-with-Bots'),'err');
+            this.activeChatListWithBots=[];
+
           });
         }, retry())
       )

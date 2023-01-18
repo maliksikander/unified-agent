@@ -62,7 +62,7 @@
             <ng-container *ngFor="let data of filteredData">
               <tr *ngFor="let chat of data.chats">
                 <td>
-                  <span *ngIf="(chat.direction | lowercase) == inbound || (chat.direction | lowercase) == outbound " class="material-icons direction-icon {{chat.direction | lowercase}}"> call_received </span>                </td>
+                  <span  class="material-icons direction-icon md-18 {{chat.direction | lowercase}}"> call_received </span></td>
                 <td>
                   <span class="channel-icon {{ chat.channelType }}"><img [src]="chat.channelType | channelName | channelLogo | async" /></span>
                 </td>
