@@ -94,6 +94,15 @@
     "theme": "Theme_ita",
     "logout": "Logout_ita"
   },
+  "socket-service":{
+    "has-joined-the-conversation":"has joined the conversation_ita",
+    "session-started":"session started_ita",
+    "session-ended":"session ended_ita",
+    "left-the-conversation":"left the conversation_ita",
+    "transfer-request-has-been-placed-by":"transfer request has been placed by_ita",
+    "conference-request-has-been-placed-by":"conference request has been placed by_ita",
+    "No-agent-is-available-for":"No agent is available for_ita"
+   },
   "announcements": {
     "team-announcement": "Team Announcement_ita",
     "all-announcements": "All Announcements_ita",
@@ -292,6 +301,7 @@
     "conference": "conference_ita",
     "transfer": "transfer_ita",
     "to": "to_ita",
+    "columns":"Columns_ita",
     "yes": "Yes_ita",
     "page-not-found": "The page you are looking for is not found_ita",
     "agents": "agents_ita",

@@ -76,6 +76,15 @@
     "Transfer-request-placed-successfully":"Transfer request placed successfully",
     "Conference-request-placed-successfully":"Conference request placed successfully"
   },
+  "socket-service":{
+   "has-joined-the-conversation":"has joined the conversation",
+   "session-started":"session started",
+   "session-ended":"session ended",
+   "left-the-conversation":"left the conversation",
+   "transfer-request-has-been-placed-by":"transfer request has been placed by",
+   "conference-request-has-been-placed-by":"conference request has been placed by",
+   "No-agent-is-available-for":"No agent is available for"
+  },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View",
     "customer-list-view": "Customer List View",
@@ -324,6 +333,9 @@
     "no-data-available": "No Data Available",
     "Confirm": "Confirm",
     "not-applicable": "N/A",
+    "channel-identifier": "Channel Identifier",
+    "agent-id":"Agent Id",
+    "columns":"Columns",
     "no-new-conversation": "No New Conversation",
     "state":"State",
     "UNIDENTIFIED-CUSTOMER":"UNIDENTIFIED CUSTOMER",
@@ -379,6 +391,7 @@
     "search": "search",
     "title": "Title",
     "agent": "Agent",
+    "bot":"Bot",
     "team": "Team",
     "time": "Time",
     "channel": "Channel",
@@ -412,6 +425,8 @@
     "notes": "Notes",
     "cancel": "Cancel",
     "done": "Done",
-    "state": "State"
+    "state": "State",
+    "conversation-direction":"Conversation Direction",
+    "origin":"Origin"
   }
 }
