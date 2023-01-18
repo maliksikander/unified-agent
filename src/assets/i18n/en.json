@@ -74,7 +74,8 @@
     "Close-Conversation":"Close Conversation",
     "Call-in-progress-sure-you-want-to-close-this-conversation":"Call in progress, Are you sure you want to close this conversation?",
     "Transfer-request-placed-successfully":"Transfer request placed successfully",
-    "Conference-request-placed-successfully":"Conference request placed successfully"
+    "Conference-request-placed-successfully":"Conference request placed successfully",
+    "Error-Getting-Queues-List":"Error Getting Queues List"
   },
   "socket-service":{
    "has-joined-the-conversation":"has joined the conversation",
@@ -427,6 +428,7 @@
     "done": "Done",
     "state": "State",
     "conversation-direction":"Conversation Direction",
-    "origin":"Origin"
+    "origin":"Origin",
+    "joined":"joined"
   }
 }

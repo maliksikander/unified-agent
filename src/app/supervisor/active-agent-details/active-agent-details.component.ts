@@ -18,7 +18,7 @@ export class ActiveAgentDetailsComponent implements OnInit {
   MRDsList:Array<any>=[];
   labels: Array<any> = [];
   agentMRD = ['chat', 'voice', 'video', 'email']
-  activeAgentsDetails:Object ={}
+  activeAgentsDetails:any={};
   constructor(private _translateService:TranslateService, private _httpService: httpService,private _snackBarService:snackbarService) { }
 
   ngOnInit() {

@@ -72,7 +72,8 @@
     "Close-Conversation":"Close Conversation_ar",
     "Call-in-progress-sure-you-want-to-close-this-conversation":"Call in progress, Are you sure you want to close this conversation?_ar",
     "Transfer-request-placed-successfully":"Transfer request placed successfully_ar",
-    "Conference-request-placed-successfully":"Conference request placed successfully_ar"
+    "Conference-request-placed-successfully":"Conference request placed successfully_ar",
+    "Error-Getting-Queues-List":"Error Getting Queues List_ar"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ar",
@@ -337,7 +338,9 @@
     "decending":"Decending_ar",
     "ascending":"Ascending_ar",
     "edit":"Edit_ar",
-    "start-conversation":"Start Conversation_ar"
+    "start-conversation":"Start Conversation_ar",
+    "agent-id":"Agent Id_ar"
+
   },
   "pull-mode": {
     "all-list": "All List_ar",
@@ -415,6 +418,8 @@
     "notes": "Notes_ar",
     "cancel": "Cancel_ar",
     "done": "Done_ar",
-    "state": "State_ar"
+    "state": "State_ar",
+    "joined":"joined_ar"
+
   }
 }
