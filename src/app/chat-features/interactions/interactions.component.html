@@ -71,14 +71,14 @@
                         <!-- <span matTooltip="Queue Consult" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, option, 'Consult to Queue')"><img src="assets/images/consult-colored.svg" alt="consult"/> </span> -->
 
                         <button
-                          [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0"
+                          [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0 || queue?.totalAvailableAgents == 0"
                           mat-icon-button matTooltip="{{'chat-features.interactions.queue-transfer' | translate}}"
                           class="transfer-selection"
                           (click)="agentAssistanceRequest(chatConsultTemplate, queue, 'transfer','queue')"><img
                             src="assets/images/transfer-colored.svg" alt="transfer" /></button>
 
                         <button
-                          [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0"
+                          [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0 || queue?.totalAvailableAgents == 0"
                           mat-icon-button matTooltip="{{'chat-features.interactions.queue-conference' | translate}}"
                           class="transfer-selection"
                           (click)="agentAssistanceRequest(chatConsultTemplate, queue,'conference','queue')"><img
@@ -1387,7 +1387,7 @@
                     <!-- ---------------------------------- FB Comment Ended-------------------------------- -->
                     <span class="chat-time file-type-stamp ">{{ message.header.timestamp | date: "shortTime" }}
                     </span>
-                    
+
 
 
                     <span class="message-stamp" *ngIf="
@@ -1459,10 +1459,10 @@
               <img
                 *ngIf="(quotedMessage.body.type | lowercase) == 'video' || (quotedMessage.body.itemType | lowercase) == 'video'"
                 src="assets/file-types/video.svg" />
-                <img
+              <img
                 *ngIf="(quotedMessage.body.type | lowercase) == 'contact' || (quotedMessage.body.itemType | lowercase) == 'video'"
                 src="assets/file-types/contact.png" />
-                <img
+              <img
                 *ngIf="(quotedMessage.body.type | lowercase) == 'location' || (quotedMessage.body.itemType | lowercase) == 'video'"
                 src="assets/file-types/location.png" />
               <img *ngIf="(quotedMessage.body.type | lowercase) == 'audio'" src="assets/file-types/audio.svg" />
@@ -1486,15 +1486,14 @@
         </div>
       </div>
 
-      <div *ngIf="currentScrollPosition < 60 && showNewMessageNotif == false"
-        (click)="goToLatestMessage()" class="jump-bottom slide-in-bottom new-msg-notif">
+      <div *ngIf="currentScrollPosition < 60 && showNewMessageNotif == false" (click)="goToLatestMessage()"
+        class="jump-bottom slide-in-bottom new-msg-notif">
         <span>
           <mat-icon>arrow_downward</mat-icon>{{'chat-features.interactions.jump-bottom' | translate}}
         </span>
       </div>
 
-      <div class="slide-in-bottom new-msg-notif" *ngIf="showNewMessageNotif"
-        (click)="goToLatestMessage()">
+      <div class="slide-in-bottom new-msg-notif" *ngIf="showNewMessageNotif" (click)="goToLatestMessage()">
         {{'chat-features.interactions.new-message' | translate}}
         <span class="material-icons"> arrow_drop_down </span>
       </div>
