@@ -366,7 +366,7 @@ export class finesseService {
         this.customer,
         leg,
         dialogState.dialog,
-        "INBOUND"
+        ""
       );
       this.ccmChannelSessionApi(cimMessage, "", "", undefined);
     } catch (e) {
