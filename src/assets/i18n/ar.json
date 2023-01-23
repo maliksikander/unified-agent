@@ -93,7 +93,8 @@
     "switch-dark": "Switch to dark mode_ar",
     "light-dark": "(Light or dark)_ar",
     "theme": "Theme_ar",
-    "logout": "Logout_ar"
+    "logout": "Logout_ar",
+    "active-agents-detail":"active agents detail_ar"
   },
   "announcements": {
     "team-announcement": "Team Announcement_ar",
@@ -339,7 +340,9 @@
     "ascending":"Ascending_ar",
     "edit":"Edit_ar",
     "start-conversation":"Start Conversation_ar",
-    "agent-id":"Agent Id_ar"
+    "agent-id":"Agent Id_ar",
+    "channel":"channel_ar",
+    "direction":"direction_ar"
 
   },
   "pull-mode": {
@@ -419,7 +422,14 @@
     "cancel": "Cancel_ar",
     "done": "Done_ar",
     "state": "State_ar",
-    "joined":"joined_ar"
+    "joined":"joined_ar",
+    "active-conversation":"active conversation_ar",
+    "mrd-states":"mrd states_ar",
+    "search-agent":"search agent_ar",
+    "agent-stats":"agent stats_ar",
+    "pending-not-ready":"Pending-Not Ready_ar",
+    "agent(s)":"agent(S)_ar",
+    "direction":"direction_ar"
 
   }
 }

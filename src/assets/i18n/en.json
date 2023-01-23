@@ -105,7 +105,7 @@
     "light-dark": "(Light or dark)",
     "theme": "Theme",
     "logout": "Logout",
-    "active-agents-detail":"Active agents detail"
+    "active-agents-detail":"active agents detail"
   },
   "announcements": {
     "team-announcement": "Team Announcement",
@@ -429,6 +429,12 @@
     "state": "State",
     "conversation-direction":"Conversation Direction",
     "origin":"Origin",
-    "joined":"joined"
+    "joined":"joined",
+    "active-conversation":"active conversation",
+    "mrd-states":"mrd states",
+    "search-agent":"search agent",
+    "agent-stats":"agent stats",
+    "pending-not-ready":"Pending-Not Ready",
+    "agent(s)":"agent(S)"
   }
 }

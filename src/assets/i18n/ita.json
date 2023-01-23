@@ -94,7 +94,8 @@
     "switch-dark": "Switch to dark mode_ita",
     "light-dark": "(Light or dark)_ita",
     "theme": "Theme_ita",
-    "logout": "Logout_ita"
+    "logout": "Logout_ita",
+    "active-agents-detail":"active agents detail_ita"
   },
   "socket-service":{
     "has-joined-the-conversation":"has joined the conversation_ita",
@@ -340,7 +341,9 @@
     "ascending":"Ascending_ita",
     "edit":"Edit_ita",
     "start-conversation":"Start Conversation_ita",
-    "agent-id":"Agent Id_ita"
+    "agent-id":"Agent Id_ita",
+    "channel":"channel_ita",
+    "direction":"direction_ita"
   },
   "pull-mode": {
     "all-list": "All List_ita",
@@ -419,6 +422,13 @@
     "cancel": "Cancel_ita",
     "done": "Done_ita",
     "state": "State_ita",
-    "joined":"joined_ita"
+    "joined":"joined_ita",
+    "active-conversation":"active conversation_ita",
+    "mrd-states":"mrd states_ita",
+    "search-agent":"search agent_ita",
+    "agent-stats":"agent stats_ita",
+    "pending-not-ready":"Pending-Not Ready_ita",
+    "agent(s)":"agent(S)_ita",
+    "direction":"direction_ita"
   }
 }
