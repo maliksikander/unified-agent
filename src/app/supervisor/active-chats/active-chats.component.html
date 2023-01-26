@@ -24,8 +24,8 @@
       <table class="table">
         <thead>
           <tr>
-            <th *ngIf="FilterSelected == 'agents'" scope="col">{{ "globals.direction" | translate }}</th>
-            <th scope="col">{{ "globals.channel" | translate }}</th>
+            <th *ngIf="FilterSelected == 'agents'" scope="col">{{ "globals.direction" | translate | titlecase}}</th>
+            <th scope="col">{{ "globals.channel" | translate | titlecase}}</th>
 
             <th scope="col">{{ "supervisor.customer" | translate }}</th>
             <th scope="col">{{ "supervisor.active-since" | translate }}</th>

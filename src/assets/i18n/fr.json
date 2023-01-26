@@ -94,7 +94,8 @@
     "switch-dark": "Switch to dark mode_fr",
     "light-dark": "(Light or dark)_fr",
     "theme": "Theme_fr",
-    "logout": "Logout_fr"
+    "logout": "Logout_fr",
+    "active-agents-detail":"active agents detail_fr"
   },
   "announcements": {
     "team-announcement": "Team Announcement_fr",
@@ -341,7 +342,9 @@
     "ascending":"Ascending_fr",
     "edit":"Edit_fr",
     "start-conversation":"Start Conversation_fr",
-    "agent-id":"Agent Id_fr"
+    "agent-id":"Agent Id_fr",
+    "channel":"channel_fr",
+    "direction":"direction_fr"
   },
   "pull-mode": {
     "all-list": "All List_fr",
@@ -420,6 +423,13 @@
     "cancel": "Cancel_fr",
     "done": "Done_fr",
     "state": "State_fr",
-    "joined":"joined_fr"
+    "joined":"joined_fr",
+    "active-conversation":"active conversation_fr",
+    "mrd-states":"mrd states_fr",
+    "search-agent":"search agent_fr",
+    "agent-stats":"agent stats_fr",
+    "pending-not-ready":"Pending-Not Ready_fr",
+    "agent(s)":"agent(S)_fr",
+    "direction":"direction_fr"
   }
 }

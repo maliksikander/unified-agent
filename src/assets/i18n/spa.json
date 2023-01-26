@@ -92,7 +92,8 @@
     "switch-dark": "Switch to dark mode_spa",
     "light-dark": "(Light or dark)_spa",
     "theme": "Theme_spa",
-    "logout": "Logout_spa"
+    "logout": "Logout_spa",
+    "active-agents-detail":"active agents detail_spa"
   },
   "announcements": {
     "team-announcement": "Team Announcement_spa",
@@ -328,7 +329,9 @@
     "ascending":"Ascending_spa",
     "edit":"Edit_spa",
     "start-conversation":"Start Conversation_spa",
-    "agent-id":"Agent Id_spa"
+    "agent-id":"Agent Id_spa",
+    "channel":"channel_spa",
+    "direction":"direction_spa"
 
   },
   "pull-mode": {
@@ -408,6 +411,13 @@
     "cancel": "Cancel_spa",
     "done": "Done_spa",
     "state": "State_spa",
-    "joined":"joined_spa"
+    "joined":"joined_spa",
+    "active-conversation":"active conversation_spa",
+    "mrd-states":"mrd states_spa",
+    "search-agent":"search agent_spa",
+    "agent-stats":"agent stats_spa",
+    "pending-not-ready":"Pending-Not Ready_spa",
+    "agent(s)":"agent(S)_spa",
+    "direction":"direction_spa"
   }
 }
