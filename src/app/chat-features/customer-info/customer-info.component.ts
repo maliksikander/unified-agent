@@ -261,6 +261,7 @@ export class CustomerInfoComponent implements OnInit {
           markdownText: ""
         }
       };
+      console.log("cim==>",cimMessage)
       this._httpService.startOutboundConversation(cimMessage).subscribe(
         (e) => {},
         (err) => {

@@ -73,7 +73,8 @@
     "Call-in-progress-sure-you-want-to-close-this-conversation":"Call in progress, Are you sure you want to close this conversation?_ger",
     "Transfer-request-placed-successfully":"Transfer request placed successfully_ger",
     "Conference-request-placed-successfully":"Conference request placed successfully_ger",
-    "Error-Getting-Queues-List":"Error Getting Queues List_ger"
+    "Error-Getting-Queues-List":"Error Getting Queues List_ger",
+    "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_ger"
   },
   "socket-service":{
     "has-joined-the-conversation":"has joined the conversation_ger",

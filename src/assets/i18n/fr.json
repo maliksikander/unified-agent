@@ -73,7 +73,8 @@
     "Call-in-progress-sure-you-want-to-close-this-conversation":"Call in progress, Are you sure you want to close this conversation?_fr",
     "Transfer-request-placed-successfully":"Transfer request placed successfully_fr",
     "Conference-request-placed-successfully":"Conference request placed successfully_fr",
-    "Error-Getting-Queues-List":"Error Getting Queues List_fr"
+    "Error-Getting-Queues-List":"Error Getting Queues List_fr",
+    "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_fr"
 
   },
   "app-header": {

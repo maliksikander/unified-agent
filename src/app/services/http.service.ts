@@ -25,10 +25,11 @@ export class httpService {
       agentSetting: "/agentSetting",
       forms: "/forms",
       agentInQueueList: "/precision-queues/available-agents",
-      queueList:"/precision-queues",
+      queueList: "/precision-queues",
       ccmChannelSession: "/message/receive",
-      tasks:"/tasks",
-      getAllMRDs:"/media-routing-domains"
+      tasks: "/tasks",
+      getAllMRDs: "/media-routing-domains",
+      defaultOutboundChannel: "/channels/defaultoutbound"
     };
   }
 
@@ -384,24 +385,18 @@ export class httpService {
     );
   }
   getAllQueues(): Observable<any> {
-    return this._httpClient.get<any>(
-      `${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.queueList}`,
-      {
-        headers: new HttpHeaders({
-          "Content-Type": "application/json"
-        })
-      }
-    );
+    return this._httpClient.get<any>(`${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.queueList}`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
   }
   getAllMRDs(): Observable<any> {
-    return this._httpClient.get<any>(
-      `${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.getAllMRDs}`,
-      {
-        headers: new HttpHeaders({
-          "Content-Type": "application/json"
-        })
-      }
-    );
+    return this._httpClient.get<any>(`${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.getAllMRDs}`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
   }
   getCustomerByChannelTypeAndIdentifier(channelType, customerChannelIdentifier): Observable<any> {
     return this._httpClient.get<any>(
@@ -446,5 +441,15 @@ export class httpService {
         "Content-Type": "application/json"
       })
     });
+  }
+  getDefaultOutboundChannel(channelTypeId): Observable<any> {
+    return this._httpClient.get<any>(
+      `${this._appConfigService.config.CCM_URL}${this.apiEndpoints.defaultOutboundChannel}?channelTypeId=${channelTypeId}`,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }
+    );
   }
 }

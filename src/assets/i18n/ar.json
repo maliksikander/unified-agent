@@ -73,7 +73,8 @@
     "Call-in-progress-sure-you-want-to-close-this-conversation":"Call in progress, Are you sure you want to close this conversation?_ar",
     "Transfer-request-placed-successfully":"Transfer request placed successfully_ar",
     "Conference-request-placed-successfully":"Conference request placed successfully_ar",
-    "Error-Getting-Queues-List":"Error Getting Queues List_ar"
+    "Error-Getting-Queues-List":"Error Getting Queues List_ar",
+    "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_ar"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ar",

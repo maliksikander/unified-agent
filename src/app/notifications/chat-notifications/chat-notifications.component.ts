@@ -65,7 +65,15 @@ export class ChatNotificationsComponent implements OnInit {
         this.removePullModeRequestFromRequestArray(e.data);
       } else if (e.msg == "openExternalModeRequestHeader") {
         this.getVoiceChannelType();
-        this.externalModeRequests.push(e.data);
+        if (this.externalModeRequests.length > 0) {
+          let request = this.externalModeRequests.find((item) => {
+            return item.identifier == e.data.identifier;
+          });
+          console.log("request==>", request);
+          if (!request) this.externalModeRequests.push(e.data);
+        } else {
+          this.externalModeRequests.push(e.data);
+        }
         console.log("external requests==>", this.externalModeRequests);
       } else if (e.msg == "closeExternalModeRequestHeader") {
         this.externalModeRequests = e.data;

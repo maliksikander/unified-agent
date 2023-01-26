@@ -5,6 +5,8 @@ import { snackbarService } from "./snackbar.service";
 import { socketService } from "./socket.service";
 import { httpService } from "./http.service";
 import * as uuid from "uuid";
+import { TranslateService } from "@ngx-translate/core";
+import { appConfigService } from "./appConfig.service";
 
 declare var executeCommands;
 
@@ -30,10 +32,12 @@ export class finesseService {
 
   constructor(
     private _snackbarService: snackbarService,
+    private _appConfigService: appConfigService,
     private _sharedService: sharedService,
     public _cacheService: cacheService,
     private _socketService: socketService,
-    private _httpService: httpService
+    private _httpService: httpService,
+    private _translateService: TranslateService
   ) {}
 
   initMe() {
@@ -170,7 +174,10 @@ export class finesseService {
         this.finesseLogoutReasonCodes = event.response.logoutReasons;
         this.finesseNotReadyReasonCodes = event.response.notReadyReasons;
       } else if (event.event == "newInboundCall") {
-        this.identifyCustomer(event, event.response.dialog.ani);
+        // this.identifyCustomer(event, event.response.dialog.ani, "INBOUND");
+      } else if (event.event == "outboundDialing") {
+        // if (event.response.dialog.ani && event.response.dialog.state == "INITIATED")
+        // this.identifyCustomer(event, event.response.dialog.ani, "OUTBOUND");
       }
     } catch (e) {
       console.error("CTI ERROR==>", e);
@@ -181,6 +188,19 @@ export class finesseService {
     try {
       let dialogState = dialogEvent.response;
       if (this.customer && dialogState.dialog && dialogState.dialog.participants.Participant) {
+        let participants = dialogState.dialog.participants.Participant;
+        let cacheId = `${this._cacheService.agent.id}:${dialogState.dialog.id}`;
+        if (Array.isArray(participants)) {
+          this.handleDialogParticipantList(dialogEvent, participants, cacheId);
+        } else {
+          this.handleDialogParticipantObject(participants, dialogState, cacheId);
+        }
+      } else if (
+        !this.customer &&
+        dialogState.dialog &&
+        dialogState.dialog.participants.Participant &&
+        (dialogState.dialog.callType == "TRANSFER" || dialogState.dialog.callType == "OFFERED")
+      ) {
         let participants = dialogState.dialog.participants.Participant;
         let cacheId = `${this._cacheService.agent.id}:${dialogState.dialog.id}`;
         if (Array.isArray(participants)) {
@@ -205,10 +225,10 @@ export class finesseService {
         let cacheId = `${this._cacheService.agent.id}:${voiceTask.channelSession.id}`;
         let D1: any = this.getDialogFromCache(cacheId);
         if (D1 && dialogState.dialog == null) {
-          this.handleCallDroppedEvent(cacheId, D1, "onRefresh", undefined);
+          this.handleCallDroppedEvent(cacheId, D1, "onRefresh", undefined, "DIALOG_ENDED");
         } else if (D1 && dialogState.dialog) {
           if (D1.dialog.id != dialogState.dialog.id) {
-            this.handleCallDroppedEvent(cacheId, D1, "onRefresh", dialogEvent);
+            this.handleCallDroppedEvent(cacheId, D1, "onRefresh", dialogEvent, "DIALOG_ENDED");
           } else if (D1.dialog.id == dialogState.dialog.id) {
             if (D1.dialogState == "active") {
               let conversation = this.getCurrentConversationIdORConversation("conversation");
@@ -235,11 +255,38 @@ export class finesseService {
             if (currentParticipant.state == "ACTIVE") {
               let dialogCache: any = this.getDialogFromCache(cacheId);
               if (dialogCache && dialogCache.dialogState == "alerting") {
+                console.log("test1==>");
                 this.handleCallActiveEvent(dialogEvent, dialogState);
               } else {
+                console.log("test2==>");
                 this.setLocalDialogCache(dialogEvent, "active");
+                if (dialogState.dialog.callType == "AGENT_INSIDE" || dialogState.dialog.callType == "OUT") {
+                  this.handleCallActiveEvent(dialogEvent, dialogState);
+                }
               }
             } else if (currentParticipant.state == "DROPPED") {
+              if (dialogState.dialog.callType == "TRANSFER" || dialogState.dialog.callType == "OFFERED") {
+                let callType = "DIRECT_TRANSFER";
+                if (
+                  this._appConfigService.finesseConfig.finesseFlavor.toLowerCase() == "uccx" ||
+                  this._appConfigService.finesseConfig.finesseFlavor.toLowerCase() == "ccx"
+                )
+                  callType = "CONSULT_TRANSFER";
+                // } else if (dialogState.dialog.callType == "CONSULT_OFFERED") callType = "CONSULT_TRANSFER";
+                // else if (dialogState.dialog.callType == "OFFERED") callType = "DIRECT_TRANSFER";
+                // else {
+                //   callType = "DIALOG_ENDED";
+                // }
+                this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, callType);
+              } else {
+                this.handleCiscoRona(cacheId);
+              }
+            } else if (
+              currentParticipant.state == "ALERTING" &&
+              (dialogState.dialog.callType == "TRANSFER" || dialogState.dialog.callType == "OFFERED")
+            ) {
+              console.log("test3==>");
+              this.handleDirectTransferOnAgentExtension(dialogEvent, cacheId);
             }
           }
         }
@@ -249,7 +296,7 @@ export class finesseService {
         } else if (dialogState.dialog.state == "FAILED") {
           let dialogCache: any = this.getDialogFromCache(cacheId);
           if (dialogCache && dialogCache.dialogState == "active") {
-            this.handleCallDroppedEvent(cacheId, dialogState, "", undefined);
+            this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, "DIALOG_ENDED");
           }
           this.removeNotification();
         }
@@ -259,22 +306,34 @@ export class finesseService {
     }
   }
 
+  handleDirectTransferOnAgentExtension(event, cacheId) {
+    let ani = event.response.dialog.ani ? event.response.dialog.ani : event.response.dialog.fromAddress;
+    let dialogCache: any = this.getDialogFromCache(cacheId);
+
+    if (!this.customer) {
+      console.log("test 4===>", cacheId);
+      this.identifyCustomer(event, ani, "INBOUND");
+    }
+  }
+
   handleDialogParticipantObject(participants, dialogState, cacheId) {
     try {
       if (participants.state == "DROPPED") {
         this.removeNotification();
         if (dialogState.dialog.state == "DROPPED" || dialogState.dialog.state == "ACTIVE") {
           let item: any = this.getDialogFromCache(cacheId);
+          console.log("rend==>",item);
           if (item && item.dialogState == "active") {
+            console.log("rend1==>",item);
             if (this.timeoutId) clearInterval(this.timeoutId);
 
-            this.handleCallDroppedEvent(cacheId, dialogState, "", undefined);
+            this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, "DILAOG_ENDED");
           }
         }
       } else if (dialogState.dialog.state == "FAILED") {
         let dialogCache: any = this.getDialogFromCache(cacheId);
         if (dialogCache && dialogCache.dialogState == "active") {
-          this.handleCallDroppedEvent(cacheId, dialogState, "", undefined);
+          this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, "DIALOG_ENDED");
         }
         this.removeNotification();
       }
@@ -283,11 +342,11 @@ export class finesseService {
     }
   }
 
-  identifyCustomer(ciscoEvent, ani) {
+  identifyCustomer(ciscoEvent, ani, callType) {
     try {
       let customerIdentifier = ani;
       if (customerIdentifier) {
-        this.getCustomerByVoiceIdentifier(customerIdentifier, ciscoEvent);
+        this.getCustomerByVoiceIdentifier(customerIdentifier, ciscoEvent, callType);
       } else {
         this._snackbarService.open("No Customer Identifier Found", "err");
       }
@@ -296,18 +355,18 @@ export class finesseService {
     }
   }
 
-  getCustomerByVoiceIdentifier(identifier, ciscoEvent) {
+  getCustomerByVoiceIdentifier(identifier, ciscoEvent, callType) {
     try {
       this._httpService.getCustomerByChannelTypeAndIdentifier("VOICE", identifier).subscribe(
         (res) => {
-          console.log("res==>", res);
+          console.log("customer res==>", res);
           this.customer = res.customer;
           let data = {
             customer: res.customer,
             identifier,
             dialogData: ciscoEvent.response.dialog
           };
-          this._sharedService.serviceChangeMessage({ msg: "openExternalModeRequestHeader", data: data });
+          if (callType == "INBOUND") this._sharedService.serviceChangeMessage({ msg: "openExternalModeRequestHeader", data: data });
           this.setLocalDialogCache(ciscoEvent, "alerting");
         },
         (error) => {
@@ -329,13 +388,13 @@ export class finesseService {
     }
   }
 
-  handleCallDroppedEvent(cacheId, dialogState, methodCalledOn, event) {
+  handleCallDroppedEvent(cacheId, dialogState, methodCalledOn, event, callType) {
     try {
       if (methodCalledOn != "onRefresh") this.clearLocalDialogCache(cacheId);
       let channelCustomerIdentifier = dialogState.dialog.ani ? dialogState.dialog.ani : dialogState.dialog.fromAddress;
       let serviceIdentifier = dialogState.dialog.dialedNumber;
       let leg = `${dialogState.dialog.id}:${this._cacheService.agent.id}`;
-
+      console.log("callType==>", callType);
       let cimMessage = this.createCIMMessage(
         "VOICE",
         channelCustomerIdentifier,
@@ -344,9 +403,10 @@ export class finesseService {
         this.customer,
         leg,
         dialogState.dialog,
-        "DIALOG_ENDED"
+        callType
       );
-      this.ccmChannelSessionApi(cimMessage, methodCalledOn, cacheId, event);
+      console.log("CIM3==>", cimMessage);
+      // this.ccmChannelSessionApi(cimMessage, methodCalledOn, cacheId, event);
     } catch (e) {
       console.error("[Error] handleCallDropEvent ==>", e);
     }
@@ -354,23 +414,74 @@ export class finesseService {
 
   handleCallActiveEvent(dialogEvent, dialogState) {
     try {
-      this.setLocalDialogCache(dialogEvent, "active");
+      console.log("test 5==>");
       let channelCustomerIdentifier = dialogState.dialog.ani ? dialogState.dialog.ani : dialogState.dialog.fromAddress;
       let serviceIdentifier = dialogState.dialog.dialedNumber;
       let leg = `${dialogState.dialog.id}:${this._cacheService.agent.id}`;
-      let cimMessage = this.createCIMMessage(
-        "VOICE",
-        channelCustomerIdentifier,
-        serviceIdentifier,
-        "CALL_LEG_STARTED",
-        this.customer,
-        leg,
-        dialogState.dialog,
-        "INBOUND"
-      );
-      this.ccmChannelSessionApi(cimMessage, "", "", undefined);
+      let callType;
+
+      if (dialogState.dialog.callType == "AGENT_INSIDE" || dialogState.dialog.callType == "OUT") {
+        callType = "OUTBOUND";
+        serviceIdentifier = "VOICE";
+        this.getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, dialogEvent);
+      } else {
+        this.setLocalDialogCache(dialogEvent, "active");
+        callType = "INBOUND";
+        let cimMessage = this.createCIMMessage(
+          "VOICE",
+          channelCustomerIdentifier,
+          serviceIdentifier,
+          "CALL_LEG_STARTED",
+          this.customer,
+          leg,
+          dialogState.dialog,
+          callType
+        );
+        console.log("CIM1==>", cimMessage);
+        // this.ccmChannelSessionApi(cimMessage, "", "", undefined);
+      }
     } catch (e) {
       console.error("[Error] handleCallActiveEvent ==>", e);
+    }
+  }
+
+  getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, dialogEvent) {
+    console.log("outbound channel api called==>");
+    let voiceChannel = this._sharedService.channelTypeList.find((item) => {
+      return item.name == "VOICE";
+    });
+    console.log("voice channel==>", voiceChannel);
+    try {
+      this._httpService.getDefaultOutboundChannel(voiceChannel.id).subscribe(
+        (res) => {
+          console.log("default outbound channel==>", res);
+          if (res) {
+            this.setLocalDialogCache(dialogEvent, "active");
+            let cimMessage = this.createCIMMessage(
+              "VOICE",
+              channelCustomerIdentifier,
+              res.serviceIdentifier,
+              "CALL_LEG_STARTED",
+              this.customer,
+              leg,
+              dialogState.dialog,
+              callType
+            );
+            console.log("CIM2==>", cimMessage);
+            this.ccmChannelSessionApi(cimMessage, "", "", undefined);
+          }
+        },
+        (error) => {
+          console.error("[Error on CCM Default Outbound Channel API] ==>", error);
+          if (error.status && error.status == 404) {
+            this._snackbarService.open(this._translateService.instant("snackbar.Default-Outbound-Channel-Not-Found"), "err");
+          } else {
+            this._sharedService.Interceptor(error.error, "err");
+          }
+        }
+      );
+    } catch (e) {
+      console.error("[Error] getDefaultOutboundChannel ==>", e);
     }
   }
 
@@ -414,6 +525,7 @@ export class finesseService {
   }
 
   ccmChannelSessionApi(data, methodCalledOn, cacheId, event) {
+    console.log("ccm api called==>");
     try {
       this._httpService.ccmVOICEChannelSession(data).subscribe(
         (res) => {
