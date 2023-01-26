@@ -3467,3 +3467,56 @@ vg-controls.hide {
     right: 25px;
   }
 }
+
+
+
+//Typing indicator
+
+.typing-indicator {
+  background-color: #F5F5F5;
+  will-change: transform;
+  height: 22px;
+  width: 42px;
+  border-radius: 8px;
+  display: inline-flex;
+  position: absolute;
+  animation: indicator 1.5s infinite ease-in-out;
+  justify-content: center;
+  align-items: center;
+  left: 10px;
+  margin-top: -23px;
+
+   span {
+     height: 6px;
+     width: 6px;
+     margin: 0 2px;
+     background-color: #8e8e8e82;
+     display: inline-block;
+     border-radius: 100%;
+     opacity: .3;
+
+     &:nth-of-type(1) {
+       -webkit-animation: 1s blink infinite 0.3333s;
+       animation: 1s blink infinite 0.3333s;
+     }
+     &:nth-of-type(2) {
+       -webkit-animation: 1s blink infinite 0.6666s;
+       animation: 1s blink infinite 0.6666s;
+     }
+     &:nth-of-type(3) {
+       -webkit-animation: 1s blink infinite 0.9999s;
+       animation: 1s blink infinite 0.9999s;
+     }
+  }
+  @keyframes blink {
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes indicator {
+    50% {
+      transform: scale(1.05);
+    }
+  }
+}

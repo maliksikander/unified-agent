@@ -97,6 +97,7 @@ export class InteractionsComponent implements OnInit {
   conversationSettings: any;
   FBPostData: any = null;
   FBPostComments: any = null;
+  sendTypingStartedEventTimer: any = null;
 
   constructor(
     private _sharedService: sharedService,
@@ -241,6 +242,7 @@ export class InteractionsComponent implements OnInit {
     this.quotedMessage = e;
   }
   onTextAreaFocus() {
+    this.conversation.unReadCount = 0;
     this.publishLatestMessageSeenEvent();
   }
 
@@ -259,9 +261,8 @@ export class InteractionsComponent implements OnInit {
   }
 
   publishMessageSeenEvent(messageForSeenNotification) {
-    this.conversation.unReadCount = 0;
 
-    if (messageForSeenNotification && messageForSeenNotification.id != this.lastSeenMessageId) {
+    if (document.hasFocus() && messageForSeenNotification && messageForSeenNotification.id != this.lastSeenMessageId) {
       const data = {
         id: uuidv4(),
         header: {
@@ -296,6 +297,7 @@ export class InteractionsComponent implements OnInit {
       });
 
       this.lastSeenMessageId = messageForSeenNotification.id;
+      this.conversation.unReadCount = 0;
     }
   }
 
@@ -304,6 +306,7 @@ export class InteractionsComponent implements OnInit {
   //   this.message = el.value;
   // }
 
+  //on every key press
   onKey(event) {
     this.message = event.target.value;
     this.expanedHeight = this.elementView.nativeElement.offsetHeight;
@@ -312,6 +315,10 @@ export class InteractionsComponent implements OnInit {
     // } else if (this.message === "" && event.keyCode === 38) {
     //   this.isSuggestion = false;
     // }
+    if (event.key !== "Enter") {
+      this.sendTypingEvent();
+    }
+
     if (this.message[0] === "/" || this.message[0] === " ") {
       this.displaySuggestionsArea = false;
       this.quickReplies = false;
@@ -335,6 +342,41 @@ export class InteractionsComponent implements OnInit {
     // }
     if (this.expanedHeight > 50) {
       this.adjustHeightOnComposerResize();
+    }
+  }
+
+  //to send typing event
+  sendTypingEvent() {
+    if (!this.sendTypingStartedEventTimer) {
+      if (this._socketService.isSocketConnected) {
+        let message = this.getCimMessage();
+        let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
+        if (selectedChannelSession) {
+          // channel is web or whatsApp
+          let sendingActiveChannelSession = JSON.parse(JSON.stringify(selectedChannelSession));
+
+          delete sendingActiveChannelSession["webChannelData"];
+          delete sendingActiveChannelSession["isChecked"];
+          delete sendingActiveChannelSession["isDisabled"];
+
+          message.header.sender = this.conversation.topicParticipant;
+          message.header.channelSession = sendingActiveChannelSession;
+          message.header.channelData = sendingActiveChannelSession.channelData;
+          message.body.type = "NOTIFICATION";
+          message.body.notificationType = "TYPING_STARTED";
+
+          let event: any = new CimEvent("TYPING_INDICATOR", "NOTIFICATION", this.conversation.conversationId, message);
+
+          this._socketService.emit("publishCimEvent", {
+            cimEvent: event,
+            agentId: this._cacheService.agent.id,
+            conversationId: this.conversation.conversationId
+          });
+          this.sendTypingStartedEventTimer = setTimeout(() => {
+            this.sendTypingStartedEventTimer = false;
+          }, 3000);
+        }
+      }
     }
   }
   eventFromChild(data) {
@@ -724,8 +766,13 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  onKeydown(event) {
+  //when enter key is pressed
+  onEnterKey(event) {
     event.preventDefault();
+    // clear the timer on enter key press so that we can send fresh typing started event
+    //on next key press as receiving message on another end will stop its typing indication
+    clearTimeout(this.sendTypingStartedEventTimer);
+    this.sendTypingStartedEventTimer = null;
   }
   // loadBrowserLanguage() {
   //   let browserLang = navigator.language;

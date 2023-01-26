@@ -1443,6 +1443,15 @@
     <div class="chat-footer" [ngClass]="{
         'textarea-disable': !_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0 || !conversation.messageComposerState
       }">
+
+     <!--  ===================================================== TYPING INDICATOR =========================================================  -->
+      <div class="typing-indicator" *ngIf="conversation.isTyping">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+
       <div class="quoted-message-selected-area" *ngIf="quotedMessage">
         <div class="message-selected-inner">
           <span *ngIf="quotedMessage.header.sender.participant.customer">{{
@@ -1559,7 +1568,7 @@
             <textarea maxlength="1000"
               [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0 || !conversation.messageComposerState"
               (keyup.enter)="onSend(replyInput.value); replyInput.value = null" (focus)="onTextAreaFocus()"
-              (keydown.enter)="onKeydown($event)"
+              (keydown.enter)="onEnterKey($event)"
               [attr.data-emoji-picker]="conversation.activeChannelSessions.length > 0 ? true : false"
               [(ngModel)]="message" (keyup)="onKey($event)" name="message" [matAutocomplete]="auto" matInput
               cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none"
@@ -1691,6 +1700,8 @@
         </form>
       </div>
     </div>
+
+    
 
     <ng-template #noteTemplate>
       <div class="note-dialog-main">
