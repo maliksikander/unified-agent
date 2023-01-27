@@ -884,7 +884,7 @@ export class socketService {
   }
 
   onSocketErrors(res) {
-    this._snackbarService.open(this._translateService.instant("snackbar.on") + res.task + " " + res.msg, "err");
+    this._snackbarService.open(this._translateService.instant("snackbar.on") +" " + res.task + " " + res.msg, "err");
   }
 
   playSoundAndBrowserNotification(conversation, cimEvent) {
