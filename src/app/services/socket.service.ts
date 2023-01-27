@@ -301,8 +301,11 @@ export class socketService {
         }
 
         if (cimEvent.data.header.sender.type.toLowerCase() == "customer") {
-          clearTimeout(sameTopicConversation['isTyping']);
-          sameTopicConversation['isTyping']=null;
+          if(cimEvent.data.body.type.toLowerCase() != "notification")
+          {
+            clearTimeout(sameTopicConversation['isTyping']);
+            sameTopicConversation['isTyping']=null;
+          }
           this.processActiveChannelSessions(sameTopicConversation, cimEvent.data.header.channelSession);
           ++sameTopicConversation.unReadCount;
           
