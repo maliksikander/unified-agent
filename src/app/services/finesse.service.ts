@@ -174,10 +174,10 @@ export class finesseService {
         this.finesseLogoutReasonCodes = event.response.logoutReasons;
         this.finesseNotReadyReasonCodes = event.response.notReadyReasons;
       } else if (event.event == "newInboundCall") {
-        // this.identifyCustomer(event, event.response.dialog.ani, "INBOUND");
+        this.identifyCustomer(event, event.response.dialog.ani, "INBOUND");
       } else if (event.event == "outboundDialing") {
-        // if (event.response.dialog.ani && event.response.dialog.state == "INITIATED")
-        // this.identifyCustomer(event, event.response.dialog.ani, "OUTBOUND");
+        if (event.response.dialog.ani && event.response.dialog.state == "INITIATED")
+          this.identifyCustomer(event, event.response.dialog.ani, "OUTBOUND");
       }
     } catch (e) {
       console.error("CTI ERROR==>", e);
@@ -322,12 +322,12 @@ export class finesseService {
         this.removeNotification();
         if (dialogState.dialog.state == "DROPPED" || dialogState.dialog.state == "ACTIVE") {
           let item: any = this.getDialogFromCache(cacheId);
-          console.log("rend==>",item);
+          console.log("rend==>", item);
           if (item && item.dialogState == "active") {
-            console.log("rend1==>",item);
+            console.log("rend1==>", item);
             if (this.timeoutId) clearInterval(this.timeoutId);
 
-            this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, "DILAOG_ENDED");
+            this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, "DIALOG_ENDED");
           }
         }
       } else if (dialogState.dialog.state == "FAILED") {
@@ -406,7 +406,7 @@ export class finesseService {
         callType
       );
       console.log("CIM3==>", cimMessage);
-      // this.ccmChannelSessionApi(cimMessage, methodCalledOn, cacheId, event);
+      this.ccmChannelSessionApi(cimMessage, methodCalledOn, cacheId, event);
     } catch (e) {
       console.error("[Error] handleCallDropEvent ==>", e);
     }
@@ -438,7 +438,7 @@ export class finesseService {
           callType
         );
         console.log("CIM1==>", cimMessage);
-        // this.ccmChannelSessionApi(cimMessage, "", "", undefined);
+        this.ccmChannelSessionApi(cimMessage, "", "", undefined);
       }
     } catch (e) {
       console.error("[Error] handleCallActiveEvent ==>", e);
