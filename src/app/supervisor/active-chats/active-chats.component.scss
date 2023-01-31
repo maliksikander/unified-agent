@@ -74,9 +74,12 @@
     height: 38px;
     line-height: 38px;
     padding: 0 15px;
-    white-space: pre;
+    white-space: nowrap;
     border: 0;
     text-transform: capitalize;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     small {
       text-transform: capitalize;
