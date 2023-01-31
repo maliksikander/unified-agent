@@ -21,10 +21,34 @@
 
   .table {
     background: #ffffff;
+&.agents-answer{
+  td,th{
+    &:nth-child(-n+2){
+      text-align: center;
+      padding: 0 5px;
+      width: 120px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 120px;
+      overflow: hidden;
+    }
+  }
+}
 
     tr {
       position: relative;
       cursor: default;
+      td,th{
+        &:nth-child(1){
+          text-align: center;
+          padding: 0 5px;
+          width: 120px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          max-width: 120px;
+          overflow: hidden;
+        }
+      }
 
       &:nth-of-type(even) {
         background: #f7f7f7;

@@ -43,14 +43,14 @@
         </div>
       </div>
 
-      <table class="table">
+      <table class="table active-agent-table">
         <thead>
           <tr>
-            <th class="status-data" scope="col">{{ 'supervisor.agent(s)' | translate | titlecase }}</th>
+            <th class="status-data" scope="col" matTooltip="{{ 'supervisor.agent(s)' | translate | titlecase }}">{{ 'supervisor.agent(s)' | translate | titlecase }}</th>
             <!-- <th scope="col">State</th> -->
-            <th scope="col">{{ 'supervisor.active-conversation' | translate | titlecase }}</th>
+            <th scope="col" matTooltip="{{ 'supervisor.active-conversation' | translate | titlecase }}">{{ 'supervisor.active-conversation' | translate | titlecase }}</th>
             <!--          <th scope="col">Queue(s)</th>-->
-            <th scope="col" class="mrd-status-cell"  *ngFor="let mrd of MRDsList">
+            <th scope="col" class="mrd-status-cell" matTooltip="{{ mrd?.name }}"  *ngFor="let mrd of MRDsList">
               {{ mrd.name }}
             </th>
           </tr>
@@ -77,7 +77,7 @@
                 </td>
               </ng-container>
             </ng-container>
-            
+
           </tr>
         </tbody>
       </table>

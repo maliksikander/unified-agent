@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="col">
-      <table class="table">
+      <table class="table {{FilterSelected == 'agents' ? 'agents-answer' : '' }}">
         <thead>
           <tr>
             <th *ngIf="FilterSelected == 'agents'" scope="col">{{ "globals.direction" | translate | titlecase}}</th>

@@ -212,6 +212,13 @@ $theme: mat-light-theme($primary, $accent, $warn);
     .main-logout {
       background: lighten(mat-color($dark-primary), 10%) !important;
     }
+    .logout-reason-inner {
+      mat-radio-button {
+        &:hover {
+          background: mat-color($ef-blue, 800) !important;
+        }
+      }
+    }
   }
 
   button.mat-menu-item {
@@ -904,14 +911,17 @@ $theme: mat-light-theme($primary, $accent, $warn);
   //Subscribed Lists
   .table {
     border: 1px solid mat-color($dark-primary, 400);
-
     thead {
       th {
         background: mat-color($dark-primary) !important;
         color: mat-contrast($dark-primary, 600) !important;
       }
     }
-
+    th,td{
+      &.mrd-status-cell{
+        border-left-color: mat-color($dark-primary, 400) !important;
+      }
+    }
     tbody {
       tr {
         background: mat-color($dark-primary, 300) !important;
@@ -1179,6 +1189,23 @@ $theme: mat-light-theme($primary, $accent, $warn);
   }
 
   .manage-dashboard {
+    tr{
+      border-bottom-color: mat-color($dark-primary, 800) !important;
+    }
+
+    .filter-area{
+      background: mat-color($dark-primary, 800) !important;
+      .search-wrapper{
+        input{
+          background: transparent;
+        }
+      }
+
+
+       mat-form-field.selection-trigger{
+         border-color: mat-color($dark-primary, 800) !important;
+       }
+    }
     .page-heading {
       background: mat-color($dark-primary, 800) !important;
 
@@ -1186,6 +1213,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
         color: mat-contrast($dark-primary, 500) !important;
       }
     }
+
   }
 
   .conversation-data-main {
