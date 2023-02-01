@@ -53,8 +53,8 @@
           <span>{{'app-header.queued-conversations-detail' | translate}}
           </span>
         </button>
-        <button routerLink="/supervisor/active-agents-detail" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
-          mat-menu-item class="main-menu-item">
+        <button routerLink="/supervisor/active-agents-detail" routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
           <span>{{'app-header.active-agents-detail' | translate}}
           </span>
         </button>
@@ -159,7 +159,9 @@
                     <img src="assets/images/dummy-user.svg" alt="Agent">
                   </div>
                   <h4 [matTooltip]="_cacheService.agent.username">{{_cacheService.agent.username}}</h4>
-                  <span>(Ext: {{agent.extension}})</span>
+                  <span *ngIf="_finesseService?.finesseAgent?.extension || _cacheService?.agent?.extension">(Ext:
+                    {{_finesseService?.finesseAgent?.extension ? _finesseService?.finesseAgent?.extension :
+                    _cacheService?.agent?.extension}})</span>
                 </div>
                 <p *ngIf="('state-change' | authPipe : 'view') as result" class="menu-trigger-custom state-trigger">
                   <span class="inner-btn">{{'globals.state' | translate}}</span>
@@ -209,7 +211,8 @@
                 <p class="menu-trigger-custom logged-out-trigger">
                   <button mat-menu-item class="theme-switcher" (click)="themeSwitch(false)"
                     matTooltip="{{(isdarkMode ? 'app-header.switch-light' : 'app-header.switch-dark') | translate}}">
-                    <span class="theme-sub-text">{{'app-header.theme' | translate}}<small>{{'app-header.light-dark' | translate}}</small></span>
+                    <span class="theme-sub-text">{{'app-header.theme' | translate}}<small>{{'app-header.light-dark' |
+                        translate}}</small></span>
                     <mat-icon>
                       {{isdarkMode ? 'brightness_7' : 'brightness_6'}}</mat-icon>
                   </button>
@@ -226,7 +229,8 @@
 
               <!-- Language list -->
               <div *ngIf="changeLanguage" class="language-change-list" (click)="$event.stopPropagation()">
-                <p>{{'app-header.selected-language' | translate}}<mat-icon (click)="changeLanguage = false; stateView = true">close</mat-icon>
+                <p>{{'app-header.selected-language' | translate}}<mat-icon
+                    (click)="changeLanguage = false; stateView = true">close</mat-icon>
                 </p>
                 <button mat-menu-item class="language-selection"
                   [ngClass]="{'selected-language': language.code == changeLanguageCode}"
@@ -239,7 +243,8 @@
               <div *ngIf="logoutReasonList" class="language-change-list" (click)="$event.stopPropagation()">
                 <p>
                   {{ "app-header.select-reason" | translate }}
-                  <mat-icon (click)="logoutReasonList = false; stateView = true" (click)="selectedReasonCode=null">close</mat-icon>
+                  <mat-icon (click)="logoutReasonList = false; stateView = true"
+                    (click)="selectedReasonCode=null">close</mat-icon>
                 </p>
                 <!-- <div *ngFor="let reason of reasonCodes; let i = index">
                   <span *ngIf="(reason.type | lowercase ) == 'logout'" class="logout-reason-inner">
@@ -247,10 +252,11 @@
                       color="primary" labelPosition="after">{{reason.name}}</mat-checkbox>
                   </span>
                 </div> -->
-                <mat-radio-group aria-label="Select an option" >
+                <mat-radio-group aria-label="Select an option">
                   <div *ngFor="let reason of reasonCodes; let i = index">
                     <span *ngIf="(reason.type | lowercase) == 'logout'" class="logout-reason-inner">
-                      <mat-radio-button value="{{ reason.name }}" (change)="onChange(reason)">{{ reason.name }}</mat-radio-button>
+                      <mat-radio-button value="{{ reason.name }}" (change)="onChange(reason)">{{ reason.name
+                        }}</mat-radio-button>
                     </span>
                   </div>
                 </mat-radio-group>
