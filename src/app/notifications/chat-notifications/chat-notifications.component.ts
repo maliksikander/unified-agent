@@ -33,50 +33,53 @@ export class ChatNotificationsComponent implements OnInit {
     private _translateService: TranslateService
   ) {
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
-      console.log("e==>", e);
-      if (e.msg == "openPushModeRequestHeader") {
-        this.pushModeRequests.push(e.data);
-        this._soundService.playRing();
-        if (e.data.cisco_data) {
-          this._soundService.openBrowserNotification(
-            this._translateService.instant("snackbar.Incoming-Call-Alert"),
-            this._translateService.instant("snackbar.Incoming-call-alert-request") + e.data.channelSession.channel.channelType.name
-          );
-          // this._finesseService.voiceChannelSessionSubject.next({
-          //   conversationId: e.data.conversationId,
-          //   channelSession: e.data.channelSession
-          // });
-        } else {
+      try {
+        console.log("e==>", e);
+        if (e.msg == "openPushModeRequestHeader") {
+          this.pushModeRequests.push(e.data);
+          this._soundService.playRing();
+          if (e.data.cisco_data) {
+            this._soundService.openBrowserNotification(
+              this._translateService.instant("snackbar.Incoming-Call-Alert"),
+              this._translateService.instant("snackbar.Incoming-call-alert-request") + e.data.channelSession.channel.channelType.name
+            );
+            // this._finesseService.voiceChannelSessionSubject.next({
+            //   conversationId: e.data.conversationId,
+            //   channelSession: e.data.channelSession
+            // });
+          } else {
+            this._soundService.openBrowserNotification(
+              this._translateService.instant("snackbar.CHAT-REQUESTED"),
+              this._translateService.instant("snackbar.Incoming-chat-request-on-push-mode-on") + e.data.channelSession.channel.channelType.name
+            );
+          }
+        } else if (e.msg == "closePushModeRequestHeader") {
+          this.removePushModeRequestFromRequestArray(e.data.conversationId);
+        } else if (e.msg == "openPullModeRequestHeader") {
+          this.pullModeRequests.push(e.data);
+          this._soundService.playRing();
           this._soundService.openBrowserNotification(
             this._translateService.instant("snackbar.CHAT-REQUESTED"),
-            this._translateService.instant("snackbar.Incoming-chat-request-on-push-mode-on") + e.data.channelSession.channel.channelType.name
+            this._translateService.instant("snackbar.Incoming-chat-request-on-pull-mode-on") + this._pullModeservice.listNames[e.data.listId]
           );
+        } else if (e.msg == "closePullModeRequestHeader") {
+          this.removePullModeRequestFromRequestArray(e.data);
+        } else if (e.msg == "openExternalModeRequestHeader") {
+          this.getVoiceChannelType();
+          if (this.externalModeRequests.length > 0) {
+            let request = this.externalModeRequests.find((item) => {
+              return item.identifier == e.data.identifier;
+            });
+            if (!request) this.externalModeRequests.push(e.data);
+          } else {
+            this.externalModeRequests.push(e.data);
+          }
+          console.log("external requests==>", this.externalModeRequests);
+        } else if (e.msg == "closeExternalModeRequestHeader") {
+          this.externalModeRequests = e.data;
         }
-      } else if (e.msg == "closePushModeRequestHeader") {
-        this.removePushModeRequestFromRequestArray(e.data.conversationId);
-      } else if (e.msg == "openPullModeRequestHeader") {
-        this.pullModeRequests.push(e.data);
-        this._soundService.playRing();
-        this._soundService.openBrowserNotification(
-          this._translateService.instant("snackbar.CHAT-REQUESTED"),
-          this._translateService.instant("snackbar.Incoming-chat-request-on-pull-mode-on") + this._pullModeservice.listNames[e.data.listId]
-        );
-      } else if (e.msg == "closePullModeRequestHeader") {
-        this.removePullModeRequestFromRequestArray(e.data);
-      } else if (e.msg == "openExternalModeRequestHeader") {
-        this.getVoiceChannelType();
-        if (this.externalModeRequests.length > 0) {
-          let request = this.externalModeRequests.find((item) => {
-            return item.identifier == e.data.identifier;
-          });
-          console.log("request==>", request);
-          if (!request) this.externalModeRequests.push(e.data);
-        } else {
-          this.externalModeRequests.push(e.data);
-        }
-        console.log("external requests==>", this.externalModeRequests);
-      } else if (e.msg == "closeExternalModeRequestHeader") {
-        this.externalModeRequests = e.data;
+      } catch (error) {
+        console.error("[serviceCurrentMessage Subscriber] Error :", error);
       }
     });
 

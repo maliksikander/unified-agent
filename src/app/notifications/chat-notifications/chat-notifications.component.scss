@@ -127,12 +127,14 @@
           position: relative;
           width: fit-content;
           padding-right: 8px;
+          font-weight: normal;
+          font-size: 12px;
 
           &:before{
-            content: open-quote;
+            // content: open-quote;
           }
           &:after{
-            content: close-quote;
+            // content: close-quote;
             position: absolute;
             right: 0;
             bottom: 0;
