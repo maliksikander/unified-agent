@@ -24,7 +24,7 @@ export class socketService {
   socket: any;
   uri: string;
   isSocketConnected: boolean = false;
-  isWrapUpTimer: boolean = true;
+  isWrapUpTimer: boolean = true ;
   conversations: any = [];
   conversationIndex = -1;
   private _conversationsListener: BehaviorSubject<any> = new BehaviorSubject([]);
