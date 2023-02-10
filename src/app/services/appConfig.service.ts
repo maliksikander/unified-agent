@@ -16,9 +16,9 @@ export class appConfigService {
     ROUTING_ENGINE_URL: "",
     CIM_REPORTING_URL: "",
     UNIFIED_ADMIN_URL: "",
-    CCM_URL: "",
+    CCM_URL: ""
   };
-  finesseConfig:any
+  finesseConfig: any;
 
   constructor(private _httpClient: HttpClient) {}
 
@@ -47,7 +47,9 @@ export class appConfigService {
           callVariable: e.callVariable,
           getQueuesDelay: e.getQueuesDelay,
           ssoBackendUrl: e.ssoBackendUrl,
-          isGadget: e.isGadget
+          isGadget: e.isGadget,
+          adminUsername: e.adminUsername,
+          adminPassword: e.adminPassword
         };
         this.finesseConfig = config;
 
