@@ -242,7 +242,7 @@
     "length-range-1-50": "*Length should be between 1 - 50 characters_spa",
     "label-already-exists": "*Label already exists_spa",
     "description": "Description_spa",
-    "length-range-1-100": "*Length should be between 1 - 50 characters_spa",
+    "length-range-1-100": "*Length should be between 1 - 100 characters_spa",
     "field-type": "Field Type_spa",
     "no-of-characters": "Number of Characters_spa",
     "value-bw-1-1000": "*Value should be between 1 - 1000_spa",

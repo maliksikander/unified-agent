@@ -252,7 +252,7 @@
     "length-range-1-50": "*Length should be between 1 - 50 characters_ita",
     "label-already-exists": "*Label already exists_ita",
     "description": "Description_ita",
-    "length-range-1-100": "*Length should be between 1 - 50 characters_ita",
+    "length-range-1-100": "*Length should be between 1 - 100 characters_ita",
     "field-type": "Field Type_ita",
     "no-of-characters": "Number of Characters_ita",
     "value-bw-1-1000": "*Value should be between 1 - 1000_ita",

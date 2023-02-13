@@ -11,6 +11,8 @@
     "CONVERSATION_MANAGER_URL":"${CONVERSATION_MANAGER_URL}",
     "domain": "${domain}",
     "subDomain" : "${subDomain}",
+    "adminUsername": "${adminUsername}",
+	  "adminPassword": "${adminPassword}",
     "boshUrl": "${boshUrl}",
     "subBoshUrl" : "${subBoshUrl}",
     "finesseFlavor": "${finesseFlavor}",

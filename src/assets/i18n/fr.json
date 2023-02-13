@@ -244,7 +244,7 @@
     "length-range-1-50": "*Length should be between 1 - 50 characters_fr",
     "label-already-exists": "*Label already exists_fr",
     "description": "Description_fr",
-    "length-range-1-100": "*Length should be between 1 - 50 characters_fr",
+    "length-range-1-100": "*Length should be between 1 - 100 characters_fr",
     "field-type": "Field Type_fr",
     "no-of-characters": "Number of Characters_fr",
     "value-bw-1-1000": "*Value should be between 1 - 1000_fr",

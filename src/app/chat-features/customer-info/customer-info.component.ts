@@ -138,15 +138,22 @@ export class CustomerInfoComponent implements OnInit {
       });
       if (this.voiceSession) {
         let cacheId = `${this._cacheService.agent.id}:${this.voiceSession.id}`;
+        // console.log("cacheID==>",cacheId);
         let cacheDialog: any = this._finesseService.getDialogFromCache(cacheId);
-        let currentParticipant = this._finesseService.getCurrentAgentFromParticipantList(cacheDialog.dialog.participants.Participant);
-        let startTime = new Date(currentParticipant.startTime);
+        // console.log("cacheDialog==>",cacheDialog);
+        if (cacheDialog) {
+          let currentParticipant = this._finesseService.getCurrentAgentFromParticipantList(cacheDialog.dialog.participants.Participant);
+          let startTime = new Date(currentParticipant.startTime);
 
-        this._finesseService.timeoutId = setInterval(() => {
-          let currentTime = new Date();
-          let timedurationinMS = currentTime.getTime() - startTime.getTime();
-          this.msToHMS(timedurationinMS);
-        }, 1000);
+          this._finesseService.timeoutId = setInterval(() => {
+            let currentTime = new Date();
+            let timedurationinMS = currentTime.getTime() - startTime.getTime();
+            this.msToHMS(timedurationinMS);
+          }, 1000);
+        } else {
+          console.log("No Dialog Found==>");
+          this.timer = "";
+        }
       } else {
         if (this._finesseService.timeoutId) {
           clearInterval(this._finesseService.timeoutId);
