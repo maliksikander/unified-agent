@@ -565,19 +565,27 @@ export class finesseService {
       let leg = `${dialogState.dialog.id}:${this._cacheService.agent.id}`;
       let customer;
       if (this.customer) customer = JSON.parse(JSON.stringify(this.customer));
-      console.log("callType==>", callType);
-      let cimMessage = this.createCIMMessage(
-        "VOICE",
-        channelCustomerIdentifier,
-        serviceIdentifier,
-        "CALL_LEG_ENDED",
-        customer,
-        leg,
-        dialogState.dialog,
-        callType
-      );
-      console.log("CIM3==>", cimMessage);
-      this.ccmChannelSessionApi(cimMessage, methodCalledOn, cacheId, event);
+      if (dialogState.dialog.callType == "AGENT_INSIDE" || dialogState.dialog.callType == "OUT") {
+        callType = "DIALOG_ENDED";
+        serviceIdentifier = "VOICE";
+        let intent = "CALL_LEG_ENDED";
+        channelCustomerIdentifier = dialogState.dialog.dialedNumber;
+        this.getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, event, intent, customer);
+      } else {
+        console.log("callType==>", callType);
+        let cimMessage = this.createCIMMessage(
+          "VOICE",
+          channelCustomerIdentifier,
+          serviceIdentifier,
+          "CALL_LEG_ENDED",
+          customer,
+          leg,
+          dialogState.dialog,
+          callType
+        );
+        console.log("CIM3==>", cimMessage);
+        this.ccmChannelSessionApi(cimMessage, methodCalledOn, cacheId, event);
+      }
       this.customer = undefined;
     } catch (e) {
       console.error("[Error] handleCallDropEvent ==>", e);
@@ -595,7 +603,8 @@ export class finesseService {
       if (dialogState.dialog.callType == "AGENT_INSIDE" || dialogState.dialog.callType == "OUT") {
         callType = "OUTBOUND";
         serviceIdentifier = "VOICE";
-        this.getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, dialogEvent);
+        let intent = "CALL_LEG_STARTED";
+        this.getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, dialogEvent, intent, undefined);
       } else {
         if (dialogState.dialog.callType == "CONSULT_OFFERED") {
           callType = "CONSULT_TRANSFER";
@@ -624,24 +633,25 @@ export class finesseService {
     }
   }
 
-  getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, dialogEvent) {
+  getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, dialogEvent, intent, customerData) {
     console.log("outbound channel api called==>");
+    let customer = customerData ? customerData : this.customer;
     let voiceChannel = this._sharedService.channelTypeList.find((item) => {
       return item.name == "VOICE";
     });
-    console.log("voice channel==>", voiceChannel);
+    // console.log("voice channel==>", voiceChannel);
     try {
       this._httpService.getDefaultOutboundChannel(voiceChannel.id).subscribe(
         (res) => {
-          console.log("default outbound channel==>", res);
+          // console.log("default outbound channel==>", res);
           if (res) {
-            this.setLocalDialogCache(dialogEvent, "active");
+            if (intent == "CAL_LEG_STARTED") this.setLocalDialogCache(dialogEvent, "active");
             let cimMessage = this.createCIMMessage(
               "VOICE",
               channelCustomerIdentifier,
               res.serviceIdentifier,
-              "CALL_LEG_STARTED",
-              this.customer,
+              intent,
+              customer,
               leg,
               dialogState.dialog,
               callType

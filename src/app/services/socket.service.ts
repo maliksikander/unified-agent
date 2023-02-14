@@ -469,7 +469,7 @@ export class socketService {
           if (participant.state.reasonCode != "AGENT") {
             conversation.activeChannelSessions.push(participant);
           } else {
-            console.log("participant==>", participant);
+            // console.log("participant==>", participant);
           }
         } else {
           conversation.activeChannelSessions.push(participant);
@@ -839,7 +839,7 @@ export class socketService {
         // conversation.activeChannelSessions.push(participant);
         conversation.activeChannelSessions.push(cimEvent.data);
       } else {
-        console.log("participant==>", cimEvent.data);
+        // console.log("participant==>", cimEvent.data);
       }
     } else {
 
