@@ -684,9 +684,9 @@ export class InteractionsComponent implements OnInit {
             "voice_activity"
           ].includes(event.name.toLowerCase())
         ) {
-          // console.log("test1==>",event.name)
           let message = this._socketService.createSystemNotificationMessage(event);
-          // console.log("past==>", message);
+          // console.log("test1==>", event.name);
+          if (event.name == "VOICE_ACTIVITY") console.log("past==>", message);
           if (message) {
             msgs.push(message);
           }
@@ -1045,4 +1045,9 @@ export class InteractionsComponent implements OnInit {
       console.error("err [getFullViewPostData] Channel session not found");
     }
   }
+
+  // getCustomerAni(callLegs:Array<any>){
+  //   console.log("data-->",callLegs)
+
+  // }
 }

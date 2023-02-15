@@ -89,6 +89,9 @@ import { TranslateModule } from "@ngx-translate/core";
 import { filterAgentParticipantClass } from "./pipes/filterAgents.pipe";
 import { SliceFilterPipe } from "./pipes/slice-filter.pipe";
 import { checkConferenceCallPipe } from "./pipes/checkConferenceCall.pipe";
+import { getCustomerAniPipe } from "./pipes/getCustomerAni.pipe";
+import { checkOutboundCallPipe } from "./pipes/checkOutboundCall.pipe";
+import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
 
 @NgModule({
   declarations: [
@@ -122,7 +125,10 @@ import { checkConferenceCallPipe } from "./pipes/checkConferenceCall.pipe";
     getCheckedChannelSessionPipe,
     filterAgentParticipantClass,
     SliceFilterPipe,
-    checkConferenceCallPipe
+    checkConferenceCallPipe,
+    getCustomerAniPipe,
+    checkOutboundCallPipe,
+    checkConsultCallPipe
   ],
   imports: [
     NgxDocViewerModule,
@@ -290,7 +296,10 @@ import { checkConferenceCallPipe } from "./pipes/checkConferenceCall.pipe";
     TranslateModule,
     filterAgentParticipantClass,
     SliceFilterPipe,
-    checkConferenceCallPipe
+    checkConferenceCallPipe,
+    checkOutboundCallPipe,
+    getCustomerAniPipe,
+    checkConsultCallPipe
   ]
 })
 export class SharedModule {}
