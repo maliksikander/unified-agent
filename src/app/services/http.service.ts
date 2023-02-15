@@ -273,9 +273,20 @@ export class httpService {
 
   ///////////////////////// Load Past Activity ////////
 
+  // getPastActivities(id, limit, offset): Observable<any> {
+  //   return this._httpClient.get<any>(
+  //     `${this._appConfigService.config.CONVERSATION_MANAGER_URL}${this.apiEndpoints.activities}/${id}/past-events?limit=${limit}&offset=${offset}`,
+  //     {
+  //       headers: new HttpHeaders({
+  //         "Content-Type": "application/json"
+  //       })
+  //     }
+  //   );
+  // }
+
   getPastActivities(id, limit, offset): Observable<any> {
     return this._httpClient.get<any>(
-      `${this._appConfigService.config.CONVERSATION_MANAGER_URL}${this.apiEndpoints.activities}/${id}/past-events?limit=${limit}&offset=${offset}`,
+      `${this._appConfigService.config.CONVERSATION_MANAGER_URL}${this.apiEndpoints.activities}/${id}/activities?limit=${limit}&offset=${offset}&activity-type=ALL`,
       {
         headers: new HttpHeaders({
           "Content-Type": "application/json"

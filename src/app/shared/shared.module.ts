@@ -87,6 +87,8 @@ import { timeDurationFromParticipantPipe } from "./pipes/timeDurationFromPartici
 import { getCheckedChannelSessionPipe } from "./pipes/getCheckedChannelSession.pipe";
 import { TranslateModule } from "@ngx-translate/core";
 import { filterAgentParticipantClass } from "./pipes/filterAgents.pipe";
+import { SliceFilterPipe } from "./pipes/slice-filter.pipe";
+import { checkConferenceCallPipe } from "./pipes/checkConferenceCall.pipe";
 
 @NgModule({
   declarations: [
@@ -118,7 +120,9 @@ import { filterAgentParticipantClass } from "./pipes/filterAgents.pipe";
     getSenderIdPipe,
     AuthPipe,
     getCheckedChannelSessionPipe,
-    filterAgentParticipantClass
+    filterAgentParticipantClass,
+    SliceFilterPipe,
+    checkConferenceCallPipe
   ],
   imports: [
     NgxDocViewerModule,
@@ -284,7 +288,9 @@ import { filterAgentParticipantClass } from "./pipes/filterAgents.pipe";
     getCheckedChannelSessionPipe,
     timeDurationFromParticipantPipe,
     TranslateModule,
-    filterAgentParticipantClass
+    filterAgentParticipantClass,
+    SliceFilterPipe,
+    checkConferenceCallPipe
   ]
 })
 export class SharedModule {}

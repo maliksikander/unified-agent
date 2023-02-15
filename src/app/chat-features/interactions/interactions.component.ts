@@ -680,10 +680,13 @@ export class InteractionsComponent implements OnInit {
             "channel_session_ended",
             "agent_subscribed",
             "agent_unsubscribed",
-            "call_leg_ended"
+            "call_leg_ended",
+            "voice_activity"
           ].includes(event.name.toLowerCase())
         ) {
+          // console.log("test1==>",event.name)
           let message = this._socketService.createSystemNotificationMessage(event);
+          // console.log("past==>", message);
           if (message) {
             msgs.push(message);
           }

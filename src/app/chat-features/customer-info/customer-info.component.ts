@@ -152,7 +152,7 @@ export class CustomerInfoComponent implements OnInit {
           }, 1000);
         } else {
           console.log("No Dialog Found==>");
-          this.timer = "";
+          // this.timer = "";
         }
       } else {
         if (this._finesseService.timeoutId) {

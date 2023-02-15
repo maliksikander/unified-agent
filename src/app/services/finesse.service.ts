@@ -264,7 +264,8 @@ export class finesseService {
       // if (methodCalledOn != "onRefresh") this.clearLocalDialogCache(cacheId);
       let channelCustomerIdentifier = dialog.fromAddress;
       let serviceIdentifier = "N/A";
-      let leg = `${dialog.id}:${this._cacheService.agent.id}`;
+      // let leg = `${dialog.id}:${this._cacheService.agent.id}`;
+      let leg = `${this.finesseAgent.extension}:${this._cacheService.agent.id}`;
       let callType = "DIALOG_ENDED";
       let cimMessage = this.createCIMMessage(
         "VOICE",
@@ -288,7 +289,8 @@ export class finesseService {
     try {
       let channelCustomerIdentifier = dialog.fromAddress;
       let serviceIdentifier = "N/A";
-      let leg = `${dialog.id}:${this._cacheService.agent.id}`;
+      // let leg = `${dialog.id}:${this._cacheService.agent.id}`;
+      let leg = `${this.finesseAgent.extension}:${this._cacheService.agent.id}`;
       let callType = "CONSULT";
 
       this.setLocalDialogCache(dialogEvent, "active");
@@ -562,7 +564,8 @@ export class finesseService {
       if (methodCalledOn != "onRefresh") this.clearLocalDialogCache(cacheId);
       let channelCustomerIdentifier = dialogState.dialog.ani ? dialogState.dialog.ani : dialogState.dialog.fromAddress;
       let serviceIdentifier = dialogState.dialog.dialedNumber;
-      let leg = `${dialogState.dialog.id}:${this._cacheService.agent.id}`;
+      // let leg = `${dialogState.dialog.id}:${this._cacheService.agent.id}`;
+      let leg = `${this.finesseAgent.extension}:${this._cacheService.agent.id}`;
       let customer;
       if (this.customer) customer = JSON.parse(JSON.stringify(this.customer));
       if (dialogState.dialog.callType == "AGENT_INSIDE" || dialogState.dialog.callType == "OUT") {
@@ -597,7 +600,8 @@ export class finesseService {
       console.log("test 5==>");
       let channelCustomerIdentifier = dialogState.dialog.ani ? dialogState.dialog.ani : dialogState.dialog.fromAddress;
       let serviceIdentifier = dialogState.dialog.dialedNumber;
-      let leg = `${dialogState.dialog.id}:${this._cacheService.agent.id}`;
+      // let leg = `${dialogState.dialog.id}:${this._cacheService.agent.id}`;
+      let leg = `${this.finesseAgent.extension}:${this._cacheService.agent.id}`;
       let callType;
 
       if (dialogState.dialog.callType == "AGENT_INSIDE" || dialogState.dialog.callType == "OUT") {

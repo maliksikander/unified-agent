@@ -1237,7 +1237,8 @@ export class socketService {
         message.body.markdownText = data;
       });
       message.body.markdownText = "session ended";
-    } else if (cimEvent.name.toLowerCase() == "call_leg_ended") {
+    } else if (cimEvent.name.toLowerCase() == "call_leg_ended" || cimEvent.name.toLowerCase() == "voice_activity") {
+      // console.log("test==>")
       message.body.type = "VOICE";
       // message.body["displayText"] = cimEvent.data.channel.channelType.name;
       // message.body.markdownText = "call_leg_ended";

@@ -859,11 +859,11 @@
           }
         }
       }
-      &.video {
+      // &.video {
         // .chat-time {
         //   // background: transparent !important;
         // }
-      }
+      // }
 
       &.image,
       &.video,
@@ -1130,9 +1130,9 @@
       margin: 0 2px;
       padding: 3px 8px;
       border-radius: 15px;
-      font-size: 10px !important;
-      position: relative;
-      top: -2px;
+      // font-size: 10px !important;
+      // position: relative;
+      // top: -2px;
       border: 1px solid lighten($main-color, 30%);
       background: #fff;
       &.sub-tags {
@@ -1149,7 +1149,7 @@
 
       &:last-child {
         .inner-detail-history:before {
-          top: 0;
+          top: -9px;
         }
       }
     }
@@ -1182,7 +1182,7 @@
           left: -1px;
           border-right: 1px solid #ccc;
           height: 100%;
-          top: 18px;
+          top: 15px;
         }
 
         &:after {
@@ -2720,7 +2720,7 @@ vg-controls.hide {
       width: 100%;
 
       .call-history-panel {
-        background: #f7f7f7;
+        // background: #f7f7f7;
         padding: 6px !important;
         margin: 5px 0;
         border-radius: 3px;
