@@ -82,7 +82,7 @@ export class CustomerInfoComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.activeChannelSessions) this.getVoiceChannelSession();
+    if (this.activeChannelSessions) this.setActiveChannelSessions(this.activeChannelSessions);
   }
 
   close() {
@@ -118,8 +118,9 @@ export class CustomerInfoComponent implements OnInit {
       this.mediaChannelData = this.getMediaChannels();
     } else if (changes.activeChannelSessions && changes.activeChannelSessions.currentValue != undefined) {
       this.activeChannelSessions = null;
-      this.activeChannelSessions = changes.activeChannelSessions.currentValue;
-      this.getVoiceChannelSession();
+      // this.activeChannelSessions = changes.activeChannelSessions.currentValue;
+      // this.getVoiceChannelSession();
+      this.setActiveChannelSessions(changes.activeChannelSessions.currentValue);
     } else if (changes.customerSuggestions && changes.customerSuggestions.currentValue != undefined) {
       this.customerSuggestions = null;
       this.customerSuggestions = changes.activeChannelSessions.currentValue;
@@ -128,6 +129,21 @@ export class CustomerInfoComponent implements OnInit {
       this.firstChannelSession = changes.activeChannelSessions.currentValue;
     }
   }
+
+  setActiveChannelSessions(activeSessions: Array<any>) {
+    let sessions: Array<any> = JSON.parse(JSON.stringify(activeSessions));
+    sessions.forEach((item, index) => {
+      if (item.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "external") {
+        if (item.state.reasonCode == "AGENT") {
+          sessions.splice(index, 1);
+        }
+      }
+    });
+    this.activeChannelSessions = sessions;
+
+    this.getVoiceChannelSession();
+  }
+
 
   getVoiceChannelSession() {
     try {

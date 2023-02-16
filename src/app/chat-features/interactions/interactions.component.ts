@@ -442,15 +442,19 @@ export class InteractionsComponent implements OnInit {
     // });
 
     let voiceSession;
-    for (let i = 0; i <= this.conversation.activeChannelSession.length; i++) {
-      if (this.conversation.activeChannelSession[i].channel.channelType.name.toLowerCase() == "voice") {
-        console.log("check==>", this.conversation.activeChannelSession[i].id);
-        let cacheId = `${this.conversation.activeChannelSession[i].id}:${this._cacheService.agent.id}`;
-        console.log("check1==>", cacheId);
+    for (let i = 0; i <= this.conversation.activeChannelSessions.length; i++) {
+      if (this.conversation.activeChannelSessions[i] && this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "voice") {
+        // console.log("check==>", this.conversation.activeChannelSessions[i].id);
+        let cacheId = `${this._cacheService.agent.id}:${this.conversation.activeChannelSessions[i].id}`;
+        // console.log("check1==>", cacheId);
         let cache = this._finesseService.getDialogFromCache(cacheId);
-        console.log("check2==>", cache);
+        if (cache) {
+          // console.log("check2==>", cache);
+          voiceSession = this.conversation.activeChannelSessions[i];
+        }
       }
     }
+
 
     console.log("VoiceSession==>", voiceSession);
     if (voiceSession) {

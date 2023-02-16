@@ -1191,9 +1191,9 @@
           height: 5px;
           background: #fff;
           border-radius: 100%;
-          border: 2px solid $blue-text-color;
+          border: 2px solid $highlight-color;
           padding: 5px;
-          top: 15px;
+          top: 5px;
         }
 
         mat-expansion-panel {
@@ -2314,7 +2314,13 @@ vg-controls.hide {
       display: none;
     }
   }
+  &.voice{
+    .profile-pic{
+      visibility: visible;
+    }
+  }
 }
+
 
 .quoted-reply-time {
   display: inline-block;
