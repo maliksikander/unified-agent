@@ -9,12 +9,11 @@ describe("Finesse service", () => {
   let _cacheService;
   let _sharedService;
   let _socketService;
-
+  let _appConfigService;
+  let _translateService;
   let _httpService;
-
   let mockAgentPresence;
   _sharedService = sharedService;
-  let _configService;
 
   beforeEach(() => {
     mockAgentPresence = {
@@ -110,7 +109,15 @@ describe("Finesse service", () => {
       ]
     };
 
-    component = new finesseService(_snackbarService, _sharedService, _cacheService, _socketService, _httpService);
+    component = new finesseService(
+      _snackbarService,
+      _appConfigService,
+      _sharedService,
+      _cacheService,
+      _socketService,
+      _httpService,
+      _translateService
+    );
   });
 
   describe("handlePresence", () => {
