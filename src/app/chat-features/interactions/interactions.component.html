@@ -1238,7 +1238,7 @@
                                     <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
                                   </vg-controls>
                                   <video #media [vgMedia]="media" id="{{ message.id }}" preload="auto">
-                                    <source [src]="message.body.attachment?.mediaUrl | getFileUrl />
+                                    <source [src]="message.body.attachment?.mediaUrl | getFileUrl" />
                                   </video>
                                 </vg-player>
                               </div>
