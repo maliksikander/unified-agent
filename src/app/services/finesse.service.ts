@@ -192,7 +192,7 @@ export class finesseService {
           });
           if (dialog.state == "ALERTING") {
             if (currentParticipant && currentParticipant.state == "ALERTING") {
-              console.log("pkre gye tum notification==>");
+              // console.log("pkre gye tum notification==>");
               let agentIdentifier = dialog.fromAddress;
               let data = {
                 // agent: res.customer,
@@ -215,7 +215,7 @@ export class finesseService {
                   return item.mediaAddress == dialog.fromAddress;
                 });
                 if (initiaterParticipant && initiaterParticipant.state == "ACTIVE") {
-                  console.log("pkre gye tum bete ==>");
+                  // console.log("pkre gye tum bete ==>");
                   this.handleActiveConsultCall(event, dialog);
                 }
               }
@@ -254,9 +254,13 @@ export class finesseService {
   };
 
   handleDroppedConsultCall(event, cacheId, dialog) {
-    this.clearLocalDialogCache(cacheId);
-    this.removeNotification();
-    this.onConsultCallEndCall(event, dialog);
+    let cacheDialog: any = this.getDialogFromCache(cacheId);
+    if (cacheDialog && cacheDialog.dialogState == "active") {
+      console.log("tester==>");
+      this.clearLocalDialogCache(cacheId);
+      this.removeNotification();
+      this.onConsultCallEndCall(event, dialog);
+    }
   }
 
   onConsultCallEndCall(dialogEvent, dialog) {
