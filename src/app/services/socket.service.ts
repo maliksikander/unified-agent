@@ -306,15 +306,15 @@ export class socketService {
   }
 
   onCimEventHandler(cimEvent, conversationId) {
-    // eents one by one
+
+    console.log("cim event ", cimEvent);
+
     if (cimEvent.channelSession) {
       if (cimEvent.data.header) {
-        // console.log("entered", cimEvent);
         cimEvent.data.header.channelSession = cimEvent.channelSession;
       }
     }
 
-    console.log("cim event ", cimEvent);
     let sameTopicConversation = this.conversations.find((e) => {
       return e.conversationId == conversationId;
     });
@@ -729,7 +729,7 @@ export class socketService {
   mergeBotSuggestions(conversation, suggestionMessage) {
     if (suggestionMessage && suggestionMessage.requestedMessage && suggestionMessage.requestedMessage.id) {
       let message = conversation.messages.find((e) => {
-        if (e.header.sender.type.toLowerCase() == "connector") {
+        if (e.header.sender.type.toLowerCase() == "customer") {
           return e.id == suggestionMessage.requestedMessage.id;
         }
       });
