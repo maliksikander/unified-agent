@@ -506,15 +506,15 @@ export class socketService {
         }
 
         //feed the active channel session array
-        if (participant.channel.channelType.name.toLowerCase() == "voice") {
-          if (participant.state.reasonCode != "AGENT") {
-            conversation.activeChannelSessions.push(participant);
-          } else {
-            // console.log("participant==>", participant);
-          }
-        } else {
+        // if (participant.channel.channelType.name.toLowerCase() == "voice") {
+        //   if (participant.state.reasonCode != "AGENT") {
+        //     conversation.activeChannelSessions.push(participant);
+        //   } else {
+        //     // console.log("participant==>", participant);
+        //   }
+        // } else {
           conversation.activeChannelSessions.push(participant);
-        }
+        // }
 
         // if the channel session is of voice or facebook then channel session should be disabled
         // because the channel session in the array is used to send the message to customer
@@ -871,17 +871,17 @@ export class socketService {
       }
       // console.log("voice session==>", cimEvent);
     //feed the active channel session array
-    if (cimEvent.data.channel.channelType.name.toLowerCase() == "voice") {
-      if (cimEvent.data.state.reasonCode != "AGENT") {
-        // conversation.activeChannelSessions.push(participant);
-        conversation.activeChannelSessions.push(cimEvent.data);
-      } else {
-        // console.log("participant==>", cimEvent.data);
-      }
-    } else {
+    // if (cimEvent.data.channel.channelType.name.toLowerCase() == "voice") {
+    //   if (cimEvent.data.state.reasonCode != "AGENT") {
+    //     // conversation.activeChannelSessions.push(participant);
+    //     conversation.activeChannelSessions.push(cimEvent.data);
+    //   } else {
+    //     // console.log("participant==>", cimEvent.data);
+    //   }
+    // } else {
 
       conversation.activeChannelSessions.push(cimEvent.data);
-    }
+    // }
 
       // conversation.activeChannelSessions.push(cimEvent.data);
 
@@ -1194,7 +1194,7 @@ export class socketService {
     this._httpService.updatePastConversationCustomer(customersObj).subscribe(
       (res) => {
         // if (res.status == "OK") {
-        // if success response is fetched ,then delete the customer 
+        // if success response is fetched ,then delete the customer
         console.log(res.message);
         this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
         // }
