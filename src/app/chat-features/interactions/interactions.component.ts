@@ -745,7 +745,7 @@ export class InteractionsComponent implements OnInit {
         ) {
           if (event.name.toLowerCase() == "customer_message" && event.data.header.sender.type.toLowerCase() == "connector") {
             event.data.header.sender.senderName = event.data.header.customer.firstName + " " + event.data.header.customer.lastName;
-            event.data.header.sender.id = event.data.header.customer.id;
+            event.data.header.sender.id = event.data.header.customer._id;
             event.data.header.sender.type = "CUSTOMER";
           }
           event.data.header["status"] = "seen";

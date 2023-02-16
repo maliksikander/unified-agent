@@ -331,7 +331,7 @@ export class socketService {
         }
 
         if (cimEvent.data.header.sender.type.toLowerCase() == "connector") {
-          cimEvent.data.header.sender.id = cimEvent.data.header.customer.id;
+          cimEvent.data.header.sender.id = cimEvent.data.header.customer._id;
           cimEvent.data.header.sender.type = 'CUSTOMER';
           cimEvent.data.header.sender.senderName = cimEvent.data.header.customer.firstName + ' ' + cimEvent.data.header.customer.lastName;
           if (cimEvent.data.body.type.toLowerCase() != "notification") {
@@ -453,7 +453,7 @@ export class socketService {
         if (event.name.toLowerCase() == "customer_message" && event.data.header.sender.type.toLowerCase() == 'connector') {
 
           event.data.header.sender.senderName = event.data.header.customer.firstName + " " + event.data.header.customer.lastName
-          event.data.header.sender.id = event.data.header.customer.id;
+          event.data.header.sender.id = event.data.header.customer._id;
           event.data.header.sender.type = 'CUSTOMER';
         }
         if (
