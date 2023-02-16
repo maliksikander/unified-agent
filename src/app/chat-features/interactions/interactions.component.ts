@@ -686,7 +686,7 @@ export class InteractionsComponent implements OnInit {
         ) {
           let message = this._socketService.createSystemNotificationMessage(event);
           // console.log("test1==>", event.name);
-          if (event.name == "VOICE_ACTIVITY") console.log("past==>", message);
+          // if (event.name == "VOICE_ACTIVITY") console.log("past==>", message);
           if (message) {
             msgs.push(message);
           }
