@@ -395,7 +395,7 @@ export class finesseService {
                 if (dialogState.dialog.callType == "AGENT_INSIDE" || dialogState.dialog.callType == "OUT") {
                   console.log("test3==>");
                   this.handleCallActiveEvent(dialogEvent, dialogState);
-                  this.setLocalDialogCache(dialogEvent, "active");
+                  // this.setLocalDialogCache(dialogEvent, "active");
                 } else if (dialogState.dialog.callType == "CONSULT_OFFERED") {
                   // consult-transfer active case
                   let dialogCache: any = this.getDialogFromCache(cacheId);
@@ -649,7 +649,7 @@ export class finesseService {
         (res) => {
           // console.log("default outbound channel==>", res);
           if (res) {
-            if (intent == "CAL_LEG_STARTED") this.setLocalDialogCache(dialogEvent, "active");
+            if (intent == "CALL_LEG_STARTED") this.setLocalDialogCache(dialogEvent, "active");
             let cimMessage = this.createCIMMessage(
               "VOICE",
               channelCustomerIdentifier,
