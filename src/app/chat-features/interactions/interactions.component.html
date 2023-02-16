@@ -1747,7 +1747,7 @@
           <label *ngIf="message.length > 0" class="count-reply">{{ replyInput.value.length }}/1000</label>
           <div class="mat-form-field chat-area" [ngClass]="{ 'expand-area-height': expanedHeight > 50 }">
             <textarea maxlength="1000"
-              [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0 || !conversation.messageComposerState"
+              [disabled]="!_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0 || !conversation.messageComposerState || (!isWhisperMode && conversation.topicParticipant.role == 'ASSISTANT' )"
               (keyup.enter)="onSend(replyInput.value); replyInput.value = null" (focus)="onTextAreaFocus()"
               (keydown.enter)="onEnterKey($event)"
               [attr.data-emoji-picker]="conversation.activeChannelSessions.length > 0 ? true : false"
