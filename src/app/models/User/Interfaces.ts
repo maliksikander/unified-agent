@@ -6,7 +6,7 @@ export interface IKeycloakUser {
   username?: string;
   firstName: string;
   lastName: string;
-  extention?: number;
+  extension?: number;
   roles: [];
   queue?: string;
   tenant?: ITenant;
