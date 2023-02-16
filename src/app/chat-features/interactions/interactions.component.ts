@@ -111,7 +111,7 @@ export class InteractionsComponent implements OnInit {
     private _finesseService: finesseService,
     private snackBar: MatSnackBar,
     private _translateService: TranslateService
-  ) {}
+  ) { }
   ngOnInit() {
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
@@ -148,7 +148,7 @@ export class InteractionsComponent implements OnInit {
       }
     );
   }
-  emoji() {}
+  emoji() { }
 
   onSend(text) {
     text = text.trim();
@@ -292,7 +292,7 @@ export class InteractionsComponent implements OnInit {
         }
       };
 
-      let event: any = new CimEvent("MESSAGE_DELIVERY_NOTIFICATION", "NOTIFICATION", this.conversation.conversationId, data);
+      let event: any = new CimEvent("MESSAGE_DELIVERY_NOTIFICATION", "NOTIFICATION", this.conversation.conversationId, data, this.conversation.customer);
 
       this._socketService.emit("publishCimEvent", {
         cimEvent: event,
@@ -373,7 +373,7 @@ export class InteractionsComponent implements OnInit {
           message.body.type = "NOTIFICATION";
           message.body.notificationType = "TYPING_STARTED";
 
-          let event: any = new CimEvent("TYPING_INDICATOR", "NOTIFICATION", this.conversation.conversationId, message);
+          let event: any = new CimEvent("TYPING_INDICATOR", "NOTIFICATION", this.conversation.conversationId, message, this.conversation.customer);
 
           this._socketService.emit("publishCimEvent", {
             cimEvent: event,
@@ -475,7 +475,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -483,7 +483,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -570,7 +570,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
   externalfilePreviewOpener(url, fileName, type) {
     const dialogRef = this.dialog.open(FilePreviewComponent, {
@@ -580,7 +580,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
 
   uploadFile(files) {
@@ -943,7 +943,7 @@ export class InteractionsComponent implements OnInit {
   emitCimEvent(message, eventName) {
     // let dummyMessage=JSON.parse(JSON.stringify(message))
 
-    let event: any = new CimEvent(eventName, "MESSAGE", this.conversation.conversationId, message);
+    let event: any = new CimEvent(eventName, "MESSAGE", this.conversation.conversationId, message, this.conversation.customer);
     // console.log("event created",event)
 
     this._socketService.emit("publishCimEvent", {
@@ -968,7 +968,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   emitFBActionEvent(message) {
-    let event: any = new CimEvent("AGENT_MESSAGE", "MESSAGE", this.conversation.conversationId, message);
+    let event: any = new CimEvent("AGENT_MESSAGE", "MESSAGE", this.conversation.conversationId, message, this.conversation.customer);
     this._socketService.emit("publishCimEvent", {
       cimEvent: event,
       agentId: this._cacheService.agent.id,

@@ -513,7 +513,7 @@ export class socketService {
         //     // console.log("participant==>", participant);
         //   }
         // } else {
-          conversation.activeChannelSessions.push(participant);
+        conversation.activeChannelSessions.push(participant);
         // }
 
         // if the channel session is of voice or facebook then channel session should be disabled
@@ -532,7 +532,7 @@ export class socketService {
         // because the channel session in the array is used to send the message to customer
         let repliedChannelSession = conversation.activeChannelSessions.find((channelSession) => {
           if (
-            channelSession.channel.channelType.name.toLowerCase() != "voice"          ) {
+            channelSession.channel.channelType.name.toLowerCase() != "voice") {
             return channelSession;
           }
         });
@@ -745,7 +745,7 @@ export class socketService {
 
   linkCustomerWithInteraction(customerId, conversationId) {
     this.emit("publishCimEvent", {
-      cimEvent: new CimEvent("ASSOCIATED_CUSTOMER_CHANGED", "NOTIFICATION", conversationId, { Id: customerId }),
+      cimEvent: new CimEvent("ASSOCIATED_CUSTOMER_CHANGED", "NOTIFICATION", conversationId, { Id: customerId }, null),
       agentId: this._cacheService.agent.id,
       conversationId: conversationId
     });
@@ -870,18 +870,18 @@ export class socketService {
         cimEvent.data["isDisabled"] = false;
       }
       // console.log("voice session==>", cimEvent);
-    //feed the active channel session array
-    // if (cimEvent.data.channel.channelType.name.toLowerCase() == "voice") {
-    //   if (cimEvent.data.state.reasonCode != "AGENT") {
-    //     // conversation.activeChannelSessions.push(participant);
-    //     conversation.activeChannelSessions.push(cimEvent.data);
-    //   } else {
-    //     // console.log("participant==>", cimEvent.data);
-    //   }
-    // } else {
+      //feed the active channel session array
+      // if (cimEvent.data.channel.channelType.name.toLowerCase() == "voice") {
+      //   if (cimEvent.data.state.reasonCode != "AGENT") {
+      //     // conversation.activeChannelSessions.push(participant);
+      //     conversation.activeChannelSessions.push(cimEvent.data);
+      //   } else {
+      //     // console.log("participant==>", cimEvent.data);
+      //   }
+      // } else {
 
       conversation.activeChannelSessions.push(cimEvent.data);
-    // }
+      // }
 
       // conversation.activeChannelSessions.push(cimEvent.data);
 
