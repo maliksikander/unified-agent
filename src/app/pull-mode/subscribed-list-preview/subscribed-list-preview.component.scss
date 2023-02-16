@@ -6,7 +6,8 @@
   padding-left: 50px;
 
   .back-to-chat{
-    background: lighten($blue-text-color, 40%);
+    //background: lighten($blue-text-color, 40%);
+    background: transparent;
     height: 50px;
     width: 50px !important;
     position: absolute;
@@ -16,13 +17,14 @@
     padding: 0;
     text-align: center;
     z-index: 2;
+    border-right: 1px solid #fff;
     &:after {
       content: "";
-      width: 18px;
-      height: 18px;
+      width: 15px;
+      height: 15px;
       position: absolute;
       left: 22px;
-      top: 16px;
+      top: 17px;
       transform: rotate(45deg);
       border-left: 2px solid $blue-text-color;
       border-bottom: 2px solid $blue-text-color;

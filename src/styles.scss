@@ -84,13 +84,13 @@ width: 18px;
   height: 18px;
   width: 18px;
 }
-  
-  
+
+
 }
 .mat-checkbox-checked:not(.mat-checkbox-disabled).mat-primary .mat-ripple-element,
 .mat-checkbox:active:not(.mat-checkbox-disabled).mat-primary .mat-ripple-element {
   background: #269ec2;
-  
+
 }
 //Loading Area
 .loading-area {
@@ -223,8 +223,10 @@ mat-tab-group.chat-tab-area {
 }
 #main-content {
   .chat-tab-area.bar-expand {
-    .user-name {
+    span.user-name {
       display: inline-block;
+      position: absolute;
+      left: 52px;
     }
     .mat-tab-header {
       width: 280px;
@@ -243,7 +245,8 @@ mat-tab-group.chat-tab-area {
     }
     .user-badge {
       text-align: left;
-      max-width: 50px;
+      //max-width: 50px;
+      width: 100%;
       position: relative;
       float: left;
     }
@@ -673,7 +676,7 @@ snack-bar-container{
   max-width: calc(100% - 75px);
   opacity: 1;
   left: 70px;
-  bottom: 78px;
+  bottom: 95px;
   background: #fff;
   z-index: 999;
   height: auto;
@@ -2178,7 +2181,7 @@ tspan {
       margin: 0;
       display: inline-block;
       line-height: 30px;
-      font-weight: normal;
+      font-weight: 500;
     }
   }
 }
@@ -3423,5 +3426,110 @@ em{
         margin-right: 5px;
       }
     }
+  }
+}
+mat-select{
+  .mat-select-arrow {
+    color: rgba(0, 0, 0, 0.54) !important;
+  }
+}
+.chat-selection-option {
+ &.mat-selected{
+   color: rgba(0, 0, 0, 0.87) !important;
+   font-weight: 500;
+ }
+}
+
+@media only screen and (min-width: 1020px) and (max-width: 1279px) {
+  .suggested-answer.answer-autocomplete {
+    &.customer-left-bar {
+      max-width: calc(100% - 238px);
+      left: 232px;
+    }
+    &.custom-compact-view {
+      max-width: 49% !important;
+      left: calc(24% - 0px) !important;
+    }
+  }
+}
+//style for the media > 1280px
+@media only screen and (min-width: 1280px) and (max-width: 1439px) {
+  .chat-session-main {
+    max-width: 90%;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .selected-channel{
+    max-width: 90%;
+  }
+
+  .chat-footer {
+    .message-composer {
+      max-width: 90%;
+    }
+    .selected-channel{
+      max-width: 87%;
+    }
+  }
+  .suggested-answer.answer-autocomplete{
+    max-width: 80% !important;
+    margin: 0 auto !important;
+    left: calc(50% - -32px);
+    transform: translate(-50%, 0);
+
+    &.customer-left-bar{
+      max-width: 68% !important;
+      left: calc(56% + 60px);
+    }
+    &.customer-right-bar{
+      left: calc(50% - 128px);
+      max-width: 58% !important;
+    }
+    &.custom-compact-view{
+      max-width: 50% !important;
+      left: calc(50% - 22px);
+    }
+  }
+}
+@media only screen and (min-width: 1440px) {
+  .chat-session-main {
+    max-width: 80%;
+    transition: width .3s;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .chat-footer {
+    .message-composer {
+      max-width: 80%;
+      transition: width .3s;
+    }
+    .selected-channel{
+      max-width: 77%;
+    }
+  }
+  .suggested-answer.answer-autocomplete{
+    max-width: 74% !important;
+    margin: 0 auto !important;
+    left: calc(50% - -32px);
+    transform: translate(-50%, 0);
+
+    &.customer-left-bar{
+      left: calc(50% + 140px);
+      max-width: 66% !important;
+    }
+    &.customer-right-bar{
+      left: calc(50% - 128px);
+      max-width: 58% !important;
+    }
+    &.custom-compact-view{
+      max-width: 50% !important;
+      left: calc(50% - 22px);
+    }
+  }
+
+  #chat-content .chat-messages-main .chat-message .chat-message-content p {
+    font-size: 14px;
+    line-height: 17px;
+
   }
 }

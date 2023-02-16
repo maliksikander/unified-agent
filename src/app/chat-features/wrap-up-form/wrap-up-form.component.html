@@ -27,7 +27,7 @@
                     {{selectedWrapUps.value}}
                     <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                   </mat-chip>
-                  <input placeholder="New Wrap-up..." #wrapUpInput [formControl]="wrapCtrl" [(ngModel)]="inputWrapup"
+                  <input placeholder="{{'chat-features.wrap-up-form.New-Wrap-up' | translate}}" #wrapUpInput [formControl]="wrapCtrl" [(ngModel)]="inputWrapup"
                     [matAutocomplete]="auto" [matChipInputFor]="chipList"
                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes" >
                 </mat-chip-list>

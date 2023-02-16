@@ -1,3 +1,4 @@
+import { MatSnackBar } from "@angular/material";
 import { sharedService } from "./shared.service";
 import { socketService } from "./socket.service";
 var jest: any;
@@ -17,8 +18,9 @@ describe("Socket service", () => {
   let ngxService: any;
   let _httpService: any;
   let _authService: any;
+  let _snackService: MatSnackBar;
   let _translateService: any;
-
+  
   const mockConversation = {
     conversationId: "12345",
     messages: [],
@@ -47,6 +49,7 @@ describe("Socket service", () => {
       ngxService,
       _httpService,
       _authService,
+      _snackService,
       _translateService
     );
     component.conversations.push(mockConversation);

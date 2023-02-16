@@ -26,7 +26,7 @@
     "you-are-logged-In-from-another-session":"you are logged In from another session_ger",
     "Profile-linked-successfully":"Profile linked successfully_ger",
     "CUSTOMER-LINKED-SUCCESSFULLY":"CUSTOMER LINKED SUCCESSFULLY_ger",
-    "on":"on _ger",
+    "on":"on_ger",
     "The-conversation-is-going-to-linking-with":"The conversation is going to linking with _ger",
     "However-the-channel-identifier":"However the channel identifier _ger",
     "can-not-be-added-in":"can't be added in _ger",
@@ -103,7 +103,8 @@
     "switch-dark": "Switch to dark mode_ger",
     "light-dark": "(Light or dark)_ger",
     "theme": "Theme_ger",
-    "logout": "Logout_ger"
+    "logout": "Logout_ger",
+    "active-agents-detail":"active agents detail_ger"
   },
   "announcements": {
     "team-announcement": "Team Announcement_ger",
@@ -175,9 +176,20 @@
       "start": "Start a New Conversation_ger"
     },
     "interactions": {
+      "Consult":"Consult_ger",
+      "Transfer":"Transfer_ger",
+      "Conference":"Conference_ger",
+      "Transfer-To-Queue":"Transfer To Queue_ger",
+      "Conference-Request":"Conference Request_ger",
+      "Add-To-Conference":"Add To Conference_ger",
+      "Search-Queue":"Search Queue_ger",
       "whisper": "Whisper_ger",
-      "bot-suggestions-available": "Bot suggestions are available type / for viewing_ger",
-      "type-a-message": "Type a message here..._ger",
+      "bot-suggestions-available": "Bot suggestions are available for sending a message_ger",
+      "for-reply-to-a-comment":"for reply to a comment_ger",
+      "Type-a-reply-to-comment":"Type a reply to comment_ger",
+      "Type-a-message": "Type a message here..._ger",
+      "Unable-to-send-message":"Unable to send message_ger",
+      "bot-suggestions-available-for-reply-to-a-comment":"Bot suggestions available for reply to a comment_ger",
       "you": "you_ger",
       "cancel": "Cancel_ger",
       "message": "Message_ger",
@@ -205,7 +217,7 @@
       "view-full-post": "View full post_ger",
       "selected-channel": "Selected Channel:_ger",
       "check": "check_ger",
-      "wrapup": "Wrapupen_ger",
+      "wrapup": "Wrap-Up_ger",
       "wrap-up-notes": "Wrap-up Notesen_ger",
       "agent-assistance": "Agent Assistance_ger",
       "queue-transfer": "Queue Transfer_ger",
@@ -216,7 +228,8 @@
       "selected": "Selected_ger",
       "cancel": "Cancel_ger",
       "apply": "Apply_ger",
-      "notes": "Notes_ger"
+      "notes": "Notes_ger",
+      "New-Wrap-up": "New Wrap-up..._ger"
     }
   },
   "column-preferences": {
@@ -340,7 +353,9 @@
     "ascending":"Ascending_ger",
     "edit":"Edit_ger",
     "start-conversation":"Start Conversation_ger",
-    "agent-id":"Agent Id_ger"
+    "agent-id":"Agent Id_ger",
+    "channel":"channel_ger",
+    "direction":"direction_ger"
 
   },
   "pull-mode": {
@@ -420,6 +435,13 @@
     "cancel": "Cancel_ger",
     "done": "Done_ger",
     "state": "State_ger",
-    "joined":"joined_ger"
+    "joined":"joined_ger",
+    "active-conversation":"active conversation_ger",
+    "mrd-states":"mrd states_ger",
+    "search-agent":"search agent_ger",
+    "agent-stats":"agent stats_ger",
+    "pending-not-ready":"Pending-Not Ready_ger",
+    "agent(s)":"agent(S)_ger",
+    "direction":"direction_ger"
   }
 }

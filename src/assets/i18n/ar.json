@@ -26,7 +26,7 @@
     "you-are-logged-In-from-another-session":"you are logged In from another session_ar",
     "Profile-linked-successfully":"Profile linked successfully_ar",
     "CUSTOMER-LINKED-SUCCESSFULLY":"CUSTOMER LINKED SUCCESSFULLY_ar",
-    "on":"on _ar",
+    "on":"on_ar",
     "The-conversation-is-going-to-linking-with":"The conversation is going to linking with _ar",
     "However-the-channel-identifier":"However the channel identifier _ar",
     "can-not-be-added-in":"can't be added in _ar",
@@ -94,7 +94,8 @@
     "switch-dark": "Switch to dark mode_ar",
     "light-dark": "(Light or dark)_ar",
     "theme": "Theme_ar",
-    "logout": "Logout_ar"
+    "logout": "Logout_ar",
+    "active-agents-detail":"active agents detail_ar"
   },
   "announcements": {
     "team-announcement": "Team Announcement_ar",
@@ -175,9 +176,20 @@
       "No-agent-is-available-for":"No agent is available for_ar"
      },
     "interactions": {
+      "Consult":"Consult_ar",
+      "Transfer":"Transfer_ar",
+      "Conference":"Conference_ar",
+      "Transfer-To-Queue":"Transfer To Queue_ar",
+      "Conference-Request":"Conference Request_ar",
+      "Add-To-Conference":"Add To Conference_ar",
+      "Search-Queue":"Search Queue_ar",
       "whisper": "Whisper_ar",
-      "bot-suggestions-available": "Bot suggestions are available type / for viewing_ar",
-      "type-a-message": "Type a message here..._ar",
+      "bot-suggestions-available": "Bot suggestions are available for sending a message_ar",
+      "for-reply-to-a-comment":"for reply to a comment_ar",
+      "Type-a-reply-to-comment":"Type a reply to comment_ar",
+      "Type-a-message": "Type a message here..._ar",
+      "Unable-to-send-message":"Unable to send message_ar",
+      "bot-suggestions-available-for-reply-to-a-comment":"Bot suggestions available for reply to a comment_ar",
       "you": "you_ar",
       "cancel": "Cancel_ar",
       "message": "Message_ar",
@@ -205,7 +217,7 @@
       "view-full-post": "View full post_ar",
       "selected-channel": "Selected Channel:_ar",
       "check": "check_ar",
-      "wrapup": "Wrapupen_ar",
+      "wrapup": "Wrap-Up_ar",
       "wrap-up-notes": "Wrap-up Notesen_ar",
       "agent-assistance": "Agent Assistance_ar",
       "queue-transfer": "Queue Transfer_ar",
@@ -216,7 +228,8 @@
       "selected": "Selected_ar",
       "cancel": "Cancel_ar",
       "apply": "Apply_ar",
-      "notes": "Notes_ar"
+      "notes": "Notes_ar",
+      "New-Wrap-up": "New Wrap-up..._ar"
     }
   },
   "column-preferences": {
@@ -340,7 +353,9 @@
     "ascending":"Ascending_ar",
     "edit":"Edit_ar",
     "start-conversation":"Start Conversation_ar",
-    "agent-id":"Agent Id_ar"
+    "agent-id":"Agent Id_ar",
+    "channel":"channel_ar",
+    "direction":"direction_ar"
 
   },
   "pull-mode": {
@@ -420,7 +435,14 @@
     "cancel": "Cancel_ar",
     "done": "Done_ar",
     "state": "State_ar",
-    "joined":"joined_ar"
+    "joined":"joined_ar",
+    "active-conversation":"active conversation_ar",
+    "mrd-states":"mrd states_ar",
+    "search-agent":"search agent_ar",
+    "agent-stats":"agent stats_ar",
+    "pending-not-ready":"Pending-Not Ready_ar",
+    "agent(s)":"agent(S)_ar",
+    "direction":"direction_ar"
 
   }
 }

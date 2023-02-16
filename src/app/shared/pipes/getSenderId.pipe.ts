@@ -8,7 +8,7 @@ export class getSenderIdPipe implements PipeTransform {
     if (sender.type.toLowerCase() == "customer") {
       id = "customer";
     } else if (sender.type.toLowerCase() == "agent") {
-      id = sender.participant.keycloakUser.id;
+      id = sender.id;
     } else if (sender.type.toLowerCase() == "bot") {
       id = "bot";
     }

@@ -26,7 +26,7 @@
     "you-are-logged-In-from-another-session":"you are logged In from another session",
     "Profile-linked-successfully":"Profile linked successfully",
     "CUSTOMER-LINKED-SUCCESSFULLY":"CUSTOMER LINKED SUCCESSFULLY",
-    "on":"on ",
+    "on":"on",
     "The-conversation-is-going-to-linking-with":"The conversation is going to linking with ",
     "However-the-channel-identifier":"However the channel identifier ",
     "can-not-be-added-in":"can't be added in ",
@@ -106,7 +106,7 @@
     "light-dark": "(Light or dark)",
     "theme": "Theme",
     "logout": "Logout",
-    "active-agents-detail":"Active agents detail"
+    "active-agents-detail":"active agents detail"
   },
   "announcements": {
     "team-announcement": "Team Announcement",
@@ -178,9 +178,20 @@
       "start": "Start a New Conversation"
     },
     "interactions": {
+      "Consult":"Consult",
+      "Transfer":"Transfer",
+      "Conference":"Conference",
+      "Transfer-To-Queue":"Transfer To Queue",
+      "Conference-Request":"Conference Request",
+      "Add-To-Conference":"Add To Conference",
+      "Search-Queue":"Search Queue",
       "whisper": "Whisper",
-      "bot-suggestions-available": "Bot suggestions are available type / for viewing",
-      "type-a-message": "Type a message here...",
+      "bot-suggestions-available": "Bot suggestions are available for sending a message",
+      "for-reply-to-a-comment":"for reply to a comment",
+      "Type-a-reply-to-comment":"Type a reply to comment",
+      "Type-a-message": "Type a message here...",
+      "Unable-to-send-message":"Unable to send message",
+      "bot-suggestions-available-for-reply-to-a-comment":"Bot suggestions available for reply to a comment",
       "you": "you",
       "cancel": "Cancel",
       "message": "Message",
@@ -208,7 +219,7 @@
       "view-full-post": "View full post",
       "selected-channel": "Selected Channel:",
       "check": "check",
-      "wrapup": "Wrapupen",
+      "wrapup": "Wrap-up",
       "wrap-up-notes": "Wrap-up Notesen",
       "agent-assistance": "Agent Assistance",
       "queue-transfer": "Queue Transfer",
@@ -221,7 +232,7 @@
       "cancel": "Cancel",
       "apply": "Apply",
       "notes": "Notes",
-      "": ""
+      "New-Wrap-up": "New Wrap-up..."
     }
   },
   "column-preferences": {
@@ -430,6 +441,12 @@
     "state": "State",
     "conversation-direction":"Conversation Direction",
     "origin":"Origin",
-    "joined":"joined"
+    "joined":"joined",
+    "active-conversation":"active conversation",
+    "mrd-states":"mrd states",
+    "search-agent":"search agent",
+    "agent-stats":"agent stats",
+    "pending-not-ready":"Pending-Not Ready",
+    "agent(s)":"agent(S)"
   }
 }

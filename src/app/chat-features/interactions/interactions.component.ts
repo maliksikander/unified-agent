@@ -14,6 +14,8 @@ import { finesseService } from "src/app/services/finesse.service";
 import { ConfirmationDialogComponent } from "src/app/new-components/confirmation-dialog/confirmation-dialog.component";
 import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
 import { TranslateService } from "@ngx-translate/core";
+import { sender } from "../../models/User/Interfaces";
+
 
 declare var EmojiPicker: any;
 
@@ -86,7 +88,7 @@ export class InteractionsComponent implements OnInit {
   displaySuggestionsArea = false;
   cannedTabOpen = false;
   quickReplies = true;
-  viewHeight = "138px";
+  viewHeight = "180px";
   noMoreConversation = false;
   pastCimEventsOffsetLimit: number = 0;
   loadingPastActivity: boolean = false;
@@ -97,6 +99,7 @@ export class InteractionsComponent implements OnInit {
   conversationSettings: any;
   FBPostData: any = null;
   FBPostComments: any = null;
+  sendTypingStartedEventTimer: any = null;
 
   constructor(
     private _sharedService: sharedService,
@@ -241,6 +244,7 @@ export class InteractionsComponent implements OnInit {
     this.quotedMessage = e;
   }
   onTextAreaFocus() {
+    this.conversation.unReadCount = 0;
     this.publishLatestMessageSeenEvent();
   }
 
@@ -259,9 +263,8 @@ export class InteractionsComponent implements OnInit {
   }
 
   publishMessageSeenEvent(messageForSeenNotification) {
-    this.conversation.unReadCount = 0;
 
-    if (messageForSeenNotification && messageForSeenNotification.id != this.lastSeenMessageId) {
+    if (document.hasFocus() && messageForSeenNotification && messageForSeenNotification.id != this.lastSeenMessageId) {
       const data = {
         id: uuidv4(),
         header: {
@@ -269,7 +272,11 @@ export class InteractionsComponent implements OnInit {
             channelCustomerIdentifier: messageForSeenNotification.header.channelData.channelCustomerIdentifier,
             serviceIdentifier: messageForSeenNotification.header.channelData.serviceIdentifier
           },
-          sender: this.conversation.topicParticipant,
+          sender: {
+            id:this.conversation.topicParticipant.participant.keycloakUser.id,
+            senderName:this.conversation.topicParticipant.participant.keycloakUser.username,
+            type:'AGENT'
+          },
           channelSession: messageForSeenNotification.header.channelSession,
           language: {},
           timestamp: "",
@@ -296,6 +303,7 @@ export class InteractionsComponent implements OnInit {
       });
 
       this.lastSeenMessageId = messageForSeenNotification.id;
+      this.conversation.unReadCount = 0;
     }
   }
 
@@ -304,6 +312,7 @@ export class InteractionsComponent implements OnInit {
   //   this.message = el.value;
   // }
 
+  //on every key press
   onKey(event) {
     this.message = event.target.value;
     this.expanedHeight = this.elementView.nativeElement.offsetHeight;
@@ -312,12 +321,16 @@ export class InteractionsComponent implements OnInit {
     // } else if (this.message === "" && event.keyCode === 38) {
     //   this.isSuggestion = false;
     // }
+    if (event.key !== "Enter") {
+      this.sendTypingEvent();
+    }
+
     if (this.message[0] === "/" || this.message[0] === " ") {
       this.displaySuggestionsArea = false;
       this.quickReplies = false;
 
       setTimeout(() => {
-        this.viewHeight = this.elementViewSuggestions.nativeElement.offsetHeight + 138 + "px";
+        this.viewHeight = this.elementViewSuggestions.nativeElement.offsetHeight + 180 + "px";
         this.downTheScrollAfterMilliSecs(0, "smooth");
         // this.viewHeight = this.mainHeight + 180 + 'px';
         // this.scrollToBottom();
@@ -327,7 +340,7 @@ export class InteractionsComponent implements OnInit {
     } else {
       this.cannedTabOpen = false;
       this.quickReplies = true;
-      this.viewHeight = "138px";
+      this.viewHeight = "180px";
     }
     // if (this.message[0] === '.') {
     //     console.log('value is 0')
@@ -335,6 +348,45 @@ export class InteractionsComponent implements OnInit {
     // }
     if (this.expanedHeight > 50) {
       this.adjustHeightOnComposerResize();
+    }
+  }
+
+  //to send typing event
+  sendTypingEvent() {
+    if (!this.sendTypingStartedEventTimer) {
+      if (this._socketService.isSocketConnected) {
+        let message = this.getCimMessage();
+        let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
+        if (selectedChannelSession) {
+          // channel is web or whatsApp
+          let sendingActiveChannelSession = JSON.parse(JSON.stringify(selectedChannelSession));
+
+          delete sendingActiveChannelSession["webChannelData"];
+          delete sendingActiveChannelSession["isChecked"];
+          delete sendingActiveChannelSession["isDisabled"];
+
+          message.header.sender = {
+            id:this.conversation.topicParticipant.participant.keycloakUser.id,
+            senderName:this.conversation.topicParticipant.participant.keycloakUser.username,
+            type:'AGENT'
+          }
+          message.header.channelSession = sendingActiveChannelSession;
+          message.header.channelData = sendingActiveChannelSession.channelData;
+          message.body.type = "NOTIFICATION";
+          message.body.notificationType = "TYPING_STARTED";
+
+          let event: any = new CimEvent("TYPING_INDICATOR", "NOTIFICATION", this.conversation.conversationId, message);
+
+          this._socketService.emit("publishCimEvent", {
+            cimEvent: event,
+            agentId: this._cacheService.agent.id,
+            conversationId: this.conversation.conversationId
+          });
+          this.sendTypingStartedEventTimer = setTimeout(() => {
+            this.sendTypingStartedEventTimer = false;
+          }, 3000);
+        }
+      }
     }
   }
   eventFromChild(data) {
@@ -426,11 +478,11 @@ export class InteractionsComponent implements OnInit {
     // console.log("changes", changes);
     if (changes.changeDetecter && changes.changeDetecter.currentValue && this.conversation.index == this._sharedService.matCurrentTabIndex) {
       if (
-        changes.changeDetecter.currentValue.header.sender.type.toLowerCase() == "agent" &&
-        changes.changeDetecter.currentValue.header.sender.participant.keycloakUser.id == this._cacheService.agent.id
+        changes.changeDetecter.currentValue.header.sender.id == this._cacheService.agent.id
       ) {
         this.downTheScrollAfterMilliSecs(50, "smooth");
       } else {
+        console.log("position",this.currentScrollPosition)
         if (this.currentScrollPosition < 95) {
           this.showNewMessageNotif = true;
         } else {
@@ -567,12 +619,13 @@ export class InteractionsComponent implements OnInit {
         let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
 
         if (selectedChannelSession) {
-          if (selectedChannelSession.channel.channelType.name.toLowerCase() == "facebook") {
+          if (this.fbCommentId && selectedChannelSession.channel.channelType.name.toLowerCase() == "facebook") {
             // channel session is facebook
 
             message = this.constructFbCommentEvent(message, msgType, selectedChannelSession, fileMimeType, fileName, fileSize, text);
 
             this.emitCimEvent(message, "AGENT_MESSAGE");
+            this.fbCommentId=null;
           } else {
             // channel is web or whatsApp
 
@@ -582,7 +635,11 @@ export class InteractionsComponent implements OnInit {
             delete sendingActiveChannelSession["isChecked"];
             delete sendingActiveChannelSession["isDisabled"];
 
-            message.header.sender = this.conversation.topicParticipant;
+            message.header.sender = {
+              id:this.conversation.topicParticipant.participant.keycloakUser.id,
+              senderName:this.conversation.topicParticipant.participant.keycloakUser.username,
+              type:'AGENT'
+            }
             message.header.channelSession = sendingActiveChannelSession;
             message.header.channelData = sendingActiveChannelSession.channelData;
             if (msgType.toLowerCase() == "plain") {
@@ -665,11 +722,28 @@ export class InteractionsComponent implements OnInit {
     try {
       let msgs = [];
       cimEvents.forEach((event) => {
+        if(event.channelSession)
+          {
+            if(event.data.header)
+            {
+              event.data.header.channelSession=event.channelSession
+
+            }
+          }
         if (
           event.name.toLowerCase() == "agent_message" ||
           event.name.toLowerCase() == "bot_message" ||
           event.name.toLowerCase() == "customer_message"
         ) {
+          
+
+          if(event.name.toLowerCase() == "customer_message" && event.data.header.sender.type.toLowerCase()=='connector' )
+        {
+          
+          event.data.header.sender.senderName=event.data.header.customer.firstName+" "+event.data.header.customer.lastName
+          event.data.header.sender.id=event.data.header.customer.id;
+          event.data.header.sender.type='CUSTOMER';
+        }
           event.data.header["status"] = "seen";
           msgs.push(event.data);
         } else if (
@@ -727,8 +801,13 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  onKeydown(event) {
+  //when enter key is pressed
+  onEnterKey(event) {
     event.preventDefault();
+    // clear the timer on enter key press so that we can send fresh typing started event
+    //on next key press as receiving message on another end will stop its typing indication
+    clearTimeout(this.sendTypingStartedEventTimer);
+    this.sendTypingStartedEventTimer = null;
   }
   // loadBrowserLanguage() {
   //   let browserLang = navigator.language;
@@ -743,7 +822,7 @@ export class InteractionsComponent implements OnInit {
   openWrapUpDialog(e): void {
     const dialogRef = this.dialog.open(WrapUpFormComponent, {
       panelClass: "wrap-dialog",
-      data: { header: e, conversation: this.conversation, RTLDirection: this.isRTLView }
+      data: { header: this._translateService.instant('chat-features.interactions.wrapup'), conversation: this.conversation, RTLDirection: this.isRTLView }
     });
 
     dialogRef.afterClosed().subscribe((res) => {
@@ -788,7 +867,11 @@ export class InteractionsComponent implements OnInit {
 
     message.id = uuidv4();
     message.header.timestamp = Date.now();
-    message.header.sender = this.conversation.topicParticipant;
+    message.header.sender = {
+      id:this.conversation.topicParticipant.participant.keycloakUser.id,
+      senderName:this.conversation.topicParticipant.participant.keycloakUser.username,
+      type:'AGENT'
+    }
 
     return message;
   }
@@ -850,17 +933,27 @@ export class InteractionsComponent implements OnInit {
   }
 
   emitCimEvent(message, eventName) {
+    // let dummyMessage=JSON.parse(JSON.stringify(message))
+
     let event: any = new CimEvent(eventName, "MESSAGE", this.conversation.conversationId, message);
+    // console.log("event created",event)
+ 
     this._socketService.emit("publishCimEvent", {
       cimEvent: event,
       agentId: this._cacheService.agent.id,
       conversationId: this.conversation.conversationId
     });
 
-    event.data.header["status"] = "sending";
-    event.data.body["isWhisper"] = eventName == "WHISPER_MESSAGE" ? true : false;
-    this.conversation.messages.push(event.data);
 
+    message.header["status"] = "sending";
+    message.body["isWhisper"] = eventName == "WHISPER_MESSAGE" ? true : false;
+
+    message['header']['channelSession']=event.channelSession;
+    // console.log("message niw",message)
+    this.conversation.messages.push(message);
+
+    
+    // console.log("all messages",this.conversation.messages)
     setTimeout(() => {
       this.message = "";
 
@@ -900,11 +993,11 @@ export class InteractionsComponent implements OnInit {
       if (requestType == "queue") {
         this.requestedQueue = data;
         if (action == "transfer") {
-          this.requestTitle = "Transfer To Queue";
-          this.noteDialogBtnText = "Transfer";
+          this.requestTitle = this._translateService.instant("chat-features.interactions.Transfer-To-Queue");
+          this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Transfer");
         } else if (action == "conference") {
-          this.requestTitle = "Conference Request";
-          this.noteDialogBtnText = "Add To Conference";
+          this.requestTitle = this._translateService.instant("chat-features.interactions.Conference-Request");
+          this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Add-To-Conference");
         }
       }
 
@@ -935,7 +1028,7 @@ export class InteractionsComponent implements OnInit {
     this.assistanceRequestNote = "";
   }
 
-  sendQueueRequest() {
+ sendQueueRequest() {
     let data = {
       channelSession: this.conversation.firstChannelSession,
       agentParticipant: this.conversation.topicParticipant,

@@ -26,7 +26,7 @@
     "you-are-logged-In-from-another-session":"you are logged In from another session_fr",
     "Profile-linked-successfully":"Profile linked successfully_fr",
     "CUSTOMER-LINKED-SUCCESSFULLY":"CUSTOMER LINKED SUCCESSFULLY_fr",
-    "on":"on _fr",
+    "on":"on_fr",
     "The-conversation-is-going-to-linking-with":"The conversation is going to linking with _fr",
     "However-the-channel-identifier":"However the channel identifier _fr",
     "can-not-be-added-in":"can't be added in _fr",
@@ -95,7 +95,8 @@
     "switch-dark": "Switch to dark mode_fr",
     "light-dark": "(Light or dark)_fr",
     "theme": "Theme_fr",
-    "logout": "Logout_fr"
+    "logout": "Logout_fr",
+    "active-agents-detail":"active agents detail_fr"
   },
   "announcements": {
     "team-announcement": "Team Announcement_fr",
@@ -167,9 +168,20 @@
       "start": "Start a New Conversation_fr"
     },
     "interactions": {
+      "Consult":"Consult_fr",
+      "Transfer":"Transfer_fr",
+      "Conference":"Conference_fr",
+      "Transfer-To-Queue":"Transfer To Queue_fr",
+      "Conference-Request":"Conference Request_fr",
+      "Add-To-Conference":"Add To Conference_fr",
+      "Search-Queue":"Search Queue_fr",
       "whisper": "Whisper_fr",
-      "bot-suggestions-available": "Bot suggestions are available type / for viewing_fr",
-      "type-a-message": "Type a message here..._fr",
+      "bot-suggestions-available": "Bot suggestions are available for sending a message_fr",
+      "for-reply-to-a-comment":"for reply to a comment_fr",
+      "Type-a-reply-to-comment":"Type a reply to comment_fr",
+      "Type-a-message": "Type a message here..._fr",
+      "Unable-to-send-message":"Unable to send message_fr",
+      "bot-suggestions-available-for-reply-to-a-comment":"Bot suggestions available for reply to a comment_fr",
       "you": "you_fr",
       "cancel": "Cancel_fr",
       "message": "Message_fr",
@@ -198,7 +210,7 @@
       "view-full-post": "View full post_fr",
       "selected-channel": "Selected Channel:_fr",
       "check": "check_fr",
-      "wrapup": "Wrapupen_fr",
+      "wrapup": "Wrap-Up_fr",
       "wrap-up-notes": "Wrap-up Notesen_fr",
       "agent-assistance": "Agent Assistance_fr",
       "queue-transfer": "Queue Transfer_fr",
@@ -209,7 +221,8 @@
       "selected": "Selected_fr",
       "cancel": "Cancel_fr",
       "apply": "Apply_fr",
-      "notes": "Notes_fr"
+      "notes": "Notes_fr",
+      "New-Wrap-up": "New Wrap-up..._fr"
     }
   },
   "column-preferences": {
@@ -342,7 +355,9 @@
     "ascending":"Ascending_fr",
     "edit":"Edit_fr",
     "start-conversation":"Start Conversation_fr",
-    "agent-id":"Agent Id_fr"
+    "agent-id":"Agent Id_fr",
+    "channel":"channel_fr",
+    "direction":"direction_fr"
   },
   "pull-mode": {
     "all-list": "All List_fr",
@@ -421,6 +436,13 @@
     "cancel": "Cancel_fr",
     "done": "Done_fr",
     "state": "State_fr",
-    "joined":"joined_fr"
+    "joined":"joined_fr",
+    "active-conversation":"active conversation_fr",
+    "mrd-states":"mrd states_fr",
+    "search-agent":"search agent_fr",
+    "agent-stats":"agent stats_fr",
+    "pending-not-ready":"Pending-Not Ready_fr",
+    "agent(s)":"agent(S)_fr",
+    "direction":"direction_fr"
   }
 }

@@ -37,34 +37,40 @@ div#main-content {
   align-items: center;
 
   .no-chat-icon {
-    width: 270px;
-    height: 270px;
-    background: #F8F7F7;
+    //width: 190px;
+    //height: 190px;
+    //background: #F8F7F7;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     border-radius: 100%;
 
-    mat-icon {
-      color: #D1D1D1;
-      font-size: 5em;
-      width: inherit;
-      height: auto;
-      line-height: inherit;
+    img {
+      width: 100%;
+      max-width: 12vw;
     }
+
+    //mat-icon {
+      //color: #D1D1D1;
+      //font-size: 3em;
+      //width: inherit;
+      //height: auto;
+      //line-height: inherit;
+    //}
   }
   button{
-    border: 1px solid #8BB3EF;
-    color: #8BB3EF;
-    font-weight: 400;
-    font-size: 14px;
+    color: #1A50A3;
+    border: 1px solid #1A50A3;
+    font-size: 13px;
+    margin-top: 5px;
+    padding: 0 10px;
   }
 }
 
 .badge1 {
   position: absolute;
   top: 4px;
-  right: 4px;
+  left: 30px;
   font-size: 8px;
   background: #DB0505;
   color: white;
@@ -129,3 +135,17 @@ div#main-content {
 
 }
 
+.add-customer.expand-view{
+  width: 100%;
+  margin: 0 auto;
+  left: 5px;
+  border-radius: 5px;
+  border: 2px solid #7d9ccc;
+  text-align: left;
+  padding-left: 10px;
+  max-width: 270px;
+
+  .start-con{
+    display: inline-block;
+  }
+}

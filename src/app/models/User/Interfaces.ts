@@ -15,6 +15,17 @@ export interface IKeycloakUser {
   permittedResources?: [];
 }
 
+export class sender {
+  id: string;
+  senderName: string;
+  type: string;
+  constructor(id:string,type: string, senderName:string) {
+    this.id = uuidv4();
+    this.senderName=senderName;
+    this.type = type;
+  }
+}
+
 interface ITeam {
   id: string;
   name: string;

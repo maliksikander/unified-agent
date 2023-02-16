@@ -54,8 +54,9 @@
           </div>
         </mat-tab>
       </mat-tab-group>
-      <button *ngIf="('start-conversation' | authPipe : 'view') as result" class="add-customer" mat-fab routerLink="/customers/phonebook">
+      <button *ngIf="('start-conversation' | authPipe : 'view') as result" class="add-customer" [ngClass]="{'expand-view': barExpand}" mat-fab routerLink="/customers/phonebook">
         <mat-icon>add</mat-icon>
+        <span class="start-con">New Conversation</span>
       </button>
       <button color="primary" class="left-bar-trigger {{ barExpand ? 'arrow_left' : 'arrow_right' }}" (click)="barExpand = !barExpand"></button>
     </div>
@@ -64,7 +65,8 @@
 <div *ngIf="(_socketService.conversationsListener | async)?.length == 0" class="no-chat-main">
   <div class="no-chat">
     <span class="no-chat-icon">
-      <mat-icon>question_answer</mat-icon>
+<!--      <mat-icon>question_answer</mat-icon>-->
+      <img src="assets/images/no-chat.svg" alt="No chat available" />
     </span>
 
     <p>{{ _sharedService.mainPagetile | titlecase }}</p>

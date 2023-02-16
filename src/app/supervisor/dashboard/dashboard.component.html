@@ -5,7 +5,7 @@
 
       <div class="main-table supervisor-table-search">
         <mat-form-field class="col search-field" appearance="outline">
-          <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
+          <input matInput (keyup)="applyFilter($event)" placeholder="{{'globals.search'  | translate | translate}}" #input>
           <mat-icon matSuffix>{{'supervisor.search'  | translate }}</mat-icon>
         </mat-form-field>
 

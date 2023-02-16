@@ -15,7 +15,8 @@ import { v4 as uuidv4 } from "uuid";
 import { AuthService } from "./auth.service";
 import { TopicParticipant } from "../models/User/Interfaces";
 import { TranslateService } from "@ngx-translate/core";
-// const mockTopicData: any = require("../mocks/topicData.json");
+import { MatSnackBar } from "@angular/material/snack-bar";
+//const mockTopicData: any = require("../mocks/mockTopicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -41,6 +42,7 @@ export class socketService {
     private ngxService: NgxUiLoaderService,
     private _httpService: httpService,
     private _authService: AuthService,
+    private snackBar: MatSnackBar,
     private _translateService: TranslateService
   ) {
     // this.onTopicData(mockTopicData, "12345", "");
@@ -76,7 +78,7 @@ export class socketService {
       this.isSocketConnected = false;
       this.ngxService.stop();
       try {
-        console.log(err.data);
+        console.error(err.data);
         console.error("socket connect_error ", err.data && err.data.content ? err.data.content : err);
         if (err.data && err.data.content && err.data.content && err.data.content.key == "LM" && err.data.content.licStatus) {
           this._snackbarService.open(this._translateService.instant("snackbar.The-license-is") + err.data.content.licStatus, "err");
@@ -86,12 +88,12 @@ export class socketService {
             "err"
           );
         }
-      } catch (err) {}
+      } catch (err) { }
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -123,7 +125,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -212,8 +214,17 @@ export class socketService {
 
     this.socket.on("topicUnsubscription", (res: any) => {
       console.log("topicUnsubscription", res);
-      if (res.reason.toUpperCase() != "UNSUBSCRIBED") {
+      if (res.reason.toUpperCase() != "UNSUBSCRIBED" && res.reason.toUpperCase() != "CHAT TRANSFERED") {
         this._snackbarService.open(this._translateService.instant("snackbar.Conversation-is-closed-due-to") + res.reason, "err");
+      }
+
+      if (res.reason.toUpperCase() == "CHAT TRANSFERED") {
+        this.snackBar.open("chat has been transferred", "", {
+          duration: 4000,
+          panelClass: "chat-success-snackbar",
+          horizontalPosition: "right",
+          verticalPosition: "bottom"
+        });
       }
 
       this.removeConversation(res.conversationId);
@@ -271,7 +282,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) {}
+    } catch (err) { }
   }
 
   listen(eventName: string) {
@@ -295,6 +306,14 @@ export class socketService {
   }
 
   onCimEventHandler(cimEvent, conversationId) {
+    // eents one by one
+    if (cimEvent.channelSession) {
+      if (cimEvent.data.header) {
+        // console.log("entered", cimEvent);
+        cimEvent.data.header.channelSession = cimEvent.channelSession;
+      }
+    }
+
     console.log("cim event ", cimEvent);
     let sameTopicConversation = this.conversations.find((e) => {
       return e.conversationId == conversationId;
@@ -311,7 +330,14 @@ export class socketService {
           this.playSoundAndBrowserNotification(sameTopicConversation, cimEvent);
         }
 
-        if (cimEvent.data.header.sender.type.toLowerCase() == "customer") {
+        if (cimEvent.data.header.sender.type.toLowerCase() == "connector") {
+          cimEvent.data.header.sender.id = cimEvent.data.header.customer.id;
+          cimEvent.data.header.sender.type = 'CUSTOMER';
+          cimEvent.data.header.sender.senderName = cimEvent.data.header.customer.firstName + ' ' + cimEvent.data.header.customer.lastName;
+          if (cimEvent.data.body.type.toLowerCase() != "notification") {
+            clearTimeout(sameTopicConversation["isTyping"]);
+            sameTopicConversation["isTyping"] = null;
+          }
           this.processActiveChannelSessions(sameTopicConversation, cimEvent.data.header.channelSession);
           ++sameTopicConversation.unReadCount;
         }
@@ -367,6 +393,8 @@ export class socketService {
         this.handleNoAgentEvent(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "message_delivery_notification") {
         this.handleDeliveryNotification(cimEvent, conversationId);
+      } else if (cimEvent.name.toLowerCase() == "typing_indicator" && cimEvent.data.header.sender.type.toLowerCase() == "connector") {
+        this.handleTypingStartedEvent(cimEvent, sameTopicConversation);
       }
     } else {
       this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-event-unsubscribing"), "err");
@@ -381,7 +409,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._snackbarService.open(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"), "err");
     alert(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"));
@@ -391,6 +419,7 @@ export class socketService {
     let conversation = {
       conversationId: conversationId,
       taskId,
+      isTyping: null,
       messages: [],
       activeConversationData: topicData.conversationData,
       activeChannelSessions: [],
@@ -399,10 +428,10 @@ export class socketService {
       state: conversationId == "FAKE_CONVERSATION" ? "CLOSED" : "ACTIVE",
       customer: topicData.customer,
       customerSuggestions: topicData.channelSession ? topicData.channelSession.customerSuggestions : [],
-      topicParticipant: topicData.topicParticipant ? topicData.topicParticipant : "",
+      topicParticipant: topicData.topicParticipant ? topicData.topicParticipant : "", //own ccuser of Agent
       firstChannelSession: topicData.channelSession ? topicData.channelSession : "",
       messageComposerState: false,
-      agentParticipants: []
+      agentParticipants: [] //all Agents in conversations except itself
     };
 
     // feed the conversation with type "messages"
@@ -410,11 +439,23 @@ export class socketService {
 
     // feed the conversation with type "messages"
     topicEvents.forEach((event, i) => {
+      if (event.channelSession) {
+        if (event.data.header) {
+          event.data.header.channelSession = event.channelSession;
+        }
+      }
       if (
         event.name.toLowerCase() == "agent_message" ||
         event.name.toLowerCase() == "bot_message" ||
         event.name.toLowerCase() == "customer_message"
       ) {
+
+        if (event.name.toLowerCase() == "customer_message" && event.data.header.sender.type.toLowerCase() == 'connector') {
+
+          event.data.header.sender.senderName = event.data.header.customer.firstName + " " + event.data.header.customer.lastName
+          event.data.header.sender.id = event.data.header.customer.id;
+          event.data.header.sender.type = 'CUSTOMER';
+        }
         if (
           event.name.toLowerCase() == "agent_message" &&
           event.data.body.type.toLowerCase() == "comment" &&
@@ -479,9 +520,7 @@ export class socketService {
         // because the channel session in the array is used to send the message to customer
         conversation.activeChannelSessions.forEach((channelSession) => {
           if (
-            channelSession.channel.channelType.name.toLowerCase() == "voice" ||
-            channelSession.channel.channelType.name.toLowerCase() == "facebook"
-          ) {
+            channelSession.channel.channelType.name.toLowerCase() == "voice") {
             channelSession["isDisabled"] = true;
           } else {
             channelSession["isDisabled"] = false;
@@ -493,9 +532,7 @@ export class socketService {
         // because the channel session in the array is used to send the message to customer
         let repliedChannelSession = conversation.activeChannelSessions.find((channelSession) => {
           if (
-            channelSession.channel.channelType.name.toLowerCase() != "voice" &&
-            channelSession.channel.channelType.name.toLowerCase() != "facebook"
-          ) {
+            channelSession.channel.channelType.name.toLowerCase() != "voice"          ) {
             return channelSession;
           }
         });
@@ -533,7 +570,7 @@ export class socketService {
       this._soundService.playBeep();
     }
 
-    console.log("conversations==>", this.conversations);
+    // console.log("conversations==>", this.conversations);
     this._conversationsListener.next(this.conversations);
   }
 
@@ -548,7 +585,7 @@ export class socketService {
   getLatestDeliveryEventMessage(events) {
     for (let index = events.length - 1; index >= 0; index--) {
       const event = events[index];
-      if (event.name.toLowerCase() == "message_delivery_notification" && event.data.header.sender.type.toLowerCase() == "customer") {
+      if (event.name.toLowerCase() == "message_delivery_notification" && event.data.header.sender.type.toLowerCase() == "connector") {
         return event.data;
       }
     }
@@ -692,7 +729,7 @@ export class socketService {
   mergeBotSuggestions(conversation, suggestionMessage) {
     if (suggestionMessage && suggestionMessage.requestedMessage && suggestionMessage.requestedMessage.id) {
       let message = conversation.messages.find((e) => {
-        if (e.header.sender.type.toLowerCase() == "customer") {
+        if (e.header.sender.type.toLowerCase() == "connector") {
           return e.id == suggestionMessage.requestedMessage.id;
         }
       });
@@ -778,7 +815,7 @@ export class socketService {
   }
 
   handleDeliveryNotification(cimEvent, conversationId) {
-    if (cimEvent.data.header.sender.type.toLowerCase() == "customer" && cimEvent.data.body.status.toLowerCase() == "read") {
+    if (cimEvent.data.header.sender.type.toLowerCase() == "connector" && cimEvent.data.body.status.toLowerCase() == "read") {
       let conversation = this.conversations.find((e) => {
         return e.conversationId == conversationId;
       });
@@ -822,7 +859,7 @@ export class socketService {
     if (conversation) {
       let message = this.createSystemNotificationMessage(cimEvent);
 
-      if (cimEvent.data.channel.channelType.name.toLowerCase() == "facebook" || cimEvent.data.channel.channelType.name.toLowerCase() == "voice") {
+      if (cimEvent.data.channel.channelType.name.toLowerCase() == "voice") {
         cimEvent.data["isDisabled"] = true;
         cimEvent.data["isChecked"] = false;
       } else {
@@ -855,6 +892,20 @@ export class socketService {
       conversation.messageComposerState = this.isNonVoiceChannelSessionExists(conversation.activeChannelSessions);
     } else {
       console.error("channelSessionId not found to added");
+    }
+  }
+
+  handleTypingStartedEvent(cimEvent, sameTopicConversation) {
+    //isTyping is not initialized start the timer else restart the timer
+    if (!sameTopicConversation["isTyping"]) {
+      sameTopicConversation["isTyping"] = setTimeout(() => {
+        sameTopicConversation["isTyping"] = false;
+      }, 5000);
+    } else {
+      clearTimeout(sameTopicConversation["isTyping"]);
+      sameTopicConversation["isTyping"] = setTimeout(() => {
+        sameTopicConversation["isTyping"] = false;
+      }, 5000);
     }
   }
 
@@ -892,7 +943,7 @@ export class socketService {
   }
 
   onSocketErrors(res) {
-    this._snackbarService.open(this._translateService.instant("snackbar.on") + res.task + " " + res.msg, "err");
+    this._snackbarService.open(this._translateService.instant("snackbar.on") + " " + res.task + " " + res.msg, "err");
   }
 
   playSoundAndBrowserNotification(conversation, cimEvent) {
@@ -926,7 +977,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
@@ -961,13 +1012,10 @@ export class socketService {
               }
             }
           });
-          console.log("attr " + attr);
 
           if (attr) {
             if (selectedCustomer[attr].includes(channelIdentifier)) {
-              console.log("already merged");
               const resp: any = await this._sharedService.getProfileLinkingConfirmation(null, selectedCustomer.firstName, null, false);
-              console.log("this is resp ", resp);
               if (resp.decisionIs) {
                 this.updateTopiCustomer(
                   selectedCustomer,
@@ -979,7 +1027,6 @@ export class socketService {
                 );
               }
             } else {
-              console.log("not merged");
               // const resp = await this._sharedService.getConfirmation('Merge Attribute Value', `Are you sure you want to add ${channelIdentifier} to ${selectedCustomer.firstName}'s ${attr}`);
               const resp: any = await this._sharedService.getProfileLinkingConfirmation(channelIdentifier, selectedCustomer.firstName, attr, true);
 
@@ -1000,13 +1047,13 @@ export class socketService {
                     console.log("limit exceed");
                     this._snackbarService.open(
                       this._translateService.instant("snackbar.The-conversation-is-going-to-linking-with") +
-                        selectedCustomer.firstName +
-                        this._translateService.instant("snackbar.However-the-channel-identifier") +
-                        channelIdentifier +
-                        this._translateService.instant("snackbar.can-not-be-added-in") +
-                        selectedCustomer.firstName +
-                        attr +
-                        this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
+                      selectedCustomer.firstName +
+                      this._translateService.instant("snackbar.However-the-channel-identifier") +
+                      channelIdentifier +
+                      this._translateService.instant("snackbar.can-not-be-added-in") +
+                      selectedCustomer.firstName +
+                      attr +
+                      this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
                       "succ",
                       20000,
                       "Ok"
@@ -1147,14 +1194,14 @@ export class socketService {
     this._httpService.updatePastConversationCustomer(customersObj).subscribe(
       (res) => {
         // if (res.status == "OK") {
-        // if success response is fetched ,then delete the customer
+        // if success response is fetched ,then delete the customer 
         console.log(res.message);
         this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
         // }
       },
       (error) => {
         if (error.error && error.error.status && error.error.status == "NOT_FOUND") {
-          console.log(error.error.message ? error.error.message : "Conversation_NOT_FOUND");
+          console.error(error.error.message ? error.error.message : "Conversation_NOT_FOUND");
           // this._router.navigate(["customers"]);
           this.deleteCustomerAndRouteToAgent(toBeDeletedCustomerId);
         } else {

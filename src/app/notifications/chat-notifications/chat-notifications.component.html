@@ -45,9 +45,8 @@
             </p>
           </div>
           <div class="requested-name">
-            <strong>{{'globals.chat'}} {{ (request?.taskDirection == 'DIRECT_CONFERENCE' ? 'globals.conference' :
-              'globals.transfer') | translate}} {{'globals.request-from' | translate }}
-              '{{request?.requestedBy | titlecase}}' {{'globals.with-customer' | translate }}
+            <strong>{{'globals.chat' | translate }} {{ (request?.taskDirection == 'DIRECT_CONFERENCE' ? 'globals.conference' : 'globals.transfer') | translate}} {{'globals.request-from'  | translate }}
+              '{{request?.requestedBy | titlecase}}' {{'globals.with-customer'  | translate }}
               '{{request?.channelSession?.customer?.firstName | titlecase }}'</strong>
             <p *ngIf="request?.note">
               {{request?.note}}

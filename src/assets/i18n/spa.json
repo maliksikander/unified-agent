@@ -26,7 +26,7 @@
     "you-are-logged-In-from-another-session":"you are logged In from another session_spa",
     "Profile-linked-successfully":"Profile linked successfully_spa",
     "CUSTOMER-LINKED-SUCCESSFULLY":"CUSTOMER LINKED SUCCESSFULLY_spa",
-    "on":"on _spa",
+    "on":"on_spa",
     "The-conversation-is-going-to-linking-with":"The conversation is going to linking with _spa",
     "However-the-channel-identifier":"However the channel identifier _spa",
     "can-not-be-added-in":"can't be added in _spa",
@@ -94,7 +94,8 @@
     "switch-dark": "Switch to dark mode_spa",
     "light-dark": "(Light or dark)_spa",
     "theme": "Theme_spa",
-    "logout": "Logout_spa"
+    "logout": "Logout_spa",
+    "active-agents-detail":"active agents detail_spa"
   },
   "announcements": {
     "team-announcement": "Team Announcement_spa",
@@ -166,9 +167,20 @@
       "start": "Start a New Conversation_spa"
     },
     "interactions": {
+      "Consult":"Consult_spa",
+      "Transfer":"Transfer_spa",
+      "Conference":"Conference_spa",
+      "Transfer-To-Queue":"Transfer To Queue_spa",
+      "Conference-Request":"Conference Request_spa",
+      "Add-To-Conference":"Add To Conference_spa",
+      "Search-Queue":"Search Queue_spa",
       "whisper": "Whisper_spa",
-      "bot-suggestions-available": "Bot suggestions are available type / for viewing_spa",
-      "type-a-message": "Type a message here..._spa",
+      "bot-suggestions-available": "Bot suggestions are available for sending a message_spa",
+      "for-reply-to-a-comment":"for reply to a comment_spa",
+      "Type-a-reply-to-comment":"Type a reply to comment_spa",
+      "Type-a-message": "Type a message here..._spa",
+      "Unable-to-send-message":"Unable to send message_spa",
+      "bot-suggestions-available-for-reply-to-a-comment":"Bot suggestions available for reply to a comment_spa",
       "you": "you_spa",
       "cancel": "Cancel_spa",
       "message": "Message_spa",
@@ -196,7 +208,7 @@
       "view-full-post": "View full post_spa",
       "selected-channel": "Selected Channel:_spa",
       "check": "check_spa",
-      "wrapup": "Wrapupen_spa",
+      "wrapup": "Wrap-Up_spa",
       "wrap-up-notes": "Wrap-up Notesen_spa",
       "agent-assistance": "Agent Assistance_spa",
       "queue-transfer": "Queue Transfer_spa",
@@ -207,7 +219,9 @@
       "selected": "Selected_spa",
       "cancel": "Cancel_spa",
       "apply": "Apply_spa",
-      "notes": "Notes_spa"
+      "notes": "Notes_spa",
+      "New-Wrap-up": "New Wrap-up..._spa"
+
     }
   },
   "column-preferences": {
@@ -330,7 +344,9 @@
     "ascending":"Ascending_spa",
     "edit":"Edit_spa",
     "start-conversation":"Start Conversation_spa",
-    "agent-id":"Agent Id_spa"
+    "agent-id":"Agent Id_spa",
+    "channel":"channel_spa",
+    "direction":"direction_spa"
 
   },
   "pull-mode": {
@@ -410,6 +426,13 @@
     "cancel": "Cancel_spa",
     "done": "Done_spa",
     "state": "State_spa",
-    "joined":"joined_spa"
+    "joined":"joined_spa",
+    "active-conversation":"active conversation_spa",
+    "mrd-states":"mrd states_spa",
+    "search-agent":"search agent_spa",
+    "agent-stats":"agent stats_spa",
+    "pending-not-ready":"Pending-Not Ready_spa",
+    "agent(s)":"agent(S)_spa",
+    "direction":"direction_spa"
   }
 }

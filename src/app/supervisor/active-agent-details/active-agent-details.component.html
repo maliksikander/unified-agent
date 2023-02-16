@@ -1,6 +1,6 @@
 <div class="page-header row m-0">
   <div class="page-heading col-md-6 col-sm-4">
-    <h4>Agent Stats</h4>
+    <h4>{{'app-header.active-agents-detail' | translate | titlecase}}</h4>
   </div>
 </div>
 
@@ -10,7 +10,7 @@
       <div class="filter-area d-flex">
         <div class="create-label col pl-0">
           <div class="search-wrapper">
-            <input type="text" placeholder="Search Agent" (click)="$event.stopPropagation()" [(ngModel)]="agentSearch" />
+            <input type="text" placeholder="{{'supervisor.search-agent' | translate | titlecase}}" (click)="$event.stopPropagation()" [(ngModel)]="agentSearch" />
             <mat-icon>search</mat-icon>
           </div>
 
@@ -32,25 +32,25 @@
         </div>
 
         <div class="mrd-stats-label">
-          <span>MRD States</span>
+          <span>{{ 'supervisor.mrd-states' | translate | titlecase }}</span>
           <ul>
-            <li><span class="busy-label"></span> Busy</li>
-            <li><span class="active-label"></span> Active</li>
-            <li><span class="ready-label"></span> Ready</li>
-            <li><span class="p-not-ready-label"></span> Pending-Not Ready</li>
-            <li><span class="not-ready-label"></span> Not Ready</li>
+            <li><span class="busy-label"></span> {{ 'supervisor.busy' | translate | titlecase }}</li>
+            <li><span class="active-label"></span> {{ 'supervisor.active' | translate | titlecase }}</li>
+            <li><span class="ready-label"></span> {{ 'supervisor.ready' | translate | titlecase }}</li>
+            <li><span class="p-not-ready-label"></span> {{ 'supervisor.pending-not-ready' | translate | titlecase }}</li>
+            <li><span class="not-ready-label"></span>{{ 'supervisor.not-ready' | translate | titlecase }}</li>
           </ul>
         </div>
       </div>
 
-      <table class="table">
+      <table class="table active-agent-table">
         <thead>
           <tr>
-            <th class="status-data" scope="col">Agent(s)</th>
+            <th class="status-data" scope="col" matTooltip="{{ 'supervisor.agent(s)' | translate | titlecase }}">{{ 'supervisor.agent(s)' | translate | titlecase }}</th>
             <!-- <th scope="col">State</th> -->
-            <th scope="col">Active Conversation</th>
+            <th scope="col" matTooltip="{{ 'supervisor.active-conversation' | translate | titlecase }}">{{ 'supervisor.active-conversation' | translate | titlecase }}</th>
             <!--          <th scope="col">Queue(s)</th>-->
-            <th scope="col" class="mrd-status-cell"  *ngFor="let mrd of MRDsList">
+            <th scope="col" class="mrd-status-cell" matTooltip="{{ mrd?.name }}"  *ngFor="let mrd of MRDsList">
               {{ mrd.name }}
             </th>
           </tr>
@@ -77,7 +77,7 @@
                 </td>
               </ng-container>
             </ng-container>
-            
+
           </tr>
         </tbody>
       </table>

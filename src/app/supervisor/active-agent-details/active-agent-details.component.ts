@@ -47,7 +47,7 @@ export class ActiveAgentDetailsComponent implements OnInit {
         {
           this.getAllActiveAgentsDetailsOnQueue(this.queueSelected);
         }
-   
+
   }, retry())
   )
   .subscribe();
