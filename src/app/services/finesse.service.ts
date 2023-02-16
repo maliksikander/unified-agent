@@ -753,13 +753,13 @@ export class finesseService {
           securityInfo: {},
           stamps: [],
           intent,
-          entities: {}
-          // sender: {
-          //   id: this._cacheService.agent.id,
-          //   senderName: this._cacheService.agent.username,
-          //   type: "AGENT",
-          //   additionalDetail: {}
-          // }
+          entities: {},
+          sender: {
+            id: this._cacheService.agent.id,
+            senderName: this._cacheService.agent.username,
+            type: "AGENT",
+            additionalDetail: {}
+          }
         },
         body: {
           type: messageType,
