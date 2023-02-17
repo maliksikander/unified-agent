@@ -972,8 +972,13 @@
                                 </li>
 
                                 <li class="section-duration">
-                                  <time>{{ message.body.data.duration }}sec</time>
                                   <!-- <time>{{ message.body.data.duration }}sec</time> -->
+
+                                  <time *ngIf="message.body.data.duration > 0">{{ message.body.data.duration * 1000 |
+                                    date:'mm' }}min {{ message.body.data.duration * 1000 |
+                                      date:'ss' }}sec</time>
+                                  <time *ngIf="message.body.data.duration == 0">{{ message.body.data.duration }}
+                                    sec</time>
                                 </li>
 
                                 <ng-container *ngIf="message.body.data.callLegs.length < 2">
@@ -1036,9 +1041,14 @@
                                     </li>
 
                                     <li class="section-duration">
-                                      <time>{{ callData.duration ? callData.duration :
+                                      <!-- <time>{{ callData.duration ? callData.duration :
                                         "N/A"
-                                        }}sec</time>
+                                        }}sec</time> -->
+                                        <time *ngIf="callData.duration > 0">{{ callData.duration * 1000 |
+                                          date:'mm' }}min {{ callData.duration * 1000 |
+                                            date:'ss' }}sec</time>
+                                        <time *ngIf="callData.duration == 0">{{ callData.duration }}
+                                          sec</time>
                                     </li>
 
                                     <li>
