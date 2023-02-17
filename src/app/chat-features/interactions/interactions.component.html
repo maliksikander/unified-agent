@@ -260,7 +260,7 @@
                 </span>
               </div>
             </ng-container>
-            <div style="display: unset" *ngFor="let message of conversation.messages; let index = index">
+            <div style="display: unset" *ngFor="let message of conversation.messages; let index = index; let last = last">
               <div id="datestamp" class="int-date" *ngIf="
                   index == 0 ||
                   (message.header.timestamp | date: 'dd MMMM yyyy') != (conversation.messages[index - 1].header.timestamp | date: 'dd MMMM yyyy')
@@ -1586,8 +1586,7 @@
                         </span>
                       </div>
                 </div>
-                <ul class="delivery-report ff {{ (message.header.sender | getSenderId) == (conversation.messages[index - 1].header.sender | getSenderId) &&  (message.header.channelSession.channel.channelType.id) ==
-                      (conversation.messages[index - 1].header.channelSession.channel.channelType.id)}}" *ngIf="(message.header.status == 'seen') &&  (message.header.sender.type | lowercase) !== 'customer'"><li class="customer-delivery-report">Jane Doe1</li><li>Adam Stanlter1</li><li>Json Butler1</li></ul>
+                <ul class="delivery-report ffff {{last}}" *ngIf="last && (message.header.status == 'seen') &&  (message.header.sender.type | lowercase) !== 'customer'"><li class="customer-delivery-report">Jane Doe1</li><li>Adam Stanlter1</li><li>Json Butler1</li></ul>
 
                     <div class="chat-intents" *ngIf="message.showBotSuggestions">
                       <div class="intents-inner">
