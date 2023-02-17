@@ -1586,7 +1586,7 @@
                         </span>
                       </div>
                 </div>
-                <ul class="delivery-report ffff {{last}}" *ngIf="last && (message.header.status == 'seen') &&  (message.header.sender.type | lowercase) !== 'customer'"><li class="customer-delivery-report">Jane Doe1</li><li>Adam Stanlter1</li><li>Json Butler1</li></ul>
+                <ul class="delivery-report" *ngIf="last && (message.header.status == 'seen') &&  (message.header.sender.type | lowercase) !== 'customer'"><li class="customer-delivery-report">{{conversation.customer.firstName}}</li><li>Adam Stanlter1</li><li>Json Butler1</li></ul>
 
                     <div class="chat-intents" *ngIf="message.showBotSuggestions">
                       <div class="intents-inner">
