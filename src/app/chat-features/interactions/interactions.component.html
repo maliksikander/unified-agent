@@ -1052,7 +1052,7 @@
                                     </li>
 
                                     <li>
-                                      <img
+                                      <img matTooltip="{{callData.endDirection | removeUnderscore | titlecase}}"
                                         *ngIf="callData.endDirection == 'TRANSFER' || callData.endDirection == 'CONSULT_TRANSFER' || callData.endDirection == 'DIRECT_TRANSFER'"
                                         src="assets/images/call-transfer.svg" />
                                       <img *ngIf="callData.endDirection == 'CONSULT_CONFERENCE'"
