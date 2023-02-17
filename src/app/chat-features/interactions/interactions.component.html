@@ -305,7 +305,7 @@
               </div>
               <!-- -------------------------------------------------------- -->
               <div *ngIf="(message.body.type | lowercase) != 'systemnotification' && message.header.channelSession"
-                class="chat-message {{ message.body.isWhisper ? 'whisper-body' : '' }} {{
+                class="chat-message  {{ message.body.isWhisper ? 'whisper-body' : '' }} {{
                   message.id != selectedCommentId && (message.isDeleted || message.isHidden) ? 'deleted-hidden-comment' : ''
                 }} {{
                   index == 0 ||
@@ -316,7 +316,7 @@
                     message.header.channelSession.channel.channelType.id ==
                       conversation.messages[index - 1].header.channelSession.channel.channelType.id)
                     ? 'same-sender-msg'
-                    : ''
+                    : 'not-same-sender'
                 }} {{ message.header.status == 'sending' ? 'low-opacity' : message.header.status == 'sent' ? 'delivered' : 'seen' }}  {{
                   message.body.type | lowercase
                 }} {{ message.header.replyToMessageId != null ? 'quoted-message-main' : '' }} {{ message.header.sender.type | lowercase }} {{
@@ -324,8 +324,7 @@
                 }}" [ngClass]="
                   (message.header.sender.type | lowercase) == 'customer' || (message.body.type | lowercase) == 'voice'
                     ? 'user-message slide-in-left'
-                    : 'agent-message'
-                ">
+                    : 'agent-message' ">
                 <div class="profile-pic">
                   <div [ngClass]="{ 'wrapup-active-icon': message?.body?.type == 'WRAPUP' }"
                     class="active-channel channel-icon"
@@ -1238,7 +1237,7 @@
                                     <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
                                   </vg-controls>
                                   <video #media [vgMedia]="media" id="{{ message.id }}" preload="auto">
-                                    <source [src]="message.body.attachment?.mediaUrl | getFileUrl />
+                                    <source [src]="message.body.attachment?.mediaUrl | getFileUrl" />
                                   </video>
                                 </vg-player>
                               </div>
@@ -1586,7 +1585,9 @@
                           <span class="chat-time">{{ message.header.timestamp | date: "shortTime" }} </span>
                         </span>
                       </div>
-                    </div>
+                </div>
+                <ul class="delivery-report ff {{ (message.header.sender | getSenderId) == (conversation.messages[index - 1].header.sender | getSenderId) &&  (message.header.channelSession.channel.channelType.id) ==
+                      (conversation.messages[index - 1].header.channelSession.channel.channelType.id)}}" *ngIf="(message.header.status == 'seen') &&  (message.header.sender.type | lowercase) !== 'customer'"><li class="customer-delivery-report">Jane Doe1</li><li>Adam Stanlter1</li><li>Json Butler1</li></ul>
 
                     <div class="chat-intents" *ngIf="message.showBotSuggestions">
                       <div class="intents-inner">
@@ -1623,6 +1624,7 @@
                   <!-- ----------------------------------system Notifications ended-------------------------------- -->
                 </div>
                 <div id="chat-area-end"></div>
+
               </div>
         </ng-scrollbar>
       </div>

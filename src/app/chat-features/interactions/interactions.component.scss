@@ -677,6 +677,7 @@
       //Agent Chat Message Right align
       &.agent-message {
         flex-direction: row-reverse;
+        position: relative;
 
         &.delivered .chat-time:after {
           content: "done_all";
@@ -695,7 +696,7 @@
     margin: 0 5px;
     position: relative;
     top: 3px;
-    color: #21a755;
+    color: $blue-text-color;
     }
         .profile-pic {
           margin-left: 6px;
@@ -1789,6 +1790,37 @@
   }
 }
 //Delivery Status
+ul.delivery-report {
+  padding: 0;
+  text-align: right;
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  margin: 5px -2px;
+  position: absolute;
+  right: 38px;
+  bottom: -32px;
+  z-index: 2;
+  li{
+    margin: 0 2px;
+    border: 1px solid $bubble-background;
+    padding: 0 10px;
+    border-radius: 18px;
+    height: 22px;
+    font-size: 12px;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    &.customer-delivery-report{
+      color: #69A21A;
+      border-color: #E8F5D6;
+
+
+    }
+  }
+}
 .material-icons.delivery-status {
   font-size: 16px;
   line-height: 10px;
