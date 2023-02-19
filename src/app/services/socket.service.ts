@@ -214,11 +214,11 @@ export class socketService {
 
     this.socket.on("topicUnsubscription", (res: any) => {
       console.log("topicUnsubscription", res);
-      if (res.reason.toUpperCase() != "UNSUBSCRIBED" && res.reason.toUpperCase() != "CHAT TRANSFERED") {
+      if (res.reason.toUpperCase() != "UNSUBSCRIBED" && res.reason.toUpperCase() != "CHAT TRANSFERRED") {
         this._snackbarService.open(this._translateService.instant("snackbar.Conversation-is-closed-due-to") + res.reason, "err");
       }
 
-      if (res.reason.toUpperCase() == "CHAT TRANSFERED") {
+      if (res.reason.toUpperCase() == "CHAT TRANSFERRED") {
         this.snackBar.open("chat has been transferred", "", {
           duration: 4000,
           panelClass: "chat-success-snackbar",
@@ -823,6 +823,22 @@ export class socketService {
       if (conversation) {
         this.markAgentMessagesToSeenTillId(conversation.messages, cimEvent.data.body.messageId);
       }
+    } else if (cimEvent.data.header.sender.type.toLowerCase() == "system" && cimEvent.data.body.status.toLowerCase() == "failed") {
+      let conversation = this.conversations.find((e) => {
+        return e.conversationId == conversationId;
+      });
+
+      if (conversation) {
+        const selectedMessage = conversation.messages.find((message) => {
+
+          return message.id == cimEvent.data.body.messageId;
+
+        });
+        if (selectedMessage) {
+          selectedMessage["header"]["status"] = "failed";
+        }
+      }
+
     }
   }
 
@@ -833,7 +849,9 @@ export class socketService {
     // mark all the previous messages as 'seen' before that message
     messages.forEach((message, i) => {
       if (i <= index && (message.header.sender.type.toLowerCase() == "agent" || message.header.sender.type.toLowerCase() == "bot")) {
-        messages[i]["header"]["status"] = "seen";
+        if (messages[i]["header"]["status"] != "failed") {
+          messages[i]["header"]["status"] = "seen";
+        }
       }
     });
   }

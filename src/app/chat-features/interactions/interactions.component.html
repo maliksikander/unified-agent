@@ -317,7 +317,7 @@
                       conversation.messages[index - 1].header.channelSession.channel.channelType.id)
                     ? 'same-sender-msg'
                     : ''
-                }} {{ message.header.status == 'sending' ? 'low-opacity' : message.header.status == 'sent' ? 'delivered' : 'seen' }}  {{
+                }} {{ message.header.status == 'sending' ? 'low-opacity' : message.header.status == 'failed' ? 'failed' : message.header.status == 'sent' ? 'delivered' : 'seen' }}  {{
                   message.body.type | lowercase
                 }} {{ message.header.replyToMessageId != null ? 'quoted-message-main' : '' }} {{ message.header.sender.type | lowercase }} {{
                   fullPostView && message.id == selectedCommentId ? 'full-post-view' : ''
@@ -634,8 +634,10 @@
                     <button *ngIf="
                         (message.body.type | lowercase) != 'wrapup' &&
                         (message.body.type | lowercase) != 'voice' &&
-                        (message.body.type | lowercase) != 'comment'
-                      " class="reply-quoted" mat-icon-button [matMenuTriggerFor]="menu">
+                        (message.body.type | lowercase) != 'comment' &&
+                        (message.header.status | lowercase) != 'sending' &&
+                        (message.header.status | lowercase) != 'failed'" class="reply-quoted" mat-icon-button
+                      [matMenuTriggerFor]="menu">
                       <mat-icon>more_vert</mat-icon>
                     </button>
                     <mat-menu #menu="matMenu">
@@ -976,7 +978,7 @@
 
                                   <time *ngIf="message.body.data.duration > 0">{{ message.body.data.duration * 1000 |
                                     date:'mm' }}min {{ message.body.data.duration * 1000 |
-                                      date:'ss' }}sec</time>
+                                    date:'ss' }}sec</time>
                                   <time *ngIf="message.body.data.duration == 0">{{ message.body.data.duration }}
                                     sec</time>
                                 </li>
@@ -1044,11 +1046,11 @@
                                       <!-- <time>{{ callData.duration ? callData.duration :
                                         "N/A"
                                         }}sec</time> -->
-                                        <time *ngIf="callData.duration > 0">{{ callData.duration * 1000 |
-                                          date:'mm' }}min {{ callData.duration * 1000 |
-                                            date:'ss' }}sec</time>
-                                        <time *ngIf="callData.duration == 0">{{ callData.duration }}
-                                          sec</time>
+                                      <time *ngIf="callData.duration > 0">{{ callData.duration * 1000 |
+                                        date:'mm' }}min {{ callData.duration * 1000 |
+                                        date:'ss' }}sec</time>
+                                      <time *ngIf="callData.duration == 0">{{ callData.duration }}
+                                        sec</time>
                                     </li>
 
                                     <li>
@@ -1642,7 +1644,9 @@
 
       <div *ngIf="currentScrollPosition < 60 && showNewMessageNotif == false" (click)="goToLatestMessage()"
         class="jump-bottom slide-in-bottom new-msg-notif">
-        <span> <mat-icon>arrow_downward</mat-icon>{{ "chat-features.interactions.jump-bottom" | translate }} </span>
+        <span>
+          <mat-icon>arrow_downward</mat-icon>{{ "chat-features.interactions.jump-bottom" | translate }}
+        </span>
       </div>
 
       <div class="slide-in-bottom new-msg-notif" *ngIf="showNewMessageNotif" (click)="goToLatestMessage()">
@@ -1925,7 +1929,8 @@
                 <div class="selected-area">
                   <div class="select-categories">
                     <mat-chip-list>
-                      <mat-chip>Doy Ortelt <mat-icon>close</mat-icon> </mat-chip>
+                      <mat-chip>Doy Ortelt <mat-icon>close</mat-icon>
+                      </mat-chip>
                     </mat-chip-list>
                   </div>
                 </div>
@@ -1944,7 +1949,8 @@
                 <div class="selected-area">
                   <div class="select-categories">
                     <mat-chip-list>
-                      <mat-chip>Doy Ortelt <mat-icon>close</mat-icon> </mat-chip>
+                      <mat-chip>Doy Ortelt <mat-icon>close</mat-icon>
+                      </mat-chip>
                     </mat-chip-list>
                   </div>
                 </div>
