@@ -77,6 +77,7 @@ export class socketService {
     this.socket.on("connect_error", (err) => {
       this.isSocketConnected = false;
       this.ngxService.stop();
+      this._sharedService.serviceChangeMessage({ msg: "closeAllPushModeRequests", data: null });
       try {
         console.error(err.data);
         console.error("socket connect_error ", err.data && err.data.content ? err.data.content : err);
@@ -103,6 +104,8 @@ export class socketService {
     this.socket.on("connect", (e) => {
       this.ngxService.stop();
       this.isSocketConnected = true;
+      this._sharedService.serviceChangeMessage({ msg: "closeAllPushModeRequests", data: null });
+
       console.log("socket connect " + e);
       if (this._router.url == "/login") {
         // this._router.navigate(["customers"]);

@@ -77,6 +77,9 @@ export class ChatNotificationsComponent implements OnInit {
           console.log("external requests==>", this.externalModeRequests);
         } else if (e.msg == "closeExternalModeRequestHeader") {
           this.externalModeRequests = e.data;
+        } else if (e.msg == "closeAllPushModeRequests") {
+
+          this.pushModeRequests = [];
         }
       } catch (error) {
         console.error("[serviceCurrentMessage Subscriber] Error :", error);
