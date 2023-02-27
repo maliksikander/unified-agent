@@ -26,35 +26,35 @@ $(document).ready(function ()
     }
 
     //Refresh case
-    try{
-        var logoutFlag = localStorage.getItem("logoutFlag");
-        if (logoutFlag == "false" && localStorage.getItem("loginParameters")) {
-            var loginParameters = JSON.parse(localStorage.getItem("loginParameters"));
-            console.log(loginParameters);
-            var isSSOAgent = loginParameters.parameter.isSSOUser;
-            console.log(isSSOAgent);
-            console.log(typeof(isSSOAgent));
-            if(isSSOAgent && (isSSOAgent == "true" || isSSOAgent == true)){
-                console.log("This is sso user, going to get sso user from local storage");
-                isRefreshCase = true;
-                var parameter = JSON.parse(localStorage.getItem("ssoUser"));
-                parameter.clientCallbackFunction = window[parameter.clientCallbackFunction];
-                parameter.isSSOUser = true;
-                var parameters = {"parameter": parameter};
-                console.log("Got parameters " , parameters);
-                login(parameters);
-                //login(parameters, "refresh");
-            }
-            else{
-                console.log("this isn't sso user");
-                var parameters = JSON.parse(localStorage.getItem("loginParameters"));
-                loginRefreshCase(parameters);
-            }
-        }
-    }
-    catch(err){
-        console.error(err);
-    }
+    // try{
+    //     var logoutFlag = localStorage.getItem("logoutFlag");
+    //     if (logoutFlag == "false" && localStorage.getItem("loginParameters")) {
+    //         var loginParameters = JSON.parse(localStorage.getItem("loginParameters"));
+    //         console.log(loginParameters);
+    //         var isSSOAgent = loginParameters.parameter.isSSOUser;
+    //         console.log(isSSOAgent);
+    //         console.log(typeof(isSSOAgent));
+    //         if(isSSOAgent && (isSSOAgent == "true" || isSSOAgent == true)){
+    //             console.log("This is sso user, going to get sso user from local storage");
+    //             isRefreshCase = true;
+    //             var parameter = JSON.parse(localStorage.getItem("ssoUser"));
+    //             parameter.clientCallbackFunction = window[parameter.clientCallbackFunction];
+    //             parameter.isSSOUser = true;
+    //             var parameters = {"parameter": parameter};
+    //             console.log("Got parameters " , parameters);
+    //             login(parameters);
+    //             //login(parameters, "refresh");
+    //         }
+    //         else{
+    //             console.log("this isn't sso user");
+    //             var parameters = JSON.parse(localStorage.getItem("loginParameters"));
+    //             loginRefreshCase(parameters);
+    //         }
+    //     }
+    // }
+    // catch(err){
+    //     console.error(err);
+    // }
 });
 
 function executeCommands(commandRequest) {
