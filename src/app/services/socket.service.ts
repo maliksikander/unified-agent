@@ -383,6 +383,7 @@ export class socketService {
         this.removeChannelSession(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "associated_customer_changed") {
         this.changeTopicCustomer(cimEvent, conversationId);
+        console.log("Event received"+cimEvent)
       } else if (cimEvent.name.toLowerCase() == "agent_subscribed") {
         this.handleAgentSubscription(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
@@ -692,12 +693,14 @@ export class socketService {
 
   changeTopicCustomer(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
+      //console.log("this is conversation id"+e.conversationId);
       return e.conversationId == conversationId;
     });
 
-    if (conversation) {
+    if (conversation )  {
       conversation.customer = cimEvent.data;
-      this._snackbarService.open(this._translateService.instant("snackbar.Profile-linked-successfully"), "succ");
+      //console.log("this is conversation of profile linked suceessfully");
+      //this._snackbarService.open(this._translateService.instant("snackbar.Profile-linked-successfully"), "succ");
     }
   }
 
@@ -1015,7 +1018,7 @@ export class socketService {
       });
       const topicCustomer = conversation.customer;
       const channelSession = conversation.firstChannelSession;
-
+      
       if (topicCustomer && channelSession) {
         const channelType = channelSession.channel.channelType.name;
         const channelIdentifier = channelSession.channelData.channelCustomerIdentifier;
@@ -1158,11 +1161,12 @@ export class socketService {
       this._httpService.updateCustomerById(selectedCustomerId, selectedCustomer).subscribe(
         (e) => {
           selectedCustomer["_id"] = selectedCustomerId;
-
+         // this._snackbarService.open(this._translateService.instant("snackbar.Profile-linked-successfully"), "succ");
           // updating customer topic
           this._httpService.updateConversationCustomer(conversationId, selectedCustomer).subscribe(
             (e) => {
               console.log("update topic success");
+              //this._snackbarService.open(this._translateService.instant("snackbar.Profile-linked-successfully"), "succ");
               if (addChannelIdentifier && toBeDeletedCustomerId != null) {
                 let requestPayload = { currentCustomer: topicCustomer, newCustomer: selectedCustomer };
                 this.updatePastConversation(requestPayload, toBeDeletedCustomerId);
@@ -1199,6 +1203,7 @@ export class socketService {
         }
       );
     }
+    this._snackbarService.open(this._translateService.instant("snackbar.Profile-linked-successfully"), "succ");
   }
 
   /**
