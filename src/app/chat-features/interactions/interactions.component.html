@@ -1695,18 +1695,18 @@
         </button>
       </mat-menu>
 
-      <div class="whisper-selection" *ngIf="conversation?.agentParticipants?.length > 0">
-        <button (click)="isWhisperMode = false" [ngClass]="{ 'customer-select': !isWhisperMode }"
-          class="customer-mode message-mode" mat-button>
-          {{ conversation.customer?.firstName ? conversation.customer.firstName : ("globals.not-applicable" | translate)
-          }}
-        </button>
-        <button (click)="isWhisperMode = true" [ngClass]="{ 'whisper-select': isWhisperMode }"
-          class="whisper-mode message-mode" mat-button>
-          {{ "chat-features.interactions.whisper" | translate }}
-        </button>
-      </div>
       <div class="message-composer">
+        <div class="whisper-selection" *ngIf="conversation?.agentParticipants?.length > 0">
+          <button (click)="isWhisperMode = false" [ngClass]="{ 'customer-select': !isWhisperMode }"
+                  class="customer-mode message-mode" mat-button>
+            {{ conversation.customer?.firstName ? conversation.customer.firstName : ("globals.not-applicable" | translate)
+            }}
+          </button>
+          <button (click)="isWhisperMode = true" [ngClass]="{ 'whisper-select': isWhisperMode }"
+                  class="whisper-mode message-mode" mat-button>
+            {{ "chat-features.interactions.whisper" | translate }}
+          </button>
+        </div>
         <div class="quoted-message-selected-area" *ngIf="quotedMessage">
           <div class="message-selected-inner">
             <span *ngIf="quotedMessage.header.sender">
@@ -1753,7 +1753,7 @@
           <span></span>
         </div>
 
-        <form class="reply-form"
+        <form class="reply-form {{conversation?.agentParticipants?.length > 0 ? 'whisper-tabs': '' }}"
           [ngClass]="{ 'whisper-mode': conversation?.agentParticipants?.length > 0 && isWhisperMode }">
           <label *ngIf="message.length > 0" class="count-reply">{{ replyInput.value.length }}/1000</label>
           <div class="mat-form-field chat-area" [ngClass]="{ 'expand-area-height': expanedHeight > 50 }">
