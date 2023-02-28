@@ -144,7 +144,6 @@ export class CustomerInfoComponent implements OnInit {
     this.getVoiceChannelSession();
   }
 
-
   getVoiceChannelSession() {
     try {
       this.voiceSession = this.activeChannelSessions.find((channelSession) => {
@@ -273,37 +272,77 @@ export class CustomerInfoComponent implements OnInit {
     if (!channelCustomerIdentifier) {
       this._snackBarService.open(this._translateService.instant("snackbar.Channel-Identifier-Not-Found"), "err");
     } else {
-      let cimMessage = {
-        id: uuid.v4().toString(),
-        header: {
-          channelData: {
-            channelCustomerIdentifier: channelCustomerIdentifier,
-            serviceIdentifier: channelTypeName,
-            additionalAttributes: [
-              { key: "agentId", type: "String100", value: this._cacheService.agent.id },
-              { key: "channelTypeName", type: "String100", value: channelTypeName }
-            ]
+      let channelTypes = [];
+      let channelType = null;
+      try {
+        channelTypes = JSON.parse(localStorage.getItem("channelTypes"));
+        if (channelTypes) {
+          channelType = channelTypes.find((e) => {
+            console.log("e.name",e.name)
+            return e.name == channelTypeName;
+          });
+        console.log("channel", channelType)
+        this._httpService.getDefaultOutboundChannel(channelType.id).subscribe(
+          (data) => {
+            if (data) {
+              if (data.serviceIdentifier) {
+                let cimMessage = {
+                  id: uuid.v4().toString(),
+                  header: {
+                    channelData: {
+                      channelCustomerIdentifier: channelCustomerIdentifier,
+                      serviceIdentifier: data.serviceIdentifier,
+                      additionalAttributes: [{ key: "agentId", type: "String100", value: this._cacheService.agent.id }]
+                    },
+                    language: {},
+                    timestamp: "",
+                    securityInfo: {},
+                    stamps: [],
+                    intent: "AGENT_OUTBOUND",
+                    entities: {},
+                    customer: this.customer
+                  },
+                  body: {
+                    type: "PLAIN",
+                    markdownText: ""
+                  }
+                };
+                console.log("cim==>", cimMessage);
+                this._httpService.startOutboundConversation(cimMessage).subscribe(
+                  (e) => {},
+                  (err) => {
+                    this._sharedService.Interceptor(err.error, "err");
+                    console.error("Error Starting Outbound Conversation", err);
+                  }
+                );
+              } else {
+                console.error("Service identifier not present");
+              }
+            }
           },
-          language: {},
-          timestamp: "",
-          securityInfo: {},
-          stamps: [],
-          intent: "AGENT_OUTBOUND",
-          entities: { customer: this.customer }
-        },
-        body: {
-          type: "PLAIN",
-          markdownText: ""
-        }
-      };
-      console.log("cim==>", cimMessage);
-      this._httpService.startOutboundConversation(cimMessage).subscribe(
-        (e) => {},
-        (err) => {
-          this._sharedService.Interceptor(err.error, "err");
-          console.error("Error Starting Outbound Conversation", err);
-        }
-      );
+          (error) => {
+            console.log("erro.staus",error)
+
+            if(error.error.status=='NOT_FOUND')
+            {
+              this._snackBarService.open(this._translateService.instant("snackbar.Default-Outbound-Channel-Not-Found-for-channelType")+" "+channelTypeName, "err");
+            }
+            else
+            {
+            this._sharedService.Interceptor(error.error, "err");
+            }
+            console.error("Error Starting Outbound Conversation", error);
+          }
+        );
+      }
+      else{
+        console.error("error getting channel types from local storage",channelTypes)
+      }
+      } catch (e) {
+
+        console.error("Error occurs",e)
+      }
+      
     }
   }
 

@@ -57,10 +57,14 @@ export class InteractionsComponent implements OnInit {
       let scrollTop = scroller.scrollTop;
       let percent = Math.floor((scrollTop / scrollHeight) * 100);
       this.currentScrollPosition = percent;
-
+      if(percent>98.5)
+      {
+        this.downTheScrollAfterMilliSecs(0, "smooth");
+      }
       if (percent > 80) {
         this.showNewMessageNotif = false;
       }
+      
     });
   }
 
@@ -118,9 +122,9 @@ export class InteractionsComponent implements OnInit {
       this.dispayVideoPIP = false;
     }
     this.convers = this.conversation.messages;
-    // setTimeout(() => {
-    //   new EmojiPicker();
-    // }, 500);
+    setTimeout(() => {
+      new EmojiPicker();
+    }, 500);
 
     this.conversationSettings = this._sharedService.conversationSettings;
     this.loadLabels();
@@ -255,7 +259,7 @@ export class InteractionsComponent implements OnInit {
   getLatestCustomerMessage() {
     for (let index = this.conversation.messages.length - 1; index >= 0; index--) {
       const message = this.conversation.messages[index];
-      if (message.header.sender.type.toLowerCase() == "customer") {
+      if (message.header.sender.type.toLowerCase() == "customer" || (message.header.sender.type.toLowerCase() == "agent" && message.header.sender.id!== this.conversation.topicParticipant.participant.keycloakUser.id)) {
         return message;
       }
     }
@@ -493,7 +497,6 @@ export class InteractionsComponent implements OnInit {
       if (changes.changeDetecter.currentValue.header.sender.id == this._cacheService.agent.id) {
         this.downTheScrollAfterMilliSecs(50, "smooth");
       } else {
-        console.log("position", this.currentScrollPosition);
         if (this.currentScrollPosition < 95) {
           this.showNewMessageNotif = true;
         } else {

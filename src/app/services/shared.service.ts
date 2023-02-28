@@ -70,6 +70,7 @@ export class sharedService {
     array.splice(index, 1);
   }
 
+  
   setChannelIcons(channelTypes) {
     this.channelTypeList = channelTypes;
     try {

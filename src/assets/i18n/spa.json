@@ -1,6 +1,7 @@
 {
   "snackbar":
   {
+    "Default-Outbound-Channel-Not-Found-for-channelType":"Default Outbound Channel Not Found for channelType_spa",
     "unable-to-connect-to-chat":"unable to connect to chat_spa",
     "error-on-logout-request":"'error on logout request'_spa",
     "Agent-Logged-Out-Successfully":"Agent Logged Out Successfully_spa",
