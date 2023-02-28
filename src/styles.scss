@@ -3367,12 +3367,18 @@ em{
     right: inherit !important;
     left: 0;
   }
+  .quoted-message-selected-area .message-selected-inner{
+    text-align: right;
+  }
   .combined-area .chat-message-content{
     padding-right: 10px !important;
     padding-left: 30px !important;
-    p{
-      padding-left: 3em;
+    .plain-text-p {
+      padding-left: 1em;
     }
+    //p{
+    //  padding-left: 3em;
+    //}
   }
 
  button.user_settings{
@@ -3427,6 +3433,7 @@ em{
       }
     }
   }
+
 }
 mat-select{
   .mat-select-arrow {
