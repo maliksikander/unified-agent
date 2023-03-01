@@ -139,7 +139,6 @@
             <ul class="channel-list">
               <mat-accordion>
                 <li class="multi-channel-list" *ngFor="let channel of mediaChannelData">
-                  <p>{{mediaChannelData | json}}</p>
                   <mat-expansion-panel [hideToggle]="!channel.channelList">
                     <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                       <div class="channel-icon-area web-channel-inner">

@@ -57,14 +57,9 @@ export class InteractionsComponent implements OnInit {
       let scrollTop = scroller.scrollTop;
       let percent = Math.floor((scrollTop / scrollHeight) * 100);
       this.currentScrollPosition = percent;
-      if(percent>98.5)
-      {
-        this.downTheScrollAfterMilliSecs(0, "smooth");
-      }
       if (percent > 80) {
         this.showNewMessageNotif = false;
       }
-      
     });
   }
 
@@ -74,7 +69,6 @@ export class InteractionsComponent implements OnInit {
   currentScrollPosition: number = 100;
 
   isBarOPened = false;
-
   unidentified = true;
   isConnected = true;
   popTitle = "Notes";
@@ -115,16 +109,16 @@ export class InteractionsComponent implements OnInit {
     private _finesseService: finesseService,
     private snackBar: MatSnackBar,
     private _translateService: TranslateService
-  ) { }
+  ) {}
   ngOnInit() {
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
     }
     this.convers = this.conversation.messages;
-    setTimeout(() => {
-      new EmojiPicker();
-    }, 500);
+    // setTimeout(() => {
+    //   new EmojiPicker();
+    // }, 500);
 
     this.conversationSettings = this._sharedService.conversationSettings;
     this.loadLabels();
@@ -140,6 +134,19 @@ export class InteractionsComponent implements OnInit {
     if (this.selectedLanguage == "ar") {
       this.isRTLView = true;
     }
+
+    this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
+
+      if(e.msg=='seenReportAdded')
+      {
+        if (this.currentScrollPosition > 90) {
+          this.downTheScrollAfterMilliSecs(0, "smooth");
+        }
+      }
+    });
+
+
+    
   }
   loadLabels() {
     this._httpService.getLabels().subscribe(
@@ -152,7 +159,7 @@ export class InteractionsComponent implements OnInit {
       }
     );
   }
-  emoji() { }
+  emoji() {}
 
   onSend(text) {
     text = text.trim();
@@ -259,7 +266,11 @@ export class InteractionsComponent implements OnInit {
   getLatestCustomerMessage() {
     for (let index = this.conversation.messages.length - 1; index >= 0; index--) {
       const message = this.conversation.messages[index];
-      if (message.header.sender.type.toLowerCase() == "customer" || (message.header.sender.type.toLowerCase() == "agent" && message.header.sender.id!== this.conversation.topicParticipant.participant.keycloakUser.id)) {
+      if (
+        message.header.sender.type.toLowerCase() == "customer" ||
+        (message.header.sender.type.toLowerCase() == "agent" &&
+          message.header.sender.id !== this.conversation.topicParticipant.participant.keycloakUser.id)
+      ) {
         return message;
       }
     }
@@ -296,7 +307,13 @@ export class InteractionsComponent implements OnInit {
         }
       };
 
-      let event: any = new CimEvent("MESSAGE_DELIVERY_NOTIFICATION", "NOTIFICATION", this.conversation.conversationId, data, this.conversation.customer);
+      let event: any = new CimEvent(
+        "MESSAGE_DELIVERY_NOTIFICATION",
+        "NOTIFICATION",
+        this.conversation.conversationId,
+        data,
+        this.conversation.customer
+      );
 
       this._socketService.emit("publishCimEvent", {
         cimEvent: event,
@@ -447,7 +464,10 @@ export class InteractionsComponent implements OnInit {
 
     let voiceSession;
     for (let i = 0; i <= this.conversation.activeChannelSessions.length; i++) {
-      if (this.conversation.activeChannelSessions[i] && this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "voice") {
+      if (
+        this.conversation.activeChannelSessions[i] &&
+        this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "voice"
+      ) {
         // console.log("check==>", this.conversation.activeChannelSessions[i].id);
         let cacheId = `${this._cacheService.agent.id}:${this.conversation.activeChannelSessions[i].id}`;
         // console.log("check1==>", cacheId);
@@ -458,7 +478,6 @@ export class InteractionsComponent implements OnInit {
         }
       }
     }
-
 
     console.log("VoiceSession==>", voiceSession);
     if (voiceSession) {
@@ -479,7 +498,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -487,12 +506,11 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // console.log("changes", changes);
     if (changes.changeDetecter && changes.changeDetecter.currentValue && this.conversation.index == this._sharedService.matCurrentTabIndex) {
       if (changes.changeDetecter.currentValue.header.sender.id == this._cacheService.agent.id) {
         this.downTheScrollAfterMilliSecs(50, "smooth");
@@ -573,7 +591,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => { });
+    dialogRef.afterClosed().subscribe((result: any) => {});
   }
   externalfilePreviewOpener(url, fileName, type) {
     const dialogRef = this.dialog.open(FilePreviewComponent, {
@@ -583,11 +601,11 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => { });
+    dialogRef.afterClosed().subscribe((result: any) => {});
   }
 
   uploadFile(files) {
-    let availableExtentions: any = ["txt", "png", "jpg", "jpeg", "pdf", "ppt", "xlsx", "xls", "doc", "docx", "rtf", "mp4"];
+    let availableExtentions: any = ["txt", "png", "jpg", "jpeg", "pdf", "ppt", "xlsx", "xls", "doc", "docx", "rtf", "mp4", "mp3"];
     let ln = files.length;
     if (ln > 0) {
       for (var i = 0; i < ln; i++) {

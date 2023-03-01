@@ -365,11 +365,7 @@
                     ? 'low-opacity'
                     : message.header.status == 'failed'
                     ? 'failed'
-                    : message.body.isWhisper || (message.header.sender | getSenderId) != conversation.topicParticipant.participant.keycloakUser.id
-                    ?''
-                    :message.header.status == 'sent'
-                    ? 'delivered'
-                    : 'seen'
+                    :''
                 }}  {{ message.body.type | lowercase }} {{ message.header.replyToMessageId != null ? 'quoted-message-main' : '' }} {{
                   message.header.sender.type | lowercase
                 }} {{ fullPostView && message.id == selectedCommentId ? 'full-post-view' : '' }}"
@@ -2106,7 +2102,7 @@
               "
             >
               <input
-                accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx,.mp4"
+                accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx,.mp4,mp3"
                 #myFileInput
                 type="file"
                 (change)="uploadFile($event.target.files); $event.target.value = ''"

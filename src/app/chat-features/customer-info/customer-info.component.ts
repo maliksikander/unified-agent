@@ -278,10 +278,8 @@ export class CustomerInfoComponent implements OnInit {
         channelTypes = JSON.parse(localStorage.getItem("channelTypes"));
         if (channelTypes) {
           channelType = channelTypes.find((e) => {
-            console.log("e.name",e.name)
             return e.name == channelTypeName;
           });
-        console.log("channel", channelType)
         this._httpService.getDefaultOutboundChannel(channelType.id).subscribe(
           (data) => {
             if (data) {
@@ -321,7 +319,7 @@ export class CustomerInfoComponent implements OnInit {
             }
           },
           (error) => {
-            console.log("erro.staus",error)
+            console.error("erro.staus",error)
 
             if(error.error.status=='NOT_FOUND')
             {

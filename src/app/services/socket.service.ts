@@ -198,7 +198,7 @@ export class socketService {
     });
 
     this.socket.on("onTopicData", (res: any, callback: any) => {
-      console.log("onTopicData", res);
+      console.log("onTopicData", JSON.parse(JSON.stringify(res)));
       try {
         this.onTopicData(res.topicData, res.conversationId, res.taskId);
         if (callback) {
@@ -309,10 +309,10 @@ export class socketService {
   }
 
   onCimEventHandler(cimEvent, conversationId) {
-    console.log("cim event ", cimEvent);
+    console.log("cim event ", JSON.parse(JSON.stringify(cimEvent)));
 
     if (cimEvent.channelSession) {
-      if (cimEvent.data.header) {
+      if (cimEvent.data && cimEvent.data.header) {
         cimEvent.data.header.channelSession = cimEvent.channelSession;
       }
     }
@@ -451,7 +451,6 @@ export class socketService {
         (event.name.toLowerCase() == "message_delivery_notification" || event.name.toLowerCase() == "customer_message") &&
         event.data.header.sender.type.toLowerCase() == "connector"
       ) {
-        console.log("detected", event);
         event.data.header.sender.senderName = event.data.header.customer.firstName;
         event.data.header.sender.id = event.data.header.customer._id;
         event.data.header.sender.type = "CUSTOMER";
@@ -592,10 +591,8 @@ export class socketService {
   }
 
   addParticipantsToTheLastSeenMessage(conversation, events) {
-    console.log("addm called");
-    let alreadyEntered = [];
+    let alreadyEnteredSenders = [];
     for (let i = events.length - 1; i > 0; i--) {
-      console.log("events in addm", events[i]);
       if (
         events[i].name.toLowerCase() == "message_delivery_notification" &&
         events[i].data.body.status.toLowerCase() == "read" &&
@@ -611,15 +608,15 @@ export class socketService {
             (events[j].name.toLowerCase() == "agent_message" ||
               (events[j].name.toLowerCase() == "whisper_message" && events[i].data.header.sender.type.toLowerCase() == "agent"))
           ) {
-            let present = alreadyEntered.findIndex((e) => e.id == events[i].data.header.sender.id);
-            if (present < 0) {
+            let senderPresent = alreadyEnteredSenders.findIndex((e) => e.id == events[i].data.header.sender.id);
+            if (senderPresent < 0) {
               if (events[j].data.header.seenStatuses) {
                 events[j].data.header.seenStatuses.push(events[i].data.header.sender);
-                alreadyEntered.push(events[i].data.header.sender);
+                alreadyEnteredSenders.push(events[i].data.header.sender);
               } else {
                 events[j].data.header["seenStatuses"] = [];
                 events[j].data.header.seenStatuses.push(events[i].data.header.sender);
-                alreadyEntered.push(events[i].data.header.sender);
+                alreadyEnteredSenders.push(events[i].data.header.sender);
               }
             }
           }
@@ -644,7 +641,6 @@ export class socketService {
     for (let index = events.length - 1; index >= 0; index--) {
       let event = events[index];
       if (event.name.toLowerCase() == "message_delivery_notification") {
-
         deliveryEvents.push(event);
         flag = true;
       }
@@ -878,33 +874,27 @@ export class socketService {
   }
 
   handleDeliveryNotification(cimEvent, conversationId) {
-    let conversation = null;
+    let conversation = this.conversations.find((e) => {
+      return e.conversationId == conversationId;
+    });
     if (
-      (cimEvent.data.header.sender.type.toLowerCase() == "connector" && cimEvent.data.body.status.toLowerCase() == "read") ||
-      (cimEvent.data.header.sender.type.toLowerCase() == "agent" && cimEvent.data.body.status.toLowerCase() == "read")
+      conversation &&
+      cimEvent.data.header.sender.id != conversation.topicParticipant.participant.keycloakUser.id &&
+      ((cimEvent.data.header.sender.type.toLowerCase() == "connector" && cimEvent.data.body.status.toLowerCase() == "read") ||
+        (cimEvent.data.header.sender.type.toLowerCase() == "agent" && cimEvent.data.body.status.toLowerCase() == "read"))
     ) {
-      conversation = this.conversations.find((e) => {
-        return e.conversationId == conversationId;
-      });
-
-      if (conversation) {
-        if (cimEvent.data.header.sender.type.toLowerCase() == "connector") {
-          cimEvent.data.header.sender.id = cimEvent.data.header.customer._id;
-          cimEvent.data.header.sender.type = "CUSTOMER";
-          cimEvent.data.header.sender.senderName = cimEvent.data.header.customer.firstName;
-        }
-        this.addSeenPartiestolastCustomerMessage(conversation, cimEvent.data.body.messageId, cimEvent.data.header.sender);
+      if (cimEvent.data.header.sender.type.toLowerCase() == "connector") {
+        cimEvent.data.header.sender.id = cimEvent.data.header.customer._id;
+        cimEvent.data.header.sender.type = "CUSTOMER";
+        cimEvent.data.header.sender.senderName = cimEvent.data.header.customer.firstName;
       }
+      this.addParticipantsToLastSeenMessage(conversation, cimEvent.data.body.messageId, cimEvent.data.header.sender);
     }
     if (cimEvent.data.header.sender.type.toLowerCase() == "customer" && cimEvent.data.body.status.toLowerCase() == "read") {
       if (conversation) {
         this.markAgentMessagesToSeenTillId(conversation.messages, cimEvent.data.body.messageId, cimEvent.data.header.customer);
       }
     } else if (cimEvent.data.header.sender.type.toLowerCase() == "system" && cimEvent.data.body.status.toLowerCase() == "failed") {
-      let conversation = this.conversations.find((e) => {
-        return e.conversationId == conversationId;
-      });
-
       if (conversation) {
         const selectedMessage = conversation.messages.find((message) => {
           return message.id == cimEvent.data.body.messageId;
@@ -928,30 +918,16 @@ export class socketService {
         }
       }
     });
-    // if(!messages[index].header.seenStatuses)
-    // {
-    //    messages[index].header["seenStatuses"]=[]
-    //    console.log("type is ",typeof(messages[index].header.seenStatuses))
-
-    // }
-    // var present = messages[index].header.seenStatuses.findIndex(x => x._id===sender._id);
-    // console.log("present is ",present)
-
-    // if(present===-1)
-    // {
-
-    //   messages[index].header.seenStatuses.push(sender);
-    //   console.log("goes is ",typeof(messages[index].header.seenStatuses))
-    // }
-    // console.log("message is ",messages[index])
   }
-  addSeenPartiestolastCustomerMessage(conversation, id, sender) {
+  addParticipantsToLastSeenMessage(conversation, id, sender) {
     // find index of the message for the delivery notification
     let messages = conversation.messages;
-    let index;
+    let index = -1;
     // let index = messages[index].header.sender.findIndex((message) => message.id == id);
-    for (let i = messages.length - 1; i > 0; i--) {
+    for (let i = messages.length - 1; i >= 0; i--) {
       if (
+        messages[i].header &&
+        (!messages[i].header.status || messages[i].header.status != "failed") &&
         messages[i].header.sender.id == conversation.topicParticipant.participant.keycloakUser.id &&
         (!messages[i].body.isWhisper || sender.type.toLowerCase() != "customer")
       ) {
@@ -959,18 +935,31 @@ export class socketService {
         break;
       }
     }
-    if (!messages[index].header.seenStatuses) {
-      messages[index].header["seenStatuses"] = [];
-    }
-    var present = messages[index].header.seenStatuses.findIndex((x) => x.id === sender.id);
-
-    if (sender.id != conversation.topicParticipant.participant.keycloakUser.id && present == -1) {
-      messages[index].header.seenStatuses.push(sender);
-      for (let k = index - 1; k >= 0; k--) {
-        if (messages[k].header.sender.id == conversation.topicParticipant.participant.keycloakUser.id && messages[k].header.seenStatuses) {
-          const indx = messages[k].header.seenStatuses.findIndex((ser) => ser.id == sender.id);
-          if (indx > -1) {
-            messages[k].header.seenStatuses.splice(indx, 1);
+    var senderPresent = -1;
+    if (index != -1) {
+      if (!messages[index].header.seenStatuses) {
+        messages[index].header["seenStatuses"] = [];
+      } else {
+        senderPresent = messages[index].header.seenStatuses.findIndex((x) => x.id === sender.id);
+      }
+      //if not exist already add in the list
+      if (senderPresent == -1) {
+        messages[index].header.seenStatuses.push(sender);
+        //Move bar to 100% if it is greater than 97 %
+        this._sharedService.serviceChangeMessage({ msg: "seenReportAdded", data: null });
+        //if sender pushed to list remove the sender from above messages if found
+        if (index > 0) {
+          for (let k = index - 1; k >= 0; k--) {
+            if (
+              messages[k].header &&
+              messages[k].header.sender.id == conversation.topicParticipant.participant.keycloakUser.id &&
+              messages[k].header.seenStatuses
+            ) {
+              const indx = messages[k].header.seenStatuses.findIndex((ser) => ser.id == sender.id);
+              if (indx > -1) {
+                messages[k].header.seenStatuses.splice(indx, 1);
+              }
+            }
           }
         }
       }
@@ -1240,7 +1229,6 @@ export class socketService {
           //  this.snackErrorMessage("Unable to link profile");
         }
         //  this._socketService.linkCustomerWithInteraction(customerId, this.conversationId);
-        console.log(selectedCustomer);
       } else {
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-link-customer"), "err");
       }
@@ -1282,7 +1270,6 @@ export class socketService {
           // updating customer topic
           this._httpService.updateConversationCustomer(conversationId, selectedCustomer).subscribe(
             (e) => {
-              console.log("update topic success");
               if (addChannelIdentifier && toBeDeletedCustomerId != null) {
                 let requestPayload = { currentCustomer: topicCustomer, newCustomer: selectedCustomer };
                 this.updatePastConversation(requestPayload, toBeDeletedCustomerId);
@@ -1306,7 +1293,6 @@ export class socketService {
       // updating customer topic
       this._httpService.updateConversationCustomer(conversationId, selectedCustomer).subscribe(
         (e) => {
-          console.log("update topic success");
           if (toBeDeletedCustomerId != null) {
             this.checkPastActivitiesAndDeleteCustomer(topicCustomer._id);
           } else {
