@@ -386,6 +386,7 @@ export class socketService {
         this.removeChannelSession(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "associated_customer_changed") {
         this.changeTopicCustomer(cimEvent, conversationId);
+        console.log("Event received"+cimEvent)
       } else if (cimEvent.name.toLowerCase() == "agent_subscribed") {
         this.handleAgentSubscription(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
@@ -752,12 +753,14 @@ export class socketService {
 
   changeTopicCustomer(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
+      //console.log("this is conversation id"+e.conversationId);
       return e.conversationId == conversationId;
     });
 
-    if (conversation) {
+    if (conversation )  {
       conversation.customer = cimEvent.data;
-      this._snackbarService.open(this._translateService.instant("snackbar.Profile-linked-successfully"), "succ");
+      //console.log("this is conversation of profile linked suceessfully");
+      //this._snackbarService.open(this._translateService.instant("snackbar.Profile-linked-successfully"), "succ");
     }
   }
 
@@ -1266,7 +1269,7 @@ export class socketService {
       this._httpService.updateCustomerById(selectedCustomerId, selectedCustomer).subscribe(
         (e) => {
           selectedCustomer["_id"] = selectedCustomerId;
-
+         // this._snackbarService.open(this._translateService.instant("snackbar.Profile-linked-successfully"), "succ");
           // updating customer topic
           this._httpService.updateConversationCustomer(conversationId, selectedCustomer).subscribe(
             (e) => {
@@ -1305,6 +1308,7 @@ export class socketService {
         }
       );
     }
+    this._snackbarService.open(this._translateService.instant("snackbar.Profile-linked-successfully"), "succ");
   }
 
   /**

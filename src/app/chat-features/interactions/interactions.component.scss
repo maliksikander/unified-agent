@@ -1451,6 +1451,12 @@
       font-size: 10px;
       color: #707070;
     }
+    &.whisper-tabs{
+      label.count-reply {
+        right: 7px;
+        top: -23px;
+      }
+    }
 
     .mat-button {
       margin: 0;
@@ -1504,7 +1510,7 @@
     //top: 8px;
     left: -10px;
     background: transparent;
-    transform: translate(0, 0);
+    transform: translate(0, 2px);
     max-height: 350px !important;
   }
 
@@ -2803,8 +2809,8 @@ vg-controls.hide {
 //Whisper mode
 .whisper-selection {
   position: absolute;
-  right: 0;
-  top: -2px;
+  top: -29px;
+  right: 75px;
   color: #9d9d9d;
   padding: 0;
 
@@ -3643,7 +3649,7 @@ vg-controls.hide {
 .right-direction {
   #chat-content {
     .chat-message-content {
-      direction: rtl;
+      //direction: rtl;
       text-align: right;
 
       .message-stamp {
@@ -3686,6 +3692,10 @@ vg-controls.hide {
   }
 
   .chat-footer {
+
+    .chat-composer-trigger {
+      width: 60px;
+    }
     textarea {
       margin-left: inherit !important;
       margin-right: 40px !important;

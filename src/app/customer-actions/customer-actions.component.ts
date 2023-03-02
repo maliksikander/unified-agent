@@ -307,6 +307,7 @@ export class CustomerActionsComponent implements OnInit {
     this._httpService.updateCustomerById(id, customerObj).subscribe(
       (e) => {
         this.dialogRef.close({ event: "refresh", data: this.labelList });
+        //console.log("event check value")
         this._sharedService.Interceptor(this._translateService.instant("snackbar.Customer-updated!"), "succ");
       },
       (error) => {
