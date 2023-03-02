@@ -89,12 +89,12 @@ export class socketService {
             "err"
           );
         }
-      } catch (err) {}
+      } catch (err) { }
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -128,7 +128,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -285,7 +285,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) {}
+    } catch (err) { }
   }
 
   listen(eventName: string) {
@@ -414,7 +414,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._snackbarService.open(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"), "err");
     alert(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"));
@@ -836,7 +836,9 @@ export class socketService {
 
     if (conversation) {
       let message = this.createSystemNotificationMessage(cimEvent);
-      conversation.messages.push(message);
+      if (message) {
+        conversation.messages.push(message);
+      }
 
       let removedChannelSessionIndex = null;
       let removedChannelSession;
@@ -1033,7 +1035,9 @@ export class socketService {
 
       conversation.activeChannelSessions = conversation.activeChannelSessions.concat([]);
 
-      conversation.messages.push(message);
+      if (message) {
+        conversation.messages.push(message);
+      }
 
       conversation.messageComposerState = this.isNonVoiceChannelSessionExists(conversation.activeChannelSessions);
     } else {
@@ -1084,7 +1088,10 @@ export class socketService {
 
       let message = this.createSystemNotificationMessage(cimEvent);
 
-      conversation.messages.push(message);
+      if (message) {
+
+        conversation.messages.push(message);
+      }
     }
   }
 
@@ -1123,7 +1130,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
@@ -1193,13 +1200,13 @@ export class socketService {
                     console.log("limit exceed");
                     this._snackbarService.open(
                       this._translateService.instant("snackbar.The-conversation-is-going-to-linking-with") +
-                        selectedCustomer.firstName +
-                        this._translateService.instant("snackbar.However-the-channel-identifier") +
-                        channelIdentifier +
-                        this._translateService.instant("snackbar.can-not-be-added-in") +
-                        selectedCustomer.firstName +
-                        attr +
-                        this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
+                      selectedCustomer.firstName +
+                      this._translateService.instant("snackbar.However-the-channel-identifier") +
+                      channelIdentifier +
+                      this._translateService.instant("snackbar.can-not-be-added-in") +
+                      selectedCustomer.firstName +
+                      attr +
+                      this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
                       "succ",
                       20000,
                       "Ok"
@@ -1400,18 +1407,22 @@ export class socketService {
   }
 
   createSystemNotificationMessage(cimEvent) {
-    let message: any = {
+    let CimMessage: any = {
       id: "",
       header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
       body: { markdownText: "", type: "" }
     };
 
-    message.id = uuidv4();
-    message.header.timestamp = cimEvent.timestamp;
-    message.body.type = "systemNotification";
-    message.header.sender.type = "system";
+    CimMessage.id = uuidv4();
+    CimMessage.header.timestamp = cimEvent.timestamp;
+    CimMessage.body.type = "systemNotification";
+    CimMessage.header.sender.type = "system";
+
+    let message = undefined;
 
     if (cimEvent.name.toLowerCase() == "channel_session_started") {
+
+      message = CimMessage;
       // if (cimEvent.data.body) {
       //   message.body["displayText"] = cimEvent.data.header.channelSession.channel.channelType.name;
       // } else {
@@ -1422,6 +1433,7 @@ export class socketService {
         message.body.markdownText = data;
       });
     } else if (cimEvent.name.toLowerCase() == "channel_session_ended") {
+      message = CimMessage;
       message.body["displayText"] = cimEvent.data.channel.channelType.name;
 
       this._translateService.stream("socket-service.session-ended").subscribe((data: string) => {
@@ -1429,6 +1441,8 @@ export class socketService {
       });
       message.body.markdownText = "session ended";
     } else if (cimEvent.name.toLowerCase() == "call_leg_ended" || cimEvent.name.toLowerCase() == "voice_activity") {
+
+      message = CimMessage;
       // console.log("test==>")
       message.body.type = "VOICE";
       // message.body["displayText"] = cimEvent.data.channel.channelType.name;
@@ -1436,17 +1450,21 @@ export class socketService {
       message.body.data = cimEvent.data;
     }
     if (cimEvent.name.toLowerCase() == "agent_subscribed") {
+
+      message = CimMessage;
       message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
       this._translateService.stream("socket-service.has-joined-the-conversation").subscribe((data: string) => {
         message.body.markdownText = data;
       });
     } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
+      message = CimMessage;
       message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
 
       this._translateService.stream("socket-service.left-the-conversation").subscribe((data: string) => {
         message.body.markdownText = data;
       });
     } else if (cimEvent.name.toLowerCase() == "task_enqueued") {
+      message = CimMessage;
       let mode;
       if (cimEvent.data.task.type.mode.toLowerCase() == "agent") {
         mode = "Agent";
@@ -1474,6 +1492,7 @@ export class socketService {
         message = null;
       }
     } else if (cimEvent.name.toLowerCase() == "no_agent_available") {
+      message = CimMessage;
       let mode;
       let direction;
 
@@ -1511,6 +1530,7 @@ export class socketService {
         cimEvent.data.state.reasonCode &&
         cimEvent.data.state.reasonCode.toLowerCase() == "force_closed"
       ) {
+        message = CimMessage;
         message.body["displayText"] = "";
         this._translateService.stream("socket-service.conference-request-has-cancelled").subscribe((data: string) => {
           message.body.markdownText = data;
