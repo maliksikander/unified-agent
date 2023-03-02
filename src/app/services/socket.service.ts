@@ -386,7 +386,6 @@ export class socketService {
         this.removeChannelSession(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "associated_customer_changed") {
         this.changeTopicCustomer(cimEvent, conversationId);
-        console.log("Event received"+cimEvent)
       } else if (cimEvent.name.toLowerCase() == "agent_subscribed") {
         this.handleAgentSubscription(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
@@ -757,7 +756,7 @@ export class socketService {
       return e.conversationId == conversationId;
     });
 
-    if (conversation )  {
+    if (conversation) {
       conversation.customer = cimEvent.data;
       //console.log("this is conversation of profile linked suceessfully");
       //this._snackbarService.open(this._translateService.instant("snackbar.Profile-linked-successfully"), "succ");
@@ -889,7 +888,8 @@ export class socketService {
       if (cimEvent.data.header.sender.type.toLowerCase() == "connector") {
         cimEvent.data.header.sender.id = cimEvent.data.header.customer._id;
         cimEvent.data.header.sender.type = "CUSTOMER";
-        cimEvent.data.header.sender.senderName = cimEvent.data.header.customer.firstName;
+        cimEvent.data.header.sender.senderName =
+          cimEvent.data.header.customer.firstName + " " + (cimEvent.data.header.customer.lastName ? cimEvent.data.header.customer.lastName : "");
       }
       this.addParticipantsToLastSeenMessage(conversation, cimEvent.data.body.messageId, cimEvent.data.header.sender);
     }
@@ -1269,7 +1269,7 @@ export class socketService {
       this._httpService.updateCustomerById(selectedCustomerId, selectedCustomer).subscribe(
         (e) => {
           selectedCustomer["_id"] = selectedCustomerId;
-         // this._snackbarService.open(this._translateService.instant("snackbar.Profile-linked-successfully"), "succ");
+          // this._snackbarService.open(this._translateService.instant("snackbar.Profile-linked-successfully"), "succ");
           // updating customer topic
           this._httpService.updateConversationCustomer(conversationId, selectedCustomer).subscribe(
             (e) => {

@@ -519,8 +519,7 @@ export class InteractionsComponent implements OnInit {
           this.showNewMessageNotif = true;
         } else {
           this.downTheScrollAfterMilliSecs(50, "smooth");
-
-          if (changes.changeDetecter.currentValue.header.sender.type.toLowerCase() == "customer") {
+          if (changes.changeDetecter.currentValue.header.sender.type.toLowerCase() == "customer" || changes.changeDetecter.currentValue.header.sender.type.toLowerCase() == "agent") {
             this.publishMessageSeenEvent(changes.changeDetecter.currentValue);
           }
         }
