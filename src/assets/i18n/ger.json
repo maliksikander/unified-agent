@@ -2,7 +2,7 @@
   "snackbar":
   {
     "Default-Outbound-Channel-Not-Found-for-channelType":"Default Outbound Channel Not Found for channelType_ger",
-    "unable-to-connect-to-chat_ger":"unable to connect to chat",
+    "unable-to-connect-to-chat":"unable to connect to chat_ger",
     "error-on-logout-request":"'error on logout request'_ger",
     "Agent-Logged-Out-Successfully":"Agent Logged Out Successfully_ger",
     "Requested-session-not-available-at-the-moment":"Requested session not available at the moment_ger",
@@ -35,6 +35,8 @@
     "Unable-to-link-customer":"Unable to link customer_ger",
     "Error-Getting-Active-Chats-with-Agents":"Error Getting Active Chats with Agents_ger",
     "Error-Getting-Active-Chats-with-Bots":"Error Getting Active Chats with Bots_ger",
+    "Error-Getting-Active-Agent-Details":"Error Getting Active Agent Details",
+    "Error-Getting-MRDs-List":"Error Getting MRDs List",
     "Channel-session-not-found":"Channel session not found_ger",
     "Access-Token-or-FB-Host-API-for-FB-is-missing":"Access Token or FB Host API for FB is missing_ger",
     "No-Conversation-Found":"No Conversation Found_ger",
@@ -77,15 +79,6 @@
     "Error-Getting-Queues-List":"Error Getting Queues List_ger",
     "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_ger"
   },
-  "socket-service":{
-    "has-joined-the-conversation":"has joined the conversation_ger",
-    "session-started":"session started_ger",
-    "session-ended":"session ended_ger",
-    "left-the-conversation":"left the conversation_ger",
-    "transfer-request-has-been-placed-by":"transfer request has been placed by_ger",
-    "conference-request-has-been-placed-by":"conference request has been placed by_ger",
-    "No-agent-is-available-for":"No agent is available for_ger"
-   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ger",
     "customer-list-view": "Customer List View_ger",
@@ -312,13 +305,23 @@
     "call-center-experts": "Your Call Center Experts._ger",
     "": ""
   },
+  "socket-service":{
+    "has-joined-the-conversation":"has joined the conversation_ger",
+   "session-started":"session started_ger",
+   "session-ended":"session ended_ger",
+   "left-the-conversation":"left the conversation_ger",
+   "transfer-request-has-been-placed-by":"transfer request has been placed by_ger",
+   "conference-request-has-been-placed-by":"conference request has been placed by_ger",
+   "No-agent-is-available-for":"No agent is available for_ger",
+   "conference-request-has-cancelled": "Conference request has been cancelled_ger"
+   },
   "globals": {
     "chat": "Chat_ger",
     "conference": "conference_ger",
     "transfer": "transfer_ger",
-    "columns":"Columns_ger",
     "to": "to_ger",
     "yes": "Yes_ger",
+    "columns":"Columns_ger",
     "page-not-found": "The page you are looking for is not found_ger",
     "agents": "agents_ger",
     "agent": "agent_ger",
@@ -345,6 +348,7 @@
     "no-data-available": "No Data Available_ger",
     "Confirm": "Confirm_ger",
     "not-applicable": "N/A_ger",
+    "channel-identifier": "Channel Identifier",
     "no-new-conversation": "No New Conversation_ger",
     "state":"State_ger",
     "UNIDENTIFIED-CUSTOMER":"UNIDENTIFIED CUSTOMER_ger",
@@ -357,7 +361,6 @@
     "agent-id":"Agent Id_ger",
     "channel":"channel_ger",
     "direction":"direction_ger"
-
   },
   "pull-mode": {
     "all-list": "All List_ger",
@@ -402,6 +405,7 @@
     "search": "search_ger",
     "title": "Title_ger",
     "agent": "Agent_ger",
+    "bot":"Bot",
     "team": "Team_ger",
     "time": "Time_ger",
     "channel": "Channel_ger",
@@ -436,6 +440,8 @@
     "cancel": "Cancel_ger",
     "done": "Done_ger",
     "state": "State_ger",
+    "conversation-direction":"Conversation Direction",
+    "origin":"Origin",
     "joined":"joined_ger",
     "active-conversation":"active conversation_ger",
     "mrd-states":"mrd states_ger",

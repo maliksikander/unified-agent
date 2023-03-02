@@ -392,6 +392,8 @@ export class socketService {
         this.handleAgentSubscription(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "task_enqueued") {
         this.handleTaskEnqueuedEvent(cimEvent, conversationId);
+      } else if (cimEvent.name.toLowerCase() == "task_state_changed") {
+        this.handleTaskStateChangedEvent(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "no_agent_available") {
         this.handleNoAgentEvent(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "message_delivery_notification") {
@@ -479,7 +481,8 @@ export class socketService {
           "channel_session_started",
           "channel_session_ended",
           "agent_subscribed",
-          "agent_unsubscribed"
+          "agent_unsubscribed",
+          "task_state_changed"
         ].includes(event.name.toLowerCase())
       ) {
         let message = this.createSystemNotificationMessage(event);
@@ -811,6 +814,19 @@ export class socketService {
       conversationId: conversationId
     });
     this._snackbarService.open(this._translateService.instant("snackbar.CUSTOMER-LINKED-SUCCESSFULLY"), "succ");
+  }
+
+  handleTaskStateChangedEvent(cimEvent, conversationId) {
+    let conversation = this.conversations.find((e) => {
+      return e.conversationId == conversationId;
+    });
+
+    if (conversation) {
+      let message = this.createSystemNotificationMessage(cimEvent);
+      if (message) {
+        conversation.messages.push(message);
+      }
+    }
   }
 
   removeChannelSession(cimEvent, conversationId) {
@@ -1488,6 +1504,17 @@ export class socketService {
         message.body.markdownText = string;
       } else {
         message = null;
+      }
+    } else if (cimEvent.name.toLowerCase() == "task_state_changed") {
+      if (
+        cimEvent.data.type.direction.toLowerCase() == "direct_conference" &&
+        cimEvent.data.state.reasonCode &&
+        cimEvent.data.state.reasonCode.toLowerCase() == "force_closed"
+      ) {
+        message.body["displayText"] = "";
+        this._translateService.stream("socket-service.conference-request-has-cancelled").subscribe((data: string) => {
+          message.body.markdownText = data;
+        });
       }
     }
 

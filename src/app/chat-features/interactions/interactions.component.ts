@@ -146,7 +146,7 @@ export class InteractionsComponent implements OnInit {
     });
 
 
-    
+
   }
   loadLabels() {
     this._httpService.getLabels().subscribe(
@@ -779,6 +779,7 @@ export class InteractionsComponent implements OnInit {
             "agent_subscribed",
             "agent_unsubscribed",
             "call_leg_ended",
+            "task_state_changed",
             "voice_activity"
           ].includes(event.name.toLowerCase())
         ) {

@@ -35,6 +35,8 @@
     "Unable-to-link-customer":"Unable to link customer_spa",
     "Error-Getting-Active-Chats-with-Agents":"Error Getting Active Chats with Agents_spa",
     "Error-Getting-Active-Chats-with-Bots":"Error Getting Active Chats with Bots_spa",
+    "Error-Getting-Active-Agent-Details":"Error Getting Active Agent Details",
+    "Error-Getting-MRDs-List":"Error Getting MRDs List",
     "Channel-session-not-found":"Channel session not found_spa",
     "Access-Token-or-FB-Host-API-for-FB-is-missing":"Access Token or FB Host API for FB is missing_spa",
     "No-Conversation-Found":"No Conversation Found_spa",
@@ -74,8 +76,8 @@
     "Call-in-progress-sure-you-want-to-close-this-conversation":"Call in progress, Are you sure you want to close this conversation?_spa",
     "Transfer-request-placed-successfully":"Transfer request placed successfully_spa",
     "Conference-request-placed-successfully":"Conference request placed successfully_spa",
-    "Error-Getting-Queues-List":"Error Getting Queues List_ita",
-    "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_ita"
+    "Error-Getting-Queues-List":"Error Getting Queues List_spa",
+    "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_spa"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_spa",
@@ -222,7 +224,6 @@
       "apply": "Apply_spa",
       "notes": "Notes_spa",
       "New-Wrap-up": "New Wrap-up..._spa"
-
     }
   },
   "column-preferences": {
@@ -304,12 +305,23 @@
     "call-center-experts": "Your Call Center Experts._spa",
     "": ""
   },
+  "socket-service":{
+    "has-joined-the-conversation":"has joined the conversation_spa",
+   "session-started":"session started_spa",
+   "session-ended":"session ended_spa",
+   "left-the-conversation":"left the conversation_spa",
+   "transfer-request-has-been-placed-by":"transfer request has been placed by_spa",
+   "conference-request-has-been-placed-by":"conference request has been placed by_spa",
+   "No-agent-is-available-for":"No agent is available for_spa",
+   "conference-request-has-cancelled": "Conference request has been cancelled_spa"
+   },
   "globals": {
     "chat": "Chat_spa",
     "conference": "conference_spa",
     "transfer": "transfer_spa",
     "to": "to_spa",
     "yes": "Yes_spa",
+    "columns":"Columns_spa",
     "page-not-found": "The page you are looking for is not found_spa",
     "agents": "agents_spa",
     "agent": "agent_spa",
@@ -336,6 +348,7 @@
     "no-data-available": "No Data Available_spa",
     "Confirm": "Confirm_spa",
     "not-applicable": "N/A_spa",
+    "channel-identifier": "Channel Identifier",
     "no-new-conversation": "No New Conversation_spa",
     "state":"State_spa",
     "UNIDENTIFIED-CUSTOMER":"UNIDENTIFIED CUSTOMER_spa",
@@ -348,7 +361,6 @@
     "agent-id":"Agent Id_spa",
     "channel":"channel_spa",
     "direction":"direction_spa"
-
   },
   "pull-mode": {
     "all-list": "All List_spa",
@@ -393,6 +405,7 @@
     "search": "search_spa",
     "title": "Title_spa",
     "agent": "Agent_spa",
+    "bot":"Bot",
     "team": "Team_spa",
     "time": "Time_spa",
     "channel": "Channel_spa",
@@ -427,6 +440,8 @@
     "cancel": "Cancel_spa",
     "done": "Done_spa",
     "state": "State_spa",
+    "conversation-direction":"Conversation Direction",
+    "origin":"Origin",
     "joined":"joined_spa",
     "active-conversation":"active conversation_spa",
     "mrd-states":"mrd states_spa",

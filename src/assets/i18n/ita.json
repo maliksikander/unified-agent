@@ -35,6 +35,8 @@
     "Unable-to-link-customer":"Unable to link customer_ita",
     "Error-Getting-Active-Chats-with-Agents":"Error Getting Active Chats with Agents_ita",
     "Error-Getting-Active-Chats-with-Bots":"Error Getting Active Chats with Bots_ita",
+    "Error-Getting-Active-Agent-Details":"Error Getting Active Agent Details",
+    "Error-Getting-MRDs-List":"Error Getting MRDs List",
     "Channel-session-not-found":"Channel session not found_ita",
     "Access-Token-or-FB-Host-API-for-FB-is-missing":"Access Token or FB Host API for FB is missing_ita",
     "No-Conversation-Found":"No Conversation Found_ita",
@@ -76,7 +78,6 @@
     "Conference-request-placed-successfully":"Conference request placed successfully_ita",
     "Error-Getting-Queues-List":"Error Getting Queues List_ita",
     "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_ita"
-
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ita",
@@ -99,15 +100,6 @@
     "logout": "Logout_ita",
     "active-agents-detail":"active agents detail_ita"
   },
-  "socket-service":{
-    "has-joined-the-conversation":"has joined the conversation_ita",
-    "session-started":"session started_ita",
-    "session-ended":"session ended_ita",
-    "left-the-conversation":"left the conversation_ita",
-    "transfer-request-has-been-placed-by":"transfer request has been placed by_ita",
-    "conference-request-has-been-placed-by":"conference request has been placed by_ita",
-    "No-agent-is-available-for":"No agent is available for_ita"
-   },
   "announcements": {
     "team-announcement": "Team Announcement_ita",
     "all-announcements": "All Announcements_ita",
@@ -232,7 +224,6 @@
       "apply": "Apply_ita",
       "notes": "Notes_ita",
       "New-Wrap-up": "New Wrap-up..._ita"
-
     }
   },
   "column-preferences": {
@@ -314,13 +305,23 @@
     "call-center-experts": "Your Call Center Experts._ita",
     "": ""
   },
+  "socket-service":{
+    "has-joined-the-conversation":"has joined the conversation_ita",
+   "session-started":"session started_ita",
+   "session-ended":"session ended_ita",
+   "left-the-conversation":"left the conversation_ita",
+   "transfer-request-has-been-placed-by":"transfer request has been placed by_ita",
+   "conference-request-has-been-placed-by":"conference request has been placed by_ita",
+   "No-agent-is-available-for":"No agent is available for_ita",
+   "conference-request-has-cancelled": "Conference request has been cancelled_ita"
+   },
   "globals": {
     "chat": "Chat_ita",
     "conference": "conference_ita",
     "transfer": "transfer_ita",
     "to": "to_ita",
-    "columns":"Columns_ita",
     "yes": "Yes_ita",
+    "columns":"Columns_ita",
     "page-not-found": "The page you are looking for is not found_ita",
     "agents": "agents_ita",
     "agent": "agent_ita",
@@ -347,6 +348,7 @@
     "no-data-available": "No Data Available_ita",
     "Confirm": "Confirm_ita",
     "not-applicable": "N/A_ita",
+    "channel-identifier": "Channel Identifier",
     "no-new-conversation": "No New Conversation_ita",
     "state":"State_ita",
     "UNIDENTIFIED-CUSTOMER":"UNIDENTIFIED CUSTOMER_ita",
@@ -403,6 +405,7 @@
     "search": "search_ita",
     "title": "Title_ita",
     "agent": "Agent_ita",
+    "bot":"Bot",
     "team": "Team_ita",
     "time": "Time_ita",
     "channel": "Channel_ita",
@@ -437,6 +440,8 @@
     "cancel": "Cancel_ita",
     "done": "Done_ita",
     "state": "State_ita",
+    "conversation-direction":"Conversation Direction",
+    "origin":"Origin",
     "joined":"joined_ita",
     "active-conversation":"active conversation_ita",
     "mrd-states":"mrd states_ita",

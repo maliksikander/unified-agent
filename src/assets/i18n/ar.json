@@ -35,6 +35,8 @@
     "Unable-to-link-customer":"Unable to link customer_ar",
     "Error-Getting-Active-Chats-with-Agents":"Error Getting Active Chats with Agents_ar",
     "Error-Getting-Active-Chats-with-Bots":"Error Getting Active Chats with Bots_ar",
+    "Error-Getting-Active-Agent-Details":"Error Getting Active Agent Details",
+    "Error-Getting-MRDs-List":"Error Getting MRDs List",
     "Channel-session-not-found":"Channel session not found_ar",
     "Access-Token-or-FB-Host-API-for-FB-is-missing":"Access Token or FB Host API for FB is missing_ar",
     "No-Conversation-Found":"No Conversation Found_ar",
@@ -167,15 +169,6 @@
     "chats": {
       "start": "Start a New Conversation_ar"
     },
-    "socket-service":{
-      "has-joined-the-conversation":"has joined the conversation_ar",
-      "session-started":"session started_ar",
-      "session-ended":"session ended_ar",
-      "left-the-conversation":"left the conversation_ar",
-      "transfer-request-has-been-placed-by":"transfer request has been placed by_ar",
-      "conference-request-has-been-placed-by":"conference request has been placed by_ar",
-      "No-agent-is-available-for":"No agent is available for_ar"
-     },
     "interactions": {
       "Consult":"Consult_ar",
       "Transfer":"Transfer_ar",
@@ -312,13 +305,23 @@
     "call-center-experts": "Your Call Center Experts._ar",
     "": ""
   },
+  "socket-service":{
+    "has-joined-the-conversation":"has joined the conversation_ar",
+   "session-started":"session started_ar",
+   "session-ended":"session ended_ar",
+   "left-the-conversation":"left the conversation_ar",
+   "transfer-request-has-been-placed-by":"transfer request has been placed by_ar",
+   "conference-request-has-been-placed-by":"conference request has been placed by_ar",
+   "No-agent-is-available-for":"No agent is available for_ar",
+   "conference-request-has-cancelled": "Conference request has been cancelled_ar"
+   },
   "globals": {
     "chat": "Chat_ar",
     "conference": "conference_ar",
     "transfer": "transfer_ar",
     "to": "to_ar",
-    "columns":"Columns_ar",
     "yes": "Yes_ar",
+    "columns":"Columns_ar",
     "page-not-found": "The page you are looking for is not found_ar",
     "agents": "agents_ar",
     "agent": "agent_ar",
@@ -341,10 +344,11 @@
     "agent-desk": "Agent Desk_ar",
     "select-all": "Select all _ar",
     "unselect-all": "Unselect all_ar",
-    "Search": "Search_ar",
+    "Search": "Search _ar",
     "no-data-available": "No Data Available_ar",
     "Confirm": "Confirm_ar",
     "not-applicable": "N/A_ar",
+    "channel-identifier": "Channel Identifier",
     "no-new-conversation": "No New Conversation_ar",
     "state":"State_ar",
     "UNIDENTIFIED-CUSTOMER":"UNIDENTIFIED CUSTOMER_ar",
@@ -357,7 +361,6 @@
     "agent-id":"Agent Id_ar",
     "channel":"channel_ar",
     "direction":"direction_ar"
-
   },
   "pull-mode": {
     "all-list": "All List_ar",
@@ -402,6 +405,7 @@
     "search": "search_ar",
     "title": "Title_ar",
     "agent": "Agent_ar",
+    "bot":"Bot",
     "team": "Team_ar",
     "time": "Time_ar",
     "channel": "Channel_ar",
@@ -436,6 +440,8 @@
     "cancel": "Cancel_ar",
     "done": "Done_ar",
     "state": "State_ar",
+    "conversation-direction":"Conversation Direction",
+    "origin":"Origin",
     "joined":"joined_ar",
     "active-conversation":"active conversation_ar",
     "mrd-states":"mrd states_ar",
@@ -444,6 +450,5 @@
     "pending-not-ready":"Pending-Not Ready_ar",
     "agent(s)":"agent(S)_ar",
     "direction":"direction_ar"
-
   }
 }

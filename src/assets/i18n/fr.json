@@ -35,6 +35,8 @@
     "Unable-to-link-customer":"Unable to link customer_fr",
     "Error-Getting-Active-Chats-with-Agents":"Error Getting Active Chats with Agents_fr",
     "Error-Getting-Active-Chats-with-Bots":"Error Getting Active Chats with Bots_fr",
+    "Error-Getting-Active-Agent-Details":"Error Getting Active Agent Details",
+    "Error-Getting-MRDs-List":"Error Getting MRDs List",
     "Channel-session-not-found":"Channel session not found_fr",
     "Access-Token-or-FB-Host-API-for-FB-is-missing":"Access Token or FB Host API for FB is missing_fr",
     "No-Conversation-Found":"No Conversation Found_fr",
@@ -76,7 +78,6 @@
     "Conference-request-placed-successfully":"Conference request placed successfully_fr",
     "Error-Getting-Queues-List":"Error Getting Queues List_fr",
     "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_fr"
-
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_fr",
@@ -193,7 +194,6 @@
       "categories": "Categories_fr",
       "send": "send_fr",
       "none":"None_fr",
-
       "edit": "edit_fr",
       "participants": "Participants_fr",
       "customer": "Customer_fr",
@@ -312,7 +312,8 @@
    "left-the-conversation":"left the conversation_fr",
    "transfer-request-has-been-placed-by":"transfer request has been placed by_fr",
    "conference-request-has-been-placed-by":"conference request has been placed by_fr",
-   "No-agent-is-available-for":"No agent is available for_fr"
+   "No-agent-is-available-for":"No agent is available for_fr",
+   "conference-request-has-cancelled": "Conference request has been cancelled_fr"
    },
   "globals": {
     "chat": "Chat_fr",
@@ -347,6 +348,7 @@
     "no-data-available": "No Data Available_fr",
     "Confirm": "Confirm_fr",
     "not-applicable": "N/A_fr",
+    "channel-identifier": "Channel Identifier",
     "no-new-conversation": "No New Conversation_fr",
     "state":"State_fr",
     "UNIDENTIFIED-CUSTOMER":"UNIDENTIFIED CUSTOMER_fr",
@@ -403,6 +405,7 @@
     "search": "search_fr",
     "title": "Title_fr",
     "agent": "Agent_fr",
+    "bot":"Bot",
     "team": "Team_fr",
     "time": "Time_fr",
     "channel": "Channel_fr",
@@ -437,6 +440,8 @@
     "cancel": "Cancel_fr",
     "done": "Done_fr",
     "state": "State_fr",
+    "conversation-direction":"Conversation Direction",
+    "origin":"Origin",
     "joined":"joined_fr",
     "active-conversation":"active conversation_fr",
     "mrd-states":"mrd states_fr",

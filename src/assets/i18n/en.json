@@ -79,15 +79,6 @@
     "Error-Getting-Queues-List":"Error Getting Queues List",
     "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found"
   },
-  "socket-service":{
-   "has-joined-the-conversation":"has joined the conversation",
-   "session-started":"session started",
-   "session-ended":"session ended",
-   "left-the-conversation":"left the conversation",
-   "transfer-request-has-been-placed-by":"transfer request has been placed by",
-   "conference-request-has-been-placed-by":"conference request has been placed by",
-   "No-agent-is-available-for":"No agent is available for"
-  },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View",
     "customer-list-view": "Customer List View",
@@ -224,8 +215,7 @@
       "wrap-up-notes": "Wrap-up Notesen",
       "agent-assistance": "Agent Assistance",
       "queue-transfer": "Queue Transfer",
-      "queue-conference": "Queue Conference",
-      "": ""
+      "queue-conference": "Queue Conference"
     },
     "wrap-up-form": {
       "wrap-up-codes": "Wrap-Up Codes",
@@ -315,6 +305,16 @@
     "call-center-experts": "Your Call Center Experts.",
     "": ""
   },
+  "socket-service":{
+    "has-joined-the-conversation":"has joined the conversation",
+    "session-started":"session started",
+    "session-ended":"session ended",
+    "left-the-conversation":"left the conversation",
+    "transfer-request-has-been-placed-by":"transfer request has been placed by",
+    "conference-request-has-been-placed-by":"conference request has been placed by",
+    "No-agent-is-available-for":"No agent is available for",
+    "conference-request-has-cancelled": "Conference request has been cancelled"
+   },
   "globals": {
     "chat": "Chat",
     "conference": "conference",
@@ -448,6 +448,7 @@
     "search-agent":"search agent",
     "agent-stats":"agent stats",
     "pending-not-ready":"Pending-Not Ready",
-    "agent(s)":"agent(S)"
+    "agent(s)":"agent(S)",
+    "direction":"direction"
   }
 }
