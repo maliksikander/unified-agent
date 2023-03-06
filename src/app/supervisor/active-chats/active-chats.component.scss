@@ -182,3 +182,29 @@
     background-color: rgb(81, 135, 214);
   }
 }
+
+
+.search-wrapper {
+  display: inline-block;
+  width: 320px;
+  margin-bottom: 0;
+  position: relative;
+
+  input{
+    width: 100%;
+    border: 1px solid #a3a3a338;
+    padding: 0 10px;
+    font-size: 13px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 2px;
+  }
+
+  mat-icon {
+    position: absolute;
+    right: 7px;
+    font-size: 18px;
+    top: 7px;
+    color: #ccc;
+  }
+}

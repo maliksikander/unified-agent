@@ -18,12 +18,17 @@ import { TranslateService } from "@ngx-translate/core";
 export class ActiveChatsComponent implements OnInit {
   FilterSelected = "agents";
   QueueSelected="all";
+  agentSearch = "";
   queuesList=[];
   timerSubscription: Subscription;
   filter: string;
   filteredData = [];
   activeChatListWithAgents: [];
   activeChatListWithBots: [];
+
+  itemList = [];
+  selectedItems = [];
+  settings = {};
 
   constructor(
     private dialog: MatDialog,
@@ -35,9 +40,8 @@ export class ActiveChatsComponent implements OnInit {
   ngOnInit(): void {
     this._httpService.getAllQueues().subscribe((e) => {
       this.queuesList = e;
-    },(err)=>
-    {
-      this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Queues-List'),'err');
+    }, (err) => {
+      this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Queues-List'), 'err');
     });
 
     this.filter = this.route.snapshot.queryParamMap.get("filter") ? this.route.snapshot.queryParamMap.get("filter") : "agents";
@@ -46,6 +50,16 @@ export class ActiveChatsComponent implements OnInit {
     } else if (this.filter == "bots") {
       this.FilterSelected = "bots";
     }
+    this.settings = {
+      text: "Team",
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      classes: "myclass custom-class",
+      enableSearchFilter: false,
+      lazyLoading: true,
+      badgeShowLimit: 1
+
+    };
     this.timerSubscription = timer(0, 10000)
       .pipe(
         map(() => {
@@ -69,6 +83,7 @@ export class ActiveChatsComponent implements OnInit {
         }, retry())
       )
       .subscribe();
+
   }
   filterData() {
     // console.log("Filter Selected for Queued Chats", this.FilterSelected);
@@ -99,5 +114,23 @@ export class ActiveChatsComponent implements OnInit {
   }
   ngOnDestroy(): void {
     this.timerSubscription.unsubscribe();
+  }
+
+  onItemSelect(item: any) {
+    console.log(item.name);
+    console.log(this.selectedItems);
+  }
+  OnItemDeSelect(item: any) {
+    console.log(item);
+    console.log(this.selectedItems);
+  }
+  onSelectAll(items: any) {
+    console.log(items);
+  }
+  onDeSelectAll(items: any) {
+    console.log(items);
+  }
+  changeData() {
+    this.selectedItems = [];
   }
 }
