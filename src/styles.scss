@@ -3550,6 +3550,7 @@ mat-select{
   line-height: 10px;
   position: relative;
   top: 10px;
+  border-color: transparent;
   .c-btn{
     min-height: 27px;
     line-height: 27px;
@@ -3580,7 +3581,7 @@ mat-select{
   .c-angle-up{
     c-icon {
       transform: rotate(180deg);
-      top: -4px;
+      top: -1px !important;
     }
   }
   .c-label{
@@ -3605,14 +3606,20 @@ mat-select{
   .selected-list .c-list .c-token{
     padding: 0 !important;
   }
-  .dropdown-list ul li {
-    padding: 10px !important;
-    cursor: pointer;
-    text-align: left;
-    label.item-list-name {
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: capitalize;
+  .dropdown-list {
+    top: 25px;
+    ul li {
+      padding: 10px !important;
+      cursor: pointer;
+      text-align: left;
+
+      label.item-list-name {
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: capitalize;
+        cursor: pointer;
+        margin: 0;
+      }
     }
   }
 }
