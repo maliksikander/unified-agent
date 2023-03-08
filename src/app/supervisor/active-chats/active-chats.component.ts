@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { ConfirmationDialogComponent } from "../../new-components/confirmation-dialog/confirmation-dialog.component";
 import { MatDialog } from "@angular/material";
 import { httpService } from "../../services/http.service";
+import { cacheService } from "../../services/cache.service";
+
 import { ActivatedRoute } from "@angular/router";
 import * as _ from "lodash";
 import { Subscription, timer } from "rxjs";
@@ -17,17 +19,18 @@ import { TranslateService } from "@ngx-translate/core";
 })
 export class ActiveChatsComponent implements OnInit {
   FilterSelected = "agents";
-  QueueSelected="all";
+  QueueSelected = "all";
   agentSearch = "";
-  queuesList=[];
+  queuesList = [];
   timerSubscription: Subscription;
   filter: string;
   filteredData = [];
-  activeChatListWithAgents: [];
-  activeChatListWithBots: [];
-
+  activeChatListWithAgents: any = [];
+  activeChatListWithBots: any = [];
+  supervisedTeams: any = [];
+  selectedTeam: any = "";
   itemList = [];
-  selectedItems = [];
+  selectedQueues: any = [];
   settings = {};
 
   constructor(
@@ -35,14 +38,10 @@ export class ActiveChatsComponent implements OnInit {
     private _translateService: TranslateService,
     private _httpService: httpService,
     private route: ActivatedRoute,
-    private _snackBarService: snackbarService
+    private _snackBarService: snackbarService,
+    private _cacheService: cacheService
   ) {}
   ngOnInit(): void {
-    this._httpService.getAllQueues().subscribe((e) => {
-      this.queuesList = e;
-    }, (err) => {
-      this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Queues-List'), 'err');
-    });
 
     this.filter = this.route.snapshot.queryParamMap.get("filter") ? this.route.snapshot.queryParamMap.get("filter") : "agents";
     if (this.filter == "agents") {
@@ -50,56 +49,70 @@ export class ActiveChatsComponent implements OnInit {
     } else if (this.filter == "bots") {
       this.FilterSelected = "bots";
     }
+
+    this.supervisedTeams = this._cacheService.agent.supervisedTeams;
+    if (this.supervisedTeams.length!=0) {
+      this.selectedTeam = this.supervisedTeams[0].teamId;
     this.settings = {
-      text: "Team",
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
+      text: "All Queues",
+      selectAllText: "Select All",
+      unSelectAllText: "UnSelect All",
       classes: "myclass custom-class",
       enableSearchFilter: false,
       lazyLoading: true,
-      badgeShowLimit: 1
-
+      badgeShowLimit: 1,
+      primaryKey: "queueId"
     };
     this.timerSubscription = timer(0, 10000)
       .pipe(
         map(() => {
-          this._httpService.getAllActiveChatsWithAgents().subscribe((e) => {
-            this.activeChatListWithAgents=e;
-            this.filterData();
-          },(err)=>
-          {
-            this.filteredData=[]
-            this.activeChatListWithAgents=[];
-            this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Chats-with-Agents'),'err');
-          });
-          this._httpService.getAllActiveChatsWithBots().subscribe((e) => {
-            this.activeChatListWithBots = e;
-          },(err)=>
-          {
-            this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Chats-with-Bots'),'err');
-            this.activeChatListWithBots=[];
-
-          });
+          if (this.FilterSelected == "agents") this.getAllActiveChatsWithTeam(this.selectedTeam, []);
+          else if (this.FilterSelected == "bots") this.getAllActiveChatsWithBots();
+          console.log("selected queus", this.selectedQueues);
         }, retry())
       )
       .subscribe();
-
+    }
+  }
+  getAllActiveChatsWithTeam(selectedTeam, selectedQueues) {
+    this._httpService.getAllActiveChatsWithAgents(selectedTeam, selectedQueues).subscribe(
+      (e) => {
+        this.activeChatListWithAgents = e;
+        this.filterData();
+      },
+      (err) => {
+        this.activeChatListWithAgents = [];
+        this._snackBarService.open(this._translateService.instant("snackbar.Error-Getting-Active-Chats-with-Agents"), "err");
+      }
+    );
+  }
+  getAllActiveChatsWithBots() {
+    this._httpService.getAllActiveChatsWithBots().subscribe(
+      (e) => {
+        this.activeChatListWithBots = e;
+      },
+      (err) => {
+        this._snackBarService.open(this._translateService.instant("snackbar.Error-Getting-Active-Chats-with-Bots"), "err");
+        this.activeChatListWithBots = [];
+      }
+    );
   }
   filterData() {
-    // console.log("Filter Selected for Queued Chats", this.FilterSelected);
-    if (this.QueueSelected == "all") {
+    this.filteredData = [];
+    if (this.selectedQueues.length == 0) {
       this.filteredData = this.activeChatListWithAgents;
     } else {
-      this.activeChatListWithAgents.forEach((value:any)=>{
-        if(value.queueId==this.QueueSelected)
-        {
-          this.filteredData=[]
-
-          this.filteredData.push(value);
-        }
-
+      this.selectedQueues.forEach((data) => {
+        this.activeChatListWithAgents.forEach((chat) => {
+          if (data.queueId == chat.queueId) this.filteredData.push(chat);
+        });
       });
     }
+  }
+  changeTeam()
+  {
+    this.selectedQueues=[];
+    this.getAllActiveChatsWithTeam(this.selectedTeam,[]);
   }
   closeChat() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -113,24 +126,20 @@ export class ActiveChatsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {});
   }
   ngOnDestroy(): void {
+    if(this.timerSubscription)
     this.timerSubscription.unsubscribe();
   }
 
   onItemSelect(item: any) {
-    console.log(item.name);
-    console.log(this.selectedItems);
   }
   OnItemDeSelect(item: any) {
-    console.log(item);
-    console.log(this.selectedItems);
   }
   onSelectAll(items: any) {
-    console.log(items);
   }
   onDeSelectAll(items: any) {
     console.log(items);
   }
   changeData() {
-    this.selectedItems = [];
+    this.selectedQueues = [];
   }
 }

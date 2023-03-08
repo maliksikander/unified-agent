@@ -7,6 +7,7 @@ describe("ActiveAgentDetailsComponent", () => {
   let component: any;
   let _httpService: any;
   let _snackBarService: any;
+  let _cacheService:any;
   let translateService: TranslateService;
 
   describe("when all APIs gives error", () => {
@@ -34,7 +35,7 @@ describe("ActiveAgentDetailsComponent", () => {
         })
       };
 
-      component = new ActiveAgentDetailsComponent(translateService, _httpService, _snackBarService);
+      component = new ActiveAgentDetailsComponent(translateService, _httpService, _snackBarService,_cacheService);
       component.ngOnInit();
 
       afterEach(async () => {
@@ -82,7 +83,7 @@ describe("ActiveAgentDetailsComponent", () => {
           });
         })
       };
-      component = new ActiveAgentDetailsComponent(translateService, _httpService, _snackBarService);
+      component = new ActiveAgentDetailsComponent(translateService, _httpService, _snackBarService,_cacheService);
       component.ngOnInit();
     });
 

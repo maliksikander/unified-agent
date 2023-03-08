@@ -1,10 +1,10 @@
 <div class="table-container manage-dashboard">
   <div class="active-chat-list-area">
     <div class="page-header row m-0">
-      <div class="col-md-6 page-heading">
+      <div class="col-md-3 page-heading">
         <h4>{{ "supervisor.active-conversations-detail" | translate }}</h4>
       </div>
-      <div class="col-md-6 text-right page-action">
+      <div class="col-md-9 text-right page-action">
         <mat-form-field appearance="outline" class="selection-trigger  mr-2">
           <mat-select [(value)]="FilterSelected">
             <mat-option value="agents">{{ "supervisor.answered-by-agents" | translate }}</mat-option>
@@ -19,35 +19,33 @@
 <!--          </mat-select>-->
 <!--        </mat-form-field>-->
 
-
-<div class="form-control multi-selection-list p-0 mr-2">
-        <angular2-multiselect [data]="queuesList" [(ngModel)]="selectedItems" [settings]="settings"  (selectionChange)="filterData()"  (onSelect)="onItemSelect($event)"
+<mat-form-field *ngIf="FilterSelected == 'agents'" appearance="outline"  class="selection-trigger mr-2">
+  <mat-select [(value)]="selectedTeam" (selectionChange)="changeTeam()">
+    <mat-option *ngFor="let team of supervisedTeams; " [value]="team.teamId">{{team.teamName}}</mat-option>
+  </mat-select>
+</mat-form-field>
+<div *ngIf="FilterSelected == 'agents'" class="form-control multi-selection-list p-0 mr-2">
+        <angular2-multiselect [data]="activeChatListWithAgents" [(ngModel)]="selectedQueues" [settings]="settings"              (ngModelChange)="filterData($event)"
+        (onSelect)="onItemSelect($event)"
                               (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
 
           <c-badge>
             <ng-template let-item="item">
-              <label class="item-name">{{item.name}}</label>
+              <label class="item-name">{{item.queueName}}</label>
             </ng-template>
           </c-badge>
           <c-item>
             <ng-template let-item="item">
-              <label class="item-list-name">{{item.name}}</label>
+              <label class="item-list-name">{{item.queueName}}</label>
             </ng-template>
           </c-item>
         </angular2-multiselect>
 
 </div>
 
-        <mat-form-field *ngIf="FilterSelected == 'agents'" appearance="outline"  class="selection-trigger mr-2">
-          <mat-select value="all" (selectionChange)="filterData()">
-            <mat-option value="all" >All Team</mat-option>
-            <mat-option value="marketing">Marketing</mat-option>
-            <mat-option value="sales">Sales</mat-option>
-            <mat-option value="product">Product</mat-option>
-            <mat-option value="software">Software</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <div class="search-wrapper">
+       
+
+        <div *ngIf="FilterSelected == 'agents'" class="search-wrapper">
           <input type="text" placeholder="{{'supervisor.search-agent' | translate | titlecase}}" (click)="$event.stopPropagation()" [(ngModel)]="agentSearch" />
           <mat-icon>search</mat-icon>
         </div>

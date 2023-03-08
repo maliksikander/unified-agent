@@ -15,9 +15,9 @@
           </div>
 
           <mat-form-field appearance="outline" class="selection-trigger chat-selection">
-            <mat-select [(value)]="queueSelected" (selectionChange)="filterData()">
-              <mat-option value="all">{{ "supervisor.all-queues" | translate }}</mat-option>
-              <mat-option *ngFor="let item of queuesList" [value]="item.id">{{ item.name }} </mat-option>
+            <mat-select [(value)]="teamSelected" (selectionChange)="filterData()">
+              <mat-option value="all">All Teams</mat-option>
+              <mat-option *ngFor="let team of supervisedTeams" [value]="team.teamId">{{ team.teamName }} </mat-option>
             </mat-select>
           </mat-form-field>
 

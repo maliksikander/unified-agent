@@ -139,15 +139,17 @@ export class httpService {
       })
     });
   }
-  getAllActiveChatsWithAgents(): Observable<any> {
-    return this._httpClient.get<any>(`${this._appConfigService.config.CIM_REPORTING_URL}/queue-active-chats/detail`, {
+  getAllActiveChatsWithAgents(selectedTeam,selectedQueues): Observable<any> {
+    return this._httpClient.post<any>(`${this._appConfigService.config.CIM_REPORTING_URL}/queue-active-chats/detail`,{teamId:selectedTeam,queues:selectedQueues}, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
     });
   }
-  getAllActiveAgentsDetails(): Observable<any> {
-    return this._httpClient.get<any>(`${this._appConfigService.config.CIM_REPORTING_URL}/agent-activity/detail`, {
+  getAllActiveAgentsDetails(teamSelected): Observable<any> {
+    console.log("teams",teamSelected)
+    let body={teams:teamSelected}
+    return this._httpClient.post<any>(`${this._appConfigService.config.CIM_REPORTING_URL}/agent-activity/detail`,body, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
@@ -167,8 +169,8 @@ export class httpService {
       })
     });
   }
-  getAllQueuedChats(): Observable<any> {
-    return this._httpClient.get<any>(`${this._appConfigService.config.CIM_REPORTING_URL}/queued-chats/detail`, {
+  getAllQueuedChats(selectedTeam,selectedQueues): Observable<any> {
+    return this._httpClient.post<any>(`${this._appConfigService.config.CIM_REPORTING_URL}/queued-chats/detail`,{teamId:selectedTeam,queues:selectedQueues}, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
