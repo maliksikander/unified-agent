@@ -147,7 +147,6 @@ export class httpService {
     });
   }
   getAllActiveAgentsDetails(teamSelected): Observable<any> {
-    console.log("teams",teamSelected)
     let body={teams:teamSelected}
     return this._httpClient.post<any>(`${this._appConfigService.config.CIM_REPORTING_URL}/agent-activity/detail`,body, {
       headers: new HttpHeaders({

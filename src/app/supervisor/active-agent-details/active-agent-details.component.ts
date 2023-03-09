@@ -22,7 +22,8 @@ export class ActiveAgentDetailsComponent implements OnInit {
   activeAgentsDetails: any = {};
   supervisedTeams: any = [];
   selectedTeam: any = "";
-  teamIds:any=[];
+  teamIds: any = [];
+
   constructor(
     private _translateService: TranslateService,
     private _httpService: httpService,
@@ -31,30 +32,37 @@ export class ActiveAgentDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this._httpService.getAllQueues().subscribe((e) => {
-    //   this.queuesList = e;
-    // },(err)=>
-    // {
-    //   this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Queues-List'),'err');
-    // });
+    // to set default filter of all teams selected
     this.supervisedTeams = this._cacheService.agent.supervisedTeams;
-    if (this.supervisedTeams.length != 0) {
+    if (this.supervisedTeams && this.supervisedTeams.length != 0) {
       this.selectedTeam = this.supervisedTeams[0].teamId;
-      this.supervisedTeams.forEach((team)=>
-      {
+      this.supervisedTeams.forEach((team) => {
         this.teamIds.push(team.teamId);
-      })
+      });
 
-      this._httpService.getAllMRDs().subscribe(
-        (e) => {
-          this.MRDsList = e;
-        },
-        (err) => {
-          this._snackBarService.open(this._translateService.instant("snackbar.Error-Getting-MRDs-List"), "err");
-        }
-      );
-      console.log("inserted",this.teamSelected)
+      this.getAllMrds();
+      this.startRefeshTimer();
+    } else {
+      this._snackBarService.open(this._translateService.instant("snackbar.No-Teams-Found"), "err");
+    }
+  }
 
+  // to get all mrd from RE
+  getAllMrds() {
+    this._httpService.getAllMRDs().subscribe(
+      (e) => {
+        this.MRDsList = e;
+      },
+      (err) => {
+        this._snackBarService.open(this._translateService.instant("snackbar.Error-Getting-MRDs-List"), "err");
+        console.error("[getAllMrds] Error :", err);
+      }
+    );
+  }
+
+  // to start timer using rxjs `timer`
+  startRefeshTimer() {
+    try {
       this.timerSubscription = timer(0, 10000)
         .pipe(
           map(() => {
@@ -68,42 +76,41 @@ export class ActiveAgentDetailsComponent implements OnInit {
           }, retry())
         )
         .subscribe();
+    } catch (err) {
+      console.error("[startRefeshTimer] Error :", err);
     }
   }
 
+  // to get agent activity detail from reporting connector
   getAllActiveAgentDetails(teamSelected) {
     this._httpService.getAllActiveAgentsDetails(teamSelected).subscribe(
-      (e) => {
-        this.activeAgentsDetails = e;
+      (res) => {
+        this.activeAgentsDetails = res;
       },
       (err) => {
         this._snackBarService.open(this._translateService.instant("snackbar.Error-Getting-Active-Agent-Details"), "err");
         this.activeAgentsDetails = {};
+        console.error("[getAllActiveAgentDetails] Error :", err);
       }
     );
   }
-  // getAllActiveAgentsDetailsOnQueue(queueId)
-  // {
-  //   this._httpService.getAllActiveAgentsDetailsOnQueue(queueId).subscribe((e) => {
-  //     this.activeAgentsDetails = e;
-  //   },(err)=>
-  //   {
-  //     this._snackBarService.open(this._translateService.instant('snackbar.Error-Getting-Active-Agent-Details'),'err');
-  //     this.activeAgentsDetails ={};
-  //   });
-  // }
+
+  // to filter data on the basis of selected teams
   filterData() {
-    // console.log("Filter Selected for Queued Chats", this.FilterSelected);
-    if (this.teamSelected == "all") {
-      this.getAllActiveAgentDetails(this.teamIds);
-    } else {
-      let teams = [];
-      teams.push(this.teamSelected);
-      this.getAllActiveAgentDetails(teams);
+    try {
+      if (this.teamSelected == "all") {
+        this.getAllActiveAgentDetails(this.teamIds);
+      } else {
+        let teams = [];
+        teams.push(this.teamSelected);
+        this.getAllActiveAgentDetails(teams);
+      }
+    } catch (err) {
+      console.error("[filterData] Error :", err);
     }
   }
 
   ngOnDestroy() {
-    this.timerSubscription.unsubscribe();
+    if (this.timerSubscription) this.timerSubscription.unsubscribe(); // to unsubscribe from the rxjs timer
   }
 }

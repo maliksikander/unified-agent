@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { ConfirmationDialogComponent } from "../../new-components/confirmation-dialog/confirmation-dialog.component";
-import { MatDialog } from "@angular/material";
+// import { ConfirmationDialogComponent } from "../../new-components/confirmation-dialog/confirmation-dialog.component";
+// import { MatDialog } from "@angular/material";
 import { httpService } from "../../services/http.service";
 import { cacheService } from "../../services/cache.service";
 
@@ -34,15 +34,15 @@ export class ActiveChatsComponent implements OnInit {
   settings = {};
 
   constructor(
-    private dialog: MatDialog,
+    // private dialog: MatDialog,
     private _translateService: TranslateService,
     private _httpService: httpService,
     private route: ActivatedRoute,
     private _snackBarService: snackbarService,
     private _cacheService: cacheService
   ) {}
-  ngOnInit(): void {
 
+  ngOnInit(): void {
     this.filter = this.route.snapshot.queryParamMap.get("filter") ? this.route.snapshot.queryParamMap.get("filter") : "agents";
     if (this.filter == "agents") {
       this.FilterSelected = "agents";
@@ -51,29 +51,40 @@ export class ActiveChatsComponent implements OnInit {
     }
 
     this.supervisedTeams = this._cacheService.agent.supervisedTeams;
-    if (this.supervisedTeams.length!=0) {
+    if (this.supervisedTeams && this.supervisedTeams.length > 0) {
       this.selectedTeam = this.supervisedTeams[0].teamId;
-    this.settings = {
-      text: "All Queues",
-      selectAllText: "Select All",
-      unSelectAllText: "UnSelect All",
-      classes: "myclass custom-class",
-      enableSearchFilter: false,
-      lazyLoading: true,
-      badgeShowLimit: 1,
-      primaryKey: "queueId"
-    };
-    this.timerSubscription = timer(0, 10000)
-      .pipe(
-        map(() => {
-          if (this.FilterSelected == "agents") this.getAllActiveChatsWithTeam(this.selectedTeam, []);
-          else if (this.FilterSelected == "bots") this.getAllActiveChatsWithBots();
-          console.log("selected queus", this.selectedQueues);
-        }, retry())
-      )
-      .subscribe();
+      this.settings = {
+        text: "All Queues",
+        selectAllText: "Select All",
+        unSelectAllText: "UnSelect All",
+        classes: "myclass custom-class",
+        enableSearchFilter: false,
+        lazyLoading: true,
+        badgeShowLimit: 1,
+        primaryKey: "queueId"
+      };
+    } else {
+      this.FilterSelected = "bots";
+      this._snackBarService.open(this._translateService.instant("snackbar.No-Teams-Found"), "err");
+    }
+    this.startRefreshTimer();
+  }
+
+  startRefreshTimer() {
+    try {
+      this.timerSubscription = timer(0, 10000)
+        .pipe(
+          map(() => {
+            if (this.FilterSelected == "agents") this.getAllActiveChatsWithTeam(this.selectedTeam, []);
+            else if (this.FilterSelected == "bots") this.getAllActiveChatsWithBots();
+          }, retry())
+        )
+        .subscribe();
+    } catch (err) {
+      console.error("[startRefeshTimer] Error :", err);
     }
   }
+
   getAllActiveChatsWithTeam(selectedTeam, selectedQueues) {
     this._httpService.getAllActiveChatsWithAgents(selectedTeam, selectedQueues).subscribe(
       (e) => {
@@ -83,9 +94,11 @@ export class ActiveChatsComponent implements OnInit {
       (err) => {
         this.activeChatListWithAgents = [];
         this._snackBarService.open(this._translateService.instant("snackbar.Error-Getting-Active-Chats-with-Agents"), "err");
+        console.error("[getAllActiveChatsWithTeam] Error :", err);
       }
     );
   }
+
   getAllActiveChatsWithBots() {
     this._httpService.getAllActiveChatsWithBots().subscribe(
       (e) => {
@@ -94,52 +107,67 @@ export class ActiveChatsComponent implements OnInit {
       (err) => {
         this._snackBarService.open(this._translateService.instant("snackbar.Error-Getting-Active-Chats-with-Bots"), "err");
         this.activeChatListWithBots = [];
+        console.error("[getAllActiveChatsWithBots] Error :", err);
       }
     );
   }
+
   filterData() {
-    this.filteredData = [];
-    if (this.selectedQueues.length == 0) {
-      this.filteredData = this.activeChatListWithAgents;
-    } else {
-      this.selectedQueues.forEach((data) => {
-        this.activeChatListWithAgents.forEach((chat) => {
-          if (data.queueId == chat.queueId) this.filteredData.push(chat);
+    try {
+      this.filteredData = [];
+      if (this.selectedQueues.length == 0) {
+        this.filteredData = this.activeChatListWithAgents;
+      } else {
+        this.selectedQueues.forEach((data) => {
+          this.activeChatListWithAgents.forEach((chat) => {
+            if (data.queueId == chat.queueId) this.filteredData.push(chat);
+          });
         });
-      });
+      }
+    } catch (err) {
+      console.error("[filterData] Error :", err);
     }
   }
-  changeTeam()
-  {
-    this.selectedQueues=[];
-    this.getAllActiveChatsWithTeam(this.selectedTeam,[]);
-  }
-  closeChat() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: "490px",
-      panelClass: "confirm-dialog",
-      data: {
-        header: this._translateService.instant("snackbar.Close-Topic"),
-        message: this._translateService.instant("snackbar.sure-to-close-this-topic")
-      }
-    });
-    dialogRef.afterClosed().subscribe((result) => {});
-  }
-  ngOnDestroy(): void {
-    if(this.timerSubscription)
-    this.timerSubscription.unsubscribe();
+
+  // team selection change callback event
+  onTeamChange() {
+    this.selectedQueues = [];
+    this.getAllActiveChatsWithTeam(this.selectedTeam, []);
   }
 
-  onItemSelect(item: any) {
+  // answered by selection change callback event
+  onAnsweredByfilterChange(e) {
+    try {
+      if (e.value == "agents")
+        if (this.supervisedTeams && this.supervisedTeams.length > 0) {
+          this.getAllActiveChatsWithTeam(this.selectedTeam, []);
+        } else {
+          this._snackBarService.open(this._translateService.instant("snackbar.No-Teams-Found"), "err");
+        }
+      else if (e.value == "bots") this.getAllActiveChatsWithBots();
+    } catch (err) {
+      console.error("[onAnsweredByfilterChange] Error :", err);
+    }
   }
-  OnItemDeSelect(item: any) {
+
+  ngOnDestroy(): void {
+    if (this.timerSubscription) this.timerSubscription.unsubscribe();
   }
-  onSelectAll(items: any) {
-  }
-  onDeSelectAll(items: any) {
-    console.log(items);
-  }
-  changeData() {
-    this.selectedQueues = [];
-  }
+
+  onItemSelect(item: any) {}
+  OnItemDeSelect(item: any) {}
+  onSelectAll(items: any) {}
+  onDeSelectAll(items: any) {}
+
+  // closeChat() {
+  //   const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+  //     width: "490px",
+  //     panelClass: "confirm-dialog",
+  //     data: {
+  //       header: this._translateService.instant("snackbar.Close-Topic"),
+  //       message: this._translateService.instant("snackbar.sure-to-close-this-topic")
+  //     }
+  //   });
+  //   dialogRef.afterClosed().subscribe((result) => {});
+  // }
 }

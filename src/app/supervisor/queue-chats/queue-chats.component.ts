@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { MatDialog } from "@angular/material";
-import { ConfirmationDialogComponent } from "../../new-components/confirmation-dialog/confirmation-dialog.component";
+// import { ConfirmationDialogComponent } from "../../new-components/confirmation-dialog/confirmation-dialog.component";
 import { httpService } from "../../services/http.service";
 import { cacheService } from "../../services/cache.service";
 import { ActivatedRoute } from "@angular/router";
@@ -19,129 +19,131 @@ export class QueueChatsComponent implements OnInit {
   timerSubscription: Subscription;
   queueId: string;
   filteredData = [];
-  supervisedTeams:any=[];
-  selectedTeam:any="";
-  settings = {};
-  selectedQueues:any=[];
+  supervisedTeams: any = [];
+  selectedTeam: any = "";
+  settings: any = {};
+  selectedQueues: any = [];
 
   constructor(
-    private dialog: MatDialog,
+    // private dialog: MatDialog,
     private _translateService: TranslateService,
     private _httpService: httpService,
     private route: ActivatedRoute,
     private _snackBarService: snackbarService,
-    private _cacheService:cacheService
+    private _cacheService: cacheService
   ) {}
 
   ngOnInit(): void {
     this.settings = {
       text: "All Queues",
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
+      selectAllText: "Select All",
+      unSelectAllText: "UnSelect All",
       classes: "myclass custom-class",
       enableSearchFilter: false,
       lazyLoading: true,
       badgeShowLimit: 1,
-      primaryKey:"queueId"
-
+      primaryKey: "queueId"
     };
+
     this.queueId = this.route.snapshot.queryParamMap.get("queueId");
-
-    this.supervisedTeams=this._cacheService.agent.supervisedTeams;
-    if(this.supervisedTeams)
-    {
-      this.selectedTeam=this.supervisedTeams[0].teamId;
+    this.supervisedTeams = this._cacheService.agent.supervisedTeams;
+    if (this.supervisedTeams && this.supervisedTeams.length > 0) {
+      this.selectedTeam = this.supervisedTeams[0].teamId;
+      this.getAllQueuedChats(this.selectedTeam);
+      this.startRefreshTimer();
+    } else {
+      this._snackBarService.open(this._translateService.instant("snackbar.No-Teams-Found"), "err");
     }
-    console.log("superv",this.supervisedTeams)
-    this.timerSubscription = timer(0, 10000)
-      .pipe(
-        map(() => {
-          this.getAllQueuedChats(this.selectedTeam);
-          console.log("selected quuw",this.selectedQueues);
-
-                }, retry())
-      )
-      .subscribe();
   }
 
-  getAllQueuedChats(selectedTeamId)
-  {
-    this._httpService.getAllQueuedChats(selectedTeamId,[]).subscribe(
-      (e) => {
-        this.queuedChatList = e;
-        this.filterData()
+  // to start timer using rxjs `timer`
+  startRefreshTimer() {
+    try {
+      this.timerSubscription = timer(0, 10000)
+        .pipe(
+          map(() => {
+            this.getAllQueuedChats(this.selectedTeam);
+          }, retry())
+        )
+        .subscribe();
+    } catch (err) {
+      console.error("[startRefeshTimer] Error :", err);
+    }
+  }
+
+  // to get all queued chat detail from reporting connector
+  getAllQueuedChats(selectedTeamId) {
+    this._httpService.getAllQueuedChats(selectedTeamId, []).subscribe(
+      (res) => {
+        this.queuedChatList = res;
+        // console.log("chat api called==>", this.queuedChatList);
+        this.filterData();
       },
       (err) => {
         this._snackBarService.open(this._translateService.instant("snackbar.Error-Getting-Active-Chats-with-Agents"), "err");
+        console.error("[getAllQueuedChats] Error :", err);
       }
-    ); 
+    );
   }
 
-  closeChat() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: "490px",
-      panelClass: "confirm-dialog",
-      data: {
-        header: this._translateService.instant("snackbar.Close-Topic"),
-        message: this._translateService.instant("snackbar.sure-to-close-this-topic")
-      }
-    });
-    dialogRef.afterClosed().subscribe((result) => {});
-  }
-  changeTeam()
-  {
-    this.selectedQueues=[];
+  // on team selection change event callback
+  onTeamChange() {
+    this.selectedQueues = [];
     this.getAllQueuedChats(this.selectedTeam);
   }
+
+  // filter data for all queues and if multiple are selected
   filterData() {
-    this.filteredData=[]
-    if(this.selectedQueues.length==0)
-    {
-      this.filteredData=this.queuedChatList
+    try {
+      this.filteredData = [];
+      if (this.selectedQueues.length == 0) {
+        this.filteredData = this.queuedChatList;
+      } else {
+        this.selectedQueues.forEach((data) => {
+          this.queuedChatList.forEach((chat) => {
+            if (data.queueId == chat.queueId) this.filteredData.push(chat);
+          });
+        });
+      }
+    } catch (err) {
+      console.error("[filterData] Error :", err);
     }
-    else
-    {
-    this.selectedQueues.forEach((data)=>
-    {
-      this.queuedChatList.forEach((chat)=>
-      {
-        if(data.queueId==chat.queueId)
-        this.filteredData.push(chat);
-      })
-      
-    })
-  }
-
-  }
-  reQueue(templateRef): void {
-    const dialogRef = this.dialog.open(templateRef, {
-      width: "480px"
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      // console.log("The dialog was closed");
-    });
   }
 
   onItemSelect(item: any) {
-    console.log(item.queueName);
-    console.log("selected teams",this.selectedQueues);
+    // this.getAllQueuedChats(this.selectedTeam);
   }
   OnItemDeSelect(item: any) {
-    console.log(item);
-    console.log(this.selectedQueues);
+    // this.getAllQueuedChats(this.selectedTeam);
   }
   onSelectAll(items: any) {
-    console.log(items);
+    // this.getAllQueuedChats(this.selectedTeam);
   }
   onDeSelectAll(items: any) {
-    console.log(items);
-  }
-  changeData() {
-    // this.selectedQueues = [];
+    // this.getAllQueuedChats(this.selectedTeam);
   }
   ngOnDestroy(): void {
-    if(this.timerSubscription)
-    this.timerSubscription.unsubscribe();
+    if (this.timerSubscription) this.timerSubscription.unsubscribe();
   }
+
+  // reQueue(templateRef): void {
+  //   const dialogRef = this.dialog.open(templateRef, {
+  //     width: "480px"
+  //   });
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     // console.log("The dialog was closed");
+  //   });
+  // }
+
+  // closeChat() {
+  //   const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+  //     width: "490px",
+  //     panelClass: "confirm-dialog",
+  //     data: {
+  //       header: this._translateService.instant("snackbar.Close-Topic"),
+  //       message: this._translateService.instant("snackbar.sure-to-close-this-topic")
+  //     }
+  //   });
+  //   dialogRef.afterClosed().subscribe((result) => {});
+  // }
 }

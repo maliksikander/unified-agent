@@ -6,47 +6,49 @@
       </div>
       <div class="col-md-9 text-right page-action">
         <mat-form-field appearance="outline" class="selection-trigger  mr-2">
-          <mat-select [(value)]="FilterSelected">
+          <mat-select [(value)]="FilterSelected" (selectionChange)="onAnsweredByfilterChange($event)">
             <mat-option value="agents">{{ "supervisor.answered-by-agents" | translate }}</mat-option>
             <mat-option value="bots">{{ "supervisor.answered-by-bot" | translate }}</mat-option>
           </mat-select>
         </mat-form-field>
 
-<!--        <mat-form-field *ngIf="FilterSelected == 'agents'" appearance="outline"  class="selection-trigger mr-2">-->
-<!--          <mat-select [(value)]="QueueSelected" (selectionChange)="filterData()" multiple >-->
-<!--            <mat-option value="all" >{{ "supervisor.all-queues" | translate }}</mat-option>-->
-<!--            <mat-option *ngFor="let item of queuesList" [value]="item.id">{{ item.name }} </mat-option>-->
-<!--          </mat-select>-->
-<!--        </mat-form-field>-->
+        <!--        <mat-form-field *ngIf="FilterSelected == 'agents'" appearance="outline"  class="selection-trigger mr-2">-->
+        <!--          <mat-select [(value)]="QueueSelected" (selectionChange)="filterData()" multiple >-->
+        <!--            <mat-option value="all" >{{ "supervisor.all-queues" | translate }}</mat-option>-->
+        <!--            <mat-option *ngFor="let item of queuesList" [value]="item.id">{{ item.name }} </mat-option>-->
+        <!--          </mat-select>-->
+        <!--        </mat-form-field>-->
 
-<mat-form-field *ngIf="FilterSelected == 'agents'" appearance="outline"  class="selection-trigger mr-2">
-  <mat-select [(value)]="selectedTeam" (selectionChange)="changeTeam()">
-    <mat-option *ngFor="let team of supervisedTeams; " [value]="team.teamId">{{team.teamName}}</mat-option>
-  </mat-select>
-</mat-form-field>
-<div *ngIf="FilterSelected == 'agents'" class="form-control multi-selection-list p-0 mr-2">
-        <angular2-multiselect [data]="activeChatListWithAgents" [(ngModel)]="selectedQueues" [settings]="settings"              (ngModelChange)="filterData($event)"
-        (onSelect)="onItemSelect($event)"
-                              (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
+        <mat-form-field *ngIf="FilterSelected == 'agents' && this.supervisedTeams.length > 0" appearance="outline"
+          class="selection-trigger mr-2">
+          <mat-select [(value)]="selectedTeam" (selectionChange)="onTeamChange()">
+            <mat-option *ngFor="let team of supervisedTeams; " [value]="team.teamId">{{team.teamName}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div *ngIf="FilterSelected == 'agents' && this.supervisedTeams.length > 0" class="form-control multi-selection-list p-0 mr-2">
+          <angular2-multiselect [data]="activeChatListWithAgents" [(ngModel)]="selectedQueues" [settings]="settings"
+            (ngModelChange)="filterData($event)" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
+            (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
 
-          <c-badge>
-            <ng-template let-item="item">
-              <label class="item-name">{{item.queueName}}</label>
-            </ng-template>
-          </c-badge>
-          <c-item>
-            <ng-template let-item="item">
-              <label class="item-list-name">{{item.queueName}}</label>
-            </ng-template>
-          </c-item>
-        </angular2-multiselect>
+            <c-badge>
+              <ng-template let-item="item">
+                <label class="item-name">{{item.queueName}}</label>
+              </ng-template>
+            </c-badge>
+            <c-item>
+              <ng-template let-item="item">
+                <label class="item-list-name">{{item.queueName}}</label>
+              </ng-template>
+            </c-item>
+          </angular2-multiselect>
 
-</div>
+        </div>
 
-       
 
-        <div *ngIf="FilterSelected == 'agents'" class="search-wrapper">
-          <input type="text" placeholder="{{'supervisor.search-agent' | translate | titlecase}}" (click)="$event.stopPropagation()" [(ngModel)]="agentSearch" />
+
+        <div *ngIf="FilterSelected == 'agents' && this.supervisedTeams.length > 0" class="search-wrapper">
+          <input type="text" placeholder="{{'supervisor.search-agent' | translate | titlecase}}"
+            (click)="$event.stopPropagation()" [(ngModel)]="agentSearch" />
           <mat-icon>search</mat-icon>
         </div>
       </div>
@@ -60,7 +62,8 @@
 
             <th scope="col">{{ "supervisor.customer" | translate }}</th>
             <th scope="col">{{ "supervisor.active-since" | translate }}</th>
-            <th scope="col">{{ (FilterSelected == "agents" ? "supervisor.agent" : "supervisor.bot") | translate | titlecase }}</th>
+            <th scope="col">{{ (FilterSelected == "agents" ? "supervisor.agent" : "supervisor.bot") | translate |
+              titlecase }}</th>
             <th *ngIf="FilterSelected == 'agents'" scope="col">{{ "supervisor.queue" | translate }}</th>
           </tr>
         </thead>
@@ -69,10 +72,12 @@
             <ng-container *ngFor="let data of activeChatListWithBots">
               <tr *ngFor="let chat of data.chats">
                 <td>
-                  <span class="channel-icon {{ chat.channelType }}"><img [src]="chat.channelType | channelName | channelLogo | async" /></span>
+                  <span class="channel-icon {{ chat.channelType }}"><img
+                      [src]="chat.channelType | channelName | channelLogo | async" /></span>
                 </td>
                 <td>
-                  {{ chat.customerName }} <small matTooltip="{{ 'globals.channel-identifier' | translate }}">({{ chat.channelIdentity }})</small>
+                  {{ chat.customerName }} <small matTooltip="{{ 'globals.channel-identifier' | translate }}">({{
+                    chat.channelIdentity }})</small>
                 </td>
                 <td>
                   {{ chat.activeSince | amDuration: "seconds" }} <small>{{ "supervisor.ago" | translate }}</small>
@@ -90,21 +95,26 @@
             </ng-container>
           </ng-container>
           <ng-container *ngIf="FilterSelected == 'agents'">
-            <ng-container *ngFor="let data of filteredData">
+            <ng-container *ngFor="let data of filteredData | LockFilter: agentSearch">
               <tr *ngFor="let chat of data.chats">
                 <td>
-                  <span  class="material-icons direction-icon md-18 {{chat.direction | lowercase}}"> call_received </span></td>
-                <td>
-                  <span class="channel-icon {{ chat.channelType }}"><img [src]="chat.channelType | channelName | channelLogo | async" /></span>
+                  <span class="material-icons direction-icon md-18 {{chat.direction | lowercase}}"> call_received
+                  </span>
                 </td>
                 <td>
-                  {{ chat.customerName }} <small matTooltip="{{ 'globals.channel-identifier' | translate }}">({{ chat.channelIdentity }})</small>
+                  <span class="channel-icon {{ chat.channelType }}"><img
+                      [src]="chat.channelType | channelName | channelLogo | async" /></span>
+                </td>
+                <td>
+                  {{ chat.customerName }} <small matTooltip="{{ 'globals.channel-identifier' | translate }}">({{
+                    chat.channelIdentity }})</small>
                 </td>
                 <td>
                   {{ chat.activeSince | amDuration: "seconds" }} <small>{{ "supervisor.ago" | translate }}</small>
                 </td>
                 <td>
-                  {{ chat.agentName }}<small matTooltip="{{ 'globals.agent-id' | translate }}">({{ chat.agentId }})</small>
+                  {{ chat.agentName }}<small matTooltip="{{ 'globals.agent-id' | translate }}">({{ chat.agentId
+                    }})</small>
                 </td>
                 <td>{{ data.queueName }}</td>
                 <!-- <span class="table-trigger">

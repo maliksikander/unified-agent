@@ -157,7 +157,8 @@ export class finesseService {
         this.showErr = false;
       } else if (event.event.toLowerCase() == "xmppevent") {
         if (event.response.description == "Connection Established, XMPP Status is Connected") {
-          this._snackbarService.open("CISCO : Synsying state with cisco", "succ");
+          // this._snackbarService.open("CISCO : Synsying state with cisco", "succ");
+          this._snackbarService.open(this._translateService.instant("snackbar.Cisco-State-Sync-Success"), "succ");
           this.showErr = false;
           executeCommands({ action: "getNotReadyLogoutReasons" });
         } else if (event.response.description == "XMPP Status is Disconnected!") {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { appConfigService } from "src/app/services/appConfig.service";
+import { cacheService } from "src/app/services/cache.service";
 
 @Component({
   selector: "app-grafana",
@@ -8,12 +9,23 @@ import { appConfigService } from "src/app/services/appConfig.service";
   styleUrls: ["./grafana.component.scss"]
 })
 export class GrafanaComponent implements OnInit {
-  constructor(public sanitizer: DomSanitizer, private _appConfigService: appConfigService) {}
-
+  constructor(public sanitizer: DomSanitizer, private _appConfigService: appConfigService, private _cacheService: cacheService) {}
+  grafanaUrl: SafeResourceUrl;
   ngOnInit() {
+    let supervisorId = this.getSupervisorId();
     this.grafanaUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-      new URL(this._appConfigService.config.GAT_URL).origin + "/grafana/d/0GEdiaunk/supervisor_dashboard_cim?orgId=1&refresh=10s"
+      new URL(this._appConfigService.config.GAT_URL).origin +
+        `/grafana/d/0GEdiaunk/supervisor_dashboard_cim?orgId=1&refresh=10s&var-userLoggedInId=${supervisorId}`
     );
   }
-  grafanaUrl: SafeResourceUrl;
+
+  getSupervisorId() {
+    let agent = JSON.parse(JSON.stringify(this._cacheService.agent));
+    let agentRoles = agent.roles ? agent.roles : [];
+    let isSupervisor = agentRoles.find((item) => {
+      return item == "supervisor";
+    });
+    if (isSupervisor) return agent.id;
+    return null;
+  }
 }

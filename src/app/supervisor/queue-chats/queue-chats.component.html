@@ -5,22 +5,15 @@
         <h4>{{ "supervisor.queued-conversations-detail" | translate }}</h4>
       </div>
       <div class="col-md-6 text-right page-action">
-        <mat-form-field appearance="outline" class="selection-trigger mr-2">
-          <mat-select [(value)]="selectedTeam" (selectionChange)="changeTeam()">
+        <mat-form-field *ngIf="this.supervisedTeams.length > 0" appearance="outline" class="selection-trigger mr-2">
+          <mat-select [(value)]="selectedTeam" (selectionChange)="onTeamChange()">
             <mat-option *ngFor="let team of supervisedTeams" [value]="team.teamId">{{ team.teamName }}</mat-option>
           </mat-select>
         </mat-form-field>
-        <div class="form-control multi-selection-list p-0 mr-2">
-          <angular2-multiselect
-            [data]="queuedChatList"
-            [(ngModel)]="selectedQueues"
-            [settings]="settings"
-            (ngModelChange)="filterData($event)"
-            (onSelect)="onItemSelect($event)"
-            (onDeSelect)="OnItemDeSelect($event)"
-            (onSelectAll)="onSelectAll($event)"
-            (onDeSelectAll)="onDeSelectAll($event)"
-          >
+        <div *ngIf="this.supervisedTeams.length > 0" class="form-control multi-selection-list p-0 mr-2">
+          <angular2-multiselect [data]="queuedChatList" [(ngModel)]="selectedQueues" [settings]="settings"
+            (ngModelChange)="filterData($event)" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
+            (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
             <c-badge>
               <ng-template let-item="item">
                 <label class="item-name">{{ item.queueName }}</label>
@@ -57,7 +50,8 @@
           <ng-container *ngFor="let data of filteredData">
             <tr *ngFor="let chat of data.chats">
               <td>
-                <span class="channel-icon"><img [src]="chat.channelType | channelName | channelLogo | async" /></span> {{ chat.customerName }}
+                <span class="channel-icon"><img [src]="chat.channelType | channelName | channelLogo | async" /></span>
+                {{ chat.customerName }}
                 <small>({{ chat.channelIdentity }})</small>
                 <!-- <ul class="customer-labels">
                 <li matTooltip="Marketing" style="background: #32b67a;"></li>
@@ -118,7 +112,8 @@
 
     <div class="action-trigger text-right">
       <button mat-button mat-dialog-close class="close-btn">{{ "supervisor.cancel" | translate }}</button>
-      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial>{{ "supervisor.done" | translate }}</button>
+      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial>{{ "supervisor.done" | translate
+        }}</button>
     </div>
   </div>
 </ng-template>

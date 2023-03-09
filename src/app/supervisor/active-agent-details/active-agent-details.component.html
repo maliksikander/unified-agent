@@ -10,11 +10,13 @@
       <div class="filter-area d-flex">
         <div class="create-label col pl-0">
           <div class="search-wrapper">
-            <input type="text" placeholder="{{'supervisor.search-agent' | translate | titlecase}}" (click)="$event.stopPropagation()" [(ngModel)]="agentSearch" />
+            <input type="text" placeholder="{{'supervisor.search-agent' | translate | titlecase}}"
+              (click)="$event.stopPropagation()" [(ngModel)]="agentSearch" />
             <mat-icon>search</mat-icon>
           </div>
 
-          <mat-form-field appearance="outline" class="selection-trigger chat-selection">
+          <mat-form-field *ngIf="this.supervisedTeams.length > 0" appearance="outline"
+            class="selection-trigger chat-selection">
             <mat-select [(value)]="teamSelected" (selectionChange)="filterData()">
               <mat-option value="all">All Teams</mat-option>
               <mat-option *ngFor="let team of supervisedTeams" [value]="team.teamId">{{ team.teamName }} </mat-option>
@@ -37,7 +39,8 @@
             <li><span class="busy-label"></span> {{ 'supervisor.busy' | translate | titlecase }}</li>
             <li><span class="active-label"></span> {{ 'supervisor.active' | translate | titlecase }}</li>
             <li><span class="ready-label"></span> {{ 'supervisor.ready' | translate | titlecase }}</li>
-            <li><span class="p-not-ready-label"></span> {{ 'supervisor.pending-not-ready' | translate | titlecase }}</li>
+            <li><span class="p-not-ready-label"></span> {{ 'supervisor.pending-not-ready' | translate | titlecase }}
+            </li>
             <li><span class="not-ready-label"></span>{{ 'supervisor.not-ready' | translate | titlecase }}</li>
           </ul>
         </div>
@@ -46,17 +49,20 @@
       <table class="table active-agent-table">
         <thead>
           <tr>
-            <th class="status-data" scope="col" matTooltip="{{ 'supervisor.agent(s)' | translate | titlecase }}">{{ 'supervisor.agent(s)' | translate | titlecase }}</th>
+            <th class="status-data" scope="col" matTooltip="{{ 'supervisor.agent(s)' | translate | titlecase }}">{{
+              'supervisor.agent(s)' | translate | titlecase }}</th>
             <!-- <th scope="col">State</th> -->
-            <th scope="col" matTooltip="{{ 'supervisor.active-conversation' | translate | titlecase }}">{{ 'supervisor.active-conversation' | translate | titlecase }}</th>
+            <th scope="col" matTooltip="{{ 'supervisor.active-conversation' | translate | titlecase }}">{{
+              'supervisor.active-conversation' | translate | titlecase }}</th>
             <!--          <th scope="col">Queue(s)</th>-->
-            <th scope="col" class="mrd-status-cell" matTooltip="{{ mrd?.name }}"  *ngFor="let mrd of MRDsList">
+            <th scope="col" class="mrd-status-cell" matTooltip="{{ mrd?.name }}" *ngFor="let mrd of MRDsList">
               {{ mrd.name }}
             </th>
           </tr>
         </thead>
         <tbody *ngIf="(activeAgentsDetails | json) != '{}'">
-          <tr *ngFor="let agent of (activeAgentsDetails.agents ? activeAgentsDetails.agents:[] ) | LockFilter: agentSearch">
+          <tr
+            *ngFor="let agent of (activeAgentsDetails.agents ? activeAgentsDetails.agents:[] ) | LockFilter: agentSearch">
             <td class="stats-agent-name {{ agent.state | lowercase }}">
               {{ agent.name }}
             </td>

@@ -77,7 +77,9 @@
     "Transfer-request-placed-successfully":"Transfer request placed successfully_ger",
     "Conference-request-placed-successfully":"Conference request placed successfully_ger",
     "Error-Getting-Queues-List":"Error Getting Queues List_ger",
-    "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_ger"
+    "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_ger",
+    "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_ger",
+    "No-Teams-Found":"No Teams Available_ger"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ger",
@@ -360,7 +362,8 @@
     "start-conversation":"Start Conversation_ger",
     "agent-id":"Agent Id_ger",
     "channel":"channel_ger",
-    "direction":"direction_ger"
+    "direction":"direction_ger",
+    "Select-All":"Select All_ger"
   },
   "pull-mode": {
     "all-list": "All List_ger",

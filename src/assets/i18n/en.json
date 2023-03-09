@@ -77,7 +77,9 @@
     "Transfer-request-placed-successfully":"Transfer request placed successfully",
     "Conference-request-placed-successfully":"Conference request placed successfully",
     "Error-Getting-Queues-List":"Error Getting Queues List",
-    "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found"
+    "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found",
+    "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco",
+    "No-Teams-Found":"No Teams Available"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View",
@@ -360,7 +362,8 @@
     "edit":"Edit",
     "start-conversation":"Start Conversation",
     "channel":"Channel",
-    "direction":"Direction"
+    "direction":"Direction",
+    "Select-All":"Select All"
   },
   "pull-mode": {
     "all-list": "All List",
