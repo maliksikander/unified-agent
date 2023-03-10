@@ -1597,7 +1597,7 @@ button.add-customer {
         line-height: 0;
 
         .c-label {
-          color: #676767 !important;
+          //color: #676767 !important;
           border: 1px solid #cccccc;
           line-height: 0;
           border-radius: 16px;
@@ -1814,7 +1814,7 @@ button.add-customer {
       line-height: 0;
 
       .c-label {
-        color: #676767 !important;
+        //color: #676767 !important;
         border: 1px solid #cccccc;
         line-height: 0;
         border-radius: 16px;
@@ -3440,10 +3440,10 @@ mat-select{
     color: rgba(0, 0, 0, 0.54) !important;
   }
 }
-.chat-selection-option {
- &.mat-selected{
+.mat-select-panel-wrap {
+ .mat-selected{
    color: rgba(0, 0, 0, 0.87) !important;
-   font-weight: 500;
+   font-weight: 700;
  }
 }
 
@@ -3560,6 +3560,21 @@ mat-select{
       font-size: 12px;
       font-weight: 600;
       border: 0 !important;
+        &:first-child{
+          color: rgba(0, 0, 0, 0.87);
+      }
+    }
+    .countplaceholder{
+      position: relative;
+      top: inherit !important;
+      right: inherit;
+      transform: inherit;
+      &:before{
+        content: '(';
+      }
+      &:after{
+        content: ')';
+      }
     }
   }
   .selected-list .c-angle-down, .selected-list .c-angle-up {
@@ -3576,6 +3591,7 @@ mat-select{
        margin: 0 4px;
        display: inline-block;
        position: relative;
+       border-top-color: #757575;
      }
   }
   .c-angle-up{
@@ -3588,12 +3604,13 @@ mat-select{
     margin: 0;
     border: 0;
     padding: 0;
+    display: inline-block !important;
     .item-name{
       height: 16px;
       line-height: 16px;
       margin: 0;
       display: inline-block;
-      width: 100px;
+      max-width: 100px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -3603,8 +3620,11 @@ mat-select{
   .c-remove{
     display: none !important;
   }
-  .selected-list .c-list .c-token{
-    padding: 0 !important;
+  .selected-list .c-list {
+    max-width: 100px;
+    .c-token{
+      padding: 0 !important;
+    }
   }
   .dropdown-list {
     top: 25px;
@@ -3622,4 +3642,13 @@ mat-select{
       }
     }
   }
+  .pure-checkbox.select-all span {
+    font-size: 13px;
+  }
+  .cuppa-dropdown{
+    ul{
+      height: auto !important;
+    }
+  }
 }
+
