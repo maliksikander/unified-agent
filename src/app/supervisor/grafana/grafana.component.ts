@@ -12,20 +12,15 @@ export class GrafanaComponent implements OnInit {
   constructor(public sanitizer: DomSanitizer, private _appConfigService: appConfigService, private _cacheService: cacheService) {}
   grafanaUrl: SafeResourceUrl;
   ngOnInit() {
-    let supervisorId = this.getSupervisorId();
+    let userId = this.getUserId();
     this.grafanaUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
       new URL(this._appConfigService.config.GAT_URL).origin +
-        `/grafana/d/0GEdiaunk/supervisor_dashboard_cim?orgId=1&refresh=10s&var-userLoggedInId=${supervisorId}`
+        `/grafana/d/0GEdiaunk/supervisor_dashboard_cim?orgId=1&refresh=10s&var-userLoggedInId=${userId}`
     );
   }
 
-  getSupervisorId() {
+  getUserId() {
     let agent = JSON.parse(JSON.stringify(this._cacheService.agent));
-    let agentRoles = agent.roles ? agent.roles : [];
-    let isSupervisor = agentRoles.find((item) => {
-      return item == "supervisor";
-    });
-    if (isSupervisor) return agent.id;
-    return null;
+    return agent.id;
   }
 }

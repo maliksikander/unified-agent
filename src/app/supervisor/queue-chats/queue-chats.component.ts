@@ -76,7 +76,6 @@ export class QueueChatsComponent implements OnInit {
     this._httpService.getAllQueuedChats(selectedTeamId, []).subscribe(
       (res) => {
         this.queuedChatList = res;
-        // console.log("chat api called==>", this.queuedChatList);
         this.filterData();
       },
       (err) => {
@@ -131,7 +130,6 @@ export class QueueChatsComponent implements OnInit {
   //     width: "480px"
   //   });
   //   dialogRef.afterClosed().subscribe((result) => {
-  //     // console.log("The dialog was closed");
   //   });
   // }
 
