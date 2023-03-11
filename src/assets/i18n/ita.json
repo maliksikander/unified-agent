@@ -78,8 +78,7 @@
     "Conference-request-placed-successfully":"Conference request placed successfully_ita",
     "Error-Getting-Queues-List":"Error Getting Queues List_ita",
     "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_ita",
-    "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_ita",
-    "No-Teams-Found":"No Teams Available_ita"
+    "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_ita"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ita",
@@ -452,6 +451,7 @@
     "agent-stats":"agent stats_ita",
     "pending-not-ready":"Pending-Not Ready_ita",
     "agent(s)":"agent(S)_ita",
-    "direction":"direction_ita"
+    "direction":"direction_ita",
+    "No-Teams-Available":"No Teams Available_ita"
   }
 }

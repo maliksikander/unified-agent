@@ -25,7 +25,8 @@
             <mat-option *ngFor="let team of supervisedTeams; " [value]="team.teamId">{{team.teamName}}</mat-option>
           </mat-select>
         </mat-form-field>
-        <div *ngIf="FilterSelected == 'agents' && this.supervisedTeams.length > 0" class="form-control multi-selection-list p-0 mr-2">
+        <div *ngIf="FilterSelected == 'agents' && this.supervisedTeams.length > 0"
+          class="form-control multi-selection-list p-0 mr-2">
           <angular2-multiselect [data]="activeChatListWithAgents" [(ngModel)]="selectedQueues" [settings]="settings"
             (ngModelChange)="filterData($event)" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
             (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
@@ -130,6 +131,11 @@
           </ng-container>
         </tbody>
       </table>
+      <div *ngIf="this.supervisedTeams && this.supervisedTeams.length == 0 && this.FilterSelected == 'agents'"
+        class="no-data-warning">
+        <i class="material-icons">warning_amber</i>
+        <span>{{'supervisor.No-Teams-Available' | translate}}</span>
+      </div>
     </div>
   </div>
 </div>

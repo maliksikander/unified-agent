@@ -51,8 +51,6 @@ export class QueueChatsComponent implements OnInit {
       this.selectedTeam = this.supervisedTeams[0].teamId;
       this.getAllQueuedChats(this.selectedTeam);
       this.startRefreshTimer();
-    } else {
-      this._snackBarService.open(this._translateService.instant("snackbar.No-Teams-Found"), "err");
     }
   }
 

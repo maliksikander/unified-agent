@@ -86,7 +86,12 @@
 
           </tr>
         </tbody>
+
       </table>
+      <div *ngIf="this.supervisedTeams && this.supervisedTeams.length == 0" class="no-data-warning">
+        <i class="material-icons">warning_amber</i>
+        <span>{{'supervisor.No-Teams-Available' | translate}}</span>
+      </div>
     </div>
   </div>
 </div>

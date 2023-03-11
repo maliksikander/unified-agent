@@ -42,8 +42,6 @@ export class ActiveAgentDetailsComponent implements OnInit {
 
       this.getAllMrds();
       this.startRefeshTimer();
-    } else {
-      this._snackBarService.open(this._translateService.instant("snackbar.No-Teams-Found"), "err");
     }
   }
 

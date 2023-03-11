@@ -3652,3 +3652,21 @@ mat-select{
   }
 }
 
+.no-data-warning {
+
+
+    margin: 0 auto;
+    text-align: center;
+    width: 50%;
+  i {
+    font-size: 60px;
+    color: #777777;
+    width: 10%;
+  }
+  span {
+    display: block;
+    padding: 0;
+    font-size: 12px;
+    color: #777777;
+  }
+}

@@ -9,18 +9,41 @@ import { cacheService } from "src/app/services/cache.service";
   styleUrls: ["./grafana.component.scss"]
 })
 export class GrafanaComponent implements OnInit {
-  constructor(public sanitizer: DomSanitizer, private _appConfigService: appConfigService, private _cacheService: cacheService) {}
   grafanaUrl: SafeResourceUrl;
+
+  constructor(public sanitizer: DomSanitizer, private _appConfigService: appConfigService, private _cacheService: cacheService) {}
+
   ngOnInit() {
-    let userId = this.getUserId();
+    let teamsId = this.getTeamsId();
     this.grafanaUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
       new URL(this._appConfigService.config.GAT_URL).origin +
-        `/grafana/d/0GEdiaunk/supervisor_dashboard_cim?orgId=1&refresh=10s&var-userLoggedInId=${userId}`
+        `/grafana/d/0GEdiaunk/supervisor_dashboard_cim?orgId=1&refresh=10s&var-teamIds=${teamsId}`
     );
   }
 
-  getUserId() {
-    let agent = JSON.parse(JSON.stringify(this._cacheService.agent));
-    return agent.id;
+  getTeamsId() {
+    try {
+      let agent = JSON.parse(JSON.stringify(this._cacheService.agent));
+      let supervisorTeams = agent.supervisedTeams ? agent.supervisedTeams : [];
+      let teamsId = [];
+      supervisorTeams.forEach((item) => {
+        teamsId.push(item.teamId);
+      });
+      return this.convertArrayToString(teamsId);
+    } catch (err) {
+      console.error("Error [getTeamsId] :", err);
+    }
+  }
+
+  convertArrayToString(teamsId) {
+    try {
+      if (teamsId.length > 0) {
+        const teamsIdStr: string = teamsId.join(",");
+        return teamsIdStr;
+      }
+      return "";
+    } catch (err) {
+      console.error("Error [convertArrayToString] :", err);
+    }
   }
 }

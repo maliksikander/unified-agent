@@ -65,7 +65,6 @@ export class ActiveChatsComponent implements OnInit {
       };
     } else {
       this.FilterSelected = "bots";
-      this._snackBarService.open(this._translateService.instant("snackbar.No-Teams-Found"), "err");
     }
     this.startRefreshTimer();
   }
@@ -75,7 +74,8 @@ export class ActiveChatsComponent implements OnInit {
       this.timerSubscription = timer(0, 10000)
         .pipe(
           map(() => {
-            if (this.FilterSelected == "agents") this.getAllActiveChatsWithTeam(this.selectedTeam, []);
+            if (this.FilterSelected == "agents" && this.supervisedTeams && this.supervisedTeams.length > 0)
+              this.getAllActiveChatsWithTeam(this.selectedTeam, []);
             else if (this.FilterSelected == "bots") this.getAllActiveChatsWithBots();
           }, retry())
         )
@@ -141,10 +141,7 @@ export class ActiveChatsComponent implements OnInit {
       if (e.value == "agents")
         if (this.supervisedTeams && this.supervisedTeams.length > 0) {
           this.getAllActiveChatsWithTeam(this.selectedTeam, []);
-        } else {
-          this._snackBarService.open(this._translateService.instant("snackbar.No-Teams-Found"), "err");
-        }
-      else if (e.value == "bots") this.getAllActiveChatsWithBots();
+        } else if (e.value == "bots") this.getAllActiveChatsWithBots();
     } catch (err) {
       console.error("[onAnsweredByfilterChange] Error :", err);
     }
