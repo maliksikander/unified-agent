@@ -12,7 +12,7 @@
         </mat-form-field>
         <div *ngIf="this.supervisedTeams.length > 0" class="form-control multi-selection-list p-0 mr-2">
           <angular2-multiselect [data]="queuedChatList" [(ngModel)]="selectedQueues" [settings]="settings"
-            (ngModelChange)="filterData($event)" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
+            (ngModelChange)="filterData()" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
             (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
             <c-badge>
               <ng-template let-item="item">
@@ -99,7 +99,8 @@
         <div class="form-group queue-transfer-to col-md-12">
           <label>{{ "supervisor.select-queue-to-re-queue-chat" | translate }}</label>
           <mat-form-field appearance="outline" class="selection-trigger">
-            <mat-select [(value)]="queueSelected">
+            <mat-select >
+            <!-- <mat-select [(value)]="queueSelected"> -->
               <mat-option value="all">{{ "supervisor.queues" | translate }}</mat-option>
               <mat-option value="software">{{ "supervisor.software-queue" | translate }}</mat-option>
               <mat-option value="marketing">{{ "supervisor.marketing-queue" | translate }}</mat-option>

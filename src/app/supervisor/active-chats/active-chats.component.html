@@ -28,7 +28,7 @@
         <div *ngIf="FilterSelected == 'agents' && this.supervisedTeams.length > 0"
           class="form-control multi-selection-list p-0 mr-2">
           <angular2-multiselect [data]="activeChatListWithAgents" [(ngModel)]="selectedQueues" [settings]="settings"
-            (ngModelChange)="filterData($event)" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
+            (ngModelChange)="filterData()" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
             (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
 
             <c-badge>
