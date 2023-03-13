@@ -1,0 +1,70 @@
+<div class="table-area announcement-table-area container-fluid ">
+  <div class="row m-0">
+    <div class="col-md-6 announcement-heading p-0">
+      <h4>{{'announcements.team-announcement' | translate}}</h4>
+    </div>
+    <div class="col-md-6 announcement-selection-area">
+      <mat-form-field appearance="outline" class="selection-trigger">
+        <mat-select [(value)]="FilterSelected">
+          <mat-option value="all" > {{'announcements.all-announcements' | translate}}</mat-option>
+          <mat-option value="active" >{{'announcements.active-announcements' | translate}}</mat-option>
+          <mat-option value="expired">{{'announcements.expired-announcements' | translate}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-button class="new-announcement" (click)="onCreateAnnouncement()"><span
+        class="announcement-icon"><img src="assets/images/promotion.svg"> </span>{{'announcements.new-announcement' | translate}}
+      </button>
+    </div>
+    <div class="table-container manage-dashboard">
+      <div class="manage-dashboard">
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">{{'announcements.announcement' | translate}}</th>
+            <th scope="col">{{'announcements.created-by' | translate}}</th>
+            <th scope="col">{{'announcements.expiry' | translate}}</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          <tr *ngFor="let announcement of displayAnnouncements">
+            <td><span>{{announcement.message}}</span></td>
+            <td>{{announcement.created_by}}</td>
+            <td>{{announcement.expiry_time}}</td>
+            <span class="table-trigger">
+<button mat-mini-fab (click)="onUpdateAnnouncement()"><i
+  class="material-icons">{{'announcements.edit' | translate}}</i></button>
+<button mat-mini-fab (click)="confirmationDialog(isConfirm, announcement)"><i
+  class="material-icons">{{'announcements.delete' | translate}}</i></button>
+</span>
+          </tr>
+          </tbody>
+        </table>
+        <!--<pagination-controls  (pageChange)="p = $event;pageChange($event)" previousLabel=""-->
+        <!--nextLabel="" maxSize='7'></pagination-controls>-->
+        <!--<h3 *ngIf="!dataBool" class="noData" translate>No_data</h3>-->
+
+      </div>
+<!--      <button *ngIf="isLoadMore" mat-raised-button type="button"-->
+<!--              class="send-announcement announcement-action load-more-announcement" >Load More-->
+<!--      </button>-->
+    </div>
+  </div>
+</div>
+
+
+<ng-template #isConfirm>
+  <div class="confirmation-dialog">
+    <div class="confirmation-header">
+      <h3>{{'announcements.delete-announcement' | translate}}</h3>
+    </div>
+    <div class="confirmation-content">
+      <p>{{'announcements.sure-delete-announcement' | translate}}</p>
+      <div class="confirmation-action">
+        <button mat-raised-button class="announcements.close-btn" mat-dialog-close>{{'announcements.cancel' | translate}}</button>
+        <button mat-raised-button class="announcements.confirm-btn">{{'announcements.confirm' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,7 +1,12 @@
-<app-header *ngIf="currentRoute != '/login'"></app-header>
+<app-header (themeSwitcher)="switchTheme($event)" (languageSwitcher)="switchLanguage($event)" *ngIf="currentRoute != '/login' && _cacheService.agent.id">
+</app-header>
 <div class="parent-notification">
-    <div class="child-notification" *ngFor="let request of requests">
-        <app-chat-notifications (closeRequestHeaderEvent)="requestHeaderEvents($event)" [data]="request"></app-chat-notifications>
-    </div>
+  <div class="child-notification">
+    <app-chat-notifications></app-chat-notifications>
+  </div>
 </div>
-<router-outlet></router-outlet>
+<ngx-ui-loader></ngx-ui-loader>
+<div class="main-app-area">
+  <div *ngIf="_finesseService.showErr" class="finesse-err">{{'globals.unable-connect-finesse'  | translate }}</div>
+  <router-outlet></router-outlet>
+</div>

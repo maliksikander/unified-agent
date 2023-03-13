@@ -1,0 +1,33 @@
+<div class="label-main page-header row m-0">
+  <div class="customer-heading page-heading col-sm-6 col-md-6">
+    <h4>{{'labels.customer-labels'  | translate }}</h4>
+  </div>
+  <div class="create-label col-md-6 col-sm-6">
+    <button *ngIf="('customer-labels' | authPipe : 'manage') as result" mat-button (click)="openLabelDialog('','new')" class="add-new"><mat-icon>add</mat-icon></button>
+  </div>
+</div>
+
+
+  <div *ngIf="labels" class="container">
+    <div class="row label-list">
+      <div class="col-md-4" *ngFor="let label of labels">
+        <div class="bar">
+        <span class="dot" [ngStyle]="{'background-color': label.colorCode}"></span>
+        <span matTooltip="{{label.name}}" class="name">{{label.name}}</span>
+        <span (click)="showMeta(label._id)" class="more-vert"><mat-icon>more_vert</mat-icon></span>
+        <div (mouseleave)="showMetaDIv = false" *ngIf="showMetaDIv && metaDivId == label._id" class="label-meta">
+          <div class="label-detail">
+            <p *ngIf="label.createdBy"> {{'labels.createdBy'  | translate }} <span>{{label.createdBy}}</span></p>
+            <p>{{'labels.createdAt'  | translate }}<span>{{label.createdAt | date :'shortDate'}}</span></p>
+            <p *ngIf="label.updatedBy"> {{'labels.updatedBy'  | translate }}<span>{{label.updatedBy}}</span></p>
+            <p *ngIf="label.updatedAt"> {{'labels.updatedAt'  | translate }}<span>{{label.updatedAt | date :'shortDate'}}</span></p>
+          </div>
+          <div class="label-actions-trigger" *ngIf="('customer-labels' | authPipe : 'manage') as result" >
+            <span  (click)="openLabelDialog(label,'update')" class="meta-btns">{{'labels.edit'  | translate }}</span>
+            <span (click)="onDelete(label._id)" class="meta-btns">{{'labels.delete'  | translate }}</span>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>

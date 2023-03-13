@@ -1,49 +1,76 @@
 <div *ngIf="(_socketService.conversationsListener | async)?.length > 0" class="ef_container container-fluid p-0">
   <div id="content" class="h-100">
-
     <div id="main-content" class="h-100">
       <!--      <button color="primary" class="left-bar-trigger" (click)="barExpand = !barExpand" ><mat-icon>{{barExpand ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}</mat-icon></button>-->
-      <mat-tab-group [ngClass]="{'bar-expand' : barExpand}" class="chat-tab-area h-100">
-
-        <mat-tab class="main-chat-tab h-100"
-          *ngFor="let conversation of (_socketService.conversationsListener | async)">
+      <mat-tab-group
+        [(selectedIndex)]="_sharedService.matCurrentTabIndex"
+        (selectedTabChange)="tabChanged($event)"
+        [ngClass]="{ 'bar-expand': barExpand }"
+        class="chat-tab-area h-100"
+      >
+        <mat-tab class="main-chat-tab h-100" *ngFor="let conversation of _socketService.conversationsListener | async">
           <div class="main-chat-bar-area">
             <div class="chat-contacts left-bar-contacts">
               <ng-template mat-tab-label>
                 <span class="get-events">
-                  <div class="user-badge">
-                    <circle-progress class="laft-bar-data" [percent]="100" [radius]="15" [outerStrokeWidth]="2"
-                      [innerStrokeWidth]="2" [outerStrokeColor]="'#3f51b5'" [innerStrokeColor]="'#F3F6F8'" [space]=-1
-                      [animation]="conversation.animation" [animationDuration]="600"
-                      [title]="conversation.messages[conversation.messages.length -1].header.channelSession.linkedCustomer.associatedCustomer.firstName | getFirstTwoLetters"
-                      [titleFontSize]="10" [showSubtitle]="false" [showUnits]="false" [renderOnClick]="false">
+                  <div class="user-badge" >
+                    <!-- [ngClass]="{'consult-monitor':conversation.customer.isConsultMonitor && _sharedService.consultRequestAccept == true && (_sharedService.requestAction | lowercase) !== 'conference'}" -->
+                    <circle-progress
+                      class="laft-bar-data"
+                      [percent]="100"
+                      [radius]="15"
+                      [outerStrokeWidth]="2"
+                      [innerStrokeWidth]="2"
+                      [outerStrokeColor]="conversation.activeChannelSessions.length > 0 ? '#3f51b5' : 'grey'"
+                      [innerStrokeColor]="conversation.state == 'ACTIVE' ? '#F3F6F8' : 'grey'"
+                      [space]="-1"
+                      [animation]="conversation.animation"
+                      [animationDuration]="600"
+                      [title]="conversation.customer.firstName | getFirstTwoLetters"
+                      [titleFontSize]="10"
+                      [showSubtitle]="false"
+                      [showUnits]="false"
+                      [renderOnClick]="false"
+                    >
                     </circle-progress>
-                    <span class="badge1" [hidden]="conversation.unReadCount == 0">{{conversation.unReadCount}}</span>
+                    <span class="badge1" [hidden]="conversation.unReadCount == 0">{{ conversation.unReadCount }}</span>
+                    <!-- <span *ngIf="conversation.customer.isConsultMonitor && _sharedService.consultRequestAccept == true" class="badge1 channel-badge"><img src="assets/images/{{(_sharedService.requestAction | lowercase) == 'conference' ? 'conference.svg' : 'consult.svg'}}"> </span> -->
+
                   </div>
-                  <span class="user-name">{{conversation.messages[conversation.messages.length
-                    -1].header.channelSession.linkedCustomer.associatedCustomer.firstName}}</span>
+                  <span class="user-name">{{ conversation.customer.firstName }}</span>
                 </span>
               </ng-template>
             </div>
             <div class="chat-contents">
               <div class="main-tab-content">
-                <app-interactions [conversation]="conversation"></app-interactions>
+                <app-interactions
+                  [currentTabIndex]="currentTabIndex"
+                  [changeDetecter]="conversation.messages[conversation.messages.length - 1]"
+                  [conversation]="conversation"
+                  [customerBar]="barExpand"
+                ></app-interactions>
               </div>
             </div>
-
           </div>
         </mat-tab>
-
       </mat-tab-group>
-      <!-- <button class="add-customer" mat-fab routerLink="/customers/phonebook">
+      <button *ngIf="('start-conversation' | authPipe : 'view') as result" class="add-customer" [ngClass]="{'expand-view': barExpand}" mat-fab routerLink="/customers/phonebook">
         <mat-icon>add</mat-icon>
-      </button> -->
-      <button color="primary" class="left-bar-trigger {{barExpand ? 'arrow_left' : 'arrow_right'}}"
-        (click)="barExpand = !barExpand"><img src="assets/images/arrow-rounded.svg"></button>
+        <span class="start-con">New Conversation</span>
+      </button>
+      <button color="primary" class="left-bar-trigger {{ barExpand ? 'arrow_left' : 'arrow_right' }}" (click)="barExpand = !barExpand"></button>
     </div>
   </div>
 </div>
+<div *ngIf="(_socketService.conversationsListener | async)?.length == 0" class="no-chat-main">
+  <div class="no-chat">
+    <span class="no-chat-icon">
+<!--      <mat-icon>question_answer</mat-icon>-->
+      <img src="assets/images/no-chat.svg" alt="No chat available" />
+    </span>
 
-<div *ngIf="(_socketService.conversationsListener | async)?.length == 0" class="no-chat">
-  NO CHAT AVAILABLE
+    <p>{{ _sharedService.mainPagetile | titlecase }}</p>
+    <button *ngIf="('customer-list' | authPipe : 'view') as result" routerLink="/customers/phonebook"
+    routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-button color="primary">{{'chat-features.chats.start' | translate}}</button>
+  </div>
 </div>

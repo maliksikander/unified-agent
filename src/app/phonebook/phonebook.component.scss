@@ -1,12 +1,16 @@
 @import "src/app/shared/globalVariables";
+//.phonebook-main-area {
+//  border: 5px solid #E2E2E2;
+//  height: calc(100% - 42px);
+//}
 .phonebook-main {
-  background: #F2F2F2;
+  background: $bubble-background;
   margin-bottom: 15px !important;
   min-height: 50px;
   padding-right: 10px;
   position: relative;
-  padding-left: 50px;
-  .back-to-chat{
+  //padding-left: 50px;
+  .back-to-chat {
     background: lighten($blue-text-color, 40%);
     height: 50px;
     width: 50px !important;
@@ -16,6 +20,7 @@
     min-width: inherit;
     padding: 0;
     text-align: center;
+    z-index: 2;
     &:after {
       content: "";
       width: 18px;
@@ -28,18 +33,18 @@
       border-bottom: 2px solid $blue-text-color;
     }
   }
-  .customer-heading{
+  .customer-heading {
     align-self: center;
 
-    h4{
+    h4 {
       font-size: 16px;
-      color: $blue-text-color;
+      color: #999;
       margin: 0;
       display: inline-block;
       line-height: 30px;
     }
   }
-  .filter-selection{
+  .filter-selection {
     display: inline-block;
     margin-left: 10px;
 
@@ -50,51 +55,58 @@
       min-height: 26px;
       font-size: 12px;
       padding: 5px 5px 5px 10px !important;
+      span {
+        color: #049be6 !important;
+        margin-left: 3px;
+      }
     }
   }
-  .right-actions{
+  .right-actions {
     align-self: center;
 
-    button{
+    button {
       font-size: 13px;
-      background: #1D9AC0;
-      color: #ffffff;
+      background: $main-color;
+      color: rgb(255, 255, 255);
       border: 0;
-      &:hover{
-        background: darken(#1D9AC0, 10%);
-      }
-    &.btn-action{
-      background: #EEF9DE;
-      color: #707070;
+      height: 32px;
+      line-height: 32px;
+      margin-left: 5px;
       margin-right: 5px;
-      &:hover{
-        background: darken(#EEF9DE, 10%);
+      &:hover {
+        background: darken($main-color, 10%);
+      }
+      img {
+        position: relative;
+        top: -1px;
+        margin-left: 4px;
       }
     }
+    .lbl-filter-search {
+      @extend button;
+      color: #333;
+
+      .lbl-search-lbl {
+        color: #fff;
+      }
     }
   }
 }
 
-
-
-
-
-
-
-.action-trigger{
+.action-trigger {
   display: none !important;
 }
-.hover{
+.hover {
   color: darken(#c5c5c5, 20%);
-  transition: all .3s;
+  transition: all 0.3s;
 }
 span.filter-icon {
   position: relative;
   top: -1px;
   color: #c5c5c5;
   cursor: pointer;
-  transition: all .3s;
-  &:hover{
+  transition: all 0.3s;
+  &:hover {
     @extend .hover;
   }
 }
@@ -103,10 +115,10 @@ span.sorting-icons {
   top: 7px;
   width: 22px;
   color: #c5c5c5;
-  transition: all .3s;
+  transition: all 0.3s;
   cursor: pointer;
   margin-right: 3px;
-  &:hover{
+  &:hover {
     @extend .hover;
   }
   span {
@@ -115,36 +127,37 @@ span.sorting-icons {
 }
 .drag-icon {
   float: left;
-  text-shadow: -5px 0 0 #C5C5C5;
-  color: #C5C5C5;
-  font-size: 20px !important;
+  text-shadow: -5px 0 0 #c5c5c5;
+  color: #c5c5c5;
+  font-size: 16px !important;
   text-align: center;
   width: 18px !important;
   line-height: 20px !important;
   cursor: pointer;
-  transition: all .3s;
+  transition: all 0.3s;
   height: 20px;
   margin-bottom: 8px;
   margin-left: 5px;
-  &:hover{
+  &:hover {
     @extend .hover;
     text-shadow: -5px 0 0 darken(#c5c5c5, 20%);
   }
 }
 
-
-.customer-search{
+.customer-search {
   padding: 5px;
   position: relative;
-  background: #F2F2F2;
+  background: #f2f2f2;
   border-top: 1px solid #efefef;
 
-  input{
+  input {
     width: 100%;
     border: 1px solid #efefef;
     border-radius: 3px;
     height: 25px;
     line-height: 25px;
+    color: gray;
+    padding: 0 19px 0 5px;
   }
 
   .close-filter {
@@ -155,17 +168,264 @@ span.sorting-icons {
     top: 12px;
     cursor: pointer;
 
-    mat-icon{
+    mat-icon {
       font-size: 14px;
-      color: #DBDBDB;
-      transition: all .3s;
+      color: #dbdbdb;
+      transition: all 0.3s;
     }
-    &:hover{
-      mat-icon{
+    &:hover {
+      mat-icon {
         color: #707070;
-        transition: all .3s;
+        transition: all 0.3s;
       }
     }
   }
 }
 
+.categorize-selection {
+  min-width: 320px;
+}
+tr.slide-in-left:hover {
+  background: #f9f9f9 !important;
+}
+
+.lbl-filter-search.custom-dropdown {
+  display: inline-block;
+  min-width: 206px;
+  position: relative;
+  height: 30px;
+  border-radius: 5px;
+  line-height: 30px;
+  width: auto;
+  vertical-align: middle;
+  background: #fff;
+  top: -1px;
+
+  .dot-in-filter {
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    position: relative;
+    display: inline-block;
+    margin-right: 5px;
+    bottom: -5px;
+    margin-left: 4px;
+  }
+
+  .lbl-search-lbl {
+    background: transparent;
+    font-size: 13px;
+    color: #000;
+    cursor: pointer;
+    border-radius: 4px;
+    text-align: left;
+    overflow: hidden;
+    white-space: pre;
+    position: absolute;
+    font-weight: 500;
+    padding: 0 10px;
+    left: 0;
+  }
+}
+
+.check-menu {
+  width: 280px;
+
+  .col-list {
+    float: left;
+    width: 48%;
+    overflow: hidden;
+    margin: 2px;
+  }
+}
+
+span.field-channel {
+  margin-left: 10px;
+  img {
+    margin: 0 2px 1px 0;
+    max-height: 15px;
+  }
+}
+.color {
+  color: #179ead !important;
+}
+
+.k-i-sort-desc-sm:hover {
+  color: coral;
+}
+
+.k-i-sort-asc-sm:hover {
+  color: coral;
+}
+
+.lblswithname {
+  .dot {
+    height: 13px;
+    width: 13px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 1px solid #fff;
+  }
+}
+
+.lblswithname {
+  top: 9px;
+  position: absolute;
+  left: 62%;
+  direction: rtl;
+
+  span:nth-child(odd) {
+    position: relative;
+    left: 5px;
+    margin-left: -10px;
+  }
+
+  span:nth-child(even) {
+    position: relative;
+    margin-left: 0;
+  }
+}
+
+.dot-in-tool {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  top: 2px;
+  margin-right: 2px;
+}
+
+.lbl-tooltip {
+  position: fixed;
+  z-index: 1;
+  top: 3px;
+  left: 162px;
+  background: #ffffff;
+  padding: 2px 3px 2px 3px;
+  border: 1px solid #ccc;
+  width: auto;
+  border-radius: 2px;
+  min-width: max-content;
+
+  div {
+    display: inline-block;
+    padding: 0px 3px;
+  }
+}
+
+.dot-in-filter {
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  position: relative;
+  display: inline-block;
+  margin-right: 5px;
+  bottom: -5px;
+  margin-left: 4px;
+}
+.add-new {
+  cursor: pointer;
+  font-size: 13px;
+  min-width: 25px;
+  background-color: $main-color;
+  color: #fff;
+  text-align: center;
+
+  &:hover {
+    background: darken($main-color, 10%);
+  }
+}
+
+//Search filter
+.search-customer-list-main {
+  flex: auto;
+  margin-right: 5px;
+  padding-left: 15px;
+  position: relative;
+  &.back-to-chat-trigger {
+    .search-customer-list {
+      width: calc(100% - 50px);
+      margin-left: 50px;
+
+      .filter-list-main {
+        width: calc(100% - 70px);
+      }
+    }
+  }
+
+  .search-customer-list {
+    mat-form-field {
+      width: 100%;
+
+      mat-icon {
+        right: 5px;
+        position: relative;
+        cursor: pointer;
+      }
+    }
+  }
+  .filter-list-main {
+    position: absolute;
+    top: 100%;
+    right: 3px;
+    width: calc(100% - 20px);
+    background: #fff;
+    padding: 10px 15px;
+    z-index: 99;
+    border-radius: 3px;
+    box-shadow: 0 2px 2px #0002;
+
+    h5 {
+      font-size: 13px;
+      margin-bottom: 15px;
+      font-weight: normal;
+    }
+  }
+  mat-radio-group {
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+
+    mat-radio-button {
+      flex: 0 0 25%;
+      font-size: 13px;
+      color: #000;
+    }
+  }
+  .filter-action-trigger {
+    position: absolute;
+    right: 2px;
+    border-left: 1px solid #a0a0a078;
+    height: 31px;
+    line-height: 31px;
+    top: 6px;
+    color: #969696;
+    border-radius: 0 3px 3px 0;
+    &.clicked {
+      box-shadow: 0 10px 0px #fff, 0 0 8px #ccc;
+      border-left: 0;
+    }
+  }
+
+  .footer-buttons {
+    text-align: right;
+    padding: 10px;
+    border-top: 1px solid #99999924;
+
+    button {
+      font-size: 13px;
+      color: $blue-text-color;
+      background: transparent;
+      height: 28px;
+      line-height: 28px;
+      min-width: 90px;
+      margin-left: 5px;
+
+      &.save-btn {
+        background: $blue-text-color;
+        color: #fff;
+      }
+    }
+  }
+}

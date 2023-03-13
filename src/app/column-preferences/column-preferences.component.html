@@ -1,0 +1,39 @@
+<div class="dialog-header">
+  <h4>{{'column-preferences.column-preferences' | translate}}</h4>
+  <button (click)="onNoClick()" mat-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+  <div class="scrollable-main col m6 s6">
+    <h4>{{'column-preferences.columns' | translate}} ({{columns?.length}})</h4>
+    <mat-form-field class="column-search" appearance="outline" floatLabel="always">
+      <input [(ngModel)]="searchItem" matInput placeholder="{{'globals.columns' | translate}}">
+      <mat-icon class="slide-in-top" matSuffix>search</mat-icon>
+    </mat-form-field>
+    <div class="cols-pref-check-box scrollable-area-left">
+      <section>
+        <div class="slide-in-left col-pref-checkbox" *ngFor="let column of columns | columnsFilterPipe : searchItem ">
+            <mat-checkbox color="primary" [hidden]="column.key == 'labels'" [checked]="loadChecked(column.key)" (change)="onChange($event,column)" [value]="column">{{column.label}}</mat-checkbox>
+          </div>
+      </section>
+    </div>
+  </div>
+  <div class="scrollable-main col m6 s6" style="float: right;">
+    <h4>{{'column-preferences.selected-columns' | translate}} ({{checkedColumns.length}})</h4>
+    <div class="scrollable-area-right right-area" cdkDropList (cdkDropListDropped)="drop($event)">
+      <div *ngIf="columns[0]" class="drag-list" >
+        <ng-container *ngFor="let col of checkedColumns">
+
+        <div [hidden]="col.header == 'Labels'" class="drag-box"  cdkDrag><mat-icon>more_vert</mat-icon>
+          <span >{{col.header}}</span>
+        </div>
+      </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="button-area">
+    <button (click)="onNoClick()" class="cancel-btn">{{'column-preferences.cancel' | translate}}</button>
+    <button (click)="save()" *ngIf="this.checkedColumns.length > 0"  cdkFocusInitial class="save-btn">{{'column-preferences.save' | translate}}</button>
+  </div>
+

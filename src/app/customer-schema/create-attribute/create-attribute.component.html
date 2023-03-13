@@ -1,0 +1,157 @@
+<div class="dialog-header">
+  <h4>{{'customer-schema.create-attribute' | translate}}</h4>
+  <button (click)="onNoClick()" mat-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div class="create-attr">
+  <form [formGroup]="createAttributeForm">
+    <div class="create-attr-dialog-body label-create-area">
+
+      <div class="left-area row m-0">
+        <div class="form-group label-name col-md-6">
+          <label class="text-left">{{'customer-schema.label' | translate}} <span class="mandatory-steric">*</span></label>
+          <mat-form-field appearance="outline">
+            <input formControlName="label" matInput>
+            <mat-error *ngIf="createAttributeForm.get('label')?.errors?.required">
+              {{'customer-schema.required' | translate}}
+            </mat-error>
+            <mat-error
+              *ngIf="createAttributeForm.get('label')?.errors?.minlength || createAttributeForm.get('label')?.errors?.maxlength">
+              {{'customer-schema.length-range-1-50' | translate}}
+            </mat-error>
+            <mat-error *ngIf="createAttributeForm.get('label')?.errors?.validName">
+              {{'customer-schema.label-already-exists' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group label-name col-md-6">
+          <label class="text-left">{{'customer-schema.description' | translate}}</label>
+          <mat-form-field appearance="outline">
+            <input formControlName="description" matInput>
+            <mat-error *ngIf="createAttributeForm.get('description')?.errors?.maxlength">
+              {{'customer-schema.length-range-1-100' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+      </div>
+
+      <div class="left-area row m-0">
+
+        <div class="form-group label-name col-md-4 pr-2">
+          <label class="text-left">{{'customer-schema.field-type' | translate}}</label>
+          <div class="select-list">
+            <mat-form-field appearance="outline">
+              <mat-select class="selected-channels" formControlName="type" (selectionChange)="onTypeChange($event)">
+                <mat-option *ngFor="let attributeType of attributeTypes" [value]="attributeType.type">
+                  {{attributeType.type | titlecase}}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="createAttributeForm.get('type')?.errors?.required">
+                {{'customer-schema.required' | translate}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div *ngIf="createAttributeForm.value.type == 'string'"
+          class="form-group label-name col-md-3 characters-length">
+          <label class="text-left">{{'customer-schema.no-of-characters' | translate}}</label>
+          <mat-form-field appearance="outline">
+            <input (keyup)="onLengthChange()" type="number" matInput formControlName="length">
+            <mat-error *ngIf="createAttributeForm.get('length')?.errors?.required">
+              {{'customer-schema.required' | translate}}
+            </mat-error>
+            <mat-error
+              *ngIf="createAttributeForm.get('length')?.errors?.min || createAttributeForm.get('length')?.errors?.max">
+              {{'customer-schema.value-bw-1-1000' | translate}} 
+            </mat-error>
+            <mat-error *ngIf="createAttributeForm.get('length')?.errors?.pattern">
+              {{'customer-schema.numeric-value' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="left-area row m-0">
+        <div class="check-box form-group col-md-3 mandatory-attribute">
+          <mat-checkbox color="primary" formControlName="isRequired" (change)="onRequiredValueChange($event)" >{{'customer-schema.mandatory' | translate}}
+            {{'customer-schema.attribute' | translate}}</mat-checkbox>
+        </div>
+        <div class="form-group label-name  default-value" *ngIf="createAttributeForm.value.isRequired">
+          <label class="text-left">{{'customer-schema.default-value' | translate}}<span class="mandatory-steric">*</span></label>
+          <mat-form-field appearance="outline">
+            <input formControlName="defaultValue" matInput>
+            <mat-error *ngIf="createAttributeForm.get('defaultValue')?.errors?.required">
+              {{'customer-schema.required' | translate}} 
+            </mat-error>
+            <mat-error
+              *ngIf="createAttributeForm.get('defaultValue')?.errors?.minLength || createAttributeForm.get('defaultValue')?.errors?.maxLength">
+              {{'customer-schema.given-limit' | translate}}
+            </mat-error>
+            <mat-error *ngIf="createAttributeForm.get('defaultValue')?.errors?.pattern">
+              {{'customer-schema.value-not-match' | translate}}
+            </mat-error>
+            <mat-error *ngIf="createAttributeForm.get('defaultValue')?.errors?.validName">
+              {{'customer-schema.name-already-exists' | translate}}
+            </mat-error>
+          </mat-form-field>
+          <small>{{'customer-schema.specify-default-value' | translate}}</small>
+        </div>
+        <!--        <div class="schema-check-box form-group">-->
+        <!--          <mat-checkbox  color="primary">Personal Identifiable Information</mat-checkbox>-->
+        <!--        </div>-->
+
+
+      </div>
+      <div class="left-area row m-0">
+        <div class="check-box form-group pii-info">
+          <mat-checkbox formControlName="isPii" color="primary">{{'customer-schema.PII' | translate}}</mat-checkbox> <a href="">{{'customer-schema.more-info-PII' | translate}}</a>
+        </div>
+      </div>
+
+    </div>
+
+    <hr>
+
+    <div class="footer">
+
+      <div class="footer-actions row m-0">
+        <div class="check-box channel-identifier form-group"
+          *ngIf="createAttributeForm.value.type != 'number' && createAttributeForm.value.type != 'password' && createAttributeForm.value.type != 'name' && createAttributeForm.value.type != 'boolean' && createAttributeForm.value.type != 'url'">
+          <label>{{'customer-schema.channel-identifier' | translate}}</label>
+          <mat-checkbox (change)="onChannelIdentifierChange($event)" formControlName="isChannelIdentifier"
+            color="primary">{{'customer-schema.yes' | translate}}
+          </mat-checkbox>
+        </div>
+
+        <div *ngIf="createAttributeForm.value.isChannelIdentifier" class="form-group label-name select-channel pr-2">
+          <label class="text-left">{{'customer-schema.select-channel' | translate}}</label>
+          <div class="select-list">
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="channelTypes" multiple class="selected-channels">
+                <mat-option class="channel-options" *ngFor="let channel of channelTypeList" [value]="channel.name"><img
+                    [src]="channel?.channelLogo | channelLogo | async"> {{channel.name}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="createAttributeForm.get('channelTypes')?.errors?.required">
+                {{'customer-schema.required' | translate}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <div class="action-right">
+
+          <button (click)="onNoClick()" class="cancel-btn">{{'customer-schema.cancel' | translate}}</button>
+          <button *ngIf="createAttributeForm.valid" (click)="onSave()" class="save-btn">{{'customer-schema.add' | translate}}
+            {{'customer-schema.attribute' | translate}}</button>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+</div>

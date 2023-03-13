@@ -1,6 +1,6 @@
 <div class="announcement-dialog-main">
   <div class="dialog-header">
-    <h4>Team Announcement</h4>
+    <h4>{{'supervisor.team-announcement'  | translate }}</h4>
     <button mat-icon-button (click)="onClose()"><i class="material-icons">close</i></button>
   </div>
   <div class="announcement-container mat-dialog-content">
@@ -8,55 +8,55 @@
       <div class="new-announcement-form">
 
         <div class="text-field message-field">
-          <label>Message</label>
+          <label>{{'supervisor.message'  | translate }}</label>
           <mat-form-field appearance="outline">
             <textarea #messageAnnouncement matInput [formControl]="announcementMessage" maxlength="250" ></textarea>
 <!--            <mat-error *ngIf="announcementMessage.hasError('required')">-->
 <!--              {{'announcements.type-message' | translate}}-->
 <!--            </mat-error>-->
-            <mat-hint align="end">{{messageAnnouncement.value.length}} / 250 characters</mat-hint>
+            <mat-hint align="end">{{messageAnnouncement.value.length}} / {{'supervisor.characters-limit-250'  | translate }}</mat-hint>
           </mat-form-field>
           <!--<span class="right-align character-limit">250 characters</span>-->
         </div>
         <div class="text-field team-selection">
-          <label>Select Team</label>
+          <label>{{'supervisor.select-team'  | translate }}</label>
           <mat-form-field appearance="outline">
             <mat-select [formControl]="teamList" multiple>
-              <mat-option  *ngFor="let team of Teams" [value]="team"  (click)="onTeam()">  {{team}} </mat-option>
+              <mat-option  *ngFor="let team of Teams" [value]="team">  {{team}} </mat-option>
             </mat-select>
             <mat-error *ngIf="teamList.hasError('required')">
-              Selecet Team
+              {{'supervisor.select-team'  | translate }}
             </mat-error>
           </mat-form-field>
         </div>
         <div class="text-field date-selection">
-          <label>Date Time</label>
+          <label>{{'supervisor.date-time'  | translate }}</label>
           <mat-form-field [formGroup]="formGroup" appearance="outline">
             <input matInput [ngxMatDatetimePicker]="picker1" [min]="announceDateMin" [formControl]="announceDate" (dateChange)="onValidateExpiryDate(announceDate.value)" >
             <mat-datepicker-toggle matSuffix  [for]="picker1"></mat-datepicker-toggle>
             <ngx-mat-datetime-picker #picker1 [stepHour]="1" [stepMinute]="5">
             </ngx-mat-datetime-picker>
             <mat-error *ngIf="announceDate.hasError('required')">
-              Select Calender
+              {{'supervisor.select-calender'  | translate }}
             </mat-error>
           </mat-form-field>
         </div>
         <div class="text-field date-selection">
-          <label>Expiry Date</label>
+          <label>{{'supervisor.expiry-date'  | translate }}</label>
           <mat-form-field appearance="outline">
             <input matInput [ngxMatDatetimePicker]="picker3" [min]="expireDateMin" [formControl]="expireDate">
             <mat-datepicker-toggle matSuffix  [for]="picker3"></mat-datepicker-toggle>
             <ngx-mat-datetime-picker #picker3 [stepHour]="1" [stepMinute]="5">
             </ngx-mat-datetime-picker>
             <mat-error *ngIf="expireDate.hasError('required')">
-              Select Calander
+              {{'supervisor.select-calender'  | translate }}
             </mat-error>
           </mat-form-field>
         </div>
 
         <div class="announcement-trigger right-align">
-          <button mat-raised-button type="button" class="discard-btn announcement-action" (click)="onClose()">Discard</button>
-          <button mat-raised-button type="button" class="send-announcement announcement-action" (click)="onCreate_UpdateAnnouncement()"[disabled]="!announcementMessage.valid || !teamList.valid || !announceDate.valid || !expireDate.valid">Create Announcement</button>
+          <button mat-raised-button type="button" class="discard-btn announcement-action" (click)="onClose()">{{'supervisor.discard'  | translate }}</button>
+          <button mat-raised-button type="button" class="send-announcement announcement-action" [disabled]="!announcementMessage.valid || !teamList.valid || !announceDate.valid || !expireDate.valid">Create Announcement</button>
 
         </div>
       </div>

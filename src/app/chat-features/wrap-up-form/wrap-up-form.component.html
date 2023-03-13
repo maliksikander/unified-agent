@@ -1,0 +1,85 @@
+<div class="note-dialog-main"  [ngClass]="{'right-align-view': wrapUpData.RTLDirection}">
+  <div class="dialog-header">
+    <h4 mat-dialog-title>{{wrapUpData.header}} <button mat-button (click)="closeDialog()">
+        <mat-icon>close</mat-icon>
+      </button></h4>
+  </div>
+  <div class="dialog-main-content">
+    <div class="row m-0">
+      <div class="col-md-12">
+        <div class="wrap-up-area divider-content">
+          <div class="row wrap-dialog-header">
+            <div class="col-md-6 selected-wrap-code">
+              <label>{{'chat-features.wrap-up-form.wrap-up-codes' | translate}}</label>
+            </div>
+            <div class="col-md-6 selected-wrap-code text-right">
+              <span>{{'chat-features.wrap-up-form.selected' | translate}} <strong>{{selectedWrapUpList.length}} - 5</strong> </span>
+            </div>
+          </div>
+
+          <div class="categories-label">
+            <div class="categories-search selected-area">
+
+              <mat-form-field class="w-100" appearance="fill">
+                <mat-chip-list #chipList aria-label="Wrap-up selection" class="wrap-code-selected">
+                  <mat-chip *ngFor="let selectedWrapUps of selectedWrapUpList" [selectable]="selectable"
+                    [removable]="removable" (removed)="remove(selectedWrapUps)">
+                    {{selectedWrapUps.value}}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                  </mat-chip>
+                  <input placeholder="{{'chat-features.wrap-up-form.New-Wrap-up' | translate}}" #wrapUpInput [formControl]="wrapCtrl" [(ngModel)]="inputWrapup"
+                    [matAutocomplete]="auto" [matChipInputFor]="chipList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" >
+                </mat-chip-list>
+                <mat-autocomplete class="wrap-selections" #auto="matAutocomplete"
+                  (optionSelected)="onSelectionReset($event)">
+                  <mat-option class="wrap-options" *ngFor="let selectWrapUps of filteredWrapUp | async"
+                    [value]="selectWrapUps">
+                    {{selectWrapUps.value}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+            <div class="wrap-code-area">
+              <mat-accordion class="note-accordion" multi="true">
+
+                <mat-expansion-panel expanded="true" *ngFor="let selectedCategory of categoryList">
+                  <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'"
+                    style="border-radius: 0;border-bottom: 0;">
+                    <mat-panel-title>
+                      <span>{{selectedCategory.categoryName}}</span>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+
+                  <!-- | LockFilter:inputWrapup -->
+                  <div class="categories-label-area">
+                    <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal">
+                      <mat-chip class="example-box" cdkDrag *ngFor="let wrapup of selectedCategory.values"
+                        (click)="selectWrapup(selectedCategory.categoryName,wrapup);">
+                        {{wrapup}}
+                      </mat-chip>
+                    </mat-chip-list>
+                  </div>
+                </mat-expansion-panel>
+
+              </mat-accordion>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="note-area col-md-12">
+        <label>{{'chat-features.wrap-up-form.notes' | translate}}</label>
+        <textarea class="p-1" [formControl]="notesFormCtrl"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-trigger text-right">
+    <button mat-button (click)="closeDialog()" class="close-btn mat-button mat-button-base">{{'chat-features.wrap-up-form.cancel' | translate}}</button>
+    <button mat-button [disabled]="selectedWrapUpList.length == 0 && !notesFormCtrl.value"
+      [ngClass]="{'btn-disable-background':selectedWrapUpList.length == 0 && !notesFormCtrl.value}"
+      class="success-btn mat-button mat-button-base" (click)="onSave()" cdkFocusInitial>{{'chat-features.wrap-up-form.apply' | translate}}</button>
+  </div>
+</div>

@@ -1,0 +1,246 @@
+//Media Queries/Compact view style only
+//
+@media(max-width: 1019px) {
+  .ef_container {
+    #main-content {
+
+      .chat-tab-area {
+
+        .chat-messages-main{
+          padding: 0 !important;
+
+          @media(max-width: 575px){
+            padding-bottom: 30px !important;
+          }
+
+          .chat-session-main {
+            padding: 0 15px;
+
+            .int-date {
+              padding-right: 8px !important;
+              margin-left: -20px;
+
+              @media(max-width: 769px){
+                padding-right: 8px !important;
+                float: none;
+                width: 100px;
+                margin: 0 auto;
+                border-radius: 20px;
+                z-index: 99;
+                border: 0;
+
+                b{
+                  display: inline-block;
+                  font-size: 11px;
+                  margin-left: 2px;
+                }
+              }
+            }
+          }
+        }
+
+        &.bar-expand {
+
+          .mat-tab-header {
+            width: 220px;
+          }
+
+          .mat-tab-body-wrapper {
+            width: calc(100% - 220px);
+          }
+
+          .chat-footer {
+            width: calc(100% - 235px) !important;
+            left: 230px !important;
+          }
+
+          .customer-bar-opened{
+            .chat-footer {
+              width: calc(100% - 235px) !important;
+              left: 230px !important;
+            }
+          }
+        }
+
+        .customer-bar-opened {
+          .interaction-inner, .main-chat-area, .chat-messages-main{
+            width: 100% !important;
+
+          }
+          .customer-info-main{
+            border-left: 0;
+            z-index: 9;
+            box-shadow: -2px 0 5px #dde0e4;
+            width: 315px;
+          }
+        }
+
+        .chat-footer {
+          width: calc(100% - 75px) !important;
+          left: 70px !important;
+        }
+      }
+
+
+    }
+
+  }
+}
+
+@media(max-width: 575px) {
+  .main-header {
+    .main-logo {
+      max-width: 230px;
+      padding: 0;
+
+      .main-menu {
+        margin: 0 5px 0 0;
+        width: 32px;
+      }
+    }
+  }
+  .main-app-area {
+    border-width: 0 !important;
+    border-top-width: 2px !important;
+  }
+  .ef_container{
+    width: 100% !important;
+
+    .right-profile-area{
+      padding: 0 5px;
+    }
+
+    #main-content {
+    .left-bar-trigger {
+      left: 0;
+      top: 57px;
+      bottom: inherit;
+      border-radius: 0;
+
+      &.arrow_left {
+        left: 227px;
+      }
+    }
+
+    mat-tab-group.chat-tab-area {
+      &.bar-expand {
+        .mat-tab-header {
+          width: 228px;
+          box-shadow: 4px 0 5px #e7edf6;
+
+        }
+
+        .mat-tab-body-wrapper {
+          width: 100%;
+        }
+      }
+
+      .mat-tab-header {
+        width: 0;
+        position: absolute;
+        z-index: 9;
+
+      }
+
+      .mat-tab-body-wrapper {
+        width: 100%;
+        border-left: 0;
+      }
+    }
+
+    .chat-tab-area {
+      &.bar-expand {
+        .chat-footer {
+          width: 100% !important;
+          left: 0 !important;
+          bottom: 0;
+        }
+      }
+
+      .chat-footer {
+        width: 100% !important;
+        left: 0 !important;
+        bottom: 0;
+
+        .reply-form {
+          .chat-area {
+            width: 100%;
+            padding: 5px 0 0;
+
+            textarea {
+              margin-left: 0 !important;
+            }
+          }
+
+          .chat-composer-trigger {
+            width: 70px !important;
+          }
+        }
+      }
+    }
+  }
+}
+  .scrollable-main{
+    padding: 10px !important;
+  }
+  .page-header{
+    .page-heading, .create-label{
+
+    }
+  }
+  .schema-container{
+    width: 100% !important;
+  }
+
+  .main-chat-bar{
+    height: auto !important;
+    padding: 0 5px;
+
+    .agent-actions{
+      justify-content: right !important;
+      padding-bottom: 5px;
+    }
+  }
+
+  #chat-content .chat-messages-main {
+    padding-bottom: 30px !important;
+    .chat-message{
+      .combined-area{
+        max-width: calc(100% - 40px) !important;
+
+        .audio-player{
+          min-width: 250px;
+        }
+        .file-type-message{
+          .display-file-name{
+            width: 170px !important;
+          }
+
+          &.file-type-video{
+            .file-type-content{
+              flex-flow: wrap;
+            }
+          }
+
+          .file-type-content{
+
+            .shared-card-content{
+              width: 180px !important;
+            }
+          }
+          .chat-time{
+            padding: 0 6px !important;
+          }
+          .display-file{
+            min-width: 60px !important;
+            img{
+              max-width: 50px !important;
+              min-width: 30px !important;
+            }
+
+          }
+        }
+      }
+    }
+  }
+}

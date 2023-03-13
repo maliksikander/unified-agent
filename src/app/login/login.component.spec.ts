@@ -3,16 +3,14 @@ import { FormBuilder } from "@angular/forms";
 
 describe("LoginComponent", () => {
   let fixture: LoginComponent;
-  let socketServiceMock: any;
-  let cacheServiceMock: any;
-  let httpServiceMock: any;
   let formBuilderMock: FormBuilder;
   let routerMock: any;
-  let sharedServiceMock: any;
+  let appConfigService: any;
+  let isLoggedInServiceMock: any;
 
   beforeEach(() => {
     formBuilderMock = new FormBuilder();
-    fixture = new LoginComponent(socketServiceMock, cacheServiceMock, httpServiceMock, routerMock, formBuilderMock, sharedServiceMock);
+    fixture = new LoginComponent(formBuilderMock, isLoggedInServiceMock);
   });
 
   describe("Test: Login Form", () => {

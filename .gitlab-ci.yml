@@ -1,6 +1,6 @@
 variables:
-  #IMAGE_NAME: ${CI_REGISTRY_IMAGE}/build:${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}-${CI_COMMIT_SHA}
-  IMAGE_NAME: ${CI_REGISTRY_IMAGE}/build:${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}
+  IMAGE_NAME: ${CI_REGISTRY_IMAGE}/build:${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}-${CI_COMMIT_SHA}
+  IMAGE_NAME_BRANCH: ${CI_REGISTRY_IMAGE}/build:${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}
 stages:
   #- validate
   #- compile
@@ -11,19 +11,22 @@ stages:
   - artifacts
   - init
   - build
-  - docker_build_merge
   - docker_build_branch
-  - scan_api
-  - publish_merge
+  - docker_build_merge
+  - anchore_scan_branch
+  - anchore_scan_merge
   - publish_branch
+  - publish_merge
 ##+==================Runs on Every Commit and merge requests========================+
 # node-validate:
 #   stage: validate
 #   #when: manual
-#   image: 
+#   image:
 #   script:
 #   only:
 #     - /^CIM-.*$/
+#     - /^.+_b-.+$/
+#     - /^.+_f-.+$/
 #     - merge_requests
 #   allow_failure: false
 #+==================Runs on Every Commit and merge requests========================+
@@ -31,10 +34,12 @@ stages:
 # node-compile:
 #   stage: compile
 #   when: on_success
-#   image: 
+#   image:
 #   script:
 #   only:
 #     - /^CIM-.*$/
+#     - /^.+_b-.+$/
+#     - /^.+_f-.+$/
 #     - merge_requests
 #   allow_failure: false
 #   cache:
@@ -51,7 +56,10 @@ node-modules-generate:
   only:
      refs:
        - /^CIM-.*$/
+       - /^.+_b-.+$/
+       - /^.+_f-.+$/
        - merge_requests
+       - /^durable.*$/
      changes:
        - package.json
   allow_failure: false
@@ -74,7 +82,11 @@ node-test:
     - npm run coverage
   only:
     - /^CIM-.*$/
+    - /^.+_b-.+$/
+    - /^.+_f-.+$/
     - merge_requests
+
+
   allow_failure: false
   cache:
     key: unified-agent-cache
@@ -85,6 +97,7 @@ node-test:
 #    paths:
 #        - coverage
 #        - node_modules/
+
 
 #+==================Runs on Every Commit and merge requests========================+
 
@@ -101,7 +114,10 @@ node-format:
 #           - node_modules
    only:
      - /^CIM-.*$/
+     - /^.+_b-.+$/
+     - /^.+_f-.+$/
      - merge_requests
+     - /^durable.*$/
    cache:
        key: unified-agent-cache
        paths:
@@ -123,7 +139,7 @@ node-format:
 #   variables:
 #       SONAR_TOKEN: "a447ea2777487119191464c9f5e9566637ace688"
 #       SONAR_HOST_URL: "http://192.168.1.109:9000"
-#       SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar" 
+#       SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
 #       GIT_DEPTH: 1
 #   script:
 #       - sonar-scanner -Dsonar.qualitygate.wait=true
@@ -134,33 +150,34 @@ node-format:
 #   allow_failure: false
 #   only:
 #       - /^CIM-.*$/
+#       - /^.+_b-.+$/
+#       - /^.+_f-.+$/
 #       - merge_requests
 #=================New Code Quality for NodeJS and TS============
-sonarqube-test:
-  stage: node-scan
-  image: adoptopenjdk/openjdk11:alpine-jre
-  script:
-    - apk add --no-cache git python3 py-pip bash shellcheck 'nodejs>10' 'npm>10'
-    - npm install -g typescript@3.7.5
-    - pip install --no-cache-dir --upgrade pip
-    - pip install --no-cache-dir pylint
-    #- npm install
-    #- npm run test
-    #- npm run coverage
-    - npm run sonar
-  only:
-    - /^CIM-.*$/
-    - merge_requests
-  allow_failure: false
-  cache:
-    key: unified-agent-cache
-    paths:
-      - node_modules
-      - coverage
-    policy: pull
-  #=artifacts:
-    #paths:
-        #- coverage
+# sonarqube-test:
+#   stage: node-scan
+#   image: adoptopenjdk/openjdk11:alpine-jre
+#   script:
+#     - apk add --no-cache git python3 py-pip bash shellcheck 'nodejs>14' 'npm>7'
+#     - npm install -g typescript@3.7.5
+#     - pip install --no-cache-dir --upgrade pip
+#     - pip install --no-cache-dir pylint
+#     #- npm install
+#     #- npm run test
+#     #- npm run coverage
+#     - npm run sonar
+#   only:
+#     - merge_requests
+#   allow_failure: false
+#   cache:
+#     key: unified-agent-cache
+#     paths:
+#       - node_modules
+#       - coverage
+#     policy: pull
+#   #=artifacts:
+#     #paths:
+#         #- coverage
 
 
 node_artifacts:
@@ -190,6 +207,9 @@ node_artifacts:
        policy: pull
    only:
    - /^CIM-.*$/
+   - /^.+_b-.+$/
+   - /^.+_f-.+$/
+   - /^durable.*$/
 
 #+==================Runs on merge requests only========================+
 
@@ -269,7 +289,7 @@ build_image_on_merge:
  only:
    - merge_requests
  allow_failure: false
- 
+
  #+==================Runs on merge requests only========================+
 build_image_in_branch:
  image: docker:latest
@@ -288,16 +308,65 @@ build_image_in_branch:
    - cp -r dist ./docker/
    - cd docker
    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
-   - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" "$IMAGE_NAME"
-   - docker push "$IMAGE_NAME"
+   - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" "$IMAGE_NAME_BRANCH"
+   - docker push "$IMAGE_NAME_BRANCH"
  only:
-   - /^CIM-.*$/  
+   - /^CIM-.*$/
+   - /^.+_b-.+$/
+   - /^.+_f-.+$/
+   - /^durable.*$/
  allow_failure: false
 
-#+==================Runs on merge requests only========================+
-anchore_scan_api:
+#+==================Runs on every commit (on success)========================+
+anchore_scan_branch:
   image: anchore/engine-cli:latest
-  stage: scan_api
+  stage: anchore_scan_branch
+  when: on_success
+  variables:
+    ANCHORE_CLI_URL: "http://192.168.2.249:8228/v1"
+    ANCHORE_CLI_USER: "admin"
+    ANCHORE_CLI_PASS: "foobar"
+    ANCHORE_CLI_SSL_VERIFY: "false"
+    ANCHORE_TIMEOUT: 1500
+    ANCHORE_FAIL_ON_POLICY: "false"
+  script:
+    - echo "Adding image to Anchore engine at ${ANCHORE_CLI_URL}"
+    - anchore-cli image add ${IMAGE_NAME_BRANCH}
+    - echo "Waiting for analysis to complete"
+    - anchore-cli image wait ${IMAGE_NAME_BRANCH} --timeout ${ANCHORE_TIMEOUT}
+    - echo "Analysis complete"
+    - echo "Producing reports"
+    #- anchore-cli image content ${IMAGE_NAME_BRANCH} os > image-packages.txt
+    #- anchore-cli image content ${IMAGE_NAME_BRANCH} npm > image-npm.txt
+    #- anchore-cli image content ${IMAGE_NAME_BRANCH} gem > image-gem.txt
+    #- anchore-cli image content ${IMAGE_NAME_BRANCH} python > image-python.txt
+    #- anchore-cli image content ${IMAGE_NAME_BRANCH} java > image-java.txt
+    - anchore-cli image vuln ${IMAGE_NAME_BRANCH} all
+    - anchore-cli image vuln ${IMAGE_NAME_BRANCH} all > "${CI_PROJECT_TITLE}"-image-vulnerabilities.txt
+    - anchore-cli image get ${IMAGE_NAME_BRANCH} > "${CI_PROJECT_TITLE}"-image-details.txt
+    - anchore-cli evaluate check ${IMAGE_NAME_BRANCH} --detail > "${CI_PROJECT_TITLE}"-image-policy.txt || true
+    - if [ "${ANCHORE_FAIL_ON_POLICY}" == "true" ] ; then anchore-cli evaluate check ${IMAGE_NAME_BRANCH}  ; fi
+  artifacts:
+    name: "$CI_JOB_NAME"
+    expire_in: 999 yrs
+    paths:
+    - ${CI_PROJECT_TITLE}-image-policy.txt
+    - ${CI_PROJECT_TITLE}-image-details.txt
+    - ${CI_PROJECT_TITLE}-image-vulnerabilities.txt
+    #- image-java.txt
+    #- image-python.txt
+    #- image-gem.txt
+    #- image-npm.txt
+    #- image-packages.txt
+  only:
+    - /^durable.*$/
+    - /^.+_b-.+$/
+    - /^.+_f-.+$/
+    - /^CIM-.*$/
+#+==================Runs on merge requests only========================+
+anchore_scan_merge:
+  image: anchore/engine-cli:latest
+  stage: anchore_scan_merge
   when: on_success
   variables:
     ANCHORE_CLI_URL: "http://192.168.2.249:8228/v1"
@@ -322,7 +391,7 @@ anchore_scan_api:
     - anchore-cli image vuln ${IMAGE_NAME} all > "${CI_PROJECT_TITLE}"-image-vulnerabilities.txt
     - anchore-cli image get ${IMAGE_NAME} > "${CI_PROJECT_TITLE}"-image-details.txt
     - anchore-cli evaluate check ${IMAGE_NAME} --detail > "${CI_PROJECT_TITLE}"-image-policy.txt || true
-    - if [ "${ANCHORE_FAIL_ON_POLICY}" == "true" ] ; then anchore-cli evaluate check ${IMAGE_NAME}  ; fi 
+    - if [ "${ANCHORE_FAIL_ON_POLICY}" == "true" ] ; then anchore-cli evaluate check ${IMAGE_NAME}  ; fi
   artifacts:
     name: "$CI_JOB_NAME"
     expire_in: 999 yrs
@@ -337,7 +406,8 @@ anchore_scan_api:
     #- image-packages.txt
   only:
     - merge_requests
-    - /^CIM-.*$/
+
+
 
 #+==================Runs on merge requests only========================+
 container_publish_on_merge:
@@ -382,15 +452,17 @@ container_publish_in_branch:
     - export TIME_TOKEN=$(env TZ=GMT-5 date +%d_%m_%Y-%H_%M_%S)
     - echo "${TIME_TOKEN}"
     - docker login -u gitlab-ci-token -p "$CI_JOB_TOKEN" "${CI_REGISTRY}"
-    - docker pull "$IMAGE_NAME"
-    - docker tag "$IMAGE_NAME" "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}-${TIME_TOKEN}"
+    - docker pull "$IMAGE_NAME_BRANCH"
+    - docker tag "$IMAGE_NAME_BRANCH" "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}-${TIME_TOKEN}"
     - docker push "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}-${TIME_TOKEN}"
     #- |
     #    if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" == "master" ]; then
-    #      docker tag "$IMAGE_NAME" "${CI_REGISTRY_IMAGE}:latest"
+    #      docker tag "$IMAGE_NAME_BRANCH" "${CI_REGISTRY_IMAGE}:latest"
     #      docker push "${CI_REGISTRY_IMAGE}:latest"
     #    fi
   only:
 
     - /^CIM-.*$/
-
+    - /^.+_b-.+$/
+    - /^.+_f-.+$/
+    - /^durable.*$/

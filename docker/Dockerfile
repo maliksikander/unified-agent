@@ -8,8 +8,6 @@ COPY config.json.template .
 
 COPY docker-entrypoint.sh .
 
-#COPY environment_variables.env .
-
 RUN chmod +x docker-entrypoint.sh
 
 ENTRYPOINT ["sh","./docker-entrypoint.sh"]

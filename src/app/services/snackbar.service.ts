@@ -7,12 +7,12 @@ import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
 export class snackbarService {
   constructor(private snackBar: MatSnackBar) {}
 
-  open(message: string, status: string) {
+  open(message: string, status: string, duration?, buttonText = null) {
     let config: MatSnackBarConfig = new MatSnackBarConfig();
-    config.duration = 3000;
-    config.panelClass = status == "err" ? ["err-class"] : ["succ-class"];
+    config.duration = duration ? duration : 7000;
+    config.panelClass = status == "err" ? ["err-class"] : ["success-snackbar"];
     config.verticalPosition = "top";
-    this.snackBar.open(message + "!", null, config);
+    this.snackBar.open(message, buttonText, config);
   }
 
   close() {

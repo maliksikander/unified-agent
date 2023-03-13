@@ -57,8 +57,4 @@ export class AnnouncementDialogComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {});
   }
-
-  onTeam() {}
-
-  onCreate_UpdateAnnouncement() {}
 }

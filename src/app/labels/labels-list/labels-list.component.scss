@@ -1,0 +1,174 @@
+@import "src/app/shared/globalVariables";
+
+//.label-main{
+//  background: #F3F6F8;
+//  margin-bottom: 15px !important;
+//  min-height: 50px;
+//  position: relative;
+//}
+.create-label {
+  padding-right: 0;
+  text-align: right;
+
+  .add-new{
+    cursor: pointer;
+    height: 50px;
+    font-size: 13px;
+    min-width: 25px;
+    background-color: #fff;
+    color: $main-color;
+    width: 50px !important;
+    text-align: center;
+    padding: 0;
+    border-radius: 0;
+
+    &:hover{
+      background: darken($main-color, 10%);;
+    }
+  }
+}
+
+//.customer-heading{
+//  align-self: center;
+//
+//  h4{
+//    font-size: 16px;
+//    color: #999;
+//    margin: 0;
+//    display: inline-block;
+//    line-height: 30px;
+//  }
+//}
+.add-icon {
+  float: right;
+  background: #11b2c7;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding-top: 3px;
+  color: white;
+  cursor: pointer;
+}
+
+.header {
+  color: #0ea3b7;
+  font-weight: bold;
+}
+
+.dot {
+  height: 21px;
+  width: 21px;
+  border: 1px solid #fff;
+  border-radius: 100%;
+}
+
+.bar {
+  background: $main-color-background;
+  border-radius: 5px;
+  margin-top: 10px;
+  height: 40px;
+  border: 1px solid $bubble-background;
+  display: flex;
+  flex-flow: wrap;
+  align-items: center;
+  padding: 0 5px;
+  position: relative;
+}
+
+.more-vert {
+  float: right;
+  cursor: pointer;
+  color: $main-color;
+  top: 10px;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  opacity: .5;
+  mat-icon {
+    font-size: 18px !important;
+  }
+}
+
+
+.name {
+  margin-left: 10px;
+  font-size: 13px;
+  color: #5B5B5B;
+  text-overflow: ellipsis;
+  white-space: pre;
+  overflow: hidden;
+}
+
+.label-meta {
+  background: $blue-text-color;
+  color: #fff;
+  position: absolute;
+  width: 160px;
+  font-size: 12px;
+  //padding: 2px 3px 0 5px;
+  right: 10px;
+  z-index: 9;
+  top: 42px;
+  border-radius: 3px 0 3px 3px;
+
+  .label-detail {
+    padding: 5px;
+    p{
+      padding: 0 2px;
+      margin: 0;
+      span{
+        padding-left: 7px;
+      }
+
+    }
+  }
+
+    .label-actions-trigger {
+      background: rgba(0,0,0,.2);
+      padding: 0 5px;
+
+      .meta-btns {
+        display: block;
+        padding: 2px;
+        cursor: pointer;
+        border-bottom: 1px dashed rgba(255,222,255,.4);
+        &:last-child{
+          border: 0;
+        }
+
+        &:hover{
+          background: rgba(0,0,0,.1);
+        }
+      }
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 1px;
+    width: 0;
+    height: 0;
+    border: 12px solid transparent;
+    border-bottom-color: $blue-text-color;
+    border-top: 0;
+    margin-top: -9px;
+    border-top: 0;
+    -webkit-filter: drop-shadow(-1px 0px 0px $blue-text-color);
+    filter: drop-shadow(0px -1px 0px $blue-text-color);
+    box-shadow: 1px 0px 0px $blue-text-color;
+    border-right: 0;
+  }
+}
+
+
+
+.hr{
+  margin: 0px;
+  padding: 0px;
+  width: 104%;
+  position: relative;
+  left: -5px;
+  height: 1px;
+  border: none;
+}

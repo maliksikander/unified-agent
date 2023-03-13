@@ -58,12 +58,80 @@ import { SearchPipe } from "./pipes/search.pipe";
 import { sentenceCasePipe } from "./pipes/sentenceCase.pipe";
 import { convertToFormDataPipe } from "./pipes/convertToFormData.pipe";
 import { getFirstTwoLettersPipe } from "./pipes/getFirstTwoLetters.pipe";
-import { PerfectScrollbarModule } from "ngx-perfect-scrollbar";
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from "ngx-mat-datetime-picker";
+import { AngularMultiSelectModule } from "angular2-multiselect-dropdown";
+import { NgScrollbarModule } from "ngx-scrollbar";
+import { getMRDSwitchesPipe } from "./pipes/getMRDSwitchs.pipe";
+import { fetchLabelsPipe } from "./pipes/fetchLabels.pipe";
+import { columnsFilterClass } from "./pipes/columnsFilter.pipe";
+import { MomentModule } from "ngx-moment";
+import { filterPullModeRequestsPipe } from "./pipes/filterPullModeReqsts.pipe";
+import { channelLogoPipe } from "./pipes/getChannelLogo.pipe";
+import { activeConversationPipe } from "./pipes/getActiveConversationData.pipe";
+import { isAlreadyJoinedPipe } from "./pipes/isAlreadyJoined.pipe";
+import { webChannelDataPipe } from "./pipes/webChannelData.pipe";
+import { getFileUrlPipe } from "./pipes/getFileUrl.pipe";
+import { NgxDocViewerModule } from "ngx-doc-viewer";
+import { sanitizePipe } from "./pipes/sanitize.pipe";
+import { DownloadDirective } from "../download.directive";
+import { getFileExtPipe } from "./pipes/getFileExt.pipe";
+import { getFormattedBytesPipe } from "./pipes/formatBytes.pipe";
+import { getReferredMessagePipe } from "./pipes/getReferredMsg.pipe";
+import { spaceInArrayPipe } from "./pipes/spaceInArray.pipe";
+import { channelNamePipe } from "./pipes/getChannelLogoByName.pipe";
+import { NgxTimerModule } from "ngx-timer";
+import { getSenderIdPipe } from "./pipes/getSenderId.pipe";
+import { AuthPipe } from "./pipes/auth.pipe";
+import { timeDurationPipe } from "./pipes/timeDuration.pipe";
+import { timeDurationFromParticipantPipe } from "./pipes/timeDurationFromParticipant.pipe";
+import { getCheckedChannelSessionPipe } from "./pipes/getCheckedChannelSession.pipe";
+import { TranslateModule } from "@ngx-translate/core";
+import { filterAgentParticipantClass } from "./pipes/filterAgents.pipe";
+import { SliceFilterPipe } from "./pipes/slice-filter.pipe";
+import { checkConferenceCallPipe } from "./pipes/checkConferenceCall.pipe";
+import { getCustomerAniPipe } from "./pipes/getCustomerAni.pipe";
+import { checkOutboundCallPipe } from "./pipes/checkOutboundCall.pipe";
+import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
 
 @NgModule({
-  declarations: [RemoveUnderscorePipe, ibsformatPipe, getSenderNamePipe, SearchPipe, sentenceCasePipe, convertToFormDataPipe, getFirstTwoLettersPipe],
+  declarations: [
+    getFormattedBytesPipe,
+    timeDurationFromParticipantPipe,
+    timeDurationPipe,
+    getMRDSwitchesPipe,
+    RemoveUnderscorePipe,
+    isAlreadyJoinedPipe,
+    ibsformatPipe,
+    getSenderNamePipe,
+    SearchPipe,
+    sentenceCasePipe,
+    convertToFormDataPipe,
+    getFirstTwoLettersPipe,
+    fetchLabelsPipe,
+    columnsFilterClass,
+    filterPullModeRequestsPipe,
+    channelLogoPipe,
+    activeConversationPipe,
+    webChannelDataPipe,
+    getFileUrlPipe,
+    sanitizePipe,
+    DownloadDirective,
+    getFileExtPipe,
+    getReferredMessagePipe,
+    spaceInArrayPipe,
+    channelNamePipe,
+    getSenderIdPipe,
+    AuthPipe,
+    getCheckedChannelSessionPipe,
+    filterAgentParticipantClass,
+    SliceFilterPipe,
+    checkConferenceCallPipe,
+    getCustomerAniPipe,
+    checkOutboundCallPipe,
+    checkConsultCallPipe
+  ],
   imports: [
+    NgxDocViewerModule,
     MatIconModule,
     MatToolbarModule,
     MatSidenavModule,
@@ -93,10 +161,10 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
     MatDatepickerModule,
     MatNativeDateModule,
     CommonModule,
-    PerfectScrollbarModule,
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
     NgxMatTimepickerModule,
+    MomentModule,
     NgCircleProgressModule.forRoot({
       radius: 100,
       outerStrokeWidth: 16,
@@ -127,9 +195,14 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
     ConfirmDialogModule,
     InputTextareaModule,
     OwlDateTimeModule,
-    OwlNativeDateTimeModule
+    OwlNativeDateTimeModule,
+    AngularMultiSelectModule,
+    NgScrollbarModule,
+    NgxTimerModule,
+    TranslateModule
   ],
   exports: [
+    NgxTimerModule,
     MatIconModule,
     MatToolbarModule,
     MatSidenavModule,
@@ -164,6 +237,7 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
     NgCircleProgressModule,
     HttpClientModule,
     RemoveUnderscorePipe,
+    filterPullModeRequestsPipe,
     NgxLinkifyjsModule,
     ibsformatPipe,
     TableModule,
@@ -187,7 +261,6 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
     InputTextareaModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    PerfectScrollbarModule,
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
     NgxMatTimepickerModule,
@@ -195,7 +268,38 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
     getSenderNamePipe,
     sentenceCasePipe,
     convertToFormDataPipe,
-    getFirstTwoLettersPipe
+    getFirstTwoLettersPipe,
+    AngularMultiSelectModule,
+    NgScrollbarModule,
+    getMRDSwitchesPipe,
+    fetchLabelsPipe,
+    columnsFilterClass,
+    MomentModule,
+    channelLogoPipe,
+    activeConversationPipe,
+    isAlreadyJoinedPipe,
+    webChannelDataPipe,
+    getFileUrlPipe,
+    sanitizePipe,
+    NgxDocViewerModule,
+    DownloadDirective,
+    getFileExtPipe,
+    getFormattedBytesPipe,
+    getReferredMessagePipe,
+    spaceInArrayPipe,
+    channelNamePipe,
+    getSenderIdPipe,
+    timeDurationPipe,
+    AuthPipe,
+    getCheckedChannelSessionPipe,
+    timeDurationFromParticipantPipe,
+    TranslateModule,
+    filterAgentParticipantClass,
+    SliceFilterPipe,
+    checkConferenceCallPipe,
+    checkOutboundCallPipe,
+    getCustomerAniPipe,
+    checkConsultCallPipe
   ]
 })
 export class SharedModule {}

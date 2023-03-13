@@ -3,11 +3,36 @@
   width: 100%;
   background-color: #2c3044;
   min-height: 100%;
-  background-image: url("../../assets/images/login-background.png");
+  background-image: url("src/assets/images/login-background.png");
   background-size: cover;
   background-position: center;
   top: 0;
   z-index: 9;
+  left: 0;
+
+  &:before {
+    content: '';
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    animation: back-change 4s;
+  }
+  @keyframes back-change {
+    0% {
+      opacity: 1;
+      background: rgba(0, 103, 135, 0.9);
+    }
+    50% {
+      opacity: .7;
+      background: rgba(0, 103, 135, 0.50);
+    }
+    100% {
+      opacity: 0;
+      background: rgba(0, 103, 135, 0);}
+  }
 
   .row {
     height: 100%;
@@ -25,6 +50,7 @@
       position: absolute;
       right: 0 !important;
       padding-left: 4em !important;
+      z-index: 2;
     }
   }
 
@@ -52,6 +78,7 @@
         padding: 10px;
         transform: translateY(-50%) translatex(-50%);
         left: 50%;
+        z-index: 2;
       }
     }
 
@@ -134,6 +161,7 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+    z-index: 2;
     img{
       height: 55px;
       display: block;
@@ -149,13 +177,15 @@
         line-height: 40px;
         max-width: 270px;
         text-transform: uppercase;
-        margin: 0 0 20px;
+        margin: 0;
       }
 
       p {
         font-size: 15px;
         color: #fff;
         max-width: 325px;
+        letter-spacing: 3px;
+        word-spacing: 5px;
       }
     }
   }
@@ -168,11 +198,12 @@
   .auth-section{
     padding: 0;
     &:before {
-      background: rgba(29, 154, 192, 0.9) !important;
+      background: rgba(70, 70, 70, 0.9) !important;
       position: fixed;
       height: 100%;
       width: 100%;
       content: '';
+      animation: none;
     }
     &:after {
       content: '';
@@ -180,7 +211,7 @@
       width: 100%;
       background-color: #2c3044;
       min-height: 100%;
-      background-image: url("../../assets/images/login-background.png");
+      background-image: url("src/assets/images/login-background.png");
       background-size: cover;
       background-position: center;
       z-index: -1;
@@ -191,6 +222,7 @@
       flex-wrap: wrap;
       background: transparent !important;
       min-height: 550px;
+      z-index: 2;
 
       .brand-logo{
         bottom: 5px;

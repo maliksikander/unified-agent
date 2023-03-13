@@ -1,0 +1,86 @@
+[
+    {
+      "channelTypes": [],
+      "_id": "61a62b05134fc2f8a65bc2a0",
+      "key": "firstName",
+      "defaultValue": "John Doe",
+      "description": "",
+      "isChannelIdentifier": false,
+      "isDeleteAble": false,
+      "isPii": false,
+      "isRequired": true,
+      "label": "First Name",
+      "length": 50,
+      "sortOrder": 1,
+      "type": "String"
+    },
+    {
+      "channelTypes": [
+        "WhatsApp",
+        "SMS"
+      ],
+      "_id": "61a7ab05134fc2f8a65c566f",
+      "key": "phoneNumber",
+      "defaultValue": "",
+      "description": "",
+      "isChannelIdentifier": true,
+      "isDeleteAble": false,
+      "isPii": false,
+      "isRequired": false,
+      "label": "Phone Number",
+      "length": 18,
+      "sortOrder": 2,
+      "type": "PhoneNumber"
+    },
+    {
+      "channelTypes": [],
+      "_id": "61a7ab05134fc2f8a65c5670",
+      "key": "isAnonymous",
+      "defaultValue": false,
+      "description": "",
+      "isChannelIdentifier": false,
+      "isDeleteAble": false,
+      "isPii": false,
+      "isRequired": true,
+      "label": "Anonymous",
+      "length": 4,
+      "sortOrder": 3,
+      "type": "Boolean"
+    },
+    {
+      "channelTypes": [
+        "Web"
+      ],
+      "_id": "61b0460ccaefbc32b489e82e",
+      "key": "webChannelIdentifier",
+      "label": "Web Channel Identifier",
+      "description": "fsdf",
+      "type": "String",
+      "length": 50,
+      "isRequired": false,
+      "defaultValue": null,
+      "isPii": false,
+      "isChannelIdentifier": true,
+      "isDeleteAble": true,
+      "sortOrder": 4,
+      "__v": 0
+    },
+    {
+      "channelTypes": [
+        "Viber"
+      ],
+      "_id": "61b04645caefbc32b489e86a",
+      "key": "viber",
+      "label": "Viber",
+      "description": "",
+      "type": "String",
+      "length": 50,
+      "isRequired": false,
+      "defaultValue": "",
+      "isPii": false,
+      "isChannelIdentifier": true,
+      "isDeleteAble": true,
+      "sortOrder": 5,
+      "__v": 0
+    }
+  ]

@@ -1,22 +1,67 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
+import { EventEmitter, Injectable, Output } from "@angular/core";
+import { MatDialog } from "@angular/material";
+import { TranslateService } from "@ngx-translate/core";
+import { Subject } from "rxjs";
+import { LinkConversationDialogComponent } from "../dialogs/link-conversation-dialog/link-conversation-dialog.component";
+import { ConfirmationDialogComponent } from "../new-components/confirmation-dialog/confirmation-dialog.component";
+import { httpService } from "./http.service";
 import { snackbarService } from "./snackbar.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class sharedService {
-  constructor(private _snackbarService: snackbarService) {}
-
-  private serviceMessageSource = new BehaviorSubject({ msg: null, data: null });
-  serviceCurrentMessage = this.serviceMessageSource.asObservable();
-  serviceChangeMessage(data: any) {
-    this.serviceMessageSource.next(data);
+  constructor(
+    private dialog: MatDialog,
+    private _translateService: TranslateService,
+    private _snackbarService: snackbarService,
+    private _httpService: httpService
+  ) {
+    this._translateService.stream("snackbar.FETCHING-CHATS").subscribe((data: string) => {
+      this.mainPagetile = data;
+    });
   }
 
-  getIndexFromTopicId(topicId, array) {
+  schema;
+  mainPagetile: any;
+  matCurrentTabIndex = 0;
+  channelLogoMapper = new Map();
+  serviceCurrentMessage = new Subject();
+  selectedlangugae = new Subject();
+  channelTypeList;
+  conversationSettings = {
+    isFileSharingEnabled: false,
+    isEmojisEnabled: false,
+    isConversationParticipantsEnabled: false,
+    isWrapUpEnabled: false,
+    wrapUpTime: 15,
+    isMessageFormattingEnabled: false
+  };
+
+  //preffered language code of agent
+  //default is en/english
+  prefferedLanguageCode = "en";
+
+  //emit the change of the language preference by agent
+  //code has the language code e.g: en/ar/fr
+  changelanguage(code: string) {
+    this.selectedlangugae.next(code);
+  }
+
+  serviceChangeMessage(data: any) {
+    this.serviceCurrentMessage.next(data);
+  }
+  setConversationSettings(setting) {
+    this.conversationSettings.isConversationParticipantsEnabled = setting.isConversationParticipantsEnabled;
+    this.conversationSettings.isFileSharingEnabled = setting.isFileSharingEnabled;
+    this.conversationSettings.isEmojisEnabled = setting.isEmojisEnabled;
+    this.conversationSettings.isWrapUpEnabled = setting.isWrapUpEnabled;
+    this.conversationSettings.wrapUpTime = setting.wrapUpTime;
+    this.conversationSettings.isMessageFormattingEnabled = setting.isMessageFormattingEnabled;
+  }
+  getIndexFromConversationId(conversationId, array) {
     let index = array.findIndex((e) => {
-      return e.topicId == topicId;
+      return e.conversationId == conversationId;
     });
     return index;
   }
@@ -25,17 +70,86 @@ export class sharedService {
     array.splice(index, 1);
   }
 
+  setChannelIcons(channelTypes) {
+    this.channelTypeList = channelTypes;
+    try {
+      localStorage.setItem("channelTypes", JSON.stringify(channelTypes));
+    } catch (e) {}
+    channelTypes.forEach((channelType) => {
+      this._httpService.getChannelLogo(channelType.channelLogo).subscribe((file) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+          // caching the channel logos
+          this.channelLogoMapper.set(channelType.channelLogo, reader.result);
+        };
+      });
+    });
+  }
+
+  getConfirmation(header, msg) {
+    return new Promise((resolve) => {
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        width: "490px",
+        panelClass: "confirm-dialog",
+        data: { header: header, message: msg }
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result && result.event == "confirm") {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+    });
+  }
+
+  getProfileLinkingConfirmation(channelIdentifier, customerName, attr, isMergeAble) {
+    return new Promise((resolve) => {
+      const dialogRef = this.dialog.open(LinkConversationDialogComponent, {
+        width: "490px",
+        panelClass: "confirm-dialog",
+        data: { channelIdentifier: channelIdentifier, customerName: customerName, attr: attr, isMergeAble: isMergeAble }
+      });
+      dialogRef.afterClosed().subscribe((decision) => {
+        if (decision) {
+          console.log("this is decision ", decision);
+          resolve(decision);
+        }
+      });
+    });
+  }
+
   Interceptor(e, res) {
     if (res == "err") {
+      console.log("[Error]:", e);
       if (e.statusCode == 401) {
-        this._snackbarService.open("UNAUTHORIZED USER", "err");
+        this._snackbarService.open(this._translateService.instant("snackbar.UNAUTHORIZED-USER"), "err");
       } else if (e.statusCode == 400) {
-        this._snackbarService.open("Bad Request", "err");
+        this._snackbarService.open(
+          e.msg.error.attribute
+            ? e.msg.error.attribute + this._translateService.instant("snackbar.is") + e.msg.error.validation
+            : this._translateService.instant("snackbar.Bad-Request"),
+          "err"
+        );
+      } else if (e.statusCode == 412) {
+        this._snackbarService.open(this._translateService.instant("snackbar.unable-to-fetch-license-status"), "err");
+      } else if (e.statusCode == 500) {
+        this._snackbarService.open(this._translateService.instant("snackbar.Internal-Server-Error"), "err");
+      } else if (e.statusCode == 408) {
+        this._snackbarService.open(e.msg, "err");
+      } else if (e.error) {
+        this._snackbarService.open(e.error.msg, "err");
       } else {
-        this._snackbarService.open("Something went wrong", "err");
+        this._snackbarService.open(this._translateService.instant("snackbar.Something-went-wrong"), "err");
       }
     }
     if (res == "succ") {
+      this._snackbarService.open(e, "succ");
     }
+  }
+
+  snackErrorMessage(msg) {
+    this._snackbarService.open(msg, "err");
   }
 }

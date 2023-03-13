@@ -2,33 +2,75 @@
   height: calc(100% - 40px);
   position: absolute;
   top: 40px;
+  width: calc(100% - 10px);
 }
 #content{
   margin: -1px 0;
   display: flex;
   flex-direction: row;
-  border: 5px solid #e2e2e2;
+  //border: 5px solid #e2e2e2;
   height: calc(100% + 1px) !important;
 }
 div#main-content {
-  //display: inline-block;
+  display: inline-block;
   //width: calc(100% - 55px);
   width: 100%;
   float: left;
 }
-
-.no-chat{
+.no-chat-main{
+  position: absolute;
+  width: calc(100% - 10px);
+  height: calc(100% - 50px);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.no-chat {
   text-align: center;
-    position: relative;
-    top: 40%;
-    color: #808080d1;
-    font-size: 30px;
+  color: #9D9D9D;
+  font-size: 30px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  align-content: center;
+  flex-flow: column;
+  align-items: center;
+
+  .no-chat-icon {
+    //width: 190px;
+    //height: 190px;
+    //background: #F8F7F7;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+
+    img {
+      width: 100%;
+      max-width: 12vw;
+    }
+
+    //mat-icon {
+      //color: #D1D1D1;
+      //font-size: 3em;
+      //width: inherit;
+      //height: auto;
+      //line-height: inherit;
+    //}
+  }
+  button{
+    color: #1A50A3;
+    border: 1px solid #1A50A3;
+    font-size: 13px;
+    margin-top: 5px;
+    padding: 0 10px;
+  }
 }
 
 .badge1 {
   position: absolute;
   top: 4px;
-  right: 4px;
+  left: 30px;
   font-size: 8px;
   background: #DB0505;
   color: white;
@@ -56,21 +98,35 @@ div#main-content {
 //Bar expand/collapse
 .left-bar-trigger {
   position: absolute;
-  left: 24px;
-  bottom: 16px;
-  transition: all .2s;
-  background: transparent !important;
-  border-radius: 0;
+  left: 14px;
+  bottom: 25px;
+  background: #E7EDF6;
   border: 0;
   cursor: pointer;
   z-index: 10;
   width: 32px;
   height: 32px;
-  transform: rotate(180deg);
+  padding: 0;
+  border-radius: 100%;
+  transition: all 0.3s;
+
+  &:before {
+    content: "";
+    width: 11px;
+    position: absolute;
+    left: 9px;
+    top: 10px;
+    height: 11px;
+    border-top: 2px solid #7596C8;
+    border-right: 2px solid #7596C8;
+    transition: all 0.3s;
+    transform: rotate(45deg);
+  }
 
   &.arrow_left {
-    left: 240px !important;
-    transform: rotate(0deg);
+    transition: all .3s;
+    transform: rotate(180deg);
+
   }
   .mat-icon {
     font-size: 15px;
@@ -79,3 +135,17 @@ div#main-content {
 
 }
 
+.add-customer.expand-view{
+  width: 100%;
+  margin: 0 auto;
+  left: 5px;
+  border-radius: 5px;
+  border: 2px solid #7d9ccc;
+  text-align: left;
+  padding-left: 10px;
+  max-width: 270px;
+
+  .start-con{
+    display: inline-block;
+  }
+}
