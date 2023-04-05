@@ -32,7 +32,7 @@ export class ActiveChatsComponent implements OnInit {
   itemList = [];
   selectedQueues: any = [];
   settings = {};
-
+  message = "hide";
   constructor(
     // private dialog: MatDialog,
     private _translateService: TranslateService,
@@ -46,10 +46,11 @@ export class ActiveChatsComponent implements OnInit {
     this.filter = this.route.snapshot.queryParamMap.get("filter") ? this.route.snapshot.queryParamMap.get("filter") : "agents";
     if (this.filter == "agents") {
       this.FilterSelected = "agents";
+      
     } else if (this.filter == "bots") {
       this.FilterSelected = "bots";
     }
-
+    
     this.supervisedTeams = this._cacheService.agent.supervisedTeams;
     if (this.supervisedTeams && this.supervisedTeams.length > 0) {
       this.selectedTeam = this.supervisedTeams[0].teamId;
@@ -67,6 +68,15 @@ export class ActiveChatsComponent implements OnInit {
       this.FilterSelected = "bots";
     }
     this.startRefreshTimer();
+  }
+  Toggle(){
+    if (this.filter == "agents") {
+      console.log(this.message); 
+      
+    } else if (this.filter == "bots") {
+      console.log("no toggle"); 
+    }
+    
   }
 
   startRefreshTimer() {
