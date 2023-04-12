@@ -118,10 +118,10 @@
                 </div>
               </div>
               <ng-container *ngIf="conversationId != 'FAKE_CONVERSATION'">
-                <div *ngIf="'customer-list' | authPipe: 'manage' as result" class="crm-trigger">
+                <div  class="crm-trigger">
                   <!-- <p>Not a correct customer profile?</p> -->
-                  <button mat-raised-button (click)="gotoEmbedView()">{{'chat-features.customer-info.link-profile' | translate}}</button>
-                  <button (click)="updateProfile()" mat-raised-button>{{'chat-features.customer-info.update-profile' | translate}}</button>
+                  <button *ngIf="('customer' | authPipe: 'view') as result" mat-raised-button (click)="gotoEmbedView()">{{'chat-features.customer-info.link-profile' | translate}}</button>
+                  <button *ngIf="('customer' | authPipe: 'manage_in_conversation') as result" (click)="updateProfile()" mat-raised-button>{{'chat-features.customer-info.update-profile' | translate}}</button>
                 </div>
               </ng-container>
             </div>
@@ -156,7 +156,7 @@
                           <small>{{ activeChannel }}</small>
                           <span class="channel-list-action">
                             <!-- <button mat-icon-button><mat-icon>call</mat-icon></button> -->
-                            <ng-container *ngIf="('start-conversation' | authPipe : 'view') as result" >
+                            <ng-container *ngIf="('agent-conversation-control' | authPipe : 'view_initiate_chat') as result" >
                               <button
                                 mat-icon-button
                                 (click)="startOutBoundConversation(channel.value, activeChannel)"
@@ -277,7 +277,7 @@
                   <li *ngIf="i < 15">
                     {{ customer.firstName }}
                     <button
-                      *ngIf="'customer-list' | authPipe: 'manage' as result"
+                    *ngIf="('customer' | authPipe: 'view') as result"
                       (click)="linkCustomer(customer)"
                       mat-icon-button
                       class="waves-effect"
@@ -289,7 +289,7 @@
               </ul>
 
               <div class="linked-action">
-                <button mat-button *ngIf="'customer-list' | authPipe: 'view' as result" (click)="viewAllMatches()">{{'chat-features.customer-info.view-matches' | translate}}</button>
+                <button mat-button *ngIf="('customer' | authPipe: 'view') as result" (click)="viewAllMatches()">{{'chat-features.customer-info.view-matches' | translate}}</button>
               </div>
             </div>
           </mat-expansion-panel>

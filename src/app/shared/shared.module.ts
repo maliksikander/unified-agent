@@ -78,6 +78,7 @@ import { getFileExtPipe } from "./pipes/getFileExt.pipe";
 import { getFormattedBytesPipe } from "./pipes/formatBytes.pipe";
 import { getReferredMessagePipe } from "./pipes/getReferredMsg.pipe";
 import { spaceInArrayPipe } from "./pipes/spaceInArray.pipe";
+import { isPIIPipe } from "./pipes/isPII.pipe";
 import { channelNamePipe } from "./pipes/getChannelLogoByName.pipe";
 import { NgxTimerModule } from "ngx-timer";
 import { getSenderIdPipe } from "./pipes/getSenderId.pipe";
@@ -119,6 +120,7 @@ import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
     getFileExtPipe,
     getReferredMessagePipe,
     spaceInArrayPipe,
+    isPIIPipe,
     channelNamePipe,
     getSenderIdPipe,
     AuthPipe,
@@ -287,6 +289,7 @@ import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
     getFormattedBytesPipe,
     getReferredMessagePipe,
     spaceInArrayPipe,
+    isPIIPipe,
     channelNamePipe,
     getSenderIdPipe,
     timeDurationPipe,

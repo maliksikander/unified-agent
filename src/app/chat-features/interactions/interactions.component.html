@@ -21,7 +21,7 @@
             {{ conversation.customer.firstName | slice: 0:50 }}
             <!-- <span class="chat-timer">( 11:32 )</span> -->
 
-            <ul *ngIf="conversation.customer.labels" class="customer-labels">
+            <ul *ngIf="(conversation.customer.labels && (('customer-labels' | authPipe: 'assign_label'))) as result" class="customer-labels">
               <li
                 *ngFor="let lbl of labels | fetchLabels: conversation.customer.labels"
                 matTooltip="{{ lbl.name }}"
@@ -32,7 +32,9 @@
         </div>
         <div class="col-md-8 col-sm-8 agent-actions">
           <ul class="list-group list-group-horizontal agent-controls">
-            <ng-container *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
+            <ng-container
+              *ngIf="conversation.conversationId != 'FAKE_CONVERSATION' && ('agent-conversation-control' | authPipe: 'view_wrap_up') as result"
+            >
               <li class="list-group-item">
                 <button
                   mat-fab
@@ -54,7 +56,10 @@
                 <mat-icon>group</mat-icon>
               </button>
             </li>
-            <li class="list-group-item" *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
+            <li
+              class="list-group-item"
+              *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'"
+            >
               <button
                 mat-icon-button
                 #consultTransferTrigger="matMenuTrigger"
@@ -66,7 +71,7 @@
                 <mat-icon>person_add</mat-icon>
               </button>
             </li>
-            <li *ngIf="'leave-chat' | authPipe: 'view' as result" class="list-group-item">
+            <li *ngIf="'agent-conversation-control' | authPipe: 'view_leave_chat' as result" class="list-group-item">
               <button mat-icon-button>
                 <mat-icon (click)="onLeaveClick()">close</mat-icon>
               </button>
@@ -104,6 +109,7 @@
                         <!-- <span matTooltip="Queue Consult" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, option, 'Consult to Queue')"><img src="assets/images/consult-colored.svg" alt="consult"/> </span> -->
 
                         <button
+                          *ngIf="'agent-conversation-control' | authPipe: 'view_direct_transfer' as result"
                           [disabled]="
                             !_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0 || queue?.totalAvailableAgents == 0
                           "
@@ -116,6 +122,7 @@
                         </button>
 
                         <button
+                          *ngIf="'agent-conversation-control' | authPipe: 'view_conference' as result"
                           [disabled]="
                             !_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0 || queue?.totalAvailableAgents == 0
                           "
@@ -265,11 +272,15 @@
               </span>
 
               <p>{{ "chat-features.interactions.no-active" | translate }}</p>
-              <p *ngIf="'customer-conversation-view' | authPipe: 'manage' as result">
+              <p
+                *ngIf="
+                  (('agent-conversation-control' | authPipe: 'view_history') || (conversation.conversationId != 'FAKE_CONVERSATION' && ('agent-conversation-control' | authPipe: 'view_history_active_customer')) ) as result
+                "
+              >
                 {{ "chat-features.interactions.click" | translate }}
                 <a routerLink="" (click)="loadPastActivities('FAKE_CONVERSATION')">{{ "chat-features.interactions.here" | translate }}</a>
                 {{ "chat-features.interactions.to-load" | translate }}
-                <button mat-button class="load-conversation" (click)="loadPastActivities('FAKE_CONVERSATION')">Load Past Conversation</button>
+                <!-- <button mat-button class="load-conversation" (click)="loadPastActivities('FAKE_CONVERSATION')">Load Past Conversation</button> -->
               </p>
             </div>
           </div>
@@ -299,7 +310,7 @@
                 </span>
               </div>
             </ng-container>
-            <div style="display: unset" *ngFor="let message of conversation.messages; let index = index;">
+            <div style="display: unset" *ngFor="let message of conversation.messages; let index = index">
               <div
                 id="datestamp"
                 class="int-date"
@@ -359,16 +370,11 @@
                       conversation.messages[index - 1].header.channelSession.channel.channelType.id)
                     ? 'same-sender-msg'
                     : 'not-same-sender'
-                }} {{
-
-                  message.header.status == 'sending'
-                    ? 'low-opacity'
-                    : message.header.status == 'failed'
-                    ? 'failed'
-                    :''
-                }}  {{ message.body.type | lowercase }} {{ message.header.replyToMessageId != null ? 'quoted-message-main' : '' }} {{
-                  message.header.sender.type | lowercase
-                }} {{ fullPostView && message.id == selectedCommentId ? 'full-post-view' : '' }}"
+                }} {{ message.header.status == 'sending' ? 'low-opacity' : message.header.status == 'failed' ? 'failed' : '' }}  {{
+                  message.body.type | lowercase
+                }} {{ message.header.replyToMessageId != null ? 'quoted-message-main' : '' }} {{ message.header.sender.type | lowercase }} {{
+                  fullPostView && message.id == selectedCommentId ? 'full-post-view' : ''
+                }}"
                 [ngClass]="
                   (message.header.sender.type | lowercase) == 'customer' || (message.body.type | lowercase) == 'voice'
                     ? 'user-message slide-in-left'
@@ -1744,12 +1750,13 @@
                 </div>
                 <ul
                   class="delivery-report"
-                  *ngIf="(message.header.sender.type | lowercase) !== 'customer' && message.header.seenStatuses && message.header.seenStatuses.length != 0"
-
+                  *ngIf="
+                    (message.header.sender.type | lowercase) !== 'customer' && message.header.seenStatuses && message.header.seenStatuses.length != 0
+                  "
                 >
-                <ng-container *ngFor="let sender of message.header.seenStatuses">
-                  <li [ngClass]="{'customer-delivery-report': sender.type=='CUSTOMER'}">{{sender.senderName}}</li>
-                </ng-container>
+                  <ng-container *ngFor="let sender of message.header.seenStatuses">
+                    <li [ngClass]="{ 'customer-delivery-report': sender.type == 'CUSTOMER' }">{{ sender.senderName }}</li>
+                  </ng-container>
                 </ul>
 
                 <div class="chat-intents" *ngIf="message.showBotSuggestions">
@@ -1867,13 +1874,10 @@
 
       <div class="message-composer">
         <div class="whisper-selection" *ngIf="conversation?.agentParticipants?.length > 0">
-          <button (click)="isWhisperMode = false" [ngClass]="{ 'customer-select': !isWhisperMode }"
-                  class="customer-mode message-mode" mat-button>
-            {{ conversation.customer?.firstName ? conversation.customer.firstName : ("globals.not-applicable" | translate)
-            }}
+          <button (click)="isWhisperMode = false" [ngClass]="{ 'customer-select': !isWhisperMode }" class="customer-mode message-mode" mat-button>
+            {{ conversation.customer?.firstName ? conversation.customer.firstName : ("globals.not-applicable" | translate) }}
           </button>
-          <button (click)="isWhisperMode = true" [ngClass]="{ 'whisper-select': isWhisperMode }"
-                  class="whisper-mode message-mode" mat-button>
+          <button (click)="isWhisperMode = true" [ngClass]="{ 'whisper-select': isWhisperMode }" class="whisper-mode message-mode" mat-button>
             {{ "chat-features.interactions.whisper" | translate }}
           </button>
         </div>
@@ -1916,7 +1920,7 @@
               {{ quotedMessage.body.markdownText }}
             </p>
 
-            <button mat-icon-button class="quoted-message-cancel" (click)="quotedMessage = ''; replyToMessageId=null;  fbCommentId = null">
+            <button mat-icon-button class="quoted-message-cancel" (click)="quotedMessage = ''; replyToMessageId = null; fbCommentId = null">
               <mat-icon>close</mat-icon>
             </button>
           </div>
@@ -1929,8 +1933,10 @@
           <span></span>
         </div>
 
-        <form class="reply-form {{conversation?.agentParticipants?.length > 0 ? 'whisper-tabs': '' }}"
-          [ngClass]="{ 'whisper-mode': conversation?.agentParticipants?.length > 0 && isWhisperMode }">
+        <form
+          class="reply-form {{ conversation?.agentParticipants?.length > 0 ? 'whisper-tabs' : '' }}"
+          [ngClass]="{ 'whisper-mode': conversation?.agentParticipants?.length > 0 && isWhisperMode }"
+        >
           <label *ngIf="message.length > 0" class="count-reply">{{ replyInput.value.length }}/1000</label>
           <div class="mat-form-field chat-area" [ngClass]="{ 'expand-area-height': expanedHeight > 50 }">
             <textarea

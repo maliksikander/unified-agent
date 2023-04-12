@@ -19,25 +19,32 @@ export class AuthGuard implements CanActivate {
 
   checkRouteAccess(path: String, resources: Array<any>) {
     try {
-      let resPath;
+      let resource, scope;
       if (path.includes("schema")) {
-        resPath = "schema";
+        resource = "customer-schema";
+        scope='view'
       }
       // else if (path.includes("dashboard")) {
-      //   resPath = "dashboard";
+      //   resource = "dashboard";
       // }
       else if (path.includes("supervisor")) {
-        resPath = "supervisor";
+        resource = "supervisor";
+        scope='view_all';
       } else if (path.includes("subscribed")) {
-        resPath = "subscribed";
+        resource = "subscribed-list";
+        scope='view'
       } else if (path.includes("phonebook")) {
-        resPath = "customer-list";
-      } else if (path.includes("customers")) {
-        resPath = "conversation";
-      } else if (path.includes("label")) {
-        resPath = "customer-labels";
+        resource = "customer";
+        scope='view'
       }
-      let value = this.checkResource(resPath, resources);
+      else if (path.includes("label")) {
+        resource = "customer-labels";
+        scope="assign_label";
+      }
+  if(!scope)
+  return true;
+      let value = this.checkScope(resource, scope);
+      
 
       return value;
     } catch (e) {
@@ -45,19 +52,49 @@ export class AuthGuard implements CanActivate {
     }
   }
 
-  checkResource(path, resources) {
+  // checkResource(path, resources) {
+  //   try {
+  //     for (let i = 0; i < resources.length; i++) {
+  //       if (resources[i].rsname.includes(path)) {
+  //         let resourceScopes: Array<any> = resources[i].scopes;
+  //         for (let j = 0; j <= resourceScopes.length; j++) {
+  //           if (resourceScopes[j] === "view") return true;
+  //         }
+  //       }
+  //     }
+  //     return false;
+  //   } catch (e) {
+  //     console.log("[Guard Resource Check Error]:", e);
+  //   }
+  // }
+
+  checkScope(resource, scope) {
     try {
-      for (let i = 0; i < resources.length; i++) {
-        if (resources[i].rsname.includes(path)) {
-          let resourceScopes: Array<any> = resources[i].scopes;
-          for (let j = 0; j <= resourceScopes.length; j++) {
-            if (resourceScopes[j] === "view") return true;
+      let ccUser: any;
+      ccUser = this._cacheService.agent;
+      if (ccUser == undefined || ccUser == null || (ccUser && (ccUser.id == null || ccUser.id == undefined || ccUser.id == ""))) {
+        ccUser = localStorage.getItem("ccUser");
+        ccUser = JSON.parse(ccUser ? atob(ccUser) : null);
+      }
+      if (ccUser != null) {
+        let permittedResources: Array<any> = ccUser.permittedResources.Resources;
+        console.log("permitted resources",permittedResources)
+        for (let i = 0; i < permittedResources.length; i++) {
+          if (permittedResources[i].rsname===resource) {
+            let resourceScopes: Array<any> = permittedResources[i].scopes;
+            for (let j = 0; j <= resourceScopes.length; j++) {
+              if (resourceScopes[j] === scope)
+              { 
+                return true;
+              }
+          }
           }
         }
       }
       return false;
     } catch (e) {
-      console.log("[Guard Resource Check Error]:", e);
+      console.error("[Scope Check Error] :", e);
+      return false;
     }
   }
 }

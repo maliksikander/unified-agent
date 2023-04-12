@@ -163,6 +163,8 @@ export class PhonebookComponent implements OnInit {
       let schemaIndex = this.schemaList.findIndex((item1) => item1.key == item.field);
       if (schemaIndex != -1) {
         item.channelTypes = this.schemaList[schemaIndex].channelTypes;
+        item.isPii=this.schemaList[schemaIndex].isPii;
+        item.key=this.schemaList[schemaIndex].key;
         item.header = this.schemaList[schemaIndex].label;
         if (item.field.toLowerCase() !== "labels") finalArray.push(item);
       }

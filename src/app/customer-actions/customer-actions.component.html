@@ -180,8 +180,8 @@
               </div>
             </div>
 
-            <!-- Label   -->
-            <div class="field-set" *ngIf="schemaAttribute.key == 'labels'">
+            <!--Customer Labels   -->
+            <div class="field-set" *ngIf="(schemaAttribute.key == 'labels' && (('customer-labels' | authPipe: 'assign_label'))) as result">
               <label class="field-label">{{ schemaAttribute.label }}<span class="red-clr" *ngIf="schemaAttribute.is_required">*</span> </label>
               <div class="drop">
                 <angular2-multiselect

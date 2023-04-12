@@ -20,19 +20,21 @@ export class AuthService {
         ccUser = JSON.parse(ccUser ? atob(ccUser) : null);
       }
       let resources: Array<any> = ccUser.permittedResources.Resources;
-      let conversationResourceIndex = resources.findIndex((item) => item.rsname.includes("conversation-view"));
+      // let conversationResourceIndex = resources.findIndex((item) => item.rsname.includes("conversation-view"));
+      let conversationResourceIndex = 1;
+
 
       if (conversationResourceIndex != -1) {
-        let scopes: Array<any> = resources[conversationResourceIndex].scopes;
-        scopes.forEach((scope: any) => {
-          if (scope == "view") {
+        // let scopes: Array<any> = resources[conversationResourceIndex].scopes;
+        // scopes.forEach((scope: any) => {
+        //   if (scope == "view") {
             this.router.navigate(["/customers/chats"]);
-            routeCheck = true;
-          }
-        });
+        //     routeCheck = true;
+        //   }
+        // });
       } else {
         resources.forEach((item) => {
-          if (item.rsname.includes("schema")) {
+          if (item.rsname.includes("customer-schema")) {
             let scopes: Array<any> = item.scopes;
             scopes.forEach((scope: any) => {
               if (scope == "view") {
@@ -40,10 +42,10 @@ export class AuthService {
                 routeCheck = true;
               }
             });
-          } else if (item.rsname.includes("dashboard")) {
+          } else if (item.rsname.includes("supervisor")) {
             let scopes: Array<any> = item.scopes;
             scopes.forEach((scope: any) => {
-              if (scope == "view") {
+              if (scope == "view_all") {
                 this.router.navigate(["/supervisor/dashboards"]);
                 routeCheck = true;
               }
@@ -86,11 +88,16 @@ export class AuthService {
         let permittedResources: Array<any> = ccUser.permittedResources.Resources;
 
         for (let i = 0; i < permittedResources.length; i++) {
-          if (permittedResources[i].rsname.includes(resource)) {
+          if (permittedResources[i].rsname===resource) {
+            console.log("resource is",resource);
             let resourceScopes: Array<any> = permittedResources[i].scopes;
             for (let j = 0; j <= resourceScopes.length; j++) {
-              if (resourceScopes[j] === scope) return true;
-            }
+              console.log("scopes in above resource",resourceScopes[j] )
+              if (resourceScopes[j] === scope)
+              { 
+                return true;
+              }
+          }
           }
         }
       }

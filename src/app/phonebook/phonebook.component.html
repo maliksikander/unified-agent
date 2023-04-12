@@ -1,38 +1,48 @@
 <div class="phonebook-main-area">
   <div class="phonebook-main row m-0">
-    <button *ngIf="isEmbededView" mat-button routerLink="/customers/chats" routerLinkActive="active"
-      [routerLinkActiveOptions]="{exact:true}" class="back-to-chat"></button>
-    <div [ngClass]="{'back-to-chat-trigger' : isEmbededView}" class="customer-heading search-customer-list-main">
+    <button
+      *ngIf="isEmbededView"
+      mat-button
+      routerLink="/customers/chats"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="back-to-chat"
+    ></button>
+    <div [ngClass]="{ 'back-to-chat-trigger': isEmbededView }" class="customer-heading search-customer-list-main">
       <!--    <h4>Customer List</h4>-->
       <!--    <h4>Customer List</h4>-->
-      <div  class="search-customer-list">
-
-
+      <div class="search-customer-list">
         <mat-form-field appearance="outline">
-          <input matInput placeholder="{{'globals.search'  | translate | titlecase }}" [(ngModel)]="filterValue"
-          (keyup.enter)="filter(selectedSearchField) ; this.isFilterListOpened=false" >
-          <span *ngIf="selectedSearchLabel.length > 0" matPrefix>{{selectedSearchLabel}}:</span>
+          <input
+            matInput
+            placeholder="{{ 'globals.search' | translate | titlecase }}"
+            [(ngModel)]="filterValue"
+            (keyup.enter)="filter(selectedSearchField); this.isFilterListOpened = false"
+          />
+          <span *ngIf="selectedSearchLabel.length > 0" matPrefix>{{ selectedSearchLabel }}:</span>
           <mat-icon matSuffix matSuffix *ngIf="selectedSearchLabel.length == 0">search</mat-icon>
-          <mat-icon  matSuffix *ngIf="selectedSearchLabel.length > 0" (click)="cancelFilter()">close</mat-icon>
+          <mat-icon matSuffix *ngIf="selectedSearchLabel.length > 0" (click)="cancelFilter()">close</mat-icon>
         </mat-form-field>
-        <button class="filter-action-trigger" [ngClass]="{'clicked' : isFilterListOpened}" (click)="isFilterList()" mat-icon-button><mat-icon>{{isFilterListOpened ? 'filter_list': 'filter_list'}} </mat-icon></button>
-
+        <button class="filter-action-trigger" [ngClass]="{ clicked: isFilterListOpened }" (click)="isFilterList()" mat-icon-button>
+          <mat-icon>{{ isFilterListOpened ? "filter_list" : "filter_list" }} </mat-icon>
+        </button>
 
         <div class="filter-list-main" *ngIf="isFilterListOpened">
-          <h5>{{'globals.select-columns'  | translate }}</h5>
+          <h5>{{ "globals.select-columns" | translate }}</h5>
           <div class="filter-list-selection">
             <mat-radio-group aria-label="Select an option">
-              <mat-radio-button value="{{col.header}}" *ngFor="let col of cols" (change)="selectedFilter($event,col.field)">{{col.header}}</mat-radio-button>
+              <mat-radio-button value="{{ col.header }}" *ngFor="let col of cols" (change)="selectedFilter($event, col.field)">{{
+                col.header
+              }}</mat-radio-button>
             </mat-radio-group>
           </div>
 
           <div class="footer-buttons">
-            <button class="cancel-btn" (click)="isFilterList()" mat-button>{{'globals.Cancel'  | translate }}</button>
-            <button class="save-btn" (click)="filter(selectedSearchField);  isFilterList()" mat-button>{{'globals.Done'  | translate }}</button>
+            <button class="cancel-btn" (click)="isFilterList()" mat-button>{{ "globals.Cancel" | translate }}</button>
+            <button class="save-btn" (click)="filter(selectedSearchField); isFilterList()" mat-button>{{ "globals.Done" | translate }}</button>
           </div>
         </div>
       </div>
-
 
       <!-- <div class="filter-selection" *ngIf="false">
         <mat-chip-list #chipList aria-label="Filter selection">
@@ -52,35 +62,39 @@
       <!--    </mat-form-field>-->
     </div>
 
-    <div *ngIf="('customer-list' | authPipe : 'manage') as result" class="right-actions text-right">
-      <button mat-button class="btn-action add-new " (click)="actions()">{{'globals.column-preference'  | translate }}</button>
+    <div *ngIf="'customer' | authPipe: 'manage' as result" class="right-actions text-right">
+      <button mat-button class="btn-action add-new" (click)="actions()">{{ "globals.column-preference" | translate }}</button>
       <mat-menu #columnMenu="matMenu">
-        <div class="check-menu" (click)="$event.stopPropagation();">
+        <div class="check-menu" (click)="$event.stopPropagation()">
           <p class="col-list" *ngFor="let col of cols">
-            <mat-checkbox color="primary">{{col.header}}</mat-checkbox>
+            <mat-checkbox color="primary">{{ col.header }}</mat-checkbox>
           </p>
         </div>
       </mat-menu>
 
-
       <div *ngIf="labels" class="lbl-filter-search custom-dropdown">
         <span (click)="lblSearch = !lblSearch" class="lbl-search-lbl">
-          {{'globals.filter-across-labels'  | translate }} 
+          {{ "globals.filter-across-labels" | translate }}
         </span>
-        <angular2-multiselect  [data]="labels" [settings]="labelSettings" (onSelect)="onItemSelect($event)"
-          (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
-          (onDeSelectAll)="onDeSelectAll($event)" [formControl]="labelsForFilter" #dropdownRef >
-
+        <angular2-multiselect
+          [data]="labels"
+          [settings]="labelSettings"
+          (onSelect)="onItemSelect($event)"
+          (onDeSelect)="OnItemDeSelect($event)"
+          (onSelectAll)="onSelectAll($event)"
+          (onDeSelectAll)="onDeSelectAll($event)"
+          [formControl]="labelsForFilter"
+          #dropdownRef
+        >
           <c-item>
             <ng-template let-item="item">
-              <div class="dot-in-filter" [ngStyle]="{'background-color':item.colorCode}"></div>
+              <div class="dot-in-filter" [ngStyle]="{ 'background-color': item.colorCode }"></div>
 
-              <label style="min-width: 150px;">{{item.name}}</label>
+              <label style="min-width: 150px">{{ item.name }}</label>
             </ng-template>
           </c-item>
         </angular2-multiselect>
       </div>
-
 
       <!--    <mat-form-field appearance="outline" class="selection-trigger">-->
       <!--      <mat-select [(value)]="FilterSelected">-->
@@ -89,45 +103,69 @@
       <!--        <mat-option value="linked">Linked</mat-option>-->
       <!--      </mat-select>-->
       <!--    </mat-form-field>-->
-      <button *ngIf="!isEmbededView" (click)="createCustomer()" mat-button class="btn-create">{{'globals.create-new-customer'  | translate }}</button>
+      <button *ngIf="!isEmbededView && ('customer' | authPipe: 'manage') as result" (click)="createCustomer()" mat-button class="btn-create">
+        {{ "globals.create-new-customer" | translate }}
+      </button>
       <!--        <button mat-button class="">Close</button>-->
     </div>
   </div>
 
-
-
   <div *ngIf="enableTable" class="main-table">
-    <p-table #dt [value]="rows" (onColReorder)="onColReorder($event)" [rowsPerPageOptions]=[25,50] [rows]="25"
-      [paginator]="true" [style]="{width:'auto'}" scrollHeight="100%" [rowHover]="true" dataKey="id"
-      (onPage)="onPage($event)" [totalRecords]="totalRecords" [columns]="cols" [showCurrentPageReport]="true"
-      [lazy]="true" [reorderableColumns]="true" [resizableColumns]="true" styleClass="sticky-table"
-      currentPageReportTemplate="Showing {{offSet}} to {{limit}} of {{totalRecords}} entries">
-
+    <p-table
+      #dt
+      [value]="rows"
+      (onColReorder)="onColReorder($event)"
+      [rowsPerPageOptions]="[25, 50]"
+      [rows]="25"
+      [paginator]="true"
+      [style]="{ width: 'auto' }"
+      scrollHeight="100%"
+      [rowHover]="true"
+      dataKey="id"
+      (onPage)="onPage($event)"
+      [totalRecords]="totalRecords"
+      [columns]="cols"
+      [showCurrentPageReport]="true"
+      [lazy]="true"
+      [reorderableColumns]="true"
+      [resizableColumns]="true"
+      styleClass="sticky-table"
+      currentPageReportTemplate="Showing {{ offSet }} to {{ limit }} of {{ totalRecords }} entries"
+    >
       <ng-template pTemplate="header" let-columns>
-
         <tr>
           <th class="tracking-in-expand" *ngFor="let col of columns" pResizableColumn pReorderableColumn>
-            <mat-icon matTooltip="{{'globals.drag-the-column'  | translate }}" class="drag-icon">more_vert</mat-icon>
-            <span class="table-head" matTooltip="{{col.header}}">{{col.header}}</span>
+            <mat-icon matTooltip="{{ 'globals.drag-the-column' | translate }}" class="drag-icon">more_vert</mat-icon>
+            <span class="table-head" matTooltip="{{ col.header }}">{{ col.header }}</span>
 
-            <span matTooltip="{{'globals.filter'  | translate }}" *ngIf="false" class="filter-icon k-icon k-i-filter-sm"
-              (click)="setFilter($event,col)">
+            <span
+              matTooltip="{{ 'globals.filter' | translate }}"
+              *ngIf="false"
+              class="filter-icon k-icon k-i-filter-sm"
+              (click)="setFilter($event, col)"
+            >
             </span>
 
             <span class="field-channel">
-              <img *ngFor="let channelType of col?.channelTypes"
-                [src]="channelType | channelName  | channelLogo | async"></span>
+              <img *ngFor="let channelType of col?.channelTypes" [src]="channelType | channelName | channelLogo | async"
+            /></span>
 
             <span class="sorting-icons">
-              <span matTooltip="{{'globals.decending'  | translate }}" class="k-icon k-i-sort-desc-sm"
-                [ngClass]="{'color': sortArrowDown && sortField == col.field}"
-                (click)="onSort(col.field, 'desc')"></span>
-              <span matTooltip="{{'globals.ascending'  | translate }}" class="k-icon k-i-sort-asc-sm"
-                [ngClass]="{'color': sortArrowUp && sortField == col.field}" (click)="onSort(col.field, 'asc')"></span>
+              <span
+                matTooltip="{{ 'globals.decending' | translate }}"
+                class="k-icon k-i-sort-desc-sm"
+                [ngClass]="{ color: sortArrowDown && sortField == col.field }"
+                (click)="onSort(col.field, 'desc')"
+              ></span>
+              <span
+                matTooltip="{{ 'globals.ascending' | translate }}"
+                class="k-icon k-i-sort-asc-sm"
+                [ngClass]="{ color: sortArrowUp && sortField == col.field }"
+                (click)="onSort(col.field, 'asc')"
+              ></span>
             </span>
 
             <div *ngIf="filterOnOff && filterActiveField == col.field" class="customer-search">
-
               <!-- <div *ngIf="col.type == 'date_time'">
                 <input class="filter" [(ngModel)]="filterValue"
                   (keyup.enter)="Cfilter($event.target.value, col.field, col.filterMatchMode)" type="text"
@@ -146,22 +184,16 @@
                 <mat-icon (click)="cancelFilter()" class="closeIcon">cancel</mat-icon>
               </div> -->
 
-
               <div>
-                <input class="filter" type="text" [(ngModel)]="filterValue"
-                  (keyup.enter)="filter(col.field)">
+                <input class="filter" type="text" [(ngModel)]="filterValue" (keyup.enter)="filter(col.field)" />
                 <div class="close-filter">
                   <mat-icon (click)="cancelFilter()" class="closeIcon">Cancel</mat-icon>
                 </div>
               </div>
-
             </div>
-
-
           </th>
           <th></th>
         </tr>
-
       </ng-template>
 
       <!--    <ng-template pTemplate="colgroup" let-columns>-->
@@ -171,8 +203,7 @@
       <!--    </ng-template>-->
 
       <ng-template let-expanded="expanded" pTemplate="body" let-rowData let-columns="columns">
-        <tr [ngClass]="{'fusion': rowData._id == topicCustomerId }" class="slide-in-left main-row"
-          style="cursor: pointer">
+        <tr [ngClass]="{ fusion: rowData._id == topicCustomerId }" class="slide-in-left main-row" style="cursor: pointer">
           <!-- <td *ngFor="let col of columns" class="ui-resizable-column">
             {{rowData[col.field]}}
 
@@ -200,27 +231,38 @@
           <!--          </div>
           </td> -->
 
-
-          <td  *ngFor="let col of columns" class="ui-resizable-column">
+          <td *ngFor="let col of columns" class="ui-resizable-column">
             <!-- <span *ngIf="col.type == 'date_time'">{{rowData[col.field] | date:'M/d/yyyy, h:mm a' }}</span> -->
             <!-- <span *ngIf="col.type == 'time'">{{rowData[col.field] | date:'shortTime' }}</span> -->
             <!-- <span *ngIf="col.type == 'date'">{{rowData[col.field] | date:'M/d/yyyy' }}</span> -->
-            <span
-              *ngIf="col.field != 'firstName' && col.type != 'date' && col.type != 'date_time' && col.type != 'time' ">{{rowData[col.field]
-              | spaceInArray}}</span>
-            <span *ngIf="col.field == 'firstName'"><span>{{rowData[col.field] | spaceInArray}}</span>
-<!--              <span *ngIf="labels" (mouseleave)="showLblTooltip = false"-->
-<!--                (mouseenter)="showLblTooltip = true ; LblTooltipId = rowData._id" class="lblswithname">-->
-<!--                <span matTooltip="{{lbl.name}}" *ngFor="let lbl of labels | fetchLabels : rowData.labels"-->
-<!--                  [ngStyle]="{'background-color':lbl.colorCode}" class="dot"></span>-->
-<!--              </span>-->
+            <span *ngIf="col.field != 'firstName' && col.type != 'date' && col.type != 'date_time' && col.type != 'time'">
 
-              <ul class="customer-labels" *ngIf="labels"><li  *ngFor="let lbl of labels | fetchLabels : rowData.labels" matTooltip="{{lbl.name}}" [ngStyle]="{'background-color':lbl.colorCode}" ></li></ul>
-
+              <span *ngIf="'customer' | authPipe: 'view_pii' as result; else maskedpii">{{ rowData[col.field] | spaceInArray }}</span>
+              <ng-template #maskedpii >{{
+                rowData[col.field] | spaceInArray | isPII: col.isPii :col.type : col.key
+              }}</ng-template>
             </span>
+    
+            <span *ngIf="col.field == 'firstName'">
+              <span *ngIf="('customer' | authPipe: 'view_pii') as result; else manage_pii">{{ rowData[col.field] | spaceInArray }}</span>
+              <ng-template #manage_pii>{{
+                rowData[col.field] | spaceInArray | isPII: col.isPii:col.type:col.key
+              }}</ng-template>
 
+              <!--              <span *ngIf="labels" (mouseleave)="showLblTooltip = false"-->
+              <!--                (mouseenter)="showLblTooltip = true ; LblTooltipId = rowData._id" class="lblswithname">-->
+              <!--                <span matTooltip="{{lbl.name}}" *ngFor="let lbl of labels | fetchLabels : rowData.labels"-->
+              <!--                  [ngStyle]="{'background-color':lbl.colorCode}" class="dot"></span>-->
+              <!--              </span>-->
 
-
+              <ul class="customer-labels" *ngIf="labels">
+                <li
+                  *ngFor="let lbl of labels | fetchLabels: rowData.labels"
+                  matTooltip="{{ lbl.name }}"
+                  [ngStyle]="{ 'background-color': lbl.colorCode }"
+                ></li>
+              </ul>
+            </span>
 
             <!-- <div class="lbl-tooltip" *ngIf="showLblTooltip && LblTooltipId == rowData._id">
               <div *ngFor="let lbl of labels | fetchLabels : rowData.labels">
@@ -231,25 +273,32 @@
           </td>
 
           <td>
-            <button *ngIf="!isEmbededView && ('customer-list' | authPipe : 'manage') as result"
-              (click)="onRowClick(rowData._id,'edit',null)" class="p-button-rounded p-button-success p-mr-2">
-              <mat-icon matTooltip="{{'globals.edit' | translate}}">edit</mat-icon>
-            </button>
-            <ng-container *ngIf="('start-conversation' | authPipe : 'view') as result">
-            <button *ngIf="('customer-conversation-view' | authPipe : 'view') as result"
-            (click)="openCOnversationView(rowData)"  class="p-button-rounded p-button-success p-mr-2">
-              <mat-icon matTooltip="{{'globals.start-conversation' | translate}}">person</mat-icon>
-            </button>
-          </ng-container>
             <button
-              *ngIf="(isEmbededView && rowData._id != topicCustomerId) && ('customer-list' | authPipe : 'manage') as result"
-              (click)="linkCustomer(rowData)" class="p-button-rounded p-button-warning link-btn">
+              *ngIf="!isEmbededView && ('customer' | authPipe: 'manage') as result"
+              (click)="onRowClick(rowData._id, 'edit', null)"
+              class="p-button-rounded p-button-success p-mr-2"
+            >
+              <mat-icon matTooltip="{{ 'globals.edit' | translate }}">edit</mat-icon>
+            </button>
+            <ng-container>
+              <button
+                *ngIf="'agent-conversation-control' | authPipe: 'view_initiate_chat' as result"
+                (click)="openCOnversationView(rowData)"
+                class="p-button-rounded p-button-success p-mr-2"
+              >
+                <mat-icon matTooltip="{{ 'globals.start-conversation' | translate }}">person</mat-icon>
+              </button>
+            </ng-container>
+            <button
+              *ngIf="isEmbededView && rowData._id != topicCustomerId && ('customer' | authPipe: 'view') as result"
+              (click)="linkCustomer(rowData)"
+              class="p-button-rounded p-button-warning link-btn"
+            >
               <mat-icon>insert_link</mat-icon>
             </button>
           </td>
         </tr>
       </ng-template>
-
     </p-table>
   </div>
 </div>

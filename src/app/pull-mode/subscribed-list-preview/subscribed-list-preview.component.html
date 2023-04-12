@@ -53,9 +53,9 @@
                         <th scope="col">{{'pull-mode.list'  | translate }}</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody *ngIf="('subscribed-list' | authPipe : 'view') as result">
 
-                    <tr
+                    <tr 
                         *ngFor="let request of _pullModeservice.subscribedListRequests | filterPullModeRequests:filterStatus:filterListId">
                         <td class="status-data"><span class="status-icon"
                                 matTooltip="{{(request.status | lowercase) == 'created' ? ('pull-mode.UNREAD'  | translate ) : (request.status | uppercase) }}"
