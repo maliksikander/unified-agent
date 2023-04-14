@@ -54,7 +54,7 @@
           </div>
         </mat-tab>
       </mat-tab-group>
-      <button *ngIf="('start-conversation' | authPipe : 'view') as result" class="add-customer" [ngClass]="{'expand-view': barExpand}" mat-fab routerLink="/customers/phonebook">
+      <button *ngIf="('customer' | authPipe : 'view') as result" class="add-customer" [ngClass]="{'expand-view': barExpand}" mat-fab routerLink="/customers/phonebook">
         <mat-icon>add</mat-icon>
         <span class="start-con">New Conversation</span>
       </button>

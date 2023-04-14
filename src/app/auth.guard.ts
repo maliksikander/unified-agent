@@ -78,12 +78,11 @@ export class AuthGuard implements CanActivate {
       }
       if (ccUser != null) {
         let permittedResources: Array<any> = ccUser.permittedResources.Resources;
-        console.log("permitted resources",permittedResources)
         for (let i = 0; i < permittedResources.length; i++) {
-          if (permittedResources[i].rsname===resource) {
+          if (permittedResources[i].rsname.trim()===resource.trim()) {
             let resourceScopes: Array<any> = permittedResources[i].scopes;
-            for (let j = 0; j <= resourceScopes.length; j++) {
-              if (resourceScopes[j] === scope)
+            for (let j = 0; j < resourceScopes.length; j++) {
+              if (resourceScopes[j].trim() === scope.trim())
               { 
                 return true;
               }

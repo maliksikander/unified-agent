@@ -292,7 +292,8 @@
           <div class="instruction-content chat-session-main">
             <ng-container *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
               <div
-                *ngIf="'customer-conversation-view' | authPipe: 'manage' as result"
+              *ngIf="
+              (('agent-conversation-control' | authPipe: 'view_history') || (conversation.conversationId != 'FAKE_CONVERSATION' && ('agent-conversation-control' | authPipe: 'view_history_active_customer')) ) as result"
                 class="int-date load-more"
                 [ngClass]="{ 'no-more-conversation': noMoreConversation }"
               >

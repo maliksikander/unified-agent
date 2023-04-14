@@ -96,7 +96,6 @@ describe("ActiveAgentDetailsComponent", () => {
 
     it("activeAgentsDetails object length should be 1", () => {
       expect(component).toBeTruthy();
-      console.log("omponent.activeAgentsDetails", component.activeAgentsDetails);
       component.getAllActiveAgentDetails();
       expect(Object.keys(component.activeAgentsDetails).length).toBe(1);
     });

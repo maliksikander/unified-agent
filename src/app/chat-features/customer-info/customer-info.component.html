@@ -117,7 +117,7 @@
                   <p class="label-detail">{{ data.value | spaceInArray }}</p>
                 </div>
               </div>
-              <ng-container *ngIf="conversationId != 'FAKE_CONVERSATION'">
+              <ng-container >
                 <div  class="crm-trigger">
                   <!-- <p>Not a correct customer profile?</p> -->
                   <button *ngIf="('customer' | authPipe: 'view') as result" mat-raised-button (click)="gotoEmbedView()">{{'chat-features.customer-info.link-profile' | translate}}</button>

@@ -88,12 +88,10 @@ export class AuthService {
         let permittedResources: Array<any> = ccUser.permittedResources.Resources;
 
         for (let i = 0; i < permittedResources.length; i++) {
-          if (permittedResources[i].rsname===resource) {
-            console.log("resource is",resource);
+          if (permittedResources[i].rsname.trim()===resource.trim()) {
             let resourceScopes: Array<any> = permittedResources[i].scopes;
-            for (let j = 0; j <= resourceScopes.length; j++) {
-              console.log("scopes in above resource",resourceScopes[j] )
-              if (resourceScopes[j] === scope)
+            for (let j = 0; j < resourceScopes.length; j++) {
+              if (resourceScopes[j].trim() === scope.trim())
               { 
                 return true;
               }

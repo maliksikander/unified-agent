@@ -1,69 +1,71 @@
 <div class="label-main page-header row m-0">
   <div class="customer-heading page-heading col-md-6 col-sm-5">
-    <h4>{{'customer-schema.customer-attributes' | translate}}</h4>
+    <h4>{{ "customer-schema.customer-attributes" | translate }}</h4>
   </div>
-  <div *ngIf="('customer-schema' | authPipe : 'manage') as result"
-    class="customer-heading page-heading col-md-6 col-sm-7 text-right">
-    <button mat-button (click)="addAttr()" class="create-new-attribute">{{'customer-schema.create-new-ttribute' | translate}}</button>
+  <div *ngIf="'customer-schema' | authPipe: 'manage' as result" class="customer-heading page-heading col-md-6 col-sm-7 text-right">
+    <button mat-button (click)="addAttr()" class="create-new-attribute">{{ "customer-schema.create-new-ttribute" | translate }}</button>
   </div>
-
 </div>
-
 
 <div class="main-content container">
   <div cdkDropListGroup>
     <div class="schema-container">
       <div cdkDropList [cdkDropListData]="schema2" class="schema-list" (cdkDropListDropped)="drop($event)">
-        <div *ngFor="let item of schema2; let i = index;">
-          <div [ngClass]="{'schema-detail-check': showDetails && divId == item._id}" (click)="openDetails(item._id)"
-            class="schema-box" cdkDrag>
+        <div *ngFor="let item of schema2; let i = index">
+          <div [ngClass]="{ 'schema-detail-check': showDetails && divId == item._id }" (click)="openDetails(item._id)" class="schema-box" cdkDrag>
             <!--                        <span class="list-count">{{i + 1}}</span>-->
             <mat-icon class="shadow">more_vert</mat-icon>
-            <span class="heading">{{item.label}}</span><span class="steric" *ngIf="item.isRequired">*</span>
+            <span class="heading">{{ item.label }}</span
+            ><span class="steric" *ngIf="item.isRequired">*</span>
             <ul class="available-channel-list">
-              <li><img *ngFor="let channelType of item.channelTypes"
-                  [src]="channelType | channelName | channelLogo | async" matTooltip="{{channelType}}">
+              <li>
+                <img
+                  *ngFor="let channelType of item.channelTypes"
+                  [src]="channelType | channelName | channelLogo | async"
+                  matTooltip="{{ channelType }}"
+                />
               </li>
             </ul>
-            <span class="field-type">({{item.type}})</span>
-            <mat-icon *ngIf="('customer-schema' | authPipe : 'manage') as result" matTooltip="{{'customer-schema.options' | translate}}" class="delete-btn box-options" [matMenuTriggerFor]="menu"
-              (click)="displayMenu($event)">more_vert
-            </mat-icon>
+            <span class="field-type">({{ item.type }})</span>
+              <mat-icon *ngIf="'customer-schema' | authPipe: 'manage' as result"
+                matTooltip="{{ 'customer-schema.options' | translate }}"
+                class="delete-btn box-options"
+                [matMenuTriggerFor]="menu"
+                (click)="displayMenu($event)"
+                >more_vert
+              </mat-icon>
 
-            <mat-menu  #menu="matMenu"
-              yPosition="below" panelClass="custom" [overlapTrigger]="false">
-              <button mat-menu-item class="channel-selection-list" (click)="edit(item)">
-                {{'customer-schema.edit' | translate}}
-              </button>
-              <button *ngIf="item.isDeleteAble" mat-menu-item class="channel-selection-list"
-                (click)="deleteAttribute(item)">
-                {{'customer-schema.delete' | translate}}
-              </button>
-
-            </mat-menu>
-
-
+              <mat-menu #menu="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
+                <button mat-menu-item class="channel-selection-list" (click)="edit(item)">
+                  {{ "customer-schema.edit" | translate }}
+                </button>
+                <button *ngIf="item.isDeleteAble" mat-menu-item class="channel-selection-list" (click)="deleteAttribute(item)">
+                  {{ "customer-schema.delete" | translate }}
+                </button>
+              </mat-menu>
+            
           </div>
           <div class="schema-details" *ngIf="showDetails && divId == item._id">
             <div class="row m-0">
               <div class="input-align col-md-6 pr-0">
-                <strong>{{'customer-schema.label' | translate}} </strong> : <span class="un-edit">{{item.label}}</span>
+                <strong>{{ "customer-schema.label" | translate }} </strong> : <span class="un-edit">{{ item.label }}</span>
               </div>
               <div class="input-align col-md-6 pr-0">
-                <strong>{{'customer-schema.type' | translate}} </strong> : <span class="un-edit"> {{ item.type}}</span>
+                <strong>{{ "customer-schema.type" | translate }} </strong> : <span class="un-edit"> {{ item.type }}</span>
               </div>
               <div *ngIf="item.type == 'string'" class="input-align col-md-6 pr-0">
-                <strong>{{'customer-schema.range' | translate}} </strong>:<span class="un-edit"> {{item.length}}</span>
+                <strong>{{ "customer-schema.range" | translate }} </strong>:<span class="un-edit"> {{ item.length }}</span>
               </div>
               <div class="input-align col-md-6 pr-0">
-                <strong> {{'customer-schema.mandatory' | translate}} </strong>:<span class="un-edit">{{item.isRequired}}</span>
+                <strong> {{ "customer-schema.mandatory" | translate }} </strong>:<span class="un-edit">{{ item.isRequired }}</span>
               </div>
               <div class="input-align col-md-6 pr-0">
-                <strong> {{'customer-schema.channel-identifier' | translate}} </strong>:<span class="un-edit">{{item.isChannelIdentifier}}</span>
+                <strong> {{ "customer-schema.channel-identifier" | translate }} </strong>:<span class="un-edit">{{ item.isChannelIdentifier }}</span>
               </div>
               <div class="input-align col-md-6 pr-0">
-                <strong>{{'customer-schema.description' | translate}} </strong>:<span class="un-edit">{{item.description ? item.description :
-                 ( 'globals.not-applicable' | translate)}}</span>
+                <strong>{{ "customer-schema.description" | translate }} </strong>:<span class="un-edit">{{
+                  item.description ? item.description : ("globals.not-applicable" | translate)
+                }}</span>
               </div>
             </div>
           </div>
@@ -74,56 +76,61 @@
     <div class="schema-container">
       <div cdkDropList [cdkDropListData]="schema1" class="schema-list" (cdkDropListDropped)="drop($event)">
         <div *ngFor="let item of schema1; let i = index">
-          <div [ngClass]="{'schema-detail-check': showDetails && divId == item._id}" (click)="openDetails(item._id)"
-            class="schema-box" cdkDrag>
-
+          <div [ngClass]="{ 'schema-detail-check': showDetails && divId == item._id }" (click)="openDetails(item._id)" class="schema-box" cdkDrag>
             <mat-icon class="shadow">more_vert</mat-icon>
-            <span class="heading">{{item.label}}</span><span class="steric" *ngIf="item.isRequired">*</span>
+            <span class="heading">{{ item.label }}</span
+            ><span class="steric" *ngIf="item.isRequired">*</span>
             <ul class="available-channel-list">
-              <li><img *ngFor="let channelType of item.channelTypes"
-                  [src]="channelType | channelName | channelLogo | async" matTooltip="{{channelType}}"> </li>
+              <li>
+                <img
+                  *ngFor="let channelType of item.channelTypes"
+                  [src]="channelType | channelName | channelLogo | async"
+                  matTooltip="{{ channelType }}"
+                />
+              </li>
             </ul>
-            <span class="field-type">({{item.type}})</span>
+            <span class="field-type">({{ item.type }})</span>
 
-            <mat-icon matTooltip="{{'customer-schema.options' | translate}}" class="delete-btn box-options" [matMenuTriggerFor]="searchChannelSelection"
-              (click)="displayMenu($event)">more_vert
+            <mat-icon *ngIf="'customer-schema' | authPipe: 'manage' as result"
+              matTooltip="{{ 'customer-schema.options' | translate }}"
+              class="delete-btn box-options"
+              [matMenuTriggerFor]="searchChannelSelection"
+              (click)="displayMenu($event)"
+              >more_vert
             </mat-icon>
 
             <mat-menu #searchChannelSelection="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
               <button mat-menu-item class="channel-selection-list" (click)="edit(item)">
-                {{'customer-schema.edit' | translate}}
+                {{ "customer-schema.edit" | translate }}
               </button>
-              <button *ngIf="item.isDeleteAble" mat-menu-item class="channel-selection-list"
-                (click)="deleteAttribute(item)">
-                {{'customer-schema.delete' | translate}}
+              <button *ngIf="item.isDeleteAble" mat-menu-item class="channel-selection-list" (click)="deleteAttribute(item)">
+                {{ "customer-schema.delete" | translate }}
               </button>
-
             </mat-menu>
-
           </div>
           <div class="schema-details" *ngIf="showDetails && divId == item._id">
             <div class="row m-0">
               <div class="input-align col-md-6 pr-0">
-                <strong>{{'customer-schema.label' | translate}} </strong> : <span class="un-edit">{{item.label}}</span>
+                <strong>{{ "customer-schema.label" | translate }} </strong> : <span class="un-edit">{{ item.label }}</span>
               </div>
 
               <div class="input-align col-md-6 pr-0">
-                <strong> {{'customer-schema.type' | translate}} </strong> : <span class="un-edit"> {{ item.type}}</span>
+                <strong> {{ "customer-schema.type" | translate }} </strong> : <span class="un-edit"> {{ item.type }}</span>
               </div>
               <div *ngIf="item.type == 'string'" class="input-align col-md-6 pr-0">
-                <strong>{{'customer-schema.range' | translate}} </strong>:<span class="un-edit">{{ item.length}}</span>
+                <strong>{{ "customer-schema.range" | translate }} </strong>:<span class="un-edit">{{ item.length }}</span>
               </div>
 
               <div class="input-align col-md-6 pr-0">
-                <strong> {{'customer-schema.mandatory' | translate}} </strong>:<span class="un-edit">{{item.isRequired}}</span>
+                <strong> {{ "customer-schema.mandatory" | translate }} </strong>:<span class="un-edit">{{ item.isRequired }}</span>
               </div>
               <div class="input-align col-md-6 pr-0">
-                <strong> {{'customer-schema.channel-identifier' | translate}} </strong>:<span class="un-edit">{{
-                  item.isChannelIdentifier}}</span>
+                <strong> {{ "customer-schema.channel-identifier" | translate }} </strong>:<span class="un-edit">{{ item.isChannelIdentifier }}</span>
               </div>
               <div class="input-align col-md-6 pr-0">
-                <strong> {{'customer-schema.description' | translate}} </strong>:<span class="un-edit">{{item.description ? item.description :
-                  'N/A'}}</span>
+                <strong> {{ "customer-schema.description" | translate }} </strong>:<span class="un-edit">{{
+                  item.description ? item.description : "N/A"
+                }}</span>
               </div>
             </div>
           </div>
@@ -132,7 +139,6 @@
     </div>
   </div>
   <div *ngIf="showsaveOrder" class="create-attribute">
-    <button mat-button (click)="changeOrder(null)" class="float-right">{{'customer-schema.save-order' | translate}}</button>
+    <button mat-button (click)="changeOrder(null)" class="float-right">{{ "customer-schema.save-order" | translate }}</button>
   </div>
-
 </div>

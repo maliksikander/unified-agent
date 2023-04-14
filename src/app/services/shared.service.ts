@@ -123,7 +123,7 @@ export class sharedService {
 
   Interceptor(e, res) {
     if (res == "err") {
-      console.log("[Error]:", e);
+      console.error("[Error]:", e);
       if (e.statusCode == 401) {
         this._snackbarService.open(this._translateService.instant("snackbar.UNAUTHORIZED-USER"), "err");
       } else if (e.statusCode == 400) {

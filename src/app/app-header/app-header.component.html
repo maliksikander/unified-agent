@@ -163,10 +163,10 @@
                     {{_finesseService?.finesseAgent?.extension ? _finesseService?.finesseAgent?.extension :
                     _cacheService?.agent?.extension}})</span>
                 </div>
-                <p *ngIf="('state-change' | authPipe : 'view') as result" class="menu-trigger-custom state-trigger">
+                <p *ngIf="('state-change' | authPipe : 'manage_state_change') as result" class="menu-trigger-custom state-trigger">
                   <span class="inner-btn">{{'globals.state' | translate}}</span>
 
-                  <button [disabled]="'state-change' | authPipe : 'manage_state_change'" mat-button #stateTrigger="matMenuTrigger" [matMenuTriggerFor]="agentState"
+                  <button  mat-button #stateTrigger="matMenuTrigger" [matMenuTriggerFor]="agentState"
                     (click)="$event.stopPropagation()"
                     class="{{_cacheService.agentPresence.state.name | lowercase}} mat-menu-item-submenu-trigger">
                     <span class="ellipsis">{{(_cacheService.agentPresence.state.name | removeUnderscore | titlecase) +
@@ -180,7 +180,7 @@
 
 
 
-                <div *ngIf="('state-change' | authPipe : 'view') as result" class="mrd-states"
+                <div *ngIf="('state-change' | authPipe : 'manage_state_change') as result" class="mrd-states"
                   (click)="$event.stopPropagation()">
                   <span class="mrd-text">{{'app-header.change-mrd-state' | translate}}</span>
                   <div class="state-main-wrapper"
