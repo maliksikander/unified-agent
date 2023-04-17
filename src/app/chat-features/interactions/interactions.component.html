@@ -56,10 +56,13 @@
                 <mat-icon>group</mat-icon>
               </button>
             </li>
-            <li
-              class="list-group-item"
-              *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'"
-            >
+            <li class="list-group-item">
+              <button mat-icon-button class="barge-in" matTooltip="Barge-in">
+                <mat-icon>chat_bubble</mat-icon>
+              </button>
+            </li>
+
+            <li class="list-group-item" *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
               <button
                 mat-icon-button
                 #consultTransferTrigger="matMenuTrigger"
