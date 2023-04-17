@@ -1,8 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 // import { ConfirmationDialogComponent } from "../../new-components/confirmation-dialog/confirmation-dialog.component";
-// import { MatDialog } from "@angular/material";
+import { MatDialog } from "@angular/material";
+import { Router } from "@angular/router";
 import { httpService } from "../../services/http.service";
 import { cacheService } from "../../services/cache.service";
+import { pullModeService } from "src/app/services/pullMode.service";
+import { sharedService } from "src/app/services/shared.service";
+import { socketService } from "src/app/services/socket.service";
 
 import { ActivatedRoute } from "@angular/router";
 import * as _ from "lodash";
@@ -11,6 +15,7 @@ import { map, retry } from "rxjs/operators";
 
 import { snackbarService } from "src/app/services/snackbar.service";
 import { TranslateService } from "@ngx-translate/core";
+import { TopicParticipant } from "src/app/models/User/Interfaces";
 
 @Component({
   selector: "app-active-chats",
@@ -39,7 +44,13 @@ export class ActiveChatsComponent implements OnInit {
     private _httpService: httpService,
     private route: ActivatedRoute,
     private _snackBarService: snackbarService,
-    private _cacheService: cacheService
+    private _cacheService: cacheService,
+    private _sharedService: sharedService,
+    private dialog: MatDialog,
+    public _pullModeservice: pullModeService,
+    private _socketService: socketService,
+    private _router: Router,
+   
   ) {}
 
   ngOnInit(): void {
@@ -69,14 +80,35 @@ export class ActiveChatsComponent implements OnInit {
     }
     this.startRefreshTimer();
   }
-  Toggle(){
-    if (this.filter == "agents") {
-      console.log(this.message); 
+  SilentMonitor(_channelSession){
+
+    // if (this.filter == "agents") {
+    //   console.log(_channelSession); 
+    //   let obj = {
+    //     topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, _channelSession.conversationId, "SILENT_MONITOR", "SUBSCRIBED"),
+    //     agentId: this._cacheService.agent.id,
+    //     channelSession: _channelSession,
+        
+    //   };
+    //   this._socketService.emit("joinAsSilentMonitor", obj);
+    //   this._router.navigate(["customers"]);
+    // }
       
-    } else if (this.filter == "bots") {
-      console.log("no toggle"); 
-    }
+    //  else if (this.filter == "bots") {
+    //   console.log("no toggle"); 
+    // }
     
+    console.log(_channelSession); 
+      let obj = {
+        topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, _channelSession.conversationId, "SILENT_MONITOR", "SUBSCRIBED"),
+        agentId: this._cacheService.agent.id,
+        channelSession: _channelSession,
+        
+      };
+      this._socketService.emit("JoinAsSilentMonitor", obj);
+      this._router.navigate(["customers"]);
+
+
   }
 
   startRefreshTimer() {
@@ -100,6 +132,7 @@ export class ActiveChatsComponent implements OnInit {
       (e) => {
         this.activeChatListWithAgents = e;
         this.filterData();
+        
       },
       (err) => {
         this.activeChatListWithAgents = [];
@@ -127,6 +160,7 @@ export class ActiveChatsComponent implements OnInit {
       this.filteredData = [];
       if (this.selectedQueues.length == 0) {
         this.filteredData = this.activeChatListWithAgents;
+        console.log(this.filteredData,"my data list");
       } else {
         this.selectedQueues.forEach((data) => {
           this.activeChatListWithAgents.forEach((chat) => {
