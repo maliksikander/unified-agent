@@ -1,11 +1,12 @@
+@import "src/app/shared/globalVariables";
+
 //dialog
 .dialog-header {
-  background: #ECF7FB;
+  background: $blue-text-color;
   position: relative;
   padding: 2px 15px;
 
   h4 {
-    color: #1D9AC0;
     margin: 0;
     font-size: 14px;
     font-weight: bold;
@@ -13,8 +14,8 @@
   button {
     position: absolute;
     right: 15px;
-    color: #A4A4A4;
-    border: 1px solid #A4A4A4;
+    color: #fff;
+    border: 1px solid #fff;
     width: 25px;
     height: 25px;
     line-height: 25px;
@@ -58,8 +59,8 @@
     background: #919191;
 
     &.send-announcement{
-      background: #CBE9F4;
-      color: #464646;
+      background: $blue-text-color;
+      color: #fff;
     }
 
     &[disabled][disabled]{

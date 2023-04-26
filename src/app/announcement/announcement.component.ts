@@ -10,61 +10,82 @@ import { MatDialog } from "@angular/material";
 })
 export class AnnouncementComponent implements OnInit {
   FilterSelected = "all";
-
   displayAnnouncements = [
     {
       message: "Hi. Please share the email ID for support team. Also share some number where I can call in emergency situations.",
       created_by: "Ev Gayforth",
+      status: "scheduled",
+      teams:  [ "Software", "Marketing", "Product", "Support", "Business", "Sales"],
       expiry_time: "12/03/2020 15:25"
     },
     {
       message: "Hi. Please share the email ID for support team. Also share some number where I can call in emergency situations.",
       created_by: "Ev Gayforth",
+      status: "scheduled",
+      teams:  [ "Software", "Product", "Support", "Business", "Sales"],
       expiry_time: "12/03/2020 15:25"
     },
     {
       message: "Hi. Please share the email ID for support team. Also share some number where I can call in emergency situations.",
       created_by: "Ev Gayforth",
+      status: "scheduled",
+      teams:  [ "Support", "Business", "Sales"],
       expiry_time: "12/03/2020 15:25"
     },
     {
       message: "Hi. Please share the email ID for support team. Also share some number where I can call in emergency situations.",
       created_by: "Ev Gayforth",
+      status: "scheduled",
+      teams:  [  "Marketing", "Product", "Support", "Business", "Sales"],
       expiry_time: "12/03/2020 15:25"
     },
     {
       message: "Hi. Please share the email ID for support team. Also share some number where I can call in emergency situations.",
       created_by: "Ev Gayforth",
+      status: "Active",
+      teams:  [ "Product", "Support", "Business", "Sales"],
       expiry_time: "12/03/2020 15:25"
     },
     {
       message: "Hi. Please share the email ID for support team. Also share some number where I can call in emergency situations.",
       created_by: "Ev Gayforth",
+      status: "active",
+      teams:  [  "Product", "Sales"],
       expiry_time: "12/03/2020 15:25"
     },
     {
       message: "Hi. Please share the email ID for support team. Also share some number where I can call in emergency situations.",
       created_by: "Ev Gayforth",
+      status: "active",
+      teams:  [ "Business", "Sales"],
       expiry_time: "12/03/2020 15:25"
     },
     {
       message: "Hi. Please share the email ID for support team. Also share some number where I can call in emergency situations.",
       created_by: "Ev Gayforth",
+      status: "active",
+      teams:  [  "Product", "Support", "Business", "Sales"],
       expiry_time: "12/03/2020 15:25"
     },
     {
       message: "Hi. Please share the email ID for support team. Also share some number where I can call in emergency situations.",
       created_by: "Ev Gayforth",
+      status: "expired",
+      teams:  [  "Support", "Business", "Sales"],
       expiry_time: "12/03/2020 15:25"
     },
     {
       message: "Hi. Please share the email ID for support team. Also share some number where I can call in emergency situations.",
       created_by: "Ev Gayforth",
+      status: "expired",
+      teams:  [ "Sales"],
       expiry_time: "12/03/2020 15:25"
     },
     {
       message: "Hi. Please share the email ID for support team. Also share some number where I can call in emergency situations.",
       created_by: "Ev Gayforth",
+      status: "expired",
+      teams:  [ "Software", "Marketing", "Product", "Support", "Business", "Sales"],
       expiry_time: "12/03/2020 15:25"
     }
   ];

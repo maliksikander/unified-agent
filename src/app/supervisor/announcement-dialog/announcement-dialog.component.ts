@@ -21,10 +21,13 @@ export class AnnouncementDialogComponent implements OnInit {
   displayAnnouncements = [];
   announcementsFilter = "all";
   announcementTask = "create";
+  teamList = [];
+  selectedTeams = [];
+  settings = {};
 
   announceDate = new FormControl(new Date(), [Validators.required]);
   expireDate = new FormControl(new Date(), [Validators.required]);
-  teamList = new FormControl("", [Validators.required]);
+  // teamList = new FormControl("", [Validators.required]);
   announcementMessage = new FormControl("", [Validators.required]);
   public formGroup = new FormGroup({
     date: new FormControl(null, [Validators.required])
@@ -35,7 +38,27 @@ export class AnnouncementDialogComponent implements OnInit {
   updateAnnouncement: any;
   constructor(private dialog: MatDialog) {}
 
-  ngOnInit() {}
+   ngOnInit() {
+
+     this.teamList = [
+       {"id": 1, "teamName": "Software"},
+       {"id": 2, "teamName": "Marketing"},
+       {"id": 3, "teamName": "Product"},
+       {"id": 4, "teamName": "Support"},
+       {"id": 5, "teamName": "Business"},
+       {"id": 6, "teamName": "Sales"}
+     ];
+
+     this.selectedTeams = [];
+     this.settings = {
+       text: "",
+       selectAllText: 'Select All',
+       unSelectAllText: 'UnSelect All',
+       enableSearchFilter: true,
+       classes: "myclass custom-class"
+     };
+   }
+
 
   onClose() {
     this.dialog.closeAll();
@@ -56,5 +79,23 @@ export class AnnouncementDialogComponent implements OnInit {
       panelClass: "confirm-dialog"
     });
     dialogRef.afterClosed().subscribe((result) => {});
+  }
+
+  onItemSelect(item: any) {
+    console.log(item);
+    console.log(this.selectedTeams);
+  }
+  OnItemDeSelect(item: any) {
+    console.log(item);
+    console.log(this.selectedTeams);
+  }
+  onSelectAll(items: any) {
+    console.log(items);
+  }
+  onDeSelectAll(items: any) {
+    console.log(items);
+  }
+  changeData() {
+    this.selectedTeams = [];
   }
 }
