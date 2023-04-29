@@ -56,8 +56,8 @@
                 <mat-icon>group</mat-icon>
               </button>
             </li>
-            <li class="list-group-item">
-              <button mat-icon-button class="barge-in" matTooltip="Barge-in">
+            <li class="list-group-item" *ngIf="conversation.topicParticipant.role == 'SILENT_MONITOR'">
+              <button mat-icon-button class="barge-in" matTooltip="Barge-in" (click)="BargeIn()" >
                 <mat-icon>chat_bubble</mat-icon>
               </button>
             </li>
@@ -1878,10 +1878,10 @@
 
       <div class="message-composer">
         <div class="whisper-selection" *ngIf="conversation?.agentParticipants?.length > 0">
-          <button (click)="isWhisperMode = false" [ngClass]="{ 'customer-select': !isWhisperMode }" class="customer-mode message-mode" mat-button>
+          <button (click)="isWhisperMode = false" [ngClass]="{ 'customer-select': !isWhisperMode }" *ngIf="conversation.topicParticipant.role != 'SILENT_MONITOR'"  class="customer-mode message-mode" mat-button>
             {{ conversation.customer?.firstName ? conversation.customer.firstName : ("globals.not-applicable" | translate) }}
           </button>
-          <button (click)="isWhisperMode = true" [ngClass]="{ 'whisper-select': isWhisperMode }" class="whisper-mode message-mode" mat-button>
+          <button (click)="isWhisperMode = true" [ngClass]="{ 'whisper-select':isWhisperMode   }" class="whisper-mode message-mode" mat-button>
             {{ "chat-features.interactions.whisper" | translate }}
           </button>
         </div>
@@ -1939,7 +1939,7 @@
 
         <form
           class="reply-form {{ conversation?.agentParticipants?.length > 0 ? 'whisper-tabs' : '' }}"
-          [ngClass]="{ 'whisper-mode': conversation?.agentParticipants?.length > 0 && isWhisperMode }"
+          [ngClass]="{ 'whisper-mode': isWhisperMode  }"
         >
           <label *ngIf="message.length > 0" class="count-reply">{{ replyInput.value.length }}/1000</label>
           <div class="mat-form-field chat-area" [ngClass]="{ 'expand-area-height': expanedHeight > 50 }">
@@ -1949,8 +1949,8 @@
                 !_socketService.isSocketConnected ||
                 conversation.activeChannelSessions.length == 0 ||
                 !conversation.messageComposerState ||
-                (!isWhisperMode && conversation.topicParticipant.role == 'ASSISTANT')
-              "
+                (!isWhisperMode  && conversation.topicParticipant.role == 'ASSISTANT')
+"
               (keyup.enter)="onSend(replyInput.value); replyInput.value = null"
               (focus)="onTextAreaFocus()"
               (keydown.enter)="onEnterKey($event)"

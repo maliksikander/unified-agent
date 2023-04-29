@@ -119,7 +119,8 @@ export class InteractionsComponent implements OnInit {
     // setTimeout(() => {
     //   new EmojiPicker();
     // }, 500);
-
+    
+    this.isWhisperMode = this.conversation.topicParticipant.role == 'SILENT_MONITOR'?true:false;
     this.conversationSettings = this._sharedService.conversationSettings;
     this.loadLabels();
 
@@ -160,6 +161,19 @@ export class InteractionsComponent implements OnInit {
     );
   }
   emoji() {}
+
+  BargeIn(){
+  //this.isWhisperMode=false;
+  // console.log( 'barge-in clicked  .... ',this.conversation);
+  // console.log( 'barge-in clicked  .... ',this.conversation.agentParticipants[0].participant.id);
+ let obj = {
+   participantId: this.conversation.topicParticipant.participant.id,
+   conversationId: this.conversation.conversationId,
+   
+ };
+ console.log("barge-in clicked" ,obj);
+ //this._socketService.emit("JoinAsBargeIn", obj);
+}
 
   onSend(text) {
     text = text.trim();
