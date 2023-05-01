@@ -23,80 +23,53 @@ stages:
   - scan
   - publish_dockerhub
 
-#+==================Runs on Every Commit and merge requests========================+
-# node-modules-generate:
-#   stage: node-modules
+
+# #+==================Runs on Every Commit and merge requests========================+
+# node-test:
+#   stage: test
+#   when: on_success
 #   image: gitlab.expertflow.com:9242/general/node:CSN-3623
 #   script:
 #     - npm install
+#     - npm run coverage
 #   only:
-#      refs:
-#        - /^CIM-.*$/
-#        - /^.+_b-.+$/
-#        - /^.+_f-.+$/
-#        - merge_requests
-#        - /^durable.*$/
-#      changes:
-#        - package.json
+#    refs:
+#     - /^.+_f-.+$/
+#     - /^.+_b-.+$/
+#     - merge_requests
+
 #   allow_failure: false
 #   cache:
 #     key: unified-agent-cache
 #     paths:
 #       - node_modules
-# #  artifacts:
-# #    paths:
-# #        - coverage
-# #        - node_modules/
-
-#+==================Runs on Every Commit and merge requests========================+
-#+==================Runs on Every Commit and merge requests========================+
-node-test:
-  stage: test
-  when: on_success
-  image: gitlab.expertflow.com:9242/general/node:CSN-3623
-  script:
-    - npm install
-    - npm run coverage
-  only:
-   refs:
-    - /^.+_f-.+$/
-    - /^.+_b-.+$/
-    - merge_requests
-
-  allow_failure: false
-  cache:
-    key: unified-agent-cache
-    paths:
-      - node_modules
-      - coverage
-  artifacts:
-    paths:
-        - coverage
-        - node_modules/
+#       - coverage
+#   artifacts:
+#     paths:
+#         - coverage
+#         - node_modules/
 
 
-#+==================Runs on Every Commit and merge requests========================+
+# #+==================Runs on Every Commit and merge requests========================+
 
 
-node-format:
-  stage: code_format
-  when: on_success
-  image: gitlab.expertflow.com:9242/general/node:CSN-3623
-  script:
-    - npm run format:check
+# node-format:
+#   stage: code_format
+#   when: on_success
+#   image: gitlab.expertflow.com:9242/general/node:CSN-3623
+#   script:
+#     - npm run format:check
 
-  allow_failure: false
-  only:
-    - /^.+_f-.+$/
-    - /^.+_b-.+$/
-    - merge_requests
-  cache:
-      key: unified-agent-cache
-      paths:
-          - node_modules
-      policy: pull
-
-
+#   allow_failure: false
+#   only:
+#     - /^.+_f-.+$/
+#     - /^.+_b-.+$/
+#     - merge_requests
+#   cache:
+#       key: unified-agent-cache
+#       paths:
+#           - node_modules
+#       policy: pull
 
 
 #+==================Runs on merge requests only========================+
@@ -111,61 +84,6 @@ time_build:
       - merge_requests
       - tags
 
-
-
-
-#==================Runs on merge requests only========================+
-#===============Code Quality /Static Testing==========
-#sonarqube-pretest:
-#   stage: node-scan
-#   when: on_success
-#   dependencies:
-#       - node-test
-#   #tags: [old-runner]
-#   image: sonarsource/sonar-scanner-cli:latest
-#   variables:
-#       SONAR_TOKEN: "a447ea2777487119191464c9f5e9566637ace688"
-#       SONAR_HOST_URL: "http://192.168.1.109:9000"
-#       SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
-#       GIT_DEPTH: 1
-#   script:
-#       - sonar-scanner -Dsonar.qualitygate.wait=true
-#   cache:
-#       key: ${CI_COMMIT_REF_SLUG}
-#       paths:
-#       - .sonar/cache
-#   allow_failure: false
-#   only:
-#       - /^CIM-.*$/
-#       - /^.+_b-.+$/
-#       - /^.+_f-.+$/
-#       - merge_requests
-#=================New Code Quality for NodeJS and TS============
-# sonarqube-test:
-#   stage: node-scan
-#   image: adoptopenjdk/openjdk11:alpine-jre
-#   script:
-#     - apk add --no-cache git python3 py-pip bash shellcheck 'nodejs>14' 'npm>7'
-#     - npm install -g typescript@3.7.5
-#     - pip install --no-cache-dir --upgrade pip
-#     - pip install --no-cache-dir pylint
-#     #- npm install
-#     #- npm run test
-#     #- npm run coverage
-#     - npm run sonar
-#   only:
-#     - merge_requests
-#   allow_failure: false
-#   cache:
-#     key: unified-agent-cache
-#     paths:
-#       - node_modules
-#       - coverage
-#     policy: pull
-#   #=artifacts:
-#     #paths:
-#         #- coverage
-
 #+==================Runs on Every Commit ========================+
 node_artifacts:
    stage: artifacts
@@ -176,6 +94,8 @@ node_artifacts:
      - npm run build
      - export TIME_TOKEN="$(cat .ci_status/ci_time)"
      - echo "${TIME_TOKEN}"
+     - ls -lah .
+     - ls -lah node_modules/
      - rm -rf node_modules/.sonar
    artifacts:
        name: "$CI_PROJECT_TITLE-$TIME_TOKEN"
