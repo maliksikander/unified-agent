@@ -133,8 +133,7 @@ sonarqube-test:
     paths:
       - .sonar/cache
   script:
-    #- sonar-scanner -X -Dsonar.sources=src/ -Dsonar.exclusions=tests/*.spec.js -Dsonar.coverage.exclusions=tests/*.spec.js,tests/*.mock.js,node_modules/*,coverage/lcov-report/* -Dsonar.tests=tests/ -Dsonar.language=js -Dsonar.sourceEncoding=UTF-8 -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info -Dsonar.testExecutionReportPaths=coverage/test-report.xml -Dsonar.projectKey=unified-agent -Dsonar.qualitygate.wait=true -Dsonar.projectName=${CI_PROJECT_NAME}
-    - sonar-scanner -X -Dsonar.projectKey=unified-agent -Dsonar.qualitygate.wait=true -Dsonar.projectName=${CI_PROJECT_NAME}
+    - sonar-scanner -X -Dsonar.testExecutionReportPaths=coverage/test-report.xml -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info -Dsonar.sources=src -Dsonar.exclusions=**/node_modules/** -Dsonar.tests=src -Dsonar.test.inclusions=**/*.spec.ts  -Dsonar.projectKey=unified-agent -Dsonar.qualitygate.wait=true -Dsonar.projectName=${CI_PROJECT_NAME}
   allow_failure: false 
 
 #+==================Runs on merge requests only========================+
