@@ -90,17 +90,14 @@ node_artifacts:
    when: on_success
    image: gitlab.expertflow.com:9242/general/node:CSN-3623
    script:
-     #- npm install
      - npm run build
      - export TIME_TOKEN="$(cat .ci_status/ci_time)"
      - echo "${TIME_TOKEN}"
-     - ls -lah .
-     - ls -lah node_modules/
      - rm -rf node_modules/.sonar
    artifacts:
-       name: "$CI_PROJECT_TITLE-$TIME_TOKEN"
+       name: "$CI_PROJECT_TITLE"
        paths:
-         - $CI_PROJECT_DIR
+         - dist
          - .ci_status/
    allow_failure: false
    cache:
