@@ -25,51 +25,51 @@ stages:
 
 
 # #+==================Runs on Every Commit and merge requests========================+
-# node-test:
-#   stage: test
-#   when: on_success
-#   image: gitlab.expertflow.com:9242/general/node:CSN-3623
-#   script:
-#     - npm install
-#     - npm run coverage
-#   only:
-#    refs:
-#     - /^.+_f-.+$/
-#     - /^.+_b-.+$/
-#     - merge_requests
+node-test:
+  stage: test
+  when: on_success
+  image: gitlab.expertflow.com:9242/general/node:CSN-3623
+  script:
+    - npm install
+    - npm run coverage
+  only:
+   refs:
+    - /^.+_f-.+$/
+    - /^.+_b-.+$/
+    - merge_requests
 
-#   allow_failure: false
-#   cache:
-#     key: unified-agent-cache
-#     paths:
-#       - node_modules
-#       - coverage
-#   artifacts:
-#     paths:
-#         - coverage
-#         - node_modules/
+  allow_failure: false
+  cache:
+    key: unified-agent-cache
+    paths:
+      - node_modules
+      - coverage
+  artifacts:
+    paths:
+        - coverage
+        - node_modules/
 
 
 # #+==================Runs on Every Commit and merge requests========================+
 
 
-# node-format:
-#   stage: code_format
-#   when: on_success
-#   image: gitlab.expertflow.com:9242/general/node:CSN-3623
-#   script:
-#     - npm run format:check
+node-format:
+  stage: code_format
+  when: on_success
+  image: gitlab.expertflow.com:9242/general/node:CSN-3623
+  script:
+    - npm run format:check
 
-#   allow_failure: false
-#   only:
-#     - /^.+_f-.+$/
-#     - /^.+_b-.+$/
-#     - merge_requests
-#   cache:
-#       key: unified-agent-cache
-#       paths:
-#           - node_modules
-#       policy: pull
+  allow_failure: false
+  only:
+    - /^.+_f-.+$/
+    - /^.+_b-.+$/
+    - merge_requests
+  cache:
+      key: unified-agent-cache
+      paths:
+          - node_modules
+      policy: pull
 
 
 #+==================Runs on merge requests only========================+
