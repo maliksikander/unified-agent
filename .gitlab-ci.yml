@@ -90,6 +90,7 @@ node_artifacts:
    when: on_success
    image: gitlab.expertflow.com:9242/general/node:CSN-3623
    script:
+     - npm install
      - npm run build
      - export TIME_TOKEN="$(cat .ci_status/ci_time)"
      - echo "${TIME_TOKEN}"
