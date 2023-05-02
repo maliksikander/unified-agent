@@ -168,11 +168,11 @@ export class InteractionsComponent implements OnInit {
   // console.log( 'barge-in clicked  .... ',this.conversation.agentParticipants[0].participant.id);
  let obj = {
    participantId: this.conversation.topicParticipant.participant.id,
-   conversationId: this.conversation.conversationId,
+   conversationId:  this.conversation.conversationId,
    
  };
  console.log("barge-in clicked" ,obj);
- //this._socketService.emit("JoinAsBargeIn", obj);
+ this._socketService.emit("JoinAsBargin", obj);
 }
 
   onSend(text) {
