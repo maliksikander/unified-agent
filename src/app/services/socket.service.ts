@@ -400,6 +400,8 @@ export class socketService {
         this.handleDeliveryNotification(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "typing_indicator" && cimEvent.data.header.sender.type.toLowerCase() == "connector") {
         this.handleTypingStartedEvent(cimEvent, sameTopicConversation);
+      }else if (cimEvent.name.toLowerCase() == "participant_role_changed" ) {
+        this.handleParticipantRoleChangedEvent(cimEvent, conversationId);
       }
     } else {
       this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-event-unsubscribing"), "err");
@@ -1056,6 +1058,16 @@ export class socketService {
       sameTopicConversation["isTyping"] = setTimeout(() => {
         sameTopicConversation["isTyping"] = false;
       }, 5000);
+    }
+  }
+  handleParticipantRoleChangedEvent(cimEvent,conversationId){
+    let conversation = this.conversations.find((e) => {
+      return e.conversationId == conversationId;
+    });
+
+    if (conversation) {
+      conversation.topicParticipant = cimEvent.data.conversationParticipant;
+      console.log("updated participant",conversation.topicParticipant);
     }
   }
 
