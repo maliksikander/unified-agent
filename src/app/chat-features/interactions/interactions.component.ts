@@ -794,6 +794,7 @@ export class InteractionsComponent implements OnInit {
             "agent_unsubscribed",
             "call_leg_ended",
             "task_state_changed",
+            "participant_role_changed",
             "voice_activity"
           ].includes(event.name.toLowerCase())
         ) {

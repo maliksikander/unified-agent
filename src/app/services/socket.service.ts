@@ -400,7 +400,7 @@ export class socketService {
         this.handleDeliveryNotification(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "typing_indicator" && cimEvent.data.header.sender.type.toLowerCase() == "connector") {
         this.handleTypingStartedEvent(cimEvent, sameTopicConversation);
-      }else if (cimEvent.name.toLowerCase() == "participant_role_changed" ) {
+      } else if (cimEvent.name.toLowerCase() == "participant_role_changed") {
         this.handleParticipantRoleChangedEvent(cimEvent, conversationId);
       }
     } else {
@@ -484,7 +484,8 @@ export class socketService {
           "channel_session_ended",
           "agent_subscribed",
           "agent_unsubscribed",
-          "task_state_changed"
+          "task_state_changed",
+          "participant_role_changed"
         ].includes(event.name.toLowerCase())
       ) {
         let message = this.createSystemNotificationMessage(event);
@@ -1060,15 +1061,22 @@ export class socketService {
       }, 5000);
     }
   }
-  handleParticipantRoleChangedEvent(cimEvent,conversationId){
+  handleParticipantRoleChangedEvent(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
       return e.conversationId == conversationId;
     });
 
     if (conversation) {
       conversation.topicParticipant = cimEvent.data.conversationParticipant;
-      console.log("updated participant",conversation.topicParticipant);
+      console.log("updated participant", conversation.topicParticipant);
+      let message = this.createSystemNotificationMessage(cimEvent);
+
+      if (message) {
+
+        conversation.messages.push(message);
+      }
     }
+
   }
 
   upateActiveConversationData(cimEvent, conversationId) {
@@ -1097,12 +1105,15 @@ export class socketService {
           return participant.participant.keycloakUser.id != cimEvent.data.agentParticipant.participant.keycloakUser.id;
         });
       }
+      if (cimEvent.data.agentParticipant.role.toLowerCase() != "silent_monitor") {
 
-      let message = this.createSystemNotificationMessage(cimEvent);
 
-      if (message) {
+        let message = this.createSystemNotificationMessage(cimEvent);
 
-        conversation.messages.push(message);
+        if (message) {
+
+          conversation.messages.push(message);
+        }
       }
     }
   }
@@ -1460,11 +1471,17 @@ export class socketService {
       // message.body["displayText"] = cimEvent.data.channel.channelType.name;
       // message.body.markdownText = "call_leg_ended";
       message.body.data = cimEvent.data;
-    }
-    if (cimEvent.name.toLowerCase() == "agent_subscribed") {
+    } else if (cimEvent.name.toLowerCase() == "agent_subscribed") {
 
       message = CimMessage;
       message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
+      this._translateService.stream("socket-service.has-joined-the-conversation").subscribe((data: string) => {
+        message.body.markdownText = data;
+      });
+    } else if (cimEvent.name.toLowerCase() == "participant_role_changed" && cimEvent.data.conversationParticipant.role.toLowerCase() == "primary") {
+
+      message = CimMessage;
+      message.body["displayText"] = cimEvent.data.conversationParticipant.participant.keycloakUser.username;
       this._translateService.stream("socket-service.has-joined-the-conversation").subscribe((data: string) => {
         message.body.markdownText = data;
       });
