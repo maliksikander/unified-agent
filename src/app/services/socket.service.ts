@@ -1105,15 +1105,12 @@ export class socketService {
           return participant.participant.keycloakUser.id != cimEvent.data.agentParticipant.participant.keycloakUser.id;
         });
       }
-      if (cimEvent.data.agentParticipant.role.toLowerCase() != "silent_monitor") {
 
+      let message = this.createSystemNotificationMessage(cimEvent);
 
-        let message = this.createSystemNotificationMessage(cimEvent);
+      if (message) {
 
-        if (message) {
-
-          conversation.messages.push(message);
-        }
+        conversation.messages.push(message);
       }
     }
   }
@@ -1471,7 +1468,7 @@ export class socketService {
       // message.body["displayText"] = cimEvent.data.channel.channelType.name;
       // message.body.markdownText = "call_leg_ended";
       message.body.data = cimEvent.data;
-    } else if (cimEvent.name.toLowerCase() == "agent_subscribed") {
+    } else if (cimEvent.name.toLowerCase() == "agent_subscribed" && cimEvent.data.agentParticipant.role.toLowerCase() != "silent_monitor") {
 
       message = CimMessage;
       message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
@@ -1485,7 +1482,7 @@ export class socketService {
       this._translateService.stream("socket-service.has-joined-the-conversation").subscribe((data: string) => {
         message.body.markdownText = data;
       });
-    } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
+    } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed" && cimEvent.data.agentParticipant.role.toLowerCase() != "silent_monitor") {
       message = CimMessage;
       message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
 
