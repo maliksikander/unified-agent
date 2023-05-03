@@ -291,7 +291,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   publishMessageSeenEvent(messageForSeenNotification) {
-    if (document.hasFocus() && messageForSeenNotification && messageForSeenNotification.id != this.lastSeenMessageId) {
+    if (document.hasFocus() && messageForSeenNotification && messageForSeenNotification.id != this.lastSeenMessageId && this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor") {
       const data = {
         id: uuidv4(),
         header: {
