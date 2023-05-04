@@ -105,7 +105,7 @@ export class socketService {
       this.ngxService.stop();
       this.isSocketConnected = true;
       this._sharedService.serviceChangeMessage({ msg: "closeAllPushModeRequests", data: null });
-
+      this._snackbarService.open("Connected", "succ");
       console.log("socket connect " + e);
       if (this._router.url == "/login") {
         // this._router.navigate(["customers"]);
@@ -1471,20 +1471,20 @@ export class socketService {
     } else if (cimEvent.name.toLowerCase() == "agent_subscribed" && cimEvent.data.agentParticipant.role.toLowerCase() != "silent_monitor") {
 
       message = CimMessage;
-      message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
+      message.body["displayText"] = this._cacheService.agent.id == cimEvent.data.agentParticipant.participant.keycloakUser.id ? 'You' : cimEvent.data.agentParticipant.participant.keycloakUser.username;
       this._translateService.stream("socket-service.has-joined-the-conversation").subscribe((data: string) => {
         message.body.markdownText = data;
       });
     } else if (cimEvent.name.toLowerCase() == "participant_role_changed" && cimEvent.data.conversationParticipant.role.toLowerCase() == "primary") {
 
       message = CimMessage;
-      message.body["displayText"] = cimEvent.data.conversationParticipant.participant.keycloakUser.username;
+      message.body["displayText"] = this._cacheService.agent.id == cimEvent.data.conversationParticipant.participant.keycloakUser.id ? 'You' : cimEvent.data.conversationParticipant.participant.keycloakUser.username;
       this._translateService.stream("socket-service.has-joined-the-conversation").subscribe((data: string) => {
         message.body.markdownText = data;
       });
     } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed" && cimEvent.data.agentParticipant.role.toLowerCase() != "silent_monitor") {
       message = CimMessage;
-      message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
+      message.body["displayText"] = this._cacheService.agent.id == cimEvent.data.agentParticipant.participant.keycloakUser.id ? 'You' : cimEvent.data.agentParticipant.participant.keycloakUser.username;
 
       this._translateService.stream("socket-service.left-the-conversation").subscribe((data: string) => {
         message.body.markdownText = data;

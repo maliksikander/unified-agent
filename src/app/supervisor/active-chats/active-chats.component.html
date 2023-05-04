@@ -84,7 +84,7 @@
                   {{ chat.activeSince | amDuration: "seconds" }} <small>{{ "supervisor.ago" | translate }}</small>
                 </td>
                 <td>{{ data.botName }}</td>
-                 <!-- <span class="table-trigger">
+                <!-- <span class="table-trigger">
               <button mat-mini-fab class="silent-monitor-btn" matTooltip="Silent Monitoring"><img
                   src="assets/images/eye.svg" alt="Silent Monitoring"></button>
               <button mat-mini-fab class="barge-in-btn" matTooltip="Bargein"><img src="assets/images/bargein.svg"
@@ -118,14 +118,19 @@
                     }})</small>
                 </td>
                 <td>{{ data.queueName }}</td>
+                <span *ngIf="chat.channelSession.conversationId | isAlreadyJoined" class="joined">{{'pull-mode.joined'
+                  | translate }}</span>
                 <span class="table-trigger">
-              <button [hidden]="chat.channelSession.conversationId | isAlreadyJoined" (click)="SilentMonitor(chat.channelSession)" mat-mini-fab class="silent-monitor-btn" matTooltip="Silent Monitoring"><img
-                  src="assets/images/eye.svg" alt="Silent Monitoring"></button>
-             <!--  <button mat-mini-fab class="barge-in-btn" matTooltip="Bargein"><img src="assets/images/bargein.svg"
+
+
+                  <button [hidden]="chat.channelSession.conversationId | isAlreadyJoined"
+                    (click)="SilentMonitor(chat.channelSession)" mat-mini-fab class="silent-monitor-btn"
+                    matTooltip="Silent Monitoring"><img src="assets/images/eye.svg" alt="Silent Monitoring"></button>
+                  <!--  <button mat-mini-fab class="barge-in-btn" matTooltip="Bargein"><img src="assets/images/bargein.svg"
                   alt="Bargein"></button>
               <button mat-mini-fab class="close-btn" matTooltip="Close" (click)="closeChat()"><img
                   src="assets/images/close.svg" alt="Close"></button> -->
-            </span> 
+                </span>
               </tr>
             </ng-container>
           </ng-container>
