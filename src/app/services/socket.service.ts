@@ -143,7 +143,7 @@ export class socketService {
     });
 
     this.socket.on("errors", (res: any) => {
-      console.log("socket errors ", res);
+      console.error("socket errors ", res);
       this.onSocketErrors(res);
     });
 
@@ -198,7 +198,7 @@ export class socketService {
     });
 
     this.socket.on("onTopicData", (res: any, callback: any) => {
-      console.log("onTopicData", res);
+      console.log("onTopicData", JSON.parse(JSON.stringify(res)));
       try {
         this.onTopicData(res.topicData, res.conversationId, res.taskId);
         if (callback) {
@@ -309,11 +309,10 @@ export class socketService {
   }
 
   onCimEventHandler(cimEvent, conversationId) {
-
-    console.log("cim event ", cimEvent);
+    console.log("cim event ", JSON.parse(JSON.stringify(cimEvent)));
 
     if (cimEvent.channelSession) {
-      if (cimEvent.data.header) {
+      if (cimEvent.data && cimEvent.data.header) {
         cimEvent.data.header.channelSession = cimEvent.channelSession;
       }
     }
@@ -335,8 +334,9 @@ export class socketService {
 
         if (cimEvent.data.header.sender.type.toLowerCase() == "connector") {
           cimEvent.data.header.sender.id = cimEvent.data.header.customer._id;
-          cimEvent.data.header.sender.type = 'CUSTOMER';
-          cimEvent.data.header.sender.senderName = cimEvent.data.header.customer.firstName + ' ' + cimEvent.data.header.customer.lastName;
+          cimEvent.data.header.sender.type = "CUSTOMER";
+          cimEvent.data.header.sender.senderName =
+            cimEvent.data.header.customer.firstName + " " + cimEvent.data.header.customer.lastName ? cimEvent.data.header.customer.lastName : "";
           if (cimEvent.data.body.type.toLowerCase() != "notification") {
             clearTimeout(sameTopicConversation["isTyping"]);
             sameTopicConversation["isTyping"] = null;
@@ -392,6 +392,8 @@ export class socketService {
         this.handleAgentSubscription(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "task_enqueued") {
         this.handleTaskEnqueuedEvent(cimEvent, conversationId);
+      } else if (cimEvent.name.toLowerCase() == "task_state_changed") {
+        this.handleTaskStateChangedEvent(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "no_agent_available") {
         this.handleNoAgentEvent(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "message_delivery_notification") {
@@ -448,17 +450,18 @@ export class socketService {
         }
       }
       if (
+        (event.name.toLowerCase() == "message_delivery_notification" || event.name.toLowerCase() == "customer_message") &&
+        event.data.header.sender.type.toLowerCase() == "connector"
+      ) {
+        event.data.header.sender.senderName = event.data.header.customer.firstName;
+        event.data.header.sender.id = event.data.header.customer._id;
+        event.data.header.sender.type = "CUSTOMER";
+      }
+      if (
         event.name.toLowerCase() == "agent_message" ||
         event.name.toLowerCase() == "bot_message" ||
         event.name.toLowerCase() == "customer_message"
       ) {
-
-        if (event.name.toLowerCase() == "customer_message" && event.data.header.sender.type.toLowerCase() == 'connector') {
-
-          event.data.header.sender.senderName = event.data.header.customer.firstName + " " + event.data.header.customer.lastName
-          event.data.header.sender.id = event.data.header.customer._id;
-          event.data.header.sender.type = 'CUSTOMER';
-        }
         if (
           event.name.toLowerCase() == "agent_message" &&
           event.data.body.type.toLowerCase() == "comment" &&
@@ -478,7 +481,8 @@ export class socketService {
           "channel_session_started",
           "channel_session_ended",
           "agent_subscribed",
-          "agent_unsubscribed"
+          "agent_unsubscribed",
+          "task_state_changed"
         ].includes(event.name.toLowerCase())
       ) {
         let message = this.createSystemNotificationMessage(event);
@@ -492,7 +496,7 @@ export class socketService {
       }
     });
 
-    this.processSeenMessages(conversation.messages, topicEvents);
+    this.processSeenMessages(conversation, topicEvents);
 
     let participants = topicData.participants ? topicData.participants : [];
     // feed the active channel sessions
@@ -522,8 +526,7 @@ export class socketService {
         // if the channel session is of voice or facebook then channel session should be disabled
         // because the channel session in the array is used to send the message to customer
         conversation.activeChannelSessions.forEach((channelSession) => {
-          if (
-            channelSession.channel.channelType.name.toLowerCase() == "voice") {
+          if (channelSession.channel.channelType.name.toLowerCase() == "voice") {
             channelSession["isDisabled"] = true;
           } else {
             channelSession["isDisabled"] = false;
@@ -534,8 +537,7 @@ export class socketService {
         // if the channel session is of web or whatsapp then channel session should be selected
         // because the channel session in the array is used to send the message to customer
         let repliedChannelSession = conversation.activeChannelSessions.find((channelSession) => {
-          if (
-            channelSession.channel.channelType.name.toLowerCase() != "voice") {
+          if (channelSession.channel.channelType.name.toLowerCase() != "voice") {
             return channelSession;
           }
         });
@@ -577,21 +579,79 @@ export class socketService {
     this._conversationsListener.next(this.conversations);
   }
 
-  processSeenMessages(messages, events) {
+  processSeenMessages(conversation, events) {
     let latestDeliveryEventMessage = this.getLatestDeliveryEventMessage(events);
 
     if (latestDeliveryEventMessage && latestDeliveryEventMessage.body.status.toLowerCase() == "read") {
-      this.markAgentMessagesToSeenTillId(messages, latestDeliveryEventMessage.body.messageId);
+      this.markAgentMessagesToSeenTillId(
+        conversation.messages,
+        latestDeliveryEventMessage.body.messageId,
+        latestDeliveryEventMessage.header.customer
+      );
+    }
+
+    this.addParticipantsToTheLastSeenMessage(conversation, events);
+  }
+
+  addParticipantsToTheLastSeenMessage(conversation, events) {
+    let alreadyEnteredSenders = [];
+    for (let i = events.length - 1; i > 0; i--) {
+      if (
+        events[i].name.toLowerCase() == "message_delivery_notification" &&
+        events[i].data.body.status.toLowerCase() == "read" &&
+        events[i].data.header &&
+        events[i].data.header.sender &&
+        events[i].data.header.sender.id != conversation.topicParticipant.participant.keycloakUser.id
+      ) {
+        for (let j = i - 1; j >= 0; j--) {
+          if (
+            events[j].data.header &&
+            events[j].data.header.sender &&
+            events[j].data.header.sender.id == conversation.topicParticipant.participant.keycloakUser.id &&
+            (events[j].name.toLowerCase() == "agent_message" ||
+              (events[j].name.toLowerCase() == "whisper_message" && events[i].data.header.sender.type.toLowerCase() == "agent"))
+          ) {
+            let senderPresent = alreadyEnteredSenders.findIndex((e) => e.id == events[i].data.header.sender.id);
+            if (senderPresent < 0) {
+              if (events[j].data.header.seenStatuses) {
+                events[j].data.header.seenStatuses.push(events[i].data.header.sender);
+                alreadyEnteredSenders.push(events[i].data.header.sender);
+              } else {
+                events[j].data.header["seenStatuses"] = [];
+                events[j].data.header.seenStatuses.push(events[i].data.header.sender);
+                alreadyEnteredSenders.push(events[i].data.header.sender);
+              }
+            }
+          }
+        }
+      }
     }
   }
 
   getLatestDeliveryEventMessage(events) {
     for (let index = events.length - 1; index >= 0; index--) {
       const event = events[index];
-      if (event.name.toLowerCase() == "message_delivery_notification" && event.data.header.sender.type.toLowerCase() == "connector") {
+
+      if (event.name.toLowerCase() == "message_delivery_notification" && event.data.header.sender.type.toLowerCase() == "customer") {
         return event.data;
       }
     }
+  }
+
+  getLatestDeliveryEvents(events) {
+    let flag = false;
+    let deliveryEvents = [];
+    for (let index = events.length - 1; index >= 0; index--) {
+      let event = events[index];
+      if (event.name.toLowerCase() == "message_delivery_notification") {
+        deliveryEvents.push(event);
+        flag = true;
+      }
+      if (event.name.toLowerCase() != "message_delivery_notification" && flag) {
+        break;
+      }
+    }
+    return deliveryEvents;
   }
 
   isVoiceChannelSessionExists(activeChannelSessions) {
@@ -695,12 +755,14 @@ export class socketService {
 
   changeTopicCustomer(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
+      //console.log("this is conversation id"+e.conversationId);
       return e.conversationId == conversationId;
     });
 
     if (conversation) {
       conversation.customer = cimEvent.data;
-      this._snackbarService.open(this._translateService.instant("snackbar.Profile-linked-successfully"), "succ");
+      //console.log("this is conversation of profile linked suceessfully");
+      //this._snackbarService.open(this._translateService.instant("snackbar.Profile-linked-successfully"), "succ");
     }
   }
 
@@ -740,7 +802,6 @@ export class socketService {
       if (message) {
         message["botSuggestions"] = suggestionMessage.suggestions;
         message["showBotSuggestions"] = false;
-        console.log("bot suggestion founded ", message);
         this._conversationsListener.next(this.conversations);
       }
     }
@@ -755,6 +816,19 @@ export class socketService {
     this._snackbarService.open(this._translateService.instant("snackbar.CUSTOMER-LINKED-SUCCESSFULLY"), "succ");
   }
 
+  handleTaskStateChangedEvent(cimEvent, conversationId) {
+    let conversation = this.conversations.find((e) => {
+      return e.conversationId == conversationId;
+    });
+
+    if (conversation) {
+      let message = this.createSystemNotificationMessage(cimEvent);
+      if (message) {
+        conversation.messages.push(message);
+      }
+    }
+  }
+
   removeChannelSession(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
       return e.conversationId == conversationId;
@@ -762,7 +836,9 @@ export class socketService {
 
     if (conversation) {
       let message = this.createSystemNotificationMessage(cimEvent);
-      conversation.messages.push(message);
+      if (message) {
+        conversation.messages.push(message);
+      }
 
       let removedChannelSessionIndex = null;
       let removedChannelSession;
@@ -818,34 +894,40 @@ export class socketService {
   }
 
   handleDeliveryNotification(cimEvent, conversationId) {
-    if (cimEvent.data.header.sender.type.toLowerCase() == "connector" && cimEvent.data.body.status.toLowerCase() == "read") {
-      let conversation = this.conversations.find((e) => {
-        return e.conversationId == conversationId;
-      });
-
+    let conversation = this.conversations.find((e) => {
+      return e.conversationId == conversationId;
+    });
+    if (
+      conversation &&
+      cimEvent.data.header.sender.id != conversation.topicParticipant.participant.keycloakUser.id &&
+      ((cimEvent.data.header.sender.type.toLowerCase() == "connector" && cimEvent.data.body.status.toLowerCase() == "read") ||
+        (cimEvent.data.header.sender.type.toLowerCase() == "agent" && cimEvent.data.body.status.toLowerCase() == "read"))
+    ) {
+      if (cimEvent.data.header.sender.type.toLowerCase() == "connector") {
+        cimEvent.data.header.sender.id = cimEvent.data.header.customer._id;
+        cimEvent.data.header.sender.type = "CUSTOMER";
+        cimEvent.data.header.sender.senderName =
+          cimEvent.data.header.customer.firstName + " " + (cimEvent.data.header.customer.lastName ? cimEvent.data.header.customer.lastName : "");
+      }
+      this.addParticipantsToLastSeenMessage(conversation, cimEvent.data.body.messageId, cimEvent.data.header.sender);
+    }
+    if (cimEvent.data.header.sender.type.toLowerCase() == "customer" && cimEvent.data.body.status.toLowerCase() == "read") {
       if (conversation) {
-        this.markAgentMessagesToSeenTillId(conversation.messages, cimEvent.data.body.messageId);
+        this.markAgentMessagesToSeenTillId(conversation.messages, cimEvent.data.body.messageId, cimEvent.data.header.customer);
       }
     } else if (cimEvent.data.header.sender.type.toLowerCase() == "system" && cimEvent.data.body.status.toLowerCase() == "failed") {
-      let conversation = this.conversations.find((e) => {
-        return e.conversationId == conversationId;
-      });
-
       if (conversation) {
         const selectedMessage = conversation.messages.find((message) => {
-
           return message.id == cimEvent.data.body.messageId;
-
         });
         if (selectedMessage) {
           selectedMessage["header"]["status"] = "failed";
         }
       }
-
     }
   }
 
-  markAgentMessagesToSeenTillId(messages, id) {
+  markAgentMessagesToSeenTillId(messages, id, sender) {
     // find index of the message for the delivery notification
     let index = messages.findIndex((message) => message.id == id);
 
@@ -858,7 +940,52 @@ export class socketService {
       }
     });
   }
-
+  addParticipantsToLastSeenMessage(conversation, id, sender) {
+    // find index of the message for the delivery notification
+    let messages = conversation.messages;
+    let index = -1;
+    // let index = messages[index].header.sender.findIndex((message) => message.id == id);
+    for (let i = messages.length - 1; i >= 0; i--) {
+      if (
+        messages[i].header &&
+        (!messages[i].header.status || messages[i].header.status != "failed") &&
+        messages[i].header.sender.id == conversation.topicParticipant.participant.keycloakUser.id &&
+        (!messages[i].body.isWhisper || sender.type.toLowerCase() != "customer")
+      ) {
+        index = i;
+        break;
+      }
+    }
+    var senderPresent = -1;
+    if (index != -1) {
+      if (!messages[index].header.seenStatuses) {
+        messages[index].header["seenStatuses"] = [];
+      } else {
+        senderPresent = messages[index].header.seenStatuses.findIndex((x) => x.id === sender.id);
+      }
+      //if not exist already add in the list
+      if (senderPresent == -1) {
+        messages[index].header.seenStatuses.push(sender);
+        //Move bar to 100% if it is greater than 97 %
+        this._sharedService.serviceChangeMessage({ msg: "seenReportAdded", data: null });
+        //if sender pushed to list remove the sender from above messages if found
+        if (index > 0) {
+          for (let k = index - 1; k >= 0; k--) {
+            if (
+              messages[k].header &&
+              messages[k].header.sender.id == conversation.topicParticipant.participant.keycloakUser.id &&
+              messages[k].header.seenStatuses
+            ) {
+              const indx = messages[k].header.seenStatuses.findIndex((ser) => ser.id == sender.id);
+              if (indx > -1) {
+                messages[k].header.seenStatuses.splice(indx, 1);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
   handleNoAgentEvent(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
       return e.conversationId == conversationId;
@@ -908,7 +1035,9 @@ export class socketService {
 
       conversation.activeChannelSessions = conversation.activeChannelSessions.concat([]);
 
-      conversation.messages.push(message);
+      if (message) {
+        conversation.messages.push(message);
+      }
 
       conversation.messageComposerState = this.isNonVoiceChannelSessionExists(conversation.activeChannelSessions);
     } else {
@@ -959,7 +1088,10 @@ export class socketService {
 
       let message = this.createSystemNotificationMessage(cimEvent);
 
-      conversation.messages.push(message);
+      if (message) {
+
+        conversation.messages.push(message);
+      }
     }
   }
 
@@ -1123,12 +1255,11 @@ export class socketService {
           //  this.snackErrorMessage("Unable to link profile");
         }
         //  this._socketService.linkCustomerWithInteraction(customerId, this.conversationId);
-        console.log(selectedCustomer);
       } else {
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-link-customer"), "err");
       }
     } catch (err) {
-      console.log("err ", err);
+      console.error("err ", err);
       this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-link-customer"), "err");
     }
   }
@@ -1161,11 +1292,10 @@ export class socketService {
       this._httpService.updateCustomerById(selectedCustomerId, selectedCustomer).subscribe(
         (e) => {
           selectedCustomer["_id"] = selectedCustomerId;
-
+          // this._snackbarService.open(this._translateService.instant("snackbar.Profile-linked-successfully"), "succ");
           // updating customer topic
           this._httpService.updateConversationCustomer(conversationId, selectedCustomer).subscribe(
             (e) => {
-              console.log("update topic success");
               if (addChannelIdentifier && toBeDeletedCustomerId != null) {
                 let requestPayload = { currentCustomer: topicCustomer, newCustomer: selectedCustomer };
                 this.updatePastConversation(requestPayload, toBeDeletedCustomerId);
@@ -1189,7 +1319,6 @@ export class socketService {
       // updating customer topic
       this._httpService.updateConversationCustomer(conversationId, selectedCustomer).subscribe(
         (e) => {
-          console.log("update topic success");
           if (toBeDeletedCustomerId != null) {
             this.checkPastActivitiesAndDeleteCustomer(topicCustomer._id);
           } else {
@@ -1202,6 +1331,7 @@ export class socketService {
         }
       );
     }
+    this._snackbarService.open(this._translateService.instant("snackbar.Profile-linked-successfully"), "succ");
   }
 
   /**
@@ -1272,23 +1402,27 @@ export class socketService {
         }
       );
     } catch (e) {
-      console.log("[Load Past Activity] Error :", e);
+      console.error("[Load Past Activity] Error :", e);
     }
   }
 
   createSystemNotificationMessage(cimEvent) {
-    let message: any = {
+    let CimMessage: any = {
       id: "",
       header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
       body: { markdownText: "", type: "" }
     };
 
-    message.id = uuidv4();
-    message.header.timestamp = cimEvent.timestamp;
-    message.body.type = "systemNotification";
-    message.header.sender.type = "system";
+    CimMessage.id = uuidv4();
+    CimMessage.header.timestamp = cimEvent.timestamp;
+    CimMessage.body.type = "systemNotification";
+    CimMessage.header.sender.type = "system";
+
+    let message = undefined;
 
     if (cimEvent.name.toLowerCase() == "channel_session_started") {
+
+      message = CimMessage;
       // if (cimEvent.data.body) {
       //   message.body["displayText"] = cimEvent.data.header.channelSession.channel.channelType.name;
       // } else {
@@ -1299,6 +1433,7 @@ export class socketService {
         message.body.markdownText = data;
       });
     } else if (cimEvent.name.toLowerCase() == "channel_session_ended") {
+      message = CimMessage;
       message.body["displayText"] = cimEvent.data.channel.channelType.name;
 
       this._translateService.stream("socket-service.session-ended").subscribe((data: string) => {
@@ -1306,6 +1441,8 @@ export class socketService {
       });
       message.body.markdownText = "session ended";
     } else if (cimEvent.name.toLowerCase() == "call_leg_ended" || cimEvent.name.toLowerCase() == "voice_activity") {
+
+      message = CimMessage;
       // console.log("test==>")
       message.body.type = "VOICE";
       // message.body["displayText"] = cimEvent.data.channel.channelType.name;
@@ -1313,17 +1450,21 @@ export class socketService {
       message.body.data = cimEvent.data;
     }
     if (cimEvent.name.toLowerCase() == "agent_subscribed") {
+
+      message = CimMessage;
       message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
       this._translateService.stream("socket-service.has-joined-the-conversation").subscribe((data: string) => {
         message.body.markdownText = data;
       });
     } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
+      message = CimMessage;
       message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
 
       this._translateService.stream("socket-service.left-the-conversation").subscribe((data: string) => {
         message.body.markdownText = data;
       });
     } else if (cimEvent.name.toLowerCase() == "task_enqueued") {
+      message = CimMessage;
       let mode;
       if (cimEvent.data.task.type.mode.toLowerCase() == "agent") {
         mode = "Agent";
@@ -1351,6 +1492,7 @@ export class socketService {
         message = null;
       }
     } else if (cimEvent.name.toLowerCase() == "no_agent_available") {
+      message = CimMessage;
       let mode;
       let direction;
 
@@ -1381,6 +1523,18 @@ export class socketService {
         message.body.markdownText = string;
       } else {
         message = null;
+      }
+    } else if (cimEvent.name.toLowerCase() == "task_state_changed") {
+      if (
+        cimEvent.data.type.direction.toLowerCase() == "direct_conference" &&
+        cimEvent.data.state.reasonCode &&
+        cimEvent.data.state.reasonCode.toLowerCase() == "force_closed"
+      ) {
+        message = CimMessage;
+        message.body["displayText"] = "";
+        this._translateService.stream("socket-service.conference-request-has-cancelled").subscribe((data: string) => {
+          message.body.markdownText = data;
+        });
       }
     }
 

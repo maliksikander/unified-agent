@@ -1,6 +1,7 @@
 {
   "snackbar":
   {
+    "Default-Outbound-Channel-Not-Found-for-channelType":"Default Outbound Channel Not Found for channelType_ar",
     "unable-to-connect-to-chat":"unable to connect to chat_ar",
     "error-on-logout-request":"'error on logout request'_ar",
     "Agent-Logged-Out-Successfully":"Agent Logged Out Successfully_ar",
@@ -34,6 +35,8 @@
     "Unable-to-link-customer":"Unable to link customer_ar",
     "Error-Getting-Active-Chats-with-Agents":"Error Getting Active Chats with Agents_ar",
     "Error-Getting-Active-Chats-with-Bots":"Error Getting Active Chats with Bots_ar",
+    "Error-Getting-Active-Agent-Details":"Error Getting Active Agent Details",
+    "Error-Getting-MRDs-List":"Error Getting MRDs List",
     "Channel-session-not-found":"Channel session not found_ar",
     "Access-Token-or-FB-Host-API-for-FB-is-missing":"Access Token or FB Host API for FB is missing_ar",
     "No-Conversation-Found":"No Conversation Found_ar",
@@ -74,7 +77,8 @@
     "Transfer-request-placed-successfully":"Transfer request placed successfully_ar",
     "Conference-request-placed-successfully":"Conference request placed successfully_ar",
     "Error-Getting-Queues-List":"Error Getting Queues List_ar",
-    "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_ar"
+    "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_ar",
+    "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_ar"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ar",
@@ -166,15 +170,6 @@
     "chats": {
       "start": "Start a New Conversation_ar"
     },
-    "socket-service":{
-      "has-joined-the-conversation":"has joined the conversation_ar",
-      "session-started":"session started_ar",
-      "session-ended":"session ended_ar",
-      "left-the-conversation":"left the conversation_ar",
-      "transfer-request-has-been-placed-by":"transfer request has been placed by_ar",
-      "conference-request-has-been-placed-by":"conference request has been placed by_ar",
-      "No-agent-is-available-for":"No agent is available for_ar"
-     },
     "interactions": {
       "Consult":"Consult_ar",
       "Transfer":"Transfer_ar",
@@ -311,13 +306,23 @@
     "call-center-experts": "Your Call Center Experts._ar",
     "": ""
   },
+  "socket-service":{
+    "has-joined-the-conversation":"has joined the conversation_ar",
+   "session-started":"session started_ar",
+   "session-ended":"session ended_ar",
+   "left-the-conversation":"left the conversation_ar",
+   "transfer-request-has-been-placed-by":"transfer request has been placed by_ar",
+   "conference-request-has-been-placed-by":"conference request has been placed by_ar",
+   "No-agent-is-available-for":"No agent is available for_ar",
+   "conference-request-has-cancelled": "Conference request has been cancelled_ar"
+   },
   "globals": {
     "chat": "Chat_ar",
     "conference": "conference_ar",
     "transfer": "transfer_ar",
     "to": "to_ar",
-    "columns":"Columns_ar",
     "yes": "Yes_ar",
+    "columns":"Columns_ar",
     "page-not-found": "The page you are looking for is not found_ar",
     "agents": "agents_ar",
     "agent": "agent_ar",
@@ -340,10 +345,11 @@
     "agent-desk": "Agent Desk_ar",
     "select-all": "Select all _ar",
     "unselect-all": "Unselect all_ar",
-    "Search": "Search_ar",
+    "Search": "Search _ar",
     "no-data-available": "No Data Available_ar",
     "Confirm": "Confirm_ar",
     "not-applicable": "N/A_ar",
+    "channel-identifier": "Channel Identifier",
     "no-new-conversation": "No New Conversation_ar",
     "state":"State_ar",
     "UNIDENTIFIED-CUSTOMER":"UNIDENTIFIED CUSTOMER_ar",
@@ -355,8 +361,8 @@
     "start-conversation":"Start Conversation_ar",
     "agent-id":"Agent Id_ar",
     "channel":"channel_ar",
-    "direction":"direction_ar"
-
+    "direction":"direction_ar",
+    "Select-All":"Select All_ar"
   },
   "pull-mode": {
     "all-list": "All List_ar",
@@ -401,6 +407,7 @@
     "search": "search_ar",
     "title": "Title_ar",
     "agent": "Agent_ar",
+    "bot":"Bot",
     "team": "Team_ar",
     "time": "Time_ar",
     "channel": "Channel_ar",
@@ -435,6 +442,8 @@
     "cancel": "Cancel_ar",
     "done": "Done_ar",
     "state": "State_ar",
+    "conversation-direction":"Conversation Direction",
+    "origin":"Origin",
     "joined":"joined_ar",
     "active-conversation":"active conversation_ar",
     "mrd-states":"mrd states_ar",
@@ -442,7 +451,7 @@
     "agent-stats":"agent stats_ar",
     "pending-not-ready":"Pending-Not Ready_ar",
     "agent(s)":"agent(S)_ar",
-    "direction":"direction_ar"
-
+    "direction":"direction_ar",
+    "No-Teams-Available":"No Teams Available_ar"
   }
 }

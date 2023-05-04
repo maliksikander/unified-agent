@@ -1,6 +1,7 @@
 {
   "snackbar":
   {
+    "Default-Outbound-Channel-Not-Found-for-channelType":"Default Outbound Channel Not Found for channelType",
     "unable-to-connect-to-chat":"unable to connect to chat",
     "error-on-logout-request":"'error on logout request'",
     "Agent-Logged-Out-Successfully":"Agent Logged Out Successfully",
@@ -76,16 +77,8 @@
     "Transfer-request-placed-successfully":"Transfer request placed successfully",
     "Conference-request-placed-successfully":"Conference request placed successfully",
     "Error-Getting-Queues-List":"Error Getting Queues List",
-    "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found"
-  },
-  "socket-service":{
-   "has-joined-the-conversation":"has joined the conversation",
-   "session-started":"session started",
-   "session-ended":"session ended",
-   "left-the-conversation":"left the conversation",
-   "transfer-request-has-been-placed-by":"transfer request has been placed by",
-   "conference-request-has-been-placed-by":"conference request has been placed by",
-   "No-agent-is-available-for":"No agent is available for"
+    "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found",
+    "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View",
@@ -223,8 +216,7 @@
       "wrap-up-notes": "Wrap-up Notesen",
       "agent-assistance": "Agent Assistance",
       "queue-transfer": "Queue Transfer",
-      "queue-conference": "Queue Conference",
-      "": ""
+      "queue-conference": "Queue Conference"
     },
     "wrap-up-form": {
       "wrap-up-codes": "Wrap-Up Codes",
@@ -314,6 +306,16 @@
     "call-center-experts": "Your Call Center Experts.",
     "": ""
   },
+  "socket-service":{
+    "has-joined-the-conversation":"has joined the conversation",
+    "session-started":"session started",
+    "session-ended":"session ended",
+    "left-the-conversation":"left the conversation",
+    "transfer-request-has-been-placed-by":"transfer request has been placed by",
+    "conference-request-has-been-placed-by":"conference request has been placed by",
+    "No-agent-is-available-for":"No agent is available for",
+    "conference-request-has-cancelled": "Conference request has been cancelled"
+   },
   "globals": {
     "chat": "Chat",
     "conference": "conference",
@@ -359,7 +361,8 @@
     "edit":"Edit",
     "start-conversation":"Start Conversation",
     "channel":"Channel",
-    "direction":"Direction"
+    "direction":"Direction",
+    "Select-All":"Select All"
   },
   "pull-mode": {
     "all-list": "All List",
@@ -447,6 +450,8 @@
     "search-agent":"search agent",
     "agent-stats":"agent stats",
     "pending-not-ready":"Pending-Not Ready",
-    "agent(s)":"agent(S)"
+    "agent(s)":"agent(S)",
+    "direction":"direction",
+    "No-Teams-Available":"No Teams Available"
   }
 }

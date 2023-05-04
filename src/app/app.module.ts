@@ -88,11 +88,17 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsType: SPINNER.chasingDots,
   bgsPosition: POSITION.centerCenter
 };
-export class lazyTranslateLoader implements TranslateLoader {
-  getTranslation(lang: string): Observable<any> {
-    return from(import(`../assets/i18n/${lang}.json`));
-  }
+// export class lazyTranslateLoader implements TranslateLoader {
+//   getTranslation(lang: string): Observable<any> {
+//     return from(import(`../assets/i18n/${lang}.json`));
+//   }
+// }
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
 }
+
+
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
@@ -134,7 +140,7 @@ export class lazyTranslateLoader implements TranslateLoader {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useClass: lazyTranslateLoader,
+        useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
     }),

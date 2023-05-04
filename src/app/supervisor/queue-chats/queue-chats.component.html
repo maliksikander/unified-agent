@@ -2,44 +2,67 @@
   <div class="active-chat-list-area">
     <div class="page-header row m-0">
       <div class="col-md-6 page-heading">
-        <h4>{{'supervisor.queued-conversations-detail'  | translate }}</h4>
+        <h4>{{ "supervisor.queued-conversations-detail" | translate }}</h4>
       </div>
-      <div class="col-md-6 text-right  page-action">
-        <mat-form-field appearance="outline" class="selection-trigger">
-          <mat-select [(value)]="FilterSelected" (selectionChange)="filterData()">
-            <mat-option value="all">{{'supervisor.all-queues'  | translate }}</mat-option>
-            <mat-option *ngFor="let item of queuedChatList; index as i" [value]="i">{{item.queueName}}</mat-option>
+      <div class="col-md-6 text-right page-action">
+        <mat-form-field *ngIf="this.supervisedTeams.length > 0" appearance="outline" class="selection-trigger mr-2">
+          <mat-select [(value)]="selectedTeam" (selectionChange)="onTeamChange()">
+            <mat-option *ngFor="let team of supervisedTeams" [value]="team.teamId">{{ team.teamName }}</mat-option>
           </mat-select>
         </mat-form-field>
+        <div *ngIf="this.supervisedTeams.length > 0" class="form-control multi-selection-list p-0 mr-2">
+          <angular2-multiselect [data]="queuedChatList" [(ngModel)]="selectedQueues" [settings]="settings"
+            (ngModelChange)="filterData()" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
+            (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
+            <c-badge>
+              <ng-template let-item="item">
+                <label class="item-name">{{ item.queueName }}</label>
+              </ng-template>
+            </c-badge>
+            <c-item>
+              <ng-template let-item="item">
+                <label class="item-list-name">{{ item.queueName }}</label>
+              </ng-template>
+            </c-item>
+          </angular2-multiselect>
+        </div>
+        <!-- <mat-form-field appearance="outline" class="selection-trigger">
+          <mat-select [(value)]="queueSelected" (selectionChange)="filterData()">
+            <mat-option value="all">{{'supervisor.all-queues'  | translate }}</mat-option>
+            <mat-option *ngFor="let item of filteredData; index as i" [value]="i">{{item.queueName}}</mat-option>
+          </mat-select>
+        </mat-form-field> -->
       </div>
     </div>
     <div class="data-table col">
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">{{'supervisor.customer'  | translate }}</th>
+            <th scope="col">{{ "supervisor.customer" | translate }}</th>
             <th scope="col">
               <!-- <mat-icon>keyboard_backspace</mat-icon> -->
-              {{'supervisor.waiting-since'  | translate }}
+              {{ "supervisor.waiting-since" | translate }}
             </th>
-            <th scope="col">{{'supervisor.queue'  | translate }}</th>
+            <th scope="col">{{ "supervisor.queue" | translate }}</th>
           </tr>
         </thead>
         <tbody>
-
           <ng-container *ngFor="let data of filteredData">
             <tr *ngFor="let chat of data.chats">
-              <td><span class="channel-icon "><img
-                    [src]="chat.channelType  | channelName  | channelLogo | async"></span>
-                {{chat.customerName}} <small>({{chat.channelIdentity}})</small>
+              <td>
+                <span class="channel-icon"><img [src]="chat.channelType | channelName | channelLogo | async" /></span>
+                {{ chat.customerName }}
+                <small>({{ chat.channelIdentity }})</small>
                 <!-- <ul class="customer-labels">
                 <li matTooltip="Marketing" style="background: #32b67a;"></li>
                 <li matTooltip="Corporate" style="background: #f34f1b;"></li>
                 <li matTooltip="Product Support" style="background: #536ce8;"></li>
               </ul> -->
               </td>
-              <td>{{chat.waitingSince | amDuration:'seconds'}} <small>{{'supervisor.ago'  | translate }}</small></td>
-              <td>{{data.queueName}}</td>
+              <td>
+                {{ chat.waitingSince | amDuration: "seconds" }} <small>{{ "supervisor.ago" | translate }}</small>
+              </td>
+              <td>{{ data.queueName }}</td>
               <!-- <span class="table-trigger">
                 <button mat-mini-fab class="chat-btn" matTooltip="Chat"><img src="assets/images/joinchat.svg"
                     alt="Chat"></button>
@@ -51,17 +74,21 @@
             </tr>
           </ng-container>
         </tbody>
+
       </table>
+      <div *ngIf="this.supervisedTeams && this.supervisedTeams.length == 0" class="no-data-warning">
+        <i class="material-icons">warning_amber</i>
+        <span>{{'supervisor.No-Teams-Available' | translate}}</span>
+      </div>
     </div>
   </div>
 </div>
 
-
-
 <ng-template #reQueueTemplate>
   <div class="note-dialog-main transfer-dialog">
     <div class="dialog-header">
-      <h4 mat-dialog-title>{{'supervisor.re-queue'  | translate }}
+      <h4 mat-dialog-title>
+        {{ "supervisor.re-queue" | translate }}
         <button mat-button mat-dialog-close>
           <mat-icon>close</mat-icon>
         </button>
@@ -70,28 +97,29 @@
     <div class="dialog-main-content">
       <div class="row m-0">
         <div class="form-group queue-transfer-to col-md-12">
-          <label>{{'supervisor.select-queue-to-re-queue-chat'  | translate }}</label>
+          <label>{{ "supervisor.select-queue-to-re-queue-chat" | translate }}</label>
           <mat-form-field appearance="outline" class="selection-trigger">
-            <mat-select [(value)]="FilterSelected">
-              <mat-option value="all">{{'supervisor.queues'  | translate }}</mat-option>
-              <mat-option value="software">{{'supervisor.software-queue'  | translate }}</mat-option>
-              <mat-option value="marketing">{{'supervisor.marketing-queue'  | translate }}</mat-option>
-              <mat-option value="sales">{{'supervisor.sales-queue'  | translate }}</mat-option>
+            <mat-select >
+            <!-- <mat-select [(value)]="queueSelected"> -->
+              <mat-option value="all">{{ "supervisor.queues" | translate }}</mat-option>
+              <mat-option value="software">{{ "supervisor.software-queue" | translate }}</mat-option>
+              <mat-option value="marketing">{{ "supervisor.marketing-queue" | translate }}</mat-option>
+              <mat-option value="sales">{{ "supervisor.sales-queue" | translate }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
 
         <div class="form-group col-md-12">
-          <label>{{'supervisor.notes'  | translate }}</label>
+          <label>{{ "supervisor.notes" | translate }}</label>
           <textarea rows="3"></textarea>
         </div>
       </div>
     </div>
 
     <div class="action-trigger text-right">
-      <button mat-button mat-dialog-close class="close-btn">{{'supervisor.cancel'  | translate }}</button>
-      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial>{{'supervisor.done'  | translate }}
-      </button>
+      <button mat-button mat-dialog-close class="close-btn">{{ "supervisor.cancel" | translate }}</button>
+      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial>{{ "supervisor.done" | translate
+        }}</button>
     </div>
   </div>
 </ng-template>
