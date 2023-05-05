@@ -53,7 +53,8 @@ export class finesseService {
   // incoming states from CIM
   handlePresence(agentPresence) {
     // check if the MRDs have a voice mrd in it or not
-    let hasVoicMrd: boolean = this.isVoiceMrdExists(agentPresence.agentMrdStates);
+    let hasVoicMrd: boolean = true;
+    console.log("mrd==>",hasVoicMrd)
 
     if (hasVoicMrd) {
       if (!this.isAlreadysubscribed) {

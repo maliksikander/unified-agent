@@ -18,12 +18,17 @@
 
         let jabber = document.createElement('script');
         let ctiLib = document.createElement('script');
+        let ctiWrapper = document.createElement('script');
 
         jabber.setAttribute('src', 'assets/cti/jabberwerx.js');
         ctiLib.setAttribute('src', 'assets/cti/CTIJsLibrary.js');
+        ctiWrapper.setAttribute('src', 'assets/cti/wrapper.js');
 
         document.head.appendChild(jabber);
         document.head.appendChild(ctiLib);
+        document.head.appendChild(ctiWrapper);
+
+
       }
     })();
 
