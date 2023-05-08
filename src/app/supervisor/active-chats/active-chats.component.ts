@@ -50,18 +50,18 @@ export class ActiveChatsComponent implements OnInit {
     public _pullModeservice: pullModeService,
     private _socketService: socketService,
     private _router: Router,
-   
-  ) {}
+
+  ) { }
 
   ngOnInit(): void {
     this.filter = this.route.snapshot.queryParamMap.get("filter") ? this.route.snapshot.queryParamMap.get("filter") : "agents";
     if (this.filter == "agents") {
       this.FilterSelected = "agents";
-      
+
     } else if (this.filter == "bots") {
       this.FilterSelected = "bots";
     }
-    
+
     this.supervisedTeams = this._cacheService.agent.supervisedTeams;
     if (this.supervisedTeams && this.supervisedTeams.length > 0) {
       this.selectedTeam = this.supervisedTeams[0].teamId;
@@ -80,33 +80,16 @@ export class ActiveChatsComponent implements OnInit {
     }
     this.startRefreshTimer();
   }
-  SilentMonitor(_channelSession){
+  SilentMonitor(_channelSession) {
 
-    // if (this.filter == "agents") {
-    //   console.log(_channelSession); 
-    //   let obj = {
-    //     topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, _channelSession.conversationId, "SILENT_MONITOR", "SUBSCRIBED"),
-    //     agentId: this._cacheService.agent.id,
-    //     channelSession: _channelSession,
-        
-    //   };
-    //   this._socketService.emit("joinAsSilentMonitor", obj);
-    //   this._router.navigate(["customers"]);
-    // }
-      
-    //  else if (this.filter == "bots") {
-    //   console.log("no toggle"); 
-    // }
-    
-    console.log(_channelSession); 
-      let obj = {
-        topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, _channelSession.conversationId, "SILENT_MONITOR", "SUBSCRIBED"),
-        agentId: this._cacheService.agent.id,
-        channelSession: _channelSession,
-        
-      };
-      this._socketService.emit("JoinAsSilentMonitor", obj);
-      this._router.navigate(["customers"]);
+    let obj = {
+      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, _channelSession.conversationId, "SILENT_MONITOR", "SUBSCRIBED"),
+      agentId: this._cacheService.agent.id,
+      channelSession: _channelSession,
+
+    };
+    this._socketService.emit("JoinAsSilentMonitor", obj);
+    this._router.navigate(["customers"]);
 
 
   }
@@ -132,7 +115,7 @@ export class ActiveChatsComponent implements OnInit {
       (e) => {
         this.activeChatListWithAgents = e;
         this.filterData();
-        
+
       },
       (err) => {
         this.activeChatListWithAgents = [];
@@ -160,7 +143,7 @@ export class ActiveChatsComponent implements OnInit {
       this.filteredData = [];
       if (this.selectedQueues.length == 0) {
         this.filteredData = this.activeChatListWithAgents;
-        console.log(this.filteredData,"my data list");
+
       } else {
         this.selectedQueues.forEach((data) => {
           this.activeChatListWithAgents.forEach((chat) => {
@@ -195,10 +178,10 @@ export class ActiveChatsComponent implements OnInit {
     if (this.timerSubscription) this.timerSubscription.unsubscribe();
   }
 
-  onItemSelect(item: any) {}
-  OnItemDeSelect(item: any) {}
-  onSelectAll(items: any) {}
-  onDeSelectAll(items: any) {}
+  onItemSelect(item: any) { }
+  OnItemDeSelect(item: any) { }
+  onSelectAll(items: any) { }
+  onDeSelectAll(items: any) { }
 
   // closeChat() {
   //   const dialogRef = this.dialog.open(ConfirmationDialogComponent, {

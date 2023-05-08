@@ -109,7 +109,7 @@ export class InteractionsComponent implements OnInit {
     private _finesseService: finesseService,
     private snackBar: MatSnackBar,
     private _translateService: TranslateService
-  ) {}
+  ) { }
   ngOnInit() {
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
@@ -119,8 +119,8 @@ export class InteractionsComponent implements OnInit {
     // setTimeout(() => {
     //   new EmojiPicker();
     // }, 500);
-    
-    this.isWhisperMode = this.conversation.topicParticipant.role == 'SILENT_MONITOR'?true:false;
+
+    this.isWhisperMode = this.conversation.topicParticipant.role == 'SILENT_MONITOR' ? true : false;
     this.conversationSettings = this._sharedService.conversationSettings;
     this.loadLabels();
 
@@ -138,8 +138,7 @@ export class InteractionsComponent implements OnInit {
 
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
 
-      if(e.msg=='seenReportAdded')
-      {
+      if (e.msg == 'seenReportAdded') {
         if (this.currentScrollPosition > 90) {
           this.downTheScrollAfterMilliSecs(0, "smooth");
         }
@@ -160,20 +159,15 @@ export class InteractionsComponent implements OnInit {
       }
     );
   }
-  emoji() {}
+  emoji() { }
 
-  BargeIn(){
-  //this.isWhisperMode=false;
-  // console.log( 'barge-in clicked  .... ',this.conversation);
-  // console.log( 'barge-in clicked  .... ',this.conversation.agentParticipants[0].participant.id);
- let obj = {
-   participantId: this.conversation.topicParticipant.participant.id,
-   conversationId:  this.conversation.conversationId,
-   
- };
- console.log("barge-in clicked" ,obj);
- this._socketService.emit("JoinAsBargin", obj);
-}
+  BargeIn() {
+    let obj = {
+      participantId: this.conversation.topicParticipant.participant.id,
+      conversationId: this.conversation.conversationId,
+    };
+    this._socketService.emit("JoinAsBargin", obj);
+  }
 
   onSend(text) {
     text = text.trim();
@@ -512,7 +506,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -520,7 +514,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -604,7 +598,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
   externalfilePreviewOpener(url, fileName, type) {
     const dialogRef = this.dialog.open(FilePreviewComponent, {
@@ -614,7 +608,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
 
   uploadFile(files) {
