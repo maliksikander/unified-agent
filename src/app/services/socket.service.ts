@@ -147,6 +147,7 @@ export class socketService {
       this.onSocketErrors(res);
     });
 
+    
     this.socket.on("taskRequest", (res: any) => {
       console.log("taskRequest==>", res);
 
