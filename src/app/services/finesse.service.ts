@@ -39,7 +39,7 @@ export class finesseService {
     private _socketService: socketService,
     private _httpService: httpService,
     private _translateService: TranslateService
-  ) {}
+  ) { }
 
   initMe() {
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
@@ -53,10 +53,11 @@ export class finesseService {
   // incoming states from CIM
   handlePresence(agentPresence) {
     // check if the MRDs have a voice mrd in it or not
-    let hasVoicMrd: boolean = true;
-    console.log("mrd==>",hasVoicMrd)
+    let hasVoiceMrd: boolean = this._appConfigService.finesseConfig.isCiscoEnabled;
+    console.log("mrd==>", hasVoiceMrd)
 
-    if (hasVoicMrd) {
+    if (hasVoiceMrd) {
+      console.log("isCiscoEnabled==>", hasVoiceMrd);
       if (!this.isAlreadysubscribed) {
         this.subscribeToCiscoEvents();
         this.isAlreadysubscribed = true;
@@ -67,6 +68,10 @@ export class finesseService {
           this.ignoreAgentState = false;
         }
       }
+    } else {
+      console.log("isCiscoEnabled==>", hasVoiceMrd);
+      console.error("Cisco is Not Enabled, Check configurations to enable it.");
+      this._snackbarService.open("CISCO is not Enabled!", "err");
     }
   }
 
@@ -89,7 +94,7 @@ export class finesseService {
   getVoiceMrd(mrds) {
     try {
       let voiceMrd = mrds.find((e) => {
-        if (e.mrd.name.toLowerCase() == "voice") {
+        if (e.mrd.id == this._appConfigService.finesseConfig.ciscoCCMrd) {
           return e;
         }
       });
@@ -220,7 +225,7 @@ export class finesseService {
 
             if (currentParticipant && currentParticipant.state.toLowerCase() == "dropped") {
               // rona case for consult
-              if (currentParticipant.mediaAddress !== dialog.fromAddress) this.handleCiscoRona(cacheId,dialog);
+              if (currentParticipant.mediaAddress !== dialog.fromAddress) this.handleCiscoRona(cacheId, dialog);
             }
           } else if (dialog.state.toLowerCase() == "active") {
             if (currentParticipant.mediaAddress !== dialog.fromAddress) {
@@ -430,7 +435,7 @@ export class finesseService {
                 callType = "CONSULT_CONFERENCE";
                 this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, callType);
               } else {
-                this.handleCiscoRona(cacheId,dialogState);
+                this.handleCiscoRona(cacheId, dialogState);
               }
             } else if (
               currentParticipant.state.toLowerCase() == "alerting" &&
@@ -454,7 +459,7 @@ export class finesseService {
         }
         if (dialogState.dialog.state.toLowerCase() == "alerting" && item.state.toLowerCase() == "dropped") {
           //rona Case
-          this.handleCiscoRona(cacheId,dialogState);
+          this.handleCiscoRona(cacheId, dialogState);
         } else if (dialogState.dialog.state.toLowerCase() == "failed") {
           let dialogCache: any = this.getDialogFromCache(cacheId);
           if (dialogCache && dialogCache.dialogState == "active") {
@@ -550,7 +555,7 @@ export class finesseService {
     }
   }
 
-  handleCiscoRona(cacheId,dialog) {
+  handleCiscoRona(cacheId, dialog) {
     try {
       this.removeNotification(dialog);
       let item: any = this.getDialogFromCache(cacheId);

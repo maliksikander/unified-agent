@@ -16,7 +16,9 @@ export class appConfigService {
     ROUTING_ENGINE_URL: "",
     CIM_REPORTING_URL: "",
     UNIFIED_ADMIN_URL: "",
-    CCM_URL: ""
+    CCM_URL: "",
+    CISCO_CC_MRD: "",
+    CX_VOICE_MRD: "",
   };
   finesseConfig: any;
 
@@ -49,7 +51,11 @@ export class appConfigService {
           ssoBackendUrl: e.ssoBackendUrl,
           isGadget: e.isGadget,
           adminUsername: e.adminUsername,
-          adminPassword: e.adminPassword
+          adminPassword: e.adminPassword,
+          isCiscoEnabled: e.isCiscoEnabled,
+          isCxVoiceEnabled: e.isCxVoiceEnabled,
+          cxVoiceMrd: e.CX_VOICE_MRD,
+          ciscoCCMrd: e.CISCO_CC_MRD
         };
         this.finesseConfig = config;
 

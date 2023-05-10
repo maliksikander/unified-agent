@@ -37,6 +37,10 @@
     "conferenceType": "CONFERENCE",
     "silentMonitorType": "SUPERVISOR_MONITOR",
 	  "bargeInType": "BARGE_IN_CONSULT",
-    "ronaStateOnCisco":"Call Not Answered"
+    "ronaStateOnCisco":"Call Not Answered",
+    "isCiscoEnabled":"true",
+    "isCxVoiceEnabled":"false",
+    "CISCO_CC_MRD":"35eb1722ea5311eda05b0242",
+    "CX_VOICE_MRD":"62f9e360ea5311eda05b0242"
 }
 
