@@ -5,9 +5,11 @@ variables:
 include:
   - project: 'cim/ci-templates'
     ref: 'main'
-    file: 
+    file:
       - trivy.yaml
       - grype.yaml
+      - trivy-merge.yaml
+      - grype-merge.yaml
       - build_time.yml
 # uncomment if need to publish to dockerhub
 #      - dockerhub-publish.yaml
@@ -51,7 +53,6 @@ node-test:
 
 
 # #+==================Runs on Every Commit and merge requests========================+
-
 
 node-format:
   stage: code_format
@@ -113,7 +114,7 @@ node_artifacts:
       - tags
 
 sonarqube-test:
-  image: 
+  image:
     name: sonarsource/sonar-scanner-cli:latest
     entrypoint: [""]
   stage: sonarqube-scan
@@ -135,7 +136,7 @@ sonarqube-test:
       - .sonar/cache
   script:
     - sonar-scanner -X -Dsonar.testExecutionReportPaths=coverage/test-report.xml -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info -Dsonar.sources=src -Dsonar.exclusions=**/node_modules/** -Dsonar.tests=src -Dsonar.test.inclusions=**/*.spec.ts  -Dsonar.projectKey=unified-agent -Dsonar.qualitygate.wait=true -Dsonar.projectName=${CI_PROJECT_NAME}
-  allow_failure: false 
+  allow_failure: false
 
 #+==================Runs on merge requests only========================+
 # ng_build:
@@ -165,8 +166,6 @@ sonarqube-test:
 #            #- dist
 
 
-
-
 #+==================Runs onevery commit and tags manual========================+
 gitlab_build_branch:
  image: docker:latest
@@ -183,17 +182,17 @@ gitlab_build_branch:
    - cp -r dist ./docker/
    - cd docker
    - |-
-       if [ $CI_COMMIT_BRANCH != '' ]; then 
+       if [ $CI_COMMIT_BRANCH != '' ]; then
          docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .;
-         docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" "${CI_REGISTRY_IMAGE}/build:${CI_COMMIT_BRANCH}-${CI_COMMIT_SHA}";
-         docker push "${CI_REGISTRY_IMAGE}/build:${CI_COMMIT_BRANCH}-${CI_COMMIT_SHA}";
+         docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" "$IMAGE_NAME_BRANCH";
+         docker push "$IMAGE_NAME_BRANCH";
        elif [ $CI_COMMIT_TAG != '' ]; then
          docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG" .;
          docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG";
        fi
  only:
    - /^.+_f-.+$/
-   - /^.+_b-.+$/  
+   - /^.+_b-.+$/
    - tags
  allow_failure: false
 
@@ -229,7 +228,7 @@ gitlab_build_merge:
     - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" "${CI_REGISTRY_IMAGE}/build:${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}-${TIME_TOKEN}"
     - docker push "${CI_REGISTRY_IMAGE}/build:${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}-${TIME_TOKEN}"
   only:
-    - merge_requests 
+    - merge_requests
   allow_failure: false
   artifacts:
     paths:
@@ -239,7 +238,7 @@ gitlab_build_merge:
 trivy_scanning_branch:
   extends: .trivy_scan_template
   when: on_success
-  needs: 
+  needs:
     - job: gitlab_build_branch
   allow_failure: false
   stage: scan
@@ -251,22 +250,18 @@ trivy_scanning_branch:
 
 
 ##==================Trivy scan merge========================##
+
 trivy_scanning_merge:
-  when: on_success
   stage: scan
-  extends: .trivy_scan_template
-  before_script:
-    - export TIME_TOKEN="$(cat .ci_status/ci_time)"
-  needs: 
+  extends: .trivy_scan_merge
+  needs:
     - job: gitlab_build_merge
-  variables:
-    FULL_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/build:${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}-${TIME_TOKEN}
-  allow_failure: false
+    - job: time_build
+      artifacts: true
   only:
     - merge_requests
-  artifacts:
-    paths:
-      - .ci_status/
+
+
 #================================================
 
 #+==================Runs on if docker build in branch========================+
@@ -277,7 +272,7 @@ grype_scan_branch:
     - job: gitlab_build_branch
   when: on_success
   allow_failure: false
-  variables: 
+  variables:
     SCAN_IMAGE: $CI_REGISTRY_IMAGE/build:$CI_COMMIT_BRANCH-$CI_COMMIT_SHA
   only:
     - /^.+_f-.+$/
@@ -285,26 +280,16 @@ grype_scan_branch:
 
 
 #+==================Runs on merge requests only========================+
+
 grype_scan_merge:
   stage: scan
-  extends: .grype_template
+  extends: .grype_template_merge
   needs:
-    - job: gitlab_build_merge  
-  when: on_success
-  allow_failure: false
-  variables:
-    SCAN_IMAGE: ${CI_REGISTRY_IMAGE}/build:${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}-${TIME_TOKEN}
-  script:
-    - export TIME_TOKEN="$(cat .ci_status/ci_time)"
-    - docker pull ${SCAN_IMAGE}
-    - apk add curl
-    - curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
-    - grype $SCAN_IMAGE --scope all-layers --fail-on critical > ${CI_PROJECT_TITLE}-vulnerabilities-grype.txt 
+    - job: gitlab_build_merge
+    - job: time_build
+      artifacts: true
   only:
     - merge_requests
-  artifacts:
-    paths:
-      - .ci_status/
 
 
 # #+==================Runs on tag requests only========================+

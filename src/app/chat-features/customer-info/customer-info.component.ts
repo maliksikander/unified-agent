@@ -24,6 +24,7 @@ export class CustomerInfoComponent implements OnInit {
   @Input() customerSuggestions: any;
   @Input() activeChannelSessions: any;
   @Input() conversationId: any;
+  @Input() conversation: any;
   @Input() activeConversationData: any;
   @Input() firstChannelSession: any;
   @Output() updatedlabels = new EventEmitter<boolean>();

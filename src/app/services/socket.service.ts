@@ -105,7 +105,7 @@ export class socketService {
       this.ngxService.stop();
       this.isSocketConnected = true;
       this._sharedService.serviceChangeMessage({ msg: "closeAllPushModeRequests", data: null });
-
+      this._snackbarService.open("Connected", "succ");
       console.log("socket connect " + e);
       if (this._router.url == "/login") {
         // this._router.navigate(["customers"]);
@@ -147,6 +147,7 @@ export class socketService {
       this.onSocketErrors(res);
     });
 
+    
     this.socket.on("taskRequest", (res: any) => {
       console.log("taskRequest==>", res);
 
@@ -400,6 +401,8 @@ export class socketService {
         this.handleDeliveryNotification(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "typing_indicator" && cimEvent.data.header.sender.type.toLowerCase() == "connector") {
         this.handleTypingStartedEvent(cimEvent, sameTopicConversation);
+      } else if (cimEvent.name.toLowerCase() == "participant_role_changed") {
+        this.handleParticipantRoleChangedEvent(cimEvent, conversationId);
       }
     } else {
       this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-event-unsubscribing"), "err");
@@ -482,7 +485,8 @@ export class socketService {
           "channel_session_ended",
           "agent_subscribed",
           "agent_unsubscribed",
-          "task_state_changed"
+          "task_state_changed",
+          "participant_role_changed"
         ].includes(event.name.toLowerCase())
       ) {
         let message = this.createSystemNotificationMessage(event);
@@ -1058,6 +1062,23 @@ export class socketService {
       }, 5000);
     }
   }
+  handleParticipantRoleChangedEvent(cimEvent, conversationId) {
+    let conversation = this.conversations.find((e) => {
+      return e.conversationId == conversationId;
+    });
+
+    if (conversation) {
+      conversation.topicParticipant = cimEvent.data.conversationParticipant;
+      console.log("updated participant", conversation.topicParticipant);
+      let message = this.createSystemNotificationMessage(cimEvent);
+
+      if (message) {
+
+        conversation.messages.push(message);
+      }
+    }
+
+  }
 
   upateActiveConversationData(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
@@ -1448,17 +1469,23 @@ export class socketService {
       // message.body["displayText"] = cimEvent.data.channel.channelType.name;
       // message.body.markdownText = "call_leg_ended";
       message.body.data = cimEvent.data;
-    }
-    if (cimEvent.name.toLowerCase() == "agent_subscribed") {
+    } else if (cimEvent.name.toLowerCase() == "agent_subscribed" && cimEvent.data.agentParticipant.role.toLowerCase() != "silent_monitor") {
 
       message = CimMessage;
-      message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
+      message.body["displayText"] = this._cacheService.agent.id == cimEvent.data.agentParticipant.participant.keycloakUser.id ? 'You' : cimEvent.data.agentParticipant.participant.keycloakUser.username;
       this._translateService.stream("socket-service.has-joined-the-conversation").subscribe((data: string) => {
         message.body.markdownText = data;
       });
-    } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
+    } else if (cimEvent.name.toLowerCase() == "participant_role_changed" && cimEvent.data.conversationParticipant.role.toLowerCase() == "primary") {
+
       message = CimMessage;
-      message.body["displayText"] = cimEvent.data.agentParticipant.participant.keycloakUser.username;
+      message.body["displayText"] = this._cacheService.agent.id == cimEvent.data.conversationParticipant.participant.keycloakUser.id ? 'You' : cimEvent.data.conversationParticipant.participant.keycloakUser.username;
+      this._translateService.stream("socket-service.has-joined-the-conversation").subscribe((data: string) => {
+        message.body.markdownText = data;
+      });
+    } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed" && cimEvent.data.agentParticipant.role.toLowerCase() != "silent_monitor") {
+      message = CimMessage;
+      message.body["displayText"] = this._cacheService.agent.id == cimEvent.data.agentParticipant.participant.keycloakUser.id ? 'You' : cimEvent.data.agentParticipant.participant.keycloakUser.username;
 
       this._translateService.stream("socket-service.left-the-conversation").subscribe((data: string) => {
         message.body.markdownText = data;

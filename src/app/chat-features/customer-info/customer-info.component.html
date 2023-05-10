@@ -118,7 +118,7 @@
                 </div>
               </div>
               <ng-container >
-                <div  class="crm-trigger">
+                <div *ngIf = "(conversation.topicParticipant.role | lowercase) != 'silent_monitor'"  class="crm-trigger">
                   <!-- <p>Not a correct customer profile?</p> -->
                   <button *ngIf="('customer' | authPipe: 'view') as result" mat-raised-button (click)="gotoEmbedView()">{{'chat-features.customer-info.link-profile' | translate}}</button>
                   <button *ngIf="('customer' | authPipe: 'manage_in_conversation') as result" (click)="updateProfile()" mat-raised-button>{{'chat-features.customer-info.update-profile' | translate}}</button>
