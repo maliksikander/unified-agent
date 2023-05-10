@@ -34,8 +34,8 @@
                     >
                     </circle-progress>
                     <span class="badge1" [hidden]="conversation.unReadCount == 0">{{ conversation.unReadCount }}</span>
-                    <!-- <span *ngIf="conversation.customer.isConsultMonitor && _sharedService.consultRequestAccept == true" class="badge1 channel-badge"><img src="assets/images/{{(_sharedService.requestAction | lowercase) == 'conference' ? 'conference.svg' : 'consult.svg'}}"> </span> -->
-
+                    <span *ngIf="conversation.topicParticipant.role == 'SILENT_MONITOR'" class="badge1 channel-badge"><img src="assets/images/monitoring.svg"> </span>
+                    <!-- topicData.topicParticipant.role == 'SILENT_MONITOR' -->
                   </div>
                   <span class="user-name">{{ conversation.customer.firstName }}</span>
                 </span>

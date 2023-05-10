@@ -18,7 +18,7 @@ export class httpService {
       customers: "/customers",
       labels: "/label",
       userPreference: "/userPreference",
-      pullModeList: "/agent/pull-mode-list",
+      pullModeList: "/pull-mode-list",
       fileServer: "/api/downloadFileStream?filename=",
       uploadFile: "/api/uploadFileStream",
       activities: "/customer-topics/customer",
@@ -331,7 +331,7 @@ export class httpService {
   }
 
   getPullModeList(): Observable<any> {
-    return this._httpClient.get<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.pullModeList, {
+    return this._httpClient.get<any>(this._appConfigService.config.UNIFIED_ADMIN_URL + this.apiEndpoints.pullModeList, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
