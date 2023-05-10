@@ -1,8 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 // import { ConfirmationDialogComponent } from "../../new-components/confirmation-dialog/confirmation-dialog.component";
-// import { MatDialog } from "@angular/material";
+import { MatDialog } from "@angular/material";
+import { Router } from "@angular/router";
 import { httpService } from "../../services/http.service";
 import { cacheService } from "../../services/cache.service";
+import { pullModeService } from "src/app/services/pullMode.service";
+import { sharedService } from "src/app/services/shared.service";
+import { socketService } from "src/app/services/socket.service";
 
 import { ActivatedRoute } from "@angular/router";
 import * as _ from "lodash";
@@ -11,6 +15,7 @@ import { map, retry } from "rxjs/operators";
 
 import { snackbarService } from "src/app/services/snackbar.service";
 import { TranslateService } from "@ngx-translate/core";
+import { TopicParticipant } from "src/app/models/User/Interfaces";
 
 @Component({
   selector: "app-active-chats",
@@ -32,20 +37,27 @@ export class ActiveChatsComponent implements OnInit {
   itemList = [];
   selectedQueues: any = [];
   settings = {};
-
+  message = "hide";
   constructor(
     // private dialog: MatDialog,
     private _translateService: TranslateService,
     private _httpService: httpService,
     private route: ActivatedRoute,
     private _snackBarService: snackbarService,
-    private _cacheService: cacheService
-  ) {}
+    private _cacheService: cacheService,
+    private _sharedService: sharedService,
+    private dialog: MatDialog,
+    public _pullModeservice: pullModeService,
+    private _socketService: socketService,
+    private _router: Router,
+
+  ) { }
 
   ngOnInit(): void {
     this.filter = this.route.snapshot.queryParamMap.get("filter") ? this.route.snapshot.queryParamMap.get("filter") : "agents";
     if (this.filter == "agents") {
       this.FilterSelected = "agents";
+
     } else if (this.filter == "bots") {
       this.FilterSelected = "bots";
     }
@@ -67,6 +79,19 @@ export class ActiveChatsComponent implements OnInit {
       this.FilterSelected = "bots";
     }
     this.startRefreshTimer();
+  }
+  SilentMonitor(_channelSession) {
+
+    let obj = {
+      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, _channelSession.conversationId, "SILENT_MONITOR", "SUBSCRIBED"),
+      agentId: this._cacheService.agent.id,
+      channelSession: _channelSession,
+
+    };
+    this._socketService.emit("JoinAsSilentMonitor", obj);
+    this._router.navigate(["customers"]);
+
+
   }
 
   startRefreshTimer() {
@@ -90,6 +115,7 @@ export class ActiveChatsComponent implements OnInit {
       (e) => {
         this.activeChatListWithAgents = e;
         this.filterData();
+
       },
       (err) => {
         this.activeChatListWithAgents = [];
@@ -117,6 +143,7 @@ export class ActiveChatsComponent implements OnInit {
       this.filteredData = [];
       if (this.selectedQueues.length == 0) {
         this.filteredData = this.activeChatListWithAgents;
+
       } else {
         this.selectedQueues.forEach((data) => {
           this.activeChatListWithAgents.forEach((chat) => {
@@ -151,10 +178,10 @@ export class ActiveChatsComponent implements OnInit {
     if (this.timerSubscription) this.timerSubscription.unsubscribe();
   }
 
-  onItemSelect(item: any) {}
-  OnItemDeSelect(item: any) {}
-  onSelectAll(items: any) {}
-  onDeSelectAll(items: any) {}
+  onItemSelect(item: any) { }
+  OnItemDeSelect(item: any) { }
+  onSelectAll(items: any) { }
+  onDeSelectAll(items: any) { }
 
   // closeChat() {
   //   const dialogRef = this.dialog.open(ConfirmationDialogComponent, {

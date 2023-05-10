@@ -21,8 +21,8 @@ export class pullModeService {
     this._httpService.getPullModeList().subscribe(
       (e) => {
         this.pullModeList = [];
-        this.pullModeList = e.data;
-        this.setListNames(e.data);
+        this.pullModeList = e;
+        this.setListNames(e);
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
