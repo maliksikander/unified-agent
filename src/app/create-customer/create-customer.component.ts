@@ -199,6 +199,7 @@ export class CreateCustomerComponent implements OnInit {
     data = this.fetchTheIdsOfLabels(data);
     data.isAnonymous = false;
     // console.log("save result==>", data);
+    console.log("save result==>");
     this.createCustomer(data);
   }
 

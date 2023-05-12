@@ -20,14 +20,33 @@
         </div>
         <div class="text-field team-selection">
           <label>{{'supervisor.select-team'  | translate }}</label>
-          <mat-form-field appearance="outline">
-            <mat-select [formControl]="teamList" multiple>
-              <mat-option  *ngFor="let team of Teams" [value]="team">  {{team}} </mat-option>
-            </mat-select>
-            <mat-error *ngIf="teamList.hasError('required')">
-              {{'supervisor.select-team'  | translate }}
-            </mat-error>
-          </mat-form-field>
+<!--          <mat-form-field appearance="outline">-->
+<!--            <mat-select [formControl]="teamList" multiple>-->
+<!--              <mat-option  *ngFor="let team of Teams" [value]="team">  {{team}} </mat-option>-->
+<!--            </mat-select>-->
+<!--            <mat-error *ngIf="teamList.hasError('required')">-->
+<!--              {{'supervisor.select-team'  | translate }}-->
+<!--            </mat-error>-->
+<!--          </mat-form-field>-->
+
+          <div class="form-control multi-select-team drop p-0 mr-2 border-0">
+
+            <angular2-multiselect [data]="teamList" [(ngModel)]="selectedTeams" [settings]="settings"  name="teams" (onSelect)="onItemSelect($event)"
+                                  (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
+
+              <c-badge>
+                <ng-template let-item="item">
+                  <label class="item-name">{{item.teamName}}</label>
+                </ng-template>
+              </c-badge>
+              <c-item>
+                <ng-template let-item="item">
+                  <label class="item-list-name">{{item.teamName}}</label>
+                </ng-template>
+              </c-item>
+            </angular2-multiselect>
+
+          </div>
         </div>
         <div class="text-field date-selection">
           <label>{{'supervisor.date-time'  | translate }}</label>
@@ -56,7 +75,7 @@
 
         <div class="announcement-trigger right-align">
           <button mat-raised-button type="button" class="discard-btn announcement-action" (click)="onClose()">{{'supervisor.discard'  | translate }}</button>
-          <button mat-raised-button type="button" class="send-announcement announcement-action" [disabled]="!announcementMessage.valid || !teamList.valid || !announceDate.valid || !expireDate.valid">Create Announcement</button>
+          <button mat-raised-button type="button" class="send-announcement announcement-action" (click)="onCreateAnnouncement()" >Create Announcement</button>
 
         </div>
       </div>

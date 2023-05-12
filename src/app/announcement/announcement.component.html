@@ -1,9 +1,9 @@
-<div class="table-area announcement-table-area container-fluid ">
-  <div class="row m-0">
-    <div class="col-md-6 announcement-heading p-0">
+<div class="table-area announcement-table-area">
+  <div class="row m-0 page-header">
+    <div class="col-md-4 announcement-heading page-heading">
       <h4>{{'announcements.team-announcement' | translate}}</h4>
     </div>
-    <div class="col-md-6 announcement-selection-area">
+    <div class="col-md-8 announcement-selection-area">
       <mat-form-field appearance="outline" class="selection-trigger">
         <mat-select [(value)]="FilterSelected">
           <mat-option value="all" > {{'announcements.all-announcements' | translate}}</mat-option>
@@ -16,13 +16,16 @@
         class="announcement-icon"><img src="assets/images/promotion.svg"> </span>{{'announcements.new-announcement' | translate}}
       </button>
     </div>
+  </div>
     <div class="table-container manage-dashboard">
       <div class="manage-dashboard">
         <table class="table">
           <thead>
           <tr>
             <th scope="col">{{'announcements.announcement' | translate}}</th>
-            <th scope="col">{{'announcements.created-by' | translate}}</th>
+<!--            <th scope="col">{{'announcements.created-by' | translate}}</th>-->
+            <th scope="col" class="rel-teams">Teams</th>
+            <th class="announcement-status" scope="col">Status</th>
             <th scope="col">{{'announcements.expiry' | translate}}</th>
           </tr>
           </thead>
@@ -30,13 +33,19 @@
 
           <tr *ngFor="let announcement of displayAnnouncements">
             <td><span>{{announcement.message}}</span></td>
-            <td>{{announcement.created_by}}</td>
+            <td  class="rel-teams"><span *ngFor="let teams of announcement.teams" class="active-team">{{teams}}</span></td>
+            <td class="announcement-status"> <span class="announcement-current-status {{announcement.status | lowercase}}">{{announcement.status}}</span></td>
             <td>{{announcement.expiry_time}}</td>
             <span class="table-trigger">
-<button mat-mini-fab (click)="onUpdateAnnouncement()"><i
-  class="material-icons">{{'announcements.edit' | translate}}</i></button>
-<button mat-mini-fab (click)="confirmationDialog(isConfirm, announcement)"><i
-  class="material-icons">{{'announcements.delete' | translate}}</i></button>
+<!--<button mat-mini-fab (click)="onUpdateAnnouncement()"><i-->
+<!--  class="material-icons">{{'announcements.edit}}</i></button>-->
+<!--<button mat-mini-fab (click)="confirmationDialog(isConfirm, announcement)"><i-->
+<!--  class="material-icons">{{'announcements.delete' | translate}}</i></button>-->
+
+              <button mat-mini-fab (click)="onUpdateAnnouncement()" matTooltip="edit"><i
+                class="material-icons">edit</i></button>
+<button mat-mini-fab (click)="confirmationDialog(isConfirm, announcement)"  matTooltip="delete"><i
+  class="material-icons">delete</i></button>
 </span>
           </tr>
           </tbody>
@@ -51,7 +60,6 @@
 <!--      </button>-->
     </div>
   </div>
-</div>
 
 
 <ng-template #isConfirm>
