@@ -59,6 +59,9 @@ export class AnnouncementDialogComponent implements OnInit {
      };
    }
 
+   onCreateAnnouncement(){
+    console.log("btn clicked")
+   }
 
   onClose() {
     this.dialog.closeAll();
