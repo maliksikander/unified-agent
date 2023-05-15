@@ -473,7 +473,7 @@ export class InteractionsComponent implements OnInit {
     for (let i = 0; i <= this.conversation.activeChannelSessions.length; i++) {
       if (
         this.conversation.activeChannelSessions[i] &&
-        this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "voice"
+        this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cisco_cc"
       ) {
         // console.log("check==>", this.conversation.activeChannelSessions[i].id);
         let cacheId = `${this._cacheService.agent.id}:${this.conversation.activeChannelSessions[i].id}`;

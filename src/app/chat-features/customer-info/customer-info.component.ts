@@ -158,7 +158,7 @@ export class CustomerInfoComponent implements OnInit {
         let cacheDialog: any = this._finesseService.getDialogFromCache(cacheId);
         // console.log("cacheDialog==>",cacheDialog);
         if (cacheDialog) {
-          let currentParticipant = this._finesseService.getCurrentAgentFromParticipantList(cacheDialog.dialog.participants);
+          let currentParticipant = this._finesseService.getCurrentParticipantFromDialog(cacheDialog.dialog);
           let startTime = new Date(currentParticipant.startTime);
 
           this._finesseService.timeoutId = setInterval(() => {

@@ -116,7 +116,7 @@ export class ChatNotificationsComponent implements OnInit {
   getVoiceChannelType() {
     let channelTypes: Array<any> = this._sharedService.channelTypeList;
 
-    this.voiceChannelType = channelTypes.find((item) => item.name == "VOICE");
+    this.voiceChannelType = channelTypes.find((item) => item.name == "CISCO_CC");
     // console.log("channelType==>", this.voiceChannelType);
   }
 
