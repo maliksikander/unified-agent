@@ -14,7 +14,6 @@ import { finesseService } from "src/app/services/finesse.service";
 import { ConfirmationDialogComponent } from "src/app/new-components/confirmation-dialog/confirmation-dialog.component";
 import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
 import { TranslateService } from "@ngx-translate/core";
-import { sender } from "../../models/User/Interfaces";
 
 declare var EmojiPicker: any;
 

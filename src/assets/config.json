@@ -10,13 +10,13 @@
     "CIM_REPORTING_URL":"https://cim-dev.expertflow.com/realtime-reports",
     "UNIFIED_ADMIN_URL":"https://cim-dev.expertflow.com/unified-admin",
     "ENV": "prod",
-    "domain": "finesse12.ucce.ipcc",
-    "subDomain" : "finesse12.ucce.ipcc",
+    "domain": "uccx12-5p.ucce.ipcc",
+    "subDomain" : "uccx12-5p.ucce.ipcc",
     "adminUsername": "administrator",
 	  "adminPassword": "Expertflow464",
-    "boshUrl": "https://finesse12.ucce.ipcc:7443/http-bind/",
-    "subBoshUrl" : "https://finesse12.ucce.ipcc:7443/http-bind/",
-    "finesseFlavor": "UCCE",
+    "boshUrl": "https://uccx12-5p.ucce.ipcc:7443/http-bind/",
+    "subBoshUrl" : "https://uccx12-5p.ucce.ipcc:7443/http-bind/",
+    "finesseFlavor": "UCCX",
     "callVariable": "callVariable1",
     "getQueuesDelay": 15,
     "ssoBackendUrl": "https://192.168.1.104:1123/",
@@ -40,7 +40,7 @@
     "ronaStateOnCisco":"Call Not Answered",
     "isCiscoEnabled":"true",
     "isCxVoiceEnabled":"false",
-    "CISCO_CC_MRD":"35eb1722ea5311eda05b0242",
+    "CISCO_CC_MRD":"20316843be924c8ab4f57a7a",
     "CX_VOICE_MRD":"62f9e360ea5311eda05b0242"
 }
 

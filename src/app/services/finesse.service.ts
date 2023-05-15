@@ -39,7 +39,7 @@ export class finesseService {
     private _socketService: socketService,
     private _httpService: httpService,
     private _translateService: TranslateService
-  ) { }
+  ) {}
 
   initMe() {
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
@@ -54,10 +54,10 @@ export class finesseService {
   handlePresence(agentPresence) {
     // check if the MRDs have a voice mrd in it or not
     let hasVoiceMrd: boolean = this._appConfigService.finesseConfig.isCiscoEnabled;
-    console.log("mrd==>", hasVoiceMrd)
+    // console.log("mrd==>", hasVoiceMrd)
 
     if (hasVoiceMrd) {
-      console.log("isCiscoEnabled==>", hasVoiceMrd);
+      // console.log("isCiscoEnabled==>", hasVoiceMrd);
       if (!this.isAlreadysubscribed) {
         this.subscribeToCiscoEvents();
         this.isAlreadysubscribed = true;
@@ -245,9 +245,9 @@ export class finesseService {
             }
             this.removeNotification(dialog);
           } else if (dialog.state.toLowerCase() == "dropped" && dialog.isCallEnded == 1) {
-            console.log("consult call dropped1==>")
+            console.log("consult call dropped1==>");
             if (currentParticipant.mediaAddress !== dialog.fromAddress) {
-              console.log("consult call dropped2==>")
+              console.log("consult call dropped2==>");
               this.handleDroppedConsultCall(event, cacheId, dialog);
             }
           }
@@ -390,10 +390,17 @@ export class finesseService {
       participants.forEach((item) => {
         let currentParticipant = item.mediaAddress == this.finesseAgent.extension ? item : undefined;
         if (currentParticipant) {
-          if (dialogState.dialog.state.toLowerCase() == "active") {
+          if (dialogState.dialog.isCallEnded === 1) {
+            let item: any = this.getDialogFromCache(cacheId);
+            if (item && item.dialogState == "active") {
+              if (this.timeoutId) clearInterval(this.timeoutId);
+
+              this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, "DIALOG_ENDED");
+            }
+          } else if (dialogState.dialog.state.toLowerCase() == "active") {
             if (currentParticipant.state.toLowerCase() == "active") {
               let dialogCache: any = this.getDialogFromCache(cacheId);
-              console.log("dialog cache==>", dialogCache);
+              // console.log("dialog cache==>", dialogCache);
               if (dialogCache && dialogCache.dialogState == "alerting") {
                 this.handleCallActiveEvent(dialogEvent, dialogState);
               } else {
@@ -431,7 +438,10 @@ export class finesseService {
               } else if (dialogState.dialog.callType.toLowerCase() == "consult_offered") {
                 callType = "CONSULT_TRANSFER";
                 this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, callType);
-              } else if (dialogState.dialog.callType.toLowerCase() == "conference" || dialogState.dialog.callType.toLowerCase() == "preroute_acd_in") {
+              } else if (
+                dialogState.dialog.callType.toLowerCase() == "conference" ||
+                dialogState.dialog.callType.toLowerCase() == "preroute_acd_in"
+              ) {
                 callType = "CONSULT_CONFERENCE";
                 this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, callType);
               } else {
@@ -447,7 +457,11 @@ export class finesseService {
             }
           } else if (currentParticipant.state.toLowerCase() == "dropped") {
             this.removeNotification(dialogState);
-            if (dialogState.dialog.state.toLowerCase() == "dropped" || dialogState.dialog.state.toLowerCase() == "active") {
+            if (
+              dialogState.dialog.state.toLowerCase() == "dropped" ||
+              dialogState.dialog.isCallEnded === 1 ||
+              dialogState.dialog.state.toLowerCase() == "active"
+            ) {
               let item: any = this.getDialogFromCache(cacheId);
               if (item && item.dialogState == "active") {
                 if (this.timeoutId) clearInterval(this.timeoutId);
@@ -748,11 +762,12 @@ export class finesseService {
             additionalAttributes: this.getCallVariablesList(dialog.callVariables.CallVariable)
           },
           language: {},
-          timestamp: new Date().getTime(),
+          timestamp: "",
           securityInfo: {},
           stamps: [],
           intent,
           entities: {},
+          customer,
           sender: {
             id: this._cacheService.agent.id,
             senderName: this._cacheService.agent.username,
@@ -764,8 +779,6 @@ export class finesseService {
           type: messageType,
           markdownText: null,
           reasonCode,
-          customer,
-          agent: this._cacheService.agent,
           leg,
           dialog
         }
