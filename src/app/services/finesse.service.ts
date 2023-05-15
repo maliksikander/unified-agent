@@ -7,7 +7,6 @@ import { httpService } from "./http.service";
 import * as uuid from "uuid";
 import { TranslateService } from "@ngx-translate/core";
 import { appConfigService } from "./appConfig.service";
-import { Dialog } from "primeng/dialog";
 
 declare var executeCommands;
 
@@ -274,6 +273,8 @@ export class finesseService {
       let serviceIdentifier = "N/A";
       let leg = `${this.finesseAgent.extension}:${this._cacheService.agent.id}:${dialog.id}`;
       let callType = "DIALOG_ENDED";
+      let timeStamp = this.getStateChangeTimeStamp(dialog);
+      // console.log("start timestamp==>",timestamp)
       let cimMessage = this.createCIMMessage(
         "VOICE",
         channelCustomerIdentifier,
@@ -282,7 +283,8 @@ export class finesseService {
         this.customer,
         leg,
         dialog,
-        callType
+        callType,
+        timeStamp
       );
       console.log("[Consult End CIM Message]==>", cimMessage);
       // this.ccmChannelSessionApi(cimMessage, "", "", undefined);
@@ -298,7 +300,7 @@ export class finesseService {
       let serviceIdentifier = "N/A";
       let leg = `${this.finesseAgent.extension}:${this._cacheService.agent.id}:${dialog.id}`;
       let callType = "CONSULT";
-
+      let timeStamp = this.getStartTimeStamp(dialog);
       this.setLocalDialogCache(dialogEvent, "active");
       let cimMessage = this.createCIMMessage(
         "VOICE",
@@ -308,7 +310,8 @@ export class finesseService {
         this.customer,
         leg,
         dialog,
-        callType
+        callType,
+        timeStamp
       );
       console.log("[handleActiveConsultCall] CIM Message==>", cimMessage);
       // this.ccmChannelSessionApi(cimMessage, "", "", undefined);
@@ -585,6 +588,7 @@ export class finesseService {
       let channelCustomerIdentifier = dialogState.dialog.customerNumber;
       let serviceIdentifier = dialogState.dialog.dialedNumber;
       let leg = `${this.finesseAgent.extension}:${this._cacheService.agent.id}:${dialogState.dialog.id}`;
+      let timeStamp = this.getStartTimeStamp(dialogState.dialog);
       let customer;
       if (this.customer) customer = JSON.parse(JSON.stringify(this.customer));
       if (dialogState.dialog.callType.toLowerCase() == "agent_inside" || dialogState.dialog.callType.toLowerCase() == "out") {
@@ -592,7 +596,7 @@ export class finesseService {
         serviceIdentifier = "VOICE";
         let intent = "CALL_LEG_ENDED";
         channelCustomerIdentifier = dialogState.dialog.dialedNumber;
-        this.getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, event, intent, customer);
+        this.getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, event, intent, customer,timeStamp);
       } else {
         let cimMessage = this.createCIMMessage(
           "VOICE",
@@ -602,7 +606,8 @@ export class finesseService {
           customer,
           leg,
           dialogState.dialog,
-          callType
+          callType,
+          timeStamp
         );
         console.log("[ handleCallDroppedEvent] CIM Message==>", cimMessage);
         // this.ccmChannelSessionApi(cimMessage, methodCalledOn, cacheId, event);
@@ -613,6 +618,26 @@ export class finesseService {
     }
   }
 
+  getStartTimeStamp(dialog){
+    let participantsList:Array<any> = dialog.participants;
+    let currentParticipant = participantsList.find((item)=>{return item.mediaAddress == this.finesseAgent.extension});
+    console.log("current participant==>",currentParticipant)
+    let startTime =currentParticipant.startTime;
+    let unixTimeStamp= Math.floor(new Date(startTime).getTime() / 1000)
+    return unixTimeStamp
+
+  }
+
+  getStateChangeTimeStamp(dialog){
+    let participantsList:Array<any> = dialog.participants;
+    let currentParticipant = participantsList.find((item)=>{return item.mediaAddress == this.finesseAgent.extension});
+    console.log("current participant==>",currentParticipant)
+    let stateChangeTime =currentParticipant.stateChangeTime;
+    let unixTimeStamp= Math.floor(new Date(stateChangeTime).getTime() / 1000)
+    return unixTimeStamp
+
+  }
+
   handleCallActiveEvent(dialogEvent, dialogState) {
     try {
       this.removeNotification(dialogState);
@@ -620,12 +645,12 @@ export class finesseService {
       let serviceIdentifier = dialogState.dialog.dialedNumber;
       let leg = `${this.finesseAgent.extension}:${this._cacheService.agent.id}:${dialogState.dialog.id}`;
       let callType;
-
+      let timeStamp = this.getStartTimeStamp(dialogState.dialog);
       if (dialogState.dialog.callType.toLowerCase() == "agent_inside" || dialogState.dialog.callType.toLowerCase() == "out") {
         callType = "OUTBOUND";
         serviceIdentifier = "VOICE";
         let intent = "CALL_LEG_STARTED";
-        this.getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, dialogEvent, intent, undefined);
+        this.getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, dialogEvent, intent, undefined,timeStamp);
       } else {
         if (dialogState.dialog.callType.toLowerCase() == "consult_offered") {
           callType = "CONSULT_TRANSFER";
@@ -644,7 +669,8 @@ export class finesseService {
           this.customer,
           leg,
           dialogState.dialog,
-          callType
+          callType,
+          timeStamp
         );
         console.log("[handleCallActiveEvent] CIM Message ==>", cimMessage);
         // this.ccmChannelSessionApi(cimMessage, "", "", undefined);
@@ -654,7 +680,7 @@ export class finesseService {
     }
   }
 
-  getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, dialogEvent, intent, customerData) {
+  getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, dialogEvent, intent, customerData,timeStamp) {
     let customer = customerData ? customerData : this.customer;
     let voiceChannel = this._sharedService.channelTypeList.find((item) => {
       return item.name == "VOICE";
@@ -672,7 +698,8 @@ export class finesseService {
               customer,
               leg,
               dialogState.dialog,
-              callType
+              callType,
+              timeStamp
             );
             console.log("[OutBoundChannel] CIM Message==>", cimMessage);
             // this.ccmChannelSessionApi(cimMessage, "", "", undefined);
@@ -751,7 +778,7 @@ export class finesseService {
     }
   }
 
-  createCIMMessage(messageType, channelCustomerIdentifier, serviceIdentifier, intent, customer, leg, dialog, reasonCode) {
+  createCIMMessage(messageType, channelCustomerIdentifier, serviceIdentifier, intent, customer, leg, dialog, reasonCode,timestamp) {
     try {
       let cimMessage = {
         id: uuid.v4().toString(),
@@ -762,7 +789,7 @@ export class finesseService {
             additionalAttributes: this.getCallVariablesList(dialog.callVariables.CallVariable)
           },
           language: {},
-          timestamp: "",
+          timestamp,
           securityInfo: {},
           stamps: [],
           intent,
