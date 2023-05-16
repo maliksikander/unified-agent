@@ -15,7 +15,8 @@ import { ConfirmationDialogComponent } from "src/app/new-components/confirmation
 import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
 import { TranslateService } from "@ngx-translate/core";
 import { sender } from "../../models/User/Interfaces";
-
+// import {HighlightResult} from 'ngx-highlightjs/lib/highlight.model';
+import { HighlightResult } from 'ngx-highlightjs';
 declare var EmojiPicker: any;
 
 @Component({
@@ -48,6 +49,219 @@ export class InteractionsComponent implements OnInit {
   lastSeenMessageId;
   // isTransfer = false;
   // isConsult = false;
+  code = `{
+  id: "6463bc378482591a48c0c7d2",
+  name: "CUSTOMER_MESSAGE",
+  type: "MESSAGE",
+  timestamp: 1684257847135,
+  conversationId: "6463bc187bc4343668f7",
+  eventEmitter: {
+    id: "642bbf7061e49db6c53785",
+    type: "CUSTOMER",
+    senderName: "Farhan Maqbool",
+    additionalDetail: {
+      web: [
+        "2541544"
+      ]
+    }
+  },
+  channelSession: {
+    participantType: "ChannelSession",
+    id: "6463bc188482591c0c68a",
+    channel: {
+      id: "6423ee8db9756a8d4bfe6",
+      name: "Web-Faizan",
+      serviceIdentifier: "1212",
+      defaultOutbound: false,
+      tenant: {
+        id: "644a6fdf295f88172d8a6c80",
+        name: null
+      },
+      channelConfig: {
+        id: "644a6fdf295f88a6c81",
+        channelMode: "HYBRID",
+        conversationBot: "",
+        responseSla: 0,
+        customerActivityTimeout: 300,
+        customerIdentificationCriteria: {
+          value: null
+        },
+        routingPolicy: {
+          agentSelectionPolicy: "LONGEST_AVAILABLE",
+          routeToLastAgent: true,
+          routingMode: "PULL",
+          routingObjectId: "6423ef0d2c00323f2964",
+          agentRequestTtl: 300
+        },
+        botId: "6423e907d9f4dd6a8ff09"
+      },
+      channelConnector: {
+        id: "6423e88cb9718d56a8d4a817",
+        name: "web connector",
+        channelProviderInterface: {
+          id: "6423e87cb9718d8d4a815",
+          name: "web provider",
+          supportedChannelTypes: [
+            {
+              id: "6423e2718d56a8d4a80c",
+              name: "WEB",
+              channelLogo: "_WEB.svg",
+              isInteractive: true,
+              mediaRoutingDomain: "6305de0711099d11d8e6"
+            }
+          ],
+          providerWebhook: "https://cim-dev.expertflow.com/web-channel-manager",
+          channelProviderConfigSchema: []
+        },
+        channelProviderConfigs: [],
+        tenant: {
+          id: "6423e88cb97a8d4a819",
+          name: null
+        }
+      },
+      channelType: {
+        id: "6423e29356a8d4a80c",
+        name: "WEB",
+        channelLogo: "_WEB.svg",
+        isInteractive: true,
+        mediaRoutingDomain: "6305de66ba1099d11d8e6"
+      }
+    },
+    customer: {
+      _id: "642bbf7061e49db5378785",
+      firstName: "Jane Doe",
+      phoneNumber: [],
+      isAnonymous: true,
+      __v: 0,
+      web: [
+        "254154"
+      ]
+    },
+    customerSuggestions: [],
+    channelData: {
+      channelCustomerIdentifier: "254154",
+      serviceIdentifier: "1212",
+      requestPriority: 0,
+      additionalAttributes: [
+        {
+          key: "WebChannelData",
+          type: "WebChannelData",
+          value: {
+            browserDeviceInfo: {
+              browserId: "123456",
+              browserIdExpiryTime: "9999",
+              browserName: "chrome",
+              deviceType: "desktop"
+            },
+            queue: "",
+            locale: {
+              timezone: "asia/karachi",
+              language: "english",
+              country: "pakistan"
+            },
+            formData: {
+              id: 0.9957170629623637,
+              formId: 0.18499401181496777,
+              filledBy: "web-init",
+              attributes: [
+                {
+                  value: "",
+                  key: "firstName",
+                  type: "string"
+                },
+                {
+                  value: "",
+                  key: "lastName",
+                  type: "string"
+                },
+                {
+                  value: "",
+                  key: "email",
+                  type: "string"
+                },
+                {
+                  value: "254154",
+                  key: "channelIdentifier1",
+                  type: "string"
+                }
+              ],
+              createdOn: "2023-05-16T17:23:33.734Z"
+            }
+          }
+        }
+      ]
+    },
+    latestIntent: null,
+    customerPresence: {
+      value: null
+    },
+    isActive: true,
+    conversationId: "6463bc18c4343668f75f11",
+    state: {
+      name: "STARTED",
+      reasonCode: "CUSTOMER"
+    },
+    channelSessionDirection: "INBOUND",
+    active: true
+  },
+  data: {
+    id: "7662a850-f40e-11ed-9207d69543fbf2",
+    header: {
+      sender: {
+        id: "460df46c-adf9-11ed-afa1-0ac120002",
+        type: "CONNECTOR",
+        senderName: "WEB_CONNECTOR",
+        additionalDetail: null
+      },
+      channelData: {
+        channelCustomerIdentifier: "254154",
+        serviceIdentifier: "1212",
+        requestPriority: 0,
+        additionalAttributes: []
+      },
+      language: {},
+      timestamp: 1684257847125,
+      securityInfo: {},
+      stamps: [],
+      intent: null,
+      entities: {},
+      channelSessionId: "6463b482591a48c0c68a",
+      conversationId: "64687bc4343668f75f11",
+      customer: {
+        _id: "642bbf7061e45378785",
+        firstName: "Jane Doe",
+        phoneNumber: [],
+        isAnonymous: true,
+        __v: 0,
+        web: [
+          "254154"
+        ]
+      },
+      replyToMessageId: null,
+      providerMessageId: null
+    },
+    body: {
+      type: "PLAIN",
+      markdownText: "Hello World"
+    }
+  }
+}`;
+  // code2 = `function myFunction() {
+  // document.getElementById("demo1").innerHTML = "Test 1!";
+  // document.getElementById("demo2").innerHTML = "Test 2!";
+  // let JSON_OBJECT =
+  //   '{"name": "XYZ", "class": 99, "roll": 120, "subject": "Computer Study"}'
+  // document.getElementById('mypara').innerHTML += '<br />' + JSON_OBJECT
+  // function postJSON() {
+  //   let http = new XMLHttpRequest()
+  //   http.open('POST', 'https://jsonplaceholder.test.com/posts/')
+  //   http.onload = function() {
+  //     document.getElementById('root').innerHTML =
+  //       'JSON data send successfully!'
+  //   }
+  //   http.send(JSON_OBJECT)
+  // }`;
+  response: HighlightResult;
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -1179,4 +1393,13 @@ export class InteractionsComponent implements OnInit {
   //   console.log("data-->",callLegs)
 
   // }
+  onHighlight(e) {
+    this.response = {
+      language: e.language,
+      relevance: e.relevance,
+      second_best: '{...}',
+      top: '{...}',
+      value: '{...}',
+    };
+  }
 }

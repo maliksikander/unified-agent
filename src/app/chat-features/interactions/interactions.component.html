@@ -318,7 +318,7 @@
               </div>
               <!-- -------------------------------------------------------- -->
               <div *ngIf="(message.body.type | lowercase) != 'systemnotification' && message.header.channelSession"
-                class="chat-message {{ message.body.isWhisper ? 'whisper-body' : '' }} {{
+                class="chat-message  {{ message.body.isWhisper ? 'whisper-body' : '' }} {{
                   message.id != selectedCommentId && (message.isDeleted || message.isHidden) ? 'deleted-hidden-comment' : ''
                 }} {{
                   index == 0 ||
@@ -890,43 +890,34 @@
                       <!--                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                     </div>
 
-                    <!-- Voice call single activity-->
+                    <!-- Custom Data start-->
+<!--add hardcoded class `voice` line 321-->
+<!--                     <div class="voice-activity-main custom-data-type panel-divider user-data customer-side single">-->
+<!--                      <mat-expansion-panel>-->
+<!--                        <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">-->
+<!--                          <mat-panel-title>-->
+<!--                            <div class="panel-header">-->
+<!--                              <ul>-->
+<!--                                <li class="agent-pic participant-agent call-services">-->
+<!--                                  <span matTooltip="test agent">TE</span>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                  <time>{{ message.header.timestamp | date: "shortTime" }}</time>-->
+<!--                                </li>-->
+<!--                              </ul>-->
+<!--                            </div>-->
+<!--                          </mat-panel-title>-->
+<!--                        </mat-expansion-panel-header>-->
+<!--                        <div class="custom-message-type">-->
+<!--&lt;!&ndash;                          <pre>{{ response | json }}</pre>&ndash;&gt;-->
+<!--                          <pre><code [highlight]="code" (highlighted)="onHighlight($event)"></code></pre>-->
+<!--&lt;!&ndash;                          <pre><code highlight="{{code2}}"></code></pre>&ndash;&gt;-->
 
-                    <!-- <div *ngIf="(message.body.type | lowercase) == 'voice'"
-                      class="voice-activity-main panel-divider user-data customer-side single">
-                      <mat-expansion-panel hideToggle disabled>
-                        <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
-                          <mat-panel-title>
-                            <div class="panel-header">
-                              <ul>
-                                <li>
-                                  <span class="phone-number">{{
-                                    message.body.data.dialog.ani ? message.body.data.dialog.ani : message.body.data.dialog.fromAddress
-                                  }}</span>
-                                </li>
+<!--                        </div>-->
+<!--                      </mat-expansion-panel>-->
+<!--                    </div>-->
 
-                                <li class="agent-pic call-services">
-                                  <span>{{ message.body.data.dialog.queueName ? message.body.data.dialog.queueName : "N/A" }}</span>
-                                </li>
-                                <li class="agent-pic participant-agent call-services">
-                                  <span matTooltip="{{ _cacheService.agent.username }}">{{ _cacheService.agent.username | getFirstTwoLetters }}</span>
-                                </li>
-
-                                <li class="section-duration">
-                                  <time>{{ message.body.data.dialog.participants | timeDurationFromParticipant }}</time>
-                                </li>
-
-                                <li>
-                                  <time>{{ message.header.timestamp | date: "shortTime" }}</time>
-                                </li>
-                              </ul>
-                            </div>
-                          </mat-panel-title>
-                        </mat-expansion-panel-header>
-                      </mat-expansion-panel>
-                    </div> -->
-
-                    <!-- ./Voice call single activity-->
+                    <!-- ./Custom data -->
 
                     <!-- Voice Call Actvity -->
                     <div *ngIf="(message.body.type | lowercase) == 'voice'"
@@ -1904,6 +1895,7 @@
         </form>
       </div>
     </div>
+
 
     <ng-template #noteTemplate>
       <div class="note-dialog-main">

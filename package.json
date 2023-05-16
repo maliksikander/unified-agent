@@ -60,7 +60,9 @@
     "videogular2": "^7.0.2",
     "zone.js": "~0.9.1",
     "@ngx-translate/core": "12.0.0",
-    "@ngx-translate/http-loader": "4.0.0"
+    "@ngx-translate/http-loader": "4.0.0",
+    "highlight.js": "9.16.2",
+    "ngx-highlightjs": "4.0.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.23",

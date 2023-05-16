@@ -743,7 +743,7 @@
           position: relative;
           top: 3px;
           color: $blue-text-color;
-          
+
         }
 
         .profile-pic {
@@ -3794,5 +3794,14 @@ vg-controls.hide {
     50% {
       transform: scale(1.05);
     }
+  }
+}
+
+//custom-message-type
+.custom-message-type{
+  width: 100%;
+  max-width: 800px;
+  pre:last-child{
+    margin-bottom: 0;
   }
 }
