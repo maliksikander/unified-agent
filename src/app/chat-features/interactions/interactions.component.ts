@@ -246,21 +246,31 @@ export class InteractionsComponent implements OnInit {
     }
   }
 }`;
-  // code2 = `function myFunction() {
-  // document.getElementById("demo1").innerHTML = "Test 1!";
-  // document.getElementById("demo2").innerHTML = "Test 2!";
-  // let JSON_OBJECT =
-  //   '{"name": "XYZ", "class": 99, "roll": 120, "subject": "Computer Study"}'
-  // document.getElementById('mypara').innerHTML += '<br />' + JSON_OBJECT
-  // function postJSON() {
-  //   let http = new XMLHttpRequest()
-  //   http.open('POST', 'https://jsonplaceholder.test.com/posts/')
-  //   http.onload = function() {
-  //     document.getElementById('root').innerHTML =
-  //       'JSON data send successfully!'
-  //   }
-  //   http.send(JSON_OBJECT)
-  // }`;
+//   code2 = `[
+//   {
+//     "title": "apples",
+//     "count": [12000, 20000],
+//     "description": {"text": "...", "sensitive": false}
+//   },
+//   {
+//     "title": "oranges",
+//     "count": [17500, null],
+//     "description": {"text": "...", "sensitive": false}
+//   }
+// ]
+//   let JSON_OBJECT =
+//     '{"name": "XYZ", "class": 99, "roll": 120, "subject": "Computer Study"}'
+//   document.getElementById('mypara').innerHTML += '<br />' + JSON_OBJECT
+//   function postJSON() {
+//     let http = new XMLHttpRequest()
+//     http.open('POST', 'https://jsonplaceholder.test.com/posts/')
+//     http.onload = function() {
+//       document.getElementById('root').innerHTML =
+//         'JSON data send successfully!'
+//     }
+//     http.send(JSON_OBJECT)
+//   }
+// `;
   response: HighlightResult;
 
   ngAfterViewInit() {
