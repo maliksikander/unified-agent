@@ -24,6 +24,7 @@ export class AnnouncementDialogComponent implements OnInit {
   teamList = [];
   selectedTeams = [];
   settings = {};
+  announcementForm: FormGroup;
 
   announceDate = new FormControl(new Date(), [Validators.required]);
   expireDate = new FormControl(new Date(), [Validators.required]);
@@ -39,7 +40,7 @@ export class AnnouncementDialogComponent implements OnInit {
   constructor(private dialog: MatDialog) {}
 
    ngOnInit() {
-
+    this.announcementForm = new FormGroup({});
      this.teamList = [
        {"id": 1, "teamName": "Software"},
        {"id": 2, "teamName": "Marketing"},
@@ -59,13 +60,47 @@ export class AnnouncementDialogComponent implements OnInit {
      };
    }
 
-   onCreateAnnouncement(){
-    console.log("btn clicked")
+   onCreateAnnouncement(data){
+    let obj={
+      "teamIds": [
+                  "99",
+                  "44242"
+              ],
+              "announcementText": "jwjw",
+              "expiryTime": "2023-05-28T00:12:00.000Z",
+              "scheduledTime": "2023-05-27T00:00:00.000Z",
+              "supervisorId": 233223,
+              "supervisorName": "danial dee"
+      }
+    console.log("btn clicked",obj)
+
    }
 
+   onSave() {
+    let data = this.announcementForm.value;
+    console.log("save-data",data);
+    // if (data.labels == "") data.labels = [];
+    // data = this.fetchTheIdsOfLabels(data);
+    // data.isAnonymous = false;
+     console.log("save result==>", data);
+    
+    this.onCreateAnnouncement(data);
+  }
   onClose() {
     this.dialog.closeAll();
   }
+
+  getAllTeams() {
+    
+        console.log("got all Teams");
+      
+      
+        console.error("Error Getting Teams");
+     
+  }
+
+
+
   onValidateExpiryDate(d) {
     let date = new Date(d);
     date.setMinutes(date.getMinutes() + 5);

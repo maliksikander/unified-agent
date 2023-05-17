@@ -10,11 +10,11 @@
         <div class="text-field message-field">
           <label>{{'supervisor.message'  | translate }}</label>
           <mat-form-field appearance="outline">
-            <textarea #messageAnnouncement matInput [formControl]="announcementMessage" maxlength="250" ></textarea>
+            <textarea #messageAnnouncement matInput [formControl]="announcementMessage" maxlength="500" ></textarea>
 <!--            <mat-error *ngIf="announcementMessage.hasError('required')">-->
 <!--              {{'announcements.type-message' | translate}}-->
 <!--            </mat-error>-->
-            <mat-hint align="end">{{messageAnnouncement.value.length}} / {{'supervisor.characters-limit-250'  | translate }}</mat-hint>
+            <mat-hint align="end">{{messageAnnouncement.value.length}} / {{'supervisor.characters-limit-500'  | translate }}</mat-hint>
           </mat-form-field>
           <!--<span class="right-align character-limit">250 characters</span>-->
         </div>
@@ -75,7 +75,7 @@
 
         <div class="announcement-trigger right-align">
           <button mat-raised-button type="button" class="discard-btn announcement-action" (click)="onClose()">{{'supervisor.discard'  | translate }}</button>
-          <button mat-raised-button type="button" class="send-announcement announcement-action" (click)="onCreateAnnouncement()" >Create Announcement</button>
+          <button mat-raised-button type="button" class="send-announcement announcement-action" (click)="onSave()" >Create Announcement</button>
 
         </div>
       </div>
