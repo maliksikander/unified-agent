@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { cacheService } from "../../services/cache.service";
 import { Subscription } from "rxjs";
 import { MatDialog } from "@angular/material";
 
@@ -37,53 +38,55 @@ export class AnnouncementDialogComponent implements OnInit {
   subscriptions: Subscription[];
   AnnouncementBTN = "";
   updateAnnouncement: any;
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private _cacheService: cacheService
+  ) { }
 
-   ngOnInit() {
+  ngOnInit() {
     this.announcementForm = new FormGroup({});
-     this.teamList = [
-       {"id": 1, "teamName": "Software"},
-       {"id": 2, "teamName": "Marketing"},
-       {"id": 3, "teamName": "Product"},
-       {"id": 4, "teamName": "Support"},
-       {"id": 5, "teamName": "Business"},
-       {"id": 6, "teamName": "Sales"}
-     ];
+    console.log(this.dialog);
+    //  this.teamList = [
+    //    {"id": 1, "teamName": "Software"},
+    //    {"id": 2, "teamName": "Marketing"},
+    //    {"id": 3, "teamName": "Product"},
+    //    {"id": 4, "teamName": "Support"},
+    //    {"id": 5, "teamName": "Business"},
+    //    {"id": 6, "teamName": "Sales"}
+    //  ];
+    this.teamList = this._cacheService.agent.supervisedTeams;
+    console.log("teams",this.teamList);
+    this.selectedTeams = [];
+    this.settings = {
+      text: "",
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      enableSearchFilter: true,
+      classes: "myclass custom-class"
+    };
+  }
 
-     this.selectedTeams = [];
-     this.settings = {
-       text: "",
-       selectAllText: 'Select All',
-       unSelectAllText: 'UnSelect All',
-       enableSearchFilter: true,
-       classes: "myclass custom-class"
-     };
-   }
+  onCreateAnnouncement(data) {
+    let obj = {
+      "teamIds": this.selectedTeams,
+      "announcementText": this.announcementMessage.value,
+      "expiryTime": this.expireDate.value,
+      "scheduledTime": this.announceDate.value,
+      "supervisorId": 233223,
+      "supervisorName": "danial dee"
+    }
+    console.log("btn clicked", obj)
 
-   onCreateAnnouncement(data){
-    let obj={
-      "teamIds": [
-                  "99",
-                  "44242"
-              ],
-              "announcementText": "jwjw",
-              "expiryTime": "2023-05-28T00:12:00.000Z",
-              "scheduledTime": "2023-05-27T00:00:00.000Z",
-              "supervisorId": 233223,
-              "supervisorName": "danial dee"
-      }
-    console.log("btn clicked",obj)
+  }
 
-   }
-
-   onSave() {
+  onSave() {
     let data = this.announcementForm.value;
-    console.log("save-data",data);
+    console.log("save-data", data);
     // if (data.labels == "") data.labels = [];
     // data = this.fetchTheIdsOfLabels(data);
     // data.isAnonymous = false;
-     console.log("save result==>", data);
-    
+    console.log("save result==>", data);
+
     this.onCreateAnnouncement(data);
   }
   onClose() {
@@ -91,12 +94,12 @@ export class AnnouncementDialogComponent implements OnInit {
   }
 
   getAllTeams() {
-    
-        console.log("got all Teams");
-      
-      
-        console.error("Error Getting Teams");
-     
+
+    console.log("got all Teams");
+
+
+    console.error("Error Getting Teams");
+
   }
 
 
@@ -116,7 +119,7 @@ export class AnnouncementDialogComponent implements OnInit {
       width: "490px",
       panelClass: "confirm-dialog"
     });
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe((result) => { });
   }
 
   onItemSelect(item: any) {
