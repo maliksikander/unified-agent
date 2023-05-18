@@ -29,7 +29,9 @@ export class AnnouncementDialogComponent implements OnInit {
 
   announceDate = new FormControl(new Date(), [Validators.required]);
   expireDate = new FormControl(new Date(), [Validators.required]);
-  teamList = new FormControl("", [Validators.required]);
+  // public formGroup1 = new FormGroup({
+  //   teamList: new FormControl(null, [Validators.required])});
+  //teamList = new FormControl("", [Validators.required]);
   announcementMessage = new FormControl("", [Validators.required]);
   public formGroup = new FormGroup({
     date: new FormControl(null, [Validators.required])
