@@ -75,7 +75,8 @@
 
         <div class="announcement-trigger right-align">
           <button mat-raised-button type="button" class="discard-btn announcement-action" (click)="onClose()">{{'supervisor.discard'  | translate }}</button>
-          <button mat-raised-button type="button" class="send-announcement announcement-action" (click)="onSave()" >Create Announcement</button>
+          <button mat-raised-button type="button" class="send-announcement announcement-action" [disabled]="(announcementMessage.valid || teamList.valid || announceDate.valid || expireDate.valid) ? false :true"
+          (click)="onSave()"  >Create Announcement</button>
 
         </div>
       </div>
