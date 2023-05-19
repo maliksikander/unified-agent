@@ -8,9 +8,9 @@ export class getCustomerAniPipe implements PipeTransform {
       data.forEach((item) => {
         if (item.startDirection && (item.startDirection == "INBOUND" || item.startDirection == "OUTBOUND")) {
           if (item.dialog.ani) {
-            ani = item.dialog.ani;
+            ani = item.dialog.customerNumber;
           } else {
-            ani = item.dialog.fromAddress;
+            ani = item.dialog.ani;
           }
         }
       });

@@ -147,7 +147,7 @@ export class socketService {
       this.onSocketErrors(res);
     });
 
-    
+
     this.socket.on("taskRequest", (res: any) => {
       console.log("taskRequest==>", res);
 
@@ -530,7 +530,7 @@ export class socketService {
         // if the channel session is of voice or facebook then channel session should be disabled
         // because the channel session in the array is used to send the message to customer
         conversation.activeChannelSessions.forEach((channelSession) => {
-          if (channelSession.channel.channelType.name.toLowerCase() == "voice") {
+          if (channelSession.channel.channelType.name.toLowerCase() == "cisco_cc" || channelSession.channel.channelType.name.toLowerCase() == "cx_voice") {
             channelSession["isDisabled"] = true;
           } else {
             channelSession["isDisabled"] = false;
@@ -1569,7 +1569,7 @@ export class socketService {
   }
 
   topicUnsub(conversation) {
-    console.log("going to unsub from topic " + conversation.conversationId);
+    console.log("going to unsub from topic==>" + conversation.conversationId);
 
     if (conversation.state === "ACTIVE") {
       // if the topic state is 'ACTIVE' then agent needs to request the agent manager for unsubscribe
