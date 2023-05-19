@@ -25,6 +25,7 @@ export class AnnouncementDialogComponent implements OnInit {
   teamList = [];
   selectedTeams = [];
   settings = {};
+  supervisor={};
   announcementForm: FormGroup;
 
   announceDate = new FormControl(new Date(), [Validators.required]);
@@ -48,23 +49,21 @@ export class AnnouncementDialogComponent implements OnInit {
   ngOnInit() {
     this.announcementForm = new FormGroup({});
     console.log(this.dialog);
-    //  this.teamList = [
-    //    {"id": 1, "teamName": "Software"},
-    //    {"id": 2, "teamName": "Marketing"},
-    //    {"id": 3, "teamName": "Product"},
-    //    {"id": 4, "teamName": "Support"},
-    //    {"id": 5, "teamName": "Business"},
-    //    {"id": 6, "teamName": "Sales"}
-    //  ];
     this.teamList = this._cacheService.agent.supervisedTeams;
     console.log("teams",this.teamList);
+    this.teamList = this._cacheService.agent.supervisedTeams;
+    this.supervisor=this._cacheService.agent.id;
+    console.log("this-->supervisor ",this.supervisor);
+    console.log("teams list+++++++ ",this.teamList);
+
     this.selectedTeams = [];
     this.settings = {
       text: "",
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       enableSearchFilter: true,
-      classes: "myclass custom-class"
+      classes: "myclass custom-class",
+      primaryKey:"teamId"
     };
   }
 
