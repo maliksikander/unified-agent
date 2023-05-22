@@ -1,5 +1,6 @@
 var CIMCallback = {};
 var dialogsIdArray = [];
+var callsResumedArray = [];
 
 $(document).ready(function (){
     var logoutFlag = localStorage.getItem("logoutFlag");
@@ -7,6 +8,7 @@ $(document).ready(function (){
         var parameter = localStorage.getItem("wrapperClientCallback");
         CIMCallback.callbackFunction = window[parameter];
         dialogsIdArray = JSON.parse(localStorage.getItem("dialogsIdArray"));
+        callsResumedArray = JSON.parse(localStorage.getItem("callsResumedArray"));
     }
 });
 
@@ -166,21 +168,21 @@ function wrapper_getCurrentCallVariableValue(callObj, configCallVariable)
         console.error(exception);
     }
 }
-function wrapper_updateCallvariablesCommand(callEvent) 
+function wrapper_updateCallvariablesCommand(callEvent)
 {
     var ani = callEvent.ani;
     var currentCallVariableValue = wrapper_getCurrentCallVariableValue(callEvent, config.callVariable);
     if(currentCallVariableValue == "")
     {
-        var commandParams = 
+        var commandParams =
         {
             "action": "updateCallVariableData",
             "parameter" :
             {
                 "dialogId": callEvent.id,
-                "callVariables": 
+                "callVariables":
                 {
-                    "callVariable": 
+                    "callVariable":
                     [
                         {
                             "name": config.callVariable,
@@ -212,24 +214,30 @@ function wrapper_getCurrentParticipantState(participants) {
     return null;
 }
 
-function wrapper_processDialog(event){    
+function wrapper_processDialog(event){
     try{
         //dialogResponseEvent = checkIfIgnoreable(dialogResponseEvent, loggedParticipantState);
         // if(loggedParticipantState == "DROPPED" || loggedParticipantState == "FAILED")
         //     dialogResponseEvent.response.dialog.dialogEndingReason = getDialogEndingReason(dialog.callType);
-    
+        let isCallExists = wrapper_checkIfCallResumedExist(event.response.dialog.id);
+        if(isCallExists == 0)
+            wrapper_addCallResumed(event.response.dialog.id);
+        let callResumed = wrapper_findResumedCallById(event.response.dialog.id);
         let loggedParticipantState = wrapper_getCurrentParticipantState(event.response.dialog.participants);
+        event.response.dialog.isCallAlreadyActive = wrapper_manageisCallResumedProperty(loggedParticipantState, callResumed);
         event.response.dialog.participants = wrapper_parseDialogParticipants(event.response.dialog.participants);
         console.log("Wrapper processing");
-        
+
         if(event.response.dialog.state == "ALERTING" || event.response.dialog.state == "ACTIVE" || (event.response.dialog.state == "INITIATED" && event.event != "consultCall"))
             wrapper_storeDialog(event);
-        if(event.response.dialog.state == "ACTIVE")
+        if(event.response.dialog.state == "ACTIVE" && loggedParticipantState == "ACTIVE")
             wrapper_updateCallvariablesCommand(event.response.dialog);
         let wrapper_callExist = wrapper_checkIfCallExist(event.response.dialog.id);
-        
-        if(event.response.dialog.state == "DROPPED" || event.response.dialog.state == "FAILED")
+
+        if(event.response.dialog.state == "DROPPED" || event.response.dialog.state == "FAILED"){
             wrapper_removeDialog(event.response.dialog.id);
+            wrapper_removeResumedCall(event.response.dialog.id);
+        }
 
         var currentCallVariableValue = wrapper_getCurrentCallVariableValue(event.response.dialog, config.callVariable);
         if(currentCallVariableValue == "")
@@ -247,7 +255,9 @@ function wrapper_processDialog(event){
 
 function wrapper_clearDialogsArray(){
     dialogsIdArray = [];
+    callsResumedArray = [];
     localStorage.setItem("dialogsIdArray", JSON.stringify(dialogsIdArray));
+    localStorage.setItem("callsResumedArray", JSON.stringify(callsResumedArray));
 }
 
 function wrapper_removeDialog(callid){
@@ -256,6 +266,24 @@ function wrapper_removeDialog(callid){
         dialogsIdArray.splice(index, 1);
         localStorage.setItem("dialogsIdArray", JSON.stringify(dialogsIdArray));
         console.log("dialogsIdArray => " , dialogsIdArray)
+    }
+}
+
+function wrapper_removeResumedCall(id) {
+    try{
+        var i = 0;
+        var callsInList = callsResumedArray.length;
+        for (var i = 0; i < callsResumedArray.length; i++) {
+            if (callsResumedArray[i].id == id) {
+                callsResumedArray.splice(i, 1);
+                if (callsInList == 1) {
+                    callsResumedArray = [];
+                }
+                localStorage.setItem("callsResumedArray", JSON.stringify(callsResumedArray));
+            }
+        }
+    }catch(err){
+        console.error(err);
     }
 }
 
@@ -268,10 +296,53 @@ function wrapper_storeDialog(event){
     }
 }
 
+function wrapper_addCallResumed(id){
+    let call = {id: id, isCallFirstActive: 0, isCallAlreadyActive: 0};
+    callsResumedArray.push(call);
+    localStorage.setItem("callsResumedArray", JSON.stringify(callsResumedArray));
+}
+
+function wrapper_manageisCallResumedProperty(loggedParticipantState, callResumedObj){
+
+    if(loggedParticipantState == "ACTIVE" && callResumedObj.isCallFirstActive == 1){
+        callResumedObj.isCallAlreadyActive = 1;
+    }
+
+    if(callResumedObj.isCallFirstActive == 0 && loggedParticipantState == "ACTIVE"){
+        callResumedObj.isCallFirstActive = 1;
+    }
+    localStorage.setItem("callsResumedArray", JSON.stringify(callsResumedArray));
+    return callResumedObj.isCallAlreadyActive;
+}
+
+function wrapper_findResumedCallById(callid){
+    var i = 0;
+    if(callsResumedArray){
+        for (i; i < callsResumedArray.length; i++) {
+            if (callsResumedArray[i].id && callsResumedArray[i].id == callid) {
+                return callsResumedArray[i];
+            }
+        }
+    }
+    return null;
+}
+
+function wrapper_checkIfCallResumedExist(callid) {
+    if(callsResumedArray){
+        for (let i = 0; i < callsResumedArray.length; i++) {
+            if (callsResumedArray[i] && callsResumedArray[i].id == callid) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 function wrapper_checkIfCallExist(callid) {
-    for (let i = 0; i < dialogsIdArray.length; i++) {
-        if (dialogsIdArray[i] && dialogsIdArray[i] == callid) {
-            return 1;
+    if(dialogsIdArray){
+        for (let i = 0; i < dialogsIdArray.length; i++) {
+            if (dialogsIdArray[i] && dialogsIdArray[i] == callid) {
+                return 1;
+            }
         }
     }
     return 0;

@@ -7,10 +7,10 @@ export class getCustomerAniPipe implements PipeTransform {
     if (Array.isArray(data)) {
       data.forEach((item) => {
         if (item.startDirection && (item.startDirection == "INBOUND" || item.startDirection == "OUTBOUND")) {
-          if (item.dialog.ani) {
-            ani = item.dialog.customerNumber;
+          if (item.additionalDetail.dialog.customerNumber) {
+            ani = item.additionalDetail.dialog.customerNumber;
           } else {
-            ani = item.dialog.ani;
+            ani = item.additionalDetail.dialog.ani;
           }
         }
       });

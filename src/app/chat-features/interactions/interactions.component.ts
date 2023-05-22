@@ -439,8 +439,10 @@ export class InteractionsComponent implements OnInit {
 
   onLeaveClick() {
     if (this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
+      // console.log("test1==>")
       this.closeConversationConfirmation();
     } else {
+      // console.log("test2==>")
       this._socketService.topicUnsub(this.conversation);
     }
   }
