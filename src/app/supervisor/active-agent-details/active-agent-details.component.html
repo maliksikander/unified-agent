@@ -62,8 +62,8 @@
         </thead>
         <tbody *ngIf="(activeAgentsDetails | json) != '{}'">
           <tr
-            *ngFor="let agent of (activeAgentsDetails.agents ? activeAgentsDetails.agents:[] ) | LockFilter: agentSearch">
-            <td class="stats-agent-name {{ agent.state | lowercase }}">
+            *ngFor="let agent of (activeAgentsDetails.agents ? activeAgentsDetails.agents:[] ) |
+             LockFilter: agentSearch : ['name']">
               {{ agent.name }}
             </td>
             <!-- <td>
