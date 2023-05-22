@@ -26,7 +26,7 @@
           </mat-select>
         </mat-form-field>
         <div *ngIf="FilterSelected == 'agents' && this.supervisedTeams.length > 0"
-          class="form-control multi-selection-list p-0 mr-2">
+          class="form-control multi-selection-list active-chat-queue-selection  p-0 mr-2">
           <angular2-multiselect [data]="activeChatListWithAgents" [(ngModel)]="selectedQueues" [settings]="settings"
             (ngModelChange)="filterData()" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
             (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
@@ -96,8 +96,9 @@
             </ng-container>
           </ng-container>
           <ng-container *ngIf="FilterSelected == 'agents'">
-            <ng-container *ngFor="let data of filteredData | LockFilter: agentSearch">
-              <tr *ngFor="let chat of data.chats">
+             <ng-container *ngFor="let data of filteredData ">
+              <tr *ngFor="let chat of data.chats | LockFilter: agentSearch : ['agentName']">
+
                 <td>
                   <span class="material-icons direction-icon md-18 {{chat.direction | lowercase}}"> call_received
                   </span>
