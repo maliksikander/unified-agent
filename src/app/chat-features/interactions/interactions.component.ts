@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, SimpleChanges, ViewChild } from "@angular/core";
+import {Component, ElementRef, EventEmitter, HostListener, Inject, Input, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
@@ -15,6 +15,8 @@ import { ConfirmationDialogComponent } from "src/app/new-components/confirmation
 import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
 import { TranslateService } from "@ngx-translate/core";
 import { sender } from "../../models/User/Interfaces";
+import {CallControlsComponent} from '../../new-components/call-controls/call-controls.component';
+import {DOCUMENT} from '@angular/common';
 
 declare var EmojiPicker: any;
 
@@ -46,8 +48,20 @@ export class InteractionsComponent implements OnInit {
   fullPostView: boolean = false;
   selectedCommentId: string;
   lastSeenMessageId;
+  chatDuringVideo = true;
+  isVideoCam = false;
+  isMute = false;
+  isVideoCall = true;
+  isBotSuggestions = false;
+  isConversationView = true;
+  fullScreenView = false;
+  videoSrc = 'assets/video/angry-birds.mp4';
   // isTransfer = false;
   // isConsult = false;
+  ctiBarView = true;
+  ctiBoxView = false;
+  element;
+  dragPosition = {x: 0, y: 0};
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -108,9 +122,12 @@ export class InteractionsComponent implements OnInit {
     private _httpService: httpService,
     private _finesseService: finesseService,
     private snackBar: MatSnackBar,
-    private _translateService: TranslateService
-  ) { }
+    private _translateService: TranslateService,
+    @Inject(DOCUMENT) private document: any
+  ) {}
   ngOnInit() {
+    this.element = document.documentElement;
+
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
@@ -1179,4 +1196,68 @@ export class InteractionsComponent implements OnInit {
   //   console.log("data-->",callLegs)
 
   // }
+  ctiControlBar() {
+    this.ctiBoxView = true;
+    this.ctiBarView = false;
+    const dialogRef = this.dialog.open(CallControlsComponent, {
+      panelClass: "call-controls-dialog",
+      hasBackdrop: false,
+      data: { header: "Leave Conversation", message: `Are you sure you want to leave conversation with ‘John Taylor’?` }
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      this.ctiBoxView = false;
+      this.ctiBarView = true;
+    });
+  }
+
+
+
+  chatInCall(){
+    this.chatDuringVideo = !this.chatDuringVideo;
+  }
+  videoSwitch(e){
+    if(e == 'jm'){
+      this.videoSrc = 'assets/video/sample-vid.mp4';
+    }else{
+      this.videoSrc = 'assets/video/angry-birds.mp4';
+    }
+  }
+  requestFullscreen(element: Element): void {
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+      this.fullScreenView = true;
+    } else if (this.element.webkitRequestFullscreen) {
+      this.element.webkitRequestFullscreen();
+      this.fullScreenView = true;
+    } else if (this.element.webkitRequestFullScreen) {
+      this.element.webkitRequestFullScreen();
+      this.fullScreenView = true;
+    } else if ((this.element as any).mozRequestFullScreen) {
+      this.fullScreenView = true;
+      (this.element as any).mozRequestFullScreen();
+    } else if ((this.element as any).msRequestFullScreen) {
+      this.fullScreenView = true;
+      (this.element as any).msRequestFullScreen();
+    }
+  }
+  /*  Close fullscreen  */
+  exitFullscreen() {
+    if (this.fullScreenView) {
+      if (document.exitFullscreen) {
+        this.document.exitFullscreen();
+        this.fullScreenView = false;
+      } else if (this.document.mozCancelFullScreen) {
+        /* Firefox */
+        this.document.mozCancelFullScreen();
+      } else if (this.document.webkitExitFullscreen) {
+        /* Chrome, Safari and Opera */
+        this.document.webkitExitFullscreen();
+      } else if (this.document.msExitFullscreen) {
+        /* IE/Edge */
+        this.document.msExitFullscreen();
+      }
+    } else {
+      return;
+    }
+  }
 }

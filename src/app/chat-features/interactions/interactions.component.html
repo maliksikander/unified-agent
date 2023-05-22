@@ -224,6 +224,68 @@
       </div>
     </div>
     <!--/Top bar-->
+<div #fullViewConversation class="main-conversation-feature {{chatDuringVideo ? 'chat-during-video' : 'no-chat-during-video'}} {{fullScreenView ? 'full-screen-call':''}}" [ngClass]="{'call-progress': isVideoCall}">
+
+    <div class="video-feature-main" *ngIf="isVideoCall">
+      <div class="sub-call-participants">
+        <span (click)="videoSwitch('jm')">
+<!--           <video #media [vgMedia]="media" id="76655" preload="auto" class="main-video-screen">&ndash;&gt;-->
+<!--                  <source src="assets/video/angry-birds.mp4" />-->
+<!--                </video>-->
+               <mat-icon class="camera-mode">videocam_off</mat-icon>
+          <strong>JM</strong>
+
+        </span>
+        <span (click)="videoSwitch('fa')">
+<!--           <video #media [vgMedia]="media" id="76655" preload="auto" class="main-video-screen">&ndash;&gt;-->
+<!--                  <source src="assets/video/angry-birds.mp4" />-->
+<!--                </video>-->
+               <mat-icon class="camera-mode">videocam_off</mat-icon>
+                    <strong>FA</strong>
+
+        </span>
+      </div>
+     <mat-icon *ngIf="!isVideoCam" class="camera-mode">videocam_off</mat-icon>
+      <vg-player>
+        <vg-controls class="video-call-controlls">
+          <ul>
+            <li (click)="chatInCall()" [ngClass]="{'active-action': chatDuringVideo}"><mat-icon>question_answer</mat-icon></li>
+            <li><mat-icon>present_to_all</mat-icon></li>
+            <li *ngIf="fullScreenView" (click)="exitFullscreen()"><mat-icon>fullscreen_exit</mat-icon></li>
+            <li *ngIf="!fullScreenView" class="full-screen-action"  (click)="requestFullscreen(fullViewConversation)"><mat-icon>fullscreen</mat-icon></li>
+            <li class="mute-call"  [ngClass]="{'active-action': isMute}" (click)="isMute = !isMute" ><vg-mute></vg-mute><mat-icon>{{isMute ? 'mic_off' : 'mic'}}</mat-icon></li>
+            <li class="video-cam" [ngClass]="{'active-action': isVideoCam}" (click)="isVideoCam = !isVideoCam"><mat-icon>{{isVideoCam ? 'videocam' : 'videocam_off'}}</mat-icon><vg-play-pause></vg-play-pause>
+            </li>
+            <!--          <li class="mute-call"><mat-icon>pause</mat-icon></li>-->
+            <li class="end-call" (click)="isVideoCall = false"><mat-icon>call_end</mat-icon></li>
+          </ul>
+        </vg-controls>
+        <video [hidden]="!isVideoCam" #media [vgMedia]="media" id="76655"  preload="auto" class="main-video-screen">
+          <source [src]="videoSrc" />
+        </video>
+      </vg-player>
+
+
+
+<!--      <div class="video-call-controlls">-->
+<!--        <ul>-->
+<!--          <li (click)="chatInCall()" [ngClass]="{'active-action': chatDuringVideo}"><mat-icon>question_answer</mat-icon></li>-->
+<!--          <li><mat-icon>groups</mat-icon></li>-->
+<!--          <li (click)="videoPIP('76655')"><mat-icon>fullscreen</mat-icon></li>-->
+<!--          <li class="mute-call"><mat-icon>mic</mat-icon></li>-->
+<!--          <li class="video-cam"><mat-icon>videocam</mat-icon></li>-->
+<!--&lt;!&ndash;          <li class="mute-call"><mat-icon>pause</mat-icon></li>&ndash;&gt;-->
+<!--          <li class="end-call"><mat-icon>call_end</mat-icon></li>-->
+<!--        </ul>-->
+<!--      </div>-->
+    </div>
+
+    <div class="chat-feature-main">
+
+      <div class="video-chat-trigger" *ngIf="isVideoCall">
+        <span (click)="isConversationView = false; isBotSuggestions = true" [ngClass]="{'active-action' : isBotSuggestions}"><img src="assets/images/robot-dark.svg" alt="bot"></span>
+        <span (click)="isConversationView = true; isBotSuggestions = false" [ngClass]="{'active-action' : isConversationView}"><mat-icon>question_answer</mat-icon></span>
+      </div>
     <!--Interactions Area Start -->
     <div id="chat-content" class="container-fluid main-chat-area">
       <div class="row">
@@ -1977,6 +2039,23 @@
   </div>
 
   <div class="customer-info-main">
+    <div class="call-controls-view" *ngIf="ctiBarView">
+      <div class="right-call-controls">
+        <mat-icon class="box-view" (click)="ctiControlBar()">picture_in_picture_alt </mat-icon>
+        <ul class="assistance-actions">
+          <li><button mat-fab><img src="assets/images/consult-colored.svg"></button></li>
+          <li><button mat-fab><img src="assets/images/transfer-colored.svg"></button></li>
+          <li><button mat-fab><img src="assets/images/conference-colored.svg"></button></li>
+        </ul>
+
+        <ul class="call-actions">
+          <li><button mat-fab><mat-icon>mic</mat-icon></button></li>
+          <li><button mat-fab><mat-icon>pause</mat-icon></button></li>
+          <li><button class="end-call"  mat-fab><mat-icon>call_end</mat-icon></button></li>
+        </ul>
+      </div>
+    </div>
+
     <app-customer-info [activeChannelSessions]="conversation.activeChannelSessions" [customer]="conversation.customer"
       [customerSuggestions]="conversation.customerSuggestions" [firstChannelSession]="conversation.firstChannelSession"
       [conversationId]="conversation.conversationId" [conversation]="conversation" [activeConversationData]="conversation.activeConversationData"
