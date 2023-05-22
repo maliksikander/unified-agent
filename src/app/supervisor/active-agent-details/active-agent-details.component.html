@@ -64,6 +64,7 @@
           <tr
             *ngFor="let agent of (activeAgentsDetails.agents ? activeAgentsDetails.agents:[] ) |
              LockFilter: agentSearch : ['name']">
+            <td class="stats-agent-name {{ agent.state | lowercase }}">
               {{ agent.name }}
             </td>
             <!-- <td>

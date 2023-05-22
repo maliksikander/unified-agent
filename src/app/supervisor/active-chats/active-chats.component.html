@@ -98,6 +98,7 @@
           <ng-container *ngIf="FilterSelected == 'agents'">
              <ng-container *ngFor="let data of filteredData ">
               <tr *ngFor="let chat of data.chats | LockFilter: agentSearch : ['agentName']">
+
                 <td>
                   <span class="material-icons direction-icon md-18 {{chat.direction | lowercase}}"> call_received
                   </span>
