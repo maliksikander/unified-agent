@@ -26,7 +26,8 @@ import {
   MatTableModule,
   MatTabsModule,
   MatToolbarModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatPaginatorModule
 } from "@angular/material";
 import { DragDropModule } from "@angular/cdk/drag-drop";
 import { CommonModule } from "@angular/common";
@@ -302,7 +303,8 @@ import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
     checkConferenceCallPipe,
     checkOutboundCallPipe,
     getCustomerAniPipe,
-    checkConsultCallPipe
+    checkConsultCallPipe,
+    MatPaginatorModule
   ]
 })
 export class SharedModule {}

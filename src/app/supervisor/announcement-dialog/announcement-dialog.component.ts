@@ -26,13 +26,13 @@ export class AnnouncementDialogComponent implements OnInit {
   selectedTeams = [];
   settings = {};
   supervisor={};
-  announcementForm: FormGroup;
+  supervisorId={};
+
+  
 
   announceDate = new FormControl(new Date(), [Validators.required]);
   expireDate = new FormControl(new Date(), [Validators.required]);
-  // public formGroup1 = new FormGroup({
-  //   teamList: new FormControl(null, [Validators.required])});
-  //teamList = new FormControl("", [Validators.required]);
+  teamListdata = new FormControl("", [Validators.required]);
   announcementMessage = new FormControl("", [Validators.required]);
   public formGroup = new FormGroup({
     date: new FormControl(null, [Validators.required])
@@ -47,14 +47,15 @@ export class AnnouncementDialogComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.announcementForm = new FormGroup({});
     console.log(this.dialog);
     this.teamList = this._cacheService.agent.supervisedTeams;
     console.log("teams",this.teamList);
     this.teamList = this._cacheService.agent.supervisedTeams;
-    this.supervisor=this._cacheService.agent.id;
+    this.supervisor=this._cacheService.agent.username;
+    this.supervisorId=this._cacheService.agent.id;
     console.log("this-->supervisor ",this.supervisor);
     console.log("teams list+++++++ ",this.teamList);
+    //console.log(this.teamListdata);
 
     this.selectedTeams = [];
     this.settings = {
@@ -67,29 +68,25 @@ export class AnnouncementDialogComponent implements OnInit {
     };
   }
 
-  onCreateAnnouncement(data) {
+  onCreateAnnouncement() {
     let obj = {
       "teamIds": this.selectedTeams,
       "announcementText": this.announcementMessage.value,
       "expiryTime": this.expireDate.value,
       "scheduledTime": this.announceDate.value,
-      "supervisorId": 233223,
-      "supervisorName": "danial dee"
+      "supervisorId": this.supervisorId,
+      "supervisorName": this.supervisor
     }
+    //if(!(this.teamList)){ console.log("teamList.valid?" );}
+   
     console.log("btn clicked", obj)
 
   }
 
   onSave() {
-    let data = this.announcementForm.value;
-    console.log("save-data", data);
-    // if (data.labels == "") data.labels = [];
-    // data = this.fetchTheIdsOfLabels(data);
-    // data.isAnonymous = false;
-    console.log("save result==>", data);
-
-    this.onCreateAnnouncement(data);
-    this.dialog.closeAll();
+  
+  this.onCreateAnnouncement();
+  this.dialog.closeAll();
   }
   onClose() {
     this.dialog.closeAll();

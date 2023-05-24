@@ -1,15 +1,19 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { CreateCustomerComponent } from "../create-customer/create-customer.component";
 import { AnnouncementDialogComponent } from "../supervisor/announcement-dialog/announcement-dialog.component";
-import { MatDialog } from "@angular/material";
+import { MatDialog,MatPaginatorModule } from "@angular/material";
+
 
 @Component({
   selector: "app-announcement",
   templateUrl: "./announcement.component.html",
   styleUrls: ["./announcement.component.scss"]
 })
+
 export class AnnouncementComponent implements OnInit {
   FilterSelected = "all";
+  currentItemsToShow =[];
+  //p: number = 1;
   displayAnnouncements = [
     {
       message: "Hi. Please share the email ID for support team. Also share some number where I can call in emergency situations.",
@@ -89,17 +93,30 @@ export class AnnouncementComponent implements OnInit {
       expiry_time: "12/03/2020 15:25"
     }
   ];
+
   constructor(private dialog: MatDialog) { }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    this.currentItemsToShow = this.displayAnnouncements;
+    console.log(this.currentItemsToShow );
+  }
   onCreateAnnouncement() {
     const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
       panelClass: "new-announcement-dialog"
     });
   }
 
+  onPageChange($event) {
+    console.log($event)
+    this.currentItemsToShow =  this.displayAnnouncements.slice($event.pageIndex*$event.pageSize, $event.pageIndex*$event.pageSize + $event.pageSize);
+  }
+  
+
+
+  //@ViewChild(MatPaginator) paginator! : MatPaginator;
+
   onUpdateAnnouncement() {
-    this.onCreateAnnouncement();
+    console.log("update Announcement clicked")
   }
   confirmationDialog(templateRef, data) {
 
@@ -109,6 +126,7 @@ export class AnnouncementComponent implements OnInit {
     });
 
     console.log(result);
+    console.log("deleted Announcement")
 
     this.dialog.closeAll();
     const dialogRef = this.dialog.open(templateRef, {
