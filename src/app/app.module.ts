@@ -46,6 +46,8 @@ import { cacheService } from "./services/cache.service";
 import { Observable,from } from "rxjs";
 import { ActiveAgentDetailsComponent } from './supervisor/active-agent-details/active-agent-details.component';
 import { CallControlsComponent } from './new-components/call-controls/call-controls.component';
+import {VgCoreModule} from 'videogular2/compiled/src/core/core';
+import {VgControlsModule} from 'videogular2/compiled/src/controls/controls';
 // import { ActiveChatsComponent } from "./supervisor/active-chats/active-chats.component";
 // import { QueueChatsComponent } from "./supervisor/queue-chats/queue-chats.component";
 
@@ -149,8 +151,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     NgxUiLoaderHttpModule.forRoot({
       exclude: [
         `${_configService.FILE_SERVER_URL}/api/downloadFileStream`,
-        "/api/downloadFileStream",
-        "/api/downloadFileStream?filename",
+        '/api/downloadFileStream',
+        '/api/downloadFileStream?filename',
         `${_configService.CIM_REPORTING_URL}/queued-chats/detail`,
         `${_configService.CIM_REPORTING_URL}/queue-active-chats/detail`
       ]
@@ -158,12 +160,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     NgxUiLoaderHttpModule.forRoot({
       excludeRegexp: [
         `${_configService.FILE_SERVER_URL}/api/downloadFileStream`,
-        "/api/downloadFileStream",
+        '/api/downloadFileStream',
         `${_configService.CIM_REPORTING_URL}/queued-chats/detail`,
         `${_configService.CIM_REPORTING_URL}/queue-active-chats/detail`
       ]
     }),
-    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+    VgCoreModule,
+    VgControlsModule,
     // ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' })
   ],
   entryComponents: [

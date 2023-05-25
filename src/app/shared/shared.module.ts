@@ -93,6 +93,10 @@ import { checkConferenceCallPipe } from "./pipes/checkConferenceCall.pipe";
 import { getCustomerAniPipe } from "./pipes/getCustomerAni.pipe";
 import { checkOutboundCallPipe } from "./pipes/checkOutboundCall.pipe";
 import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
+import {VgCoreModule} from 'videogular2/compiled/src/core/core';
+import {VgControlsModule} from 'videogular2/compiled/src/controls/controls';
+import {VgOverlayPlayModule} from 'videogular2/compiled/src/overlay-play/overlay-play';
+import {VgBufferingModule} from 'videogular2/compiled/src/buffering/buffering';
 
 @NgModule({
   declarations: [
@@ -201,7 +205,11 @@ import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
     AngularMultiSelectModule,
     NgScrollbarModule,
     NgxTimerModule,
-    TranslateModule
+    TranslateModule,
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule
   ],
   exports: [
     NgxTimerModule,

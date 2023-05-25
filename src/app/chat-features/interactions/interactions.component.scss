@@ -3850,6 +3850,40 @@ vg-controls.hide {
     top: 40px;
   }
 
+
+
+  .main-showcase.customer-info-dp.main-audio-call {
+    margin-left: 0;
+    height: 200px;
+    position: absolute;
+    z-index: 9;
+    flex-direction: column;
+    width: 100%;
+    justify-content: space-evenly;
+    top: 25%;
+
+    .agent-showcase {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto;
+
+      img {
+        width: 100px;
+        max-height: 100px;
+        transition: all 0.1s;
+      }
+    }
+    h4 {
+      font-size: 24px;
+      max-width: inherit;
+      span{
+        font-size: 14px;
+        text-align: center;
+      }
+    }
+  }
+
+
   .camera-mode {
     position: absolute;
     font-size: 25vh;

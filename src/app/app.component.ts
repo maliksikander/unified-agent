@@ -38,6 +38,12 @@ export class AppComponent implements OnInit {
     this._router.events.subscribe((event: any) => {
       if (event.url) {
         this.currentRoute = event.url;
+
+        // if (event.url == "/customers/chats") {
+
+        // this._sharedService.callActiveEvent(event.url);
+
+        // }
       }
     });
     this._httpService.getConversationSettings().subscribe(

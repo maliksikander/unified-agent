@@ -52,7 +52,8 @@ export class InteractionsComponent implements OnInit {
   chatDuringVideo = false;
   isVideoCam = false;
   isMute = false;
-  isVideoCall = true;
+  isVideoCall = false;
+  isAudioCall = true;
   isBotSuggestions = true;
   isConversationView = true;
   fullScreenView = false;
@@ -141,9 +142,9 @@ export class InteractionsComponent implements OnInit {
     // this._sharedService.callActiveEvent(msg)
     // this._sharedService.isCallActive
 
-    this._sharedService.isCallActive.subscribe((msg: string) => {
-       console.log('Event message from Component AAAAAAAAAA: ' + msg);
-    });
+    // this._sharedService.isCallActive.subscribe((msg: string) => {
+    //    console.log('Event message from Component AAAAAAAAAA: ' + msg);
+    // });
 
 
     //  console.log("i am called hello")
@@ -1223,7 +1224,7 @@ export class InteractionsComponent implements OnInit {
     const dialogRef = this.dialog.open(CallControlsComponent, {
       panelClass: "call-controls-dialog",
       hasBackdrop: false,
-      data: { header: "Leave Conversation", message: `Are you sure you want to leave conversation with ‘John Taylor’?` }
+      data: { source: this.videoSrc, isMute: this.isMute, isVideoCam: this.isVideoCam, isAudioCall: this.isAudioCall, isVideoCall: this.isVideoCall }
     });
     dialogRef.afterClosed().subscribe((result) => {
       this.router.navigate(["/customers/chats"]);

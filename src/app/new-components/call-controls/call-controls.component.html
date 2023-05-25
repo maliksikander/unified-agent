@@ -30,33 +30,85 @@
 <!--  </div>-->
 <!--</div>-->
 
-<div class="call-control-box call-controls-view box-view {{fullView ? 'expand-view-controls'  : ''}}" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+<div class="call-control-box call-controls-view box-view expand-view-controls" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
   <mat-icon class="drag-controls" cdkDragHandle>more_vert</mat-icon>
 
   <div class="right-call-controls">
-    <mat-icon class="control-adjust" (click)="fullView = !fullView">{{fullView ? 'fullscreen_exit'  : 'fullscreen'}}</mat-icon>
+<!--    <mat-icon class="control-adjust" (click)="fullView = !fullView">{{fullView ? 'fullscreen_exit'  : 'fullscreen'}}</mat-icon>-->
+    <div *ngIf="isAudioCall" class="mini-audio-call">
     <div class="main-showcase customer-info-dp">
-      <div class="agent-showcase">
-        <img src="assets/images/user11.png" alt="customer">
-      </div>
-      <h4 matTooltip="john taylor">John Taylor
-        <span class="timer-call">call in progress</span>
-        <span class="timer-call">03:37</span>
-      </h4>
+          <div class="agent-showcase">
+            <img src="assets/images/user11.png" alt="customer">
+          </div>
+          <h4 matTooltip="john taylor">John Taylor
+            <span class="timer-call">call in progress</span>
+            <span class="timer-call">03:37</span>
+          </h4>
+        </div>
+
+        <ul class="assistance-actions call-actions">
+          <!--      <li><button mat-fab><img src="assets/images/chat1.svg"></button></li>-->
+          <li><button mat-fab (click)="cancel()"><mat-icon>picture_in_picture</mat-icon></button></li>
+          <li><button mat-fab><img src="assets/images/consult-colored.svg"></button></li>
+          <li><button mat-fab><img src="assets/images/transfer-colored.svg"></button></li>
+          <li><button mat-fab><img src="assets/images/conference-colored.svg"></button></li>
+    <!--    </ul>-->
+
+    <!--    <ul class="call-actions">-->
+          <li><button mat-fab><mat-icon>mic</mat-icon></button></li>
+          <li><button mat-fab><mat-icon>pause</mat-icon></button></li>
+          <li><button class="end-call" mat-fab (click)="cancel()"><mat-icon>call_end</mat-icon></button></li>
+        </ul>
+
     </div>
+    <div class="video-feature-main" *ngIf="isVideoCall">
+      <div class="sub-call-participants">
+        <span>
+               <mat-icon class="camera-mode">videocam_off</mat-icon>
+          <strong>JM</strong>
 
-    <ul class="assistance-actions call-actions">
-      <!--      <li><button mat-fab><img src="assets/images/chat1.svg"></button></li>-->
-      <li><button mat-fab (click)="cancel()"><mat-icon>picture_in_picture</mat-icon></button></li>
-      <li><button mat-fab><img src="assets/images/consult-colored.svg"></button></li>
-      <li><button mat-fab><img src="assets/images/transfer-colored.svg"></button></li>
-      <li><button mat-fab><img src="assets/images/conference-colored.svg"></button></li>
-<!--    </ul>-->
+        </span>
+        <span>
+               <mat-icon class="camera-mode">videocam_off</mat-icon>
+                    <strong>FA</strong>
 
-<!--    <ul class="call-actions">-->
-      <li><button mat-fab><mat-icon>mic</mat-icon></button></li>
-      <li><button mat-fab><mat-icon>pause</mat-icon></button></li>
-      <li><button class="end-call" mat-fab (click)="cancel()"><mat-icon>call_end</mat-icon></button></li>
-    </ul>
+        </span>
+      </div>
+
+    <mat-icon *ngIf="!isVideoCam" class="camera-mode">videocam_off</mat-icon>
+    <vg-player>
+      <vg-controls>
+        <ul class="assistance-actions call-actions">
+          <li>
+            <button mat-fab (click)="cancel()">
+              <mat-icon>picture_in_picture</mat-icon>
+            </button>
+          </li>
+
+          <li class="mute-call" [ngClass]="{'active-action': isMute}">
+            <button mat-fab (click)="isMute = !isMute">
+              <vg-mute></vg-mute>
+              <mat-icon>{{isMute ? 'mic_off' : 'mic'}}</mat-icon>
+            </button>
+          </li>
+
+          <li class="video-cam">
+            <button mat-fab (click)="isVideoCam = !isVideoCam">
+              <mat-icon>{{isVideoCam ? 'videocam' : 'videocam_off'}}</mat-icon>
+              <vg-play-pause></vg-play-pause>
+            </button>
+          </li>
+
+          <li>
+            <button class="end-call" mat-fab (click)="cancel()">
+              <mat-icon>call_end</mat-icon>
+            </button>
+          </li>
+        </ul>
+      </vg-controls>
+      <video [hidden]="!isVideoCam" #media autoplay [vgMedia]="media" id="76655"  preload="auto" class="main-video-screen">
+        <source [src]="videoSrc" />
+      </video>
+    </vg-player>
   </div>
 </div>
