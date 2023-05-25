@@ -9,6 +9,7 @@ import { appConfigService } from "./appConfig.service";
 export class httpService {
   apiEndpoints;
   mockurl = "https://57be0c49-6ed4-469c-a93a-13f49e48e8c2.mock.pstmn.io";
+  url="https://3e4a011b-523f-403d-9b76-3d5054db5a09.mock.pstmn.io/announcement";
 
   constructor(public _appConfigService: appConfigService, private _httpClient: HttpClient) {
     this.apiEndpoints = {
@@ -32,6 +33,13 @@ export class httpService {
       defaultOutboundChannel: "/channels/defaultoutbound"
     };
   }
+
+  getAnnouncements(): Observable<any>{
+    
+    //https://3e4a011b-523f-403d-9b76-3d5054db5a09.mock.pstmn.io/announcement
+    return this._httpClient.get<any>(`${this.url}`);
+  }
+
 
   login(user): Observable<any> {
     return this._httpClient.post<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.login, user, {
