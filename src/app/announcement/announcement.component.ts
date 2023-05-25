@@ -121,8 +121,20 @@ export class AnnouncementComponent implements OnInit {
 
 
 
-  onUpdateAnnouncement() {
-    console.log("update Announcement clicked")
+  onUpdateAnnouncement(value) {
+  //    data:{};
+  //  const allAnnouncements=this._httpService.getAnnouncements().subscribe(
+  //   (res) => {
+  //     let temp = res.find( c => c.ID === value);
+      
+  //   });
+    console.log("update Announcement clicked",value);
+    console.log(this.displayAnnouncements[2]);
+    //console.log("update Announcement clicked",allAnnouncements);
+
+    const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
+      panelClass: "Edit-announcement-dialog"
+    });
   }
   confirmationDialog(templateRef, data) {
 
