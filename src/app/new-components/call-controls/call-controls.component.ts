@@ -8,7 +8,7 @@ import {MatDialogRef} from '@angular/material';
 })
 export class CallControlsComponent implements OnInit {
 
-  fullView = false;
+  fullView = true;
   constructor(public dialogRef: MatDialogRef<CallControlsComponent>) { }
 
   ngOnInit() {

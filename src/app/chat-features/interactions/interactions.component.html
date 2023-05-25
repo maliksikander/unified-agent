@@ -224,9 +224,9 @@
       </div>
     </div>
     <!--/Top bar-->
-<div #fullViewConversation class="main-conversation-feature {{chatDuringVideo ? 'chat-during-video' : 'no-chat-during-video'}} {{fullScreenView ? 'full-screen-call':''}}" [ngClass]="{'call-progress': isVideoCall}">
+<div #fullViewConversation class="main-conversation-feature {{chatDuringVideo ? 'chat-during-video' : 'no-chat-during-video'}} {{fullScreenView ? 'full-screen-call':''}}" [ngClass]="{'call-progress': isVideoCall, 'smart-call-controls':ctiBarView}">
 
-    <div class="video-feature-main" *ngIf="isVideoCall">
+    <div class="video-feature-main" *ngIf="isVideoCall && !ctiBarView">
       <div class="sub-call-participants">
         <span (click)="videoSwitch('jm')">
 <!--           <video #media [vgMedia]="media" id="76655" preload="auto" class="main-video-screen">&ndash;&gt;-->
@@ -252,6 +252,7 @@
             <li (click)="chatInCall()" [ngClass]="{'active-action': chatDuringVideo}"><mat-icon>question_answer</mat-icon></li>
             <li><mat-icon>present_to_all</mat-icon></li>
             <li *ngIf="fullScreenView" (click)="exitFullscreen()"><mat-icon>fullscreen_exit</mat-icon></li>
+            <li class="full-screen-action"  (click)="ctiControlBar()"><mat-icon>picture_in_picture</mat-icon></li>
             <li *ngIf="!fullScreenView" class="full-screen-action"  (click)="requestFullscreen(fullViewConversation)"><mat-icon>fullscreen</mat-icon></li>
             <li class="mute-call"  [ngClass]="{'active-action': isMute}" (click)="isMute = !isMute" ><vg-mute></vg-mute><mat-icon>{{isMute ? 'mic_off' : 'mic'}}</mat-icon></li>
             <li class="video-cam" [ngClass]="{'active-action': isVideoCam}" (click)="isVideoCam = !isVideoCam"><mat-icon>{{isVideoCam ? 'videocam' : 'videocam_off'}}</mat-icon><vg-play-pause></vg-play-pause>
@@ -312,11 +313,32 @@
             </div>
           </div>
 
-          <!-- voice message chat area -->
+<div class="bot-suggestion-area" *ngIf="isBotSuggestions">
+  <div class="chat-intents">
+    <div class="chat-intents">
+      <div class="intents-inner">
+        <p *ngFor="let intent of intents">
+          {{intent}}
+          <!--              <b>{{intent.confidence.toFixed(2)}}</b>-->
+          <button mat-mini-fab class="canned-trigger edit-trigger">
+            <i class="material-icons">
+              edit
+            </i>
+          </button>
+          <button mat-mini-fab class="canned-trigger send-suggestion" >
+            <i class="material-icons">
+              send
+            </i>
+          </button>
+        </p>
+      </div>
+    </div>
 
+  </div>
+</div>
           <!-- simple chat area -->
           <div id="chat-area-start"></div>
-          <div class="instruction-content chat-session-main">
+          <div class="instruction-content chat-session-main" *ngIf="isConversationView">
             <ng-container *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
               <div
                 *ngIf="
@@ -2037,24 +2059,26 @@
       </div>
     </ng-template>
   </div>
+</div>
+  </div>
 
   <div class="customer-info-main">
-    <div class="call-controls-view" *ngIf="ctiBarView">
-      <div class="right-call-controls">
-        <mat-icon class="box-view" (click)="ctiControlBar()">picture_in_picture_alt </mat-icon>
-        <ul class="assistance-actions">
-          <li><button mat-fab><img src="assets/images/consult-colored.svg"></button></li>
-          <li><button mat-fab><img src="assets/images/transfer-colored.svg"></button></li>
-          <li><button mat-fab><img src="assets/images/conference-colored.svg"></button></li>
-        </ul>
+<!--    <div class="call-controls-view" *ngIf="ctiBarView">-->
+<!--      <div class="right-call-controls">-->
+<!--        <mat-icon class="box-view" (click)="ctiControlBar()">picture_in_picture_alt </mat-icon>-->
+<!--        <ul class="assistance-actions">-->
+<!--          <li><button mat-fab><img src="assets/images/consult-colored.svg"></button></li>-->
+<!--          <li><button mat-fab><img src="assets/images/transfer-colored.svg"></button></li>-->
+<!--          <li><button mat-fab><img src="assets/images/conference-colored.svg"></button></li>-->
+<!--        </ul>-->
 
-        <ul class="call-actions">
-          <li><button mat-fab><mat-icon>mic</mat-icon></button></li>
-          <li><button mat-fab><mat-icon>pause</mat-icon></button></li>
-          <li><button class="end-call"  mat-fab><mat-icon>call_end</mat-icon></button></li>
-        </ul>
-      </div>
-    </div>
+<!--        <ul class="call-actions">-->
+<!--          <li><button mat-fab><mat-icon>mic</mat-icon></button></li>-->
+<!--          <li><button mat-fab><mat-icon>pause</mat-icon></button></li>-->
+<!--          <li><button class="end-call"  mat-fab><mat-icon>call_end</mat-icon></button></li>-->
+<!--        </ul>-->
+<!--      </div>-->
+<!--    </div>-->
 
     <app-customer-info [activeChannelSessions]="conversation.activeChannelSessions" [customer]="conversation.customer"
       [customerSuggestions]="conversation.customerSuggestions" [firstChannelSession]="conversation.firstChannelSession"

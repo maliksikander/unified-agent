@@ -1924,10 +1924,33 @@ ul.delivery-report {
   min-width: 0;
   position: absolute;
   right: 0;
+  z-index: 3;
 }
 
 //Expand view 3rd party bar
 .customer-bar-opened {
+  .call-progress{
+    .chat-feature-main{
+   filter: blur(5px);
+      &:after {
+        content: '';
+        background: #02020242;
+        position: absolute;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 3;
+      }
+    }
+    &.full-screen-call{
+      .chat-feature-main{
+        filter: blur(0);
+        &:after {
+          display: none;
+        }
+      }
+    }
+  }
   .customer-info-main {
     width: 320px;
     border-left: 5px solid $fill-color;
@@ -1948,6 +1971,22 @@ ul.delivery-report {
   .chat-footer {
     width: calc(100% - 394px) !important;
   }
+
+    .call-progress{
+      .main-chat-area, .chat-messages-main,  .interaction-inner, .chat-footer {
+        width: 100% !important;
+      }
+
+      //.video-feature-main {
+      //  background: #4e4e4e;
+      //  position: relative;
+      //  flex: 0 0 calc(100% - 320px);
+      //  padding: 10px;
+      //}
+      &.no-chat-during-video{
+        width: calc(100% - 320px) !important;
+      }
+    }
 }
 
 button.attachment-btn {
@@ -3831,6 +3870,13 @@ vg-controls.hide {
     display: flex;
     visibility: visible;
     flex: 0 0 460px;
+  }
+  &.smart-call-controls{
+    .chat-feature-main {
+      display: flex;
+      visibility: visible;
+      flex: 0 0 100%;
+    }
   }
 }
   .video-feature-main {

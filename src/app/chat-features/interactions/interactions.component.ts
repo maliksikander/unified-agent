@@ -17,6 +17,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { sender } from "../../models/User/Interfaces";
 import {CallControlsComponent} from '../../new-components/call-controls/call-controls.component';
 import {DOCUMENT} from '@angular/common';
+import {Router} from '@angular/router';
 
 declare var EmojiPicker: any;
 
@@ -48,17 +49,17 @@ export class InteractionsComponent implements OnInit {
   fullPostView: boolean = false;
   selectedCommentId: string;
   lastSeenMessageId;
-  chatDuringVideo = true;
+  chatDuringVideo = false;
   isVideoCam = false;
   isMute = false;
   isVideoCall = true;
-  isBotSuggestions = false;
+  isBotSuggestions = true;
   isConversationView = true;
   fullScreenView = false;
   videoSrc = 'assets/video/angry-birds.mp4';
   // isTransfer = false;
   // isConsult = false;
-  ctiBarView = true;
+  ctiBarView = false;
   ctiBoxView = false;
   element;
   dragPosition = {x: 0, y: 0};
@@ -89,7 +90,7 @@ export class InteractionsComponent implements OnInit {
   expanedHeight = 0;
   selectedLanguage = "";
   isRTLView = false;
-
+  currentRoute: string;
   message = "";
   convers: any[];
   ringing = false;
@@ -111,6 +112,7 @@ export class InteractionsComponent implements OnInit {
   FBPostData: any = null;
   FBPostComments: any = null;
   sendTypingStartedEventTimer: any = null;
+  test;
 
   constructor(
     private _sharedService: sharedService,
@@ -123,10 +125,26 @@ export class InteractionsComponent implements OnInit {
     private _finesseService: finesseService,
     private snackBar: MatSnackBar,
     private _translateService: TranslateService,
+    private router: Router,
     @Inject(DOCUMENT) private document: any
   ) {}
   ngOnInit() {
     this.element = document.documentElement;
+    // this.test = this._sharedService.callActiveEvent(msg: string);
+    // this._sharedService.callActiveEvent((msg: string);
+    //   console.log(this.test, 'ccccccccccccccccccccccccccccccccccccccccdddddddddddd');
+
+    // this._sharedService.callActiveEvent((msg: string).subscribe((msg: string) => {
+    //   console.log('Event message from Component ABBBBBBBBBBBBBB: ' + msg);
+    // });
+
+    // this._sharedService.callActiveEvent(msg)
+    // this._sharedService.isCallActive
+
+    this._sharedService.isCallActive.subscribe((msg: string) => {
+       console.log('Event message from Component AAAAAAAAAA: ' + msg);
+    });
+
 
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
@@ -1198,15 +1216,21 @@ export class InteractionsComponent implements OnInit {
   // }
   ctiControlBar() {
     this.ctiBoxView = true;
-    this.ctiBarView = false;
+    this.ctiBarView = true;
+    if (this.fullScreenView) {
+      this.exitFullscreen();
+    }
     const dialogRef = this.dialog.open(CallControlsComponent, {
       panelClass: "call-controls-dialog",
       hasBackdrop: false,
       data: { header: "Leave Conversation", message: `Are you sure you want to leave conversation with ‘John Taylor’?` }
     });
     dialogRef.afterClosed().subscribe((result) => {
+      this.router.navigate(["/customers/chats"]);
+      this.chatDuringVideo = false;
+      console.log(this.chatDuringVideo, 'chat chatDuringVideo')
       this.ctiBoxView = false;
-      this.ctiBarView = true;
+      this.ctiBarView = false;
     });
   }
 
