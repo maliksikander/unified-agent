@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+
 import {
   MatAutocompleteModule,
   MatButtonModule,
@@ -84,6 +85,7 @@ import { channelNamePipe } from "./pipes/getChannelLogoByName.pipe";
 import { NgxTimerModule } from "ngx-timer";
 import { getSenderIdPipe } from "./pipes/getSenderId.pipe";
 import { AuthPipe } from "./pipes/auth.pipe";
+import { TableFilterPipe } from "./pipes/table.pipe";
 import { timeDurationPipe } from "./pipes/timeDuration.pipe";
 import { timeDurationFromParticipantPipe } from "./pipes/timeDurationFromParticipant.pipe";
 import { getCheckedChannelSessionPipe } from "./pipes/getCheckedChannelSession.pipe";
@@ -125,6 +127,7 @@ import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
     channelNamePipe,
     getSenderIdPipe,
     AuthPipe,
+    TableFilterPipe,
     getCheckedChannelSessionPipe,
     filterAgentParticipantClass,
     SliceFilterPipe,
@@ -304,7 +307,8 @@ import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
     checkOutboundCallPipe,
     getCustomerAniPipe,
     checkConsultCallPipe,
-    MatPaginatorModule
+    MatPaginatorModule,
+    TableFilterPipe
   ]
 })
 export class SharedModule {}

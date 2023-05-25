@@ -3,6 +3,7 @@ import { CreateCustomerComponent } from "../create-customer/create-customer.comp
 import { AnnouncementDialogComponent } from "../supervisor/announcement-dialog/announcement-dialog.component";
 import { MatDialog, MatPaginatorModule } from "@angular/material";
 import { httpService } from "../services/http.service";
+import { sharedService } from "../services/shared.service";
 
 @Component({
   selector: "app-announcement",
@@ -12,8 +13,10 @@ import { httpService } from "../services/http.service";
 
 export class AnnouncementComponent implements OnInit {
   FilterSelected = "all";
-  currentItemsToShow :any ;
+  currentItemsToShow: any;
   displayAnnouncements = [];
+  status = '';
+
   // displayAnnouncements = [
   //   {
   //     message: "Hi. Please share the email ID for support team. Also share some number where I can call in emergency situations.",
@@ -94,25 +97,31 @@ export class AnnouncementComponent implements OnInit {
   //   }
   // ];
 
-  constructor(private dialog: MatDialog,private _httpService: httpService) { 
-    this._httpService.getAnnouncements().subscribe((data)=>{
-      console.log("data",data)
+  constructor(private dialog: MatDialog, private _httpService: httpService, private _sharedService: sharedService) {
+    this._httpService.getAnnouncements().subscribe((data) => {
+      console.log("data", data)
       this.currentItemsToShow = data;
-      this.displayAnnouncements =data;
+      this.displayAnnouncements = data;
     });
-    
+
   }
 
   ngOnInit() {
     this.currentItemsToShow = this.displayAnnouncements;
     //console.log(this.currentItemsToShow);
-    console.log("filter selected",this.FilterSelected);
+    console.log("filter selected", this.FilterSelected);
+    this.currentItemsToShow = this.displayAnnouncements;
+
   }
+
+
   onCreateAnnouncement() {
     const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
       panelClass: "new-announcement-dialog"
     });
   }
+
+
 
   onPageChange($event) {
     console.log($event)
@@ -121,31 +130,29 @@ export class AnnouncementComponent implements OnInit {
 
 
 
-  onUpdateAnnouncement(value) {
-  //    data:{};
-  //  const allAnnouncements=this._httpService.getAnnouncements().subscribe(
-  //   (res) => {
-  //     let temp = res.find( c => c.ID === value);
-      
-  //   });
-    console.log("update Announcement clicked",value);
-    console.log(this.displayAnnouncements[2]);
-    //console.log("update Announcement clicked",allAnnouncements);
+  onUpdateAnnouncement(value,index) {
+    //    data:{};
+    //  const allAnnouncements=this._httpService.getAnnouncements().subscribe(
+    //   (res) => {
+    //     let temp = res.find( c => c.ID === value);
 
+    //   });
+    console.log("update Announcement clicked", value);
+    console.log("edit specific id",this.displayAnnouncements[index]);
+    //console.log("update Announcement clicked",allAnnouncements);
     const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
       panelClass: "Edit-announcement-dialog"
     });
   }
+
+
+
   confirmationDialog(templateRef, data) {
-
-
     const result = this.displayAnnouncements.filter((obj) => {
       return obj.status === 'active';
     });
-
     console.log(result);
     console.log("deleted Announcement")
-
     this.dialog.closeAll();
     const dialogRef = this.dialog.open(templateRef, {
       width: "490px",
@@ -153,4 +160,21 @@ export class AnnouncementComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => { });
   }
+
+
+
+  // onChangeFilter(event){
+  //   //console.log(event);
+  //   let result = this.currentItemsToShow .filter((obj) => {
+  //     return obj.status === event.value;
+  //   });
+  //  // console.log(result);
+
+  //   this.currentItemsToShow =result;
+  //   console.log(this.currentItemsToShow,"dp");
+  //   //this.currentItemsToShow = this.displayAnnouncements;
+
+  // }
+
+
 }

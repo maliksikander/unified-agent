@@ -5,10 +5,11 @@
     </div>
     <div class="col-md-8 announcement-selection-area">
       <mat-form-field appearance="outline" class="selection-trigger">
-        <mat-select [(value)]="FilterSelected">
-          <mat-option value="all"> {{'announcements.all-announcements' | translate}}</mat-option>
+        <mat-select [(value)]="FilterSelected" [(ngModel)]="status">
+          <mat-option value=""> {{'announcements.all-announcements' | translate}}</mat-option>
           <mat-option value="active">{{'announcements.active-announcements' | translate}}</mat-option>
           <mat-option value="expired">{{'announcements.expired-announcements' | translate}}</mat-option>
+          <mat-option value="scheduled">Scheduled Announcements</mat-option>
         </mat-select>
       </mat-form-field>
 
@@ -31,7 +32,7 @@
         </thead>
         <tbody>
 
-          <tr *ngFor="let announcement of currentItemsToShow">
+          <tr *ngFor="let announcement of currentItemsToShow | tableFilter : status ;index as i">
             <td><span>{{announcement.announcementText}}</span></td>
             <td class="rel-teams"><span *ngFor="let teams of announcement.teamIds" class="active-team">{{teams}}</span>
             </td>
@@ -45,7 +46,7 @@
               <!--<button mat-mini-fab (click)="confirmationDialog(isConfirm, announcement)"><i-->
               <!--  class="material-icons">{{'announcements.delete' | translate}}</i></button>-->
 
-              <button mat-mini-fab (click)="onUpdateAnnouncement(announcement.id)" matTooltip="edit"><i
+              <button mat-mini-fab (click)="onUpdateAnnouncement(announcement.id ,i)" matTooltip="edit"><i
                   class="material-icons">edit</i></button>
               <button mat-mini-fab (click)="confirmationDialog(isConfirm, announcement)" matTooltip="delete"><i
                   class="material-icons">delete</i></button>
