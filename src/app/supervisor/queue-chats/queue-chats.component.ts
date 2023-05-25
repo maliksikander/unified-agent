@@ -23,7 +23,7 @@ export class QueueChatsComponent implements OnInit {
   selectedTeam: any = "";
   settings: any = {};
   selectedQueues: any = [];
-  sortOrder: "asc" | "desc" = "desc";
+  sortOrder: "asc" | "desc" = "asc";
 
   constructor(
     // private dialog: MatDialog,

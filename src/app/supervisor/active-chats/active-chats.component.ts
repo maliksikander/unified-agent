@@ -39,7 +39,7 @@ export class ActiveChatsComponent implements OnInit {
   settings = {};
   message = "hide";
   ascending: boolean = false;
-  sortOrder: "asc" | "desc" = "desc";
+  sortOrder: "asc" | "desc" = "asc";
   constructor(
     // private dialog: MatDialog,
     private _translateService: TranslateService,
