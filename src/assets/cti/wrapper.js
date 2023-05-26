@@ -171,6 +171,9 @@ function wrapper_getCurrentCallVariableValue(callObj, configCallVariable)
 function wrapper_updateCallvariablesCommand(callEvent)
 {
     var ani = callEvent.ani;
+    var dn = callEvent.dialedNumber ? callEvent.dialedNumber : "";
+    if(dn)
+        ani = ani + ":" + dn;
     var currentCallVariableValue = wrapper_getCurrentCallVariableValue(callEvent, config.callVariable);
     if(currentCallVariableValue == "")
     {
@@ -240,11 +243,18 @@ function wrapper_processDialog(event){
         }
 
         var currentCallVariableValue = wrapper_getCurrentCallVariableValue(event.response.dialog, config.callVariable);
-        if(currentCallVariableValue == "")
+        if(currentCallVariableValue == ""){
             event.response.dialog.customerNumber = event.response.dialog.ani;
-        else
-            event.response.dialog.customerNumber = currentCallVariableValue;
-
+            event.response.dialog.primaryDN = event.response.dialog.dialedNumber;
+        }
+        else{
+            event.response.dialog.customerNumber = currentCallVariableValue.split(":")[0];;
+            let primaryDN = currentCallVariableValue.split(":")[1];
+            if(primaryDN)
+                event.response.dialog.primaryDN = primaryDN;
+            else
+                event.response.dialog.primaryDN = event.response.dialog.dialedNumber;
+        }
         if(wrapper_callExist)
             return event;
     }catch(err){
