@@ -55,7 +55,6 @@ export class ActiveChatsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     this.filter = this.route.snapshot.queryParamMap.get("filter") ? this.route.snapshot.queryParamMap.get("filter") : "agents";
     if (this.filter == "agents") {
       this.FilterSelected = "agents";
@@ -81,11 +80,6 @@ export class ActiveChatsComponent implements OnInit {
     this.startRefreshTimer();
   }
 
-  toggleSorting() {
-    // Toggle the sorting order
-    this.sortOrder = this.sortOrder === "asc" ? "desc" : "asc";
-  }
-  
   SilentMonitor(_channelSession) {
     let obj = {
       topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, _channelSession.conversationId, "SILENT_MONITOR", "SUBSCRIBED"),
@@ -126,18 +120,30 @@ export class ActiveChatsComponent implements OnInit {
     );
   }
 
+  // Function to handle sorting and filtering for the agent tab
+  handleAgentTabClick() {
+    this.toggleSorting();
+    this.filterData();
+  }
+
+  // Function to handle sorting and fetching data for the bot tab
+  handleBotTabClick() {
+    this.toggleSorting();
+    this.getAllActiveChatsWithBots();
+  }
+
+  toggleSorting() {
+    // Toggle the sorting order
+    this.sortOrder = this.sortOrder === "asc" ? "desc" : "asc";
+  }
+
   getAllActiveChatsWithBots() {
     this._httpService.getAllActiveChatsWithBots().subscribe(
       (e) => {
         this.activeChatListWithBots = e;
+        // Sort the activeChatListWithBots array by activeSince property
         for (let data of this.activeChatListWithBots) {
-          data.chats.sort((a, b) => {
-            if (this.sortOrder === "asc") {
-              return a.activeSince - b.activeSince;
-            } else {
-              return b.activeSince - a.activeSince;
-            }
-          });
+          data.chats = this.sortChatsByActiveSince(data.chats);
         }
       },
       (err) => {
@@ -147,7 +153,6 @@ export class ActiveChatsComponent implements OnInit {
       }
     );
   }
-
 
   filterData() {
     try {
@@ -161,20 +166,24 @@ export class ActiveChatsComponent implements OnInit {
           });
         });
       }
-      
-      // Sort the filteredData array in descending order by activeSince property
+
+      // Sort the filteredData array by activeSince property
       for (let data of this.filteredData) {
-        data.chats.sort((a, b) => {
-          if (this.sortOrder === "asc") {
-            return a.activeSince - b.activeSince;
-          } else {
-            return b.activeSince - a.activeSince;
-          }
-        });
+        data.chats = this.sortChatsByActiveSince(data.chats);
       }
     } catch (err) {
       console.error("[filterData] Error :", err);
     }
+  }
+
+  sortChatsByActiveSince(chats: any[]) {
+    return chats.sort((a, b) => {
+      if (this.sortOrder === "asc") {
+        return a.activeSince - b.activeSince;
+      } else {
+        return b.activeSince - a.activeSince;
+      }
+    });
   }
 
   // team selection change callback event
