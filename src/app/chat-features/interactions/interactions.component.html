@@ -224,9 +224,11 @@
       </div>
     </div>
     <!--/Top bar-->
-<div #fullViewConversation class="main-conversation-feature {{chatDuringVideo ? 'chat-during-video' : 'no-chat-during-video'}} {{fullScreenView ? 'full-screen-call':''}}" [ngClass]="{'call-progress': isVideoCall || isAudioCall, 'smart-call-controls':ctiBarView}">
+<div #fullViewConversation class="main-conversation-feature {{chatDuringCall || (isAudioCall && isBotSuggestions) || (isVideoCall && isBotSuggestions) ||  (isConversationView && isBotSuggestions) ? 'dual-column-display' : isAudioCall || isVideoCall && !isBotSuggestions && !isConversationView ? 'full-column-display nnnn'  :'full-column-display'}}
+{{fullScreenView ? 'full-screen-call':''}}"
+     [ngClass]="{'call-in-progress': isVideoCall || isAudioCall, 'smart-call-controls':ctiBarView, 'bot-suggestions-active': isBotSuggestions, 'chat-view-active': isConversationView, 'multi-column-display' : chatDuringCall && isBotSuggestions, 'chat-suggestion-view' : isConversationView && isBotSuggestions && !chatDuringCall}">
 
-    <div class="video-feature-main" *ngIf="(isVideoCall && !ctiBarView) || isAudioCall && !ctiBarView">
+    <div class="video-feature-main" *ngIf="(isVideoCall && !ctiBarView) || (isAudioCall && !ctiBarView)">
       <div class="sub-call-participants">
         <span (click)="videoSwitch('jm')">
 <!--           <video #media [vgMedia]="media" id="76655" preload="auto" class="main-video-screen">&ndash;&gt;-->
@@ -261,7 +263,8 @@
       <vg-player>
         <vg-controls class="video-call-controlls">
           <ul>
-            <li (click)="chatInCall()" [ngClass]="{'active-action': chatDuringVideo}"><mat-icon>question_answer</mat-icon></li>
+            <li (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}"><mat-icon>question_answer</mat-icon></li>
+            <li (click)="isBotSuggestions = !isBotSuggestions" [ngClass]="{'active-action': isBotSuggestions}"><mat-icon>notes</mat-icon></li>
             <li><mat-icon>present_to_all</mat-icon></li>
             <li *ngIf="fullScreenView && isVideoCall" (click)="exitFullscreen()"><mat-icon>fullscreen_exit</mat-icon></li>
             <li class="full-screen-action"  (click)="ctiControlBar()"><mat-icon>picture_in_picture</mat-icon></li>
@@ -270,7 +273,7 @@
             <li *ngIf="isVideoCall" class="video-cam" [ngClass]="{'active-action': isVideoCam}" (click)="isVideoCam = !isVideoCam"><mat-icon>{{isVideoCam ? 'videocam' : 'videocam_off'}}</mat-icon><vg-play-pause></vg-play-pause>
             </li>
             <!--          <li class="mute-call"><mat-icon>pause</mat-icon></li>-->
-            <li class="end-call" (click)="isVideoCall = false"><mat-icon>call_end</mat-icon></li>
+            <li class="end-call" (click)="endActiveCall()"><mat-icon>call_end</mat-icon></li>
           </ul>
         </vg-controls>
         <video [hidden]="!isVideoCam" #media [vgMedia]="media" id="76655"  preload="auto" class="main-video-screen">
@@ -286,7 +289,7 @@
 
 <!--      <div class="video-call-controlls">-->
 <!--        <ul>-->
-<!--          <li (click)="chatInCall()" [ngClass]="{'active-action': chatDuringVideo}"><mat-icon>question_answer</mat-icon></li>-->
+<!--          <li (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}"><mat-icon>question_answer</mat-icon></li>-->
 <!--          <li><mat-icon>groups</mat-icon></li>-->
 <!--          <li (click)="videoPIP('76655')"><mat-icon>fullscreen</mat-icon></li>-->
 <!--          <li class="mute-call"><mat-icon>mic</mat-icon></li>-->
@@ -297,9 +300,9 @@
 <!--      </div>-->
     </div>
 
-    <div class="chat-feature-main">
+    <div class="chat-feature-main  {{(!isConversationView && isAudioCall) || (!isConversationView && isVideoCall) ? 'hide-conversation-view' :''}}">
 
-<!--      <div class="video-chat-trigger" *ngIf="isVideoCall">-->
+<!--      <div class="video-chat-trigger">-->
 <!--        <span (click)="isConversationView = false; isBotSuggestions = true" [ngClass]="{'active-action' : isBotSuggestions}"><img src="assets/images/robot-dark.svg" alt="bot"></span>-->
 <!--        <span (click)="isConversationView = true; isBotSuggestions = false" [ngClass]="{'active-action' : isConversationView}"><mat-icon>question_answer</mat-icon></span>-->
 <!--      </div>-->
@@ -329,29 +332,29 @@
             </div>
           </div>
 
-<div class="bot-suggestion-area" *ngIf="isBotSuggestions">
-  <div class="chat-intents">
-    <div class="chat-intents">
-      <div class="intents-inner">
-        <p *ngFor="let intent of intents">
-          {{intent}}
-          <!--              <b>{{intent.confidence.toFixed(2)}}</b>-->
-          <button mat-mini-fab class="canned-trigger edit-trigger">
-            <i class="material-icons">
-              edit
-            </i>
-          </button>
-          <button mat-mini-fab class="canned-trigger send-suggestion" >
-            <i class="material-icons">
-              send
-            </i>
-          </button>
-        </p>
-      </div>
-    </div>
+<!--<div class="bot-suggestion-area" *ngIf="isBotSuggestions">-->
+<!--  <div class="chat-intents">-->
+<!--    <div class="chat-intents">-->
+<!--      <div class="intents-inner">-->
+<!--        <p *ngFor="let intent of intents">-->
+<!--          {{intent}}-->
+<!--          &lt;!&ndash;              <b>{{intent.confidence.toFixed(2)}}</b>&ndash;&gt;-->
+<!--          <button mat-mini-fab class="canned-trigger edit-trigger">-->
+<!--            <i class="material-icons">-->
+<!--              edit-->
+<!--            </i>-->
+<!--          </button>-->
+<!--          <button mat-mini-fab class="canned-trigger send-suggestion" >-->
+<!--            <i class="material-icons">-->
+<!--              send-->
+<!--            </i>-->
+<!--          </button>-->
+<!--        </p>-->
+<!--      </div>-->
+<!--    </div>-->
 
-  </div>
-</div>
+<!--  </div>-->
+<!--</div>-->
           <!-- simple chat area -->
           <div id="chat-area-start"></div>
           <div class="instruction-content chat-session-main" *ngIf="isConversationView">
@@ -2074,6 +2077,33 @@
         </div>
       </div>
     </ng-template>
+  </div>
+
+  <div class="suggestion-main-area" *ngIf="isBotSuggestions">
+
+    <div class="bot-suggestion-area" >
+      <div class="chat-intents">
+        <div class="chat-intents">
+          <div class="intents-inner">
+            <p *ngFor="let intent of intents">
+              {{intent}}
+              <!--              <b>{{intent.confidence.toFixed(2)}}</b>-->
+              <button mat-mini-fab class="canned-trigger edit-trigger">
+                <i class="material-icons">
+                  edit
+                </i>
+              </button>
+              <button mat-mini-fab class="canned-trigger send-suggestion" >
+                <i class="material-icons">
+                  send
+                </i>
+              </button>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div>
 </div>
   </div>

@@ -258,7 +258,7 @@ mat-tab-group.chat-tab-area {
     .customer-bar-opened .chat-footer {
       width: calc(100% - 615px) !important;
     }
-    .call-progress{
+    .call-in-progress{
       .chat-footer{
         width: 100% !important;
         left: 0 !important;
@@ -3998,4 +3998,34 @@ mat-select{
   cursor: pointer;
   color: #999;
 }
+//for Call and bot suggestion
+#main-content {
+  .bar-expand {
+    .main-conversation-feature.bot-suggestions-active.dual-column-display.chat-suggestion-view .chat-feature-main {
+      flex: 1 0 0 !important;
+    }
+  }
+  .customer-bar-opened{
+    .main-conversation-feature.bot-suggestions-active.dual-column-display.chat-suggestion-view .chat-feature-main {
+      display: flex;
+      visibility: visible;
+      flex: calc(100% - 660px) 0 0 !important;
+    }
+  }
+  .customer-bar-opened, .bar-expand {
+    .main-conversation-feature.bot-suggestions-active.dual-column-display.chat-suggestion-view .chat-feature-main {
+      display: flex;
+      visibility: visible;
+      //flex: 63% 0 0 !important;
 
+      .main-chat-area, .chat-messages-main {
+        width: 100% !important;
+      }
+
+      .chat-footer {
+        width: 100% !important;
+        left: 0 !important;
+      }
+    }
+  }
+}

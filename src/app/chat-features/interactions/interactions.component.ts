@@ -49,13 +49,13 @@ export class InteractionsComponent implements OnInit {
   fullPostView: boolean = false;
   selectedCommentId: string;
   lastSeenMessageId;
-  chatDuringVideo = false;
+  chatDuringCall = false;
   isVideoCam = false;
   isMute = false;
   isVideoCall = false;
   isAudioCall = true;
-  isBotSuggestions = true;
-  isConversationView = true;
+  isBotSuggestions = false;
+  isConversationView = false;
   fullScreenView = false;
   videoSrc = 'assets/video/angry-birds.mp4';
   // isTransfer = false;
@@ -63,6 +63,16 @@ export class InteractionsComponent implements OnInit {
   ctiBarView = false;
   ctiBoxView = false;
   element;
+  intents = [
+    'Share number where I can call in emergency situations.',
+    'Please select an option from the self service menu below. Our automated system will help you register your\n' +
+    'complaint efficiently.',
+    'I am having issue with the server for a long time and filed complaint several times before but it is still not resolved. It is getting a big problem for me and I want it resolved as soon as possible without getting in to any fuss. Can anyone please help?\n',
+    'Share number where I can call in emergency situations.',
+    'Please select an option from the self service menu below. Our automated system will help you register your\n' +
+    'complaint efficiently.',
+    'I am having issue with the server for a long time and filed complaint several times before but it is still not resolved. It is getting a big problem for me and I want it resolved as soon as possible without getting in to any fuss. Can anyone please help?\n',
+  ];
   dragPosition = {x: 0, y: 0};
 
   ngAfterViewInit() {
@@ -1221,15 +1231,18 @@ export class InteractionsComponent implements OnInit {
     if (this.fullScreenView) {
       this.exitFullscreen();
     }
+
     const dialogRef = this.dialog.open(CallControlsComponent, {
       panelClass: "call-controls-dialog",
       hasBackdrop: false,
       data: { source: this.videoSrc, isMute: this.isMute, isVideoCam: this.isVideoCam, isAudioCall: this.isAudioCall, isVideoCall: this.isVideoCall }
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.router.navigate(["/customers/chats"]);
-      this.chatDuringVideo = false;
-      console.log(this.chatDuringVideo, 'chat chatDuringVideo')
+      // this.router.navigate(["/customers/chats"]);
+      this.chatDuringCall = false;
+      this.isBotSuggestions = false;
+      this.isConversationView = false;
+      console.log(this.chatDuringCall, 'chat chatDuringCall')
       this.ctiBoxView = false;
       this.ctiBarView = false;
     });
@@ -1238,7 +1251,8 @@ export class InteractionsComponent implements OnInit {
 
 
   chatInCall(){
-    this.chatDuringVideo = !this.chatDuringVideo;
+    this.chatDuringCall = !this.chatDuringCall;
+    this.isConversationView = !this.isConversationView;
   }
   videoSwitch(e){
     if(e == 'jm'){
@@ -1284,5 +1298,11 @@ export class InteractionsComponent implements OnInit {
     } else {
       return;
     }
+  }
+
+  endActiveCall(){
+    this.isVideoCall = false;
+    this.isAudioCall = false;
+    this.chatDuringCall = false;
   }
 }

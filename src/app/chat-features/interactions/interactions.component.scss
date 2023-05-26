@@ -1929,7 +1929,7 @@ ul.delivery-report {
 
 //Expand view 3rd party bar
 .customer-bar-opened {
-  .call-progress{
+  .call-in-progress{
     .chat-feature-main{
    filter: blur(5px);
       &:after {
@@ -1972,7 +1972,7 @@ ul.delivery-report {
     width: calc(100% - 394px) !important;
   }
 
-    .call-progress{
+    .call-in-progress{
       .main-chat-area, .chat-messages-main,  .interaction-inner, .chat-footer {
         width: 100% !important;
       }
@@ -1983,7 +1983,7 @@ ul.delivery-report {
       //  flex: 0 0 calc(100% - 320px);
       //  padding: 10px;
       //}
-      &.no-chat-during-video{
+      &.full-column-display{
         width: calc(100% - 320px) !important;
       }
     }
@@ -3838,17 +3838,18 @@ vg-controls.hide {
 
 
 //call & screen sharing structure changes
-.main-conversation-feature.call-progress {
+.main-conversation-feature.call-in-progress, .main-conversation-feature.bot-suggestions-active {
   display: flex;
   height: calc(100% - 52px);
   align-items: stretch;
   position: absolute;
   width: 100%;
-  .main-chat-area{
-    height: calc(100% - 40px);
-    position: relative;
-    top: 40px;
-  }
+  z-index: 3;
+  //.main-chat-area{
+  //  height: calc(100% - 40px);
+  //  position: relative;
+  //  top: 40px;
+  //}
 
 
 
@@ -3856,7 +3857,7 @@ vg-controls.hide {
     margin-left: 0;
     height: 200px;
     position: absolute;
-    z-index: 9;
+    z-index: 1;
     flex-direction: column;
     width: 100%;
     justify-content: space-evenly;
@@ -3895,7 +3896,7 @@ vg-controls.hide {
     height: inherit;
     z-index: 2;
   }
-&.chat-during-video{
+&.dual-column-display{
   .video-feature-main {
     flex: 0 0 calc(100% - 460px);
 
@@ -3905,14 +3906,34 @@ vg-controls.hide {
     visibility: visible;
     flex: 0 0 460px;
   }
+
   &.smart-call-controls{
     .chat-feature-main {
       display: flex;
       visibility: visible;
       flex: 0 0 100%;
     }
+    &.bot-suggestions-active{
+      .chat-feature-main{
+        flex: 1 0 0 !important;
+      }
+    }
+  }
+  &.chat-suggestion-view{
+    .chat-feature-main{
+      //display: flex;
+      visibility: visible;
+      flex: 1 0 0 !important;
+      //flex: 0 0 calc(100% - 460px) !important;
+    }
   }
 }
+
+  &.multi-column-display{
+    .video-feature-main {
+      flex: 0 0 calc(100% - 800px) !important;
+    }
+  }
   .video-feature-main {
     //background: #4e4e4e;
     position: relative;
@@ -4111,4 +4132,12 @@ vg-controls.hide {
   }
 }
 
-
+//Bot-suggestions and chat-view handling main
+.bot-suggestion-area{
+  width: 340px;
+}
+.chat-feature-main.hide-conversation-view {
+  opacity: 0;
+  visibility: hidden !important;
+  display: none !important;
+}
