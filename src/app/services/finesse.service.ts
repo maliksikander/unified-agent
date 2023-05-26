@@ -233,7 +233,12 @@ export class finesseService {
               return item.mediaAddress == dialog.fromAddress;
             });
             if (initiaterParticipant && initiaterParticipant.state.toLowerCase() == "active") {
+              let cacheId = `${this._cacheService.agent.id}:${dialog.id}`;
+              let cacheDialog:any = this.getDialogFromCache(cacheId);
+              console.log("Cache Dailog==>",cacheDialog)
+              if(cacheDialog && cacheDialog.dialogState.toLowerCase() !== "active"){
               this.handleActiveConsultCall(event, dialog);
+              }
             }
           }
         }
@@ -560,7 +565,7 @@ export class finesseService {
           callId
         );
         console.log("[handleCallActiveEvent] CIM Message ==>", cimMessage);
-        this.ccmChannelSessionApi(cimMessage, "", "", undefined);
+        // this.ccmChannelSessionApi(cimMessage, "", "", undefined);
       }
     } catch (e) {
       console.error("[Error] handleCallActiveEvent ==>", e);
@@ -597,7 +602,7 @@ export class finesseService {
           callId
         );
         console.log("[ handleCallDroppedEvent] CIM Message==>", cimMessage);
-        this.ccmChannelSessionApi(cimMessage, methodCalledOn, cacheId, event);
+        // this.ccmChannelSessionApi(cimMessage, methodCalledOn, cacheId, event);
       }
       this.customer = undefined;
     } catch (e) {
@@ -640,7 +645,7 @@ export class finesseService {
               callId
             );
             console.log("[OutBoundChannel] CIM Message==>", cimMessage);
-            this.ccmChannelSessionApi(cimMessage, "", "", undefined);
+            // this.ccmChannelSessionApi(cimMessage, "", "", undefined);
           }
         },
         (error) => {
@@ -956,7 +961,7 @@ export class finesseService {
         callId
       );
       console.log("[Consult End CIM Message]==>", cimMessage);
-      this.ccmChannelSessionApi(cimMessage, "", "", undefined);
+      // this.ccmChannelSessionApi(cimMessage, "", "", undefined);
       this.customer = undefined;
     } catch (e) {
       console.error("[Error] onConsultCallEndCall ==>", e);
@@ -986,7 +991,7 @@ export class finesseService {
         callId
       );
       console.log("[handleActiveConsultCall] CIM Message==>", cimMessage);
-      this.ccmChannelSessionApi(cimMessage, "", "", undefined);
+      // this.ccmChannelSessionApi(cimMessage, "", "", undefined);
     } catch (e) {
       console.error("[handleActiveConsultCall] Error ==>", e);
     }

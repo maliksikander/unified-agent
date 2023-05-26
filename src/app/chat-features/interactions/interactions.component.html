@@ -945,7 +945,7 @@
                                 </li>
 
                                 <li *ngIf="message.body.data.callLegs.length < 2" class="agent-pic call-services">
-                                  <span>==*{{
+                                  <span>{{
                                    message.body.data.callLegs[0].additionalDetail.dialog.queueName ?
                                     message.body.data.callLegs[0].additionalDetail.dialog.queueName : "N/A"
                                     }}</span>
@@ -956,7 +956,7 @@
                                     <span>
                                       <ng-container *ngFor="let callLeg of message.body.data.callLegs">
                                         <ng-container *ngIf="callLeg.startDirection != 'CONSULT'">
-                                          ==>{{ callLeg?.additionalDetail?.dialog.queueName ? callLeg?.additionalDetail?.dialog.queueName : "N/A" }}
+                                          {{ callLeg?.additionalDetail?.dialog.queueName ? callLeg?.additionalDetail?.dialog.queueName : "N/A" }}
                                         </ng-container>
                                       </ng-container>
                                     </span>
