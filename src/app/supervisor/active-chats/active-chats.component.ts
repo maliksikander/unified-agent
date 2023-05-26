@@ -130,6 +130,15 @@ export class ActiveChatsComponent implements OnInit {
     this._httpService.getAllActiveChatsWithBots().subscribe(
       (e) => {
         this.activeChatListWithBots = e;
+        for (let data of this.activeChatListWithBots) {
+          data.chats.sort((a, b) => {
+            if (this.sortOrder === "asc") {
+              return a.activeSince - b.activeSince;
+            } else {
+              return b.activeSince - a.activeSince;
+            }
+          });
+        }
       },
       (err) => {
         this._snackBarService.open(this._translateService.instant("snackbar.Error-Getting-Active-Chats-with-Bots"), "err");
@@ -138,6 +147,7 @@ export class ActiveChatsComponent implements OnInit {
       }
     );
   }
+
 
   filterData() {
     try {

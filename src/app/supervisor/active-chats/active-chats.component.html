@@ -64,7 +64,7 @@
             <th scope="col">{{ "supervisor.customer" | translate }}</th>
             <th scope="col">
               {{ "supervisor.active-since" | translate }}
-              <button mat-icon-button (click)="toggleSorting(); filterData()" matTooltip="Sort by Active Since">
+              <button mat-icon-button (click)="toggleSorting(); filterData(); getAllActiveChatsWithBots()" matTooltip="Sort by Active Since">
                 <mat-icon></mat-icon>
               </button>
             </th>
