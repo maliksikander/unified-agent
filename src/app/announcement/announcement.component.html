@@ -48,7 +48,7 @@
 
               <button mat-mini-fab (click)="onUpdateAnnouncement(announcement.id ,i)" matTooltip="edit"><i
                   class="material-icons">edit</i></button>
-              <button mat-mini-fab (click)="confirmationDialog(isConfirm, announcement)" matTooltip="delete"><i
+              <button mat-mini-fab (click)="confirmationDialog(isConfirm,announcement.id,announcement.status)" matTooltip="delete"><i
                   class="material-icons">delete</i></button>
             </span>
           </tr>

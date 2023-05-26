@@ -130,7 +130,7 @@ export class AnnouncementComponent implements OnInit {
 
 
 
-  onUpdateAnnouncement(value,index) {
+  onUpdateAnnouncement(value, index) {
     //    data:{};
     //  const allAnnouncements=this._httpService.getAnnouncements().subscribe(
     //   (res) => {
@@ -138,7 +138,7 @@ export class AnnouncementComponent implements OnInit {
 
     //   });
     console.log("update Announcement clicked", value);
-    console.log("edit specific id",this.displayAnnouncements[index]);
+    console.log("edit specific id", this.displayAnnouncements[index]);
     //console.log("update Announcement clicked",allAnnouncements);
     const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
       panelClass: "Edit-announcement-dialog"
@@ -147,18 +147,21 @@ export class AnnouncementComponent implements OnInit {
 
 
 
-  confirmationDialog(templateRef, data) {
-    const result = this.displayAnnouncements.filter((obj) => {
-      return obj.status === 'active';
-    });
-    console.log(result);
-    console.log("deleted Announcement")
-    this.dialog.closeAll();
-    const dialogRef = this.dialog.open(templateRef, {
-      width: "490px",
-      panelClass: "confirm-dialog"
-    });
-    dialogRef.afterClosed().subscribe((result) => { });
+  confirmationDialog(templateRef, id, status) {
+    // const result = this.displayAnnouncements.filter((obj) => {
+    //   return obj.status === 'active';
+    // });
+    // console.log(result);
+    if (id && status === 'active') {
+      console.log("deleted Announcement")
+      this.dialog.closeAll();
+      const dialogRef = this.dialog.open(templateRef, {
+        width: "490px",
+        panelClass: "confirm-dialog"
+      });
+      dialogRef.afterClosed().subscribe((result) => { });
+    }
+
   }
 
 

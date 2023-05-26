@@ -9,7 +9,7 @@ import { appConfigService } from "./appConfig.service";
 export class httpService {
   apiEndpoints;
   mockurl = "https://57be0c49-6ed4-469c-a93a-13f49e48e8c2.mock.pstmn.io";
-  url="https://3e4a011b-523f-403d-9b76-3d5054db5a09.mock.pstmn.io/announcement";
+  url="https://3e4a011b-523f-403d-9b76-3d5054db5a09.mock.pstmn.io";
 
   constructor(public _appConfigService: appConfigService, private _httpClient: HttpClient) {
     this.apiEndpoints = {
@@ -30,15 +30,50 @@ export class httpService {
       ccmChannelSession: "/message/receive",
       tasks: "/tasks",
       getAllMRDs: "/media-routing-domains",
-      defaultOutboundChannel: "/channels/defaultoutbound"
+      defaultOutboundChannel: "/channels/defaultoutbound",
+      "announcement": "/announcement"
     };
   }
 
+ /////////////////Announcements CURD ///////////////////////////////////// 
+
+  addAnnouncemenent(obj): Observable<any> {
+  return this._httpClient.post<any>(`${this.url}${this.apiEndpoints.announcement}`, obj, {
+    headers: new HttpHeaders({
+      "Content-Type": "application/json"
+    })
+  });
+}
+
+updateAnnouncemenent(data, id): Observable<any> {
+  return this._httpClient.put<any>(`${this.url}${this.apiEndpoints.announcement}/${id}`, data, {
+    headers: new HttpHeaders({
+      "Content-Type": "application/json"
+    })
+  });
+}
+
   getAnnouncements(): Observable<any>{
-    
     //https://3e4a011b-523f-403d-9b76-3d5054db5a09.mock.pstmn.io/announcement
-    return this._httpClient.get<any>(`${this.url}`);
+    return this._httpClient.get<any>(`${this.url}${this.apiEndpoints.announcement}`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
   }
+
+  deleteAnnouncementById(id): Observable<any> {
+    return this._httpClient.delete<any>(`${this.url}${this.apiEndpoints.announcement}/${id}`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+
+
+
+
 
 
   login(user): Observable<any> {
@@ -50,6 +85,7 @@ export class httpService {
   }
 
   ///////////////////////// Customer Schema CRUD /////////////////
+  
 
   getSchemaTypes(): Observable<any> {
     return this._httpClient.get<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.schemaTypes}`, {
