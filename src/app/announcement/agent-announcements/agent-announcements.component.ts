@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { cacheService } from "../../services/cache.service";
 
 @Component({
   selector: "app-agent-announcements",
@@ -6,6 +7,7 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./agent-announcements.component.scss"]
 })
 export class AgentAnnouncementsComponent implements OnInit {
+  agentsData:any ;
   announcements = [
     {
       message:
@@ -33,11 +35,19 @@ export class AgentAnnouncementsComponent implements OnInit {
       startTime: "January 16, 2020 - 09:35AM"
     }
   ];
+ 
 
-  constructor() {}
+  constructor( private _cacheService: cacheService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.agentsData=this._cacheService.agent.userTeam;
+    //let teamData=;
+    console.log("this._cacheService.agent",this.agentsData);
+  }
   onUnreadClick(announcement) {
+    console.log("this._cacheService.agent",this.agentsData);
+   
     announcement.isRead = true;
   }
+    
 }

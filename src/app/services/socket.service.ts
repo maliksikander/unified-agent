@@ -142,6 +142,17 @@ export class socketService {
       this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: res.agentPresence });
     });
 
+    this.socket.on("ANNOUNCEMENT_CREATED", (res: any) => {
+      console.log("ANNOUNCEMENT_CREATED", res);
+      //this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: res.agentPresence });
+    });
+
+    this.socket.on("ANNOUNCEMENT_DELETED", (res: any) => {
+      console.log("ANNOUNCEMENT_DELETED", res);
+      //this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: res.agentPresence });
+    });
+
+
     this.socket.on("errors", (res: any) => {
       console.error("socket errors ", res);
       this.onSocketErrors(res);
@@ -308,6 +319,7 @@ export class socketService {
   revokeChatRequest(data) {
     this._sharedService.serviceChangeMessage({ msg: "closePushModeRequestHeader", data: data });
   }
+  //this.socket.on(){}
 
   onCimEventHandler(cimEvent, conversationId) {
     console.log("cim event ", JSON.parse(JSON.stringify(cimEvent)));

@@ -18,7 +18,7 @@ export class httpService {
       schemaTypes: "/attributeTypes",
       customers: "/customers",
       labels: "/label",
-      userPreference: "/userPreference",
+      userPreference: "/userPreference", 
       pullModeList: "/pull-mode-list",
       fileServer: "/api/downloadFileStream?filename=",
       uploadFile: "/api/uploadFileStream",
@@ -31,22 +31,30 @@ export class httpService {
       tasks: "/tasks",
       getAllMRDs: "/media-routing-domains",
       defaultOutboundChannel: "/channels/defaultoutbound",
-      "announcement": "/announcement"
+      announcement: "/announcement"
     };
   }
 
- /////////////////Announcements CURD ///////////////////////////////////// 
+ ///////////////////////////// Announcements CURD ///////////////////////////////////// 
 
   addAnnouncemenent(obj): Observable<any> {
-  return this._httpClient.post<any>(`${this.url}${this.apiEndpoints.announcement}`, obj, {
+  return this._httpClient.post<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}`, obj, {
     headers: new HttpHeaders({
       "Content-Type": "application/json"
     })
   });
 }
 
-updateAnnouncemenent(data, id): Observable<any> {
-  return this._httpClient.put<any>(`${this.url}${this.apiEndpoints.announcement}/${id}`, data, {
+updateAnnouncemenentById(data, id): Observable<any> {
+  return this._httpClient.put<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}/${id}`, data, {
+    headers: new HttpHeaders({
+      "Content-Type": "application/json"
+    })
+  });
+}
+
+getAnnouncementsById(id): Observable<any>{
+  return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}/${id}`, {
     headers: new HttpHeaders({
       "Content-Type": "application/json"
     })
@@ -54,8 +62,8 @@ updateAnnouncemenent(data, id): Observable<any> {
 }
 
   getAnnouncements(): Observable<any>{
-    //https://3e4a011b-523f-403d-9b76-3d5054db5a09.mock.pstmn.io/announcement
-    return this._httpClient.get<any>(`${this.url}${this.apiEndpoints.announcement}`, {
+    
+    return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}`, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
@@ -63,7 +71,7 @@ updateAnnouncemenent(data, id): Observable<any> {
   }
 
   deleteAnnouncementById(id): Observable<any> {
-    return this._httpClient.delete<any>(`${this.url}${this.apiEndpoints.announcement}/${id}`, {
+    return this._httpClient.delete<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}/${id}`, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })

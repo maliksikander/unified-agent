@@ -91,7 +91,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit() {
     this.getSupportedLanguages();
-    this.getReasonCodes();
+    this.getReasonCodes(); 
   }
   getReasonCodes() {
     this._httpService.getReasonCodes().subscribe(

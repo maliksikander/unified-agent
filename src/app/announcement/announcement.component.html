@@ -13,8 +13,8 @@
         </mat-select>
       </mat-form-field>
 
-      <button mat-button class="new-announcement" (click)="onCreateAnnouncement()"><span class="announcement-icon"><img
-            src="assets/images/promotion.svg"> </span>{{'announcements.new-announcement' | translate}}
+      <button mat-button class="new-announcement" (click)="onNewAnnouncement()"><span class="announcement-icon"><img
+            src="assets/images/promotion.svg"> </span>{{'announcements.new-announcement' | translate}} 
       </button>
     </div>
   </div>
@@ -77,7 +77,7 @@
       <div class="confirmation-action">
         <button mat-raised-button class="announcements.close-btn" mat-dialog-close>{{'announcements.cancel' |
           translate}}</button>
-        <button mat-raised-button class="announcements.confirm-btn">{{'announcements.confirm' | translate}}</button>
+        <button mat-raised-button class="announcements.confirm-btn" (click)="confirmDelete()">{{'announcements.confirm' | translate}}</button>
       </div>
     </div>
   </div>
