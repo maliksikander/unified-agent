@@ -2081,24 +2081,37 @@
 
   <div class="suggestion-main-area" *ngIf="isBotSuggestions">
 
-    <div class="bot-suggestion-area" >
+    <div class="bot-suggestion-area">
       <div class="chat-intents">
         <div class="chat-intents">
+          <div class="search-wrapper">
+            <mat-form-field appearance="outline">
+              <input matInput type="text" placeholder="Search knowledge base" />
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+          </div>
           <div class="intents-inner">
-            <p *ngFor="let intent of intents">
-              {{intent}}
+            <div class="suggestion-main {{intent.type}}" *ngFor="let intent of intents">
+              <div class="suggestion-title">
+                  <span class="suggestion-type">
+                <mat-icon>{{intent.type == 'inCallSuggestion' ? 'call' : intent.type == 'knowledgeBase' ? 'wb_incandescent' : 'chat_bubble' }}</mat-icon>
+              </span>
+                {{intent.title}}
+                <time>11:22 AM</time>
+              </div>
+              <span class="suggestion-message">{{intent.message}}</span>
               <!--              <b>{{intent.confidence.toFixed(2)}}</b>-->
               <button mat-mini-fab class="canned-trigger edit-trigger">
                 <i class="material-icons">
                   edit
                 </i>
               </button>
-              <button mat-mini-fab class="canned-trigger send-suggestion" >
+              <button mat-mini-fab class="canned-trigger send-suggestion">
                 <i class="material-icons">
                   send
                 </i>
               </button>
-            </p>
+            </div>
           </div>
         </div>
 

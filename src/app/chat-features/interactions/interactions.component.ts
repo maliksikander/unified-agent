@@ -52,8 +52,8 @@ export class InteractionsComponent implements OnInit {
   chatDuringCall = false;
   isVideoCam = false;
   isMute = false;
-  isVideoCall = false;
-  isAudioCall = true;
+  isVideoCall = true;
+  isAudioCall = false;
   isBotSuggestions = false;
   isConversationView = false;
   fullScreenView = false;
@@ -64,14 +64,33 @@ export class InteractionsComponent implements OnInit {
   ctiBoxView = false;
   element;
   intents = [
-    'Share number where I can call in emergency situations.',
-    'Please select an option from the self service menu below. Our automated system will help you register your\n' +
-    'complaint efficiently.',
-    'I am having issue with the server for a long time and filed complaint several times before but it is still not resolved. It is getting a big problem for me and I want it resolved as soon as possible without getting in to any fuss. Can anyone please help?\n',
-    'Share number where I can call in emergency situations.',
-    'Please select an option from the self service menu below. Our automated system will help you register your\n' +
-    'complaint efficiently.',
-    'I am having issue with the server for a long time and filed complaint several times before but it is still not resolved. It is getting a big problem for me and I want it resolved as soon as possible without getting in to any fuss. Can anyone please help?\n',
+    {
+      type: 'messageSuggestion',
+      title: 'Share number where I can call in emergency situations.',
+      message: `Dear Customer,
+      You may contact our 24/7 available support team via E-mail or Call.
+      Customer Support Email:  support@abctelecom.com`
+    },
+    {
+      type: 'knowledgeBase',
+      title: 'Share customer support email address with customer',
+      message: `Dear Customer,
+      You may contact our 24/7 available support team via E-mail or Call.
+      Customer Support Email:
+      'support@abctelecom.com
+      Customer Support Voice:
+      +4489858785, +4444787485`
+    },
+    {
+      type: 'inCallSuggestion',
+      title: 'What are the customer support official timings?',
+      message: `Dear Customer,
+      You may contact our 24/7 available support team via E-mail or Call.
+      Customer Support Email:
+      support@abctelecom.com
+      Customer Support Voice:
+      +4489858785, +4444787485`
+    },
   ];
   dragPosition = {x: 0, y: 0};
 
@@ -1238,7 +1257,7 @@ export class InteractionsComponent implements OnInit {
       data: { source: this.videoSrc, isMute: this.isMute, isVideoCam: this.isVideoCam, isAudioCall: this.isAudioCall, isVideoCall: this.isVideoCall }
     });
     dialogRef.afterClosed().subscribe((result) => {
-      // this.router.navigate(["/customers/chats"]);
+      this.router.navigate(["/customers/chats"]);
       this.chatDuringCall = false;
       this.isBotSuggestions = false;
       this.isConversationView = false;
