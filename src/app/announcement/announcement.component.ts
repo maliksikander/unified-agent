@@ -22,6 +22,8 @@ export class AnnouncementComponent implements OnInit {
   allAnnouncements: any;
   obj={}
   formData:any ={};
+  pageSize:Number=25;
+  length;
 
   // displayAnnouncements = [
   //   {
@@ -141,6 +143,8 @@ export class AnnouncementComponent implements OnInit {
   }
 
   onPageChange($event) {
+    // this.pageSize=10;
+    // this.length
     console.log($event)
     this.currentItemsToShow = this.displayAnnouncements.slice($event.pageIndex * $event.pageSize, $event.pageIndex * $event.pageSize + $event.pageSize);
   }

@@ -63,7 +63,7 @@ getAnnouncementsById(id): Observable<any>{
 
   getAnnouncements(): Observable<any>{
     
-    return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}`, {
+    return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}?page=${1}&limit=${10}`, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })

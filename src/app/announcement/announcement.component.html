@@ -54,7 +54,7 @@
           </tr>
         </tbody>
       </table>
-      <mat-paginator (page)="onPageChange($event)" [length]="22" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+      <mat-paginator (page)="onPageChange($event)" [length]="10" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
       </mat-paginator>
       <!--<pagination-controls  (pageChange)="p=$event" previousLabel="" nextLabel="" maxSize='7'></pagination-controls> -->
       <!--<h3 *ngIf="!dataBool" class="noData" translate>No_data</h3>-->
@@ -75,9 +75,9 @@
     <div class="confirmation-content">
       <p>{{'announcements.sure-delete-announcement' | translate}}</p>
       <div class="confirmation-action">
-        <button mat-raised-button class="announcements.close-btn" mat-dialog-close>{{'announcements.cancel' |
+        <button mat-raised-button class="announcements.close-btn" [mat-dialog-close]="true">{{'announcements.cancel' |
           translate}}</button>
-        <button mat-raised-button class="announcements.confirm-btn" (click)="confirmDelete()">{{'announcements.confirm' | translate}}</button>
+        <button mat-raised-button class="announcements.confirm-btn" (click)="confirmDelete()" [mat-dialog-close]="true">{{'announcements.confirm' | translate}}</button>
       </div>
     </div>
   </div>

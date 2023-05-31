@@ -1,8 +1,8 @@
 <div class="announcement-tab-content">
   <div class="announcement-content" [ngClass]="{'read-announcement': announcement.isRead}" *ngFor="let announcement of announcements">
     <p (click)="onUnreadClick(announcement)">
-      {{announcement.message}}
-      <time>{{announcement.startTime}}</time>
+      {{announcement.announcementText}}
+      <time>{{announcement.scheduledTime}}</time>
     </p>
   </div>
 </div>
