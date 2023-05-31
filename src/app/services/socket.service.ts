@@ -16,7 +16,8 @@ import { AuthService } from "./auth.service";
 import { TopicParticipant } from "../models/User/Interfaces";
 import { TranslateService } from "@ngx-translate/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import {announcementService} from "./announcement.service"
+import {announcementService} from "./announcement.service";
+
 //const mockTopicData: any = require("../mocks/mockTopicData.json");
 
 @Injectable({
@@ -147,6 +148,7 @@ export class socketService {
     this.socket.on("ANNOUNCEMENT_CREATED", (res: any) => {
       console.log("ANNOUNCEMENT_CREATED", res);
       this._announcementService.addCreatedAnnoucement(res);
+      this._snackbarService.open(this._translateService.instant("snackbar.New-Announcement"), "err");
     });
 
     this.socket.on("ANNOUNCEMENT_DELETED", (res: any) => {

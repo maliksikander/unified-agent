@@ -78,7 +78,8 @@
     "Conference-request-placed-successfully":"Conference request placed successfully_spa",
     "Error-Getting-Queues-List":"Error Getting Queues List_spa",
     "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_spa",
-    "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_spa"
+    "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_spa",
+    "New-Announcement":"New-Announcements_spa"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_spa",

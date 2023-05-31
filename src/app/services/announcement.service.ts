@@ -16,8 +16,16 @@ export class announcementService {
     getAnnouncementList() {
         // const arr1 = [1, 2, 3, 4];
         //  const queryParams = `?teamIds=${arr1.join(',')}`;
-        const teamIds = this._cacheService.agent.supervisedTeams.concat(this._cacheService.agent.userTeam);
-        this._httpService.getAnnouncementsByTeamIds(teamIds).subscribe((data) => {
+        const teamIds = this._cacheService.agent.supervisedTeams.map(item => item.teamId);
+        teamIds.push(this._cacheService.agent.userTeam.teamId);
+        
+        const uniqueTeamIds = Array.from(new Set(teamIds));
+          
+          // Create a Set to remove duplicates
+         // const uniqueTeamIds = [...new Set(teamIds)];
+        //let teamIds = this._cacheService.agent.supervisedTeams.concat(this._cacheService.agent.userTeam.teamId);
+        console.log("%%%%%% CONCAT %%%%%%%",teamIds);
+        this._httpService.getAnnouncementsByTeamIds(uniqueTeamIds,"active").subscribe((data) => {
             console.log("data", data)
             this.announcementList = data.filter((item) => item.superviserId !== this._cacheService.agent.id);
             console.log(" this.announcementList====>>>",  this.announcementList)

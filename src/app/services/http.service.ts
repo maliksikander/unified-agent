@@ -54,8 +54,8 @@ updateAnnouncemenentById(data, id): Observable<any> {
   });
 }
 
-AnnouncementSeenByUser(id,data): Observable<any>{
-  return this._httpClient.put<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcementSeenBy}/${id}`,data, {
+AnnouncementSeenByUser(id,announcementId): Observable<any>{
+  return this._httpClient.put<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcementSeenBy}/${id}`,announcementId, {
     headers: new HttpHeaders({
       "Content-Type": "application/json"
     })
@@ -69,8 +69,8 @@ getAnnouncementsById(id): Observable<any>{
     })
   });
 }
-getAnnouncementsByTeamIds(teamIds): Observable<any>{
-  return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}/?${teamIds.join(',')}`, {
+getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
+  return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}/?teamIds=${teamIds.join(',')}&status=${status}`, {
     headers: new HttpHeaders({
       "Content-Type": "application/json"
     })

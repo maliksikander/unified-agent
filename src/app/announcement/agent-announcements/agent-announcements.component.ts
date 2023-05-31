@@ -9,7 +9,7 @@ import { announcementService } from "src/app/services/announcement.service";
   styleUrls: ["./agent-announcements.component.scss"]
 })
 export class AgentAnnouncementsComponent implements OnInit {
-  agentsData:any ;
+  agentsId={};
   announcements =[];
   // announcements = [
   //   {
@@ -52,17 +52,33 @@ export class AgentAnnouncementsComponent implements OnInit {
     //   console.log("data", data)
     //   this.announcements = data;
     //   this.sortList();
-      
+    
     // });
 
-    // this.agentsData=this._cacheService.agent.userTeam;
-    // //let teamData=;
-    // console.log("this._cacheService.agent",this.agentsData);
+     this.agentsId=this._cacheService.agent.id;
+
+     console.log("this._cacheService.agent",this.agentsId);
+     console.log("USER_TEAM",this._cacheService.agent);
+     
 
   }
-  onUnreadClick(announcement) {
-    console.log("this._cacheService.agent",this.agentsData);
-    announcement.isRead = true;
+  onUnreadClick(announcement,announcementId) {
+    console.log("USER_TEAM",this._cacheService.agent);
+    console.log("this._cacheService.agent",this.agentsId ,"iDDDD",announcementId);
+   // announcement.isRead = true;
+    //announcement.announcementText="hellllllo";
+    let obj={
+      "userId":this.agentsId
+    }
+    this._httpService.AnnouncementSeenByUser(announcementId,obj).subscribe({
+      next: (val: any) => {
+        //announcement.seenBy=val.result.seenBy;
+        console.log("read successfully",announcement);
+      },
+      error: (err: any) => {
+        console.error(err);
+      },
+    });
 
   }
     
