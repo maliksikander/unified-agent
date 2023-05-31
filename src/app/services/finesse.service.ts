@@ -67,7 +67,7 @@ export class finesseService {
         }
       }
     } else {
-      console.log("isCiscoEnabled==>", hasVoiceMrd);
+      // console.log("isCiscoEnabled==>", hasVoiceMrd);
       console.error("Cisco is Not Enabled, Check configurations to enable it.");
       this._snackbarService.open("CISCO is not Enabled!", "err");
     }
@@ -221,9 +221,9 @@ export class finesseService {
           if (currentParticipant.mediaAddress !== dialog.fromAddress) this.handleCiscoRona(cacheId, dialog);
         }
       } else if (dialog.isCallEnded == 1) {
-        console.log("consult call dropped1==>");
+        // console.log("consult call dropped1==>");
         if (currentParticipant.mediaAddress !== dialog.fromAddress) {
-          console.log("consult call dropped2==>");
+          // console.log("consult call dropped2==>");
           this.handleDroppedConsultCall(event, cacheId, dialog);
         }
       } else if (dialog.state.toLowerCase() == "active") {
@@ -235,7 +235,7 @@ export class finesseService {
             if (initiaterParticipant && initiaterParticipant.state.toLowerCase() == "active") {
               let cacheId = `${this._cacheService.agent.id}:${dialog.id}`;
               let cacheDialog:any = this.getDialogFromCache(cacheId);
-              console.log("Cache Dailog==>",cacheDialog)
+              console.log("Cache Dialog==>",cacheDialog)
               if(cacheDialog && cacheDialog.dialogState.toLowerCase() !== "active"){
               this.handleActiveConsultCall(event, dialog);
               }
@@ -249,9 +249,9 @@ export class finesseService {
         }
         this.removeNotification(dialog);
       } else if (dialog.state.toLowerCase() == "dropped" && dialog.isCallEnded == 1) {
-        console.log("consult call dropped1==>");
+        // console.log("consult call dropped1==>");
         if (currentParticipant.mediaAddress !== dialog.fromAddress) {
-          console.log("consult call dropped2==>");
+          // console.log("consult call dropped2==>");
           this.handleDroppedConsultCall(event, cacheId, dialog);
         }
       }
@@ -304,14 +304,14 @@ export class finesseService {
     try {
       let dialogState = dialogEvent.response;
       if (this.customer && dialogState.dialog && dialogState.dialog.participants) {
-        console.log("Dialog State 1==>");
+        // console.log("Dialog State 1==>");
         let participants = dialogState.dialog.participants;
         let cacheId = `${this._cacheService.agent.id}:${dialogState.dialog.id}`;
         if (Array.isArray(participants) && participants.length > 0) {
-          console.log("Dialog State 2==>");
+          // console.log("Dialog State 2==>");
           this.handleDialogParticipants(dialogEvent, participants, cacheId);
         } else {
-          console.log("Dialog State 3==>");
+          // console.log("Dialog State 3==>");
           console.log("No Participant Found==>");
           // this.handleDialogParticipantObject(participants, dialogState, cacheId);
         }
@@ -325,22 +325,22 @@ export class finesseService {
           dialogState.dialog.callType.toLowerCase() == "conference")
       ) {
         console.log("direct transfer case cce==>");
-        console.log("Dialog State 4==>");
+        // console.log("Dialog State 4==>");
         let participants = dialogState.dialog.participants;
         let cacheId = `${this._cacheService.agent.id}:${dialogState.dialog.id}`;
         if (Array.isArray(participants)) {
-          console.log("Dialog State 5==>");
+          // console.log("Dialog State 5==>");
           this.handleDialogParticipants(dialogEvent, participants, cacheId);
         } else {
-          console.log("Dialog State 6==>");
+          // console.log("Dialog State 6==>");
           console.log("No Participant Found==>");
           // this.handleDialogParticipantObject(participants, dialogState, cacheId);
         }
       } else {
         // console.log("na g==>");
-        console.log("Dialog State 7==>");
+        // console.log("Dialog State 7==>");
         if (!this.customer) {
-          console.log("Dialog State 8==>");
+          // console.log("Dialog State 8==>");
           this.handleRefreshCase(dialogEvent, dialogState);
         }
       }
@@ -356,25 +356,25 @@ export class finesseService {
         let currentParticipant = item.mediaAddress == this.finesseAgent.extension ? item : undefined;
         if (currentParticipant) {
           if (dialogState.dialog.isCallEnded === 1) {
-            console.log("handle dialog 1==>");
+            // console.log("handle dialog 1==>");
             let item: any = this.getDialogFromCache(cacheId);
             if (item && item.dialogState == "active") {
-              console.log("handle dialog 2==>");
+              // console.log("handle dialog 2==>");
               if (this.timeoutId) clearInterval(this.timeoutId);
 
               this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, "DIALOG_ENDED");
             }
           } else if (dialogState.dialog.state.toLowerCase() == "active") {
-            console.log("handle dialog 3==>");
+            // console.log("handle dialog 3==>");
             if (currentParticipant.state.toLowerCase() == "active") {
-              console.log("handle dialog 4==>");
+              // console.log("handle dialog 4==>");
               let dialogCache: any = this.getDialogFromCache(cacheId);
               // console.log("dialog cache==>", dialogCache);
               if (dialogCache && dialogCache.dialogState == "alerting") {
-                console.log("handle dialog 5==>");
+                // console.log("handle dialog 5==>");
                 this.handleCallActiveEvent(dialogEvent, dialogState);
               } else {
-                console.log("handle dialog 6==>");
+                // console.log("handle dialog 6==>");
                 // if (dialogState.dialog.callType == "AGENT_INSIDE" || dialogState.dialog.callType == "OUT") {
                 //   this.handleCallActiveEvent(dialogEvent, dialogState);
                 // } else
@@ -384,29 +384,29 @@ export class finesseService {
                     this._appConfigService.finesseConfig.finesseFlavor.toLowerCase() == "ccx") &&
                     dialogState.dialog.callType.toLowerCase() == "transfer")
                 ) {
-                  console.log("handle dialog 7==>");
+                  // console.log("handle dialog 7==>");
                   // consult-transfer active case
                   let dialogCache: any = this.getDialogFromCache(cacheId);
                   if (!dialogCache) {
-                    console.log("handle dialog 8==>");
+                    // console.log("handle dialog 8==>");
                     this.handleActiveConsultTransferORConferenceCCall(dialogEvent, "CONSULT_OFFERED");
                   }
                 } else if (dialogState.dialog.callType.toLowerCase() == "conference") {
-                  console.log("handle dialog 9==>");
+                  // console.log("handle dialog 9==>");
                   if (!dialogCache) {
-                    console.log("handle dialog 10==>");
+                    // console.log("handle dialog 10==>");
                     let consultDialogId = dialogState.dialog.secondaryId;
                     let consultCallDialogCacheId = `${this._cacheService.agent.id}:${consultDialogId}`;
                     let consultCacheDialog = this.getDialogFromCache(consultCallDialogCacheId);
                     if (!consultCacheDialog) {
-                      console.log("handle dialog 11==>");
+                      // console.log("handle dialog 11==>");
                       this.handleActiveConsultTransferORConferenceCCall(dialogEvent, "CONFERENCE");
                     }
                   }
                 }
               }
             } else if (currentParticipant.state.toLowerCase() == "dropped") {
-              console.log("handle dialog 12==>");
+              // console.log("handle dialog 12==>");
               let callType;
               if (dialogState.dialog.callType.toLowerCase() == "transfer" || dialogState.dialog.callType.toLowerCase() == "offered") {
                 callType = "DIRECT_TRANSFER";
@@ -416,31 +416,31 @@ export class finesseService {
                 ) {
                   callType = "CONSULT_TRANSFER";
                 }
-                console.log("handle dialog 13==>");
+                // console.log("handle dialog 13==>");
                 let item: any = this.getDialogFromCache(cacheId);
                 if (item && item.dialogState == "active") {
-                  console.log("handle dialog 13.2==>");
+                  // console.log("handle dialog 13.2==>");
                   this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, callType);
                 } else if (item && item.dialogState == "alerting") {
-                  console.log("handle dialog 13.3==>");
+                  // console.log("handle dialog 13.3==>");
                   if (dialogState.dialog.state.toLowerCase() == "active") {
-                    console.log("handle dialog 13.4==>");
+                    // console.log("handle dialog 13.4==>");
                     this.handleCiscoRona(cacheId, dialogState);
                   }
                 }
               } else if (dialogState.dialog.callType.toLowerCase() == "consult_offered") {
-                console.log("handle dialog 14==>");
+                // console.log("handle dialog 14==>");
                 callType = "CONSULT_TRANSFER";
                 this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, callType);
               } else if (
                 dialogState.dialog.callType.toLowerCase() == "conference" ||
                 dialogState.dialog.callType.toLowerCase() == "preroute_acd_in"
               ) {
-                console.log("handle dialog 15==>");
+                // console.log("handle dialog 15==>");
                 callType = "CONSULT_CONFERENCE";
                 this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, callType);
               } else {
-                console.log("handle dialog 16==>");
+                // console.log("handle dialog 16==>");
                 this.handleCiscoRona(cacheId, dialogState);
               }
             } else if (
@@ -448,21 +448,21 @@ export class finesseService {
               (dialogState.dialog.callType.toLowerCase() == "transfer" || dialogState.dialog.callType.toLowerCase() == "offered")
             ) {
               console.log("direct transfer case 2==>");
-              console.log("handle dialog 17==>");
+              // console.log("handle dialog 17==>");
               this.handleDirectTransferOnAgentExtension(dialogEvent, cacheId);
             }
           } else if (currentParticipant.state.toLowerCase() == "dropped") {
             this.removeNotification(dialogState);
-            console.log("handle dialog 18==>");
+            // console.log("handle dialog 18==>");
             if (
               dialogState.dialog.state.toLowerCase() == "dropped" ||
               dialogState.dialog.isCallEnded === 1 ||
               dialogState.dialog.state.toLowerCase() == "active"
             ) {
-              console.log("handle dialog 19==>");
+              // console.log("handle dialog 19==>");
               let item: any = this.getDialogFromCache(cacheId);
               if (item && item.dialogState == "active") {
-                console.log("handle dialog 20==>");
+                // console.log("handle dialog 20==>");
                 if (this.timeoutId) clearInterval(this.timeoutId);
 
                 this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, "DIALOG_ENDED");
@@ -474,16 +474,16 @@ export class finesseService {
           let item: any = this.getDialogFromCache(cacheId);
           if (item && item.dialogState == "active") {
             console.log("ccx direct transfer case==>");
-            console.log("handle dialog 21==>");
+            // console.log("handle dialog 21==>");
             let callType = "DIRECT_TRANSFER";
             this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, callType);
           } else {
-            console.log("handle dialog 22==>");
+            // console.log("handle dialog 22==>");
             //rona Case
             this.handleCiscoRona(cacheId, dialogState);
           }
         } else if (dialogState.dialog.state.toLowerCase() == "failed") {
-          console.log("handle dialog 22==>");
+          // console.log("handle dialog 22==>");
           let dialogCache: any = this.getDialogFromCache(cacheId);
           if (dialogCache && dialogCache.dialogState == "active") {
             this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, "DIALOG_ENDED");
@@ -804,7 +804,7 @@ export class finesseService {
       for (let i = 0; i <= conversationList.length; i++) {
         if (conversationList[i] && conversationList[i].activeChannelSessions) {
           let voiceSession = conversationList[i].activeChannelSessions.find((item) => {
-            return item.channel.channelType.name.toLowerCase() == "voice";
+            return item.channel.channelType.name.toLowerCase() == "cisco_cc";
           });
           if (voiceSession && type == "id") {
             return voiceSession.conversationId;
@@ -1015,14 +1015,14 @@ export class finesseService {
 
   handleRefreshCase(dialogEvent, dialogState) {
     try {
-      console.log("refresh called ==>");
+      // console.log("refresh called ==>");
       let voiceTask = this.getVoiceTask();
       if (voiceTask) {
-        console.log("refresh called 1==>");
+        // console.log("refresh called 1==>");
         let cacheId = `${this._cacheService.agent.id}:${voiceTask.channelSession.id}`;
-        console.log("refresh cacheId==>", cacheId);
+        // console.log("refresh cacheId==>", cacheId);
         let D1: any = this.getDialogFromCache(cacheId);
-        console.log("D1==>", D1);
+        // console.log("D1==>", D1);
         if (!D1) {
           if (voiceTask.type.direction == "CONSULT") {
             let test1: any = localStorage.getItem("consultCallObject");
@@ -1034,20 +1034,20 @@ export class finesseService {
             }
           }
         } else if (D1 && dialogState.dialog == null) {
-          console.log("refresh called 2==>");
+          // console.log("refresh called 2==>");
           this.handleCallDroppedEvent(cacheId, D1, "onRefresh", undefined, "DIALOG_ENDED");
         } else if (D1 && dialogState.dialog) {
-          console.log("refresh called 3==>");
+          // console.log("refresh called 3==>");
           if (D1.dialog.id != dialogState.dialog.id) {
-            console.log("refresh called 4==>");
+            // console.log("refresh called 4==>");
             this.handleCallDroppedEvent(cacheId, D1, "onRefresh", dialogEvent, "DIALOG_ENDED");
           } else if (D1.dialog.id == dialogState.dialog.id) {
-            console.log("refresh called 5==>");
+            // console.log("refresh called 5==>");
             if (D1.dialogState == "active") {
-              console.log("refresh called 6==>");
+              // console.log("refresh called 6==>");
               let conversation = this.getCurrentConversationIdORConversation("conversation");
               if (conversation) {
-                console.log("refresh called 7==>");
+                // console.log("refresh called 7==>");
                 this.customer = conversation.customer;
               }
             }

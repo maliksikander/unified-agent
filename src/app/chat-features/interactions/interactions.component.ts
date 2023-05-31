@@ -439,16 +439,9 @@ export class InteractionsComponent implements OnInit {
   // }
 
   onLeaveClick() {
-    // if (this._socketService.consultTask ){
-    //   if(this._socketService.consultTask.channelSession.channel.channelType.name.toLowerCase() == "cisco_cc")
-    //   console.log("tester==>",this._socketService.consultTask)
-    // }
-
     if (this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
-      // console.log("test1==>")
       this.closeConversationConfirmation();
     } else {
-      // console.log("test2==>")
       this._socketService.topicUnsub(this.conversation);
     }
   }
@@ -464,10 +457,7 @@ export class InteractionsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.event == "confirm") {
-        // this._finesseService.isLeaveButtonClicked = true;
         this.endCallOnFinesse();
-        // this._finesseService.emitEndChannelSessionEvent();
-        // this._socketService.topicUnsub(this.conversation);
       }
     });
   }
@@ -480,30 +470,22 @@ export class InteractionsComponent implements OnInit {
         this.conversation.activeChannelSessions[i] &&
         this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cisco_cc"
       ) {
-        // console.log("check==>", this.conversation.activeChannelSessions[i].id);
         let cacheId = `${this._cacheService.agent.id}:${this.conversation.activeChannelSessions[i].id}`;
-        // console.log("check1==>", cacheId);
         let cache = this._finesseService.getDialogFromCache(cacheId);
         if (cache) {
-          // console.log("check2==>", cache);
           voiceSession = this.conversation.activeChannelSessions[i];
         }
-        console.log("VoiceSession==>", voiceSession);
-
-        console.log("consult end==>", this._socketService.consultTask);
         if (!voiceSession && this._socketService.consultTask) {
 
           let consultCallDialog: any = localStorage.getItem("consultCallObject");
           if (typeof consultCallDialog == "string") consultCallDialog = JSON.parse(consultCallDialog);
-          console.log("consult end 2==>",consultCallDialog);
+
           data = {
             action: "releaseCall",
             parameter: {
               dialogId: consultCallDialog ? consultCallDialog.id : null
             }
           };
-          console.log("end call data 1==>", data);
-          // this._finesseService.endCallOnFinesse(data);
         } else if (voiceSession) {
           data = {
             action: "releaseCall",
@@ -511,8 +493,6 @@ export class InteractionsComponent implements OnInit {
               dialogId: voiceSession ? voiceSession.id : null
             }
           };
-          console.log("end call data2==>", data);
-          // this._finesseService.endCallOnFinesse(data);
         }
       }
     }

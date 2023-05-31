@@ -150,9 +150,10 @@ export class socketService {
 
     this.socket.on("taskRequest", (res: any) => {
       console.log("taskRequest==>", res);
-      this.consultTask = undefined;
+
       if (res.taskState && res.taskState.name.toLowerCase() == "started") {
         if (res.taskDirection.toLowerCase() == "consult") {
+          this.consultTask = undefined;
           this.consultTask = res;
           console.log("taskRequest1==>");
           this.emit("topicSubscription", {
