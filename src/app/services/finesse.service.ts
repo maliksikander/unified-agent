@@ -941,7 +941,7 @@ export class finesseService {
     try {
       // if (methodCalledOn != "onRefresh") this.clearLocalDialogCache(cacheId);
       let channelCustomerIdentifier = dialog.customerNumber;
-      let serviceIdentifier = "46001";
+      let serviceIdentifier = dialog.primaryDN;
       let leg = `${this.finesseAgent.extension}:${this._cacheService.agent.id}:${dialog.id}`;
       let callType = "CONSULT_ENDED";
       let callId = dialog.id;
@@ -972,7 +972,7 @@ export class finesseService {
     this.removeNotification(dialog);
     try {
       let channelCustomerIdentifier = dialog.customerNumber;
-      let serviceIdentifier = "46001";
+      let serviceIdentifier = dialog.primaryDN;
       let leg = `${this.finesseAgent.extension}:${this._cacheService.agent.id}:${dialog.id}`;
       let callType = "CONSULT";
       let timeStamp = this.getStartOREndTimeStamp(dialog, "startCall");
