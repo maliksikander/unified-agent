@@ -31,7 +31,8 @@ export class httpService {
       tasks: "/tasks",
       getAllMRDs: "/media-routing-domains",
       defaultOutboundChannel: "/channels/defaultoutbound",
-      announcement: "/announcement"
+      announcement: "/announcement",
+      announcementSeenBy:"/announcement/seenStatus"
     };
   }
 
@@ -53,8 +54,23 @@ updateAnnouncemenentById(data, id): Observable<any> {
   });
 }
 
+AnnouncementSeenByUser(id,data): Observable<any>{
+  return this._httpClient.put<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcementSeenBy}/${id}`,data, {
+    headers: new HttpHeaders({
+      "Content-Type": "application/json"
+    })
+  });
+}
+
 getAnnouncementsById(id): Observable<any>{
   return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}/${id}`, {
+    headers: new HttpHeaders({
+      "Content-Type": "application/json"
+    })
+  });
+}
+getAnnouncementsByTeamIds(teamIds): Observable<any>{
+  return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}/?${teamIds.join(',')}`, {
     headers: new HttpHeaders({
       "Content-Type": "application/json"
     })
@@ -78,6 +94,7 @@ getAnnouncementsById(id): Observable<any>{
     });
   }
 
+  
 
 
 

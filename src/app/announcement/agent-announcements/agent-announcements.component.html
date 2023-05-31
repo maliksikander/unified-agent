@@ -1,5 +1,5 @@
 <div class="announcement-tab-content">
-  <div class="announcement-content" [ngClass]="{'read-announcement': announcement.isRead}" *ngFor="let announcement of announcements">
+  <div class="announcement-content" [ngClass]="{'read-announcement': announcement.isRead}" *ngFor="let announcement of _announcementService.announcementList">
     <p (click)="onUnreadClick(announcement)">
       {{announcement.announcementText}}
       <time>{{announcement.scheduledTime}}</time>

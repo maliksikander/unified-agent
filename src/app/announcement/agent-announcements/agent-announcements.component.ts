@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { cacheService } from "../../services/cache.service";
 import { httpService } from "../../services/http.service";
+import { announcementService } from "src/app/services/announcement.service";
 
 @Component({
   selector: "app-agent-announcements",
@@ -42,25 +43,27 @@ export class AgentAnnouncementsComponent implements OnInit {
   constructor(
      private _cacheService: cacheService,
      private _httpService: httpService,
+     private _announcementService : announcementService
      ) {}
 
   ngOnInit() {
 
-    this._httpService.getAnnouncements().subscribe((data) => {
-      console.log("data", data)
-      this.announcements = data;
-      this.sortList();
+    // this._httpService.getAnnouncements().subscribe((data) => {
+    //   console.log("data", data)
+    //   this.announcements = data;
+    //   this.sortList();
       
-    });
+    // });
 
-    this.agentsData=this._cacheService.agent.userTeam;
-    //let teamData=;
-    console.log("this._cacheService.agent",this.agentsData);
+    // this.agentsData=this._cacheService.agent.userTeam;
+    // //let teamData=;
+    // console.log("this._cacheService.agent",this.agentsData);
+
   }
   onUnreadClick(announcement) {
     console.log("this._cacheService.agent",this.agentsData);
-   
     announcement.isRead = true;
+
   }
     
   sortList() {
