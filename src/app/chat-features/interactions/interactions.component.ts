@@ -501,7 +501,7 @@ export class InteractionsComponent implements OnInit {
       this._finesseService.endCallOnFinesse(data);
     } else {
       console.log("No active voice session or dialog id found ==>");
-      this._snackbarService.open("No Active Voice Session Found", "err");
+      this._snackbarService.open("Unable to end voice session", "err");
     }
   }
 
@@ -878,6 +878,7 @@ export class InteractionsComponent implements OnInit {
 
   switchChannelSession(channelSession, channelIndex) {
     try {
+      console.log("channel session==>",channelSession);
       if (!channelSession.isDisabled) {
         if (!channelSession.isChecked) {
           this.conversation.activeChannelSessions.forEach((channelSession) => {

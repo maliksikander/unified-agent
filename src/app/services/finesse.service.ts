@@ -180,7 +180,11 @@ export class finesseService {
         this.finesseLogoutReasonCodes = event.response.logoutReasons;
         this.finesseNotReadyReasonCodes = event.response.notReadyReasons;
       } else if (event.event.toLowerCase() == "newinboundcall") {
-        this.identifyCustomer(event, event.response.dialog.customerNumber, "INBOUND");
+        if (event.response.dialog) {
+          let cacheId = `${this._cacheService.agent.id}:${event.response.dialog.id}`;
+          let cacheDialog: any = this.getDialogFromCache(cacheId);
+          if (!cacheDialog) this.identifyCustomer(event, event.response.dialog.customerNumber, "INBOUND");
+        }
       } else if (event.event.toLowerCase() == "outbounddialing") {
         if (event.response.dialog.customerNumber && event.response.dialog.state.toLowerCase() == "initiated") {
           this.identifyCustomer(event, event.response.dialog.customerNumber, "OUTBOUND");
@@ -234,10 +238,10 @@ export class finesseService {
             });
             if (initiaterParticipant && initiaterParticipant.state.toLowerCase() == "active") {
               let cacheId = `${this._cacheService.agent.id}:${dialog.id}`;
-              let cacheDialog:any = this.getDialogFromCache(cacheId);
-              console.log("Cache Dialog==>",cacheDialog)
-              if(cacheDialog && cacheDialog.dialogState.toLowerCase() !== "active"){
-              this.handleActiveConsultCall(event, dialog);
+              let cacheDialog: any = this.getDialogFromCache(cacheId);
+              console.log("Cache Dialog==>", cacheDialog);
+              if (cacheDialog && cacheDialog.dialogState.toLowerCase() !== "active") {
+                this.handleActiveConsultCall(event, dialog);
               }
             }
           }

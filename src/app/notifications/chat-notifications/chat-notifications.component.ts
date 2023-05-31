@@ -77,14 +77,16 @@ export class ChatNotificationsComponent implements OnInit {
           console.log("external requests==>", this.externalModeRequests);
         } else if (e.msg == "closeExternalModeRequestHeader") {
           // this.externalModeRequests = e.data;
-          console.log("notification close==>", e.data);
+          console.log("notification close data==>", e.data);
           let dialog = e.data.dialog ? e.data.dialog : e.data;
           if (this.externalModeRequests.length > 0) {
             let index = this.externalModeRequests.findIndex((item) => {
               return item.dialogData.id == dialog.id;
             });
             console.log("Closing Index==>",index)
-            if(index !=- 1) this.externalModeRequests.splice(index,1)
+
+            if(index !=- 1) this.externalModeRequests.splice(index,1);
+            console.log("notification close==>", this.externalModeRequests);
           }
 
         } else if (e.msg == "closeAllPushModeRequests") {
