@@ -245,14 +245,17 @@ export class InteractionsComponent implements OnInit {
     this.openQuotedReplyArea(message);
   }
 
-  showRepliedMessage(repliedMessage: any, messages: any[]) {
+  navigationToRepliedMessage(repliedMessage: any) {
     if (repliedMessage && repliedMessage.id) {
       const elementId = repliedMessage.id;
 
       const element = document.getElementById(elementId);
 
       if (element) {
-        element.scrollIntoView({ block: "start", behavior: "smooth" });
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
       }
     }
   }

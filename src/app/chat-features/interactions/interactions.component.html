@@ -383,7 +383,7 @@
                     *ngIf="message.header.replyToMessageId != null && message.header.replyToMessageId != ''">
                     <div class="main-quoted-reply"
                       *ngFor="let referredMessage of message.header.replyToMessageId | getReferredMsg: conversation.messages"
-                        (click)="showRepliedMessage(referredMessage, conversation.messages)">
+                        (click)="navigationToRepliedMessage(referredMessage)">
                       <strong class="message-author"
                         [ngClass]="(referredMessage.header.sender.type | lowercase) == 'customer' ? '' : 'current-agents'">
                         <span *ngIf="referredMessage.header.sender">
@@ -653,7 +653,7 @@
                       <mat-icon>more_vert</mat-icon>
                     </button>
                     <mat-menu #menu="matMenu">
-                      <button mat-menu-item class="reply-trigger" (click)="onQuotedReply(message)">reply</button>
+                      <button mat-menu-item class="reply-trigger" (focus)="onTextAreaFocus()" (click)="onQuotedReply(message)">reply</button>
                     </mat-menu>
                     <div *ngIf="
                         ((message.body.type | lowercase) != 'comment' && message.body.markdownText) ||
