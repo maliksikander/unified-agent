@@ -55,6 +55,7 @@ export class AnnouncementDialogComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.getAllAnnouncementList();
     // this.announcementForm = this.formBuilder.group({
     //   announceDate : [new Date(), [Validators.required]],
     //   expireDate : [new Date(), [Validators.required]],
