@@ -71,7 +71,6 @@ export class ActiveChatsComponent implements OnInit {
         unSelectAllText: "UnSelect All",
         classes: "myclass custom-class",
         enableSearchFilter: false,
-        lazyLoading: true,
         badgeShowLimit: 1,
         primaryKey: "queueId"
       };

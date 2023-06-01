@@ -22,7 +22,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
   @Output() languageSwitcher = new EventEmitter<any>();
 
   isdarkMode = false;
-
+  unreadAnnouncements=0;
   agent = {
     state: "ready",
     name: "Bryan Miller",
@@ -90,10 +90,34 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
         this._cacheService.agentPresence = e.data;
       }
     });
+    this._announcementService.countUnreadAnnouncementSubject.subscribe((e: any) => {
+      if (e) {
+        this.countUnreadAnnouncements()
+      }
+    })
   }
+  
   ngAfterViewInit() {
     this.getSupportedLanguages();
     this.getReasonCodes(); 
+  }
+  countUnreadAnnouncements() {
+    this.unreadAnnouncements=0;
+    let agentId = this._cacheService.agent.id;
+    let announcementList=this._announcementService.announcementList;
+    console.log("hdjddjhd",announcementList)
+        if (agentId && announcementList) {
+       announcementList.forEach(element => {
+        if(element.seenBy.includes(agentId)){
+         // seenByCount = seenByCount;
+        }else {
+          this.unreadAnnouncements = this.unreadAnnouncements + 1;
+        }
+        
+      });
+      
+    }
+
   }
   getReasonCodes() {
     this._httpService.getReasonCodes().subscribe(

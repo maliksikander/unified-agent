@@ -69,18 +69,22 @@ export class AgentAnnouncementsComponent implements OnInit {
     console.log("this._cacheService.agent",this.agentsId ,"iDDDD",announcementId);
    // announcement.isRead = true;
     //announcement.announcementText="hellllllo";
+    if(!announcement.seenBy.includes(this.agentsId))
+    {
     let obj={
       "userId":this.agentsId
     }
     this._httpService.AnnouncementSeenByUser(announcementId,obj).subscribe({
       next: (val: any) => {
         announcement.seenBy=val.result.seenBy;
+        this._announcementService.countUnreadAnnouncement();
         console.log("read successfully",announcement);
       },
       error: (err: any) => {
         console.error(err);
       },
     });
+  }
 
   }
     

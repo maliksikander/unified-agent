@@ -110,7 +110,7 @@
 
         </div> -->
         <div class="announcement-trigger-area" >
-          <span class="notification-hint">{{ _announcementService.announcementList | filterSeenByAnnouncements : _cacheService.agent.id }}</span>
+          <span class="notification-hint">{{ unreadAnnouncements }}</span>
           <button mat-icon-button class="announcement-trigger"
                   [ngClass]="{'announcement-tab-opened': sidenav.opened}"
                   (click)="sidenav.toggle()">
