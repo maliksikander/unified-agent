@@ -1,8 +1,10 @@
 <div class="announcement-tab-content">
-  <div class="announcement-content" [ngClass]="{'read-announcement': announcement.seenBy.includes(agentsId)}" *ngFor="let announcement of _announcementService.announcementList">
+  <div class="announcement-content" [ngClass]="{'read-announcement': announcement.seenBy.includes(agentsId)}" *ngFor="let announcement of _announcementService.announcementList 
+  ">
     <p (click)="onUnreadClick(announcement,announcement.id)">
       {{announcement.announcementText}}
-      <time>{{announcement.scheduledTime}}</time>
+      <time>{{announcement.scheduledTime | date: format}}</time>
+      <small>Supervisor: {{announcement.supervisorName }}</small>
     </p>
   </div>
 </div>

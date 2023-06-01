@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { cacheService } from "../../services/cache.service";
 import { httpService } from "../../services/http.service";
 import { announcementService } from "src/app/services/announcement.service";
+import { sharedService } from "src/app/services/shared.service";
 
 @Component({
   selector: "app-agent-announcements",
@@ -43,7 +44,8 @@ export class AgentAnnouncementsComponent implements OnInit {
   constructor(
      private _cacheService: cacheService,
      private _httpService: httpService,
-     private _announcementService : announcementService
+     private _announcementService : announcementService,
+     private _sharedService: sharedService,
      ) {}
 
   ngOnInit() {
@@ -72,7 +74,7 @@ export class AgentAnnouncementsComponent implements OnInit {
     }
     this._httpService.AnnouncementSeenByUser(announcementId,obj).subscribe({
       next: (val: any) => {
-        //announcement.seenBy=val.result.seenBy;
+        announcement.seenBy=val.result.seenBy;
         console.log("read successfully",announcement);
       },
       error: (err: any) => {

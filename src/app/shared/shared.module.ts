@@ -96,6 +96,7 @@ import { checkConferenceCallPipe } from "./pipes/checkConferenceCall.pipe";
 import { getCustomerAniPipe } from "./pipes/getCustomerAni.pipe";
 import { checkOutboundCallPipe } from "./pipes/checkOutboundCall.pipe";
 import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
+import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements.pipe";
 
 @NgModule({
   declarations: [
@@ -114,6 +115,7 @@ import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
     fetchLabelsPipe,
     columnsFilterClass,
     filterPullModeRequestsPipe,
+    filterSeenByAnnouncementsPipe,
     channelLogoPipe,
     activeConversationPipe,
     webChannelDataPipe,
@@ -244,6 +246,7 @@ import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
     HttpClientModule,
     RemoveUnderscorePipe,
     filterPullModeRequestsPipe,
+    filterSeenByAnnouncementsPipe,
     NgxLinkifyjsModule,
     ibsformatPipe,
     TableModule,
