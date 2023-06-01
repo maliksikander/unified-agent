@@ -1888,7 +1888,7 @@
         border-top: 1px solid #ddd;
       }
       .canned-trigger{
-        top: inherit;
+        top: inherit !important;
         bottom: 10px;
         .material-icons{
           color: $main-color;
@@ -4214,7 +4214,7 @@ vg-controls.hide {
 
 //Bot-suggestions and chat-view handling main
 .bot-suggestion-area{
-  width: 460px;
+  width: 450px;
   height: 100%;
   background: #FAFBFD;
 
