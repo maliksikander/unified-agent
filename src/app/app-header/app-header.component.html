@@ -9,8 +9,8 @@
                mat-menu-item class="main-menu-item">
                   <span>Dashboard</span>
                </button> -->
-            <button routerLink="/supervisor/announcement" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
-           mat-menu-item class="main-menu-item">
+            <button routerLink="/supervisor/announcement" routerLinkActive="active"  [routerLinkActiveOptions]="{exact:true}"
+           mat-menu-item class="main-menu-item" *ngIf="('supervisor' | authPipe : 'view_all') as result">
             <span>Team Announcements </span>
              </button>
         <button  routerLink="/customers/chats"

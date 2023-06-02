@@ -46,7 +46,7 @@ export class httpService {
   });
 }
 
-updateAnnouncemenentById(data, id): Observable<any> {
+updateAnnouncemenentById(id,data): Observable<any> {
   return this._httpClient.put<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}/${id}`, data, {
     headers: new HttpHeaders({
       "Content-Type": "application/json"
