@@ -1069,7 +1069,7 @@ export class InteractionsComponent implements OnInit {
       channelSession: this.conversation.firstChannelSession,
       agentParticipant: this.conversation.topicParticipant,
       mode: "queue",
-      queueId: this.requestedQueue.queueId,
+      queueName: this.requestedQueue.queueName,
       note: this.assistanceRequestNote
     };
     if (this.requestAction == "transfer") this._socketService.emit("directTransferRequest", data);
