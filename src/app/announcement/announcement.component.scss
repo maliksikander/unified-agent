@@ -65,10 +65,13 @@
 
       span {
         cursor: default;
-        max-width: 100%;
         display: inline-block;
-        white-space: normal;
         line-height: 20px;
+        vertical-align: middle;
+        max-width: 500px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
 

@@ -21,7 +21,7 @@ export class ChatNotificationsComponent implements OnInit {
   externalModeRequests = [];
   notificationArea: boolean = false;
   voiceChannelType;
-  newAnnouncement =true;
+  newAnnouncement =false;
 
   constructor(
     public _pullModeservice: pullModeService,

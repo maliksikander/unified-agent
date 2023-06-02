@@ -25,7 +25,7 @@ export class AnnouncementDialogComponent implements OnInit {
   announcementsFilter = "all";
   announcementTask = "create";
   teamList: any;
-  selectedTeams = [];
+  selectedTeams: any ;
   settings = {};
   supervisor = {};
   supervisorId = {};
@@ -64,16 +64,16 @@ export class AnnouncementDialogComponent implements OnInit {
         console.log("currentAnnouncement", res)
         this.editObj = {
           "teamIds": this.selectedTeams = res.teamIds,
-          "status": this.formData.status,
-          "seenBy": this.formData.seenBy,
+          //"status": this.formData.status,
+          //"seenBy": this.formData.seenBy,
           "announcementText": this.announcementMessage.setValue(this.formData.announcementText),
           "expiryTime": this.expireDate.setValue(this.formData.expiryTime),
           "scheduledTime": this.announceDate.setValue(this.formData.scheduledTime),
           "supervisorId": this.supervisorId,
           "supervisorName": this.supervisor,
-          "createdAt": this.formData.createdAt,
-          "updatedAt": this.formData.updatedAt,
-          "id": this.formData.id
+          //"createdAt": this.formData.createdAt,
+          //"updatedAt": this.formData.updatedAt,
+          //"id": this.formData.id
         }
         console.log("this.selected teams", this.selectedTeams);
       });
@@ -111,9 +111,11 @@ export class AnnouncementDialogComponent implements OnInit {
 
 
   onCreateAnnouncement() {
-
+   let selectedTeamNames = this.selectedTeams.map(d => JSON.stringify(d));
+    console.log("TEAM NAME MAP ", selectedTeamNames);
+    this.selectedTeams = selectedTeamNames;
     let obj = {
-      "teamIds": [this.selectedTeams[0].teamIds],
+      "teamIds": this.selectedTeams,
       "announcementText": this.announcementMessage.value,
       "expiryTime": this.expireDate.value,
       "scheduledTime": this.announceDate.value,
@@ -127,7 +129,7 @@ export class AnnouncementDialogComponent implements OnInit {
       next: (val: any) => {
         this.getAllAnnouncementList();
         console.log("added successfully");
-        
+
       },
       error: (err: any) => {
         console.error(err);
@@ -142,8 +144,8 @@ export class AnnouncementDialogComponent implements OnInit {
 
   }
   update() {
-    console.log("update dataaid.value",this.dataID.value);
-    this._httpService.updateAnnouncemenentById(this.dataID.value,this.editObj).subscribe({
+    console.log("update dataaid.value", this.dataID.value);
+    this._httpService.updateAnnouncemenentById(this.dataID.value, this.editObj).subscribe({
       next: (val: any) => {
         this.getAllAnnouncementList();
         console.log("updated successfully");
@@ -179,8 +181,10 @@ export class AnnouncementDialogComponent implements OnInit {
       data: this.postData
 
     });
-   
-    dialogRef.afterClosed().subscribe((result) => { dialogRef.close() });;
+
+    dialogRef.afterClosed().subscribe((result) => { 
+      this._httpService.getAnnouncements();
+      dialogRef.close() });;
   }
 
   onItemSelect(item: any) {
