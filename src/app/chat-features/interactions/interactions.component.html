@@ -26,6 +26,20 @@
           </h5>
         </div>
         <div class="col-md-8 col-sm-8 agent-actions">
+          <ul class="list-group list-group-horizontal agent-controls call-controls">
+            <li class="list-group-item">
+              <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}"
+                      matTooltip="Chat" aria-label="Chat">
+                <mat-icon>question_answer</mat-icon>
+              </button>
+            </li>
+            <li class="list-group-item">
+              <button mat-icon-button (click)="isBotSuggestions = !isBotSuggestions" [ngClass]="{'active-action': isBotSuggestions}"
+                      matTooltip="Suggestions" aria-label="Suggestions">
+                <img src="assets/images/robot-dark.svg" alt="Suggestions"/>
+              </button>
+            </li>
+          </ul>
           <ul class="list-group list-group-horizontal agent-controls">
             <ng-container
               *ngIf="conversation.conversationId != 'FAKE_CONVERSATION' && ('agent-conversation-control' | authPipe: 'view_wrap_up') as result">
