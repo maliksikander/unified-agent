@@ -84,6 +84,19 @@
         }
       }
 
+      &.new-announcement-notification {
+        background: #0068d429 !important;
+
+        .channel-icon{
+            width: 38px !important;
+            height: 38px !important;
+          img{
+            max-height: 28px !important;
+            max-width: 28px !important;
+          }
+        }
+      }
+
       &.consult-notification {
         background: #F6BF2C;
         &.conference-request{
@@ -130,9 +143,9 @@
           font-weight: normal;
           font-size: 12px;
 
-          &:before{
-            // content: open-quote;
-          }
+          // &:before{
+          //   // content: open-quote;
+          // }
           &:after{
             // content: close-quote;
             position: absolute;

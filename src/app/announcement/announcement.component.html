@@ -42,7 +42,7 @@
             <td>{{announcement.expiryTime | date:'medium'}}</td>
             <span class="table-trigger">
               <!--<button mat-mini-fab (click)="onUpdateAnnouncement()"><i-->
-              <!--  class="material-icons">{{'announcements.edit}}</i></button>-->
+              <!--  class="material-icons">{{'announcements.edit}}</i></button>--> 
               <!--<button mat-mini-fab (click)="confirmationDialog(isConfirm, announcement)"><i-->
               <!--  class="material-icons">{{'announcements.delete' | translate}}</i></button>-->
 
@@ -75,9 +75,9 @@
     <div class="confirmation-content">
       <p>{{'announcements.sure-delete-announcement' | translate}}</p>
       <div class="confirmation-action">
-        <button mat-raised-button class="announcements.close-btn" [mat-dialog-close]="true">{{'announcements.cancel' |
+        <button mat-raised-button class="announcements close-btn" [mat-dialog-close]="true">{{'announcements.cancel' |
           translate}}</button>
-        <button mat-raised-button class="announcements.confirm-btn" (click)="confirmDelete()" [mat-dialog-close]="true">{{'announcements.confirm' | translate}}</button>
+        <button mat-raised-button class="announcements confirm-btn" (click)="confirmDelete()" [mat-dialog-close]="true">{{'announcements.confirm' | translate}}</button>
       </div>
     </div>
   </div>

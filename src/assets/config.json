@@ -9,7 +9,7 @@
     "ROUTING_ENGINE_URL": "https://cim-dev2.expertflow.com/routing-engine",
     "CIM_REPORTING_URL":"https://cim-dev2.expertflow.com/realtime-reports",
     "UNIFIED_ADMIN_URL":"https://cim-dev2.expertflow.com/unified-admin",
-    "TEAM_ANNOUNCEMENT":"https://cim-dev.expertflow.com/team-announcement",
+    "TEAM_ANNOUNCEMENT":"https://cim-dev2.expertflow.com/team-announcement",
     "ENV": "prod",
     "domain": "finesse12.ucce.ipcc",
     "subDomain" : "finesse12.ucce.ipcc",

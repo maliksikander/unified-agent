@@ -28,15 +28,11 @@ export class AnnouncementComponent implements OnInit {
     private dialog: MatDialog,
     private _httpService: httpService,
     private _sharedService: sharedService) {
-    // this._httpService.getAnnouncements().subscribe((data) => {
-    //   console.log("data", data)
-    //   this.currentItemsToShow = data;
-    //   this.displayAnnouncements = data;
-    // });
+   
   }
 
   ngOnInit() {
-     this.getAllAnnouncements();
+    this.getAllAnnouncements();
   }
 
 
@@ -44,7 +40,7 @@ export class AnnouncementComponent implements OnInit {
     const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
       panelClass: "new-announcement-dialog"
     });
-    this.getAllAnnouncements();
+    
   }
 
   getAllAnnouncements() {
@@ -67,32 +63,11 @@ export class AnnouncementComponent implements OnInit {
       console.log("formData",this.formData)
     });
     console.log("UpdatedformData===>",this.formData)
-   
-    //  this.obj={
-    //     "teamIds": this.updateData,
-    //      "announcementText": this.updateData.announcementText,
-    //      "expiryTime": this.updateData.expiryTime,
-    //      "scheduledTime": this.updateData.scheduledTime,
-    //      "supervisorId": this.updateData.supervisorId,
-    //      "supervisorName": this.updateData.supervisorName
-    // }
-    // this.updateData=obj;
-     //console.log("update Announcement obj", this.obj);
-    // console.log("update AnnouncementINDEX  clicked", value);
-    // console.log("edit specific id", this.displayAnnouncements[index]);
-    // this._httpService.getAnnouncementsById(value).subscribe(data => { this.updateData = data; })
-    // console.log("update Announcement clicked", this.updateData);
 
     const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
 
       data: {   
         value : value,
-      // teamIds: this.updateData,
-       //announcementText: this.updateData.announcementText,
-      // expiryTime: this.updateData.expiryTime,
-      // scheduledTime: this.updateData.scheduledTime,
-      // supervisorId: this.updateData.supervisorId,
-      // supervisorName: this.updateData.supervisorName
 
     }
     });

@@ -73,7 +73,7 @@ export class AnnouncementDialogComponent implements OnInit {
           "supervisorName": this.supervisor,
           "createdAt": this.formData.createdAt,
           "updatedAt": this.formData.updatedAt,
-          "id": "6454e40e608c874a6c5be87f"
+          "id": this.formData.id
         }
         console.log("this.selected teams", this.selectedTeams);
       });
@@ -113,7 +113,7 @@ export class AnnouncementDialogComponent implements OnInit {
   onCreateAnnouncement() {
 
     let obj = {
-      "teamIds": [this.selectedTeams[0].teamId],
+      "teamIds": [this.selectedTeams[0].teamIds],
       "announcementText": this.announcementMessage.value,
       "expiryTime": this.expireDate.value,
       "scheduledTime": this.announceDate.value,
@@ -127,6 +127,7 @@ export class AnnouncementDialogComponent implements OnInit {
       next: (val: any) => {
         this.getAllAnnouncementList();
         console.log("added successfully");
+        
       },
       error: (err: any) => {
         console.error(err);
@@ -171,14 +172,15 @@ export class AnnouncementDialogComponent implements OnInit {
   }
 
   confirmationDialog(templateRef, data) {
-    this.dialog.closeAll();
+    //this.dialog.closeAll();
     const dialogRef = this.dialog.open(templateRef, {
       width: "490px",
       panelClass: "confirm-dialog",
       data: this.postData
 
     });
-    dialogRef.afterClosed().subscribe((result) => { });
+   
+    dialogRef.afterClosed().subscribe((result) => { dialogRef.close() });;
   }
 
   onItemSelect(item: any) {
