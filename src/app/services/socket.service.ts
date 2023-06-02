@@ -665,7 +665,10 @@ export class socketService {
 
   isVoiceChannelSessionExists(activeChannelSessions) {
     let voiceChannelSession = activeChannelSessions.find((channelSession) => {
-      if (channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "external") {
+      if (
+        channelSession.channel.channelType.name.toLowerCase() == "cisco_cc" ||
+        channelSession.channel.channelType.name.toLowerCase() == "cx_voice"
+      ) {
         return channelSession;
       }
     });
