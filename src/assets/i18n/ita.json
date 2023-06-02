@@ -78,7 +78,8 @@
     "Conference-request-placed-successfully":"Conference request placed successfully_ita",
     "Error-Getting-Queues-List":"Error Getting Queues List_ita",
     "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_ita",
-    "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_ita"
+    "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_ita",
+    "Unable-To-End-Voice-Session":"Unable to end voice session_ita"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ita",

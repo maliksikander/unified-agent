@@ -78,7 +78,8 @@
     "Conference-request-placed-successfully":"Conference request placed successfully_ger",
     "Error-Getting-Queues-List":"Error Getting Queues List_ger",
     "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_ger",
-    "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_ger"
+    "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_ger",
+    "Unable-To-End-Voice-Session":"Unable to end voice session_ger"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ger",

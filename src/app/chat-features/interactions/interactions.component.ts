@@ -501,7 +501,8 @@ export class InteractionsComponent implements OnInit {
       this._finesseService.endCallOnFinesse(data);
     } else {
       console.log("No active voice session or dialog id found ==>");
-      this._snackbarService.open("Unable to end voice session", "err");
+      this._snackbarService.open(this._translateService.instant("snackbar.Unable-To-End-Voice-Session"), "err");
+      // this._snackbarService.open("Unable to end voice session", "err");
     }
   }
 
