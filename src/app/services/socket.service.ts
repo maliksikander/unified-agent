@@ -182,7 +182,7 @@ export class socketService {
         //   });
 
         // } else {
-          this.triggerNewChatRequest(res);
+        this.triggerNewChatRequest(res);
         // }
         // this.triggerNewChatRequest(res);
       }
@@ -558,7 +558,10 @@ export class socketService {
         // if the channel session is of web or whatsapp then channel session should be selected
         // because the channel session in the array is used to send the message to customer
         let repliedChannelSession = conversation.activeChannelSessions.find((channelSession) => {
-          if (channelSession.channel.channelType.name.toLowerCase() != "cisco_cc") {
+          if (
+            channelSession.channel.channelType.name.toLowerCase() != "cisco_cc" &&
+            channelSession.channel.channelType.name.toLowerCase() != "cx_voice"
+          ) {
             return channelSession;
           }
         });
@@ -695,7 +698,8 @@ export class socketService {
   isNonVoiceChannelSessionExists(activeChannelSessions) {
     let nonVoiceChannelSession = activeChannelSessions.find((channelSession) => {
       if (
-        channelSession.channel.channelType.name.toLowerCase() != "voice"
+        channelSession.channel.channelType.name.toLowerCase() != "cisco_cc" &&
+        channelSession.channel.channelType.name.toLowerCase() != "cx_voice"
         // channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "pull" ||
         // channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "push"
       ) {
@@ -884,6 +888,7 @@ export class socketService {
           let repliedChannelSession = conversation.activeChannelSessions.find((channelSession) => {
             if (
               channelSession.channel.channelType.name.toLowerCase() != "cisco_cc" &&
+              channelSession.channel.channelType.name.toLowerCase() != "cx_voice" &&
               channelSession.channel.channelType.name.toLowerCase() != "facebook"
             ) {
               return channelSession;
@@ -1032,7 +1037,7 @@ export class socketService {
     if (conversation) {
       let message = this.createSystemNotificationMessage(cimEvent);
 
-      if (cimEvent.data.channel.channelType.name.toLowerCase() == "cisco_cc") {
+      if (cimEvent.data.channel.channelType.name.toLowerCase() == "cisco_cc" || cimEvent.data.channel.channelType.name.toLowerCase() == "cx_voice") {
         cimEvent.data["isDisabled"] = true;
         cimEvent.data["isChecked"] = false;
       } else {

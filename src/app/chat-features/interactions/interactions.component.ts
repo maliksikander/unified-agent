@@ -474,23 +474,26 @@ export class InteractionsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.event == "confirm") {
-        this.endCallOnFinesse();
+        this.endCallOnCTI();
       }
     });
   }
 
-  endCallOnFinesse() {
+  endCallOnCTI() {
     let data;
     let voiceSession;
     for (let i = 0; i <= this.conversation.activeChannelSessions.length; i++) {
       if (
         this.conversation.activeChannelSessions[i] &&
-        this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cisco_cc"
+        (this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cisco_cc" || this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cx_voice")
       ) {
         let cacheId = `${this._cacheService.agent.id}:${this.conversation.activeChannelSessions[i].id}`;
         let cache = this._finesseService.getDialogFromCache(cacheId);
         if (cache) {
           voiceSession = this.conversation.activeChannelSessions[i];
+        }
+        else if(!cache && this._appConfigService.config.isCxVoiceEnabled){
+          voiceSession =  voiceSession = this.conversation.activeChannelSessions[i];
         }
         if (!voiceSession && this._socketService.consultTask) {
 
@@ -515,7 +518,9 @@ export class InteractionsComponent implements OnInit {
     }
     console.log("end call data==>", data);
     if (voiceSession || data.parameter.dialogId) {
-      this._finesseService.endCallOnFinesse(data);
+      if (this._appConfigService.config.isCiscoEnabled) this._finesseService.endCallOnFinesse(data);
+      else if(this._appConfigService.config.isCxVoiceEnabled) this._sipService.endCallOnSip();
+
     } else {
       console.log("No active voice session or dialog id found ==>");
       this._snackbarService.open(this._translateService.instant("snackbar.Unable-To-End-Voice-Session"), "err");
@@ -561,23 +566,6 @@ export class InteractionsComponent implements OnInit {
       this.downTheScrollAfterMilliSecs(500, "auto");
       //this.publishLatestMessageSeenEvent();
     }
-    // console.log("before",this.conversation.activeChannelSessions)
-    //     this.activeChannelSessionList = this.conversation.activeChannelSessions;
-    //     this.activeChannelSessionList.forEach((item, index, array) => {
-    //      if (index === array.length - 1 && item.channel.channelType.name != "VOICE" && item.channel.channelType.name != "facebook") {
-    //         item.isChecked = true;
-    //       }
-    //       else if (array.length >1 && index === array.length - 1 && (item.channel.channelType.name == "VOICE" || item.channel.channelType.name == "facebook"))
-    //         {
-    //           item.isChecked = false;
-    //         this.activeChannelSessionList[array.length - 2].isChecked = true;
-    //       } else {
-    //         item.isChecked = false;
-    //       }
-    //       console.log("after",this.conversation.activeChannelSessions)
-    // });
-
-    // this._finesseService.currentConversation.next(this.conversation);
   }
 
   ngOnDestroy() {

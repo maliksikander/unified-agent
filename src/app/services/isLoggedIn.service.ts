@@ -13,6 +13,7 @@ import { snackbarService } from "./snackbar.service";
 import { socketService } from "./socket.service";
 import { TranslateService } from "@ngx-translate/core";
 import { AuthService } from "./auth.service";
+import { appConfigService } from "./appConfig.service";
 
 @Injectable({
   providedIn: "root"
@@ -33,7 +34,8 @@ export class isLoggedInService {
     private _snackbarService: snackbarService,
     private _location: Location,
     private _translateService: TranslateService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _appConfigService: appConfigService
   ) {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       this._cacheService.isMobileDevice = true;
@@ -103,11 +105,14 @@ export class isLoggedInService {
         });
         console.log("this is login resp ==>", e.data);
         this._cacheService.agent = e.data.keycloak_User;
-        const attribute = e.data.keycloak_User.attributes;
-        function isAttributeEmpty(obj) {
-          return Object.keys(obj).length === 0;
-        }
-        // if (!isAttributeEmpty(attribute)) {
+        const attributes = e.data.keycloak_User.attributes;
+        // function isAttributeEmpty(obj) {
+        //   return Object.keys(obj).length === 0;
+        // }
+        console.log("test==>",this._appConfigService.config.isCxVoiceEnabled)
+        if (this._appConfigService.config.isCxVoiceEnabled) this.initiateSipService(attributes);
+
+        // if (this._appConfigService.config.isCiscoEnabled && !isAttributeEmpty(attribute)) {
         //   if (attribute.agentExtension !== '' && attribute.agentExtension !== null && attribute.agentExtension !== undefined && attribute.agentExtension[0] !== '') {
         //     this._sipService.extension = attribute.agentExtension[0];
         //     localStorage.setItem('ext', `${this._sipService.extension}`);
@@ -121,7 +126,7 @@ export class isLoggedInService {
         try {
           localStorage.setItem("ccUser", btoa(JSON.stringify(e.data.keycloak_User)));
           localStorage.setItem("sipPass", btoa(JSON.stringify(obj.password)));
-        } catch (e) { }
+        } catch (e) {}
         this._socketService.disConnectSocket();
         this.validateFcmKeyAndConnectToSocket(false);
       },
@@ -140,6 +145,24 @@ export class isLoggedInService {
     );
   }
 
+  initiateSipService(attributes) {
+    // function isAttributeEmpty(obj) {
+    // return Object.keys(obj).length === 0;
+    // }
+    if (Object.keys(attributes).length !== 0) {
+      if (
+        attributes.agentExtension !== "" &&
+        attributes.agentExtension !== null &&
+        attributes.agentExtension !== undefined &&
+        attributes.agentExtension[0] !== ""
+      ) {
+        this._sipService.extension = attributes.agentExtension[0];
+        // localStorage.setItem('ext', `${this._sipService.extension}`);
+        console.log(this._sipService.extension, '-----------extension');
+      }
+    }
+  }
+
   autoLogin() {
     console.log("auto login");
     const params = new URLSearchParams(window.location.search);
@@ -150,7 +173,7 @@ export class isLoggedInService {
     let ccUser: any;
     try {
       ccUser = localStorage.getItem("ccUser");
-    } catch (e) { }
+    } catch (e) {}
 
     ccUser = JSON.parse(ccUser ? atob(ccUser) : null);
 
@@ -165,9 +188,11 @@ export class isLoggedInService {
   async validateFcmKeyAndConnectToSocket(params) {
     this.ngxService.start();
     this._authService.moveToAuthorizedResourceOnLogin();
-    // this._sipService.initMe();
-    // this._sipService.checkActiveTasks(this._cacheService.agent.id);
 
+    if (this._appConfigService.config.isCxVoiceEnabled) {
+      this._sipService.initMe();
+      this._sipService.checkActiveTasks(this._cacheService.agent.id);
+    }
     // if (this._cacheService.isMobileDevice) {
 
     //   // for a mobile device the fcm is coming from url
@@ -183,11 +208,12 @@ export class isLoggedInService {
         this._router.navigate([`supervisor/active-chats`]);
       } else if (url.includes("/queue-chats")) {
         this._router.navigate([`supervisor/queue-chats`]); // pass queue id
-      }
-      else if (url.includes("/active-agents-detail")) {
+      } else if (url.includes("/active-agents-detail")) {
         this._router.navigate([`supervisor/active-agents-detail`]); // pass queue id
       }
       this._socketService.connectToSocket();
+
+
     } catch (err) {
       this._snackbarService.open(this._translateService.instant("snackbar.you-will-not-receive-browser-notifications"), "err");
       this._socketService.connectToSocket();

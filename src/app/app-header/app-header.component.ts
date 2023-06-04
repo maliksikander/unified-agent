@@ -9,6 +9,7 @@ import { fcmService } from "../services/fcm.service";
 import { httpService } from "../services/http.service";
 import { snackbarService } from "src/app/services/snackbar.service";
 import { TranslateService } from "@ngx-translate/core";
+import { SipService } from "../services/sip.service";
 
 @Component({
   selector: "app-header",
@@ -63,6 +64,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     private _socketService: socketService,
     private _sharedService: sharedService,
     public _finesseService: finesseService,
+    public _sipService: SipService,
     private _fcmService: fcmService,
     private _httpService: httpService,
     private _snackBarService: snackbarService,

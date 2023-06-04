@@ -47,10 +47,6 @@ export class ChatNotificationsComponent implements OnInit {
               this._translateService.instant("snackbar.Incoming-Call-Alert"),
               this._translateService.instant("snackbar.Incoming-call-alert-request") + e.data.channelSession.channel.channelType.name
             );
-            // this._finesseService.voiceChannelSessionSubject.next({
-            //   conversationId: e.data.conversationId,
-            //   channelSession: e.data.channelSession
-            // });
           } else {
             this._soundService.openBrowserNotification(
               this._translateService.instant("snackbar.CHAT-REQUESTED"),
@@ -122,8 +118,8 @@ export class ChatNotificationsComponent implements OnInit {
         dialogId: data.dialogData.id
       }
     };
-    // console.log("call accept data ==>", data);
-    // console.log("call accept command ==>", acceptCommand);
+    console.log("call accept data ==>", data);
+    console.log("call accept command ==>", acceptCommand);
     if (data.provider == "cx_voice") {
       this._sipService.acceptCallOnSip(acceptCommand);
     } else if (data.provider == "cisco") {
