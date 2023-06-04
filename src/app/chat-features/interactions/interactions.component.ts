@@ -1,8 +1,8 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, SimpleChanges, ViewChild } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from "@angular/core";
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
-import { MatDialog, MatSnackBar, MatDialogRef } from "@angular/material";
+import { MatDialog, MatSnackBar} from "@angular/material";
 import { CimEvent } from "../../models/Event/cimEvent";
 import { v4 as uuidv4 } from "uuid";
 import { NgScrollbar } from "ngx-scrollbar";
@@ -14,8 +14,11 @@ import { finesseService } from "src/app/services/finesse.service";
 import { ConfirmationDialogComponent } from "src/app/new-components/confirmation-dialog/confirmation-dialog.component";
 import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
 import { TranslateService } from "@ngx-translate/core";
+import {CallControlsComponent} from '../../new-components/call-controls/call-controls.component';
+import { SipService } from "src/app/services/sip.service";
 
-declare var EmojiPicker: any;
+
+// declare var EmojiPicker: any;
 
 @Component({
   selector: "app-interactions",
@@ -47,6 +50,8 @@ export class InteractionsComponent implements OnInit {
   lastSeenMessageId;
   // isTransfer = false;
   // isConsult = false;
+  ctiBarView = true;
+  ctiBoxView = false;
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -67,7 +72,7 @@ export class InteractionsComponent implements OnInit {
   showNewMessageNotif: boolean = false;
   currentScrollPosition: number = 100;
 
-  isBarOPened = false;
+  isBarOpened = false;
   unidentified = true;
   isConnected = true;
   popTitle = "Notes";
@@ -105,11 +110,16 @@ export class InteractionsComponent implements OnInit {
     private _snackbarService: snackbarService,
     public _appConfigService: appConfigService,
     private _httpService: httpService,
-    private _finesseService: finesseService,
+    public _finesseService: finesseService,
     private snackBar: MatSnackBar,
-    private _translateService: TranslateService
-  ) {}
+    private _translateService: TranslateService,
+    public _sipService: SipService
+  ) { }
+
+
   ngOnInit() {
+    console.log(this.conversation, '==> Conversation');
+
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
@@ -142,6 +152,11 @@ export class InteractionsComponent implements OnInit {
         }
       }
     });
+
+    if (this._sipService.isCallActive == true) {
+      this.ctiControlBar();
+    }
+
   }
   loadLabels() {
     this._httpService.getLabels().subscribe(
@@ -417,7 +432,9 @@ export class InteractionsComponent implements OnInit {
     }
   }
   eventFromChild(data) {
-    this.isBarOPened = data;
+    console.log("isbaropened "+data);
+    console.log("ctiBarView "+this.ctiBarView);
+    this.isBarOpened = data;
   }
   eventFromChildForUpdatedLabel(data) {
     this.labels = data;
@@ -1187,4 +1204,18 @@ export class InteractionsComponent implements OnInit {
   //   console.log("data-->",callLegs)
 
   // }
+
+  ctiControlBar() {
+    this.ctiBoxView = true;
+    this.ctiBarView = false;
+    const dialogRef = this.dialog.open(CallControlsComponent, {
+      panelClass: "call-controls-dialog",
+      hasBackdrop: false,
+      data: { header: "Leave Conversation", message: `Are you sure you want to leave conversation with ‘John Taylor’?` }
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      this.ctiBoxView = false;
+      this.ctiBarView = true;
+    });
+  }
 }

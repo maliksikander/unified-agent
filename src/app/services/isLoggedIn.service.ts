@@ -6,6 +6,7 @@ import { NgxUiLoaderService } from "ngx-ui-loader";
 import { cacheService } from "./cache.service";
 import { fcmService } from "./fcm.service";
 import { finesseService } from "./finesse.service";
+import { SipService } from "./sip.service";
 import { httpService } from "./http.service";
 import { sharedService } from "./shared.service";
 import { snackbarService } from "./snackbar.service";
@@ -26,6 +27,7 @@ export class isLoggedInService {
     private _httpService: httpService,
     private _sharedService: sharedService,
     private _finesseService: finesseService,
+    private _sipService: SipService,
     private _fcmService: fcmService,
     private ngxService: NgxUiLoaderService,
     private _snackbarService: snackbarService,
@@ -99,20 +101,27 @@ export class isLoggedInService {
             message: this._translateService.instant("Agent-Logged-In-Successfully")
           }
         });
-
         console.log("this is login resp ==>", e.data);
-
         this._cacheService.agent = e.data.keycloak_User;
-
+        const attribute = e.data.keycloak_User.attributes;
+        function isAttributeEmpty(obj) {
+          return Object.keys(obj).length === 0;
+        }
+        // if (!isAttributeEmpty(attribute)) {
+        //   if (attribute.agentExtension !== '' && attribute.agentExtension !== null && attribute.agentExtension !== undefined && attribute.agentExtension[0] !== '') {
+        //     this._sipService.extension = attribute.agentExtension[0];
+        //     localStorage.setItem('ext', `${this._sipService.extension}`);
+        //     console.log(this._sipService.extension, '-----------extension');
+        //   }
+        // }
         if (loginType == "3rdparty") {
           console.log("finesse auto 12==>");
           this._finesseService.checkActiveTasks(e.data.keycloak_User.id);
         }
-        // this._finesseService.checkActiveTasks(e.data.keycloak_User.id);
-
         try {
           localStorage.setItem("ccUser", btoa(JSON.stringify(e.data.keycloak_User)));
-        } catch (e) {}
+          localStorage.setItem("sipPass", btoa(JSON.stringify(obj.password)));
+        } catch (e) { }
         this._socketService.disConnectSocket();
         this.validateFcmKeyAndConnectToSocket(false);
       },
@@ -141,7 +150,7 @@ export class isLoggedInService {
     let ccUser: any;
     try {
       ccUser = localStorage.getItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
 
     ccUser = JSON.parse(ccUser ? atob(ccUser) : null);
 
@@ -156,6 +165,8 @@ export class isLoggedInService {
   async validateFcmKeyAndConnectToSocket(params) {
     this.ngxService.start();
     this._authService.moveToAuthorizedResourceOnLogin();
+    // this._sipService.initMe();
+    // this._sipService.checkActiveTasks(this._cacheService.agent.id);
 
     // if (this._cacheService.isMobileDevice) {
 

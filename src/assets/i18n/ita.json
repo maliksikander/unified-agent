@@ -79,7 +79,11 @@
     "Error-Getting-Queues-List":"Error Getting Queues List_ita",
     "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_ita",
     "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_ita",
-    "Unable-To-End-Voice-Session":"Unable to end voice session_ita"
+    "Unable-To-End-Voice-Session":"Unable to end voice session_ita",
+    "CX-Voice-incorrect-request":"CX VOICE : Incorrect object for call request!_ita",
+    "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed, Invalid Credentials!_ita",
+    "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed!_ita",
+    "CX-Voice-Login-Success":"CX VOICE : Successfully login with EF Switch_ita"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ita",

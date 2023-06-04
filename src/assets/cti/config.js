@@ -26,3 +26,4 @@
 
 var config = {}
 var callTypes = {}
+var sipConfig = {}

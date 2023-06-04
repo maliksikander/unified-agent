@@ -5,6 +5,10 @@
   <meta charset="utf-8">
   <title>Agent Desk</title>
   <base href="/">
+  <div style="position: absolute">
+    <audio id="remoteVideo" autoplay="autoplay"></audio>
+    <audio id="localVideo" autoplay="autoplay" muted="muted"></audio>
+  </div>
 
   <!-- <link rel="manifest" href="./manifest.json"> -->
   <script type="text/javascript" src="assets/cti/jQuery3.5.1.min.js"></script>
@@ -27,9 +31,15 @@
         document.head.appendChild(jabber);
         document.head.appendChild(ctiLib);
         document.head.appendChild(ctiWrapper);
-
-
       }
+
+      let sipLib = document.createElement('script');
+      let sipWrapper = document.createElement('script');
+      sipLib.setAttribute('src', 'assets/cti/sip-libraries/sip-0.15.11.js');
+      sipWrapper.setAttribute('src', 'assets/cti/sip-libraries/sip-wrapper.js');
+      document.head.appendChild(sipLib);
+      document.head.appendChild(sipWrapper);
+
     })();
 
     // <!-- Google Tag Manager -->
@@ -44,7 +54,6 @@
           'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
     })(window, document, 'script', 'dataLayer', 'GTM-W3T32X5');
 // <!-- End Google Tag Manager -->
-
 
   </script>
 

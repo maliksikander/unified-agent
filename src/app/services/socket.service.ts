@@ -172,7 +172,19 @@ export class socketService {
           });
         }
       } else {
-        this.triggerNewChatRequest(res);
+        // if (res.channelSession.channel.channelType.name.toLowerCase() == "voice") {
+
+        //   this.emit("topicSubscription", {
+        //     topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.conversationId, "PRIMARY", "SUBSCRIBED"),
+        //     agentId: this._cacheService.agent.id,
+        //     conversationId: res.conversationId,
+        //     taskId: res.taskId
+        //   });
+
+        // } else {
+          this.triggerNewChatRequest(res);
+        // }
+        // this.triggerNewChatRequest(res);
       }
     });
 
@@ -683,8 +695,9 @@ export class socketService {
   isNonVoiceChannelSessionExists(activeChannelSessions) {
     let nonVoiceChannelSession = activeChannelSessions.find((channelSession) => {
       if (
-        channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "pull" ||
-        channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "push"
+        channelSession.channel.channelType.name.toLowerCase() != "voice"
+        // channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "pull" ||
+        // channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "push"
       ) {
         return channelSession;
       }

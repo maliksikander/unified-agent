@@ -9,6 +9,8 @@ import { pullModeService } from "src/app/services/pullMode.service";
 import { soundService } from "src/app/services/sounds.service";
 import { finesseService } from "src/app/services/finesse.service";
 import { TranslateService } from "@ngx-translate/core";
+import { appConfigService } from "src/app/services/appConfig.service";
+import { SipService } from "src/app/services/sip.service";
 
 @Component({
   selector: "app-chat-notifications",
@@ -30,7 +32,9 @@ export class ChatNotificationsComponent implements OnInit {
     private _router: Router,
     private _soundService: soundService,
     private _finesseService: finesseService,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
+    private _sipService: SipService,
+    private _appConfigService: appConfigService
   ) {
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       try {
@@ -65,7 +69,7 @@ export class ChatNotificationsComponent implements OnInit {
         } else if (e.msg == "closePullModeRequestHeader") {
           this.removePullModeRequestFromRequestArray(e.data);
         } else if (e.msg == "openExternalModeRequestHeader") {
-          this.getVoiceChannelType();
+          this.getVoiceChannelType(e.data.provider);
           if (this.externalModeRequests.length > 0) {
             let request = this.externalModeRequests.find((item) => {
               return item.identifier == e.data.identifier;
@@ -83,66 +87,56 @@ export class ChatNotificationsComponent implements OnInit {
             let index = this.externalModeRequests.findIndex((item) => {
               return item.dialogData.id == dialog.id;
             });
-            console.log("Closing Index==>",index)
+            console.log("Closing Index==>", index);
 
-            if(index !=- 1) this.externalModeRequests.splice(index,1);
+            if (index != -1) this.externalModeRequests.splice(index, 1);
             console.log("notification close==>", this.externalModeRequests);
           }
-
         } else if (e.msg == "closeAllPushModeRequests") {
-
           this.pushModeRequests = [];
         }
       } catch (error) {
         console.error("[serviceCurrentMessage Subscriber] Error :", error);
       }
     });
-
-    // this._finesseService.newIncomingVoiceRequest.subscribe((res: any) => {
-    //   console.log("e==>", res);
-    //   this.getVoiceChannelType();
-    //   this.externalModeRequests = res;
-    // });
   }
 
-  ngOnInit() {
-    // this._finesseService.removeNotification.subscribe((res) => {
-    //   if (res.identifier) {
-    //     this.removeExternalModeRequestFromRequestArray(res.identifier, res.conversationId);
-    //   } else {
-    //     this.removePushModeRequestFromRequestArray(res.conversationId);
-    //   }
-    // });
-  }
+  ngOnInit() {}
 
-  getVoiceChannelType() {
+  getVoiceChannelType(provider) {
     let channelTypes: Array<any> = this._sharedService.channelTypeList;
-
-    this.voiceChannelType = channelTypes.find((item) => item.name == "CISCO_CC");
-    // console.log("channelType==>", this.voiceChannelType);
+    let ciscoChannelType;
+    let cxVoiceChannelType;
+    ciscoChannelType = channelTypes.find((item) => item.name == "CISCO_CC");
+    cxVoiceChannelType = channelTypes.find((item) => item.name == "CX_VOICE");
+    console.log("provider==>", provider);
+    if (provider == "cisco") this.voiceChannelType = ciscoChannelType;
+    else if (provider == "cx_voice") this.voiceChannelType = cxVoiceChannelType;
+    console.log("voice channelType==>", this.voiceChannelType);
   }
 
-  acceptCall(ciscoData) {
-    let data = {
+  acceptCall(data) {
+    let acceptCommand = {
       action: "answerCall",
       parameter: {
-        dialogId: ciscoData.dialogData.id
+        dialogId: data.dialogData.id
       }
     };
-    console.log("call accept data==>", data);
-    this._finesseService.acceptCallOnFinesse(data);
+    // console.log("call accept data ==>", data);
+    // console.log("call accept command ==>", acceptCommand);
+    if (data.provider == "cx_voice") {
+      this._sipService.acceptCallOnSip(acceptCommand);
+    } else if (data.provider == "cisco") {
+      this._finesseService.acceptCallOnFinesse(acceptCommand);
+    }
   }
 
   onAcceptCallback(conversationId, taskId, taskDirection) {
-    // if (ciscoData) {
-    // this.acceptCall(conversationId, ciscoData);
-    // } else {
     this.getTopicSubscription(conversationId, taskId, taskDirection);
-    // }
   }
 
-  onExternalRequestAccept(ciscoData) {
-    this.acceptCall(ciscoData);
+  onExternalRequestAccept(data) {
+    this.acceptCall(data);
   }
 
   getTopicSubscription(conversationId, taskId, taskDirection) {

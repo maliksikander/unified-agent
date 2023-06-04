@@ -7,6 +7,7 @@ export interface IKeycloakUser {
   firstName: string;
   lastName: string;
   extension?: number;
+  // attributes: { agentExtension: [] };
   roles: [];
   queue?: string;
   tenant?: ITenant;
@@ -15,6 +16,7 @@ export interface IKeycloakUser {
   permittedResources?: [];
   supervisedTeams?:[]
   userTeam?:[]
+  attributes?:any
 }
 
 export class sender {

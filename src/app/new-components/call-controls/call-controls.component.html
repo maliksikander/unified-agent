@@ -1,0 +1,36 @@
+<!--<div class="call-control-box call-controls-view box-view {{fullView ? 'expand-view-controls'  : ''}}" cdkDrag cdkDragRootElement=".cdk-overlay-pane">-->
+<div class="call-control-box call-controls-view box-view" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <mat-icon class="drag-controls" cdkDragHandle>more_vert</mat-icon>
+
+  <div class="right-call-controls">
+    <!--    <mat-icon class="control-adjust" *ngIf="fullView"  (click)="cancel()">picture_in_picture</mat-icon>-->
+    <div class="main-showcase customer-info-dp">
+      <div class="agent-showcase">
+        <img src="assets/images/dummy-user.svg" alt="Customer">
+        <mat-icon routerLink="/customers/chats">flip_to_back</mat-icon>
+      </div>
+      <h4 matTooltip="customerNumber">{{customerNumber}}<span class="timer-call">{{ minutes | number: '2.0' }}:{{ seconds |
+          number: '2.0' }}</span>
+      </h4>
+    </div>
+
+    <ul class="assistance-actions">
+      <!--      <li><button mat-fab><img src="assets/images/chat1.svg"></button></li>-->
+      <!--      <li><button mat-fab (click)="fullView = !fullView"><mat-icon>{{fullView ? 'fullscreen_exit'  : 'fullscreen'}}</mat-icon></button></li>-->
+
+      <!-- <li><button mat-fab><img src="assets/images/consult-colored.svg"></button></li>
+      <li><button mat-fab><img src="assets/images/transfer-colored.svg"></button></li>
+      <li><button mat-fab><img src="assets/images/conference-colored.svg"></button></li> -->
+    </ul>
+
+    <ul class="call-actions">
+      <li><button mat-fab (click)="cancel()"><mat-icon>picture_in_picture</mat-icon></button></li>
+      <li><button mat-fab><mat-icon>mic</mat-icon></button></li>
+      <li *ngIf="_sipService.isCallHold == false"><button (click)="holdCallOnSip()"
+          mat-fab><mat-icon>pause</mat-icon></button></li>
+      <li *ngIf="_sipService.isCallHold == true"><button (click)="resumeCallOnSip()"
+          mat-fab><mat-icon>pause_circle_filled</mat-icon></button></li>
+      <li><button (click)="endCallOnSip()" class="end-call" mat-fab><mat-icon>call_end</mat-icon></button></li>
+    </ul>
+  </div>
+</div>

@@ -79,7 +79,12 @@
     "Error-Getting-Queues-List":"Error Getting Queues List",
     "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found",
     "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco",
-    "Unable-To-End-Voice-Session":"Unable to end voice session"
+    "Unable-To-End-Voice-Session":"Unable to end voice session",
+    "CX-Voice-incorrect-request":"CX VOICE : Incorrect object for call request!",
+    "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed, Invalid Credentials!",
+    "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed!",
+    "CX-Voice-Login-Success":"CX VOICE : Successfully login with EF Switch",
+    "CX-Voice-call-canceled" : "CX VOICE : Voice Call canceled"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View",

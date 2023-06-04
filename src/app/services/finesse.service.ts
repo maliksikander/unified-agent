@@ -52,7 +52,8 @@ export class finesseService {
   // incoming states from CIM
   handlePresence(agentPresence) {
     // check if the MRDs have a voice mrd in it or not
-    let hasVoiceMrd: boolean = this._appConfigService.finesseConfig.isCiscoEnabled;
+    let hasVoiceMrd: boolean = this._appConfigService.config.isCiscoEnabled;
+    // console.log("mrd==>", hasVoiceMrd)
 
     if (hasVoiceMrd) {
       // console.log("isCiscoEnabled==>", hasVoiceMrd);
@@ -77,7 +78,7 @@ export class finesseService {
   getVoiceMrd(mrds) {
     try {
       let voiceMrd = mrds.find((e) => {
-        if (e.mrd.id == this._appConfigService.finesseConfig.ciscoCCMrd) {
+        if (e.mrd.id == this._appConfigService.config.CISCO_CC_MRD) {
           return e;
         }
       });
@@ -213,7 +214,8 @@ export class finesseService {
           let agentIdentifier = dialog.fromAddress;
           let data = {
             identifier: agentIdentifier,
-            dialogData: dialog
+            dialogData: dialog,
+            provider:"cisco"
           };
           this._sharedService.serviceChangeMessage({ msg: "openExternalModeRequestHeader", data: data });
           // this.setLocalDialogCache(event, "alerting");
@@ -283,7 +285,8 @@ export class finesseService {
           let data = {
             customer: res.customer,
             identifier,
-            dialogData: ciscoEvent.response.dialog
+            dialogData: ciscoEvent.response.dialog,
+            provider:"cisco"
           };
           if (callType == "INBOUND") {
             this._sharedService.serviceChangeMessage({ msg: "openExternalModeRequestHeader", data: data });
@@ -1087,7 +1090,7 @@ export class finesseService {
       if (this.taskList && this.taskList.length > 0) {
         for (let i = 0; i <= this.taskList.length; i++) {
           // if (this.taskList[i].state && this.taskList[i].state.name.toLowerCase() == "active") {
-          if (this.taskList[i].mrd.id == this._appConfigService.finesseConfig.ciscoCCMrd) return this.taskList[i];
+          if (this.taskList[i].mrd.id == this._appConfigService.config.CISCO_CC_MRD) return this.taskList[i];
           // }
         }
       }
