@@ -132,7 +132,7 @@ export class SipService implements OnInit {
         let cacheId = `${this._cacheService.agent.id}:${event.response.dialog.id}`;
         let cacheDialog: any = this.getDialogFromCache(cacheId);
         if (!cacheDialog) {
-          console.log("1==>")
+          // console.log("1==>")
           // this.setDialogCache(event, "ALERTING");
           this.identifyCustomer(event, event.response.dialog.customerNumber, "INBOUND");
         }
