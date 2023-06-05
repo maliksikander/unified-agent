@@ -9,6 +9,7 @@ import { pullModeService } from "src/app/services/pullMode.service";
 import { soundService } from "src/app/services/sounds.service";
 import { finesseService } from "src/app/services/finesse.service";
 import { TranslateService } from "@ngx-translate/core";
+import { announcementService } from "src/app/services/announcement.service";
 
 @Component({
   selector: "app-chat-notifications",
@@ -21,7 +22,7 @@ export class ChatNotificationsComponent implements OnInit {
   externalModeRequests = [];
   notificationArea: boolean = false;
   voiceChannelType;
-  newAnnouncement =false;
+  //newAnnouncement =true;
 
   constructor(
     public _pullModeservice: pullModeService,
@@ -31,7 +32,8 @@ export class ChatNotificationsComponent implements OnInit {
     private _router: Router,
     private _soundService: soundService,
     private _finesseService: finesseService,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
+    private _announcementService:announcementService
   ) {
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       try {
@@ -102,6 +104,11 @@ export class ChatNotificationsComponent implements OnInit {
     //     this.removePushModeRequestFromRequestArray(res.conversationId);
     //   }
     // });
+  }
+
+  onDismiss(announcement){
+    this._announcementService.removeAnnoucementFromNotificationList(announcement);
+
   }
 
   getVoiceChannelType() {

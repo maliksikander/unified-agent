@@ -41,6 +41,9 @@ export class AnnouncementComponent implements OnInit {
       panelClass: "new-announcement-dialog"
       
     });
+    dialogRef.afterClosed().subscribe((result) => { 
+      this._httpService.getAnnouncements();
+      dialogRef.close() });;
 
   }
 

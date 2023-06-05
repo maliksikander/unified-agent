@@ -13,12 +13,12 @@ import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 })
 export class AnnouncementDialogComponent implements OnInit {
   announceDateMin = new Date();
-  maxdateaVar=this.announceDateMin;
-  
+  maxdateaVar = this.announceDateMin;
 
-   someDate = this.announceDateMin.getDate();
-   //numberOfDaysToAdd = 5;
-   //result = this.someDate.setDate(this.someDate + this.numberOfDaysToAdd);
+
+  someDate = this.announceDateMin.getDate();
+  //numberOfDaysToAdd = 5;
+  //result = this.someDate.setDate(this.someDate + this.numberOfDaysToAdd);
   maxDateVal;
   expireDateMin = new Date();
   FilterSelected = "all";
@@ -31,7 +31,7 @@ export class AnnouncementDialogComponent implements OnInit {
   announcementsFilter = "all";
   announcementTask = "create";
   teamList: any;
-  selectedTeams: any ;
+  selectedTeams: any;
   settings = {};
   supervisor = {};
   supervisorId = {};
@@ -40,8 +40,8 @@ export class AnnouncementDialogComponent implements OnInit {
   currentAnnouncement: any = {};
   formData: any = [];
   announcementForm: FormGroup;
-  editObj2={};
-  editObj={};
+  editObj2 = {};
+  editObj = {};
 
   announceDate = new FormControl(new Date(), [Validators.required]);
   expireDate = new FormControl(new Date(), [Validators.required]);
@@ -61,13 +61,13 @@ export class AnnouncementDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<AnnouncementDialogComponent>, @Inject(MAT_DIALOG_DATA) public dataID: any
   ) {//this.maxDateVal= new Date( 2023, 6, 15);
 
-   }
+  }
 
   ngOnInit() {
     //this.maxDate= this.maxdateaVar.setHours(120);
-
+    this.getAllAnnouncementList();
     if (this.dataID !== null) {
-      
+
       this.currentAnnouncement = this._httpService.getAnnouncementsById(this.dataID.value).subscribe(res => {
         this.formData = res;
         this.editObj = {
@@ -79,9 +79,9 @@ export class AnnouncementDialogComponent implements OnInit {
           "supervisorName": this.supervisor,
         }
       });
-  
+
     }
-    
+
     this.teamList = this._cacheService.agent.supervisedTeams;
     console.log("teams", this.teamList);
     this.teamList = this._cacheService.agent.supervisedTeams;
@@ -111,7 +111,7 @@ export class AnnouncementDialogComponent implements OnInit {
 
 
   onCreateAnnouncement() {
-   let selectedTeamNames = this.selectedTeams.map(d => d);
+    let selectedTeamNames = this.selectedTeams.map(d => d);
     console.log("TEAM NAME MAP ", selectedTeamNames);
     this.selectedTeams = selectedTeamNames;
     let obj = {
@@ -122,27 +122,28 @@ export class AnnouncementDialogComponent implements OnInit {
       "supervisorId": this.supervisorId,
       "supervisorName": this.supervisor
     }
-    console.log("btn clicked", obj);
     this.postData = obj;
-    console.log("this.postData", this.postData);
     this._httpService.addAnnouncemenent(this.postData).subscribe({
       next: (val: any) => {
         this.getAllAnnouncementList();
         console.log("added successfully");
+        this.dialog.closeAll();
 
       },
       error: (err: any) => {
         console.error(err);
+        this.dialog.closeAll();
       },
     });
+    this.dialog.closeAll();
+    
 
   }
 
   onSave() {
     this.onCreateAnnouncement();
-    this.dialog.closeAll();
-
   }
+
   update() {
     console.log("update dataaid.value", this.dataID.value);
     this.editObj2 = {
@@ -182,19 +183,22 @@ export class AnnouncementDialogComponent implements OnInit {
     this.expireDate = new FormControl(_date, [Validators.required]);
   }
 
-  confirmationDialog(templateRef, data) {
-    //this.dialog.closeAll();
-    const dialogRef = this.dialog.open(templateRef, {
-      width: "490px",
-      panelClass: "confirm-dialog",
-      data: this.postData
+  // confirmationDialog() {
+  //   //this.dialog.closeAll();
+  //   const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
+  //     width: "490px",
+  //     panelClass: "confirm-dialog",
+  //     data: this.postData
+  //   });
 
-    });
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     this._httpService.getAnnouncements();
+  //     dialogRef.close()
+  //     this.dialog.closeAll();
+  //   });
 
-    templateRef.afterClosed().subscribe((result) => { 
-      this._httpService.getAnnouncements();
-      dialogRef.close() });;
-  }
+
+  // }
 
   onItemSelect(item: any) {
     console.log(item);

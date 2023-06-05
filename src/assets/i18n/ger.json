@@ -79,7 +79,8 @@
     "Error-Getting-Queues-List":"Error Getting Queues List_ger",
     "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_ger",
     "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_ger",
-    "New-Announcement":"New-Announcements_ger"
+    "New-Announcement":"New-Announcements_ger",
+    "Announcement-Deleted":"Announcement-Deleted_ger"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ger",

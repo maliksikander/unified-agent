@@ -79,7 +79,9 @@
     "Error-Getting-Queues-List":"Error Getting Queues List_fr",
     "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_fr",
     "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_fr",
-    "New-Announcement":"New-Announcement_fr"
+    "New-Announcement":"New-Announcement_fr",
+    "Announcement-Deleted":"Announcement-Deleted_fr"
+    
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_fr",

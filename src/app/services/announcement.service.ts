@@ -8,6 +8,8 @@ import { Subject } from "rxjs";
 })
 export class announcementService {
     announcementList: any = [];
+    announcementNotificationList: any = [];
+    timer:any=null;
 
 
     constructor(
@@ -19,6 +21,7 @@ export class announcementService {
     countUnreadAnnouncement() {
         this.countUnreadAnnouncementSubject.next(true);
     }
+
     getAnnouncementList() {
         const teamIds = this._cacheService.agent.supervisedTeams.map(item => item.teamId);
         teamIds.push(this._cacheService.agent.userTeam.teamId);
@@ -36,15 +39,32 @@ export class announcementService {
     }
 
     addCreatedAnnoucement(announcement) {
+      
         if (announcement.superviserId != this._cacheService.agent.id) {
             this.announcementList.push(announcement);
-            this.countUnreadAnnouncement()
+            this.countUnreadAnnouncement();
+            this.announcementNotificationList.push(announcement);
+            if(!this.timer)
+            this.timer=setTimeout(()=>{this.announcementNotificationList=[]
+            this.timer=null;
+            },60000);
+           
         }
+
     }
 
     removeAnnoucement(announcement) {
         this.announcementList = this.announcementList.filter((item) => item.id !== announcement.id);
+        this.announcementNotificationList= this.announcementNotificationList.filter((item) => item.id !== announcement.id);
         this.countUnreadAnnouncement()
+
+ 
+    }
+
+    removeAnnoucementFromNotificationList(announcement){
+        this.announcementNotificationList= this.announcementNotificationList.filter((item) => item.id !== announcement.id);
+        console.log("announcement",announcement);
+        console.log("this.announcementNotificationList",this.announcementNotificationList)
 
     }
 }

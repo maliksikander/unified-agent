@@ -157,7 +157,8 @@
   </div>
 
 <!--  New Announcement notifications-->
-<div class="notification-area" *ngIf="newAnnouncement">
+<div *ngFor="let announcementNotification of this._announcementService.announcementNotificationList">
+<div class="notification-area" >
   <div class="row main-panel m-0">
     <mat-card class="notification-panel mat-card">
       <mat-card-content
@@ -168,20 +169,20 @@
           </p>
         </div>
         <div class="requested-name">
-          <strong>New Announcement by Henry Williams</strong>
+          <strong>New Announcement by {{announcementNotification.supervisorName}}</strong>
           <p>
-            The office will remain closed on public holiday on December 25th, 2023. Teams
-            with working shift will get a day off in the coming week.
+            {{announcementNotification.announcementText}}
           </p>
         </div>
         <div class="notification-trigger">
-          <button class="mat-flat-button" (click)="newAnnouncement = false"
+          <button class="mat-flat-button" (click)="onDismiss(announcementNotification)"
                   mat-button>Dismiss</button>
         </div>
       </mat-card-content>
     </mat-card>
 
   </div>
+</div>
 </div>
 
 
