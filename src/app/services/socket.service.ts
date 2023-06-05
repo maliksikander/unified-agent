@@ -148,7 +148,7 @@ export class socketService {
     this.socket.on("ANNOUNCEMENT_CREATED", (res: any) => {
       console.log("ANNOUNCEMENT_CREATED", res);
       this._announcementService.addCreatedAnnoucement(res);
-      this._snackbarService.open(this._translateService.instant("snackbar.New-Announcement"), "err");
+      this._snackbarService.open(this._translateService.instant("snackbar.New-Announcement" ), "err");
     });
 
     this.socket.on("ANNOUNCEMENT_DELETED", (res: any) => {

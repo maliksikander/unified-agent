@@ -39,11 +39,13 @@ export class AnnouncementComponent implements OnInit {
   onNewAnnouncement() {
     const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
       panelClass: "new-announcement-dialog"
-      
+
     });
-    dialogRef.afterClosed().subscribe((result) => { 
-      this._httpService.getAnnouncements();
-      dialogRef.close() });;
+    dialogRef.afterClosed().subscribe((result) => {
+    
+      dialogRef.close()
+      this.getAllAnnouncements();
+    });
 
   }
 
@@ -61,26 +63,24 @@ export class AnnouncementComponent implements OnInit {
   }
 
   onUpdateAnnouncement(value, index) {
+
     console.log("ID clicked", value);
     this.allAnnouncements = this._httpService.getAnnouncementsById(value).subscribe(res => {
       this.formData = res;
       console.log("formData", this.formData)
     });
     console.log("UpdatedformData===>", this.formData)
-
-    const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
-
-      data: {
-        value: value,
-
-      }
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      dialogRef.close()
-      this.getAllAnnouncements();
-    });;
-
-
+    if (this.formData.status == "scheduled") {
+      const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
+        data: {
+          value: value,
+        }
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        dialogRef.close()
+        this.getAllAnnouncements();
+      });
+    }
   }
 
 
