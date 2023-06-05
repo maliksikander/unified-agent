@@ -9,7 +9,6 @@ import { socketService } from "./socket.service";
 import { httpService } from "./http.service";
 import { sharedService } from "./shared.service";
 import * as uuid from "uuid";
-import { Dialog } from 'primeng/dialog';
 
 declare var postMessage;
 
@@ -134,7 +133,7 @@ export class SipService implements OnInit {
         }
         this.handleDialogStateEvent(event);
       } else if (event.event.toLowerCase() == "newinboundcall") {
-        console.log('New Inbound Call sip==>', event);
+        // console.log('New Inbound Call sip==>', event);
         this.customerNumber = event.response.dialog.customerNumber;
         let cacheId = `${this._cacheService.agent.id}:${event.response.dialog.id}`;
         let cacheDialog: any = this.getDialogFromCache(cacheId);
@@ -388,12 +387,12 @@ export class SipService implements OnInit {
             customer: res.customer,
             identifier,
             dialogData: sipEvent.response.dialog,
-            provider: "CX_VOICE"
+            provider: "cx_voice"
           };
           if (callType == "INBOUND") {
             this._sharedService.serviceChangeMessage({ msg: "openExternalModeRequestHeader", data: data });
             this.setDialogCache(sipEvent, "ALERTING");
-            console.log('Alerting inbound sip==>', sipEvent);
+            // console.log('Alerting inbound sip==>', sipEvent);
 
           } else { }
         },
@@ -698,9 +697,9 @@ export class SipService implements OnInit {
 
       if (this.taskList && this.taskList.length > 0) {
         for (let i = 0; i <= this.taskList.length; i++) {
-          if (this.taskList[i].state && this.taskList[i].state.name.toLowerCase() == "active") {
+          // if (this.taskList[i].state && this.taskList[i].state.name.toLowerCase() == "active") {
             if (this.taskList[i].channelSession && this.taskList[i].channelSession.channel.channelType.name == "CX_VOICE") return this.taskList[i];
-          }
+          // }
         }
       }
       return null;

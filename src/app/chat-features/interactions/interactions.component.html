@@ -930,73 +930,75 @@
 
                     <!-- Voice Call Actvity -->
                     <div *ngIf="(message.body.type | lowercase) == 'voice'"
-                    class="voice-activity-main panel-divider user-data customer-side">
-                    <mat-expansion-panel
-                      hideToggle="{{ message.body.data.callLegs.length > 1 && !(message.body.data.callLegs | checkConsultCall) ? false : true }}"
-                      disabled="{{ message.body.data.callLegs.length > 1 && !(message.body.data.callLegs | checkConsultCall) ? false : true }}">
-                      <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
-                        <mat-panel-title>
-                          <div class="panel-header">
-                            <ul>
-                              <li>
-                                <span class="phone-number">
-                                  {{ message.body.data.callLegs | getCustomerAni }}
-                                </span>
-                              </li>
-
-                              <li *ngIf="message.body.data.callLegs.length < 2" class="agent-pic call-services">
-                                <span>{{
-                                 message.body.data.callLegs[0].additionalDetail.dialog.queueName ?
-                                  message.body.data.callLegs[0].additionalDetail.dialog.queueName : "N/A"
-                                  }}</span>
-                              </li>
-                              <ng-container *ngIf="message.body.data.callLegs.length == 2">
-                                <li *ngIf="message.body.data.callLegs | checkConsultCall"
-                                  class="agent-pic call-services">
-                                  <span>
-                                    <ng-container *ngFor="let callLeg of message.body.data.callLegs">
-                                      <ng-container *ngIf="callLeg.startDirection != 'CONSULT'">
-                                        {{ callLeg?.additionalDetail?.dialog.queueName ? callLeg?.additionalDetail?.dialog.queueName : "N/A" }}
-                                      </ng-container>
-                                    </ng-container>
+                      class="voice-activity-main panel-divider user-data customer-side">
+                      <mat-expansion-panel
+                        hideToggle="{{ message.body.data.callLegs.length > 1 && !(message.body.data.callLegs | checkConsultCall) ? false : true }}"
+                        disabled="{{ message.body.data.callLegs.length > 1 && !(message.body.data.callLegs | checkConsultCall) ? false : true }}">
+                        <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+                          <mat-panel-title>
+                            <div class="panel-header">
+                              <ul>
+                                <li>
+                                  <span class="phone-number">
+                                    {{ message.body.data.callLegs | getCustomerAni }}
                                   </span>
                                 </li>
-                              </ng-container>
 
-                              <li class="agent-pic participant-agent call-services">
-                                <ng-container *ngFor="let callData of message.body.data.callLegs">
-                                  <span matTooltip="{{ callData.sender.senderName }}"
-                                    *ngIf="callData?.startDirection != 'CONSULT'">{{
-                                    callData.sender.senderName | getFirstTwoLetters
+                                <li *ngIf="message.body.data.callLegs.length < 2" class="agent-pic call-services">
+                                  <span>{{
+                                    message.body.data.callLegs[0].additionalDetail.dialog.queueName ?
+                                    message.body.data.callLegs[0].additionalDetail.dialog.queueName : "N/A"
                                     }}</span>
+                                </li>
+                                <ng-container *ngIf="message.body.data.callLegs.length == 2">
+                                  <li *ngIf="message.body.data.callLegs | checkConsultCall"
+                                    class="agent-pic call-services">
+                                    <span>
+                                      <ng-container *ngFor="let callLeg of message.body.data.callLegs">
+                                        <ng-container *ngIf="callLeg.startDirection != 'CONSULT'">
+                                          {{ callLeg?.additionalDetail?.dialog.queueName ?
+                                          callLeg?.additionalDetail?.dialog.queueName : "N/A" }}
+                                        </ng-container>
+                                      </ng-container>
+                                    </span>
+                                  </li>
                                 </ng-container>
-                              </li>
 
-                              <li *ngIf="message.body.data.callLegs | checkConferenceCall"
-                                class="multiple-users agent-pic participant-agent call-services">
-                                <span><img src="assets/images/groups.svg" alt="group" /></span>
-                              </li>
+                                <li class="agent-pic participant-agent call-services">
+                                  <ng-container *ngFor="let callData of message.body.data.callLegs">
+                                    <span matTooltip="{{ callData.sender.senderName }}"
+                                      *ngIf="callData?.startDirection != 'CONSULT'">{{
+                                      callData.sender.senderName | getFirstTwoLetters
+                                      }}</span>
+                                  </ng-container>
+                                </li>
 
-                              <li class="section-duration">
-                                <!-- <time>{{ message.body.data.duration }}sec</time> -->
+                                <li *ngIf="message.body.data.callLegs | checkConferenceCall"
+                                  class="multiple-users agent-pic participant-agent call-services">
+                                  <span><img src="assets/images/groups.svg" alt="group" /></span>
+                                </li>
 
-                                <time *ngIf="message.body.data.duration > 0">{{ message.body.data.duration * 1000 |
-                                  date: "mm" }}min
-                                  {{ message.body.data.duration * 1000 | date: "ss" }}sec</time>
-                                <time *ngIf="message.body.data.duration == 0">{{ message.body.data.duration }}
-                                  sec</time>
-                              </li>
+                                <li class="section-duration">
+                                  <!-- <time>{{ message.body.data.duration }}sec</time> -->
 
-                              <ng-container *ngIf="message.body.data.callLegs.length < 2">
-                                <li *ngIf="message.body.data.callLegs[0]?.additionalDetail?.dialog.wrapUpReason" class="section-tags">
-                                  <span>
-                                    {{
-                                    message.body.data.callLegs[0]?.additionalDetail?.dialog.wrapUpReason ?
-                                    message.body.data.callLegs[0]?.additionalDetail?.dialog.wrapUpReason : "N/A"
-                                    }}
-                                  </span>
+                                  <time *ngIf="message.body.data.duration > 0">{{ message.body.data.duration * 1000 |
+                                    date: "mm" }}min
+                                    {{ message.body.data.duration * 1000 | date: "ss" }}sec</time>
+                                  <time *ngIf="message.body.data.duration == 0">{{ message.body.data.duration }}
+                                    sec</time>
+                                </li>
 
-                                  <!-- <span
+                                <ng-container *ngIf="message.body.data.callLegs.length < 2">
+                                  <li *ngIf="message.body.data.callLegs[0]?.additionalDetail?.dialog.wrapUpReason"
+                                    class="section-tags">
+                                    <span>
+                                      {{
+                                      message.body.data.callLegs[0]?.additionalDetail?.dialog.wrapUpReason ?
+                                      message.body.data.callLegs[0]?.additionalDetail?.dialog.wrapUpReason : "N/A"
+                                      }}
+                                    </span>
+
+                                    <!-- <span
                                   *ngFor="let reasonCode of message.body.data?.dialog?.wrapUpReason | sliceFilter:0:2">
                                   {{reasonCode }}
                                 </span>
@@ -1004,92 +1006,95 @@
                                 <span *ngIf="message.body.data?.dialog?.wrapUpReason.length > 2" class="sub-tags"
                                   [matMenuTriggerFor]="voiceTags">+{{message.body.data?.dialog?.wrapUpReason.length -
                                   2}}</span> -->
+                                  </li>
+                                </ng-container>
+                                <li>
+                                  <time>{{ message.body.data.startTime | date: "shortTime" }}</time>
+                                  <time *ngIf="message.body.data.callLegs | checkConferenceCall">-{{
+                                    message.body.data.endTime | date: "shortTime" }}</time>
                                 </li>
-                              </ng-container>
-                              <li>
-                                <time>{{ message.body.data.startTime | date: "shortTime" }}</time>
-                                <time *ngIf="message.body.data.callLegs | checkConferenceCall">-{{
-                                  message.body.data.endTime | date: "shortTime" }}</time>
-                              </li>
-                            </ul>
-                          </div>
-                          <!-- <mat-menu #voiceTags="matMenu">
+                              </ul>
+                            </div>
+                            <!-- <mat-menu #voiceTags="matMenu">
                             <div class="more-section-tags">
                               <span
                                 *ngFor="let reasonCode of message.body.data?.dialog?.wrapUpReason">{{reasonCode}}</span>
                             </div>
                           </mat-menu> -->
-                        </mat-panel-title>
-                      </mat-expansion-panel-header>
-                      <ng-container
-                        *ngIf="message.body.data.callLegs.length > 1 && !(message.body.data.callLegs | checkConsultCall)">
-                        <ng-container *ngFor="let callData of message.body.data.callLegs">
-                          <div *ngIf="callData?.startDirection != 'CONSULT'"
-                            class="panel-header call-history-panel inner-detail">
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <ng-container
+                          *ngIf="message.body.data.callLegs.length > 1 && !(message.body.data.callLegs | checkConsultCall)">
+                          <ng-container *ngFor="let callData of message.body.data.callLegs">
                             <div *ngIf="callData?.startDirection != 'CONSULT'"
-                              class="history-detail inner-detail-history">
-                              <div class="panel-header">
-                                <ul>
-                                  <li class="agent-pic participant-agent call-services">
-                                    <span matTooltip="{{ callData.sender.senderName }}">{{ callData.sender.senderName |
-                                      getFirstTwoLetters }}</span>
-                                  </li>
+                              class="panel-header call-history-panel inner-detail">
+                              <div *ngIf="callData?.startDirection != 'CONSULT'"
+                                class="history-detail inner-detail-history">
+                                <div class="panel-header">
+                                  <ul>
+                                    <li class="agent-pic participant-agent call-services">
+                                      <span matTooltip="{{ callData.sender.senderName }}">{{ callData.sender.senderName
+                                        |
+                                        getFirstTwoLetters }}</span>
+                                    </li>
 
-                                  <li class="agent-pic call-services">
-                                    <span>{{ callData?.additionalDetail?.dialog.queueName ? callData?.additionalDetail?.dialog.queueName : "N/A" }}</span>
-                                  </li>
+                                    <li class="agent-pic call-services">
+                                      <span>{{ callData?.additionalDetail?.dialog.queueName ?
+                                        callData?.additionalDetail?.dialog.queueName : "N/A" }}</span>
+                                    </li>
 
-                                  <li class="section-duration">
-                                    <!-- <time>{{ callData.duration ? callData.duration :
+                                    <li class="section-duration">
+                                      <!-- <time>{{ callData.duration ? callData.duration :
                                       "N/A"
                                       }}sec</time> -->
-                                    <time *ngIf="callData.duration > 0">{{ callData.duration * 1000 | date: "mm" }}min
-                                      {{ callData.duration * 1000 | date: "ss" }}sec</time>
-                                    <time *ngIf="callData.duration == 0">{{ callData.duration }} sec</time>
-                                  </li>
+                                      <time *ngIf="callData.duration > 0">{{ callData.duration * 1000 | date: "mm" }}min
+                                        {{ callData.duration * 1000 | date: "ss" }}sec</time>
+                                      <time *ngIf="callData.duration == 0">{{ callData.duration }} sec</time>
+                                    </li>
 
-                                  <li>
-                                    <img matTooltip="{{ callData.endDirection | removeUnderscore | titlecase }}"
-                                      *ngIf="
+                                    <li>
+                                      <img matTooltip="{{ callData.endDirection | removeUnderscore | titlecase }}"
+                                        *ngIf="
                                         callData.endDirection == 'TRANSFER' ||
                                         callData.endDirection == 'CONSULT_TRANSFER' ||
                                         callData.endDirection == 'DIRECT_TRANSFER'
                                       " src="assets/images/call-transfer.svg" />
-                                    <img *ngIf="callData.endDirection == 'CONSULT_CONFERENCE'"
-                                      src="assets/images/call-end.svg" />
-                                    <img *ngIf="callData.endDirection == 'DIALOG_ENDED'"
-                                      src="assets/images/call-end.svg" />
-                                  </li>
+                                      <img *ngIf="callData.endDirection == 'CONSULT_CONFERENCE'"
+                                        src="assets/images/call-end.svg" />
+                                      <img *ngIf="callData.endDirection == 'DIALOG_ENDED'"
+                                        src="assets/images/call-end.svg" />
+                                    </li>
 
-                                  <!-- <ng-container *ngIf="message.body.data.callLegs.length < 2"> -->
-                                  <li *ngIf="callData.additionalDetail?.dialog.wrapUpReason" class="section-tags">
-                                    <span>
-                                      {{ callData?.additionalDetail?.dialog?.wrapUpReason ? callData?.additionalDetail?.dialog?.wrapUpReason : "N/A" }}
-                                    </span>
-                                    <!-- <span *ngFor="let reasonCode of callData.dialog?.wrapUpReason | sliceFilter:0:2">
+                                    <!-- <ng-container *ngIf="message.body.data.callLegs.length < 2"> -->
+                                    <li *ngIf="callData.additionalDetail?.dialog.wrapUpReason" class="section-tags">
+                                      <span>
+                                        {{ callData?.additionalDetail?.dialog?.wrapUpReason ?
+                                        callData?.additionalDetail?.dialog?.wrapUpReason : "N/A" }}
+                                      </span>
+                                      <!-- <span *ngFor="let reasonCode of callData.dialog?.wrapUpReason | sliceFilter:0:2">
                                   {{reasonCode }}
                                 </span>
 
                                 <span *ngIf="callData.dialog?.wrapUpReason.length > 2" class="sub-tags"
                                   [matMenuTriggerFor]="multiVoiceTags">+{{callData.dialog?.wrapUpReason.length -
                                   2}}</span> -->
-                                  </li>
-                                  <!-- <li>
+                                    </li>
+                                    <!-- <li>
                                   <time>{{ message.header.timestamp | date: "shortTime" }}</time>
                                 </li> -->
-                                </ul>
+                                  </ul>
+                                </div>
                               </div>
-                            </div>
-                            <!-- <mat-menu #multiVoiceTags="matMenu">
+                              <!-- <mat-menu #multiVoiceTags="matMenu">
                             <div class="more-section-tags">
                               <span *ngFor="let reasonCode of callData.dialog?.wrapUpReason">{{reasonCode}}</span>
                             </div>
                           </mat-menu> -->
-                          </div>
+                            </div>
+                          </ng-container>
                         </ng-container>
-                      </ng-container>
-                    </mat-expansion-panel>
-                  </div>
+                      </mat-expansion-panel>
+                    </div>
 
                     <!-- /Voice Call Actvity -->
 
@@ -1980,15 +1985,26 @@
   <div class="customer-info-main">
     <div class="call-controls-view" *ngIf="isBarOpened && ctiBarView && _sipService.isCallActive">
       <div class="right-call-controls">
-        <mat-icon class="box-view" (click)="ctiControlBar()">picture_in_picture_alt </mat-icon>
-        <ul class="assistance-actions">
-          <!-- <li><button disabled mat-fab><img src="assets/images/consult-colored.svg"></button></li>
+
+        <div class="main-showcase customer-info-dp">
+          <div class="agent-showcase">
+            <img src="assets/images/dummy-user.svg" alt="Customer">
+            <mat-icon routerLink="/customers/chats">flip_to_back</mat-icon>
+          </div>
+          <h4 matTooltip="{{customerNumber}}">1218=00<span class="timer-call">{{ minutes | number: '2.0' }}:{{ seconds |
+              number: '2.0' }}</span>
+          </h4>
+        </div>
+        <!-- <ul class="assistance-actions"> -->
+        <!-- <li><button disabled mat-fab><img src="assets/images/consult-colored.svg"></button></li>
           <li><button disabled mat-fab><img src="assets/images/transfer-colored.svg"></button></li>
           <li><button disabled mat-fab><img src="assets/images/conference-colored.svg"></button></li> -->
-        </ul>
+        <!-- </ul> -->
 
         <ul class="call-actions">
-          <li><button disabled mat-fab><mat-icon>mic</mat-icon></button></li>
+          <!-- <li><button disabled mat-fab><mat-icon>mic</mat-icon></button></li> -->
+          <li><button (click)="ctiControlBar()" mat-fab><mat-icon>picture_in_picture_alt
+              </mat-icon></button></li>
           <li (click)="_sipService.holdCallOnSip()" *ngIf="_sipService.isCallHold == false"><button
               mat-fab><mat-icon>pause</mat-icon></button></li>
           <li (click)="_sipService.resumeCallOnSip()" *ngIf="_sipService.isCallHold == true"><button

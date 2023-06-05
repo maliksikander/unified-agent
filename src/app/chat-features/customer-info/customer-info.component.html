@@ -309,7 +309,7 @@
                       <span class="channel-icon"><img [src]="channelSession.channel.channelType.channelLogo | channelLogo | async" /></span>
                       <label
                         >{{ channelSession.channel.channelType.name }}
-                        <span *ngIf="channelSession?.channel.channelType.name == 'CISCO_CC'" class="call-time">{{ timer }}</span>
+                        <span *ngIf="channelSession?.channel.channelType.name == 'CISCO_CC' || channelSession?.channel.channelType.name == 'CX_VOICE'" class="call-time">{{ timer }}</span>
                       </label>
 
                       <!-- <button (click)="moveSession($event)" mat-button [matMenuTriggerFor]="rerouteMenu"

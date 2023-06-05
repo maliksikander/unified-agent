@@ -66,8 +66,8 @@ export class CustomerInfoComponent implements OnInit {
     " Ev Gayforth"
   ];
   timer = "00:00";
-  voiceSession;
-
+  ciscoVoiceSession;
+  cxVoiceSession;
   // drop(event: CdkDragDrop<string[]>) {
   //   moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
   // }
@@ -150,18 +150,15 @@ export class CustomerInfoComponent implements OnInit {
 
   getVoiceChannelSession() {
     try {
-      this.voiceSession = this.activeChannelSessions.find((channelSession) => {
+      this.ciscoVoiceSession = this.activeChannelSessions.find((channelSession) => {
         if (channelSession.channel.channelType.name.toLowerCase() == "cisco_cc") {
           // if (channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "external") {
           return channelSession;
         }
       });
-      if (this.voiceSession) {
-        let cacheId = `${this._cacheService.agent.id}:${this.voiceSession.id}`;
-        // console.log("cacheID==>",cacheId);
-        // let cacheDialog: any = this._finesseService.getDialogFromCache(cacheId);
-        let cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
-        // console.log("cacheDialog==>",cacheDialog);
+      if (this.ciscoVoiceSession) {
+        let cacheId = `${this._cacheService.agent.id}:${this.ciscoVoiceSession.id}`;
+        let cacheDialog: any = this._finesseService.getDialogFromCache(cacheId);
         if (cacheDialog) {
           let currentParticipant = this._finesseService.getCurrentParticipantFromDialog(cacheDialog.dialog);
           let startTime = new Date(currentParticipant.startTime);
@@ -172,22 +169,26 @@ export class CustomerInfoComponent implements OnInit {
             this.msToHMS(timedurationinMS);
           }, 1000);
 
-          // let currentParticipant = this._finesseService.getCurrentAgentFromParticipantList(cacheDialog.dialog.participants);
-          // let currentParticipant = this._sipService.getCurrentAgentFromParticipantList(cacheDialog.dialog.participants[0]);
-          // let startTime = new Date(currentParticipant.startTime);
-          // let startTime = new Date(this._sipService.startTime);
-          // console.log(this._sipService.startTime);
-          // // this._finesseService.timeoutId = setInterval(() => {
-          // this._sipService.timeoutId = setInterval(() => {
-          //   let currentTime = new Date();
-          //   let timedurationinMS = currentTime.getTime() - startTime.getTime();
-          //   this.msToHMS(timedurationinMS);
-          // }, 1000);
         } else {
           console.log("No Dialog Found==>");
+        }
+      } else if(this.cxVoiceSession){
+        let cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
+        let cacheDialog: any = this._finesseService.getDialogFromCache(cacheId);
+        if (cacheDialog) {
+          let currentParticipant = this._sipService.getCurrentAgentFromParticipantList(cacheDialog.dialog.participants[0]);
+          let startTime = new Date(currentParticipant.startTime);
+          this._sipService.timeoutId = setInterval(() => {
+            let currentTime = new Date();
+            let timedurationinMS = currentTime.getTime() - startTime.getTime();
+            this.msToHMS(timedurationinMS);
+          }, 1000);
+        } else {
+          console.log("No Sip Dialog Found==>");
           // this.timer = "";
         }
-      } else {
+      }
+      else {
         if (this._finesseService.timeoutId) clearInterval(this._finesseService.timeoutId);
         if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
       }
