@@ -34,7 +34,7 @@
 
           <tr *ngFor="let announcement of currentItemsToShow | tableFilter : status ;index as i">
             <td><span>{{announcement.announcementText}} {{teams}}</span></td>
-            <td class="rel-teams"><span *ngFor="let teams of announcement.teamIds" class="active-team">{{teams}}</span>
+            <td class="rel-teams"><span *ngFor="let teamsobj of announcement.teams" class="active-team">{{teamsobj.teamName}}</span>
             </td>
             <td class="announcement-status"> <span
                 class="announcement-current-status {{announcement.status | lowercase}}">{{announcement.status}}</span>

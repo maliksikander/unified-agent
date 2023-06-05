@@ -13,12 +13,18 @@ import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 })
 export class AnnouncementDialogComponent implements OnInit {
   announceDateMin = new Date();
+  maxdateaVar=this.announceDateMin;
+  
+
+   someDate = this.announceDateMin.getDate();
+   //numberOfDaysToAdd = 5;
+   //result = this.someDate.setDate(this.someDate + this.numberOfDaysToAdd);
+  maxDateVal;
   expireDateMin = new Date();
   FilterSelected = "all";
   announcements = [];
   announcementsBackup: any;
   agentDetail: any;
-  Teams: string[] = ["handRaise", "title", "agent", "team", "time", "channel"];
   announcementsIndex = 0;
   isLoadMore = true;
   displayAnnouncements = [];
@@ -34,8 +40,8 @@ export class AnnouncementDialogComponent implements OnInit {
   currentAnnouncement: any = {};
   formData: any = [];
   announcementForm: FormGroup;
-  textVar;
-  editObj = {}
+  editObj2={};
+  editObj={};
 
   announceDate = new FormControl(new Date(), [Validators.required]);
   expireDate = new FormControl(new Date(), [Validators.required]);
@@ -53,34 +59,29 @@ export class AnnouncementDialogComponent implements OnInit {
     private _cacheService: cacheService,
     private _httpService: httpService,
     public dialogRef: MatDialogRef<AnnouncementDialogComponent>, @Inject(MAT_DIALOG_DATA) public dataID: any
-  ) { }
+  ) {//this.maxDateVal= new Date( 2023, 6, 15);
+
+   }
 
   ngOnInit() {
+    //this.maxDate= this.maxdateaVar.setHours(120);
 
     if (this.dataID !== null) {
-      console.log(this.dataID, "DataID------------->");
+      
       this.currentAnnouncement = this._httpService.getAnnouncementsById(this.dataID.value).subscribe(res => {
         this.formData = res;
-        console.log("currentAnnouncement", res)
         this.editObj = {
-          "teamIds": this.selectedTeams = res.teamIds,
-          //"status": this.formData.status,
-          //"seenBy": this.formData.seenBy,
-          "announcementText": this.announcementMessage.setValue(this.formData.announcementText),
-          "expiryTime": this.expireDate.setValue(this.formData.expiryTime),
-          "scheduledTime": this.announceDate.setValue(this.formData.scheduledTime),
+          "teams": this.selectedTeams = res.teams,
+          "announcementText": this.announcementMessage.setValue(res.announcementText),
+          "expiryTime": this.expireDate.setValue(res.expiryTime),
+          "scheduledTime": this.announceDate.setValue(res.scheduledTime),
           "supervisorId": this.supervisorId,
           "supervisorName": this.supervisor,
-          //"createdAt": this.formData.createdAt,
-          //"updatedAt": this.formData.updatedAt,
-          //"id": this.formData.id
         }
-        console.log("this.selected teams", this.selectedTeams);
       });
-      console.log("EDIT OBJ===>", this.editObj)
+  
     }
-    // console.log(this.dialog);
-
+    
     this.teamList = this._cacheService.agent.supervisedTeams;
     console.log("teams", this.teamList);
     this.teamList = this._cacheService.agent.supervisedTeams;
@@ -103,7 +104,6 @@ export class AnnouncementDialogComponent implements OnInit {
   getAllAnnouncementList() {
     this._httpService.getAnnouncements().subscribe((data) => {
       console.log("data", data)
-      //this.currentItemsToShow = data;
       this.fetchDataList = data;
 
     });
@@ -111,11 +111,11 @@ export class AnnouncementDialogComponent implements OnInit {
 
 
   onCreateAnnouncement() {
-   let selectedTeamNames = this.selectedTeams.map(d => JSON.stringify(d));
+   let selectedTeamNames = this.selectedTeams.map(d => d);
     console.log("TEAM NAME MAP ", selectedTeamNames);
     this.selectedTeams = selectedTeamNames;
     let obj = {
-      "teamIds": this.selectedTeams,
+      "teams": this.selectedTeams,
       "announcementText": this.announcementMessage.value,
       "expiryTime": this.expireDate.value,
       "scheduledTime": this.announceDate.value,
@@ -145,7 +145,16 @@ export class AnnouncementDialogComponent implements OnInit {
   }
   update() {
     console.log("update dataaid.value", this.dataID.value);
-    this._httpService.updateAnnouncemenentById(this.dataID.value, this.editObj).subscribe({
+    this.editObj2 = {
+      "teams": this.selectedTeams,
+      "announcementText": this.announcementMessage.value,
+      //setValue(this.formData.expiryTime)
+      "expiryTime": this.expireDate.value,
+      "scheduledTime": this.announceDate.setValue(this.announceDate.value),
+      "supervisorId": this.supervisorId,
+      "supervisorName": this.supervisor,
+    }
+    this._httpService.updateAnnouncemenentById(this.dataID.value, this.editObj2).subscribe({
       next: (val: any) => {
         this.getAllAnnouncementList();
         console.log("updated successfully");
@@ -182,7 +191,7 @@ export class AnnouncementDialogComponent implements OnInit {
 
     });
 
-    dialogRef.afterClosed().subscribe((result) => { 
+    templateRef.afterClosed().subscribe((result) => { 
       this._httpService.getAnnouncements();
       dialogRef.close() });;
   }
