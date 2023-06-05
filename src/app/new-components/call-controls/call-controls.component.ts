@@ -12,7 +12,7 @@ export class CallControlsComponent implements OnInit {
   minutes: number;
   seconds: number;
   fullView = false;
-  customerNumber: String = '448844';
+  customerNumber: any = this._sipService.customerNumber;
   constructor(public dialogRef: MatDialogRef<CallControlsComponent>,
     private _sipService: SipService) { }
 

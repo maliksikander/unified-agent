@@ -19,6 +19,7 @@ var dialogStatedata = null;
 var invitedata = null;
 var outboundDialingdata = null;
 var freeswitch_domain = null;
+
 var sipconfig = sipConfig;
 
 var remoteVideo = document.getElementById('remoteVideo');
@@ -180,7 +181,8 @@ var invitedata1 = {
 
 
 function postMessage(obj, callback) {
-  if(Object.keys(sipconfig).length === 0) sipconfig =sipConfig;
+  console.log(obj);
+  if (Object.keys(sipconfig).length === 0) sipconfig = sipConfig;
   switch (obj.action) {
     case 'login':
       // if a callback function has been passed then we add the refereance to the EventEmitter class
@@ -198,15 +200,10 @@ function postMessage(obj, callback) {
       loader3(obj.parameter.clientCallbackFunction);
       break;
     case 'makeCall':
-      // dialogStatedata = ccassclient.dialogState;
-      // outboundDialingdata = ccassclient.outboundDialing;
       initiate_call('sip:' + obj.parameter.calledNumber + "@" + sipconfig.uri, obj.parameter.clientCallbackFunction);
-      // console.log(obj);
       break;
     case 'silentMonitor':
-      // dialogStatedata = ccassclient.dialogState;
-      // outboundDialingdata = ccassclient.outboundDialing;
-      initiate_call('sip:*33' + obj.parameter.toAddress + "@" + freeswitch_domain, obj.parameter.clientCallbackFunction);
+      console.log('Freeswitch do not support silentMonitor currently');
       break;
     case 'answerCall':
       respond_call();
@@ -215,8 +212,10 @@ function postMessage(obj, callback) {
       terminate_call();
       break;
     case 'rejectCall':
-      callreject = true;
-      reject_call();
+      console.log('Freeswitch do not support rejectCall currently');
+      break;
+    case 'closeCall':
+      console.log('Freeswitch do not support closeCall currently');
       break;
     case 'end_call':
       console.log(obj);
@@ -234,47 +233,40 @@ function postMessage(obj, callback) {
       phone_unmute(obj.parameter.clientCallbackFunction);
       break;
     case 'SST':
-      blind_transfer('sip:' + obj.parameter.numberToTransfer + "@" + freeswitch_domain)
+      console.log('Freeswitch do not support SST currently');
       break;
     case 'conferenceCall':
-      obj.parameter.variable_list = call_variable_array;
-      obj.parameter.dialogId = obj.parameter.dialogId + '@' + freeswitch_domain;
-      obj.parameter.agent_uri = agentlogindata.agent_contact;
-      socket.emit('FS-Command', obj);
+      console.log('Freeswitch do not support conferenceCall currently');
       break;
     case 'makeNotReadyWithReason':
-      if (obj.parameter.reasonCode === 'Logged Out' && obj.parameter.userId === agentlogindata.agent_name) {
-        // console.log(agent_id_nameMapping)
-        terminate_current_session();
-
-      } else {
-        var action = {
-          action: 'update_status',
-          parameter: {
-            reasonCode: obj.parameter.reasonCode,
-            agent_id: agent_id_nameMapping[obj.parameter.userId]
-          }
-        }
-        socket.emit('FS-Command', action);
-      }
+      console.log('Freeswitch do not support makeNotReadyWithReason currently');
       break;
     case 'makeReady':
-      var action = {
-        action: 'update_status',
-        parameter: {
-          reasonCode: 'Available',
-          agent_id: agent_id_nameMapping[obj.parameter.userId]
-        }
-      }
-      socket.emit('FS-Command', action);
+      console.log('Freeswitch do not support makeReady currently');
+      break;
+    case 'makeWorkReady':
+      console.log('Freeswitch do not support makeWorkReady currently');
       break;
     case 'getDialog':
-      ccassclient.emit('event', JSON.parse(JSON.stringify(dialogStatedata)));
+      console.log('Freeswitch do not support getDialog currently');
+      break;
+    case 'getWrapUpReasons':
+      console.log('Freeswitch do not support getWrapUpReasons currently');
+      break;
+    case 'updateCallVariableData':
+      console.log('Freeswitch do not support updateCallVariableData currently');
+      break;
+    case 'updateWrapupData':
+      console.log('Freeswitch do not support updateWrapupData currently');
+      break;
+    case 'acceptCall':
+      console.log('Freeswitch do not support updateWrapupData currently');
+      break;
+    case 'dropParticipant':
+      console.log('Freeswitch do not support dropParticipant currently');
       break;
     case 'bargeIn':
-      // console.log(obj.parameter.eavesdrop_code)
-      let dtmpmapping = { "monitoring": '0', "whisper_legb": '1', "whisper_lega": '2', "barge-in": '3' }
-      sendDtmf("3");
+      console.log('Freeswitch do not support bargeIn currently');
       break;
     case 'whisper':
       sendDtmf("2");
@@ -289,51 +281,20 @@ function postMessage(obj, callback) {
       console.log(obj);
       break;
     case 'getState':
-      get_agent_status();
+      console.log('Freeswitch do not support getState currently');
+      //get_agent_status();
       break;
     case 'getNotReadyLogoutReasons':
-      // console.log(this.agentlogindata);
-      ccassclient.emit('event', {
-        "event": "notReadyLogoutReasonCode",
-        "loingId": agentlogindata.agent_name,
-        "response": {
-          "notReadyReasons": [
-            {
-              "label": "Break",
-              "code": "On Break",
-              "systemCode": ""
-            }
-          ],
-          "logoutReasons": [
-            {
-              "label": "Logout",
-              "code": "Logged Out",
-              "systemCode": ""
-            }
-          ]
-        }
-      });
+      console.log('Freeswitch do not support getNotReadyLogoutReasons currently');
+      break;
+    case 'makeConsult':
+      console.log('Freeswitch do not support makeConsult currently');
+      break;
+    case 'consultTransfer':
+      console.log('Freeswitch do not support consultTransfer currently');
       break;
     case 'getTeamUsers':
-      var users = JSON.parse(JSON.stringify(team_list[obj.parameter.teamId]));
-      users.forEach(element => {
-        delete element["agent_cti_data"];
-      });
-      teamUsersList = ccassclient.teamUsersList;
-      teamUsersList.response.loginId = agentlogindata.agent_name;
-      teamUsersList.response.teamId = obj.parameter.teamId;
-      teamUsersList.response.teamName = obj.parameter.teamId;
-      teamUsersList.response.users = users;
-      ccassclient.emit('event', JSON.parse(JSON.stringify({
-        "event": "teamEvent",
-        "response": {
-          "loginId": agentlogindata.agent_name,
-          "result": "Subscribed"
-        }
-      })));
-      ccassclient.emit('event', JSON.parse(JSON.stringify(teamUsersList)));
-
-
+      console.log('Freeswitch do not support getTeamUsers currently');
       break;
   }
 }
@@ -377,7 +338,7 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
       userAgentString: "SIP.js/0.15.11-CTI/Expertflow",
       register: true,
       autostart: true,
-      contactName: username
+      // contactName: username
     };
 
     ua = new SIP.UA(config);
@@ -415,12 +376,16 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
         var datetime = sysdate.toISOString();
 
         var dnis = sip_from[1].split(">;")[0]
-        dialedNumber = session.request.data;
-        if (dialedNumber.includes("caller_destination:")) {
-          dialedNumber = dialedNumber.split("caller_destination:")[1].split('X-FS-Support')[0].replace(/\s/g, '');
-        } else {
-          dialedNumber = loginid;
-        }
+        // dialedNumber = session.request.data;
+        // if (dialedNumber.includes("caller_destination:")) {
+        //     dialedNumber = dialedNumber.split("caller_destination:")[1].split('X-FS-Support')[0].replace(/\s/g, '');
+        // } else {
+        //     dialedNumber = loginid;
+        // }
+
+        dialedNumber = session.request.headers["X-Destination-Number"];
+        dialedNumber = dialedNumber != undefined ? dialedNumber[0].raw : loginid;
+
         call_variable_array = [];
         if (variablelist.length === 1) {
           if (variablelist[0].replace(/['"]+/g, '') == 'conference') {
@@ -489,13 +454,14 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
 
           }
         }
+        console.log('Sip Call Request sip==>',session);
+        console.log('Sip Call Request sip==>',session.request);
         dialogStatedata.response.dialog.callVariables.CallVariable = call_variable_array;
         dialogStatedata.response.loginId = loginid;
         dialogStatedata.response.dialog.id = session.request.headers["Call-ID"][0].raw;
         dialogStatedata.response.dialog.ani = dnis.split('sip:')[1].split('@')[0];
         dialogStatedata.response.dialog.fromAddress = dnis.split('sip:')[1].split('@')[0];
         dialogStatedata.response.dialog.customerNumber = dnis.split('sip:')[1].split('@')[0];
-        dialogStatedata.response.dialog.wrapUpReason = (wrapupenabler) ? "Queue Call" : "Local Dialing";
         dialogStatedata.response.dialog.participants[0].mediaAddress = loginid;
         dialogStatedata.response.dialog.dnis = dialedNumber;
         dialogStatedata.response.dialog.participants[0].startTime = datetime;
@@ -509,7 +475,6 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
         invitedata.response.dialog.dnis = dialedNumber;
         invitedata.response.dialog.id = session.request.headers["Call-ID"][0].raw;
         invitedata.response.dialog.ani = dnis.split('sip:')[1].split('@')[0];
-        invitedata.response.dialog.wrapUpReason = (wrapupenabler) ? "Queue Call" : "Local Dialing";
         invitedata.response.dialog.fromAddress = dnis.split('sip:')[1].split('@')[0];
         invitedata.response.dialog.customerNumber = dnis.split('sip:')[1].split('@')[0];
         invitedata.response.dialog.participants[0].mediaAddress = loginid;
@@ -518,6 +483,7 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
         invitedata.response.dialog.participants[0].state = "ALERTING";
         invitedata.response.dialog.state = "ALERTING";
         invitedata.response.dialog.dialedNumber = dialedNumber;
+
 
 
         // ccassclient.emit('event',JSON.parse(JSON.stringify(invitedata)));
@@ -1113,7 +1079,6 @@ function addsipcallback(temp_session, call_type, callback) {
           dialogStatedata.response.dialog.dialedNumber = dialedNumber;
           dialogStatedata.response.dialog.fromAddress = sip_to_uri.split('@')[0];
           dialogStatedata.response.dialog.customerNumber = sip_to_uri.split('@')[0];
-          dialogStatedata.response.dialog.wrapUpReason = "Local Dialing";
           dialogStatedata.response.dialog.participants[0].stateChangeTime = datetime;
           //change dialogStatedata.response.dialog.participants[0].mediaAddress = agentlogindata.agent_contact.split('/')[1].split('@')[0];
 
@@ -1125,7 +1090,6 @@ function addsipcallback(temp_session, call_type, callback) {
           outboundDialingdata.response.dialog.id = response.headers['Call-ID'][0]['raw'];
           outboundDialingdata.response.dialog.dialedNumber = dialedNumber;
           outboundDialingdata.response.dialog.customerNumber = sip_to_uri.split('@')[0];
-          outboundDialingdata.response.dialog.wrapUpReason = "Local Dialing";
           outboundDialingdata.response.dialog.participants[0].mediaAddress = loginid;
           outboundDialingdata.response.dialog.participants[0].startTime = datetime;
           outboundDialingdata.response.dialog.participants[0].stateChangeTime = datetime;
@@ -1318,4 +1282,3 @@ var errorsList = {
   "Bad Media Description": "Received SDP is wrong.",
   "‘Dialog Error": "	An in-dialog request received a 408 or 481 SIP error.",
 };
-
