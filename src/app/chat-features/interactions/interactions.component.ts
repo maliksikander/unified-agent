@@ -109,7 +109,7 @@ export class InteractionsComponent implements OnInit {
     private _finesseService: finesseService,
     private snackBar: MatSnackBar,
     private _translateService: TranslateService
-  ) { }
+  ) {}
   ngOnInit() {
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
@@ -120,7 +120,7 @@ export class InteractionsComponent implements OnInit {
     //   new EmojiPicker();
     // }, 500);
 
-    this.isWhisperMode = this.conversation.topicParticipant.role == 'SILENT_MONITOR' ? true : false;
+    this.isWhisperMode = this.conversation.topicParticipant.role == "SILENT_MONITOR" ? true : false;
     this.conversationSettings = this._sharedService.conversationSettings;
     this.loadLabels();
 
@@ -137,16 +137,12 @@ export class InteractionsComponent implements OnInit {
     }
 
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
-
-      if (e.msg == 'seenReportAdded') {
+      if (e.msg == "seenReportAdded") {
         if (this.currentScrollPosition > 90) {
           this.downTheScrollAfterMilliSecs(0, "smooth");
         }
       }
     });
-
-
-
   }
   loadLabels() {
     this._httpService.getLabels().subscribe(
@@ -159,12 +155,12 @@ export class InteractionsComponent implements OnInit {
       }
     );
   }
-  emoji() { }
+  emoji() {}
 
   BargeIn() {
     let obj = {
       participantId: this.conversation.topicParticipant.participant.id,
-      conversationId: this.conversation.conversationId,
+      conversationId: this.conversation.conversationId
     };
     this._socketService.emit("JoinAsBargin", obj);
   }
@@ -249,6 +245,21 @@ export class InteractionsComponent implements OnInit {
     this.openQuotedReplyArea(message);
   }
 
+  navigationToRepliedMessage(repliedMessage: any) {
+    if (repliedMessage && repliedMessage.id) {
+      const elementId = repliedMessage.id;
+
+      const element = document.getElementById(elementId);
+
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+      }
+    }
+  }
+
   openDialog(templateRef, e): void {
     this.popTitle = e;
 
@@ -285,7 +296,12 @@ export class InteractionsComponent implements OnInit {
   }
 
   publishMessageSeenEvent(messageForSeenNotification) {
-    if (document.hasFocus() && messageForSeenNotification && messageForSeenNotification.id != this.lastSeenMessageId && this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor") {
+    if (
+      document.hasFocus() &&
+      messageForSeenNotification &&
+      messageForSeenNotification.id != this.lastSeenMessageId &&
+      this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor"
+    ) {
       const data = {
         id: uuidv4(),
         header: {
@@ -506,7 +522,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -514,7 +530,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -527,7 +543,10 @@ export class InteractionsComponent implements OnInit {
           this.showNewMessageNotif = true;
         } else {
           this.downTheScrollAfterMilliSecs(50, "smooth");
-          if (changes.changeDetecter.currentValue.header.sender.type.toLowerCase() == "customer" || changes.changeDetecter.currentValue.header.sender.type.toLowerCase() == "agent") {
+          if (
+            changes.changeDetecter.currentValue.header.sender.type.toLowerCase() == "customer" ||
+            changes.changeDetecter.currentValue.header.sender.type.toLowerCase() == "agent"
+          ) {
             this.publishMessageSeenEvent(changes.changeDetecter.currentValue);
           }
         }
@@ -598,7 +617,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => { });
+    dialogRef.afterClosed().subscribe((result: any) => {});
   }
   externalfilePreviewOpener(url, fileName, type) {
     const dialogRef = this.dialog.open(FilePreviewComponent, {
@@ -608,7 +627,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => { });
+    dialogRef.afterClosed().subscribe((result: any) => {});
   }
 
   uploadFile(files) {

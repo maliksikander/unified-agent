@@ -39,7 +39,7 @@ export class QueueChatsComponent implements OnInit {
       text: "All Queues",
       selectAllText: "Select All",
       unSelectAllText: "UnSelect All",
-      classes: "myclass custom-class",
+      classes: "queue-list-dropdown",
       enableSearchFilter: false,
       badgeShowLimit: 1,
       primaryKey: "queueId"
