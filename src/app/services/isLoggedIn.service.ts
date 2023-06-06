@@ -106,19 +106,7 @@ export class isLoggedInService {
         console.log("this is login resp ==>", e.data);
         this._cacheService.agent = e.data.keycloak_User;
         const attributes = e.data.keycloak_User.attributes;
-        // function isAttributeEmpty(obj) {
-        //   return Object.keys(obj).length === 0;
-        // }
-        console.log("test==>",this._appConfigService.config.isCxVoiceEnabled)
         if (this._appConfigService.config.isCxVoiceEnabled) this.initiateSipService(attributes);
-
-        // if (this._appConfigService.config.isCiscoEnabled && !isAttributeEmpty(attribute)) {
-        //   if (attribute.agentExtension !== '' && attribute.agentExtension !== null && attribute.agentExtension !== undefined && attribute.agentExtension[0] !== '') {
-        //     this._sipService.extension = attribute.agentExtension[0];
-        //     localStorage.setItem('ext', `${this._sipService.extension}`);
-        //     console.log(this._sipService.extension, '-----------extension');
-        //   }
-        // }
         if (loginType == "3rdparty") {
           console.log("finesse auto 12==>");
           this._finesseService.checkActiveTasks(e.data.keycloak_User.id);
@@ -146,9 +134,6 @@ export class isLoggedInService {
   }
 
   initiateSipService(attributes) {
-    // function isAttributeEmpty(obj) {
-    // return Object.keys(obj).length === 0;
-    // }
     if (Object.keys(attributes).length !== 0) {
       if (
         attributes.agentExtension !== "" &&
@@ -157,8 +142,6 @@ export class isLoggedInService {
         attributes.agentExtension[0] !== ""
       ) {
         this._sipService.extension = attributes.agentExtension[0];
-        // localStorage.setItem('ext', `${this._sipService.extension}`);
-        console.log(this._sipService.extension, '-----------extension');
       }
     }
   }
@@ -212,8 +195,6 @@ export class isLoggedInService {
         this._router.navigate([`supervisor/active-agents-detail`]); // pass queue id
       }
       this._socketService.connectToSocket();
-
-
     } catch (err) {
       this._snackbarService.open(this._translateService.instant("snackbar.you-will-not-receive-browser-notifications"), "err");
       this._socketService.connectToSocket();

@@ -1,6 +1,6 @@
-import { Injectable, OnInit } from '@angular/core';
-import { Observable, Subject, timer } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { Injectable, OnInit } from "@angular/core";
+import { Observable, Subject, timer } from "rxjs";
+import { map, takeUntil } from "rxjs/operators";
 import { cacheService } from "./cache.service";
 import { snackbarService } from "./snackbar.service";
 import { TranslateService } from "@ngx-translate/core";
@@ -13,15 +13,12 @@ import * as uuid from "uuid";
 declare var postMessage;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class SipService implements OnInit {
-
   private destroy$ = new Subject<void>();
   private timer$: Observable<number>;
 
-  agentUsername: string;
-  agentPassword: string;
   extension: number;
   customer: any;
   startTime: any;
@@ -33,8 +30,7 @@ export class SipService implements OnInit {
   activeDialog: any;
   isSipLoggedIn: boolean = false;
   agentMrdStates: any;
-  customerNumber:any = '448899';
-
+  customerNumber: any = "";
 
   constructor(
     private _appConfigService: appConfigService,
@@ -50,8 +46,7 @@ export class SipService implements OnInit {
       map((value) => value + 1)
     );
   }
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   getTimer(): Observable<number> {
     return this.timer$;
@@ -67,18 +62,13 @@ export class SipService implements OnInit {
       this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
         if (e.msg == "stateChanged") {
           this.agentMrdStates = e.data;
-          if (this._appConfigService.config.isCxVoiceEnabled && !this.isSipLoggedIn) {
-            console.log("CX Voice is enabled sip==>", this._appConfigService.config.isCxVoiceEnabled);
-            this.loginSip();
-          } else {
-            console.log("CX Voice is not enabled sip==>", this._appConfigService.config.isCxVoiceEnabled);
-          }
+          if (this._appConfigService.config.isCxVoiceEnabled && !this.isSipLoggedIn) this.loginSip();
+          else console.log("CX Voice is not enabled sip==>");
         }
       });
     } catch (error) {
-      console.log("CX Voice enabled sip==>", error);
+      console.error("[Error on initMe] Sip ==>", error);
     }
-
   }
 
   // this will used to subscribe to SIP library events
@@ -86,15 +76,16 @@ export class SipService implements OnInit {
     try {
       let sipPassword = localStorage.getItem("sipPass");
       sipPassword = JSON.parse(sipPassword ? atob(sipPassword) : null);
-      this.agentUsername = this._cacheService.agent.username;
-      this.agentPassword = sipPassword;
+      let loginId = this._cacheService.agent.username;
+      let password = sipPassword;
+      let extension = this.extension != undefined ? this.extension : this._cacheService.agent.attributes.agentExtension[0];
 
       let command = {
         action: "login",
         parameter: {
-          loginId: this.agentUsername,
-          password: this.agentPassword,
-          extension: this.extension != undefined ? this.extension : localStorage.getItem('ext'),
+          loginId,
+          password,
+          extension,
           clientCallbackFunction: this.clientCallback
         }
       };
@@ -102,7 +93,7 @@ export class SipService implements OnInit {
       postMessage(command);
     } catch (error) {
       this.notReadyAgentState();
-      console.log("login SIP command sip==>", error);
+      console.error("login SIP command sip==>", error);
     }
   }
 
@@ -114,51 +105,41 @@ export class SipService implements OnInit {
           this.isSipLoggedIn = true;
           this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-Login-Success"), "succ");
           this.readyAgentState();
-          console.log("Connection Established, CTI Status is Connected!!!");
+          console.log("Connection Established, CTI Status is Connected ==>");
         }
         if (event.response.state.toLowerCase() == "logout") {
           this.isSipLoggedIn = false;
           this.notReadyAgentState();
           this._snackbarService.open(this._translateService.instant("SIP Logout Successfully"), "err");
-          console.log("Connection Expired, CTI Status logout!!!");
+          console.log("Connection Expired, CTI Status logout==>");
         }
       } else if (event.event.toLowerCase() == "dialogstate") {
         if (event.response.dialog == null) {
         } else if (event.response.dialog.state.toLowerCase() == "active") {
           // this.customerNumber = event.response.dialog.customerNumber;
           this.isCallHold = false;
-        }
-        else if (event.response.dialog.state.toLowerCase() == "held") {
+        } else if (event.response.dialog.state.toLowerCase() == "held") {
           this.isCallHold = true;
         }
         this.handleDialogStateEvent(event);
       } else if (event.event.toLowerCase() == "newinboundcall") {
-        // console.log('New Inbound Call sip==>', event);
         this.customerNumber = event.response.dialog.customerNumber;
         let cacheId = `${this._cacheService.agent.id}:${event.response.dialog.id}`;
         let cacheDialog: any = this.getDialogFromCache(cacheId);
-        if (!cacheDialog) {
-          // console.log("1==>")
-          // this.setDialogCache(event, "ALERTING");
-          this.identifyCustomer(event, event.response.dialog.customerNumber, "INBOUND");
-        }
-        // this.identifyCustomer(event, event.response.dialog.ani, 'INBOUND');
+        if (!cacheDialog) this.identifyCustomer(event, event.response.dialog.customerNumber, "INBOUND");
       } else if (event.event == "Error") {
         if (event.response.type.toLowerCase() == "invalidstate") {
           this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-incorrect-request"), "err");
           this.notReadyAgentState();
-          console.log(event.response.description);
         } else if (event.response.type.toLowerCase() == "subscriptionfailed") {
           this.notReadyAgentState();
           this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-invalid-credentials"), "err");
-          console.log(event.response.description);
         } else if (event.response.type.toLowerCase() == "generalerror") {
           if (event.response.description.toLowerCase() == "canceled") {
             this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-call-canceled"), "err");
           } else {
             let cacheId = `${this._cacheService.agent.id}:${event.response.dialog.id}`;
             let dialogCache: any = this.getDialogFromCache(cacheId);
-            console.log('dialogCache clientCallback==>', dialogCache);
             if (dialogCache && dialogCache.dialogState == "active") {
               this.handleCallDroppedEvent(cacheId, event.dialog, "", undefined, "DIALOG_ENDED");
             }
@@ -166,12 +147,11 @@ export class SipService implements OnInit {
             this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-connection-failed"), "err");
             this.notReadyAgentState();
           }
-          console.log(event.response.description);
         }
+        console.log("[Sip Error Event] ==>", event);
       }
     } catch (e) {
       console.error("SIP ERROR sip==>", e);
-      throw new Error(`SIP Error ${e}`);
     }
   };
 
@@ -185,16 +165,16 @@ export class SipService implements OnInit {
 
         if (Array.isArray(participants)) {
           this.handleDialogParticipantList(dialogEvent, participants, cacheId);
-        } else { }
+        } else {
+        }
       } else {
         if (!this.customer) {
-          console.log('Customer Not found sip==>');
-
+          console.log("Customer Not found sip==>");
           this.handleRefreshCase(dialogEvent, dialogState);
         }
       }
     } catch (e) {
-      console.error("[Error] handleDialogStateEvent ==>", e);
+      console.error("[Error Sip] handleDialogStateEvent ==>", e);
     }
   }
 
@@ -202,7 +182,6 @@ export class SipService implements OnInit {
     try {
       let dialogState = dialogEvent.response;
       participants.forEach((item) => {
-        console.log('Handle Dial ITEMS ==>', item);
         let currentParticipant = item.mediaAddress == this._cacheService.agent.attributes.agentExtension[0] ? item : undefined;
         if (currentParticipant) {
           if (dialogState.dialog.state == "ACTIVE") {
@@ -226,20 +205,19 @@ export class SipService implements OnInit {
         this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, "DIALOG_ENDED");
       }
     } catch (e) {
-      console.error("[Error] handleDialogParticipant ==>", e);
+      console.error("[Error Sip] handleDialogParticipant ==>", e);
     }
   }
 
   removeNotification(dialog) {
     try {
       this._sharedService.serviceChangeMessage({ msg: "closeExternalModeRequestHeader", data: dialog });
-      // this._sharedService.serviceChangeMessage({ msg: "closeExternalModeRequestHeader", data: [] });
     } catch (e) {
-      console.error("[Error] removeNotification ==>", e);
+      console.error("[Error Sip] removeNotification ==>", e);
     }
   }
 
-  getCurrentParticipantFromDialog(dialog: { participants: any[]; }) {
+  getCurrentParticipantFromDialog(dialog: { participants: any[] }) {
     try {
       let participantsList: Array<any> = dialog.participants;
       let currentParticipant = participantsList.find((item) => {
@@ -247,7 +225,7 @@ export class SipService implements OnInit {
       });
       return currentParticipant;
     } catch (e) {
-      console.error("[Error] getCurrentParticipantFromDialog ==>", e);
+      console.error("[Error Sip] getCurrentParticipantFromDialog ==>", e);
     }
   }
 
@@ -264,11 +242,14 @@ export class SipService implements OnInit {
       unixTimeStamp = unixTimeStamp * 1000;
       return unixTimeStamp;
     } catch (e) {
-      console.error("[Error] getStartOREndTimeStamp ==>", e);
+      console.error("[Error Sip] getStartOREndTimeStamp ==>", e);
     }
   }
 
-  handleCallActiveEvent(dialogEvent: { event?: string; response: any; }, dialogState: { dialog: { ani: any; fromAddress: any; id: any; dnis?: any; callType?: string; dialedNumber?: any; callVariables?: any; }; }) {
+  handleCallActiveEvent(
+    dialogEvent: { event?: string; response: any },
+    dialogState: { dialog: { ani: any; fromAddress: any; id: any; dnis?: any; callType?: string; dialedNumber?: any; callVariables?: any } }
+  ) {
     try {
       let channelCustomerIdentifier = dialogState.dialog.ani ? dialogState.dialog.ani : dialogState.dialog.fromAddress;
       let serviceIdentifier = dialogEvent.response.dialog.dnis;
@@ -276,7 +257,6 @@ export class SipService implements OnInit {
       let callType;
       let timeStamp = this.getStartOREndTimeStamp(dialogState.dialog, "startCall");
       callType = "INBOUND";
-      console.log("dialogState sip==>", dialogState);
       this.setDialogCache(dialogEvent, "active");
       let cimMessage = this.createCIMMessage(
         "VOICE",
@@ -293,7 +273,7 @@ export class SipService implements OnInit {
       this.ccmChannelSessionApi(cimMessage, "", "", undefined);
       this.isCallActive = true;
     } catch (e) {
-      console.error("[Error] handleCallActiveEvent ==>", e);
+      console.error("[Error] handleCallActiveEvent Sip==>", e);
     }
   }
 
@@ -319,12 +299,11 @@ export class SipService implements OnInit {
         }, 500);
       }
     } catch (error) {
-      console.error('Not Ready State for Sip==>', error);
+      console.error("Not Ready State for Sip==>", error);
     }
   }
 
   readyAgentState() {
-    console.log('Change Agent State ==>');
     try {
       const voiceMrdObj = this.getVoiceMrd(this.agentMrdStates.agentMrdStates);
       if (this.agentMrdStates.state.name.toLowerCase() != "ready") {
@@ -346,7 +325,7 @@ export class SipService implements OnInit {
         }, 500);
       }
     } catch (error) {
-      console.error('Ready State for Sip==>', error);
+      console.error("Ready State for Sip==>", error);
     }
   }
 
@@ -365,7 +344,7 @@ export class SipService implements OnInit {
     }
   }
 
-  identifyCustomer(sipEvent: { event?: string; response: any; }, ani: any, callType: string) {
+  identifyCustomer(sipEvent: { event?: string; response: any }, ani: any, callType: string) {
     try {
       let customerIdentifier = ani;
       if (customerIdentifier) {
@@ -374,11 +353,11 @@ export class SipService implements OnInit {
         this._snackbarService.open("No Customer Identifier Found", "err");
       }
     } catch (e) {
-      console.error("[Error on Identify Customer] ==>", e);
+      console.error("[Error on Identify Customer Sip] ==>", e);
     }
   }
 
-  getCustomerByVoiceIdentifier(identifier: any, sipEvent: { response: any; }, callType: string) {
+  getCustomerByVoiceIdentifier(identifier: any, sipEvent: { response: any }, callType: string) {
     try {
       this._httpService.getCustomerByChannelTypeAndIdentifier("CX_VOICE", identifier).subscribe(
         (res) => {
@@ -392,16 +371,14 @@ export class SipService implements OnInit {
           if (callType == "INBOUND") {
             this._sharedService.serviceChangeMessage({ msg: "openExternalModeRequestHeader", data: data });
             this.setDialogCache(sipEvent, "ALERTING");
-            // console.log('Alerting inbound sip==>', sipEvent);
-
-          } else { }
+          }
         },
         (error) => {
           this._sharedService.Interceptor(error.error, "err");
         }
       );
     } catch (e) {
-      console.error("[Error] getCustomerByVoiceIdentifier ==>", e);
+      console.error("[Error] getCustomerByVoiceIdentifier Sip ==>", e);
     }
   }
 
@@ -414,11 +391,21 @@ export class SipService implements OnInit {
       };
       localStorage.setItem(`${cacheId}`, JSON.stringify(dialogCacheObj));
     } catch (e) {
-      console.error("[Error on Set Dialog Cache] ==>", e);
+      console.error("[Error on Set Dialog Cache] Sip ==>", e);
     }
   }
 
-  createCIMMessage(messageType: string, channelCustomerIdentifier: any, serviceIdentifier: any, intent: string, customer: any, leg: string, dialog: { ani?: any; fromAddress?: any; dnis?: any; id: any; callType?: string; dialedNumber?: any; callVariables?: any; }, reasonCode: string, timestamp: number) {
+  createCIMMessage(
+    messageType: string,
+    channelCustomerIdentifier: any,
+    serviceIdentifier: any,
+    intent: string,
+    customer: any,
+    leg: string,
+    dialog: { ani?: any; fromAddress?: any; dnis?: any; id: any; callType?: string; dialedNumber?: any; callVariables?: any },
+    reasonCode: string,
+    timestamp: number
+  ) {
     try {
       let cimMessage = {
         id: uuid.v4().toString(),
@@ -462,7 +449,7 @@ export class SipService implements OnInit {
       }
       return cimMessage;
     } catch (e) {
-      console.error("[Error] createCIMMessage ==>", e);
+      console.error("[Error] createCIMMessage Sip ==>", e);
     }
   }
 
@@ -470,10 +457,8 @@ export class SipService implements OnInit {
     try {
       this._httpService.ccmVOICEChannelSession(data).subscribe(
         (res) => {
-          console.log("CCM API Success==>");
-          if (methodCalledOn == "onRefresh") {
-            if (event) this.handleCallActiveEvent(event, event.response);
-          }
+          console.log("CCM API Success Sip==>");
+          if (methodCalledOn == "onRefresh") if (event) this.handleCallActiveEvent(event, event.response);
         },
         (error) => {
           console.error("[Error on CCM Channel Session API] ==>", error);
@@ -501,7 +486,7 @@ export class SipService implements OnInit {
       });
       return temp;
     } catch (err) {
-      console.error("[Error on Get Call Variables List] ==>", err);
+      console.error("[Error on Get Call Variables List] Sip==>", err);
     }
   }
 
@@ -511,7 +496,7 @@ export class SipService implements OnInit {
       for (let i = 0; i <= conversationList.length; i++) {
         if (conversationList[i] && conversationList[i].activeChannelSessions) {
           let voiceSession = conversationList[i].activeChannelSessions.find((item) => {
-            return item.channel.channelType.name.toLowerCase() == "voice";
+            return item.channel.channelType.name.toLowerCase() == "cx_voice";
           });
           if (voiceSession && type == "id") {
             return voiceSession.conversationId;
@@ -521,7 +506,7 @@ export class SipService implements OnInit {
         }
       }
     } catch (e) {
-      console.error("[Error] getConversationIdOrConversation ==>", e);
+      console.error("[Error] getConversationIdOrConversation Sip==>", e);
     }
   }
 
@@ -531,7 +516,7 @@ export class SipService implements OnInit {
       if (item) item = JSON.parse(item);
       return item;
     } catch (e) {
-      console.error("[Error on Get Dialog Cache] ==>", e);
+      console.error("[Error on Get Dialog Cache] Sip==>", e);
     }
   }
 
@@ -561,26 +546,25 @@ export class SipService implements OnInit {
           callType,
           timeStamp
         );
-        console.log("[ handleCallDroppedEvent] CIM Message sip==>", cimMessage);
+        console.log("[ handleCallDroppedEvent] CIM Message Sip==>", cimMessage);
         this.ccmChannelSessionApi(cimMessage, methodCalledOn, cacheId, event);
       }
       this.customer = undefined;
     } catch (e) {
-      console.error("[Error] handleCallDropEvent ==>", e);
+      console.error("[Error] handleCallDropEvent Sip==>", e);
     }
     this.isCallActive = false;
   }
 
   clearLocalDialogCache(cacheId: any) {
     try {
-      console.log('clearCache Sip ==>');
       localStorage.removeItem(`${cacheId}`);
     } catch (e) {
-      console.error("[Error on clear Dialog Cache] ==>", e);
+      console.error("[Error on clear Dialog Cache Sip] ==>", e);
     }
   }
 
-  acceptCallOnSip(command: { action: string; parameter: { dialogId: any; }; }) {
+  acceptCallOnSip(command: { action: string; parameter: { dialogId: any } }) {
     postMessage(command);
   }
   endCallOnSip() {
@@ -591,10 +575,10 @@ export class SipService implements OnInit {
           dialogId: this.activeDialog.id
         }
       };
-      console.log('EndCallOnSip sip==>', command);
+      console.log("EndCallOnSip ==>", command);
       postMessage(command);
     } catch (error) {
-      console.log(error, 'on end call command sip==>');
+      console.error("[Error on initMe] Sip ==>", error);
     }
   }
 
@@ -607,10 +591,10 @@ export class SipService implements OnInit {
           clientCallbackFunction: this.clientCallback
         }
       };
-      console.log('holdCallOnSip sip==>', command);
+      console.log("holdCallOnSip==>", command);
       postMessage(command);
     } catch (error) {
-      console.log(error, 'on hold call command sip==>');
+      console.error("[Error on holdCallOnSip] ==>", error);
     }
   }
 
@@ -623,10 +607,10 @@ export class SipService implements OnInit {
           clientCallbackFunction: this.clientCallback
         }
       };
-      console.log('resumeCallOnSip sip==>', command);
+      console.log("resumeCallOnSip sip==>", command);
       postMessage(command);
     } catch (error) {
-      console.log(error, 'on resume call command sip==>');
+      console.error("[Error on resumeCallOnSip] ==>", error);
     }
   }
 
@@ -640,18 +624,11 @@ export class SipService implements OnInit {
 
   handleRefreshCase(dialogEvent, dialogState) {
     try {
-      console.log('HandleRefreshCase 1 sip==>');
       let voiceTask = this.getVoiceTask();
       if (voiceTask) {
-        console.log('HandleRefreshCase voice task 2 sip==>');
-
         let cacheId = `${this._cacheService.agent.id}:${voiceTask.channelSession.id}`;
         let D1: any = this.getDialogFromCache(cacheId);
-        console.log('HandleRefreshCase cacheId sip==>', cacheId);
-
-        console.log('HandleRefreshCase D1 3 sip==>', D1);
         if (D1 && dialogState.dialog == null) {
-          console.log('HandleRefreshCase D1 4 sip==>');
           this.handleCallDroppedEvent(cacheId, D1, "onRefresh", undefined, "DIALOG_ENDED");
         } else if (D1 && dialogState.dialog) {
           if (D1.dialog.id != dialogState.dialog.id) {
@@ -667,7 +644,7 @@ export class SipService implements OnInit {
         }
       }
     } catch (e) {
-      console.error("[Error] handleRefreshCase ==>", e);
+      console.error("[Error] handleRefreshCase Sip==>", e);
     }
   }
 
@@ -676,7 +653,7 @@ export class SipService implements OnInit {
       this._httpService.getRETasksList(agentId).subscribe(
         (res) => {
           this.taskList = res;
-          console.log('Tasklist ==> ', this.taskList);
+          console.log("Tasklist ==> ", this.taskList);
 
           if (this.taskList.length > 0) {
             this.getVoiceTask();
@@ -693,13 +670,11 @@ export class SipService implements OnInit {
 
   getVoiceTask() {
     try {
-      console.log('getVoiceTask ==>',);
+      console.log("getVoiceTask ==>");
 
       if (this.taskList && this.taskList.length > 0) {
         for (let i = 0; i <= this.taskList.length; i++) {
-          // if (this.taskList[i].state && this.taskList[i].state.name.toLowerCase() == "active") {
-            if (this.taskList[i].channelSession && this.taskList[i].channelSession.channel.channelType.name == "CX_VOICE") return this.taskList[i];
-          // }
+          if (this.taskList[i].channelSession && this.taskList[i].channelSession.channel.channelType.name == "CX_VOICE") return this.taskList[i];
         }
       }
       return null;
@@ -712,15 +687,15 @@ export class SipService implements OnInit {
     try {
       let command = {
         action: "logout",
-        parameter:{
-            reasonCode: "Logged Out",
-            userId: this._cacheService.agent.attributes.agentExtension[0],
-            clientCallbackFunction: this.clientCallback
+        parameter: {
+          reasonCode: "Logged Out",
+          userId: this._cacheService.agent.attributes.agentExtension[0],
+          clientCallbackFunction: this.clientCallback
         }
       };
       postMessage(command);
     } catch (error) {
-      console.log('[Error] Handle Logout for Sip==>', error);
+      console.error("[Error] Handle Logout for Sip==>", error);
     }
   }
 }
