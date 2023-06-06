@@ -79,7 +79,7 @@ getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
 
   getAnnouncements(): Observable<any>{
     
-    return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}?page=${1}&limit=${100}`, {
+    return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}?page=${1}&limit=${1000}`, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })

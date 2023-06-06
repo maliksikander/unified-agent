@@ -46,31 +46,28 @@ export class AnnouncementComponent implements OnInit {
       dialogRef.close()
       this.getAllAnnouncements();
     });
-
   }
 
   getAllAnnouncements() {
     this._httpService.getAnnouncements().subscribe((data) => {
-      console.log("data", data)
       this.currentItemsToShow = data;
       this.displayAnnouncements = data;
     });
   }
 
   onPageChange($event) {
-    console.log($event)
-    this.currentItemsToShow = this.displayAnnouncements.slice($event.pageIndex * $event.pageSize, $event.pageIndex * $event.pageSize + $event.pageSize);
+    this.currentItemsToShow = this.displayAnnouncements.slice(
+      $event.pageIndex * $event.pageSize, $event.pageIndex * $event.pageSize + $event.pageSize);
   }
 
   onUpdateAnnouncement(value, index) {
-
-    console.log("ID clicked", value);
     this.allAnnouncements = this._httpService.getAnnouncementsById(value).subscribe(res => {
-      this.formData = res;
-      console.log("formData", this.formData)
+      this.formData = res;  
+      
     });
-    console.log("UpdatedformData===>", this.formData)
+   
     if (this.formData.status == "scheduled") {
+      this.getAllAnnouncements();
       const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
         data: {
           value: value,
@@ -99,13 +96,12 @@ export class AnnouncementComponent implements OnInit {
 
   confirmDelete() {
     this._httpService.deleteAnnouncementById(this.specficId).subscribe({
-      next: (res) => {
-        console.log("deleted Announcement");
+      next: (res) => { 
         this.getAllAnnouncements();
       },
       error: console.log,
     })
-    console.log("id clicked", this.specficId);
+   
 
   }
 

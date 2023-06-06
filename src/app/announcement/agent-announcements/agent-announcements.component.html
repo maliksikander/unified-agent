@@ -4,7 +4,7 @@
     <p (click)="onUnreadClick(announcement,announcement.id)">
       {{announcement.announcementText}}
       <time>{{announcement.scheduledTime | date:'medium'}}</time>
-      <small>Supervisor: {{announcement.supervisorName }}</small>
+      <strong>Supervisor : {{announcement.supervisorName }}</strong>
     </p>
   </div>
 </div>

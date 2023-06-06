@@ -109,9 +109,9 @@
           <span class="time_state">{{display | date :"HH:mm:ss":'UTC'}}</span>
 
         </div> -->
-        <div class="announcement-trigger-area" >
+        <div class="announcement-trigger-area"  >
           <span class="notification-hint" *ngIf="unreadAnnouncements > 0">{{ unreadAnnouncements  }}</span>
-          <button mat-icon-button class="announcement-trigger"
+          <button mat-icon-button  class="announcement-trigger"
                   [ngClass]="{'announcement-tab-opened': sidenav.opened}"
                   (click)="sidenav.toggle()">
             <!--            <img src="assets/images/announcement.svg">-->

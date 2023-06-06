@@ -9,7 +9,7 @@
           <mat-option value=""> {{'announcements.all-announcements' | translate}}</mat-option>
           <mat-option value="active">{{'announcements.active-announcements' | translate}}</mat-option>
           <mat-option value="expired">{{'announcements.expired-announcements' | translate}}</mat-option>
-          <mat-option value="scheduled">Scheduled Announcements</mat-option>
+          <mat-option value="scheduled">{{'announcements.scheduled-announcements' | translate}}</mat-option>
         </mat-select>
       </mat-form-field>
 
@@ -54,8 +54,8 @@
           </tr>
         </tbody>
       </table>
-      <mat-paginator (page)="onPageChange($event)" [length]="20" [pageSize]="20" [pageSizeOptions]="[5, 10, 25, 100]">
-      </mat-paginator>
+      <!-- <mat-paginator (page)="onPageChange($event)" [length]="20" [pageSize]="20" [pageSizeOptions]="[5, 10, 25, 100]">
+      </mat-paginator> -->
       <!--<pagination-controls  (pageChange)="p=$event" previousLabel="" nextLabel="" maxSize='7'></pagination-controls> -->
       <!--<h3 *ngIf="!dataBool" class="noData" translate>No_data</h3>-->
 

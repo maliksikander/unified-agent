@@ -4,7 +4,7 @@ import { cacheService } from "../../services/cache.service";
 import { httpService } from "../../services/http.service";
 import { Subscription } from "rxjs";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material";
-import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
+
 
 @Component({
   selector: "app-announcement-dialog",
@@ -14,12 +14,8 @@ import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 export class AnnouncementDialogComponent implements OnInit {
   announceDateMin = new Date();
   maxdateaVar = this.announceDateMin;
-
-
   someDate = this.announceDateMin.getDate();
-  //numberOfDaysToAdd = 5;
-  //result = this.someDate.setDate(this.someDate + this.numberOfDaysToAdd);
-  maxDateVal;
+  maxDateVal=new Date();
   expireDateMin = new Date();
   FilterSelected = "all";
   announcements = [];
@@ -59,12 +55,18 @@ export class AnnouncementDialogComponent implements OnInit {
     private _cacheService: cacheService,
     private _httpService: httpService,
     public dialogRef: MatDialogRef<AnnouncementDialogComponent>, @Inject(MAT_DIALOG_DATA) public dataID: any
-  ) {//this.maxDateVal= new Date( 2023, 6, 15);
-
-  }
-
+  ) {}
+  
   ngOnInit() {
     //this.maxDate= this.maxdateaVar.setHours(120);
+    //console.log("this.expireDateMin = date;",this.expireDateMin); 
+    let date = new Date(this.expireDateMin);
+    date.setMinutes(date.getMinutes() + 10);
+    //this.expireDateMin = date;
+    this.expireDate = new FormControl(date, [Validators.required]);
+    //console.log("this.expireDateMin 2 +10;",this.expireDateMin); 
+
+
     this.getAllAnnouncementList();
     if (this.dataID !== null) {
 
@@ -82,8 +84,7 @@ export class AnnouncementDialogComponent implements OnInit {
 
     }
 
-    this.teamList = this._cacheService.agent.supervisedTeams;
-    console.log("teams", this.teamList);
+ 
     this.teamList = this._cacheService.agent.supervisedTeams;
     this.supervisor = this._cacheService.agent.username;
     this.supervisorId = this._cacheService.agent.id;
@@ -97,7 +98,6 @@ export class AnnouncementDialogComponent implements OnInit {
       classes: "myclass custom-class",
       primaryKey: "teamId"
     };
-    console.log(this.selectedTeams)
 
   }
 
@@ -112,7 +112,6 @@ export class AnnouncementDialogComponent implements OnInit {
 
   onCreateAnnouncement() {
     let selectedTeamNames = this.selectedTeams.map(d => d);
-    console.log("TEAM NAME MAP ", selectedTeamNames);
     this.selectedTeams = selectedTeamNames;
     let obj = {
       "teams": this.selectedTeams,
@@ -126,7 +125,6 @@ export class AnnouncementDialogComponent implements OnInit {
     this._httpService.addAnnouncemenent(this.postData).subscribe({
       next: (val: any) => {
         this.getAllAnnouncementList();
-        console.log("added successfully");
         this.dialog.closeAll();
 
       },
@@ -178,6 +176,10 @@ export class AnnouncementDialogComponent implements OnInit {
     let date = new Date(d);
     date.setMinutes(date.getMinutes() + 10);
     this.expireDateMin = date;
+    let date2=this.announceDate.value;
+    date2.setHours(120);
+    this.maxDateVal =date2
+    console.log("max val",this.maxDateVal);
     let _date = new Date(d);
     _date.setMinutes(_date.getMinutes() + 10);
     this.expireDate = new FormControl(_date, [Validators.required]);

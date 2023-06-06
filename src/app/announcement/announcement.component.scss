@@ -302,7 +302,7 @@
 
 
 .confirmation-header {
-  background: #e35151;
+  background: $red-color;
   height: 36px;
   line-height: 36px;
 
@@ -342,7 +342,7 @@
     text-transform: capitalize;
 
     &.confirm-btn {
-      background: #e35151;
+      background: $red-color;
     }
   }
 }
