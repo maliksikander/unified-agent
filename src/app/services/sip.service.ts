@@ -380,7 +380,7 @@ export class SipService implements OnInit {
 
   getCustomerByVoiceIdentifier(identifier: any, sipEvent: { response: any; }, callType: string) {
     try {
-      this._httpService.getCustomerByChannelTypeAndIdentifier("VOICE", identifier).subscribe(
+      this._httpService.getCustomerByChannelTypeAndIdentifier("CX_VOICE", identifier).subscribe(
         (res) => {
           this.customer = res.customer;
           let data = {
