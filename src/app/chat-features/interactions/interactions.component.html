@@ -946,8 +946,8 @@
 
                                 <li *ngIf="message.body.data.callLegs.length < 2" class="agent-pic call-services">
                                   <span>{{
-                                    message.body.data.callLegs[0].additionalDetail.dialog.queueName ?
-                                    message.body.data.callLegs[0].additionalDetail.dialog.queueName : "N/A"
+                                    message.body.data.callLegs[0].additionalDetail.dialog?.queueName ?
+                                    message.body.data.callLegs[0].additionalDetail.dialog?.queueName : "N/A"
                                     }}</span>
                                 </li>
                                 <ng-container *ngIf="message.body.data.callLegs.length == 2">
@@ -956,8 +956,8 @@
                                     <span>
                                       <ng-container *ngFor="let callLeg of message.body.data.callLegs">
                                         <ng-container *ngIf="callLeg.startDirection != 'CONSULT'">
-                                          {{ callLeg?.additionalDetail?.dialog.queueName ?
-                                          callLeg?.additionalDetail?.dialog.queueName : "N/A" }}
+                                          {{ callLeg?.additionalDetail?.dialog?.queueName ?
+                                          callLeg?.additionalDetail?.dialog?.queueName : "N/A" }}
                                         </ng-container>
                                       </ng-container>
                                     </span>
@@ -989,12 +989,12 @@
                                 </li>
 
                                 <ng-container *ngIf="message.body.data.callLegs.length < 2">
-                                  <li *ngIf="message.body.data.callLegs[0]?.additionalDetail?.dialog.wrapUpReason"
+                                  <li *ngIf="message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason"
                                     class="section-tags">
                                     <span>
                                       {{
-                                      message.body.data.callLegs[0]?.additionalDetail?.dialog.wrapUpReason ?
-                                      message.body.data.callLegs[0]?.additionalDetail?.dialog.wrapUpReason : "N/A"
+                                      message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason ?
+                                      message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason : "N/A"
                                       }}
                                     </span>
 
@@ -1039,8 +1039,8 @@
                                     </li>
 
                                     <li class="agent-pic call-services">
-                                      <span>{{ callData?.additionalDetail?.dialog.queueName ?
-                                        callData?.additionalDetail?.dialog.queueName : "N/A" }}</span>
+                                      <span>{{ callData?.additionalDetail?.dialog?.queueName ?
+                                        callData?.additionalDetail?.dialog?.queueName : "N/A" }}</span>
                                     </li>
 
                                     <li class="section-duration">
@@ -1066,7 +1066,7 @@
                                     </li>
 
                                     <!-- <ng-container *ngIf="message.body.data.callLegs.length < 2"> -->
-                                    <li *ngIf="callData.additionalDetail?.dialog.wrapUpReason" class="section-tags">
+                                    <li *ngIf="callData.additionalDetail?.dialog?.wrapUpReason" class="section-tags">
                                       <span>
                                         {{ callData?.additionalDetail?.dialog?.wrapUpReason ?
                                         callData?.additionalDetail?.dialog?.wrapUpReason : "N/A" }}
