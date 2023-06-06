@@ -1984,14 +1984,14 @@
 
   <div class="customer-info-main">
     <div class="call-controls-view" *ngIf="isBarOpened && ctiBarView && _sipService.isCallActive">
-      <div class="right-call-controls">
+      <div class="right-call-controls row doc-bar">
 
         <div class="main-showcase customer-info-dp">
           <div class="agent-showcase">
             <img src="assets/images/dummy-user.svg" alt="Customer">
             <mat-icon routerLink="/customers/chats">flip_to_back</mat-icon>
           </div>
-          <h4 matTooltip="{{customerNumber}}">1218=00<span class="timer-call">{{ minutes | number: '2.0' }}:{{ seconds |
+          <h4 matTooltip="{{this._sipService.customerNumber}}">{{this._sipService.customerNumber}}<span class="timer-call">{{ minutes | number: '2.0' }}:{{ seconds |
               number: '2.0' }}</span>
           </h4>
         </div>
@@ -2009,7 +2009,7 @@
               mat-fab><mat-icon>pause</mat-icon></button></li>
           <li (click)="_sipService.resumeCallOnSip()" *ngIf="_sipService.isCallHold == true"><button
               mat-fab><mat-icon>pause_circle_filled</mat-icon></button></li>
-          <li (click)="_sipService.endCallOnSip()"><button class="end-call"
+          <li (click)="endCallOnSip()"><button class="end-call"
               mat-fab><mat-icon>call_end</mat-icon></button></li>
         </ul>
       </div>

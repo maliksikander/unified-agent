@@ -52,6 +52,8 @@ export class InteractionsComponent implements OnInit {
   // isConsult = false;
   ctiBarView = true;
   ctiBoxView = false;
+  minutes: number;
+  seconds: number;
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -156,6 +158,11 @@ export class InteractionsComponent implements OnInit {
     if (this._sipService.isCallActive == true) {
       this.ctiControlBar();
     }
+
+    this._sipService.getTimer().subscribe(value => {
+      this.minutes = Math.floor(value / 60);
+      this.seconds = value % 60;
+    });
 
   }
   loadLabels() {
@@ -1205,5 +1212,11 @@ export class InteractionsComponent implements OnInit {
       this.ctiBoxView = false;
       this.ctiBarView = true;
     });
+  }
+
+  endCallOnSip(){
+    console.log('on End Call Request==>');
+    this._sipService.stopTimer();
+    this._sipService.endCallOnSip();
   }
 }

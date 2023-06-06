@@ -10,6 +10,7 @@ import { httpService } from "../services/http.service";
 import { snackbarService } from "src/app/services/snackbar.service";
 import { TranslateService } from "@ngx-translate/core";
 import { SipService } from "../services/sip.service";
+import { appConfigService } from "../services/appConfig.service";
 
 @Component({
   selector: "app-header",
@@ -65,6 +66,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     private _sharedService: sharedService,
     public _finesseService: finesseService,
     public _sipService: SipService,
+    public _appConfigService:appConfigService,
     private _fcmService: fcmService,
     private _httpService: httpService,
     private _snackBarService: snackbarService,
@@ -233,6 +235,8 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
       action: "agentState",
       state: { name: "LOGOUT", reasonCode: this.selectedReasonCode }
     });
+
+    if(this._appConfigService.config.isCxVoiceEnabled) this._sipService.logout();
   }
 
   changeMRD(event, agentMrdState) {

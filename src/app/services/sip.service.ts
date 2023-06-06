@@ -118,9 +118,9 @@ export class SipService implements OnInit {
         }
         if (event.response.state.toLowerCase() == "logout") {
           this.isSipLoggedIn = false;
-          this._snackbarService.open(this._translateService.instant("Logout Successfully"), "err");
-          console.log("Connection Expired, CTI Status logout!!!");
           this.notReadyAgentState();
+          this._snackbarService.open(this._translateService.instant("SIP Logout Successfully"), "err");
+          console.log("Connection Expired, CTI Status logout!!!");
         }
       } else if (event.event.toLowerCase() == "dialogstate") {
         if (event.response.dialog == null) {
@@ -705,6 +705,22 @@ export class SipService implements OnInit {
       return null;
     } catch (e) {
       console.error("[Error] getVoiceTask ==>", e);
+    }
+  }
+
+  logout() {
+    try {
+      let command = {
+        action: "logout",
+        parameter:{
+            reasonCode: "Logged Out",
+            userId: this._cacheService.agent.attributes.agentExtension[0],
+            clientCallbackFunction: this.clientCallback
+        }
+      };
+      postMessage(command);
+    } catch (error) {
+      console.log('[Error] Handle Logout for Sip==>', error);
     }
   }
 }
