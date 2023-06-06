@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject, Input } from "@angular/core";
 import { cacheService } from "src/app/services/cache.service";
 import { socketService } from "src/app/services/socket.service";
-import { Output, EventEmitter } from "@angular/core";
 import { TopicParticipant } from "../../models/User/Interfaces";
 import { Router } from "@angular/router";
 import { sharedService } from "src/app/services/shared.service";
@@ -77,16 +76,13 @@ export class ChatNotificationsComponent implements OnInit {
           console.log("external requests==>", this.externalModeRequests);
         } else if (e.msg == "closeExternalModeRequestHeader") {
           // this.externalModeRequests = e.data;
-          console.log("notification close data==>", e.data);
           let dialog = e.data.dialog ? e.data.dialog : e.data;
           if (this.externalModeRequests.length > 0) {
             let index = this.externalModeRequests.findIndex((item) => {
               return item.dialogData.id == dialog.id;
             });
             console.log("Closing Index==>", index);
-
             if (index != -1) this.externalModeRequests.splice(index, 1);
-            console.log("notification close==>", this.externalModeRequests);
           }
         } else if (e.msg == "closeAllPushModeRequests") {
           this.pushModeRequests = [];
@@ -105,10 +101,8 @@ export class ChatNotificationsComponent implements OnInit {
     let cxVoiceChannelType;
     ciscoChannelType = channelTypes.find((item) => item.name == "CISCO_CC");
     cxVoiceChannelType = channelTypes.find((item) => item.name == "CX_VOICE");
-    console.log("provider==>", provider);
     if (provider == "cisco") this.voiceChannelType = ciscoChannelType;
     else if (provider == "cx_voice") this.voiceChannelType = cxVoiceChannelType;
-    console.log("voice channelType==>", this.voiceChannelType);
   }
 
   acceptCall(data) {
@@ -118,8 +112,6 @@ export class ChatNotificationsComponent implements OnInit {
         dialogId: data.dialogData.id
       }
     };
-    console.log("call accept data ==>", data);
-    console.log("call accept command ==>", acceptCommand);
     if (data.provider == "cx_voice") {
       this._sipService.acceptCallOnSip(acceptCommand);
     } else if (data.provider == "cisco") {
