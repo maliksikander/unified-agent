@@ -22,7 +22,7 @@ export class CallControlsComponent implements OnInit {
   constructor(
     public _cacheService: cacheService,
     public dialogRef: MatDialogRef<CallControlsComponent>,
-    private _sipService: SipService,
+    public _sipService: SipService,
     public _finesseService: finesseService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
