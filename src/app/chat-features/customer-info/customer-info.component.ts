@@ -68,6 +68,9 @@ export class CustomerInfoComponent implements OnInit {
   timer = "00:00";
   ciscoVoiceSession;
   cxVoiceSession;
+  // hours: number;
+  // minutes: number;
+  // seconds: number;
   // drop(event: CdkDragDrop<string[]>) {
   //   moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
   // }
@@ -86,6 +89,11 @@ export class CustomerInfoComponent implements OnInit {
 
   ngOnInit() {
     if (this.activeChannelSessions) this.setActiveChannelSessions(this.activeChannelSessions);
+    // this._sipService.getTimer().subscribe((value) => {
+    //   this.hours = Math.floor(value / 3600);
+    //   this.minutes = Math.floor(value / 60);
+    //   this.seconds = value % 60;
+    // });
   }
 
   close() {
@@ -152,10 +160,15 @@ export class CustomerInfoComponent implements OnInit {
     try {
       this.ciscoVoiceSession = this.activeChannelSessions.find((channelSession) => {
         if (channelSession.channel.channelType.name.toLowerCase() == "cisco_cc") {
-          // if (channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "external") {
           return channelSession;
         }
       });
+      this.cxVoiceSession = this.activeChannelSessions.find((channelSession) => {
+        if (channelSession.channel.channelType.name.toLowerCase() == "cx_voice") {
+          return channelSession;
+        }
+      });
+
       if (this.ciscoVoiceSession) {
         let cacheId = `${this._cacheService.agent.id}:${this.ciscoVoiceSession.id}`;
         let cacheDialog: any = this._finesseService.getDialogFromCache(cacheId);
@@ -168,26 +181,26 @@ export class CustomerInfoComponent implements OnInit {
             let timedurationinMS = currentTime.getTime() - startTime.getTime();
             this.msToHMS(timedurationinMS);
           }, 1000);
-
         } else {
           console.log("No Dialog Found==>");
         }
-      } else if(this.cxVoiceSession){
+      } if (this.cxVoiceSession) {
         let cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
-        let cacheDialog: any = this._finesseService.getDialogFromCache(cacheId);
+        let cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
         if (cacheDialog) {
-          let currentParticipant = this._sipService.getCurrentAgentFromParticipantList(cacheDialog.dialog.participants[0]);
+          let currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
           let startTime = new Date(currentParticipant.startTime);
+
           this._sipService.timeoutId = setInterval(() => {
             let currentTime = new Date();
             let timedurationinMS = currentTime.getTime() - startTime.getTime();
             this.msToHMS(timedurationinMS);
           }, 1000);
         } else {
-          console.log("No Sip Dialog Found==>");
-          // this.timer = "";
+          console.log("No Dialog Found==>");
         }
       }
+
       else {
         if (this._finesseService.timeoutId) clearInterval(this._finesseService.timeoutId);
         if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);

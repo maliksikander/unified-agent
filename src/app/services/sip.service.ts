@@ -18,12 +18,13 @@ declare var postMessage;
 export class SipService implements OnInit {
   private destroy$ = new Subject<void>();
   private timer$: Observable<number>;
+  public _isActiveSub = new Subject();
 
   extension: number;
   customer: any;
   startTime: any;
   endTime: any;
-  timeoutId: NodeJS.Timer;
+  timeoutId;
   taskList: Array<any>;
   isCallActive: boolean = false;
   isCallHold: boolean = false;
@@ -59,13 +60,14 @@ export class SipService implements OnInit {
 
   initMe() {
     try {
-      this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
-        if (e.msg == "stateChanged") {
-          this.agentMrdStates = e.data;
-          if (this._appConfigService.config.isCxVoiceEnabled && !this.isSipLoggedIn) this.loginSip();
-          else console.log("CX Voice is not enabled sip==>");
-        }
-      });
+      if (this._appConfigService.config.isCxVoiceEnabled) {
+        this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
+          if (e.msg == "stateChanged") {
+            this.agentMrdStates = e.data;
+            if (!this.isSipLoggedIn && this.checkAgentExtensionAttribute(this._cacheService.agent.attributes)) this.loginSip();
+          }
+        });
+      }
     } catch (error) {
       console.error("[Error on initMe] Sip ==>", error);
     }
@@ -78,33 +80,31 @@ export class SipService implements OnInit {
       sipPassword = JSON.parse(sipPassword ? atob(sipPassword) : null);
       let loginId = this._cacheService.agent.username;
       let password = sipPassword;
-      if(this.checkAgentExtensionAttribute(this._cacheService.agent.attributes)){
-      let extension = this.extension != undefined ? this.extension : this._cacheService.agent.attributes.agentExtension[0];
+      if (this.checkAgentExtensionAttribute(this._cacheService.agent.attributes)) {
+        let extension = this.extension != undefined ? this.extension : this._cacheService.agent.attributes.agentExtension[0];
 
-
-      let command = {
-        action: "login",
-        parameter: {
-          loginId,
-          password,
-          extension,
-          clientCallbackFunction: this.clientCallback
-        }
-      };
-      console.log("login SIP command sip==>", command);
-      postMessage(command);
-    }
-    else{
-      console.log("No Extension configured for agent==>");
-      this._snackbarService.open(this._translateService.instant("snackbar.No-Extension-Found"), "err");
-    }
+        let command = {
+          action: "login",
+          parameter: {
+            loginId,
+            password,
+            extension,
+            clientCallbackFunction: this.clientCallback
+          }
+        };
+        console.log("login SIP command sip==>", command);
+        postMessage(command);
+      } else {
+        console.log("No Extension configured for agent==>");
+        this._snackbarService.open(this._translateService.instant("snackbar.No-Extension-Found"), "err");
+      }
     } catch (error) {
       this.notReadyAgentState();
       console.error("login SIP command sip==>", error);
     }
   }
 
-  checkAgentExtensionAttribute(attributes){
+  checkAgentExtensionAttribute(attributes) {
     if (Object.keys(attributes).length !== 0) {
       if (
         attributes.agentExtension !== "" &&
@@ -207,12 +207,12 @@ export class SipService implements OnInit {
         if (currentParticipant) {
           if (dialogState.dialog.state == "ACTIVE") {
             this.removeNotification(dialogState.dialog);
-            this.isCallActive = true;
-            this.setDialogCache(dialogEvent, "ACTIVE");
             if (currentParticipant.state == "ACTIVE") {
               if (dialogState.dialog.isCallAlreadyActive == false) {
-                this.handleCallActiveEvent(dialogEvent, dialogState);
+                this.isCallActive = true;
+                this._isActiveSub.next(true);
                 this.setDialogCache(dialogEvent, "ACTIVE");
+                this.handleCallActiveEvent(dialogEvent, dialogState);
               }
             }
           }
@@ -238,15 +238,16 @@ export class SipService implements OnInit {
     }
   }
 
-  getCurrentParticipantFromDialog(dialog: { participants: any[] }) {
+  getCurrentParticipantFromDialog(dialog) {
     try {
       let participantsList: Array<any> = dialog.participants;
       let currentParticipant = participantsList.find((item) => {
+
         return item.mediaAddress == this._cacheService.agent.attributes.agentExtension[0];
       });
       return currentParticipant;
     } catch (e) {
-      console.error("[Error Sip] getCurrentParticipantFromDialog ==>", e);
+      console.error("[Error] getCurrentParticipantFromDialog ==>", e);
     }
   }
 
@@ -292,7 +293,6 @@ export class SipService implements OnInit {
       );
       console.log("[handleCallActiveEvent] CIM Message sip==>", cimMessage);
       this.ccmChannelSessionApi(cimMessage, "", "", undefined);
-      this.isCallActive = true;
     } catch (e) {
       console.error("[Error] handleCallActiveEvent Sip==>", e);
     }
@@ -543,7 +543,6 @@ export class SipService implements OnInit {
 
   handleCallDroppedEvent(cacheId, dialogState, methodCalledOn, event, callType) {
     try {
-      if (methodCalledOn != "onRefresh") this.clearLocalDialogCache(cacheId);
       let channelCustomerIdentifier = dialogState.dialog.ani ? dialogState.dialog.ani : dialogState.dialog.fromAddress;
       let serviceIdentifier = dialogState.dialog.dnis;
       let leg = `${this._cacheService.agent.attributes.agentExtension[0]}:${this._cacheService.agent.id}:${dialogState.dialog.id}`;
@@ -571,10 +570,13 @@ export class SipService implements OnInit {
         this.ccmChannelSessionApi(cimMessage, methodCalledOn, cacheId, event);
       }
       this.customer = undefined;
+      this.isCallActive = false;
+      this._isActiveSub.next(false);
+      if (this.timeoutId) clearInterval(this.timeoutId);
     } catch (e) {
       console.error("[Error] handleCallDropEvent Sip==>", e);
     }
-    this.isCallActive = false;
+
   }
 
   clearLocalDialogCache(cacheId: any) {
@@ -647,8 +649,11 @@ export class SipService implements OnInit {
     try {
       let voiceTask = this.getVoiceTask();
       if (voiceTask) {
+        console.log("test==>1", voiceTask);
         let cacheId = `${this._cacheService.agent.id}:${voiceTask.channelSession.id}`;
+        console.log("test==>2", cacheId);
         let D1: any = this.getDialogFromCache(cacheId);
+        console.log("test==>3", D1);
         if (D1 && dialogState.dialog == null) {
           this.handleCallDroppedEvent(cacheId, D1, "onRefresh", undefined, "DIALOG_ENDED");
         } else if (D1 && dialogState.dialog) {

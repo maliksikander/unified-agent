@@ -9,8 +9,12 @@
         <img src="assets/images/dummy-user.svg" alt="Customer">
         <mat-icon routerLink="/customers/chats">flip_to_back</mat-icon>
       </div>
-      <h4 matTooltip="{{customerNumber}}">{{customerNumber}}<span class="timer-call">{{ minutes | number: '2.0' }}:{{ seconds |
+      <!-- <h4 matTooltip="{{customerNumber}}">{{customerNumber}}<span class="timer-call"><ng-container
+            *ngIf="hours && hours > 0">{{ hours | number: '2.0' }}:</ng-container>{{ minutes | number: '2.0' }}:{{
+          seconds |
           number: '2.0' }}</span>
+      </h4> -->
+      <h4 matTooltip="{{customerNumber}}">{{customerNumber}}<span class="timer-call">{{timer}}</span>
       </h4>
     </div>
 

@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChang
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
-import { MatDialog, MatSnackBar} from "@angular/material";
+import { MatDialog, MatSnackBar } from "@angular/material";
 import { CimEvent } from "../../models/Event/cimEvent";
 import { v4 as uuidv4 } from "uuid";
 import { NgScrollbar } from "ngx-scrollbar";
@@ -14,9 +14,8 @@ import { finesseService } from "src/app/services/finesse.service";
 import { ConfirmationDialogComponent } from "src/app/new-components/confirmation-dialog/confirmation-dialog.component";
 import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
 import { TranslateService } from "@ngx-translate/core";
-import {CallControlsComponent} from '../../new-components/call-controls/call-controls.component';
+import { CallControlsComponent } from "../../new-components/call-controls/call-controls.component";
 import { SipService } from "src/app/services/sip.service";
-
 
 // declare var EmojiPicker: any;
 
@@ -52,6 +51,7 @@ export class InteractionsComponent implements OnInit {
   // isConsult = false;
   ctiBarView = true;
   ctiBoxView = false;
+  hours: number;
   minutes: number;
   seconds: number;
 
@@ -116,11 +116,10 @@ export class InteractionsComponent implements OnInit {
     private snackBar: MatSnackBar,
     private _translateService: TranslateService,
     public _sipService: SipService
-  ) { }
-
+  ) {}
 
   ngOnInit() {
-    console.log(this.conversation, '==> Conversation');
+    console.log(this.conversation, "==> Conversation");
 
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
@@ -159,11 +158,10 @@ export class InteractionsComponent implements OnInit {
       this.ctiControlBar();
     }
 
-    this._sipService.getTimer().subscribe(value => {
+    this._sipService.getTimer().subscribe((value) => {
       this.minutes = Math.floor(value / 60);
       this.seconds = value % 60;
     });
-
   }
   loadLabels() {
     this._httpService.getLabels().subscribe(
@@ -439,8 +437,8 @@ export class InteractionsComponent implements OnInit {
     }
   }
   eventFromChild(data) {
-    console.log("isbaropened "+data);
-    console.log("ctiBarView "+this.ctiBarView);
+    console.log("isbaropened " + data);
+    console.log("ctiBarView " + this.ctiBarView);
     this.isBarOpened = data;
   }
   eventFromChildForUpdatedLabel(data) {
@@ -492,18 +490,17 @@ export class InteractionsComponent implements OnInit {
     for (let i = 0; i <= this.conversation.activeChannelSessions.length; i++) {
       if (
         this.conversation.activeChannelSessions[i] &&
-        (this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cisco_cc" || this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cx_voice")
+        (this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cisco_cc" ||
+          this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cx_voice")
       ) {
         let cacheId = `${this._cacheService.agent.id}:${this.conversation.activeChannelSessions[i].id}`;
         let cache = this._finesseService.getDialogFromCache(cacheId);
         if (cache) {
           voiceSession = this.conversation.activeChannelSessions[i];
-        }
-        else if(!cache && this._appConfigService.config.isCxVoiceEnabled){
-          voiceSession =  voiceSession = this.conversation.activeChannelSessions[i];
+        } else if (!cache && this._appConfigService.config.isCxVoiceEnabled) {
+          voiceSession = voiceSession = this.conversation.activeChannelSessions[i];
         }
         if (!voiceSession && this._socketService.consultTask) {
-
           let consultCallDialog: any = localStorage.getItem("consultCallObject");
           if (typeof consultCallDialog == "string") consultCallDialog = JSON.parse(consultCallDialog);
 
@@ -525,9 +522,8 @@ export class InteractionsComponent implements OnInit {
     }
     console.log("end call data==>", data);
     if (voiceSession || data.parameter.dialogId) {
+      if (this._appConfigService.config.isCxVoiceEnabled) this._sipService.endCallOnSip();
       if (this._appConfigService.config.isCiscoEnabled) this._finesseService.endCallOnFinesse(data);
-      else if(this._appConfigService.config.isCxVoiceEnabled) this._sipService.endCallOnSip();
-
     } else {
       console.log("No active voice session or dialog id found ==>");
       this._snackbarService.open(this._translateService.instant("snackbar.Unable-To-End-Voice-Session"), "err");
@@ -891,7 +887,7 @@ export class InteractionsComponent implements OnInit {
 
   switchChannelSession(channelSession, channelIndex) {
     try {
-      console.log("channel session==>",channelSession);
+      console.log("channel session==>", channelSession);
       if (!channelSession.isDisabled) {
         if (!channelSession.isChecked) {
           this.conversation.activeChannelSessions.forEach((channelSession) => {
@@ -1206,16 +1202,17 @@ export class InteractionsComponent implements OnInit {
     const dialogRef = this.dialog.open(CallControlsComponent, {
       panelClass: "call-controls-dialog",
       hasBackdrop: false,
-      data: { header: "Leave Conversation", message: `Are you sure you want to leave conversation with ‘John Taylor’?` }
+      data: { conversation: this.conversation }
     });
     dialogRef.afterClosed().subscribe((result) => {
       this.ctiBoxView = false;
       this.ctiBarView = true;
+      if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
     });
   }
 
-  endCallOnSip(){
-    console.log('on End Call Request==>');
+  endCallOnSip() {
+    console.log("on End Call Request==>");
     this._sipService.stopTimer();
     this._sipService.endCallOnSip();
   }

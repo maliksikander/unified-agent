@@ -15,7 +15,7 @@ describe("InteractionsComponent", () => {
   let _appConfigService: any;
   let snackBar: any;
   let translateService: TranslateService;
-
+  let _sipService: any
   let channelSession = {
     channel: {
       channelConnector: {
@@ -55,7 +55,8 @@ describe("InteractionsComponent", () => {
         _httpService,
         _finneseService,
         snackBar,
-        translateService
+        translateService,
+        _sipService
       );
     });
 
@@ -97,7 +98,8 @@ describe("InteractionsComponent", () => {
         _httpService,
         _finneseService,
         snackBar,
-        translateService
+        translateService,
+        _sipService
       );
     });
 
@@ -143,7 +145,8 @@ describe("InteractionsComponent", () => {
         _httpService,
         _finneseService,
         snackBar,
-        translateService
+        translateService,
+        _sipService
       );
     });
 
@@ -178,7 +181,8 @@ describe("InteractionsComponent", () => {
         _httpService,
         _finneseService,
         snackBar,
-        translateService
+        translateService,
+        _sipService
       );
     });
 

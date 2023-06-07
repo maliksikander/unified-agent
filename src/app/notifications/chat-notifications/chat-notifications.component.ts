@@ -112,6 +112,7 @@ export class ChatNotificationsComponent implements OnInit {
         dialogId: data.dialogData.id
       }
     };
+    console.log("accept Data==>",acceptCommand)
     if (data.provider == "cx_voice") {
       this._sipService.acceptCallOnSip(acceptCommand);
     } else if (data.provider == "cisco") {

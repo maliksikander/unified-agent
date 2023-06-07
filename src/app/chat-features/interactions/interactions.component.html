@@ -1754,28 +1754,27 @@
           <label *ngIf="message.length > 0" class="count-reply">{{ replyInput.value.length }}/1000</label>
           <div class="mat-form-field chat-area" [ngClass]="{ 'expand-area-height': expanedHeight > 50 }">
             <textarea maxlength="1000" [disabled]="
-                !_socketService.isSocketConnected ||
-                conversation.activeChannelSessions.length == 0 ||
-                !conversation.messageComposerState ||
-                (!isWhisperMode  && conversation.topicParticipant.role == 'ASSISTANT') || _sipService.isCallActive"
-              (keyup.enter)="onSend(replyInput.value); replyInput.value = null" (focus)="onTextAreaFocus()"
+            !_socketService.isSocketConnected ||
+            conversation.activeChannelSessions.length == 0 ||
+            !conversation.messageComposerState ||
+            (!isWhisperMode  && conversation.topicParticipant.role == 'ASSISTANT')
+" (keyup.enter)="onSend(replyInput.value); replyInput.value = null" (focus)="onTextAreaFocus()"
               (keydown.enter)="onEnterKey($event)"
               [attr.data-emoji-picker]="conversation.activeChannelSessions.length > 0 ? true : false"
               [(ngModel)]="message" (keyup)="onKey($event)" name="message" [matAutocomplete]="auto" matInput
               cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none"
               #replyInput name="message" placeholder="{{
-                (_sipService.isCallActive ? 'chat-features.interactions.Unable-to-send-message' :
-                conversation.messages[conversation.messages.length - 1]?.botSuggestions
-                  ? fbCommentId
-                    ? 'chat-features.interactions.bot-suggestions-available-for-reply-to-a-comment'
-                    : 'chat-features.interactions.bot-suggestions-available'
-                  : _socketService.isSocketConnected && conversation.activeChannelSessions.length > 0 && conversation.messageComposerState
-                  ? fbCommentId
-                    ? 'chat-features.interactions.Type-a-reply-to-comment'
-                    : 'chat-features.interactions.Type-a-message'
-                   : 'chat-features.interactions.Unable-to-send-message'
-                ) | translate
-              }}"></textarea>
+            (conversation.messages[conversation.messages.length - 1]?.botSuggestions
+              ? fbCommentId
+                ? 'chat-features.interactions.bot-suggestions-available-for-reply-to-a-comment'
+                : 'chat-features.interactions.bot-suggestions-available'
+              : _socketService.isSocketConnected && conversation.activeChannelSessions.length > 0 && conversation.messageComposerState
+              ? fbCommentId
+                ? 'chat-features.interactions.Type-a-reply-to-comment'
+                : 'chat-features.interactions.Type-a-message'
+              : 'chat-features.interactions.Unable-to-send-message'
+            ) | translate
+          }}"></textarea>
             <!-- [ngClass]="{'animate-content': displaySuggestionsAnimation}" -->
 
             <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete {{
@@ -1991,7 +1990,10 @@
             <img src="assets/images/dummy-user.svg" alt="Customer">
             <mat-icon routerLink="/customers/chats">flip_to_back</mat-icon>
           </div>
-          <h4 matTooltip="{{this._sipService.customerNumber}}">{{this._sipService.customerNumber}}<span class="timer-call">{{ minutes | number: '2.0' }}:{{ seconds |
+          <h4 matTooltip="{{this._sipService.customerNumber}}">{{this._sipService.customerNumber}}<span
+              class="timer-call"><ng-container *ngIf="hours && hours > 0">{{ hours | number: '2.0' }}:</ng-container>{{
+              minutes | number: '2.0' }}:{{
+              seconds |
               number: '2.0' }}</span>
           </h4>
         </div>
@@ -2009,8 +2011,7 @@
               mat-fab><mat-icon>pause</mat-icon></button></li>
           <li (click)="_sipService.resumeCallOnSip()" *ngIf="_sipService.isCallHold == true"><button
               mat-fab><mat-icon>pause_circle_filled</mat-icon></button></li>
-          <li (click)="endCallOnSip()"><button class="end-call"
-              mat-fab><mat-icon>call_end</mat-icon></button></li>
+          <li (click)="endCallOnSip()"><button class="end-call" mat-fab><mat-icon>call_end</mat-icon></button></li>
         </ul>
       </div>
     </div>
