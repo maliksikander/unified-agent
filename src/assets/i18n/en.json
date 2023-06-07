@@ -84,7 +84,9 @@
     "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed, Invalid Credentials!",
     "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed!",
     "CX-Voice-Login-Success":"CX VOICE : Successfully login with EF Switch",
-    "CX-Voice-call-canceled" : "CX VOICE : Voice Call canceled"
+    "CX-Voice-call-canceled" : "CX VOICE : Voice Call canceled",
+    "SIP-Logout-Successful":"SIP Logout Successful",
+    "No-Extension-Found":"No Extension Found For Sip Agent"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View",
@@ -314,6 +316,7 @@
   },
   "socket-service":{
     "has-joined-the-conversation":"has joined the conversation",
+    "have-joined-the-conversation":"have joined the conversation",
     "session-started":"session started",
     "session-ended":"session ended",
     "left-the-conversation":"left the conversation",

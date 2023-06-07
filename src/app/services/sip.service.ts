@@ -78,7 +78,9 @@ export class SipService implements OnInit {
       sipPassword = JSON.parse(sipPassword ? atob(sipPassword) : null);
       let loginId = this._cacheService.agent.username;
       let password = sipPassword;
+      if(this.checkAgentExtensionAttribute(this._cacheService.agent.attributes)){
       let extension = this.extension != undefined ? this.extension : this._cacheService.agent.attributes.agentExtension[0];
+
 
       let command = {
         action: "login",
@@ -91,9 +93,28 @@ export class SipService implements OnInit {
       };
       console.log("login SIP command sip==>", command);
       postMessage(command);
+    }
+    else{
+      console.log("No Extension configured for agent==>");
+      this._snackbarService.open(this._translateService.instant("snackbar.No-Extension-Found"), "err");
+    }
     } catch (error) {
       this.notReadyAgentState();
       console.error("login SIP command sip==>", error);
+    }
+  }
+
+  checkAgentExtensionAttribute(attributes){
+    if (Object.keys(attributes).length !== 0) {
+      if (
+        attributes.agentExtension !== "" &&
+        attributes.agentExtension !== null &&
+        attributes.agentExtension !== undefined &&
+        attributes.agentExtension[0] !== ""
+      ) {
+        return true;
+      }
+      return false;
     }
   }
 
@@ -110,7 +131,7 @@ export class SipService implements OnInit {
         if (event.response.state.toLowerCase() == "logout") {
           this.isSipLoggedIn = false;
           this.notReadyAgentState();
-          this._snackbarService.open(this._translateService.instant("SIP Logout Successfully"), "err");
+          this._snackbarService.open(this._translateService.instant("snackbar.SIP-Logout-Successful"), "err");
           console.log("Connection Expired, CTI Status logout==>");
         }
       } else if (event.event.toLowerCase() == "dialogstate") {

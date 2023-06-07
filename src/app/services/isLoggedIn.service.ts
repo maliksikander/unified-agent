@@ -134,15 +134,8 @@ export class isLoggedInService {
   }
 
   initiateSipService(attributes) {
-    if (Object.keys(attributes).length !== 0) {
-      if (
-        attributes.agentExtension !== "" &&
-        attributes.agentExtension !== null &&
-        attributes.agentExtension !== undefined &&
-        attributes.agentExtension[0] !== ""
-      ) {
-        this._sipService.extension = attributes.agentExtension[0];
-      }
+    if (this._sipService.checkAgentExtensionAttribute(attributes)) {
+      this._sipService.extension = attributes.agentExtension[0];
     }
   }
 

@@ -83,7 +83,9 @@
     "CX-Voice-incorrect-request":"CX VOICE : Incorrect object for call request!_ger",
     "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed, Invalid Credentials!_ger",
     "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed!_ger",
-    "CX-Voice-Login-Success":"CX VOICE : Successfully login with EF Switch_ger"
+    "CX-Voice-Login-Success":"CX VOICE : Successfully login with EF Switch_ger",
+    "SIP-Logout-Successful":"SIP Logout Successful_ger",
+    "No-Extension-Found":"No Extension Found For Sip Agent_ger"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ger",
@@ -313,6 +315,7 @@
   },
   "socket-service":{
     "has-joined-the-conversation":"has joined the conversation_ger",
+    "have-joined-the-conversation":"have joined the conversation_ger",
    "session-started":"session started_ger",
    "session-ended":"session ended_ger",
    "left-the-conversation":"left the conversation_ger",

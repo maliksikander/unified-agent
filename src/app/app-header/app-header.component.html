@@ -159,9 +159,9 @@
                     <img src="assets/images/dummy-user.svg" alt="Agent">
                   </div>
                   <h4 [matTooltip]="_cacheService.agent.username">{{_cacheService.agent.username}}</h4>
-                  <span *ngIf="_finesseService?.finesseAgent?.extension || _cacheService?.agent?.attributes?.agentExtension[0]">(Ext:
+                  <span *ngIf="_finesseService?.finesseAgent?.extension || _cacheService?.agent?.attributes?.agentExtension">(Ext:
                     {{_finesseService?.finesseAgent?.extension ? _finesseService?.finesseAgent?.extension :
-                    _cacheService?.agent?.attributes?.agentExtension[0]}})</span>
+                    (_cacheService?.agent?.attributes.agentExtension && _cacheService?.agent?.attributes.agentExtension != "" && _cacheService?.agent?.attributes.agentExtension != null && _cacheService?.agent?.attributes.agentExtension != undefined && _cacheService?.agent?.attributes.agentExtension[0] != "" ? _cacheService?.agent?.attributes.agentExtension[0] : 'N/A')}})</span>
                 </div>
                 <p *ngIf="('state-change' | authPipe : 'manage_state_change') as result" class="menu-trigger-custom state-trigger">
                   <span class="inner-btn">{{'globals.state' | translate}}</span>
