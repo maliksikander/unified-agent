@@ -51,9 +51,8 @@ export class InteractionsComponent implements OnInit {
   // isConsult = false;
   ctiBarView = true;
   ctiBoxView = false;
-  hours: number;
-  minutes: number;
-  seconds: number;
+  timer: any = "00:00";
+  cxVoiceSession: any;
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -154,15 +153,13 @@ export class InteractionsComponent implements OnInit {
       }
     });
 
-    if (this._sipService.isCallActive == true) {
-      this.ctiControlBar();
-    }
 
-    this._sipService.getTimer().subscribe((value) => {
-      this.minutes = Math.floor(value / 60);
-      this.seconds = value % 60;
-    });
+    if (this.conversation && this.conversation.activeChannelSessions[0].channel.channelType.name.toLowerCase() === "cx_voice"){
+      if (this._sipService.isCallActive == true) this.ctiControlBar();
+      this.getVoiceChannelSession();
+    }
   }
+
   loadLabels() {
     this._httpService.getLabels().subscribe(
       (e) => {
@@ -1213,7 +1210,56 @@ export class InteractionsComponent implements OnInit {
 
   endCallOnSip() {
     console.log("on End Call Request==>");
-    this._sipService.stopTimer();
     this._sipService.endCallOnSip();
+  }
+
+  getVoiceChannelSession() {
+    try {
+      this.cxVoiceSession = this.conversation.activeChannelSessions.find((channelSession) => {
+        return channelSession.channel.channelType.name.toLowerCase() === "cx_voice";
+      });
+      if (this.cxVoiceSession) {
+        const cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
+        const cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
+        if (cacheDialog) {
+          const currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
+          const startTime = new Date(currentParticipant.startTime);
+          this._sipService.timeoutId = setInterval(() => {
+            const currentTime = new Date();
+            const timedurationinMS = currentTime.getTime() - startTime.getTime();
+            this.msToHMS(timedurationinMS);
+          }, 1000);
+        } else {
+          console.log("No Dialog Found==>");
+        }
+      } else {
+        clearInterval(this._sipService.timeoutId);
+      }
+    } catch (e) {
+      console.error("[getVoiceChannelSession] Error:", e);
+    }
+  }
+
+  msToHMS(ms) {
+    try {
+      // Convert to seconds:
+      let sec = Math.floor(ms / 1000);
+      // Extract hours:
+      const hours = Math.floor(sec / 3600); // 3,600 seconds in 1 hour
+      sec %= 3600; // seconds remaining after extracting hours
+      // Extract minutes:
+      const min = Math.floor(sec / 60); // 60 seconds in 1 minute
+      // Keep only seconds not extracted to minutes:
+      sec %= 60;
+      if (hours > 0) {this.timer = `${this.formatNumber(hours)}:${this.formatNumber(min)}:${this.formatNumber(sec)}`;}else{
+        this.timer = `${this.formatNumber(min)}:${this.formatNumber(sec)}`;
+      }
+    } catch (e) {
+      console.error("[msToHMS] Error:", e);
+    }
+  }
+
+  formatNumber(num) {
+    return num.toString().padStart(2, '0');
   }
 }
