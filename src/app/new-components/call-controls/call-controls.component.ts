@@ -49,7 +49,7 @@ export class CallControlsComponent implements OnInit {
 
   endCallOnSip() {
     console.log("on End Call Request==>");
-    this.stopTimer();
+    // this.stopTimer();
     this._sipService.endCallOnSip();
     this.dialogRef.close();
   }
@@ -62,101 +62,57 @@ export class CallControlsComponent implements OnInit {
     this._sipService.resumeCallOnSip();
   }
 
-  stopTimer(): void {
-    this._sipService.stopTimer();
-  }
+  // stopTimer(): void {
+  //   this._sipService.stopTimer();
+  // }
 
   getVoiceChannelSession() {
     try {
       this.cxVoiceSession = this.data.conversation.activeChannelSessions.find((channelSession) => {
-        if (channelSession.channel.channelType.name.toLowerCase() == "cx_voice") {
-          return channelSession;
-        }
+        return channelSession.channel.channelType.name.toLowerCase() === "cx_voice";
       });
       if (this.cxVoiceSession) {
-        let cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
-        let cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
+        const cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
+        const cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
         if (cacheDialog) {
-          let currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
-          let startTime = new Date(currentParticipant.startTime);
+          const currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
+          const startTime = new Date(currentParticipant.startTime);
           this._sipService.timeoutId = setInterval(() => {
-            let currentTime = new Date();
-            let timedurationinMS = currentTime.getTime() - startTime.getTime();
+            const currentTime = new Date();
+            const timedurationinMS = currentTime.getTime() - startTime.getTime();
             this.msToHMS(timedurationinMS);
           }, 1000);
         } else {
           console.log("No Dialog Found==>");
         }
       } else {
-        // if (this._finesseService.timeoutId) clearInterval(this._finesseService.timeoutId);
-        if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
+        clearInterval(this._sipService.timeoutId);
       }
     } catch (e) {
-      console.error("[getVoiceChannelSession] Error :", e);
+      console.error("[getVoiceChannelSession] Error:", e);
     }
   }
 
   msToHMS(ms) {
     try {
-      // 1- Convert to seconds:
-      let sec = ms / 1000;
-      // 2- Extract hours:
-      const hours = parseInt(JSON.stringify(sec / 3600)); // 3,600 seconds in 1 hour
-      sec = sec % 3600; // seconds remaining after extracting hours
-      // 3- Extract minutes:
-      const min = parseInt(JSON.stringify(sec / 60)); // 60 seconds in 1 minute
-      // 4- Keep only seconds not extracted to minutes:
-      sec = Math.floor(sec % 60);
-
-      if (hours > 0) {
-        this.hourTimer(hours, min, sec);
-      } else {
-        if (min >= 10 && sec < 10) {
-          this.timer = `${min}:0${sec}`;
-        } else if (min < 10 && sec >= 10) {
-          this.timer = `0${min}:${sec}`;
-        } else if (min > 0 && min < 10 && sec < 10) {
-          this.timer = `0${min}:0${sec}`;
-        } else if (min == 0 && min < 10 && sec < 10) {
-          this.timer = `0${min}:0${sec}`;
-        } else {
-          this.timer = `${min}:${sec}`;
-        }
+      // Convert to seconds:
+      let sec = Math.floor(ms / 1000);
+      // Extract hours:
+      const hours = Math.floor(sec / 3600); // 3,600 seconds in 1 hour
+      sec %= 3600; // seconds remaining after extracting hours
+      // Extract minutes:
+      const min = Math.floor(sec / 60); // 60 seconds in 1 minute
+      // Keep only seconds not extracted to minutes:
+      sec %= 60;
+      if (hours > 0) {this.timer = `${this.formatNumber(hours)}:${this.formatNumber(min)}:${this.formatNumber(sec)}`;}else{
+        this.timer = `${this.formatNumber(min)}:${this.formatNumber(sec)}`;
       }
     } catch (e) {
       console.error("[msToHMS] Error:", e);
     }
   }
 
-  hourTimer(hour, min, sec) {
-    try {
-      if (hour > 0 && hour < 10) {
-        if (min >= 10 && sec < 10) {
-          this.timer = `0${hour}:${min}:0${sec}`;
-        } else if (min < 10 && sec >= 10) {
-          this.timer = `0${hour}0${min}:${sec}`;
-        } else if (min > 0 && min < 10 && sec < 10) {
-          this.timer = `0${hour}0${min}:0${sec}`;
-        } else if (min == 0 && min < 10 && sec < 10) {
-          this.timer = `0${hour}0${min}:0${sec}`;
-        } else {
-          this.timer = `${hour}:${min}:${sec}`;
-        }
-      } else {
-        if (min >= 10 && sec < 10) {
-          this.timer = `${hour}:${min}:0${sec}`;
-        } else if (min < 10 && sec >= 10) {
-          this.timer = `${hour}0${min}:${sec}`;
-        } else if (min > 0 && min < 10 && sec < 10) {
-          this.timer = `${hour}0${min}:0${sec}`;
-        } else if (min == 0 && min < 10 && sec < 10) {
-          this.timer = `${hour}0${min}:0${sec}`;
-        } else {
-          this.timer = `${hour}:${min}:${sec}`;
-        }
-      }
-    } catch (e) {
-      console.error("[hourTimer] Error :", e);
-    }
+  formatNumber(num) {
+    return num.toString().padStart(2, '0');
   }
 }

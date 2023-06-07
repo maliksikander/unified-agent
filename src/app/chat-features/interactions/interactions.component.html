@@ -1991,10 +1991,7 @@
             <mat-icon routerLink="/customers/chats">flip_to_back</mat-icon>
           </div>
           <h4 matTooltip="{{this._sipService.customerNumber}}">{{this._sipService.customerNumber}}<span
-              class="timer-call"><ng-container *ngIf="hours && hours > 0">{{ hours | number: '2.0' }}:</ng-container>{{
-              minutes | number: '2.0' }}:{{
-              seconds |
-              number: '2.0' }}</span>
+              class="timer-call">{{timer}}</span>
           </h4>
         </div>
         <!-- <ul class="assistance-actions"> -->

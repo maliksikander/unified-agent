@@ -16,8 +16,6 @@ declare var postMessage;
   providedIn: "root"
 })
 export class SipService implements OnInit {
-  private destroy$ = new Subject<void>();
-  private timer$: Observable<number>;
   public _isActiveSub = new Subject();
 
   extension: number;
@@ -42,21 +40,8 @@ export class SipService implements OnInit {
     private _snackbarService: snackbarService,
     private _sharedService: sharedService
   ) {
-    this.timer$ = timer(0, 1000).pipe(
-      takeUntil(this.destroy$),
-      map((value) => value + 1)
-    );
   }
   ngOnInit(): void {}
-
-  getTimer(): Observable<number> {
-    return this.timer$;
-  }
-
-  stopTimer(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 
   initMe() {
     try {
@@ -137,7 +122,6 @@ export class SipService implements OnInit {
       } else if (event.event.toLowerCase() == "dialogstate") {
         if (event.response.dialog == null) {
         } else if (event.response.dialog.state.toLowerCase() == "active") {
-          // this.customerNumber = event.response.dialog.customerNumber;
           this.isCallHold = false;
         } else if (event.response.dialog.state.toLowerCase() == "held") {
           this.isCallHold = true;
