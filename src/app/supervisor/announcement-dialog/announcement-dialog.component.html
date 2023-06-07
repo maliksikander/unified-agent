@@ -65,7 +65,8 @@
         <div class="text-field date-selection">
           <label>{{'supervisor.expiry-date'  | translate }}</label>
           <mat-form-field appearance="outline" >
-            <input matInput [ngxMatDatetimePicker]="picker3" [min]="expireDateMin" [max]="maxDateVal" [formControl]="expireDate">
+            <!-- [max]="maxDateVal" -->
+            <input matInput [ngxMatDatetimePicker]="picker3" [min]="expireDateMin" [formControl]="expireDate">
             <mat-datepicker-toggle matSuffix  [for]="picker3"></mat-datepicker-toggle>
             <ngx-mat-datetime-picker #picker3 [stepHour]="1" [stepMinute]="5">
             </ngx-mat-datetime-picker>

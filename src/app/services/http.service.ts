@@ -2,12 +2,14 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { appConfigService } from "./appConfig.service";
+import { cacheService } from "./cache.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class httpService {
   apiEndpoints;
+  supervisorId ;
   mockurl = "https://57be0c49-6ed4-469c-a93a-13f49e48e8c2.mock.pstmn.io";
   url="https://3e4a011b-523f-403d-9b76-3d5054db5a09.mock.pstmn.io";
 
@@ -77,9 +79,9 @@ getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
   });
 }
 
-  getAnnouncements(): Observable<any>{
+  getAnnouncements(supervisorIds): Observable<any>{
     
-    return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}?page=${1}&limit=${1000}`, {
+    return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}?page=${1}&limit=${1000},&supervisorIds=${supervisorIds}`, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })

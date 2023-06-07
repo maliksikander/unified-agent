@@ -102,7 +102,7 @@ export class AnnouncementDialogComponent implements OnInit {
   }
 
   getAllAnnouncementList() {
-    this._httpService.getAnnouncements().subscribe((data) => {
+    this._httpService.getAnnouncements(this.supervisorId).subscribe((data) => {
       console.log("data", data)
       this.fetchDataList = data;
 
@@ -176,10 +176,10 @@ export class AnnouncementDialogComponent implements OnInit {
     let date = new Date(d);
     date.setMinutes(date.getMinutes() + 10);
     this.expireDateMin = date;
-    let date2=this.announceDate.value;
-    date2.setHours(120);
-    this.maxDateVal =date2
-    console.log("max val",this.maxDateVal);
+    // let date2=this.announceDate.value;
+    // date2.setMinutes(date2.getDay() + 5000)
+    // this.maxDateVal =date2
+    // console.log("max val",this.maxDateVal);
     let _date = new Date(d);
     _date.setMinutes(_date.getMinutes() + 10);
     this.expireDate = new FormControl(_date, [Validators.required]);

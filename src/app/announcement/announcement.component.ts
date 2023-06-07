@@ -4,6 +4,7 @@ import { AnnouncementDialogComponent } from "../supervisor/announcement-dialog/a
 import { MatDialog, MatPaginatorModule, MAT_DIALOG_DATA } from "@angular/material";
 import { httpService } from "../services/http.service";
 import { sharedService } from "../services/shared.service";
+import { cacheService } from "../services/cache.service";
 
 
 @Component({
@@ -23,15 +24,18 @@ export class AnnouncementComponent implements OnInit {
   obj = {}
   formData: any = {};
   pageSize: Number = 25;
+  supervisorId 
   constructor(
 
     private dialog: MatDialog,
     private _httpService: httpService,
-    private _sharedService: sharedService) {
+    private _sharedService: sharedService,
+    private _cacheService: cacheService,) {
 
   }
 
   ngOnInit() {
+    this.supervisorId = this._cacheService.agent.id;
     this.getAllAnnouncements();
   }
 
@@ -49,7 +53,7 @@ export class AnnouncementComponent implements OnInit {
   }
 
   getAllAnnouncements() {
-    this._httpService.getAnnouncements().subscribe((data) => {
+    this._httpService.getAnnouncements(this.supervisorId).subscribe((data) => {
       this.currentItemsToShow = data;
       this.displayAnnouncements = data;
     });
