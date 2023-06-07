@@ -219,7 +219,7 @@ export class SipService implements OnInit {
         }
       });
       if (dialogEvent.response.dialog.state == "DROPPED") {
-        this.setDialogCache(dialogEvent, "DROPPED");
+        // this.setDialogCache(dialogEvent, "DROPPED");
         if (dialogEvent.response.dialog.callEndReason == "Canceled") {
           this.removeNotification(dialogState.dialog);
         }
@@ -649,11 +649,8 @@ export class SipService implements OnInit {
     try {
       let voiceTask = this.getVoiceTask();
       if (voiceTask) {
-        console.log("test==>1", voiceTask);
         let cacheId = `${this._cacheService.agent.id}:${voiceTask.channelSession.id}`;
-        console.log("test==>2", cacheId);
         let D1: any = this.getDialogFromCache(cacheId);
-        console.log("test==>3", D1);
         if (D1 && dialogState.dialog == null) {
           this.handleCallDroppedEvent(cacheId, D1, "onRefresh", undefined, "DIALOG_ENDED");
         } else if (D1 && dialogState.dialog) {

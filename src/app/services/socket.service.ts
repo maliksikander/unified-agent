@@ -172,18 +172,10 @@ export class socketService {
           });
         }
       } else {
-        // if (res.channelSession.channel.channelType.name.toLowerCase() == "voice") {
-
-        //   this.emit("topicSubscription", {
-        //     topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.conversationId, "PRIMARY", "SUBSCRIBED"),
-        //     agentId: this._cacheService.agent.id,
-        //     conversationId: res.conversationId,
-        //     taskId: res.taskId
-        //   });
-
+        if (res.channelSession.channel.channelType.name.toLowerCase() !== "cx_voice") {
         // } else {
         this.triggerNewChatRequest(res);
-        // }
+        }
         // this.triggerNewChatRequest(res);
       }
     });
@@ -213,7 +205,7 @@ export class socketService {
     });
 
     this.socket.on("onTopicData", (res: any, callback: any) => {
-      console.log("onTopicData", JSON.parse(JSON.stringify(res)));
+      console.log("onTopicData==>", JSON.parse(JSON.stringify(res)));
       try {
         this.onTopicData(res.topicData, res.conversationId, res.taskId);
         if (callback) {
