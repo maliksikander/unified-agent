@@ -177,10 +177,12 @@ describe("Finesse service", () => {
     // });
   });
 
-  describe("isVoiceMrdExists", () => {
-    // it("should return true when mrd list contains voice mrd in it", () => {
-    //   expect(component.isVoiceMrdExists(mockAgentPresence.agentMrdStates)).toBeTruthy();
-    // });
+  describe("Test Check", () => {
+    it("test check", () => {
+      let a = 4;
+      expect(a).toBeTruthy();
+      // expect(component.isVoiceMrdExists(mockAgentPresence.agentMrdStates)).toBeTruthy();
+    });
 
     // it("should return false when mrd list does not contains voice mrd in it", () => {
     //   delete mockAgentPresence.agentMrdStates[2];

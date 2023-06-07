@@ -444,21 +444,6 @@ export class InteractionsComponent implements OnInit {
   eventFromChildForUpdatedLabel(data) {
     this.labels = data;
   }
-  // topicUnsub() {
-  //   console.log("going to unsub from topic " + this.conversation.conversationId);
-
-  //   if (this.conversation.state === "ACTIVE") {
-  //     // if the topic state is 'ACTIVE' then agent needs to request the agent manager for unsubscribe
-  //     this._socketService.emit("topicUnsubscription", {
-  //       conversationId: this.conversation.conversationId,
-  //       agentId: this._cacheService.agent.id
-  //     });
-  //   } else if (this.conversation.state === "CLOSED") {
-  //     // if the topic state is 'CLOSED' it means agent is already unsubscribed by the agent manager
-  //     // now it only needs to clear the conversation from conversations array
-  //     this._socketService.removeConversation(this.conversation.conversationId);
-  //   }
-  // }
 
   onLeaveClick() {
     if (this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {

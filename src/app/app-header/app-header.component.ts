@@ -7,7 +7,6 @@ import { Router } from "@angular/router";
 import { finesseService } from "../services/finesse.service";
 import { fcmService } from "../services/fcm.service";
 import { httpService } from "../services/http.service";
-import { snackbarService } from "src/app/services/snackbar.service";
 import { TranslateService } from "@ngx-translate/core";
 import { SipService } from "../services/sip.service";
 import { appConfigService } from "../services/appConfig.service";
@@ -69,7 +68,6 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     public _appConfigService:appConfigService,
     private _fcmService: fcmService,
     private _httpService: httpService,
-    private _snackBarService: snackbarService,
     private _translateService: TranslateService
   ) {}
 

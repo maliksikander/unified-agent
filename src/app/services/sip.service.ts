@@ -162,7 +162,7 @@ export class SipService implements OnInit {
             let cacheId = `${this._cacheService.agent.id}:${event.response.dialog.id}`;
             let dialogCache: any = this.getDialogFromCache(cacheId);
             if (dialogCache && dialogCache.dialogState == "active") {
-              this.handleCallDroppedEvent(cacheId, event.dialog, "", undefined, "DIALOG_ENDED");
+              this.handleCallDroppedEvent(cacheId, event.dialog, "call_end", undefined, "DIALOG_ENDED", undefined);
             }
             this.removeNotification(event.response.dialog);
             this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-connection-failed"), "err");
@@ -223,7 +223,7 @@ export class SipService implements OnInit {
         if (dialogEvent.response.dialog.callEndReason == "Canceled") {
           this.removeNotification(dialogState.dialog);
         }
-        this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, "DIALOG_ENDED");
+        this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, "DIALOG_ENDED", undefined);
       }
     } catch (e) {
       console.error("[Error Sip] handleDialogParticipant ==>", e);
@@ -242,7 +242,6 @@ export class SipService implements OnInit {
     try {
       let participantsList: Array<any> = dialog.participants;
       let currentParticipant = participantsList.find((item) => {
-
         return item.mediaAddress == this._cacheService.agent.attributes.agentExtension[0];
       });
       return currentParticipant;
@@ -289,7 +288,8 @@ export class SipService implements OnInit {
         leg,
         dialogState.dialog,
         callType,
-        timeStamp
+        timeStamp,
+        undefined
       );
       console.log("[handleCallActiveEvent] CIM Message sip==>", cimMessage);
       this.ccmChannelSessionApi(cimMessage, "", "", undefined);
@@ -425,7 +425,8 @@ export class SipService implements OnInit {
     leg: string,
     dialog: { ani?: any; fromAddress?: any; dnis?: any; id: any; callType?: string; dialedNumber?: any; callVariables?: any },
     reasonCode: string,
-    timestamp: number
+    timestamp: number,
+    state
   ) {
     try {
       let cimMessage = {
@@ -456,7 +457,8 @@ export class SipService implements OnInit {
           reasonCode,
           leg,
           callId: dialog.id,
-          dialog
+          dialog,
+          state
         }
       };
       if (intent == "CALL_LEG_ENDED") {
@@ -479,7 +481,7 @@ export class SipService implements OnInit {
       this._httpService.ccmVOICEChannelSession(data).subscribe(
         (res) => {
           console.log("CCM API Success Sip==>");
-          if (methodCalledOn == "onRefresh") if (event) this.handleCallActiveEvent(event, event.response);
+          if (methodCalledOn == "call_end") this.clearLocalDialogCache(cacheId);
         },
         (error) => {
           console.error("[Error on CCM Channel Session API] ==>", error);
@@ -541,34 +543,32 @@ export class SipService implements OnInit {
     }
   }
 
-  handleCallDroppedEvent(cacheId, dialogState, methodCalledOn, event, callType) {
+  handleCallDroppedEvent(cacheId, dialogState, methodCalledOn, event, callType, state) {
     try {
+      let taskState;
+      if (state.taskId) taskState = state;
       let channelCustomerIdentifier = dialogState.dialog.ani ? dialogState.dialog.ani : dialogState.dialog.fromAddress;
       let serviceIdentifier = dialogState.dialog.dnis;
       let leg = `${this._cacheService.agent.attributes.agentExtension[0]}:${this._cacheService.agent.id}:${dialogState.dialog.id}`;
       let customer;
       let timeStamp = this.getStartOREndTimeStamp(dialogState.dialog, "endCall");
       if (this.customer) customer = JSON.parse(JSON.stringify(this.customer));
-      if (dialogState.dialog.callType == "AGENT_INSIDE" || dialogState.dialog.callType == "OUT") {
-        callType = "DIALOG_ENDED";
-        // serviceIdentifier = dialogState.dialog.dnis;
-        let intent = "CALL_LEG_ENDED";
-        channelCustomerIdentifier = dialogState.dialog.dialedNumber;
-      } else {
-        let cimMessage = this.createCIMMessage(
-          "VOICE",
-          channelCustomerIdentifier,
-          serviceIdentifier,
-          "CALL_LEG_ENDED",
-          customer,
-          leg,
-          dialogState.dialog,
-          callType,
-          timeStamp
-        );
-        console.log("[ handleCallDroppedEvent] CIM Message Sip==>", cimMessage);
-        this.ccmChannelSessionApi(cimMessage, methodCalledOn, cacheId, event);
-      }
+
+      let cimMessage = this.createCIMMessage(
+        "VOICE",
+        channelCustomerIdentifier,
+        serviceIdentifier,
+        "CALL_LEG_ENDED",
+        customer,
+        leg,
+        dialogState.dialog,
+        callType,
+        timeStamp,
+        taskState
+      );
+      console.log("[ handleCallDroppedEvent] CIM Message Sip==>", cimMessage);
+      this.ccmChannelSessionApi(cimMessage, methodCalledOn, cacheId, event);
+
       this.customer = undefined;
       this.isCallActive = false;
       this._isActiveSub.next(false);
@@ -576,7 +576,6 @@ export class SipService implements OnInit {
     } catch (e) {
       console.error("[Error] handleCallDropEvent Sip==>", e);
     }
-
   }
 
   clearLocalDialogCache(cacheId: any) {
@@ -651,11 +650,12 @@ export class SipService implements OnInit {
       if (voiceTask) {
         let cacheId = `${this._cacheService.agent.id}:${voiceTask.channelSession.id}`;
         let D1: any = this.getDialogFromCache(cacheId);
+        let state = { state: "alerting", taskId: voiceTask.id };
         if (D1 && dialogState.dialog == null) {
-          this.handleCallDroppedEvent(cacheId, D1, "onRefresh", undefined, "DIALOG_ENDED");
+          this.handleCallDroppedEvent(cacheId, D1, "call_end", undefined, "DIALOG_ENDED", state);
         } else if (D1 && dialogState.dialog) {
           if (D1.dialog.id != dialogState.dialog.id) {
-            this.handleCallDroppedEvent(cacheId, D1, "onRefresh", dialogEvent, "DIALOG_ENDED");
+            this.handleCallDroppedEvent(cacheId, D1, "call_end", dialogEvent, "DIALOG_ENDED", state);
           } else if (D1.dialog.id == dialogState.dialog.id) {
             if (D1.dialogState == "active") {
               let conversation = this.getCurrentConversationIdORConversation("conversation");

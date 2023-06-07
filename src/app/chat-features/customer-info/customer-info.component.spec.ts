@@ -15,6 +15,7 @@ describe("CustomerInfoComponent", () => {
   let _cacheService: any;
   let _snackBarService: any;
   let _translateService: TranslateService;
+  let _sipService: any;
 
   beforeEach(() => {
     _shareredService = sharedService;
@@ -27,6 +28,7 @@ describe("CustomerInfoComponent", () => {
       dialogMock,
       _httpService,
       _finneseService,
+      _sipService,
       _cacheService,
       _snackBarService,
       _translateService
