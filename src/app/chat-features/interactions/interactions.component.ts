@@ -153,8 +153,7 @@ export class InteractionsComponent implements OnInit {
       }
     });
 
-
-    if (this.conversation && this.conversation.activeChannelSessions[0].channel.channelType.name.toLowerCase() === "cx_voice"){
+    if (this.conversation && this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
       if (this._sipService.isCallActive == true) this.ctiControlBar();
       this.getVoiceChannelSession();
     }
@@ -1236,7 +1235,9 @@ export class InteractionsComponent implements OnInit {
       const min = Math.floor(sec / 60); // 60 seconds in 1 minute
       // Keep only seconds not extracted to minutes:
       sec %= 60;
-      if (hours > 0) {this.timer = `${this.formatNumber(hours)}:${this.formatNumber(min)}:${this.formatNumber(sec)}`;}else{
+      if (hours > 0) {
+        this.timer = `${this.formatNumber(hours)}:${this.formatNumber(min)}:${this.formatNumber(sec)}`;
+      } else {
         this.timer = `${this.formatNumber(min)}:${this.formatNumber(sec)}`;
       }
     } catch (e) {
@@ -1245,6 +1246,6 @@ export class InteractionsComponent implements OnInit {
   }
 
   formatNumber(num) {
-    return num.toString().padStart(2, '0');
+    return num.toString().padStart(2, "0");
   }
 }

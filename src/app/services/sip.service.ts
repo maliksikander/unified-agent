@@ -530,7 +530,7 @@ export class SipService implements OnInit {
   handleCallDroppedEvent(cacheId, dialogState, methodCalledOn, event, callType, state) {
     try {
       let taskState;
-      if (state.taskId) taskState = state;
+      if (state && state.taskId) taskState = state;
       let channelCustomerIdentifier = dialogState.dialog.ani ? dialogState.dialog.ani : dialogState.dialog.fromAddress;
       let serviceIdentifier = dialogState.dialog.dnis;
       let leg = `${this._cacheService.agent.attributes.agentExtension[0]}:${this._cacheService.agent.id}:${dialogState.dialog.id}`;
@@ -634,21 +634,23 @@ export class SipService implements OnInit {
       if (voiceTask) {
         let cacheId = `${this._cacheService.agent.id}:${voiceTask.channelSession.id}`;
         let D1: any = this.getDialogFromCache(cacheId);
-        let state = { state: "alerting", taskId: voiceTask.id };
+        let state;
+        if (voiceTask.state.name.toLowerCase() == "reserved")  state = { state: "alerting", taskId: voiceTask.id };
         if (D1 && dialogState.dialog == null) {
           this.handleCallDroppedEvent(cacheId, D1, "call_end", undefined, "DIALOG_ENDED", state);
-        } else if (D1 && dialogState.dialog) {
-          if (D1.dialog.id != dialogState.dialog.id) {
-            this.handleCallDroppedEvent(cacheId, D1, "call_end", dialogEvent, "DIALOG_ENDED", state);
-          } else if (D1.dialog.id == dialogState.dialog.id) {
-            if (D1.dialogState == "active") {
-              let conversation = this.getCurrentConversationIdORConversation("conversation");
-              if (conversation) {
-                this.customer = conversation.customer;
-              }
-            }
-          }
         }
+        // else if (D1 && dialogState.dialog) {
+        //   if (D1.dialog.id != dialogState.dialog.id) {
+        //     this.handleCallDroppedEvent(cacheId, D1, "call_end", dialogEvent, "DIALOG_ENDED", state);
+        //   } else if (D1.dialog.id == dialogState.dialog.id) {
+        //     if (D1.dialogState == "active") {
+        //       let conversation = this.getCurrentConversationIdORConversation("conversation");
+        //       if (conversation) {
+        //         this.customer = conversation.customer;
+        //       }
+        //     }
+        //   }
+        // }
       }
     } catch (e) {
       console.error("[Error] handleRefreshCase Sip==>", e);

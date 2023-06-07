@@ -39,7 +39,6 @@ export class CallControlsComponent implements OnInit {
     this._sipService._isActiveSub.subscribe((val) => {
       if (val == false) this.cancel();
     });
-    console.log("data1==>", this.data);
     if (this.data.conversation) this.getVoiceChannelSession();
   }
 
