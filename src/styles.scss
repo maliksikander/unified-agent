@@ -3942,3 +3942,6 @@ mat-select {
 
 
 
+.mat-slide-toggle.mat-disabled .mat-slide-toggle-label, .mat-slide-toggle.mat-disabled .mat-slide-toggle-thumb-container {
+  cursor: no-drop !important;
+}
