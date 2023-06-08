@@ -17,8 +17,8 @@ export interface IKeycloakUser {
   // supervisedTeams?:[]
   // userTeam?:[]
   attributes?:any;
-  supervisedTeams?:[{ teamId :string, teamName:string}];
-  userTeam?:{teamId :string, teamName:string};
+  supervisedTeams?:[{ teamId :string, teamName:string}]
+  userTeam?:{teamId :string, teamName:string}
 }
 
 export class sender {

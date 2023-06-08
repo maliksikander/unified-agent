@@ -10,9 +10,9 @@ import { httpService } from "../services/http.service";
 import { TranslateService } from "@ngx-translate/core";
 import { SipService } from "../services/sip.service";
 import { appConfigService } from "../services/appConfig.service";
+import { snackbarService } from "../services/snackbar.service";
 import { announcementService } from "../services/announcement.service";
 import { getMatIconFailedToSanitizeLiteralError } from "@angular/material";
-import { snackbarService } from "../services/snackbar.service";
 
 @Component({
   selector: "app-header",
@@ -74,8 +74,8 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     public _appConfigService:appConfigService,
     private _fcmService: fcmService,
     private _httpService: httpService,
-    private _translateService: TranslateService,
     private _snackBarService: snackbarService,
+    private _translateService: TranslateService,
     private _announcementService: announcementService,
   ) { }
 
@@ -94,6 +94,9 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     //   console.log("arry val",e);
     //   if(e == "agent")
     //   {this.checkRoles= e}
+
+    // }
+
 
     // }
 

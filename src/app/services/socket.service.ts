@@ -50,7 +50,6 @@ export class socketService {
     private _translateService: TranslateService
   ) {
     // this.onTopicData(mockTopicData, "12345", "");
-
   }
 
   connectToSocket() {
@@ -154,15 +153,12 @@ export class socketService {
       console.log("ANNOUNCEMENT_CREATED", res);
       if ((res.supervisorId !== this._cacheService.agent.id)) {
         this._announcementService.addCreatedAnnoucement(res);
-
       }
-
     });
 
     this.socket.on("ANNOUNCEMENT_DELETED", (res: any) => {
       console.log("ANNOUNCEMENT_DELETED", res);
       this._announcementService.removeAnnoucement(res);
-
     });
 
 

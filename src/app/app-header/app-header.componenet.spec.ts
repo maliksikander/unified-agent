@@ -50,8 +50,8 @@ describe("Appheader component", () => {
         _appConfigService,
         _fcmService,
         _httpService,
-        _translateService,
         _snackBarService,
+        _translateService,
         _announcementService
       );
     });

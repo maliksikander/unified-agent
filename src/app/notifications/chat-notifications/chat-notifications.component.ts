@@ -97,11 +97,11 @@ export class ChatNotificationsComponent implements OnInit {
 
   ngOnInit() {}
 
-
   onDismiss(announcement){
     this._announcementService.removeAnnoucementFromNotificationList(announcement);
 
   }
+
   getVoiceChannelType(provider) {
     let channelTypes: Array<any> = this._sharedService.channelTypeList;
     let ciscoChannelType;

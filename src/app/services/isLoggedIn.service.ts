@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { Location } from "@angular/common";
-
 import { Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { cacheService } from "./cache.service";
@@ -192,7 +191,6 @@ export class isLoggedInService {
       this._socketService.connectToSocket();
       //if(this._cacheService.agent.id){this._announcementService.getAnnouncementList();}
       this._announcementService.getAnnouncementList();
-
     } catch (err) {
       this._snackbarService.open(this._translateService.instant("snackbar.you-will-not-receive-browser-notifications"), "err");
       this._socketService.connectToSocket();
