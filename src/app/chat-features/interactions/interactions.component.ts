@@ -397,7 +397,7 @@ export class InteractionsComponent implements OnInit {
   //to send typing event
   sendTypingEvent() {
     if (!this.sendTypingStartedEventTimer) {
-      if (this._socketService.isSocketConnected && this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor") {
+      if (this._socketService.isSocketConnected && this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor" && !this.isWhisperMode) {
         let message = this.getCimMessage();
         let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
         if (selectedChannelSession) {
@@ -1088,7 +1088,7 @@ export class InteractionsComponent implements OnInit {
       channelSession: this.conversation.firstChannelSession,
       agentParticipant: this.conversation.topicParticipant,
       mode: "queue",
-      queueId: this.requestedQueue.queueId,
+      queueName: this.requestedQueue.queueName,
       note: this.assistanceRequestNote
     };
     if (this.requestAction == "transfer") this._socketService.emit("directTransferRequest", data);
