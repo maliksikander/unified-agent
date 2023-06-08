@@ -1406,7 +1406,10 @@ ngx-mat-datetime-content,
   .mat-calendar-content {
     padding-bottom: 0;
   }
-
+  .mat-calendar-body-selected{
+    background: $blue-text-color;
+    color: #fff;
+  }
   .mat-calendar-body tr:last-child {
     border: 0;
   }
@@ -1745,6 +1748,8 @@ button.add-customer {
     border: 1px solid #ccc;
     background: #fff;
     box-shadow: 0 1px 5px #ccc;
+    position: relative;
+    z-index: 2;
   }
 
   .select-all {
@@ -3939,6 +3944,41 @@ mat-select {
   }
 }
 
+//multiselection for Team (Announcement)
+.announcement-selection-area{
+  .mat-form-field-appearance-outline .mat-select-arrow-wrapper {
+    transform: inherit;
+  }
+}
+.multi-select-team{
+  .c-label {
+    line-height: 18px !important;
+    label{
+      top: 0px !important;
+      color:#3b3737 !important;
+    }
+  }
+ 
+
+  ul{
+    li {
+      label{
+        color:   #5b5b5b !important;
+      }
+    }
+  }
+  .pure-checkbox{
+    label {
+      span{
+        color:#3b3737;
+      }
+    }
+  }
+
+  .filter-select-all .pure-checkbox.select-all {
+    display: none;
+}
+}
 
 
 

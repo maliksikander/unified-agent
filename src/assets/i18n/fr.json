@@ -78,7 +78,16 @@
     "Conference-request-placed-successfully":"Conference request placed successfully_fr",
     "Error-Getting-Queues-List":"Error Getting Queues List_fr",
     "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_fr",
-    "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_fr"
+    "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_fr",
+    "Unable-to-edit-Active-Announcements":"Unable to edit Active Announcement_fr",
+    "New-Announcement":"New Announcement Created_fr",
+    "Announcement-Deleted":"Announcement Deleted_fr",
+    "Announcement-Updated":"Announcement Updated_fr",
+    "Unable-to-Create-New-Announcement":"Unable to Create New Announcement_fr",
+    "Unable-to-Update-Announcement":"Unable to Update Announcement_fr",
+    "Unable-to-Delete-Announcement":"Unable to Delete Announcement_fr"
+
+    
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_fr",
@@ -105,6 +114,7 @@
     "team-announcement": "Team Announcement_fr",
     "all-announcements": "All Announcements_fr",
     "expired-announcements": "Expired Announcements_fr",
+    "scheduled-announcements":"Scheduled Announcements_fr",
     "active-announcements": "Active Announcements_fr",
     "new-announcement": "New Announcement_fr",
     "announcement": "Announcement_fr",
@@ -398,12 +408,12 @@
     "queue": "Queue_fr",
     "team-announcement": "Team Announcement_fr",
     "message": "Message_fr",
-    "characters-limit-250": "250 characters_fr",
-    "select-team": "Selecet Team_fr",
-    "date-time": "Date Time_fr",
+    "characters-limit-500": "500 characters_fr",
+    "select-team": "Select Team_fr",
+    "date-time": "Scheduled Time_fr",
     "select-calende": "Select Calender_fr",
     "expiry-date": "Expiry Date_fr",
-    "discard": "Discard_fr",
+    "discard": "Cancel_fr",
     "active-chat": "Active Chat_fr",
     "search": "search_fr",
     "title": "Title_fr",

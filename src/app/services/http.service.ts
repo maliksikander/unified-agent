@@ -2,13 +2,16 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { appConfigService } from "./appConfig.service";
+import { cacheService } from "./cache.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class httpService {
   apiEndpoints;
+  supervisorId ;
   mockurl = "https://57be0c49-6ed4-469c-a93a-13f49e48e8c2.mock.pstmn.io";
+  url="https://3e4a011b-523f-403d-9b76-3d5054db5a09.mock.pstmn.io";
 
   constructor(public _appConfigService: appConfigService, private _httpClient: HttpClient) {
     this.apiEndpoints = {
@@ -17,7 +20,7 @@ export class httpService {
       schemaTypes: "/attributeTypes",
       customers: "/customers",
       labels: "/label",
-      userPreference: "/userPreference",
+      userPreference: "/userPreference", 
       pullModeList: "/pull-mode-list",
       fileServer: "/api/downloadFileStream?filename=",
       uploadFile: "/api/uploadFileStream",
@@ -29,9 +32,76 @@ export class httpService {
       ccmChannelSession: "/message/receive",
       tasks: "/tasks",
       getAllMRDs: "/media-routing-domains",
-      defaultOutboundChannel: "/channels/defaultoutbound"
+      defaultOutboundChannel: "/channels/defaultoutbound",
+      announcement: "/announcement",
+      announcementSeenBy:"/announcement/seenStatus"
     };
   }
+
+ ///////////////////////////// Announcements CURD ///////////////////////////////////// 
+
+  addAnnouncemenent(obj): Observable<any> {
+  return this._httpClient.post<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}`, obj, {
+    headers: new HttpHeaders({
+      "Content-Type": "application/json"
+    })
+  });
+}
+
+updateAnnouncemenentById(id,data): Observable<any> {
+  return this._httpClient.put<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}/${id}`, data, {
+    headers: new HttpHeaders({
+      "Content-Type": "application/json"
+    })
+  });
+}
+
+AnnouncementSeenByUser(id,announcementId): Observable<any>{
+  return this._httpClient.put<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcementSeenBy}/${id}`,announcementId, {
+    headers: new HttpHeaders({
+      "Content-Type": "application/json"
+    })
+  });
+}
+
+getAnnouncementsById(id): Observable<any>{
+  return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}/${id}`, {
+    headers: new HttpHeaders({
+      "Content-Type": "application/json"
+    })
+  });
+}
+getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
+  return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}/?teamIds=${teamIds.join(',')}&status=${status}`, {
+    headers: new HttpHeaders({
+      "Content-Type": "application/json"
+    })
+  });
+}
+
+  getAnnouncements(supervisorIds): Observable<any>{
+    
+    return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}?page=${1}&limit=${1000},&supervisorIds=${supervisorIds}`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+  deleteAnnouncementById(id): Observable<any> {
+    return this._httpClient.delete<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}/${id}`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+  
+
+
+
+
+
 
   login(user): Observable<any> {
     return this._httpClient.post<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.login, user, {
@@ -42,6 +112,7 @@ export class httpService {
   }
 
   ///////////////////////// Customer Schema CRUD /////////////////
+  
 
   getSchemaTypes(): Observable<any> {
     return this._httpClient.get<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.schemaTypes}`, {

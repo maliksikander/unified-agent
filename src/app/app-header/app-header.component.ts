@@ -9,6 +9,7 @@ import { fcmService } from "../services/fcm.service";
 import { httpService } from "../services/http.service";
 import { snackbarService } from "src/app/services/snackbar.service";
 import { TranslateService } from "@ngx-translate/core";
+import { announcementService } from "../services/announcement.service";
 import { getMatIconFailedToSanitizeLiteralError } from "@angular/material";
 
 @Component({
@@ -22,7 +23,9 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
   @Output() languageSwitcher = new EventEmitter<any>();
 
   isdarkMode = false;
-
+  checkRoles:any=[];
+  setAgent=true;
+  unreadAnnouncements = 0;
   agent = {
     state: "ready",
     name: "Bryan Miller",
@@ -68,8 +71,9 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     private _fcmService: fcmService,
     private _httpService: httpService,
     private _snackBarService: snackbarService,
-    private _translateService: TranslateService
-  ) {}
+    private _translateService: TranslateService,
+    private _announcementService: announcementService,
+  ) { }
 
   ngOnInit() {
     this.timerConfigs = new countUpTimerConfigModel();
@@ -78,6 +82,19 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     this.timerConfigs.timerTexts.minuteText = ":"; //default - mm
     this.timerConfigs.timerTexts.secondsText = " "; //default - ss
     this.timerConfigs.timerClass = "state-timer";
+    this.checkRoles=this._cacheService.agent.roles.filter(value => {value == "agent"
+     this.setAgent=true;
+  }
+    )
+    //   e=>{
+    //   console.log("arry val",e);
+    //   if(e == "agent")
+    //   {this.checkRoles= e}
+     
+    // }
+  
+    console.log("arry val updayted",this.checkRoles);
+
     this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       if (e.msg == "stateChanged") {
         this.disableMrdActions = false;
@@ -91,10 +108,33 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
         this._cacheService.agentPresence = e.data;
       }
     });
+    this._announcementService.countUnreadAnnouncementSubject.subscribe((e: any) => {
+      if (e) {
+        this.countUnreadAnnouncements()
+      }
+    })
   }
+
   ngAfterViewInit() {
     this.getSupportedLanguages();
     this.getReasonCodes();
+  }
+  countUnreadAnnouncements() {
+    this.unreadAnnouncements = 0;
+    let agentId = this._cacheService.agent.id;
+    let announcementList = this._announcementService.announcementList;
+    if (agentId && announcementList) {
+      announcementList.forEach(element => {
+        if (element.seenBy.includes(agentId)) {
+          // seenByCount = seenByCount;
+        } else {
+          this.unreadAnnouncements = this.unreadAnnouncements + 1;
+        }
+
+      });
+
+    }
+
   }
   getReasonCodes() {
     this._httpService.getReasonCodes().subscribe(
@@ -182,7 +222,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
       this.languageFlag = selectedLanguage.flag;
       this.changeLanguageCode = languageCode;
       try {
-        this._httpService.updateAgentSettings({ language: "en" }, this._cacheService.agent.id).subscribe((e) => {});
+        this._httpService.updateAgentSettings({ language: "en" }, this._cacheService.agent.id).subscribe((e) => { });
       } catch (error) {
         this._sharedService.Interceptor(error.error, "err");
         console.error(`error updating language`, error);
@@ -198,7 +238,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
       this.changeLanguageCode = languageCode;
       this.changeAgentDeskLanguage(languageCode);
       try {
-        this._httpService.updateAgentSettings({ language: languageCode }, this._cacheService.agent.id).subscribe((e) => {});
+        this._httpService.updateAgentSettings({ language: languageCode }, this._cacheService.agent.id).subscribe((e) => { });
       } catch (error) {
         this._sharedService.Interceptor(error.error, "err");
         console.error(`error updating theme`, error);
@@ -250,7 +290,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     this.disableMrdActions = true;
   }
 
-  close() {}
+  close() { }
 
   onChange(reason) {
     this.selectedReasonCode = reason;
@@ -260,7 +300,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
 
     this._cacheService.resetCache();
     this._socketService.socket.disconnect();

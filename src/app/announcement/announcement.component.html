@@ -1,55 +1,68 @@
-<div class="table-area announcement-table-area container-fluid ">
-  <div class="row m-0">
-    <div class="col-md-6 announcement-heading p-0">
+<div class="table-area announcement-table-area">
+  <div class="row m-0 page-header">
+    <div class="col-md-4 announcement-heading page-heading">
       <h4>{{'announcements.team-announcement' | translate}}</h4>
     </div>
-    <div class="col-md-6 announcement-selection-area">
+    <div class="col-md-8 announcement-selection-area">
       <mat-form-field appearance="outline" class="selection-trigger">
-        <mat-select [(value)]="FilterSelected">
-          <mat-option value="all" > {{'announcements.all-announcements' | translate}}</mat-option>
-          <mat-option value="active" >{{'announcements.active-announcements' | translate}}</mat-option>
+        <mat-select [(value)]="FilterSelected" [(ngModel)]="status">
+          <mat-option value=""> {{'announcements.all-announcements' | translate}}</mat-option>
+          <mat-option value="active">{{'announcements.active-announcements' | translate}}</mat-option>
           <mat-option value="expired">{{'announcements.expired-announcements' | translate}}</mat-option>
+          <mat-option value="scheduled">{{'announcements.scheduled-announcements' | translate}}</mat-option>
         </mat-select>
       </mat-form-field>
 
-      <button mat-button class="new-announcement" (click)="onCreateAnnouncement()"><span
-        class="announcement-icon"><img src="assets/images/promotion.svg"> </span>{{'announcements.new-announcement' | translate}}
+      <button mat-button class="new-announcement" (click)="onNewAnnouncement()"><span class="announcement-icon"><img
+            src="assets/images/promotion.svg"> </span>{{'announcements.new-announcement' | translate}} 
       </button>
     </div>
-    <div class="table-container manage-dashboard">
-      <div class="manage-dashboard">
-        <table class="table">
-          <thead>
+  </div>
+  <div class="table-container manage-dashboard container-fluid">
+    <div class="manage-dashboard">
+      <table class="table">
+        <thead>
           <tr>
             <th scope="col">{{'announcements.announcement' | translate}}</th>
-            <th scope="col">{{'announcements.created-by' | translate}}</th>
+            <!--            <th scope="col">{{'announcements.created-by' | translate}}</th>-->
+            <th scope="col" class="rel-teams">Teams</th>
+            <th class="announcement-status" scope="col">Status</th>
             <th scope="col">{{'announcements.expiry' | translate}}</th>
           </tr>
-          </thead>
-          <tbody>
+        </thead>
+        <tbody>
 
-          <tr *ngFor="let announcement of displayAnnouncements">
-            <td><span>{{announcement.message}}</span></td>
-            <td>{{announcement.created_by}}</td>
-            <td>{{announcement.expiry_time}}</td>
+          <tr *ngFor="let announcement of currentItemsToShow | tableFilter : status ;index as i">
+            <td><span>{{announcement.announcementText}}</span></td>
+            <td class="rel-teams"><span *ngFor="let teamsobj of announcement.teams" class="active-team">{{teamsobj.teamName}}</span>
+            </td>
+            <td class="announcement-status"> <span
+                class="announcement-current-status {{announcement.status | lowercase}}">{{announcement.status}}</span>
+            </td>
+            <td>{{announcement.expiryTime | date:'medium'}}</td>
             <span class="table-trigger">
-<button mat-mini-fab (click)="onUpdateAnnouncement()"><i
-  class="material-icons">{{'announcements.edit' | translate}}</i></button>
-<button mat-mini-fab (click)="confirmationDialog(isConfirm, announcement)"><i
-  class="material-icons">{{'announcements.delete' | translate}}</i></button>
-</span>
-          </tr>
-          </tbody>
-        </table>
-        <!--<pagination-controls  (pageChange)="p = $event;pageChange($event)" previousLabel=""-->
-        <!--nextLabel="" maxSize='7'></pagination-controls>-->
-        <!--<h3 *ngIf="!dataBool" class="noData" translate>No_data</h3>-->
+              <!--<button mat-mini-fab (click)="onUpdateAnnouncement()"><i-->
+              <!--  class="material-icons">{{'announcements.edit}}</i></button>--> 
+              <!--<button mat-mini-fab (click)="confirmationDialog(isConfirm, announcement)"><i-->
+              <!--  class="material-icons">{{'announcements.delete' | translate}}</i></button>-->
 
-      </div>
-<!--      <button *ngIf="isLoadMore" mat-raised-button type="button"-->
-<!--              class="send-announcement announcement-action load-more-announcement" >Load More-->
-<!--      </button>-->
+              <button mat-mini-fab (click)="onUpdateAnnouncement(announcement.id ,i)" matTooltip="edit"><i
+                  class="material-icons">edit</i></button>
+              <button mat-mini-fab (click)="confirmationDialog(isConfirm,announcement.id,announcement.status)" matTooltip="delete"><i
+                  class="material-icons">delete</i></button>
+            </span>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <mat-paginator (page)="onPageChange($event)" [length]="20" [pageSize]="20" [pageSizeOptions]="[5, 10, 25, 100]">
+      </mat-paginator> -->
+      <!--<pagination-controls  (pageChange)="p=$event" previousLabel="" nextLabel="" maxSize='7'></pagination-controls> -->
+      <!--<h3 *ngIf="!dataBool" class="noData" translate>No_data</h3>-->
+
     </div>
+    <!-- <button *ngIf="isLoadMore" mat-raised-button type="button"
+           class="send-announcement announcement-action load-more-announcement" >Load More
+     </button> -->
   </div>
 </div>
 
@@ -62,8 +75,9 @@
     <div class="confirmation-content">
       <p>{{'announcements.sure-delete-announcement' | translate}}</p>
       <div class="confirmation-action">
-        <button mat-raised-button class="announcements.close-btn" mat-dialog-close>{{'announcements.cancel' | translate}}</button>
-        <button mat-raised-button class="announcements.confirm-btn">{{'announcements.confirm' | translate}}</button>
+        <button mat-raised-button class="announcements close-btn" [mat-dialog-close]="true">{{'announcements.cancel' |
+          translate}}</button>
+        <button mat-raised-button class="announcements confirm-btn" (click)="confirmDelete()" [mat-dialog-close]="true">{{'announcements.confirm' | translate}}</button>
       </div>
     </div>
   </div>

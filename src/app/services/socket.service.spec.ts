@@ -7,7 +7,7 @@ const mockTopicData: any = require("../mocks/topicData.json");
 
 describe("Socket service", () => {
   let component: socketService;
-
+  let _announcementService: any;
   let _snackbarService: any;
   let _appConfigService: any;
   let _cacheService: any;
@@ -40,6 +40,7 @@ describe("Socket service", () => {
 
     component = new socketService(
       _snackbarService,
+      _announcementService,
       _appConfigService,
       _cacheService,
       _sharedService,
