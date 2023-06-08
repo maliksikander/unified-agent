@@ -10,6 +10,7 @@ import { httpService } from "../services/http.service";
 import { snackbarService } from "src/app/services/snackbar.service";
 import { TranslateService } from "@ngx-translate/core";
 import { announcementService } from "../services/announcement.service";
+import { getMatIconFailedToSanitizeLiteralError } from "@angular/material";
 
 @Component({
   selector: "app-header",
@@ -46,6 +47,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
   // stopTime: Date;
   // active: boolean = false;
   timerConfigs;
+  disableMrdActions : boolean = false;
   // get display() {
   //   return this.startTime && this.stopTime ? +this.stopTime - +this.startTime : 0;
   // }
@@ -95,6 +97,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
 
     this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       if (e.msg == "stateChanged") {
+        this.disableMrdActions = false;
         if (e.data.state.name.toLowerCase() == "logout") {
           this.moveToLogin();
         } else if (this._cacheService.agentPresence.state.name == null) {
@@ -183,6 +186,8 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
   }
 
   changeState(state) {
+    console.log("current state", state);
+
     if (state == 0) {
       this._socketService.emit("changeAgentState", {
         agentId: this._cacheService.agent.id,
@@ -196,13 +201,13 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
         state: { name: "READY", reasonCode: null }
       });
     } else {
-      console.log("state", state);
       this._socketService.emit("changeAgentState", {
         agentId: this._cacheService.agent.id,
         action: "agentState",
         state: { name: "NOT_READY", reasonCode: state }
       });
     }
+    this.disableMrdActions = true;
   }
   setAgentPreferedlanguage(languageCode) {
     let selectedLanguage = this.languages.find((r) => r.code == languageCode);
@@ -274,7 +279,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
   }
 
   changeMRD(event, agentMrdState) {
-    console.log("state==>", agentMrdState);
+    console.log("current state ", agentMrdState);
 
     this._socketService.emit("changeAgentState", {
       agentId: this._cacheService.agent.id,
@@ -282,6 +287,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
       state: event.checked == true ? "READY" : "NOT_READY",
       mrdId: agentMrdState.mrd.id
     });
+    this.disableMrdActions = true;
   }
 
   close() { }

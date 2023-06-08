@@ -360,6 +360,7 @@
     "Confirm": "Confirm",
     "not-applicable": "N/A",
     "channel-identifier": "Channel Identifier",
+    "agent-username":"Agent Username",
     "agent-id":"Agent Id",
     "columns":"Columns",
     "no-new-conversation": "No New Conversation",

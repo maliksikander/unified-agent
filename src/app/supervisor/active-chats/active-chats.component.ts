@@ -38,6 +38,8 @@ export class ActiveChatsComponent implements OnInit {
   selectedQueues: any = [];
   settings = {};
   message = "hide";
+  ascending: boolean = false;
+  sortOrder: "asc" | "desc" = "asc";
   constructor(
     // private dialog: MatDialog,
     private _translateService: TranslateService,
@@ -49,15 +51,13 @@ export class ActiveChatsComponent implements OnInit {
     private dialog: MatDialog,
     public _pullModeservice: pullModeService,
     private _socketService: socketService,
-    private _router: Router,
-
-  ) { }
+    private _router: Router
+  ) {}
 
   ngOnInit(): void {
     this.filter = this.route.snapshot.queryParamMap.get("filter") ? this.route.snapshot.queryParamMap.get("filter") : "agents";
     if (this.filter == "agents") {
       this.FilterSelected = "agents";
-
     } else if (this.filter == "bots") {
       this.FilterSelected = "bots";
     }
@@ -79,18 +79,15 @@ export class ActiveChatsComponent implements OnInit {
     }
     this.startRefreshTimer();
   }
-  SilentMonitor(_channelSession) {
 
+  SilentMonitor(_channelSession) {
     let obj = {
       topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, _channelSession.conversationId, "SILENT_MONITOR", "SUBSCRIBED"),
       agentId: this._cacheService.agent.id,
-      channelSession: _channelSession,
-
+      channelSession: _channelSession
     };
     this._socketService.emit("JoinAsSilentMonitor", obj);
     this._router.navigate(["customers"]);
-
-
   }
 
   startRefreshTimer() {
@@ -114,7 +111,6 @@ export class ActiveChatsComponent implements OnInit {
       (e) => {
         this.activeChatListWithAgents = e;
         this.filterData();
-
       },
       (err) => {
         this.activeChatListWithAgents = [];
@@ -124,10 +120,31 @@ export class ActiveChatsComponent implements OnInit {
     );
   }
 
+  // Function to handle sorting and filtering for the agent tab
+  handleAgentTabClick() {
+    this.toggleSorting();
+    this.filterData();
+  }
+
+  // Function to handle sorting and fetching data for the bot tab
+  handleBotTabClick() {
+    this.toggleSorting();
+    this.getAllActiveChatsWithBots();
+  }
+
+  toggleSorting() {
+    // Toggle the sorting order
+    this.sortOrder = this.sortOrder === "asc" ? "desc" : "asc";
+  }
+
   getAllActiveChatsWithBots() {
     this._httpService.getAllActiveChatsWithBots().subscribe(
       (e) => {
         this.activeChatListWithBots = e;
+        // Sort the activeChatListWithBots array by activeSince property
+        for (let data of this.activeChatListWithBots) {
+          data.chats = this.sortChatsByActiveSince(data.chats);
+        }
       },
       (err) => {
         this._snackBarService.open(this._translateService.instant("snackbar.Error-Getting-Active-Chats-with-Bots"), "err");
@@ -142,7 +159,6 @@ export class ActiveChatsComponent implements OnInit {
       this.filteredData = [];
       if (this.selectedQueues.length == 0) {
         this.filteredData = this.activeChatListWithAgents;
-
       } else {
         this.selectedQueues.forEach((data) => {
           this.activeChatListWithAgents.forEach((chat) => {
@@ -150,9 +166,24 @@ export class ActiveChatsComponent implements OnInit {
           });
         });
       }
+
+      // Sort the filteredData array by activeSince property
+      for (let data of this.filteredData) {
+        data.chats = this.sortChatsByActiveSince(data.chats);
+      }
     } catch (err) {
       console.error("[filterData] Error :", err);
     }
+  }
+
+  sortChatsByActiveSince(chats: any[]) {
+    return chats.sort((a, b) => {
+      if (this.sortOrder === "asc") {
+        return a.activeSince - b.activeSince;
+      } else {
+        return b.activeSince - a.activeSince;
+      }
+    });
   }
 
   // team selection change callback event
@@ -177,10 +208,10 @@ export class ActiveChatsComponent implements OnInit {
     if (this.timerSubscription) this.timerSubscription.unsubscribe();
   }
 
-  onItemSelect(item: any) { }
-  OnItemDeSelect(item: any) { }
-  onSelectAll(items: any) { }
-  onDeSelectAll(items: any) { }
+  onItemSelect(item: any) {}
+  OnItemDeSelect(item: any) {}
+  onSelectAll(items: any) {}
+  onDeSelectAll(items: any) {}
 
   // closeChat() {
   //   const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
