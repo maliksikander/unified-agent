@@ -150,7 +150,7 @@ export class socketService {
       console.log("ANNOUNCEMENT_CREATED", res);
       if ((res.supervisorId !== this._cacheService.agent.id)) {
         this._announcementService.addCreatedAnnoucement(res);
-        //this._snackbarService.open(this._translateService.instant("snackbar.New-Announcement"), "err");
+        
       }
 
     });
@@ -158,7 +158,7 @@ export class socketService {
     this.socket.on("ANNOUNCEMENT_DELETED", (res: any) => {
       console.log("ANNOUNCEMENT_DELETED", res);
       this._announcementService.removeAnnoucement(res);
-     // this._snackbarService.open(this._translateService.instant("snackbar.Announcement-Deleted"), "err");
+     
     });
 
 

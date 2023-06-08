@@ -79,8 +79,15 @@
     "Error-Getting-Queues-List":"Error Getting Queues List",
     "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found",
     "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco",
-    "Unable-to-edit-Active-Announcements":"Unable to edit Active Announcements",
-    "Announcement-Deleted":"Announcement-Deleted"
+    "Unable-to-edit-Active-Announcements":"Unable to edit Active Announcement",
+    "New-Announcement":"New Announcement Created",
+    "Announcement-Deleted":"Announcement Deleted",
+    "Announcement-Updated":"Announcement Updated",
+    "Unable-to-Create-New-Announcement":"Unable to Create New Announcement",
+    "Unable-to-Update-Announcement":"Unable to Update Announcement",
+    "Unable-to-Delete-Announcement":"Unable to Delete Announcement"
+    
+
 
   },
   "app-header": {
@@ -402,11 +409,11 @@
     "team-announcement": "Team Announcement",
     "message": "Message",
     "characters-limit-500": "500 characters",
-    "select-team": "Selecet Team",
-    "date-time": "Date Time",
+    "select-team": "Select Team",
+    "date-time": "Scheduled Time",
     "select-calende": "Select Calender",
     "expiry-date": "Expiry Date",
-    "discard": "Discard",
+    "discard": "Cancel",
     "active-chat": "Active Chat",
     "search": "search",
     "title": "Title",

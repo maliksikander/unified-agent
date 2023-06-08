@@ -3685,8 +3685,29 @@ mat-select{
 .multi-select-team{
   .c-label {
     line-height: 18px !important;
+    label{
+      top: 0px !important;
+      color:#3b3737 !important;
+    }
   }
-  label{
-    top: -1px !important;
+ 
+
+  ul{
+    li {
+      label{
+        color:   #5b5b5b !important;
+      }
+    }
   }
+  .pure-checkbox{
+    label {
+      span{
+        color:#3b3737;
+      }
+    }
+  }
+
+  .filter-select-all .pure-checkbox.select-all {
+    display: none;
+}
 }

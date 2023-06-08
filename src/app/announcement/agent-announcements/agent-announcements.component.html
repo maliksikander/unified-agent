@@ -3,8 +3,8 @@
   ">
     <p (click)="onUnreadClick(announcement,announcement.id)">
       {{announcement.announcementText}}
-      <time>{{announcement.scheduledTime | date:'medium'}}</time>
-      <strong>Supervisor : {{announcement.supervisorName }}</strong>
+      <time>{{announcement.scheduledTime | date:'medium'}} | by <strong>{{announcement.supervisorName }} </strong> </time>
+     
     </p>
   </div>
 </div>

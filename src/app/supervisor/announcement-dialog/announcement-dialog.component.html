@@ -66,7 +66,7 @@
           <label>{{'supervisor.expiry-date'  | translate }}</label>
           <mat-form-field appearance="outline" >
             <!-- [max]="maxDateVal" -->
-            <input matInput [ngxMatDatetimePicker]="picker3" [min]="expireDateMin" [formControl]="expireDate">
+            <input matInput [ngxMatDatetimePicker]="picker3" [min]="expireDateMin" [max]="expireDateMax" [formControl]="expireDate">
             <mat-datepicker-toggle matSuffix  [for]="picker3"></mat-datepicker-toggle>
             <ngx-mat-datetime-picker #picker3 [stepHour]="1" [stepMinute]="5">
             </ngx-mat-datetime-picker>
@@ -79,9 +79,9 @@
         <div class="announcement-trigger right-align">
           <button mat-raised-button type="button" class="discard-btn announcement-action" (click)="onClose()">{{'supervisor.discard'  | translate }}</button>
           <button mat-raised-button type="button" *ngIf="!dataID?.value" class="send-announcement announcement-action" [disabled]="!announcementMessage.valid || selectedTeams.length < 1"
-          (click)="onSave()"  >Create Announcement</button>
+          (click)="onCreateAnnouncement()"  >Create Announcement</button>
           <button mat-raised-button type="button" *ngIf="dataID?.value" class="send-announcement announcement-action" [disabled]="!announcementMessage.valid || selectedTeams.length < 1 "
-          (click)="update()"  >Update Announcement</button>
+          (click)="updateAnnouncement()"  >Update Announcement</button>
 
         </div>
       </div>

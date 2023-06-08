@@ -22,11 +22,9 @@ export class AnnouncementComponent implements OnInit {
   status = '';
   specficId: String = "";
   updateData: any;
-  allAnnouncements: any;
   obj = {}
-  formData: any = {};
   pageSize: Number = 25;
-  supervisorId 
+  supervisorId
   constructor(
 
     private dialog: MatDialog,
@@ -67,26 +65,22 @@ export class AnnouncementComponent implements OnInit {
   }
 
   onUpdateAnnouncement(value, index) {
-    this.allAnnouncements = this._httpService.getAnnouncementsById(value).subscribe(res => {
-      this.formData = res;  
-      
+     this._httpService.getAnnouncementsById(value).subscribe(res => {
+      if (res.status === "scheduled") {
+        const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
+          data: {
+            value: value,
+          }
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+          dialogRef.close()
+          this.getAllAnnouncements();
+        });
+      }
+      else {
+        this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-edit-Active-Announcements"), "err");
+      }
     });
-   
-    if (this.formData.status == "scheduled") {
-      this.getAllAnnouncements();
-      const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
-        data: {
-          value: value,
-        }
-      });
-      dialogRef.afterClosed().subscribe((result) => {
-        dialogRef.close()
-        this.getAllAnnouncements();
-      });
-    }
-    else{
-      this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-edit-Active-Announcements"), "err");
-    }
   }
 
 
@@ -105,12 +99,19 @@ export class AnnouncementComponent implements OnInit {
 
   confirmDelete() {
     this._httpService.deleteAnnouncementById(this.specficId).subscribe({
-      next: (res) => { 
+      next: (res) => {
+        this._snackbarService.open(this._translateService.instant("snackbar.Announcement-Deleted"), "succ");
         this.getAllAnnouncements();
       },
-      error: console.log,
+      error: (err: any) => {
+        console.error(err);
+        this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-Delete-Announcement"), "err");
+       
+      
+      },
+      
     })
-   
+
 
   }
 

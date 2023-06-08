@@ -12,34 +12,6 @@ import { sharedService } from "src/app/services/shared.service";
 export class AgentAnnouncementsComponent implements OnInit {
   agentsId = {};
   announcements = [];
-  // announcements = [
-  //   {
-  //     message:
-  //       "The office will remain closed on public holiday on December 25th, 2019. Teams with working shift will get a day off in the coming week.",
-  //     startTime: "January 16, 2020 - 09:35AM"
-  //   },
-  //   {
-  //     message:
-  //       "The office will remain closed on public holiday on December 25th, 2019. Teams with working shift will get a day off in the coming week. The office will remain closed on public holiday on December 25th, 2019. Teams with working shift will get a day off in the coming week. ",
-  //     startTime: "January 16, 2020 - 09:35AM"
-  //   },
-  //   {
-  //     message:
-  //       "The office will remain closed on public holiday on December 25th, 2019. Teams with working shift will get a day off in the coming week.",
-  //     startTime: "January 16, 2020 - 09:35AM"
-  //   },
-  //   {
-  //     message:
-  //       "The office will remain closed on public holiday on December 25th, 2019. Teams with working shift will get a day off in the coming week.",
-  //     startTime: "January 16, 2020 - 09:35AM"
-  //   },
-  //   {
-  //     message:
-  //       "The office will remain closed on public holiday on December 25th, 2019. Teams with working shift will get a day off in the coming week.",
-  //     startTime: "January 16, 2020 - 09:35AM"
-  //   }
-  // ];
-
 
   constructor(
     private _cacheService: cacheService,
@@ -49,27 +21,12 @@ export class AgentAnnouncementsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
-    // this._httpService.getAnnouncements().subscribe((data) => {
-    //   console.log("data", data)
-    //   this.announcements = data;
-    //   this.sortList();
-
-    // });
-
-    this.agentsId = this._cacheService.agent.id;
-     this._announcementService.getAnnouncementList();
-     console.log(" this._announcementService.getAnnouncementList()",this._announcementService.getAnnouncementList());
-    //console.log("this._cacheService.agent",this.agentsId);
-    //console.log("USER_TEAM",this._cacheService.agent);
+    this.agentsId = this._cacheService.agent.id; 
     this.sortList();
-
   }
+  
   onUnreadClick(announcement, announcementId) {
-    console.log("USER_TEAM", this._cacheService.agent);
-    console.log("this._cacheService.agent", this.agentsId, "iDDDD", announcementId);
-    // announcement.isRead = true;
-    //announcement.announcementText="hellllllo";
+   
     if (!announcement.seenBy.includes(this.agentsId)) {
       let obj = {
         "userId": this.agentsId
@@ -78,7 +35,6 @@ export class AgentAnnouncementsComponent implements OnInit {
         next: (val: any) => {
           announcement.seenBy = val.result.seenBy;
           this._announcementService.countUnreadAnnouncement();
-          console.log("read successfully", announcement);
         },
         error: (err: any) => {
           console.error(err);

@@ -10,8 +10,6 @@ export class announcementService {
     announcementList: any = [];
     announcementNotificationList: any = [];
     timer: any = null;
-
-
     constructor(
         private _sharedService: sharedService,
         private _httpService: httpService,
@@ -28,19 +26,9 @@ export class announcementService {
         const teamIds = this._cacheService.agent.supervisedTeams.map(item => item.teamId);
         teamIds.push(this._cacheService.agent.userTeam.teamId);
         const uniqueTeamIds = Array.from(new Set(teamIds));
-        // Create a Set to remove duplicates
-        // const uniqueTeamIds = [...new Set(teamIds)];
-        //let teamIds = this._cacheService.agent.supervisedTeams.concat(this._cacheService.agent.userTeam.teamId);
-        this._httpService.getAnnouncementsByTeamIds(uniqueTeamIds, "active").subscribe((data) => {
 
-            //console.log(data, "#####DATAW###")
-            this.announcementList = data.filter((item) => item.supervisorId!== this._cacheService.agent.id);
-            // this.announcementList = data.filter((item) => {
-            //     if (!(item.superviserId === this._cacheService.agent.id)) { item }
-            //    // else { item }
-            // });
-           // this.announcementList = this.announcementList.filter((item) => item.id !== announcement.id);
-            console.log(this.announcementList, "===========>>>")
+        this._httpService.getAnnouncementsByTeamIds(uniqueTeamIds, "active").subscribe((data) => {
+            this.announcementList = data.filter((item) => item.supervisorId !== this._cacheService.agent.id);
             this.countUnreadAnnouncement()
         });
     }
@@ -62,12 +50,10 @@ export class announcementService {
         this.announcementList = this.announcementList.filter((item) => item.id !== announcement.id);
         this.announcementNotificationList = this.announcementNotificationList.filter((item) => item.id !== announcement.id);
         this.countUnreadAnnouncement();
-
     }
 
     removeAnnoucementFromNotificationList(announcement) {
         this.announcementNotificationList = this.announcementNotificationList.filter((item) => item.id !== announcement.id);
-        // console.log("announcement",announcement);
-        // console.log("this.announcementNotificationList",this.announcementNotificationList)
+
     }
 }
