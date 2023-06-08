@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject, Input } from "@angular/core";
 import { cacheService } from "src/app/services/cache.service";
 import { socketService } from "src/app/services/socket.service";
-import { Output, EventEmitter } from "@angular/core";
 import { TopicParticipant } from "../../models/User/Interfaces";
 import { Router } from "@angular/router";
 import { sharedService } from "src/app/services/shared.service";
@@ -9,6 +8,8 @@ import { pullModeService } from "src/app/services/pullMode.service";
 import { soundService } from "src/app/services/sounds.service";
 import { finesseService } from "src/app/services/finesse.service";
 import { TranslateService } from "@ngx-translate/core";
+import { appConfigService } from "src/app/services/appConfig.service";
+import { SipService } from "src/app/services/sip.service";
 import { announcementService } from "src/app/services/announcement.service";
 
 @Component({
@@ -33,6 +34,8 @@ export class ChatNotificationsComponent implements OnInit {
     private _soundService: soundService,
     private _finesseService: finesseService,
     private _translateService: TranslateService,
+    private _sipService: SipService,
+    private _appConfigService: appConfigService,
     public _announcementService:announcementService
   ) {
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
@@ -45,10 +48,6 @@ export class ChatNotificationsComponent implements OnInit {
               this._translateService.instant("snackbar.Incoming-Call-Alert"),
               this._translateService.instant("snackbar.Incoming-call-alert-request") + e.data.channelSession.channel.channelType.name
             );
-            // this._finesseService.voiceChannelSessionSubject.next({
-            //   conversationId: e.data.conversationId,
-            //   channelSession: e.data.channelSession
-            // });
           } else {
             this._soundService.openBrowserNotification(
               this._translateService.instant("snackbar.CHAT-REQUESTED"),
@@ -67,7 +66,7 @@ export class ChatNotificationsComponent implements OnInit {
         } else if (e.msg == "closePullModeRequestHeader") {
           this.removePullModeRequestFromRequestArray(e.data);
         } else if (e.msg == "openExternalModeRequestHeader") {
-          this.getVoiceChannelType();
+          this.getVoiceChannelType(e.data.provider);
           if (this.externalModeRequests.length > 0) {
             let request = this.externalModeRequests.find((item) => {
               return item.identifier == e.data.identifier;
@@ -78,65 +77,62 @@ export class ChatNotificationsComponent implements OnInit {
           }
           console.log("external requests==>", this.externalModeRequests);
         } else if (e.msg == "closeExternalModeRequestHeader") {
-          this.externalModeRequests = e.data;
+          // this.externalModeRequests = e.data;
+          let dialog = e.data.dialog ? e.data.dialog : e.data;
+          if (this.externalModeRequests.length > 0) {
+            let index = this.externalModeRequests.findIndex((item) => {
+              return item.dialogData.id == dialog.id;
+            });
+            console.log("Closing Index==>", index);
+            if (index != -1) this.externalModeRequests.splice(index, 1);
+          }
         } else if (e.msg == "closeAllPushModeRequests") {
-
           this.pushModeRequests = [];
         }
       } catch (error) {
         console.error("[serviceCurrentMessage Subscriber] Error :", error);
       }
     });
-
-    // this._finesseService.newIncomingVoiceRequest.subscribe((res: any) => {
-    //   console.log("e==>", res);
-    //   this.getVoiceChannelType();
-    //   this.externalModeRequests = res;
-    // });
   }
 
-  ngOnInit() {
-    // this._finesseService.removeNotification.subscribe((res) => {
-    //   if (res.identifier) {
-    //     this.removeExternalModeRequestFromRequestArray(res.identifier, res.conversationId);
-    //   } else {
-    //     this.removePushModeRequestFromRequestArray(res.conversationId);
-    //   }
-    // });
-  }
+  ngOnInit() {}
 
   onDismiss(announcement){
     this._announcementService.removeAnnoucementFromNotificationList(announcement);
 
   }
 
-  getVoiceChannelType() {
+  getVoiceChannelType(provider) {
     let channelTypes: Array<any> = this._sharedService.channelTypeList;
-
-    this.voiceChannelType = channelTypes.find((item) => item.name == "VOICE");
-    // console.log("channelType==>", this.voiceChannelType);
+    let ciscoChannelType;
+    let cxVoiceChannelType;
+    ciscoChannelType = channelTypes.find((item) => item.name == "CISCO_CC");
+    cxVoiceChannelType = channelTypes.find((item) => item.name == "CX_VOICE");
+    if (provider == "cisco") this.voiceChannelType = ciscoChannelType;
+    else if (provider == "cx_voice") this.voiceChannelType = cxVoiceChannelType;
   }
 
-  acceptCall(ciscoData) {
-    let data = {
+  acceptCall(data) {
+    let acceptCommand = {
       action: "answerCall",
       parameter: {
-        dialogId: ciscoData.dialogData.id
+        dialogId: data.dialogData.id
       }
     };
-    this._finesseService.acceptCallOnFinesse(data);
+    console.log("accept Data==>",acceptCommand)
+    if (data.provider == "cx_voice") {
+      this._sipService.acceptCallOnSip(acceptCommand);
+    } else if (data.provider == "cisco") {
+      this._finesseService.acceptCallOnFinesse(acceptCommand);
+    }
   }
 
   onAcceptCallback(conversationId, taskId, taskDirection) {
-    // if (ciscoData) {
-    // this.acceptCall(conversationId, ciscoData);
-    // } else {
     this.getTopicSubscription(conversationId, taskId, taskDirection);
-    // }
   }
 
-  onExternalRequestAccept(ciscoData) {
-    this.acceptCall(ciscoData);
+  onExternalRequestAccept(data) {
+    this.acceptCall(data);
   }
 
   getTopicSubscription(conversationId, taskId, taskDirection) {

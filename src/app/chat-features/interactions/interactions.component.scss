@@ -743,7 +743,7 @@
           position: relative;
           top: 3px;
           color: $blue-text-color;
-          
+
         }
 
         .profile-pic {
@@ -1924,6 +1924,19 @@ ul.delivery-report {
   min-width: 0;
   position: absolute;
   right: 0;
+}
+
+mat-icon.box-view {
+  position: relative;
+  left: -7px;
+  top: -2px;
+  color: #999;
+  font-size: 18px;
+  cursor: pointer;
+
+  &:hover{
+    opacity: .8;
+  }
 }
 
 //Expand view 3rd party bar
@@ -3796,4 +3809,8 @@ vg-controls.hide {
       transform: scale(1.05);
     }
   }
+}
+.doc-bar {
+  margin-left: 0px;
+  margin-right: 0px;
 }

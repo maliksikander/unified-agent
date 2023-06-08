@@ -57,119 +57,6 @@ $(document).ready(function ()
     // }
 });
 
-function executeCommands(commandRequest) {
-    switch (commandRequest.action) {
-        case "login":
-            login(commandRequest);
-            break;
-        case "getState":
-            getState();
-            break;
-        case "getNotReadyLogoutReasons":
-            getNotReadyLogoutReasons();
-            break;
-        case "makeNotReadyWithReason":
-            makeNotReady(commandRequest);
-            break;
-        case "makeReady":
-            makeReady(commandRequest);
-            break;
-        case "makeCall":
-            makeCall(commandRequest);
-            break;
-        case "answerCall":
-            dialogAction(commandRequest);
-            break;
-        case "releaseCall":
-            dialogAction(commandRequest);
-            break;
-        case "holdCall":
-            dialogAction(commandRequest);
-            break;
-        case "retrieveCall":
-            dialogAction(commandRequest);
-            break;
-        case "acceptCall":
-            dialogAction(commandRequest);
-            break;
-        case "closeCall":
-            dialogAction(commandRequest);
-            break;
-        case "rejectCall":
-            dialogAction(commandRequest);
-            break;
-        case "SST":
-            transferCall(commandRequest);
-            break;
-        case "makeConsult":
-            makeConsult(commandRequest);
-            break;
-        case "consultTransfer":
-            transferCall(commandRequest);
-            break;
-        case "conferenceCall":
-            dialogAction(commandRequest);
-            break;
-        case "getDialog":
-            getDialogs(commandRequest);
-            break;
-        case "logout":
-            logout(commandRequest);
-            break;
-        case "getWrapUpReasons":
-            getWrapUpReasons(commandRequest);
-            break;
-        case "updateCallVariableData":
-            updateCallVariableData(commandRequest);
-            break;
-        case "updateWrapupData":
-            updateWrapupData(commandRequest);
-            break;
-        case "makeWorkReady":
-            makeWorkReady(commandRequest);
-            break;
-        case "subscribeTeam":
-            subscribeToTeam(commandRequest);
-            break;
-        case "unsubscribeTeam":
-            unsubscribeToTeam(commandRequest);
-            break;
-        case "getTeamUsers":
-            getTeamUsers(commandRequest);
-            break;
-        case "silentMonitor":
-            silentMonitor(commandRequest);
-            break;
-        case "bargeIn":
-            bargeIn(commandRequest);
-            break;
-        case "dropParticipant":
-            dropParticipant(commandRequest);
-            break;
-        case "getQueues":
-            getUserQueues(commandRequest);
-            if((config.getQueuesDelay > 0 && config.getQueuesDelay < 10000) && queueInterval == null){
-                queueSubscribed = true;
-                queueInterval = setInterval(() => {
-                    getUserQueues(commandRequest);
-                }, config.getQueuesDelay * 1000);
-            }
-            break;
-        case "getUserPhoneBook":
-            getUserPhoneBook(commandRequest);
-            break;
-        case "getSSOToken":
-            getSSOToken(commandRequest);
-            break;
-        case "reclassifyDialog":
-            reclassifyDialog(commandRequest);
-            break;
-        case "scheduleCallback":
-            scheduleCallbackDialog(commandRequest);
-            break;
-    }
-}
-
 function initialize(parameters) {
     try {
       var authcode = parameters.parameter.loginId + ":" + parameters.parameter.password;
@@ -689,6 +576,9 @@ function _eventHandler(data) {
 function parseEvent(event) {
     console.log("Event Received");
     console.log(event);
+    if(!finesseFlavor){
+        finesseFlavor = config.finesseFlavor;
+    }
     var parsedEvent;
     if (event.User || event.Dialogs != undefined) {
         if (event.User)
@@ -938,6 +828,7 @@ function parseDialogEvent(dialogEvent, eventType) {
             callbackNumber : dialogEvent.callbackNumber ? dialogEvent.callbackNumber : null,
             scheduledCallbackInfo : dialogEvent.scheduledCallbackInfo ? dialogEvent.scheduledCallbackInfo : null,
             isCallEnded : 0,
+            dialogEndingReason: null,
             eventType: eventType,
         }
         setCallObjectLocalStorage(dialog);
@@ -992,86 +883,100 @@ function getDigits(text) {
     return null;
 }
 
-function parseDialogEventType(dialog) {
-    var callType = dialog.callType;
-    var dialogEvent;
-    switch (callType) {
-        case callTypes.directType:
-            dialogEvent = processDirectCall(dialog);
-            break;
-        case callTypes.inboundTypeCCE:
-        case callTypes.inboundTypeCCX:
-            dialogEvent = processInboundCall(dialog);
-            break;
-        case callTypes.outboundType:
-        case callTypes.outboundType2:
-            if (finesseFlavor == "UCCE" && dialog.associatedDialogUri)
+ function parseDialogEventType(dialog) {
+    try{
+        var callType = dialog.callType;
+        var dialogEvent;
+        switch (callType) {
+            case callTypes.directType:
+                dialogEvent = processDirectCall(dialog);
+                break;
+            case callTypes.inboundTypeCCE:
+            case callTypes.inboundTypeCCX:
+                dialogEvent = processInboundCall(dialog);
+                break;
+            case callTypes.outboundType:
+            case callTypes.outboundType2:
+                if (finesseFlavor == "UCCE" && dialog.associatedDialogUri)
+                    dialogEvent = processConsultCall(dialog);
+                else
+                    dialogEvent = processOutboundCall(dialog);
+                break;
+            case callTypes.consultType:
                 dialogEvent = processConsultCall(dialog);
-            else
-                dialogEvent = processOutboundCall(dialog);
-            break;
-        case callTypes.consultType:
-            dialogEvent = processConsultCall(dialog);
-            break;
-        case callTypes.directTransferTypeCCE:
-        case callTypes.directTransferTypeCCX:
-            dialogEvent = processDirectTransferCall(dialog);
-            break;
-        case callTypes.consultTransferTypeCCE:
-        case callTypes.consultTransferTypeCCX:
-            dialogEvent = processConsultTransferCall(dialog);
-            break;
-        case callTypes.conferenceType:
-            dialogEvent = processConferenceCall(dialog);
-            break;
-        case callTypes.outboundCampaignType:
-        case callTypes.outboundCampaignCallbackCCEType1:
-        case callTypes.outboundCampaignCallbackCCEType2:
-            dialogEvent = processOutboundCampaignCall(dialog);
-            break;
-        case callTypes.outboundPreviewCampaignTypeCCX:
-        case callTypes.outboundPreviewCampaignTypeCCE:
-        case callTypes.outboundPreviewCampaignCallbackCCEType1:
-        case callTypes.outboundPreviewCampaignCallbackCCEType2:
-            dialogEvent = processOutboundPreviewCampaignCall(dialog);
-            break;
-        case callTypes.silentMonitorType:
-            dialogEvent = processSilentMonitor(dialog);
-            break;
-        case callTypes.bargeInTypeCCX:
-        case callTypes.bargeInTypeCCE:
-            dialogEvent = processBargeIn(dialog);
-            break;
+                break;
+            case callTypes.directTransferTypeCCE:
+            case callTypes.directTransferTypeCCX:
+            case callTypes.consultTransferTypeCCE:
+            case callTypes.consultTransferTypeCCX:
+                if(finesseFlavor == "UCCE" && callType == callTypes.directTransferTypeCCE)
+                    dialogEvent = processDirectTransferCall(dialog);
+                else if(finesseFlavor == "UCCX" && callType == callTypes.directTransferTypeCCX)
+                    dialogEvent = processDirectTransferCall(dialog);
+                else if(finesseFlavor == "UCCE" && callType == callTypes.consultTransferTypeCCE)
+                    dialogEvent = processConsultTransferCall(dialog);
+                else if(finesseFlavor == "UCCX" && callType == callTypes.consultTransferTypeCCX)
+                    dialogEvent = processConsultTransferCall(dialog);
+                break;
+            case callTypes.conferenceType:
+                dialogEvent = processConferenceCall(dialog);
+                break;
+            case callTypes.outboundCampaignType:
+            case callTypes.outboundCampaignCallbackCCEType1:
+            case callTypes.outboundCampaignCallbackCCEType2:
+                dialogEvent = processOutboundCampaignCall(dialog);
+                break;
+            case callTypes.outboundPreviewCampaignTypeCCX:
+            case callTypes.outboundPreviewCampaignTypeCCE:
+            case callTypes.outboundPreviewCampaignCallbackCCEType1:
+            case callTypes.outboundPreviewCampaignCallbackCCEType2:
+                dialogEvent = processOutboundPreviewCampaignCall(dialog);
+                break;
+            case callTypes.silentMonitorType:
+                dialogEvent = processSilentMonitor(dialog);
+                break;
+            case callTypes.bargeInTypeCCX:
+            case callTypes.bargeInTypeCCE:
+                dialogEvent = processBargeIn(dialog);
+                break;
+        }
+        dialogEvent.response.dialog.ani = getDigits(dialogEvent.response.dialog.ani);
+        dialogEvent.response.dialog.isCallEnded = checkIfCallEnded(dialogEvent.response.dialog);
+        if(dialogEvent.response.dialog.isCallEnded == 1 && dialogEvent.event != "consultCall")
+            dialogEvent.response.dialog.ani = getCallVariableValue(dialog, config.callVariable);
+
+        return dialogEvent;
+    }catch(err){
+        console.error(err);
     }
-    dialogEvent.response.dialog.ani = getDigits(dialogEvent.response.dialog.ani);
-    dialogEvent.response.dialog.isCallEnded = checkIfCallEnded(dialogEvent.response.dialog);
-    if(dialogEvent.response.dialog.isCallEnded == 1 && dialogEvent.event != "consultCall")
-        dialogEvent.response.dialog.ani = getCallVariableValue(dialog, config.callVariable);
-    return dialogEvent;
 }
 
 function checkIfCallEnded(dialog){
-    if(dialog.state && dialog.state == "DROPPED")
-        return 1;
-    if(dialog.state && dialog.state == "ACTIVE")
-    {
-        let participants = dialog.participants.Participant;
-        if(participants.length && participants.length == 2){
-            for(participant of participants){
-                if(participant.state == "DROPPED" && dialog.eventType == "DELETE")
+    try{
+        if(dialog.state && dialog.state == "DROPPED")
+            return 1;
+        if(dialog.state && dialog.state == "ACTIVE")
+        {
+            let participants = dialog.participants.Participant;
+            if(participants.length && participants.length == 2){
+                for(participant of participants){
+                    if(participant.state == "DROPPED" && dialog.eventType == "DELETE")
+                        return 1;
+                }
+                return 0;
+            }
+            else if(participants.length == undefined){
+                let participant = participants;
+                if(participant.state != "DROPPED")
+                    return 0;
+                else
                     return 1;
             }
-            return 0;
         }
-        else if(participants.length == undefined){
-            let participant = participants;
-            if(participant.state != "DROPPED")
-                return 0;
-            else
-                return 1;
-        }
+        return 0;
+    }catch{err}{
+        console.error(err);
     }
-    return 0;
 }
 /*function checkIfCallEnded(dialog){
     if(dialog.state && dialog.state == "DROPPED")

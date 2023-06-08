@@ -11,7 +11,10 @@ export class getSenderNamePipe implements PipeTransform {
       name = sender.senderName;
     } else if (sender.type.toLowerCase() == "bot") {
       name = "bot";
-    } else {
+    } else if (sender.type.toLowerCase() == "ivr") {
+      name = "ivr";
+    }
+    else {
       return " ";
     }
     if (onlyFirstTwoLetters) {

@@ -1,17 +1,18 @@
 import { Injectable } from "@angular/core";
 import { Location } from "@angular/common";
-
 import { Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { cacheService } from "./cache.service";
 import { fcmService } from "./fcm.service";
 import { finesseService } from "./finesse.service";
+import { SipService } from "./sip.service";
 import { httpService } from "./http.service";
 import { sharedService } from "./shared.service";
 import { snackbarService } from "./snackbar.service";
 import { socketService } from "./socket.service";
 import { TranslateService } from "@ngx-translate/core";
 import { AuthService } from "./auth.service";
+import { appConfigService } from "./appConfig.service";
 import { announcementService } from "./announcement.service";
 
 @Injectable({
@@ -27,12 +28,14 @@ export class isLoggedInService {
     private _httpService: httpService,
     private _sharedService: sharedService,
     private _finesseService: finesseService,
+    private _sipService: SipService,
     private _fcmService: fcmService,
     private ngxService: NgxUiLoaderService,
     private _snackbarService: snackbarService,
     private _location: Location,
     private _translateService: TranslateService,
     private _authService: AuthService,
+    private _appConfigService: appConfigService,
     private _announcementService:announcementService
   ) {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -101,19 +104,17 @@ export class isLoggedInService {
             message: this._translateService.instant("Agent-Logged-In-Successfully")
           }
         });
-
         console.log("this is login resp ==>", e.data);
-
         this._cacheService.agent = e.data.keycloak_User;
-
+        const attributes = e.data.keycloak_User.attributes;
+        if (this._appConfigService.config.isCxVoiceEnabled) this.initiateSipService(attributes);
         if (loginType == "3rdparty") {
           console.log("finesse auto 12==>");
           this._finesseService.checkActiveTasks(e.data.keycloak_User.id);
         }
-        // this._finesseService.checkActiveTasks(e.data.keycloak_User.id);
-
         try {
           localStorage.setItem("ccUser", btoa(JSON.stringify(e.data.keycloak_User)));
+          localStorage.setItem("sipPass", btoa(JSON.stringify(obj.password)));
         } catch (e) {}
         this._socketService.disConnectSocket();
         this.validateFcmKeyAndConnectToSocket(false);
@@ -131,6 +132,12 @@ export class isLoggedInService {
         this._router.navigate(["login"]);
       }
     );
+  }
+
+  initiateSipService(attributes) {
+    if (this._sipService.checkAgentExtensionAttribute(attributes)) {
+      this._sipService.extension = attributes.agentExtension[0];
+    }
   }
 
   autoLogin() {
@@ -159,6 +166,10 @@ export class isLoggedInService {
     this.ngxService.start();
     this._authService.moveToAuthorizedResourceOnLogin();
 
+    if (this._appConfigService.config.isCxVoiceEnabled) {
+      this._sipService.initMe();
+      this._sipService.checkActiveTasks(this._cacheService.agent.id);
+    }
     // if (this._cacheService.isMobileDevice) {
 
     //   // for a mobile device the fcm is coming from url
@@ -174,14 +185,12 @@ export class isLoggedInService {
         this._router.navigate([`supervisor/active-chats`]);
       } else if (url.includes("/queue-chats")) {
         this._router.navigate([`supervisor/queue-chats`]); // pass queue id
-      }
-      else if (url.includes("/active-agents-detail")) {
+      } else if (url.includes("/active-agents-detail")) {
         this._router.navigate([`supervisor/active-agents-detail`]); // pass queue id
       }
       this._socketService.connectToSocket();
       //if(this._cacheService.agent.id){this._announcementService.getAnnouncementList();}
       this._announcementService.getAnnouncementList();
-      
     } catch (err) {
       this._snackbarService.open(this._translateService.instant("snackbar.you-will-not-receive-browser-notifications"), "err");
       this._socketService.connectToSocket();

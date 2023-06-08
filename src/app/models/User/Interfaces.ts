@@ -7,12 +7,16 @@ export interface IKeycloakUser {
   firstName: string;
   lastName: string;
   extension?: number;
+  // attributes: { agentExtension: [] };
   roles: [];
   queue?: string;
   tenant?: ITenant;
   teams?: ITeam[];
   routingAttributes?: [];
   permittedResources?: [];
+  // supervisedTeams?:[]
+  // userTeam?:[]
+  attributes?:any;
   supervisedTeams?:[{ teamId :string, teamName:string}]
   userTeam?:{teamId :string, teamName:string}
 }

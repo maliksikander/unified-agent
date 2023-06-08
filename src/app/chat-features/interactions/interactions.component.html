@@ -1,5 +1,5 @@
 <div class="interaction-main" [ngClass]="{
-    'customer-bar-opened': isBarOPened,
+    'customer-bar-opened': isBarOpened,
     'unidentified-customer': conversation.customer.isAnonymous,
     'right-direction': selectedLanguage == 'ar'
   }">
@@ -947,8 +947,8 @@
 
                                 <li *ngIf="message.body.data.callLegs.length < 2" class="agent-pic call-services">
                                   <span>{{
-                                    message.body.data.callLegs[0].dialog.queueName ?
-                                    message.body.data.callLegs[0].dialog.queueName : "N/A"
+                                    message.body.data.callLegs[0].additionalDetail.dialog?.queueName ?
+                                    message.body.data.callLegs[0].additionalDetail.dialog?.queueName : "N/A"
                                     }}</span>
                                 </li>
                                 <ng-container *ngIf="message.body.data.callLegs.length == 2">
@@ -957,7 +957,8 @@
                                     <span>
                                       <ng-container *ngFor="let callLeg of message.body.data.callLegs">
                                         <ng-container *ngIf="callLeg.startDirection != 'CONSULT'">
-                                          {{ callLeg.dialog.queueName ? callLeg.dialog.queueName : "N/A" }}
+                                          {{ callLeg?.additionalDetail?.dialog?.queueName ?
+                                          callLeg?.additionalDetail?.dialog?.queueName : "N/A" }}
                                         </ng-container>
                                       </ng-container>
                                     </span>
@@ -966,9 +967,9 @@
 
                                 <li class="agent-pic participant-agent call-services">
                                   <ng-container *ngFor="let callData of message.body.data.callLegs">
-                                    <span matTooltip="{{ callData.agent.username }}"
+                                    <span matTooltip="{{ callData.sender.senderName }}"
                                       *ngIf="callData?.startDirection != 'CONSULT'">{{
-                                      callData.agent.username | getFirstTwoLetters
+                                      callData.sender.senderName | getFirstTwoLetters
                                       }}</span>
                                   </ng-container>
                                 </li>
@@ -989,22 +990,23 @@
                                 </li>
 
                                 <ng-container *ngIf="message.body.data.callLegs.length < 2">
-                                  <li *ngIf="message.body.data.callLegs[0].dialog.wrapUpReason" class="section-tags">
+                                  <li *ngIf="message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason"
+                                    class="section-tags">
                                     <span>
                                       {{
-                                      message.body.data.callLegs[0].dialog.wrapUpReason ?
-                                      message.body.data.callLegs[0].dialog.wrapUpReason : "N/A"
+                                      message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason ?
+                                      message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason : "N/A"
                                       }}
                                     </span>
 
                                     <!-- <span
-                                    *ngFor="let reasonCode of message.body.data?.dialog?.wrapUpReason | sliceFilter:0:2">
-                                    {{reasonCode }}
-                                  </span>
+                                  *ngFor="let reasonCode of message.body.data?.dialog?.wrapUpReason | sliceFilter:0:2">
+                                  {{reasonCode }}
+                                </span>
 
-                                  <span *ngIf="message.body.data?.dialog?.wrapUpReason.length > 2" class="sub-tags"
-                                    [matMenuTriggerFor]="voiceTags">+{{message.body.data?.dialog?.wrapUpReason.length -
-                                    2}}</span> -->
+                                <span *ngIf="message.body.data?.dialog?.wrapUpReason.length > 2" class="sub-tags"
+                                  [matMenuTriggerFor]="voiceTags">+{{message.body.data?.dialog?.wrapUpReason.length -
+                                  2}}</span> -->
                                   </li>
                                 </ng-container>
                                 <li>
@@ -1015,11 +1017,11 @@
                               </ul>
                             </div>
                             <!-- <mat-menu #voiceTags="matMenu">
-                              <div class="more-section-tags">
-                                <span
-                                  *ngFor="let reasonCode of message.body.data?.dialog?.wrapUpReason">{{reasonCode}}</span>
-                              </div>
-                            </mat-menu> -->
+                            <div class="more-section-tags">
+                              <span
+                                *ngFor="let reasonCode of message.body.data?.dialog?.wrapUpReason">{{reasonCode}}</span>
+                            </div>
+                          </mat-menu> -->
                           </mat-panel-title>
                         </mat-expansion-panel-header>
                         <ng-container
@@ -1032,18 +1034,20 @@
                                 <div class="panel-header">
                                   <ul>
                                     <li class="agent-pic participant-agent call-services">
-                                      <span matTooltip="{{ callData.agent.username }}">{{ callData.agent.username |
+                                      <span matTooltip="{{ callData.sender.senderName }}">{{ callData.sender.senderName
+                                        |
                                         getFirstTwoLetters }}</span>
                                     </li>
 
                                     <li class="agent-pic call-services">
-                                      <span>{{ callData.dialog.queueName ? callData.dialog.queueName : "N/A" }}</span>
+                                      <span>{{ callData?.additionalDetail?.dialog?.queueName ?
+                                        callData?.additionalDetail?.dialog?.queueName : "N/A" }}</span>
                                     </li>
 
                                     <li class="section-duration">
                                       <!-- <time>{{ callData.duration ? callData.duration :
-                                        "N/A"
-                                        }}sec</time> -->
+                                      "N/A"
+                                      }}sec</time> -->
                                       <time *ngIf="callData.duration > 0">{{ callData.duration * 1000 | date: "mm" }}min
                                         {{ callData.duration * 1000 | date: "ss" }}sec</time>
                                       <time *ngIf="callData.duration == 0">{{ callData.duration }} sec</time>
@@ -1052,10 +1056,10 @@
                                     <li>
                                       <img matTooltip="{{ callData.endDirection | removeUnderscore | titlecase }}"
                                         *ngIf="
-                                          callData.endDirection == 'TRANSFER' ||
-                                          callData.endDirection == 'CONSULT_TRANSFER' ||
-                                          callData.endDirection == 'DIRECT_TRANSFER'
-                                        " src="assets/images/call-transfer.svg" />
+                                        callData.endDirection == 'TRANSFER' ||
+                                        callData.endDirection == 'CONSULT_TRANSFER' ||
+                                        callData.endDirection == 'DIRECT_TRANSFER'
+                                      " src="assets/images/call-transfer.svg" />
                                       <img *ngIf="callData.endDirection == 'CONSULT_CONFERENCE'"
                                         src="assets/images/call-end.svg" />
                                       <img *ngIf="callData.endDirection == 'DIALOG_ENDED'"
@@ -1063,29 +1067,30 @@
                                     </li>
 
                                     <!-- <ng-container *ngIf="message.body.data.callLegs.length < 2"> -->
-                                    <li *ngIf="callData.dialog.wrapUpReason" class="section-tags">
+                                    <li *ngIf="callData.additionalDetail?.dialog?.wrapUpReason" class="section-tags">
                                       <span>
-                                        {{ callData.dialog.wrapUpReason ? callData.dialog.wrapUpReason : "N/A" }}
+                                        {{ callData?.additionalDetail?.dialog?.wrapUpReason ?
+                                        callData?.additionalDetail?.dialog?.wrapUpReason : "N/A" }}
                                       </span>
                                       <!-- <span *ngFor="let reasonCode of callData.dialog?.wrapUpReason | sliceFilter:0:2">
-                                    {{reasonCode }}
-                                  </span>
+                                  {{reasonCode }}
+                                </span>
 
-                                  <span *ngIf="callData.dialog?.wrapUpReason.length > 2" class="sub-tags"
-                                    [matMenuTriggerFor]="multiVoiceTags">+{{callData.dialog?.wrapUpReason.length -
-                                    2}}</span> -->
+                                <span *ngIf="callData.dialog?.wrapUpReason.length > 2" class="sub-tags"
+                                  [matMenuTriggerFor]="multiVoiceTags">+{{callData.dialog?.wrapUpReason.length -
+                                  2}}</span> -->
                                     </li>
                                     <!-- <li>
-                                    <time>{{ message.header.timestamp | date: "shortTime" }}</time>
-                                  </li> -->
+                                  <time>{{ message.header.timestamp | date: "shortTime" }}</time>
+                                </li> -->
                                   </ul>
                                 </div>
                               </div>
                               <!-- <mat-menu #multiVoiceTags="matMenu">
-                              <div class="more-section-tags">
-                                <span *ngFor="let reasonCode of callData.dialog?.wrapUpReason">{{reasonCode}}</span>
-                              </div>
-                            </mat-menu> -->
+                            <div class="more-section-tags">
+                              <span *ngFor="let reasonCode of callData.dialog?.wrapUpReason">{{reasonCode}}</span>
+                            </div>
+                          </mat-menu> -->
                             </div>
                           </ng-container>
                         </ng-container>
@@ -1750,38 +1755,38 @@
           <label *ngIf="message.length > 0" class="count-reply">{{ replyInput.value.length }}/1000</label>
           <div class="mat-form-field chat-area" [ngClass]="{ 'expand-area-height': expanedHeight > 50 }">
             <textarea maxlength="1000" [disabled]="
-                !_socketService.isSocketConnected ||
-                conversation.activeChannelSessions.length == 0 ||
-                !conversation.messageComposerState ||
-                (!isWhisperMode  && conversation.topicParticipant.role == 'ASSISTANT')
+            !_socketService.isSocketConnected ||
+            conversation.activeChannelSessions.length == 0 ||
+            !conversation.messageComposerState ||
+            (!isWhisperMode  && conversation.topicParticipant.role == 'ASSISTANT')
 " (keyup.enter)="onSend(replyInput.value); replyInput.value = null" (focus)="onTextAreaFocus()"
               (keydown.enter)="onEnterKey($event)"
               [attr.data-emoji-picker]="conversation.activeChannelSessions.length > 0 ? true : false"
               [(ngModel)]="message" (keyup)="onKey($event)" name="message" [matAutocomplete]="auto" matInput
               cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none"
               #replyInput name="message" placeholder="{{
-                (conversation.messages[conversation.messages.length - 1]?.botSuggestions
-                  ? fbCommentId
-                    ? 'chat-features.interactions.bot-suggestions-available-for-reply-to-a-comment'
-                    : 'chat-features.interactions.bot-suggestions-available'
-                  : _socketService.isSocketConnected && conversation.activeChannelSessions.length > 0 && conversation.messageComposerState
-                  ? fbCommentId
-                    ? 'chat-features.interactions.Type-a-reply-to-comment'
-                    : 'chat-features.interactions.Type-a-message'
-                  : 'chat-features.interactions.Unable-to-send-message'
-                ) | translate
-              }}"></textarea>
+            (conversation.messages[conversation.messages.length - 1]?.botSuggestions
+              ? fbCommentId
+                ? 'chat-features.interactions.bot-suggestions-available-for-reply-to-a-comment'
+                : 'chat-features.interactions.bot-suggestions-available'
+              : _socketService.isSocketConnected && conversation.activeChannelSessions.length > 0 && conversation.messageComposerState
+              ? fbCommentId
+                ? 'chat-features.interactions.Type-a-reply-to-comment'
+                : 'chat-features.interactions.Type-a-message'
+              : 'chat-features.interactions.Unable-to-send-message'
+            ) | translate
+          }}"></textarea>
             <!-- [ngClass]="{'animate-content': displaySuggestionsAnimation}" -->
 
             <mat-autocomplete #auto="matAutocomplete" class="suggested-answer answer-autocomplete {{
-                isBarOPened && !customerBar
+                isBarOpened && !customerBar
                   ? 'customer-right-bar'
-                  : customerBar && !isBarOPened
+                  : customerBar && !isBarOpened
                   ? 'customer-left-bar'
-                  : customerBar && isBarOPened
+                  : customerBar && isBarOpened
                   ? 'custom-compact-view'
                   : ''
-              }} {{ customerBar && isBarOPened ? 'custom-compact-viewddd' : '' }}">
+              }} {{ customerBar && isBarOpened ? 'custom-compact-viewddd' : '' }}">
               <div class="suggested-content" #mainScreen
                 [ngClass]="{ 'content-display': cannedTabOpen || displaySuggestionsArea }">
                 <!-- <div class="suggested-tab suggested-tabs-update" *ngIf="quickReplies"
@@ -1978,10 +1983,42 @@
   </div>
 
   <div class="customer-info-main">
+    <div class="call-controls-view" *ngIf="isBarOpened && ctiBarView && _sipService.isCallActive">
+      <div class="right-call-controls row doc-bar">
+
+        <div class="main-showcase customer-info-dp">
+          <div class="agent-showcase">
+            <img src="assets/images/dummy-user.svg" alt="Customer">
+            <mat-icon routerLink="/customers/chats">flip_to_back</mat-icon>
+          </div>
+          <h4 matTooltip="{{this._sipService.customerNumber}}">{{this._sipService.customerNumber}}<span
+              class="timer-call">{{timer}}</span>
+          </h4>
+        </div>
+        <!-- <ul class="assistance-actions"> -->
+        <!-- <li><button disabled mat-fab><img src="assets/images/consult-colored.svg"></button></li>
+          <li><button disabled mat-fab><img src="assets/images/transfer-colored.svg"></button></li>
+          <li><button disabled mat-fab><img src="assets/images/conference-colored.svg"></button></li> -->
+        <!-- </ul> -->
+
+        <ul class="call-actions">
+          <!-- <li><button disabled mat-fab><mat-icon>mic</mat-icon></button></li> -->
+          <li><button (click)="ctiControlBar()" mat-fab><mat-icon>picture_in_picture_alt
+              </mat-icon></button></li>
+          <li (click)="_sipService.holdCallOnSip()" *ngIf="_sipService.isCallHold == false"><button
+              mat-fab><mat-icon>pause</mat-icon></button></li>
+          <li (click)="_sipService.resumeCallOnSip()" *ngIf="_sipService.isCallHold == true"><button
+              mat-fab><mat-icon>pause_circle_filled</mat-icon></button></li>
+          <li (click)="endCallOnSip()"><button class="end-call" mat-fab><mat-icon>call_end</mat-icon></button></li>
+        </ul>
+      </div>
+    </div>
+
     <app-customer-info [activeChannelSessions]="conversation.activeChannelSessions" [customer]="conversation.customer"
       [customerSuggestions]="conversation.customerSuggestions" [firstChannelSession]="conversation.firstChannelSession"
-      [conversationId]="conversation.conversationId" [conversation]="conversation" [activeConversationData]="conversation.activeConversationData"
-      (expandCustomerInfo)="eventFromChild($event)" (updatedlabels)="eventFromChildForUpdatedLabel($event)">
+      [conversationId]="conversation.conversationId" [conversation]="conversation"
+      [activeConversationData]="conversation.activeConversationData" (expandCustomerInfo)="eventFromChild($event)"
+      (updatedlabels)="eventFromChildForUpdatedLabel($event)">
     </app-customer-info>
   </div>
 </div>

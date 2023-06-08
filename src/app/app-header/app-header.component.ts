@@ -7,8 +7,10 @@ import { Router } from "@angular/router";
 import { finesseService } from "../services/finesse.service";
 import { fcmService } from "../services/fcm.service";
 import { httpService } from "../services/http.service";
-import { snackbarService } from "src/app/services/snackbar.service";
 import { TranslateService } from "@ngx-translate/core";
+import { SipService } from "../services/sip.service";
+import { appConfigService } from "../services/appConfig.service";
+import { snackbarService } from "../services/snackbar.service";
 import { announcementService } from "../services/announcement.service";
 import { getMatIconFailedToSanitizeLiteralError } from "@angular/material";
 
@@ -68,6 +70,8 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     private _socketService: socketService,
     private _sharedService: sharedService,
     public _finesseService: finesseService,
+    public _sipService: SipService,
+    public _appConfigService:appConfigService,
     private _fcmService: fcmService,
     private _httpService: httpService,
     private _snackBarService: snackbarService,
@@ -90,9 +94,12 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     //   console.log("arry val",e);
     //   if(e == "agent")
     //   {this.checkRoles= e}
-     
+
     // }
-  
+
+
+    // }
+
     console.log("arry val updayted",this.checkRoles);
 
     this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
@@ -276,6 +283,8 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
       action: "agentState",
       state: { name: "LOGOUT", reasonCode: this.selectedReasonCode }
     });
+
+    if(this._appConfigService.config.isCxVoiceEnabled) this._sipService.logout();
   }
 
   changeMRD(event, agentMrdState) {

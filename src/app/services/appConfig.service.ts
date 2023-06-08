@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-declare var config, callTypes;
+declare var config, callTypes, sipConfig;
 
 @Injectable()
 export class appConfigService {
@@ -17,11 +17,21 @@ export class appConfigService {
     CIM_REPORTING_URL: "",
     UNIFIED_ADMIN_URL: "",
     CCM_URL: "",
+    isCiscoEnabled: true,
+    isCxVoiceEnabled: true,
+    CISCO_CC_MRD: "",
+    CX_VOICE_MRD: "",
     TEAM_ANNOUNCEMENT:""
   };
+  // public sipConfig = {
+  //   wss: "",
+  //   uri: "",
+  //   agentStaticPassword: 1234,
+  //   enable_sip_log: false,
+  // }
   finesseConfig: any;
 
-  constructor(private _httpClient: HttpClient) {}
+  constructor(private _httpClient: HttpClient) { }
 
   loadConfig() {
     return this._httpClient
@@ -39,6 +49,10 @@ export class appConfigService {
         this.config.CIM_REPORTING_URL = e.CIM_REPORTING_URL;
         this.config.UNIFIED_ADMIN_URL = e.UNIFIED_ADMIN_URL;
         this.config.CCM_URL = e.CCM_URL;
+        this.config.isCiscoEnabled = e.isCiscoEnabled,
+        this.config.isCxVoiceEnabled = e.isCxVoiceEnabled,
+        this.config.CX_VOICE_MRD = e.CX_VOICE_MRD,
+        this.config.CISCO_CC_MRD = e.CISCO_CC_MRD,
         this.config.TEAM_ANNOUNCEMENT=e.TEAM_ANNOUNCEMENT;
         config = {
           domain: e.domain,
@@ -51,7 +65,7 @@ export class appConfigService {
           ssoBackendUrl: e.ssoBackendUrl,
           isGadget: e.isGadget,
           adminUsername: e.adminUsername,
-          adminPassword: e.adminPassword
+          adminPassword: e.adminPassword,
         };
         this.finesseConfig = config;
 
@@ -73,6 +87,13 @@ export class appConfigService {
           silentMonitorType: e.silentMonitorType,
           bargeInType: e.bargeInType
         };
+        sipConfig = {
+          wss: e.wss,
+          uri: e.uri,
+          agentStaticPassword: e.agentStaticPassword,
+          enable_sip_log: e.enable_sip_log,
+        };
+        // this.sipConfig = sipConfig;
       });
   }
 }

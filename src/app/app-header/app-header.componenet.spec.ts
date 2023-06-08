@@ -19,8 +19,22 @@ describe("Appheader component", () => {
   let fixture: AppHeaderComponent;
   let _cacheService: cacheService;
   let _sharedService: sharedService;
+  let _translateService: any
+  let _sipService: any;
+  let _appConfigService:any;
+
+  // private countupTimerService: CountupTimerService,
+    // private _router: Router,
+    // public _cacheService: cacheService,
+    // private _socketService: socketService,
+    // private _sharedService: sharedService,
+    // public _finesseService: finesseService,
+    // public _sipService: SipService,
+    // public _appConfigService:appConfigService,
+    // private _fcmService: fcmService,
+    // private _httpService: httpService,i
+    // private _translateService: TranslateService
   let _snackBarService: any;
-  let _translateService: any;
   let _announcementService:any;
 
   describe("testing create label validators", () => {
@@ -32,6 +46,8 @@ describe("Appheader component", () => {
         _socketService,
         _sharedService,
         _finesseService,
+        _sipService,
+        _appConfigService,
         _fcmService,
         _httpService,
         _snackBarService,

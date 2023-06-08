@@ -1,8 +1,8 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, SimpleChanges, ViewChild } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from "@angular/core";
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
-import { MatDialog, MatSnackBar, MatDialogRef } from "@angular/material";
+import { MatDialog, MatSnackBar } from "@angular/material";
 import { CimEvent } from "../../models/Event/cimEvent";
 import { v4 as uuidv4 } from "uuid";
 import { NgScrollbar } from "ngx-scrollbar";
@@ -14,9 +14,10 @@ import { finesseService } from "src/app/services/finesse.service";
 import { ConfirmationDialogComponent } from "src/app/new-components/confirmation-dialog/confirmation-dialog.component";
 import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
 import { TranslateService } from "@ngx-translate/core";
-import { sender } from "../../models/User/Interfaces";
+import { CallControlsComponent } from "../../new-components/call-controls/call-controls.component";
+import { SipService } from "src/app/services/sip.service";
 
-declare var EmojiPicker: any;
+// declare var EmojiPicker: any;
 
 @Component({
   selector: "app-interactions",
@@ -48,6 +49,10 @@ export class InteractionsComponent implements OnInit {
   lastSeenMessageId;
   // isTransfer = false;
   // isConsult = false;
+  ctiBarView = true;
+  ctiBoxView = false;
+  timer: any = "00:00";
+  cxVoiceSession: any;
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -68,7 +73,7 @@ export class InteractionsComponent implements OnInit {
   showNewMessageNotif: boolean = false;
   currentScrollPosition: number = 100;
 
-  isBarOPened = false;
+  isBarOpened = false;
   unidentified = true;
   isConnected = true;
   popTitle = "Notes";
@@ -106,8 +111,9 @@ export class InteractionsComponent implements OnInit {
     private _snackbarService: snackbarService,
     public _appConfigService: appConfigService,
     private _httpService: httpService,
-    private _finesseService: finesseService,
+    public _finesseService: finesseService,
     private snackBar: MatSnackBar,
+    public _sipService: SipService,
     private _translateService: TranslateService
   ) {}
   ngOnInit() {
@@ -143,7 +149,13 @@ export class InteractionsComponent implements OnInit {
         }
       }
     });
+
+    if (this.conversation && this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
+      if (this._sipService.isCallActive == true) this.ctiControlBar();
+      this.getVoiceChannelSession();
+    }
   }
+
   loadLabels() {
     this._httpService.getLabels().subscribe(
       (e) => {
@@ -433,26 +445,13 @@ export class InteractionsComponent implements OnInit {
     }
   }
   eventFromChild(data) {
-    this.isBarOPened = data;
+    console.log("isbaropened " + data);
+    console.log("ctiBarView " + this.ctiBarView);
+    this.isBarOpened = data;
   }
   eventFromChildForUpdatedLabel(data) {
     this.labels = data;
   }
-  // topicUnsub() {
-  //   console.log("going to unsub from topic " + this.conversation.conversationId);
-
-  //   if (this.conversation.state === "ACTIVE") {
-  //     // if the topic state is 'ACTIVE' then agent needs to request the agent manager for unsubscribe
-  //     this._socketService.emit("topicUnsubscription", {
-  //       conversationId: this.conversation.conversationId,
-  //       agentId: this._cacheService.agent.id
-  //     });
-  //   } else if (this.conversation.state === "CLOSED") {
-  //     // if the topic state is 'CLOSED' it means agent is already unsubscribed by the agent manager
-  //     // now it only needs to clear the conversation from conversations array
-  //     this._socketService.removeConversation(this.conversation.conversationId);
-  //   }
-  // }
 
   onLeaveClick() {
     if (this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
@@ -473,48 +472,55 @@ export class InteractionsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.event == "confirm") {
-        // this._finesseService.isLeaveButtonClicked = true;
-        this.endCallOnFinesse();
-        // this._finesseService.emitEndChannelSessionEvent();
-        // this._socketService.topicUnsub(this.conversation);
+        this.endCallOnCTI();
       }
     });
   }
 
-  endCallOnFinesse() {
-    // let voiceSession = this.conversation.activeChannelSessions.find((item) => {
-    //   return item.channel.channelType.name.toLowerCase() == "voice";
-    // });
-
+  endCallOnCTI() {
+    let data;
     let voiceSession;
     for (let i = 0; i <= this.conversation.activeChannelSessions.length; i++) {
       if (
         this.conversation.activeChannelSessions[i] &&
-        this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "voice"
+        (this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cisco_cc" ||
+          this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cx_voice")
       ) {
-        // console.log("check==>", this.conversation.activeChannelSessions[i].id);
         let cacheId = `${this._cacheService.agent.id}:${this.conversation.activeChannelSessions[i].id}`;
-        // console.log("check1==>", cacheId);
         let cache = this._finesseService.getDialogFromCache(cacheId);
         if (cache) {
-          // console.log("check2==>", cache);
           voiceSession = this.conversation.activeChannelSessions[i];
+        } else if (!cache && this._appConfigService.config.isCxVoiceEnabled) {
+          voiceSession = voiceSession = this.conversation.activeChannelSessions[i];
+        }
+        if (!voiceSession && this._socketService.consultTask) {
+          let consultCallDialog: any = localStorage.getItem("consultCallObject");
+          if (typeof consultCallDialog == "string") consultCallDialog = JSON.parse(consultCallDialog);
+
+          data = {
+            action: "releaseCall",
+            parameter: {
+              dialogId: consultCallDialog ? consultCallDialog.id : null
+            }
+          };
+        } else if (voiceSession) {
+          data = {
+            action: "releaseCall",
+            parameter: {
+              dialogId: voiceSession ? voiceSession.id : null
+            }
+          };
         }
       }
     }
-
-    console.log("VoiceSession==>", voiceSession);
-    if (voiceSession) {
-      let data = {
-        action: "releaseCall",
-        parameter: {
-          dialogId: voiceSession ? voiceSession.id : null
-        }
-      };
-      this._finesseService.endCallOnFinesse(data);
-      console.log("end call data==>", data);
+    console.log("end call data==>", data);
+    if (voiceSession || data.parameter.dialogId) {
+      if (this._appConfigService.config.isCxVoiceEnabled) this._sipService.endCallOnSip();
+      if (this._appConfigService.config.isCiscoEnabled) this._finesseService.endCallOnFinesse(data);
     } else {
-      this._snackbarService.open("No Active Voice Session Found", "err");
+      console.log("No active voice session or dialog id found ==>");
+      this._snackbarService.open(this._translateService.instant("snackbar.Unable-To-End-Voice-Session"), "err");
+      // this._snackbarService.open("Unable to end voice session", "err");
     }
   }
 
@@ -556,23 +562,6 @@ export class InteractionsComponent implements OnInit {
       this.downTheScrollAfterMilliSecs(500, "auto");
       //this.publishLatestMessageSeenEvent();
     }
-    // console.log("before",this.conversation.activeChannelSessions)
-    //     this.activeChannelSessionList = this.conversation.activeChannelSessions;
-    //     this.activeChannelSessionList.forEach((item, index, array) => {
-    //      if (index === array.length - 1 && item.channel.channelType.name != "VOICE" && item.channel.channelType.name != "facebook") {
-    //         item.isChecked = true;
-    //       }
-    //       else if (array.length >1 && index === array.length - 1 && (item.channel.channelType.name == "VOICE" || item.channel.channelType.name == "facebook"))
-    //         {
-    //           item.isChecked = false;
-    //         this.activeChannelSessionList[array.length - 2].isChecked = true;
-    //       } else {
-    //         item.isChecked = false;
-    //       }
-    //       console.log("after",this.conversation.activeChannelSessions)
-    // });
-
-    // this._finesseService.currentConversation.next(this.conversation);
   }
 
   ngOnDestroy() {
@@ -891,6 +880,7 @@ export class InteractionsComponent implements OnInit {
 
   switchChannelSession(channelSession, channelIndex) {
     try {
+      console.log("channel session==>", channelSession);
       if (!channelSession.isDisabled) {
         if (!channelSession.isChecked) {
           this.conversation.activeChannelSessions.forEach((channelSession) => {
@@ -1198,4 +1188,76 @@ export class InteractionsComponent implements OnInit {
   //   console.log("data-->",callLegs)
 
   // }
+
+  ctiControlBar() {
+    this.ctiBoxView = true;
+    this.ctiBarView = false;
+    const dialogRef = this.dialog.open(CallControlsComponent, {
+      panelClass: "call-controls-dialog",
+      hasBackdrop: false,
+      data: { conversation: this.conversation }
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      this.ctiBoxView = false;
+      this.ctiBarView = true;
+      if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
+    });
+  }
+
+  endCallOnSip() {
+    console.log("on End Call Request==>");
+    this._sipService.endCallOnSip();
+  }
+
+  getVoiceChannelSession() {
+    try {
+      this.cxVoiceSession = this.conversation.activeChannelSessions.find((channelSession) => {
+        return channelSession.channel.channelType.name.toLowerCase() === "cx_voice";
+      });
+      if (this.cxVoiceSession) {
+        const cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
+        const cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
+        if (cacheDialog) {
+          const currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
+          const startTime = new Date(currentParticipant.startTime);
+          this._sipService.timeoutId = setInterval(() => {
+            const currentTime = new Date();
+            const timedurationinMS = currentTime.getTime() - startTime.getTime();
+            this.msToHMS(timedurationinMS);
+          }, 1000);
+        } else {
+          console.log("No Dialog Found==>");
+        }
+      } else {
+        clearInterval(this._sipService.timeoutId);
+      }
+    } catch (e) {
+      console.error("[getVoiceChannelSession] Error:", e);
+    }
+  }
+
+  msToHMS(ms) {
+    try {
+      // Convert to seconds:
+      let sec = Math.floor(ms / 1000);
+      // Extract hours:
+      const hours = Math.floor(sec / 3600); // 3,600 seconds in 1 hour
+      sec %= 3600; // seconds remaining after extracting hours
+      // Extract minutes:
+      const min = Math.floor(sec / 60); // 60 seconds in 1 minute
+      // Keep only seconds not extracted to minutes:
+      sec %= 60;
+      if (hours > 0) {
+        this.timer = `${this.formatNumber(hours)}:${this.formatNumber(min)}:${this.formatNumber(sec)}`;
+      } else {
+        this.timer = `${this.formatNumber(min)}:${this.formatNumber(sec)}`;
+      }
+    } catch (e) {
+      console.error("[msToHMS] Error:", e);
+    }
+  }
+
+  formatNumber(num) {
+    return num.toString().padStart(2, "0");
+  }
 }

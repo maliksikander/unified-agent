@@ -79,6 +79,13 @@
     "Error-Getting-Queues-List":"Error Getting Queues List_fr",
     "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found_fr",
     "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_fr",
+    "Unable-To-End-Voice-Session":"Unable to end voice session_fr",
+    "CX-Voice-incorrect-request":"CX VOICE : Incorrect object for call request!_fr",
+    "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed, Invalid Credentials!_fr",
+    "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed_fr",
+    "CX-Voice-Login-Success":"CX VOICE : Successfully login with EF Switch_fr",
+    "SIP-Logout-Successful":"SIP Logout Successful_fr",
+    "No-Extension-Found":"No Extension Found For Sip Agent_fr",
     "Unable-to-edit-Active-Announcements":"Unable to edit Active Announcement_fr",
     "New-Announcement":"New Announcement Created_fr",
     "Announcement-Deleted":"Announcement Deleted_fr",
@@ -86,8 +93,6 @@
     "Unable-to-Create-New-Announcement":"Unable to Create New Announcement_fr",
     "Unable-to-Update-Announcement":"Unable to Update Announcement_fr",
     "Unable-to-Delete-Announcement":"Unable to Delete Announcement_fr"
-
-    
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_fr",
@@ -318,6 +323,7 @@
   },
   "socket-service":{
     "has-joined-the-conversation":"has joined the conversation_fr",
+    "have-joined-the-conversation":"have joined the conversation_fr",
    "session-started":"session started_fr",
    "session-ended":"session ended_fr",
    "left-the-conversation":"left the conversation_fr",

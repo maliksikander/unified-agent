@@ -45,6 +45,7 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { cacheService } from "./services/cache.service";
 import { Observable,from } from "rxjs";
 import { ActiveAgentDetailsComponent } from './supervisor/active-agent-details/active-agent-details.component';
+import { CallControlsComponent } from './new-components/call-controls/call-controls.component';
 // import { ActiveChatsComponent } from "./supervisor/active-chats/active-chats.component";
 // import { QueueChatsComponent } from "./supervisor/queue-chats/queue-chats.component";
 
@@ -129,7 +130,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     GrafanaComponent,
     ActiveChatsComponent,
     QueueChatsComponent,
-    ActiveAgentDetailsComponent
+    ActiveAgentDetailsComponent,
+    CallControlsComponent
   ],
   imports: [
     BrowserModule,
@@ -174,7 +176,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     columnPreferences,
     CreateLabelComponent,
     FilePreviewComponent,
-    LinkConversationDialogComponent
+    LinkConversationDialogComponent,
+    CallControlsComponent
   ],
   providers: [
     {

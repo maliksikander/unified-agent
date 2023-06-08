@@ -2,6 +2,7 @@ import { Component, OnInit, HostBinding } from "@angular/core";
 import { Router } from "@angular/router";
 import { finesseService } from "./services/finesse.service";
 import { isLoggedInService } from "./services/isLoggedIn.service";
+import { SipService } from "./services/sip.service";
 import { sharedService } from "./services/shared.service";
 import { OverlayContainer } from "@angular/cdk/overlay";
 import { httpService } from "./services/http.service";
@@ -28,6 +29,7 @@ export class AppComponent implements OnInit {
     private _router: Router,
     private _httpService: httpService,
     private _isLoggedInservice: isLoggedInService,
+    private _sipService : SipService,
     private _sharedService: sharedService,
     private _translateService: TranslateService
   ) {}

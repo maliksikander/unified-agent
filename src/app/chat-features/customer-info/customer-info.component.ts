@@ -10,6 +10,7 @@ import { cacheService } from "src/app/services/cache.service";
 import * as uuid from "uuid";
 import { snackbarService } from "src/app/services/snackbar.service";
 import { TranslateService } from "@ngx-translate/core";
+import { SipService } from "src/app/services/sip.service";
 
 @Component({
   selector: "app-customer-info",
@@ -65,8 +66,11 @@ export class CustomerInfoComponent implements OnInit {
     " Ev Gayforth"
   ];
   timer = "00:00";
-  voiceSession;
-
+  ciscoVoiceSession;
+  cxVoiceSession;
+  // hours: number;
+  // minutes: number;
+  // seconds: number;
   // drop(event: CdkDragDrop<string[]>) {
   //   moveItemInArray(this.customArray, event.previousIndex, event.currentIndex);
   // }
@@ -77,6 +81,7 @@ export class CustomerInfoComponent implements OnInit {
     private dialog: MatDialog,
     private _httpService: httpService,
     private _finesseService: finesseService,
+    private _sipService: SipService,
     private _cacheService: cacheService,
     private _snackBarService: snackbarService,
     private _translateService: TranslateService
@@ -84,6 +89,11 @@ export class CustomerInfoComponent implements OnInit {
 
   ngOnInit() {
     if (this.activeChannelSessions) this.setActiveChannelSessions(this.activeChannelSessions);
+    // this._sipService.getTimer().subscribe((value) => {
+    //   this.hours = Math.floor(value / 3600);
+    //   this.minutes = Math.floor(value / 60);
+    //   this.seconds = value % 60;
+    // });
   }
 
   close() {
@@ -134,7 +144,8 @@ export class CustomerInfoComponent implements OnInit {
   setActiveChannelSessions(activeSessions: Array<any>) {
     let sessions: Array<any> = JSON.parse(JSON.stringify(activeSessions));
     sessions.forEach((item, index) => {
-      if (item.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "external") {
+      // if (item.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "external") {
+      if (item.channel.channelType.name.toLowerCase() == "voice") {
         if (item.state.reasonCode == "AGENT") {
           sessions.splice(index, 1);
         }
@@ -147,18 +158,22 @@ export class CustomerInfoComponent implements OnInit {
 
   getVoiceChannelSession() {
     try {
-      this.voiceSession = this.activeChannelSessions.find((channelSession) => {
-        if (channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "external") {
+      this.ciscoVoiceSession = this.activeChannelSessions.find((channelSession) => {
+        if (channelSession.channel.channelType.name.toLowerCase() == "cisco_cc") {
           return channelSession;
         }
       });
-      if (this.voiceSession) {
-        let cacheId = `${this._cacheService.agent.id}:${this.voiceSession.id}`;
-        // console.log("cacheID==>",cacheId);
+      this.cxVoiceSession = this.activeChannelSessions.find((channelSession) => {
+        if (channelSession.channel.channelType.name.toLowerCase() == "cx_voice") {
+          return channelSession;
+        }
+      });
+
+      if (this.ciscoVoiceSession) {
+        let cacheId = `${this._cacheService.agent.id}:${this.ciscoVoiceSession.id}`;
         let cacheDialog: any = this._finesseService.getDialogFromCache(cacheId);
-        // console.log("cacheDialog==>",cacheDialog);
         if (cacheDialog) {
-          let currentParticipant = this._finesseService.getCurrentAgentFromParticipantList(cacheDialog.dialog.participants.Participant);
+          let currentParticipant = this._finesseService.getCurrentParticipantFromDialog(cacheDialog.dialog);
           let startTime = new Date(currentParticipant.startTime);
 
           this._finesseService.timeoutId = setInterval(() => {
@@ -168,12 +183,27 @@ export class CustomerInfoComponent implements OnInit {
           }, 1000);
         } else {
           console.log("No Dialog Found==>");
-          // this.timer = "";
         }
-      } else {
-        if (this._finesseService.timeoutId) {
-          clearInterval(this._finesseService.timeoutId);
+      } if (this.cxVoiceSession) {
+        let cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
+        let cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
+        if (cacheDialog) {
+          let currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
+          let startTime = new Date(currentParticipant.startTime);
+
+          this._sipService.timeoutId = setInterval(() => {
+            let currentTime = new Date();
+            let timedurationinMS = currentTime.getTime() - startTime.getTime();
+            this.msToHMS(timedurationinMS);
+          }, 1000);
+        } else {
+          console.log("No Dialog Found==>");
         }
+      }
+
+      else {
+        if (this._finesseService.timeoutId) clearInterval(this._finesseService.timeoutId);
+        if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
       }
     } catch (e) {
       console.error("[getVoiceChannelSession] Error :", e);
@@ -281,67 +311,64 @@ export class CustomerInfoComponent implements OnInit {
           channelType = channelTypes.find((e) => {
             return e.name == channelTypeName;
           });
-        this._httpService.getDefaultOutboundChannel(channelType.id).subscribe(
-          (data) => {
-            if (data) {
-              if (data.serviceIdentifier) {
-                let cimMessage = {
-                  id: uuid.v4().toString(),
-                  header: {
-                    channelData: {
-                      channelCustomerIdentifier: channelCustomerIdentifier,
-                      serviceIdentifier: data.serviceIdentifier,
-                      additionalAttributes: [{ key: "agentId", type: "String100", value: this._cacheService.agent.id }]
+          this._httpService.getDefaultOutboundChannel(channelType.id).subscribe(
+            (data) => {
+              if (data) {
+                if (data.serviceIdentifier) {
+                  let cimMessage = {
+                    id: uuid.v4().toString(),
+                    header: {
+                      channelData: {
+                        channelCustomerIdentifier: channelCustomerIdentifier,
+                        serviceIdentifier: data.serviceIdentifier,
+                        additionalAttributes: [{ key: "agentId", type: "String100", value: this._cacheService.agent.id }]
+                      },
+                      language: {},
+                      timestamp: "",
+                      securityInfo: {},
+                      stamps: [],
+                      intent: "AGENT_OUTBOUND",
+                      entities: {},
+                      customer: this.customer
                     },
-                    language: {},
-                    timestamp: "",
-                    securityInfo: {},
-                    stamps: [],
-                    intent: "AGENT_OUTBOUND",
-                    entities: {},
-                    customer: this.customer
-                  },
-                  body: {
-                    type: "PLAIN",
-                    markdownText: ""
-                  }
-                };
-                console.log("cim==>", cimMessage);
-                this._httpService.startOutboundConversation(cimMessage).subscribe(
-                  (e) => {},
-                  (err) => {
-                    this._sharedService.Interceptor(err.error, "err");
-                    console.error("Error Starting Outbound Conversation", err);
-                  }
+                    body: {
+                      type: "PLAIN",
+                      markdownText: ""
+                    }
+                  };
+                  console.log("cim==>", cimMessage);
+                  this._httpService.startOutboundConversation(cimMessage).subscribe(
+                    (e) => {},
+                    (err) => {
+                      this._sharedService.Interceptor(err.error, "err");
+                      console.error("Error Starting Outbound Conversation", err);
+                    }
+                  );
+                } else {
+                  console.error("Service identifier not present");
+                }
+              }
+            },
+            (error) => {
+              console.error("erro.staus", error);
+
+              if (error.error.status == "NOT_FOUND") {
+                this._snackBarService.open(
+                  this._translateService.instant("snackbar.Default-Outbound-Channel-Not-Found-for-channelType") + " " + channelTypeName,
+                  "err"
                 );
               } else {
-                console.error("Service identifier not present");
+                this._sharedService.Interceptor(error.error, "err");
               }
+              console.error("Error Starting Outbound Conversation", error);
             }
-          },
-          (error) => {
-            console.error("erro.staus",error)
-
-            if(error.error.status=='NOT_FOUND')
-            {
-              this._snackBarService.open(this._translateService.instant("snackbar.Default-Outbound-Channel-Not-Found-for-channelType")+" "+channelTypeName, "err");
-            }
-            else
-            {
-            this._sharedService.Interceptor(error.error, "err");
-            }
-            console.error("Error Starting Outbound Conversation", error);
-          }
-        );
-      }
-      else{
-        console.error("error getting channel types from local storage",channelTypes)
-      }
+          );
+        } else {
+          console.error("error getting channel types from local storage", channelTypes);
+        }
       } catch (e) {
-
-        console.error("Error occurs",e)
+        console.error("Error occurs", e);
       }
-      
     }
   }
 

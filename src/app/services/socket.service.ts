@@ -29,6 +29,7 @@ export class socketService {
   isSocketConnected: boolean = false;
   conversations: any = [];
   conversationIndex = -1;
+  consultTask;
   private _conversationsListener: BehaviorSubject<any> = new BehaviorSubject([]);
 
   public readonly conversationsListener: Observable<any> = this._conversationsListener.asObservable();
@@ -49,7 +50,6 @@ export class socketService {
     private _translateService: TranslateService
   ) {
     // this.onTopicData(mockTopicData, "12345", "");
-    
   }
 
   connectToSocket() {
@@ -96,12 +96,12 @@ export class socketService {
             "err"
           );
         }
-      } catch (err) { }
+      } catch (err) {}
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) { }
+        } catch (e) {}
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -135,7 +135,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) { }
+        } catch (e) {}
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -153,15 +153,12 @@ export class socketService {
       console.log("ANNOUNCEMENT_CREATED", res);
       if ((res.supervisorId !== this._cacheService.agent.id)) {
         this._announcementService.addCreatedAnnoucement(res);
-        
       }
-
     });
 
     this.socket.on("ANNOUNCEMENT_DELETED", (res: any) => {
       console.log("ANNOUNCEMENT_DELETED", res);
       this._announcementService.removeAnnoucement(res);
-     
     });
 
 
@@ -173,9 +170,10 @@ export class socketService {
 
     this.socket.on("taskRequest", (res: any) => {
       console.log("taskRequest==>", res);
-
       if (res.taskState && res.taskState.name.toLowerCase() == "started") {
         if (res.taskDirection.toLowerCase() == "consult") {
+          this.consultTask = undefined;
+          this.consultTask = res;
           console.log("taskRequest1==>");
           this.emit("topicSubscription", {
             topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.conversationId, "ASSISTANT", "SUBSCRIBED"),
@@ -193,7 +191,11 @@ export class socketService {
           });
         }
       } else {
+        if (res.channelSession.channel.channelType.name.toLowerCase() !== "cx_voice") {
+        // } else {
         this.triggerNewChatRequest(res);
+        }
+        // this.triggerNewChatRequest(res);
       }
     });
 
@@ -222,7 +224,7 @@ export class socketService {
     });
 
     this.socket.on("onTopicData", (res: any, callback: any) => {
-      console.log("onTopicData", JSON.parse(JSON.stringify(res)));
+      console.log("onTopicData==>", JSON.parse(JSON.stringify(res)));
       try {
         this.onTopicData(res.topicData, res.conversationId, res.taskId);
         if (callback) {
@@ -309,7 +311,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) { }
+    } catch (err) {}
   }
 
   listen(eventName: string) {
@@ -441,7 +443,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) { }
+    } catch (e) {}
     this._cacheService.resetCache();
     this._snackbarService.open(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"), "err");
     alert(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"));
@@ -554,7 +556,10 @@ export class socketService {
         // if the channel session is of voice or facebook then channel session should be disabled
         // because the channel session in the array is used to send the message to customer
         conversation.activeChannelSessions.forEach((channelSession) => {
-          if (channelSession.channel.channelType.name.toLowerCase() == "voice") {
+          if (
+            channelSession.channel.channelType.name.toLowerCase() == "cisco_cc" ||
+            channelSession.channel.channelType.name.toLowerCase() == "cx_voice"
+          ) {
             channelSession["isDisabled"] = true;
           } else {
             channelSession["isDisabled"] = false;
@@ -565,7 +570,10 @@ export class socketService {
         // if the channel session is of web or whatsapp then channel session should be selected
         // because the channel session in the array is used to send the message to customer
         let repliedChannelSession = conversation.activeChannelSessions.find((channelSession) => {
-          if (channelSession.channel.channelType.name.toLowerCase() != "voice") {
+          if (
+            channelSession.channel.channelType.name.toLowerCase() != "cisco_cc" &&
+            channelSession.channel.channelType.name.toLowerCase() != "cx_voice"
+          ) {
             return channelSession;
           }
         });
@@ -684,7 +692,10 @@ export class socketService {
 
   isVoiceChannelSessionExists(activeChannelSessions) {
     let voiceChannelSession = activeChannelSessions.find((channelSession) => {
-      if (channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "external") {
+      if (
+        channelSession.channel.channelType.name.toLowerCase() == "cisco_cc" ||
+        channelSession.channel.channelType.name.toLowerCase() == "cx_voice"
+      ) {
         return channelSession;
       }
     });
@@ -699,8 +710,10 @@ export class socketService {
   isNonVoiceChannelSessionExists(activeChannelSessions) {
     let nonVoiceChannelSession = activeChannelSessions.find((channelSession) => {
       if (
-        channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "pull" ||
-        channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "push"
+        channelSession.channel.channelType.name.toLowerCase() != "cisco_cc" &&
+        channelSession.channel.channelType.name.toLowerCase() != "cx_voice"
+        // channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "pull" ||
+        // channelSession.channel.channelConfig.routingPolicy.routingMode.toLowerCase() == "push"
       ) {
         return channelSession;
       }
@@ -886,7 +899,8 @@ export class socketService {
           // because the channel session in the array is used to send the message to customer
           let repliedChannelSession = conversation.activeChannelSessions.find((channelSession) => {
             if (
-              channelSession.channel.channelType.name.toLowerCase() != "voice" &&
+              channelSession.channel.channelType.name.toLowerCase() != "cisco_cc" &&
+              channelSession.channel.channelType.name.toLowerCase() != "cx_voice" &&
               channelSession.channel.channelType.name.toLowerCase() != "facebook"
             ) {
               return channelSession;
@@ -1035,7 +1049,7 @@ export class socketService {
     if (conversation) {
       let message = this.createSystemNotificationMessage(cimEvent);
 
-      if (cimEvent.data.channel.channelType.name.toLowerCase() == "voice") {
+      if (cimEvent.data.channel.channelType.name.toLowerCase() == "cisco_cc" || cimEvent.data.channel.channelType.name.toLowerCase() == "cx_voice") {
         cimEvent.data["isDisabled"] = true;
         cimEvent.data["isChecked"] = false;
       } else {
@@ -1174,7 +1188,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) { }
+    } catch (e) {}
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
@@ -1244,13 +1258,13 @@ export class socketService {
                     console.log("limit exceed");
                     this._snackbarService.open(
                       this._translateService.instant("snackbar.The-conversation-is-going-to-linking-with") +
-                      selectedCustomer.firstName +
-                      this._translateService.instant("snackbar.However-the-channel-identifier") +
-                      channelIdentifier +
-                      this._translateService.instant("snackbar.can-not-be-added-in") +
-                      selectedCustomer.firstName +
-                      attr +
-                      this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
+                        selectedCustomer.firstName +
+                        this._translateService.instant("snackbar.However-the-channel-identifier") +
+                        channelIdentifier +
+                        this._translateService.instant("snackbar.can-not-be-added-in") +
+                        selectedCustomer.firstName +
+                        attr +
+                        this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
                       "succ",
                       20000,
                       "Ok"
@@ -1496,9 +1510,15 @@ export class socketService {
         this._cacheService.agent.id == cimEvent.data.agentParticipant.participant.keycloakUser.id
           ? "You"
           : cimEvent.data.agentParticipant.participant.keycloakUser.username;
-      this._translateService.stream("socket-service.has-joined-the-conversation").subscribe((data: string) => {
-        message.body.markdownText = data;
-      });
+      if (message.body.displayText == "You") {
+        this._translateService.stream("socket-service.have-joined-the-conversation").subscribe((data: string) => {
+          message.body.markdownText = data;
+        });
+      } else {
+        this._translateService.stream("socket-service.has-joined-the-conversation").subscribe((data: string) => {
+          message.body.markdownText = data;
+        });
+      }
     } else if (cimEvent.name.toLowerCase() == "participant_role_changed" && cimEvent.data.conversationParticipant.role.toLowerCase() == "primary") {
       message = CimMessage;
       message.body["displayText"] =
@@ -1597,7 +1617,7 @@ export class socketService {
   }
 
   topicUnsub(conversation) {
-    console.log("going to unsub from topic " + conversation.conversationId);
+    console.log("going to unsub from topic==>" + conversation.conversationId);
 
     if (conversation.state === "ACTIVE") {
       // if the topic state is 'ACTIVE' then agent needs to request the agent manager for unsubscribe

@@ -36,5 +36,9 @@
     "conferenceType": "${conferenceType}",
     "silentMonitorType": "${silentMonitorType}",
 	  "bargeInType": "${bargeInType}",
-    "ronaStateOnCisco":"${ronaStateOnCisco}"
+    "ronaStateOnCisco":"${ronaStateOnCisco}",
+    "isCiscoEnabled":"${isCiscoEnabled}",
+    "isCxVoiceEnabled":"${isCxVoiceEnabled}",
+    "CISCO_CC_MRD":"${CISCO_CC_MRD}",
+    "CX_VOICE_MRD":"${CX_VOICE_MRD}"
 }
