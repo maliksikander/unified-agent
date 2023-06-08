@@ -33,7 +33,7 @@ export class ChatNotificationsComponent implements OnInit {
     private _soundService: soundService,
     private _finesseService: finesseService,
     private _translateService: TranslateService,
-    private _announcementService:announcementService
+    public _announcementService:announcementService
   ) {
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       try {
