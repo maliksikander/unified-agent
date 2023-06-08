@@ -1,21 +1,23 @@
+@import "src/app/shared/globalVariables";
 //.announcement-table-area{
 //  border: 5px solid #E2E2E2;
 //  height: calc(100% - 42px);
 //}
-.table-area {
-
-  h4 {
-    font-size: 13px;
-    color: #000;
-    margin: 20px 0;
-  }
-}
+//.table-area {
+//
+//  h4 {
+//    font-size: 13px;
+//    color: #000;
+//    margin: 20px 0;
+//  }
+//}
 
 .manage-dashboard {
   width: 100%;
 
   .table {
     background: #ffffff;
+    box-shadow: 0 0 5px #00000029;
 
     tr {
       position: relative;
@@ -29,21 +31,15 @@
     }
 
     thead {
+      background: $main-color-background !important;
 
       th {
-        color: #000000;
-        height: 26px;
-        line-height: 26px;
+        color: $blue-text-color;
+        height: 38px;
+        line-height: 38px;
         padding: 0 15px;
         font-size: 12px;
-        background: #DEDEDE !important;
         border: 0 !important;
-        &:first-child{
-          border-radius: 5px 0 0 0;
-        }
-        &:last-child{
-          border-radius: 0 5px 0 0;
-        }
       }
     }
   }
@@ -69,10 +65,13 @@
 
       span {
         cursor: default;
-        max-width: 100%;
         display: inline-block;
-        white-space: normal;
         line-height: 20px;
+        vertical-align: middle;
+        max-width: 500px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
 
@@ -84,22 +83,64 @@
     //  width: 20% !important;
     //}
   }
-tbody {
-  border-bottom: 1px solid #dedede;
-  tr {
-    border-left: 1px solid #dedede;
-    border-right: 1px solid #dedede;
-     &:hover {
-      background: #ECF7FB;
+  tbody {
+    border-bottom: 1px solid #dedede;
+    tr {
+      &:hover {
+        background: lighten($main-color, 45%);
 
-      .table-trigger {
-        display: inline-block;
-        opacity: 1;
-        visibility: visible;
+        .table-trigger {
+          display: inline-block;
+          opacity: 1;
+          visibility: visible;
+        }
       }
     }
   }
-}
+  .announcement-status {
+    width: 25%;
+    text-align: center;
+    text-transform: capitalize;
+
+    span {
+      color: #b5b5b5;
+      background: lighten($text-color, 50%);
+      border: 1px solid lighten(#b5b5b5, 5%);
+      min-width: 85px;
+      display: inline-block;
+      height: 25px;
+      line-height: 23px;
+      border-radius: 5px;
+
+      &.active {
+        color: $green-color;
+        background: lighten($green-color, 50%);
+        border: 1px solid lighten($green-color, 35%);
+      }
+      &.scheduled {
+        color: #ff761a;
+        background: lighten(#ff761a, 43%);
+        border: 1px solid lighten(#ff761a, 30%);
+      }
+    }
+
+    //&.active {
+    //  span {
+    //    color: $green-color;
+    //    //background: lighten($green-color, 45%);
+    //    //border: 1px solid $green-color;
+    //  }
+    //}
+    //&.scheduled {
+    //  span {
+    //    color: #ff761a;
+    //    //background: lighten($main-color, 45%);
+    //    //border: 1px solid $main-color;
+    //  }
+    //}
+
+
+  }
 
 }
 
@@ -119,10 +160,10 @@ tbody {
     margin: 0 5px;
     width: 24px;
     line-height: 24px;
-    background: #25AFCB;
+    background: $blue-text-color;
 
     &:hover {
-      background: #448aff;
+      background: lighten($blue-text-color, 5%);
     }
 
     .mat-button-wrapper {
@@ -131,22 +172,22 @@ tbody {
   }
 
   //.list-trigger-area {
-    //display: none;
-    //transition: all .3s;
-    //position: absolute;
-    //right: 50px;
-    //z-index: 2;
-    //transition: all .3s;
+  //display: none;
+  //transition: all .3s;
+  //position: absolute;
+  //right: 50px;
+  //z-index: 2;
+  //transition: all .3s;
 
-    i {
-      font-size: 16px;
-    }
+  i {
+    font-size: 16px;
+  }
   //}
 }
 
 .announcement-selection-area {
   text-align: right;
-  padding: 12px 0;
+  padding: 6px 0;
 
   mat-form-field {
     top: 1px;
@@ -161,7 +202,7 @@ tbody {
 
 
   .new-announcement {
-    background: #25AFCB;
+    background: $main-color;
     padding-left: 45px;
     height: 35px;
     line-height: 35px;
@@ -188,12 +229,12 @@ tbody {
 
 //dialog
 .dialog-header {
-  background: #ECF7FB;
+  background: $blue-text-color;
   position: relative;
   padding: 15px;
 
   h4 {
-    color: #1D9AC0;
+    //color: #1D9AC0;
     margin: 0;
     font-size: 14px;
     font-weight: bold;
@@ -202,8 +243,8 @@ tbody {
   button {
     position: absolute;
     right: 15px;
-    color: #A4A4A4;
-    border: 1px solid #A4A4A4;
+    color: #fff;
+    border: 1px solid #fff;
     width: 25px;
     height: 25px;
     line-height: 25px;
@@ -261,7 +302,7 @@ tbody {
 
 
 .confirmation-header {
-  background: #e35151;
+  background: $red-color;
   height: 36px;
   line-height: 36px;
 
@@ -301,7 +342,7 @@ tbody {
     text-transform: capitalize;
 
     &.confirm-btn {
-      background: #e35151;
+      background: $red-color;
     }
   }
 }
@@ -329,4 +370,91 @@ tbody {
     color: #505050;
     font-size: 11px;
   }
+}
+
+
+//
+.announcement-status-label {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  margin-right: 15px;
+  vertical-align: middle;
+
+  span {
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+
+    li {
+      display: inline-flex;
+      margin-left: 10px;
+      font-size: 10px;
+      padding: 5px;
+    }
+  }
+}
+
+span.announcement-current-status {
+  display: inline-flex;
+  width: 10px;
+  height: 10px;
+  background: #dedede;
+  margin-right: 6px;
+  align-self: center;
+  border-radius: 100%;
+  border: 1px solid #fff;
+  font-size: 12px;
+  font-weight: 600;
+
+  &.scheduled {
+    background: #ff761a;
+  }
+
+  &.active {
+    background: #91cc10;
+  }
+
+  &.expired {
+    background: #dedede;
+  }
+}
+
+@media (max-width:1280px) {
+  td{
+    width: 100%;
+    span.active-team {
+      background: transparent;
+      padding: 0 3px;
+    }
+  }
+  .rel-teams {
+    max-width: 180px !important;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap !important;
+  }
+}
+
+span.active-team {
+  padding-right: 6px;
+  position: relative;
+  background: #f1f1f18a;
+  margin: 0 2px;
+  padding-left: 6px;
+  border-radius: 2px;
+  line-height: 19px;
+  display: inline-block;
+  //&:after{
+  //  //content: ',';
+  //}
+  //&:last-child{
+  //  &:after{
+  //    content: '';
+  //  }
+  //}
 }

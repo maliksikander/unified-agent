@@ -379,7 +379,7 @@
   padding-left: 26px !important;
 
   &.state-trigger {
-    min-width: 160px;
+    min-width: 160px; 
   }
 
   &:hover {
@@ -557,6 +557,7 @@ button.main-menu-item {
   }
 }
 
+
 .menu-trigger-custom {
   display: block;
   margin: 0;
@@ -623,6 +624,11 @@ button.main-menu-item {
       right: 11px;
     }
 
+      &:disabled{
+        cursor: not-allowed;
+      }
+    
+      
     //&.ready {
     //  background: $green-color;
     //  border-color: $green-color;
@@ -766,6 +772,10 @@ button.main-menu-item {
     font-size: 11px;
     color: #171717;
     padding: 5px 0;
+
+    .mat-slide-toggle.mat-disabled {
+      opacity: 1;
+  }
   }
 }
 .state-main-wrapper {
@@ -928,28 +938,30 @@ button.main-menu-item {
   position: relative;
   width: 40px;
 
-  button {
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
-    background: #f1f1f1;
+  button{
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    background: transparent;
     overflow: hidden;
     transition: all 0.2s;
 
-    img {
-      position: relative;
-      top: -11px;
-      width: 12px;
-      transition: all 0.2s;
+    //img{
+    //  position: relative;
+    //  top: -11px;
+    //  width: 12px;
+    //  transition: all .2s;
+    //}
+    mat-icon{
+      color: $highlight-color;
+      font-size: 24px;
     }
 
-    &:hover,
-    &.announcement-tab-opened {
-      background: #d4f5fb;
-      transition: all 0.2s;
-      img {
-        top: 5px;
-        transition: all 0.2s;
+    &:hover, &.announcement-tab-opened{
+      //background: #D4F5FB;
+      transition: all .2s;
+      mat-icon{
+        color: darken($highlight-color, 20%);
       }
     }
   }
@@ -965,8 +977,8 @@ button.main-menu-item {
     color: #fff;
     line-height: 13px;
     text-align: center;
-    right: 4px;
-    top: -4px;
+    right: 5px;
+    top: -2px;
     font-weight: 600;
     border-radius: 100%;
   }
@@ -974,7 +986,7 @@ button.main-menu-item {
 
 .right-canned-message-list.mat-drawer-opened.announcement-tab {
   opacity: 1;
-  height: calc(100% - 135px) !important;
+  height: fit-content !important;
   overflow: inherit;
   top: 50px;
   width: 320px;
@@ -984,9 +996,11 @@ button.main-menu-item {
 
   .mat-sidenav {
     top: 0;
-    height: 100%;
+    height: fit-content;
     width: 100%;
     max-width: 320px;
+    overflow: auto;
+    max-height: 80vh;
   }
 }
 

@@ -113,13 +113,10 @@ export class InteractionsComponent implements OnInit {
     private _httpService: httpService,
     public _finesseService: finesseService,
     private snackBar: MatSnackBar,
-    private _translateService: TranslateService,
-    public _sipService: SipService
+    public _sipService: SipService,
+    private _translateService: TranslateService
   ) {}
-
   ngOnInit() {
-    console.log(this.conversation, "==> Conversation");
-
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
@@ -260,6 +257,21 @@ export class InteractionsComponent implements OnInit {
     this.openQuotedReplyArea(message);
   }
 
+  navigationToRepliedMessage(repliedMessage: any) {
+    if (repliedMessage && repliedMessage.id) {
+      const elementId = repliedMessage.id;
+
+      const element = document.getElementById(elementId);
+
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+      }
+    }
+  }
+
   openDialog(templateRef, e): void {
     this.popTitle = e;
 
@@ -397,7 +409,7 @@ export class InteractionsComponent implements OnInit {
   //to send typing event
   sendTypingEvent() {
     if (!this.sendTypingStartedEventTimer) {
-      if (this._socketService.isSocketConnected && this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor") {
+      if (this._socketService.isSocketConnected && this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor" && !this.isWhisperMode) {
         let message = this.getCimMessage();
         let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
         if (selectedChannelSession) {
@@ -1066,7 +1078,7 @@ export class InteractionsComponent implements OnInit {
       channelSession: this.conversation.firstChannelSession,
       agentParticipant: this.conversation.topicParticipant,
       mode: "queue",
-      queueId: this.requestedQueue.queueId,
+      queueName: this.requestedQueue.queueName,
       note: this.assistanceRequestNote
     };
     if (this.requestAction == "transfer") this._socketService.emit("directTransferRequest", data);

@@ -55,8 +55,9 @@ describe("InteractionsComponent", () => {
         _httpService,
         _finneseService,
         snackBar,
+        _sipService,
         translateService,
-        _sipService
+
       );
     });
 
@@ -98,8 +99,9 @@ describe("InteractionsComponent", () => {
         _httpService,
         _finneseService,
         snackBar,
+        _sipService,
         translateService,
-        _sipService
+
       );
     });
 
@@ -145,8 +147,8 @@ describe("InteractionsComponent", () => {
         _httpService,
         _finneseService,
         snackBar,
-        translateService,
-        _sipService
+        _sipService,
+        translateService
       );
     });
 
@@ -181,8 +183,8 @@ describe("InteractionsComponent", () => {
         _httpService,
         _finneseService,
         snackBar,
-        translateService,
-        _sipService
+        _sipService,
+        translateService
       );
     });
 

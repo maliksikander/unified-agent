@@ -5,7 +5,7 @@
         <h4>{{ "supervisor.active-conversations-detail" | translate }}</h4>
       </div>
       <div class="col-md-9 text-right page-action">
-        <mat-form-field appearance="outline" class="selection-trigger  mr-2">
+        <mat-form-field appearance="outline" class="selection-trigger mr-2">
           <mat-select [(value)]="FilterSelected" (selectionChange)="onAnsweredByfilterChange($event)">
             <mat-option value="agents">{{ "supervisor.answered-by-agents" | translate }}</mat-option>
             <mat-option value="bots">{{ "supervisor.answered-by-bot" | translate }}</mat-option>
@@ -19,52 +19,68 @@
         <!--          </mat-select>-->
         <!--        </mat-form-field>-->
 
-        <mat-form-field *ngIf="FilterSelected == 'agents' && this.supervisedTeams.length > 0" appearance="outline"
-          class="selection-trigger mr-2">
+        <mat-form-field *ngIf="FilterSelected == 'agents' && this.supervisedTeams.length > 0" appearance="outline" class="selection-trigger mr-2">
           <mat-select [(value)]="selectedTeam" (selectionChange)="onTeamChange()">
-            <mat-option *ngFor="let team of supervisedTeams; " [value]="team.teamId">{{team.teamName}}</mat-option>
+            <mat-option *ngFor="let team of supervisedTeams" [value]="team.teamId">{{ team.teamName }}</mat-option>
           </mat-select>
         </mat-form-field>
-        <div *ngIf="FilterSelected == 'agents' && this.supervisedTeams.length > 0"
-          class="form-control multi-selection-list p-0 mr-2">
-          <angular2-multiselect [data]="activeChatListWithAgents" [(ngModel)]="selectedQueues" [settings]="settings"
-            (ngModelChange)="filterData()" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
-            (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
-
+        <div
+          *ngIf="FilterSelected == 'agents' && this.supervisedTeams.length > 0"
+          class="form-control multi-selection-list active-chat-queue-selection p-0 mr-2"
+        >
+          <angular2-multiselect
+            [data]="activeChatListWithAgents"
+            [(ngModel)]="selectedQueues"
+            [settings]="settings"
+            (ngModelChange)="filterData()"
+            (onSelect)="onItemSelect($event)"
+            (onDeSelect)="OnItemDeSelect($event)"
+            (onSelectAll)="onSelectAll($event)"
+            (onDeSelectAll)="onDeSelectAll($event)"
+          >
             <c-badge>
               <ng-template let-item="item">
-                <label class="item-name">{{item.queueName}}</label>
+                <label class="item-name">{{ item.queueName }}</label>
               </ng-template>
             </c-badge>
             <c-item>
               <ng-template let-item="item">
-                <label class="item-list-name">{{item.queueName}}</label>
+                <label class="item-list-name">{{ item.queueName }}</label>
               </ng-template>
             </c-item>
           </angular2-multiselect>
-
         </div>
 
-
-
         <div *ngIf="FilterSelected == 'agents' && this.supervisedTeams.length > 0" class="search-wrapper">
-          <input type="text" placeholder="{{'supervisor.search-agent' | translate | titlecase}}"
-            (click)="$event.stopPropagation()" [(ngModel)]="agentSearch" />
+          <input
+            type="text"
+            placeholder="{{ 'supervisor.search-agent' | translate | titlecase }}"
+            (click)="$event.stopPropagation()"
+            [(ngModel)]="agentSearch"
+          />
           <mat-icon>search</mat-icon>
         </div>
       </div>
     </div>
     <div class="col">
-      <table class="table {{FilterSelected == 'agents' ? 'agents-answer' : '' }}">
+      <table class="table {{ FilterSelected == 'agents' ? 'agents-answer' : '' }}">
         <thead>
           <tr>
-            <th *ngIf="FilterSelected == 'agents'" scope="col">{{ "globals.direction" | translate | titlecase}}</th>
-            <th scope="col">{{ "globals.channel" | translate | titlecase}}</th>
+            <th *ngIf="FilterSelected == 'agents'" scope="col">{{ "globals.direction" | translate | titlecase }}</th>
+            <th scope="col">{{ "globals.channel" | translate | titlecase }}</th>
 
             <th scope="col">{{ "supervisor.customer" | translate }}</th>
-            <th scope="col">{{ "supervisor.active-since" | translate }}</th>
-            <th scope="col">{{ (FilterSelected == "agents" ? "supervisor.agent" : "supervisor.bot") | translate |
-              titlecase }}</th>
+            <th scope="col">
+              {{ "supervisor.active-since" | translate }}
+              <button
+                mat-icon-button
+                (click)="FilterSelected === 'agents' ? handleAgentTabClick() : handleBotTabClick()"
+                matTooltip="Sort by Active Since">
+                <mat-icon></mat-icon>
+              </button>
+            </th>
+
+            <th scope="col">{{ (FilterSelected == "agents" ? "supervisor.agent" : "supervisor.bot") | translate | titlecase }}</th>
             <th *ngIf="FilterSelected == 'agents'" scope="col">{{ "supervisor.queue" | translate }}</th>
           </tr>
         </thead>
@@ -73,12 +89,10 @@
             <ng-container *ngFor="let data of activeChatListWithBots">
               <tr *ngFor="let chat of data.chats">
                 <td>
-                  <span class="channel-icon {{ chat.channelType }}"><img
-                      [src]="chat.channelType | channelName | channelLogo | async" /></span>
+                  <span class="channel-icon {{ chat.channelType }}"><img [src]="chat.channelType | channelName | channelLogo | async" /></span>
                 </td>
                 <td>
-                  {{ chat.customerName }} <small matTooltip="{{ 'globals.channel-identifier' | translate }}">({{
-                    chat.channelIdentity }})</small>
+                  {{ chat.customerName }} <small matTooltip="{{ 'globals.channel-identifier' | translate }}">({{ chat.channelIdentity }})</small>
                 </td>
                 <td>
                   {{ chat.activeSince | amDuration: "seconds" }} <small>{{ "supervisor.ago" | translate }}</small>
@@ -96,36 +110,36 @@
             </ng-container>
           </ng-container>
           <ng-container *ngIf="FilterSelected == 'agents'">
-            <ng-container *ngFor="let data of filteredData | LockFilter: agentSearch">
-              <tr *ngFor="let chat of data.chats">
+            <ng-container *ngFor="let data of filteredData">
+              <tr *ngFor="let chat of data.chats | LockFilter: agentSearch:['agentName']">
                 <td>
-                  <span class="material-icons direction-icon md-18 {{chat.direction | lowercase}}"> call_received
-                  </span>
+                  <span class="material-icons direction-icon md-18 {{ chat.direction | lowercase }}"> call_received </span>
                 </td>
                 <td>
-                  <span class="channel-icon {{ chat.channelType }}"><img
-                      [src]="chat.channelType | channelName | channelLogo | async" /></span>
+                  <span class="channel-icon {{ chat.channelType }}"><img [src]="chat.channelType | channelName | channelLogo | async" /></span>
                 </td>
                 <td>
-                  {{ chat.customerName }} <small matTooltip="{{ 'globals.channel-identifier' | translate }}">({{
-                    chat.channelIdentity }})</small>
+                  {{ chat.customerName }} <small matTooltip="{{ 'globals.channel-identifier' | translate }}">({{ chat.channelIdentity }})</small>
                 </td>
                 <td>
                   {{ chat.activeSince | amDuration: "seconds" }} <small>{{ "supervisor.ago" | translate }}</small>
                 </td>
                 <td>
-                  {{ chat.agentName }}<small matTooltip="{{ 'globals.agent-id' | translate }}">({{ chat.agentId
+                  {{ chat.agentName }}<small matTooltip="{{ 'globals.agent-username' | translate }}">({{ chat.agentUsername
                     }})</small>
                 </td>
                 <td>{{ data.queueName }}</td>
-                <span *ngIf="chat.channelSession.conversationId | isAlreadyJoined" class="joined">{{'pull-mode.joined'
-                  | translate }}</span>
+                <span *ngIf="chat.channelSession.conversationId | isAlreadyJoined" class="joined">{{ "pull-mode.joined" | translate }}</span>
                 <span class="table-trigger">
-
-
-                  <button [hidden]="chat.channelSession.conversationId | isAlreadyJoined"
-                    (click)="SilentMonitor(chat.channelSession)" mat-mini-fab class="silent-monitor-btn"
-                    matTooltip="Silent Monitoring"><img src="assets/images/eye.svg" alt="Silent Monitoring"></button>
+                  <button
+                    [hidden]="chat.channelSession.conversationId | isAlreadyJoined"
+                    (click)="SilentMonitor(chat.channelSession)"
+                    mat-mini-fab
+                    class="silent-monitor-btn"
+                    matTooltip="Silent Monitoring"
+                  >
+                    <img src="assets/images/eye.svg" alt="Silent Monitoring" />
+                  </button>
                   <!--  <button mat-mini-fab class="barge-in-btn" matTooltip="Bargein"><img src="assets/images/bargein.svg"
                   alt="Bargein"></button>
               <button mat-mini-fab class="close-btn" matTooltip="Close" (click)="closeChat()"><img
@@ -136,10 +150,9 @@
           </ng-container>
         </tbody>
       </table>
-      <div *ngIf="this.supervisedTeams && this.supervisedTeams.length == 0 && this.FilterSelected == 'agents'"
-        class="no-data-warning">
+      <div *ngIf="this.supervisedTeams && this.supervisedTeams.length == 0 && this.FilterSelected == 'agents'" class="no-data-warning">
         <i class="material-icons">warning_amber</i>
-        <span>{{'supervisor.No-Teams-Available' | translate}}</span>
+        <span>{{ "supervisor.No-Teams-Available" | translate }}</span>
       </div>
     </div>
   </div>

@@ -1,4 +1,7 @@
 import { Component, OnInit } from "@angular/core";
+import { cacheService } from "../../services/cache.service";
+import { httpService } from "../../services/http.service";
+import { announcementService } from "src/app/services/announcement.service";
 
 @Component({
   selector: "app-agent-announcements",
@@ -6,38 +9,40 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./agent-announcements.component.scss"]
 })
 export class AgentAnnouncementsComponent implements OnInit {
-  announcements = [
-    {
-      message:
-        "The office will remain closed on public holiday on December 25th, 2019. Teams with working shift will get a day off in the coming week.",
-      startTime: "January 16, 2020 - 09:35AM"
-    },
-    {
-      message:
-        "The office will remain closed on public holiday on December 25th, 2019. Teams with working shift will get a day off in the coming week. The office will remain closed on public holiday on December 25th, 2019. Teams with working shift will get a day off in the coming week. ",
-      startTime: "January 16, 2020 - 09:35AM"
-    },
-    {
-      message:
-        "The office will remain closed on public holiday on December 25th, 2019. Teams with working shift will get a day off in the coming week.",
-      startTime: "January 16, 2020 - 09:35AM"
-    },
-    {
-      message:
-        "The office will remain closed on public holiday on December 25th, 2019. Teams with working shift will get a day off in the coming week.",
-      startTime: "January 16, 2020 - 09:35AM"
-    },
-    {
-      message:
-        "The office will remain closed on public holiday on December 25th, 2019. Teams with working shift will get a day off in the coming week.",
-      startTime: "January 16, 2020 - 09:35AM"
+  agentsId = {};
+  announcements = [];
+
+  constructor(
+    private _cacheService: cacheService,
+    private _httpService: httpService,
+    public _announcementService: announcementService
+  ) { }
+
+  ngOnInit() {
+    this.agentsId = this._cacheService.agent.id; 
+    this.sortList();
+  }
+  
+  onUnreadClick(announcement, announcementId) {
+   
+    if (!announcement.seenBy.includes(this.agentsId)) {
+      let obj = {
+        "userId": this.agentsId
+      }
+      this._httpService.AnnouncementSeenByUser(announcementId, obj).subscribe({
+        next: (val: any) => {
+          announcement.seenBy = val.result.seenBy;
+          this._announcementService.countUnreadAnnouncement();
+        },
+        error: (err: any) => {
+          console.error(err);
+        },
+      });
     }
-  ];
 
-  constructor() {}
+  }
 
-  ngOnInit() {}
-  onUnreadClick(announcement) {
-    announcement.isRead = true;
+  sortList() {
+    this.announcements.sort((a, b) => new Date(b.scheduledTime).getTime() - new Date(a.scheduledTime).getTime());
   }
 }

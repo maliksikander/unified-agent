@@ -34,6 +34,8 @@ describe("Appheader component", () => {
     // private _fcmService: fcmService,
     // private _httpService: httpService,i
     // private _translateService: TranslateService
+  let _snackBarService: any;
+  let _announcementService:any;
 
   describe("testing create label validators", () => {
     beforeEach(() => {
@@ -48,7 +50,9 @@ describe("Appheader component", () => {
         _appConfigService,
         _fcmService,
         _httpService,
-        _translateService
+        _translateService,
+        _snackBarService,
+        _announcementService
       );
     });
     it("selectedReasonCode should be undefined on component initiation", () => {

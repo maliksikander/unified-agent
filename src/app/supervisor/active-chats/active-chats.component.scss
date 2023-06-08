@@ -64,6 +64,29 @@
         font-size: 13px;
         background: #f7f7f7;
         border: 0;
+
+        mat-icon {
+          color: #848484;
+          transform: rotate(90deg);
+          font-size: 15px;
+          position: relative;
+          cursor: pointer;
+
+          &:after {
+            content: "keyboard_backspace";
+            position: absolute;
+            left: 2px;
+            top: 5px;
+            transform: rotate(180deg);
+          }
+          &:before {
+            content: "keyboard_backspace";
+            position: absolute;
+            left: 2px;
+            top: -2px;
+            transform: rotate(0deg);
+          }
+        }
       }
     }
   }

@@ -5,33 +5,54 @@
   </div>
   <div class="announcement-container mat-dialog-content">
     <form>
+      <!-- [formGroup]="announcementForm" -->
       <div class="new-announcement-form">
 
         <div class="text-field message-field">
           <label>{{'supervisor.message'  | translate }}</label>
           <mat-form-field appearance="outline">
-            <textarea #messageAnnouncement matInput [formControl]="announcementMessage" maxlength="250" ></textarea>
+            <textarea #messageAnnouncement matInput [formControl]="announcementMessage" maxlength="500" ></textarea>
 <!--            <mat-error *ngIf="announcementMessage.hasError('required')">-->
 <!--              {{'announcements.type-message' | translate}}-->
 <!--            </mat-error>-->
-            <mat-hint align="end">{{messageAnnouncement.value.length}} / {{'supervisor.characters-limit-250'  | translate }}</mat-hint>
+           <mat-hint align="end">{{messageAnnouncement.value.length}} / {{'supervisor.characters-limit-500'  | translate }}</mat-hint> 
           </mat-form-field>
           <!--<span class="right-align character-limit">250 characters</span>-->
         </div>
         <div class="text-field team-selection">
           <label>{{'supervisor.select-team'  | translate }}</label>
-          <mat-form-field appearance="outline">
-            <mat-select [formControl]="teamList" multiple>
-              <mat-option  *ngFor="let team of Teams" [value]="team">  {{team}} </mat-option>
-            </mat-select>
-            <mat-error *ngIf="teamList.hasError('required')">
-              {{'supervisor.select-team'  | translate }}
-            </mat-error>
-          </mat-form-field>
+<!--          <mat-form-field appearance="outline">-->
+<!--            <mat-select [formControl]="teamList" multiple>-->
+<!--              <mat-option  *ngFor="let team of Teams" [value]="team">  {{team}} </mat-option>-->
+<!--            </mat-select>-->
+<!--            <mat-error *ngIf="teamList.hasError('required')">-->
+<!--              {{'supervisor.select-team'  | translate }}-->
+<!--            </mat-error>-->
+<!--          </mat-form-field>-->
+
+<div class="form-control multi-select-team drop p-0 mr-2 border-0">
+
+  <angular2-multiselect [data]="teamList" [(ngModel)]="selectedTeams" [settings]="settings"  name="teams" (onSelect)="onItemSelect($event)"
+                        (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
+
+    <c-badge>
+      <ng-template let-item="item">
+        <label class="item-name">{{item.teamName}}</label>
+      </ng-template>
+    </c-badge>
+    <c-item>
+      <ng-template let-item="item">
+        <label class="item-list-name">{{item.teamName}}</label>
+      </ng-template>
+    </c-item>
+  </angular2-multiselect>
+
+</div>
+
         </div>
         <div class="text-field date-selection">
           <label>{{'supervisor.date-time'  | translate }}</label>
-          <mat-form-field [formGroup]="formGroup" appearance="outline">
+          <mat-form-field [formGroup]="formGroup" appearance="outline" >
             <input matInput [ngxMatDatetimePicker]="picker1" [min]="announceDateMin" [formControl]="announceDate" (dateChange)="onValidateExpiryDate(announceDate.value)" >
             <mat-datepicker-toggle matSuffix  [for]="picker1"></mat-datepicker-toggle>
             <ngx-mat-datetime-picker #picker1 [stepHour]="1" [stepMinute]="5">
@@ -43,8 +64,9 @@
         </div>
         <div class="text-field date-selection">
           <label>{{'supervisor.expiry-date'  | translate }}</label>
-          <mat-form-field appearance="outline">
-            <input matInput [ngxMatDatetimePicker]="picker3" [min]="expireDateMin" [formControl]="expireDate">
+          <mat-form-field appearance="outline" >
+            <!-- [max]="maxDateVal" -->
+            <input matInput [ngxMatDatetimePicker]="picker3" [min]="expireDateMin" [max]="expireDateMax" [formControl]="expireDate">
             <mat-datepicker-toggle matSuffix  [for]="picker3"></mat-datepicker-toggle>
             <ngx-mat-datetime-picker #picker3 [stepHour]="1" [stepMinute]="5">
             </ngx-mat-datetime-picker>
@@ -56,7 +78,10 @@
 
         <div class="announcement-trigger right-align">
           <button mat-raised-button type="button" class="discard-btn announcement-action" (click)="onClose()">{{'supervisor.discard'  | translate }}</button>
-          <button mat-raised-button type="button" class="send-announcement announcement-action" [disabled]="!announcementMessage.valid || !teamList.valid || !announceDate.valid || !expireDate.valid">Create Announcement</button>
+          <button mat-raised-button type="button" *ngIf="!dataID?.value" class="send-announcement announcement-action" [disabled]="!announcementMessage.valid || selectedTeams.length < 1"
+          (click)="onCreateAnnouncement()"  >Create Announcement</button>
+          <button mat-raised-button type="button" *ngIf="dataID?.value" class="send-announcement announcement-action" [disabled]="!announcementMessage.valid || selectedTeams.length < 1 "
+          (click)="updateAnnouncement()"  >Update Announcement</button>
 
         </div>
       </div>

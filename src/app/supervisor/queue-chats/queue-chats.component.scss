@@ -1,12 +1,12 @@
-.active-chat-list-area{
-  .channel-icon{
+.active-chat-list-area {
+  .channel-icon {
     width: 20px;
     height: 20px;
     text-align: center;
     border-radius: 100%;
     margin-right: 6px;
 
-    img{
+    img {
       width: 20px;
       max-height: 25px;
     }
@@ -15,7 +15,7 @@
 
 .manage-dashboard {
   width: 100%;
-  .page-action{
+  .page-action {
     align-self: center;
   }
 
@@ -25,20 +25,19 @@
     tr {
       position: relative;
       cursor: default;
-      &:nth-of-type(even){
-        background: #F7F7F7;
+      &:nth-of-type(even) {
+        background: #f7f7f7;
       }
     }
 
     thead {
-
       th {
         color: #434343;
         height: 38px;
         line-height: 38px;
         padding: 0 15px;
         font-size: 13px;
-        background: #F7F7F7;
+        background: #f7f7f7;
         border: 0;
 
         mat-icon {
@@ -48,12 +47,19 @@
           position: relative;
           cursor: pointer;
 
-          &:after{
-            content: 'keyboard_backspace';
+          &:after {
+            content: "keyboard_backspace";
             position: absolute;
             left: 2px;
             top: 5px;
             transform: rotate(180deg);
+          }
+          &:before {
+            content: "keyboard_backspace";
+            position: absolute;
+            left: 2px;
+            top: -2px;
+            transform: rotate(0deg);
           }
         }
       }
@@ -105,47 +111,45 @@
     //}
   }
   tbody {
-
-    .table-trigger{
+    .table-trigger {
       opacity: 0;
       visibility: hidden;
-      transition: all .3s;
+      transition: all 0.3s;
       position: absolute;
       right: 15px;
       z-index: 2;
       top: 4px;
-      button{
+      button {
         height: 24px;
         margin: 0 5px;
         width: 24px;
         line-height: 24px;
         background: #919191;
-        img{
+        img {
           height: 11px;
           max-width: 15px;
         }
 
-
-        &.chat-btn{
-          &:hover{
-            background: #35A7FA;
+        &.chat-btn {
+          &:hover {
+            background: #35a7fa;
           }
         }
-        &.transfer-btn{
+        &.transfer-btn {
           &:hover {
-            background: #31CB73;
+            background: #31cb73;
           }
         }
-        &.close-btn{
+        &.close-btn {
           &:hover {
-            background: #FC2A49;
+            background: #fc2a49;
           }
         }
       }
     }
     tr {
       &:hover {
-        background: #EAEAEA;
+        background: #eaeaea;
 
         .table-trigger {
           display: inline-block;
@@ -155,10 +159,9 @@
       }
     }
   }
-
 }
 
-.data-table{
+.data-table {
   height: 80vh;
   overflow: auto;
 }
@@ -169,14 +172,13 @@
   label {
     display: block;
     font-size: 13px;
-    margin:  0;
+    margin: 0;
     color: #434343;
   }
 
-  textarea{
+  textarea {
     width: 100%;
-    border: 1px solid #C2C2C2;
+    border: 1px solid #c2c2c2;
     border-radius: 5px;
   }
 }
-

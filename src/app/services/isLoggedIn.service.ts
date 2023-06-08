@@ -14,6 +14,7 @@ import { socketService } from "./socket.service";
 import { TranslateService } from "@ngx-translate/core";
 import { AuthService } from "./auth.service";
 import { appConfigService } from "./appConfig.service";
+import { announcementService } from "./announcement.service";
 
 @Injectable({
   providedIn: "root"
@@ -35,7 +36,8 @@ export class isLoggedInService {
     private _location: Location,
     private _translateService: TranslateService,
     private _authService: AuthService,
-    private _appConfigService: appConfigService
+    private _appConfigService: appConfigService,
+    private _announcementService:announcementService
   ) {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       this._cacheService.isMobileDevice = true;
@@ -188,9 +190,13 @@ export class isLoggedInService {
         this._router.navigate([`supervisor/active-agents-detail`]); // pass queue id
       }
       this._socketService.connectToSocket();
+      //if(this._cacheService.agent.id){this._announcementService.getAnnouncementList();}
+      this._announcementService.getAnnouncementList();
+
     } catch (err) {
       this._snackbarService.open(this._translateService.instant("snackbar.you-will-not-receive-browser-notifications"), "err");
       this._socketService.connectToSocket();
+      this._announcementService.getAnnouncementList();
     }
 
     // }

@@ -156,7 +156,34 @@
     </div>
   </div>
 
+<!--  New Announcement notifications-->
+<div *ngFor="let announcementNotification of this._announcementService.announcementNotificationList">
+<div class="notification-area" >
+  <div class="row main-panel m-0">
+    <mat-card class="notification-panel mat-card">
+      <mat-card-content
+        class="mat-card-content identified consult-notification new-announcement-notification">
+        <div class="chat-request">
+          <p class="channel-icon">
+            <img src="assets/images/promotion.svg" alt="Announcement">
+          </p>
+        </div>
+        <div class="requested-name">
+          <strong>New Announcement by {{announcementNotification.supervisorName}}</strong>
+          <p>
+            {{announcementNotification.announcementText}}
+          </p>
+        </div>
+        <div class="notification-trigger">
+          <button class="mat-flat-button" (click)="onDismiss(announcementNotification)"
+                  mat-button>Dismiss</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
 
+  </div>
+</div>
+</div>
 
 
 

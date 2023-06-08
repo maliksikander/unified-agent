@@ -8,6 +8,7 @@
   "ROUTING_ENGINE_URL": "https://cim-dev.expertflow.com/routing-engine",
   "CIM_REPORTING_URL":"https://cim-dev.expertflow.com/realtime-reports",
   "UNIFIED_ADMIN_URL":"https://cim-dev.expertflow.com/unified-admin",
+  "TEAM_ANNOUNCEMENT":"https://cim-dev2.expertflow.com/team-announcement",
   "ENV": "prod",
   "domain": "uccx12-5p.ucce.ipcc",
   "subDomain" : "uccx12-5p.ucce.ipcc",

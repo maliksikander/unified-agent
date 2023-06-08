@@ -10,6 +10,7 @@ import { finesseService } from "src/app/services/finesse.service";
 import { TranslateService } from "@ngx-translate/core";
 import { appConfigService } from "src/app/services/appConfig.service";
 import { SipService } from "src/app/services/sip.service";
+import { announcementService } from "src/app/services/announcement.service";
 
 @Component({
   selector: "app-chat-notifications",
@@ -22,6 +23,7 @@ export class ChatNotificationsComponent implements OnInit {
   externalModeRequests = [];
   notificationArea: boolean = false;
   voiceChannelType;
+  //newAnnouncement =true;
 
   constructor(
     public _pullModeservice: pullModeService,
@@ -33,11 +35,11 @@ export class ChatNotificationsComponent implements OnInit {
     private _finesseService: finesseService,
     private _translateService: TranslateService,
     private _sipService: SipService,
-    private _appConfigService: appConfigService
+    private _appConfigService: appConfigService,
+    public _announcementService:announcementService
   ) {
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       try {
-        console.log("e==>", e);
         if (e.msg == "openPushModeRequestHeader") {
           this.pushModeRequests.push(e.data);
           this._soundService.playRing();
@@ -95,6 +97,11 @@ export class ChatNotificationsComponent implements OnInit {
 
   ngOnInit() {}
 
+
+  onDismiss(announcement){
+    this._announcementService.removeAnnoucementFromNotificationList(announcement);
+
+  }
   getVoiceChannelType(provider) {
     let channelTypes: Array<any> = this._sharedService.channelTypeList;
     let ciscoChannelType;

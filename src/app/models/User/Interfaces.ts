@@ -14,9 +14,11 @@ export interface IKeycloakUser {
   teams?: ITeam[];
   routingAttributes?: [];
   permittedResources?: [];
-  supervisedTeams?:[]
-  userTeam?:[]
-  attributes?:any
+  // supervisedTeams?:[]
+  // userTeam?:[]
+  attributes?:any;
+  supervisedTeams?:[{ teamId :string, teamName:string}];
+  userTeam?:{teamId :string, teamName:string};
 }
 
 export class sender {

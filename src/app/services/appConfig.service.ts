@@ -21,6 +21,7 @@ export class appConfigService {
     isCxVoiceEnabled: true,
     CISCO_CC_MRD: "",
     CX_VOICE_MRD: "",
+    TEAM_ANNOUNCEMENT:""
   };
   // public sipConfig = {
   //   wss: "",
@@ -52,7 +53,7 @@ export class appConfigService {
         this.config.isCxVoiceEnabled = e.isCxVoiceEnabled,
         this.config.CX_VOICE_MRD = e.CX_VOICE_MRD,
         this.config.CISCO_CC_MRD = e.CISCO_CC_MRD,
-
+        this.config.TEAM_ANNOUNCEMENT=e.TEAM_ANNOUNCEMENT;
         config = {
           domain: e.domain,
           subDomain: e.subDomain,

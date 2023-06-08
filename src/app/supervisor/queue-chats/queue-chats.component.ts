@@ -23,6 +23,7 @@ export class QueueChatsComponent implements OnInit {
   selectedTeam: any = "";
   settings: any = {};
   selectedQueues: any = [];
+  sortOrder: "asc" | "desc" = "asc";
 
   constructor(
     // private dialog: MatDialog,
@@ -38,9 +39,8 @@ export class QueueChatsComponent implements OnInit {
       text: "All Queues",
       selectAllText: "Select All",
       unSelectAllText: "UnSelect All",
-      classes: "myclass custom-class",
+      classes: "queue-list-dropdown",
       enableSearchFilter: false,
-      lazyLoading: true,
       badgeShowLimit: 1,
       primaryKey: "queueId"
     };
@@ -89,6 +89,10 @@ export class QueueChatsComponent implements OnInit {
     this.getAllQueuedChats(this.selectedTeam);
   }
 
+  toggleSorting() {
+    // Toggle the sorting order
+    this.sortOrder = this.sortOrder === "asc" ? "desc" : "asc";
+  }
   // filter data for all queues and if multiple are selected
   filterData() {
     try {
@@ -100,6 +104,17 @@ export class QueueChatsComponent implements OnInit {
           this.queuedChatList.forEach((chat) => {
             if (data.queueId == chat.queueId) this.filteredData.push(chat);
           });
+        });
+      }
+
+      // Sort the filteredData array in descending order by waitingSince property
+      for (let data of this.filteredData) {
+        data.chats.sort((a, b) => {
+          if (this.sortOrder === "asc") {
+            return a.waitingSince - b.waitingSince;
+          } else {
+            return b.waitingSince - a.waitingSince;
+          }
         });
       }
     } catch (err) {
