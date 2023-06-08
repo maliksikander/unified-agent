@@ -12,16 +12,16 @@ export class appConfigService {
     FILE_SERVER_URL: "",
     CIM_CUSTOMER_URL: "",
     CONVERSATION_MANAGER_URL: "",
+    TEAM_ANNOUNCEMENT_URL:"",
     Rona_State_On_Cisco: "",
     ROUTING_ENGINE_URL: "",
     CIM_REPORTING_URL: "",
     UNIFIED_ADMIN_URL: "",
     CCM_URL: "",
-    isCiscoEnabled: true,
-    isCxVoiceEnabled: true,
+    isCiscoEnabled: false,
+    isCxVoiceEnabled: false,
     CISCO_CC_MRD: "",
     CX_VOICE_MRD: "",
-    TEAM_ANNOUNCEMENT:""
   };
   // public sipConfig = {
   //   wss: "",
@@ -53,7 +53,7 @@ export class appConfigService {
         this.config.isCxVoiceEnabled = e.isCxVoiceEnabled,
         this.config.CX_VOICE_MRD = e.CX_VOICE_MRD,
         this.config.CISCO_CC_MRD = e.CISCO_CC_MRD,
-        this.config.TEAM_ANNOUNCEMENT=e.TEAM_ANNOUNCEMENT;
+        this.config.TEAM_ANNOUNCEMENT_URL=e.TEAM_ANNOUNCEMENT_URL;
         config = {
           domain: e.domain,
           subDomain: e.subDomain,
@@ -88,10 +88,10 @@ export class appConfigService {
           bargeInType: e.bargeInType
         };
         sipConfig = {
-          wss: e.wss,
-          uri: e.uri,
-          agentStaticPassword: e.agentStaticPassword,
-          enable_sip_log: e.enable_sip_log,
+          wss: e.SIP_SOCKET_URL,
+          uri: e.SIP_URI,
+          agentStaticPassword: e.EXT_STATIC_PASSWORD,
+          enable_sip_log: e.ENABLE_SIP_LOGS,
         };
         // this.sipConfig = sipConfig;
       });

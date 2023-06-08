@@ -8,7 +8,7 @@
   "ROUTING_ENGINE_URL": "https://cim-dev.expertflow.com/routing-engine",
   "CIM_REPORTING_URL":"https://cim-dev.expertflow.com/realtime-reports",
   "UNIFIED_ADMIN_URL":"https://cim-dev.expertflow.com/unified-admin",
-  "TEAM_ANNOUNCEMENT":"https://cim-dev2.expertflow.com/team-announcement",
+  "TEAM_ANNOUNCEMENT_URL":"https://cim-dev2.expertflow.com/team-announcement",
   "ENV": "prod",
   "domain": "uccx12-5p.ucce.ipcc",
   "subDomain" : "uccx12-5p.ucce.ipcc",
@@ -42,8 +42,8 @@
   "isCxVoiceEnabled":true,
   "CISCO_CC_MRD":"20316843be924c8ab4f57a7a",
   "CX_VOICE_MRD": "62f9e360ea5311eda05b0242",
-  "wss": "wss://192.168.1.201:7443",
-  "uri": "192.168.1.201",
-  "agentStaticPassword": 1234,
-  "enable_sip_log": false
+  "SIP_SOCKET_URL": "wss://192.168.1.201:7443",
+  "SIP_URI": "192.168.1.201",
+  "EXT_STATIC_PASSWORD": 1234,
+  "ENABLE_SIP_LOGS": false
 }

@@ -20,7 +20,7 @@ export class httpService {
       schemaTypes: "/attributeTypes",
       customers: "/customers",
       labels: "/label",
-      userPreference: "/userPreference", 
+      userPreference: "/userPreference",
       pullModeList: "/pull-mode-list",
       fileServer: "/api/downloadFileStream?filename=",
       uploadFile: "/api/uploadFileStream",
@@ -38,10 +38,10 @@ export class httpService {
     };
   }
 
- ///////////////////////////// Announcements CURD ///////////////////////////////////// 
+ ///////////////////////////// Announcements CURD /////////////////////////////////////
 
   addAnnouncemenent(obj): Observable<any> {
-  return this._httpClient.post<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}`, obj, {
+  return this._httpClient.post<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT_URL}${this.apiEndpoints.announcement}`, obj, {
     headers: new HttpHeaders({
       "Content-Type": "application/json"
     })
@@ -49,7 +49,7 @@ export class httpService {
 }
 
 updateAnnouncemenentById(id,data): Observable<any> {
-  return this._httpClient.put<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}/${id}`, data, {
+  return this._httpClient.put<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT_URL}${this.apiEndpoints.announcement}/${id}`, data, {
     headers: new HttpHeaders({
       "Content-Type": "application/json"
     })
@@ -57,7 +57,7 @@ updateAnnouncemenentById(id,data): Observable<any> {
 }
 
 AnnouncementSeenByUser(id,announcementId): Observable<any>{
-  return this._httpClient.put<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcementSeenBy}/${id}`,announcementId, {
+  return this._httpClient.put<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT_URL}${this.apiEndpoints.announcementSeenBy}/${id}`,announcementId, {
     headers: new HttpHeaders({
       "Content-Type": "application/json"
     })
@@ -65,14 +65,14 @@ AnnouncementSeenByUser(id,announcementId): Observable<any>{
 }
 
 getAnnouncementsById(id): Observable<any>{
-  return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}/${id}`, {
+  return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT_URL}${this.apiEndpoints.announcement}/${id}`, {
     headers: new HttpHeaders({
       "Content-Type": "application/json"
     })
   });
 }
 getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
-  return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}/?teamIds=${teamIds.join(',')}&status=${status}`, {
+  return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT_URL}${this.apiEndpoints.announcement}/?teamIds=${teamIds.join(',')}&status=${status}`, {
     headers: new HttpHeaders({
       "Content-Type": "application/json"
     })
@@ -80,8 +80,8 @@ getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
 }
 
   getAnnouncements(supervisorIds): Observable<any>{
-    
-    return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}?page=${1}&limit=${1000},&supervisorIds=${supervisorIds}`, {
+
+    return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT_URL}${this.apiEndpoints.announcement}?page=${1}&limit=${1000},&supervisorIds=${supervisorIds}`, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
@@ -89,14 +89,14 @@ getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
   }
 
   deleteAnnouncementById(id): Observable<any> {
-    return this._httpClient.delete<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT}${this.apiEndpoints.announcement}/${id}`, {
+    return this._httpClient.delete<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT_URL}${this.apiEndpoints.announcement}/${id}`, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
     });
   }
 
-  
+
 
 
 
@@ -112,7 +112,7 @@ getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
   }
 
   ///////////////////////// Customer Schema CRUD /////////////////
-  
+
 
   getSchemaTypes(): Observable<any> {
     return this._httpClient.get<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.schemaTypes}`, {
