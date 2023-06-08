@@ -79,7 +79,7 @@
     "Error-Getting-Queues-List":"Error Getting Queues List",
     "Default-Outbound-Channel-Not-Found":"No Default Outbound Channel Found",
     "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco",
-    "New-Announcement":"New-Announcement",
+    "Unable-to-edit-Active-Announcements":"Unable to edit Active Announcements",
     "Announcement-Deleted":"Announcement-Deleted"
 
   },

@@ -62,14 +62,13 @@ export class AnnouncementDialogComponent implements OnInit {
     //console.log("this.expireDateMin = date;",this.expireDateMin); 
     let date = new Date(this.expireDateMin);
     date.setMinutes(date.getMinutes() + 10);
-    //this.expireDateMin = date;
+    //this.expireDateMin = date;1
     this.expireDate = new FormControl(date, [Validators.required]);
     //console.log("this.expireDateMin 2 +10;",this.expireDateMin); 
 
 
-    this.getAllAnnouncementList();
+    //this.getAllAnnouncementList();
     if (this.dataID !== null) {
-
       this.currentAnnouncement = this._httpService.getAnnouncementsById(this.dataID.value).subscribe(res => {
         this.formData = res;
         this.editObj = {
@@ -88,7 +87,7 @@ export class AnnouncementDialogComponent implements OnInit {
     this.teamList = this._cacheService.agent.supervisedTeams;
     this.supervisor = this._cacheService.agent.username;
     this.supervisorId = this._cacheService.agent.id;
-    this.getAllAnnouncementList();
+    //this.getAllAnnouncementList();
     this.selectedTeams = [];
     this.settings = {
       text: "",

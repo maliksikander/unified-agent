@@ -1,10 +1,12 @@
 import { Component, Inject, OnInit, ViewChild } from "@angular/core";
 import { CreateCustomerComponent } from "../create-customer/create-customer.component";
 import { AnnouncementDialogComponent } from "../supervisor/announcement-dialog/announcement-dialog.component";
-import { MatDialog, MatPaginatorModule, MAT_DIALOG_DATA } from "@angular/material";
+import { MatDialog, MatPaginatorModule, MAT_DIALOG_DATA, MatSnackBar } from "@angular/material";
 import { httpService } from "../services/http.service";
 import { sharedService } from "../services/shared.service";
 import { cacheService } from "../services/cache.service";
+import { TranslateService } from "@ngx-translate/core";
+import { snackbarService } from "../services/snackbar.service";
 
 
 @Component({
@@ -30,7 +32,9 @@ export class AnnouncementComponent implements OnInit {
     private dialog: MatDialog,
     private _httpService: httpService,
     private _sharedService: sharedService,
-    private _cacheService: cacheService,) {
+    private _cacheService: cacheService,
+    private _snackbarService: snackbarService,
+    private _translateService: TranslateService) {
 
   }
 
@@ -43,10 +47,8 @@ export class AnnouncementComponent implements OnInit {
   onNewAnnouncement() {
     const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
       panelClass: "new-announcement-dialog"
-
     });
     dialogRef.afterClosed().subscribe((result) => {
-    
       dialogRef.close()
       this.getAllAnnouncements();
     });
@@ -81,6 +83,9 @@ export class AnnouncementComponent implements OnInit {
         dialogRef.close()
         this.getAllAnnouncements();
       });
+    }
+    else{
+      this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-edit-Active-Announcements"), "err");
     }
   }
 

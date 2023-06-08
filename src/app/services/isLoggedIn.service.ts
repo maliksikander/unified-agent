@@ -179,7 +179,9 @@ export class isLoggedInService {
         this._router.navigate([`supervisor/active-agents-detail`]); // pass queue id
       }
       this._socketService.connectToSocket();
+      //if(this._cacheService.agent.id){this._announcementService.getAnnouncementList();}
       this._announcementService.getAnnouncementList();
+      
     } catch (err) {
       this._snackbarService.open(this._translateService.instant("snackbar.you-will-not-receive-browser-notifications"), "err");
       this._socketService.connectToSocket();
