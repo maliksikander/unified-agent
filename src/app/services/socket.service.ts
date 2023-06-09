@@ -150,14 +150,12 @@ export class socketService {
     });
 
     this.socket.on("ANNOUNCEMENT_CREATED", (res: any) => {
-      console.log("ANNOUNCEMENT_CREATED", res);
       if ((res.supervisorId !== this._cacheService.agent.id)) {
         this._announcementService.addCreatedAnnoucement(res);
       }
     });
 
     this.socket.on("ANNOUNCEMENT_DELETED", (res: any) => {
-      console.log("ANNOUNCEMENT_DELETED", res);
       this._announcementService.removeAnnoucement(res);
     });
 
