@@ -102,9 +102,9 @@
               <button mat-mini-fab class="silent-monitor-btn" matTooltip="Silent Monitoring"><img
                   src="assets/images/eye.svg" alt="Silent Monitoring"></button>
               <button mat-mini-fab class="barge-in-btn" matTooltip="Bargein"><img src="assets/images/bargein.svg"
-                  alt="Bargein"></button> 
+                  alt="Bargein"></button>
               <button mat-mini-fab class="close-btn" matTooltip="Close" (click)="closeChat()"><img
-                  src="assets/images/close.svg" alt="Close"></button> 
+                  src="assets/images/close.svg" alt="Close"></button>
             </span> -->
               </tr>
             </ng-container>
@@ -119,16 +119,17 @@
                   <span class="channel-icon {{ chat.channelType }}"><img [src]="chat.channelType | channelName | channelLogo | async" /></span>
                 </td>
                 <td>
-                  {{ chat.customerName }} <small matTooltip="{{ 'globals.channel-identifier' | translate }}">({{ chat.channelIdentity }})</small>
+                  <span class="table-main-data"  matTooltip="{{ chat.customerName }}">{{ chat.customerName }}</span> <small matTooltip="{{ 'globals.channel-identifier' | translate }} {{ chat.channelIdentity }}">({{ chat.channelIdentity }})</small>
                 </td>
                 <td>
-                  {{ chat.activeSince | amDuration: "seconds" }} <small>{{ "supervisor.ago" | translate }}</small>
+                  <span class="table-main-data">{{ chat.activeSince | amDuration: "seconds" }}</span> <small>{{ "supervisor.ago" | translate }}</small>
                 </td>
                 <td>
-                  {{ chat.agentName }}<small matTooltip="{{ 'globals.agent-username' | translate }}">({{ chat.agentUsername
+                  <span class="table-main-data" matTooltip="{{ chat.agentName }}">{{ chat.agentName }}</span>
+                  <small matTooltip="{{ 'globals.agent-username' | translate }}">({{ chat.agentUsername
                     }})</small>
                 </td>
-                <td>{{ data.queueName }}</td>
+                <td><span class="table-main-data"  matTooltip="{{ data.queueName }}">{{ data.queueName }}</span></td>
                 <span *ngIf="chat.channelSession.conversationId | isAlreadyJoined" class="joined">{{ "pull-mode.joined" | translate }}</span>
                 <span class="table-trigger">
                   <button
