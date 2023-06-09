@@ -63,7 +63,7 @@
           margin: 0;
           font-size: 12px;
           color: #fff;
-          //max-width: 235px;
+          max-width: 350px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: pre-line;
@@ -85,11 +85,24 @@
       }
 
       &.new-announcement-notification {
-        background: #0068d429 !important;
+        background: #1A50A3 !important;
+        .notification-trigger{
+          button{
+            background: #fff !important;
+            color: #080808;
+          }
+        }
+        .requested-name{
+          strong,p{
+            color: #fff !important;
+            max-width: 350px;
+          }
+        }
 
         .channel-icon{
-            width: 38px !important;
-            height: 38px !important;
+          width: 38px !important;
+          height: 38px !important;
+          background: transparent !important;
           img{
             max-height: 28px !important;
             max-width: 28px !important;

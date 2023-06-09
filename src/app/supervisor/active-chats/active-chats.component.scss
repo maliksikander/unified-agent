@@ -109,6 +109,7 @@
       color: #888;
       font-size: 11px;
       margin-right: 3px;
+      margin-left: 5px;
     }
 
     .dashboard-name {
@@ -138,6 +139,15 @@
     //&:nth-child(3),  &:nth-child(4) {
     //  width: 20% !important;
     //}
+
+    span.table-main-data {
+      max-width: calc(100% - 80px);
+      overflow: hidden;
+      display: inline-block;
+      text-overflow: ellipsis;
+      white-space: pre;
+      float: left;
+    }
   }
   tbody {
     .table-trigger {
