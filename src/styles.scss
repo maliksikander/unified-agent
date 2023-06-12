@@ -3003,6 +3003,15 @@ body {
   min-width: 5px;
 }
 
+.mat-form-field-appearance-outline{
+  .mat-form-field-outline-start {
+    border-right-style: none !important;
+  }
+  .mat-form-field-outline-end {
+    border-left-style: none !important;
+  }
+}
+
 .schema-box.cdk-drag.cdk-drag-dragging,
 .schema-box.cdk-drag.cdk-drag-preview {
   box-shadow: 0 0 10px darken($main-color-background, 50%);
