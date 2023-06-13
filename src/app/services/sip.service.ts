@@ -683,7 +683,7 @@ export class SipService implements OnInit {
 
       if (this.taskList && this.taskList.length > 0) {
         for (let i = 0; i <= this.taskList.length; i++) {
-          if (this.taskList[i].channelSession && this.taskList[i].channelSession.channel.channelType.name == "CX_VOICE") return this.taskList[i];
+          if (this.taskList[i] && this.taskList[i].channelSession && this.taskList[i].channelSession.channel.channelType.name == "CX_VOICE") return this.taskList[i];
         }
       }
       return null;

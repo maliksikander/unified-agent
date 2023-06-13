@@ -1195,6 +1195,10 @@ export class InteractionsComponent implements OnInit {
     const dialogRef = this.dialog.open(CallControlsComponent, {
       panelClass: "call-controls-dialog",
       hasBackdrop: false,
+      position: {
+        top: '8%',
+        right: '8%'
+      },
       data: { conversation: this.conversation }
     });
     dialogRef.afterClosed().subscribe((result) => {
