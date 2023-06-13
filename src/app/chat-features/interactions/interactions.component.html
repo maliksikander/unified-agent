@@ -225,6 +225,7 @@
     </div>
     <!--/Top bar-->
     <!--Interactions Area Start -->
+
     <div id="chat-content" class="container-fluid main-chat-area">
       <div class="row">
         <ng-scrollbar class="chat-messages-main my-scrollbar" [style.height]="
@@ -397,7 +398,7 @@
                             (referredMessage.body.type | lowercase) != 'button'
                         }">
                         <!-- ---------------plain---------------------- -->
-                        <div>
+                        <div *ngIf="(referredMessage.body.type | lowercase) == 'plain'">
                           <p>
                             <span [innerHTML]="
                                 conversationSettings.isMessageFormattingEnabled
@@ -521,17 +522,17 @@
 
                         <div *ngIf="(referredMessage.body.type | lowercase) == 'url'"
                           class="file-type-content url-content">
-                          <a class="display-file url-image" href="{{ referredMessage.body.mediaUrl }}" target="_blank">
+                          <span class="display-file url-image">
                             <img src="assets/images/url.png" />
-                          </a>
+                          </span>
                           <div class="shared-url shared-card-content">
                             <span class="url-title card-title" [matTooltip]="referredMessage.body.markdownText">{{
                               referredMessage.body.markdownText
                               }}</span>
                             <span class="url-description card-description"></span>
-                            <a class="url-link card-action" [matTooltip]="referredMessage.body.mediaUrl"
-                              href="{{ referredMessage.body.mediaUrl }}" target="_blank">{{
-                              referredMessage.body.mediaUrl }}</a>
+                            <span class="url-link card-action" [matTooltip]="referredMessage.body.mediaUrl"
+                              [innerHTML]=" referredMessage.body.mediaUrl | linkify" >{{
+                              referredMessage.body.mediaUrl }}</span>
                           </div>
                           <!--                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
                         </div>
@@ -656,7 +657,7 @@
                       <button mat-menu-item class="reply-trigger" (click)="onQuotedReply(message)">reply</button>
                     </mat-menu>
                     <div *ngIf="
-                        ((message.body.type | lowercase) != 'comment' && message.body.markdownText) ||
+                        ((message.body.type | lowercase) != 'comment' && (message.body.type | lowercase) != 'url' && message.body.markdownText) ||
                         ((message.body.type | lowercase) == 'comment' &&
                           (message.body.itemType | lowercase) == 'text' &&
                           (message.header.sender.type | lowercase) == 'agent')
@@ -792,17 +793,17 @@
                     <!-- ------------------------------url------------------------------- -->
 
                     <div *ngIf="(message.body.type | lowercase) == 'url'" class="file-type-content url-content">
-                      <a class="display-file url-image" href="{{ message.body.mediaUrl }}" target="_blank">
+                      <span class="display-file url-image">
                         <img src="assets/images/url.png" />
-                      </a>
+                      </span>
                       <div class="shared-url shared-card-content">
                         <span class="url-title card-title" [matTooltip]="message.body.markdownText">{{
                           message.body.markdownText }}</span>
                         <span class="url-description card-description"></span>
-                        <a class="url-link card-action" [matTooltip]="message.body.mediaUrl"
-                          href="{{ message.body.mediaUrl }}" target="_blank">{{
+                        <span class="url-link card-action" [matTooltip]="message.body.mediaUrl"
+                          [innerHTML]=" message.body.mediaUrl | linkify">{{
                           message.body.mediaUrl
-                          }}</a>
+                          }}</span>
                       </div>
                       <!--                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                     </div>
