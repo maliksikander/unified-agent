@@ -137,6 +137,7 @@ export class SipService implements OnInit {
         let cacheDialog: any = this.getDialogFromCache(cacheId);
         if (!cacheDialog) this.identifyCustomer(event, event.response.dialog.customerNumber, "INBOUND");
       } else if (event.event == "Error") {
+        console.log("test==>")
         if (event.response.type.toLowerCase() == "invalidstate") {
           this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-incorrect-request"), "err");
           this.notReadyAgentState();
@@ -145,14 +146,19 @@ export class SipService implements OnInit {
           this.notReadyAgentState();
           this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-invalid-credentials"), "err");
         } else if (event.response.type.toLowerCase() == "generalerror") {
+          console.log("test1==>")
           if (event.response.description.toLowerCase() == "canceled") {
+            console.log("test2==>")
             this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-call-canceled"), "err");
           } else {
+            console.log("test3==>")
             let cacheId = `${this._cacheService.agent.id}:${event.response.dialog.id}`;
             let dialogCache: any = this.getDialogFromCache(cacheId);
             if (dialogCache && dialogCache.dialogState == "active") {
+              console.log("test4==>")
               this.handleCallDroppedEvent(cacheId, event.dialog, "call_end", undefined, "DIALOG_ENDED", undefined);
             }
+            console.log("test5==>")
             this.removeNotification(event.response.dialog);
             this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-connection-failed"), "err");
             this.notReadyAgentState();
@@ -210,7 +216,9 @@ export class SipService implements OnInit {
         // this.setDialogCache(dialogEvent, "DROPPED");
         if (dialogEvent.response.dialog.callEndReason == "Canceled") {
           this.removeNotification(dialogState.dialog);
+          this.notReadyAgentState();
         }
+
         this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, "DIALOG_ENDED", undefined);
       }
     } catch (e) {
@@ -580,6 +588,7 @@ export class SipService implements OnInit {
   acceptCallOnSip(command: { action: string; parameter: { dialogId: any } }) {
     postMessage(command);
   }
+
   endCallOnSip() {
     try {
       let command = {
