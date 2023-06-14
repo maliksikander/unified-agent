@@ -52,7 +52,6 @@ export class SipService implements OnInit {
               this.loginSip();
           }
         });
-        // if (!this.isSubscriptionFailed && !this.isSipLoggedIn && this.checkAgentExtensionAttribute(this._cacheService.agent.attributes)) this.loginSip();
       }
     } catch (error) {
       console.error("[Error on initMe] Sip ==>", error);
