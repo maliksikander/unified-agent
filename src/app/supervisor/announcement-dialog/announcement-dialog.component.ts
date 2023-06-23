@@ -199,14 +199,14 @@ export class AnnouncementDialogComponent implements OnInit {
     console.log(this.selectedTeams);
   }
   OnItemDeSelect(item: any) {
-    console.log(item);
-    console.log(this.selectedTeams);
+    console.log("DeSelected  Team",item);
+    //console.log(this.selectedTeams);
   }
   onSelectAll(items: any) {
-    console.log(items);
+    console.log("Selected All Teams",items);
   }
   onDeSelectAll(items: any) {
-    console.log(items);
+    console.log("DeSelected All Teams",items);
   }
   changeData() {
     this.selectedTeams = [];
