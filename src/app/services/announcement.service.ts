@@ -35,9 +35,9 @@ export class announcementService {
 
     addCreatedAnnoucement(announcement) {
         if (announcement.supervisorId != this._cacheService.agent.id) {
-            this.announcementList.push(announcement);
+            this.announcementList.unshift(announcement);
             this.countUnreadAnnouncement();
-            this.announcementNotificationList.push(announcement);
+            this.announcementNotificationList.unshift(announcement);
             if (!this.timer)
                 this.timer = setTimeout(() => {
                     this.announcementNotificationList = []
