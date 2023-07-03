@@ -414,6 +414,10 @@ snack-bar-container {
   &.success-snackbar {
     background: #0a770a !important;
   }
+
+  &.warn-snackbar {
+    background: $highlight-color !important;
+  }
 }
 
 .mat-simple-snackbar span {
@@ -2041,6 +2045,19 @@ ul.customer-labels {
 
     span {
       font-size: 13px;
+    }
+  }
+
+  &.sla-expired-notify {
+    simple-snack-bar {
+
+      &:before {
+        content: 'error_outline';
+        font-family: "Material Icons";
+        font-weight: 100;
+        background: rgb(0 0 0 / 0%);
+        font-size: 30px;
+      }
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from "@angular/core";
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild} from '@angular/core';
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
@@ -36,6 +36,7 @@ export class InteractionsComponent implements OnInit {
   @ViewChild("media", { static: false }) media: ElementRef;
   @ViewChild("mainScreen", { static: false }) elementViewSuggestions: ElementRef;
   @ViewChild("consultTransferTrigger", { static: false }) consultTransferTrigger: any;
+  @ViewChild('slaExpiredTemplate', {static: false}) slaDialog = {} as TemplateRef<any>;
 
   isWhisperMode: boolean = false;
   dispayVideoPIP = true;
@@ -53,6 +54,11 @@ export class InteractionsComponent implements OnInit {
   ctiBoxView = false;
   timer: any = "00:00";
   cxVoiceSession: any;
+
+  slaTime: number = 30;
+  timeLeft: number = 0;
+  interval;
+  slaTimeValue;
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -117,6 +123,7 @@ export class InteractionsComponent implements OnInit {
     private _translateService: TranslateService
   ) {}
   ngOnInit() {
+    this.startWrapUpTimer();
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
@@ -272,13 +279,6 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  openDialog(templateRef, e): void {
-    this.popTitle = e;
-
-    this.dialog.open(templateRef, {
-      panelClass: "wrap-dialog"
-    });
-  }
 
   //To open the quoted area
   openQuotedReplyArea(e) {
@@ -1264,4 +1264,61 @@ export class InteractionsComponent implements OnInit {
   formatNumber(num) {
     return num.toString().padStart(2, "0");
   }
+
+  startWrapUpTimer() {
+    this.timeLeft = this.slaTime;
+    this.slaTimeValue = 'sla-normal';
+    this.interval = setInterval(() => {
+      if (this.timeLeft > 0) {
+        this.timeLeft--;
+
+        if (this.timeLeft == this.slaTime / 2) {
+          console.log(this.timeLeft, 'leftttttttttttttt', this.slaTime);
+          this.slaTimeValue = 'sla-warn';
+          // this.snackBar.open("SLA Going To Expire", "", {
+          //   duration: 2000,
+          //   panelClass: "success-snackbar",
+          //   horizontalPosition: "right",
+          //   verticalPosition: "bottom"
+          // });
+        }
+        if (this.timeLeft == this.slaTime / 3) {
+          console.log(this.timeLeft, 'leftttttttttttttt2222', this.slaTime);
+          // this.openDialog();
+          // this.snackBar.open("Please Check SLA Going To Expire", "x", {
+          //   duration: 2000,
+          //   panelClass: ['warn-snackbar', 'chat-success-snackbar'],
+          //   horizontalPosition: "right",
+          //   verticalPosition: "bottom"
+          // });
+        }
+        if (this.timeLeft == 0) {
+          console.log(this.timeLeft, 'leftttttttttttttt2222', this.slaTime)
+          this.slaTimeValue = 'sla-ended';
+          this.openDialog();
+          this.snackBar.open("SLA is expiring in your conversations!", " ", {
+            duration: 200000000,
+            panelClass: ['err-class', 'chat-success-snackbar', 'sla-expired-notify'],
+            horizontalPosition: "right",
+            verticalPosition: "bottom"
+          });
+        }
+
+      }
+    }, 1000);
+  }
+
+  openDialog(): void {
+
+     this.dialog.open(this.slaDialog,
+      {
+
+      });
+
+    // this.dialog.open(templateRef, {
+    //   panelClass: "wrap-dialog"
+    // });
+  }
+
 }
+

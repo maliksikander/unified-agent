@@ -1656,7 +1656,8 @@
         <label *ngIf="conversation.activeChannelSessions.length == 0" style="color: grey"> None </label>
       </span> -->
 
-      <span class="selected-channel"><span>{{ "chat-features.interactions.selected-channel" | translate }}</span>
+      <span class="selected-channel">
+        <span>{{ "chat-features.interactions.selected-channel" | translate }}</span>
         <button *ngIf="conversation.activeChannelSessions.length > 0" mat-button [matMenuTriggerFor]="channelSwitching"
           class="channel-switching-trigger">
           <ng-container *ngFor="let info of conversation.activeChannelSessions | getCheckedChannelSession">
@@ -1677,6 +1678,12 @@
         <label *ngIf="conversation.activeChannelSessions.length == 0" style="color: grey; padding-left: 2px">{{
           "chat-features.interactions.none" | translate }}
         </label>
+
+        <span class="agent-sla-timer {{slaTimeValue}}">
+          <mat-icon>watch_later</mat-icon>
+          <time>{{timeLeft> 0 ? timeLeft + 'sec' : 'SLA Expired'}}</time>
+        </span>
+
       </span>
 
       <mat-menu #channelSwitching="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
@@ -2069,6 +2076,38 @@
       <!--      <button mat-button *ngIf="isTransfer" [mat-dialog-close]="true" class="success-btn" cdkFocusInitial-->
       <!--              (click)="transferRequest(chatConsultTo.name, ' ')">Transfer-->
       <!--      </button>-->
+    </div>
+  </div>
+</ng-template>
+
+
+
+<!--Chat consult dialog-->
+<ng-template #slaExpiredTemplate>
+  <div class="note-dialog-main transfer-dialog">
+    <div class="dialog-header">
+      <!-- <h4 mat-dialog-title>{{requestAction ? requestAction + ' Request' : requestedAgentForAssistance.team && isTransfer
+        ? 'Transfer to Queue' : 'Conversation Transfer'}} -->
+      <h4 mat-dialog-title>
+        SLA Expired
+        <button mat-button mat-dialog-close>
+          <mat-icon>close</mat-icon>
+        </button>
+      </h4>
+    </div>
+    <div class="dialog-main-content sla-dialog-content">
+      <div class="container text-center">
+        <p>SLA breached due to latency.
+          Would you like to continue conversation?</p>
+
+      </div>
+    </div>
+
+    <div class="action-trigger text-center">
+      <button mat-button mat-dialog-close class="close-btn">Leave</button>
+      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial >
+        Continue
+      </button>
     </div>
   </div>
 </ng-template>
