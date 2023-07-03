@@ -137,7 +137,6 @@ export class SipService implements OnInit {
         let cacheDialog: any = this.getDialogFromCache(cacheId);
         if (!cacheDialog) this.identifyCustomer(event, event.response.dialog.customerNumber, "INBOUND");
       } else if (event.event == "Error") {
-        console.log("test==>")
         if (event.response.type.toLowerCase() == "invalidstate") {
           this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-incorrect-request"), "err");
           this.notReadyAgentState();
@@ -146,19 +145,19 @@ export class SipService implements OnInit {
           this.notReadyAgentState();
           this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-invalid-credentials"), "err");
         } else if (event.response.type.toLowerCase() == "generalerror") {
-          console.log("test1==>")
+          // console.log("test1==>");
           if (event.response.description.toLowerCase() == "canceled") {
-            console.log("test2==>")
+            // console.log("test2==>");
             this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-call-canceled"), "err");
           } else {
-            console.log("test3==>")
+            // console.log("test3==>");
             let cacheId = `${this._cacheService.agent.id}:${event.response.dialog.id}`;
             let dialogCache: any = this.getDialogFromCache(cacheId);
             if (dialogCache && dialogCache.dialogState == "active") {
-              console.log("test4==>")
+              // console.log("test4==>");
               this.handleCallDroppedEvent(cacheId, event.dialog, "call_end", undefined, "DIALOG_ENDED", undefined);
             }
-            console.log("test5==>")
+            // console.log("test5==>");
             this.removeNotification(event.response.dialog);
             this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-connection-failed"), "err");
             this.notReadyAgentState();
@@ -633,6 +632,38 @@ export class SipService implements OnInit {
       postMessage(command);
     } catch (error) {
       console.error("[Error on resumeCallOnSip] ==>", error);
+    }
+  }
+
+  muteCallOnSip() {
+    try {
+      let command = {
+        action: "mute_call",
+        parameter: {
+          dialogId: this.activeDialog.id,
+          clientCallbackFunction: this.clientCallback
+        }
+      };
+      console.log("muteCallOnSip ==>", command);
+      postMessage(command);
+    } catch (error) {
+      console.error("[Error on muteCallOnSip] ==>", error);
+    }
+  }
+
+  unmuteCallOnSip() {
+    try {
+      let command = {
+        action: "unmute_call",
+        parameter: {
+          dialogId: this.activeDialog.id,
+          clientCallbackFunction: this.clientCallback
+        }
+      };
+      console.log("unmuteCallOnSip ==>", command);
+      postMessage(command);
+    } catch (error) {
+      console.error("[Error on unmuteCallOnSip] ==>", error);
     }
   }
 

@@ -61,6 +61,10 @@ export class CallControlsComponent implements OnInit {
     this._sipService.resumeCallOnSip();
   }
 
+  muteUnmuteCall(){
+    this._sipService.muteCallOnSip();
+  }
+
   // stopTimer(): void {
   //   this._sipService.stopTimer();
   // }

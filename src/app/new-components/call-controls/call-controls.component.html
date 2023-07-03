@@ -29,7 +29,7 @@
 
     <ul class="call-actions">
       <li><button mat-fab (click)="cancel()"><mat-icon>picture_in_picture</mat-icon></button></li>
-      <!-- <li><button mat-fab><mat-icon>mic</mat-icon></button></li> -->
+      <li><button (click)="muteUnmuteCall()" mat-fab><mat-icon>mic</mat-icon></button></li>
       <li *ngIf="_sipService.isCallHold == false"><button (click)="holdCallOnSip()"
           mat-fab><mat-icon>pause</mat-icon></button></li>
       <li *ngIf="_sipService.isCallHold == true"><button (click)="resumeCallOnSip()"
