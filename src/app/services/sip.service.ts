@@ -30,6 +30,7 @@ export class SipService implements OnInit {
   agentMrdStates: any;
   customerNumber: any = "";
   isSubscriptionFailed = false;
+  isMuted: boolean = false;
 
   constructor(
     private _appConfigService: appConfigService,
@@ -201,7 +202,12 @@ export class SipService implements OnInit {
           if (dialogState.dialog.state == "ACTIVE") {
             this.removeNotification(dialogState.dialog);
             if (currentParticipant.state == "ACTIVE") {
-              if (dialogState.dialog.isCallAlreadyActive == false) {
+              let cacheId = `${this._cacheService.agent.id}:${dialogState.dialog.id}`;
+              this.isMuted = currentParticipant.mute ? currentParticipant.mute : false;
+              let dialogCache: any = this.getDialogFromCache(cacheId);
+              console.log("dialogCache==>", dialogCache);
+
+              if (dialogState.dialog.isCallAlreadyActive == false && (!dialogCache || dialogCache.dialogState == "ALERTING")) {
                 this.isCallActive = true;
                 this._isActiveSub.next(true);
                 this.setDialogCache(dialogEvent, "ACTIVE");

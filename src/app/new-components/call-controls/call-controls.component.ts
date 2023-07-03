@@ -61,8 +61,12 @@ export class CallControlsComponent implements OnInit {
     this._sipService.resumeCallOnSip();
   }
 
-  muteUnmuteCall(){
-    this._sipService.muteCallOnSip();
+  muteUnmuteCall() {
+    if (this._sipService.isMuted) {
+      this._sipService.unmuteCallOnSip();
+    } else {
+      this._sipService.muteCallOnSip();
+    }
   }
 
   // stopTimer(): void {
@@ -107,7 +111,9 @@ export class CallControlsComponent implements OnInit {
       const min = Math.floor(sec / 60); // 60 seconds in 1 minute
       // Keep only seconds not extracted to minutes:
       sec %= 60;
-      if (hours > 0) {this.timer = `${this.formatNumber(hours)}:${this.formatNumber(min)}:${this.formatNumber(sec)}`;}else{
+      if (hours > 0) {
+        this.timer = `${this.formatNumber(hours)}:${this.formatNumber(min)}:${this.formatNumber(sec)}`;
+      } else {
         this.timer = `${this.formatNumber(min)}:${this.formatNumber(sec)}`;
       }
     } catch (e) {
@@ -116,6 +122,6 @@ export class CallControlsComponent implements OnInit {
   }
 
   formatNumber(num) {
-    return num.toString().padStart(2, '0');
+    return num.toString().padStart(2, "0");
   }
 }

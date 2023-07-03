@@ -380,7 +380,11 @@
     "start-conversation":"Start Conversation",
     "channel":"Channel",
     "direction":"Direction",
-    "Select-All":"Select All"
+    "Select-All":"Select All",
+    "mute":"Mute",
+    "unMute":"Unmute",
+    "hold":"Hold",
+    "resume":"Resume"
   },
   "pull-mode": {
     "all-list": "All List",
