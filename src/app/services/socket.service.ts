@@ -49,7 +49,7 @@ export class socketService {
     private snackBar: MatSnackBar,
     private _translateService: TranslateService
   ) {
-    // this.onTopicData(mockTopicData, "12345", "");
+     //this.onTopicData(mockTopicData, "12345", "");
   }
 
   connectToSocket() {

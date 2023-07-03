@@ -16,6 +16,8 @@ import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
 import { TranslateService } from "@ngx-translate/core";
 import { CallControlsComponent } from "../../new-components/call-controls/call-controls.component";
 import { SipService } from "src/app/services/sip.service";
+import { HighlightResult } from 'ngx-highlightjs';
+
 
 // declare var EmojiPicker: any;
 
@@ -1264,4 +1266,5 @@ export class InteractionsComponent implements OnInit {
   formatNumber(num) {
     return num.toString().padStart(2, "0");
   }
+
 }
