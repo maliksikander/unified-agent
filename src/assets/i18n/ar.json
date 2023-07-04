@@ -84,6 +84,7 @@
     "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed, Invalid Credentials!_ar",
     "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed!_ar",
     "CX-Voice-Login-Success":"CX VOICE : Successfully login with EF Switch_ar",
+    "CX-Voice-call-canceled" : "CX VOICE : Voice Call canceled_ar",
     "SIP-Logout-Successful":"SIP Logout Successful_ar",
     "No-Extension-Found":"No Extension Found For Sip Agent_ar",
     "Unable-to-edit-Active-Announcements":"Unable to edit Active Announcement_ar",
@@ -379,7 +380,11 @@
     "agent-id":"Agent Id_ar",
     "channel":"channel_ar",
     "direction":"direction_ar",
-    "Select-All":"Select All_ar"
+    "Select-All":"Select All_ar",
+    "mute":"Mute_ar",
+    "unMute":"Unmute_ar",
+    "hold":"Hold_ar",
+    "resume":"Resume_ar"
   },
   "pull-mode": {
     "all-list": "All List_ar",

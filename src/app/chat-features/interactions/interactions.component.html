@@ -2006,14 +2006,14 @@
           <!-- <li><button disabled mat-fab><mat-icon>mic</mat-icon></button></li> -->
           <li><button (click)="ctiControlBar()" mat-fab><mat-icon>picture_in_picture_alt
               </mat-icon></button></li>
-          <li><button *ngIf="_sipService.isMuted == false" matTooltip="{{('globals.mute' | translate)}}"
+          <li *ngIf="_sipService.isMuted == false"><button  matTooltip="{{('globals.mute' | translate)}}"
               (click)="_sipService.muteCallOnSip()" mat-fab><mat-icon>mic</mat-icon></button></li>
-          <li><button *ngIf="_sipService.isMuted == true" matTooltip="{{('globals.unMute' | translate)}}"
+          <li *ngIf="_sipService.isMuted == true"><button  matTooltip="{{('globals.unMute' | translate)}}"
               (click)="_sipService.unmuteCallOnSip()" mat-fab><mat-icon>mic_off</mat-icon></button></li>
-          <li matTooltip="{{('globals.hold' | translate)}}" (click)="_sipService.holdCallOnSip()"
-            *ngIf="_sipService.isCallHold == false"><button mat-fab><mat-icon>pause</mat-icon></button></li>
-          <li matTooltip="{{('globals.resume' | translate)}}" (click)="_sipService.resumeCallOnSip()"
-            *ngIf="_sipService.isCallHold == true"><button mat-fab><mat-icon>pause_circle_filled</mat-icon></button>
+          <li *ngIf="_sipService.isCallHold == false" matTooltip="{{('globals.hold' | translate)}}" (click)="_sipService.holdCallOnSip()"
+            ><button mat-fab><mat-icon>pause</mat-icon></button></li>
+          <li *ngIf="_sipService.isCallHold == true" matTooltip="{{('globals.resume' | translate)}}" (click)="_sipService.resumeCallOnSip()"
+            ><button mat-fab><mat-icon>pause_circle_filled</mat-icon></button>
           </li>
           <li (click)="endCallOnSip()"><button class="end-call" mat-fab><mat-icon>call_end</mat-icon></button></li>
         </ul>

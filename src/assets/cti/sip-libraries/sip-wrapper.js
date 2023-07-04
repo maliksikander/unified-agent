@@ -1,8 +1,5 @@
-var newregister;
-var ccassclient = null
 var userAgent;
 var registerer;
-var sessionjazeb;
 var again_register = false;
 var sessionall = null;
 var remotesession = null;
@@ -12,24 +9,18 @@ var wrapupenabler = null;
 var agentInfo = false;
 var callbackFunction = null;
 
-var useragentregister = false;
-var callreject = false;
 var call_variable_array = {};
-var call_queue_uuid;
-var ServerconfigParams = null;
-var freeswitch_wssip = null;
 var agentStatedata = null;
 var dialogStatedata = null;
 var invitedata = null;
 var outboundDialingdata = null;
-var freeswitch_domain = null;
-
-var sipconfig = {
-    wss: "wss://192.168.1.201:7443",
-    uri: "192.168.1.201",
-    enable_sip_log: true,
-    agentStaticPassword: '1234',
-}
+var sipconfig = sipConfig;
+// var sipconfig = {
+//     wss: "wss://192.168.1.201:7443",
+//     uri: "192.168.1.201",
+//     enable_sip_log: true,
+//     agentStaticPassword: 'Expertflow464',
+// }
 
 var remoteVideo = document.getElementById('remoteVideo');
 var localVideo = document.getElementById('localVideo');
@@ -191,7 +182,6 @@ function postMessage(obj, callback) {
             // if a callback function has been passed then we add the refereance to the EventEmitter class
             if (typeof obj.parameter.clientCallbackFunction === 'function') {
                 if (sipconfig.uri !== null && sipconfig.uri !== undefined) {
-                    freeswitch_domain = sipconfig.uri;
                     connect_useragent(obj.parameter.extension, sipconfig.uri, sipconfig.agentStaticPassword, sipconfig.wss, sipconfig.enable_sip_log, obj.parameter.clientCallbackFunction);
                     callbackFunction = obj.parameter.clientCallbackFunction;
                 } else {
@@ -483,7 +473,7 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
                 }
                 dialogStatedata.response.dialog.callVariables.CallVariable = call_variable_array;
                 dialogStatedata.response.loginId = loginid;
-                dialogStatedata.response.dialog.id = invitation.incomingInviteRequest.message.headers["X-Call-Id"]!= undefined ? invitation.incomingInviteRequest.message.headers["X-Call-Id"][0]['raw'] : invitation.incomingInviteRequest.message.headers["Call-ID"][0]['raw'];
+                dialogStatedata.response.dialog.id = invitation.incomingInviteRequest.message.headers["X-Call-Id"] != undefined ? invitation.incomingInviteRequest.message.headers["X-Call-Id"][0]['raw'] : invitation.incomingInviteRequest.message.headers["Call-ID"][0]['raw'];
                 dialogStatedata.response.dialog.ani = dnis.split('sip:')[1].split('@')[0];
                 dialogStatedata.response.dialog.fromAddress = dnis.split('sip:')[1].split('@')[0];
                 dialogStatedata.response.dialog.customerNumber = dnis.split('sip:')[1].split('@')[0];
@@ -498,7 +488,7 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
                 invitedata.response.dialog.callVariables.CallVariable = call_variable_array;
                 invitedata.response.loginId = loginid;
                 invitedata.response.dialog.dnis = dialedNumber;
-                invitedata.response.dialog.id = invitation.incomingInviteRequest.message.headers["X-Call-Id"]!= undefined ? invitation.incomingInviteRequest.message.headers["X-Call-Id"][0]['raw'] : invitation.incomingInviteRequest.message.headers["Call-ID"][0]['raw'];
+                invitedata.response.dialog.id = invitation.incomingInviteRequest.message.headers["X-Call-Id"] != undefined ? invitation.incomingInviteRequest.message.headers["X-Call-Id"][0]['raw'] : invitation.incomingInviteRequest.message.headers["Call-ID"][0]['raw'];
                 invitedata.response.dialog.ani = dnis.split('sip:')[1].split('@')[0];
                 invitedata.response.dialog.fromAddress = dnis.split('sip:')[1].split('@')[0];
                 invitedata.response.dialog.customerNumber = dnis.split('sip:')[1].split('@')[0];
@@ -509,9 +499,6 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
                 invitedata.response.dialog.state = "ALERTING";
                 invitedata.response.dialog.dialedNumber = dialedNumber;
 
-
-                // ccassclient.emit('event',JSON.parse(JSON.stringify(invitedata)));
-                //ccassclient.emit('event',JSON.parse(JSON.stringify(dialogStatedata)));
                 callback(JSON.parse(JSON.stringify(invitedata)));
                 // console.log(event);
                 remotesession = invitation;
@@ -552,9 +539,6 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
 
     userAgent = new SIP.UserAgent(config)
 
-    // } else {
-    //     error('invalidState', loginid, "invalid action login", callback);
-    // }
 
     userAgent.start()
         .then(() => {
@@ -769,7 +753,9 @@ function terminate_call() {
                 sessionall.cancel();
             } else {
                 // An unestablished incoming session
+                dialogStatedata.response.dialog.callEndReason = "Rejected";
                 sessionall.reject();
+
             }
             break;
         case SIP.SessionState.Established:
@@ -1082,7 +1068,15 @@ function addsipcallback(temp_session, call_type, callback) {
             },
             onCancel: (invitation) => {
                 console.log("onCancel received", invitation);
-                dialogStatedata.response.dialog.callEndReason = "Canceled";
+
+                const match = invitation.incomingCancelRequest.data.match(/text="([^"]+)"/);
+
+                if (match && match[1]) {
+                    dialogStatedata.response.dialog.callEndReason = match[1];
+                } else {
+                    dialogStatedata.response.dialog.callEndReason = "Canceled";
+                }
+
                 //invitation.accept();
             },
             onFailed: (invitation) => {
@@ -1121,8 +1115,6 @@ function addsipcallback(temp_session, call_type, callback) {
 }
 window.addEventListener('beforeunload', (event) => {
     terminate_call();
-    useragentregister = false;
-    callreject = false;
     call_variable_array = {};
     agentStatedata = null;
     dialogStatedata = null;
@@ -1249,12 +1241,15 @@ function setupRemoteMedia(temp_session) {
     var pc = temp_session.sessionDescriptionHandler.peerConnection;
     var remoteStream;
     remoteStream = new MediaStream();
-    pc.getReceivers().forEach((receiver) => {
-        if (receiver.track) {
-            console.log(receiver.track);
-            remoteStream.addTrack(receiver.track);
-        }
-    });
+    // pc.getReceivers().forEach((receiver) => {
+    //     if (receiver.track) {
+    //         console.log(receiver.track);
+    //         remoteStream.addTrack(receiver.track);
+    //     }
+    // });
+    // remoteVideo.srcObject = remoteStream;
+    var receiver = pc.getReceivers()[0];
+    remoteStream.addTrack(receiver.track);
     remoteVideo.srcObject = remoteStream;
 
 
@@ -1277,4 +1272,3 @@ function registrationFailed(response) {
     //console.log('helo ',msg);
     error("subscriptionFailed", loginid, errorsList[response.message.reasonPhrase], callbackFunction);
 }
-
