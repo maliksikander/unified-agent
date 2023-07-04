@@ -1630,6 +1630,7 @@
               <!-- ----------------------------------system Notifications ended-------------------------------- -->
             </div>
             <div id="chat-area-end"></div>
+
           </div>
         </ng-scrollbar>
       </div>
@@ -1988,6 +1989,34 @@
         </div>
       </div>
     </ng-template>
+
+    <!--Chat SLA dialog-->
+    <div class="sla-main-action" *ngIf="openSLADialog">
+      <div class="note-dialog-main transfer-dialog">
+        <div class="dialog-header">
+          <!-- <h4 mat-dialog-title>{{requestAction ? requestAction + ' Request' : requestedAgentForAssistance.team && isTransfer
+            ? 'Transfer to Queue' : 'Conversation Transfer'}} -->
+          <h4 mat-dialog-title>
+            SLA Expired
+              <span class="float-right">SLA Timer | {{timeLeft}} sec</span>
+          </h4>
+        </div>
+        <div class="dialog-main-content sla-dialog-content">
+          <div class="container text-center">
+            <strong>SLA breached!</strong>
+              <p>Would you like to stay in the conversation?</p>
+
+          </div>
+        </div>
+
+        <div class="action-trigger text-center">
+          <button mat-button mat-dialog-close (click)="openSLADialog = false"  class="close-btn">Leave</button>
+          <button mat-button (click)="openSLADialog = false" class="success-btn" cdkFocusInitial >
+            Stay
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="customer-info-main">
@@ -2029,6 +2058,8 @@
       (updatedlabels)="eventFromChildForUpdatedLabel($event)">
     </app-customer-info>
   </div>
+
+
 </div>
 
 <!--Chat consult dialog-->
@@ -2082,32 +2113,32 @@
 
 
 
-<!--Chat consult dialog-->
-<ng-template #slaExpiredTemplate>
-  <div class="note-dialog-main transfer-dialog">
-    <div class="dialog-header">
-      <!-- <h4 mat-dialog-title>{{requestAction ? requestAction + ' Request' : requestedAgentForAssistance.team && isTransfer
-        ? 'Transfer to Queue' : 'Conversation Transfer'}} -->
-      <h4 mat-dialog-title>
-        SLA Expired
-        <button mat-button mat-dialog-close>
-          <mat-icon>close</mat-icon>
-        </button>
-      </h4>
-    </div>
-    <div class="dialog-main-content sla-dialog-content">
-      <div class="container text-center">
-        <p>SLA breached due to latency.
-          Would you like to continue conversation?</p>
+<!--&lt;!&ndash;Chat consult dialog&ndash;&gt;-->
+<!--<ng-template #slaExpiredTemplate>-->
+<!--  <div class="note-dialog-main transfer-dialog">-->
+<!--    <div class="dialog-header">-->
+<!--      &lt;!&ndash; <h4 mat-dialog-title>{{requestAction ? requestAction + ' Request' : requestedAgentForAssistance.team && isTransfer-->
+<!--        ? 'Transfer to Queue' : 'Conversation Transfer'}} &ndash;&gt;-->
+<!--      <h4 mat-dialog-title>-->
+<!--        SLA Expired-->
+<!--        <button mat-button mat-dialog-close>-->
+<!--          <mat-icon>close</mat-icon>-->
+<!--        </button>-->
+<!--      </h4>-->
+<!--    </div>-->
+<!--    <div class="dialog-main-content sla-dialog-content">-->
+<!--      <div class="container text-center">-->
+<!--        <p>SLA breached due to latency.-->
+<!--          Would you like to continue conversation?</p>-->
 
-      </div>
-    </div>
+<!--      </div>-->
+<!--    </div>-->
 
-    <div class="action-trigger text-center">
-      <button mat-button mat-dialog-close class="close-btn">Leave</button>
-      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial >
-        Continue
-      </button>
-    </div>
-  </div>
-</ng-template>
+<!--    <div class="action-trigger text-center">-->
+<!--      <button mat-button mat-dialog-close class="close-btn">Leave</button>-->
+<!--      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial >-->
+<!--        Continue-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</ng-template>-->

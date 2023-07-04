@@ -16,6 +16,7 @@ import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
 import { TranslateService } from "@ngx-translate/core";
 import { CallControlsComponent } from "../../new-components/call-controls/call-controls.component";
 import { SipService } from "src/app/services/sip.service";
+import {Router} from '@angular/router';
 
 // declare var EmojiPicker: any;
 
@@ -54,6 +55,7 @@ export class InteractionsComponent implements OnInit {
   ctiBoxView = false;
   timer: any = "00:00";
   cxVoiceSession: any;
+  openSLADialog = false;
 
   slaTime: number = 30;
   timeLeft: number = 0;
@@ -120,7 +122,8 @@ export class InteractionsComponent implements OnInit {
     public _finesseService: finesseService,
     private snackBar: MatSnackBar,
     public _sipService: SipService,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
+    private _router: Router
   ) {}
   ngOnInit() {
     this.startWrapUpTimer();
@@ -1275,6 +1278,7 @@ export class InteractionsComponent implements OnInit {
         if (this.timeLeft == this.slaTime / 2) {
           console.log(this.timeLeft, 'leftttttttttttttt', this.slaTime);
           this.slaTimeValue = 'sla-warn';
+          this.openSLADialog = true;
           // this.snackBar.open("SLA Going To Expire", "", {
           //   duration: 2000,
           //   panelClass: "success-snackbar",
@@ -1285,19 +1289,25 @@ export class InteractionsComponent implements OnInit {
         if (this.timeLeft == this.slaTime / 3) {
           console.log(this.timeLeft, 'leftttttttttttttt2222', this.slaTime);
           // this.openDialog();
-          // this.snackBar.open("Please Check SLA Going To Expire", "x", {
-          //   duration: 2000,
-          //   panelClass: ['warn-snackbar', 'chat-success-snackbar'],
-          //   horizontalPosition: "right",
-          //   verticalPosition: "bottom"
-          // });
+          // this.openSLADialog = true;
+          this.slaTimeValue = 'sla-ended';
+          if (this._router.url !== "/customers/chats") {
+            this.snackBar.open("SLA is expiring in one of your conversations!", " ", {
+              duration: 20000,
+              panelClass: ['err-class', 'chat-success-snackbar', 'sla-expired-notify'],
+              horizontalPosition: "right",
+              verticalPosition: "bottom"
+            });
+          }
+
         }
         if (this.timeLeft == 0) {
+          // this.openSLADialog = true;
           console.log(this.timeLeft, 'leftttttttttttttt2222', this.slaTime)
           this.slaTimeValue = 'sla-ended';
-          this.openDialog();
-          this.snackBar.open("SLA is expiring in your conversations!", " ", {
-            duration: 200000000,
+          // this.openDialog();
+          this.snackBar.open("SLA is expiring in one of your conversations!", " ", {
+            duration: 20000,
             panelClass: ['err-class', 'chat-success-snackbar', 'sla-expired-notify'],
             horizontalPosition: "right",
             verticalPosition: "bottom"
