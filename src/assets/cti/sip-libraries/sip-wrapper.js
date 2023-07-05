@@ -334,6 +334,7 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
                 };
                 callback(event);
                 if (again_register) {
+                  setupRemoteMedia(sessionall);
                     registerer.register()
                         .then((request) => {
                             console.log("Successfully sent REGISTER");
@@ -1249,6 +1250,7 @@ function setupRemoteMedia(temp_session) {
     // });
     // remoteVideo.srcObject = remoteStream;
     var receiver = pc.getReceivers()[0];
+    console.log("Receiver track==>",receiver.track)
     remoteStream.addTrack(receiver.track);
     remoteVideo.srcObject = remoteStream;
 
