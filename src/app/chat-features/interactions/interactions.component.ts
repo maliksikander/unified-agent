@@ -97,9 +97,9 @@ export class InteractionsComponent implements OnInit {
   activeChat = false;
   activeChannelSessionList: Array<any>;
   fbPostId: string = null;
-  fbCommentId: string = null;
+  commentId: string = null;
   conversationSettings: any;
-  FBPostData: any = null;
+  postData: any = null;
   FBPostComments: any = null;
   sendTypingStartedEventTimer: any = null;
 
@@ -185,20 +185,20 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  fbCommentAction(message, action) {
+  // This was fb page comment action / Generalizing it.
+  commentAction(message, action) {  
+
     if (action == "like" && message["isLiked"]) {
     } else if (this._socketService.isSocketConnected) {
-      let fbCommentId = message.header.providerMessageId;
-
-      if (fbCommentId && message.body.postId) {
-        let fbChannelSession = this.getFaceBookChannelSession();
-
-        if (fbChannelSession) {
-          let originalFbChannelSession = JSON.parse(JSON.stringify(fbChannelSession));
+      let commentId = message.header.providerMessageId;
+      if (commentId && message.body.postId) {
+        let channelSession = this.getChannelSession();
+        if (channelSession) {
+          let originalFbChannelSession = JSON.parse(JSON.stringify(channelSession));
           delete originalFbChannelSession["isChecked"];
           delete originalFbChannelSession["isDisabled"];
 
-          this.constructAndSendFbAction(fbCommentId, message.body.postId, originalFbChannelSession, message.id, action);
+          this.constructAndSendFbAction(commentId, message.body.postId, originalFbChannelSession, message.id, action);
         } else {
           this._snackbarService.open(this._translateService.instant("snackbar.Requested-session-not-available-at-the-moment"), "err");
         }
@@ -210,13 +210,14 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  constructAndSendFbAction(commentId, postId, fbChannelSession, replyToMessageId, action) {
+
+  constructAndSendFbAction(commentId, postId, channelSession, replyToMessageId, action) {
     let message = this.getCimMessage();
     message.header.providerMessageId = commentId;
     message.body.postId = postId;
     message.body.type = "COMMENT";
-    message.header.channelSession = fbChannelSession;
-    message.header.channelData = fbChannelSession.channelData;
+    message.header.channelSession = channelSession;
+    message.header.channelData = channelSession.channelData;
     message.header.replyToMessageId = replyToMessageId;
     if (action == "like" || action == "delete" || action == "hide") {
       message.body.itemType = action.toUpperCase();
@@ -224,21 +225,22 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  replyToFbComment(message) {
+  //replyToFBComment
+  replyToComment(message) {
     this.fbPostId = message.body.postId;
     this.replyToMessageId = message.id;
 
-    this.fbCommentId = message.header.providerMessageId;
+    this.commentId = message.header.providerMessageId;
 
-    if (this.fbPostId && this.fbCommentId) {
-      let fbChannelSession = this.getFaceBookChannelSession();
+    if (this.fbPostId && this.commentId) {
+      let channelSession = this.getChannelSession();
 
-      if (fbChannelSession) {
+      if (channelSession) {
         this.conversation.activeChannelSessions.forEach((channelSession) => {
           channelSession.isChecked = false;
         });
 
-        fbChannelSession.isChecked = true;
+        channelSession.isChecked = true;
 
         this.conversation.activeChannelSessions = this.conversation.activeChannelSessions.concat([]);
 
@@ -666,13 +668,12 @@ export class InteractionsComponent implements OnInit {
         let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
 
         if (selectedChannelSession) {
-          if (this.fbCommentId && selectedChannelSession.channel.channelType.name.toLowerCase() == "facebook") {
+          if (this.commentId && selectedChannelSession.channel.channelType.name.toLowerCase() == "facebook") {
             // channel session is facebook
-
-            message = this.constructFbCommentEvent(message, msgType, selectedChannelSession, fileMimeType, fileName, fileSize, text);
+            message = this.constructCommentEvent(message, msgType, selectedChannelSession, fileMimeType, fileName, fileSize, text);
 
             this.emitCimEvent(message, "AGENT_MESSAGE");
-            this.fbCommentId = null;
+            this.commentId = null;
           } else {
             // channel is web or whatsApp
 
@@ -897,12 +898,13 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  getFaceBookChannelSession() {
-    let fbChannelSession = this.conversation.activeChannelSessions.find((channelSession) => {
+  // fbchannel session . 
+  getChannelSession() {
+    let channelSession = this.conversation.activeChannelSessions.find((channelSession) => {
       return channelSession.channel.channelType.name.toLowerCase() == "facebook";
     });
 
-    return fbChannelSession;
+    return channelSession;
   }
 
   getCimMessage() {
@@ -939,13 +941,14 @@ export class InteractionsComponent implements OnInit {
     return message;
   }
 
-  constructFbCommentEvent(message, msgType, channelSession, fileMimeType?, fileName?, fileSize?, text?) {
+  // Fb comment event.
+  constructCommentEvent(message, msgType, channelSession, fileMimeType?, fileName?, fileSize?, text?) {
     let sendingActiveChannelSession = JSON.parse(JSON.stringify(channelSession));
     delete sendingActiveChannelSession["webChannelData"];
     delete sendingActiveChannelSession["isChecked"];
     delete sendingActiveChannelSession["isDisabled"];
 
-    message.header.providerMessageId = this.fbCommentId;
+    message.header.providerMessageId = this.commentId;
     message.body.type = "COMMENT";
     message.body.postId = this.fbPostId;
     message.header.channelSession = sendingActiveChannelSession;
@@ -1117,21 +1120,23 @@ export class InteractionsComponent implements OnInit {
     }, 1000);
   }
 
-  getFBPost(postId, selectedCommentId, accessToken, FBHOSTAPI) {
+  // getFBPost 
+  getPost(postId, selectedCommentId, accessToken, FBHOSTAPI) {
     this._httpService.getFBPostData(postId, accessToken, FBHOSTAPI).subscribe(
       (res: any) => {
-        this.FBPostData = res;
+        this.postData = res;
         this.fullPostView = true;
         this.selectedCommentId = selectedCommentId;
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
-        console.error("err [getFBPost]", error.error);
+        console.error("err [getPost]", error.error);
       }
     );
   }
 
-  getFBComments(postId, selectedCommentId, accessToken, FBHOSTAPI) {
+  // getFBComments
+  getComments(postId, selectedCommentId, accessToken, FBHOSTAPI) {
     this._httpService.getFBPostComments(postId, accessToken, FBHOSTAPI).subscribe(
       (res: any) => {
         this.FBPostComments = res;
@@ -1140,18 +1145,18 @@ export class InteractionsComponent implements OnInit {
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
-        console.error("err [getFBComments]", error.error);
+        console.error("err [getComments]", error.error);
       }
     );
   }
 
   //the function will fetch fb post and comments API parallel
-  getFBPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI) {
+  getPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI) {
     try {
-      this.getFBPost(postId, selectedCommentId, accessToken, FBHOSTAPI);
-      this.getFBComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
+      this.getPost(postId, selectedCommentId, accessToken, FBHOSTAPI);
+      this.getComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
     } catch (err) {
-      console.error("err [ getFBPostAndComments ] error while fetching post and comments", err);
+      console.error("err [ getPostAndComments ] error while fetching post and comments", err);
     }
   }
 
@@ -1160,7 +1165,7 @@ export class InteractionsComponent implements OnInit {
     let accessToken = null;
     let FBHOSTAPI = null;
     this.FBPostComments = null;
-    this.FBPostData = null;
+    this.postData = null;
     this.fullPostView = false;
     this.selectedCommentId = null;
     if (channelSession) {
@@ -1173,7 +1178,7 @@ export class InteractionsComponent implements OnInit {
         }
       });
       if (accessToken && FBHOSTAPI) {
-        this.getFBPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
+        this.getPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
       } else {
         this._snackbarService.open(this._translateService.instant("snackbar.Access-Token-or-FB-Host-API-for-FB-is-missing"), "err");
         console.error("err [getFullViewPostData] accessToken or FB Host API for FB is missing");
