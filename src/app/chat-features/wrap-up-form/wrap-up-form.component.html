@@ -1,8 +1,29 @@
 <div class="note-dialog-main"  [ngClass]="{'right-align-view': wrapUpData.RTLDirection}">
   <div class="dialog-header">
-    <h4 mat-dialog-title>{{wrapUpData.header}} <button mat-button (click)="closeDialog()">
+    <h4 mat-dialog-title>{{wrapUpData.header}}
+      <button *ngIf="wrapUpData.timerEnabled == false" mat-button (click)="closeDialog()">
         <mat-icon>close</mat-icon>
-      </button></h4>
+      </button>
+      <span *ngIf="wrapUpData.timerEnabled" class="wrap-timer"> <span class="wrap-time-count">{{timeLeft }}</span>
+      <circle-progress
+        class="laft-bar-data"
+        [percent]="100"
+        [radius]="15"
+        [outerStrokeWidth]="2"
+        [innerStrokeWidth]="2"
+        [outerStrokeColor]="'#DB2323'"
+        [innerStrokeColor]="'#ffffff66'"
+        [space]="-2"
+        [animationDuration]="timeProgress * 1000"
+        [title]="52"
+        [titleFontSize]="10"
+        [showSubtitle]="false"
+        [showTitle]="false"
+        [showUnits]="false"
+        [renderOnClick]="false">
+    </circle-progress>
+    </span>
+    </h4>
   </div>
   <div class="dialog-main-content">
     <div class="row m-0">
@@ -77,9 +98,9 @@
   </div>
 
   <div class="action-trigger text-right">
-    <button mat-button (click)="closeDialog()" class="close-btn mat-button mat-button-base">{{'chat-features.wrap-up-form.cancel' | translate}}</button>
+    <button mat-button (click)="closeDialog()" class="close-btn mat-button mat-button-base">{{  (wrapUpData.timerEnabled ? 'chat-features.wrap-up-form.Leave-without-wrap-up' : 'chat-features.wrap-up-form.cancel') | translate }}</button>
     <button mat-button [disabled]="selectedWrapUpList.length == 0 && !notesFormCtrl.value"
       [ngClass]="{'btn-disable-background':selectedWrapUpList.length == 0 && !notesFormCtrl.value}"
-      class="success-btn mat-button mat-button-base" (click)="onSave()" cdkFocusInitial>{{'chat-features.wrap-up-form.apply' | translate}}</button>
+      class="success-btn mat-button mat-button-base" (click)="onSave()" cdkFocusInitial>{{(wrapUpData.timerEnabled ? 'chat-features.wrap-up-form.Add-Wrap-Up' :'chat-features.wrap-up-form.apply') | translate}}</button>
   </div>
 </div>

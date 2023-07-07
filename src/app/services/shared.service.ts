@@ -6,6 +6,8 @@ import { LinkConversationDialogComponent } from "../dialogs/link-conversation-di
 import { ConfirmationDialogComponent } from "../new-components/confirmation-dialog/confirmation-dialog.component";
 import { httpService } from "./http.service";
 import { snackbarService } from "./snackbar.service";
+import { ConversationSettings } from '../models/conversationSetting/conversationSettings';
+
 
 @Injectable({
   providedIn: "root"
@@ -29,12 +31,12 @@ export class sharedService {
   serviceCurrentMessage = new Subject();
   selectedlangugae = new Subject();
   channelTypeList;
-  conversationSettings = {
+  conversationSettings:ConversationSettings = {
     isFileSharingEnabled: false,
     isEmojisEnabled: false,
     isConversationParticipantsEnabled: false,
     isWrapUpEnabled: false,
-    wrapUpTime: 15,
+    wrapUpTime: 0,
     isMessageFormattingEnabled: false
   };
 

@@ -187,6 +187,8 @@
       "start": "Start a New Conversation"
     },
     "interactions": {
+      "leave-conversation":"Leave Conversation",
+      "Are-you-sure-you-want-to-leave-the-conversation-with":"Are you sure you want to leave the conversation with",
       "Consult":"Consult",
       "Transfer":"Transfer",
       "Conference":"Conference",
@@ -235,6 +237,8 @@
       "queue-conference": "Queue Conference"
     },
     "wrap-up-form": {
+      "Add-Wrap-Up": "Add Wrap-Up",
+      "Leave-without-wrap-up":"Leave Without Wrap-Up",
       "wrap-up-codes": "Wrap-Up Codes",
       "selected": "Selected",
       "cancel": "Cancel",
