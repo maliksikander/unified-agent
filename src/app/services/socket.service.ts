@@ -18,7 +18,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { announcementService } from "./announcement.service";
 
-//const mockTopicData: any = require("../mocks/mockTopicData.json");
+const mockTopicData: any = require("../mocks/mockTopicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -49,7 +49,19 @@ export class socketService {
     private snackBar: MatSnackBar,
     private _translateService: TranslateService
   ) {
-     //this.onTopicData(mockTopicData, "12345", "");
+    this.createFakeConversation(2);
+  }
+
+  createFakeConversation(count) {
+
+    this.onTopicData(mockTopicData, "12345", "11220");
+
+    if (count == 2) {
+      let anotherTopicdata: any = JSON.parse(JSON.stringify(mockTopicData));
+      anotherTopicdata.customer._id = '12345431213';
+      this.onTopicData(anotherTopicdata, "1234567", "2211");
+    }
+
   }
 
   connectToSocket() {
@@ -96,12 +108,12 @@ export class socketService {
             "err"
           );
         }
-      } catch (err) {}
+      } catch (err) { }
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -135,7 +147,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -190,8 +202,8 @@ export class socketService {
         }
       } else {
         if (res.channelSession.channel.channelType.name.toLowerCase() !== "cx_voice") {
-        // } else {
-        this.triggerNewChatRequest(res);
+          // } else {
+          this.triggerNewChatRequest(res);
         }
         // this.triggerNewChatRequest(res);
       }
@@ -309,7 +321,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) {}
+    } catch (err) { }
   }
 
   listen(eventName: string) {
@@ -441,7 +453,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._snackbarService.open(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"), "err");
     alert(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"));
@@ -463,6 +475,7 @@ export class socketService {
       topicParticipant: topicData.topicParticipant ? topicData.topicParticipant : "", //own ccuser of Agent
       firstChannelSession: topicData.channelSession ? topicData.channelSession : "",
       messageComposerState: false,
+      SLACountdown: { Ref: null, value: 100, color: 'sla-normal' },
       agentParticipants: [] //all Agents in conversations except itself
     };
 
@@ -609,9 +622,46 @@ export class socketService {
       this._soundService.playBeep();
     }
 
+    this.startSLACountDown(conversation.SLACountdown);
+
     // console.log("conversations==>", this.conversations);
     this._conversationsListener.next(this.conversations);
   }
+
+
+    // starts the conversation SLA countdown
+  startSLACountDown(SLACountdown) {
+
+    if (SLACountdown.value > 0) {
+      SLACountdown.ref = setInterval(() => {
+        SLACountdown.value--;
+
+        if (SLACountdown.value === 0) {
+          clearInterval(SLACountdown.ref); // Stop the interval when countdown reaches 0
+        }
+      }, 1000); // Update countdown every second
+    }
+  }
+
+
+  // stops the conversation SLA countdown
+  stopSLACountDown(conversationId) {
+
+    let conversation = this.conversations.find((e) => {
+      //console.log("this is conversation id"+e.conversationId);
+      return e.conversationId == conversationId;
+    });
+
+    if (conversation) {
+      conversation.SLACountdown.value = 0;
+      clearInterval(conversation.SLACountdown.ref);
+      conversation.SLACountdown.ref = null;
+    }else{
+      console.log("not")
+    }
+
+  }
+
 
   processSeenMessages(conversation, events) {
     let latestDeliveryEventMessage = this.getLatestDeliveryEventMessage(events);
@@ -1186,7 +1236,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
@@ -1256,13 +1306,13 @@ export class socketService {
                     console.log("limit exceed");
                     this._snackbarService.open(
                       this._translateService.instant("snackbar.The-conversation-is-going-to-linking-with") +
-                        selectedCustomer.firstName +
-                        this._translateService.instant("snackbar.However-the-channel-identifier") +
-                        channelIdentifier +
-                        this._translateService.instant("snackbar.can-not-be-added-in") +
-                        selectedCustomer.firstName +
-                        attr +
-                        this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
+                      selectedCustomer.firstName +
+                      this._translateService.instant("snackbar.However-the-channel-identifier") +
+                      channelIdentifier +
+                      this._translateService.instant("snackbar.can-not-be-added-in") +
+                      selectedCustomer.firstName +
+                      attr +
+                      this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
                       "succ",
                       20000,
                       "Ok"

@@ -1,3 +1,4 @@
+<button (click)="clear()">clear</button>
 <div class="interaction-main" [ngClass]="{
     'customer-bar-opened': isBarOpened,
     'unidentified-customer': conversation.customer.isAnonymous,
@@ -1738,6 +1739,10 @@
         <label *ngIf="conversation.activeChannelSessions.length == 0" style="color: grey; padding-left: 2px">{{
           "chat-features.interactions.none" | translate }}
         </label>
+        <span class="agent-sla-timer {{conversation.SLACountdown.color}">
+          <mat-icon>watch_later</mat-icon>
+          <time>{{conversation.SLACountdown.value + 'sec'}}</time>
+        </span>
       </span>
 
       <mat-menu #channelSwitching="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">

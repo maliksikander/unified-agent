@@ -55,6 +55,9 @@ export class InteractionsComponent implements OnInit {
   ctiBoxView = false;
   timer: any = "00:00";
   cxVoiceSession: any;
+  
+
+ 
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -156,6 +159,8 @@ export class InteractionsComponent implements OnInit {
       if (this._sipService.isCallActive == true) this.ctiControlBar();
       this.getVoiceChannelSession();
     }
+
+
   }
 
   loadLabels() {
@@ -1265,6 +1270,59 @@ export class InteractionsComponent implements OnInit {
 
   formatNumber(num) {
     return num.toString().padStart(2, "0");
+  }
+
+  // startWrapUpTimer() {
+  //   this.timeLeft = this.slaTime;
+  //   this.slaTimeValue = 'sla-normal';
+  //   this.interval = setInterval(() => {
+  //     if (this.timeLeft > 0) {
+  //       this.timeLeft--;
+
+  //       if (this.timeLeft == this.slaTime / 2) {
+  //         console.log(this.timeLeft, 'leftttttttttttttt', this.slaTime);
+  //         this.slaTimeValue = 'sla-warn';
+  //         // this.openSLADialog = true;
+  //         // this.snackBar.open("SLA Going To Expire", "", {
+  //         //   duration: 2000,
+  //         //   panelClass: "success-snackbar",
+  //         //   horizontalPosition: "right",
+  //         //   verticalPosition: "bottom"
+  //         // });
+  //       }
+  //       if (this.timeLeft == this.slaTime / 3) {
+  //         console.log(this.timeLeft, 'leftttttttttttttt2222', this.slaTime);
+  //         // this.openDialog();
+  //         // this.openSLADialog = true;
+  //         this.slaTimeValue = 'sla-ended';
+  //         // if (this._router.url !== "/customers/chats") {
+  //         //   this.snackBar.open("SLA is expiring in one of your conversations!", " ", {
+  //         //     duration: 20000,
+  //         //     panelClass: ['err-class', 'chat-success-snackbar', 'sla-expired-notify'],
+  //         //     horizontalPosition: "right",
+  //         //     verticalPosition: "bottom"
+  //         //   });
+  //         // }
+
+  //       }
+  //       if (this.timeLeft == 0) {
+  //         // this.openSLADialog = true;
+  //         console.log(this.timeLeft, 'leftttttttttttttt2222', this.slaTime)
+  //         this.slaTimeValue = 'sla-ended';
+  //         // this.openDialog();
+  //         this.snackBar.open("SLA is expiring in one of your conversations!", " ", {
+  //           duration: 20000,
+  //           panelClass: ['err-class', 'chat-success-snackbar', 'sla-expired-notify'],
+  //           horizontalPosition: "right",
+  //           verticalPosition: "bottom"
+  //         });
+  //       }
+
+  //     }
+  //   }, 1000);
+  // }
+  clear(){
+    this._socketService.stopSLACountDown(this.conversation.conversationId)
   }
 
 }
