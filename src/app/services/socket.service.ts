@@ -475,7 +475,7 @@ export class socketService {
       topicParticipant: topicData.topicParticipant ? topicData.topicParticipant : "", //own ccuser of Agent
       firstChannelSession: topicData.channelSession ? topicData.channelSession : "",
       messageComposerState: false,
-      SLACountdown: { Ref: null, value: 100, color: 'sla-normal' },
+      SLACountdown: { show: true, ref: null, value: 100, color: 'sla-normal' },
       agentParticipants: [] //all Agents in conversations except itself
     };
 
@@ -629,7 +629,7 @@ export class socketService {
   }
 
 
-    // starts the conversation SLA countdown
+  // starts the conversation SLA countdown
   startSLACountDown(SLACountdown) {
 
     if (SLACountdown.value > 0) {
@@ -656,9 +656,8 @@ export class socketService {
       conversation.SLACountdown.value = 0;
       clearInterval(conversation.SLACountdown.ref);
       conversation.SLACountdown.ref = null;
-    }else{
-      console.log("not")
-    }
+      conversation.SLACountdown.show = false;
+    } 
 
   }
 

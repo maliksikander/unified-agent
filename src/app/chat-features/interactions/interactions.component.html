@@ -1739,7 +1739,7 @@
         <label *ngIf="conversation.activeChannelSessions.length == 0" style="color: grey; padding-left: 2px">{{
           "chat-features.interactions.none" | translate }}
         </label>
-        <span class="agent-sla-timer {{conversation.SLACountdown.color}">
+        <span *ngIf="conversation.SLACountdown.show" class="agent-sla-timer {{conversation.SLACountdown.color}">
           <mat-icon>watch_later</mat-icon>
           <time>{{conversation.SLACountdown.value + 'sec'}}</time>
         </span>
