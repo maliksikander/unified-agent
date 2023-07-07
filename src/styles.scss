@@ -4215,3 +4215,16 @@ mat-select {
   cursor: pointer;
   color: #999;
 }
+
+.custom {
+  .mat-expansion-indicator{
+    margin-right: 17px;
+    margin-bottom: 4px;
+}
+  
+
+.plain-text-check{
+visibility: hidden;
+display: none;
+}
+}
