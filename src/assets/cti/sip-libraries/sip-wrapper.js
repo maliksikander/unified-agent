@@ -1250,7 +1250,6 @@ function setupRemoteMedia(temp_session) {
     // });
     // remoteVideo.srcObject = remoteStream;
     var receiver = pc.getReceivers()[0];
-    console.log("Receiver track==>",receiver.track)
     remoteStream.addTrack(receiver.track);
     remoteVideo.srcObject = remoteStream;
 

@@ -219,12 +219,20 @@ export class SipService implements OnInit {
       });
       if (dialogEvent.response.dialog.state == "DROPPED") {
         // this.setDialogCache(dialogEvent, "DROPPED");
-        if (dialogEvent.response.dialog.callEndReason == "Canceled") {
+        if (dialogEvent.response.dialog.callEndReason == "NO_ANSWER" || dialogEvent.response.dialog.callEndReason == "ORIGINATOR_CANCEL") {
+          let endReason = dialogEvent.response.dialog.callEndReason;
           this.removeNotification(dialogState.dialog);
-          this.notReadyAgentState();
-        }
+          if (dialogEvent.response.dialog.callEndReason == "NO_ANSWER") this.notReadyAgentState();
+          let agentId = this._cacheService.agent.id;
+          this.checkActiveTasks(agentId, dialogEvent.response, endReason);
+        } else {
+          if (dialogEvent.response.dialog.callEndReason == "Canceled") {
+            this.removeNotification(dialogState.dialog);
+            this.notReadyAgentState();
+          }
 
-        this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, "DIALOG_ENDED", undefined);
+          this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, "DIALOG_ENDED", undefined);
+        }
       }
     } catch (e) {
       console.error("[Error Sip] handleDialogParticipant ==>", e);
@@ -551,7 +559,7 @@ export class SipService implements OnInit {
     try {
       let taskState;
       if (state && state.taskId) taskState = state;
-      let channelCustomerIdentifier = dialogState.dialog.ani ? dialogState.dialog.ani : dialogState.dialog.fromAddress;
+      let channelCustomerIdentifier = dialogState.dialog.customerNumber;
       let serviceIdentifier = dialogState.dialog.dnis;
       let leg = `${this._cacheService.agent.attributes.agentExtension[0]}:${this._cacheService.agent.id}:${dialogState.dialog.id}`;
       let customer;
@@ -710,12 +718,21 @@ export class SipService implements OnInit {
     }
   }
 
-  checkActiveTasks(agentId) {
+  handleNoAnwerEvent(dialogState) {
+    let voiceTask = this.getVoiceTask();
+    let state;
+    let cacheId = `${this._cacheService.agent.id}:${dialogState.id}`;
+    if (voiceTask) state = { state: "alerting", taskId: voiceTask.id };
+    this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, "DIALOG_ENDED", state);
+  }
+
+  checkActiveTasks(agentId, dialog, state) {
     try {
       this._httpService.getRETasksList(agentId).subscribe(
         (res) => {
           this.taskList = res;
           console.log("Tasklist ==> ", this.taskList);
+          if (state) this.handleNoAnwerEvent(dialog);
 
           if (this.taskList.length > 0) {
             this.getVoiceTask();
