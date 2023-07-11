@@ -1744,7 +1744,7 @@
         </label>
         <span *ngIf="conversation.SLACountdown.inViewShow" class="agent-sla-timer {{conversation.SLACountdown.color}}">
           <mat-icon>watch_later</mat-icon>
-          <time>{{conversation.SLACountdown.value + 'sec'}}</time>
+          <time>{{conversation.SLACountdown.value | duration}}</time>
         </span>
       </span>
 
@@ -2059,7 +2059,7 @@
             ? 'Transfer to Queue' : 'Conversation Transfer'}} -->
           <h4 mat-dialog-title>
             SLA Expired
-              <span class="float-right">SLA Timer | {{conversation.SLACountdown.value}} sec</span>
+              <span class="float-right">SLA Timer | {{conversation.SLACountdown.value | duration}}</span>
           </h4>
         </div>
         <div class="dialog-main-content sla-dialog-content">

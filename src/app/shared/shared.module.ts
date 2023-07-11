@@ -97,6 +97,7 @@ import { getCustomerAniPipe } from "./pipes/getCustomerAni.pipe";
 import { checkOutboundCallPipe } from "./pipes/checkOutboundCall.pipe";
 import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
 import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements.pipe";
+import { DurationPipe } from "./pipes/duration.pipe";
 
 @NgModule({
   declarations: [
@@ -136,7 +137,8 @@ import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements
     checkConferenceCallPipe,
     getCustomerAniPipe,
     checkOutboundCallPipe,
-    checkConsultCallPipe
+    checkConsultCallPipe,
+    DurationPipe
   ],
   imports: [
     NgxDocViewerModule,
@@ -311,7 +313,8 @@ import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements
     getCustomerAniPipe,
     checkConsultCallPipe,
     MatPaginatorModule,
-    TableFilterPipe
+    TableFilterPipe,
+    DurationPipe
   ]
 })
 export class SharedModule {}
