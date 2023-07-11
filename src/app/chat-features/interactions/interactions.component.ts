@@ -1325,4 +1325,16 @@ export class InteractionsComponent implements OnInit {
     this._socketService.stopSLACountDown(this.conversation.conversationId)
   }
 
+  warn(){
+    this.conversation.SLACountdown.color = "sla-warn"
+  }
+
+  ended(){
+      this.conversation.SLACountdown.color = "sla-ended"
+    
+  }
+
+  popUp(){
+    this._socketService.showSLAPopUp(this.conversation.conversationId)
+  }
 }

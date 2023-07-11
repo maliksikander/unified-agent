@@ -475,7 +475,7 @@ export class socketService {
       topicParticipant: topicData.topicParticipant ? topicData.topicParticipant : "", //own ccuser of Agent
       firstChannelSession: topicData.channelSession ? topicData.channelSession : "",
       messageComposerState: false,
-      SLACountdown: { show: true, ref: null, value: 100, color: 'sla-normal' },
+      SLACountdown: { inPopUpShow: false, inViewShow: true, ref: null, value: 100, color: 'sla-normal' },
       agentParticipants: [] //all Agents in conversations except itself
     };
 
@@ -656,9 +656,23 @@ export class socketService {
       conversation.SLACountdown.value = 0;
       clearInterval(conversation.SLACountdown.ref);
       conversation.SLACountdown.ref = null;
-      conversation.SLACountdown.show = false;
-    } 
+      conversation.SLACountdown.inViewShow = false;
+      conversation.SLACountdown.inPopUpShow = false;
+      conversation.SLACountdown.color = "sla-normal"
+    }
 
+  }
+
+  showSLAPopUp(conversationId){
+    let conversation = this.conversations.find((e) => {
+      //console.log("this is conversation id"+e.conversationId);
+      return e.conversationId == conversationId;
+    });
+
+    if (conversation) {
+      conversation.SLACountdown.inViewShow = false;
+      conversation.SLACountdown.inPopUpShow = true;
+    }
   }
 
 

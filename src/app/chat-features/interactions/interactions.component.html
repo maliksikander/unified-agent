@@ -1,4 +1,7 @@
 <button (click)="clear()">clear</button>
+<button (click)="warn()">warn</button>
+<button (click)="ended()">ended</button>
+<button (click)="popUp()">popUp</button>
 <div class="interaction-main" [ngClass]="{
     'customer-bar-opened': isBarOpened,
     'unidentified-customer': conversation.customer.isAnonymous,
@@ -1739,7 +1742,7 @@
         <label *ngIf="conversation.activeChannelSessions.length == 0" style="color: grey; padding-left: 2px">{{
           "chat-features.interactions.none" | translate }}
         </label>
-        <span *ngIf="conversation.SLACountdown.show" class="agent-sla-timer {{conversation.SLACountdown.color}">
+        <span *ngIf="conversation.SLACountdown.inViewShow" class="agent-sla-timer {{conversation.SLACountdown.color}}">
           <mat-icon>watch_later</mat-icon>
           <time>{{conversation.SLACountdown.value + 'sec'}}</time>
         </span>
@@ -2047,6 +2050,36 @@
         </div>
       </div>
     </ng-template>
+
+     <!--Chat SLA dialog-->
+     <div class="sla-main-action" *ngIf="conversation.SLACountdown.inPopUpShow">
+      <div class="note-dialog-main transfer-dialog">
+        <div class="dialog-header">
+          <!-- <h4 mat-dialog-title>{{requestAction ? requestAction + ' Request' : requestedAgentForAssistance.team && isTransfer
+            ? 'Transfer to Queue' : 'Conversation Transfer'}} -->
+          <h4 mat-dialog-title>
+            SLA Expired
+              <span class="float-right">SLA Timer | {{conversation.SLACountdown.value}} sec</span>
+          </h4>
+        </div>
+        <div class="dialog-main-content sla-dialog-content">
+          <div class="container text-center">
+            <strong>SLA breached!</strong>
+              <p>Would you like to stay in the conversation?</p>
+
+          </div>
+        </div>
+
+        <div class="action-trigger text-center">
+          <button mat-button  class="close-btn">Leave</button>
+          <button mat-button class="success-btn" cdkFocusInitial >
+            Stay
+          </button>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 
   <div class="customer-info-main">
