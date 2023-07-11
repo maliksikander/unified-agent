@@ -96,11 +96,11 @@ export class InteractionsComponent implements OnInit {
   loadingPastActivity: boolean = false;
   activeChat = false;
   activeChannelSessionList: Array<any>;
-  fbPostId: string = null;
+  commentPostId: string = null;
   commentId: string = null;
   conversationSettings: any;
   postData: any = null;
-  FBPostComments: any = null;
+  postComments: any = null;
   sendTypingStartedEventTimer: any = null;
 
   constructor(
@@ -115,7 +115,7 @@ export class InteractionsComponent implements OnInit {
     private snackBar: MatSnackBar,
     public _sipService: SipService,
     private _translateService: TranslateService
-  ) {}
+  ) { }
   ngOnInit() {
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
@@ -167,7 +167,7 @@ export class InteractionsComponent implements OnInit {
       }
     );
   }
-  emoji() {}
+  emoji() { }
 
   BargeIn() {
     let obj = {
@@ -186,19 +186,19 @@ export class InteractionsComponent implements OnInit {
   }
 
   // This was fb page comment action / Generalizing it.
-  commentAction(message, action) {  
+  commentAction(message, action) {
 
     if (action == "like" && message["isLiked"]) {
     } else if (this._socketService.isSocketConnected) {
       let commentId = message.header.providerMessageId;
       if (commentId && message.body.postId) {
-        let channelSession = this.getChannelSession();
+        let channelSession = this.getChannelSession(message);
         if (channelSession) {
-          let originalFbChannelSession = JSON.parse(JSON.stringify(channelSession));
-          delete originalFbChannelSession["isChecked"];
-          delete originalFbChannelSession["isDisabled"];
+          let originalChannelSession = JSON.parse(JSON.stringify(channelSession));
+          delete originalChannelSession["isChecked"];
+          delete originalChannelSession["isDisabled"];
 
-          this.constructAndSendFbAction(commentId, message.body.postId, originalFbChannelSession, message.id, action);
+          this.constructAndSendCommentAction(commentId, message.body.postId, originalChannelSession, message.id, action);
         } else {
           this._snackbarService.open(this._translateService.instant("snackbar.Requested-session-not-available-at-the-moment"), "err");
         }
@@ -211,7 +211,7 @@ export class InteractionsComponent implements OnInit {
   }
 
 
-  constructAndSendFbAction(commentId, postId, channelSession, replyToMessageId, action) {
+  constructAndSendCommentAction(commentId, postId, channelSession, replyToMessageId, action) {
     let message = this.getCimMessage();
     message.header.providerMessageId = commentId;
     message.body.postId = postId;
@@ -227,13 +227,11 @@ export class InteractionsComponent implements OnInit {
 
   //replyToFBComment
   replyToComment(message) {
-    this.fbPostId = message.body.postId;
+    this.commentPostId = message.body.postId;
     this.replyToMessageId = message.id;
-
     this.commentId = message.header.providerMessageId;
-
-    if (this.fbPostId && this.commentId) {
-      let channelSession = this.getChannelSession();
+    if (this.commentPostId && this.commentId) {
+      let channelSession = this.getChannelSession(message);
 
       if (channelSession) {
         this.conversation.activeChannelSessions.forEach((channelSession) => {
@@ -530,7 +528,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -538,7 +536,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -608,7 +606,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
   externalfilePreviewOpener(url, fileName, type) {
     const dialogRef = this.dialog.open(FilePreviewComponent, {
@@ -618,7 +616,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
 
   uploadFile(files) {
@@ -668,8 +666,10 @@ export class InteractionsComponent implements OnInit {
         let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
 
         if (selectedChannelSession) {
-          if (this.commentId && selectedChannelSession.channel.channelType.name.toLowerCase() == "facebook") {
-            // channel session is facebook
+          if (this.commentId && (selectedChannelSession.channel.channelType.name.toLowerCase() == "facebook" ||
+                                 selectedChannelSession.channel.channelType.name.toLowerCase() == "instagram" ||
+                                 selectedChannelSession.channel.channelType.name.toLowerCase() == "twitter")) {
+            // channel session is facebook/instagram/twitter
             message = this.constructCommentEvent(message, msgType, selectedChannelSession, fileMimeType, fileName, fileSize, text);
 
             this.emitCimEvent(message, "AGENT_MESSAGE");
@@ -899,9 +899,10 @@ export class InteractionsComponent implements OnInit {
   }
 
   // fbchannel session . 
-  getChannelSession() {
+  getChannelSession(message) {
+    let channelType = message.header.channelSession.channel.channelType.name.toLowerCase()
     let channelSession = this.conversation.activeChannelSessions.find((channelSession) => {
-      return channelSession.channel.channelType.name.toLowerCase() == "facebook";
+      return channelSession.channel.channelType.name.toLowerCase() == channelType
     });
 
     return channelSession;
@@ -950,7 +951,7 @@ export class InteractionsComponent implements OnInit {
 
     message.header.providerMessageId = this.commentId;
     message.body.type = "COMMENT";
-    message.body.postId = this.fbPostId;
+    message.body.postId = this.commentPostId;
     message.header.channelSession = sendingActiveChannelSession;
     message.header.channelData = sendingActiveChannelSession.channelData;
 
@@ -1139,7 +1140,7 @@ export class InteractionsComponent implements OnInit {
   getComments(postId, selectedCommentId, accessToken, FBHOSTAPI) {
     this._httpService.getFBPostComments(postId, accessToken, FBHOSTAPI).subscribe(
       (res: any) => {
-        this.FBPostComments = res;
+        this.postComments = res;
         this.fullPostView = true;
         this.selectedCommentId = selectedCommentId;
       },
@@ -1164,7 +1165,7 @@ export class InteractionsComponent implements OnInit {
   getFullViewPostData(channelSession, postId, selectedCommentId) {
     let accessToken = null;
     let FBHOSTAPI = null;
-    this.FBPostComments = null;
+    this.postComments = null;
     this.postData = null;
     this.fullPostView = false;
     this.selectedCommentId = null;

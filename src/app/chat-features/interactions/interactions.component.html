@@ -1163,9 +1163,12 @@
                               <mat-icon (click)="replyToComment(message)"> chat_bubble_outline</mat-icon>
                             </li>
                             <li>
-                              <mat-icon [ngClass]="{ liked: message.isLiked }"
-                                (click)="commentAction(message, 'like')"> thumb_up</mat-icon>
+                              <mat-icon [ngClass]="{ 'liked': message.isLiked }"
+                                        (click)="commentAction(message, message.header.channelSession.channel.channelType.name.includes('FACEBOOK') ? 'like' : 'heart')">
+                                {{ message.header.channelSession.channel.channelType.name.includes('FACEBOOK') ? 'thumb_up' : 'favorite' }}
+                              </mat-icon>
                             </li>
+                            
                             <li class="view-all-options">
                               <ul *ngIf="viewFullCommentAction">
                                 <li>
@@ -1327,9 +1330,9 @@
                         <!-------------------------- SUB COMMENTS -------------------------------->
 
                         <div class="post-sub-comments-area"
-                          *ngIf="fullPostView && FBPostComments && message.id == selectedCommentId">
+                          *ngIf="fullPostView && postComments && message.id == selectedCommentId">
                           <div class="total-comment-count"></div>
-                          <div class="post-sub-comments" *ngFor="let postComments of FBPostComments?.data">
+                          <div class="post-sub-comments" *ngFor="let postComments of postComments?.data">
                             <div class="sub-profile-picture">
                               <img src="assets/images/dummy-user.svg" />
                             </div>
