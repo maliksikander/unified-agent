@@ -1,10 +1,10 @@
 <div class="interaction-main" [ngClass]="{
     'customer-bar-opened': isBarOpened,
     'unidentified-customer': conversation.customer.isAnonymous,
-    'right-direction': selectedLanguage == 'ar'
+    'right-direction': selectedLanguage == 'ar',  'mobile-device-page': isMobileDevice
   }">
   <div class="interaction-inner">
-    <div class="container-fluid main-chat-bar">
+    <div class="container-fluid main-chat-bar {{interactionSearch ? 'interaction-search-mobile' : ''}}" >
       <div class="row">
         <div class="col-md-4 col-sm-4 customer-showcase">
           <h3 matTooltipPosition="right" class="customer-highlight">
@@ -24,9 +24,65 @@
                 [ngStyle]="{ 'background-color': lbl.colorCode }"></li>
             </ul>
           </h5>
+          <button mat-button class="chat-controls-mobile search-trigger" aria-label="search" (click)="interactionSearch = true">
+            <mat-icon>search</mat-icon>
+          </button>
+          <button mat-button class="chat-controls-mobile"  [matMenuTriggerFor]="agentControllForMobile" ><mat-icon>more_vert</mat-icon></button>
+        </div>
+        <div class="instruction-search" *ngIf="interactionSearch">
+          <input placeholder="Search Interactions" type="text" [(ngModel)]="searchInteraction">
+          <button mat-button (click)="interactionSearch = false">
+            <mat-icon>close</mat-icon>
+          </button>
         </div>
         <div class="col-md-8 col-sm-8 agent-actions">
-          <ul class="list-group list-group-horizontal agent-controls">
+          <mat-menu #agentControllForMobile="matMenu" [overlapTrigger]="true"  backdropClass="mobile-menu-backdrop" panelClass="custom-pane">
+            <div class="{{isMobileDevice ? 'mobile-chat-controls'  : ''}}" >
+              <div class="menu-header-mobile">
+                <h5>Chat Action Items <button mat-button class="close-menu-mobile" *ngIf="isMobileDevice"><mat-icon>close</mat-icon></button>
+                </h5>
+              </div>
+              <ul (click)="$event.stopPropagation()" class="list-group list-group-vertical agent-controls agent-controls-mobile">
+                <ng-container *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
+                  <li class="list-group-item">
+                    <button mat-icon-button matTooltip="Wrapup" aria-label="WrapUp" (click)="openWrapUpDialog('Wrap-up')">
+                      <mat-icon>note_add</mat-icon>
+                      Add Wrap-up
+                    </button>
+                  </li>
+
+
+                  <li class="list-group-item">
+                    <button mat-icon-button>
+                      <mat-icon>group</mat-icon>
+                      View Participants
+                    </button>
+                  </li>
+                  <!--              <li class="list-group-item">-->
+                  <!--                <button mat-icon-button>-->
+                  <!--                  <mat-icon>note_add</mat-icon>-->
+                  <!--                  Add Notes-->
+                  <!--                </button>-->
+                  <!--              </li>-->
+                  <li class="list-group-item">
+                    <button mat-icon-button>
+                      <mat-icon>person_add</mat-icon>
+                      Add Participants
+                    </button>
+                  </li>
+                </ng-container>
+                <li *ngIf="'leave-chat' | authPipe: 'view' as result" class="list-group-item">
+                  <button mat-icon-button>
+                    <mat-icon (click)="onLeaveClick()">close</mat-icon>
+                    Leave Chat
+                  </button>
+                </li>
+
+              </ul>
+            </div>
+          </mat-menu>
+
+          <ul class="list-group list-group-horizontal agent-controls" *ngIf="!isMobileDevice">
             <ng-container
               *ngIf="conversation.conversationId != 'FAKE_CONVERSATION' && conversation.topicParticipant.role != 'SILENT_MONITOR' && ('agent-conversation-control' | authPipe: 'view_wrap_up') as result">
               <li class="list-group-item">
@@ -2086,7 +2142,7 @@
       [customerSuggestions]="conversation.customerSuggestions" [firstChannelSession]="conversation.firstChannelSession"
       [conversationId]="conversation.conversationId" [conversation]="conversation"
       [activeConversationData]="conversation.activeConversationData" (expandCustomerInfo)="eventFromChild($event)"
-      (updatedlabels)="eventFromChildForUpdatedLabel($event)">
+      (updatedlabels)="eventFromChildForUpdatedLabel($event)" [isMobileDevice]="isMobileDevice">
     </app-customer-info>
   </div>
 </div>

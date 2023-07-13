@@ -87,7 +87,7 @@ export class InteractionsComponent implements OnInit {
   convers: any[];
   ringing = false;
   callControls = true;
-
+  searchInteraction = '';
   isSuggestion = false;
   displaySuggestionsArea = false;
   cannedTabOpen = false;
@@ -104,6 +104,10 @@ export class InteractionsComponent implements OnInit {
   FBPostData: any = null;
   FBPostComments: any = null;
   sendTypingStartedEventTimer: any = null;
+  isMobileDevice = false;
+  @Input() max: any;
+  today = new Date();
+  interactionSearch = false;
 
   constructor(
     private _sharedService: sharedService,
@@ -119,6 +123,9 @@ export class InteractionsComponent implements OnInit {
     private _translateService: TranslateService
   ) {}
   ngOnInit() {
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      this.isMobileDevice = true;
+    }
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;

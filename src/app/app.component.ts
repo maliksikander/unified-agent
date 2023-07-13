@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
   timer;
 
   currentRoute: string;
+  isMobile = false;
 
   constructor(
     private overlay: OverlayContainer,
@@ -36,6 +37,9 @@ export class AppComponent implements OnInit {
   isdarkMode = false;
 
   ngOnInit() {
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      this.isMobile = true;
+    }
     this._translateService.setDefaultLang("en");
     this._router.events.subscribe((event: any) => {
       if (event.url) {

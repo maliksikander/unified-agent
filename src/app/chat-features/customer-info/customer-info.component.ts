@@ -30,6 +30,7 @@ export class CustomerInfoComponent implements OnInit {
   @Input() firstChannelSession: any;
   @Output() updatedlabels = new EventEmitter<boolean>();
   @Output() expandCustomerInfo = new EventEmitter<any>();
+  @Input() isMobileDevice: any;
 
   customerProfileFormData: any;
   timeoutId;

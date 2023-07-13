@@ -9,8 +9,11 @@
 <mat-sidenav-container class="right-side-bar-main" (backdropClick)="close()">
   <mat-sidenav #sidenav (keydown.escape)="close()" disableClose position="end">
     <div class="bar-content">
-      <mat-accordion class="right-drag-accordion">
+
+      <mat-accordion class="right-drag-accordion" [multi]="isMobileDevice">
         <div class="right-drag-content">
+            <button mat-button class="close-menu-mobile" (click)="sidenav.toggle(); customerInfoToggle()" *ngIf="isMobileDevice"><mat-icon>close</mat-icon></button>
+
           <!--          <mat-expansion-panel class="drag-expansion-panel" *ngIf="acc == 'media_channel'" cdkDrag>-->
           <!--            <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">-->
           <!--              <mat-panel-title><span class="material-icons drag-icon">more_vert</span>Media Channels-->
@@ -104,13 +107,24 @@
 
           <!--            </ul>-->
           <!--          </mat-expansion-panel>-->
-          <mat-expansion-panel class="drag-expansion-panel">
-            <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
+
+          <mat-expansion-panel class="drag-expansion-panel  customer-info-panel" [expanded]="isMobileDevice">
+            <mat-expansion-panel-header  [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
               <mat-panel-title><span class="material-icons drag-icon">more_vert</span>
                 {{'chat-features.customer-info.info' | translate}}
 
               </mat-panel-title>
             </mat-expansion-panel-header>
+            <div class="custom-tab-area">
+              <ul>
+                <li (click)="displayProfile = true; displayCustomerChannels = false" [ngClass]="{ 'tab-active': displayProfile }">
+                  Customer Profile
+                </li>
+                <li class="no-mobile-view" (click)="displayProfile = false; displayCustomerChannels = true" [ngClass]="{ 'tab-active': displayCustomerChannels }">
+                  Media Channels
+                </li>
+              </ul>
+            </div>
             <div class="user-pre-detail">
               <div class="user-detail-area" *ngFor="let data of customerProfileFormData">
                 <div>
@@ -140,6 +154,16 @@
                 translate}}
               </mat-panel-title>
             </mat-expansion-panel-header>
+
+
+            <div class="custom-tab-area  only-mobile-view">
+              <ul>
+                <!--                <li (click)="displayProfile = true; displayCustomerChannels = false"-->
+                <!--                    [ngClass]="{'tab-active' : displayProfile}">Customer Profile</li>-->
+                <li (click)="displayProfile = false; displayCustomerChannels = !displayCustomerChannels"
+                    [ngClass]="{'tab-active' : displayCustomerChannels}">Media Channels <span class="mat-expansion-indicator"></span></li>
+              </ul>
+            </div>
 
             <ul class="channel-list">
               <mat-accordion>

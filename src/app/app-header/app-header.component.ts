@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import { cacheService } from "../services/cache.service";
 import { sharedService } from "../services/shared.service";
 import { socketService } from "../services/socket.service";
@@ -23,6 +23,8 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
   @ViewChild("stateTrigger", { static: false }) stateTrigger: any;
   @Output() themeSwitcher = new EventEmitter<any>();
   @Output() languageSwitcher = new EventEmitter<any>();
+  @ViewChild('menuTrigger' , { static: false }) trigger;
+  @Input() isMobile: any;
 
   isdarkMode = false;
   checkRoles:any=[];
@@ -100,7 +102,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
 
     // }
 
-    
+
 
     this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       if (e.msg == "stateChanged") {
@@ -338,5 +340,8 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     //save the preffered language code in shared service
     this._sharedService.prefferedLanguageCode = languageCode;
     this.languageSwitcher.emit({ language: languageCode });
+  }
+  closeAgentMenu() {
+    this.trigger.closeMenu();
   }
 }
