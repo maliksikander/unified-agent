@@ -81,6 +81,8 @@ export class socketService {
       }
     });
 
+   
+
     this.socket.on("connect_error", (err) => {
       this.isSocketConnected = false;
       this.ngxService.stop();
@@ -158,6 +160,8 @@ export class socketService {
     this.socket.on("ANNOUNCEMENT_DELETED", (res: any) => {
       this._announcementService.removeAnnoucement(res);
     });
+
+ 
 
 
     this.socket.on("errors", (res: any) => {
@@ -253,9 +257,29 @@ export class socketService {
           verticalPosition: "bottom"
         });
       }
-
+      let sameTopicConversation = this.conversations.find((e) => {
+        return e.conversationId == res.conversationId;
+      });
+      if(sameTopicConversation["agentState"]!="wrapup")
+      {
       this.removeConversation(res.conversationId);
+      }
     });
+
+    this.socket.on("WRAP_UP_STARTED", (res:any) => {
+      let sameTopicConversation = this.conversations.find((e) => {
+        return e.conversationId == res.conversationId;
+      });
+      sameTopicConversation["agentState"]="wrapup";
+    })
+
+    this.socket.on("WRAP_UP_ENDED", (res:any) => {
+      let sameTopicConversation = this.conversations.find((e) => {
+        return e.conversationId == res.conversationId;
+      });
+      delete sameTopicConversation["agentState"];
+      this.removeConversation(res.conversationId);
+    })
 
     this.socket.on("socketSessionRemoved", (res: any) => {
       console.log("socketSessionRemoved", res);

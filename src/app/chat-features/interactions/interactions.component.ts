@@ -50,6 +50,7 @@ export class InteractionsComponent implements OnInit {
   fullPostView: boolean = false;
   selectedCommentId: string;
   lastSeenMessageId;
+  pastActivitiesloadedOnce:boolean=false;
   // isTransfer = false;
   // isConsult = false;
   ctiBarView = true;
@@ -769,6 +770,7 @@ export class InteractionsComponent implements OnInit {
   // to get past acitivities
   loadPastActivities(conversation) {
     try {
+      this.pastActivitiesloadedOnce=true
       this.loadingPastActivity = true;
 
       let limit = 25;
