@@ -1,0 +1,71 @@
+@import "src/app/shared/globalVariables";
+
+//dialog
+.dialog-header {
+  background: $blue-text-color;
+  position: relative;
+  padding: 2px 15px;
+
+  h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  button {
+    position: absolute;
+    right: 15px;
+    color: #fff;
+    border: 1px solid #fff;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    top: 7px;
+    padding: 0 !important;
+    margin: 0 !important;
+    i{
+      font-size: 14px;
+      line-height: 15px;
+      top: -2px;
+      position: relative;
+    }
+  }
+}
+
+
+
+.new-message-form {
+  padding: 10px 15px;
+
+  .mat-form-field{
+    width: 100%;
+
+    textarea{
+      height: 70px;
+    }
+  }
+  label {
+    color: #5B5B5B;
+    font-size: 13px;
+  }
+
+}
+
+.message-trigger{
+  padding-bottom: 12px;
+  text-align: right;
+  .message-action {
+    color: #fff;
+    background: #919191;
+
+    &.send-message{
+      background: $blue-text-color;
+      color: #fff;
+    }
+    //
+    //&[disabled][disabled]{
+    //  background: #e3e3e3 !important;
+    //  color: #aeaaaa !important;
+    //}
+  }
+}
+

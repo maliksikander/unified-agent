@@ -1,0 +1,44 @@
+<div class="message-dialog-main announcement-dialog-main">
+  <div class="dialog-header">
+    <h4>Send SMS</h4>
+    <button mat-icon-button><i class="material-icons" [mat-dialog-close]="true">close</i></button>
+  </div>
+  <div class="message-container mat-dialog-content m-0 p-0">
+    <form>
+      <div class="new-message-form new-announcement-form">
+        <div class="text-field message-field">
+          <label>Channel Identity</label>
+          <mat-form-field appearance="outline">
+            <input type="text"
+                   placeholder="Enter Phone Number"
+                   aria-label="Number"
+                   matInput
+                   [formControl]="phoneNumber"
+                   [matAutocomplete]="auto">
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+              <ng-container *ngFor="let option of filteredOptions | async">
+                <mat-option *ngIf="phoneNumber.value.length > 4" [value]="option.phone + ' ' +' [ '+ option.name  + ' ] '">
+                  {{option.name}}
+                </mat-option>
+              </ng-container>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div class="text-field message-field">
+          <label>Type SMS</label>
+          <mat-form-field appearance="outline">
+            <textarea #message matInput maxlength="500"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="message-trigger right-align">
+          <button mat-raised-button type="button" [mat-dialog-close]="true" class="discard-btn message-action">Discard
+          </button>
+          <button mat-raised-button type="button" class="send-message message-action ml-2" (click)="openSnackBar()">Send SMS</button>
+
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

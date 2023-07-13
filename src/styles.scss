@@ -4221,10 +4221,82 @@ mat-select {
     margin-right: 17px;
     margin-bottom: 4px;
 }
-  
+
 
 .plain-text-check{
 visibility: hidden;
 display: none;
 }
+}
+
+//Send sms dialog
+
+.send-sms-dialog{
+  margin: 0 auto !important;
+  border: 1px solid #0000001a;
+}
+
+.sms{
+  .chat-time.file-type-stamp{
+    display: none;
+  }
+  .wrap-up-header{
+    ul{
+      &:after{
+        display: none !important;
+      }
+    }
+  }
+
+  .profile-pic{
+    .active-channel{
+      display: none;
+      opacity: 0;
+    }
+    .user-img{
+      img{
+        width: 17px !important;
+        top: -2px !important;
+      }
+    }
+  }
+}
+
+
+//Custom snsckbar
+.send-sms-notify {
+  border: 1px solid #0000001a;
+  background: #669300 !important;
+}
+.custom-sms-notification {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 480px;
+  min-width: 360px;
+
+  span.main-notify {
+    text-align: left !important;
+    white-space: pre-line;
+    max-width: calc(100% - 70px);
+    margin: 0 10px;
+    font-size: 14px;
+    font-family: "Roboto";
+
+    strong {
+      display: block;
+    }
+
+    .update-new-profile {
+      height: 20px;
+      line-height: 20px;
+      border: 0;
+      border-bottom: 1px solid #fff;
+      padding: 0;
+      color: #fff;
+      &:before{
+        display: none;
+      }
+    }
+  }
 }

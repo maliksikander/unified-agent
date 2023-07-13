@@ -12,7 +12,8 @@ import { SipService } from "../services/sip.service";
 import { appConfigService } from "../services/appConfig.service";
 import { snackbarService } from "../services/snackbar.service";
 import { announcementService } from "../services/announcement.service";
-import { getMatIconFailedToSanitizeLiteralError } from "@angular/material";
+import {getMatIconFailedToSanitizeLiteralError, MatDialog} from '@angular/material';
+import {SendSmsComponent} from '../chat-features/send-sms/send-sms.component';
 
 @Component({
   selector: "app-header",
@@ -77,6 +78,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     private _snackBarService: snackbarService,
     private _translateService: TranslateService,
     private _announcementService: announcementService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -100,7 +102,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
 
     // }
 
-    
+
 
     this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       if (e.msg == "stateChanged") {
@@ -338,5 +340,15 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     //save the preffered language code in shared service
     this._sharedService.prefferedLanguageCode = languageCode;
     this.languageSwitcher.emit({ language: languageCode });
+  }
+
+  openMessageDialog(){
+    const dialogRef = this.dialog.open(SendSmsComponent, {
+      maxWidth: "700px",
+      width: "100%",
+      panelClass: "send-sms-dialog"
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+    });
   }
 }
