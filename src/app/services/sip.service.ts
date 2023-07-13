@@ -219,19 +219,26 @@ export class SipService implements OnInit {
       });
       if (dialogEvent.response.dialog.state == "DROPPED") {
         // this.setDialogCache(dialogEvent, "DROPPED");
+        let callType = "DIALOG_ENDED";
         if (dialogEvent.response.dialog.callEndReason == "NO_ANSWER" || dialogEvent.response.dialog.callEndReason == "ORIGINATOR_CANCEL") {
           let endReason = dialogEvent.response.dialog.callEndReason;
           this.removeNotification(dialogState.dialog);
           if (dialogEvent.response.dialog.callEndReason == "NO_ANSWER") this.notReadyAgentState();
           let agentId = this._cacheService.agent.id;
           this.checkActiveTasks(agentId, dialogEvent.response, endReason);
-        } else {
+        }
+        else if (dialogEvent.response.dialog.callEndReason.toLowerCase() == "direct-transfered") {
+            console.log("direct transfer case==>");
+            callType = "DIRECT_TRANSFER";
+          }
+
+        else {
           if (dialogEvent.response.dialog.callEndReason == "Canceled") {
             this.removeNotification(dialogState.dialog);
             this.notReadyAgentState();
           }
 
-          this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, "DIALOG_ENDED", undefined);
+          this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, callType, undefined);
         }
       }
     } catch (e) {
@@ -678,6 +685,25 @@ export class SipService implements OnInit {
       postMessage(command);
     } catch (error) {
       console.error("[Error on unmuteCallOnSip] ==>", error);
+    }
+  }
+
+  directQueueTransferOnSip(data) {
+    try {
+      let command = {
+        action: "SST_Queue",
+        parameter: {
+          dialogId: this.activeDialog.id,
+          queue: data.queueName,
+          queueType: "NAME",
+          clientCallbackFunction: this.clientCallback
+        }
+      };
+
+      console.log("directQueueTransferOnSip ==>", command);
+      // postMessage(command);
+    } catch (error) {
+      console.error("[Error on directQueueTransferOnSip] ==>", error);
     }
   }
 
