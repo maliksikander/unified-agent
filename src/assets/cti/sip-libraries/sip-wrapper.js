@@ -35,6 +35,7 @@ var dialogStatedata1 = {
             "wrapUpReason": null,
             "callEndReason": null,
             "queueName": null,
+            "queueType": null,
             "associatedDialogUri": null,
             "secondaryId": null,
             "participants": [
@@ -87,6 +88,7 @@ var outboundDialingdata1 = {
             "eventType": "PUT",
             "callType": null,
             "queueName": null,
+            "queueType": null,
             "dialedNumber": null,
             "dnis": null,
             "secondaryId": null,
@@ -136,6 +138,7 @@ var invitedata1 = {
             "eventType": "PUT",
             "callType": null,
             "queueName": null,
+            "queueType": null,
             "dialedNumber": null,
             "dnis": null,
             "secondaryId": null,
@@ -193,7 +196,7 @@ function postMessage(obj, callback) {
             case 'SST':
                 blind_transfer('sip:' + obj.parameter.numberToTransfer + "@" + sipconfig.uri, obj.parameter.clientCallbackFunction);
                 break;
-                case 'SST':
+                case 'SST_Queue':
                     blind_transfer_queue('sip:' + obj.parameter.numberToTransfer + "@" + sipconfig.uri,obj.parameter.queue,obj.parameter.queueType, obj.parameter.clientCallbackFunction);
                     break;
         case 'silentMonitor':
@@ -310,6 +313,8 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
         transportOptions: {
             server: wss, // wss Protocol
         },
+        extraContactHeaderParams:['X-Referred-By-Someone: Username'],
+        extraHeaders : ['X-Referred-By-Someone12: Username12'],
         contactParams: { transport: "wss" },
         contactName: username,
         /**
@@ -337,7 +342,7 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
                 };
                 callback(event);
                 if (again_register) {
-                    setupRemoteMedia(sessionall);
+                   // setupRemoteMedia(sessionall);
                     registerer.register()
                         .then((request) => {
                             console.log("Successfully sent REGISTER");
@@ -465,11 +470,23 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
 
                 }
                 if (invitation.incomingInviteRequest) {
+                    dialogStatedata.event = "dialogState";
+                    invitedata.event =  "newInboundCall";
                     if (invitation.incomingInviteRequest.message.from._displayName === 'conference') {
                         dialogStatedata.response.dialog.callType = 'conference';
                         invitedata.response.dialog.callType = 'conference';
 
-                    } else {
+                    }else if(invitation.incomingInviteRequest.message.headers["X-Calltype"] !== undefined){
+                        var calltype=invitation.incomingInviteRequest.message.headers["X-Calltype"][0].raw;
+                        if(calltype == "PROGRESSIVE"){
+                            dialogStatedata.response.dialog.callType = "OUTBOUND";
+                            invitedata.response.dialog.callType = "OUTBOUND";
+                            dialogStatedata.event = "campaignCall";
+                            invitedata.event =  "campaignCall";
+                            setTimeout(respond_call, sipconfig.autoCallAnswer*1000,callback);
+                        }
+                    }
+                     else {
                         dialogStatedata.response.dialog.callType = 'OTHER_IN'
                         invitedata.response.dialog.callType = 'OTHER_IN';
 
@@ -488,6 +505,8 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
                 dialogStatedata.response.dialog.participants[0].state = "ALERTING";
                 dialogStatedata.response.dialog.state = "ALERTING";
                 dialogStatedata.response.dialog.dialedNumber = dialedNumber;
+                dialogStatedata.response.dialog.queueName = invitation.incomingInviteRequest.message.headers["X-Queue"]!= undefined ? invitation.incomingInviteRequest.message.headers["X-Queue"][0]['raw'] : "Nil";
+                dialogStatedata.response.dialog.queueType = invitation.incomingInviteRequest.message.headers["X-Queuetype"]!= undefined ? invitation.incomingInviteRequest.message.headers["X-Queuetype"][0]['raw'] : "Nil";
 
                 invitedata.response.dialog.callVariables.CallVariable = call_variable_array;
                 invitedata.response.loginId = loginid;
@@ -645,6 +664,11 @@ function initiate_call(sip_id, callback) {
         }
         // Create new Session instance in "initial" state
         sessionall = new SIP.Inviter(userAgent, sip_uri);
+        const request = sessionall.request;
+
+        request.extraHeaders.push('X-Custom-Header: Value1');
+        request.extraHeaders.push('Another-Header: Value2');
+
 
         // Options including delegate to capture response messages
         const inviteOptions = {
@@ -734,7 +758,12 @@ function initiate_call(sip_id, callback) {
                     video: false
                 }
             },
-            extraHeaders: ["X-variableOne:CustomValue1"]
+            earlyMedia: true,
+            requestOptions: {
+                extraHeaders: [
+                  'X-Referred-By-Someone-jazeb: Username'
+                ]
+              },
         };
 
         // Send initial INVITE
@@ -806,33 +835,27 @@ function blind_transfer(sip_id, callback) {
               error("generalError", loginid, "Invalid target Uri:" + sip_id, callback);
               return;
           }
-        //   const options = {
-        //     extraHeaders: ['X-variableOne:CustomValue1'],
-        //     // "X-Headers" : ['X-Custom-Header1: Custom Value1'],
-        //     // headers: ['X-Custom-Header1jazeb: Custom Value1'],
-        //     eventHandlers: {
-        //       accepted: () => {
-        //         console.log('REFER request accepted');
-        //       },
-        //       failed: (response) => {
-        //         console.log('REFER request failed:', response.statusCode);
-        //       }
-        //     },
-        //     requestDelegate: {
-        //       onAccept: (request) => {
-        //         console.log('Custom onAccept logic');
-        //         // Custom logic for accepting the REFER request
-        //       },
-        //       onReject: (request) => {
-        //         console.log('Custom onReject logic');
-        //         // Custom logic for rejecting the REFER request
-        //       }
-        //     },
-        //   };
-    sessionall.refer(target, {
-        sessionDescriptionHandlerOptions: {
-        },extraHeaders: ['X-variableOne:CustomValue1']
-    }).then((res)=>{
+          const options = {
+            eventHandlers: {
+              accepted: () => {
+                console.log('REFER request accepted');
+              },
+              failed: (response) => {
+                console.log('REFER request failed:', response.statusCode);
+              }
+            },
+            requestDelegate: {
+              onAccept: (request) => {
+                console.log('Custom onAccept logic');
+                // Custom logic for accepting the REFER request
+              },
+              onReject: (request) => {
+                console.log('Custom onReject logic');
+                // Custom logic for rejecting the REFER request
+              }
+            },
+          };
+    sessionall.refer(target,options).then((res)=>{
         console.log('success blind_transfer',res);
         dialogStatedata.response.dialog.callEndReason = "direct-transfered";
 
@@ -840,36 +863,45 @@ function blind_transfer(sip_id, callback) {
         console.log('blind_transfer error ',e);
         error("generalError", loginid, e.message, callback);
     })
-    //     , {
-    //     // Example of extra headers in REFER request
-    //     requestOptions: {
-    //     },
-    //     activeAfterTransfer: false,
-    //     receiveResponse: function (msg, ss) {
-    //         console.log("testing msg" + msg);
-    //         console.log("testing ss" + ss);
-    //     }
-    // }
-    //);
 }
-function blind_transfer_queue(sip_id,queueName,queueType,callback){
+function blind_transfer_queue(sip_id,queuename,queuetype,callback){
     if (!sessionall) {
         return;
     }
           // Target URI
           var target = SIP.UserAgent.makeURI(sip_id);
           if (!target) {
-              // console.error("Failed to create target URI.");
               error("generalError", loginid, "Invalid target Uri:" + sip_id, callback);
               return;
           }
-          sessionall.refer(target, {
-            sessionDescriptionHandlerOptions: {
-            },extraHeaders: [
-                'X-queue:'+queueName,
-                'X-queueType:'+queueType
-        ]
-        }).then((res)=>{
+          const options = {
+            eventHandlers: {
+              accepted: () => {
+               // console.log('REFER request accepted');
+              },
+              failed: (response) => {
+               // console.log('REFER request failed:', response.statusCode);
+              }
+            },
+            requestOptions:{
+                extraHeaders:[
+                    'X-queueTransfer:'+queuename, // Replace with your desired header and value
+                    'X-queueTypeTransfer:'+queuetype,
+                  ]
+            },
+            requestDelegate: {
+              onAccept: (request) => {
+                //console.log('Custom onAccept logic');
+                // Custom logic for accepting the REFER request
+              },
+              onReject: (request) => {
+                //console.log('Custom onReject logic');
+                // Custom logic for rejecting the REFER request
+              }
+            },
+          };
+
+          sessionall.refer(target,options).then((res)=>{
             console.log('success blind_transfer_queue',res);
             dialogStatedata.response.dialog.callEndReason = "direct-transfered";
         }).catch((e)=>{
@@ -1272,7 +1304,7 @@ function addsipcallback(temp_session, call_type, callback) {
                         dialogStatedata.response.dialog.participants[0].mute = false;
                         dialogStatedata.response.dialog.participants[0].stateChangeTime = datetime;
                         dialogStatedata.response.dialog.participants[0].state = "DROPPED";
-                        if(dialogStatedata.response.dialog.callEndReason == "transfered"){
+                        if(dialogStatedata.response.dialog.callEndReason == "direct-transfered"){
                             dialogStatedata.response.dialog.isCallEnded = 0;
                         }else{
                             dialogStatedata.response.dialog.isCallEnded = 1;
@@ -1281,6 +1313,7 @@ function addsipcallback(temp_session, call_type, callback) {
                         dialogStatedata.response.dialog.isCallAlreadyActive = false;
                         callback(JSON.parse(JSON.stringify(dialogStatedata)));
                         dialogStatedata.response.dialog.callEndReason = null;
+                       // clearTimeout(myTimeout);
                     }
                     break;
             }

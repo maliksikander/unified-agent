@@ -1546,11 +1546,15 @@ export class socketService {
       }
       if (cimEvent.data.task.type.direction == "DIRECT_TRANSFER") {
         let text = " transfer request has been placed by ";
-        this._translateService.stream("socket-service.transfer-request-has-been-placed-by").subscribe((data: string) => {
+        let translationKey ="socket-service.transfer-request-has-been-placed-by";
+        if(!cimEvent.data.task.type.metadata.requestedBy) translationKey ="socket-service.transfer-request-has-been-placed"
+        this._translateService.stream(`${translationKey}`).subscribe((data: string) => {
           text = data;
         });
 
-        let string = mode + " " + text + " " + cimEvent.data.task.type.metadata.requestedBy;
+        let string;
+        if(cimEvent.data.task.type.metadata.requestedBy) string = mode + " " + text + " " + cimEvent.data.task.type.metadata.requestedBy;
+        else string = mode + " " + text;
         message.body["displayText"] = "";
         message.body.markdownText = string;
       } else if (cimEvent.data.task.type.direction == "DIRECT_CONFERENCE") {

@@ -329,6 +329,7 @@
    "session-ended":"session ended_ger",
    "left-the-conversation":"left the conversation_ger",
    "transfer-request-has-been-placed-by":"transfer request has been placed by_ger",
+   "transfer-request-has-been-placed":"transfer request has been placed_ger",
    "conference-request-has-been-placed-by":"conference request has been placed by_ger",
    "No-agent-is-available-for":"No agent is available for_ger",
    "conference-request-has-cancelled": "Conference request has been cancelled_ger"

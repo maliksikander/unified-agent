@@ -12,7 +12,7 @@ export class appConfigService {
     FILE_SERVER_URL: "",
     CIM_CUSTOMER_URL: "",
     CONVERSATION_MANAGER_URL: "",
-    TEAM_ANNOUNCEMENT_URL:"",
+    TEAM_ANNOUNCEMENT_URL: "",
     Rona_State_On_Cisco: "",
     ROUTING_ENGINE_URL: "",
     CIM_REPORTING_URL: "",
@@ -21,7 +21,7 @@ export class appConfigService {
     isCiscoEnabled: false,
     isCxVoiceEnabled: false,
     CISCO_CC_MRD: "",
-    CX_VOICE_MRD: "",
+    CX_VOICE_MRD: ""
   };
   // public sipConfig = {
   //   wss: "",
@@ -30,8 +30,9 @@ export class appConfigService {
   //   enable_sip_log: false,
   // }
   finesseConfig: any;
+  cxSipConfig:any
 
-  constructor(private _httpClient: HttpClient) { }
+  constructor(private _httpClient: HttpClient) {}
 
   loadConfig() {
     return this._httpClient
@@ -49,11 +50,11 @@ export class appConfigService {
         this.config.CIM_REPORTING_URL = e.CIM_REPORTING_URL;
         this.config.UNIFIED_ADMIN_URL = e.UNIFIED_ADMIN_URL;
         this.config.CCM_URL = e.CCM_URL;
-        this.config.isCiscoEnabled = e.isCiscoEnabled,
-        this.config.isCxVoiceEnabled = e.isCxVoiceEnabled,
-        this.config.CX_VOICE_MRD = e.CX_VOICE_MRD,
-        this.config.CISCO_CC_MRD = e.CISCO_CC_MRD,
-        this.config.TEAM_ANNOUNCEMENT_URL=e.TEAM_ANNOUNCEMENT_URL;
+        (this.config.isCiscoEnabled = e.isCiscoEnabled),
+          (this.config.isCxVoiceEnabled = e.isCxVoiceEnabled),
+          (this.config.CX_VOICE_MRD = e.CX_VOICE_MRD),
+          (this.config.CISCO_CC_MRD = e.CISCO_CC_MRD),
+          (this.config.TEAM_ANNOUNCEMENT_URL = e.TEAM_ANNOUNCEMENT_URL);
         config = {
           domain: e.domain,
           subDomain: e.subDomain,
@@ -65,7 +66,7 @@ export class appConfigService {
           ssoBackendUrl: e.ssoBackendUrl,
           isGadget: e.isGadget,
           adminUsername: e.adminUsername,
-          adminPassword: e.adminPassword,
+          adminPassword: e.adminPassword
         };
         this.finesseConfig = config;
 
@@ -92,7 +93,9 @@ export class appConfigService {
           uri: e.SIP_URI,
           agentStaticPassword: e.EXT_STATIC_PASSWORD,
           enable_sip_log: e.ENABLE_SIP_LOGS,
+          staticQueueTransferDn: e.STATIC_QUEUE_TRANSFER_DN
         };
+        this.cxSipConfig = sipConfig;
         // this.sipConfig = sipConfig;
       });
   }
