@@ -1,3 +1,4 @@
+var endcal = false;
 var calls = [];
 var consultSessioin;
 var userAgent;
@@ -191,14 +192,14 @@ function postMessage(obj, callback) {
             loader3(obj.parameter.clientCallbackFunction);
             break;
         case 'makeCall':
-            initiate_call('sip:' + obj.parameter.calledNumber + "@" + sipconfig.uri, obj.parameter.clientCallbackFunction);
+            initiate_call(obj.parameter.calledNumber, obj.parameter.clientCallbackFunction);
             break;
-            case 'SST':
-                blind_transfer('sip:' + obj.parameter.numberToTransfer + "@" + sipconfig.uri, obj.parameter.clientCallbackFunction);
-                break;
-                case 'SST_Queue':
-                    blind_transfer_queue('sip:' + obj.parameter.numberToTransfer + "@" + sipconfig.uri,obj.parameter.queue,obj.parameter.queueType, obj.parameter.clientCallbackFunction);
-                    break;
+        case 'SST':
+            blind_transfer(obj.parameter.numberToTransfer, obj.parameter.clientCallbackFunction);
+            break;
+        case 'SST_Queue':
+            blind_transfer_queue(obj.parameter.numberToTransfer, obj.parameter.queue, obj.parameter.queueType, obj.parameter.clientCallbackFunction);
+            break;
         case 'silentMonitor':
             console.log('Freeswitch do not support silentMonitor currently');
             break;
@@ -300,23 +301,30 @@ function postMessage(obj, callback) {
 
 
 
-function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callback) {
-    const uri = SIP.UserAgent.makeURI("sip:" + username + "@" + sip_uri);
+function connect_useragent(extension, sip_uri, sip_password, wss, sip_log, callback) {
+    const undefinedParams = checkUndefinedParams(connect_useragent, [extension, sip_uri, sip_password, wss, sip_log, callback]);
+
+    if (undefinedParams.length > 0) {
+        // console.log(`Error: The following parameter(s) are undefined or null: ${undefinedParams.join(', ')}`);
+        error("generalError", extension, `Error: The following parameter(s) are undefined or null or empty: ${undefinedParams.join(', ')}`, callback);
+        return;
+    }
+    const uri = SIP.UserAgent.makeURI("sip:" + extension + "@" + sip_uri);
     if (!uri) {
         // Failed to create URI
     }
     // if (!ua) {
     var config = {
         uri: uri,
-        authorizationUsername: username,
+        authorizationUsername: extension,
         authorizationPassword: sip_password,
         transportOptions: {
             server: wss, // wss Protocol
         },
-        extraContactHeaderParams:['X-Referred-By-Someone: Username'],
-        extraHeaders : ['X-Referred-By-Someone12: Username12'],
+        extraContactHeaderParams: ['X-Referred-By-Someone: Username'],
+        extraHeaders: ['X-Referred-By-Someone12: Username12'],
         contactParams: { transport: "wss" },
-        contactName: username,
+        contactName: extension,
         /**
 * If true, a first provisional response after the 100 Trying will be sent automatically if UAC does not
 * require reliable provisional responses.
@@ -335,18 +343,22 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
                 var event = {
                     "event": "xmppEvent",
                     "response": {
-                        "loginId": username,
+                        "loginId": extension,
                         "type": "IN_SERVICE",
                         "description": "Connected"
                     }
                 };
                 callback(event);
                 if (again_register) {
-                   // setupRemoteMedia(sessionall);
+                    // setupRemoteMedia(sessionall);
+                    //    if(dialogStatedata.response.dialog.state=="ACTIVE")
+                    //    terminate_call();
                     registerer.register()
                         .then((request) => {
                             console.log("Successfully sent REGISTER");
                             console.log("Sent request = ", request);
+                            // if(dialogStatedata.response.dialog.state=="ACTIVE")
+                            // terminate_call();
                             again_register = false
                         })
                         .catch((error) => {
@@ -357,14 +369,15 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
             onDisconnect: (errorr) => {
                 again_register = true;
                 console.log("Network connectivity lost going to unregister");
-                error("networkIssue", username, errorr.message, callback);
-                if (!error) {
+                error("networkIssue", extension, errorr.message, callback);
+                endcal = true;
+                if (!errorr) {
                     console.log("User agent stopped");
                     var event = {
                         "event": "agentInfo",
                         "response": {
-                            "loginId": username,
-                            "extension": username,
+                            "loginId": extension,
+                            "extension": extension,
                             "state": "LOGOUT",
                             "cause": cause
                         }
@@ -387,7 +400,7 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
                     var event = {
                         "event": "xmppEvent",
                         "response": {
-                            "loginId": username,
+                            "loginId": extension,
                             "type": "OUT_OF_SERVICE",
                             "description": errorr.message
                         }
@@ -471,30 +484,32 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
                 }
                 if (invitation.incomingInviteRequest) {
                     dialogStatedata.event = "dialogState";
-                    invitedata.event =  "newInboundCall";
+                    invitedata.event = "newInboundCall";
                     if (invitation.incomingInviteRequest.message.from._displayName === 'conference') {
                         dialogStatedata.response.dialog.callType = 'conference';
                         invitedata.response.dialog.callType = 'conference';
 
-                    }else if(invitation.incomingInviteRequest.message.headers["X-Calltype"] !== undefined){
-                        var calltype=invitation.incomingInviteRequest.message.headers["X-Calltype"][0].raw;
-                        if(calltype == "PROGRESSIVE"){
+                    } else if (invitation.incomingInviteRequest.message.headers["X-Calltype"] !== undefined) {
+                        var calltype = invitation.incomingInviteRequest.message.headers["X-Calltype"][0].raw;
+                        if (calltype == "PROGRESSIVE") {
                             dialogStatedata.response.dialog.callType = "OUTBOUND";
                             invitedata.response.dialog.callType = "OUTBOUND";
                             dialogStatedata.event = "campaignCall";
-                            invitedata.event =  "campaignCall";
-                            setTimeout(respond_call, sipconfig.autoCallAnswer*1000,callback);
+                            invitedata.event = "campaignCall";
+                            setTimeout(respond_call, sipconfig.autoCallAnswer * 1000, callback);
                         }
                     }
-                     else {
+                    else {
                         dialogStatedata.response.dialog.callType = 'OTHER_IN'
                         invitedata.response.dialog.callType = 'OTHER_IN';
 
                     }
                 }
+                var queuenameval = invitation.incomingInviteRequest.message.headers["X-Queue"] != undefined ? invitation.incomingInviteRequest.message.headers["X-Queue"][0]['raw'] : "Nil";
+                var queuetypeval = invitation.incomingInviteRequest.message.headers["X-Queuetype"] != undefined ? invitation.incomingInviteRequest.message.headers["X-Queuetype"][0]['raw'] : "Nil";
                 dialogStatedata.response.dialog.callVariables.CallVariable = call_variable_array;
                 dialogStatedata.response.loginId = loginid;
-                dialogStatedata.response.dialog.id = invitation.incomingInviteRequest.message.headers["X-Call-Id"]!= undefined ? invitation.incomingInviteRequest.message.headers["X-Call-Id"][0]['raw'] : invitation.incomingInviteRequest.message.headers["Call-ID"][0]['raw'];
+                dialogStatedata.response.dialog.id = invitation.incomingInviteRequest.message.headers["X-Call-Id"] != undefined ? invitation.incomingInviteRequest.message.headers["X-Call-Id"][0]['raw'] : invitation.incomingInviteRequest.message.headers["Call-ID"][0]['raw'];
                 dialogStatedata.response.dialog.ani = dnis.split('sip:')[1].split('@')[0];
                 dialogStatedata.response.dialog.fromAddress = dnis.split('sip:')[1].split('@')[0];
                 dialogStatedata.response.dialog.customerNumber = dnis.split('sip:')[1].split('@')[0];
@@ -505,13 +520,13 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
                 dialogStatedata.response.dialog.participants[0].state = "ALERTING";
                 dialogStatedata.response.dialog.state = "ALERTING";
                 dialogStatedata.response.dialog.dialedNumber = dialedNumber;
-                dialogStatedata.response.dialog.queueName = invitation.incomingInviteRequest.message.headers["X-Queue"]!= undefined ? invitation.incomingInviteRequest.message.headers["X-Queue"][0]['raw'] : "Nil";
-                dialogStatedata.response.dialog.queueType = invitation.incomingInviteRequest.message.headers["X-Queuetype"]!= undefined ? invitation.incomingInviteRequest.message.headers["X-Queuetype"][0]['raw'] : "Nil";
+                dialogStatedata.response.dialog.queueName = queuenameval == "Nil" ? null : queuenameval;
+                dialogStatedata.response.dialog.queueType = queuetypeval == "Nil" ? null : queuetypeval;
 
                 invitedata.response.dialog.callVariables.CallVariable = call_variable_array;
                 invitedata.response.loginId = loginid;
                 invitedata.response.dialog.dnis = dialedNumber;
-                invitedata.response.dialog.id = invitation.incomingInviteRequest.message.headers["X-Call-Id"]!= undefined ? invitation.incomingInviteRequest.message.headers["X-Call-Id"][0]['raw'] : invitation.incomingInviteRequest.message.headers["Call-ID"][0]['raw'];
+                invitedata.response.dialog.id = invitation.incomingInviteRequest.message.headers["X-Call-Id"] != undefined ? invitation.incomingInviteRequest.message.headers["X-Call-Id"][0]['raw'] : invitation.incomingInviteRequest.message.headers["Call-ID"][0]['raw'];
                 invitedata.response.dialog.ani = dnis.split('sip:')[1].split('@')[0];
                 invitedata.response.dialog.fromAddress = dnis.split('sip:')[1].split('@')[0];
                 invitedata.response.dialog.customerNumber = dnis.split('sip:')[1].split('@')[0];
@@ -521,6 +536,8 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
                 invitedata.response.dialog.participants[0].state = "ALERTING";
                 invitedata.response.dialog.state = "ALERTING";
                 invitedata.response.dialog.dialedNumber = dialedNumber;
+                invitedata.response.dialog.queueName = queuenameval == "Nil" ? null : queuenameval;
+                invitedata.response.dialog.queueType = queuetypeval == "Nil" ? null : queuetypeval;
 
                 callback(JSON.parse(JSON.stringify(invitedata)));
                 calls.push(invitedata);
@@ -567,14 +584,18 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
                         console.log("Registered");
                         if (dialogStatedata == null)
                             dialogStatedata = dialogStatedata1;
-                        loginid = username;
-                        dialogStatedata.response.loginId = username;
+                        if (dialogStatedata.response.dialog.state == "ACTIVE" && endcal == true) {
+                            setTimeout(terminate_call, 5000);
+                            endcal = false;
+                        }
+                        loginid = extension;
+                        dialogStatedata.response.loginId = extension;
                         console.log(' connected registered', registerer);
                         var event = {
                             "event": "agentInfo",
                             "response": {
-                                "loginId": username,
-                                "extension": username,
+                                "loginId": extension,
+                                "extension": extension,
                                 "state": "LOGIN",
                                 cause: null
                             }
@@ -584,7 +605,7 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
                             callback({
                                 "event": "dialogState",
                                 "response": {
-                                    "loginId": username,
+                                    "loginId": extension,
                                     "dialog": null
                                 }
                             });
@@ -597,8 +618,8 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
                             var event = {
                                 "event": "agentInfo",
                                 "response": {
-                                    "loginId": username,
-                                    "extension": username,
+                                    "loginId": extension,
+                                    "extension": extension,
                                     "state": "LOGOUT",
                                     "cause": null
                                 }
@@ -607,6 +628,10 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
                             dialogStatedata = null;
                             loginid = null;
                             agentInfo = false;
+                            userAgent.delegate = null;
+                            userAgent = null;
+                            sessionall = null;
+
                         }
                         break;
                     case SIP.RegistererState.Terminated:
@@ -642,24 +667,32 @@ function connect_useragent(username, sip_uri, sip_password, wss, sip_log, callba
                 })
                 .catch((error) => {
                     console.error("Failed to send REGISTER", error.message);
-                    error("subscriptionFailed", username, error.message, callback);
+                    error("subscriptionFailed", extension, error.message, callback);
                 });
         })
         .catch((errorr) => {
             console.error("Failed to connect", errorr);
-            error("subscriptionFailed", username, errorr.message, callback);
+            error("subscriptionFailed", extension, errorr.message, callback);
         });
 
 
 
 }
-function initiate_call(sip_id, callback) {
+function initiate_call(calledNumber, callback) {
+    const undefinedParams = checkUndefinedParams(initiate_call, [calledNumber, callback]);
+
+    if (undefinedParams.length > 0) {
+        // console.log(`Error: The following parameter(s) are undefined or null: ${undefinedParams.join(', ')}`);
+        error("generalError", loginid, `Error: The following parameter(s) are undefined or null or empty: ${undefinedParams.join(', ')}`, callback);
+        return;
+    }
+
     if (userAgent !== null && userAgent !== undefined) {
         // Target URI
-        var sip_uri = SIP.UserAgent.makeURI(sip_id);
+        var sip_uri = SIP.UserAgent.makeURI('sip:' + calledNumber + "@" + sipconfig.uri);
         if (!sip_uri) {
             // console.error("Failed to create target URI.");
-            error("generalError", loginid, "Invalid target Uri:" + sip_id, callback);
+            error("generalError", loginid, "Invalid target Uri:" + calledNumber, callback);
             return;
         }
         // Create new Session instance in "initial" state
@@ -761,9 +794,9 @@ function initiate_call(sip_id, callback) {
             earlyMedia: true,
             requestOptions: {
                 extraHeaders: [
-                  'X-Referred-By-Someone-jazeb: Username'
+                    'X-Referred-By-Someone: Username'
                 ]
-              },
+            },
         };
 
         // Send initial INVITE
@@ -793,6 +826,7 @@ function terminate_call() {
             error('invalidState', loginid, "invalid action releaseCall", callbackFunction);
         return;
     }
+    console.log('state', sessionall.state);
     switch (sessionall.state) {
         case SIP.SessionState.Initial:
         case SIP.SessionState.Establishing:
@@ -801,6 +835,7 @@ function terminate_call() {
                 sessionall.cancel();
             } else {
                 // An unestablished incoming session
+                dialogStatedata.response.dialog.callEndReason = "Rejected";
                 sessionall.reject();
             }
             break;
@@ -824,93 +859,110 @@ function reject_call() {
         error('invalidState', loginid, "invalid action rejectCall", callback);
     }
 }
-function blind_transfer(sip_id, callback) {
+function blind_transfer(numberToTransfer, callback) {
+    const undefinedParams = checkUndefinedParams(blind_transfer, [numberToTransfer, callback]);
+
+    if (undefinedParams.length > 0) {
+        // console.log(`Error: The following parameter(s) are undefined or null: ${undefinedParams.join(', ')}`);
+        error("generalError", loginid, `Error: The following parameter(s) are undefined or null or empty: ${undefinedParams.join(', ')}`, callback);
+        return;
+    }
+
     if (!sessionall) {
         return;
     }
-          // Target URI
-          var target = SIP.UserAgent.makeURI(sip_id);
-          if (!target) {
-              // console.error("Failed to create target URI.");
-              error("generalError", loginid, "Invalid target Uri:" + sip_id, callback);
-              return;
-          }
-          const options = {
-            eventHandlers: {
-              accepted: () => {
+    // Target URI
+    var target = SIP.UserAgent.makeURI('sip:' + numberToTransfer + "@" + sipconfig.uri);
+    if (!target) {
+        // console.error("Failed to create target URI.");
+        error("generalError", loginid, "Invalid target Uri:" + numberToTransfer, callback);
+        return;
+    }
+    const options = {
+        eventHandlers: {
+            accepted: () => {
                 console.log('REFER request accepted');
-              },
-              failed: (response) => {
-                console.log('REFER request failed:', response.statusCode);
-              }
             },
-            requestDelegate: {
-              onAccept: (request) => {
+            failed: (response) => {
+                console.log('REFER request failed:', response.statusCode);
+            }
+        },
+        requestDelegate: {
+            onAccept: (request) => {
                 console.log('Custom onAccept logic');
                 // Custom logic for accepting the REFER request
-              },
-              onReject: (request) => {
+            },
+            onReject: (request) => {
                 console.log('Custom onReject logic');
                 // Custom logic for rejecting the REFER request
-              }
-            },
-          };
-    sessionall.refer(target,options).then((res)=>{
-        console.log('success blind_transfer',res);
+            }
+        },
+    };
+    sessionall.refer(target, options).then((res) => {
+        console.log('success blind_transfer', res);
         dialogStatedata.response.dialog.callEndReason = "direct-transfered";
 
-    }).catch((e)=>{
-        console.log('blind_transfer error ',e);
+    }).catch((e) => {
+        console.log('blind_transfer error ', e);
         error("generalError", loginid, e.message, callback);
     })
 }
-function blind_transfer_queue(sip_id,queuename,queuetype,callback){
+function blind_transfer_queue(numberToTransfer, queue, queuetype, callback) {
+    const undefinedParams = checkUndefinedParams(blind_transfer_queue, [numberToTransfer, queue, queuetype, callback]);
+
+    if (undefinedParams.length > 0) {
+        // console.log(`Error: The following parameter(s) are undefined or null: ${undefinedParams.join(', ')}`);
+        error("generalError", loginid, `Error: The following parameter(s) are undefined or null or empty: ${undefinedParams.join(', ')}`, callback);
+        return;
+    }
+
     if (!sessionall) {
         return;
     }
-          // Target URI
-          var target = SIP.UserAgent.makeURI(sip_id);
-          if (!target) {
-              error("generalError", loginid, "Invalid target Uri:" + sip_id, callback);
-              return;
-          }
-          const options = {
-            eventHandlers: {
-              accepted: () => {
-               // console.log('REFER request accepted');
-              },
-              failed: (response) => {
-               // console.log('REFER request failed:', response.statusCode);
-              }
+    // Target URI
+    var target = SIP.UserAgent.makeURI('sip:' + numberToTransfer + "@" + sipconfig.uri);
+    if (!target) {
+        error("generalError", loginid, "Invalid target Uri:" + numberToTransfer, callback);
+        return;
+    }
+    const options = {
+        eventHandlers: {
+            accepted: () => {
+                // console.log('REFER request accepted');
             },
-            requestOptions:{
-                extraHeaders:[
-                    'X-queueTransfer:'+queuename, // Replace with your desired header and value
-                    'X-queueTypeTransfer:'+queuetype,
-                  ]
-            },
-            requestDelegate: {
-              onAccept: (request) => {
+            failed: (response) => {
+                // console.log('REFER request failed:', response.statusCode);
+            }
+        },
+        requestOptions: {
+            extraHeaders: [
+                'X-queueTransfer: ' + queue, // Replace with your desired header and value
+                'X-queueTypeTransfer: ' + queuetype,
+            ]
+        },
+        requestDelegate: {
+            onAccept: (request) => {
                 //console.log('Custom onAccept logic');
                 // Custom logic for accepting the REFER request
-              },
-              onReject: (request) => {
+            },
+            onReject: (request) => {
                 //console.log('Custom onReject logic');
                 // Custom logic for rejecting the REFER request
-              }
-            },
-          };
+            }
+        },
+    };
 
-          sessionall.refer(target,options).then((res)=>{
-            console.log('success blind_transfer_queue',res);
-            dialogStatedata.response.dialog.callEndReason = "direct-transfered";
-        }).catch((e)=>{
-            console.log('blind_transfer_queue error ',e);
-            error("generalError", loginid, e.message, callback);
-        })
+    sessionall.refer(target, options).then((res) => {
+        console.log('success blind_transfer_queue', res);
+        dialogStatedata.response.dialog.callEndReason = "direct-transfered";
+    }).catch((e) => {
+        console.log('blind_transfer_queue error ', e);
+        error("generalError", loginid, e.message, callback);
+    })
 
 }
 function phone_hold(callback) {
+
     if (!sessionall || dialogStatedata.response.dialog.state == "HELD") {
         error('invalidState', loginid, "invalid action holdCall", callback);
         return;
@@ -1085,7 +1137,7 @@ function respond_call(callback) {
 
 
 }
-function makeConsultCall(sip_id,callback){
+function makeConsultCall(sip_id, callback) {
     if (userAgent !== null && userAgent !== undefined) {
         // Target URI
         var sip_uri = SIP.UserAgent.makeURI(sip_id);
@@ -1203,20 +1255,21 @@ function makeConsultCall(sip_id,callback){
 
 
             });
-            consultSessioin.stateChange.addListener((newState) => {
-                console.log(newState);
-                switch (newState) {
-                    case SIP.SessionState.Establishing:
-                        console.log("Ringing");
+        consultSessioin.stateChange.addListener((newState) => {
+            console.log(newState);
+            switch (newState) {
+                case SIP.SessionState.Establishing:
+                    console.log("Ringing");
 
-                        break;
-                    case SIP.SessionState.Established:
-                        console.log("Answered");
-                        break;
-                        case SIP.SessionState.Terminated:
+                    break;
+                case SIP.SessionState.Established:
+                    console.log("Answered");
+                    break;
+                case SIP.SessionState.Terminated:
                     console.log("Ended");
-                    break;}
-                });
+                    break;
+            }
+        });
 
         //addsipcallback(sessionall, 'outbound', callback);
     } else {
@@ -1225,8 +1278,8 @@ function makeConsultCall(sip_id,callback){
 
     //sessionall.refer(consultSessioin);
 }
-function makeConsultTransferCall(callback){
-sessionall.refer(consultSessioin);
+function makeConsultTransferCall(callback) {
+    sessionall.refer(consultSessioin);
 }
 function addsipcallback(temp_session, call_type, callback) {
     try {
@@ -1304,16 +1357,16 @@ function addsipcallback(temp_session, call_type, callback) {
                         dialogStatedata.response.dialog.participants[0].mute = false;
                         dialogStatedata.response.dialog.participants[0].stateChangeTime = datetime;
                         dialogStatedata.response.dialog.participants[0].state = "DROPPED";
-                        if(dialogStatedata.response.dialog.callEndReason == "direct-transfered"){
+                        if (dialogStatedata.response.dialog.callEndReason == "direct-transfered") {
                             dialogStatedata.response.dialog.isCallEnded = 0;
-                        }else{
+                        } else {
                             dialogStatedata.response.dialog.isCallEnded = 1;
                         }
                         dialogStatedata.response.dialog.state = "DROPPED";
                         dialogStatedata.response.dialog.isCallAlreadyActive = false;
                         callback(JSON.parse(JSON.stringify(dialogStatedata)));
                         dialogStatedata.response.dialog.callEndReason = null;
-                       // clearTimeout(myTimeout);
+                        // clearTimeout(myTimeout);
                     }
                     break;
             }
@@ -1332,7 +1385,13 @@ function addsipcallback(temp_session, call_type, callback) {
             },
             onCancel: (invitation) => {
                 console.log("onCancel received", invitation);
-                dialogStatedata.response.dialog.callEndReason = "Canceled";
+                const match = invitation.incomingCancelRequest.data.match(/text="([^"]+)"/);
+
+                if (match && match[1]) {
+                    dialogStatedata.response.dialog.callEndReason = match[1];
+                } else {
+                    dialogStatedata.response.dialog.callEndReason = "Canceled";
+                }
                 //invitation.accept();
             },
             onFailed: (invitation) => {
@@ -1360,9 +1419,9 @@ function addsipcallback(temp_session, call_type, callback) {
                 console.log("onTerminate received", invitation);
                 //invitation.accept();
             },
-              onRefer: (refer) => {
-                console.log('onRefer received : ',refer)
-   }
+            onRefer: (refer) => {
+                console.log('onRefer received : ', refer)
+            }
 
         };
         //
@@ -1401,6 +1460,10 @@ function loader3(callback) {
 
 }
 function error(type, loginid, cause, callback) {
+    if (typeof callback !== 'function') {
+        console.error("invalid call back function");
+        return;
+    }
     const sysdate = new Date();
     let datetime = sysdate.getFullYear() + '-' + (sysdate.getMonth() + 1) + '-' + sysdate.getDate() + ' ' + sysdate.getHours() + ':' + sysdate.getMinutes() + ':' + sysdate.getSeconds() + '.' + sysdate.getMilliseconds()
     let event = {
@@ -1528,11 +1591,34 @@ function registrationFailed(response) {
     error("subscriptionFailed", loginid, errorsList[response.message.reasonPhrase], callbackFunction);
 }
 function getCallIndex(dialogId) {
-	for (let index = 0; index < calls.length; index++) {
-		var element = calls[index];
-		if (element.dialogId == dialogId) {
-			return index;
-		}
-	}
-	return -1;
+    for (let index = 0; index < calls.length; index++) {
+        var element = calls[index];
+        if (element.dialogId == dialogId) {
+            return index;
+        }
+    }
+    return -1;
+}
+function checkUndefinedParams(func, params) {
+    const paramNames = getParameterNames(func);
+    const undefinedParams = [];
+
+    paramNames.forEach((paramName, index) => {
+        const paramValue = params[index];
+        if (paramValue === undefined || paramValue === null || paramValue === "") {
+            undefinedParams.push(paramName);
+        }
+    });
+
+    return undefinedParams;
+}
+
+function getParameterNames(func) {
+    const functionString = func.toString();
+    const parameterRegex = /function\s*\w*\s*\(([\s\S]*?)\)/;
+    const match = parameterRegex.exec(functionString);
+    if (match && match[1]) {
+        return match[1].split(',').map(param => param.trim());
+    }
+    return [];
 }

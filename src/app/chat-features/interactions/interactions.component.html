@@ -975,6 +975,19 @@
                                   </ng-container>
                                 </li>
 
+                                <ng-container *ngIf="message.body.data.callLegs.length == 1">
+                                  <li
+                                    *ngIf="message.body.data?.callLegs[0]?.sender.type == 'IVR' && message.body.data?.callLegs[0]?.additionalDetail?.activities?.length > 0"
+                                    class="">
+                                    <ng-container
+                                      *ngFor="let ivrDetail of message.body.data?.callLegs[0]?.additionalDetail?.activities; let j = index">
+                                      <span>{{ivrDetail?.menu}} > {{ivrDetail?.selection}} <ng-container
+                                          *ngIf="j !== message.body.data?.callLegs[0]?.additionalDetail?.activities?.length - 1">
+                                          > </ng-container> </span>
+                                    </ng-container>
+                                  </li>
+                                </ng-container>
+
                                 <li *ngIf="message.body.data.callLegs | checkConferenceCall"
                                   class="multiple-users agent-pic participant-agent call-services">
                                   <span><img src="assets/images/groups.svg" alt="group" /></span>
@@ -1038,6 +1051,17 @@
                                       <span matTooltip="{{ callData.sender.senderName }}">{{ callData.sender.senderName
                                         |
                                         getFirstTwoLetters }}</span>
+                                    </li>
+
+                                    <li
+                                      *ngIf="callData.sender.type == 'IVR' && callData?.additionalDetail?.activities?.length > 0"
+                                      class="">
+                                      <ng-container
+                                        *ngFor="let ivrDetail of callData?.additionalDetail?.activities; let j = index">
+                                        <span>{{ivrDetail?.menu}} > {{ivrDetail?.selection}} <ng-container
+                                            *ngIf="j !== callData?.additionalDetail?.activities?.length - 1">
+                                            > </ng-container> </span>
+                                      </ng-container>
                                     </li>
 
                                     <li class="agent-pic call-services">
@@ -2006,14 +2030,14 @@
           <!-- <li><button disabled mat-fab><mat-icon>mic</mat-icon></button></li> -->
           <li><button (click)="ctiControlBar()" mat-fab><mat-icon>picture_in_picture_alt
               </mat-icon></button></li>
-          <li *ngIf="_sipService.isMuted == false"><button  matTooltip="{{('globals.mute' | translate)}}"
+          <li *ngIf="_sipService.isMuted == false"><button matTooltip="{{('globals.mute' | translate)}}"
               (click)="_sipService.muteCallOnSip()" mat-fab><mat-icon>mic</mat-icon></button></li>
-          <li *ngIf="_sipService.isMuted == true"><button  matTooltip="{{('globals.unMute' | translate)}}"
+          <li *ngIf="_sipService.isMuted == true"><button matTooltip="{{('globals.unMute' | translate)}}"
               (click)="_sipService.unmuteCallOnSip()" mat-fab><mat-icon>mic_off</mat-icon></button></li>
-          <li *ngIf="_sipService.isCallHold == false" matTooltip="{{('globals.hold' | translate)}}" (click)="_sipService.holdCallOnSip()"
-            ><button mat-fab><mat-icon>pause</mat-icon></button></li>
-          <li *ngIf="_sipService.isCallHold == true" matTooltip="{{('globals.resume' | translate)}}" (click)="_sipService.resumeCallOnSip()"
-            ><button mat-fab><mat-icon>pause_circle_filled</mat-icon></button>
+          <li *ngIf="_sipService.isCallHold == false" matTooltip="{{('globals.hold' | translate)}}"
+            (click)="_sipService.holdCallOnSip()"><button mat-fab><mat-icon>pause</mat-icon></button></li>
+          <li *ngIf="_sipService.isCallHold == true" matTooltip="{{('globals.resume' | translate)}}"
+            (click)="_sipService.resumeCallOnSip()"><button mat-fab><mat-icon>pause_circle_filled</mat-icon></button>
           </li>
           <li (click)="endCallOnSip()"><button class="end-call" mat-fab><mat-icon>call_end</mat-icon></button></li>
         </ul>

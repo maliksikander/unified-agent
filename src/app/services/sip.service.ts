@@ -220,25 +220,25 @@ export class SipService implements OnInit {
       if (dialogEvent.response.dialog.state == "DROPPED") {
         // this.setDialogCache(dialogEvent, "DROPPED");
         let callType = "DIALOG_ENDED";
+        this.removeNotification(dialogState.dialog);
         if (dialogEvent.response.dialog.callEndReason) {
           if (dialogEvent.response.dialog.callEndReason == "NO_ANSWER" || dialogEvent.response.dialog.callEndReason == "ORIGINATOR_CANCEL") {
             let endReason = dialogEvent.response.dialog.callEndReason;
-            this.removeNotification(dialogState.dialog);
             if (dialogEvent.response.dialog.callEndReason == "NO_ANSWER") this.notReadyAgentState();
             let agentId = this._cacheService.agent.id;
             this.checkActiveTasks(agentId, dialogEvent.response, endReason);
-          } else if (dialogEvent.response.dialog.callEndReason.toLowerCase() == "direct-transfered") {
-            console.log("direct transfer case==>");
-            callType = "DIRECT_TRANSFER";
-            // this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, callType, undefined);
+          } else {
+            if (dialogEvent.response.dialog.callEndReason == "Canceled") {
+              this.notReadyAgentState();
+            } else if (dialogEvent.response.dialog.callEndReason.toLowerCase() == "direct-transfered") {
+              console.log("direct transfer case==>");
+              callType = "DIRECT_TRANSFER";
+            }
+            this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, callType, undefined);
           }
         } else {
-          if (dialogEvent.response.dialog.callEndReason == "Canceled") {
-            this.removeNotification(dialogState.dialog);
-            this.notReadyAgentState();
-          }
+          this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, callType, undefined);
         }
-        this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, callType, undefined);
       }
     } catch (e) {
       console.error("[Error Sip] handleDialogParticipant ==>", e);
@@ -695,7 +695,7 @@ export class SipService implements OnInit {
           dialogId: this.activeDialog.id,
           queue: data.queueName,
           queueType: "NAME",
-          numberToTransfer:this._appConfigService.cxSipConfig.staticQueueTransferDn,
+          numberToTransfer: this._appConfigService.cxSipConfig.staticQueueTransferDn,
           clientCallbackFunction: this.clientCallback
         }
       };
