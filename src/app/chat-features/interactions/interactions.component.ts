@@ -15,7 +15,7 @@ import { ConfirmationDialogComponent } from "src/app/new-components/confirmation
 import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
 import { TranslateService } from "@ngx-translate/core";
 import { CallControlsComponent } from "../../new-components/call-controls/call-controls.component";
-import { ConversationSettings } from '../../models/conversationSetting/conversationSettings';
+import { ConversationSettings } from "../../models/conversationSetting/conversationSettings";
 
 import { SipService } from "src/app/services/sip.service";
 import { T } from "@angular/cdk/keycodes";
@@ -50,7 +50,7 @@ export class InteractionsComponent implements OnInit {
   fullPostView: boolean = false;
   selectedCommentId: string;
   lastSeenMessageId;
-  pastActivitiesloadedOnce:boolean=false;
+  pastActivitiesloadedOnce: boolean = false;
   // isTransfer = false;
   // isConsult = false;
   ctiBarView = true;
@@ -463,29 +463,29 @@ export class InteractionsComponent implements OnInit {
       panelClass: "confirm-dialog",
       data: {
         header: this._translateService.instant("chat-features.interactions.leave-conversation").toUpperCase(),
-        message: this._translateService.instant("chat-features.interactions.Are-you-sure-you-want-to-leave-the-conversation-with")+" '"+this.conversation.customer.firstName+"'"
+        message:
+          this._translateService.instant("chat-features.interactions.Are-you-sure-you-want-to-leave-the-conversation-with") +
+          " '" +
+          this.conversation.customer.firstName +
+          "'"
       }
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result && result.event == "confirm") {
-
-        if(this.conversationSettings.isWrapUpEnabled && this.conversationSettings.wrapUpTime>=15)
-        {
-          console.log("open wrap up")
+        // if (this.conversationSettings.isWrapUpEnabled && this.conversationSettings.wrapUpTime >= 15) {
+        //   this.openWrapUpDialog(true);
+        //   // this._socketService.emitCimEvent({agentId:this.cc}"start-wrap-up-time")
+        // } else {
           this.openWrapUpDialog(true);
-          // this._socketService.emitCimEvent({agentId:this.cc}"start-wrap-up-time")
-    
-        }
-        else
-        {
-        this.unsubscribeFromConversation() 
-             }     }
+
+          // this.unsubscribeFromConversation();
+        // }
+      }
     });
   }
 
-
   unsubscribeFromConversation() {
-    console.log("calles",this.conversationSettings)
+    console.log("calles", this.conversationSettings);
 
     if (this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
       this.closeConversationConfirmation();
@@ -770,7 +770,7 @@ export class InteractionsComponent implements OnInit {
   // to get past acitivities
   loadPastActivities(conversation) {
     try {
-      this.pastActivitiesloadedOnce=true
+      this.pastActivitiesloadedOnce = true;
       this.loadingPastActivity = true;
 
       let limit = 25;
@@ -895,14 +895,17 @@ export class InteractionsComponent implements OnInit {
   // }
 
   // to open dialog form
-  openWrapUpDialog(timerEnabled:boolean): void {
+  openWrapUpDialog(timerEnabled: boolean): void {
+    if (timerEnabled) {
+      this.unsubscribeFromConversation();
+    }
     const dialogRef = this.dialog.open(WrapUpFormComponent, {
       disableClose: true,
       panelClass: "wrap-dialog",
       data: {
         header: this._translateService.instant("chat-features.interactions.wrapup"),
-        timerEnabled:timerEnabled,
-        wrapUpTime:this._sharedService.conversationSettings.wrapUpTime,
+        timerEnabled: timerEnabled,
+        wrapUpTime: this._sharedService.conversationSettings.wrapUpTime,
         conversation: this.conversation,
         RTLDirection: this.isRTLView
       }
@@ -912,10 +915,8 @@ export class InteractionsComponent implements OnInit {
       if (res.event == "apply") {
         this.constructAndSendCimEvent("wrapup", "", "", "", "", res.data.wrapups, res.data.note);
       }
-      if(timerEnabled)
-      {
-        this.unsubscribeFromConversation()
-      }    });
+      
+    });
   }
 
   switchChannelSession(channelSession, channelIndex) {
@@ -1236,8 +1237,8 @@ export class InteractionsComponent implements OnInit {
       panelClass: "call-controls-dialog",
       hasBackdrop: false,
       position: {
-        top: '8%',
-        right: '8%'
+        top: "8%",
+        right: "8%"
       },
       data: { conversation: this.conversation }
     });

@@ -81,8 +81,6 @@ export class socketService {
       }
     });
 
-   
-
     this.socket.on("connect_error", (err) => {
       this.isSocketConnected = false;
       this.ngxService.stop();
@@ -152,7 +150,7 @@ export class socketService {
     });
 
     this.socket.on("ANNOUNCEMENT_CREATED", (res: any) => {
-      if ((res.supervisorId !== this._cacheService.agent.id)) {
+      if (res.supervisorId !== this._cacheService.agent.id) {
         this._announcementService.addCreatedAnnoucement(res);
       }
     });
@@ -161,14 +159,10 @@ export class socketService {
       this._announcementService.removeAnnoucement(res);
     });
 
- 
-
-
     this.socket.on("errors", (res: any) => {
       console.error("socket errors ", res);
       this.onSocketErrors(res);
     });
-
 
     this.socket.on("taskRequest", (res: any) => {
       console.log("taskRequest==>", res);
@@ -194,8 +188,8 @@ export class socketService {
         }
       } else {
         if (res.channelSession.channel.channelType.name.toLowerCase() !== "cx_voice") {
-        // } else {
-        this.triggerNewChatRequest(res);
+          // } else {
+          this.triggerNewChatRequest(res);
         }
         // this.triggerNewChatRequest(res);
       }
@@ -257,29 +251,26 @@ export class socketService {
           verticalPosition: "bottom"
         });
       }
-      let sameTopicConversation = this.conversations.find((e) => {
-        return e.conversationId == res.conversationId;
-      });
-      if(sameTopicConversation["agentState"]!="wrapup")
-      {
       this.removeConversation(res.conversationId);
-      }
     });
 
-    this.socket.on("WRAP_UP_STARTED", (res:any) => {
+    this.socket.on("WRAP_UP_STARTED", (res: any) => {
+      console.log("WRAP_UP_STARTED", res);
       let sameTopicConversation = this.conversations.find((e) => {
         return e.conversationId == res.conversationId;
       });
-      sameTopicConversation["agentState"]="wrapup";
-    })
+      sameTopicConversation["timerStarted"] = "wrapup";
+    });
 
-    this.socket.on("WRAP_UP_ENDED", (res:any) => {
+    this.socket.on("WRAP_UP_CLOSED", (res: any) => {
+      console.log("WRAP_UP_CLOSED", res);
+
       let sameTopicConversation = this.conversations.find((e) => {
         return e.conversationId == res.conversationId;
       });
-      delete sameTopicConversation["agentState"];
+      // delete sameTopicConversation["agentState"];
       this.removeConversation(res.conversationId);
-    })
+    });
 
     this.socket.on("socketSessionRemoved", (res: any) => {
       console.log("socketSessionRemoved", res);
@@ -470,11 +461,17 @@ export class socketService {
     this._snackbarService.open(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"), "err");
     alert(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"));
   }
+  //call on reload and on every new conversation
   onTopicData(topicData, conversationId, taskId) {
     // this.removeConversation(conversationId);
     let conversation = {
       conversationId: conversationId,
       taskId,
+      wrapUpDialog:{
+        show:false,
+        duration:null,
+        ref:null
+      },
       isTyping: null,
       messages: [],
       activeConversationData: topicData.conversationData,
@@ -831,6 +828,7 @@ export class socketService {
 
   removeConversation(conversationId) {
     // fetching the whole conversation which needs to be removed
+    console.log("emovin conversation", conversationId);
     let index;
     const removedConversation = this.conversations.find((conversation, indx) => {
       if (conversation.conversationId == conversationId || conversation.customer._id == conversationId) {
@@ -839,6 +837,7 @@ export class socketService {
       }
     });
     if (index != -1) {
+      console.log("index ound for removing")
       this._sharedService.spliceArray(index, this.conversations);
       --this.conversationIndex;
 
