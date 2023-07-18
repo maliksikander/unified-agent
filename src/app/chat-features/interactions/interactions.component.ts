@@ -43,6 +43,7 @@ export class InteractionsComponent implements OnInit {
   labels: Array<any> = [];
   quotedMessage: any;
   replyToMessageId: any;
+  privateMessageReply: any
   viewFullCommentAction: boolean = false;
   fullPostView: boolean = false;
   selectedCommentId: string;
@@ -189,7 +190,9 @@ export class InteractionsComponent implements OnInit {
   commentAction(message, action) {
 
     if (action == "like" && message["isLiked"]) {
-    } else if (this._socketService.isSocketConnected) {
+    }
+    else if (this._socketService.isSocketConnected) {
+
       let commentId = message.header.providerMessageId;
       if (commentId && message.body.postId) {
         let channelSession = this.getChannelSession(message);
@@ -205,7 +208,8 @@ export class InteractionsComponent implements OnInit {
       } else {
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-the-request"), "err");
       }
-    } else {
+    }
+    else {
       this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-connect-with-server"), "err");
     }
   }
@@ -225,6 +229,11 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
+  //This is for private comment reply for Instagram for now.
+  replyToPrivateComment(message, privateAction) {
+    this.privateMessageReply = privateAction
+    this.replyToComment(message)
+  }
   //replyToFBComment
   replyToComment(message) {
     this.commentPostId = message.body.postId;
@@ -650,6 +659,12 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
+  isInstagramChannel(channel) {
+    if(this.replyToMessageId && this.privateMessageReply) {
+      return channel.channelType.name === "INSTAGRAM";
+    }
+  }
+
   constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?, wrapups?, note?) {
     if (this._socketService.isSocketConnected) {
       let message = this.getCimMessage();
@@ -659,7 +674,7 @@ export class InteractionsComponent implements OnInit {
 
         this.emitCimEvent(message, "AGENT_MESSAGE");
       } else {
-        if (this.replyToMessageId) {
+        if (this.replyToMessageId ) {
           message.header.replyToMessageId = this.replyToMessageId;
           this.replyToMessageId = null;
         }
@@ -667,11 +682,15 @@ export class InteractionsComponent implements OnInit {
 
         if (selectedChannelSession) {
           if (this.commentId && (selectedChannelSession.channel.channelType.name.toLowerCase() == "facebook" ||
-                                 selectedChannelSession.channel.channelType.name.toLowerCase() == "instagram" ||
-                                 selectedChannelSession.channel.channelType.name.toLowerCase() == "twitter")) {
+            selectedChannelSession.channel.channelType.name.toLowerCase() == "instagram" ||
+            selectedChannelSession.channel.channelType.name.toLowerCase() == "twitter")) {
             // channel session is facebook/instagram/twitter
+            if(this.privateMessageReply) {
+              msgType = this.privateMessageReply
+              this.privateMessageReply = null
+            }
             message = this.constructCommentEvent(message, msgType, selectedChannelSession, fileMimeType, fileName, fileSize, text);
-
+            
             this.emitCimEvent(message, "AGENT_MESSAGE");
             this.commentId = null;
           } else {
@@ -979,7 +998,10 @@ export class InteractionsComponent implements OnInit {
         thumbnail: ""
       };
     }
-
+    else if (msgType.toLowerCase() == "private_reply") {
+      message.body.itemType = "PRIVATE_REPLY"
+      message.body.markdownText = text.trim()
+    }
     return message;
   }
 
@@ -1161,10 +1183,27 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
+  // getInstaPostAndComments(postId, selectedCommentId, accessToken, INSTHOSTAPI) {
+  //   this._httpService.getInstaPostData(postId, accessToken, INSTHOSTAPI).subscribe(
+  //     (res: any) => {
+  //       this.postData = res;
+  //       this.postComments = res;
+  //       this.fullPostView = true;
+  //       this.selectedCommentId = selectedCommentId;
+  //     },
+  //     (error) => {
+  //       this._sharedService.Interceptor(error.error, "err");
+  //       console.error("err [getPost]", error.error);
+  //     }
+  //   );
+  // }
+
   //the below function will check for some keys and call another function which will fetch post data with comments
   getFullViewPostData(channelSession, postId, selectedCommentId) {
     let accessToken = null;
+    let instaAccessToken = null
     let FBHOSTAPI = null;
+    let INSTHOSTAPI = null
     this.postComments = null;
     this.postData = null;
     this.fullPostView = false;
@@ -1177,10 +1216,24 @@ export class InteractionsComponent implements OnInit {
         if (item.key == "FACEBOOK-HOST-URL") {
           FBHOSTAPI = item.value;
         }
+        // if (item.key == "INSTAGRAM-API-KEY") {
+        //   instaAccessToken = item.value;
+        // }
+        // if (item.key == "INSTAGRAM-HOST-URL") {
+        //   INSTHOSTAPI = item.value;
+        // }
       });
       if (accessToken && FBHOSTAPI) {
+
         this.getPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
-      } else {
+
+      }
+      // else if (instaAccessToken && INSTHOSTAPI) {
+
+      //   this.getInstaPostAndComments(postId, selectedCommentId, instaAccessToken, INSTHOSTAPI);
+      // }
+
+      else {
         this._snackbarService.open(this._translateService.instant("snackbar.Access-Token-or-FB-Host-API-for-FB-is-missing"), "err");
         console.error("err [getFullViewPostData] accessToken or FB Host API for FB is missing");
       }

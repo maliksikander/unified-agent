@@ -335,7 +335,6 @@ export class socketService {
 
   onCimEventHandler(cimEvent, conversationId) {
     console.log("cim event ", JSON.parse(JSON.stringify(cimEvent)));
-
     if (cimEvent.channelSession) {
       if (cimEvent.data && cimEvent.data.header) {
         cimEvent.data.header.channelSession = cimEvent.channelSession;
@@ -374,7 +373,8 @@ export class socketService {
           cimEvent.data.body.type.toLowerCase() == "comment" &&
           cimEvent.data.body.itemType.toLowerCase() != "text" &&
           cimEvent.data.body.itemType.toLowerCase() != "video" &&
-          cimEvent.data.body.itemType.toLowerCase() != "image"
+          cimEvent.data.body.itemType.toLowerCase() != "image" &&
+          cimEvent.data.body.itemType.toLowerCase() !="private_reply"
         ) {
           this.processFaceBookCommentActions(sameTopicConversation.messages, cimEvent.data);
         }
@@ -494,7 +494,8 @@ export class socketService {
           event.data.body.type.toLowerCase() == "comment" &&
           event.data.body.itemType.toLowerCase() != "text" &&
           event.data.body.itemType.toLowerCase() != "video" &&
-          event.data.body.itemType.toLowerCase() != "image"
+          event.data.body.itemType.toLowerCase() != "image" &&
+          event.data.body.itemType.toLowerCase() != "private_reply"
         ) {
           this.processFaceBookCommentActions(conversation.messages, event.data);
         } else {
