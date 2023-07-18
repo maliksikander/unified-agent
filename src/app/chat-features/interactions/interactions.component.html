@@ -1164,7 +1164,7 @@
                             </li>
                             <li>
                               <mat-icon [ngClass]="{ 'liked': message.isLiked }"
-                                (click)="message.header.channelSession.channel.channelType.name.includes('FACEBOOK') ? likeAction(message) : replyToPrivateComment(message, 'PRIVATE_REPLY')">
+                                (click)="message.header.channelSession.channel.channelType.name.includes('FACEBOOK') ? commentAction(message, 'like') : replyToPrivateComment(message, 'PRIVATE_REPLY')">
                                 {{ message.header.channelSession.channel.channelType.name.includes('FACEBOOK') ?
                                 'thumb_up' : 'reply' }}
                               </mat-icon>
@@ -1488,7 +1488,7 @@
                                   </li>
                                   <li>
                                     <mat-icon [ngClass]="{ 'liked': message.isLiked }"
-                                      (click)="message.header.channelSession.channel.channelType.name.includes('FACEBOOK') ? likeAction(message) : replyToPrivateComment(message, 'PRIVATE_REPLY')">
+                                      (click)="message.header.channelSession.channel.channelType.name.includes('FACEBOOK') ? commentAction(message, 'like') : replyToPrivateComment(message, 'PRIVATE_REPLY')">
                                       {{ message.header.channelSession.channel.channelType.name.includes('FACEBOOK') ?
                                       'thumb_up' : 'reply' }}
                                     </mat-icon>
