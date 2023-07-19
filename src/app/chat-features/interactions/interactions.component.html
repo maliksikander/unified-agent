@@ -981,7 +981,7 @@
                                     class="">
                                     <ng-container
                                       *ngFor="let ivrDetail of message.body.data?.callLegs[0]?.additionalDetail?.activities; let j = index">
-                                      <span>{{ivrDetail?.menu}} > {{ivrDetail?.selection}} <ng-container
+                                      <span matTooltip="{{ivrDetail?.menu}} > {{ivrDetail?.selection}}">{{ivrDetail?.menu}} > {{ivrDetail?.selection}} <ng-container
                                           *ngIf="j !== message.body.data?.callLegs[0]?.additionalDetail?.activities?.length - 1">
                                           > </ng-container> </span>
                                     </ng-container>
@@ -1055,10 +1055,10 @@
 
                                     <li
                                       *ngIf="callData.sender.type == 'IVR' && callData?.additionalDetail?.activities?.length > 0"
-                                      class="">
+                                      >
                                       <ng-container
                                         *ngFor="let ivrDetail of callData?.additionalDetail?.activities; let j = index">
-                                        <span>{{ivrDetail?.menu}} > {{ivrDetail?.selection}} <ng-container
+                                        <span matTooltip="{{ivrDetail?.menu}} > {{ivrDetail?.selection}}">{{ivrDetail?.menu}} > {{ivrDetail?.selection}} <ng-container
                                             *ngIf="j !== callData?.additionalDetail?.activities?.length - 1">
                                             > </ng-container> </span>
                                       </ng-container>
