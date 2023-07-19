@@ -3487,6 +3487,12 @@ span.note-icon {
       white-space: pre;
       overflow: hidden;
       text-overflow: ellipsis;
+
+      span.ivr-tag {
+        background: #000;
+        color: #fff !important;
+        border-color: #000 !important;
+      }
     }
   }
   .mat-expansion-panel-body {
