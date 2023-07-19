@@ -3489,9 +3489,11 @@ span.note-icon {
       text-overflow: ellipsis;
 
       span.ivr-tag {
-        background: #000;
+        background: #333;
         color: #fff !important;
-        border-color: #000 !important;
+        border-color: #333 !important;
+        font-size: 11px !important;
+
       }
     }
   }

@@ -1047,7 +1047,7 @@
                                 <div class="panel-header">
                                   <ul>
                                     <li class="agent-pic participant-agent call-services">
-                                      <span matTooltip="{{ callData.sender.senderName }}">{{ callData.sender.senderName
+                                      <span class=" {{ (callData.sender.senderName | getFirstTwoLetters | lowercase) == 'ivr'  ? 'ivr-tag': 'non-ivr' }}" matTooltip="{{ callData.sender.senderName }}">{{ callData.sender.senderName
                                         |
                                         getFirstTwoLetters }}</span>
                                     </li>
