@@ -211,3 +211,10 @@ ul.available-channel-list {
     }
   }
 }
+
+
+@media(max-width: 768px){
+  .customer-heading{
+    width: 50% !important;
+  }
+}

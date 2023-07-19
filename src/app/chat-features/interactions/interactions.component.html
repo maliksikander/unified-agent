@@ -24,12 +24,12 @@
                 [ngStyle]="{ 'background-color': lbl.colorCode }"></li>
             </ul>
           </h5>
-          <button mat-button class="chat-controls-mobile search-trigger" aria-label="search" (click)="interactionSearch = true">
+          <button mat-button class="chat-controls-mobile search-trigger" *ngIf="isMobileDevice" aria-label="search" (click)="interactionSearch = true">
             <mat-icon>search</mat-icon>
           </button>
-          <button mat-button class="chat-controls-mobile"  [matMenuTriggerFor]="agentControllForMobile" ><mat-icon>more_vert</mat-icon></button>
+          <button mat-button class="chat-controls-mobile" *ngIf="isMobileDevice"  [matMenuTriggerFor]="agentControllForMobile" ><mat-icon>more_vert</mat-icon></button>
         </div>
-        <div class="instruction-search" *ngIf="interactionSearch">
+        <div class="instruction-search" *ngIf="interactionSearch && isMobileDevice">
           <input placeholder="Search Interactions" type="text" [(ngModel)]="searchInteraction">
           <button mat-button (click)="interactionSearch = false">
             <mat-icon>close</mat-icon>

@@ -343,6 +343,22 @@
   #chat-content .chat-messages-main .chat-message.video .file-type-message {
     min-width: auto !important;
   }
+
+
+    button.add-customer{
+      display: none;
+      top: 68px;
+      z-index: 9;
+      max-width: 310px;
+      &.expand-view{
+        display: block;
+      }
+  }
+  .profile-detail .vert-dropdown {
+    display: inline-block;
+    top: 4px;
+    position: relative;
+  }
 }
 .option-label {
   opacity: .8;
@@ -664,7 +680,7 @@ button.close-menu-mobile {
         border-radius: 0;
 
         &.arrow_left {
-          left: 227px;
+          left: 320px;
         }
       }
 
