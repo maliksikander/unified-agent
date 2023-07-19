@@ -93,7 +93,8 @@
     "Announcement-Updated":"Announcement Updated_spa",
     "Unable-to-Create-New-Announcement":"Unable to Create New Announcement_spa",
     "Unable-to-Update-Announcement":"Unable to Update Announcement_spa",
-    "Unable-to-Delete-Announcement":"Unable to Delete Announcement_spa"
+    "Unable-to-Delete-Announcement":"Unable to Delete Announcement_spa",
+    "Socket-Connected":"Socket Connected_spa"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_spa",

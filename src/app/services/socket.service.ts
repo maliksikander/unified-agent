@@ -112,7 +112,8 @@ export class socketService {
       this.ngxService.stop();
       this.isSocketConnected = true;
       this._sharedService.serviceChangeMessage({ msg: "closeAllPushModeRequests", data: null });
-      this._snackbarService.open("Connected", "succ");
+      // this._snackbarService.open("Connected", "succ");
+      this._snackbarService.open(this._translateService.instant("snackbar.Socket-Connected"), "succ");
       console.log("socket connect " + e);
       if (this._router.url == "/login") {
         // this._router.navigate(["customers"]);

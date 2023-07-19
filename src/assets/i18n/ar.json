@@ -93,7 +93,8 @@
     "Announcement-Updated":"Announcement Updated_ar",
     "Unable-to-Create-New-Announcement":"Unable to Create New Announcement_ar",
     "Unable-to-Update-Announcement":"Unable to Update Announcement_ar",
-    "Unable-to-Delete-Announcement":"Unable to Delete Announcement"
+    "Unable-to-Delete-Announcement":"Unable to Delete Announcement_ar",
+    "Socket-Connected":"Socket Connected_ar"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ar",

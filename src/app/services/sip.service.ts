@@ -114,15 +114,21 @@ export class SipService implements OnInit {
       if (event.event.toLowerCase() == "agentinfo") {
         if (event.response.state.toLowerCase() == "login") {
           this.isSipLoggedIn = true;
-          this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-Login-Success"), "succ");
-          this.readyAgentState();
-          console.log("Connection Established, CTI Status is Connected ==>");
         }
+
         if (event.response.state.toLowerCase() == "logout") {
           this.isSipLoggedIn = false;
           this.notReadyAgentState();
           this._snackbarService.open(this._translateService.instant("snackbar.SIP-Logout-Successful"), "succ");
           console.log("Connection Expired, CTI Status logout==>");
+        }
+      } else if (event.event.toLowerCase() == "xmppevent") {
+        // console.log("yo1==>")
+        if (event.response && event.response.type == "IN_SERVICE") {
+          // console.log("yo2==>")
+          this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-Login-Success"), "succ");
+          this.readyAgentState();
+          console.log("Connection Established, CTI Status is Connected ==>");
         }
       } else if (event.event.toLowerCase() == "dialogstate") {
         if (event.response.dialog == null) {
@@ -137,6 +143,11 @@ export class SipService implements OnInit {
         let cacheId = `${this._cacheService.agent.id}:${event.response.dialog.id}`;
         let cacheDialog: any = this.getDialogFromCache(cacheId);
         if (!cacheDialog) this.identifyCustomer(event, event.response.dialog.customerNumber, "INBOUND");
+      } else if (event.event.toLowerCase() == "campaigncall") {
+        this.customerNumber = event.response.dialog.customerNumber;
+        let cacheId = `${this._cacheService.agent.id}:${event.response.dialog.id}`;
+        let cacheDialog: any = this.getDialogFromCache(cacheId);
+        if (!cacheDialog) this.identifyCustomer(event, event.response.dialog.customerNumber, "OUTBOUND_CAMPAIGN");
       } else if (event.event == "Error") {
         if (event.response.type.toLowerCase() == "invalidstate") {
           this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-incorrect-request"), "err");
@@ -405,9 +416,11 @@ export class SipService implements OnInit {
             customer: res.customer,
             identifier,
             dialogData: sipEvent.response.dialog,
-            provider: "cx_voice"
+            provider: "cx_voice",
+            isOutbound: false
           };
-          if (callType == "INBOUND") {
+          if (callType == "INBOUND" || callType == "OUTBOUND_CAMPAIGN") {
+            if (callType == "OUTBOUND_CAMPAIGN") data.isOutbound = true;
             this._sharedService.serviceChangeMessage({ msg: "openExternalModeRequestHeader", data: data });
             this.setDialogCache(sipEvent, "ALERTING");
           }

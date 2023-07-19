@@ -45,8 +45,9 @@
             </p>
           </div>
           <div class="requested-name">
-            <strong>{{'globals.chat' | translate }} {{ (request?.taskDirection == 'DIRECT_CONFERENCE' ? 'globals.conference' : 'globals.transfer') | translate}} {{'globals.request-from'  | translate }}
-              '{{request?.requestedBy | titlecase}}' {{'globals.with-customer'  | translate }}
+            <strong>{{'globals.chat' | translate }} {{ (request?.taskDirection == 'DIRECT_CONFERENCE' ?
+              'globals.conference' : 'globals.transfer') | translate}} {{'globals.request-from' | translate }}
+              '{{request?.requestedBy | titlecase}}' {{'globals.with-customer' | translate }}
               '{{request?.channelSession?.customer?.firstName | titlecase }}'</strong>
             <p *ngIf="request?.note">
               {{request?.note}}
@@ -114,12 +115,20 @@
           </div>
           <div class="requested-name">
             <p matTooltip="{{request?.customer?.firstName ? request?.customer?.firstName : 'UNIDENTIFIED CUSTOMER' }}">
-              {{request?.customer?.firstName ? request?.customer?.firstName : 'UNIDENTIFIED CUSTOMER' }}</p>
-            <p>
+              <span *ngIf="request.isOutbound">Ringing on </span> <span
+                class="voice-customer">{{request?.customer?.firstName ? request?.customer?.firstName : 'UNIDENTIFIED
+                CUSTOMER' }}</span>
+              <span class="dot-container">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </span>
+            </p>
+            <p class="voice-customer">
               {{request?.identifier ?
               request?.identifier : 'N/A' }}</p>
           </div>
-          <div class="notification-trigger">
+          <div *ngIf="!request?.isOutbound" class="notification-trigger">
             <button (click)="onExternalRequestAccept(request)" class="mat-flat-button" mat-button>{{'globals.accept' |
               translate }}</button>
           </div>
@@ -133,7 +142,7 @@
           </div>
           <div class="requested-name">
             <p>
-            Incoming call from : <strong>{{request?.identifier}}</strong></p>
+              Incoming call from : <strong>{{request?.identifier}}</strong></p>
             <!-- <strong>{{'globals.chat'}} {{ (request?.taskDirection == 'DIRECT_CONFERENCE' ? 'globals.conference' :
               'globals.transfer') | translate}} {{'globals.request-from' | translate }}
               '{{request?.requestedBy | titlecase}}' {{'globals.with-customer' | translate }}
@@ -156,34 +165,32 @@
     </div>
   </div>
 
-<!--  New Announcement notifications-->
-<div *ngFor="let announcementNotification of this._announcementService.announcementNotificationList">
-<div class="notification-area" >
-  <div class="row main-panel m-0">
-    <mat-card class="notification-panel mat-card">
-      <mat-card-content
-        class="mat-card-content identified consult-notification new-announcement-notification">
-        <div class="chat-request">
-          <p class="channel-icon">
-            <img src="assets/images/megaphone.svg" alt="Announcement">
-          </p>
-        </div>
-        <div class="requested-name">
-          <strong>New Announcement by {{announcementNotification.supervisorName}}</strong>
-          <p>
-            {{announcementNotification.announcementText}}
-          </p>
-        </div>
-        <div class="notification-trigger">
-          <button class="mat-flat-button" (click)="onDismiss(announcementNotification)"
-                  mat-button>Dismiss</button>
-        </div>
-      </mat-card-content>
-    </mat-card>
+  <!--  New Announcement notifications-->
+  <div *ngFor="let announcementNotification of this._announcementService.announcementNotificationList">
+    <div class="notification-area">
+      <div class="row main-panel m-0">
+        <mat-card class="notification-panel mat-card">
+          <mat-card-content class="mat-card-content identified consult-notification new-announcement-notification">
+            <div class="chat-request">
+              <p class="channel-icon">
+                <img src="assets/images/megaphone.svg" alt="Announcement">
+              </p>
+            </div>
+            <div class="requested-name">
+              <strong>New Announcement by {{announcementNotification.supervisorName}}</strong>
+              <p>
+                {{announcementNotification.announcementText}}
+              </p>
+            </div>
+            <div class="notification-trigger">
+              <button class="mat-flat-button" (click)="onDismiss(announcementNotification)" mat-button>Dismiss</button>
+            </div>
+          </mat-card-content>
+        </mat-card>
 
+      </div>
+    </div>
   </div>
-</div>
-</div>
 
 
 
