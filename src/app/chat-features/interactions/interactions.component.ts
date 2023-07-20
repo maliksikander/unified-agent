@@ -61,6 +61,7 @@ export class InteractionsComponent implements OnInit {
   timeLeft: number = 0;
   interval;
   slaTimeValue;
+  openWrapDialog = false;
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -445,6 +446,16 @@ export class InteractionsComponent implements OnInit {
           }, 3000);
         }
       }
+    }
+  }
+
+  closeWrapDialog(data) {
+    console.log("wrap dialog .... " + data);
+    if(data == false){
+      this.openWrapDialog = false;
+    } else{
+        this.constructAndSendCimEvent("wrapup", "", "", "", "", data.wrapups, data.note);
+        this.openWrapDialog = false;
     }
   }
   eventFromChild(data) {
@@ -1319,11 +1330,11 @@ export class InteractionsComponent implements OnInit {
   }
 
   openDialog(): void {
-
-     this.dialog.open(this.slaDialog,
-      {
-
-      });
+this.openWrapDialog = true;
+     // this.dialog.open(this.slaDialog,
+    //      //  {
+    //      //
+    //      //  });
 
     // this.dialog.open(templateRef, {
     //   panelClass: "wrap-dialog"

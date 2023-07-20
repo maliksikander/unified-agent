@@ -36,6 +36,12 @@
                 </button>
               </li>
             </ng-container>
+            <li class="list-group-item">
+              <button mat-fab matTooltip="{{ 'chat-features.interactions.wrapup' | translate }}" aria-label="WrapUp"
+                      (click)="openDialog()">
+                <img alt="Note" src="assets/images/note.svg" />
+              </button>
+            </li>
             <li class="list-group-item" *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
               <button mat-icon-button [matMenuTriggerFor]="ParticipantsList"
                 matTooltip="{{ 'chat-features.interactions.participants' | translate }}" aria-label="Participants">
@@ -1991,31 +1997,38 @@
     </ng-template>
 
     <!--Chat SLA dialog-->
-    <div class="sla-main-action" *ngIf="openSLADialog">
-      <div class="note-dialog-main transfer-dialog">
-        <div class="dialog-header">
-          <!-- <h4 mat-dialog-title>{{requestAction ? requestAction + ' Request' : requestedAgentForAssistance.team && isTransfer
-            ? 'Transfer to Queue' : 'Conversation Transfer'}} -->
-          <h4 mat-dialog-title>
-            SLA Expired
-              <span class="float-right">SLA Timer | {{timeLeft}} sec</span>
-          </h4>
-        </div>
-        <div class="dialog-main-content sla-dialog-content">
-          <div class="container text-center">
-            <strong>SLA breached!</strong>
-              <p>Would you like to stay in the conversation?</p>
 
-          </div>
-        </div>
+<!--    header: this._translateService.instant("chat-features.interactions.wrapup"),-->
+<!--    conversation: this.conversation,-->
+<!--    RTLDirection: this.isRTLView-->
+    <div class="sla-main-action" *ngIf="openWrapDialog">
+      <app-wrap-up-form [conversation]="conversation" [RTLDirection]="isRTLView" (closeWrapDialog)="closeWrapDialog($event)"></app-wrap-up-form>
 
-        <div class="action-trigger text-center">
-          <button mat-button mat-dialog-close (click)="openSLADialog = false"  class="close-btn">Leave</button>
-          <button mat-button (click)="openSLADialog = false" class="success-btn" cdkFocusInitial >
-            Stay
-          </button>
-        </div>
-      </div>
+
+<!--      <div class="note-dialog-main transfer-dialog">-->
+<!--        <div class="dialog-header">-->
+<!--          &lt;!&ndash; <h4 mat-dialog-title>{{requestAction ? requestAction + ' Request' : requestedAgentForAssistance.team && isTransfer-->
+<!--            ? 'Transfer to Queue' : 'Conversation Transfer'}} &ndash;&gt;-->
+<!--          <h4 mat-dialog-title>-->
+<!--            SLA Expired-->
+<!--              <span class="float-right">SLA Timer | {{timeLeft}} sec</span>-->
+<!--          </h4>-->
+<!--        </div>-->
+<!--        <div class="dialog-main-content sla-dialog-content">-->
+<!--          <div class="container text-center">-->
+<!--            <strong>SLA breached!</strong>-->
+<!--              <p>Would you like to stay in the conversation?</p>-->
+
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        <div class="action-trigger text-center">-->
+<!--          <button mat-button mat-dialog-close (click)="openSLADialog = false"  class="close-btn">Leave</button>-->
+<!--          <button mat-button (click)="openSLADialog = false" class="success-btn" cdkFocusInitial >-->
+<!--            Stay-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
   </div>
 

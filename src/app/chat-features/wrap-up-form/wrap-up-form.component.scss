@@ -1,7 +1,9 @@
 @import "src/app/shared/globalVariables";
 
 
-
+.wrap-main-dialog{
+  background: $white-color;
+}
 .action-trigger {
   padding: 15px 10px;
   button{
