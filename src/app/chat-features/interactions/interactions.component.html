@@ -966,9 +966,9 @@
                                   </li>
                                 </ng-container>
 
-                                <li class="agent-pic participant-agent call-services">
+                                <li class="agent-pic participant-agent call-services aa">
                                   <ng-container *ngFor="let callData of message.body.data.callLegs">
-                                    <span matTooltip="{{ callData.sender.senderName }}"
+                                    <span matTooltip="{{ callData.sender.senderName }}" class=" {{ (callData.sender.senderName | getFirstTwoLetters | lowercase) == 'ivr'  ? 'ivr-tag': 'non-ivr' }}"
                                       *ngIf="callData?.startDirection != 'CONSULT'">{{
                                       callData.sender.senderName | getFirstTwoLetters
                                       }}</span>
@@ -977,11 +977,10 @@
 
                                 <ng-container *ngIf="message.body.data.callLegs.length == 1">
                                   <li
-                                    *ngIf="message.body.data?.callLegs[0]?.sender.type == 'IVR' && message.body.data?.callLegs[0]?.additionalDetail?.activities?.length > 0"
-                                    class="">
+                                    *ngIf="message.body.data?.callLegs[0]?.sender.type == 'IVR' && message.body.data?.callLegs[0]?.additionalDetail?.activities?.length > 0">
                                     <ng-container
                                       *ngFor="let ivrDetail of message.body.data?.callLegs[0]?.additionalDetail?.activities; let j = index">
-                                      <span>{{ivrDetail?.menu}} > {{ivrDetail?.selection}} <ng-container
+                                      <span matTooltip="{{ivrDetail?.menu}} > {{ivrDetail?.selection}}">{{ivrDetail?.menu}} > {{ivrDetail?.selection}} <ng-container
                                           *ngIf="j !== message.body.data?.callLegs[0]?.additionalDetail?.activities?.length - 1">
                                           > </ng-container> </span>
                                     </ng-container>
@@ -1048,17 +1047,17 @@
                                 <div class="panel-header">
                                   <ul>
                                     <li class="agent-pic participant-agent call-services">
-                                      <span matTooltip="{{ callData.sender.senderName }}">{{ callData.sender.senderName
+                                      <span class=" {{ (callData.sender.senderName | getFirstTwoLetters | lowercase) == 'ivr'  ? 'ivr-tag': 'non-ivr' }}" matTooltip="{{ callData.sender.senderName }}">{{ callData.sender.senderName
                                         |
                                         getFirstTwoLetters }}</span>
                                     </li>
 
                                     <li
                                       *ngIf="callData.sender.type == 'IVR' && callData?.additionalDetail?.activities?.length > 0"
-                                      class="">
+                                      >
                                       <ng-container
                                         *ngFor="let ivrDetail of callData?.additionalDetail?.activities; let j = index">
-                                        <span>{{ivrDetail?.menu}} > {{ivrDetail?.selection}} <ng-container
+                                        <span matTooltip="{{ivrDetail?.menu}} > {{ivrDetail?.selection}}">{{ivrDetail?.menu}} > {{ivrDetail?.selection}} <ng-container
                                             *ngIf="j !== callData?.additionalDetail?.activities?.length - 1">
                                             > </ng-container> </span>
                                       </ng-container>
