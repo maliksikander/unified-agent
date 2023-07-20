@@ -385,18 +385,35 @@
                     <div class="main-quoted-reply"
                       *ngFor="let referredMessage of message.header.replyToMessageId | getReferredMsg: conversation.messages"
                       (click)="navigationToRepliedMessage(referredMessage)">
+                      
                       <strong class="message-author"
                         [ngClass]="(referredMessage.header.sender.type | lowercase) == 'customer' ? '' : 'current-agents'">
                         <span *ngIf="referredMessage.header.sender">
                           {{ referredMessage.header.sender | getSenderName: conversation.customer | titlecase }}
                         </span>
                       </strong>
+                      
                       <div [ngClass]="{
                           'file-type-message':
                             (referredMessage.body.type | lowercase) != 'plain' &&
                             (referredMessage.body.type | lowercase) != 'comment' &&
                             (referredMessage.body.type | lowercase) != 'button'
                         }">
+
+                        <!-- ---------------Comments---------------------- -->
+                        <div *ngIf="(referredMessage.body.type | lowercase) == 'comment'">
+                          <p>
+                            <span [innerHTML]="
+                                conversationSettings.isMessageFormattingEnabled
+                                  ? (referredMessage.body.markdownText | linkify | ibsformat)
+                                  : (referredMessage.body.markdownText | linkify)
+                              "></span>
+                            <!--                            <span class="message-stamp yellow">-->
+                            <!--                              <span class="chat-time red">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
+                            <!--                            </span>-->
+                          </p>
+                        </div>
+
                         <!-- ---------------plain---------------------- -->
                         <div *ngIf="(referredMessage.body.type | lowercase) == 'plain'">
                           <p>
@@ -1164,7 +1181,7 @@
                             </li>
                             <li>
                               <mat-icon [ngClass]="{ 'liked': message.isLiked }"
-                                (click)="message.header.channelSession.channel.channelType.name.includes('FACEBOOK') ? commentAction(message, 'like') : replyToPrivateComment(message, 'PRIVATE_REPLY')">
+                                (click)="message.header.channelSession.channel.channelType.name.includes('FACEBOOK') ? commentAction(message, 'like') : privateReplyToComment(message)">
                                 {{ message.header.channelSession.channel.channelType.name.includes('FACEBOOK') ?
                                 'thumb_up' : 'reply' }}
                               </mat-icon>
@@ -1488,7 +1505,7 @@
                                   </li>
                                   <li>
                                     <mat-icon [ngClass]="{ 'liked': message.isLiked }"
-                                      (click)="message.header.channelSession.channel.channelType.name.includes('FACEBOOK') ? commentAction(message, 'like') : replyToPrivateComment(message, 'PRIVATE_REPLY')">
+                                      (click)="message.header.channelSession.channel.channelType.name.includes('FACEBOOK') ? commentAction(message, 'like') : privateReplyToComment(message)">
                                       {{ message.header.channelSession.channel.channelType.name.includes('FACEBOOK') ?
                                       'thumb_up' : 'reply' }}
                                     </mat-icon>
@@ -1719,6 +1736,7 @@
             <span *ngIf="quotedMessage.header.sender">
               {{ quotedMessage.header.sender | getSenderName: conversation.customer | titlecase }}
             </span>
+            
             <p>
               <span *ngIf="quotedMessage.body.attachment" class="display-file display-image">
                 <img
@@ -1748,7 +1766,7 @@
             </p>
 
             <button mat-icon-button class="quoted-message-cancel"
-              (click)="quotedMessage = ''; replyToMessageId = null; commentId = null">
+              (click)="quotedMessage = ''; replyToMessageId = null; commentId = null; privateMessageReply = null">
               <mat-icon>close</mat-icon>
             </button>
           </div>

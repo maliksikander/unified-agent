@@ -230,8 +230,8 @@ export class InteractionsComponent implements OnInit {
   }
 
   //This is for private comment reply for Instagram for now.
-  replyToPrivateComment(message, privateAction) {
-    this.privateMessageReply = privateAction
+  privateReplyToComment(message) {
+    this.privateMessageReply = "PRIVATE_REPLY"
     this.replyToComment(message)
   }
   //replyToFBComment
@@ -267,11 +267,10 @@ export class InteractionsComponent implements OnInit {
   }
 
   navigationToRepliedMessage(repliedMessage: any) {
-    if (repliedMessage && repliedMessage.id) {
+    if (repliedMessage && repliedMessage.id ) {
       const elementId = repliedMessage.id;
 
       const element = document.getElementById(elementId);
-
       if (element) {
         element.scrollIntoView({
           behavior: "smooth",
@@ -660,11 +659,10 @@ export class InteractionsComponent implements OnInit {
   }
 
   isInstagramChannel(channel) {
-    if(this.replyToMessageId && this.privateMessageReply) {
+    if(this.replyToMessageId && this.privateMessageReply || this.replyToMessageId) {
       return channel.channelType.name === "INSTAGRAM";
     }
   }
-
   constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?, wrapups?, note?) {
     if (this._socketService.isSocketConnected) {
       let message = this.getCimMessage();
@@ -684,7 +682,7 @@ export class InteractionsComponent implements OnInit {
           if (this.commentId && (selectedChannelSession.channel.channelType.name.toLowerCase() == "facebook" ||
             selectedChannelSession.channel.channelType.name.toLowerCase() == "instagram" ||
             selectedChannelSession.channel.channelType.name.toLowerCase() == "twitter")) {
-            // channel session is facebook/instagram/twitter
+            // If private reply icon is clicked then msgType would be private reply. 
             if(this.privateMessageReply) {
               msgType = this.privateMessageReply
               this.privateMessageReply = null
@@ -849,7 +847,7 @@ export class InteractionsComponent implements OnInit {
           msg.body.itemType.toLowerCase() != "video" &&
           msg.body.itemType.toLowerCase() != "image"
         ) {
-          this._socketService.processFaceBookCommentActions(msgs, msg);
+          this._socketService.processCommentActions(msgs, msg);
         } else {
           this.conversation.messages.unshift(msg);
         }
