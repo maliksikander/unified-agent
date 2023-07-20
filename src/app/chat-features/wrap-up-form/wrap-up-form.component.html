@@ -1,4 +1,4 @@
-<div class="note-dialog-main"  [ngClass]="{'right-align-view': wrapUpData.RTLDirection}">
+<div class="note-dialog-main wrap-main-dialog"  [ngClass]="{'right-align-view': wrapUpData.RTLDirection}">
   <div class="dialog-header">
     <h4 mat-dialog-title>{{wrapUpData.header}}
       <button *ngIf="wrapUpData.timerEnabled == false" mat-button (click)="closeDialog()">

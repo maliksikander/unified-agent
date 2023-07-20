@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from "@angular/core";
+import {Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild} from '@angular/core';
 import { MAT_DIALOG_DATA, MatAutocompleteSelectedEvent, MatDialogRef } from "@angular/material";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { FormControl } from "@angular/forms";
@@ -31,22 +31,23 @@ export class WrapUpFormComponent implements OnInit {
   inputWrapup = "";
   categoryList: any = [];
 
-   wrapUpData;
+   // wrapUpData;
   categoryOptions;
   timeLeft: number = 30;
   timeProgress: number = this.timeLeft;
   interval;
+  @Input() wrapUpData: any;
+  @Output() closeWrapDialog = new EventEmitter<any>();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    // @Inject(MAT_DIALOG_DATA) public data: any,
     private _httpService: httpService,
     private _sharedService: sharedService,
-    private dialogRef: MatDialogRef<WrapUpFormComponent>,
-    private snackBar:snackbarService
+    private snackBar:snackbarService,
+    // private dialogRef: MatDialogRef<WrapUpFormComponent>,
   ) {}
 
   ngOnInit() {
-    this.wrapUpData = this.data;
     this.getWrapUpForm();
   }
 
@@ -146,7 +147,9 @@ export class WrapUpFormComponent implements OnInit {
   }
 
   closeDialog() {
-    this.dialogRef.close({ event: "close" });
+    // this.dialogRef.close({ event: "close" });
+    this.closeWrapDialog.emit(false,{event:"close"});
+
   }
 
   onSave() {
@@ -154,7 +157,8 @@ export class WrapUpFormComponent implements OnInit {
       wrapups: this.selectedWrapUpList,
       note: this.notesFormCtrl.value ? this.notesFormCtrl.value : ""
     };
-    this.dialogRef.close({ event: "apply", data });
+    // this.dialogRef.close({ event: "apply", data });
+    this.closeWrapDialog.emit(data);
   }
 
 

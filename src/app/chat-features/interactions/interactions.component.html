@@ -30,8 +30,12 @@
             <ng-container
               *ngIf="conversation.conversationId != 'FAKE_CONVERSATION' && conversation.topicParticipant.role != 'SILENT_MONITOR' && ('agent-conversation-control' | authPipe: 'view_wrap_up') as result">
               <li class="list-group-item">
+<!--                <button mat-fab matTooltip="{{ 'chat-features.interactions.wrapup' | translate }}" aria-label="WrapUp"-->
+<!--                  (click)="openWrapUpDialog(false)">-->
+<!--                  <img alt="Note" src="assets/images/note.svg" />-->
+<!--                </button>-->
                 <button mat-fab matTooltip="{{ 'chat-features.interactions.wrapup' | translate }}" aria-label="WrapUp"
-                  (click)="openWrapUpDialog(false)">
+                        (click)="wrapUpDialog(false)">
                   <img alt="Note" src="assets/images/note.svg" />
                 </button>
               </li>
@@ -1981,6 +1985,9 @@
         </div>
       </div>
     </ng-template>
+    <div class="custom-dialog-main" *ngIf="openWrapDialog">
+      <app-wrap-up-form  [wrapUpData]="wrapUpFormData"  (closeWrapDialog)="closeWrapDialog($event)"></app-wrap-up-form>
+    </div>
   </div>
 
   <div class="customer-info-main">

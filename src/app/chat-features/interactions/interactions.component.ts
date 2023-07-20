@@ -19,6 +19,7 @@ import { ConversationSettings } from "../../models/conversationSetting/conversat
 
 import { SipService } from "src/app/services/sip.service";
 import { T } from "@angular/cdk/keycodes";
+import {Router} from '@angular/router';
 
 // declare var EmojiPicker: any;
 
@@ -29,6 +30,7 @@ import { T } from "@angular/cdk/keycodes";
 })
 export class InteractionsComponent implements OnInit {
   @Input() conversation: any;
+  // @Input() wrapUpData: any;
   @Input() customerBar: any;
   @Input() currentTabIndex: any;
   @Input() changeDetecter: any;
@@ -57,6 +59,9 @@ export class InteractionsComponent implements OnInit {
   ctiBoxView = false;
   timer: any = "00:00";
   cxVoiceSession: any;
+  openWrapDialog = false;
+  wrapUpFormData:any;
+
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -118,7 +123,8 @@ export class InteractionsComponent implements OnInit {
     public _finesseService: finesseService,
     private snackBar: MatSnackBar,
     public _sipService: SipService,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
+    private _router: Router
   ) {}
   ngOnInit() {
     //  console.log("i am called hello")
@@ -448,6 +454,16 @@ export class InteractionsComponent implements OnInit {
       }
     }
   }
+
+  closeWrapDialog(data) {
+    console.log("wrap dialog .... " + data);
+    if(data == false){
+      this.openWrapDialog = false;
+    } else{
+        this.constructAndSendCimEvent("wrapup", "", "", "", "", data.wrapups, data.note);
+        this.openWrapDialog = false;
+    }
+  }
   eventFromChild(data) {
     console.log("isbaropened " + data);
     console.log("ctiBarView " + this.ctiBarView);
@@ -476,7 +492,8 @@ export class InteractionsComponent implements OnInit {
         //   this.openWrapUpDialog(true);
         //   // this._socketService.emitCimEvent({agentId:this.cc}"start-wrap-up-time")
         // } else {
-          this.openWrapUpDialog(true);
+        //   this.openWrapUpDialog(true);
+          this.wrapUpDialog(true);
 
           // this.unsubscribeFromConversation();
         // }
@@ -895,29 +912,29 @@ export class InteractionsComponent implements OnInit {
   // }
 
   // to open dialog form
-  openWrapUpDialog(timerEnabled: boolean): void {
-    if (timerEnabled) {
-      this.unsubscribeFromConversation();
-    }
-    const dialogRef = this.dialog.open(WrapUpFormComponent, {
-      disableClose: true,
-      panelClass: "wrap-dialog",
-      data: {
-        header: this._translateService.instant("chat-features.interactions.wrapup"),
-        timerEnabled: timerEnabled,
-        wrapUpTime: this._sharedService.conversationSettings.wrapUpTime,
-        conversation: this.conversation,
-        RTLDirection: this.isRTLView
-      }
-    });
-
-    dialogRef.afterClosed().subscribe((res) => {
-      if (res.event == "apply") {
-        this.constructAndSendCimEvent("wrapup", "", "", "", "", res.data.wrapups, res.data.note);
-      }
-      
-    });
-  }
+  // openWrapUpDialog(timerEnabled: boolean): void {
+  //   if (timerEnabled) {
+  //     this.unsubscribeFromConversation();
+  //   }
+  //   const dialogRef = this.dialog.open(WrapUpFormComponent, {
+  //     disableClose: true,
+  //     panelClass: "wrap-dialog",
+  //     data: {
+  //       header: this._translateService.instant("chat-features.interactions.wrapup"),
+  //       timerEnabled: timerEnabled,
+  //       wrapUpTime: this._sharedService.conversationSettings.wrapUpTime,
+  //       conversation: this.conversation,
+  //       RTLDirection: this.isRTLView
+  //     }
+  //   });
+  //
+  //   dialogRef.afterClosed().subscribe((res) => {
+  //     if (res.event == "apply") {
+  //       this.constructAndSendCimEvent("wrapup", "", "", "", "", res.data.wrapups, res.data.note);
+  //     }
+  //
+  //   });
+  // }
 
   switchChannelSession(channelSession, channelIndex) {
     try {
@@ -1304,5 +1321,20 @@ export class InteractionsComponent implements OnInit {
 
   formatNumber(num) {
     return num.toString().padStart(2, "0");
+  }
+
+  wrapUpDialog(timerEnabled: boolean): void {
+    // if (timerEnabled) {
+    //   this.unsubscribeFromConversation();
+    // }
+    this.wrapUpFormData = {
+      header: this._translateService.instant("chat-features.interactions.wrapup"),
+      timerEnabled: timerEnabled,
+      wrapUpTime: this._sharedService.conversationSettings.wrapUpTime,
+      conversation: this.conversation,
+      RTLDirection: this.isRTLView
+    };
+    this.openWrapDialog = true;
+
   }
 }
