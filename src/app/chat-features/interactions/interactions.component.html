@@ -231,7 +231,7 @@
         <ng-scrollbar class="chat-messages-main my-scrollbar" [style.height]="
             replyInput?.offsetHeight > 80 ? 'calc(100% - ' + (replyInput?.offsetHeight + 80) + 'px)' : 'calc(100% - ' + viewHeight + ')'
           ">
-          <div *ngIf="!conversation.messages.length" class="no-chat-main">
+          <div *ngIf="!conversation.messages.length && !pastActivitiesloadedOnce" class="no-chat-main">
             <div class="no-chat">
               <span class="no-chat-icon">
                 <!--                <mat-icon>question_answer</mat-icon>-->
@@ -256,7 +256,7 @@
           <!-- simple chat area -->
           <div id="chat-area-start"></div>
           <div class="instruction-content chat-session-main">
-            <ng-container *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
+            <ng-container <ng-container *ngIf="pastActivitiesloadedOnce || conversation.conversationId != 'FAKE_CONVERSATION'">
               <div
                 *ngIf="
               (('agent-conversation-control' | authPipe: 'view_history') || (conversation.conversationId != 'FAKE_CONVERSATION' && ('agent-conversation-control' | authPipe: 'view_history_active_customer')) ) as result"
