@@ -269,7 +269,6 @@ export class InteractionsComponent implements OnInit {
   navigationToRepliedMessage(repliedMessage: any) {
     if (repliedMessage && repliedMessage.id ) {
       const elementId = repliedMessage.id;
-
       const element = document.getElementById(elementId);
       if (element) {
         element.scrollIntoView({

@@ -385,14 +385,14 @@
                     <div class="main-quoted-reply"
                       *ngFor="let referredMessage of message.header.replyToMessageId | getReferredMsg: conversation.messages"
                       (click)="navigationToRepliedMessage(referredMessage)">
-                      
+
                       <strong class="message-author"
                         [ngClass]="(referredMessage.header.sender.type | lowercase) == 'customer' ? '' : 'current-agents'">
                         <span *ngIf="referredMessage.header.sender">
                           {{ referredMessage.header.sender | getSenderName: conversation.customer | titlecase }}
                         </span>
                       </strong>
-                      
+
                       <div [ngClass]="{
                           'file-type-message':
                             (referredMessage.body.type | lowercase) != 'plain' &&
@@ -401,7 +401,7 @@
                         }">
 
                         <!-- ---------------Comments---------------------- -->
-                        <div *ngIf="(referredMessage.body.type | lowercase) == 'comment'">
+                        <div *ngIf="(referredMessage.body.type | lowercase) == 'comment'" [id]="referredMessage.id">
                           <p>
                             <span [innerHTML]="
                                 conversationSettings.isMessageFormattingEnabled
@@ -651,7 +651,7 @@
                     class="comment-action">{{
                     message.isDeleted ? "deleted Message" : "Hidden Message"
                     }}</span>
-                    
+
                   <div class="chat-message-content" [ngClass]="{
                       'replied-message': message.header.replyToMessageId != null,
                       'file-type-message':
@@ -1179,15 +1179,17 @@
                             <li>
                               <mat-icon (click)="replyToComment(message) "> chat_bubble_outline</mat-icon>
                             </li>
-                            <li>
+                            <li *ngIf="message.header.channelSession.channel.channelType.name.includes('FACEBOOK')">
                               <mat-icon [ngClass]="{ 'liked': message.isLiked }"
-                                (click)="message.header.channelSession.channel.channelType.name.includes('FACEBOOK') ? commentAction(message, 'like') : privateReplyToComment(message)">
-                                {{ message.header.channelSession.channel.channelType.name.includes('FACEBOOK') ?
-                                'thumb_up' : 'reply' }}
+                                (click)="commentAction(message, 'like')">
+                                thumb_up
                               </mat-icon>
                             </li>
-
-
+                            <li>
+                              <mat-icon (click)="privateReplyToComment(message)">
+                                reply
+                              </mat-icon>
+                            </li>
                             <li class="view-all-options">
                               <ul *ngIf="viewFullCommentAction">
                                 <li>
@@ -1736,7 +1738,7 @@
             <span *ngIf="quotedMessage.header.sender">
               {{ quotedMessage.header.sender | getSenderName: conversation.customer | titlecase }}
             </span>
-            
+
             <p>
               <span *ngIf="quotedMessage.body.attachment" class="display-file display-image">
                 <img
