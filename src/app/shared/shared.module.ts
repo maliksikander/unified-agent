@@ -97,6 +97,7 @@ import { getCustomerAniPipe } from "./pipes/getCustomerAni.pipe";
 import { checkOutboundCallPipe } from "./pipes/checkOutboundCall.pipe";
 import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
 import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements.pipe";
+import { getIVRTrailPipe } from "./pipes/getIVRTrail.pipe";
 
 @NgModule({
   declarations: [
@@ -108,6 +109,7 @@ import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements
     isAlreadyJoinedPipe,
     ibsformatPipe,
     getSenderNamePipe,
+    getIVRTrailPipe,
     SearchPipe,
     sentenceCasePipe,
     convertToFormDataPipe,
@@ -275,6 +277,7 @@ import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements
     NgxMatTimepickerModule,
     SearchPipe,
     getSenderNamePipe,
+    getIVRTrailPipe,
     sentenceCasePipe,
     convertToFormDataPipe,
     getFirstTwoLettersPipe,

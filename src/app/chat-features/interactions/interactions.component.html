@@ -976,11 +976,11 @@
                                 </li>
 
                                 <ng-container *ngIf="message.body.data.callLegs.length == 1">
-                                  <li
+                                  <li matTooltip="{{message.body.data?.callLegs[0]?.additionalDetail?.activities | getIVRTrail }}"
                                     *ngIf="message.body.data?.callLegs[0]?.sender.type == 'IVR' && message.body.data?.callLegs[0]?.additionalDetail?.activities?.length > 0">
                                     <ng-container
                                       *ngFor="let ivrDetail of message.body.data?.callLegs[0]?.additionalDetail?.activities; let j = index">
-                                      <span matTooltip="{{ivrDetail?.menu}} > {{ivrDetail?.selection}}">{{ivrDetail?.menu}} > {{ivrDetail?.selection}} <ng-container
+                                      <span >{{ivrDetail?.menu}} > {{ivrDetail?.selection}} <ng-container
                                           *ngIf="j !== message.body.data?.callLegs[0]?.additionalDetail?.activities?.length - 1">
                                           > </ng-container> </span>
                                     </ng-container>
@@ -1052,12 +1052,12 @@
                                         getFirstTwoLetters }}</span>
                                     </li>
 
-                                    <li
+                                    <li  matTooltip="{{callData?.additionalDetail?.activities | getIVRTrail }}"
                                       *ngIf="callData.sender.type == 'IVR' && callData?.additionalDetail?.activities?.length > 0"
                                       >
                                       <ng-container
                                         *ngFor="let ivrDetail of callData?.additionalDetail?.activities; let j = index">
-                                        <span matTooltip="{{ivrDetail?.menu}} > {{ivrDetail?.selection}}">{{ivrDetail?.menu}} > {{ivrDetail?.selection}} <ng-container
+                                        <span>{{ivrDetail?.menu}} > {{ivrDetail?.selection}} <ng-container
                                             *ngIf="j !== callData?.additionalDetail?.activities?.length - 1">
                                             > </ng-container> </span>
                                       </ng-container>
