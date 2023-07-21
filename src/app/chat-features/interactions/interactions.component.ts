@@ -455,15 +455,7 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  closeWrapDialog(data) {
-    console.log("wrap dialog .... " + data);
-    if(data == false){
-      this.openWrapDialog = false;
-    } else{
-        this.constructAndSendCimEvent("wrapup", "", "", "", "", data.wrapups, data.note);
-        this.openWrapDialog = false;
-    }
-  }
+
   eventFromChild(data) {
     console.log("isbaropened " + data);
     console.log("ctiBarView " + this.ctiBarView);
@@ -1324,17 +1316,33 @@ export class InteractionsComponent implements OnInit {
   }
 
   wrapUpDialog(timerEnabled: boolean): void {
-    // if (timerEnabled) {
-    //   this.unsubscribeFromConversation();
-    // }
+    if (timerEnabled) {
+      this.unsubscribeFromConversation();
+    }
     this.wrapUpFormData = {
       header: this._translateService.instant("chat-features.interactions.wrapup"),
-      timerEnabled: timerEnabled,
-      wrapUpTime: this._sharedService.conversationSettings.wrapUpTime,
+      wrapUpDialog: this.conversation.wrapUpDialog,
       conversation: this.conversation,
       RTLDirection: this.isRTLView
     };
     this.openWrapDialog = true;
 
   }
+
+closeWrapDialog(data) {
+  console.log("close wrap dialog .... " + data);
+  if(data == false){
+    this.openWrapDialog = false;
+  } else{
+      this.constructAndSendCimEvent("wrapup", "", "", "", "", data.wrapups, data.note);
+      this.openWrapDialog = false;
+  }
+  if(this.conversation.wrapUpDialog.show)
+  {
+    this._socketService.emit("WRAP_UP_CLOSED",{
+      conversationId: this.conversation.conversationId,
+        agentId: this._cacheService.agent.id
+    })
+  }
+}
 }

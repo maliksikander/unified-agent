@@ -111,7 +111,7 @@ export class WrapUpFormComponent implements OnInit {
         this.categoryOptions = res.attributes[0].categoryOptions;
         this.categoryList = this.categoryOptions.categories;
         this.getCategoryValues();
-        this.startWrapUpTimer();
+        // this.startWrapUpTimer();
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -148,7 +148,7 @@ export class WrapUpFormComponent implements OnInit {
 
   closeDialog() {
     // this.dialogRef.close({ event: "close" });
-    this.closeWrapDialog.emit(false,{event:"close"});
+    this.closeWrapDialog.emit(false);
 
   }
 
@@ -163,24 +163,24 @@ export class WrapUpFormComponent implements OnInit {
 
 
 
-startWrapUpTimer() {
-  console.log("called");
-  this.interval = setInterval(() => {
-    if (this.timeLeft > 0) {
-      this.timeLeft--;
+// startWrapUpTimer() {
+//   console.log("called");
+//   this.interval = setInterval(() => {
+//     if (this.timeLeft > 0) {
+//       this.timeLeft--;
 
-    } else {
-      if (this.timeLeft == 0 && this.wrapUpData.isWrapUpTimer) {
-        this.closeDialog();
+//     } else {
+//       if (this.timeLeft == 0 && this.wrapUpData.isWrapUpTimer) {
+//         this.closeDialog();
 
 
-        this.customerLeft('Wrap-up time for the conversation with ‘Jason Slayer’ has expired.', '');
-        this.stopTimer();
-      }
-      this.timeLeft = 0;
-    }
-  }, 1000);
-}
+//         this.customerLeft('Wrap-up time for the conversation with ‘Jason Slayer’ has expired.', '');
+//         this.stopTimer();
+//       }
+//       this.timeLeft = 0;
+//     }
+//   }, 1000);
+// }
 
 stopTimer() {
   if (this.interval) {

@@ -254,20 +254,23 @@ export class socketService {
       this.removeConversation(res.conversationId);
     });
 
-    this.socket.on("WRAP_UP_STARTED", (res: any) => {
-      console.log("WRAP_UP_STARTED", res);
+    this.socket.on("WRAP_UP_TIMER_STARTED", (res: any) => {
+      console.log("WRAP_UP_TIMER_STARTED", res);
       let sameTopicConversation = this.conversations.find((e) => {
         return e.conversationId == res.conversationId;
       });
-      sameTopicConversation["timerStarted"] = "wrapup";
+      sameTopicConversation.wrapUpDialog.show=true;
+      sameTopicConversation.wrapUpDialog.durationLeft=res.duration;
+
+      this.startWrapUpTimer(sameTopicConversation);
     });
 
     this.socket.on("WRAP_UP_CLOSED", (res: any) => {
       console.log("WRAP_UP_CLOSED", res);
 
-      let sameTopicConversation = this.conversations.find((e) => {
-        return e.conversationId == res.conversationId;
-      });
+      // let sameTopicConversation = this.conversations.find((e) => {
+      //   return e.conversationId == res.conversationId;
+      // });
       // delete sameTopicConversation["agentState"];
       this.removeConversation(res.conversationId);
     });
@@ -469,7 +472,8 @@ export class socketService {
       taskId,
       wrapUpDialog:{
         show:false,
-        duration:null,
+        durationLeft:null,
+        timeLeft:null,
         ref:null
       },
       isTyping: null,
@@ -1636,8 +1640,29 @@ export class socketService {
 
     return message;
   }
+  startWrapUpTimer(conversation) {
+    console.log("star wrap up timer called called");
+    conversation.wrapUpDialog.ref = setInterval(() => {
+      if (conversation.wrapUpDialog.durationLeft > 0) {
+        conversation.wrapUpDialog.durationLeft--;
+  
+      } else {
+        if (conversation.wrapUpDialog.durationLeft == 0) {
+          conversation.wrapUpDialog.show=false;
+  
+  
+          // this.customerLeft('Wrap-up time for the conversation with ‘Jason Slayer’ has expired.', '');
+          this.stopTimer(conversation);
+        }
+      }
+    }, 1000);
+  }
 
-  topicUnsub(conversation) {
+  stopTimer(conversation) {
+    if (conversation.wrapUpDialog.ref) {
+      clearInterval(conversation.wrapUpDialog.ref);
+    }
+  }  topicUnsub(conversation) {
     console.log("going to unsub from topic==>" + conversation.conversationId);
 
     if (conversation.state === "ACTIVE") {

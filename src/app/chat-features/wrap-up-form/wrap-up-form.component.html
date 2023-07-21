@@ -1,10 +1,12 @@
 <div class="note-dialog-main wrap-main-dialog"  [ngClass]="{'right-align-view': wrapUpData.RTLDirection}">
   <div class="dialog-header">
     <h4 mat-dialog-title>{{wrapUpData.header}}
-      <button *ngIf="wrapUpData.timerEnabled == false" mat-button (click)="closeDialog()">
+
+      <p>{{wrapUpData | json}}</p>
+      <button *ngIf="wrapUpData.wrapUpDialog.show == false" mat-button (click)="closeDialog()">
         <mat-icon>close</mat-icon>
       </button>
-      <span *ngIf="wrapUpData.timerEnabled" class="wrap-timer"> <span class="wrap-time-count">{{timeLeft }}</span>
+      <span *ngIf="wrapUpData.wrapUpDialog.show" class="wrap-timer"> <span class="wrap-time-count">{{wrapUpData.wrapUpDialog.durationLeft }}</span>
       <circle-progress
         class="laft-bar-data"
         [percent]="100"
@@ -98,9 +100,9 @@
   </div>
 
   <div class="action-trigger text-right">
-    <button mat-button (click)="closeDialog()" class="close-btn mat-button mat-button-base">{{  (wrapUpData.timerEnabled ? 'chat-features.wrap-up-form.Leave-without-wrap-up' : 'chat-features.wrap-up-form.cancel') | translate }}</button>
+    <button mat-button (click)="closeDialog()" class="close-btn mat-button mat-button-base">{{  (wrapUpData.wrapUpDialog.show ? 'chat-features.wrap-up-form.Leave-without-wrap-up' : 'chat-features.wrap-up-form.cancel') | translate }}</button>
     <button mat-button [disabled]="selectedWrapUpList.length == 0 && !notesFormCtrl.value"
       [ngClass]="{'btn-disable-background':selectedWrapUpList.length == 0 && !notesFormCtrl.value}"
-      class="success-btn mat-button mat-button-base" (click)="onSave()" cdkFocusInitial>{{(wrapUpData.timerEnabled ? 'chat-features.wrap-up-form.Add-Wrap-Up' :'chat-features.wrap-up-form.apply') | translate}}</button>
+      class="success-btn mat-button mat-button-base" (click)="onSave()" cdkFocusInitial>{{(wrapUpData.wrapUpDialog.show ? 'chat-features.wrap-up-form.Add-Wrap-Up' :'chat-features.wrap-up-form.apply') | translate}}</button>
   </div>
 </div>
