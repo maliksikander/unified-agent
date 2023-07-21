@@ -104,53 +104,68 @@
 
           <!--            </ul>-->
           <!--          </mat-expansion-panel>-->
+
+          <p>{{ _sharedService.schema | json }}</p>
           <mat-expansion-panel class="drag-expansion-panel">
             <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
-              <mat-panel-title><span class="material-icons drag-icon">more_vert</span>
-                {{'chat-features.customer-info.info' | translate}}
-
+              <mat-panel-title
+                ><span class="material-icons drag-icon">more_vert</span>
+                {{ "chat-features.customer-info.info" | translate }}
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="user-pre-detail">
+              <p>{{ customerProfileFormData | json }}</p>
               <div class="user-detail-area" *ngFor="let data of customerProfileFormData">
                 <div>
                   <label>{{ data.key | sentenceCase }}:</label>
-                  <p class="label-detail">{{ data.value | spaceInArray }}</p>
+
+                  <p class="label-detail" *ngIf="'customer' | authPipe: 'view_pii' as result; else maskedpii">{{ data.value | spaceInArray }}</p>
+                  <ng-template *ngFor="let col of _sharedService.schema">
+                    <p class="label-detail" *ngIf="col.key == data.key" #maskedpii>
+                      {{ data.value | spaceInArray | isPII: col.isPII:col.type:col.key }}
+                    </p>
+                  </ng-template>
                 </div>
               </div>
               <ng-container>
                 <div *ngIf="(conversation.topicParticipant.role | lowercase) != 'silent_monitor'" class="crm-trigger">
                   <!-- <p>Not a correct customer profile?</p> -->
-                  <button *ngIf="('customer' | authPipe: 'view') as result" mat-raised-button
-                    (click)="gotoEmbedView()">{{'chat-features.customer-info.link-profile' | translate}}</button>
-                  <button *ngIf="('customer' | authPipe: 'manage_in_conversation') as result" (click)="updateProfile()"
-                    mat-raised-button>{{'chat-features.customer-info.update-profile' | translate}}</button>
+                  <button *ngIf="'customer' | authPipe: 'view' as result" mat-raised-button (click)="gotoEmbedView()">
+                    {{ "chat-features.customer-info.link-profile" | translate }}
+                  </button>
+                  <button *ngIf="'customer' | authPipe: 'manage_in_conversation' as result" (click)="updateProfile()" mat-raised-button>
+                    {{ "chat-features.customer-info.update-profile" | translate }}
+                  </button>
                 </div>
               </ng-container>
             </div>
-
           </mat-expansion-panel>
-
-
 
           <mat-expansion-panel class="drag-expansion-panel">
             <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
-              <mat-panel-title><span
-                  class="material-icons drag-icon">more_vert</span>{{'chat-features.customer-info.media-channels' |
-                translate}}
+
+              <mat-panel-title
+                ><span class="material-icons drag-icon">more_vert</span>{{ "chat-features.customer-info.media-channels" | translate }}
               </mat-panel-title>
             </mat-expansion-panel-header>
 
             <ul class="channel-list">
               <mat-accordion>
+                <p>{{mediaChannelData | json}}</p>
                 <li class="multi-channel-list" *ngFor="let channel of mediaChannelData">
                   <mat-expansion-panel [hideToggle]="!channel.channelList">
                     <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                       <div class="channel-icon-area web-channel-inner">
-                        <img matTooltip="{{ channel.fieldType }}"
-                          src="assets/attr-types/{{ channel.fieldType | lowercase }}.svg" />
+                        <img matTooltip="{{ channel.fieldType }}" src="assets/attr-types/{{ channel.fieldType | lowercase }}.svg" />
                         <p>
-                          <strong>{{ channel.value | spaceInArray }}</strong>
+
+
+                          <strong *ngIf="'customer' | authPipe: 'view_pii' as result; else maskedpii">{{ channel.value | spaceInArray }}</strong>
+                          <ng-template #maskedpii >
+                            <strong>{{
+                              channel.value | spaceInArray | isPII: channel.isPii :channel.fieldType : channel.key
+                            }}</strong>
+                          </ng-template>
                           <small>{{ channel.label }}</small>
                         </p>
                       </div>
@@ -162,10 +177,12 @@
                           <small>{{ activeChannel }}</small>
                           <span class="channel-list-action">
                             <!-- <button mat-icon-button><mat-icon>call</mat-icon></button> -->
-                            <ng-container
-                              *ngIf="('agent-conversation-control' | authPipe : 'view_initiate_chat') as result">
-                              <button mat-icon-button (click)="startOutBoundConversation(channel.value, activeChannel)"
-                                *ngIf="(activeChannel | lowercase) == 'whatsapp' || (activeChannel | lowercase) == 'twitter'">
+                            <ng-container *ngIf="'agent-conversation-control' | authPipe: 'view_initiate_chat' as result">
+                              <button
+                                mat-icon-button
+                                (click)="startOutBoundConversation(channel.value, activeChannel)"
+                                *ngIf="(activeChannel | lowercase) == 'whatsapp' || (activeChannel | lowercase) == 'twitter'"
+                              >
                                 <mat-icon>message</mat-icon>
                               </button>
                             </ng-container>
@@ -180,7 +197,6 @@
               </mat-accordion>
             </ul>
           </mat-expansion-panel>
-
 
           <!--          <mat-expansion-panel class="drag-expansion-panel customer-info-panel">-->
           <!--            <mat-expansion-panel-header [collapsedHeight]="'45px'" [expandedHeight]="'45px'">-->
@@ -271,19 +287,18 @@
           <!-- customer Suggestions Tab start-->
           <mat-expansion-panel class="drag-expansion-panel" *ngIf="customerSuggestions.length !== 0">
             <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
-              <mat-panel-title><span
-                  class="material-icons drag-icon">more_vert</span>{{'chat-features.customer-info.link-profile' |
-                translate}}</mat-panel-title>
+              <mat-panel-title
+                ><span class="material-icons drag-icon">more_vert</span>{{ "chat-features.customer-info.link-profile" | translate }}</mat-panel-title
+              >
             </mat-expansion-panel-header>
 
             <div class="linked-area">
-              <h5>{{ customerSuggestions.length }}{{'chat-features.customer-info.profile-matched' | translate}}</h5>
+              <h5>{{ customerSuggestions.length }}{{ "chat-features.customer-info.profile-matched" | translate }}</h5>
               <ul class="match-content">
                 <div *ngFor="let customer of customerSuggestions; let i = index">
                   <li *ngIf="i < 15">
                     {{ customer.firstName }}
-                    <button *ngIf="('customer' | authPipe: 'view') as result" (click)="linkCustomer(customer)"
-                      mat-icon-button class="waves-effect">
+                    <button *ngIf="'customer' | authPipe: 'view' as result" (click)="linkCustomer(customer)" mat-icon-button class="waves-effect">
                       <mat-icon>insert_link</mat-icon>
                     </button>
                   </li>
@@ -291,8 +306,9 @@
               </ul>
 
               <div class="linked-action">
-                <button mat-button *ngIf="('customer' | authPipe: 'view') as result"
-                  (click)="viewAllMatches()">{{'chat-features.customer-info.view-matches' | translate}}</button>
+                <button mat-button *ngIf="'customer' | authPipe: 'view' as result" (click)="viewAllMatches()">
+                  {{ "chat-features.customer-info.view-matches" | translate }}
+                </button>
               </div>
             </div>
           </mat-expansion-panel>
@@ -301,22 +317,25 @@
 
           <mat-expansion-panel class="drag-expansion-panel">
             <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
-              <mat-panel-title><span
-                  class="material-icons drag-icon">more_vert</span>{{'chat-features.customer-info.active-channels' |
-                translate}} </mat-panel-title>
+              <mat-panel-title
+                ><span class="material-icons drag-icon">more_vert</span>{{ "chat-features.customer-info.active-channels" | translate }}
+              </mat-panel-title>
             </mat-expansion-panel-header>
 
             <div class="profile-area multi-channel-area">
               <mat-accordion>
                 <mat-expansion-panel class="chat-channel-area" *ngFor="let channelSession of activeChannelSessions">
+                  <p>{{channelSession | json}}</p>
+
                   <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                     <div class="channel-icon-area">
-                      <span class="channel-icon"><img
-                          [src]="channelSession.channel.channelType.channelLogo | channelLogo | async" /></span>
-                      <label>{{ channelSession.channel.channelType.name }}
+                      <span class="channel-icon"><img [src]="channelSession.channel.channelType.channelLogo | channelLogo | async" /></span>
+                      <label
+                        >{{ channelSession.channel.channelType.name }}
                         <span
                           *ngIf="channelSession?.channel.channelType.name == 'CISCO_CC' || channelSession?.channel.channelType.name == 'CX_VOICE'"
-                          class="call-time">{{timer}}
+                          class="call-time"
+                          >{{ timer }}
                           <!-- <ng-container *ngIf="channelSession?.channel.channelType.name == 'CISCO_CC'">{{ timer
                             }}</ng-container>
                           <ng-container *ngIf="channelSession?.channel.channelType.name == 'CX_VOICE'"><ng-container
@@ -324,8 +343,9 @@
                             '2.0' }}:{{
                             seconds |
                             number: '2.0' }}</ng-container> -->
-                          </span>
+                        </span>
                       </label>
+                     
 
                       <!-- <button (click)="moveSession($event)" mat-button [matMenuTriggerFor]="rerouteMenu"
                         class="re-route-session">Move</button>
@@ -338,51 +358,65 @@
                       </mat-menu> -->
                     </div>
                     <ul class="channel-info-list" *ngIf="channelSession.webChannelData">
-                      <li matTooltip="{{('chat-features.customer-info.device' | translate)}} {{
+                      <li
+                        matTooltip="{{ 'chat-features.customer-info.device' | translate }} {{
                           channelSession.webChannelData.browserDeviceInfo.deviceType
                             ? channelSession.webChannelData.browserDeviceInfo.deviceType
                             : ('chat-features.customer-info.unknown' | translate)
-                        }}">
+                        }}"
+                      >
                         <!--                        <mat-icon>{{channelSession.webChannelData.browserDeviceInfo.deviceType |-->
                         <!--                          webChannelData:'deviceType'}}</mat-icon>-->
 
-                        <img src="assets/device-icons/{{
+                        <img
+                          src="assets/device-icons/{{
                             channelSession.webChannelData.browserDeviceInfo.deviceType | webChannelData: 'deviceType'
-                          }}.svg" alt="device" />
+                          }}.svg"
+                          alt="device"
+                        />
                       </li>
-                      <li matTooltip="{{('chat-features.customer-info.browser' | translate)}} {{
+                      <li
+                        matTooltip="{{ 'chat-features.customer-info.browser' | translate }} {{
                           channelSession.webChannelData.browserDeviceInfo.browserName
                             ? channelSession.webChannelData.browserDeviceInfo.browserName
                             : ('chat-features.customer-info.unknown' | translate)
-                        }}">
+                        }}"
+                      >
                         <img
                           src="assets/browser-icons/{{ channelSession.webChannelData.browserDeviceInfo.browserName | webChannelData: 'browser' }}.svg"
-                          alt="browser" />
+                          alt="browser"
+                        />
                       </li>
-                      <li matTooltip="{{('chat-features.customer-info.country' | translate)}} {{
-                          channelSession.webChannelData.locale.country ? channelSession.webChannelData.locale.country : ('chat-features.customer-info.unknown' | translate)
-                        }}">
-                        <img
-                          src="assets/flags/{{ channelSession.webChannelData.locale.country | webChannelData: 'country' }}.svg"
-                          alt="country" />
+                      <li
+                        matTooltip="{{ 'chat-features.customer-info.country' | translate }} {{
+                          channelSession.webChannelData.locale.country
+                            ? channelSession.webChannelData.locale.country
+                            : ('chat-features.customer-info.unknown' | translate)
+                        }}"
+                      >
+                        <img src="assets/flags/{{ channelSession.webChannelData.locale.country | webChannelData: 'country' }}.svg" alt="country" />
                       </li>
-                      <li class="lang-bar" matTooltip="{{('chat-features.customer-info.language' | translate)}} {{
-                          channelSession.webChannelData.locale.language ? channelSession.webChannelData.locale.language : ('chat-features.customer-info.unknown' | translate)
-                        }}">
+                      <li
+                        class="lang-bar"
+                        matTooltip="{{ 'chat-features.customer-info.language' | translate }} {{
+                          channelSession.webChannelData.locale.language
+                            ? channelSession.webChannelData.locale.language
+                            : ('chat-features.customer-info.unknown' | translate)
+                        }}"
+                      >
                         {{
-                        (channelSession.webChannelData.locale.language ? channelSession.webChannelData.locale.language :
-                        "A") | getFirstTwoLetters
+                          (channelSession.webChannelData.locale.language ? channelSession.webChannelData.locale.language : "A") | getFirstTwoLetters
                         }}
                       </li>
                     </ul>
                   </mat-expansion-panel-header>
                   <ul class="requested-channel-content">
                     <li>
-                      <label>{{'chat-features.customer-info.customer-identifier' | translate}}</label>
+                      <label>{{ "chat-features.customer-info.customer-identifier" | translate }}</label>
                       {{ channelSession.channelData.channelCustomerIdentifier }}
                     </li>
                     <li>
-                      <label>{{'chat-features.customer-info.service-identifier' | translate}}</label>
+                      <label>{{ "chat-features.customer-info.service-identifier" | translate }}</label>
                       {{ channelSession.channelData.serviceIdentifier }}
                     </li>
                     <div *ngFor="let attr of channelSession.channelData.additionalAttributes">
@@ -396,18 +430,16 @@
                       </li> -->
                     </div>
                   </ul>
-                  <div class="channel-inner-content"
-                    *ngFor="let additionalAttribute of channelSession.channelData.additionalAttributes">
+                  <div class="channel-inner-content" *ngFor="let additionalAttribute of channelSession.channelData.additionalAttributes">
                     <!--Web chat desktop channel accordion-->
                     <mat-expansion-panel *ngIf="(additionalAttribute.type | lowercase) == 'webchanneldata'">
                       <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                         <div class="channel-icon-area web-channel-inner">
-                          <label>{{'chat-features.customer-info.form-data' | translate}}</label>
+                          <label>{{ "chat-features.customer-info.form-data" | translate }}</label>
                         </div>
                       </mat-expansion-panel-header>
 
-                      <ul class="requested-channel-content"
-                        *ngFor="let attr of additionalAttribute.value.formData.attributes">
+                      <ul class="requested-channel-content" *ngFor="let attr of additionalAttribute.value.formData.attributes">
                         <li>
                           <label>{{ attr.key | sentenceCase }}</label>
                           {{ attr.value }}
@@ -459,24 +491,25 @@
           <!-- Current Conversation data-->
           <mat-expansion-panel class="drag-expansion-panel conversation-data-panel">
             <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
-              <mat-panel-title><span
-                  class="material-icons drag-icon">more_vert</span>{{'chat-features.customer-info.conversation-data' |
-                translate}} <small>{{'chat-features.customer-info.active-conversation' | translate}}</small>
+              <mat-panel-title
+                ><span class="material-icons drag-icon">more_vert</span>{{ "chat-features.customer-info.conversation-data" | translate }}
+                <small>{{ "chat-features.customer-info.active-conversation" | translate }}</small>
               </mat-panel-title>
             </mat-expansion-panel-header>
 
             <div class="conversation-data-main">
               <div class="conversation-data">
-                <ul (click)="$event.stopPropagation()"
-                  *ngIf="(activeConversationData | keyvalue)?.length; else notFound">
+                <ul (click)="$event.stopPropagation()" *ngIf="(activeConversationData | keyvalue)?.length; else notFound">
                   <li *ngFor="let data of activeConversationData | keyvalue">
                     <label>{{ data.key | titlecase }}:</label><span>{{ data.value }}</span>
                   </li>
                 </ul>
                 <ng-template #notFound>
                   <ul>
-                    <li><label>{{'chat-features.customer-info.data' |
-                        translate}}</label><span>{{'chat-features.customer-info.not-found' | translate}}</span></li>
+                    <li>
+                      <label>{{ "chat-features.customer-info.data" | translate }}</label
+                      ><span>{{ "chat-features.customer-info.not-found" | translate }}</span>
+                    </li>
                   </ul>
                 </ng-template>
               </div>
@@ -501,19 +534,18 @@
             <mat-icon>phone</mat-icon>
           </div>
           <div class="call-detail">
-            <p>{{'chat-features.customer-info.initiate-outgoing-call-to' | translate}}</p>
-            <h4>{{'chat-features.customer-info.stacy-miller' | translate}}</h4>
+            <p>{{ "chat-features.customer-info.initiate-outgoing-call-to" | translate }}</p>
+            <h4>{{ "chat-features.customer-info.stacy-miller" | translate }}</h4>
             <strong>{{ outgoingCallingNumber }}</strong>
-            <small>{{'chat-features.customer-info.mobile' | translate}}</small>
+            <small>{{ "chat-features.customer-info.mobile" | translate }}</small>
           </div>
         </div>
       </div>
     </div>
 
     <div class="call-trigger">
-      <button mat-button [mat-dialog-close]="true" class="call-btn" cdkFocusInitial>{{'chat-features.customer-info.call'
-        | translate}}</button>
-      <button mat-button mat-dialog-close class="cancel-call">{{'globals.Cancel' | translate}}</button>
+      <button mat-button [mat-dialog-close]="true" class="call-btn" cdkFocusInitial>{{ "chat-features.customer-info.call" | translate }}</button>
+      <button mat-button mat-dialog-close class="cancel-call">{{ "globals.Cancel" | translate }}</button>
     </div>
   </div>
 </ng-template>
@@ -526,14 +558,15 @@
     <div class="confirmation-content">
       <p>
         {{
-        (reRouteText == "re-assign"
-        ? 'chat-features.customer-info.re-assign-chat-session-to-your-self?'
-        : 'chat-features.customer-info.re-route-Whatsapp-chat session-to-another-agent?') |translate
+          (reRouteText == "re-assign"
+            ? "chat-features.customer-info.re-assign-chat-session-to-your-self?"
+            : "chat-features.customer-info.re-route-Whatsapp-chat session-to-another-agent?"
+          ) | translate
         }}
       </p>
       <div class="confirmation-action">
-        <button mat-raised-button class="close-btn" mat-dialog-close>{{'globals.Cancel' | translate}}</button>
-        <button mat-raised-button class="confirm-btn">{{'globals.Confirm' | translate}}</button>
+        <button mat-raised-button class="close-btn" mat-dialog-close>{{ "globals.Cancel" | translate }}</button>
+        <button mat-raised-button class="confirm-btn">{{ "globals.Confirm" | translate }}</button>
       </div>
     </div>
   </div>

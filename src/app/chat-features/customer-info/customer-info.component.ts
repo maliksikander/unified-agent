@@ -286,6 +286,8 @@ export class CustomerInfoComponent implements OnInit {
               fieldType: e.type,
               value: value,
               label: e.label,
+              isPII:e.isPII,
+              key:e.key,
               channelList: e.channelTypes
             });
           });
@@ -382,6 +384,7 @@ export class CustomerInfoComponent implements OnInit {
 
     let processedObj = [];
     let keys = Object.keys(obj);
+    console.log("poo",keys)
     let values = Object.values(obj);
     for (let i = 0; i < keys.length; i++) {
       if (
