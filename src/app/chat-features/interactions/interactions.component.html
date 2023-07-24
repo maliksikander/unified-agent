@@ -300,7 +300,6 @@
                   <span>{{ "chat-features.interactions.conversation-data" | translate }} <mat-icon>arrow_drop_down
                     </mat-icon></span>
                 </span>
-
                 <mat-menu #conversationData="matMenu">
                   <div class="conversation-data-main">
                     <div class="conversation-data">
@@ -401,7 +400,7 @@
                         }">
 
                         <!-- ---------------Comments---------------------- -->
-                        <div *ngIf="(referredMessage.body.type | lowercase) == 'comment'" [id]="referredMessage.id">
+                        <div *ngIf="(referredMessage.body.type | lowercase) == 'comment'">
                           <p>
                             <span [innerHTML]="
                                 conversationSettings.isMessageFormattingEnabled
@@ -1185,10 +1184,8 @@
                                 thumb_up
                               </mat-icon>
                             </li>
-                            <li>
-                              <mat-icon (click)="privateReplyToComment(message)">
-                                reply
-                              </mat-icon>
+                            <li class="private-reply-icon" (click)="privateReplyToComment(message)">
+                              <img width="22px" src="assets/images/private-reply.png">
                             </li>
                             <li class="view-all-options">
                               <ul *ngIf="viewFullCommentAction">
@@ -1237,7 +1234,7 @@
 
                         <div class="main-comment" *ngIf="!fullPostView || message.id != selectedCommentId">
                           <div class="post-inner-content">
-                            <p>
+                            <p [id]="message.id">
                               <span [innerHTML]="
                                   conversationSettings.isMessageFormattingEnabled
                                     ? (message.body.markdownText | linkify | ibsformat)
@@ -1505,12 +1502,14 @@
                                   <li>
                                     <mat-icon (click)="replyToComment(message)"> chat_bubble_outline</mat-icon>
                                   </li>
-                                  <li>
+                                  <li *ngIf="message.header.channelSession.channel.channelType.name.includes('FACEBOOK')">
                                     <mat-icon [ngClass]="{ 'liked': message.isLiked }"
-                                      (click)="message.header.channelSession.channel.channelType.name.includes('FACEBOOK') ? commentAction(message, 'like') : privateReplyToComment(message)">
-                                      {{ message.header.channelSession.channel.channelType.name.includes('FACEBOOK') ?
-                                      'thumb_up' : 'reply' }}
+                                      (click)="commentAction(message, 'like')">
+                                      thumb_up
                                     </mat-icon>
+                                  </li>
+                                  <li class="private-reply-icon" (click)="privateReplyToComment(message)">
+                                    <img width="22px" src="assets/images/private-reply.png">
                                   </li>
                                   <li class="view-all-options">
                                     <ul *ngIf="viewFullCommentAction">

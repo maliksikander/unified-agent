@@ -259,7 +259,7 @@ export class InteractionsComponent implements OnInit {
       this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-the-request"), "err");
     }
   }
-
+  
   //Quoted Reply
   onQuotedReply(message) {
     this.replyToMessageId = message.id;
