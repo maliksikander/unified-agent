@@ -115,6 +115,7 @@ export class PhonebookComponent implements OnInit {
 
   loadCustomerOnSearchOp(limit, offSet, sort, query) {
     this.getCustomers(limit, offSet, sort, query);
+    console.log("get customer")
   }
 
   getCustomerSchema(savedPref: Array<any>) {
@@ -138,6 +139,7 @@ export class PhonebookComponent implements OnInit {
         this.userPreferenceObj = res.docs[0];
         this.getCustomerSchema(savedPref);
         this.getCustomers(limit, offSet, sort, query);
+        //console.log(res,"customers")
       } else {
         this._snackbarService.open(this._translateService.instant("snackbar.No-Preference-Added"), "err");
       }
@@ -153,6 +155,7 @@ export class PhonebookComponent implements OnInit {
     this._httpService.getCustomers(limit, offSet, sort, query).subscribe((e) => {
       this.rows = e.docs;
       this.totalRecords = e.totalDocs;
+      console.log(e,"customers,,,,,,,,,,,,,")
     });
   }
 
@@ -188,6 +191,8 @@ export class PhonebookComponent implements OnInit {
       this.filterQuery.push({ field: field, value: this.filterValue });
       // this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
       this.offSet = 0;
+      console.log("feild",field);
+      console.log("this.filterValue",this.filterValue)
       this.loadCustomerOnSearchOp(this.limit, this.offSet, this.sort, this.query);
     }
   }

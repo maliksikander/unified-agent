@@ -1,51 +1,241 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
-import {MAT_SNACK_BAR_DATA, MatDialog, MatSnackBar, MatSnackBarRef} from '@angular/material';
-import {CustomerActionsComponent} from '../../customer-actions/customer-actions.component';
+import { AfterViewInit, Component, Inject, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { FormControl,Validators } from '@angular/forms';
+import { Observable, fromEvent } from 'rxjs';
+import { map, startWith, throttleTime, distinctUntilChanged } from 'rxjs/operators';
+import { MAT_SNACK_BAR_DATA, MatDialog, MatSnackBar, MatSnackBarRef } from '@angular/material';
+import { CustomerActionsComponent } from '../../customer-actions/customer-actions.component';
+import { httpService } from 'src/app/services/http.service';
 
 @Component({
   selector: 'app-send-sms',
   templateUrl: './send-sms.component.html',
   styleUrls: ['./send-sms.component.scss']
 })
-export class SendSmsComponent implements OnInit {
+export class SendSmsComponent implements OnInit, AfterViewInit {
+  @ViewChild('textInput', { static: true }) textInput: ElementRef;
   phoneNumber = new FormControl('');
-  userList: any[] = [
-    {
-      name: 'Martin Gupital',
-      phone: '030012345'
+  searchNumberRequest = "";
+  offSet = 0;
+  sort = {};
+  limit = 25;
+  query = {};
+  filterQuery = [];
+  filterValue;
+  field = "phoneNumber";
+  selectedNumber:any={};
 
-    }, {
-      name: 'Alex Henry',
-      phone: '0300123456'
+  //userList:any;
+  userData: any = []
+  outboundSmsDialogData={}
 
-    }, {
-      name: 'John Brit',
-      phone: '0300123456789'
+  // userList: any[] = [
+  //   {
+  //     name: 'Martin Gupital',
+  //     phone: '030012345'
 
-    },
-  ]
-  filteredOptions: Observable<any[]>;
+  //   }, {
+  //     name: 'Alex Henry',
+  //     phone: '0300123456'
 
-  constructor(private snackBar: MatSnackBar){}
+  //   }, {
+  //     name: 'John Brit',
+  //     phone: '0300123456789'
+
+  //   },
+  // ]
+  //filteredOptions: Observable<any[]>;
+  outboundMessage = new FormControl("", [Validators.required]);
+  constructor(
+    private snackBar: MatSnackBar,
+    private _httpService: httpService
+  ) { }
 
   ngOnInit() {
-    this.filteredOptions = this.phoneNumber.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
-    );
+
+    // fromEvent(this.textInput.nativeElement, 'keyup')
+    // .pipe(
+
+    //   //throttleTime(3000), // Adjust the time (in milliseconds) for throttling
+    //   //distinctUntilChanged() // This ensures that only distinct values are emitted
+    // )
+    // .subscribe((event: Event) => {
+    //   this.handleThrottledKeyUp(event);
+    //   console.log( this.searchNumberRequest," this.searchNumberRequest")
+
+    // });
+
+
+
+    // this.filteredOptions = this.phoneNumber.valueChanges.pipe(
+    //   startWith(''),
+    //   map(value => this._filter(value || '')),
+
+    // );
+
+
   }
 
-  private _filter(value: any): any[] {
-    const filterValue = value.toLowerCase();
+  getCustomers(limit, offSet, sort, query) {
+    this._httpService.getCustomers(limit, offSet, sort, query).subscribe((e) => {
+      this.userData = e.docs;
+      console.log(e.docs, "data")
+      console.log(this.userData, "userdata")
+    });
+  }
+  loadCustomerOnSearchOp(limit, offSet, sort, query) {
+    this.getCustomers(limit, offSet, sort, query);
 
-    return this.userList.filter(option => option.phone.toLowerCase().includes(filterValue));
+  }
+
+  filter() {
+
+    if (this.filterValue && this.field) {
+      let filterVal = JSON.parse(JSON.stringify(this.filterValue));
+      filterVal = encodeURIComponent(filterVal);
+      this.query = { field: this.field, value: filterVal };
+      this.filterQuery = [];
+      this.filterQuery.push({ field: this.field, value: this.filterValue });
+      // this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
+      this.offSet = 0;
+      console.log("feild", this.field);
+      console.log("this.filterValue", this.filterValue)
+      this.loadCustomerOnSearchOp(this.limit, this.offSet, this.sort, this.query);
+    }
+  }
+
+
+  ngAfterViewInit(): void {
+    fromEvent(this.textInput.nativeElement, 'keyup').pipe(
+      throttleTime(5000), // Adjust the time (in milliseconds) for throttling
+      distinctUntilChanged()
+    )
+
+      .subscribe((event: Event) => {
+        this.handleThrottledKeyUp(event);
+        this.filter();
+
+      });
+  }
+
+  handleThrottledKeyUp(event: Event) {
+    let phonenumber = fromEvent<any>(this.textInput.nativeElement, 'keyup')
+      .pipe(
+        map(event => event.target.value),
+        
+      )
+    console.log(event,"keyup event")
+    phonenumber.subscribe((res) => {
+      this.searchNumberRequest = res;
+      console.log(this.searchNumberRequest, " this.searchNumberRequest"),
+        this.filterValue = res;
+
+    });
+
+  }
+
+  updateMySelection(event){
+    
+    if(event){
+      this.selectedNumber=event;
+      console.log(event,"event updated")
+    console.log(this.selectedNumber,"this.selectedNumber")
+    }
+    else{
+      this.selectedNumber={};
+    }
+    
+  }
+  
+  
+
+  // private _filter(value: any): any[] {
+  //   const filterValue = value.toLowerCase();
+
+  //   return this.userList.filter(option => option.phone.toLowerCase().includes(filterValue));
+  // }
+
+  sendSms() {
+
+
+    if(Object.keys(this.selectedNumber).length === 0 ){
+      this.outboundSmsDialogData={
+      
+        "id": null,
+        "header": {
+            "sender": null,
+            "channelData": {
+                "channelCustomerIdentifier": "57853834848772",
+                "serviceIdentifier": "1218",
+                "requestPriority": 0,
+                "additionalAttributes": [
+                    {
+                        "key": "name",
+                        "type": "String2000",
+                        "value": null,
+                    }
+                ]
+            },
+            "language": null,
+            "timestamp": 1652074481000,
+            "securityInfo": null,
+            "stamps": null,
+            "intent": null,
+            "entities": null,
+            "channelSession": null,
+            "replyToMessageId": null,
+            "providerMessageId": null
+        },
+        "body": {
+            "type": "PLAIN",
+            "markdownText": this.outboundMessage.value
+        }
+      };
+    }
+
+    else{
+      this.outboundSmsDialogData={
+      
+        "id": this.selectedNumber._id,
+        "header": {
+            "sender": null,
+            "channelData": {
+                "channelCustomerIdentifier": this.selectedNumber.phoneNumber[0],
+                "serviceIdentifier": "1218",
+                "requestPriority": 0,
+                "additionalAttributes": [
+                    {
+                        "key": "name",
+                        "type": "String2000",
+                        "value": this.selectedNumber.firstName,
+                    }
+                ]
+            },
+            "language": null,
+            "timestamp": 1652074481000,
+            "securityInfo": null,
+            "stamps": null,
+            "intent": null,
+            "entities": null,
+            "channelSession": null,
+            "replyToMessageId": null,
+            "providerMessageId": null
+        },
+        "body": {
+            "type": "PLAIN",
+            "markdownText": this.outboundMessage.value
+        }
+      };
+    }
+    
+   // this.openSnackBar();//use it in after API response 
+    console.log("msg data",this.outboundSmsDialogData);
+    this.outboundSmsDialogData="";
   }
 
   openSnackBar() {
+
     let snackBar: MatSnackBarRef<SendSmsSnackbarComponent>;
+
     snackBar = this.snackBar.openFromComponent(SendSmsSnackbarComponent, {
       duration: 200000,
       panelClass: ['chat-success-snackbar', 'send-sms-notify'],
@@ -78,15 +268,15 @@ export class SendSmsComponent implements OnInit {
 })
 export class SendSmsSnackbarComponent {
   constructor(
-    @Inject(MAT_SNACK_BAR_DATA) public data,  private dialog: MatDialog) {}
+    @Inject(MAT_SNACK_BAR_DATA) public data, private dialog: MatDialog) { }
 
-  updateUser(){
+  updateUser() {
     this.dismiss();
     this.dialog.closeAll();
     this.onRowClick('64a3d6a59ae709b4096d50dc');
   }
 
-  dismiss(){
+  dismiss() {
     console.log(this.data);
     this.data.preClose();
   }
@@ -103,10 +293,10 @@ export class SendSmsSnackbarComponent {
       // height: "88vh",
       data: { id: id }
     });
-//   dialogRef.afterClosed().subscribe((result: any) => {
-//   if ((result && result.event && result.event == "refresh") || (result && result.event && result.event == "delete")) {
-//   this.loadLabelsAndCustomer();
-// }
-// });
+    //   dialogRef.afterClosed().subscribe((result: any) => {
+    //   if ((result && result.event && result.event == "refresh") || (result && result.event && result.event == "delete")) {
+    //   this.loadLabelsAndCustomer();
+    // }
+    // });
   }
 }

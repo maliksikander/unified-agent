@@ -10,15 +10,17 @@
           <label>Channel Identity</label>
           <mat-form-field appearance="outline">
             <input type="text"
+                   #textInput
                    placeholder="Enter Phone Number"
                    aria-label="Number"
                    matInput
                    [formControl]="phoneNumber"
-                   [matAutocomplete]="auto">
+                   [matAutocomplete]="auto"
+                   (keyup)="handleThrottledKeyUp($event)">
             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-              <ng-container *ngFor="let option of filteredOptions | async">
-                <mat-option *ngIf="phoneNumber.value.length > 4" [value]="option.phone + ' ' +' [ '+ option.name  + ' ] '">
-                  {{option.name}}
+              <ng-container *ngFor="let option of userData">
+                <mat-option [value]="option.phoneNumber + ' ' +' [ '+ option.firstName  + ' ] '" (onSelectionChange)="updateMySelection(option)">
+                  {{option.firstName}}
                 </mat-option>
               </ng-container>
             </mat-autocomplete>
@@ -27,14 +29,14 @@
         <div class="text-field message-field">
           <label>Type SMS</label>
           <mat-form-field appearance="outline">
-            <textarea #message matInput maxlength="500"></textarea>
+            <textarea #message matInput [formControl]="outboundMessage" maxlength="500"></textarea>
           </mat-form-field>
         </div>
 
         <div class="message-trigger right-align">
           <button mat-raised-button type="button" [mat-dialog-close]="true" class="discard-btn message-action">Discard
           </button>
-          <button mat-raised-button type="button" class="send-message message-action ml-2" (click)="openSnackBar()">Send SMS</button>
+          <button mat-raised-button type="button" class="send-message message-action ml-2" (click)="sendSms()">Send SMS</button>
 
         </div>
       </div>
