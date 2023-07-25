@@ -5,6 +5,8 @@ import { map, startWith, throttleTime, distinctUntilChanged } from 'rxjs/operato
 import { MAT_SNACK_BAR_DATA, MatDialog, MatSnackBar, MatSnackBarRef } from '@angular/material';
 import { CustomerActionsComponent } from '../../customer-actions/customer-actions.component';
 import { httpService } from 'src/app/services/http.service';
+import { TranslateService } from "@ngx-translate/core";
+import { snackbarService } from "src/app/services/snackbar.service";
 
 @Component({
   selector: 'app-send-sms',
@@ -45,9 +47,12 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   // ]
   //filteredOptions: Observable<any[]>;
   outboundMessage = new FormControl("", [Validators.required]);
+ 
   constructor(
     private snackBar: MatSnackBar,
-    private _httpService: httpService
+    private _httpService: httpService,
+    private _translateService: TranslateService,
+    private _snackbarService: snackbarService,
   ) { }
 
   ngOnInit() {
@@ -225,11 +230,26 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
             "markdownText": this.outboundMessage.value
         }
       };
+ 
+      this._httpService.sendOutboundSms(this.outboundSmsDialogData).subscribe({
+        next: (val: any) => {
+          
+          //this._snackbarService.open(this._translateService.instant("snackbar.New-Announcement"), "succ");
+          //third party API
+          //call open snack bar here
+        },
+        error: (err: any) => {
+          console.error(err);
+         // this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-Create-New-Announcement"), "err");
+          
+        },
+      });
+
     }
     
    // this.openSnackBar();//use it in after API response 
     console.log("msg data",this.outboundSmsDialogData);
-    this.outboundSmsDialogData="";
+    //this.outboundSmsDialogData="";
   }
 
   openSnackBar() {
