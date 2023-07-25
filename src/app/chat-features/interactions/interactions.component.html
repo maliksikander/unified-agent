@@ -1184,7 +1184,8 @@
                                 thumb_up
                               </mat-icon>
                             </li>
-                            <li class="private-reply-icon" (click)="privateReplyToComment(message)">
+                            <li *ngIf="message.header.channelSession.channel.channelType.name.includes('INSTAGRAM')"
+                             class="private-reply-icon" (click)="privateReplyToComment(message)">
                               <img width="22px" src="assets/images/private-reply.png">
                             </li>
                             <li class="view-all-options">
@@ -1508,7 +1509,8 @@
                                       thumb_up
                                     </mat-icon>
                                   </li>
-                                  <li class="private-reply-icon" (click)="privateReplyToComment(message)">
+                                  <li *ngIf="message.header.channelSession.channel.channelType.name.includes('INSTAGRAM')"
+                                   class="private-reply-icon" (click)="privateReplyToComment(message)">
                                     <img width="22px" src="assets/images/private-reply.png">
                                   </li>
                                   <li class="view-all-options">
