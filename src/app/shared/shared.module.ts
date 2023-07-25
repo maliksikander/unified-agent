@@ -97,6 +97,7 @@ import { getCustomerAniPipe } from "./pipes/getCustomerAni.pipe";
 import { checkOutboundCallPipe } from "./pipes/checkOutboundCall.pipe";
 import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
 import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements.pipe";
+import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
 
 @NgModule({
   declarations: [
@@ -109,6 +110,7 @@ import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements
     ibsformatPipe,
     getSenderNamePipe,
     SearchPipe,
+    SearchSuggestionsPipe,
     sentenceCasePipe,
     convertToFormDataPipe,
     getFirstTwoLettersPipe,
@@ -274,6 +276,7 @@ import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements
     NgxMatNativeDateModule,
     NgxMatTimepickerModule,
     SearchPipe,
+    SearchSuggestionsPipe,
     getSenderNamePipe,
     sentenceCasePipe,
     convertToFormDataPipe,

@@ -680,7 +680,7 @@
                         <!--                    <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
 
                         <button mat-icon-button class="user_settings"
-                          *ngIf="(message.header.sender.type | lowercase) == 'customer' && message.botSuggestions"
+                          *ngIf="(message.header.sender.type | lowercase) == 'customer' && message.botSuggestions && onMessageSuggestions"
                           (click)="message.showBotSuggestions = !message.showBotSuggestions"></button>
                       </p>
                     </div>
@@ -712,7 +712,7 @@
                         <span class="chat-time">{{ message.header.timestamp | date: "shortTime" }}</span>
                       </span>
                       <button mat-icon-button class="user_settings"
-                        *ngIf="(message.header.sender.type | lowercase) == 'customer' && message.botSuggestions"
+                        *ngIf="(message.header.sender.type | lowercase) == 'customer' && message.botSuggestions && onMessageSuggestions"
                         (click)="message.showBotSuggestions = !message.showBotSuggestions"></button>
                     </div>
 
@@ -1849,7 +1849,7 @@
 
                     <mat-tab label="Bot Suggestions">
                       <ng-container
-                        *ngFor="let botSuggestion of conversation.messages[conversation.messages.length - 1]?.botSuggestions | LockFilter: message">
+                        *ngFor="let botSuggestion of conversation.messages[conversation.messages.length - 1]?.botSuggestions | SuggestionsFilter: message">
                         <ng-container *ngIf="botSuggestion?.messageBody.type == 'PLAIN'">
                           <mat-option [value]="botSuggestion?.messageBody.markdownText"
                             (click)="replyInput.value = botSuggestion?.messageBody.markdownText"
