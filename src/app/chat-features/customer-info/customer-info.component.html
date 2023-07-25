@@ -482,6 +482,52 @@
               </div>
             </div>
           </mat-expansion-panel>
+
+<!--          Scheduled Activities-->
+          <mat-expansion-panel class="drag-expansion-panel">
+            <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
+              <mat-panel-title><span
+                class="material-icons drag-icon">more_vert</span>Scheduled Activities
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+<!--            <ul class="channel-list">-->
+              <mat-accordion>
+<!--                <li class="multi-channel-list" *ngFor="let channel of mediaChannelData">-->
+                  <mat-expansion-panel class="scheduled-activity-panel">
+                    <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
+                      <div class="activity-main-panel" (click)="$event.stopPropagation()">
+                        <span class="activity-icon"><mat-icon>phone_forwarded</mat-icon></span>
+                        <span class="activity-time">4 hrs remaining</span>
+                        <span class="activity-actions"><span class="delete-activity">Delete</span><span class="reschedule-activity">Reschedule</span></span>
+                      </div>
+                    </mat-expansion-panel-header>
+                    <div class="scheduled-activity-data conversation-data-main">
+                    <ul>
+                      <li *ngFor="let item of activityData | keyvalue">
+                        <label>{{item.key}}</label><span>{{item.value}}</span>
+                      </li>
+                    </ul>
+                    </div>
+                    <div class="activity-detail-main">
+                    <div class="activity-detail">
+                      <strong>Note/Description</strong>
+                      <p>Contrary to popular belief, Lorem Ipsum is not simply random text.</p>
+                    </div>
+                    <div class="activity-detail">
+                      <strong>Message</strong>
+                      <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in
+                        a piece of classical Latin literature from 45 BC, making it over 2000 years old.
+                        Richard McClintock, a Latin professor at Hampden-Sydney College.</p>
+                    </div>
+                    </div>
+                  </mat-expansion-panel>
+<!--                </li>-->
+              </mat-accordion>
+<!--            </ul>-->
+          </mat-expansion-panel>
+
+
         </div>
       </mat-accordion>
     </div>

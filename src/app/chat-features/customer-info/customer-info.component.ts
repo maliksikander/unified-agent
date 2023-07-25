@@ -65,6 +65,18 @@ export class CustomerInfoComponent implements OnInit {
     "Glenn Helgass",
     " Ev Gayforth"
   ];
+  activityData: { [key: string]: string } =
+    {
+      'Scheduled by' : 'John Dillon (Supervisor)',
+      "Channel": 'WhatsApp',
+      "Channel Id": '41254785224',
+      "Type": 'Call',
+      "Sub Type": 'Outbound',
+      "Scheduled to": 'Steve Miller',
+      "Queue": 'Marketing',
+      "Scheduled on": '23/07/23 - 4:40PM',
+      "Campaign": 'Broadband Package Upgrade',
+    };
   timer = "00:00";
   ciscoVoiceSession;
   cxVoiceSession;

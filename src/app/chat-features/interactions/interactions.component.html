@@ -256,7 +256,7 @@
           <!-- simple chat area -->
           <div id="chat-area-start"></div>
           <div class="instruction-content chat-session-main">
-            <ng-container <ng-container *ngIf="pastActivitiesloadedOnce || conversation.conversationId != 'FAKE_CONVERSATION'">
+            <ng-container *ngIf="pastActivitiesloadedOnce || conversation.conversationId != 'FAKE_CONVERSATION'">
               <div
                 *ngIf="
               (('agent-conversation-control' | authPipe: 'view_history') || (conversation.conversationId != 'FAKE_CONVERSATION' && ('agent-conversation-control' | authPipe: 'view_history_active_customer')) ) as result"
@@ -319,7 +319,7 @@
               </div>
               <!-- -------------------------------------------------------- -->
               <div *ngIf="(message.body.type | lowercase) != 'systemnotification' && message.header.channelSession"
-                class="chat-message {{ message.body.isWhisper ? 'whisper-body' : '' }} {{
+                class="chat-message voice {{ message.body.isWhisper ? 'whisper-body' : '' }} {{
                   message.id != selectedCommentId && (message.isDeleted || message.isHidden) ? 'deleted-hidden-comment' : ''
                 }} {{
                   index == 0 ||
@@ -359,7 +359,8 @@
                   </div>
 
                   <div *ngIf="(message.header.sender.type | lowercase) == 'bot'" class="profile-pic-area user-img">
-                    <img src="assets/images/robot-dark.svg" />
+                    <img *ngIf="(message.status | lowercase) !== 'scheduled'" src="assets/images/robot-dark.svg" />
+                    <mat-icon  *ngIf="(message.status | lowercase) == 'scheduled'">event</mat-icon>
                   </div>
 
                   <div
@@ -1196,6 +1197,43 @@
                         </div>
                       </mat-expansion-panel>
                     </div>
+
+
+                    <!-- <-------------------------------------Scheduled Activity--------------------------------------------------->
+
+                    <div *ngIf="(message.body.type | lowercase) == 'scheduled_activity'"
+                         class="voice-activity-main panel-divider single scheduled-activity-area {{message.status | lowercase}}">
+                      <mat-expansion-panel>
+                        <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+                          <mat-panel-title>
+                            <div class="panel-header">
+                              <ul>
+                                <li *ngIf="(message.status | lowercase) == 'delivered'" class="activity-status">Delivered</li>
+                                <li>Marketing </li>
+                                <li>
+                                  <time>{{ message.header.timestamp | date}} - {{ message.header.timestamp | date: "shortTime" }}</time>
+                                </li>
+                                <li>Broadband Package Upgrade</li>
+                                <li class="multiple-users agent-pic participant-agent call-services activity-response">
+                                  <span><mat-icon>phone_forwarded</mat-icon></span>
+<!--                                <span><img src="assets/images/groups.svg" alt="group" /></span>-->
+                                </li>
+                                <li> {{ messageData.phone }}
+                                </li>
+                                <li class="agent-pic participant-agent call-services">
+                                  <span matTooltip="test agent">FA</span>
+                                </li>
+                              </ul>
+                            </div>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="custom-message-type">
+                          <p>{{  messageData.message }}</p>
+
+                        </div>
+                      </mat-expansion-panel>
+                    </div>
+
                     <!-- <--------------------------------------------WRAP UP MESSAGE END-------------------------------------------->
 
                     <!-- ---------------------------------- FB COMMENT STARTED -------------------------------- -->
