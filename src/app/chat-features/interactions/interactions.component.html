@@ -15,12 +15,11 @@
             <!--            </span>-->
           </h3>
           <h5 class="customer-name">
-            <!-- <p>{{ conversation.customer | json}}</p> -->
             <span *ngIf="('customer' | authPipe: 'view_pii') as result; else manage_pii">
               {{ conversation.customer.firstName | slice: 0:50 }}</span>
               <ng-template #manage_pii>
                 {{
-                rowData[col.field] | spaceInArray | isPII: col.isPii:col.type:col.key
+                  conversation.customer.firstName | maskPIIAttribute: ('firstName' | returnSchemaByKey )
               }}</ng-template>
             
             <!-- <span class="chat-timer">( 11:32 )</span> -->
@@ -263,7 +262,7 @@
           <!-- simple chat area -->
           <div id="chat-area-start"></div>
           <div class="instruction-content chat-session-main">
-            <ng-container <ng-container *ngIf="pastActivitiesloadedOnce || conversation.conversationId != 'FAKE_CONVERSATION'">
+            <ng-container *ngIf="pastActivitiesloadedOnce || conversation.conversationId != 'FAKE_CONVERSATION'">
               <div
                 *ngIf="
               (('agent-conversation-control' | authPipe: 'view_history') || (conversation.conversationId != 'FAKE_CONVERSATION' && ('agent-conversation-control' | authPipe: 'view_history_active_customer')) ) as result"

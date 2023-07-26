@@ -280,13 +280,14 @@ export class CustomerInfoComponent implements OnInit {
       this.mediaChannelData = [];
       let mediaChannelData = [];
       this._sharedService.schema.forEach((e) => {
+
         if (e.isChannelIdentifier == true && this.customer.hasOwnProperty(e.key)) {
           this.customer[e.key].forEach((value) => {
             mediaChannelData.push({
               fieldType: e.type,
               value: value,
               label: e.label,
-              isPII:e.isPII,
+              isPii:e.isPii,
               key:e.key,
               channelList: e.channelTypes
             });
@@ -384,7 +385,6 @@ export class CustomerInfoComponent implements OnInit {
 
     let processedObj = [];
     let keys = Object.keys(obj);
-    console.log("poo",keys)
     let values = Object.values(obj);
     for (let i = 0; i < keys.length; i++) {
       if (

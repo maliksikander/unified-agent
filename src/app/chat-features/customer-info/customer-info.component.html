@@ -105,7 +105,6 @@
           <!--            </ul>-->
           <!--          </mat-expansion-panel>-->
 
-          <p>{{ _sharedService.schema | json }}</p>
           <mat-expansion-panel class="drag-expansion-panel">
             <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
               <mat-panel-title
@@ -114,15 +113,14 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="user-pre-detail">
-              <p>{{ customerProfileFormData | json }}</p>
               <div class="user-detail-area" *ngFor="let data of customerProfileFormData">
                 <div>
                   <label>{{ data.key | sentenceCase }}:</label>
 
                   <p class="label-detail" *ngIf="'customer' | authPipe: 'view_pii' as result; else maskedpii">{{ data.value | spaceInArray }}</p>
-                  <ng-template *ngFor="let col of _sharedService.schema">
-                    <p class="label-detail" *ngIf="col.key == data.key" #maskedpii>
-                      {{ data.value | spaceInArray | isPII: col.isPII:col.type:col.key }}
+                  <ng-template #maskedpii>
+                    <p class="label-detail">
+                      {{ data.value | spaceInArray | maskPIIAttribute: (data.key | returnSchemaByKey) }}
                     </p>
                   </ng-template>
                 </div>
@@ -143,7 +141,6 @@
 
           <mat-expansion-panel class="drag-expansion-panel">
             <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
-
               <mat-panel-title
                 ><span class="material-icons drag-icon">more_vert</span>{{ "chat-features.customer-info.media-channels" | translate }}
               </mat-panel-title>
@@ -151,19 +148,16 @@
 
             <ul class="channel-list">
               <mat-accordion>
-                <p>{{mediaChannelData | json}}</p>
                 <li class="multi-channel-list" *ngFor="let channel of mediaChannelData">
                   <mat-expansion-panel [hideToggle]="!channel.channelList">
                     <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                       <div class="channel-icon-area web-channel-inner">
                         <img matTooltip="{{ channel.fieldType }}" src="assets/attr-types/{{ channel.fieldType | lowercase }}.svg" />
                         <p>
-
-
                           <strong *ngIf="'customer' | authPipe: 'view_pii' as result; else maskedpii">{{ channel.value | spaceInArray }}</strong>
-                          <ng-template #maskedpii >
+                          <ng-template #maskedpii>
                             <strong>{{
-                              channel.value | spaceInArray | isPII: channel.isPii :channel.fieldType : channel.key
+                              channel.value | spaceInArray | maskPIIAttribute: { isPii: channel.isPii, type: channel.fieldType, key: channel.key }
                             }}</strong>
                           </ng-template>
                           <small>{{ channel.label }}</small>
@@ -325,7 +319,6 @@
             <div class="profile-area multi-channel-area">
               <mat-accordion>
                 <mat-expansion-panel class="chat-channel-area" *ngFor="let channelSession of activeChannelSessions">
-                  <p>{{channelSession | json}}</p>
 
                   <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                     <div class="channel-icon-area">
@@ -345,7 +338,6 @@
                             number: '2.0' }}</ng-container> -->
                         </span>
                       </label>
-                     
 
                       <!-- <button (click)="moveSession($event)" mat-button [matMenuTriggerFor]="rerouteMenu"
                         class="re-route-session">Move</button>
@@ -412,8 +404,16 @@
                   </mat-expansion-panel-header>
                   <ul class="requested-channel-content">
                     <li>
-                      <label>{{ "chat-features.customer-info.customer-identifier" | translate }}</label>
-                      {{ channelSession.channelData.channelCustomerIdentifier }}
+                      <label>{{
+                        "chat-features.customer-info.customer-identifier" | translate
+                      }}</label>
+                      <span *ngIf="'customer' | authPipe: 'view_pii' as result; else maskedpii">{{channelSession.channelData.channelCustomerIdentifier}}</span>
+                      <ng-template #maskedpii>
+                        {{
+                          channelSession.channelData.channelCustomerIdentifier
+                            | maskPIIAttribute: (channelSession.channel.channelType.name | returnSchemaByChannelType)
+                        }}
+                      </ng-template>
                     </li>
                     <li>
                       <label>{{ "chat-features.customer-info.service-identifier" | translate }}</label>

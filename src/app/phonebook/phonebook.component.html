@@ -239,14 +239,14 @@
 
               <span *ngIf="'customer' | authPipe: 'view_pii' as result; else maskedpii">{{ rowData[col.field] | spaceInArray }}</span>
               <ng-template #maskedpii >{{
-                rowData[col.field] | spaceInArray | isPII: col.isPii :col.type : col.key
+                rowData[col.field] | spaceInArray | maskPIIAttribute: {isPii:col.isPii , type:col.type , key: col.key}
               }}</ng-template>
             </span>
     
             <span *ngIf="col.field == 'firstName'">
               <span *ngIf="('customer' | authPipe: 'view_pii') as result; else manage_pii">{{ rowData[col.field] | spaceInArray }}</span>
               <ng-template #manage_pii>{{
-                rowData[col.field] | spaceInArray | isPII: col.isPii:col.type:col.key
+                rowData[col.field] | spaceInArray | maskPIIAttribute: {isPii:col.isPii , type:col.type , key: col.key}
               }}</ng-template>
 
               <!--              <span *ngIf="labels" (mouseleave)="showLblTooltip = false"-->

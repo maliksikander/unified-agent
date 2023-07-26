@@ -1,22 +1,27 @@
 import { Pipe, PipeTransform } from "@angular/core";
+import { CustomerSchema } from "src/app/models/customer-schema";
 
-@Pipe({ name: "isPII", pure: true })
-export class isPIIPipe implements PipeTransform {
-  transform(data: any, isPii: any, type: any, key: any): any {
+type schemaAttributes={isPii:boolean , type:string , key: string}
+
+
+@Pipe({ name: "maskPIIAttribute", pure: true })
+export class maskPIIAttributePipe implements PipeTransform {
+
+  transform(data: String | number, schema: CustomerSchema | schemaAttributes | null ): String | number {
     if (data) {
-      if (isPii) {
-        if (type == "string" && key != "labels") {
+      if (schema && schema.isPii) {
+        if (schema.type == "string" && schema.key != "labels") {
           return this.maskString(data);
-        } else if (type == "phoneNumber") {
+        } else if (schema.type == "phoneNumber") {
           return this.maskNumber(data);
-        } else if (type == "email") {
+        } else if (schema.type == "email") {
           return this.maskEmail(data);
         }
       } else {
         return data;
       }
     } else {
-      return null;
+      return data;
     }
   }
   maskString(str) {

@@ -95,8 +95,6 @@ export class ActiveChatsComponent implements OnInit {
   loadLabels():void {
     this._httpService.getLabels().subscribe((e) => {
       this.labels = e;
-      console.log("labels",this.labels)
-
     });
   }
   startRefreshTimer() {
