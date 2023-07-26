@@ -25,7 +25,8 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   filterValue;
   field = "phoneNumber";
   selectedNumber:any={};
-
+  sendSmsResponse:any={}
+ thirdPartyActivityObj={}
   //userList:any;
   userData: any = []
   outboundSmsDialogData={}
@@ -111,7 +112,7 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     fromEvent(this.textInput.nativeElement, 'keyup').pipe(
-      throttleTime(5000), // Adjust the time (in milliseconds) for throttling
+      throttleTime(2000), // Adjust the time (in milliseconds) for throttling
       distinctUntilChanged()
     )
 
@@ -233,10 +234,15 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
  
       this._httpService.sendOutboundSms(this.outboundSmsDialogData).subscribe({
         next: (val: any) => {
-          
+          this.sendSmsResponse=val;
           //this._snackbarService.open(this._translateService.instant("snackbar.New-Announcement"), "succ");
+          console.log(val,"ressponse check")
           //third party API
           //call open snack bar here
+          if(this.sendSmsResponse.status == 200){
+            this.openSnackBar();
+
+          }
         },
         error: (err: any) => {
           console.error(err);
@@ -251,6 +257,46 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
     console.log("msg data",this.outboundSmsDialogData);
     //this.outboundSmsDialogData="";
   }
+  saveDataInThirdPartyActivities(){
+   this.thirdPartyActivityObj={
+    "id": "{{$guid}}",
+    "header": {
+    "sender": {
+      "id": this.selectedNumber._id,
+      "type": "APP",
+      "senderName": "APPName",
+      "additionalDetail": null
+    },
+    "channelData": {
+      "channelCustomerIdentifier": "",
+      "serviceIdentifier": "",
+      "requestPriority": 0,
+      "additionalAttributes": []
+    },
+    "language": {},
+    "timestamp": 1677151053951,
+    "securityInfo": {},
+    "stamps": [],
+    "intent": null,
+    "entities": {},
+    "channelSessionId": null,
+    "conversationId": "642b51a7d9ba694f5ba0ba7f",
+    "customer": {"_id": this.sendSmsResponse.additionalDetails.customer._id},
+    "replyToMessageId": null,
+    "providerMessageId": null
+  },
+    "body": {
+        "type": "PLAIN",
+        "markdownText": "hello",
+        "custom1": "DummyValue1",
+        "custom2": "DummayVlaue2"
+    }
+}
+
+   
+
+  }
+
 
   openSnackBar() {
 

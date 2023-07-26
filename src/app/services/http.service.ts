@@ -11,7 +11,7 @@ export class httpService {
   apiEndpoints;
   supervisorId ;
   mockurl = "https://57be0c49-6ed4-469c-a93a-13f49e48e8c2.mock.pstmn.io";
-  url="https://cim13-qa.expertflow.com/ccm";
+  url="https://76e11bc7-12a4-4f1c-8fa4-a77bb023fe19.mock.pstmn.io";
 
   constructor(public _appConfigService: appConfigService, private _httpClient: HttpClient) {
     this.apiEndpoints = {
