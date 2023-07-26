@@ -105,6 +105,7 @@ export class InteractionsComponent implements OnInit {
   FBPostData: any = null;
   FBPostComments: any = null;
   sendTypingStartedEventTimer: any = null;
+  onMessageSuggestions = false;
 
   constructor(
     private _sharedService: sharedService,
