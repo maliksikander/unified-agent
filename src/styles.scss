@@ -4310,29 +4310,42 @@ display: none;
   }
 
 }
-
-.scheduled-activity-panel {
-  span.mat-expansion-indicator {
-    &::after {
-      position: absolute;
-      left: 5px;
-      top: 4px;
-    }
-  }
-
+.scheduled-activity-main-panel {
   .mat-expansion-panel-header {
-    &.mat-expanded {
-      border-radius: 5px 5px 0 0;
+    .mat-content {
+      overflow: visible;
     }
   }
 
-  .mat-expansion-panel-content {
-    border: 1px solid #f3f6f8;
-    padding: 5px;
+  .mat-accordion {
+    .scheduled-activity-panel {
+      margin: 10px 4px !important;
 
-    .scheduled-activity-data {
-      background: $main-color-background;
+      span.mat-expansion-indicator {
+        &::after {
+          border-width: 0 1px 1px 0;
+          position: absolute;
+          left: 5px;
+          top: 4px;
+        }
+      }
+
+      .mat-expansion-panel-header {
+        &.mat-expanded {
+          border-radius: 5px 5px 0 0;
+        }
+      }
+
+      .mat-expansion-panel-content {
+        border: 1px solid #f3f6f8;
+        padding: 0;
+
+        .scheduled-activity-data {
+          background: $main-color-background;
+          padding: 10px;
+          margin: 5px 0 15px;
+        }
+      }
     }
   }
 }
-

@@ -833,7 +833,7 @@ a{
 
   span {
     height: 20px;
-    margin: 0 5px;
+    //margin: 0 5px;
     font-size: 12px;
   }
 
@@ -844,7 +844,7 @@ a{
     border-radius: 50%;
     background: #fff;
     text-align: center;
-    margin-left: 0;
+    margin: 0;
 
     mat-icon {
       color: #CE0101;
@@ -860,9 +860,12 @@ a{
     border-radius: 15px;
     padding: 0 10px;
     background: #fff;
+    margin: 0 0 0 3px;
   }
 
   .activity-actions {
+    margin-left: 0;
+    margin-right: 10px;
     span {
       border-bottom: 1px solid #000;
       font-size: 10px;
@@ -897,16 +900,19 @@ a{
 }
 .scheduled-activity-panel {
   .scheduled-activity-data ul {
-    margin-bottom: 5px;
+    margin: 0;
+
     li label {
 
-    margin-right: 10px;
+      margin-right: 10px;
+    }
   }
-}
+
   mat-expansion-panel-header {
     padding: 0 5px !important;
     border-radius: 5px;
   }
+
   span.mat-expansion-indicator {
     border: 1px solid rgb(204, 204, 204);
     width: 20px;
@@ -915,16 +921,40 @@ a{
     position: relative;
     border-radius: 100%;
   }
-.activity-detail-main{
-  .activity-detail{
-    strong{
-      color: $blue-text-color;
-      font-size: 12px;
-    }
-    p{
-      font-size: 14px;
-      margin-bottom: 8px;
+
+  .activity-detail-main {
+    .activity-detail {
+      strong {
+        color: $blue-text-color;
+        font-size: 12px;
+      }
+
+      p {
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
     }
   }
 }
+  .activity-notify {
+    font-weight: normal;
+    background: $red-color;
+    width: 15px;
+    height: 15px;
+    border-radius: 100%;
+    text-align: center;
+    font-size: 10px;
+    color: #fff;
+    line-height: 13px;
+    border: 1px solid #fff;
+    position: relative;
+    right: 3px;
+    top: -6px;
+    box-shadow: 0 0 4px #999;
+  }
+.panel-content-main{
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
 }
+

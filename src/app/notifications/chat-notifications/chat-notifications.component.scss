@@ -84,6 +84,37 @@
         }
       }
 
+      //Scheduled Activity Notification
+      &.scheduled-activity-notification{
+        background: #1A50A1 !important;
+
+        .requested-name{
+          p{
+            color: #fff !important;
+            max-width: 350px;
+          }
+        }
+        .channel-icon{
+          background: rgba(0,0,0,.5) !important;
+        }
+
+        .notification-trigger{
+          button {
+            color: #fff;
+            height: 25px;
+            line-height: 25px;
+
+            &.accept-btn {
+              background: #79A31D;
+            }
+
+            &.decline-btn {
+              background: #CE0101;
+            }
+          }
+        }
+      }
+
       &.new-announcement-notification {
         background: #1A50A3 !important;
         .notification-trigger{
@@ -266,3 +297,4 @@
   max-height: 200px;
   overflow: auto;
 }
+

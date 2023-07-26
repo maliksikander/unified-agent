@@ -484,10 +484,10 @@
           </mat-expansion-panel>
 
 <!--          Scheduled Activities-->
-          <mat-expansion-panel class="drag-expansion-panel">
+          <mat-expansion-panel class="drag-expansion-panel scheduled-activity-main-panel">
             <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
               <mat-panel-title><span
-                class="material-icons drag-icon">more_vert</span>Scheduled Activities
+                class="material-icons drag-icon">more_vert</span>Scheduled Activities <span class="activity-notify">2</span>
               </mat-panel-title>
             </mat-expansion-panel-header>
 
@@ -497,8 +497,10 @@
                   <mat-expansion-panel class="scheduled-activity-panel">
                     <mat-expansion-panel-header [collapsedHeight]="'30px'" [expandedHeight]="'30px'">
                       <div class="activity-main-panel" (click)="$event.stopPropagation()">
-                        <span class="activity-icon"><mat-icon>phone_forwarded</mat-icon></span>
-                        <span class="activity-time">4 hrs remaining</span>
+                        <span class="panel-content-main">
+                          <span class="activity-icon"><mat-icon>phone_forwarded</mat-icon></span>
+                          <span class="activity-time">4 hrs remaining</span>
+                        </span>
                         <span class="activity-actions"><span class="delete-activity">Delete</span><span class="reschedule-activity">Reschedule</span></span>
                       </div>
                     </mat-expansion-panel-header>
