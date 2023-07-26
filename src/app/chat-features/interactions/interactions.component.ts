@@ -16,6 +16,8 @@ import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
 import { TranslateService } from "@ngx-translate/core";
 import { CallControlsComponent } from "../../new-components/call-controls/call-controls.component";
 import { SipService } from "src/app/services/sip.service";
+import { HighlightResult } from 'ngx-highlightjs';
+
 
 // declare var EmojiPicker: any;
 
@@ -48,6 +50,7 @@ export class InteractionsComponent implements OnInit {
   fullPostView: boolean = false;
   selectedCommentId: string;
   lastSeenMessageId;
+  pastActivitiesloadedOnce:boolean=false;
   // isTransfer = false;
   // isConsult = false;
   ctiBarView = true;
@@ -103,6 +106,7 @@ export class InteractionsComponent implements OnInit {
   postData: any = null;
   postComments: any = null;
   sendTypingStartedEventTimer: any = null;
+  onMessageSuggestions = false;
 
   constructor(
     private _sharedService: sharedService,
@@ -754,6 +758,7 @@ export class InteractionsComponent implements OnInit {
   // to get past acitivities
   loadPastActivities(conversation) {
     try {
+      this.pastActivitiesloadedOnce=true;
       this.loadingPastActivity = true;
 
       let limit = 25;
@@ -1320,4 +1325,5 @@ export class InteractionsComponent implements OnInit {
   formatNumber(num) {
     return num.toString().padStart(2, "0");
   }
+
 }

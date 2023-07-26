@@ -49,7 +49,7 @@ export class socketService {
     private snackBar: MatSnackBar,
     private _translateService: TranslateService
   ) {
-    // this.onTopicData(mockTopicData, "12345", "");
+     //this.onTopicData(mockTopicData, "12345", "");
   }
 
   connectToSocket() {
@@ -1109,6 +1109,9 @@ export class socketService {
       if (this._cacheService.agent.id == cimEvent.data.conversationParticipant.participant.keycloakUser.id) {
         conversation.topicParticipant = cimEvent.data.conversationParticipant;
         console.log("updated participant", conversation.topicParticipant);
+      } else {
+        conversation.agentParticipants.push(cimEvent.data.conversationParticipant);
+        conversation.agentParticipants = conversation.agentParticipants.concat([]);
       }
       let message = this.createSystemNotificationMessage(cimEvent);
 

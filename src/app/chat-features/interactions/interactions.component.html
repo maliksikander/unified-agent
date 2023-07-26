@@ -231,7 +231,7 @@
         <ng-scrollbar class="chat-messages-main my-scrollbar" [style.height]="
             replyInput?.offsetHeight > 80 ? 'calc(100% - ' + (replyInput?.offsetHeight + 80) + 'px)' : 'calc(100% - ' + viewHeight + ')'
           ">
-          <div *ngIf="!conversation.messages.length" class="no-chat-main">
+          <div *ngIf="!conversation.messages.length && !pastActivitiesloadedOnce" class="no-chat-main">
             <div class="no-chat">
               <span class="no-chat-icon">
                 <!--                <mat-icon>question_answer</mat-icon>-->
@@ -256,7 +256,7 @@
           <!-- simple chat area -->
           <div id="chat-area-start"></div>
           <div class="instruction-content chat-session-main">
-            <ng-container *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
+            <ng-container *ngIf="pastActivitiesloadedOnce || conversation.conversationId != 'FAKE_CONVERSATION'">
               <div
                 *ngIf="
               (('agent-conversation-control' | authPipe: 'view_history') || (conversation.conversationId != 'FAKE_CONVERSATION' && ('agent-conversation-control' | authPipe: 'view_history_active_customer')) ) as result"
@@ -553,6 +553,36 @@
                           <!--                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
                         </div>
 
+
+
+                        <!--------------------------------- Custom Data start----------------------------------------------->
+                        <div *ngIf="(referredMessage.body.type | lowercase) == 'custom'"
+                          class="voice-activity-main custom-data-type panel-divider user-data customer-side single">
+                          <mat-expansion-panel>
+                            <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+                              <mat-panel-title>
+                                <div class="panel-header">
+                                  <ul>
+                                    <li class="agent-pic participant-agent call-services">
+                                      <span matTooltip="test agent">{{referredMessage.header.sender | getSenderName:
+                                        conversation.customer | getFirstTwoLetters}}</span>
+                                    </li>
+                                    <li>
+                                      <time>{{ referredMessage.header.timestamp | date: "shortTime" }}</time>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="custom-message-type">
+                              <pre><code [highlight]="referredMessage.body | json"></code></pre>
+
+                            </div>
+                          </mat-expansion-panel>
+                        </div>
+
+
+
                         <!-- -----------------------------audio--------------------------------------- -->
 
                         <div *ngIf="(referredMessage.body.type | lowercase) == 'audio'"
@@ -697,7 +727,7 @@
                         <!--                    <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
 
                         <button mat-icon-button class="user_settings"
-                          *ngIf="(message.header.sender.type | lowercase) == 'customer' && message.botSuggestions"
+                          *ngIf="(message.header.sender.type | lowercase) == 'customer' && message.botSuggestions && onMessageSuggestions"
                           (click)="message.showBotSuggestions = !message.showBotSuggestions"></button>
                       </p>
                     </div>
@@ -729,7 +759,7 @@
                         <span class="chat-time">{{ message.header.timestamp | date: "shortTime" }}</span>
                       </span>
                       <button mat-icon-button class="user_settings"
-                        *ngIf="(message.header.sender.type | lowercase) == 'customer' && message.botSuggestions"
+                        *ngIf="(message.header.sender.type | lowercase) == 'customer' && message.botSuggestions && onMessageSuggestions"
                         (click)="message.showBotSuggestions = !message.showBotSuggestions"></button>
                     </div>
 
@@ -823,6 +853,36 @@
                       </div>
                       <!--                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                     </div>
+
+
+                    <!--------------------------------- Custom Data start----------------------------------------------->
+                    <div *ngIf="(message.body.type | lowercase) == 'custom'"
+                      class="voice-activity-main custom-data-type panel-divider user-data customer-side single">
+                      <mat-expansion-panel>
+                        <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+                          <mat-panel-title>
+                            <div class="panel-header">
+                              <ul>
+                                <li class="agent-pic participant-agent call-services">
+                                  <span matTooltip="test agent">{{message.header.sender | getSenderName:
+                                    conversation.customer | getFirstTwoLetters}}</span>
+                                </li>
+                                <li>
+                                  <time>{{ message.header.timestamp | date: "shortTime" }}</time>
+                                </li>
+                              </ul>
+                            </div>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="custom-message-type">
+                          <pre><code [highlight]="message.body | json"></code></pre>
+                        </div>
+                      </mat-expansion-panel>
+                    </div>
+
+
+
+
 
                     <!-- -----------------------------audio--------------------------------------- -->
 
@@ -1881,7 +1941,7 @@
 
                     <mat-tab label="Bot Suggestions">
                       <ng-container
-                        *ngFor="let botSuggestion of conversation.messages[conversation.messages.length - 1]?.botSuggestions | LockFilter: message">
+                        *ngFor="let botSuggestion of conversation.messages[conversation.messages.length - 1]?.botSuggestions | SuggestionsFilter: message">
                         <ng-container *ngIf="botSuggestion?.messageBody.type == 'PLAIN'">
                           <mat-option [value]="botSuggestion?.messageBody.markdownText"
                             (click)="replyInput.value = botSuggestion?.messageBody.markdownText"
@@ -2036,13 +2096,19 @@
 
         <ul class="call-actions">
           <!-- <li><button disabled mat-fab><mat-icon>mic</mat-icon></button></li> -->
-          <li><button (click)="ctiControlBar()" mat-fab><mat-icon>picture_in_picture_alt
-              </mat-icon></button></li>
-          <li (click)="_sipService.holdCallOnSip()" *ngIf="_sipService.isCallHold == false"><button
-              mat-fab><mat-icon>pause</mat-icon></button></li>
-          <li (click)="_sipService.resumeCallOnSip()" *ngIf="_sipService.isCallHold == true"><button
-              mat-fab><mat-icon>pause_circle_filled</mat-icon></button></li>
-          <li (click)="endCallOnSip()"><button class="end-call" mat-fab><mat-icon>call_end</mat-icon></button></li>
+          <li><button (click)="ctiControlBar()" mat-fab>
+              <mat-icon>picture_in_picture_alt
+              </mat-icon>
+            </button></li>
+          <li (click)="_sipService.holdCallOnSip()" *ngIf="_sipService.isCallHold == false"><button mat-fab>
+              <mat-icon>pause</mat-icon>
+            </button></li>
+          <li (click)="_sipService.resumeCallOnSip()" *ngIf="_sipService.isCallHold == true"><button mat-fab>
+              <mat-icon>pause_circle_filled</mat-icon>
+            </button></li>
+          <li (click)="endCallOnSip()"><button class="end-call" mat-fab>
+              <mat-icon>call_end</mat-icon>
+            </button></li>
         </ul>
       </div>
     </div>
