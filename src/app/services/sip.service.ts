@@ -114,6 +114,7 @@ export class SipService implements OnInit {
       if (event.event.toLowerCase() == "agentinfo") {
         if (event.response.state.toLowerCase() == "login") {
           this.isSipLoggedIn = true;
+          this.readyAgentState();
         }
 
         if (event.response.state.toLowerCase() == "logout") {
@@ -123,11 +124,9 @@ export class SipService implements OnInit {
           console.log("Connection Expired, CTI Status logout==>");
         }
       } else if (event.event.toLowerCase() == "xmppevent") {
-        // console.log("yo1==>")
         if (event.response && event.response.type == "IN_SERVICE") {
-          // console.log("yo2==>")
           this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-Login-Success"), "succ");
-          this.readyAgentState();
+
           console.log("Connection Established, CTI Status is Connected ==>");
         }
       } else if (event.event.toLowerCase() == "dialogstate") {
@@ -184,7 +183,11 @@ export class SipService implements OnInit {
     let cacheId = `${this._cacheService.agent.id}:${event.response.dialog.id}`;
     let cacheDialog: any = this.getDialogFromCache(cacheId);
     if (!cacheDialog) this.identifyCustomer(event, event.response.dialog.customerNumber, callType);
-    else if (event.event.toLowerCase() == "campaigncall" && event.response.dialog && (event.response.dialog.state.toLowerCase() == "active" || event.response.dialog.state.toLowerCase() == "dropped"))
+    else if (
+      event.event.toLowerCase() == "campaigncall" &&
+      event.response.dialog &&
+      (event.response.dialog.state.toLowerCase() == "active" || event.response.dialog.state.toLowerCase() == "dropped")
+    )
       this.handleDialogStateEvent(event);
   }
 
@@ -351,7 +354,7 @@ export class SipService implements OnInit {
       let callType;
       let timeStamp = this.getStartOREndTimeStamp(dialogState.dialog, "startCall");
       callType = "INBOUND";
-      if(dialogEvent.event.toLowerCase() == "campaigncall") callType = "OUTBOUND"
+      if (dialogEvent.event.toLowerCase() == "campaigncall") callType = "OUTBOUND";
       this.setDialogCache(dialogEvent, "active");
       let cimMessage = this.createCIMMessage(
         "VOICE",
@@ -709,13 +712,14 @@ export class SipService implements OnInit {
   }
 
   directQueueTransferOnSip(data) {
+    console.log("data==>", data);
     try {
       let command = {
         action: "SST_Queue",
         parameter: {
           dialogId: this.activeDialog.id,
-          queue: data.queueName,
-          queueType: "NAME",
+          queue: data.queueId,
+          queueType: "ID",
           numberToTransfer: this._appConfigService.cxSipConfig.staticQueueTransferDn,
           clientCallbackFunction: this.clientCallback
         }

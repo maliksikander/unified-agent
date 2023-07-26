@@ -920,7 +920,7 @@ function blind_transfer_queue(numberToTransfer, queue, queuetype, callback) {
         return;
     }
     // Target URI
-    var target = SIP.UserAgent.makeURI('sip:' + numberToTransfer + "@" + sipconfig.uri);
+    var target = SIP.UserAgent.makeURI('sip:' + numberToTransfer + "-" + queue + "@" + sipconfig.uri);
     if (!target) {
         error("generalError", loginid, "Invalid target Uri:" + numberToTransfer, callback);
         return;
