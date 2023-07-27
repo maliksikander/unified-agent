@@ -12,13 +12,11 @@ import { appConfigService } from "src/app/services/appConfig.service";
 import { httpService } from "src/app/services/http.service";
 import { finesseService } from "src/app/services/finesse.service";
 import { ConfirmationDialogComponent } from "src/app/new-components/confirmation-dialog/confirmation-dialog.component";
-import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
 import { TranslateService } from "@ngx-translate/core";
 import { CallControlsComponent } from "../../new-components/call-controls/call-controls.component";
 import { ConversationSettings } from "../../models/conversationSetting/conversationSettings";
 
 import { SipService } from "src/app/services/sip.service";
-import { T } from "@angular/cdk/keycodes";
 import {Router} from '@angular/router';
 
 // declare var EmojiPicker: any;
@@ -53,14 +51,12 @@ export class InteractionsComponent implements OnInit {
   selectedCommentId: string;
   lastSeenMessageId;
   pastActivitiesloadedOnce: boolean = false;
-  // isTransfer = false;
-  // isConsult = false;
   ctiBarView = true;
   ctiBoxView = false;
   timer: any = "00:00";
   cxVoiceSession: any;
   openWrapDialog = false;
-  wrapUpFormData:any;
+ 
 
 
   ngAfterViewInit() {
@@ -74,6 +70,12 @@ export class InteractionsComponent implements OnInit {
       if (percent > 80) {
         this.showNewMessageNotif = false;
       }
+
+      // console.log("hjhjwdhjwjwh",this.conversation.wrapUpDialog)
+      // if(this.conversation.wrapUpDialog.show)
+      // {
+      //   this.wrapUpDialog(false)
+      // }
     });
   }
 
@@ -111,7 +113,7 @@ export class InteractionsComponent implements OnInit {
   FBPostData: any = null;
   FBPostComments: any = null;
   sendTypingStartedEventTimer: any = null;
-
+  wrapUpFormData:any;
   constructor(
     private _sharedService: sharedService,
     public _cacheService: cacheService,
@@ -148,6 +150,7 @@ export class InteractionsComponent implements OnInit {
       this.selectedLanguage = data;
     });
 
+
     if (this.selectedLanguage == "ar") {
       this.isRTLView = true;
     }
@@ -164,6 +167,14 @@ export class InteractionsComponent implements OnInit {
       if (this._sipService.isCallActive == true) this.ctiControlBar();
       this.getVoiceChannelSession();
     }
+
+    console.log("dialog data",this.conversation.wrapUpDialog)
+    this.wrapUpFormData = {
+      header: this._translateService.instant("chat-features.interactions.wrapup"),
+      wrapUpDialog: this.conversation.wrapUpDialog,
+      conversation: this.conversation,
+      RTLDirection: this.isRTLView
+    };
   }
 
   loadLabels() {
@@ -1316,16 +1327,16 @@ export class InteractionsComponent implements OnInit {
   }
 
   wrapUpDialog(timerEnabled: boolean): void {
+  console.log(" wrapupdialog called timer enabled ",timerEnabled)
+   
+
     if (timerEnabled) {
       this.unsubscribeFromConversation();
     }
-    this.wrapUpFormData = {
-      header: this._translateService.instant("chat-features.interactions.wrapup"),
-      wrapUpDialog: this.conversation.wrapUpDialog,
-      conversation: this.conversation,
-      RTLDirection: this.isRTLView
-    };
-    this.openWrapDialog = true;
+    else
+    {
+      this.openWrapDialog = true;
+    }
 
   }
 

@@ -509,7 +509,7 @@ export class socketService {
         event.data.header.sender.id = event.data.header.customer._id;
         event.data.header.sender.type = "CUSTOMER";
       }
-      if (
+      if (    
         event.name.toLowerCase() == "agent_message" ||
         event.name.toLowerCase() == "bot_message" ||
         event.name.toLowerCase() == "customer_message"

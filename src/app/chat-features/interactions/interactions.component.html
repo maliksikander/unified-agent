@@ -1985,7 +1985,7 @@
         </div>
       </div>
     </ng-template>
-    <div class="custom-dialog-main" *ngIf="openWrapDialog">
+    <div class="custom-dialog-main" *ngIf="openWrapDialog || conversation.wrapUpDialog.show">
       <app-wrap-up-form  [wrapUpData]="wrapUpFormData"  (closeWrapDialog)="closeWrapDialog($event)"></app-wrap-up-form>
     </div>
   </div>
