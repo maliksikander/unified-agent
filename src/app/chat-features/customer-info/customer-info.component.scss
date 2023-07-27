@@ -861,6 +861,11 @@ a{
     padding: 0 10px;
     background: #fff;
     margin: 0 0 0 3px;
+    max-width: 115px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    white-space: nowrap;
   }
 
   .activity-actions {
