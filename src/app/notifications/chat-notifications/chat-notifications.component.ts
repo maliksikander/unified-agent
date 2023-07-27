@@ -23,6 +23,7 @@ export class ChatNotificationsComponent implements OnInit {
   externalModeRequests = [];
   notificationArea: boolean = false;
   voiceChannelType;
+  isCallAcceptClicked:boolean = false;
   //newAnnouncement =true;
 
   constructor(
@@ -131,6 +132,7 @@ export class ChatNotificationsComponent implements OnInit {
   }
 
   onExternalRequestAccept(data) {
+    this.isCallAcceptClicked = true;
     this.acceptCall(data);
   }
 

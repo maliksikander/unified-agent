@@ -129,7 +129,7 @@
               request?.identifier : 'N/A' }}</p>
           </div>
           <div *ngIf="!request?.isOutbound" class="notification-trigger">
-            <button (click)="onExternalRequestAccept(request)" class="mat-flat-button" mat-button>{{'globals.accept' |
+            <button [disabled]="isCallAcceptClicked" (click)="onExternalRequestAccept(request)" class="mat-flat-button" mat-button>{{'globals.accept' |
               translate }}</button>
           </div>
         </mat-card-content>
@@ -152,7 +152,7 @@
             </p> -->
           </div>
           <div class="notification-trigger">
-            <button (click)="onExternalRequestAccept(request)" class="mat-flat-button" mat-button>{{'globals.accept' |
+            <button  (click)="onExternalRequestAccept(request)" class="mat-flat-button" mat-button>{{'globals.accept' |
               translate }}</button>
           </div>
         </mat-card-content>
