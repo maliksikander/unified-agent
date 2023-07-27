@@ -24,17 +24,17 @@
                 [ngStyle]="{ 'background-color': lbl.colorCode }"></li>
             </ul>
           </h5>
-          <button mat-button class="chat-controls-mobile search-trigger" *ngIf="isMobileDevice" aria-label="search" (click)="interactionSearch = true">
-            <mat-icon>search</mat-icon>
-          </button>
+<!--          <button mat-button class="chat-controls-mobile search-trigger" *ngIf="isMobileDevice" aria-label="search" (click)="interactionSearch = true">-->
+<!--            <mat-icon>search</mat-icon>-->
+<!--          </button>-->
           <button mat-button class="chat-controls-mobile" *ngIf="isMobileDevice"  [matMenuTriggerFor]="agentControllForMobile" ><mat-icon>more_vert</mat-icon></button>
         </div>
-        <div class="instruction-search" *ngIf="interactionSearch && isMobileDevice">
-          <input placeholder="Search Interactions" type="text" [(ngModel)]="searchInteraction">
-          <button mat-button (click)="interactionSearch = false">
-            <mat-icon>close</mat-icon>
-          </button>
-        </div>
+<!--        <div class="instruction-search" *ngIf="interactionSearch && isMobileDevice">-->
+<!--          <input placeholder="Search Interactions" type="text" [(ngModel)]="searchInteraction">-->
+<!--          <button mat-button (click)="interactionSearch = false">-->
+<!--            <mat-icon>close</mat-icon>-->
+<!--          </button>-->
+<!--        </div>-->
         <div class="col-md-8 col-sm-8 agent-actions">
           <mat-menu #agentControllForMobile="matMenu" [overlapTrigger]="true"  backdropClass="mobile-menu-backdrop" panelClass="custom-pane">
             <div class="{{isMobileDevice ? 'mobile-chat-controls'  : ''}}" >
@@ -44,39 +44,52 @@
               </div>
               <ul (click)="$event.stopPropagation()" class="list-group list-group-vertical agent-controls agent-controls-mobile">
                 <ng-container *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
-                  <li class="list-group-item">
-                    <button mat-icon-button matTooltip="Wrapup" aria-label="WrapUp" (click)="openWrapUpDialog('Wrap-up')">
-                      <mat-icon>note_add</mat-icon>
-                      Add Wrap-up
-                    </button>
-                  </li>
+<!--                  <li class="list-group-item">-->
+<!--                    <button mat-icon-button matTooltip="Wrapup" aria-label="WrapUp" (click)="openWrapUpDialog('Wrap-up')">-->
+<!--                      <mat-icon>note_add</mat-icon>-->
+<!--                      Add Wrap-up-->
+<!--                    </button>-->
+<!--                  </li>-->
 
-
-                  <li class="list-group-item">
-                    <button mat-icon-button>
+                  <ng-container
+                    *ngIf="conversation.conversationId != 'FAKE_CONVERSATION' && conversation.topicParticipant.role != 'SILENT_MONITOR' && ('agent-conversation-control' | authPipe: 'view_wrap_up') as result">
+                    <li class="list-group-item">
+                      <button mat-icon-button matTooltip="{{ 'chat-features.interactions.wrapup' | translate }}" aria-label="WrapUp"
+                              (click)="openWrapUpDialog('wrap')">
+                        <mat-icon>note_add</mat-icon>
+                        Add Wrap-up
+                      </button>
+                    </li>
+                  </ng-container>
+                  <li class="list-group-item" *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
+                    <button mat-icon-button [matMenuTriggerFor]="ParticipantsList"
+                            matTooltip="{{ 'chat-features.interactions.participants' | translate }}" aria-label="Participants">
                       <mat-icon>group</mat-icon>
-                      View Participants
+                      Participants List
                     </button>
                   </li>
-                  <!--              <li class="list-group-item">-->
-                  <!--                <button mat-icon-button>-->
-                  <!--                  <mat-icon>note_add</mat-icon>-->
-                  <!--                  Add Notes-->
-                  <!--                </button>-->
-                  <!--              </li>-->
-                  <li class="list-group-item">
-                    <button mat-icon-button>
+                  <li class="list-group-item" *ngIf="conversation.topicParticipant.role == 'SILENT_MONITOR'">
+                    <button mat-icon-button class="barge-in" matTooltip="Barge-in" (click)="BargeIn()">
+                      <mat-icon>chat_bubble</mat-icon>
+                      Barge In
+                    </button>
+                  </li>
+
+                  <li class="list-group-item" *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
+                    <button mat-icon-button #consultTransferTrigger="matMenuTrigger"
+                            [matMenuTriggerFor]="ConsultTransferConversation" (click)="getAgentsInQueue()"
+                            matTooltip="{{ 'chat-features.interactions.agent-assistance' | translate }}" aria-label="Consult Chat">
                       <mat-icon>person_add</mat-icon>
-                      Add Participants
+                      Agent Assistance
+                    </button>
+                  </li>
+                  <li *ngIf="'agent-conversation-control' | authPipe: 'view_leave_chat' as result" class="list-group-item">
+                    <button mat-icon-button>
+                      <mat-icon (click)="onLeaveClick()">close</mat-icon>
+                      Leave Chat
                     </button>
                   </li>
                 </ng-container>
-                <li *ngIf="'leave-chat' | authPipe: 'view' as result" class="list-group-item">
-                  <button mat-icon-button>
-                    <mat-icon (click)="onLeaveClick()">close</mat-icon>
-                    Leave Chat
-                  </button>
-                </li>
 
               </ul>
             </div>
