@@ -53,7 +53,7 @@ export class httpService {
   }
 
   saveActivies(obj):Observable<any> {
-    return this._httpClient.post<any>(`https://cim-dev.expertflow.com/conversation-manager${this.apiEndpoints.saveActivities}`, obj, {
+    return this._httpClient.post<any>(`${this._appConfigService.config.CONVERSATION_MANAGER_URL}${this.apiEndpoints.saveActivities}`, obj, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })

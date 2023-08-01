@@ -54,7 +54,7 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   ngOnInit() {
 
     //Validators.pattern("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$"),
-    this.phoneNumberSelector = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]);
+    this.phoneNumberSelector = new FormControl('', [Validators.required,Validators.pattern("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$"), Validators.minLength(3), Validators.maxLength(20)]);
     this.outboundMessage = new FormControl("", [Validators.required]);
 
     this.channelTypeId = this._sharedService.channelTypeList[3].id;

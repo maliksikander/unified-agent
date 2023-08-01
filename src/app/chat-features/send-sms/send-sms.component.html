@@ -9,11 +9,22 @@
         <div class="text-field message-field">
           <label>Channel Identity</label>
           <mat-form-field appearance="outline">
-            <input type="text" #textInput placeholder="Enter Phone Number" aria-label="Number" matInput
+            <input  #textInput placeholder="Enter Phone Number" aria-label="Number" matInput
               [formControl]="phoneNumberSelector" [matAutocomplete]="auto" (keyup)="handleThrottledKeyUp($event)">
             <mat-error *ngIf="phoneNumberSelector.hasError('required')">
-            *invalid format
-            </mat-error>
+              
+            *This field can't be empty
+            <!-- </mat-error> -->
+            <div *ngIf="phoneNumberSelector.hasError('pattern')">
+              *Invalid Pattern
+            </div>
+            <div *ngIf="phoneNumberSelector.hasError('minlength')">
+              *below minLength
+            </div>
+            <div *ngIf="phoneNumberSelector.hasError('maxlength')">
+              *exceed maxLength
+            </div>
+  </mat-error>
             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
               <!-- <div *ngIf="(phoneNumberSelector.invalid || phoneNumberSelector.touched)">
                 <div *ngIf="phoneNumberSelector.errors.required">{{ phoneNumberSelector.errors.required }}</div>
@@ -21,7 +32,7 @@
               </div> -->
 
               <ng-container *ngFor="let option of userData">
-                <mat-option [value]="option.phoneNumber + ' ' +' [ '+ option.firstName  + ' ] '"
+                <mat-option [value]="option.phoneNumber"
                   (onSelectionChange)="updateMySelection(option)">
                   {{option.firstName}}
                 </mat-option>
@@ -43,7 +54,7 @@
         <div class="message-trigger right-align">
           <button mat-raised-button type="button" [mat-dialog-close]="true" class="discard-btn message-action">Discard
           </button>
-          <button mat-raised-button type="button" class="send-message message-action ml-2"
+          <button *ngIf="(outboundMessage.valid && phoneNumberSelector.valid)" mat-raised-button type="button" class="send-message message-action ml-2" 
            (click)="sendSms()">Send SMS</button>
 
         </div>
