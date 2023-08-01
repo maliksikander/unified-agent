@@ -9,19 +9,23 @@
         <div class="text-field message-field">
           <label>Channel Identity</label>
           <mat-form-field appearance="outline">
-            <input type="text"
-                   #textInput
-                   placeholder="Enter Phone Number"
-                   aria-label="Number"
-                   matInput
-                   [formControl]="phoneNumber"
-                   [matAutocomplete]="auto"
-                   (keyup)="handleThrottledKeyUp($event)">
+            <input type="text" #textInput placeholder="Enter Phone Number" aria-label="Number" matInput
+              [formControl]="phoneNumberSelector" [matAutocomplete]="auto" (keyup)="handleThrottledKeyUp($event)">
+            <mat-error *ngIf="phoneNumberSelector.hasError('required')">
+            *invalid format
+            </mat-error>
             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+              <!-- <div *ngIf="(phoneNumberSelector.invalid || phoneNumberSelector.touched)">
+                <div *ngIf="phoneNumberSelector.errors.required">{{ phoneNumberSelector.errors.required }}</div>
+                 <div *ngIf="phoneNumberSelector.errors.minlength.requiredLength ">Invalid email format.</div> 
+              </div> -->
+
               <ng-container *ngFor="let option of userData">
-                <mat-option [value]="option.phoneNumber + ' ' +' [ '+ option.firstName  + ' ] '" (onSelectionChange)="updateMySelection(option)">
+                <mat-option [value]="option.phoneNumber + ' ' +' [ '+ option.firstName  + ' ] '"
+                  (onSelectionChange)="updateMySelection(option)">
                   {{option.firstName}}
                 </mat-option>
+
               </ng-container>
             </mat-autocomplete>
           </mat-form-field>
@@ -30,17 +34,20 @@
           <label>Type SMS</label>
           <mat-form-field appearance="outline">
             <textarea #message matInput [formControl]="outboundMessage" maxlength="500"></textarea>
+            <mat-error *ngIf="outboundMessage.hasError('required')">
+              *invalid text
+              </mat-error>
           </mat-form-field>
         </div>
 
         <div class="message-trigger right-align">
           <button mat-raised-button type="button" [mat-dialog-close]="true" class="discard-btn message-action">Discard
           </button>
-          <button mat-raised-button type="button" class="send-message message-action ml-2" (click)="sendSms()">Send SMS</button>
+          <button mat-raised-button type="button" class="send-message message-action ml-2"
+           (click)="sendSms()">Send SMS</button>
 
         </div>
       </div>
     </form>
   </div>
 </div>
-

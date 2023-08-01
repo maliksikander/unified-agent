@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Inject, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { FormControl,Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { Observable, fromEvent } from 'rxjs';
 import { map, startWith, throttleTime, distinctUntilChanged } from 'rxjs/operators';
 import { MAT_SNACK_BAR_DATA, MatDialog, MatSnackBar, MatSnackBarRef } from '@angular/material';
@@ -7,6 +7,9 @@ import { CustomerActionsComponent } from '../../customer-actions/customer-action
 import { httpService } from 'src/app/services/http.service';
 import { TranslateService } from "@ngx-translate/core";
 import { snackbarService } from "src/app/services/snackbar.service";
+import { v4 as uuidv4 } from "uuid";
+import { sharedService } from 'src/app/services/shared.service';
+import { cacheService } from 'src/app/services/cache.service';
 
 @Component({
   selector: 'app-send-sms',
@@ -15,7 +18,8 @@ import { snackbarService } from "src/app/services/snackbar.service";
 })
 export class SendSmsComponent implements OnInit, AfterViewInit {
   @ViewChild('textInput', { static: true }) textInput: ElementRef;
-  phoneNumber = new FormControl('');
+  channelTypeId;
+  phoneNumberSelector;
   searchNumberRequest = "";
   offSet = 0;
   sort = {};
@@ -24,77 +28,56 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   filterQuery = [];
   filterValue;
   field = "phoneNumber";
-  selectedNumber:any={};
-  sendSmsResponse:any={}
- thirdPartyActivityObj={}
-  //userList:any;
+  selectedNumber: any = {};
+  sendSmsResponse: any = {}
+  thirdPartyActivityObj = {}
+  randomUUID: string;
   userData: any = []
-  outboundSmsDialogData={}
+  outboundSmsDialogData = {}
+  outboundSmsDialogDataforAnonmyous;
+  serviceIdentifier;
+  anonmyousCustomerDetails;
+  outboundMessage;
+  rowID;
 
-  // userList: any[] = [
-  //   {
-  //     name: 'Martin Gupital',
-  //     phone: '030012345'
-
-  //   }, {
-  //     name: 'Alex Henry',
-  //     phone: '0300123456'
-
-  //   }, {
-  //     name: 'John Brit',
-  //     phone: '0300123456789'
-
-  //   },
-  // ]
-  //filteredOptions: Observable<any[]>;
-  outboundMessage = new FormControl("", [Validators.required]);
- 
   constructor(
     private snackBar: MatSnackBar,
     private _httpService: httpService,
     private _translateService: TranslateService,
     private _snackbarService: snackbarService,
-  ) { }
+    private _sharedService: sharedService,
+    private _cacheService: cacheService,
+  ) {
+    this.randomUUID = uuidv4();
+  }
 
   ngOnInit() {
 
-    // fromEvent(this.textInput.nativeElement, 'keyup')
-    // .pipe(
+    //Validators.pattern("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$"),
+    this.phoneNumberSelector = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]);
+    this.outboundMessage = new FormControl("", [Validators.required]);
 
-    //   //throttleTime(3000), // Adjust the time (in milliseconds) for throttling
-    //   //distinctUntilChanged() // This ensures that only distinct values are emitted
-    // )
-    // .subscribe((event: Event) => {
-    //   this.handleThrottledKeyUp(event);
-    //   console.log( this.searchNumberRequest," this.searchNumberRequest")
+    this.channelTypeId = this._sharedService.channelTypeList[3].id;
+    this._httpService.getDefaultOutboundChannel(this.channelTypeId).subscribe(res => {
+      this.serviceIdentifier = res.serviceIdentifier;
 
-    // });
-
-
-
-    // this.filteredOptions = this.phoneNumber.valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filter(value || '')),
-
-    // );
-
+    });
 
   }
 
   getCustomers(limit, offSet, sort, query) {
     this._httpService.getCustomers(limit, offSet, sort, query).subscribe((e) => {
       this.userData = e.docs;
-      console.log(e.docs, "data")
-      console.log(this.userData, "userdata")
+     // console.log(e.docs, "data")
+    //console.log(this.userData.length, "userdata")
     });
   }
+
   loadCustomerOnSearchOp(limit, offSet, sort, query) {
     this.getCustomers(limit, offSet, sort, query);
-
   }
 
   filter() {
-
     if (this.filterValue && this.field) {
       let filterVal = JSON.parse(JSON.stringify(this.filterValue));
       filterVal = encodeURIComponent(filterVal);
@@ -103,8 +86,8 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
       this.filterQuery.push({ field: this.field, value: this.filterValue });
       // this.loadCustomers(this.limit, this.offSet, this.sort, this.query);
       this.offSet = 0;
-      console.log("feild", this.field);
-      console.log("this.filterValue", this.filterValue)
+      // console.log("feild", this.field);
+      // console.log("this.filterValue", this.filterValue)
       this.loadCustomerOnSearchOp(this.limit, this.offSet, this.sort, this.query);
     }
   }
@@ -127,173 +110,222 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
     let phonenumber = fromEvent<any>(this.textInput.nativeElement, 'keyup')
       .pipe(
         map(event => event.target.value),
-        
+
       )
-    console.log(event,"keyup event")
+    //console.log(event, "keyup event")
     phonenumber.subscribe((res) => {
       this.searchNumberRequest = res;
-      console.log(this.searchNumberRequest, " this.searchNumberRequest"),
+     // console.log(this.searchNumberRequest, " this.searchNumberRequest"),
         this.filterValue = res;
 
     });
 
   }
 
-  updateMySelection(event){
-    
-    if(event){
-      this.selectedNumber=event;
-      console.log(event,"event updated")
-    console.log(this.selectedNumber,"this.selectedNumber")
+  updateMySelection(event) {
+    if (event) {
+      this.selectedNumber = event;
     }
-    else{
-      this.selectedNumber={};
+    else {
+      this.selectedNumber = {};
     }
-    
   }
-  
-  
-
-  // private _filter(value: any): any[] {
-  //   const filterValue = value.toLowerCase();
-
-  //   return this.userList.filter(option => option.phone.toLowerCase().includes(filterValue));
-  // }
 
   sendSms() {
 
+    if (this.userData.length === 0) {
+      this.outboundSmsDialogDataforAnonmyous = {
 
-    if(Object.keys(this.selectedNumber).length === 0 ){
-      this.outboundSmsDialogData={
-      
-        "id": null,
+        "id": this.randomUUID,
         "header": {
-            "sender": null,
-            "channelData": {
-                "channelCustomerIdentifier": "57853834848772",
-                "serviceIdentifier": "1218",
-                "requestPriority": 0,
-                "additionalAttributes": [
-                    {
-                        "key": "name",
-                        "type": "String2000",
-                        "value": null,
-                    }
-                ]
-            },
-            "language": null,
-            "timestamp": 1652074481000,
-            "securityInfo": null,
-            "stamps": null,
-            "intent": null,
-            "entities": null,
-            "channelSession": null,
-            "replyToMessageId": null,
-            "providerMessageId": null
+          "sender": {
+            "id": this._cacheService.agent.id,
+            "type": "AGENT",
+            "senderName": this._cacheService.agent.firstName,
+          },
+          "customer": null,
+          "channelData": {
+            "channelCustomerIdentifier": this.phoneNumberSelector.value,
+            "serviceIdentifier": this.serviceIdentifier,
+            "requestPriority": 0,
+            "additionalAttributes": null
+          },
+          "language": null,
+          "timestamp": new Date(),
+          "securityInfo": null,
+          "stamps": null,
+          "intent": null,
+          "entities": null,
+          "channelSession": null,
+          "replyToMessageId": null,
+          "providerMessageId": null
         },
         "body": {
-            "type": "PLAIN",
-            "markdownText": this.outboundMessage.value
+          "type": "PLAIN",
+          "markdownText": this.outboundMessage.value
         }
       };
-    }
-
-    else{
-      this.outboundSmsDialogData={
-      
-        "id": this.selectedNumber._id,
-        "header": {
-            "sender": null,
-            "channelData": {
-                "channelCustomerIdentifier": this.selectedNumber.phoneNumber[0],
-                "serviceIdentifier": "1218",
-                "requestPriority": 0,
-                "additionalAttributes": [
-                    {
-                        "key": "name",
-                        "type": "String2000",
-                        "value": this.selectedNumber.firstName,
-                    }
-                ]
-            },
-            "language": null,
-            "timestamp": 1652074481000,
-            "securityInfo": null,
-            "stamps": null,
-            "intent": null,
-            "entities": null,
-            "channelSession": null,
-            "replyToMessageId": null,
-            "providerMessageId": null
-        },
-        "body": {
-            "type": "PLAIN",
-            "markdownText": this.outboundMessage.value
-        }
-      };
- 
-      this._httpService.sendOutboundSms(this.outboundSmsDialogData).subscribe({
+      this._httpService.sendOutboundSms(this.outboundSmsDialogDataforAnonmyous).subscribe({
         next: (val: any) => {
-          this.sendSmsResponse=val;
-          //this._snackbarService.open(this._translateService.instant("snackbar.New-Announcement"), "succ");
-          console.log(val,"ressponse check")
-          //third party API
-          //call open snack bar here
-          if(this.sendSmsResponse.status == 200){
+          this.anonmyousCustomerDetails = val.additionalDetails.customer;
+          console.log(this.anonmyousCustomerDetails, "(return customer obj)+++++++++++++++++++response check val.additionalDetails.customer+++++++++++")
+          this.rowID = this.randomUUID;
+          console.log(this.rowID,"row IID")
+          if (val.status == 200) {
             this.openSnackBar();
+            this.saveDataInThirdPartyActivities()
 
-          }
+          } else { }
         },
         error: (err: any) => {
           console.error(err);
-         // this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-Create-New-Announcement"), "err");
-          
+          // this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-Create-New-Announcement"), "err");
+
+        },
+      });
+    }
+
+    else {
+      this.outboundSmsDialogData = {
+
+        "id": this.randomUUID,
+        "header": {
+          "sender": {
+            "id": this._cacheService.agent.id,
+            "type": "AGENT",
+            "senderName": this._cacheService.agent.firstName,
+          },
+          "customer": this.selectedNumber,
+          "channelData": {
+            "channelCustomerIdentifier": this.selectedNumber.phoneNumber[0],
+            "serviceIdentifier": this.serviceIdentifier,
+            "requestPriority": 0,
+            "additionalAttributes": null
+          },
+          "language": null,
+          "timestamp": new Date(),
+          "securityInfo": null,
+          "stamps": null,
+          "intent": null,
+          "entities": null,
+          "channelSession": null,
+          "replyToMessageId": null,
+          "providerMessageId": null
+        },
+        "body": {
+          "type": "PLAIN",
+          "markdownText": this.outboundMessage.value
+        }
+      };
+      //ccm API CALL
+      this._httpService.sendOutboundSms(this.outboundSmsDialogData).subscribe({
+        next: (val: any) => {
+          this.sendSmsResponse = val;
+          //this._snackbarService.open(this._translateService.instant("snackbar.New-Announcement"), "succ");
+         // console.log(val, "ressponse check")
+          //third party API
+          //call open snack bar here
+          this.rowID = this.randomUUID;
+          if (this.sendSmsResponse.status == 200) {
+            this.openSnackBar();
+            // call saveActivities func here
+            this.saveDataInThirdPartyActivities();
+          } else { }
+        },
+        error: (err: any) => {
+          console.error(err);
+          // this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-Create-New-Announcement"), "err");
+
         },
       });
 
     }
-    
-   // this.openSnackBar();//use it in after API response 
-    console.log("msg data",this.outboundSmsDialogData);
-    //this.outboundSmsDialogData="";
-  }
-  saveDataInThirdPartyActivities(){
-   this.thirdPartyActivityObj={
-    "id": "{{$guid}}",
-    "header": {
-    "sender": {
-      "id": this.selectedNumber._id,
-      "type": "APP",
-      "senderName": "APPName",
-      "additionalDetail": null
-    },
-    "channelData": {
-      "channelCustomerIdentifier": "",
-      "serviceIdentifier": "",
-      "requestPriority": 0,
-      "additionalAttributes": []
-    },
-    "language": {},
-    "timestamp": 1677151053951,
-    "securityInfo": {},
-    "stamps": [],
-    "intent": null,
-    "entities": {},
-    "channelSessionId": null,
-    "conversationId": "642b51a7d9ba694f5ba0ba7f",
-    "customer": {"_id": this.sendSmsResponse.additionalDetails.customer._id},
-    "replyToMessageId": null,
-    "providerMessageId": null
-  },
-    "body": {
-        "type": "PLAIN",
-        "markdownText": "hello",
-        "custom1": "DummyValue1",
-        "custom2": "DummayVlaue2"
-    }
-}
 
-   
+  }
+
+  saveDataInThirdPartyActivities() {
+    //with customer
+    //without customer
+    console.log("this.anonmyousCustomerDetails", this.anonmyousCustomerDetails)
+    if (this.anonmyousCustomerDetails) {
+
+
+
+      this.thirdPartyActivityObj = {
+        "id": this.randomUUID,
+        "header": {
+          "sender": {
+            "id": this._cacheService.agent.id,
+            "type": "AGENT",
+            "senderName": this._cacheService.agent.firstName,
+          },
+          //{id:"",senderName:"",type:"AGENT"}
+          "customer": this.anonmyousCustomerDetails,
+          "channelData": {
+            "channelCustomerIdentifier": this.phoneNumberSelector.value,
+            "serviceIdentifier": this.serviceIdentifier,//call api
+            "requestPriority": 0,
+            "additionalAttributes": null
+          },
+          "language": null,
+          "timestamp": new Date(),//date
+          "securityInfo": null,
+          "stamps": null,
+          "intent": null,
+          "entities": null,
+          "channelSession": null,
+          "replyToMessageId": null,
+          "providerMessageId": null
+        },
+        "body": {
+          "type": "PLAIN",
+          "markdownText": this.outboundMessage.value
+        }
+
+      }
+
+      this._httpService.saveActivies(this.thirdPartyActivityObj).subscribe({
+        next: (val: any) => {
+          console.log(val, "ressponse check of third party Activities+this.thirdPartyActivityObj")
+
+        },
+        error: (err: any) => {
+          console.error(err);
+
+        },
+      });
+    }
+
+    else {
+      /// callin API
+      console.log(this.outboundSmsDialogData, "ressponse check BEFORE SAVING of third party Activities+this.outboundSmsDialogData ")
+      this._httpService.saveActivies(this.outboundSmsDialogData).subscribe({
+        next: (val: any) => {
+          console.log(val, "ressponse check of third party Activities+this.outboundSmsDialogData ")
+
+        },
+        error: (err: any) => {
+          console.error(err);
+
+        },
+      });
+
+    }
+
+
+    /// callin API
+
+    // this._httpService.saveActivies(this.thirdPartyActivityObj).subscribe({
+    //   next: (val: any) => {
+    //     console.log(val,"ressponse check of third party Activities")
+
+    //   },
+    //   error: (err: any) => {
+    //     console.error(err);
+
+    //   },
+    // });
+
 
   }
 
@@ -308,6 +340,7 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
       horizontalPosition: 'right',
       verticalPosition: 'bottom',
       data: {
+        id: this.rowID,
         preClose: () => {
           snackBar.dismiss(
           );
@@ -337,9 +370,11 @@ export class SendSmsSnackbarComponent {
     @Inject(MAT_SNACK_BAR_DATA) public data, private dialog: MatDialog) { }
 
   updateUser() {
+    //let id=this.sendSmsResponse.additionalDetails.customer._id
     this.dismiss();
     this.dialog.closeAll();
-    this.onRowClick('64a3d6a59ae709b4096d50dc');
+    //this.onRowClick(this.data.id);
+    this.onRowClick("642404aad1fb9c565b21d45a");
   }
 
   dismiss() {
@@ -350,7 +385,7 @@ export class SendSmsSnackbarComponent {
   // to open user customer action dialog
   onRowClick(id) {
 
-    console.log(id, 'iddddddddddddd')
+    console.log(this.data.id, 'iddddddddddddd')
     const dialogRef = this.dialog.open(CustomerActionsComponent, {
       panelClass: "edit-customer-dialog",
       maxWidth: "80vw",
