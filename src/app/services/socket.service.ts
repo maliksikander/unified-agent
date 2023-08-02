@@ -49,7 +49,7 @@ export class socketService {
     private snackBar: MatSnackBar,
     private _translateService: TranslateService
   ) {
-     //this.onTopicData(mockTopicData, "12345", "");
+    //this.onTopicData(mockTopicData, "12345", "");
   }
 
   connectToSocket() {
@@ -96,12 +96,12 @@ export class socketService {
             "err"
           );
         }
-      } catch (err) {}
+      } catch (err) { }
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -135,7 +135,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -190,8 +190,8 @@ export class socketService {
         }
       } else {
         if (res.channelSession.channel.channelType.name.toLowerCase() !== "cx_voice") {
-        // } else {
-        this.triggerNewChatRequest(res);
+          // } else {
+          this.triggerNewChatRequest(res);
         }
         // this.triggerNewChatRequest(res);
       }
@@ -309,7 +309,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) {}
+    } catch (err) { }
   }
 
   listen(eventName: string) {
@@ -368,13 +368,18 @@ export class socketService {
           this.processActiveChannelSessions(sameTopicConversation, cimEvent.data.header.channelSession);
           ++sameTopicConversation.unReadCount;
         }
+        if (cimEvent.name.toLowerCase() == "customer_message" &&
+          cimEvent.data.body.type.toLowerCase() == "comment" &&
+          cimEvent.data.body.itemType.toLowerCase() == "delete") {
+          this.processCommentActions(sameTopicConversation.messages, cimEvent.data);
+        }
         if (
           cimEvent.name.toLowerCase() == "agent_message" &&
           cimEvent.data.body.type.toLowerCase() == "comment" &&
           cimEvent.data.body.itemType.toLowerCase() != "text" &&
           cimEvent.data.body.itemType.toLowerCase() != "video" &&
           cimEvent.data.body.itemType.toLowerCase() != "image" &&
-          cimEvent.data.body.itemType.toLowerCase() !="private_reply"
+          cimEvent.data.body.itemType.toLowerCase() != "private_reply"
         ) {
           this.processCommentActions(sameTopicConversation.messages, cimEvent.data);
         }
@@ -393,9 +398,14 @@ export class socketService {
             cimEvent.data.header["status"] = "sent";
             cimEvent.data.body["isWhisper"] = cimEvent.name.toLowerCase() == "whisper_message" ? true : false;
             sameTopicConversation.messages.push(cimEvent.data);
-          }
+          } 
         } else {
-          sameTopicConversation.messages.push(cimEvent.data);
+
+          // Condition added to handle the user deleted functionality for the INSTAGRAM/ to get Permissions
+          if(cimEvent.data.body.type.toLowerCase()=="comment" && cimEvent.data.body.itemType.toLowerCase()!="delete") {
+            sameTopicConversation.messages.push(cimEvent.data);
+          }
+         
         }
 
         sameTopicConversation.unReadCount ? undefined : (sameTopicConversation.unReadCount = 0);
@@ -441,7 +451,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._snackbarService.open(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"), "err");
     alert(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"));
@@ -498,7 +508,6 @@ export class socketService {
           event.data.body.itemType.toLowerCase() != "private_reply"
         ) {
           this.processCommentActions(conversation.messages, event.data);
-         
         } else {
           event.data.header["status"] = "sent";
           conversation.messages.push(event.data);
@@ -1191,7 +1200,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
@@ -1261,13 +1270,13 @@ export class socketService {
                     console.log("limit exceed");
                     this._snackbarService.open(
                       this._translateService.instant("snackbar.The-conversation-is-going-to-linking-with") +
-                        selectedCustomer.firstName +
-                        this._translateService.instant("snackbar.However-the-channel-identifier") +
-                        channelIdentifier +
-                        this._translateService.instant("snackbar.can-not-be-added-in") +
-                        selectedCustomer.firstName +
-                        attr +
-                        this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
+                      selectedCustomer.firstName +
+                      this._translateService.instant("snackbar.However-the-channel-identifier") +
+                      channelIdentifier +
+                      this._translateService.instant("snackbar.can-not-be-added-in") +
+                      selectedCustomer.firstName +
+                      attr +
+                      this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
                       "succ",
                       20000,
                       "Ok"
