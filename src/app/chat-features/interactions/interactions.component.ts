@@ -779,7 +779,8 @@ export class InteractionsComponent implements OnInit {
         if (
           event.name.toLowerCase() == "agent_message" ||
           event.name.toLowerCase() == "bot_message" ||
-          event.name.toLowerCase() == "customer_message"
+          event.name.toLowerCase() == "customer_message" ||
+          event.name.toLowerCase() == "third_party_activity"
         ) {
           if (event.name.toLowerCase() == "customer_message" && event.data.header.sender.type.toLowerCase() == "connector") {
             event.data.header.sender.senderName = event.data.header.customer.firstName + " " + event.data.header.customer.lastName;
