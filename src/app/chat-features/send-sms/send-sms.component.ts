@@ -16,33 +16,20 @@ import { cacheService } from 'src/app/services/cache.service';
   templateUrl: './send-sms.component.html',
   styleUrls: ['./send-sms.component.scss']
 })
-export class SendSmsComponent implements OnInit, AfterViewInit {
+export class SendSmsComponent implements OnInit {
   @ViewChild('textInput', { static: true }) textInput: ElementRef;
-  phoneNumberSelector;
-  searchNumberRequest = "";
+
   offSet = 0;
   sort = {};
   limit = 25;
-  query = {};
-  filterQuery = [];
-  filterValue;
-  field = "phoneNumber";
-  selectedNumber: any = {};
-  sendSmsResponse: any = {}
-  thirdPartyActivityObj = {}
-  randomUUID: string;
   userData: any = []
-  outboundSmsDialogData = {}
-  outboundSmsDialogDataforAnonmyous;
   SMSServiceIdentifier;
-  anonmyousCustomerDetails;
-  outboundMessage;
-  rowID;
-  defaultPrefixOutbound = "+92"
+  textAreaControl;
   phoneControl;
+  defaultPrefixOutbound = "+92"
   identifiedCustomer = null;
   phoneNumber;
-  sendMessage;
+  phoneNumberFieldSubscriber;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -52,10 +39,6 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
     private _sharedService: sharedService,
     private _cacheService: cacheService,
   ) {
-    this.randomUUID = uuidv4();
-  }
-  ngAfterViewInit(): void {
-    throw new Error('Method not implemented.');
   }
 
   ngOnInit() {
@@ -68,13 +51,13 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
         Validators.maxLength(20)
       ]);
 
-    this.outboundMessage = new FormControl("", [Validators.required]);
+    this.textAreaControl = new FormControl("", [Validators.required]);
 
     // this.getAgentDeskSettings();
 
     this.fetchSMSServiceIdentifier();
 
-    this.phoneControl.valueChanges.subscribe((phoneNumber) => {
+    this.phoneNumberFieldSubscriber = this.phoneControl.valueChanges.subscribe((phoneNumber) => {
       this.formatePhoneNumber(phoneNumber);
     });
 
@@ -183,7 +166,7 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
       },
       body: {
         type: "PLAIN",
-        markdownText: this.outboundMessage.value
+        markdownText: this.textAreaControl.value
       }
     };
 
@@ -205,6 +188,10 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
 
     });
 
+  }
+
+  ngOnDestroy(){
+    this.phoneNumberFieldSubscriber.unsubscribe();
   }
 
 
@@ -243,7 +230,7 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
     let snackBar: MatSnackBarRef<SendSmsSnackbarComponent>;
 
     snackBar = this.snackBar.openFromComponent(SendSmsSnackbarComponent, {
-      duration: 200000,
+      duration: 500,
       panelClass: ['chat-success-snackbar', 'send-sms-notify'],
       horizontalPosition: 'right',
       verticalPosition: 'bottom',
