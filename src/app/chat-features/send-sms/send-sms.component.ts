@@ -39,6 +39,9 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   anonmyousCustomerDetails;
   outboundMessage;
   rowID;
+  defaultPrefixOutbound;
+  phoneControl;
+  phoneNumber;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -54,22 +57,89 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   ngOnInit() {
 
     //Validators.pattern("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$"),
-    this.phoneNumberSelector = new FormControl('', [Validators.required,Validators.pattern("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$"), Validators.minLength(3), Validators.maxLength(20)]);
+    this.phoneControl = new FormControl('',
+      [
+        Validators.required,
+        Validators.pattern("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$"),
+        //Validators.minLength(3),
+        //Validators.maxLength(15)
+      ]);
+      this.phoneControl.valueChanges.subscribe((phoneNumber) => {
+        // if (this.userData.length === 0){
+        //   console.log("No multi match",this.userData.length)
+          
+        //  }
+        this.formatePhoneNumber(phoneNumber);
+       
+      });
+     // console.log("phone num",this.phoneNumberSelector);
     this.outboundMessage = new FormControl("", [Validators.required]);
 
+    this.getAgentDeskSettings()
     this.channelTypeId = this._sharedService.channelTypeList[3].id;
     this._httpService.getDefaultOutboundChannel(this.channelTypeId).subscribe(res => {
+      
       this.serviceIdentifier = res.serviceIdentifier;
 
     });
 
   }
+  formatePhoneNumber(phoneNumber) {
+    setTimeout(() => {
+      let plusExists = false;
+      this.phoneControl.setValue('', { emitEvent: false });
+      if (phoneNumber[0] == '+') {
+        plusExists = true;
+      }
+      phoneNumber = phoneNumber.replace(/\D/g, '').replace(/\s/g, '');
+      if (plusExists) {
+        phoneNumber = '+' + phoneNumber;
+      }
+      this.phoneNumber = this.applyPrefix(phoneNumber);
+      this.phoneControl.setValue(this.phoneNumber, { emitEvent: false });
+    }, 100);
+  }
+
+  applyPrefix(phoneNumber) {
+    if (phoneNumber == '') return phoneNumber;
+    let modifiedNumber = phoneNumber;
+    let prefix = this.defaultPrefixOutbound;
+    if (
+      phoneNumber[0] != '+' &&
+      phoneNumber.startsWith(this.defaultPrefixOutbound)
+    ) {
+      modifiedNumber = modifiedNumber.substring(this.defaultPrefixOutbound);
+      if (modifiedNumber.startsWith(this.defaultPrefixOutbound))
+        return modifiedNumber;
+      else return phoneNumber;
+    } else if (prefix.length > 0 && modifiedNumber[0] == 0) {
+      modifiedNumber = modifiedNumber.substring(1);
+      modifiedNumber = prefix + modifiedNumber;
+    } else if (modifiedNumber[0] !== '+' && prefix.length > 0) {
+      let phoneFirstLetters = modifiedNumber.substring(0, prefix.length);
+      if (prefix !== phoneFirstLetters) {
+        modifiedNumber = prefix + modifiedNumber;
+      }
+      if (prefix[0] == '+') {
+        let prefixWithoutPlus = prefix.substring(1);
+        if (phoneNumber.startsWith(prefixWithoutPlus)) {
+          modifiedNumber = '+' + phoneNumber;
+        }
+      }
+    }
+    return modifiedNumber;
+  }
 
   getCustomers(limit, offSet, sort, query) {
     this._httpService.getCustomers(limit, offSet, sort, query).subscribe((e) => {
       this.userData = e.docs;
-     // console.log(e.docs, "data")
-    //console.log(this.userData.length, "userdata")
+       console.log(e.docs, "data")
+       if(this.phoneControl.value.length < 1){
+
+        this.userData=null;
+        console.log(this.userData, "userdata")
+       }
+      //console.log(this.userData.length, "userdata")
     });
   }
 
@@ -96,7 +166,9 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     fromEvent(this.textInput.nativeElement, 'keyup').pipe(
       throttleTime(2000), // Adjust the time (in milliseconds) for throttling
-      distinctUntilChanged()
+      //distinctUntilChanged()
+      
+
     )
 
       .subscribe((event: Event) => {
@@ -115,11 +187,12 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
     //console.log(event, "keyup event")
     phonenumber.subscribe((res) => {
       this.searchNumberRequest = res;
-     // console.log(this.searchNumberRequest, " this.searchNumberRequest"),
-        this.filterValue = res;
+      // console.log(this.searchNumberRequest, " this.searchNumberRequest"),
+      this.filterValue = res;
 
     });
 
+    
   }
 
   updateMySelection(event) {
@@ -145,7 +218,7 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
           },
           "customer": null,
           "channelData": {
-            "channelCustomerIdentifier": this.phoneNumberSelector.value,
+            "channelCustomerIdentifier": this.phoneControl.value,
             "serviceIdentifier": this.serviceIdentifier,
             "requestPriority": 0,
             "additionalAttributes": null
@@ -170,7 +243,7 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
           this.anonmyousCustomerDetails = val.additionalDetails.customer;
           console.log(this.anonmyousCustomerDetails, "(return customer obj)+++++++++++++++++++response check val.additionalDetails.customer+++++++++++")
           this.rowID = this.randomUUID;
-          console.log(this.rowID,"row IID")
+          console.log(this.rowID, "row IID")
           if (val.status == 200) {
             this.openSnackBar();
             this.saveDataInThirdPartyActivities()
@@ -222,7 +295,7 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
         next: (val: any) => {
           this.sendSmsResponse = val;
           //this._snackbarService.open(this._translateService.instant("snackbar.New-Announcement"), "succ");
-         // console.log(val, "ressponse check")
+          // console.log(val, "ressponse check")
           //third party API
           //call open snack bar here
           this.rowID = this.randomUUID;
@@ -262,7 +335,7 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
           //{id:"",senderName:"",type:"AGENT"}
           "customer": this.anonmyousCustomerDetails,
           "channelData": {
-            "channelCustomerIdentifier": this.phoneNumberSelector.value,
+            "channelCustomerIdentifier": this.phoneControl.value,
             "serviceIdentifier": this.serviceIdentifier,//call api
             "requestPriority": 0,
             "additionalAttributes": null
@@ -330,6 +403,35 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   }
 
 
+  getAgentDeskSettings() {
+
+    if (this._cacheService.agent.id) {
+      this._httpService.getConversationSettings().subscribe(
+        (e) => {
+          console.log(e, "getting agent desk settingz");
+          this.defaultPrefixOutbound = e[0].prefixCode;
+          //this.isOutboundEnabled = e.isOutboundSmsEnabled;
+          console.log(this.defaultPrefixOutbound, "this.agentDeskSettingResp")
+          // if (e.theme == "dark") {
+          //   this.themeSwitch(true);
+          // }
+          // this.setAgentPreferedlanguage(e.language);
+        },
+        (error) => {
+          this._sharedService.Interceptor(error.error, "err");
+          console.error("error getting agent settings", error);
+        }
+      );
+
+
+
+    }
+
+
+
+  }
+
+
   openSnackBar() {
 
     let snackBar: MatSnackBarRef<SendSmsSnackbarComponent>;
@@ -340,7 +442,7 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
       horizontalPosition: 'right',
       verticalPosition: 'bottom',
       data: {
-        id: this.rowID,
+        id: this.selectedNumber._id,
         preClose: () => {
           snackBar.dismiss(
           );
@@ -370,11 +472,11 @@ export class SendSmsSnackbarComponent {
     @Inject(MAT_SNACK_BAR_DATA) public data, private dialog: MatDialog) { }
 
   updateUser() {
-    //let id=this.sendSmsResponse.additionalDetails.customer._id
+    //let id=this.data.id
     this.dismiss();
     this.dialog.closeAll();
-    //this.onRowClick(this.data.id);
-    this.onRowClick("642404aad1fb9c565b21d45a");
+    this.onRowClick(this.data.id);
+    //this.onRowClick("642404aad1fb9c565b21d45a");
   }
 
   dismiss() {
