@@ -1109,7 +1109,6 @@ export class InteractionsComponent implements OnInit {
       queues.forEach((item: any) => {
         if (item.mrdId == this._appConfigService.config.CX_VOICE_MRD) cxQueues.push(item);
       });
-      console.log("filtered queues==>",cxQueues);
       this.queueList = cxQueues;
     } catch (e) {
       console.error("[filterCXQueues] Error :", e);
@@ -1121,7 +1120,6 @@ export class InteractionsComponent implements OnInit {
       this._httpService.getAgentsInQueue(this.conversation.conversationId).subscribe(
         (res: any) => {
           if (this.isCXVoiceSessionActive() && res) {
-            console.log("test1==>");
             this.filterCXQueues(res);
           } else {
             this.queueList = res;

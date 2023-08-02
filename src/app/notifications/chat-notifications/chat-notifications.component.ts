@@ -78,6 +78,7 @@ export class ChatNotificationsComponent implements OnInit {
           }
           console.log("external requests==>", this.externalModeRequests);
         } else if (e.msg == "closeExternalModeRequestHeader") {
+          this.isCallAcceptClicked = false;
           let dialog = e.data.dialog ? e.data.dialog : e.data;
           if (this.externalModeRequests.length > 0) {
             let index = this.externalModeRequests.findIndex((item) => {
