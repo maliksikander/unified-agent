@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Inject, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, fromEvent } from 'rxjs';
 import { map, startWith, throttleTime, distinctUntilChanged } from 'rxjs/operators';
 import { MAT_SNACK_BAR_DATA, MatDialog, MatSnackBar, MatSnackBarRef } from '@angular/material';
@@ -24,12 +24,11 @@ export class SendSmsComponent implements OnInit {
   limit = 25;
   userData: any = []
   SMSServiceIdentifier;
-  textAreaControl;
-  phoneControl;
   defaultPrefixOutbound = "+92"
   identifiedCustomer = null;
   phoneNumber;
   phoneNumberFieldSubscriber;
+  smsForm: FormGroup;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -38,26 +37,31 @@ export class SendSmsComponent implements OnInit {
     private _snackbarService: snackbarService,
     private _sharedService: sharedService,
     private _cacheService: cacheService,
+    public fb: FormBuilder,
   ) {
   }
 
   ngOnInit() {
 
-    this.phoneControl = new FormControl('',
-      [
-        Validators.required,
-        Validators.pattern("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$"),
-        Validators.minLength(3),
-        Validators.maxLength(20)
-      ]);
+    this.smsForm = this.fb.group({
 
-    this.textAreaControl = new FormControl("", [Validators.required]);
+
+      phoneControl: ['',
+        [
+          Validators.required,
+          Validators.pattern("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$"),
+          Validators.minLength(3),
+          Validators.maxLength(20)
+        ]],
+
+      textAreaControl: ["", [Validators.required]]
+    });
 
     // this.getAgentDeskSettings();
 
     this.fetchSMSServiceIdentifier();
 
-    this.phoneNumberFieldSubscriber = this.phoneControl.valueChanges.subscribe((phoneNumber) => {
+    this.phoneNumberFieldSubscriber = this.smsForm.get("phoneControl").valueChanges.subscribe((phoneNumber) => {
       this.formatePhoneNumber(phoneNumber);
     });
 
@@ -82,7 +86,7 @@ export class SendSmsComponent implements OnInit {
   formatePhoneNumber(phoneNumber) {
     setTimeout(() => {
       let plusExists = false;
-      this.phoneControl.setValue('', { emitEvent: false });
+      this.smsForm.get("phoneControl").setValue('', { emitEvent: false });
       if (phoneNumber[0] == '+') {
         plusExists = true;
       }
@@ -91,7 +95,7 @@ export class SendSmsComponent implements OnInit {
         phoneNumber = '+' + phoneNumber;
       }
       this.phoneNumber = this.applyPrefix(phoneNumber);
-      this.phoneControl.setValue(this.phoneNumber, { emitEvent: false });
+      this.smsForm.get("phoneControl").setValue(this.phoneNumber, { emitEvent: false });
     }, 100);
   }
 
@@ -135,14 +139,15 @@ export class SendSmsComponent implements OnInit {
   handleThrottledKeyUp() {
 
     this.identifiedCustomer = "";
-    if (this.phoneControl.value.length > 2) {
-      this.getCustomers(this.limit, this.offSet, this.sort, { field: "phoneNumber", value: encodeURIComponent(this.phoneControl.value) });
+    if (this.smsForm.get("phoneControl").value.length > 2) {
+      this.getCustomers(this.limit, this.offSet, this.sort, { field: "phoneNumber", value: encodeURIComponent(this.smsForm.get("phoneControl").value) });
     }
 
 
   }
 
   updateMySelection(option) {
+
     this.identifiedCustomer = option;
 
   }
@@ -154,8 +159,9 @@ export class SendSmsComponent implements OnInit {
       id: uuidv4(),
       header: {
         channelData: {
-          channelCustomerIdentifier: this.phoneControl.value,
-          serviceIdentifier: this.SMSServiceIdentifier
+          channelCustomerIdentifier: this.smsForm.get("phoneControl").value,
+          serviceIdentifier: this.SMSServiceIdentifier,
+          additionalAttributes: [{ key: 'messageDirection', value: 'outbound', type: 'String2000' }]
         },
         sender: {
           id: this._cacheService.agent.id,
@@ -166,7 +172,7 @@ export class SendSmsComponent implements OnInit {
       },
       body: {
         type: "PLAIN",
-        markdownText: this.textAreaControl.value
+        markdownText: this.smsForm.get("textAreaControl").value
       }
     };
 
@@ -186,11 +192,13 @@ export class SendSmsComponent implements OnInit {
 
     }, (error) => {
 
+      this._snackbarService.open("unable to delivered the message, please try again", "err");
+
     });
 
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.phoneNumberFieldSubscriber.unsubscribe();
   }
 
@@ -230,7 +238,7 @@ export class SendSmsComponent implements OnInit {
     let snackBar: MatSnackBarRef<SendSmsSnackbarComponent>;
 
     snackBar = this.snackBar.openFromComponent(SendSmsSnackbarComponent, {
-      duration: 500,
+      duration: 500000,
       panelClass: ['chat-success-snackbar', 'send-sms-notify'],
       horizontalPosition: 'right',
       verticalPosition: 'bottom',

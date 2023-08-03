@@ -4,37 +4,40 @@
     <button mat-icon-button><i class="material-icons" [mat-dialog-close]="true">close</i></button>
   </div>
   <div class="message-container mat-dialog-content m-0 p-0">
-    <form>
+    <form [formGroup]="smsForm">
       <div class="new-message-form new-announcement-form">
         <div class="text-field message-field">
-          <label>Channel Identity</label><span class="icustomer" *ngIf="identifiedCustomer">[{{identifiedCustomer.firstName}}]</span>
+          <label>Channel Identity</label><span class="icustomer"
+            *ngIf="identifiedCustomer">[{{identifiedCustomer.firstName}}]</span>
           <mat-form-field appearance="outline">
-            <input type="text" #textInput placeholder="Enter Phone Number" aria-label="Number" matInput
-              [formControl]="phoneControl" maxlength="20" minLength="3" [matAutocomplete]="auto"
-              (keyup)="handleThrottledKeyUp()">
-              <mat-error>
-                <div *ngIf="phoneControl.hasError('required')">
-                  *This field can't be empty
-                </div>
-                <div *ngIf="phoneControl.hasError('pattern')">
-                  *Invalid pattern
-                </div>
-                <div *ngIf="phoneControl.hasError('minlength') || phoneControl.hasError('maxlength')">
-                  *number should be in range 3 to 15
-                </div>
-              </mat-error>
-            
+            <input placeholder="Enter Phone Number" aria-label="Number" matInput formControlName="phoneControl"
+              maxlength="20" minLength="3" [matAutocomplete]="auto" (keyup)="handleThrottledKeyUp()">
+            <mat-error>
+              <div *ngIf="smsForm.get('phoneControl').hasError('required')">
+                *This field can't be empty
+              </div>
+              <div *ngIf="smsForm.get('phoneControl').hasError('pattern')">
+                *Invalid pattern
+              </div>
+              <div
+                *ngIf="smsForm.get('phoneControl').hasError('minlength') || smsForm.get('phoneControl').hasError('maxlength')">
+                *number should be in range 3 to 15
+              </div>
+            </mat-error>
+
             <!-- <mat-error>
               <div *ngIf="phoneControl.hasError('minlength')">
                 *below minLength
               </div>
             </mat-error> -->
-            
-            <mat-autocomplete autoActiveFirstOption hidden="phoneControl.value.length < 1" #auto="matAutocomplete">
-              
+
+            <mat-autocomplete autoActiveFirstOption hidden="smsForm.get('phoneControl').value.length < 1"
+              #auto="matAutocomplete">
+
 
               <ng-container *ngFor="let option of userData">
-                <mat-option [value]="option.phoneNumber[0]" (onSelectionChange)="updateMySelection(option)">
+                <mat-option [value]="option.phoneNumber | getMatchedString:smsForm.get('phoneControl').value "
+                  (onSelectionChange)="updateMySelection(option)">
                   {{option.firstName}}
                 </mat-option>
 
@@ -45,8 +48,8 @@
         <div class="text-field message-field">
           <label>Type SMS</label>
           <mat-form-field appearance="outline">
-            <textarea #message matInput [formControl]="textAreaControl" maxlength="500"></textarea>
-            <mat-error *ngIf="textAreaControl.hasError('required')">
+            <textarea #message matInput formControlName="textAreaControl" maxlength="500"></textarea>
+            <mat-error *ngIf="smsForm.get('textAreaControl').hasError('required')">
               *invalid text
             </mat-error>
           </mat-form-field>
@@ -55,8 +58,8 @@
         <div class="message-trigger right-align">
           <button mat-raised-button type="button" [mat-dialog-close]="true" class="discard-btn message-action">Discard
           </button>
-          <button *ngIf="(textAreaControl.valid && phoneControl.valid)" mat-raised-button type="button"
-            class="send-message message-action ml-2" (click)="sendSMS()">Send SMS</button>
+          <button *ngIf="(smsForm.valid)" mat-raised-button type="button" class="send-message message-action ml-2"
+            (click)="sendSMS()">Send SMS</button>
 
         </div>
       </div>

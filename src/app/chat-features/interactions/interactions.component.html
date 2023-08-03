@@ -319,7 +319,7 @@
               </div>
               <!-- -------------------------------------------------------- -->
               <div *ngIf="(message.body.type | lowercase) != 'systemnotification' && message.header.channelSession"
-                class="chat-message {{ message.body.isWhisper ? 'whisper-body' : '' }} {{
+                class="chat-message {{(message.body.type | lowercase)  == 'outboundsms' ? 'voice' : ''}}  {{ message.body.isWhisper ? 'whisper-body' : '' }} {{
                   message.id != selectedCommentId && (message.isDeleted || message.isHidden) ? 'deleted-hidden-comment' : ''
                 }} {{
                   index == 0 ||
@@ -566,6 +566,34 @@
                         </div>
 
 
+                         <!--------------------------------- Outbound message start----------------------------------------------->
+                         
+                         <div *ngIf="(referredMessage.body.type | lowercase) == 'outboundsms'"
+                         class="voice-activity-main custom-data-type panel-divider user-data customer-side single">
+                      <mat-expansion-panel>
+                        <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+                          <mat-panel-title>
+                            <div class="panel-header">
+                              <ul>
+                                <li class="agent-pic participant-agent call-services">
+                                  <span matTooltip="test agent">{{referredMessage.header.sender.senderName | getFirstTwoLetters}}</span>
+                                </li>
+                                <li> {{ referredMessage.header.channelData.channelCustomerIdentifier }}
+                                </li>
+                                <li>
+                                  <time>{{ referredMessage.header.timestamp | date: "shortTime" }}</time>
+                                </li>
+                              </ul>
+                            </div>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="custom-message-type">
+                          <p>{{  referredMessage.body.markdownText }}</p>
+                    
+                        </div>
+                      </mat-expansion-panel>
+                    </div>
+
 
                         <!-- -----------------------------audio--------------------------------------- -->
 
@@ -687,7 +715,7 @@
                       <button mat-menu-item class="reply-trigger" (click)="onQuotedReply(message)">reply</button>
                     </mat-menu>
                     <div *ngIf="
-                        ((message.body.type | lowercase) != 'comment' && (message.body.type | lowercase) != 'url' && message.body.markdownText) ||
+                        ((message.body.type | lowercase) != 'outboundsms' && (message.body.type | lowercase) != 'comment' && (message.body.type | lowercase) != 'url' && message.body.markdownText) ||
                         ((message.body.type | lowercase) == 'comment' &&
                           (message.body.itemType | lowercase) == 'text' &&
                           (message.header.sender.type | lowercase) == 'agent')
@@ -865,6 +893,33 @@
                     </div>
 
 
+                    <!--------------------------------- Outbound message start----------------------------------------------->
+                         
+                    <div *ngIf="(message.body.type | lowercase) == 'outboundsms'"
+                      class="voice-activity-main custom-data-type panel-divider user-data customer-side single">
+                   <mat-expansion-panel>
+                     <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+                       <mat-panel-title>
+                         <div class="panel-header">
+                           <ul>
+                             <li class="agent-pic participant-agent call-services">
+                               <span matTooltip="test agent">{{message.header.sender.senderName | getFirstTwoLetters}}</span>
+                             </li>
+                             <li> {{ message.header.channelData.channelCustomerIdentifier }}
+                             </li>
+                             <li>
+                               <time>{{ message.header.timestamp | date: "shortTime" }}</time>
+                             </li>
+                           </ul>
+                         </div>
+                       </mat-panel-title>
+                     </mat-expansion-panel-header>
+                     <div class="custom-message-type">
+                       <p>{{  message.body.markdownText }}</p>
+                 
+                     </div>
+                   </mat-expansion-panel>
+                 </div>
 
 
 

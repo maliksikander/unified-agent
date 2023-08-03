@@ -97,6 +97,7 @@ import { getCustomerAniPipe } from "./pipes/getCustomerAni.pipe";
 import { checkOutboundCallPipe } from "./pipes/checkOutboundCall.pipe";
 import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
 import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements.pipe";
+import { getMatchedStringPipe } from "./pipes/getMatchedString.pipe";
 
 @NgModule({
   declarations: [
@@ -136,7 +137,8 @@ import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements
     checkConferenceCallPipe,
     getCustomerAniPipe,
     checkOutboundCallPipe,
-    checkConsultCallPipe
+    checkConsultCallPipe,
+    getMatchedStringPipe
   ],
   imports: [
     NgxDocViewerModule,
@@ -207,7 +209,7 @@ import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements
     AngularMultiSelectModule,
     NgScrollbarModule,
     NgxTimerModule,
-    TranslateModule
+    TranslateModule,
   ],
   exports: [
     NgxTimerModule,
@@ -311,7 +313,8 @@ import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements
     getCustomerAniPipe,
     checkConsultCallPipe,
     MatPaginatorModule,
-    TableFilterPipe
+    TableFilterPipe,
+    getMatchedStringPipe
   ]
 })
 export class SharedModule {}

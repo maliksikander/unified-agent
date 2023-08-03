@@ -117,7 +117,7 @@ export class InteractionsComponent implements OnInit {
     private snackBar: MatSnackBar,
     public _sipService: SipService,
     private _translateService: TranslateService
-  ) {}
+  ) { }
   ngOnInit() {
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
@@ -169,7 +169,7 @@ export class InteractionsComponent implements OnInit {
       }
     );
   }
-  emoji() {}
+  emoji() { }
 
   BargeIn() {
     let obj = {
@@ -530,7 +530,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -538,7 +538,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -608,7 +608,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
   externalfilePreviewOpener(url, fileName, type) {
     const dialogRef = this.dialog.open(FilePreviewComponent, {
@@ -618,7 +618,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
 
   uploadFile(files) {
@@ -779,8 +779,7 @@ export class InteractionsComponent implements OnInit {
         if (
           event.name.toLowerCase() == "agent_message" ||
           event.name.toLowerCase() == "bot_message" ||
-          event.name.toLowerCase() == "customer_message" ||
-          event.name.toLowerCase() == "third_party_activity"
+          event.name.toLowerCase() == "customer_message"
         ) {
           if (event.name.toLowerCase() == "customer_message" && event.data.header.sender.type.toLowerCase() == "connector") {
             event.data.header.sender.senderName = event.data.header.customer.firstName + " " + event.data.header.customer.lastName;
@@ -789,6 +788,22 @@ export class InteractionsComponent implements OnInit {
           }
           event.data.header["status"] = "seen";
           msgs.push(event.data);
+        } else if (event.name.toLowerCase() == "third_party_activity") {
+
+          if (event.data.header.channelData.additionalAttributes.length > 0) {
+
+            const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => { return e.value.toLowerCase() == "outbound" });
+            if (isOutBoundSMSType) {
+              event.data.body['type'] = 'outboundsms';
+
+              const smsChannelType = this.filterChannelType('sms');
+              if (smsChannelType) {
+                event.data.header.channelSession.channel.channelType = smsChannelType;
+              }
+              msgs.push(event.data);
+              console.log("pushed value ",event.data)
+            }
+          }
         } else if (
           [
             "task_enqueued",
@@ -844,6 +859,13 @@ export class InteractionsComponent implements OnInit {
     } catch (e) {
       console.error("[Load Past Activity] Filter Error :", e);
     }
+  }
+
+  filterChannelType(channelTypeName) {
+    const channelType = this._sharedService.channelTypeList.find((channelType) => { return channelType.name.toLowerCase() == channelTypeName.toLowerCase() });
+
+    return channelType;
+
   }
 
   //when enter key is pressed
