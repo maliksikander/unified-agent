@@ -479,13 +479,29 @@ span.field-channel {
       line-height: 40px;
       vertical-align: middle;
       position: relative;
+      border-bottom: 1px solid #CCCACA;
 
-      mat-icon {
-        position: absolute;
-        right: 0;
-        top: 50%;
+      button {
+        position: relative;
+        right: 10px;
         transform: translate(0, -50%);
-        color: #BFBFBF;
+        top: 50%;
+        width: 28px;
+        height: 28px;
+        border-radius: 100%;
+        border-width: 0!important;
+        background: #4773b5;
+        color: #fff;
+        text-align: center;
+        padding: 0 2px;
+        float: right;
+        margin: 0 6px;
+        opacity: 0;
+      }
+      &:hover{
+        button{
+          opacity: 1;
+        }
       }
 
       ul {
@@ -519,8 +535,8 @@ span.field-channel {
         border: 1px solid transparent;
         height: 36px;
         line-height: 36px;
-        padding-left: 35px;
-        padding-right: 15px;
+        padding-left: 15px;
+        padding-right: 35px;
         font-size: 15px;
         &:focus, &:focus-visible{
           border-color: $blue-text-color;
@@ -533,7 +549,7 @@ span.field-channel {
       }
       mat-icon{
         position: absolute;
-        left: 10px;
+        right: 10px;
         top: 7px;
         color: #999999;
       }

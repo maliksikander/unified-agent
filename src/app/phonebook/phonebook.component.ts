@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from "@angular/core";
+import {Component, OnInit, Input, ViewChild, ElementRef, HostListener} from '@angular/core';
 import { DateAdapter, MatDialog } from "@angular/material";
 import { CreateCustomerComponent } from "../create-customer/create-customer.component";
 import { FormControl } from "@angular/forms";
@@ -30,14 +30,17 @@ export class PhonebookComponent implements OnInit {
     private _router: Router,
     private route: ActivatedRoute,
     private _socketService: socketService,
-    private _snackbarService: snackbarService
+    private _snackbarService: snackbarService,
   ) {
     this.dateAdapter.setLocale("en-GB");
     this._translateService.stream("globals.Search").subscribe((data: string) => {
       this.labelSettings.searchPlaceholderText = data;
     });
+    this.getScreenSize();
   }
-
+  @HostListener('window:resize', ['$event'])
+  screenHeight: number;
+  screenWidth: number;
   customers;
   topicCustomerId;
   paramsSubscription;
@@ -386,5 +389,14 @@ export class PhonebookComponent implements OnInit {
   selectedFilter(e, field) {
     this.selectedSearchLabel = e.value;
     this.selectedSearchField = field;
+  }
+
+  getScreenSize(event?) {
+    this.screenHeight = window.innerHeight;
+    this.screenWidth = window.innerWidth;
+    console.log(this.screenHeight, this.screenWidth);
+    if (this.screenWidth < 768) {
+      this.isMobileDevice = true;
+    }
   }
 }
