@@ -94,7 +94,8 @@
     "Unable-to-Create-New-Announcement":"Unable to Create New Announcement_ita",
     "Unable-to-Update-Announcement":"Unable to Update Announcement_ita",
     "Unable-to-Delete-Announcement":"Unable to Delete Announcement_ita",
-    "Socket-Connected":"Socket Connected_ita"
+    "Socket-Connected":"Socket Connected_ita",
+    "Calling":"Calling_ita"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ita",

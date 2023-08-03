@@ -115,7 +115,7 @@
           </div>
           <div class="requested-name">
             <p matTooltip="{{request?.customer?.firstName ? request?.customer?.firstName : 'UNIDENTIFIED CUSTOMER' }}">
-              <span *ngIf="request.isOutbound">Calling   </span> <span
+              <span *ngIf="request.isOutbound">{{'snackbar.Calling' | translate}}   </span> <span
                 class="voice-customer">{{request?.customer?.firstName ? request?.customer?.firstName : 'UNIDENTIFIED
                 CUSTOMER' }}</span>
               <span *ngIf="request.isOutbound" class="dot-container">
