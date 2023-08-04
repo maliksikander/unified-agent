@@ -64,7 +64,7 @@ export class SendSmsComponent implements OnInit {
     this.phoneNumberFieldSubscriber = this.smsForm.get("phoneControl").valueChanges.subscribe((phoneNumber) => {
       if (phoneNumber != null && phoneNumber != "" && phoneNumber != undefined) {
         this.formatePhoneNumber(phoneNumber);
-      }else{
+      } else {
         this.userData = [];
       }
     });
@@ -160,46 +160,57 @@ export class SendSmsComponent implements OnInit {
 
 
   sendSMS() {
-    let message = {
-      id: uuidv4(),
-      header: {
-        channelData: {
-          channelCustomerIdentifier: this.smsForm.get("phoneControl").value,
-          serviceIdentifier: this.SMSServiceIdentifier,
-          additionalAttributes: [{ key: 'messageDirection', value: 'outbound', type: 'String2000' }]
+
+    if (this.SMSServiceIdentifier) {
+
+      let message = {
+        id: uuidv4(),
+        header: {
+          channelData: {
+            channelCustomerIdentifier: this.smsForm.get("phoneControl").value,
+            serviceIdentifier: this.SMSServiceIdentifier,
+            additionalAttributes: [{ key: 'messageDirection', value: 'outbound', type: 'String2000' }]
+          },
+          sender: {
+            id: this._cacheService.agent.id,
+            senderName: this._cacheService.agent.firstName,
+            type: "AGENT"
+          },
+          customer: this.identifiedCustomer ? this.identifiedCustomer : null
         },
-        sender: {
-          id: this._cacheService.agent.id,
-          senderName: this._cacheService.agent.firstName,
-          type: "AGENT"
-        },
-        customer: this.identifiedCustomer ? this.identifiedCustomer : null
-      },
-      body: {
-        type: "PLAIN",
-        markdownText: this.smsForm.get("textAreaControl").value
-      }
-    };
+        body: {
+          type: "PLAIN",
+          markdownText: this.smsForm.get("textAreaControl").value
+        }
+      };
 
-    this._httpService.sendOutboundSms(message).subscribe((res) => {
+      this._httpService.sendOutboundSms(message).subscribe((res) => {
 
-      if (message.header.customer == null || message.header.customer == "" || message.header.customer == undefined) {
-        message['header']['customer'] = res.additionalDetails.customer;
-      }
+        if (message.header.customer == null || message.header.customer == "" || message.header.customer == undefined) {
+          message['header']['customer'] = res.additionalDetails.customer;
+          this.openSuccessDialog({ newProfileCreated: true, customer: message.header.customer, sentNumber: message.header.channelData.channelCustomerIdentifier })
 
-      this.openSuccessDialog({ customer: message.header.customer, sentNumber: message.header.channelData.channelCustomerIdentifier })
+        } else {
+          this.openSuccessDialog({ newProfileCreated: false, customer: message.header.customer, sentNumber: message.header.channelData.channelCustomerIdentifier })
+
+        }
 
 
 
-      this._httpService.saveActivies(message).subscribe((res) => {
-        console.log("this party activity saved ", res);
-      })
 
-    }, (error) => {
+        this._httpService.saveActivies(message).subscribe((res) => {
+          console.log("this party activity saved ", res);
+        })
 
-      this._snackbarService.open(error.error.description, "err");
+      }, (error) => {
 
-    });
+        this._snackbarService.open(error.error.description, "err");
+
+      });
+
+    } else {
+      this._snackbarService.open("unable to fetch service identifier, messages cant be sent ", "err");
+    }
 
   }
 
@@ -265,8 +276,8 @@ export class SendSmsComponent implements OnInit {
   <div class="custom-sms-notification">
       <mat-icon>check_circle</mat-icon>
       <span class="main-notify"><strong>SMS sent successfully </strong>
-           The SMS has been sent to the <span *ngIf="data.info.customer.isAnonymous == true">new</span> customer <b>"{{data.info.customer.firstName}}"</b> on this number {{data.info.sentNumber}}.<br/> 
-          <span *ngIf="data.info.customer.isAnonymous == true"> To update the customer profile, <button class="update-new-profile" (click)="updateUser()"> click here</button></span>
+           The SMS has been sent to the <span *ngIf="data.info.newProfileCreated == true">new</span> customer <b>"{{data.info.customer.firstName}}"</b> on this number {{data.info.sentNumber}}.<br/> 
+          <span *ngIf="data.info.newProfileCreated == true"> To update the customer profile, <button class="update-new-profile" (click)="updateUser()"> click here</button></span>
       </span>
       
       <button mat-button color="primary" (click)="dismiss()"></button>
@@ -277,8 +288,6 @@ export class SendSmsComponent implements OnInit {
 export class SendSmsSnackbarComponent {
   constructor(
     @Inject(MAT_SNACK_BAR_DATA) public data, private dialog: MatDialog) {
-
-    console.log("data from commp ", data);
 
   }
 
