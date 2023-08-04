@@ -372,6 +372,7 @@ export class socketService {
           cimEvent.data.body.type.toLowerCase() == "comment" &&
           cimEvent.data.body.itemType.toLowerCase() == "delete") {
           this.processCommentActions(sameTopicConversation.messages, cimEvent.data);
+         
         }
         if (
           cimEvent.name.toLowerCase() == "agent_message" &&
@@ -401,11 +402,11 @@ export class socketService {
           } 
         } else {
 
-          // Condition added to handle the user deleted functionality for the INSTAGRAM/ to get Permissions
-          if(cimEvent.data.body.type.toLowerCase()=="comment" && cimEvent.data.body.itemType.toLowerCase()!="delete") {
+          // Condition added to handle the user deleted functionality for the INSTAGRAM/Permissions
+          if(cimEvent.data.body.type.toLowerCase()=="comment" && cimEvent.data.body.itemType.toLowerCase()=="delete") {
+          } else {
             sameTopicConversation.messages.push(cimEvent.data);
           }
-         
         }
 
         sameTopicConversation.unReadCount ? undefined : (sameTopicConversation.unReadCount = 0);
@@ -1697,14 +1698,18 @@ export class socketService {
   }
 
   processCommentActions(cimMessages, message) {
+    //console.log("here are the messages", message)
+    console.log("and the cim message", cimMessages)
     if (["like", "hide", "delete"].includes(message.body.itemType.toLowerCase())) {
       let commentMessage = this.getCimMessageByMessageId(cimMessages, message.header.replyToMessageId);
+      console.log("comment message", commentMessage)
       if (commentMessage) {
         if (message.body.itemType.toLowerCase() == "like") {
           commentMessage["isLiked"] = true;
         } else if (message.body.itemType.toLowerCase() == "hide") {
           commentMessage["isHidden"] = true;
         } else if (message.body.itemType.toLowerCase() == "delete") {
+          
           commentMessage["isDeleted"] = true;
         }
       }
