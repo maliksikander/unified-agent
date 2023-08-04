@@ -124,8 +124,6 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
         this.countUnreadAnnouncements()
       }
     })
-
-    this.getAgentDeskSettings();
   }
 
   ngAfterViewInit() {
@@ -175,34 +173,6 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
       }
     );
   }
-
-getAgentDeskSettings(){
-
-  if (this._cacheService.agent.id) {
-    this._httpService.getConversationSettings().subscribe(
-      (e) => {
-        console.log(e,"getting agent desk settingz");
-        this.agentDeskSettingResp=e;
-        //this.isOutboundEnabled = e.isOutboundSmsEnabled;
-        //console.log(resp.isOutboundSmsEnabled,"this.isOutboundEnabled")
-        // if (e.theme == "dark") {
-        //   this.themeSwitch(true);
-        // }
-        // this.setAgentPreferedlanguage(e.language);
-      },
-      (error) => {
-        this._sharedService.Interceptor(error.error, "err");
-        console.error("error getting agent settings", error);
-      }
-    );
-   
-
-
-  }
-
-
-
-}
 
 
   getAgentSettings() {

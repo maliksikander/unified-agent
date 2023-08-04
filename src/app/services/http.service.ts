@@ -10,9 +10,6 @@ import { cacheService } from "./cache.service";
 export class httpService {
   apiEndpoints;
   supervisorId ;
-  mockurl = "https://57be0c49-6ed4-469c-a93a-13f49e48e8c2.mock.pstmn.io";
-  url="https://76e11bc7-12a4-4f1c-8fa4-a77bb023fe19.mock.pstmn.io";
-  url2="https://cim-dev.expertflow.com/conversation-manager"
 
   constructor(public _appConfigService: appConfigService, private _httpClient: HttpClient) {
     this.apiEndpoints = {
@@ -530,7 +527,17 @@ getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
       }
     );
   }
+  getInstaPostData(postId, accessToken, INSTHOSTAPI) : Observable<any> {
+    return this._httpClient.get<any> (
+      `${INSTHOSTAPI}/${postId}?access_token=${accessToken}&limit=4&order=reverse_chronological&fields=id,ig_id,is_comment_enabled,media_type,media_url,owner,timestamp,username,comments,caption`,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }
+    )
 
+  }
   ccmVOICEChannelSession(data): Observable<any> {
     return this._httpClient.post<any>(`${this._appConfigService.config.CCM_URL}${this.apiEndpoints.ccmChannelSession}`, data, {
       headers: new HttpHeaders({

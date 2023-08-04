@@ -98,6 +98,7 @@ import { checkOutboundCallPipe } from "./pipes/checkOutboundCall.pipe";
 import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
 import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements.pipe";
 import { getMatchedStringPipe } from "./pipes/getMatchedString.pipe";
+import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
 
 @NgModule({
   declarations: [
@@ -110,6 +111,7 @@ import { getMatchedStringPipe } from "./pipes/getMatchedString.pipe";
     ibsformatPipe,
     getSenderNamePipe,
     SearchPipe,
+    SearchSuggestionsPipe,
     sentenceCasePipe,
     convertToFormDataPipe,
     getFirstTwoLettersPipe,
@@ -276,6 +278,7 @@ import { getMatchedStringPipe } from "./pipes/getMatchedString.pipe";
     NgxMatNativeDateModule,
     NgxMatTimepickerModule,
     SearchPipe,
+    SearchSuggestionsPipe,
     getSenderNamePipe,
     sentenceCasePipe,
     convertToFormDataPipe,

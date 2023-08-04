@@ -24,7 +24,7 @@ export class SendSmsComponent implements OnInit {
   limit = 25;
   userData: any = []
   SMSServiceIdentifier;
-  defaultPrefixOutbound = "+92"
+  defaultPrefixOutbound = '';
   identifiedCustomer = null;
   phoneNumber;
   phoneNumberFieldSubscriber;
@@ -42,6 +42,8 @@ export class SendSmsComponent implements OnInit {
   }
 
   ngOnInit() {
+
+   this.defaultPrefixOutbound = this._sharedService.conversationSettings.prefixCode;
 
     this.smsForm = this.fb.group({
 
@@ -199,7 +201,6 @@ export class SendSmsComponent implements OnInit {
 
 
         this._httpService.saveActivies(message).subscribe((res) => {
-          console.log("this party activity saved ", res);
         })
 
       }, (error) => {
@@ -254,7 +255,7 @@ export class SendSmsComponent implements OnInit {
     let snackBar: MatSnackBarRef<SendSmsSnackbarComponent>;
 
     snackBar = this.snackBar.openFromComponent(SendSmsSnackbarComponent, {
-      duration: 500000,
+      duration: 5000,
       panelClass: ['chat-success-snackbar', 'send-sms-notify'],
       horizontalPosition: 'right',
       verticalPosition: 'bottom',
