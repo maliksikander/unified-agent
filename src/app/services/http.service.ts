@@ -33,7 +33,7 @@ export class httpService {
       ccmChannelSession: "/message/receive",
       tasks: "/tasks",
       getAllMRDs: "/media-routing-domains",
-      defaultOutboundChannel: "/channels/defaultoutbound",
+      defaultOutboundChannel: "/channels/default-outbound",
       announcement: "/announcement",
       announcementSeenBy:"/announcement/seenStatus",
       sendSms:"/message/send",
@@ -45,7 +45,7 @@ export class httpService {
   ////////////////////////////  OutBound SMS ////////////////////////////////////////////
 
   sendOutboundSms(obj): Observable<any> {
-    return this._httpClient.post<any>(`${this.url}${this.apiEndpoints.sendSms}`, obj, {
+    return this._httpClient.post<any>(`${this._appConfigService.config.CCM_URL}${this.apiEndpoints.sendSms}`, obj, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })

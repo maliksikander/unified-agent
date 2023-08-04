@@ -2492,6 +2492,12 @@ vg-controls.hide {
   }
 }
 
+.not-same-sender{
+  .profile-pic {
+    visibility:visible !important;
+  }
+}
+
 
 .quoted-reply-time {
   display: inline-block;

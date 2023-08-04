@@ -62,7 +62,11 @@ export class SendSmsComponent implements OnInit {
     this.fetchSMSServiceIdentifier();
 
     this.phoneNumberFieldSubscriber = this.smsForm.get("phoneControl").valueChanges.subscribe((phoneNumber) => {
-      this.formatePhoneNumber(phoneNumber);
+      if (phoneNumber != null && phoneNumber != "" && phoneNumber != undefined) {
+        this.formatePhoneNumber(phoneNumber);
+      }else{
+        this.userData = [];
+      }
     });
 
 
@@ -73,30 +77,30 @@ export class SendSmsComponent implements OnInit {
     const SMSChannelType = this._sharedService.channelTypeList.find((channelType) => { return channelType.name.toLowerCase() == "sms" });
 
     if (SMSChannelType) {
-      this._httpService.getDefaultOutboundChannel(SMSChannelType.id).subscribe(res => {
+      this._httpService.getDefaultOutboundChannel(SMSChannelType.id).subscribe((res) => {
 
         this.SMSServiceIdentifier = res.serviceIdentifier;
 
-      });
+      }, (error) => { this._snackbarService.open("unable to fetch service identifier, messages cant be sent ", "err") });
     }
 
 
   }
 
   formatePhoneNumber(phoneNumber) {
-    setTimeout(() => {
-      let plusExists = false;
-      this.smsForm.get("phoneControl").setValue('', { emitEvent: false });
-      if (phoneNumber[0] == '+') {
-        plusExists = true;
-      }
-      phoneNumber = phoneNumber.replace(/\D/g, '').replace(/\s/g, '');
-      if (plusExists) {
-        phoneNumber = '+' + phoneNumber;
-      }
-      this.phoneNumber = this.applyPrefix(phoneNumber);
-      this.smsForm.get("phoneControl").setValue(this.phoneNumber, { emitEvent: false });
-    }, 100);
+    //   setTimeout(() => {
+    let plusExists = false;
+    this.smsForm.get("phoneControl").setValue('', { emitEvent: false });
+    if (phoneNumber[0] == '+') {
+      plusExists = true;
+    }
+    phoneNumber = phoneNumber.replace(/\D/g, '').replace(/\s/g, '');
+    if (plusExists) {
+      phoneNumber = '+' + phoneNumber;
+    }
+    this.phoneNumber = this.applyPrefix(phoneNumber);
+    this.smsForm.get("phoneControl").setValue(this.phoneNumber, { emitEvent: false });
+    // }, 100);
   }
 
   applyPrefix(phoneNumber) {
@@ -130,6 +134,7 @@ export class SendSmsComponent implements OnInit {
   }
 
   getCustomers(limit, offSet, sort, query) {
+    this.userData = [];
     this._httpService.getCustomers(limit, offSet, sort, query).subscribe((e) => {
       this.userData = e.docs;
     });
@@ -168,7 +173,7 @@ export class SendSmsComponent implements OnInit {
           senderName: this._cacheService.agent.firstName,
           type: "AGENT"
         },
-        customer: this.identifiedCustomer
+        customer: this.identifiedCustomer ? this.identifiedCustomer : null
       },
       body: {
         type: "PLAIN",
@@ -192,7 +197,7 @@ export class SendSmsComponent implements OnInit {
 
     }, (error) => {
 
-      this._snackbarService.open("unable to delivered the message, please try again", "err");
+      this._snackbarService.open(error.error.description, "err");
 
     });
 
