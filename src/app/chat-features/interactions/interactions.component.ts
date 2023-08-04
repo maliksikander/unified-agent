@@ -1185,20 +1185,23 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  // getInstaPostAndComments(postId, selectedCommentId, accessToken, INSTHOSTAPI) {
-  //   this._httpService.getInstaPostData(postId, accessToken, INSTHOSTAPI).subscribe(
-  //     (res: any) => {
-  //       this.postData = res;
-  //       this.postComments = res;
-  //       this.fullPostView = true;
-  //       this.selectedCommentId = selectedCommentId;
-  //     },
-  //     (error) => {
-  //       this._sharedService.Interceptor(error.error, "err");
-  //       console.error("err [getPost]", error.error);
-  //     }
-  //   );
-  // }
+  getInstaPostAndComments(postId, selectedCommentId, accessToken, INSTHOSTAPI) {
+    this._httpService.getInstaPostData(postId, accessToken, INSTHOSTAPI).subscribe(
+     
+      (res: any) => {
+        this.postData = res;
+        this.postComments = res;
+        this.fullPostView = true;
+        console.log("here is the data ", this.postData)
+        this.selectedCommentId = selectedCommentId;
+      },
+      (error) => {
+        this._sharedService.Interceptor(error.error, "err");
+        console.error("err [getPost]", error.error);
+      }
+    );
+  }
+  
 
   //the below function will check for some keys and call another function which will fetch post data with comments
   getFullViewPostData(channelSession, postId, selectedCommentId) {
@@ -1218,22 +1221,23 @@ export class InteractionsComponent implements OnInit {
         if (item.key == "FACEBOOK-HOST-URL") {
           FBHOSTAPI = item.value;
         }
-        // if (item.key == "INSTAGRAM-API-KEY") {
-        //   instaAccessToken = item.value;
-        // }
-        // if (item.key == "INSTAGRAM-HOST-URL") {
-        //   INSTHOSTAPI = item.value;
-        // }
+        if (item.key == "INSTAGRAM-API-KEY") {
+          instaAccessToken = item.value;
+        }
+        if (item.key == "INSTAGRAM-HOST-URL") {
+          INSTHOSTAPI = item.value;
+        }
       });
       if (accessToken && FBHOSTAPI) {
 
         this.getPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
 
       }
-      // else if (instaAccessToken && INSTHOSTAPI) {
+      else if (instaAccessToken && INSTHOSTAPI) {
+        console.log("I am in the else part")
 
-      //   this.getInstaPostAndComments(postId, selectedCommentId, instaAccessToken, INSTHOSTAPI);
-      // }
+        this.getInstaPostAndComments(postId, selectedCommentId, instaAccessToken, INSTHOSTAPI);
+      }
 
       else {
         this._snackbarService.open(this._translateService.instant("snackbar.Access-Token-or-FB-Host-API-for-FB-is-missing"), "err");

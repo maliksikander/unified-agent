@@ -1227,7 +1227,8 @@
                             <!-- <strong>{{ postData?.from?.name }} <span>Posted on {{ postData?.from?.name }}</span> </strong> -->
                           </div>
                           <div class="post-info">
-                            <span><img src="assets/images/facebook-colored.svg" /> {{ postData?.from?.name }}</span>
+                            <span><img src="assets/images/facebook-colored.svg" /> {{ postData?.socialMediaPost
+                              ?.username }}</span>
                             <mat-icon (click)="fullPostView = false; selectedCommentId = null">close</mat-icon>
                           </div>
                         </div>
@@ -1280,9 +1281,10 @@
                                 <img src="assets/images/dummy-user.svg" />
                               </span>
                               <span class="post-page-info">
-                                <strong>{{ postData?.from?.name }}</strong>
+                                <strong>{{ postData?.socialMediaPost?.username }}</strong>
                                 <small>
-                                  {{ postData.created_time | date: "shortTime" }}
+                                  {{ postData.socialMediaPost.timestamp
+                                  | date: "shortTime" }}
                                 </small>
                               </span>
                             </div>
@@ -1348,15 +1350,16 @@
                             <p>
                               <span [innerHTML]="
                                   conversationSettings.isMessageFormattingEnabled
-                                    ? (postData?.message | linkify | ibsformat)
-                                    : (postData?.message | linkify)
+                                    ? (postData?.socialMediaPost.text | linkify | ibsformat)
+                                    : (postData?.socialMediaPost.text | linkify)
                                 "></span>
                             </p>
-                            <div *ngFor="let post of postData.data?.attachments?.data">
+                            <div *ngFor="let post of postData.socialMediaPost?.attachment?.data">
 
                               <div class="shared-url shared-card-content video-player p-0"
-                                *ngIf="post.type.includes('video') || post.type == 'animated_image_autoplay'">
-                                <div class="media-main" *ngIf="post?.media.source">
+                                *ngIf="post.mimeType.includes('video') || post.mimeType == 'animated_image_autoplay'">
+                                <!------check here about the post?.url?.source.-->
+                                <div class="media-main" *ngIf="post?.mediaUrl">
                                   <vg-player>
                                     <vg-overlay-play></vg-overlay-play>
                                     <vg-buffering></vg-buffering>
@@ -1375,7 +1378,7 @@
                                       <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
                                     </vg-controls>
                                     <video #media [vgMedia]="media" id="{{ message.id }}" preload="auto">
-                                      <source src="{{ post?.media?.source }}" />
+                                      <source src="{{ post?.mediaUrl }}" />
                                     </video>
                                   </vg-player>
                                 </div>
@@ -1408,21 +1411,22 @@
                         <!-------------------------- SUB COMMENTS -------------------------------->
 
                         <div class="post-sub-comments-area"
-                          *ngIf="fullPostView && postComments && message.id == selectedCommentId">
+                          *ngIf="fullPostView && message.id == selectedCommentId">
                           <div class="total-comment-count"></div>
-                          <div class="post-sub-comments" *ngFor="let postComments of postComments?.data">
+                          <p>hello here Ia m</p>
+                          <div class="post-sub-comments" *ngFor="let postComments of postData?.socialMediaPost?.comments">
                             <div class="sub-profile-picture">
                               <img src="assets/images/dummy-user.svg" />
                             </div>
                             <div class="sub-comment">
-                              <strong>{{ postComments?.from?.name }}</strong>
+                              <strong>{{ postComments?.username }}</strong>
                               <div>
                                 <div>
                                   <p>
                                     <span [innerHTML]="
                                         conversationSettings.isMessageFormattingEnabled
-                                          ? (postComments.message | linkify | ibsformat)
-                                          : (postComments.message | linkify)
+                                          ? (postComments.text | linkify | ibsformat)
+                                          : (postComments.text | linkify)
                                       "></span>
                                   </p>
                                   <div class="shared-url shared-card-content video-player p-0" *ngIf="
@@ -1470,7 +1474,7 @@
                                   <mat-icon></mat-icon>
                                 </span>
                                 <span class="message-stamp">
-                                  <span class="chat-time">{{ postComments.created_time | date: "shortTime" }}</span>
+                                  <span class="chat-time">{{ postComments.timestamp | date: "shortTime" }}</span>
                                 </span>
                               </div>
                             </div>
@@ -1562,7 +1566,8 @@
                                   <li>
                                     <mat-icon (click)="replyToComment(message)"> chat_bubble_outline</mat-icon>
                                   </li>
-                                  <li *ngIf="message.header.channelSession.channel.channelType.name.includes('FACEBOOK')">
+                                  <li
+                                    *ngIf="message.header.channelSession.channel.channelType.name.includes('FACEBOOK')">
                                     <mat-icon [ngClass]="{ 'liked': message.isLiked }"
                                       (click)="commentAction(message, 'like')">
                                       thumb_up

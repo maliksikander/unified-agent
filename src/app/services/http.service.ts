@@ -511,7 +511,7 @@ getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
   }
   getInstaPostData(postId, accessToken, INSTHOSTAPI) : Observable<any> {
     return this._httpClient.get<any> (
-      `${INSTHOSTAPI}/${postId}?access_token=${accessToken}&limit=4&order=reverse_chronological&fields=id,ig_id,is_comment_enabled,media_type,media_url,owner,timestamp,username,comments,caption`,
+      `https://724e173a-40c3-4bb7-b968-81148aba2e52.mock.pstmn.io/getData`,
       {
         headers: new HttpHeaders({
           "Content-Type": "application/json"
