@@ -71,7 +71,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     private _router: Router,
     public _cacheService: cacheService,
     private _socketService: socketService,
-    private _sharedService: sharedService,
+    public _sharedService: sharedService,
     public _finesseService: finesseService,
     public _sipService: SipService,
     public _appConfigService:appConfigService,
