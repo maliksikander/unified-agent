@@ -333,7 +333,7 @@
                 }} {{ message.header.status == 'sending' ? 'low-opacity' : message.header.status == 'failed' ? 'failed' : '' }}  {{
                   message.body.type | lowercase
                 }} {{ message.header.replyToMessageId != null ? 'quoted-message-main' : '' }} {{ message.header.sender.type | lowercase }} {{
-                  fullPostView && message.id == selectedCommentId ? 'full-post-view' : ''
+                  fullPostView && 'full-post-view'
                 }}" [ngClass]="
                   (message.header.sender.type | lowercase) == 'customer' || (message.body.type | lowercase) == 'voice'
                     ? 'user-message slide-in-left'
@@ -1222,7 +1222,7 @@
                       *ngIf="(message.body.type | lowercase) == 'comment' && (message.header.sender.type | lowercase) == 'customer'">
                       <div class="post-main-area">
                         <div class="post-message-header"
-                          *ngIf="fullPostView && postData && message.id == selectedCommentId">
+                          *ngIf="fullPostView && postData">
                           <div class="post-by">
                             <!-- <strong>{{ postData?.from?.name }} <span>Posted on {{ postData?.from?.name }}</span> </strong> -->
                           </div>
@@ -1265,7 +1265,7 @@
                                   <mat-icon (click)="commentAction(message, 'hide')"> visibility_off</mat-icon>
                                 </li>
                                 <li class="view-post"
-                                  (click)="getFullViewPostData(message.header.channelSession, message.body.postId, message.id)">
+                                  (click)="getFullPostViewData(message.header.channelSession.channel.serviceIdentifier, message.body.postId, message.id)">
                                   {{ "chat-features.interactions.view-full-post" | translate }}
                                 </li>
                               </ul>
@@ -1279,7 +1279,7 @@
 
                         <!--------------------------  FB POST HEADER STARTED------------------------------------>
 
-                        <div class="post-full-view" *ngIf="fullPostView && postData && message.id == selectedCommentId">
+                        <div class="post-full-view" *ngIf="fullPostView && postData">
                           <div class="main-post-content">
                             <div class="post-header">
                               <span class="post-page-showcase">
@@ -1350,7 +1350,7 @@
 
                         <!-------------------------- FULL POST STARTED -------------------------------->
 
-                        <div class="main-comment" *ngIf="fullPostView && message.id == selectedCommentId">
+                        <div class="main-comment" *ngIf="fullPostView">
                           <div class="post-inner-content">
                             <p>
                               <span [innerHTML]="
@@ -1415,14 +1415,14 @@
                         <!-------------------------- SUB COMMENTS -------------------------------->
 
                         <div class="post-sub-comments-area"
-                          *ngIf="fullPostView && message.id == selectedCommentId">
+                          *ngIf="fullPostView">
                           <div class="total-comment-count"></div>
                           <div class="post-sub-comments" *ngFor="let postComments of postData?.socialMediaPost?.comments">
                             <div class="sub-profile-picture">
                               <img src="assets/images/dummy-user.svg" />
                             </div>
                             <div class="sub-comment">
-                              <strong>{{ postComments?.username }}</strong>
+                              <strong>{{ postData?.socialMediaPost.username }}</strong>
                               <div>
                                 <div>
                                   <p>

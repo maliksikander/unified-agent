@@ -1186,13 +1186,12 @@ export class InteractionsComponent implements OnInit {
   }
 
   getInstaPostAndComments(postId, selectedCommentId, accessToken, INSTHOSTAPI) {
-    this._httpService.getInstaPostData(postId, accessToken, INSTHOSTAPI).subscribe(
+    this._httpService.getInstaPostData(postId, accessToken).subscribe(
      
       (res: any) => {
         this.postData = res;
         this.postComments = res;
         this.fullPostView = true;
-        console.log("here is the data ", this.postData)
         this.selectedCommentId = selectedCommentId;
       },
       (error) => {
@@ -1208,8 +1207,23 @@ export class InteractionsComponent implements OnInit {
 
   }
 
+  getFullPostViewData(serviceIdentifier, postId, messageId) {
+    this._httpService.getInstaPostData(postId, serviceIdentifier, ).subscribe(
+     
+      (res: any) => {
+        this.postData = res;
+        this.fullPostView = true;
+        console.log("here is the data ", this.postData)
+      },
+      (error) => {
+        this._sharedService.Interceptor(error.error, "err");
+        console.error("err [getPost]", error.error);
+      }
+    );
+  }
   //the below function will check for some keys and call another function which will fetch post data with comments
   getFullViewPostData(channelSession, postId, selectedCommentId) {
+    console.log(channelSession, postId, selectedCommentId)
     let accessToken = null;
     let instaAccessToken = null
     let FBHOSTAPI = null;

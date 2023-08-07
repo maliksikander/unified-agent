@@ -509,16 +509,16 @@ getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
       }
     );
   }
-  getInstaPostData(postId, accessToken, INSTHOSTAPI) : Observable<any> {
+  getInstaPostData(postId, serviceIdentifier) : Observable<any> {
+    //https://expertflow.postman.co/workspace/Expertflow~f8480e26-6001-4a5f-8435-d0adbf5d7f5c/request/8262326-85e2374a-2aab-4ea2-b2da-907101b94f35
     return this._httpClient.get<any> (
-      `https://724e173a-40c3-4bb7-b968-81148aba2e52.mock.pstmn.io/getData`,
+      `${this._appConfigService.config.CCM_URL}/social-media-post?postId=${postId}&serviceIdentifier=${serviceIdentifier}&limit=6`,
       {
         headers: new HttpHeaders({
           "Content-Type": "application/json"
         })
       }
     )
-
   }
   ccmVOICEChannelSession(data): Observable<any> {
     return this._httpClient.post<any>(`${this._appConfigService.config.CCM_URL}${this.apiEndpoints.ccmChannelSession}`, data, {
