@@ -48,7 +48,7 @@ export class SendSmsComponent implements OnInit {
     this.smsForm = this.fb.group({
 
 
-      phoneControl: ['',
+      phoneControl: [this.defaultPrefixOutbound,
         [
           Validators.required,
           Validators.pattern("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$"),
@@ -60,7 +60,7 @@ export class SendSmsComponent implements OnInit {
     });
 
     // this.getAgentDeskSettings();
-
+//hello All
     this.fetchSMSServiceIdentifier();
 
     this.phoneNumberFieldSubscriber = this.smsForm.get("phoneControl").valueChanges.subscribe((phoneNumber) => {
@@ -175,7 +175,7 @@ export class SendSmsComponent implements OnInit {
           },
           sender: {
             id: this._cacheService.agent.id,
-            senderName: this._cacheService.agent.firstName,
+            senderName: this._cacheService.agent.username,
             type: "AGENT"
           },
           customer: this.identifiedCustomer ? this.identifiedCustomer : null
@@ -255,7 +255,7 @@ export class SendSmsComponent implements OnInit {
     let snackBar: MatSnackBarRef<SendSmsSnackbarComponent>;
 
     snackBar = this.snackBar.openFromComponent(SendSmsSnackbarComponent, {
-      duration: 5000,
+      duration: 10000,
       panelClass: ['chat-success-snackbar', 'send-sms-notify'],
       horizontalPosition: 'right',
       verticalPosition: 'bottom',
