@@ -92,7 +92,8 @@
     "Announcement-Updated":"Announcement Updated_spa",
     "Unable-to-Create-New-Announcement":"Unable to Create New Announcement_spa",
     "Unable-to-Update-Announcement":"Unable to Update Announcement_spa",
-    "Unable-to-Delete-Announcement":"Unable to Delete Announcement_spa"
+    "Unable-to-Delete-Announcement":"Unable to Delete Announcement_spa",
+    "unable-to-fetch-service-identifier-messages-cant-be-sent":"Unable to fetch service identifier, messages cant be sent_spa"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_spa",
@@ -154,6 +155,18 @@
     "no-data-available": "No Data Available_spa"
   },
   "chat-features": {
+    "send-sms":{
+      "info":"SEND SMS_spa",
+      "channel-identity":"Channel Identity_spa",
+      "type-sms":"Type SMS_spa",
+      "invalid-text":"invalid text_spa",
+      "not-empty":"This field can't be empty_spa",
+      "invalid-pattern":"Invalid pattern_spa",
+      "number-should-be-in-range-3-to-15":"number should be in range 3 to 15_spa",
+      "discard":"Discard_spa",
+      "send-sms":"Send SMS_spa"
+    },
+    
     "customer-info": {
       "info": "Customer Info_spa",
       "customer-profile": " Customer Profile_spa",

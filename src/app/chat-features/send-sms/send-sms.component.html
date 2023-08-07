@@ -1,27 +1,27 @@
 <div class="message-dialog-main announcement-dialog-main">
   <div class="dialog-header">
-    <h4>Send SMS</h4>
+    <h4>{{'chat-features.send-sms.info'  | translate }}</h4>
     <button mat-icon-button><i class="material-icons" [mat-dialog-close]="true">close</i></button>
   </div>
   <div class="message-container mat-dialog-content m-0 p-0">
     <form [formGroup]="smsForm">
       <div class="new-message-form new-announcement-form">
         <div class="text-field message-field">
-          <label>Channel Identity</label><span class="icustomer"
+          <label>{{'chat-features.send-sms.channel-identity'  | translate }}</label><span class="icustomer"
             *ngIf="identifiedCustomer">[{{identifiedCustomer.firstName}}]</span>
           <mat-form-field appearance="outline">
             <input placeholder="Enter Phone Number" aria-label="Number" matInput formControlName="phoneControl"
               maxlength="20" minLength="3" [matAutocomplete]="auto" (keyup)="handleThrottledKeyUp()">
             <mat-error>
               <div *ngIf="smsForm.get('phoneControl').hasError('required')">
-                *This field can't be empty
+                *{{'chat-features.send-sms.not-empty'  | translate }}
               </div>
               <div *ngIf="smsForm.get('phoneControl').hasError('pattern')">
-                *Invalid pattern
+                *{{'chat-features.send-sms.invalid-pattern'  | translate }}
               </div>
               <div
                 *ngIf="smsForm.get('phoneControl').hasError('minlength') || smsForm.get('phoneControl').hasError('maxlength')">
-                *number should be in range 3 to 15
+                *{{'chat-features.send-sms.number-should-be-in-range-3-to-15'  | translate }}
               </div>
             </mat-error>
 
@@ -46,20 +46,20 @@
           </mat-form-field>
         </div>
         <div class="text-field message-field">
-          <label>Type SMS</label>
+          <label>{{'chat-features.send-sms.type-sms'  | translate }}</label>
           <mat-form-field appearance="outline">
             <textarea #message matInput formControlName="textAreaControl" maxlength="500"></textarea>
             <mat-error *ngIf="smsForm.get('textAreaControl').hasError('required')">
-              *invalid text
+              *{{'chat-features.send-sms.invalid-text'  | translate }}
             </mat-error>
           </mat-form-field>
         </div>
 
         <div class="message-trigger right-align">
-          <button mat-raised-button type="button" [mat-dialog-close]="true" class="discard-btn message-action">Discard
+          <button mat-raised-button type="button" [mat-dialog-close]="true" class="discard-btn message-action">{{'chat-features.send-sms.discard'  | translate }}
           </button>
           <button *ngIf="(smsForm.valid)" mat-raised-button type="button" class="send-message message-action ml-2"
-            (click)="sendSMS()">Send SMS</button>
+            (click)="sendSMS()">{{'chat-features.send-sms.send-sms'  | translate }}</button>
 
         </div>
       </div>

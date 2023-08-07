@@ -83,7 +83,7 @@ export class SendSmsComponent implements OnInit {
 
         this.SMSServiceIdentifier = res.serviceIdentifier;
 
-      }, (error) => { this._snackbarService.open("unable to fetch service identifier, messages cant be sent ", "err") });
+      }, (error) => { this._snackbarService.open(this._translateService.instant("snackbar.unable-to-fetch-service-identifier-messages-cant-be-sent"), "err") });
     }
 
 
@@ -210,7 +210,7 @@ export class SendSmsComponent implements OnInit {
       });
 
     } else {
-      this._snackbarService.open("unable to fetch service identifier, messages cant be sent ", "err");
+      this._snackbarService.open(this._translateService.instant("snackbar.unable-to-fetch-service-identifier-messages-cant-be-sent"), "err");
     }
 
   }

@@ -92,7 +92,8 @@
     "Announcement-Updated":"Announcement Updated_fr",
     "Unable-to-Create-New-Announcement":"Unable to Create New Announcement_fr",
     "Unable-to-Update-Announcement":"Unable to Update Announcement_fr",
-    "Unable-to-Delete-Announcement":"Unable to Delete Announcement_fr"
+    "Unable-to-Delete-Announcement":"Unable to Delete Announcement_fr",
+    "unable-to-fetch-service-identifier-messages-cant-be-sent":"Unable to fetch service identifier, messages cant be sent_fr"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_fr",
@@ -154,6 +155,18 @@
     "no-data-available": "No Data Available_fr"
   },
   "chat-features": {
+    "send-sms":{
+      "info":"SEND SMS_fr",
+      "channel-identity":"Channel Identity_fr",
+      "type-sms":"Type SMS_fr",
+      "invalid-text":"invalid text_fr",
+      "not-empty":"This field can't be empty_fr",
+      "invalid-pattern":"Invalid pattern_fr",
+      "number-should-be-in-range-3-to-15":"number should be in range 3 to 15_fr",
+      "discard":"Discard_fr",
+      "send-sms":"Send SMS_fr"
+    },
+    
     "customer-info": {
       "info": "Customer Info_fr",
       "customer-profile": " Customer Profile_fr",
