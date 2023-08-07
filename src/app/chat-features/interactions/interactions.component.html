@@ -1214,9 +1214,9 @@
                     </div>
                     <!-- <--------------------------------------------WRAP UP MESSAGE END-------------------------------------------->
 
-                    <!-- ---------------------------------- FB COMMENT STARTED -------------------------------- -->
+                    <!-- ---------------------------------- Social Media COMMENT STARTED -------------------------------- -->
 
-                    <!------------------------------------Facebook post comment type------------------------------------->
+                    <!------------------------------------Socila Media post comment type------------------------------------->
 
                     <div class="post-message-main"
                       *ngIf="(message.body.type | lowercase) == 'comment' && (message.header.sender.type | lowercase) == 'customer'">
@@ -1226,7 +1226,12 @@
                           <div class="post-by">
                             <!-- <strong>{{ postData?.from?.name }} <span>Posted on {{ postData?.from?.name }}</span> </strong> -->
                           </div>
-                          <div class="post-info">
+                          <div *ngIf="message.header.channelSession.channel.channelType.name === 'INSTAGRAM'" class="post-info">
+                            <span><img src="assets/images/instagram-color-icon.webp" /> {{ postData?.socialMediaPost
+                              ?.username }}</span>
+                            <mat-icon (click)="fullPostView = false; selectedCommentId = null">close</mat-icon>
+                          </div>
+                          <div *ngIf="message.header.channelSession.channel.channelType.name === 'FACEBOOK'" class="post-info">
                             <span><img src="assets/images/facebook-colored.svg" /> {{ postData?.socialMediaPost
                               ?.username }}</span>
                             <mat-icon (click)="fullPostView = false; selectedCommentId = null">close</mat-icon>
@@ -1354,12 +1359,12 @@
                                     : (postData?.socialMediaPost.text | linkify)
                                 "></span>
                             </p>
-                            <div *ngFor="let post of postData.socialMediaPost?.attachment?.data">
-
+                            <!----check here about the attatchment?.size..................size -->
+                            <div *ngFor="let post of postData.socialMediaPost?.attachment?.size">
                               <div class="shared-url shared-card-content video-player p-0"
                                 *ngIf="post.mimeType.includes('video') || post.mimeType == 'animated_image_autoplay'">
                                 <!------check here about the post?.url?.source.-->
-                                <div class="media-main" *ngIf="post?.mediaUrl">
+                                <div class="media-main" *ngIf="post?.mediaUrl"  (click) = "checking(post)">
                                   <vg-player>
                                     <vg-overlay-play></vg-overlay-play>
                                     <vg-buffering></vg-buffering>
@@ -1394,8 +1399,7 @@
                                   </ng-container>
                                 </ng-container>
                               </div>
-
-                              <p *ngIf="post.type == 'photo' || post?.type == 'animated_image_share'">
+                              <p *ngIf="post.type == 'image' || post?.type == 'animated_image_share'">
                                 <a style="cursor: pointer"
                                   (click)="externalfilePreviewOpener(post.media.image.src, post.type, 'image')"
                                   class="display-file display-image" [ngClass]="{ 'pt-2': postData.message }">
@@ -1413,7 +1417,6 @@
                         <div class="post-sub-comments-area"
                           *ngIf="fullPostView && message.id == selectedCommentId">
                           <div class="total-comment-count"></div>
-                          <p>hello here Ia m</p>
                           <div class="post-sub-comments" *ngFor="let postComments of postData?.socialMediaPost?.comments">
                             <div class="sub-profile-picture">
                               <img src="assets/images/dummy-user.svg" />

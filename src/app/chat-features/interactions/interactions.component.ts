@@ -1203,6 +1203,11 @@ export class InteractionsComponent implements OnInit {
   }
   
 
+  checking(message) {
+    console.log("here is the message", message)
+
+  }
+
   //the below function will check for some keys and call another function which will fetch post data with comments
   getFullViewPostData(channelSession, postId, selectedCommentId) {
     let accessToken = null;
@@ -1234,8 +1239,6 @@ export class InteractionsComponent implements OnInit {
 
       }
       else if (instaAccessToken && INSTHOSTAPI) {
-        console.log("I am in the else part")
-
         this.getInstaPostAndComments(postId, selectedCommentId, instaAccessToken, INSTHOSTAPI);
       }
 
