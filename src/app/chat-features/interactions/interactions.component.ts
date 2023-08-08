@@ -50,7 +50,7 @@ export class InteractionsComponent implements OnInit {
   fullPostView: boolean = false;
   selectedCommentId: string;
   lastSeenMessageId;
-  pastActivitiesloadedOnce:boolean=false;
+  pastActivitiesloadedOnce: boolean = false;
   // isTransfer = false;
   // isConsult = false;
   ctiBarView = true;
@@ -263,7 +263,7 @@ export class InteractionsComponent implements OnInit {
       this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-the-request"), "err");
     }
   }
-  
+
   //Quoted Reply
   onQuotedReply(message) {
     this.replyToMessageId = message.id;
@@ -271,7 +271,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   navigationToRepliedMessage(repliedMessage: any) {
-    if (repliedMessage && repliedMessage.id ) {
+    if (repliedMessage && repliedMessage.id) {
       const elementId = repliedMessage.id;
       const element = document.getElementById(elementId);
       if (element) {
@@ -620,6 +620,7 @@ export class InteractionsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => { });
   }
   externalfilePreviewOpener(url, fileName, type) {
+    console.log("here in the externalfilepreview")
     const dialogRef = this.dialog.open(FilePreviewComponent, {
       maxHeight: "100vh",
       maxWidth: "100%",
@@ -662,7 +663,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   isInstagramChannel(channel) {
-    if(this.replyToMessageId && this.privateMessageReply || this.replyToMessageId) {
+    if (this.replyToMessageId && this.privateMessageReply || this.replyToMessageId) {
       return channel.channelType.name === "INSTAGRAM";
     }
   }
@@ -675,7 +676,7 @@ export class InteractionsComponent implements OnInit {
 
         this.emitCimEvent(message, "AGENT_MESSAGE");
       } else {
-        if (this.replyToMessageId ) {
+        if (this.replyToMessageId) {
           message.header.replyToMessageId = this.replyToMessageId;
           this.replyToMessageId = null;
         }
@@ -686,12 +687,12 @@ export class InteractionsComponent implements OnInit {
             selectedChannelSession.channel.channelType.name.toLowerCase() == "instagram" ||
             selectedChannelSession.channel.channelType.name.toLowerCase() == "twitter")) {
             // If private reply icon is clicked then msgType would be private reply. 
-            if(this.privateMessageReply) {
+            if (this.privateMessageReply) {
               msgType = this.privateMessageReply
               this.privateMessageReply = null
             }
             message = this.constructCommentEvent(message, msgType, selectedChannelSession, fileMimeType, fileName, fileSize, text);
-            
+
             this.emitCimEvent(message, "AGENT_MESSAGE");
             this.commentId = null;
           } else {
@@ -758,7 +759,7 @@ export class InteractionsComponent implements OnInit {
   // to get past acitivities
   loadPastActivities(conversation) {
     try {
-      this.pastActivitiesloadedOnce=true;
+      this.pastActivitiesloadedOnce = true;
       this.loadingPastActivity = true;
 
       let limit = 25;
@@ -1146,50 +1147,12 @@ export class InteractionsComponent implements OnInit {
   }
 
   // getFBPost 
-  getPost(postId, selectedCommentId, accessToken, FBHOSTAPI) {
-    this._httpService.getFBPostData(postId, accessToken, FBHOSTAPI).subscribe(
-      (res: any) => {
-        this.postData = res;
-        this.fullPostView = true;
-        this.selectedCommentId = selectedCommentId;
-      },
-      (error) => {
-        this._sharedService.Interceptor(error.error, "err");
-        console.error("err [getPost]", error.error);
-      }
-    );
-  }
 
-  // getFBComments
-  getComments(postId, selectedCommentId, accessToken, FBHOSTAPI) {
-    this._httpService.getFBPostComments(postId, accessToken, FBHOSTAPI).subscribe(
-      (res: any) => {
-        this.postComments = res;
-        this.fullPostView = true;
-        this.selectedCommentId = selectedCommentId;
-      },
-      (error) => {
-        this._sharedService.Interceptor(error.error, "err");
-        console.error("err [getComments]", error.error);
-      }
-    );
-  }
 
-  //the function will fetch fb post and comments API parallel
-  getPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI) {
-    try {
-      this.getPost(postId, selectedCommentId, accessToken, FBHOSTAPI);
-      this.getComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
-    } catch (err) {
-      console.error("err [ getPostAndComments ] error while fetching post and comments", err);
-    }
-  }
-
-  // getInstaPostAndComments(postId, selectedCommentId, accessToken, INSTHOSTAPI) {
-  //   this._httpService.getInstaPostData(postId, accessToken, INSTHOSTAPI).subscribe(
+  // getPost(postId, selectedCommentId, accessToken, FBHOSTAPI) {
+  //   this._httpService.getFBPostData(postId, accessToken, FBHOSTAPI).subscribe(
   //     (res: any) => {
   //       this.postData = res;
-  //       this.postComments = res;
   //       this.fullPostView = true;
   //       this.selectedCommentId = selectedCommentId;
   //     },
@@ -1200,50 +1163,91 @@ export class InteractionsComponent implements OnInit {
   //   );
   // }
 
-  //the below function will check for some keys and call another function which will fetch post data with comments
-  getFullViewPostData(channelSession, postId, selectedCommentId) {
-    let accessToken = null;
-    let instaAccessToken = null
-    let FBHOSTAPI = null;
-    let INSTHOSTAPI = null
-    this.postComments = null;
-    this.postData = null;
-    this.fullPostView = false;
-    this.selectedCommentId = null;
-    if (channelSession) {
-      channelSession.channel.channelConnector.channelProviderConfigs.forEach((item) => {
-        if (item.key == "FACEBOOK-API-KEY") {
-          accessToken = item.value;
+  // getFBComments
+
+
+  // getComments(postId, selectedCommentId, accessToken, FBHOSTAPI) {
+  //   this._httpService.getFBPostComments(postId, accessToken, FBHOSTAPI).subscribe(
+  //     (res: any) => {
+  //       this.postComments = res;
+  //       this.fullPostView = true;
+  //       this.selectedCommentId = selectedCommentId;
+  //     },
+  //     (error) => {
+  //       this._sharedService.Interceptor(error.error, "err");
+  //       console.error("err [getComments]", error.error);
+  //     }
+  //   );
+  // }
+
+  //the function will fetch fb post and comments API parallel
+
+
+  // getPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI) {
+  //   try {
+  //     this.getPost(postId, selectedCommentId, accessToken, FBHOSTAPI);
+  //     this.getComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
+  //   } catch (err) {
+  //     console.error("err [ getPostAndComments ] error while fetching post and comments", err);
+  //   }
+  // }
+
+  fullPostViewData(serviceIdentifier, postId) {
+    if (serviceIdentifier && postId) {
+      this._httpService.getPostData(postId, serviceIdentifier).subscribe(
+
+        (res: any) => {
+          this.postData = res;
+          this.fullPostView = true;
+          this.selectedCommentId= this.postData.socialMediaPost.id
+          console.log("here is the data ", this.postData)
+        },
+        (error) => {
+          this._sharedService.Interceptor(error.error, "err");
+          console.error("err [getPost]", error.error);
         }
-        if (item.key == "FACEBOOK-HOST-URL") {
-          FBHOSTAPI = item.value;
-        }
-        // if (item.key == "INSTAGRAM-API-KEY") {
-        //   instaAccessToken = item.value;
-        // }
-        // if (item.key == "INSTAGRAM-HOST-URL") {
-        //   INSTHOSTAPI = item.value;
-        // }
-      });
-      if (accessToken && FBHOSTAPI) {
-
-        this.getPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
-
-      }
-      // else if (instaAccessToken && INSTHOSTAPI) {
-
-      //   this.getInstaPostAndComments(postId, selectedCommentId, instaAccessToken, INSTHOSTAPI);
-      // }
-
-      else {
-        this._snackbarService.open(this._translateService.instant("snackbar.Access-Token-or-FB-Host-API-for-FB-is-missing"), "err");
-        console.error("err [getFullViewPostData] accessToken or FB Host API for FB is missing");
-      }
+      );
     } else {
-      this._snackbarService.open(this._translateService.instant("snackbar.Channel-session-not-found"), "err");
-      console.error("err [getFullViewPostData] Channel session not found");
+      this._snackbarService.open(this._translateService.instant("serviceIdentifier-or-postId-for-Host-API-is-missing"), "err");
+      console.error("err [getFullViewPostData] serviceIdentifier or postId is missing");
     }
   }
+  //Commenting after the new API for facebook and Instagram
+
+  
+  // getFullViewPostData(channelSession, postId, selectedCommentId) {
+  //   console.log(channelSession, postId, selectedCommentId)
+  //   let accessToken = null;
+  //   let instaAccessToken = null
+  //   let FBHOSTAPI = null;
+  //   let INSTHOSTAPI = null
+  //   this.postComments = null;
+  //   this.postData = null;
+  //   this.fullPostView = false;
+  //   this.selectedCommentId = null;
+  //   if (channelSession) {
+  //     channelSession.channel.channelConnector.channelProviderConfigs.forEach((item) => {
+  //       if (item.key == "FACEBOOK-API-KEY") {
+  //         accessToken = item.value;
+  //       }
+  //       if (item.key == "FACEBOOK-HOST-URL") {
+  //         FBHOSTAPI = item.value;
+  //       }
+  //     });
+  //     if (accessToken && FBHOSTAPI) {
+
+  //       this.getPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
+
+  //     }
+  //     else {
+  //       this._snackbarService.open(this._translateService.instant("snackbar.Access-Token-or-FB-Host-API-for-FB-is-missing"), "err");
+  //       console.error("err [getFullViewPostData] accessToken or FB Host API for FB is missing");
+  //     }
+  //   } else {
+  //     this._snackbarService.open(this._translateService.instant("snackbar.Channel-session-not-found"), "err");
+  //     console.error("err [getFullViewPostData] Channel session not found");
+  //   }
+  // }
 
   // getCustomerAni(callLegs:Array<any>){
   //   console.log("data-->",callLegs)
