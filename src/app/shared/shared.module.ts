@@ -100,6 +100,7 @@ import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements
 import {  returnSchemaByKeyPipe } from "./pipes/returnSchemaByKey.pipe";
 import {  returnSchemaByChannelTypePipe } from "./pipes/returnSchemaByChannelType.pipe";
 
+import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
 
 @NgModule({
   declarations: [
@@ -112,6 +113,7 @@ import {  returnSchemaByChannelTypePipe } from "./pipes/returnSchemaByChannelTyp
     ibsformatPipe,
     getSenderNamePipe,
     SearchPipe,
+    SearchSuggestionsPipe,
     sentenceCasePipe,
     convertToFormDataPipe,
     getFirstTwoLettersPipe,
@@ -279,6 +281,7 @@ import {  returnSchemaByChannelTypePipe } from "./pipes/returnSchemaByChannelTyp
     NgxMatNativeDateModule,
     NgxMatTimepickerModule,
     SearchPipe,
+    SearchSuggestionsPipe,
     getSenderNamePipe,
     sentenceCasePipe,
     convertToFormDataPipe,

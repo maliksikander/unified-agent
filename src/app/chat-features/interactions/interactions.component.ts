@@ -45,6 +45,7 @@ export class InteractionsComponent implements OnInit {
   labels: Array<any> = [];
   quotedMessage: any;
   replyToMessageId: any;
+  privateMessageReply: any
   viewFullCommentAction: boolean = false;
   fullPostView: boolean = false;
   selectedCommentId: string;
@@ -99,12 +100,13 @@ export class InteractionsComponent implements OnInit {
   loadingPastActivity: boolean = false;
   activeChat = false;
   activeChannelSessionList: Array<any>;
-  fbPostId: string = null;
-  fbCommentId: string = null;
+  commentPostId: string = null;
+  commentId: string = null;
   conversationSettings: any;
-  FBPostData: any = null;
-  FBPostComments: any = null;
+  postData: any = null;
+  postComments: any = null;
   sendTypingStartedEventTimer: any = null;
+  onMessageSuggestions = false;
 
   constructor(
     private _sharedService: sharedService,
@@ -118,7 +120,7 @@ export class InteractionsComponent implements OnInit {
     private snackBar: MatSnackBar,
     public _sipService: SipService,
     private _translateService: TranslateService
-  ) {}
+  ) { }
   ngOnInit() {
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
@@ -169,7 +171,7 @@ export class InteractionsComponent implements OnInit {
       }
     );
   }
-  emoji() {}
+  emoji() { }
 
   BargeIn() {
     let obj = {
@@ -187,38 +189,42 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  fbCommentAction(message, action) {
+  // This was fb page comment action / Generalizing it.
+  commentAction(message, action) {
+
     if (action == "like" && message["isLiked"]) {
-    } else if (this._socketService.isSocketConnected) {
-      let fbCommentId = message.header.providerMessageId;
+    }
+    else if (this._socketService.isSocketConnected) {
 
-      if (fbCommentId && message.body.postId) {
-        let fbChannelSession = this.getFaceBookChannelSession();
+      let commentId = message.header.providerMessageId;
+      if (commentId && message.body.postId) {
+        let channelSession = this.getChannelSession(message);
+        if (channelSession) {
+          let originalChannelSession = JSON.parse(JSON.stringify(channelSession));
+          delete originalChannelSession["isChecked"];
+          delete originalChannelSession["isDisabled"];
 
-        if (fbChannelSession) {
-          let originalFbChannelSession = JSON.parse(JSON.stringify(fbChannelSession));
-          delete originalFbChannelSession["isChecked"];
-          delete originalFbChannelSession["isDisabled"];
-
-          this.constructAndSendFbAction(fbCommentId, message.body.postId, originalFbChannelSession, message.id, action);
+          this.constructAndSendCommentAction(commentId, message.body.postId, originalChannelSession, message.id, action);
         } else {
           this._snackbarService.open(this._translateService.instant("snackbar.Requested-session-not-available-at-the-moment"), "err");
         }
       } else {
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-the-request"), "err");
       }
-    } else {
+    }
+    else {
       this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-connect-with-server"), "err");
     }
   }
 
-  constructAndSendFbAction(commentId, postId, fbChannelSession, replyToMessageId, action) {
+
+  constructAndSendCommentAction(commentId, postId, channelSession, replyToMessageId, action) {
     let message = this.getCimMessage();
     message.header.providerMessageId = commentId;
     message.body.postId = postId;
     message.body.type = "COMMENT";
-    message.header.channelSession = fbChannelSession;
-    message.header.channelData = fbChannelSession.channelData;
+    message.header.channelSession = channelSession;
+    message.header.channelData = channelSession.channelData;
     message.header.replyToMessageId = replyToMessageId;
     if (action == "like" || action == "delete" || action == "hide") {
       message.body.itemType = action.toUpperCase();
@@ -226,21 +232,25 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  replyToFbComment(message) {
-    this.fbPostId = message.body.postId;
+  //This is for private comment reply for Instagram for now.
+  privateReplyToComment(message) {
+    this.privateMessageReply = "PRIVATE_REPLY"
+    this.replyToComment(message)
+  }
+  //replyToFBComment
+  replyToComment(message) {
+    this.commentPostId = message.body.postId;
     this.replyToMessageId = message.id;
+    this.commentId = message.header.providerMessageId;
+    if (this.commentPostId && this.commentId) {
+      let channelSession = this.getChannelSession(message);
 
-    this.fbCommentId = message.header.providerMessageId;
-
-    if (this.fbPostId && this.fbCommentId) {
-      let fbChannelSession = this.getFaceBookChannelSession();
-
-      if (fbChannelSession) {
+      if (channelSession) {
         this.conversation.activeChannelSessions.forEach((channelSession) => {
           channelSession.isChecked = false;
         });
 
-        fbChannelSession.isChecked = true;
+        channelSession.isChecked = true;
 
         this.conversation.activeChannelSessions = this.conversation.activeChannelSessions.concat([]);
 
@@ -252,7 +262,7 @@ export class InteractionsComponent implements OnInit {
       this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-the-request"), "err");
     }
   }
-
+  
   //Quoted Reply
   onQuotedReply(message) {
     this.replyToMessageId = message.id;
@@ -260,11 +270,9 @@ export class InteractionsComponent implements OnInit {
   }
 
   navigationToRepliedMessage(repliedMessage: any) {
-    if (repliedMessage && repliedMessage.id) {
+    if (repliedMessage && repliedMessage.id ) {
       const elementId = repliedMessage.id;
-
       const element = document.getElementById(elementId);
-
       if (element) {
         element.scrollIntoView({
           behavior: "smooth",
@@ -530,7 +538,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -538,7 +546,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -608,7 +616,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
   externalfilePreviewOpener(url, fileName, type) {
     const dialogRef = this.dialog.open(FilePreviewComponent, {
@@ -618,7 +626,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
 
   uploadFile(files) {
@@ -652,6 +660,11 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
+  isInstagramChannel(channel) {
+    if(this.replyToMessageId && this.privateMessageReply || this.replyToMessageId) {
+      return channel.channelType.name === "INSTAGRAM";
+    }
+  }
   constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?, wrapups?, note?) {
     if (this._socketService.isSocketConnected) {
       let message = this.getCimMessage();
@@ -661,20 +674,25 @@ export class InteractionsComponent implements OnInit {
 
         this.emitCimEvent(message, "AGENT_MESSAGE");
       } else {
-        if (this.replyToMessageId) {
+        if (this.replyToMessageId ) {
           message.header.replyToMessageId = this.replyToMessageId;
           this.replyToMessageId = null;
         }
         let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
 
         if (selectedChannelSession) {
-          if (this.fbCommentId && selectedChannelSession.channel.channelType.name.toLowerCase() == "facebook") {
-            // channel session is facebook
-
-            message = this.constructFbCommentEvent(message, msgType, selectedChannelSession, fileMimeType, fileName, fileSize, text);
-
+          if (this.commentId && (selectedChannelSession.channel.channelType.name.toLowerCase() == "facebook" ||
+            selectedChannelSession.channel.channelType.name.toLowerCase() == "instagram" ||
+            selectedChannelSession.channel.channelType.name.toLowerCase() == "twitter")) {
+            // If private reply icon is clicked then msgType would be private reply. 
+            if(this.privateMessageReply) {
+              msgType = this.privateMessageReply
+              this.privateMessageReply = null
+            }
+            message = this.constructCommentEvent(message, msgType, selectedChannelSession, fileMimeType, fileName, fileSize, text);
+            
             this.emitCimEvent(message, "AGENT_MESSAGE");
-            this.fbCommentId = null;
+            this.commentId = null;
           } else {
             // channel is web or whatsApp
 
@@ -832,7 +850,7 @@ export class InteractionsComponent implements OnInit {
           msg.body.itemType.toLowerCase() != "video" &&
           msg.body.itemType.toLowerCase() != "image"
         ) {
-          this._socketService.processFaceBookCommentActions(msgs, msg);
+          this._socketService.processCommentActions(msgs, msg);
         } else {
           this.conversation.messages.unshift(msg);
         }
@@ -900,12 +918,14 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  getFaceBookChannelSession() {
-    let fbChannelSession = this.conversation.activeChannelSessions.find((channelSession) => {
-      return channelSession.channel.channelType.name.toLowerCase() == "facebook";
+  // fbchannel session . 
+  getChannelSession(message) {
+    let channelType = message.header.channelSession.channel.channelType.name.toLowerCase()
+    let channelSession = this.conversation.activeChannelSessions.find((channelSession) => {
+      return channelSession.channel.channelType.name.toLowerCase() == channelType
     });
 
-    return fbChannelSession;
+    return channelSession;
   }
 
   getCimMessage() {
@@ -942,15 +962,16 @@ export class InteractionsComponent implements OnInit {
     return message;
   }
 
-  constructFbCommentEvent(message, msgType, channelSession, fileMimeType?, fileName?, fileSize?, text?) {
+  // Fb comment event.
+  constructCommentEvent(message, msgType, channelSession, fileMimeType?, fileName?, fileSize?, text?) {
     let sendingActiveChannelSession = JSON.parse(JSON.stringify(channelSession));
     delete sendingActiveChannelSession["webChannelData"];
     delete sendingActiveChannelSession["isChecked"];
     delete sendingActiveChannelSession["isDisabled"];
 
-    message.header.providerMessageId = this.fbCommentId;
+    message.header.providerMessageId = this.commentId;
     message.body.type = "COMMENT";
-    message.body.postId = this.fbPostId;
+    message.body.postId = this.commentPostId;
     message.header.channelSession = sendingActiveChannelSession;
     message.header.channelData = sendingActiveChannelSession.channelData;
 
@@ -978,7 +999,10 @@ export class InteractionsComponent implements OnInit {
         thumbnail: ""
       };
     }
-
+    else if (msgType.toLowerCase() == "private_reply") {
+      message.body.itemType = "PRIVATE_REPLY"
+      message.body.markdownText = text.trim()
+    }
     return message;
   }
 
@@ -1120,50 +1144,69 @@ export class InteractionsComponent implements OnInit {
     }, 1000);
   }
 
-  getFBPost(postId, selectedCommentId, accessToken, FBHOSTAPI) {
+  // getFBPost 
+  getPost(postId, selectedCommentId, accessToken, FBHOSTAPI) {
     this._httpService.getFBPostData(postId, accessToken, FBHOSTAPI).subscribe(
       (res: any) => {
-        this.FBPostData = res;
+        this.postData = res;
         this.fullPostView = true;
         this.selectedCommentId = selectedCommentId;
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
-        console.error("err [getFBPost]", error.error);
+        console.error("err [getPost]", error.error);
       }
     );
   }
 
-  getFBComments(postId, selectedCommentId, accessToken, FBHOSTAPI) {
+  // getFBComments
+  getComments(postId, selectedCommentId, accessToken, FBHOSTAPI) {
     this._httpService.getFBPostComments(postId, accessToken, FBHOSTAPI).subscribe(
       (res: any) => {
-        this.FBPostComments = res;
+        this.postComments = res;
         this.fullPostView = true;
         this.selectedCommentId = selectedCommentId;
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
-        console.error("err [getFBComments]", error.error);
+        console.error("err [getComments]", error.error);
       }
     );
   }
 
   //the function will fetch fb post and comments API parallel
-  getFBPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI) {
+  getPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI) {
     try {
-      this.getFBPost(postId, selectedCommentId, accessToken, FBHOSTAPI);
-      this.getFBComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
+      this.getPost(postId, selectedCommentId, accessToken, FBHOSTAPI);
+      this.getComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
     } catch (err) {
-      console.error("err [ getFBPostAndComments ] error while fetching post and comments", err);
+      console.error("err [ getPostAndComments ] error while fetching post and comments", err);
     }
   }
+
+  // getInstaPostAndComments(postId, selectedCommentId, accessToken, INSTHOSTAPI) {
+  //   this._httpService.getInstaPostData(postId, accessToken, INSTHOSTAPI).subscribe(
+  //     (res: any) => {
+  //       this.postData = res;
+  //       this.postComments = res;
+  //       this.fullPostView = true;
+  //       this.selectedCommentId = selectedCommentId;
+  //     },
+  //     (error) => {
+  //       this._sharedService.Interceptor(error.error, "err");
+  //       console.error("err [getPost]", error.error);
+  //     }
+  //   );
+  // }
 
   //the below function will check for some keys and call another function which will fetch post data with comments
   getFullViewPostData(channelSession, postId, selectedCommentId) {
     let accessToken = null;
+    let instaAccessToken = null
     let FBHOSTAPI = null;
-    this.FBPostComments = null;
-    this.FBPostData = null;
+    let INSTHOSTAPI = null
+    this.postComments = null;
+    this.postData = null;
     this.fullPostView = false;
     this.selectedCommentId = null;
     if (channelSession) {
@@ -1174,10 +1217,24 @@ export class InteractionsComponent implements OnInit {
         if (item.key == "FACEBOOK-HOST-URL") {
           FBHOSTAPI = item.value;
         }
+        // if (item.key == "INSTAGRAM-API-KEY") {
+        //   instaAccessToken = item.value;
+        // }
+        // if (item.key == "INSTAGRAM-HOST-URL") {
+        //   INSTHOSTAPI = item.value;
+        // }
       });
       if (accessToken && FBHOSTAPI) {
-        this.getFBPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
-      } else {
+
+        this.getPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
+
+      }
+      // else if (instaAccessToken && INSTHOSTAPI) {
+
+      //   this.getInstaPostAndComments(postId, selectedCommentId, instaAccessToken, INSTHOSTAPI);
+      // }
+
+      else {
         this._snackbarService.open(this._translateService.instant("snackbar.Access-Token-or-FB-Host-API-for-FB-is-missing"), "err");
         console.error("err [getFullViewPostData] accessToken or FB Host API for FB is missing");
       }
