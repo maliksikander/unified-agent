@@ -9,12 +9,13 @@ export class maskPIIAttributePipe implements PipeTransform {
 
   transform(data: String | number, schema: CustomerSchema | schemaAttributes | null ): String | number {
     if (data) {
-      if (schema && schema.isPii) {
-        if (schema.type == "string" && schema.key != "labels") {
+      if (schema && schema.isPii && schema.key) {
+        console.log("schema",schema)
+        if (schema.type.toLocaleLowerCase() == "string" && schema.key.toLocaleLowerCase() != "labels") {
           return this.maskString(data);
-        } else if (schema.type == "phoneNumber") {
+        } else if (schema.type.toLocaleLowerCase() == "phonenumber") {
           return this.maskNumber(data);
-        } else if (schema.type == "email") {
+        } else if (schema.type.toLocaleLowerCase()== "email") {
           return this.maskEmail(data);
         }
       } else {

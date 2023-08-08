@@ -128,10 +128,10 @@
               <ng-container>
                 <div *ngIf="(conversation.topicParticipant.role | lowercase) != 'silent_monitor'" class="crm-trigger">
                   <!-- <p>Not a correct customer profile?</p> -->
-                  <button *ngIf="'customer' | authPipe: 'view' as result" mat-raised-button (click)="gotoEmbedView()">
+                  <button *ngIf="conversation.conversationId != 'FAKE_CONVERSATION' && (('customer' | authPipe: 'view') && ('customer' | authPipe: 'manage_in_conversation')) as result" mat-raised-button (click)="gotoEmbedView()">
                     {{ "chat-features.customer-info.link-profile" | translate }}
                   </button>
-                  <button *ngIf="'customer' | authPipe: 'manage_in_conversation' as result" (click)="updateProfile()" mat-raised-button>
+                  <button *ngIf="conversation.conversationId != 'FAKE_CONVERSATION' && ('customer' | authPipe: 'manage_in_conversation') as result" (click)="updateProfile()" mat-raised-button>
                     {{ "chat-features.customer-info.update-profile" | translate }}
                   </button>
                 </div>
@@ -281,18 +281,23 @@
           <!-- customer Suggestions Tab start-->
           <mat-expansion-panel class="drag-expansion-panel" *ngIf="customerSuggestions.length !== 0">
             <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
-              <mat-panel-title
+              <mat-panel-title *ngIf="conversation.conversationId != 'FAKE_CONVERSATION' && ('customer' | authPipe: 'manage_in_conversation') as result"
                 ><span class="material-icons drag-icon">more_vert</span>{{ "chat-features.customer-info.link-profile" | translate }}</mat-panel-title
               >
             </mat-expansion-panel-header>
 
             <div class="linked-area">
-              <h5>{{ customerSuggestions.length }}{{ "chat-features.customer-info.profile-matched" | translate }}</h5>
+              <h5>{{ customerSuggestions.length }} {{ "chat-features.customer-info.profile-matched" | translate }}</h5>
               <ul class="match-content">
                 <div *ngFor="let customer of customerSuggestions; let i = index">
                   <li *ngIf="i < 15">
-                    {{ customer.firstName }}
-                    <button *ngIf="'customer' | authPipe: 'view' as result" (click)="linkCustomer(customer)" mat-icon-button class="waves-effect">
+                    <span *ngIf="('customer' | authPipe: 'view_pii') as result; else manage_pii">{{ customer.firstName}}</span>
+                    <ng-template #manage_pii >
+                      <span>
+                        {{ customer.firstName | maskPIIAttribute : ( 'firstName' | returnSchemaByKey) }}
+                      </span>
+                    </ng-template>
+                    <button *ngIf="('customer' | authPipe: 'manage_in_conversation') as result" (click)="linkCustomer(customer)" mat-icon-button class="waves-effect">
                       <mat-icon>insert_link</mat-icon>
                     </button>
                   </li>
@@ -300,7 +305,7 @@
               </ul>
 
               <div class="linked-action">
-                <button mat-button *ngIf="'customer' | authPipe: 'view' as result" (click)="viewAllMatches()">
+                <button mat-button *ngIf="(('customer' | authPipe: 'view') && ('customer' | authPipe: 'view')) as result" (click)="viewAllMatches()">
                   {{ "chat-features.customer-info.view-matches" | translate }}
                 </button>
               </div>
@@ -438,11 +443,11 @@
                           <label>{{ "chat-features.customer-info.form-data" | translate }}</label>
                         </div>
                       </mat-expansion-panel-header>
-
+                      <p>{{ additionalAttribute.value.formData.attributes | json }}</p>
                       <ul class="requested-channel-content" *ngFor="let attr of additionalAttribute.value.formData.attributes">
                         <li>
                           <label>{{ attr.key | sentenceCase }}</label>
-                          {{ attr.value }}
+                          {{ attr.value | maskPIIAttribute : (attr.key | returnSchemaByKey) }}
                         </li>
                       </ul>
                     </mat-expansion-panel>

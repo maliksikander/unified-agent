@@ -11,7 +11,7 @@ export class returnSchemaByKeyPipe implements PipeTransform {
     let schema=null;
     if (key) {
       this._sharedService.schema.find((e) => {
-        if (e.key == key) {
+        if (e.key.toLowerCase() == key.toLocaleLowerCase()) {
                 schema=e;
         }
       });

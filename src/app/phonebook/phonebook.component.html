@@ -282,7 +282,7 @@
             </button>
             <ng-container>
               <button
-                *ngIf="'agent-conversation-control' | authPipe: 'view_initiate_chat' as result"
+                *ngIf="!isEmbededView && ('agent-conversation-control' | authPipe: 'view_initiate_chat') as result"
                 (click)="openCOnversationView(rowData)"
                 class="p-button-rounded p-button-success p-mr-2"
               >

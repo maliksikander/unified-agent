@@ -15,9 +15,8 @@
           </div>
           <div class="requested-name">
             <p
-              matTooltip="{{request.channelSession.customer.firstName ? request.channelSession.customer.firstName : ('globals.UNIDENTIFIED-CUSTOMER' | translate) }}">
-              {{request.channelSession.customer.firstName ? request.channelSession.customer.firstName : 'UNIDENTIFIED
-              CUSTOMER' }}
+              matTooltip="{{request.channelSession.customer.firstName ? (('customer' | authPipe : 'view_pii')?request.channelSession.customer.firstName:request.channelSession.customer.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey)) : ('globals.UNIDENTIFIED-CUSTOMER' | translate) }}">
+              {{request.channelSession.customer.firstName ? (('customer' | authPipe : 'view_pii')?request.channelSession.customer.firstName:request.channelSession.customer.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey)) : ('globals.UNIDENTIFIED-CUSTOMER' | translate) }}
             </p>
             <p *ngIf="request?.cisco_data">
               {{request.channelSession.channelData.channelCustomerIdentifier ?
@@ -47,7 +46,7 @@
           <div class="requested-name">
             <strong>{{'globals.chat' | translate }} {{ (request?.taskDirection == 'DIRECT_CONFERENCE' ? 'globals.conference' : 'globals.transfer') | translate}} {{'globals.request-from'  | translate }}
               '{{request?.requestedBy | titlecase}}' {{'globals.with-customer'  | translate }}
-              '{{request?.channelSession?.customer?.firstName | titlecase }}'</strong>
+              '{{(('customer' | authPipe : 'view_pii') ? (request?.channelSession?.customer.firstName | titlecase) : (request?.channelSession?.customer.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey)))}}'</strong>
             <p *ngIf="request?.note">
               {{request?.note}}
             </p>
@@ -76,7 +75,7 @@
               </div>
               <div class="requested-name">
                 <p>{{'globals.new-chat-message' | translate }}
-                  <span>{{request.channelSession.customer.firstName}}</span> {{'globals.in' | translate }}
+                  <span>{{('customer' | authPipe : 'view_pii') ? request?.channelSession?.customer?.firstName : request?.channelSession?.customer?.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey) }}</span> {{'globals.in' | translate }}
                   <span>'{{_pullModeservice.listNames[request.listId] ? _pullModeservice.listNames[request.listId] :
                     '-'}}'</span>
                 </p>
@@ -113,8 +112,8 @@
             </p>
           </div>
           <div class="requested-name">
-            <p matTooltip="{{request?.customer?.firstName ? request?.customer?.firstName : 'UNIDENTIFIED CUSTOMER' }}">
-              {{request?.customer?.firstName ? request?.customer?.firstName : 'UNIDENTIFIED CUSTOMER' }}</p>
+            <p matTooltip="{{request?.customer?.firstName ? (('customer' | authPipe : 'view_pii')?request?.customer?.firstName:request?.customer?.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey)) : ('globals.UNIDENTIFIED-CUSTOMER' | translate) }}">
+              {{request?.customer?.firstName ? (('customer' | authPipe : 'view_pii')?request?.customer?.firstName:request?.customer?.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey)) : ('globals.UNIDENTIFIED-CUSTOMER' | translate) }}</p>
             <p>
               {{request?.identifier ?
               request?.identifier : 'N/A' }}</p>
