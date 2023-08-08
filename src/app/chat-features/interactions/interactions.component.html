@@ -343,7 +343,7 @@
                 <div class="profile-pic">
                   <div [ngClass]="{ 'wrapup-active-icon': message?.body?.type == 'WRAPUP' }"
                     class="active-channel channel-icon"
-                    *ngIf="(message.header.sender.type | lowercase) !== 'customer' && (message.body.type | lowercase) !== 'voice'">
+                    *ngIf="(message.header.sender.type | lowercase) !== 'customer' && (message.body.type | lowercase) !== 'voice' && (message.status | lowercase) !== 'scheduled'">
                     <img *ngIf="message?.body?.type != 'WRAPUP'" width="20"
                       [src]="message.header.channelSession.channel.channelType.channelLogo | channelLogo | async" />
                     <img matTooltip="{{ 'chat-features.interactions.wrapup' | translate }}" class="wrap-up-icon"
@@ -1208,20 +1208,27 @@
                           <mat-panel-title>
                             <div class="panel-header">
                               <ul>
-                                <li *ngIf="(message.status | lowercase) == 'delivered'" class="activity-status">Delivered</li>
-                                <li>Marketing </li>
-                                <li>
-                                  <time>{{ message.header.timestamp | date}} - {{ message.header.timestamp | date: "shortTime" }}</time>
+                                <li *ngIf="(message.status | lowercase) == 'delivered'" class="activity-status" matTooltip="Activity Status"><span>Delivered</span></li>
+                                <li matTooltip="Queue">Marketing </li>
+                                <li *ngIf="(message.status | lowercase) == 'delivered'" matTooltip="Scheduled Time">
+                                  {{ message.header.timestamp | date: "shortTime" }}
                                 </li>
-                                <li>Broadband Package Upgrade</li>
-                                <li class="multiple-users agent-pic participant-agent call-services activity-response">
+                                <li *ngIf="(message.status | lowercase) !== 'delivered'" matTooltip="Execute Time">
+                                  Jul 5, 2023
+                                </li>
+                                <li *ngIf="(message.status | lowercase) !== 'delivered'" matTooltip="Execute Time">
+                                  {{ message.header.timestamp | date}} - {{ message.header.timestamp | date: "shortTime" }}
+                                </li>
+
+                                <li matTooltip="Campaign Name">Broadband Package Upgrade</li>
+                                <li *ngIf="(message.status | lowercase) !== 'delivered'"  matTooltip="Channel" class="multiple-users agent-pic participant-agent call-services activity-response">
                                   <span><mat-icon>phone_forwarded</mat-icon></span>
 <!--                                <span><img src="assets/images/groups.svg" alt="group" /></span>-->
                                 </li>
-                                <li> {{ messageData.phone }}
+                                <li  matTooltip="Channel Identity"> {{ messageData.phone }}
                                 </li>
-                                <li class="agent-pic participant-agent call-services">
-                                  <span matTooltip="test agent">FA</span>
+                                <li *ngIf="(message.status | lowercase) !== 'delivered'"  class="agent-pic participant-agent call-services"  matTooltip="Agent - Farhan">
+                                  <span>FA</span>
                                 </li>
                               </ul>
                             </div>
