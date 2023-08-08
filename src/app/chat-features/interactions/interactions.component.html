@@ -333,7 +333,7 @@
                 }} {{ message.header.status == 'sending' ? 'low-opacity' : message.header.status == 'failed' ? 'failed' : '' }}  {{
                   message.body.type | lowercase
                 }} {{ message.header.replyToMessageId != null ? 'quoted-message-main' : '' }} {{ message.header.sender.type | lowercase }} {{
-                  fullPostView && 'full-post-view'
+                  fullPostView && 'full-post-view' && message.body.postId == selectedCommentId ? 'full-post-view' : ''
                 }}" [ngClass]="
                   (message.header.sender.type | lowercase) == 'customer' || (message.body.type | lowercase) == 'voice'
                     ? 'user-message slide-in-left'
@@ -1222,7 +1222,7 @@
                       *ngIf="(message.body.type | lowercase) == 'comment' && (message.header.sender.type | lowercase) == 'customer'">
                       <div class="post-main-area">
                         <div class="post-message-header"
-                          *ngIf="fullPostView && postData">
+                          *ngIf="fullPostView && postData  && message.body.postId == selectedCommentId">
                           <div class="post-by">
                             <!-- <strong>{{ postData?.from?.name }} <span>Posted on {{ postData?.from?.name }}</span> </strong> -->
                           </div>
@@ -1238,7 +1238,7 @@
                           </div>
                         </div>
 
-                        <div *ngIf="!message.isDeleted && !message.isHidden && message.id != selectedCommentId"
+                        <div *ngIf="!message.isDeleted && !message.isHidden && message.body.postId != selectedCommentId"
                           class="comment-controlls post-controlls">
                           <ul>
                             <li>
@@ -1265,7 +1265,7 @@
                                   <mat-icon (click)="commentAction(message, 'hide')"> visibility_off</mat-icon>
                                 </li>
                                 <li class="view-post"
-                                  (click)="getFullPostViewData(message.header.channelSession.channel.serviceIdentifier, message.body.postId, message.id)">
+                                  (click)="fullPostViewData(message.header.channelSession.channel.serviceIdentifier, message.body.postId)">
                                   {{ "chat-features.interactions.view-full-post" | translate }}
                                 </li>
                               </ul>
@@ -1279,7 +1279,7 @@
 
                         <!--------------------------  FB POST HEADER STARTED------------------------------------>
 
-                        <div class="post-full-view" *ngIf="fullPostView && postData">
+                        <div class="post-full-view" *ngIf="fullPostView && postData && message.body.postId == selectedCommentId">
                           <div class="main-post-content">
                             <div class="post-header">
                               <span class="post-page-showcase">
@@ -1299,7 +1299,7 @@
 
                         <!-------------------------- MAIN FB COMMENT STARTED -------------------------------->
 
-                        <div class="main-comment" *ngIf="!fullPostView || message.id != selectedCommentId">
+                        <div class="main-comment" *ngIf="!fullPostView || message.body.postId != selectedCommentId">
                           <div class="post-inner-content">
                             <p [id]="message.id">
                               <span [innerHTML]="
@@ -1350,7 +1350,7 @@
 
                         <!-------------------------- FULL POST STARTED -------------------------------->
 
-                        <div class="main-comment" *ngIf="fullPostView">
+                        <div class="main-comment" *ngIf="fullPostView && message.body.postId == selectedCommentId">
                           <div class="post-inner-content">
                             <p>
                               <span [innerHTML]="
@@ -1360,11 +1360,12 @@
                                 "></span>
                             </p>
                             <!----check here about the attatchment?.size..................size -->
-                            <div *ngFor="let post of postData.socialMediaPost?.attachment?.size">
+                            <div *ngFor="let post of postData.socialMediaPost?.attachment?.data">
                               <div class="shared-url shared-card-content video-player p-0"
                                 *ngIf="post.mimeType.includes('video') || post.mimeType == 'animated_image_autoplay'">
                                 <!------check here about the post?.url?.source.-->
-                                <div class="media-main" *ngIf="post?.mediaUrl"  (click) = "checking(post)">
+                                <div class="media-main" *ngIf="post?.mediaUrl">
+                                  <p>where am i</p>
                                   <vg-player>
                                     <vg-overlay-play></vg-overlay-play>
                                     <vg-buffering></vg-buffering>
@@ -1399,11 +1400,11 @@
                                   </ng-container>
                                 </ng-container>
                               </div>
-                              <p *ngIf="post.type == 'image' || post?.type == 'animated_image_share'">
+                              <p *ngIf="post.mimeType == 'IMAGE' || post?.mimeType == 'animated_image_share'">
                                 <a style="cursor: pointer"
-                                  (click)="externalfilePreviewOpener(post.media.image.src, post.type, 'image')"
+                                  (click)="externalfilePreviewOpener(post.mediaUrl, post.mimeType, 'image')"
                                   class="display-file display-image" [ngClass]="{ 'pt-2': postData.message }">
-                                  <img src="{{ post.media.image.src }}" alt="image" />
+                                  <img src="{{ post.mediaUrl }}" alt="image" />
                                 </a>
                               </p>
                             </div>
@@ -1415,7 +1416,7 @@
                         <!-------------------------- SUB COMMENTS -------------------------------->
 
                         <div class="post-sub-comments-area"
-                          *ngIf="fullPostView">
+                          *ngIf="fullPostView && message.body.postId == selectedCommentId">
                           <div class="total-comment-count"></div>
                           <div class="post-sub-comments" *ngFor="let postComments of postData?.socialMediaPost?.comments">
                             <div class="sub-profile-picture">
