@@ -4303,7 +4303,7 @@ mat-select {
     max-width: calc(100% - 70px);
     margin: 0 10px;
     font-size: 14px;
-    font-family: "Roboto";
+    font-style: normal;
 
     strong {
       display: block;
@@ -4352,5 +4352,23 @@ mat-select {
   .reply-quoted{
     display: none;
     visibility: hidden;
+  }
+}
+
+.outbound-customer-list{
+  label {
+    color: #000;
+    font-size: 14px;
+    height: 30px;
+    line-height: 30px;
+    margin: 0;
+    font-weight: 600;
+  }
+  mat-option{
+    padding-left: 20px !important;
+    height: 30px;
+    line-height: 30px;
+    font-size: 13px;
+    opacity: .8;
   }
 }

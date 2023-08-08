@@ -583,10 +583,11 @@
 
 
                          <!--------------------------------- Outbound message start----------------------------------------------->
-                         
+
                          <div *ngIf="(referredMessage.body.type | lowercase) == 'outboundsms'"
-                         class="voice-activity-main custom-data-type panel-divider user-data customer-side single">
-                      <mat-expansion-panel>
+                         class="voice-activity-main custom-data-type panel-divider user-data customer-side single outboundsms">
+                      <mat-expansion-panel hideToggle="{{ referredMessage.body.markdownText.length > 50 ? false : true }}"
+                                           disabled="{{   referredMessage.body.markdownText.length > 50 ? false : true }}">
                         <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
                           <mat-panel-title>
                             <div class="panel-header">
@@ -595,6 +596,8 @@
                                   <span matTooltip="test agent">{{referredMessage.header.sender.senderName | getFirstTwoLetters}}</span>
                                 </li>
                                 <li> {{ referredMessage.header.channelData.channelCustomerIdentifier }}
+                                </li>
+                                <li class="message-activity-text" #activityText> {{  referredMessage.body.markdownText }}
                                 </li>
                                 <li>
                                   <time>{{ referredMessage.header.timestamp | date: "shortTime" }}</time>
@@ -605,7 +608,7 @@
                         </mat-expansion-panel-header>
                         <div class="custom-message-type">
                           <p>{{  referredMessage.body.markdownText }}</p>
-                    
+
                         </div>
                       </mat-expansion-panel>
                     </div>
@@ -912,10 +915,11 @@
 
 
                     <!--------------------------------- Outbound message start----------------------------------------------->
-                         
+
                     <div *ngIf="(message.body.type | lowercase) == 'outboundsms'"
                       class="voice-activity-main custom-data-type panel-divider user-data customer-side single">
-                   <mat-expansion-panel>
+                   <mat-expansion-panel hideToggle="{{ message.body.markdownText.length > 50 ? false : true }}"
+                                        disabled="{{   message.body.markdownText.length > 50 ? false : true }}">
                      <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
                        <mat-panel-title>
                          <div class="panel-header">
@@ -924,6 +928,8 @@
                                <span matTooltip="test agent">{{message.header.sender.senderName | getFirstTwoLetters}}</span>
                              </li>
                              <li> {{ message.header.channelData.channelCustomerIdentifier }}
+                             </li>
+                             <li class="message-activity-text"> {{ message.body.markdownText }}
                              </li>
                              <li>
                                <time>{{ message.header.timestamp | date: "shortTime" }}</time>
@@ -934,7 +940,7 @@
                      </mat-expansion-panel-header>
                      <div class="custom-message-type">
                        <p>{{  message.body.markdownText }}</p>
-                 
+
                      </div>
                    </mat-expansion-panel>
                  </div>

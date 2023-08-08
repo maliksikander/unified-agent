@@ -36,11 +36,12 @@
 
 
               <ng-container *ngFor="let option of userData">
+                <mat-optgroup [label]="option.firstName" class="outbound-customer-list">
                 <mat-option [value]="option.phoneNumber | getMatchedString:smsForm.get('phoneControl').value "
                   (onSelectionChange)="updateMySelection(option)">
-                  {{option.firstName}}
+                  {{option.phoneNumber}}
                 </mat-option>
-
+                </mat-optgroup>
               </ng-container>
             </mat-autocomplete>
           </mat-form-field>
