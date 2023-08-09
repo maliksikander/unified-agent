@@ -98,6 +98,7 @@ import { checkOutboundCallPipe } from "./pipes/checkOutboundCall.pipe";
 import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
 import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements.pipe";
 import { getIVRTrailPipe } from "./pipes/getIVRTrail.pipe";
+import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
 
 @NgModule({
   declarations: [
@@ -111,6 +112,7 @@ import { getIVRTrailPipe } from "./pipes/getIVRTrail.pipe";
     getSenderNamePipe,
     getIVRTrailPipe,
     SearchPipe,
+    SearchSuggestionsPipe,
     sentenceCasePipe,
     convertToFormDataPipe,
     getFirstTwoLettersPipe,
@@ -276,6 +278,7 @@ import { getIVRTrailPipe } from "./pipes/getIVRTrail.pipe";
     NgxMatNativeDateModule,
     NgxMatTimepickerModule,
     SearchPipe,
+    SearchSuggestionsPipe,
     getSenderNamePipe,
     getIVRTrailPipe,
     sentenceCasePipe,

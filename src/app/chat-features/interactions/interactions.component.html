@@ -231,7 +231,7 @@
         <ng-scrollbar class="chat-messages-main my-scrollbar" [style.height]="
             replyInput?.offsetHeight > 80 ? 'calc(100% - ' + (replyInput?.offsetHeight + 80) + 'px)' : 'calc(100% - ' + viewHeight + ')'
           ">
-          <div *ngIf="!conversation.messages.length" class="no-chat-main">
+          <div *ngIf="!conversation.messages.length && !pastActivitiesloadedOnce" class="no-chat-main">
             <div class="no-chat">
               <span class="no-chat-icon">
                 <!--                <mat-icon>question_answer</mat-icon>-->
@@ -256,7 +256,7 @@
           <!-- simple chat area -->
           <div id="chat-area-start"></div>
           <div class="instruction-content chat-session-main">
-            <ng-container *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
+            <ng-container *ngIf="pastActivitiesloadedOnce || conversation.conversationId != 'FAKE_CONVERSATION'">
               <div
                 *ngIf="
               (('agent-conversation-control' | authPipe: 'view_history') || (conversation.conversationId != 'FAKE_CONVERSATION' && ('agent-conversation-control' | authPipe: 'view_history_active_customer')) ) as result"
@@ -300,7 +300,6 @@
                   <span>{{ "chat-features.interactions.conversation-data" | translate }} <mat-icon>arrow_drop_down
                     </mat-icon></span>
                 </span>
-
                 <mat-menu #conversationData="matMenu">
                   <div class="conversation-data-main">
                     <div class="conversation-data">
@@ -385,18 +384,35 @@
                     <div class="main-quoted-reply"
                       *ngFor="let referredMessage of message.header.replyToMessageId | getReferredMsg: conversation.messages"
                       (click)="navigationToRepliedMessage(referredMessage)">
+
                       <strong class="message-author"
                         [ngClass]="(referredMessage.header.sender.type | lowercase) == 'customer' ? '' : 'current-agents'">
                         <span *ngIf="referredMessage.header.sender">
                           {{ referredMessage.header.sender | getSenderName: conversation.customer | titlecase }}
                         </span>
                       </strong>
+
                       <div [ngClass]="{
                           'file-type-message':
                             (referredMessage.body.type | lowercase) != 'plain' &&
                             (referredMessage.body.type | lowercase) != 'comment' &&
                             (referredMessage.body.type | lowercase) != 'button'
                         }">
+
+                        <!-- ---------------Comments---------------------- -->
+                        <div *ngIf="(referredMessage.body.type | lowercase) == 'comment'">
+                          <p>
+                            <span [innerHTML]="
+                                conversationSettings.isMessageFormattingEnabled
+                                  ? (referredMessage.body.markdownText | linkify | ibsformat)
+                                  : (referredMessage.body.markdownText | linkify)
+                              "></span>
+                            <!--                            <span class="message-stamp yellow">-->
+                            <!--                              <span class="chat-time red">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
+                            <!--                            </span>-->
+                          </p>
+                        </div>
+
                         <!-- ---------------plain---------------------- -->
                         <div *ngIf="(referredMessage.body.type | lowercase) == 'plain'">
                           <p>
@@ -537,6 +553,36 @@
                           <!--                    <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
                         </div>
 
+
+
+                        <!--------------------------------- Custom Data start----------------------------------------------->
+                        <div *ngIf="(referredMessage.body.type | lowercase) == 'custom'"
+                          class="voice-activity-main custom-data-type panel-divider user-data customer-side single">
+                          <mat-expansion-panel>
+                            <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+                              <mat-panel-title>
+                                <div class="panel-header">
+                                  <ul>
+                                    <li class="agent-pic participant-agent call-services">
+                                      <span matTooltip="test agent">{{referredMessage.header.sender | getSenderName:
+                                        conversation.customer | getFirstTwoLetters}}</span>
+                                    </li>
+                                    <li>
+                                      <time>{{ referredMessage.header.timestamp | date: "shortTime" }}</time>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="custom-message-type">
+                              <pre><code [highlight]="referredMessage.body | json"></code></pre>
+
+                            </div>
+                          </mat-expansion-panel>
+                        </div>
+
+
+
                         <!-- -----------------------------audio--------------------------------------- -->
 
                         <div *ngIf="(referredMessage.body.type | lowercase) == 'audio'"
@@ -634,6 +680,7 @@
                     class="comment-action">{{
                     message.isDeleted ? "deleted Message" : "Hidden Message"
                     }}</span>
+
                   <div class="chat-message-content" [ngClass]="{
                       'replied-message': message.header.replyToMessageId != null,
                       'file-type-message':
@@ -657,11 +704,10 @@
                       <button mat-menu-item class="reply-trigger" (click)="onQuotedReply(message)">reply</button>
                     </mat-menu>
                     <div *ngIf="
-                        ((message.body.type | lowercase) != 'comment' && (message.body.type | lowercase) != 'url' && message.body.markdownText) ||
-                        ((message.body.type | lowercase) == 'comment' &&
-                          (message.body.itemType | lowercase) == 'text' &&
-                          (message.header.sender.type | lowercase) == 'agent')
-                      ">
+                               ((message.body.type | lowercase) != 'comment' && (message.body.type | lowercase) != 'url' && message.body.markdownText) ||
+                               ((message.body.type | lowercase) == 'comment' && (message.body.itemType | lowercase) == 'text' && (message.header.sender.type | lowercase) == 'agent') ||
+                              ((message.body.type | lowercase) == 'comment' && (message.body.itemType | lowercase) == 'private_reply' && (message.header.sender.type | lowercase) == 'agent')
+                               ">
                       <p class="{{
                           (message.header.sender.type | lowercase) == 'customer' && message.botSuggestions ? 'plain-text-p' : ''
                         }} plain-text-check">
@@ -681,7 +727,7 @@
                         <!--                    <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
 
                         <button mat-icon-button class="user_settings"
-                          *ngIf="(message.header.sender.type | lowercase) == 'customer' && message.botSuggestions"
+                          *ngIf="(message.header.sender.type | lowercase) == 'customer' && message.botSuggestions && onMessageSuggestions"
                           (click)="message.showBotSuggestions = !message.showBotSuggestions"></button>
                       </p>
                     </div>
@@ -713,7 +759,7 @@
                         <span class="chat-time">{{ message.header.timestamp | date: "shortTime" }}</span>
                       </span>
                       <button mat-icon-button class="user_settings"
-                        *ngIf="(message.header.sender.type | lowercase) == 'customer' && message.botSuggestions"
+                        *ngIf="(message.header.sender.type | lowercase) == 'customer' && message.botSuggestions && onMessageSuggestions"
                         (click)="message.showBotSuggestions = !message.showBotSuggestions"></button>
                     </div>
 
@@ -807,6 +853,36 @@
                       </div>
                       <!--                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
                     </div>
+
+
+                    <!--------------------------------- Custom Data start----------------------------------------------->
+                    <div *ngIf="(message.body.type | lowercase) == 'custom'"
+                      class="voice-activity-main custom-data-type panel-divider user-data customer-side single">
+                      <mat-expansion-panel>
+                        <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+                          <mat-panel-title>
+                            <div class="panel-header">
+                              <ul>
+                                <li class="agent-pic participant-agent call-services">
+                                  <span matTooltip="test agent">{{message.header.sender | getSenderName:
+                                    conversation.customer | getFirstTwoLetters}}</span>
+                                </li>
+                                <li>
+                                  <time>{{ message.header.timestamp | date: "shortTime" }}</time>
+                                </li>
+                              </ul>
+                            </div>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="custom-message-type">
+                          <pre><code [highlight]="message.body | json"></code></pre>
+                        </div>
+                      </mat-expansion-panel>
+                    </div>
+
+
+
+
 
                     <!-- -----------------------------audio--------------------------------------- -->
 
@@ -1169,12 +1245,12 @@
                       *ngIf="(message.body.type | lowercase) == 'comment' && (message.header.sender.type | lowercase) == 'customer'">
                       <div class="post-main-area">
                         <div class="post-message-header"
-                          *ngIf="fullPostView && FBPostData && message.id == selectedCommentId">
+                          *ngIf="fullPostView && postData && message.id == selectedCommentId">
                           <div class="post-by">
-                            <!-- <strong>{{ FBPostData?.from?.name }} <span>Posted on {{ FBPostData?.from?.name }}</span> </strong> -->
+                            <!-- <strong>{{ postData?.from?.name }} <span>Posted on {{ postData?.from?.name }}</span> </strong> -->
                           </div>
                           <div class="post-info">
-                            <span><img src="assets/images/facebook-colored.svg" /> {{ FBPostData?.from?.name }}</span>
+                            <span><img src="assets/images/facebook-colored.svg" /> {{ postData?.from?.name }}</span>
                             <mat-icon (click)="fullPostView = false; selectedCommentId = null">close</mat-icon>
                           </div>
                         </div>
@@ -1183,22 +1259,28 @@
                           class="comment-controlls post-controlls">
                           <ul>
                             <li>
-                              <mat-icon (click)="replyToFbComment(message)"> chat_bubble_outline</mat-icon>
+                              <mat-icon (click)="replyToComment(message) "> chat_bubble_outline</mat-icon>
                             </li>
-                            <li>
-                              <mat-icon [ngClass]="{ liked: message.isLiked }"
-                                (click)="fbCommentAction(message, 'like')"> thumb_up</mat-icon>
+                            <li *ngIf="message.header.channelSession.channel.channelType.name.includes('FACEBOOK')">
+                              <mat-icon [ngClass]="{ 'liked': message.isLiked }"
+                                (click)="commentAction(message, 'like')">
+                                thumb_up
+                              </mat-icon>
+                            </li>
+                            <li *ngIf="message.header.channelSession.channel.channelType.name.includes('INSTAGRAM')"
+                             class="private-reply-icon" (click)="privateReplyToComment(message)">
+                              <img width="22px" src="assets/images/private-reply.png">
                             </li>
                             <li class="view-all-options">
                               <ul *ngIf="viewFullCommentAction">
                                 <li>
-                                  <mat-icon (click)="fbCommentAction(message, 'delete')"> delete</mat-icon>
+                                  <mat-icon (click)="commentAction(message, 'delete')"> delete</mat-icon>
                                 </li>
                                 <!-- <li>
                                   <mat-icon>person_off</mat-icon>
                                 </li> -->
                                 <li>
-                                  <mat-icon (click)="fbCommentAction(message, 'hide')"> visibility_off</mat-icon>
+                                  <mat-icon (click)="commentAction(message, 'hide')"> visibility_off</mat-icon>
                                 </li>
                                 <li class="view-post"
                                   (click)="getFullViewPostData(message.header.channelSession, message.body.postId, message.id)">
@@ -1215,17 +1297,16 @@
 
                         <!--------------------------  FB POST HEADER STARTED------------------------------------>
 
-                        <div class="post-full-view"
-                          *ngIf="fullPostView && FBPostData && message.id == selectedCommentId">
+                        <div class="post-full-view" *ngIf="fullPostView && postData && message.id == selectedCommentId">
                           <div class="main-post-content">
                             <div class="post-header">
                               <span class="post-page-showcase">
                                 <img src="assets/images/dummy-user.svg" />
                               </span>
                               <span class="post-page-info">
-                                <strong>{{ FBPostData?.from?.name }}</strong>
+                                <strong>{{ postData?.from?.name }}</strong>
                                 <small>
-                                  {{ FBPostData.created_time | date: "shortTime" }}
+                                  {{ postData.created_time | date: "shortTime" }}
                                 </small>
                               </span>
                             </div>
@@ -1237,7 +1318,7 @@
 
                         <div class="main-comment" *ngIf="!fullPostView || message.id != selectedCommentId">
                           <div class="post-inner-content">
-                            <p>
+                            <p [id]="message.id">
                               <span [innerHTML]="
                                   conversationSettings.isMessageFormattingEnabled
                                     ? (message.body.markdownText | linkify | ibsformat)
@@ -1291,11 +1372,12 @@
                             <p>
                               <span [innerHTML]="
                                   conversationSettings.isMessageFormattingEnabled
-                                    ? (FBPostData?.message | linkify | ibsformat)
-                                    : (FBPostData?.message | linkify)
+                                    ? (postData?.message | linkify | ibsformat)
+                                    : (postData?.message | linkify)
                                 "></span>
                             </p>
-                            <div *ngFor="let post of FBPostData?.attachments?.data">
+                            <div *ngFor="let post of postData.data?.attachments?.data">
+
                               <div class="shared-url shared-card-content video-player p-0"
                                 *ngIf="post.type.includes('video') || post.type == 'animated_image_autoplay'">
                                 <div class="media-main" *ngIf="post?.media.source">
@@ -1327,7 +1409,7 @@
                                   <ng-container *ngIf="subattachment?.type == 'photo'">
                                     <a style="cursor: pointer"
                                       (click)="externalfilePreviewOpener(subattachment.media.image.src, subattachment?.type, 'image')"
-                                      class="display-file display-image" [ngClass]="{ 'pt-2': FBPostData.message }">
+                                      class="display-file display-image" [ngClass]="{ 'pt-2': postData.message }">
                                       <img src="{{ subattachment.media.image.src }}" alt="image" />
                                     </a>
                                   </ng-container>
@@ -1337,7 +1419,7 @@
                               <p *ngIf="post.type == 'photo' || post?.type == 'animated_image_share'">
                                 <a style="cursor: pointer"
                                   (click)="externalfilePreviewOpener(post.media.image.src, post.type, 'image')"
-                                  class="display-file display-image" [ngClass]="{ 'pt-2': FBPostData.message }">
+                                  class="display-file display-image" [ngClass]="{ 'pt-2': postData.message }">
                                   <img src="{{ post.media.image.src }}" alt="image" />
                                 </a>
                               </p>
@@ -1350,9 +1432,9 @@
                         <!-------------------------- SUB COMMENTS -------------------------------->
 
                         <div class="post-sub-comments-area"
-                          *ngIf="fullPostView && FBPostComments && message.id == selectedCommentId">
+                          *ngIf="fullPostView && postComments && message.id == selectedCommentId">
                           <div class="total-comment-count"></div>
-                          <div class="post-sub-comments" *ngFor="let postComments of FBPostComments?.data">
+                          <div class="post-sub-comments" *ngFor="let postComments of postComments?.data">
                             <div class="sub-profile-picture">
                               <img src="assets/images/dummy-user.svg" />
                             </div>
@@ -1502,22 +1584,28 @@
                                 class="comment-controlls post-controlls">
                                 <ul>
                                   <li>
-                                    <mat-icon (click)="replyToFbComment(message)"> chat_bubble_outline</mat-icon>
+                                    <mat-icon (click)="replyToComment(message)"> chat_bubble_outline</mat-icon>
                                   </li>
-                                  <li>
-                                    <mat-icon [ngClass]="{ liked: message.isLiked }"
-                                      (click)="fbCommentAction(message, 'like')"> thumb_up</mat-icon>
+                                  <li *ngIf="message.header.channelSession.channel.channelType.name.includes('FACEBOOK')">
+                                    <mat-icon [ngClass]="{ 'liked': message.isLiked }"
+                                      (click)="commentAction(message, 'like')">
+                                      thumb_up
+                                    </mat-icon>
+                                  </li>
+                                  <li *ngIf="message.header.channelSession.channel.channelType.name.includes('INSTAGRAM')"
+                                   class="private-reply-icon" (click)="privateReplyToComment(message)">
+                                    <img width="22px" src="assets/images/private-reply.png">
                                   </li>
                                   <li class="view-all-options">
                                     <ul *ngIf="viewFullCommentAction">
                                       <li>
-                                        <mat-icon (click)="fbCommentAction(message, 'delete')"> delete</mat-icon>
+                                        <mat-icon (click)="commentAction(message, 'delete')"> delete</mat-icon>
                                       </li>
                                       <!-- <li>
                                         <mat-icon>person_off</mat-icon>
                                       </li> -->
                                       <li>
-                                        <mat-icon (click)="fbCommentAction(message, 'hide')"> visibility_off</mat-icon>
+                                        <mat-icon (click)="commentAction(message, 'hide')"> visibility_off</mat-icon>
                                       </li>
                                     </ul>
                                   </li>
@@ -1588,7 +1676,7 @@
 
                         <div class="message-footer">
                           <span>
-                            <!-- <strong *ngIf="FBPostData"><span>Posted on</span><b (click)="getFullViewPostData(message.header.channelSession,message.body.postId, message.id)">{{ FBPostData?.from?.name }}</b></strong> -->
+                            <!-- <strong *ngIf="postData"><span>Posted on</span><b (click)="getFullViewPostData(message.header.channelSession,message.body.postId, message.id)">{{ postData?.from?.name }}</b></strong> -->
                           </span>
                           <span class="message-stamp">
                             <span class="chat-time">{{ message.header.timestamp | date: "shortTime" }}</span>
@@ -1603,7 +1691,9 @@
                     <span class="message-stamp" *ngIf="
                         (message.header.sender.type | lowercase) == 'agent' &&
                         (message.body.type | lowercase) == 'comment' &&
-                        (message.body.itemType | lowercase) != 'text'
+                        (message.body.itemType | lowercase) != 'text' &&
+                        (message.body.itemType | lowercase) != 'private_reply'
+
                       ">
                       <span class="chat-time">{{ message.header.timestamp | date: "shortTime" }} </span>
                     </span>
@@ -1732,6 +1822,7 @@
             <span *ngIf="quotedMessage.header.sender">
               {{ quotedMessage.header.sender | getSenderName: conversation.customer | titlecase }}
             </span>
+
             <p>
               <span *ngIf="quotedMessage.body.attachment" class="display-file display-image">
                 <img
@@ -1761,7 +1852,7 @@
             </p>
 
             <button mat-icon-button class="quoted-message-cancel"
-              (click)="quotedMessage = ''; replyToMessageId = null; fbCommentId = null">
+              (click)="quotedMessage = ''; replyToMessageId = null; commentId = null; privateMessageReply = null">
               <mat-icon>close</mat-icon>
             </button>
           </div>
@@ -1790,11 +1881,11 @@
               cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none"
               #replyInput name="message" placeholder="{{
             (conversation.messages[conversation.messages.length - 1]?.botSuggestions
-              ? fbCommentId
+              ? commentId
                 ? 'chat-features.interactions.bot-suggestions-available-for-reply-to-a-comment'
                 : 'chat-features.interactions.bot-suggestions-available'
               : _socketService.isSocketConnected && conversation.activeChannelSessions.length > 0 && conversation.messageComposerState
-              ? fbCommentId
+              ? commentId
                 ? 'chat-features.interactions.Type-a-reply-to-comment'
                 : 'chat-features.interactions.Type-a-message'
               : 'chat-features.interactions.Unable-to-send-message'
@@ -1873,7 +1964,7 @@
 
                     <mat-tab label="Bot Suggestions">
                       <ng-container
-                        *ngFor="let botSuggestion of conversation.messages[conversation.messages.length - 1]?.botSuggestions | LockFilter: message">
+                        *ngFor="let botSuggestion of conversation.messages[conversation.messages.length - 1]?.botSuggestions | SuggestionsFilter: message">
                         <ng-container *ngIf="botSuggestion?.messageBody.type == 'PLAIN'">
                           <mat-option [value]="botSuggestion?.messageBody.markdownText"
                             (click)="replyInput.value = botSuggestion?.messageBody.markdownText"
@@ -1916,7 +2007,8 @@
                 conversation.activeChannelSessions.length > 0 &&
                 conversation.messageComposerState &&
                 conversationSettings.isFileSharingEnabled &&
-                _socketService.isSocketConnected
+                _socketService.isSocketConnected &&
+                !isInstagramChannel(conversation.activeChannelSessions[0].channel)
               ">
               <input accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx,.mp4,mp3" #myFileInput
                 type="file" (change)="uploadFile($event.target.files); $event.target.value = ''"
