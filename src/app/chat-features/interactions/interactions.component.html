@@ -1386,7 +1386,7 @@
                                 </div>
                               </div>
                               <div *ngIf="postData.socialMediaPost?.attachment?.mimeType == 'album'">
-                                <ng-container *ngFor="let subattachment of post.subattachments?.data">
+                                <ng-container *ngFor="let subattachment of postData.subattachments?.data">
                                   <ng-container *ngIf="subattachment?.type == 'photo'">
                                     <a style="cursor: pointer"
                                       (click)="externalfilePreviewOpener(subattachment.media.image.src, subattachment?.type, 'image')"
