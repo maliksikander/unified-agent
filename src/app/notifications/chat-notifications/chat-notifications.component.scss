@@ -84,10 +84,10 @@
             border-radius: 50%;
             background-color: #fff;
             margin-left: 2px;
-            animation: indicator 1.5s infinite ease-in-out;
+            animation: indicatorOB 1.5s infinite ease-in-out;
           }
 
-          @keyframes indicator {
+          @keyframes indicatorOB {
             50% {
               transform: scale(1.7);
               opacity: 0.9;

@@ -76,6 +76,7 @@ export class ChatNotificationsComponent implements OnInit {
           } else {
             this.externalModeRequests.push(e.data);
           }
+          this._soundService.playRing();
           console.log("external requests==>", this.externalModeRequests);
         } else if (e.msg == "closeExternalModeRequestHeader") {
           this.isCallAcceptClicked = false;
@@ -86,6 +87,7 @@ export class ChatNotificationsComponent implements OnInit {
             });
             console.log("Closing Index==>", index);
             if (index != -1) this.externalModeRequests.splice(index, 1);
+            this._soundService.stopRing();
           }
         } else if (e.msg == "closeAllPushModeRequests") {
           this.pushModeRequests = [];

@@ -81,7 +81,7 @@
     "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_fr",
     "Unable-To-End-Voice-Session":"Unable to end voice session_fr",
     "CX-Voice-incorrect-request":"CX VOICE : Incorrect object for call request!_fr",
-    "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed, Invalid Credentials!_fr",
+    "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed!_fr",
     "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed_fr",
     "CX-Voice-Login-Success":"CX VOICE : Successfully login with EF Switch_fr",
     "CX-Voice-call-canceled" : "CX VOICE : Voice Call canceled_fr",

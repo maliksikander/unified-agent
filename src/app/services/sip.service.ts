@@ -639,7 +639,7 @@ export class SipService implements OnInit {
       if (this.customer) customer = JSON.parse(JSON.stringify(this.customer));
 
       if (dialogState.dialog.callType.toLowerCase() == "outbound") {
-        callType = "DIALOG_ENDED";
+        // callType = "DIALOG_ENDED";
         serviceIdentifier = "VOICE";
         this.getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, event, intent, customer, timeStamp, methodCalledOn);
       } else {
