@@ -100,7 +100,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
 
     // }
 
-    
+
 
     this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       if (e.msg == "stateChanged") {

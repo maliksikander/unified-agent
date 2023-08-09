@@ -1058,33 +1058,49 @@ export class InteractionsComponent implements OnInit {
   requestType: string;
   noteDialogBtnText: string;
 
+  isCXVoiceSessionActive() {
+    let session = this.conversation.activeChannelSessions.find((channelSession) => {
+      return channelSession.channel.channelType.name.toLowerCase() === "cx_voice";
+    });
+    if (session) return true;
+    return false;
+  }
+
   agentAssistanceRequest(templateRef, data, action, requestType): void {
     try {
       this.requestType = requestType;
       this.requestAction = action;
 
-      if (requestType == "queue") {
-        this.requestedQueue = data;
-        if (action == "transfer") {
-          this.requestTitle = this._translateService.instant("chat-features.interactions.Transfer-To-Queue");
-          this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Transfer");
-        } else if (action == "conference") {
-          this.requestTitle = this._translateService.instant("chat-features.interactions.Conference-Request");
-          this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Add-To-Conference");
+      if (this.isCXVoiceSessionActive()) {
+        if (requestType == "queue") {
+          if (action == "transfer") {
+            this._sipService.directQueueTransferOnSip(data);
+          }
         }
+      } else {
+        if (requestType == "queue") {
+          this.requestedQueue = data;
+          if (action == "transfer") {
+            this.requestTitle = this._translateService.instant("chat-features.interactions.Transfer-To-Queue");
+            this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Transfer");
+          } else if (action == "conference") {
+            this.requestTitle = this._translateService.instant("chat-features.interactions.Conference-Request");
+            this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Add-To-Conference");
+          }
+        }
+
+        // this.requestAction = action;
+
+        const dialogRef = this.dialog.open(templateRef, {
+          panelClass: "consult-dialog"
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+          // console.log("The dialog was closed==>", result);
+        });
+
+        this.consultTransferTrigger.closeMenu();
       }
-
-      // this.requestAction = action;
-
-      const dialogRef = this.dialog.open(templateRef, {
-        panelClass: "consult-dialog"
-      });
-
-      dialogRef.afterClosed().subscribe((result) => {
-        // console.log("The dialog was closed==>", result);
-      });
-
-      this.consultTransferTrigger.closeMenu();
     } catch (e) {
       console.error("[Error] on Agent Assitance", e);
     }
@@ -1115,11 +1131,29 @@ export class InteractionsComponent implements OnInit {
     this.showRequestNotification();
   }
 
+  filterCXQueues(queues: Array<any>) {
+    try {
+      let cxQueues: Array<any> = [];
+      queues.forEach((item: any) => {
+        if (item.mrdId == this._appConfigService.config.CX_VOICE_MRD) cxQueues.push(item);
+      });
+      this.queueList = cxQueues;
+    } catch (e) {
+      console.error("[filterCXQueues] Error :", e);
+    }
+  }
+
   getAgentsInQueue() {
     try {
       this._httpService.getAgentsInQueue(this.conversation.conversationId).subscribe(
         (res: any) => {
-          this.queueList = res;
+          if (this.isCXVoiceSessionActive() && res) {
+            this.filterCXQueues(res);
+          } else {
+            this.queueList = res;
+          }
+
+          // this.queueList = res;
         },
         (error) => {
           this._sharedService.Interceptor(error.error, "err");
@@ -1257,8 +1291,8 @@ export class InteractionsComponent implements OnInit {
       panelClass: "call-controls-dialog",
       hasBackdrop: false,
       position: {
-        top: '8%',
-        right: '8%'
+        top: "8%",
+        right: "8%"
       },
       data: { conversation: this.conversation }
     });
