@@ -43,24 +43,24 @@ export class SendSmsComponent implements OnInit {
 
   ngOnInit() {
 
-   this.defaultPrefixOutbound = this._sharedService.conversationSettings.prefixCode;
+    this.defaultPrefixOutbound = this._sharedService.conversationSettings.prefixCode;
 
     this.smsForm = this.fb.group({
 
 
       phoneControl: [this.defaultPrefixOutbound,
-        [
-          Validators.required,
-          Validators.pattern("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$"),
-          Validators.minLength(3),
-          Validators.maxLength(20)
-        ]],
+      [
+        Validators.required,
+        Validators.pattern("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$"),
+        Validators.minLength(3),
+        Validators.maxLength(20)
+      ]],
 
       textAreaControl: ["", [Validators.required]]
     });
 
     // this.getAgentDeskSettings();
-//hello All
+    //hello All
     this.fetchSMSServiceIdentifier();
 
     this.phoneNumberFieldSubscriber = this.smsForm.get("phoneControl").valueChanges.subscribe((phoneNumber) => {
@@ -276,9 +276,9 @@ export class SendSmsComponent implements OnInit {
   template: `
   <div class="custom-sms-notification">
       <mat-icon>check_circle</mat-icon>
-      <span class="main-notify"><strong>SMS sent successfully </strong>
-           The SMS has been sent to the <span *ngIf="data.info.newProfileCreated == true">new</span> customer <b>"{{data.info.customer.firstName}}"</b> on this number {{data.info.sentNumber}}.<br/> 
-          <span *ngIf="data.info.newProfileCreated == true"> To update the customer profile, <button class="update-new-profile" (click)="updateUser()"> click here</button></span>
+      <span class="main-notify"><strong>{{'chat-features.send-sms.success-sms'  | translate }} </strong>
+           {{'chat-features.send-sms.the-sms-has-been-sent-to-the'  | translate }} <span *ngIf="data.info.newProfileCreated == true">new</span> customer {{'chat-features.send-sms.customer'  | translate }}<b>"{{data.info.customer.firstName}}"</b> on this number{{'chat-features.send-sms.on-this-number'  | translate }} {{data.info.sentNumber}}.<br/> 
+          <span *ngIf="data.info.newProfileCreated == true"> {{'chat-features.send-sms.update-profile'  | translate }}, <button class="update-new-profile" (click)="updateUser()">{{'chat-features.send-sms.click-here'  | translate }}</button></span>
       </span>
       
       <button mat-button color="primary" (click)="dismiss()"></button>

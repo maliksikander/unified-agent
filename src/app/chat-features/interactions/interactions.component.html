@@ -925,7 +925,7 @@
                          <div class="panel-header">
                            <ul>
                              <li class="agent-pic participant-agent call-services">
-                               <span matTooltip="test agent">{{message.header.sender.senderName | getFirstTwoLetters}}</span>
+                               <span matTooltip="{{message.header.sender.senderName}}">{{message.header.sender.senderName | getFirstTwoLetters}}</span>
                              </li>
                              <li> {{ message.header.channelData.channelCustomerIdentifier }}
                              </li>

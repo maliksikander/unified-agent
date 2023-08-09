@@ -164,7 +164,13 @@
       "invalid-pattern":"Invalid pattern_spa",
       "number-should-be-in-range-3-to-15":"number should be in range 3 to 15_spa",
       "discard":"Discard_spa",
-      "send-sms":"Send SMS_spa"
+      "send-sms":"Send SMS_spa",
+      "success-sms":"SMS sent successfully_spa",
+      "update-profile":"To update the customer profile",
+      "click-here":"click here_spa",
+      "the-sms-has-been-sent-to-the":"The SMS has been sent to the ",
+      "on-this-number":"on this number_spa",
+      "customer":"customer"
     },
     
     "customer-info": {

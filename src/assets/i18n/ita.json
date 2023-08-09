@@ -164,7 +164,13 @@
       "invalid-pattern":"Invalid pattern_ita",
       "number-should-be-in-range-3-to-15":"number should be in range 3 to 15_ita",
       "discard":"Discard_ita",
-      "send-sms":"Send SMS_ita"
+      "send-sms":"Send SMS_ita",
+      "success-sms":"SMS sent successfully_ita",
+      "update-profile":"To update the customer profile",
+      "click-here":"click here_ita",
+      "the-sms-has-been-sent-to-the":"The SMS has been sent to the ",
+      "on-this-number":"on this number_ita",
+      "customer":"customer"
     },
 
     "customer-info": {

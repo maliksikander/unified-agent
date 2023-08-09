@@ -164,7 +164,13 @@
       "invalid-pattern":"Invalid pattern_ger",
       "number-should-be-in-range-3-to-15":"number should be in range 3 to 15_ger",
       "discard":"Discard_ger",
-      "send-sms":"Send SMS_ger"
+      "send-sms":"Send SMS_ger",
+      "success-sms":"SMS sent successfully_ger",
+      "update-profile":"To update the customer profile",
+      "click-here":"click here_ger",
+      "the-sms-has-been-sent-to-the":"The SMS has been sent to the ",
+      "on-this-number":"on this number_ger",
+      "customer":"customer"
     },
 
     "customer-info": {
