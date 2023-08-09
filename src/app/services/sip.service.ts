@@ -115,6 +115,7 @@ export class SipService implements OnInit {
         if (event.response.state.toLowerCase() == "login") {
           this.isSipLoggedIn = true;
           this.readyAgentState();
+          this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-Login-Success"), "succ");
         }
 
         if (event.response.state.toLowerCase() == "logout") {
@@ -125,8 +126,7 @@ export class SipService implements OnInit {
         }
       } else if (event.event.toLowerCase() == "xmppevent") {
         if (event.response && event.response.type == "IN_SERVICE") {
-          this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-Login-Success"), "succ");
-
+          this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-Connected"), "succ");
           console.log("Connection Established, CTI Status is Connected ==>");
         }
       } else if (event.event.toLowerCase() == "dialogstate") {

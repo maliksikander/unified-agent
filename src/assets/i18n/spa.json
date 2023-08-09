@@ -83,7 +83,7 @@
     "CX-Voice-incorrect-request":"CX VOICE : Incorrect object for call request!_spa",
     "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed!_spa",
     "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed!_spa",
-    "CX-Voice-Login-Success":"CX VOICE : Successfully login with EF Switch_spa",
+    "CX-Voice-Login-Success":"CX VOICE: Login Successful with EF Switch_spa",
     "CX-Voice-call-canceled" : "CX VOICE : Voice Call canceled_spa",
     "SIP-Logout-Successful":"SIP Logout Successful_spa",
     "No-Extension-Found":"No Extension Found For Sip Agent_spa",
@@ -95,7 +95,8 @@
     "Unable-to-Update-Announcement":"Unable to Update Announcement_spa",
     "Unable-to-Delete-Announcement":"Unable to Delete Announcement_spa",
     "Socket-Connected":"Socket Connected_spa",
-    "Calling":"Calling_spa"
+    "Calling":"Calling_spa",
+    "CX-Voice-Connected":"CX VOICE Connected_spa"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_spa",

@@ -83,7 +83,7 @@
     "CX-Voice-incorrect-request":"CX VOICE : Incorrect object for call request!",
     "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed!",
     "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed!",
-    "CX-Voice-Login-Success":"CX VOICE : Successfully login with EF Switch",
+    "CX-Voice-Login-Success":"CX VOICE: Login Successful with EF Switch",
     "CX-Voice-call-canceled" : "CX VOICE : Voice Call canceled",
     "SIP-Logout-Successful":"SIP Logout Successful",
     "No-Extension-Found":"No Extension Found For Sip Agent",
@@ -95,7 +95,8 @@
     "Unable-to-Update-Announcement":"Unable to Update Announcement",
     "Unable-to-Delete-Announcement":"Unable to Delete Announcement",
     "Socket-Connected":"Socket Connected",
-    "Calling":"Calling"
+    "Calling":"Calling",
+    "CX-Voice-Connected":"CX VOICE Connected"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View",
