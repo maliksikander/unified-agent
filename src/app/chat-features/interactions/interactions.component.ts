@@ -1199,6 +1199,7 @@ export class InteractionsComponent implements OnInit {
         (res: any) => {
           this.postData = res;
           this.fullPostView = true;
+          console.log("here is the data", this.postData)
           this.selectedCommentId= selectedCommentId
         },
         (error) => {
