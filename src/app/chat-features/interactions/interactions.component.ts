@@ -620,7 +620,6 @@ export class InteractionsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => { });
   }
   externalfilePreviewOpener(url, fileName, type) {
-    console.log("here in the externalfilepreview")
     const dialogRef = this.dialog.open(FilePreviewComponent, {
       maxHeight: "100vh",
       maxWidth: "100%",
@@ -1192,15 +1191,15 @@ export class InteractionsComponent implements OnInit {
   //   }
   // }
 
-  fullPostViewData(serviceIdentifier, postId) {
-    if (serviceIdentifier && postId) {
+  fullPostViewData(serviceIdentifier, postId, selectedCommentId) {
+    this.selectedCommentId = null
+    if (serviceIdentifier && postId && selectedCommentId) {
       this._httpService.getPostData(postId, serviceIdentifier).subscribe(
 
         (res: any) => {
           this.postData = res;
           this.fullPostView = true;
-          this.selectedCommentId= this.postData.socialMediaPost.id
-          console.log("here is the data ", this.postData)
+          this.selectedCommentId= selectedCommentId
         },
         (error) => {
           this._sharedService.Interceptor(error.error, "err");
