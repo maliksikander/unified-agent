@@ -1210,13 +1210,13 @@
                               <ul>
                                 <li *ngIf="(message.status | lowercase) == 'delivered'" class="activity-status" matTooltip="Activity Status"><span>Delivered</span></li>
                                 <li matTooltip="Queue">Marketing </li>
-                                <li *ngIf="(message.status | lowercase) == 'delivered'" matTooltip="Scheduled Time">
+                                <li *ngIf="(message.status | lowercase) == 'delivered'" matTooltip="Execute Time">
                                   {{ message.header.timestamp | date: "shortTime" }}
                                 </li>
                                 <li *ngIf="(message.status | lowercase) !== 'delivered'" matTooltip="Execute Time">
                                   Jul 5, 2023
                                 </li>
-                                <li *ngIf="(message.status | lowercase) !== 'delivered'" matTooltip="Execute Time">
+                                <li *ngIf="(message.status | lowercase) !== 'delivered'" matTooltip="Scheduled Time">
                                   {{ message.header.timestamp | date}} - {{ message.header.timestamp | date: "shortTime" }}
                                 </li>
 
