@@ -65,6 +65,13 @@ export class SendSmsComponent implements OnInit {
 
     this.phoneNumberFieldSubscriber = this.smsForm.get("phoneControl").valueChanges.subscribe((phoneNumber) => {
       if (phoneNumber != null && phoneNumber != "" && phoneNumber != undefined) {
+
+        console.log("value before proceiing " + this.smsForm.get("phoneControl").value);
+
+        this.smsForm.get("phoneControl").setValue('', { emitEvent: false });
+
+        console.log("value after proceiing " + this.smsForm.get("phoneControl").value);
+
         this.formatePhoneNumber(phoneNumber);
       } else {
         this.userData = [];
@@ -90,6 +97,8 @@ export class SendSmsComponent implements OnInit {
   }
 
   formatePhoneNumber(phoneNumber) {
+
+    phoneNumber = this.removeStartingNumber(phoneNumber, this.defaultPrefixOutbound);
     //   setTimeout(() => {
     let plusExists = false;
     this.smsForm.get("phoneControl").setValue('', { emitEvent: false });
@@ -103,6 +112,13 @@ export class SendSmsComponent implements OnInit {
     this.phoneNumber = this.applyPrefix(phoneNumber);
     this.smsForm.get("phoneControl").setValue(this.phoneNumber, { emitEvent: false });
     // }, 100);
+  }
+
+  removeStartingNumber(completeNumber, prefix) {
+    if (completeNumber.startsWith(prefix)) {
+      return completeNumber.substring(prefix.length);
+    }
+    return completeNumber;
   }
 
   applyPrefix(phoneNumber) {
