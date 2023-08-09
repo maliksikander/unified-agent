@@ -384,7 +384,6 @@
                     <div class="main-quoted-reply"
                       *ngFor="let referredMessage of message.header.replyToMessageId | getReferredMsg: conversation.messages"
                       (click)="navigationToRepliedMessage(referredMessage)">
-
                       <strong class="message-author"
                         [ngClass]="(referredMessage.header.sender.type | lowercase) == 'customer' ? '' : 'current-agents'">
                         <span *ngIf="referredMessage.header.sender">
