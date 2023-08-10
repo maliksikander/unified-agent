@@ -51,7 +51,8 @@
         <div class="text-field message-field">
           <label>{{'chat-features.send-sms.type-sms'  | translate }}</label>
           <mat-form-field appearance="outline">
-            <textarea #message matInput formControlName="textAreaControl" maxlength="500"></textarea>
+            <textarea #message matInput formControlName="textAreaControl" maxlength="2000"></textarea>
+            <mat-hint align="end"> {{ smsForm.get('textAreaControl').value?.length || 0 }} / {{'chat-features.send-sms.characters-limit-2000' | translate }}</mat-hint>
             <mat-error *ngIf="smsForm.get('textAreaControl').hasError('required')">
               *{{'chat-features.send-sms.invalid-text'  | translate }}
             </mat-error>

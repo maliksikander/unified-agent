@@ -170,7 +170,8 @@
       "click-here":"click here_ar",
       "the-sms-has-been-sent-to-the":"The SMS has been sent to the ",
       "on-this-number":"on this number_ar",
-      "customer":"customer"
+      "customer":"customer",
+      "characters-limit-2000":"2000 characters_ar"
     },
     "customer-info": {
       "info": "Customer Info_ar",

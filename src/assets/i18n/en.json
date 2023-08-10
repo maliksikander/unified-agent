@@ -171,7 +171,9 @@
       "click-here":"click here",
       "the-sms-has-been-sent-to-the":"The SMS has been sent to the ",
       "on-this-number":"on this number",
-      "customer":"customer"
+      "customer":"customer",
+      "characters-limit-2000":"2000 characters"
+
 
     },
 
