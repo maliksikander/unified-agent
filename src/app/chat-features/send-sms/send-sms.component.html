@@ -6,12 +6,16 @@
   <div class="message-container mat-dialog-content m-0 p-0">
     <form [formGroup]="smsForm">
       <div class="new-message-form new-announcement-form">
-        <div class="text-field message-field">
-          <label>{{'chat-features.send-sms.channel-identity'  | translate }}</label><span class="icustomer"
-            *ngIf="identifiedCustomer">[{{identifiedCustomer.firstName}}]</span>
+        <div class="text-field message-field send-sms-field">
+          <label>{{'chat-features.send-sms.channel-identity'  | translate }}</label>
+<!--          <span class="icustomer"-->
+<!--            *ngIf="identifiedCustomer">[{{identifiedCustomer.firstName}}]</span>-->
           <mat-form-field appearance="outline">
-            <input placeholder="Enter Phone Number" aria-label="Number" matInput formControlName="phoneControl"
+            <input placeholder="Enter" aria-label="Number" matInput formControlName="phoneControl"
               maxlength="20" minLength="3" [matAutocomplete]="auto" (keyup)="handleThrottledKeyUp()">
+<!--            <span matTextPrefix  *ngIf="identifiedCustomer">[{{identifiedCustomer.firstName}}]</span>-->
+
+            <span *ngIf="identifiedCustomer" matTextSuffix>[{{identifiedCustomer.firstName}}]</span>
             <mat-error>
               <div *ngIf="smsForm.get('phoneControl').hasError('required')">
                 *{{'chat-features.send-sms.not-empty'  | translate }}
@@ -36,7 +40,8 @@
 
 
                 <mat-optgroup *ngFor="let option of userData" [label]="option.firstName" class="outbound-customer-list">
-                <mat-option *ngFor="let number of option.phoneNumber" [value]="option.phoneNumber | getMatchedString:smsForm.get('phoneControl').value "
+                <mat-option *ngFor="let number of option.phoneNumber" [value]="option.phoneNumber | getMatchedString:number"
+
                   (onSelectionChange)="updateMySelection(option)">
                   {{number}}
                 </mat-option>

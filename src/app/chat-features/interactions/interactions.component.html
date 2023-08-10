@@ -918,8 +918,8 @@
 
                     <div *ngIf="(message.body.type | lowercase) == 'outboundsms'"
                       class="voice-activity-main custom-data-type panel-divider user-data customer-side single">
-                   <mat-expansion-panel hideToggle="{{ message.body.markdownText.length > 50 ? false : true }}"
-                                        disabled="{{   message.body.markdownText.length > 50 ? false : true }}">
+                   <mat-expansion-panel hideToggle="{{ message.body.markdownText.length > 60 ? false : true }}"
+                                        disabled="{{   message.body.markdownText.length > 60 ? false : true }}">
                      <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
                        <mat-panel-title>
                          <div class="panel-header">

@@ -4353,6 +4353,20 @@ mat-select {
     display: none;
     visibility: hidden;
   }
+  .mat-expansion-panel-header{
+    &.mat-expanded{
+      .message-activity-text{
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+    .mat-content {
+      padding-right: 1rem;
+    }
+  }
+  .mat-expansion-panel-body {
+    padding: 5px 15px;
+  }
 }
 
 .outbound-customer-list{
@@ -4371,4 +4385,23 @@ mat-select {
     font-size: 13px;
     opacity: .8;
   }
+}
+
+.send-sms-field{
+  //.mat-form-field-infix{
+  //  display: flex;
+  //  flex-direction: row;
+  //  flex-wrap: nowrap;
+  //  justify-content: space-between;
+  //}
+  input{
+    width: fit-content;
+    min-width: 2ch;
+    max-width: 20ch;
+  }
+}
+
+.right-direction #chat-content .outboundsms .mat-expansion-panel-header .mat-content {
+  padding-left: 0rem !important;
+  padding-right: 15px;
 }
