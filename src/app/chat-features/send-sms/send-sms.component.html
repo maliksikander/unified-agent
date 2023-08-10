@@ -36,7 +36,7 @@
 
 
                 <mat-optgroup *ngFor="let option of userData" [label]="option.firstName" class="outbound-customer-list">
-                <mat-option *ngFor="let number of option.phoneNumber" [value]="option.phoneNumber | getMatchedString:smsForm.get('phoneControl').value "
+                <mat-option *ngFor="let number of option.phoneNumber" [value]="option.phoneNumber | getMatchedString:number "
                   (onSelectionChange)="updateMySelection(option)">
                   {{number}}
                 </mat-option>

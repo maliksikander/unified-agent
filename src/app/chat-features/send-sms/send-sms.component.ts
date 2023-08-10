@@ -293,7 +293,7 @@ export class SendSmsComponent implements OnInit {
   <div class="custom-sms-notification">
       <mat-icon>check_circle</mat-icon>
       <span class="main-notify"><strong>{{'chat-features.send-sms.success-sms'  | translate }} </strong>
-           {{'chat-features.send-sms.the-sms-has-been-sent-to-the'  | translate }} <span *ngIf="data.info.newProfileCreated == true">new</span> customer {{'chat-features.send-sms.customer'  | translate }}<b>"{{data.info.customer.firstName}}"</b> on this number{{'chat-features.send-sms.on-this-number'  | translate }} {{data.info.sentNumber}}.<br/> 
+           {{'chat-features.send-sms.the-sms-has-been-sent-to-the'  | translate }} <span *ngIf="data.info.newProfileCreated == true">new</span> {{'chat-features.send-sms.customer'  | translate }}<b>"{{data.info.customer.firstName}}"</b>{{'chat-features.send-sms.on-this-number'  | translate }} {{data.info.sentNumber}}.<br/> 
           <span *ngIf="data.info.newProfileCreated == true"> {{'chat-features.send-sms.update-profile'  | translate }}, <button class="update-new-profile" (click)="updateUser()">{{'chat-features.send-sms.click-here'  | translate }}</button></span>
       </span>
       
