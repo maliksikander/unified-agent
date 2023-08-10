@@ -97,6 +97,7 @@ import { getCustomerAniPipe } from "./pipes/getCustomerAni.pipe";
 import { checkOutboundCallPipe } from "./pipes/checkOutboundCall.pipe";
 import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
 import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements.pipe";
+import { getIVRTrailPipe } from "./pipes/getIVRTrail.pipe";
 import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
 
 @NgModule({
@@ -109,6 +110,7 @@ import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
     isAlreadyJoinedPipe,
     ibsformatPipe,
     getSenderNamePipe,
+    getIVRTrailPipe,
     SearchPipe,
     SearchSuggestionsPipe,
     sentenceCasePipe,
@@ -278,6 +280,7 @@ import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
     SearchPipe,
     SearchSuggestionsPipe,
     getSenderNamePipe,
+    getIVRTrailPipe,
     sentenceCasePipe,
     convertToFormDataPipe,
     getFirstTwoLettersPipe,
