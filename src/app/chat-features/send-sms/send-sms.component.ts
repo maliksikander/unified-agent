@@ -16,7 +16,7 @@ import { cacheService } from 'src/app/services/cache.service';
   templateUrl: './send-sms.component.html',
   styleUrls: ['./send-sms.component.scss']
 })
-export class SendSmsComponent implements OnInit {
+export class SendSmsComponent implements OnInit, AfterViewInit {
   @ViewChild('textInput', { static: true }) textInput: ElementRef;
 
   offSet = 0;
@@ -30,6 +30,7 @@ export class SendSmsComponent implements OnInit {
   phoneNumberFieldSubscriber;
   smsForm: FormGroup;
 
+
   constructor(
     private snackBar: MatSnackBar,
     private _httpService: httpService,
@@ -39,9 +40,6 @@ export class SendSmsComponent implements OnInit {
     private _cacheService: cacheService,
     public fb: FormBuilder,
   ) {
-  }
-
-  ngOnInit() {
 
     this.defaultPrefixOutbound = this._sharedService.conversationSettings.prefixCode;
 
@@ -63,14 +61,33 @@ export class SendSmsComponent implements OnInit {
     //hello All
     this.fetchSMSServiceIdentifier();
 
+
+  }
+  ngAfterViewInit(): void {
+
+    const phoneField = document.getElementById('phoneField');
+
+
+    phoneField.addEventListener('keydown', (event) => {
+
+
+      // Check your conditions here
+      if (this.smsForm.get("phoneControl").value == this.defaultPrefixOutbound) {
+        // Prevent the default behavior of the backspace key (key code 8)
+        if (event.key === "ArrowLeft" || event.key === 'Backspace') {
+          event.preventDefault();
+        }
+      }
+    });
+  }
+
+  ngOnInit() {
+
+
     this.phoneNumberFieldSubscriber = this.smsForm.get("phoneControl").valueChanges.subscribe((phoneNumber) => {
       if (phoneNumber != null && phoneNumber != "" && phoneNumber != undefined) {
 
-        console.log("value before proceiing " + this.smsForm.get("phoneControl").value);
-
         this.smsForm.get("phoneControl").setValue('', { emitEvent: false });
-
-        console.log("value after proceiing " + this.smsForm.get("phoneControl").value);
 
         this.formatePhoneNumber(phoneNumber);
       } else {
@@ -78,9 +95,7 @@ export class SendSmsComponent implements OnInit {
       }
     });
 
-
   }
-
 
   fetchSMSServiceIdentifier() {
     const SMSChannelType = this._sharedService.channelTypeList.find((channelType) => { return channelType.name.toLowerCase() == "sms" });
@@ -164,6 +179,10 @@ export class SendSmsComponent implements OnInit {
     this.identifiedCustomer = "";
     if (this.smsForm.get("phoneControl").value.length > 2) {
       this.getCustomers(this.limit, this.offSet, this.sort, { field: "phoneNumber", value: encodeURIComponent(this.smsForm.get("phoneControl").value) });
+    }
+
+    if (this.smsForm.get("phoneControl").value == "") {
+      this.smsForm.get("phoneControl").setValue(this.defaultPrefixOutbound, { emitEvent: false });
     }
 
 
