@@ -81,9 +81,10 @@
     "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_ita",
     "Unable-To-End-Voice-Session":"Unable to end voice session_ita",
     "CX-Voice-incorrect-request":"CX VOICE : Incorrect object for call request!_ita",
-    "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed, Invalid Credentials!_ita",
+    "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed!_ita",
     "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed!_ita",
-    "CX-Voice-Login-Success":"CX VOICE : Successfully login with EF Switch_ita",
+    "CX-Voice-Login-Success":"CX VOICE: Login Successful with EF Switch_ita",
+    "CX-Voice-call-canceled" : "CX VOICE : Voice Call canceled_ita",
     "SIP-Logout-Successful":"SIP Logout Successful_ita",
     "No-Extension-Found":"No Extension Found For Sip Agent_ita",
     "Unable-to-edit-Active-Announcements":"Unable to edit Active Announcement_ita",
@@ -92,7 +93,10 @@
     "Announcement-Updated":"Announcement Updated_ita",
     "Unable-to-Create-New-Announcement":"Unable to Create New Announcement_ita",
     "Unable-to-Update-Announcement":"Unable to Update Announcement_ita",
-    "Unable-to-Delete-Announcement":"Unable to Delete Announcement_ita"
+    "Unable-to-Delete-Announcement":"Unable to Delete Announcement_ita",
+    "Socket-Connected":"Socket Connected_ita",
+    "Calling":"Calling_ita",
+    "CX-Voice-Connected":"CX VOICE Connected_ita"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ita",
@@ -328,6 +332,7 @@
    "session-ended":"session ended_ita",
    "left-the-conversation":"left the conversation_ita",
    "transfer-request-has-been-placed-by":"transfer request has been placed by_ita",
+   "transfer-request-has-been-placed":"transfer request has been placed_ita",
    "conference-request-has-been-placed-by":"conference request has been placed by_ita",
    "No-agent-is-available-for":"No agent is available for_ita",
    "conference-request-has-cancelled": "Conference request has been cancelled_ita"
@@ -379,7 +384,11 @@
     "agent-id":"Agent Id_ita",
     "channel":"channel_ita",
     "direction":"direction_ita",
-    "Select-All":"Select All_ita"
+    "Select-All":"Select All_ita",
+    "mute":"Mute_ita",
+    "unMute":"Unmute_ita",
+    "hold":"Hold_ita",
+    "resume":"Resume_ita"
   },
   "pull-mode": {
     "all-list": "All List_ita",
