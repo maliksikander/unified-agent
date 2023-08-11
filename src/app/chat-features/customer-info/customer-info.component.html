@@ -128,10 +128,10 @@
               <ng-container>
                 <div *ngIf="(conversation.topicParticipant.role | lowercase) != 'silent_monitor'" class="crm-trigger">
                   <!-- <p>Not a correct customer profile?</p> -->
-                  <button *ngIf="conversation.conversationId != 'FAKE_CONVERSATION' && (('customer' | authPipe: 'view') && ('customer' | authPipe: 'manage_in_conversation')) as result" mat-raised-button (click)="gotoEmbedView()">
+                  <button *ngIf="('customer' | authPipe: 'view') && ( ('customer' | authPipe: 'manage') || (conversation.conversationId != 'FAKE_CONVERSATION' &&  ('customer' | authPipe: 'manage_in_conversation'))) as result" mat-raised-button (click)="gotoEmbedView()">
                     {{ "chat-features.customer-info.link-profile" | translate }}
                   </button>
-                  <button *ngIf="conversation.conversationId != 'FAKE_CONVERSATION' && ('customer' | authPipe: 'manage_in_conversation') as result" (click)="updateProfile()" mat-raised-button>
+                  <button *ngIf="('customer' | authPipe: 'manage') || (conversation.conversationId != 'FAKE_CONVERSATION' && ('customer' | authPipe: 'manage_in_conversation')) as result" (click)="updateProfile()" mat-raised-button>
                     {{ "chat-features.customer-info.update-profile" | translate }}
                   </button>
                 </div>
@@ -443,7 +443,6 @@
                           <label>{{ "chat-features.customer-info.form-data" | translate }}</label>
                         </div>
                       </mat-expansion-panel-header>
-                      <p>{{ additionalAttribute.value.formData.attributes | json }}</p>
                       <ul class="requested-channel-content" *ngFor="let attr of additionalAttribute.value.formData.attributes">
                         <li>
                           <label>{{ attr.key | sentenceCase }}</label>

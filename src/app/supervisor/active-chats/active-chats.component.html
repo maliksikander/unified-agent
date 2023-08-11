@@ -107,7 +107,7 @@
                     >
                   </ng-template>
 
-                  <ul class="customer-labels" *ngIf="labels">
+                  <ul class="customer-labels" *ngIf="(labels && ('customer-labels' | authPipe : 'assign_label')) as result">
                     <li
                       *ngFor="let lbl of labels | fetchLabels: chat.customerLabels"
                       matTooltip="{{ lbl.name }}"
@@ -153,7 +153,7 @@
                       >({{ chat.channelIdentity | maskPIIAttribute: (chat.channelType | returnSchemaByChannelType) }})</small
                     >
                   </ng-template>
-                  <ul class="customer-labels" *ngIf="labels">
+                  <ul class="customer-labels" *ngIf="(labels && ('customer-labels' | authPipe : 'assign_label')) as result">
                     <li
                       *ngFor="let lbl of labels | fetchLabels: chat.customerLabels"
                       matTooltip="{{ lbl.name }}"

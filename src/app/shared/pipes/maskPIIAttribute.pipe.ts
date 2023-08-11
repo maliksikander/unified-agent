@@ -7,16 +7,18 @@ type schemaAttributes={isPii:boolean , type:string , key: string}
 @Pipe({ name: "maskPIIAttribute", pure: true })
 export class maskPIIAttributePipe implements PipeTransform {
 
-  transform(data: String | number, schema: CustomerSchema | schemaAttributes | null ): String | number {
+  transform(data: String, schema: CustomerSchema | schemaAttributes | null ): String | number {
     if (data) {
+      // console.log("data is",data)
+      // console.log("type is",typeof(data))
       if (schema && schema.isPii && schema.key) {
-        console.log("schema",schema)
-        if (schema.type.toLocaleLowerCase() == "string" && schema.key.toLocaleLowerCase() != "labels") {
-          return this.maskString(data);
-        } else if (schema.type.toLocaleLowerCase() == "phonenumber") {
+         if (schema.type.toLocaleLowerCase() == "phonenumber") {
           return this.maskNumber(data);
         } else if (schema.type.toLocaleLowerCase()== "email") {
           return this.maskEmail(data);
+        }
+        else if (schema.key.toLocaleLowerCase() != "labels") {
+          return this.maskString(data);
         }
       } else {
         return data;
@@ -26,31 +28,36 @@ export class maskPIIAttributePipe implements PipeTransform {
     }
   }
   maskString(str) {
-    if (str.length <= 3) {
-      return str;
-    }
+    let parts = str.split(',');
 
-    const maskedChars = "*".repeat(str.length - 3);
-    const maskedStr = str.substring(0, 3) + maskedChars;
+    // Step 2: Modify and mask the parts
+    let maskedParts = parts.map(part => {
+      // Keep the first three characters and mask the rest
+      let firstThreeChars = part.substring(0, 3);
+      let maskedChars = part.substring(3).replace(/./g, '*');
+      return firstThreeChars + maskedChars;
+    });
+    
+    // Step 3: Join the modified parts back together
+    return maskedParts.join(',');
 
-    return maskedStr;
   }
 
-  maskNumber(num) {
-    const numStr = num.toString();
+  maskNumber(numStr) {
 
-    if (numStr.length <= 2) {
-      return numStr;
-    }
-
-    const maskedChars = "*".repeat(numStr.length - 2);
-    const maskedNum = maskedChars + numStr.slice(-2);
-
-    return maskedNum;
+    let segments = numStr.split(','); // Split based on commas
+    let maskedSegments = segments.map(segment => {
+      let trimmedSegment = segment.trim();
+      let maskedPart = trimmedSegment.slice(0, -2).replace(/./g, '*'); // Mask all characters except last two
+      let lastTwoChars = trimmedSegment.slice(-2); // Get the last two characters
+      return maskedPart + lastTwoChars;
+    });
+    
+    return maskedSegments.join(',');
   }
   maskEmail(email) {
-    const [firstPart, secondPart] = email.split("@");
-
+    let [firstPart, secondPart] = email.split("@");
+    secondPart='@'+secondPart;
     let maskedChars;
     let maskedFirstPart;
     let maskedChars2;
