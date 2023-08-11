@@ -30,7 +30,7 @@ export class ActiveChatsComponent implements OnInit {
   queuesList = [];
   timerSubscription: Subscription;
   filter: string;
-  labels:CustomerLabels[]
+  labels: CustomerLabels[]
   filteredData = [];
   activeChatListWithAgents: any = [];
   activeChatListWithBots: any = [];
@@ -54,7 +54,7 @@ export class ActiveChatsComponent implements OnInit {
     public _pullModeservice: pullModeService,
     private _socketService: socketService,
     private _router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadLabels()
@@ -92,10 +92,10 @@ export class ActiveChatsComponent implements OnInit {
     this._socketService.emit("JoinAsSilentMonitor", obj);
     this._router.navigate(["customers"]);
   }
-  loadLabels():void {
+  loadLabels(): void {
     this._httpService.getLabels().subscribe((e) => {
       this.labels = e;
-      console.log("labels",this.labels)
+      console.log("labels", this.labels)
 
     });
   }
@@ -152,7 +152,13 @@ export class ActiveChatsComponent implements OnInit {
         this.activeChatListWithBots = e;
         // Sort the activeChatListWithBots array by activeSince property
         for (let data of this.activeChatListWithBots) {
-          data.chats = this.sortChatsByActiveSince(data.chats);
+          return data.chats.sort((a, b) => {
+            if (this.sortOrder === "asc") {
+              return a.activeSince - b.activeSince;
+            } else {
+              return b.activeSince - a.activeSince;
+            }
+          });
         }
       },
       (err) => {
@@ -175,24 +181,33 @@ export class ActiveChatsComponent implements OnInit {
           });
         });
       }
-
       // Sort the filteredData array by activeSince property
-      for (let data of this.filteredData) {
-        data.chats = this.sortChatsByActiveSince(data.chats);
-      }
+      this.sortChatsByActiveSince()
     } catch (err) {
       console.error("[filterData] Error :", err);
     }
   }
+  sortChatsByActiveSince() {
+    this.filteredData.sort((a, b) => {
+      if (a.chats.length === 0 && b.chats.length === 0) return 0;
+      if (a.chats.length === 0) return this.sortOrder === "asc" ? 1 : -1;
+      if (b.chats.length === 0) return this.sortOrder === "asc" ? -1 : 1;
 
-  sortChatsByActiveSince(chats: any[]) {
-    return chats.sort((a, b) => {
       if (this.sortOrder === "asc") {
-        return a.activeSince - b.activeSince;
+        return a.chats[0].activeSince - b.chats[0].activeSince;
       } else {
-        return b.activeSince - a.activeSince;
+        return b.chats[0].activeSince - a.chats[0].activeSince;
       }
     });
+    for (let data of this.filteredData) {
+      data.chats.sort((a, b) => {
+        if (this.sortOrder === "asc") {
+          return a.activeSince - b.activeSince;
+        } else {
+          return b.activeSince - a.activeSince;
+        }
+      });
+    }
   }
 
   // team selection change callback event
@@ -204,12 +219,11 @@ export class ActiveChatsComponent implements OnInit {
   // answered by selection change callback event
   onAnsweredByfilterChange(e) {
     try {
-      if (e.value == "agents")
-      {
+      if (e.value == "agents") {
         if (this.supervisedTeams && this.supervisedTeams.length > 0) {
           this.getAllActiveChatsWithTeam(this.selectedTeam, []);
         }
-       } else if (e.value == "bots") this.getAllActiveChatsWithBots();
+      } else if (e.value == "bots") this.getAllActiveChatsWithBots();
     } catch (err) {
       console.error("[onAnsweredByfilterChange] Error :", err);
     }
@@ -219,10 +233,10 @@ export class ActiveChatsComponent implements OnInit {
     if (this.timerSubscription) this.timerSubscription.unsubscribe();
   }
 
-  onItemSelect(item: any) {}
-  OnItemDeSelect(item: any) {}
-  onSelectAll(items: any) {}
-  onDeSelectAll(items: any) {}
+  onItemSelect(item: any) { }
+  OnItemDeSelect(item: any) { }
+  onSelectAll(items: any) { }
+  onDeSelectAll(items: any) { }
 
   // closeChat() {
   //   const dialogRef = this.dialog.open(ConfirmationDialogComponent, {

@@ -116,21 +116,31 @@ export class QueueChatsComponent implements OnInit {
         });
       }
 
-      // Sort the filteredData array in descending order by waitingSince property
-      for (let data of this.filteredData) {
-        data.chats.sort((a, b) => {
-          if (this.sortOrder === "asc") {
-            return a.waitingSince - b.waitingSince;
-          } else {
-            return b.waitingSince - a.waitingSince;
-          }
-        });
-      }
+      this.sortFilteredDataInQueues() 
     } catch (err) {
       console.error("[filterData] Error :", err);
     }
   }
 
+  sortFilteredDataInQueues() {
+    this.filteredData.sort((a, b) => {
+      if (a.chats.length === 0 && b.chats.length === 0) return 0;
+      if (a.chats.length === 0) return this.sortOrder === "asc" ? 1 : -1;
+      if (b.chats.length === 0) return this.sortOrder === "asc" ? -1 : 1;
+  
+      const aWaitingSince = a.chats[0].waitingSince;
+      const bWaitingSince = b.chats[0].waitingSince;
+  
+      return (this.sortOrder === "asc" ? 1 : -1) * (aWaitingSince - bWaitingSince);
+    });
+  
+    this.filteredData.forEach(data => {
+      data.chats.sort((a, b) => {
+        return (this.sortOrder === "asc" ? 1 : -1) * (a.waitingSince - b.waitingSince);
+      });
+    });
+  }
+  
   onItemSelect(item: any) {
     // this.getAllQueuedChats(this.selectedTeam);
   }
