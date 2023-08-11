@@ -130,10 +130,9 @@ export class QueueChatsComponent implements OnInit {
   
       const aWaitingSince = a.chats[0].waitingSince;
       const bWaitingSince = b.chats[0].waitingSince;
-  
+
       return (this.sortOrder === "asc" ? 1 : -1) * (aWaitingSince - bWaitingSince);
     });
-  
     this.filteredData.forEach(data => {
       data.chats.sort((a, b) => {
         return (this.sortOrder === "asc" ? 1 : -1) * (a.waitingSince - b.waitingSince);

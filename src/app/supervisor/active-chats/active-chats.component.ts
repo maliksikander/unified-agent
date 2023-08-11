@@ -188,6 +188,7 @@ export class ActiveChatsComponent implements OnInit {
     }
   }
   sortChatsByActiveSince() {
+    console.log("here is the filtered data", this.filteredData)
     this.filteredData.sort((a, b) => {
       if (a.chats.length === 0 && b.chats.length === 0) return 0;
       if (a.chats.length === 0) return this.sortOrder === "asc" ? 1 : -1;
@@ -200,6 +201,7 @@ export class ActiveChatsComponent implements OnInit {
       }
     });
     for (let data of this.filteredData) {
+      console.log("I am in", data)
       data.chats.sort((a, b) => {
         if (this.sortOrder === "asc") {
           return a.activeSince - b.activeSince;
@@ -208,6 +210,7 @@ export class ActiveChatsComponent implements OnInit {
         }
       });
     }
+    console.log("here is the filtered data after the dfsaaaaaaaaaaaaaaa", this.filteredData)
   }
 
   // team selection change callback event
