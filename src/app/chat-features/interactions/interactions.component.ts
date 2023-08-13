@@ -1242,7 +1242,6 @@ export class InteractionsComponent implements OnInit {
         }
       );
     } else {
-      this._snackbarService.open(this._translateService.instant("serviceIdentifier-or-postId-for-Host-API-is-missing"), "err");
       console.error("err [getFullViewPostData] serviceIdentifier or postId is missing");
     }
   }
