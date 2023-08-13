@@ -168,7 +168,7 @@ export class isLoggedInService {
 
     if (this._appConfigService.config.isCxVoiceEnabled) {
       this._sipService.initMe();
-      this._sipService.checkActiveTasks(this._cacheService.agent.id);
+      this._sipService.checkActiveTasks(this._cacheService.agent.id,undefined,undefined);
     }
     // if (this._cacheService.isMobileDevice) {
 

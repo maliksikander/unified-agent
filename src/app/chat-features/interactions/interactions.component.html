@@ -1041,14 +1041,26 @@
                                   </li>
                                 </ng-container>
 
-                                <li class="agent-pic participant-agent call-services">
+                                <li class="agent-pic participant-agent call-services aa">
                                   <ng-container *ngFor="let callData of message.body.data.callLegs">
-                                    <span matTooltip="{{ callData.sender.senderName }}"
+                                    <span matTooltip="{{ callData.sender.senderName }}" class=" {{ (callData.sender.senderName | getFirstTwoLetters | lowercase) == 'ivr'  ? 'ivr-tag': 'non-ivr' }}"
                                       *ngIf="callData?.startDirection != 'CONSULT'">{{
                                       callData.sender.senderName | getFirstTwoLetters
                                       }}</span>
                                   </ng-container>
                                 </li>
+
+                                <ng-container *ngIf="message.body.data.callLegs.length == 1">
+                                  <li matTooltip="{{message.body.data?.callLegs[0]?.additionalDetail?.activities | getIVRTrail }}"
+                                    *ngIf="message.body.data?.callLegs[0]?.sender.type == 'IVR' && message.body.data?.callLegs[0]?.additionalDetail?.activities?.length > 0">
+                                    <ng-container
+                                      *ngFor="let ivrDetail of message.body.data?.callLegs[0]?.additionalDetail?.activities; let j = index">
+                                      <span >{{ivrDetail?.menu}} > {{ivrDetail?.selection}} <ng-container
+                                          *ngIf="j !== message.body.data?.callLegs[0]?.additionalDetail?.activities?.length - 1">
+                                          > </ng-container> </span>
+                                    </ng-container>
+                                  </li>
+                                </ng-container>
 
                                 <li *ngIf="message.body.data.callLegs | checkConferenceCall"
                                   class="multiple-users agent-pic participant-agent call-services">
@@ -1110,9 +1122,20 @@
                                 <div class="panel-header">
                                   <ul>
                                     <li class="agent-pic participant-agent call-services">
-                                      <span matTooltip="{{ callData.sender.senderName }}">{{ callData.sender.senderName
+                                      <span class=" {{ (callData.sender.senderName | getFirstTwoLetters | lowercase) == 'ivr'  ? 'ivr-tag': 'non-ivr' }}" matTooltip="{{ callData.sender.senderName }}">{{ callData.sender.senderName
                                         |
                                         getFirstTwoLetters }}</span>
+                                    </li>
+
+                                    <li  matTooltip="{{callData?.additionalDetail?.activities | getIVRTrail }}"
+                                      *ngIf="callData.sender.type == 'IVR' && callData?.additionalDetail?.activities?.length > 0"
+                                      >
+                                      <ng-container
+                                        *ngFor="let ivrDetail of callData?.additionalDetail?.activities; let j = index">
+                                        <span>{{ivrDetail?.menu}} > {{ivrDetail?.selection}} <ng-container
+                                            *ngIf="j !== callData?.additionalDetail?.activities?.length - 1">
+                                            > </ng-container> </span>
+                                      </ng-container>
                                     </li>
 
                                     <li class="agent-pic call-services">
@@ -1358,10 +1381,10 @@
                                     : (postData?.socialMediaPost.text | linkify)
                                 "></span>
                             </p>
-                            <div *ngIf="postData?.socialMediaPost?.attachment">
+                            <div *ngFor="let post of postData?.socialMediaPost?.attachments">
                               <div class="shared-url shared-card-content video-player p-0"
-                                *ngIf="postData.socialMediaPost?.attachment?.mimeType.includes('video') || postData.socialMediaPost?.attachment?.mimeType == 'animated_image_autoplay'">
-                                <div class="media-main" *ngIf="postData.socialMediaPost?.attachment?.mediaUrl">
+                                *ngIf="post?.mimeType.includes('VIDEO')">
+                                <div class="media-main" *ngIf="post?.mediaUrl">
                                   <vg-player>
                                     <vg-overlay-play></vg-overlay-play>
                                     <vg-buffering></vg-buffering>
@@ -1380,7 +1403,7 @@
                                       <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
                                     </vg-controls>
                                     <video #media [vgMedia]="media" id="{{ message.id }}" preload="auto">
-                                      <source src="{{ postData.socialMediaPost?.attachment?.mediaUrl }}" />
+                                      <source src="{{ post?.mediaUrl }}" />
                                     </video>
                                   </vg-player>
                                 </div>
@@ -1397,10 +1420,19 @@
                                 </ng-container>
                               </div>
                               <p *ngIf="postData.socialMediaPost?.attachment?.mimeType == 'IMAGE'">
+                             
+                              <p *ngIf="post?.mimeType == 'IMAGE'">
                                 <a style="cursor: pointer"
-                                  (click)="externalfilePreviewOpener(postData.socialMediaPost.attachment.mediaUrl, postData.socialMediaPost.attachment.mimeType, 'image')"
+                                  (click)="externalfilePreviewOpener(post?.mediaUrl, post.mimeType, 'image')"
                                   class="display-file display-image" [ngClass]="{ 'pt-2': postData.socialMediaPost.text }">
-                                  <img src="{{ postData.socialMediaPost?.attachment?.mediaUrl }}" alt="image" />
+                                  <img src="{{ post?.mediaUrl }}"  alt="image" />
+                                </a>
+                              </p>
+                              <p *ngIf="post?.mimeType == 'GIF'">
+                                <a style="cursor: pointer"
+                                  (click)="externalfilePreviewOpener(post?.mediaUrl, post.mimeType, 'image')"
+                                  class="display-file display-image" [ngClass]="{ 'pt-2': postData.socialMediaPost.text }">
+                                  <img src="{{ post?.mediaUrl }}" alt="image" />
                                 </a>
                               </p>
                             </div>
@@ -1429,10 +1461,8 @@
                                           : (postComments.text | linkify)
                                       "></span>
                                   </p>
-                                  <div class="shared-url shared-card-content video-player p-0" *ngIf="
-                                      postComments?.attachment?.type.includes('video') || postComments?.attachment?.type == 'animated_image_autoplay'
-                                    ">
-                                    <div class="media-main" *ngIf="postComments?.attachment?.media.source">
+                                  <div class="shared-url shared-card-content video-player p-0" *ngIf="postComments?.attachment?.mimeType?.includes('VIDEO')">
+                                    <div class="media-main" *ngIf="postComments?.attachment?.mediaUrl">
                                       <vg-player>
                                         <vg-overlay-play></vg-overlay-play>
                                         <vg-buffering></vg-buffering>
@@ -1451,20 +1481,20 @@
                                           <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
                                         </vg-controls>
                                         <video #media [vgMedia]="media" id="{{ message.id }}" preload="auto">
-                                          <source src="{{ postComments?.attachment?.media.source }}" />
+                                          <source src="{{ postComments?.attachment?.mediaUrl }}" />
                                         </video>
                                       </vg-player>
                                     </div>
                                   </div>
 
                                   <p
-                                    *ngIf="postComments?.attachment?.type == 'photo' || postComments?.attachment?.type == 'animated_image_share'">
+                                    *ngIf="postComments?.attachment?.mimeType == 'IMAGE'">
                                     <a style="cursor: pointer"
-                                      *ngIf="postComments?.attachment?.media.image.src?.length > 0" (click)="
-                                        externalfilePreviewOpener(postComments?.attachment?.media.image.src, postComments?.attachment?.type, 'image')
+                                      *ngIf="postComments?.attachment?.mediaUrl?.length > 0" (click)="
+                                        externalfilePreviewOpener(postComments?.attachment?.mediaUrl, postComments?.attachment?.mimeType, 'image')
                                       " class="display-file display-image"
                                       [ngClass]="{ 'pt-2': message.body.markdownText?.length > 0 }">
-                                      <img src="{{ postComments?.attachment?.media.image.src }}" alt="image" />
+                                      <img src="{{ postComments?.attachment?.mediaUrl }}" alt="image" />
                                     </a>
                                   </p>
                                 </div>
@@ -1480,24 +1510,24 @@
                             </div>
 
                             <div class="post-sub-comments post-nested-comments"
-                              *ngFor="let nestedComments of postComments.comments?.data">
+                              *ngFor="let nestedComments of postComments.subComments">
                               <div class="sub-profile-picture">
                                 <img src="assets/images/dummy-user.svg" />
                               </div>
 
                               <div class="sub-comment">
-                                <strong>{{ nestedComments?.from?.name }}</strong>
+                                <strong>{{ nestedComments?.username }}</strong>
 
                                 <p>
                                   <span [innerHTML]="
                                       conversationSettings.isMessageFormattingEnabled
-                                        ? (nestedComments.message | linkify | ibsformat)
-                                        : (nestedComments.message | linkify)
+                                        ? (nestedComments.text | linkify | ibsformat)
+                                        : (nestedComments.text | linkify)
                                     "></span>
                                 </p>
                                 <div class="shared-url shared-card-content video-player p-0"
-                                  *ngIf="nestedComments?.attachment?.type.includes('video')">
-                                  <div class="media-main" *ngIf="nestedComments?.attachment?.media?.source?.length > 0">
+                                  *ngIf="nestedComments?.attachment?.mimeType?.includes('VIDEO')">
+                                  <div class="media-main" *ngIf="nestedComments?.attachment?.mediaUrl?.length > 0">
                                     <vg-player>
                                       <vg-overlay-play></vg-overlay-play>
                                       <vg-buffering></vg-buffering>
@@ -1516,24 +1546,24 @@
                                         <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
                                       </vg-controls>
                                       <video #media [vgMedia]="media" id="{{ message.id }}" preload="auto">
-                                        <source src="{{ nestedComments?.attachment?.media?.source }}" />
+                                        <source src="{{ nestedComments?.attachment?.mediaUrl }}" />
                                       </video>
                                     </vg-player>
                                   </div>
                                 </div>
 
                                 <p class="asdfg"
-                                  *ngIf="nestedComments?.attachment?.type == 'photo' || nestedComments?.attachment?.type == 'animated_image_share'">
+                                  *ngIf="nestedComments?.attachment?.mimeType == 'IMAGE'">
                                   <a style="cursor: pointer"
-                                    *ngIf="nestedComments?.attachment?.media.image.src?.length > 0" (click)="
+                                    *ngIf="nestedComments?.attachment?.mediaUr?.length > 0" (click)="
                                       externalfilePreviewOpener(
-                                        nestedComments?.attachment?.media.image.src,
-                                        nestedComments?.attachment?.type,
+                                        nestedComments?.attachment?.mediaUrl,
+                                        nestedComments?.attachment?.mimeType,
                                         'image'
                                       )
                                     " class="display-file display-image"
                                     [ngClass]="{ 'pt-2': message.body.markdownText?.length > 0 }">
-                                    <img src="{{ nestedComments?.attachment?.media.image.src }}" alt="image" />
+                                    <img src="{{ nestedComments?.attachment?.mediaUrl }}" alt="image" />
                                   </a>
                                 </p>
 
@@ -1542,7 +1572,7 @@
                                     <mat-icon></mat-icon>
                                   </span>
                                   <span class="message-stamp">
-                                    <span class="chat-time">{{ nestedComments.created_time | date: "shortTime" }}</span>
+                                    <span class="chat-time">{{ nestedComments.timestamp | date: "shortTime" }}</span>
                                   </span>
                                 </div>
                               </div>
@@ -2099,19 +2129,18 @@
 
         <ul class="call-actions">
           <!-- <li><button disabled mat-fab><mat-icon>mic</mat-icon></button></li> -->
-          <li><button (click)="ctiControlBar()" mat-fab>
-              <mat-icon>picture_in_picture_alt
-              </mat-icon>
-            </button></li>
-          <li (click)="_sipService.holdCallOnSip()" *ngIf="_sipService.isCallHold == false"><button mat-fab>
-              <mat-icon>pause</mat-icon>
-            </button></li>
-          <li (click)="_sipService.resumeCallOnSip()" *ngIf="_sipService.isCallHold == true"><button mat-fab>
-              <mat-icon>pause_circle_filled</mat-icon>
-            </button></li>
-          <li (click)="endCallOnSip()"><button class="end-call" mat-fab>
-              <mat-icon>call_end</mat-icon>
-            </button></li>
+          <li><button (click)="ctiControlBar()" mat-fab><mat-icon>picture_in_picture_alt
+              </mat-icon></button></li>
+          <li *ngIf="_sipService.isMuted == false"><button matTooltip="{{('globals.mute' | translate)}}"
+              (click)="_sipService.muteCallOnSip()" mat-fab><mat-icon>mic</mat-icon></button></li>
+          <li *ngIf="_sipService.isMuted == true"><button matTooltip="{{('globals.unMute' | translate)}}"
+              (click)="_sipService.unmuteCallOnSip()" mat-fab><mat-icon>mic_off</mat-icon></button></li>
+          <li *ngIf="_sipService.isCallHold == false" matTooltip="{{('globals.hold' | translate)}}"
+            (click)="_sipService.holdCallOnSip()"><button mat-fab><mat-icon>pause</mat-icon></button></li>
+          <li *ngIf="_sipService.isCallHold == true" matTooltip="{{('globals.resume' | translate)}}"
+            (click)="_sipService.resumeCallOnSip()"><button mat-fab><mat-icon>pause_circle_filled</mat-icon></button>
+          </li>
+          <li (click)="endCallOnSip()"><button class="end-call" mat-fab><mat-icon>call_end</mat-icon></button></li>
         </ul>
       </div>
     </div>

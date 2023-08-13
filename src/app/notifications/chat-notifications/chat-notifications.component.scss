@@ -54,7 +54,7 @@
         }
       }
 
-      .requested-name {
+    .requested-name {
           flex: 2;
           margin: 0 5px;
           align-self: center;
@@ -69,7 +69,32 @@
           white-space: pre-line;
           font-weight: normal;
         }
+
+        .voice-customer{
+          font-weight: 600;
+          font-size: 13px;
+        }
+
+        .dot-container{
+          margin-left: 2px;
+          .dot {
+            display: inline-block;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background-color: #fff;
+            margin-left: 2px;
+            animation: indicatorOB 1.5s infinite ease-in-out;
+          }
+
+          @keyframes indicatorOB {
+            50% {
+              transform: scale(1.7);
+              opacity: 0.9;
+            }
+          }
       }
+    }
       .notification-trigger {
         margin-right: 10px;
         align-self: center;
@@ -81,6 +106,11 @@
           width: 75px;
           line-height: 30px;
           margin: 5px;
+          &:disabled{
+            background-color: #333 !important;
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
         }
       }
 

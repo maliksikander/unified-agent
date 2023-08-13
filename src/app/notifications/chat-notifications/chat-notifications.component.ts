@@ -23,6 +23,7 @@ export class ChatNotificationsComponent implements OnInit {
   externalModeRequests = [];
   notificationArea: boolean = false;
   voiceChannelType;
+  isCallAcceptClicked:boolean = false;
   //newAnnouncement =true;
 
   constructor(
@@ -75,9 +76,10 @@ export class ChatNotificationsComponent implements OnInit {
           } else {
             this.externalModeRequests.push(e.data);
           }
+          this._soundService.playRing();
           console.log("external requests==>", this.externalModeRequests);
         } else if (e.msg == "closeExternalModeRequestHeader") {
-          // this.externalModeRequests = e.data;
+          this.isCallAcceptClicked = false;
           let dialog = e.data.dialog ? e.data.dialog : e.data;
           if (this.externalModeRequests.length > 0) {
             let index = this.externalModeRequests.findIndex((item) => {
@@ -85,6 +87,7 @@ export class ChatNotificationsComponent implements OnInit {
             });
             console.log("Closing Index==>", index);
             if (index != -1) this.externalModeRequests.splice(index, 1);
+            this._soundService.stopRing();
           }
         } else if (e.msg == "closeAllPushModeRequests") {
           this.pushModeRequests = [];
@@ -132,6 +135,7 @@ export class ChatNotificationsComponent implements OnInit {
   }
 
   onExternalRequestAccept(data) {
+    this.isCallAcceptClicked = true;
     this.acceptCall(data);
   }
 
