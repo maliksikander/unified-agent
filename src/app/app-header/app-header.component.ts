@@ -356,6 +356,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
       panelClass: "send-sms-dialog"
     });
     dialogRef.afterClosed().subscribe((result) => {
+     // dialogRef.close();
     });
   }
 }

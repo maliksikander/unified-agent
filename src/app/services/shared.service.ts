@@ -36,6 +36,7 @@ export class sharedService {
     isWrapUpEnabled: false,
     wrapUpTime: 15,
     isMessageFormattingEnabled: false,
+    isDialogClosed: false,
     isOutboundSmsEnabled: false,
     prefixCode : ''
   };
@@ -60,6 +61,7 @@ export class sharedService {
     this.conversationSettings.isWrapUpEnabled = setting.isWrapUpEnabled;
     this.conversationSettings.wrapUpTime = setting.wrapUpTime;
     this.conversationSettings.isMessageFormattingEnabled = setting.isMessageFormattingEnabled;
+    this.conversationSettings.isDialogClosed=setting.isDialogClosed;
     this.conversationSettings.isOutboundSmsEnabled = setting.isOutboundSmsEnabled;
     this.conversationSettings.prefixCode = setting.prefixCode ? setting.prefixCode : '' 
   }

@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Inject, OnInit, ElementRef, ViewChild } from 
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, fromEvent } from 'rxjs';
 import { map, startWith, throttleTime, distinctUntilChanged } from 'rxjs/operators';
-import { MAT_SNACK_BAR_DATA, MatDialog, MatSnackBar, MatSnackBarRef } from '@angular/material';
+import { MAT_SNACK_BAR_DATA, MatDialog, MatSnackBar, MatSnackBarRef, MatDialogRef } from '@angular/material';
 import { CustomerActionsComponent } from '../../customer-actions/customer-actions.component';
 import { httpService } from 'src/app/services/http.service';
 import { TranslateService } from "@ngx-translate/core";
@@ -10,6 +10,7 @@ import { snackbarService } from "src/app/services/snackbar.service";
 import { v4 as uuidv4 } from "uuid";
 import { sharedService } from 'src/app/services/shared.service';
 import { cacheService } from 'src/app/services/cache.service';
+import { AppHeaderComponent } from 'src/app/app-header/app-header.component';
 
 @Component({
   selector: 'app-send-sms',
@@ -25,10 +26,12 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   userData: any = []
   SMSServiceIdentifier;
   defaultPrefixOutbound = '';
+  isDialogClosed;
   identifiedCustomer = null;
   phoneNumber;
   phoneNumberFieldSubscriber;
   smsForm: FormGroup;
+  // dialogRef: MatDialogRef<any>;
 
 
   constructor(
@@ -38,10 +41,13 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
     private _snackbarService: snackbarService,
     private _sharedService: sharedService,
     private _cacheService: cacheService,
+    // private dialog: MatDialog,
+    public dialogRef: MatDialogRef<AppHeaderComponent>,
     public fb: FormBuilder,
   ) {
 
     this.defaultPrefixOutbound = this._sharedService.conversationSettings.prefixCode;
+    this.isDialogClosed = this._sharedService.conversationSettings.isDialogClosed;
 
     this.smsForm = this.fb.group({
 
@@ -64,7 +70,8 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
 
   }
   ngAfterViewInit(): void {
-
+    this.isDialogClosed = this._sharedService.conversationSettings.isDialogClosed;
+    console.log("this.isDialogClosed+++++ng Afterviewinit++++++++++", this.isDialogClosed)
     const phoneField = document.getElementById('phoneField');
 
 
@@ -82,8 +89,8 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-
-
+    this.isDialogClosed = this._sharedService.conversationSettings.isDialogClosed;
+    console.log("this.isDialogClosed  ------------ngoninit", this.isDialogClosed)
     this.phoneNumberFieldSubscriber = this.smsForm.get("phoneControl").valueChanges.subscribe((phoneNumber) => {
       if (phoneNumber != null && phoneNumber != "" && phoneNumber != undefined) {
 
@@ -225,11 +232,15 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
 
         if (message.header.customer == null || message.header.customer == "" || message.header.customer == undefined) {
           message['header']['customer'] = res.additionalDetails.customer;
-          this.openSuccessDialog({ newProfileCreated: true, customer: message.header.customer, sentNumber: message.header.channelData.channelCustomerIdentifier })
+          
 
+          this.openSuccessDialog({ newProfileCreated: true, customer: message.header.customer, sentNumber: message.header.channelData.channelCustomerIdentifier })
+              if(this.isDialogClosed){ this.dialogRef.close();}
         } else {
           this.openSuccessDialog({ newProfileCreated: false, customer: message.header.customer, sentNumber: message.header.channelData.channelCustomerIdentifier })
 
+              if(this.isDialogClosed){ this.dialogRef.close();}
+          
         }
 
 
