@@ -1179,52 +1179,6 @@ export class InteractionsComponent implements OnInit {
     }, 1000);
   }
 
-  // getFBPost 
-
-
-  // getPost(postId, selectedCommentId, accessToken, FBHOSTAPI) {
-  //   this._httpService.getFBPostData(postId, accessToken, FBHOSTAPI).subscribe(
-  //     (res: any) => {
-  //       this.postData = res;
-  //       this.fullPostView = true;
-  //       this.selectedCommentId = selectedCommentId;
-  //     },
-  //     (error) => {
-  //       this._sharedService.Interceptor(error.error, "err");
-  //       console.error("err [getPost]", error.error);
-  //     }
-  //   );
-  // }
-
-  // getFBComments
-
-
-  // getComments(postId, selectedCommentId, accessToken, FBHOSTAPI) {
-  //   this._httpService.getFBPostComments(postId, accessToken, FBHOSTAPI).subscribe(
-  //     (res: any) => {
-  //       this.postComments = res;
-  //       this.fullPostView = true;
-  //       this.selectedCommentId = selectedCommentId;
-  //     },
-  //     (error) => {
-  //       this._sharedService.Interceptor(error.error, "err");
-  //       console.error("err [getComments]", error.error);
-  //     }
-  //   );
-  // }
-
-  //the function will fetch fb post and comments API parallel
-
-
-  // getPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI) {
-  //   try {
-  //     this.getPost(postId, selectedCommentId, accessToken, FBHOSTAPI);
-  //     this.getComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
-  //   } catch (err) {
-  //     console.error("err [ getPostAndComments ] error while fetching post and comments", err);
-  //   }
-  // }
-
   fullPostViewData(serviceIdentifier, postId, selectedCommentId) {
     this.selectedCommentId = null
     if (serviceIdentifier && postId && selectedCommentId) {
@@ -1233,7 +1187,6 @@ export class InteractionsComponent implements OnInit {
         (res: any) => {
           this.postData = res;
           this.fullPostView = true;
-          console.log("here is the data", this.postData)
           this.selectedCommentId= selectedCommentId
         },
         (error) => {
@@ -1245,47 +1198,6 @@ export class InteractionsComponent implements OnInit {
       console.error("err [getFullViewPostData] serviceIdentifier or postId is missing");
     }
   }
-  //Commenting after the new API for facebook and Instagram
-
-  
-  // getFullViewPostData(channelSession, postId, selectedCommentId) {
-  //   console.log(channelSession, postId, selectedCommentId)
-  //   let accessToken = null;
-  //   let instaAccessToken = null
-  //   let FBHOSTAPI = null;
-  //   let INSTHOSTAPI = null
-  //   this.postComments = null;
-  //   this.postData = null;
-  //   this.fullPostView = false;
-  //   this.selectedCommentId = null;
-  //   if (channelSession) {
-  //     channelSession.channel.channelConnector.channelProviderConfigs.forEach((item) => {
-  //       if (item.key == "FACEBOOK-API-KEY") {
-  //         accessToken = item.value;
-  //       }
-  //       if (item.key == "FACEBOOK-HOST-URL") {
-  //         FBHOSTAPI = item.value;
-  //       }
-  //     });
-  //     if (accessToken && FBHOSTAPI) {
-
-  //       this.getPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
-
-  //     }
-  //     else {
-  //       this._snackbarService.open(this._translateService.instant("snackbar.Access-Token-or-FB-Host-API-for-FB-is-missing"), "err");
-  //       console.error("err [getFullViewPostData] accessToken or FB Host API for FB is missing");
-  //     }
-  //   } else {
-  //     this._snackbarService.open(this._translateService.instant("snackbar.Channel-session-not-found"), "err");
-  //     console.error("err [getFullViewPostData] Channel session not found");
-  //   }
-  // }
-
-  // getCustomerAni(callLegs:Array<any>){
-  //   console.log("data-->",callLegs)
-
-  // }
 
   ctiControlBar() {
     this.ctiBoxView = true;
