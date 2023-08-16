@@ -818,61 +818,61 @@ button.close-menu-mobile {
 
 
 //Dialog for mobile
-
-.edit-customer-dialog-mobile-view-panel, .create-customer-dialog-mobile-view-panel {
-  max-width: 100% !important;
-  max-height: 100% !important;
-  height: 100% !important;
-
-  .dialog-header {
-    background: #F3F6FA;
-    height: 38px;
-    position: relative;
-    button{
-      right: inherit;
-      left: 0;
-      border-color: transparent;
-
-      mat-icon{
-        color: transparent;
-        &:after {
-          content: 'chevron_left';
-          color: #939393;
-          font-size: 20px;
-          position: absolute;
-          left: 3px;
-        }
-      }
-    }
-
-    h4 {
-      font-size: 14px;
-      color: #1A50A3;
-      font-weight: 400;
-      padding-left: 22px;
-    }
-  }
-
-  .main-content{
-    box-shadow: none !important;
-    height: 100%;
-    max-height: calc(100% - 85px);
-  }
-  mat-dialog-actions{
-    min-height: inherit;
-    box-shadow: 0 -4px 5px #ccc;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    margin: 0;
-    .cancel-btn{
-      display: none;
-    }
-
-    .save-btn{
-      width: 100% !important;
-      margin: 0 auto !important;
-      max-width: 300px;
-    }
-  }
-}
+//
+//.edit-customer-dialog-mobile-view-panel, .create-customer-dialog-mobile-view-panel {
+//  max-width: 100% !important;
+//  max-height: 100% !important;
+//  height: 100% !important;
+//
+//  .dialog-header {
+//    background: #F3F6FA;
+//    height: 38px;
+//    position: relative;
+//    button{
+//      right: inherit;
+//      left: 0;
+//      border-color: transparent;
+//
+//      mat-icon{
+//        color: transparent;
+//        &:after {
+//          content: 'chevron_left';
+//          color: #939393;
+//          font-size: 20px;
+//          position: absolute;
+//          left: 3px;
+//        }
+//      }
+//    }
+//
+//    h4 {
+//      font-size: 14px;
+//      color: #1A50A3;
+//      font-weight: 400;
+//      padding-left: 22px;
+//    }
+//  }
+//
+//  .main-content{
+//    box-shadow: none !important;
+//    height: 100%;
+//    max-height: calc(100% - 85px);
+//  }
+//  mat-dialog-actions{
+//    min-height: inherit;
+//    box-shadow: 0 -4px 5px #ccc;
+//    position: absolute;
+//    bottom: 0;
+//    width: 100%;
+//    margin: 0;
+//    .cancel-btn{
+//      display: none;
+//    }
+//
+//    .save-btn{
+//      width: 100% !important;
+//      margin: 0 auto !important;
+//      max-width: 300px;
+//    }
+//  }
+//}
