@@ -47,10 +47,6 @@
             <strong>{{'globals.chat' | translate }} {{ (request?.taskDirection == 'DIRECT_CONFERENCE' ? 'globals.conference' : 'globals.transfer') | translate}} {{'globals.request-from'  | translate }}
               '{{request?.requestedBy | titlecase}}' {{'globals.with-customer'  | translate }}
               '{{(('customer' | authPipe : 'view_pii') ? (request?.channelSession?.customer.firstName | titlecase) : (request?.channelSession?.customer.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey)))}}'</strong>
-            <strong>{{'globals.chat' | translate }} {{ (request?.taskDirection == 'DIRECT_CONFERENCE' ?
-              'globals.conference' : 'globals.transfer') | translate}} {{'globals.request-from' | translate }}
-              '{{request?.requestedBy | titlecase}}' {{'globals.with-customer' | translate }}
-              '{{request?.channelSession?.customer?.firstName | titlecase }}'</strong>
             <p *ngIf="request?.note">
               {{request?.note}}
             </p>
