@@ -559,8 +559,8 @@ button.close-menu-mobile {
             padding: 0 15px;
 
             .int-date {
-              padding-right: 8px !important;
-              margin-left: -20px;
+              //padding-right: 8px !important;
+              //margin-left: -20px;
 
               @media(max-width: 769px){
                 padding-right: 8px !important;
@@ -649,10 +649,11 @@ button.close-menu-mobile {
   }
 }
 
-@media(max-width: 575px) {
+@media(max-width: 768px) {
   .main-header {
     .main-logo {
-      max-width: 230px;
+      min-width: 230px;
+      max-width: 50%;
       padding: 0;
 
       .main-menu {
@@ -725,9 +726,10 @@ button.close-menu-mobile {
           bottom: 0;
 
           .reply-form {
+            border-radius: 0;
             .chat-area {
               width: 100%;
-              padding: 0;
+              padding: 5px 0;
 
               textarea {
                 margin-left: 0 !important;

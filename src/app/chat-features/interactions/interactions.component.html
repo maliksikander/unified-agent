@@ -6,7 +6,7 @@
   <div class="interaction-inner">
     <div class="container-fluid main-chat-bar {{interactionSearch ? 'interaction-search-mobile' : ''}}" >
       <div class="row">
-        <div class="col-md-4 col-sm-4 customer-showcase">
+        <div class="col-md-4 customer-showcase {{isMobileDevice ? 'col-sm-12' : 'col-sm-4'}}">
           <h3 matTooltipPosition="right" class="customer-highlight">
             {{ conversation.customer.firstName | getFirstTwoLetters }}
             <!--            <span class="channel-icon">-->

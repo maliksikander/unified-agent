@@ -123,21 +123,10 @@ export class InteractionsComponent implements OnInit {
     private _translateService: TranslateService
   ) {}
   ngOnInit() {
-
-    // this.ref.detectChanges();
-    // var width = this.mainArea.nativeElement.offsetWidth;
-    // var height = this.mainArea.nativeElement.offsetHeight;
-
-    // this._sharedService.isCompactView
-      // .subscribe((data) => {
-        console.log('Event message from Component A: ' + this._sharedService.isCompactView);
-      // });
-
-    // if(this.mainArea.nativeElement.offsetWidth < 768){
-    //   this.isMobileDevice = true;
-    //   console.log('this.mainArea.nativeElement.offsetWidth ', this.mainArea.nativeElement.offsetWidth );
-    // }
-
+    if (this._sharedService.isCompactView) {
+      this.isMobileDevice = true;
+      console.log('this is a compact view Interactions view ?', this.isMobileDevice);
+    }
     // if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     //   this.isMobileDevice = true;
     // }

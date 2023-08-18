@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild, ElementRef, HostListener} from '@angular/core';
+import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import { DateAdapter, MatDialog } from "@angular/material";
 import { CreateCustomerComponent } from "../create-customer/create-customer.component";
 import { FormControl } from "@angular/forms";
@@ -36,11 +36,11 @@ export class PhonebookComponent implements OnInit {
     this._translateService.stream("globals.Search").subscribe((data: string) => {
       this.labelSettings.searchPlaceholderText = data;
     });
-    this.getScreenSize();
+    // this.getScreenSize();
   }
-  @HostListener('window:resize', ['$event'])
-  screenHeight: number;
-  screenWidth: number;
+  // @HostListener('window:resize', ['$event'])
+  // screenHeight: number;
+  // screenWidth: number;
   customers;
   topicCustomerId;
   paramsSubscription;
@@ -89,6 +89,12 @@ export class PhonebookComponent implements OnInit {
   ngOnInit() {
     this.processURLParams();
     this.loadLabelsAndCustomer();
+
+    if (this._sharedService.isCompactView) {
+      this.isMobileDevice = true;
+      console.log('this is a compact view phonebook?', this.isMobileDevice);
+    }
+
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       this.isMobileDevice = true;
     }
@@ -391,13 +397,13 @@ export class PhonebookComponent implements OnInit {
     this.selectedSearchField = field;
   }
 
-  getScreenSize() {
-    // this.screenHeight = window.innerHeight;
-    // this.screenWidth = window.innerWidth;
-    this.screenWidth = window.innerWidth;
-    console.log(this.screenWidth);
-    if (this.screenWidth < 768) {
-      this.isMobileDevice = true;
-    }
-  }
+  // getScreenSize() {
+  //   // this.screenHeight = window.innerHeight;
+  //   // this.screenWidth = window.innerWidth;
+  //   this.screenWidth = window.innerWidth;
+  //   console.log(this.screenWidth);
+  //   if (this.screenWidth < 768) {
+  //     this.isMobileDevice = true;
+  //   }
+  // }
 }

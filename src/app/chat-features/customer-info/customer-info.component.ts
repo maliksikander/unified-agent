@@ -89,6 +89,11 @@ export class CustomerInfoComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+
+    if (this._sharedService.isCompactView) {
+      this.isMobileDevice = true;
+      console.log('this is a compact view Interactions view ?', this.isMobileDevice);
+    }
     if (this.activeChannelSessions) this.setActiveChannelSessions(this.activeChannelSessions);
     // this._sipService.getTimer().subscribe((value) => {
     //   this.hours = Math.floor(value / 3600);

@@ -379,7 +379,7 @@
   padding-left: 26px !important;
 
   &.state-trigger {
-    min-width: 160px; 
+    min-width: 160px;
   }
 
   &:hover {
@@ -627,8 +627,8 @@ button.main-menu-item {
       &:disabled{
         cursor: not-allowed;
       }
-    
-      
+
+
     //&.ready {
     //  background: $green-color;
     //  border-color: $green-color;
@@ -918,7 +918,7 @@ button.main-menu-item {
 }
 @media (max-width: 575px) {
   .right-profile-area {
-    width: calc(100% - 230px) !important;
+    width: 50% !important;
   }
 }
 @media (max-width: 520px) {
