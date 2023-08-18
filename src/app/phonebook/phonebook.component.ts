@@ -391,10 +391,11 @@ export class PhonebookComponent implements OnInit {
     this.selectedSearchField = field;
   }
 
-  getScreenSize(event?) {
-    this.screenHeight = window.innerHeight;
+  getScreenSize() {
+    // this.screenHeight = window.innerHeight;
+    // this.screenWidth = window.innerWidth;
     this.screenWidth = window.innerWidth;
-    console.log(this.screenHeight, this.screenWidth);
+    console.log(this.screenWidth);
     if (this.screenWidth < 768) {
       this.isMobileDevice = true;
     }

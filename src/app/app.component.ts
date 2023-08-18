@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding } from "@angular/core";
+import {Component, OnInit, HostBinding, ElementRef, ViewChild, AfterViewInit, ChangeDetectorRef} from '@angular/core';
 import { Router } from "@angular/router";
 import { finesseService } from "./services/finesse.service";
 import { isLoggedInService } from "./services/isLoggedIn.service";
@@ -14,11 +14,13 @@ import { TranslateService } from "@ngx-translate/core";
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit{
   title = "unified-agent-gadget";
   @HostBinding("class") className = "";
   themeChange;
   timer;
+  @ViewChild('mainArea',  { static: false })
+  mainArea: ElementRef;
 
   currentRoute: string;
   isMobile = false;
@@ -32,14 +34,28 @@ export class AppComponent implements OnInit {
     private _isLoggedInservice: isLoggedInService,
     private _sipService : SipService,
     private _sharedService: sharedService,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
+    private ref: ChangeDetectorRef
   ) {}
   isdarkMode = false;
 
   ngOnInit() {
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    this.ref.detectChanges();
+    if (this.mainArea.nativeElement.offsetWidth < 768) {
       this.isMobile = true;
+      console.log('this.mainArea.nativeElement.offsetWidth ', this.mainArea.nativeElement.offsetWidth);
+
+      this.chackCompactView(this.isMobile);
+    }else{
+      this.chackCompactView(false);
+
     }
+
+
+    // if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    //   this.isMobile = true;
+    // }
+
     this._translateService.setDefaultLang("en");
     this._router.events.subscribe((event: any) => {
       if (event.url) {
@@ -66,6 +82,22 @@ export class AppComponent implements OnInit {
     if (channelTypes) {
       this._sharedService.channelTypeList = channelTypes;
     }
+  }
+  chackCompactView(e) {
+    this._sharedService.isCompactView = e;
+  }
+  ngAfterViewInit() {
+    // this.ref.detectChanges();
+    // var width = this.mainArea.nativeElement.offsetWidth;
+    // var height = this.mainArea.nativeElement.offsetHeight;
+    //
+    // if(this.mainArea.nativeElement.offsetWidth < 768){
+    //   this.isMobile = true;
+    //   console.log('this.mainArea.nativeElement.offsetWidth ', this.mainArea.nativeElement.offsetWidth );
+    // }
+    //
+    // console.log('Width:' + width);
+    // console.log('Height: ' + height);
   }
 
   updateTheme(theme: string) {

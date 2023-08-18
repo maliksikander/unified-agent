@@ -21,6 +21,7 @@ export class sharedService {
       this.mainPagetile = data;
     });
   }
+  @Output() isCompactView = new EventEmitter<string>();
 
   schema;
   mainPagetile: any;
@@ -70,7 +71,7 @@ export class sharedService {
     array.splice(index, 1);
   }
 
-  
+
   setChannelIcons(channelTypes) {
     this.channelTypeList = channelTypes;
     try {
@@ -152,5 +153,10 @@ export class sharedService {
 
   snackErrorMessage(msg) {
     this._snackbarService.open(msg, "err");
+  }
+
+
+  chackCompactView(e) {
+    this.isCompactView.emit(e);
   }
 }
