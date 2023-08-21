@@ -3857,3 +3857,25 @@ vg-controls.hide {
     }
   }
 }
+
+button.back-to-sms{
+  background: $main-color-background;
+ 
+  margin-right: 10px;
+  
+  
+  border: 2px;
+  margin-right: 10px;
+  border-radius: 100%;
+  width: 32px;
+  height: 32px;
+
+
+  mat-icon{
+    font-size: 20px;
+    color: $main-color;
+    text-align: center;
+    display: inline;
+    vertical-align: baseline;
+  }
+}

@@ -172,7 +172,8 @@
       "the-sms-has-been-sent-to-the":"The SMS has been sent to the ",
       "on-this-number":"on this number",
       "customer":"customer",
-      "characters-limit-2000":"2000 characters"
+      "characters-limit-1500":"1500 characters",
+      "to-view-the-customer-profile":" to view the customer profile"
 
 
     },

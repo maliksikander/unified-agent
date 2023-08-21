@@ -17,6 +17,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { CallControlsComponent } from "../../new-components/call-controls/call-controls.component";
 import { SipService } from "src/app/services/sip.service";
 import { HighlightResult } from 'ngx-highlightjs';
+import { SendSmsComponent } from "../send-sms/send-sms.component";
 
 
 // declare var EmojiPicker: any;
@@ -57,6 +58,7 @@ export class InteractionsComponent implements OnInit {
   ctiBoxView = false;
   timer: any = "00:00";
   cxVoiceSession: any;
+  isDialogClosed;
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -107,6 +109,7 @@ export class InteractionsComponent implements OnInit {
   postComments: any = null;
   sendTypingStartedEventTimer: any = null;
   onMessageSuggestions = false;
+  getDialogData;
 
   constructor(
     private _sharedService: sharedService,
@@ -120,9 +123,11 @@ export class InteractionsComponent implements OnInit {
     private snackBar: MatSnackBar,
     public _sipService: SipService,
     private _translateService: TranslateService
-  ) { }
+  ) {
+   
+   }
   ngOnInit() {
-    //  console.log("i am called hello")
+   
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
     }
@@ -159,6 +164,10 @@ export class InteractionsComponent implements OnInit {
       if (this._sipService.isCallActive == true) this.ctiControlBar();
       this.getVoiceChannelSession();
     }
+   if(this._cacheService.smsDialogData){
+    this.loadPastActivities('FAKE_CONVERSATION');
+   }
+
   }
 
   loadLabels() {
@@ -291,6 +300,21 @@ export class InteractionsComponent implements OnInit {
     });
   }
 
+  openOutboundSmsDialog(data){
+    console.log("Interactions dialog data",data)
+    const dialogRef = this.dialog.open(SendSmsComponent, {
+      maxWidth: "700px",
+      width: "100%",
+      panelClass: "send-sms-dialog",
+      data: {info:this._cacheService.smsDialogData},
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+     
+    });
+    this._cacheService.clearOutboundSmsDialogData();
+    this._socketService.topicUnsub(this.conversation);
+  }
+  
   //To open the quoted area
   openQuotedReplyArea(e) {
     this.quotedMessage = e;

@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Inject, OnInit, ElementRef, ViewChild } from 
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, fromEvent } from 'rxjs';
 import { map, startWith, throttleTime, distinctUntilChanged } from 'rxjs/operators';
-import { MAT_SNACK_BAR_DATA, MatDialog, MatSnackBar, MatSnackBarRef, MatDialogRef } from '@angular/material';
+import { MAT_SNACK_BAR_DATA,MAT_DIALOG_DATA, MatDialog, MatSnackBar, MatSnackBarRef, MatDialogRef } from '@angular/material';
 import { CustomerActionsComponent } from '../../customer-actions/customer-actions.component';
 import { httpService } from 'src/app/services/http.service';
 import { TranslateService } from "@ngx-translate/core";
@@ -11,6 +11,10 @@ import { v4 as uuidv4 } from "uuid";
 import { sharedService } from 'src/app/services/shared.service';
 import { cacheService } from 'src/app/services/cache.service';
 import { AppHeaderComponent } from 'src/app/app-header/app-header.component';
+import { socketService } from 'src/app/services/socket.service';
+import { Router } from '@angular/router';
+import { smsDialogDataService } from 'src/app/services/sendSms.service';
+import { T } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-send-sms',
@@ -26,28 +30,33 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   userData: any = []
   SMSServiceIdentifier;
   defaultPrefixOutbound = '';
-  isDialogClosed;
+  OutboundSmsSendandClose;
   identifiedCustomer = null;
   phoneNumber;
   phoneNumberFieldSubscriber;
   smsForm: FormGroup;
-  // dialogRef: MatDialogRef<any>;
+  
 
 
   constructor(
     private snackBar: MatSnackBar,
+    private _socketService: socketService,
     private _httpService: httpService,
     private _translateService: TranslateService,
     private _snackbarService: snackbarService,
     private _sharedService: sharedService,
     private _cacheService: cacheService,
-    // private dialog: MatDialog,
-    public dialogRef: MatDialogRef<AppHeaderComponent>,
+    private _router: Router,
+    
+    @Inject(MAT_DIALOG_DATA) public smsData:any,
+    
+    
     public fb: FormBuilder,
+    private smsDialog: MatDialog
   ) {
 
     this.defaultPrefixOutbound = this._sharedService.conversationSettings.prefixCode;
-    this.isDialogClosed = this._sharedService.conversationSettings.isDialogClosed;
+    this.OutboundSmsSendandClose = this._sharedService.conversationSettings.OutboundSmsSendandClose;
 
     this.smsForm = this.fb.group({
 
@@ -63,15 +72,14 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
       textAreaControl: ["", [Validators.required]]
     });
 
-    // this.getAgentDeskSettings();
-    //hello All
+   
     this.fetchSMSServiceIdentifier();
 
 
   }
   ngAfterViewInit(): void {
-    this.isDialogClosed = this._sharedService.conversationSettings.isDialogClosed;
-    console.log("this.isDialogClosed+++++ng Afterviewinit++++++++++", this.isDialogClosed)
+    
+    
     const phoneField = document.getElementById('phoneField');
 
 
@@ -89,8 +97,17 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.isDialogClosed = this._sharedService.conversationSettings.isDialogClosed;
-    console.log("this.isDialogClosed  ------------ngoninit", this.isDialogClosed)
+   
+    if(this.smsData){
+      this.smsForm.controls.phoneControl.setValue(this.smsData.info.channelCustomerIdentifier);
+      this.smsForm.controls.textAreaControl.setValue(this.smsData.info.markdownText);
+      this.identifiedCustomer = this.smsData.info.customer;
+    }
+
+   
+
+
+
     this.phoneNumberFieldSubscriber = this.smsForm.get("phoneControl").valueChanges.subscribe((phoneNumber) => {
       if (phoneNumber != null && phoneNumber != "" && phoneNumber != undefined) {
 
@@ -106,9 +123,9 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
 
   fetchSMSServiceIdentifier() {
     const SMSChannelType = this._sharedService.channelTypeList.find((channelType) => { return channelType.name.toLowerCase() == "sms" });
-
+   // console.log("SMSChannelType",SMSChannelType.id)
     if (SMSChannelType) {
-      this._httpService.getDefaultOutboundChannel(SMSChannelType.id).subscribe((res) => {
+      this._httpService.getDefaultOutboundChannel(SMSChannelType.id.toString()).subscribe((res) => {
 
         this.SMSServiceIdentifier = res.serviceIdentifier;
 
@@ -182,7 +199,7 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
 
 
   handleThrottledKeyUp() {
-
+    this.smsData=null;
     this.identifiedCustomer = "";
     if (this.smsForm.get("phoneControl").value.length > 2) {
       this.getCustomers(this.limit, this.offSet, this.sort, { field: "phoneNumber", value: encodeURIComponent(this.smsForm.get("phoneControl").value) });
@@ -198,12 +215,21 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   updateMySelection(option) {
 
     this.identifiedCustomer = option;
+  }
 
+  openCOnversationView(customer) {
+    this._socketService.onTopicData({ customer }, "FAKE_CONVERSATION", "");
+    this._router.navigate(["customers"]);
+     if (this.SMSServiceIdentifier){
+      this._cacheService.storeOutboundSmsDialogData({ customer: this.identifiedCustomer ? this.identifiedCustomer : null, channelCustomerIdentifier: this.smsForm.get("phoneControl").value, markdownText: this.smsForm.get("textAreaControl").value});
+      }
+      
+    this.smsDialog.closeAll();
   }
 
 
-
   sendSMS() {
+
 
     if (this.SMSServiceIdentifier) {
 
@@ -232,21 +258,25 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
 
         if (message.header.customer == null || message.header.customer == "" || message.header.customer == undefined) {
           message['header']['customer'] = res.additionalDetails.customer;
-          
 
+
+         
           this.openSuccessDialog({ newProfileCreated: true, customer: message.header.customer, sentNumber: message.header.channelData.channelCustomerIdentifier })
-              if(this.isDialogClosed){ this.dialogRef.close();}
+          
         } else {
           this.openSuccessDialog({ newProfileCreated: false, customer: message.header.customer, sentNumber: message.header.channelData.channelCustomerIdentifier })
-
-              if(this.isDialogClosed){ this.dialogRef.close();}
           
+         
         }
 
+        
 
 
 
         this._httpService.saveActivies(message).subscribe((res) => {
+          if (this.OutboundSmsSendandClose) {
+            //console.log("------------this.smsDialog.closeAll();------------",this.OutboundSmsSendandClose)
+            this.smsDialog.closeAll(); }
         })
 
       }, (error) => {
@@ -271,14 +301,11 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
     if (this._cacheService.agent.id) {
       this._httpService.getConversationSettings().subscribe(
         (e) => {
-          console.log(e, "getting agent desk settingz");
+          
           this.defaultPrefixOutbound = e[0].prefixCode;
-          //this.isOutboundEnabled = e.isOutboundSmsEnabled;
-          console.log(this.defaultPrefixOutbound, "this.agentDeskSettingResp")
-          // if (e.theme == "dark") {
-          //   this.themeSwitch(true);
-          // }
-          // this.setAgentPreferedlanguage(e.language);
+          
+          
+          
         },
         (error) => {
           this._sharedService.Interceptor(error.error, "err");
@@ -316,36 +343,59 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   }
 }
 
-
+         
 @Component({
   selector: 'app-send-sms-snackbar',
   template: `
   <div class="custom-sms-notification">
       <mat-icon>check_circle</mat-icon>
       <span class="main-notify"><strong>{{'chat-features.send-sms.success-sms'  | translate }} </strong>
-           {{'chat-features.send-sms.the-sms-has-been-sent-to-the'  | translate }} <span *ngIf="data.info.newProfileCreated == true">new</span> {{'chat-features.send-sms.customer'  | translate }}<b>"{{data.info.customer.firstName}}"</b>{{'chat-features.send-sms.on-this-number'  | translate }} {{data.info.sentNumber}}.<br/> 
-          <span *ngIf="data.info.newProfileCreated == true"> {{'chat-features.send-sms.update-profile'  | translate }}, <button class="update-new-profile" (click)="updateUser()">{{'chat-features.send-sms.click-here'  | translate }}</button></span>
+           {{'chat-features.send-sms.the-sms-has-been-sent-to-the'  | translate }}
+           
+           <span *ngIf="data.info.newProfileCreated == true">new</span> {{'chat-features.send-sms.customer'  | translate }}<b>"{{data.info.customer.firstName}}"</b>{{'chat-features.send-sms.on-this-number'  | translate }} {{data.info.sentNumber}}.<br/> 
+           <span class="link-span" (click)="openCOnversationView()">click here </span>{{'chat-features.send-sms.to-view-the-customer-profile'  | translate }}<br/>
+          
       </span>
       
       <button mat-button color="primary" (click)="dismiss()"></button>
   </div>
   `,
+  styles: [`
+    .link-span {
+      cursor: pointer;
+      color: white; /* You can adjust the color to match your styling */
+      text-decoration: underline;
+    }
+  `],
 
 })
 export class SendSmsSnackbarComponent {
+  
+
   constructor(
+    private _router: Router,private _socketService: socketService,
     @Inject(MAT_SNACK_BAR_DATA) public data, private dialog: MatDialog) {
+    
 
   }
 
+  openCOnversationView(){
+   
+    this._socketService.onTopicData({ customer:this.data.info.customer }, "FAKE_CONVERSATION", "");
+    this._router.navigate(["customers"]);
+    this.dialog.closeAll();
+    
+  }
   updateUser() {
     this.dismiss();
     this.dialog.closeAll();
     this.openEditCustomerDialog(this.data.info.customer._id);
+   
   }
 
   dismiss() {
     this.data.preClose();
+
   }
 
   openEditCustomerDialog(id) {

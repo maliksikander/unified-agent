@@ -53,6 +53,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
   // active: boolean = false;
   timerConfigs;
   disableMrdActions : boolean = false;
+  getDialogData;
   // get display() {
   //   return this.startTime && this.stopTime ? +this.stopTime - +this.startTime : 0;
   // }
@@ -357,6 +358,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
      // dialogRef.close();
+    //  this._cacheService.clearOutboundSmsDialogData();
     });
   }
 }

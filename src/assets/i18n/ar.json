@@ -171,7 +171,8 @@
       "the-sms-has-been-sent-to-the":"The SMS has been sent to the ",
       "on-this-number":"on this number_ar",
       "customer":"customer",
-      "characters-limit-2000":"2000 characters_ar"
+      "characters-limit-1500":"1500 characters_ar",
+      "to-view-the-customer-profile":" to view the customer profile_ar"
     },
     "customer-info": {
       "info": "Customer Info_ar",

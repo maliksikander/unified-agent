@@ -7,6 +7,10 @@
     <div class="container-fluid main-chat-bar">
       <div class="row">
         <div class="col-md-4 col-sm-4 customer-showcase">
+          <!-- //*ngIf="isDialogClosed" -->
+          <button *ngIf="_cacheService.smsDialogData"
+          class="back-to-sms" mat-icon-button (click)="openOutboundSmsDialog()" matTooltip="Back to send-sms">
+           <mat-icon>keyboard_backspace</mat-icon></button>
           <h3 matTooltipPosition="right" class="customer-highlight">
             {{ conversation.customer.firstName | getFirstTwoLetters }}
             <!--            <span class="channel-icon">-->

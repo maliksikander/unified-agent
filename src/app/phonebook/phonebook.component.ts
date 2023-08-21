@@ -264,6 +264,7 @@ export class PhonebookComponent implements OnInit {
   }
   //to open conversation view for outbound chat
   openCOnversationView(customer) {
+    console.log("customer ---->>>",customer)
     this._socketService.onTopicData({ customer }, "FAKE_CONVERSATION", "");
     this._router.navigate(["customers"]);
   }
