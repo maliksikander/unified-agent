@@ -3813,6 +3813,12 @@ vg-controls.hide {
 .doc-bar {
   margin-left: 0px;
   margin-right: 0px;
+  flex-direction: row;
+  justify-content: space-between;
+  .customer-info-dp{
+    width: auto;
+    max-width: 170px;
+  }
 }
 
 .url-title, .url-link{
@@ -3832,6 +3838,10 @@ vg-controls.hide {
 }
 
 
+
+.private-reply-icon{
+  cursor: pointer;
+}
 
 //instruction-search
 

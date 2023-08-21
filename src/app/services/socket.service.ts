@@ -112,7 +112,8 @@ export class socketService {
       this.ngxService.stop();
       this.isSocketConnected = true;
       this._sharedService.serviceChangeMessage({ msg: "closeAllPushModeRequests", data: null });
-      this._snackbarService.open("Connected", "succ");
+      // this._snackbarService.open("Connected", "succ");
+      this._snackbarService.open(this._translateService.instant("snackbar.Socket-Connected"), "succ");
       console.log("socket connect " + e);
       if (this._router.url == "/login") {
         // this._router.navigate(["customers"]);
@@ -335,7 +336,6 @@ export class socketService {
 
   onCimEventHandler(cimEvent, conversationId) {
     console.log("cim event ", JSON.parse(JSON.stringify(cimEvent)));
-
     if (cimEvent.channelSession) {
       if (cimEvent.data && cimEvent.data.header) {
         cimEvent.data.header.channelSession = cimEvent.channelSession;
@@ -374,9 +374,10 @@ export class socketService {
           cimEvent.data.body.type.toLowerCase() == "comment" &&
           cimEvent.data.body.itemType.toLowerCase() != "text" &&
           cimEvent.data.body.itemType.toLowerCase() != "video" &&
-          cimEvent.data.body.itemType.toLowerCase() != "image"
+          cimEvent.data.body.itemType.toLowerCase() != "image" &&
+          cimEvent.data.body.itemType.toLowerCase() !="private_reply"
         ) {
-          this.processFaceBookCommentActions(sameTopicConversation.messages, cimEvent.data);
+          this.processCommentActions(sameTopicConversation.messages, cimEvent.data);
         }
         // for agent type message change the status of message
         else if (cimEvent.name.toLowerCase() == "agent_message" || cimEvent.name.toLowerCase() == "whisper_message") {
@@ -494,9 +495,11 @@ export class socketService {
           event.data.body.type.toLowerCase() == "comment" &&
           event.data.body.itemType.toLowerCase() != "text" &&
           event.data.body.itemType.toLowerCase() != "video" &&
-          event.data.body.itemType.toLowerCase() != "image"
+          event.data.body.itemType.toLowerCase() != "image" &&
+          event.data.body.itemType.toLowerCase() != "private_reply"
         ) {
-          this.processFaceBookCommentActions(conversation.messages, event.data);
+          this.processCommentActions(conversation.messages, event.data);
+         
         } else {
           event.data.header["status"] = "sent";
           conversation.messages.push(event.data);
@@ -1107,6 +1110,9 @@ export class socketService {
       if (this._cacheService.agent.id == cimEvent.data.conversationParticipant.participant.keycloakUser.id) {
         conversation.topicParticipant = cimEvent.data.conversationParticipant;
         console.log("updated participant", conversation.topicParticipant);
+      } else {
+        conversation.agentParticipants.push(cimEvent.data.conversationParticipant);
+        conversation.agentParticipants = conversation.agentParticipants.concat([]);
       }
       let message = this.createSystemNotificationMessage(cimEvent);
 
@@ -1546,11 +1552,15 @@ export class socketService {
       }
       if (cimEvent.data.task.type.direction == "DIRECT_TRANSFER") {
         let text = " transfer request has been placed by ";
-        this._translateService.stream("socket-service.transfer-request-has-been-placed-by").subscribe((data: string) => {
+        let translationKey ="socket-service.transfer-request-has-been-placed-by";
+        if(!cimEvent.data.task.type.metadata.requestedBy) translationKey ="socket-service.transfer-request-has-been-placed"
+        this._translateService.stream(`${translationKey}`).subscribe((data: string) => {
           text = data;
         });
 
-        let string = mode + " " + text + " " + cimEvent.data.task.type.metadata.requestedBy;
+        let string;
+        if(cimEvent.data.task.type.metadata.requestedBy) string = mode + " " + text + " " + cimEvent.data.task.type.metadata.requestedBy;
+        else string = mode + " " + text;
         message.body["displayText"] = "";
         message.body.markdownText = string;
       } else if (cimEvent.data.task.type.direction == "DIRECT_CONFERENCE") {
@@ -1682,16 +1692,16 @@ export class socketService {
     });
   }
 
-  processFaceBookCommentActions(cimMessages, message) {
+  processCommentActions(cimMessages, message) {
     if (["like", "hide", "delete"].includes(message.body.itemType.toLowerCase())) {
-      let fbCommentMessage = this.getCimMessageByMessageId(cimMessages, message.header.replyToMessageId);
-      if (fbCommentMessage) {
+      let commentMessage = this.getCimMessageByMessageId(cimMessages, message.header.replyToMessageId);
+      if (commentMessage) {
         if (message.body.itemType.toLowerCase() == "like") {
-          fbCommentMessage["isLiked"] = true;
+          commentMessage["isLiked"] = true;
         } else if (message.body.itemType.toLowerCase() == "hide") {
-          fbCommentMessage["isHidden"] = true;
+          commentMessage["isHidden"] = true;
         } else if (message.body.itemType.toLowerCase() == "delete") {
-          fbCommentMessage["isDeleted"] = true;
+          commentMessage["isDeleted"] = true;
         }
       }
     }

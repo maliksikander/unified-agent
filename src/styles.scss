@@ -3477,6 +3477,26 @@ span.note-icon {
 }
 
 .voice-activity-main {
+
+  ul{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    li{
+      max-width: 700px;
+      white-space: pre;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      span.ivr-tag {
+        background: #333;
+        color: #fff !important;
+        border-color: #333 !important;
+        font-size: 11px !important;
+
+      }
+    }
+  }
   .mat-expansion-panel-body {
     padding: 5px;
   }
@@ -3487,7 +3507,7 @@ span.note-icon {
     }
 
     .mat-content {
-      padding-right: 6rem;
+      padding-right: 2rem;
     }
   }
 }

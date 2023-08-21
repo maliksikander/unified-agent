@@ -492,24 +492,17 @@ getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
     );
   }
 
-  getFBPostData(postId, accessToken, FBHOSTAPI): Observable<any> {
-    return this._httpClient.get<any>(`${FBHOSTAPI}${postId}?access_token=${accessToken}&fields=attachments,from,created_time,story,message`, {
-      headers: new HttpHeaders({
-        "Content-Type": "application/json"
-      })
-    });
-  }
-  getFBPostComments(postId, accessToken, FBHOSTAPI): Observable<any> {
-    return this._httpClient.get<any>(
-      `${FBHOSTAPI}${postId}/comments?access_token=${accessToken}&limit=4&order=reverse_chronological&fields=created_time,name,from,message,attachment,comments.filter(stream)`,
+  getPostData(postId, serviceIdentifier) : Observable<any> {
+    //https://expertflow.postman.co/workspace/Expertflow~f8480e26-6001-4a5f-8435-d0adbf5d7f5c/request/8262326-85e2374a-2aab-4ea2-b2da-907101b94f35
+    return this._httpClient.get<any> (
+      `${this._appConfigService.config.CCM_URL}/social-media-post?postId=${postId}&serviceIdentifier=${serviceIdentifier}&limit=4`,
       {
         headers: new HttpHeaders({
           "Content-Type": "application/json"
         })
       }
-    );
+    )
   }
-
   ccmVOICEChannelSession(data): Observable<any> {
     return this._httpClient.post<any>(`${this._appConfigService.config.CCM_URL}${this.apiEndpoints.ccmChannelSession}`, data, {
       headers: new HttpHeaders({

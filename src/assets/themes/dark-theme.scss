@@ -1552,6 +1552,10 @@ $theme: mat-light-theme($primary, $accent, $warn);
     .mat-expansion-indicator::after {
       color: mat-contrast($dark-primary, 500) !important;
     }
+    span.ivr-tag {
+      background: #757582 !important;
+      border-color: #757582 !important;
+    }
   }
 
   .more-section-tags {
@@ -1816,4 +1820,5 @@ em{
 .typing-indicator {
   background-color: #283F6A !important;
 }
+
 }
