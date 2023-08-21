@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Inject, OnInit, ElementRef, ViewChild } from 
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, fromEvent } from 'rxjs';
 import { map, startWith, throttleTime, distinctUntilChanged } from 'rxjs/operators';
-import { MAT_SNACK_BAR_DATA,MAT_DIALOG_DATA, MatDialog, MatSnackBar, MatSnackBarRef, MatDialogRef } from '@angular/material';
+import { MAT_SNACK_BAR_DATA, MAT_DIALOG_DATA, MatDialog, MatSnackBar, MatSnackBarRef, MatDialogRef } from '@angular/material';
 import { CustomerActionsComponent } from '../../customer-actions/customer-actions.component';
 import { httpService } from 'src/app/services/http.service';
 import { TranslateService } from "@ngx-translate/core";
@@ -35,7 +35,7 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   phoneNumber;
   phoneNumberFieldSubscriber;
   smsForm: FormGroup;
-  
+
 
 
   constructor(
@@ -47,10 +47,10 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
     private _sharedService: sharedService,
     private _cacheService: cacheService,
     private _router: Router,
-    
-    @Inject(MAT_DIALOG_DATA) public smsData:any,
-    
-    
+
+    @Inject(MAT_DIALOG_DATA) public smsData: any,
+
+
     public fb: FormBuilder,
     private smsDialog: MatDialog
   ) {
@@ -72,14 +72,14 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
       textAreaControl: ["", [Validators.required]]
     });
 
-   
+
     this.fetchSMSServiceIdentifier();
 
 
   }
   ngAfterViewInit(): void {
-    
-    
+
+
     const phoneField = document.getElementById('phoneField');
 
 
@@ -97,14 +97,14 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-   
-    if(this.smsData){
+
+    if (this.smsData) {
       this.smsForm.controls.phoneControl.setValue(this.smsData.info.channelCustomerIdentifier);
       this.smsForm.controls.textAreaControl.setValue(this.smsData.info.markdownText);
       this.identifiedCustomer = this.smsData.info.customer;
     }
 
-   
+
 
 
 
@@ -123,7 +123,7 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
 
   fetchSMSServiceIdentifier() {
     const SMSChannelType = this._sharedService.channelTypeList.find((channelType) => { return channelType.name.toLowerCase() == "sms" });
-   // console.log("SMSChannelType",SMSChannelType.id)
+    // console.log("SMSChannelType",SMSChannelType.id)
     if (SMSChannelType) {
       this._httpService.getDefaultOutboundChannel(SMSChannelType.id.toString()).subscribe((res) => {
 
@@ -138,6 +138,9 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   formatePhoneNumber(phoneNumber) {
 
     phoneNumber = this.removeStartingNumber(phoneNumber, this.defaultPrefixOutbound);
+
+    phoneNumber = this.convertZerosToPlus(phoneNumber);
+
     //   setTimeout(() => {
     let plusExists = false;
     this.smsForm.get("phoneControl").setValue('', { emitEvent: false });
@@ -151,6 +154,13 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
     this.phoneNumber = this.applyPrefix(phoneNumber);
     this.smsForm.get("phoneControl").setValue(this.phoneNumber, { emitEvent: false });
     // }, 100);
+  }
+
+  convertZerosToPlus(input) {
+    // Remove leading zeros and replace with a plus symbol
+    let modifiedStr = input.replace(/^0{2,}/, '+');
+
+    return modifiedStr;
   }
 
   removeStartingNumber(completeNumber, prefix) {
@@ -199,7 +209,7 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
 
 
   handleThrottledKeyUp() {
-    this.smsData=null;
+    this.smsData = null;
     this.identifiedCustomer = "";
     if (this.smsForm.get("phoneControl").value.length > 2) {
       this.getCustomers(this.limit, this.offSet, this.sort, { field: "phoneNumber", value: encodeURIComponent(this.smsForm.get("phoneControl").value) });
@@ -220,10 +230,10 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   openCOnversationView(customer) {
     this._socketService.onTopicData({ customer }, "FAKE_CONVERSATION", "");
     this._router.navigate(["customers"]);
-     if (this.SMSServiceIdentifier){
-      this._cacheService.storeOutboundSmsDialogData({ customer: this.identifiedCustomer ? this.identifiedCustomer : null, channelCustomerIdentifier: this.smsForm.get("phoneControl").value, markdownText: this.smsForm.get("textAreaControl").value});
-      }
-      
+    if (this.SMSServiceIdentifier) {
+      this._cacheService.storeOutboundSmsDialogData({ customer: this.identifiedCustomer ? this.identifiedCustomer : null, channelCustomerIdentifier: this.smsForm.get("phoneControl").value, markdownText: this.smsForm.get("textAreaControl").value });
+    }
+
     this.smsDialog.closeAll();
   }
 
@@ -260,23 +270,24 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
           message['header']['customer'] = res.additionalDetails.customer;
 
 
-         
+
           this.openSuccessDialog({ newProfileCreated: true, customer: message.header.customer, sentNumber: message.header.channelData.channelCustomerIdentifier })
-          
+
         } else {
           this.openSuccessDialog({ newProfileCreated: false, customer: message.header.customer, sentNumber: message.header.channelData.channelCustomerIdentifier })
-          
-         
+
+
         }
 
-        
+
 
 
 
         this._httpService.saveActivies(message).subscribe((res) => {
           if (this.isOutboundSmsSendandClose) {
             //console.log("------------this.smsDialog.closeAll();------------",this.isOutboundSmsSendandClose)
-            this.smsDialog.closeAll(); }
+            this.smsDialog.closeAll();
+          }
         })
 
       }, (error) => {
@@ -301,11 +312,11 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
     if (this._cacheService.agent.id) {
       this._httpService.getConversationSettings().subscribe(
         (e) => {
-          
+
           this.defaultPrefixOutbound = e[0].prefixCode;
-          
-          
-          
+
+
+
         },
         (error) => {
           this._sharedService.Interceptor(error.error, "err");
@@ -343,7 +354,7 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   }
 }
 
-         
+
 @Component({
   selector: 'app-send-sms-snackbar',
   template: `
@@ -370,27 +381,27 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
 
 })
 export class SendSmsSnackbarComponent {
-  
+
 
   constructor(
-    private _router: Router,private _socketService: socketService,
+    private _router: Router, private _socketService: socketService,
     @Inject(MAT_SNACK_BAR_DATA) public data, private dialog: MatDialog) {
-    
+
 
   }
 
-  openCOnversationView(){
-   
-    this._socketService.onTopicData({ customer:this.data.info.customer }, "FAKE_CONVERSATION", "");
+  openCOnversationView() {
+
+    this._socketService.onTopicData({ customer: this.data.info.customer }, "FAKE_CONVERSATION", "");
     this._router.navigate(["customers"]);
     this.dialog.closeAll();
-    
+
   }
   updateUser() {
     this.dismiss();
     this.dialog.closeAll();
     this.openEditCustomerDialog(this.data.info.customer._id);
-   
+
   }
 
   dismiss() {
