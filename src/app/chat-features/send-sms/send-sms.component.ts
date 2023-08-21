@@ -30,7 +30,7 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   userData: any = []
   SMSServiceIdentifier;
   defaultPrefixOutbound = '';
-  OutboundSmsSendandClose;
+  isOutboundSmsSendandClose;
   identifiedCustomer = null;
   phoneNumber;
   phoneNumberFieldSubscriber;
@@ -56,7 +56,7 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   ) {
 
     this.defaultPrefixOutbound = this._sharedService.conversationSettings.prefixCode;
-    this.OutboundSmsSendandClose = this._sharedService.conversationSettings.OutboundSmsSendandClose;
+    this.isOutboundSmsSendandClose = this._sharedService.conversationSettings.isOutboundSmsSendandClose;
 
     this.smsForm = this.fb.group({
 
@@ -274,8 +274,8 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
 
 
         this._httpService.saveActivies(message).subscribe((res) => {
-          if (this.OutboundSmsSendandClose) {
-            //console.log("------------this.smsDialog.closeAll();------------",this.OutboundSmsSendandClose)
+          if (this.isOutboundSmsSendandClose) {
+            //console.log("------------this.smsDialog.closeAll();------------",this.isOutboundSmsSendandClose)
             this.smsDialog.closeAll(); }
         })
 
