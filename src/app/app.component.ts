@@ -46,7 +46,7 @@ export class AppComponent implements OnInit, AfterViewInit{
       console.log('this.mainArea.nativeElement.offsetWidth ', this.mainArea.nativeElement.offsetWidth);
 
       this.chackCompactView(this.isMobile);
-    }else{
+    } else {
       this.chackCompactView(false);
 
     }

@@ -528,9 +528,9 @@ button.close-menu-mobile {
 //  height: 100% !important;
 //}
 @media(max-width: 1019px) {
-  .main-notification-area{
-    right: 0 !important;
-  }
+  //.main-notification-area{
+  //  right: 0 !important;
+  //}
 
   .footer-buttons{
     text-align: center !important;
@@ -652,7 +652,7 @@ button.close-menu-mobile {
 @media(max-width: 768px) {
   .main-header {
     .main-logo {
-      min-width: 230px;
+      min-width: 180px;
       max-width: 50%;
       padding: 0;
 
