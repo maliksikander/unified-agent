@@ -4140,11 +4140,12 @@ mat-select {
 }
 
 .main-showcase.customer-info-dp {
-  display: flex;
-  flex-flow: row;
-  width: 170px;
-  margin-left: 5px;
-  align-self: center;
+    display: flex;
+    flex-flow: row;
+    width: 140px;
+    margin-left: 5px;
+    align-self: center;
+    max-width: 140px;
 
   .agent-showcase {
     width: 40px;
@@ -4221,7 +4222,7 @@ mat-select {
     margin-right: 17px;
     margin-bottom: 4px;
 }
-  
+
 
 .plain-text-check{
 visibility: hidden;
