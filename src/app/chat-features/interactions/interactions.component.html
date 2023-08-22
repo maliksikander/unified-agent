@@ -1161,7 +1161,7 @@
                                       " src="assets/images/call-transfer.svg" />
                                       <img *ngIf="callData.endDirection == 'CONSULT_CONFERENCE'"
                                         src="assets/images/call-end.svg" />
-                                      <img *ngIf="callData.endDirection == 'DIALOG_ENDED'"
+                                      <img matTooltip="{{'snackbar.Call-Ended' | translate}}" *ngIf="callData.endDirection == 'DIALOG_ENDED'"
                                         src="assets/images/call-end.svg" />
                                     </li>
 

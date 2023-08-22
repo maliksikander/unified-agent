@@ -96,7 +96,8 @@
     "Unable-to-Delete-Announcement":"Unable to Delete Announcement_ger",
     "Socket-Connected":"Socket Connected_ger",
     "Calling":"Calling_ger",
-    "CX-Voice-Connected":"CX VOICE Connected_ger"
+    "CX-Voice-Connected":"CX VOICE Connected_ger",
+    "Call-Ended":"Call Ended_ger"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ger",
