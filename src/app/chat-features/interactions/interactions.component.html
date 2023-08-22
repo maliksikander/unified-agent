@@ -387,7 +387,7 @@
               </div>
               <!-- -------------------------------------------------------- -->
               <div *ngIf="(message.body.type | lowercase) != 'systemnotification' && message.header.channelSession"
-                class="chat-message {{ message.body.isWhisper ? 'whisper-body' : '' }} {{
+                class="chat-message {{message.header.status}} {{ message.body.isWhisper ? 'whisper-body' : '' }} {{
                   message.id != selectedCommentId && (message.isDeleted || message.isHidden) ? 'deleted-hidden-comment' : ''
                 }} {{
                   index == 0 ||
@@ -1477,7 +1477,7 @@
                                   </vg-player>
                                 </div>
                               </div>
-                             
+
                               <p *ngIf="post?.mimeType == 'IMAGE' || 'GIF'">
                                 <a style="cursor: pointer"
                                   (click)="externalfilePreviewOpener(post?.mediaUrl, post.mimeType, 'image')"
@@ -2159,7 +2159,7 @@
   </div>
 
   <div class="customer-info-main">
-    <div class="call-controls-view" *ngIf="isBarOpened && ctiBarView && _sipService.isCallActive">
+    <div class="call-controls-view" *ngIf="isBarOpened">
       <div class="right-call-controls row doc-bar">
 
         <div class="main-showcase customer-info-dp">
