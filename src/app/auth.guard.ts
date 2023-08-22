@@ -48,7 +48,7 @@ export class AuthGuard implements CanActivate {
 
       return value;
     } catch (e) {
-      console.log("[Route Access Error]:", e);
+      console.error("[Route Access Error]:", e);
     }
   }
 

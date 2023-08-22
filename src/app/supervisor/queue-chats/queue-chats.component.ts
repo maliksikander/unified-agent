@@ -59,7 +59,7 @@ export class QueueChatsComponent implements OnInit {
   loadLabels():void {
     this._httpService.getLabels().subscribe((e) => {
       this.labels = e;
-      console.log("labels",this.labels)
+      // console.log("labels",this.labels)
 
     });
   }

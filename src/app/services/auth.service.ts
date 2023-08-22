@@ -71,7 +71,7 @@ export class AuthService {
         if (routeCheck == false) this.snackbar.open("Not Authorized to Access Resources", "err");
       }
     } catch (e) {
-      console.log("[Navigation Error in Login] :", e);
+      console.error("[Navigation Error in Login] :", e);
     }
   }
 
