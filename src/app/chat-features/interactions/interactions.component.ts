@@ -51,7 +51,7 @@ export class InteractionsComponent implements OnInit {
   fullPostView: boolean = false;
   selectedCommentId: string;
   lastSeenMessageId;
-  pastActivitiesloadedOnce:boolean=false;
+  pastActivitiesloadedOnce:boolean=false; 
   // isTransfer = false;
   // isConsult = false;
   ctiBarView = true;
@@ -164,7 +164,8 @@ export class InteractionsComponent implements OnInit {
       if (this._sipService.isCallActive == true) this.ctiControlBar();
       this.getVoiceChannelSession();
     }
-   if(this._cacheService.smsDialogData){
+    //this._cacheService.smsDialogData || 
+   if(this.conversation.conversationId === 'FAKE_CONVERSATION'){
     this.loadPastActivities('FAKE_CONVERSATION');
    }
 
