@@ -397,9 +397,8 @@
                 }} {{ message.header.status == 'sending' ? 'low-opacity' : message.header.status == 'failed' ? 'failed' : '' }}  {{
                   message.body.type | lowercase
                 }} {{ message.header.replyToMessageId != null ? 'quoted-message-main' : '' }} {{ message.header.sender.type | lowercase }} {{
-                  fullPostView && message.id == selectedCommentId ? 'full-post-view' : ''
-                }}"
-                [ngClass]="
+                  fullPostView && 'full-post-view' && message.id == selectedCommentId ? 'full-post-view' : ''
+                }}" [ngClass]="
                   (message.header.sender.type | lowercase) == 'customer' || (message.body.type | lowercase) == 'voice'
                     ? 'user-message slide-in-left'
                     : 'agent-message'
@@ -474,7 +473,6 @@
                       class="main-quoted-reply"
                       *ngFor="let referredMessage of message.header.replyToMessageId | getReferredMsg: conversation.messages"
                       (click)="navigationToRepliedMessage(referredMessage)">
-
                       <strong class="message-author"
                         [ngClass]="(referredMessage.header.sender.type | lowercase) == 'customer' ? '' : 'current-agents'">
                         <span *ngIf="referredMessage.header.sender">
@@ -1379,9 +1377,9 @@
                     </div>
                     <!-- <--------------------------------------------WRAP UP MESSAGE END-------------------------------------------->
 
-                    <!-- ---------------------------------- FB COMMENT STARTED -------------------------------- -->
+                    <!-- ---------------------------------- Social Media COMMENT STARTED -------------------------------- -->
 
-                    <!------------------------------------Facebook post comment type------------------------------------->
+                    <!------------------------------------Socila Media post comment type------------------------------------->
 
                     <div
                       class="post-message-main"
@@ -1389,12 +1387,18 @@
                     >
                       <div class="post-main-area">
                         <div class="post-message-header"
-                          *ngIf="fullPostView && postData && message.id == selectedCommentId">
+                          *ngIf="fullPostView && postData  && message.id == selectedCommentId">
                           <div class="post-by">
                             <!-- <strong>{{ postData?.from?.name }} <span>Posted on {{ postData?.from?.name }}</span> </strong> -->
                           </div>
-                          <div class="post-info">
-                            <span><img src="assets/images/facebook-colored.svg" /> {{ postData?.from?.name }}</span>
+                          <div *ngIf="message.header.channelSession.channel.channelType.name === 'INSTAGRAM'" class="post-info">
+                            <span><img src="assets/images/instagram-color-icon.webp" /> {{ postData?.socialMediaPost
+                              ?.username }}</span>
+                            <mat-icon (click)="fullPostView = false; selectedCommentId = null">close</mat-icon>
+                          </div>
+                          <div *ngIf="message.header.channelSession.channel.channelType.name === 'FACEBOOK'" class="post-info">
+                            <span><img src="assets/images/facebook-colored.svg" /> {{ postData?.socialMediaPost
+                              ?.username }}</span>
                             <mat-icon (click)="fullPostView = false; selectedCommentId = null">close</mat-icon>
                           </div>
                         </div>
@@ -1413,8 +1417,7 @@
                                 thumb_up
                               </mat-icon>
                             </li>
-                            <li *ngIf="message.header.channelSession.channel.channelType.name.includes('INSTAGRAM')"
-                             class="private-reply-icon" (click)="privateReplyToComment(message)">
+                            <li class="private-reply-icon" (click)="privateReplyToComment(message)">
                               <img width="22px" src="assets/images/private-reply.png">
                             </li>
                             <li class="view-all-options">
@@ -1428,7 +1431,8 @@
                                 <li>
                                   <mat-icon (click)="commentAction(message, 'hide')"> visibility_off</mat-icon>
                                 </li>
-                                <li class="view-post" (click)="getFullViewPostData(message.header.channelSession, message.body.postId, message.id)">
+                                <li class="view-post"
+                                  (click)="fullPostViewData(message.header.channelSession.channel.serviceIdentifier, message.body.postId, message.id)">
                                   {{ "chat-features.interactions.view-full-post" | translate }}
                                 </li>
                               </ul>
@@ -1450,9 +1454,10 @@
                                 <img src="assets/images/dummy-user.svg" />
                               </span>
                               <span class="post-page-info">
-                                <strong>{{ postData?.from?.name }}</strong>
+                                <strong>{{ postData?.socialMediaPost?.username }}</strong>
                                 <small>
-                                  {{ postData.created_time | date: "shortTime" }}
+                                  {{ postData.socialMediaPost.timestamp
+                                  | date: "shortTime" }}
                                 </small>
                               </span>
                             </div>
@@ -1521,15 +1526,14 @@
                               <span
                                 [innerHTML]="
                                   conversationSettings.isMessageFormattingEnabled
-                                    ? (postData?.message | linkify | ibsformat)
-                                    : (postData?.message | linkify)
+                                    ? (postData?.socialMediaPost.text | linkify | ibsformat)
+                                    : (postData?.socialMediaPost.text | linkify)
                                 "></span>
                             </p>
-                            <div *ngFor="let post of postData.data?.attachments?.data">
-
+                            <div *ngFor="let post of postData?.socialMediaPost?.attachments">
                               <div class="shared-url shared-card-content video-player p-0"
-                                *ngIf="post.type.includes('video') || post.type == 'animated_image_autoplay'">
-                                <div class="media-main" *ngIf="post?.media.source">
+                                *ngIf="post?.mimeType.includes('VIDEO')">
+                                <div class="media-main" *ngIf="post?.mediaUrl">
                                   <vg-player>
                                     <vg-overlay-play></vg-overlay-play>
                                     <vg-buffering></vg-buffering>
@@ -1547,30 +1551,17 @@
                                       <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
                                     </vg-controls>
                                     <video #media [vgMedia]="media" id="{{ message.id }}" preload="auto">
-                                      <source src="{{ post?.media?.source }}" />
+                                      <source src="{{ post?.mediaUrl }}" />
                                     </video>
                                   </vg-player>
                                 </div>
                               </div>
-                              <div *ngIf="post.type == 'album'">
-                                <ng-container *ngFor="let subattachment of post.subattachments?.data">
-                                  <ng-container *ngIf="subattachment?.type == 'photo'">
-                                    <a
-                                      style="cursor: pointer"
-                                      (click)="externalfilePreviewOpener(subattachment.media.image.src, subattachment?.type, 'image')"
-                                      class="display-file display-image" [ngClass]="{ 'pt-2': postData.message }">
-                                      <img src="{{ subattachment.media.image.src }}" alt="image" />
-                                    </a>
-                                  </ng-container>
-                                </ng-container>
-                              </div>
-
-                              <p *ngIf="post.type == 'photo' || post?.type == 'animated_image_share'">
-                                <a
-                                  style="cursor: pointer"
-                                  (click)="externalfilePreviewOpener(post.media.image.src, post.type, 'image')"
-                                  class="display-file display-image" [ngClass]="{ 'pt-2': postData.message }">
-                                  <img src="{{ post.media.image.src }}" alt="image" />
+                             
+                              <p *ngIf="post?.mimeType == 'IMAGE' || 'GIF'">
+                                <a style="cursor: pointer"
+                                  (click)="externalfilePreviewOpener(post?.mediaUrl, post.mimeType, 'image')"
+                                  class="display-file display-image" [ngClass]="{ 'pt-2': postData.socialMediaPost.text }">
+                                  <img src="{{ post?.mediaUrl }}"  alt="image" />
                                 </a>
                               </p>
                             </div>
@@ -1582,32 +1573,26 @@
                         <!-------------------------- SUB COMMENTS -------------------------------->
 
                         <div class="post-sub-comments-area"
-                          *ngIf="fullPostView && postComments && message.id == selectedCommentId">
+                          *ngIf="fullPostView && message.id == selectedCommentId">
                           <div class="total-comment-count"></div>
-                          <div class="post-sub-comments" *ngFor="let postComments of postComments?.data">
+                          <div class="post-sub-comments" *ngFor="let postComments of postData?.socialMediaPost?.comments">
                             <div class="sub-profile-picture">
                               <img src="assets/images/dummy-user.svg" />
                             </div>
                             <div class="sub-comment">
-                              <strong>{{ postComments?.from?.name }}</strong>
+                              <strong>{{ postData?.socialMediaPost.username }}</strong>
                               <div>
                                 <div>
                                   <p>
                                     <span
                                       [innerHTML]="
                                         conversationSettings.isMessageFormattingEnabled
-                                          ? (postComments.message | linkify | ibsformat)
-                                          : (postComments.message | linkify)
-                                      "
-                                    ></span>
+                                          ? (postComments.text | linkify | ibsformat)
+                                          : (postComments.text | linkify)
+                                      "></span>
                                   </p>
-                                  <div
-                                    class="shared-url shared-card-content video-player p-0"
-                                    *ngIf="
-                                      postComments?.attachment?.type.includes('video') || postComments?.attachment?.type == 'animated_image_autoplay'
-                                    "
-                                  >
-                                    <div class="media-main" *ngIf="postComments?.attachment?.media.source">
+                                  <div class="shared-url shared-card-content video-player p-0" *ngIf="postComments?.attachment?.mimeType?.includes('VIDEO')">
+                                    <div class="media-main" *ngIf="postComments?.attachment?.mediaUrl">
                                       <vg-player>
                                         <vg-overlay-play></vg-overlay-play>
                                         <vg-buffering></vg-buffering>
@@ -1625,23 +1610,20 @@
                                           <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
                                         </vg-controls>
                                         <video #media [vgMedia]="media" id="{{ message.id }}" preload="auto">
-                                          <source src="{{ postComments?.attachment?.media.source }}" />
+                                          <source src="{{ postComments?.attachment?.mediaUrl }}" />
                                         </video>
                                       </vg-player>
                                     </div>
                                   </div>
 
-                                  <p *ngIf="postComments?.attachment?.type == 'photo' || postComments?.attachment?.type == 'animated_image_share'">
-                                    <a
-                                      style="cursor: pointer"
-                                      *ngIf="postComments?.attachment?.media.image.src?.length > 0"
-                                      (click)="
-                                        externalfilePreviewOpener(postComments?.attachment?.media.image.src, postComments?.attachment?.type, 'image')
-                                      "
-                                      class="display-file display-image"
-                                      [ngClass]="{ 'pt-2': message.body.markdownText?.length > 0 }"
-                                    >
-                                      <img src="{{ postComments?.attachment?.media.image.src }}" alt="image" />
+                                  <p
+                                    *ngIf="postComments?.attachment?.mimeType == 'IMAGE'">
+                                    <a style="cursor: pointer"
+                                      *ngIf="postComments?.attachment?.mediaUrl?.length > 0" (click)="
+                                        externalfilePreviewOpener(postComments?.attachment?.mediaUrl, postComments?.attachment?.mimeType, 'image')
+                                      " class="display-file display-image"
+                                      [ngClass]="{ 'pt-2': message.body.markdownText?.length > 0 }">
+                                      <img src="{{ postComments?.attachment?.mediaUrl }}" alt="image" />
                                     </a>
                                   </p>
                                 </div>
@@ -1651,33 +1633,31 @@
                                   <mat-icon></mat-icon>
                                 </span>
                                 <span class="message-stamp">
-                                  <span class="chat-time">{{ postComments.created_time | date: "shortTime" }}</span>
+                                  <span class="chat-time">{{ postComments.timestamp | date: "shortTime" }}</span>
                                 </span>
                               </div>
                             </div>
 
-                            <div class="post-sub-comments post-nested-comments" *ngFor="let nestedComments of postComments.comments?.data">
+                            <div class="post-sub-comments post-nested-comments"
+                              *ngFor="let nestedComments of postComments.subComments">
                               <div class="sub-profile-picture">
                                 <img src="assets/images/dummy-user.svg" />
                               </div>
 
                               <div class="sub-comment">
-                                <strong>{{ nestedComments?.from?.name }}</strong>
+                                <strong>{{ nestedComments?.username }}</strong>
 
                                 <p>
                                   <span
                                     [innerHTML]="
                                       conversationSettings.isMessageFormattingEnabled
-                                        ? (nestedComments.message | linkify | ibsformat)
-                                        : (nestedComments.message | linkify)
-                                    "
-                                  ></span>
+                                        ? (nestedComments.text | linkify | ibsformat)
+                                        : (nestedComments.text | linkify)
+                                    "></span>
                                 </p>
-                                <div
-                                  class="shared-url shared-card-content video-player p-0"
-                                  *ngIf="nestedComments?.attachment?.type.includes('video')"
-                                >
-                                  <div class="media-main" *ngIf="nestedComments?.attachment?.media?.source?.length > 0">
+                                <div class="shared-url shared-card-content video-player p-0"
+                                  *ngIf="nestedComments?.attachment?.mimeType?.includes('VIDEO')">
+                                  <div class="media-main" *ngIf="nestedComments?.attachment?.mediaUrl?.length > 0">
                                     <vg-player>
                                       <vg-overlay-play></vg-overlay-play>
                                       <vg-buffering></vg-buffering>
@@ -1695,30 +1675,24 @@
                                         <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
                                       </vg-controls>
                                       <video #media [vgMedia]="media" id="{{ message.id }}" preload="auto">
-                                        <source src="{{ nestedComments?.attachment?.media?.source }}" />
+                                        <source src="{{ nestedComments?.attachment?.mediaUrl }}" />
                                       </video>
                                     </vg-player>
                                   </div>
                                 </div>
 
-                                <p
-                                  class="asdfg"
-                                  *ngIf="nestedComments?.attachment?.type == 'photo' || nestedComments?.attachment?.type == 'animated_image_share'"
-                                >
-                                  <a
-                                    style="cursor: pointer"
-                                    *ngIf="nestedComments?.attachment?.media.image.src?.length > 0"
-                                    (click)="
+                                <p class="asdfg"
+                                  *ngIf="nestedComments?.attachment?.mimeType == 'IMAGE'">
+                                  <a style="cursor: pointer"
+                                    *ngIf="nestedComments?.attachment?.mediaUr?.length > 0" (click)="
                                       externalfilePreviewOpener(
-                                        nestedComments?.attachment?.media.image.src,
-                                        nestedComments?.attachment?.type,
+                                        nestedComments?.attachment?.mediaUrl,
+                                        nestedComments?.attachment?.mimeType,
                                         'image'
                                       )
-                                    "
-                                    class="display-file display-image"
-                                    [ngClass]="{ 'pt-2': message.body.markdownText?.length > 0 }"
-                                  >
-                                    <img src="{{ nestedComments?.attachment?.media.image.src }}" alt="image" />
+                                    " class="display-file display-image"
+                                    [ngClass]="{ 'pt-2': message.body.markdownText?.length > 0 }">
+                                    <img src="{{ nestedComments?.attachment?.mediaUrl }}" alt="image" />
                                   </a>
                                 </p>
 
@@ -1727,7 +1701,7 @@
                                     <mat-icon></mat-icon>
                                   </span>
                                   <span class="message-stamp">
-                                    <span class="chat-time">{{ nestedComments.created_time | date: "shortTime" }}</span>
+                                    <span class="chat-time">{{ nestedComments.timestamp | date: "shortTime" }}</span>
                                   </span>
                                 </div>
                               </div>
@@ -1753,14 +1727,14 @@
                                   <li>
                                     <mat-icon (click)="replyToComment(message)"> chat_bubble_outline</mat-icon>
                                   </li>
-                                  <li *ngIf="message.header.channelSession.channel.channelType.name.includes('FACEBOOK')">
+                                  <li
+                                    *ngIf="message.header.channelSession.channel.channelType.name.includes('FACEBOOK')">
                                     <mat-icon [ngClass]="{ 'liked': message.isLiked }"
                                       (click)="commentAction(message, 'like')">
                                       thumb_up
                                     </mat-icon>
                                   </li>
-                                  <li *ngIf="message.header.channelSession.channel.channelType.name.includes('INSTAGRAM')"
-                                   class="private-reply-icon" (click)="privateReplyToComment(message)">
+                                  <li class="private-reply-icon" (click)="privateReplyToComment(message)">
                                     <img width="22px" src="assets/images/private-reply.png">
                                   </li>
                                   <li class="view-all-options">
