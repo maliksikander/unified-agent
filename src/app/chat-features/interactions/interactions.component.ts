@@ -301,8 +301,8 @@ export class InteractionsComponent implements OnInit {
     });
   }
 
-  openOutboundSmsDialog(data){
-    console.log("Interactions dialog data",data)
+  openOutboundSmsDialog(){
+    
     const dialogRef = this.dialog.open(SendSmsComponent, {
       maxWidth: "700px",
       width: "100%",
