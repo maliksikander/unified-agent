@@ -51,7 +51,7 @@ export class InteractionsComponent implements OnInit {
   fullPostView: boolean = false;
   selectedCommentId: string;
   lastSeenMessageId;
-  pastActivitiesloadedOnce:boolean=false; 
+  pastActivitiesloadedOnce: boolean = false;
   // isTransfer = false;
   // isConsult = false;
   ctiBarView = true;
@@ -135,7 +135,6 @@ export class InteractionsComponent implements OnInit {
     // setTimeout(() => {
     //   new EmojiPicker();
     // }, 500);
-
     this.isWhisperMode = this.conversation.topicParticipant.role == "SILENT_MONITOR" ? true : false;
     this.conversationSettings = this._sharedService.conversationSettings;
     this.loadLabels();
@@ -273,7 +272,7 @@ export class InteractionsComponent implements OnInit {
       this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-the-request"), "err");
     }
   }
-  
+
   //Quoted Reply
   onQuotedReply(message) {
     this.replyToMessageId = message.id;
@@ -281,7 +280,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   navigationToRepliedMessage(repliedMessage: any) {
-    if (repliedMessage && repliedMessage.id ) {
+    if (repliedMessage && repliedMessage.id) {
       const elementId = repliedMessage.id;
       const element = document.getElementById(elementId);
       if (element) {
@@ -687,7 +686,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   isInstagramChannel(channel) {
-    if(this.replyToMessageId && this.privateMessageReply || this.replyToMessageId) {
+    if (this.replyToMessageId && this.privateMessageReply || this.replyToMessageId) {
       return channel.channelType.name === "INSTAGRAM";
     }
   }
@@ -700,7 +699,7 @@ export class InteractionsComponent implements OnInit {
 
         this.emitCimEvent(message, "AGENT_MESSAGE");
       } else {
-        if (this.replyToMessageId ) {
+        if (this.replyToMessageId) {
           message.header.replyToMessageId = this.replyToMessageId;
           this.replyToMessageId = null;
         }
@@ -711,12 +710,12 @@ export class InteractionsComponent implements OnInit {
             selectedChannelSession.channel.channelType.name.toLowerCase() == "instagram" ||
             selectedChannelSession.channel.channelType.name.toLowerCase() == "twitter")) {
             // If private reply icon is clicked then msgType would be private reply. 
-            if(this.privateMessageReply) {
+            if (this.privateMessageReply) {
               msgType = this.privateMessageReply
               this.privateMessageReply = null
             }
             message = this.constructCommentEvent(message, msgType, selectedChannelSession, fileMimeType, fileName, fileSize, text);
-            
+
             this.emitCimEvent(message, "AGENT_MESSAGE");
             this.commentId = null;
           } else {
@@ -783,7 +782,7 @@ export class InteractionsComponent implements OnInit {
   // to get past acitivities
   loadPastActivities(conversation) {
     try {
-      this.pastActivitiesloadedOnce=true;
+      this.pastActivitiesloadedOnce = true;
       this.loadingPastActivity = true;
 
       let limit = 25;
@@ -1105,33 +1104,49 @@ export class InteractionsComponent implements OnInit {
   requestType: string;
   noteDialogBtnText: string;
 
+  isCXVoiceSessionActive() {
+    let session = this.conversation.activeChannelSessions.find((channelSession) => {
+      return channelSession.channel.channelType.name.toLowerCase() === "cx_voice";
+    });
+    if (session) return true;
+    return false;
+  }
+
   agentAssistanceRequest(templateRef, data, action, requestType): void {
     try {
       this.requestType = requestType;
       this.requestAction = action;
 
-      if (requestType == "queue") {
-        this.requestedQueue = data;
-        if (action == "transfer") {
-          this.requestTitle = this._translateService.instant("chat-features.interactions.Transfer-To-Queue");
-          this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Transfer");
-        } else if (action == "conference") {
-          this.requestTitle = this._translateService.instant("chat-features.interactions.Conference-Request");
-          this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Add-To-Conference");
+      if (this.isCXVoiceSessionActive()) {
+        if (requestType == "queue") {
+          if (action == "transfer") {
+            this._sipService.directQueueTransferOnSip(data);
+          }
         }
+      } else {
+        if (requestType == "queue") {
+          this.requestedQueue = data;
+          if (action == "transfer") {
+            this.requestTitle = this._translateService.instant("chat-features.interactions.Transfer-To-Queue");
+            this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Transfer");
+          } else if (action == "conference") {
+            this.requestTitle = this._translateService.instant("chat-features.interactions.Conference-Request");
+            this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Add-To-Conference");
+          }
+        }
+
+        // this.requestAction = action;
+
+        const dialogRef = this.dialog.open(templateRef, {
+          panelClass: "consult-dialog"
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+          // console.log("The dialog was closed==>", result);
+        });
+
+        this.consultTransferTrigger.closeMenu();
       }
-
-      // this.requestAction = action;
-
-      const dialogRef = this.dialog.open(templateRef, {
-        panelClass: "consult-dialog"
-      });
-
-      dialogRef.afterClosed().subscribe((result) => {
-        // console.log("The dialog was closed==>", result);
-      });
-
-      this.consultTransferTrigger.closeMenu();
     } catch (e) {
       console.error("[Error] on Agent Assitance", e);
     }
@@ -1162,11 +1177,29 @@ export class InteractionsComponent implements OnInit {
     this.showRequestNotification();
   }
 
+  filterCXQueues(queues: Array<any>) {
+    try {
+      let cxQueues: Array<any> = [];
+      queues.forEach((item: any) => {
+        if (item.mrdId == this._appConfigService.config.CX_VOICE_MRD) cxQueues.push(item);
+      });
+      this.queueList = cxQueues;
+    } catch (e) {
+      console.error("[filterCXQueues] Error :", e);
+    }
+  }
+
   getAgentsInQueue() {
     try {
       this._httpService.getAgentsInQueue(this.conversation.conversationId).subscribe(
         (res: any) => {
-          this.queueList = res;
+          if (this.isCXVoiceSessionActive() && res) {
+            this.filterCXQueues(res);
+          } else {
+            this.queueList = res;
+          }
+
+          // this.queueList = res;
         },
         (error) => {
           this._sharedService.Interceptor(error.error, "err");
@@ -1192,110 +1225,25 @@ export class InteractionsComponent implements OnInit {
     }, 1000);
   }
 
-  // getFBPost 
-  getPost(postId, selectedCommentId, accessToken, FBHOSTAPI) {
-    this._httpService.getFBPostData(postId, accessToken, FBHOSTAPI).subscribe(
-      (res: any) => {
-        this.postData = res;
-        this.fullPostView = true;
-        this.selectedCommentId = selectedCommentId;
-      },
-      (error) => {
-        this._sharedService.Interceptor(error.error, "err");
-        console.error("err [getPost]", error.error);
-      }
-    );
-  }
+  fullPostViewData(serviceIdentifier, postId, selectedCommentId) {
+    this.selectedCommentId = null
+    if (serviceIdentifier && postId && selectedCommentId) {
+      this._httpService.getPostData(postId, serviceIdentifier).subscribe(
 
-  // getFBComments
-  getComments(postId, selectedCommentId, accessToken, FBHOSTAPI) {
-    this._httpService.getFBPostComments(postId, accessToken, FBHOSTAPI).subscribe(
-      (res: any) => {
-        this.postComments = res;
-        this.fullPostView = true;
-        this.selectedCommentId = selectedCommentId;
-      },
-      (error) => {
-        this._sharedService.Interceptor(error.error, "err");
-        console.error("err [getComments]", error.error);
-      }
-    );
-  }
-
-  //the function will fetch fb post and comments API parallel
-  getPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI) {
-    try {
-      this.getPost(postId, selectedCommentId, accessToken, FBHOSTAPI);
-      this.getComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
-    } catch (err) {
-      console.error("err [ getPostAndComments ] error while fetching post and comments", err);
-    }
-  }
-
-  // getInstaPostAndComments(postId, selectedCommentId, accessToken, INSTHOSTAPI) {
-  //   this._httpService.getInstaPostData(postId, accessToken, INSTHOSTAPI).subscribe(
-  //     (res: any) => {
-  //       this.postData = res;
-  //       this.postComments = res;
-  //       this.fullPostView = true;
-  //       this.selectedCommentId = selectedCommentId;
-  //     },
-  //     (error) => {
-  //       this._sharedService.Interceptor(error.error, "err");
-  //       console.error("err [getPost]", error.error);
-  //     }
-  //   );
-  // }
-
-  //the below function will check for some keys and call another function which will fetch post data with comments
-  getFullViewPostData(channelSession, postId, selectedCommentId) {
-    let accessToken = null;
-    let instaAccessToken = null
-    let FBHOSTAPI = null;
-    let INSTHOSTAPI = null
-    this.postComments = null;
-    this.postData = null;
-    this.fullPostView = false;
-    this.selectedCommentId = null;
-    if (channelSession) {
-      channelSession.channel.channelConnector.channelProviderConfigs.forEach((item) => {
-        if (item.key == "FACEBOOK-API-KEY") {
-          accessToken = item.value;
+        (res: any) => {
+          this.postData = res;
+          this.fullPostView = true;
+          this.selectedCommentId= selectedCommentId
+        },
+        (error) => {
+          this._sharedService.Interceptor(error.error, "err");
+          console.error("err [getPost]", error.error);
         }
-        if (item.key == "FACEBOOK-HOST-URL") {
-          FBHOSTAPI = item.value;
-        }
-        // if (item.key == "INSTAGRAM-API-KEY") {
-        //   instaAccessToken = item.value;
-        // }
-        // if (item.key == "INSTAGRAM-HOST-URL") {
-        //   INSTHOSTAPI = item.value;
-        // }
-      });
-      if (accessToken && FBHOSTAPI) {
-
-        this.getPostAndComments(postId, selectedCommentId, accessToken, FBHOSTAPI);
-
-      }
-      // else if (instaAccessToken && INSTHOSTAPI) {
-
-      //   this.getInstaPostAndComments(postId, selectedCommentId, instaAccessToken, INSTHOSTAPI);
-      // }
-
-      else {
-        this._snackbarService.open(this._translateService.instant("snackbar.Access-Token-or-FB-Host-API-for-FB-is-missing"), "err");
-        console.error("err [getFullViewPostData] accessToken or FB Host API for FB is missing");
-      }
+      );
     } else {
-      this._snackbarService.open(this._translateService.instant("snackbar.Channel-session-not-found"), "err");
-      console.error("err [getFullViewPostData] Channel session not found");
+      console.error("err [getFullViewPostData] serviceIdentifier or postId is missing");
     }
   }
-
-  // getCustomerAni(callLegs:Array<any>){
-  //   console.log("data-->",callLegs)
-
-  // }
 
   ctiControlBar() {
     this.ctiBoxView = true;
@@ -1304,8 +1252,8 @@ export class InteractionsComponent implements OnInit {
       panelClass: "call-controls-dialog",
       hasBackdrop: false,
       position: {
-        top: '8%',
-        right: '8%'
+        top: "8%",
+        right: "8%"
       },
       data: { conversation: this.conversation }
     });

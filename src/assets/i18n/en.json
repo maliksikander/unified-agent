@@ -81,9 +81,9 @@
     "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco",
     "Unable-To-End-Voice-Session":"Unable to end voice session",
     "CX-Voice-incorrect-request":"CX VOICE : Incorrect object for call request!",
-    "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed, Invalid Credentials!",
+    "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed!",
     "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed!",
-    "CX-Voice-Login-Success":"CX VOICE : Successfully login with EF Switch",
+    "CX-Voice-Login-Success":"CX VOICE: Login Successful with EF Switch",
     "CX-Voice-call-canceled" : "CX VOICE : Voice Call canceled",
     "SIP-Logout-Successful":"SIP Logout Successful",
     "No-Extension-Found":"No Extension Found For Sip Agent",
@@ -94,7 +94,10 @@
     "Unable-to-Create-New-Announcement":"Unable to Create New Announcement",
     "Unable-to-Update-Announcement":"Unable to Update Announcement",
     "Unable-to-Delete-Announcement":"Unable to Delete Announcement",
-    "unable-to-fetch-service-identifier-messages-cant-be-sent":"Unable to fetch service identifier, messages cant be sent"
+    "unable-to-fetch-service-identifier-messages-cant-be-sent":"Unable to fetch service identifier, messages cant be sent",
+    "Socket-Connected":"Socket Connected",
+    "Calling":"Calling",
+    "CX-Voice-Connected":"CX VOICE Connected"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View",
@@ -164,14 +167,16 @@
       "not-empty":"This field can't be empty",
       "invalid-pattern":"Invalid pattern",
       "number-should-be-in-range-3-to-15":"number should be in range 3 to 15",
+      "see-conversation-history":"See Conversation History",
       "discard":"Discard",
       "send-sms":"Send SMS",
       "success-sms":"SMS sent successfully",
       "update-profile":"To update the customer profile",
       "click-here":"click here",
-      "the-sms-has-been-sent-to-the":"The SMS has been sent to the ",
-      "on-this-number":"on this number",
-      "customer":"customer",
+      "the-sms-has-been-sent-to-the":"The SMS has been sent to the\u0020 ",
+      "on-this-number":" on this number",
+      "new":"new",
+      "customer":"customer ",
       "characters-limit-1500":"1500 characters",
       "to-view-the-customer-profile":" to view the customer profile"
 
@@ -352,6 +357,7 @@
     "session-ended":"session ended",
     "left-the-conversation":"left the conversation",
     "transfer-request-has-been-placed-by":"transfer request has been placed by",
+    "transfer-request-has-been-placed":"transfer request has been placed",
     "conference-request-has-been-placed-by":"conference request has been placed by",
     "No-agent-is-available-for":"No agent is available for",
     "conference-request-has-cancelled": "Conference request has been cancelled"
@@ -403,7 +409,11 @@
     "start-conversation":"Start Conversation",
     "channel":"Channel",
     "direction":"Direction",
-    "Select-All":"Select All"
+    "Select-All":"Select All",
+    "mute":"Mute",
+    "unMute":"Unmute",
+    "hold":"Hold",
+    "resume":"Resume"
   },
   "pull-mode": {
     "all-list": "All List",

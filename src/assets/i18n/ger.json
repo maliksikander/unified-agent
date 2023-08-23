@@ -81,9 +81,10 @@
     "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_ger",
     "Unable-To-End-Voice-Session":"Unable to end voice session_ger",
     "CX-Voice-incorrect-request":"CX VOICE : Incorrect object for call request!_ger",
-    "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed, Invalid Credentials!_ger",
+    "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed!_ger",
     "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed!_ger",
-    "CX-Voice-Login-Success":"CX VOICE : Successfully login with EF Switch_ger",
+    "CX-Voice-Login-Success":"CX VOICE: Login Successful with EF Switch_ger",
+    "CX-Voice-call-canceled" : "CX VOICE : Voice Call canceled_ger",
     "SIP-Logout-Successful":"SIP Logout Successful_ger",
     "No-Extension-Found":"No Extension Found For Sip Agent_ger",
     "Unable-to-edit-Active-Announcements":"Unable to edit Active Announcement_ger",
@@ -93,7 +94,10 @@
     "Unable-to-Create-New-Announcement":"Unable to Create New Announcement_ger",
     "Unable-to-Update-Announcement":"Unable to Update Announcement_ger",
     "Unable-to-Delete-Announcement":"Unable to Delete Announcement_ger",
-    "unable-to-fetch-service-identifier-messages-cant-be-sent":"Unable to fetch service identifier, messages cant be sent_ger"
+    "unable-to-fetch-service-identifier-messages-cant-be-sent":"Unable to fetch service identifier, messages cant be sent_ger",
+    "Socket-Connected":"Socket Connected_ger",
+    "Calling":"Calling_ger",
+    "CX-Voice-Connected":"CX VOICE Connected_ger"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ger",
@@ -163,13 +167,15 @@
       "not-empty":"This field can't be empty_ger",
       "invalid-pattern":"Invalid pattern_ger",
       "number-should-be-in-range-3-to-15":"number should be in range 3 to 15_ger",
+      "see-conversation-history":"See Conversation History_ger",
       "discard":"Discard_ger",
       "send-sms":"Send SMS_ger",
       "success-sms":"SMS sent successfully_ger",
       "update-profile":"To update the customer profile",
       "click-here":"click here_ger",
-      "the-sms-has-been-sent-to-the":"The SMS has been sent to the ",
-      "on-this-number":"on this number_ger",
+      "the-sms-has-been-sent-to-the":"The SMS has been sent to the\u0020",
+      "on-this-number":" on this number_ger",
+      "new":"new",
       "customer":"customer",
       "characters-limit-1500":"1500 characters_ger",
       "to-view-the-customer-profile":" to view the customer profile_ger"
@@ -349,6 +355,7 @@
    "session-ended":"session ended_ger",
    "left-the-conversation":"left the conversation_ger",
    "transfer-request-has-been-placed-by":"transfer request has been placed by_ger",
+   "transfer-request-has-been-placed":"transfer request has been placed_ger",
    "conference-request-has-been-placed-by":"conference request has been placed by_ger",
    "No-agent-is-available-for":"No agent is available for_ger",
    "conference-request-has-cancelled": "Conference request has been cancelled_ger"
@@ -400,7 +407,11 @@
     "agent-id":"Agent Id_ger",
     "channel":"channel_ger",
     "direction":"direction_ger",
-    "Select-All":"Select All_ger"
+    "Select-All":"Select All_ger",
+    "mute":"Mute_ger",
+    "unMute":"Unmute_ger",
+    "hold":"Hold_ger",
+    "resume":"Resume_ger"
   },
   "pull-mode": {
     "all-list": "All List_ger",

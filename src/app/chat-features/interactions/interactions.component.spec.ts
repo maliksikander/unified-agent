@@ -26,6 +26,7 @@ describe("InteractionsComponent", () => {
       }
     }
   };
+  let serviceIdentifier
 
   describe("when only post data api returns data ", () => {
     beforeEach(async () => {
@@ -35,14 +36,9 @@ describe("InteractionsComponent", () => {
       });
 
       _httpService = {
-        getFBPostComments: jest.fn((postId) => {
+        getPostData: jest.fn((postId,serviceIdentifier) => {
           return throwError(() => errorResponse);
         }),
-        getFBPostData: jest.fn((postId) => {
-          return of(() => {
-            throw HttpErrorResponse;
-          });
-        })
       };
 
       component = new InteractionsComponent(
@@ -65,29 +61,24 @@ describe("InteractionsComponent", () => {
       expect(component).toBeTruthy();
       let postId = 1;
       let selectedCommentId = 2;
-      component.getFullViewPostData(channelSession, postId, selectedCommentId);
-      expect(component.selectedCommentId).toBe(2);
+      component.fullPostViewData(serviceIdentifier, postId, selectedCommentId);
       expect(component.postData).toBeDefined();
-      expect(component.postComments).toBe(null);
     });
 
     it("fullPostView should be truthy", () => {
       let postId = 9;
       let selectedCommentId = 10;
-      component.getFullViewPostData(channelSession, postId, selectedCommentId);
-      expect(component.fullPostView).toBeTruthy();
+      component.fullPostViewData(serviceIdentifier, postId, selectedCommentId);
+      expect(component.fullPostView).toBeFalsy();
     });
   });
 
-  describe("when both post data and fb comments api returns data ", () => {
+  describe("when post data api returns data ", () => {
     beforeEach(async () => {
       _httpService = {
-        getFBPostComments: jest.fn((postId) => {
+        getPostData: jest.fn((postId,serviceIdentifier) => {
           return of([{ data: "comments" }]);
         }),
-        getFBPostData: jest.fn((postId) => {
-          return of([{ data: "comments" }]);
-        })
       };
       component = new InteractionsComponent(
         _shareredService,
@@ -109,31 +100,26 @@ describe("InteractionsComponent", () => {
       expect(component).toBeTruthy();
       let postId = 1;
       let selectedCommentId = 2;
-      component.getFullViewPostData(channelSession, postId, selectedCommentId);
-      expect(component.selectedCommentId).toBe(selectedCommentId);
+      component.fullPostViewData(serviceIdentifier, postId, selectedCommentId);
       expect(component.postData).toBeDefined();
-      expect(component.postComments).toBeDefined();
     });
 
-    it("fullPostView should be truthy", () => {
+    it("fullPostView should be falsy", () => {
       let postId = 9;
       let selectedCommentId = 10;
-      component.getFullViewPostData(channelSession, postId, selectedCommentId);
-      expect(component.fullPostView).toBeTruthy();
+      component.fullPostViewData(serviceIdentifier, postId, selectedCommentId);
+      expect(component.fullPostView).toBeFalsy();
     });
   });
 
-  describe("when both apis returns error", () => {
+  describe("when postViewApi returns error", () => {
     beforeEach(async () => {
       const errorResponse = new HttpErrorResponse({
         error: "test 404 error",
         status: 404
       });
       _httpService = {
-        getFBPostComments: jest.fn((postId) => {
-          return throwError(() => errorResponse);
-        }),
-        getFBPostData: jest.fn((postId) => {
+        getPostData: jest.fn((postId,serviceIdentifier) => {
           return throwError(() => errorResponse);
         })
       };
@@ -156,17 +142,15 @@ describe("InteractionsComponent", () => {
       expect(component).toBeTruthy();
       let postId = 1;
       let selectedCommentId = 2;
-      component.getFullViewPostData(channelSession, postId, selectedCommentId);
+      component.fullPostViewData(serviceIdentifier, postId, selectedCommentId);
       expect(component.selectedCommentId).toBe(null);
       expect(component.postData).toBe(null);
-      expect(component.fullPostView).toBeFalsy();
-      expect(component.postComments).toBe(null);
     });
 
     it("fullPostView should be falsy", () => {
       let postId = 9;
       let selectedCommentId = 10;
-      component.getFullViewPostData(channelSession, postId, selectedCommentId);
+      component.fullPostViewData(serviceIdentifier, postId, selectedCommentId);
       expect(component.fullPostView).toBeFalsy();
     });
   });
