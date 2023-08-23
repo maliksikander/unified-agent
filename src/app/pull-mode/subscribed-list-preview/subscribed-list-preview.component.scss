@@ -335,12 +335,12 @@
 
 //Compact & mobile view
 @media(max-width: 1019px) {
-  .table-container.manage-dashboard{
-    display: none;
-  }
-  .manage-dashboard.list-for-compact{
-    display: block;
-  }
+  //.table-container.manage-dashboard{
+  //  display: none;
+  //}
+  //.manage-dashboard.list-for-compact{
+  //  display: block;
+  //}
 
   .page-header{
     background: lighten($bubble-background, 2%);
@@ -383,6 +383,7 @@
   }
   .create-label{
     padding: 8px;
+    display: flex;
 
     &.filter-view{
       display: none;
@@ -391,11 +392,10 @@
       display: none;
     }
     mat-form-field{
-      width: 100%;
-      font-size: 16px;
       padding: 3px 0;
       background: #fff;
-      margin: 2px 0;
+      margin: 2px 5px;
+      flex: 1;
     }
   }
 

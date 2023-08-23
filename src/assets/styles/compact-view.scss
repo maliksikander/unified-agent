@@ -359,6 +359,14 @@
     top: 4px;
     position: relative;
   }
+
+  .announcement-selection-area{
+    padding-right: 15px !important;
+  }
+  .active-chat-list-area{
+    overflow: auto;
+    margin-top: 10px;
+  }
 }
 .option-label {
   opacity: .8;
@@ -537,6 +545,7 @@ button.close-menu-mobile {
   }
   .scrollable-main{
     width: 100% !important;
+    height: inherit !important;
 
     &.selected-columns-drag{
       display: none !important;
@@ -650,6 +659,9 @@ button.close-menu-mobile {
 }
 
 @media(max-width: 768px) {
+  .characters-length{
+    padding-left: 15px !important;
+  }
   .main-header {
     .main-logo {
       min-width: 180px;
@@ -753,9 +765,9 @@ button.close-menu-mobile {
     h4{
       color: #7f7f7f !important;
     }
-    .page-heading, .create-label{
-
-    }
+    //.page-heading, .create-label{
+    //
+    //}
   }
   .schema-container{
     width: 100% !important;
@@ -821,60 +833,19 @@ button.close-menu-mobile {
 
 //Dialog for mobile
 //
-//.edit-customer-dialog-mobile-view-panel, .create-customer-dialog-mobile-view-panel {
-//  max-width: 100% !important;
-//  max-height: 100% !important;
-//  height: 100% !important;
-//
-//  .dialog-header {
-//    background: #F3F6FA;
-//    height: 38px;
-//    position: relative;
-//    button{
-//      right: inherit;
-//      left: 0;
-//      border-color: transparent;
-//
-//      mat-icon{
-//        color: transparent;
-//        &:after {
-//          content: 'chevron_left';
-//          color: #939393;
-//          font-size: 20px;
-//          position: absolute;
-//          left: 3px;
-//        }
-//      }
-//    }
-//
-//    h4 {
-//      font-size: 14px;
-//      color: #1A50A3;
-//      font-weight: 400;
-//      padding-left: 22px;
-//    }
-//  }
-//
-//  .main-content{
-//    box-shadow: none !important;
-//    height: 100%;
-//    max-height: calc(100% - 85px);
-//  }
-//  mat-dialog-actions{
-//    min-height: inherit;
-//    box-shadow: 0 -4px 5px #ccc;
-//    position: absolute;
-//    bottom: 0;
-//    width: 100%;
-//    margin: 0;
-//    .cancel-btn{
-//      display: none;
-//    }
-//
-//    .save-btn{
-//      width: 100% !important;
-//      margin: 0 auto !important;
-//      max-width: 300px;
-//    }
-//  }
-//}
+.edit-customer-dialog-mobile-view-panel, .create-customer-dialog-mobile-view-panel {
+  .dialog-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
+    .button-area {
+      position: sticky;
+      bottom: 0;
+      background: #fff;
+      display: inline-block;
+      width: 100%;
+      padding: 10px !important;
+    }
+  }
+}

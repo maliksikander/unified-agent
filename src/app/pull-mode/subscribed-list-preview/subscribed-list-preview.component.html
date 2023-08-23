@@ -1,6 +1,6 @@
 <div class="page-header row m-0">
     <button mat-button class="back-to-chat" (click)="listPreviewToggle()"></button>
-    <div class="page-heading col-md-6 col-sm-4">
+    <div class="page-heading col-md-6 col-sm-12">
         <h4>{{'pull-mode.inbox'  | translate }}</h4>
       <img class="header-action-trigger"  src="assets/images/filter.svg" (click)="filterView = !filterView" alt="filter">
     </div>
@@ -109,46 +109,46 @@
         </div>
     </div>
 
-  <div class="manage-dashboard list-for-compact">
-    <ul>
-      <li
-        *ngFor="let request of _pullModeservice.subscribedListRequests | filterPullModeRequests:filterStatus:filterListId">
-        <div class="active-user-channel">
+<!--  <div class="manage-dashboard list-for-compact">-->
+<!--    <ul>-->
+<!--      <li-->
+<!--        *ngFor="let request of _pullModeservice.subscribedListRequests | filterPullModeRequests:filterStatus:filterListId">-->
+<!--        <div class="active-user-channel">-->
 
-<span class="channel-icon">
-<img
-  [style.borderColor]="(request.status | lowercase) == 'active' ? '#29C671' : ((request.status | lowercase) == 'inactive' ? '#ccc' : 'red')"
-  [src]="request.channelSession.channel.channelType.channelLogo | channelLogo | async">
-<span class="status-icon"
-      matTooltip="{{(request.status | lowercase) == 'created' ? 'UNREAD' : (request.status | uppercase) }}"
-      [style.backgroundColor]="(request.status | lowercase) == 'active' ? '#29C671' : ((request.status | lowercase) == 'inactive' ? '#ccc' : 'red')"></span>
-</span>
+<!--<span class="channel-icon">-->
+<!--<img-->
+<!--  [style.borderColor]="(request.status | lowercase) == 'active' ? '#29C671' : ((request.status | lowercase) == 'inactive' ? '#ccc' : 'red')"-->
+<!--  [src]="request.channelSession.channel.channelType.channelLogo | channelLogo | async">-->
+<!--<span class="status-icon"-->
+<!--      matTooltip="{{(request.status | lowercase) == 'created' ? 'UNREAD' : (request.status | uppercase) }}"-->
+<!--      [style.backgroundColor]="(request.status | lowercase) == 'active' ? '#29C671' : ((request.status | lowercase) == 'inactive' ? '#ccc' : 'red')"></span>-->
+<!--</span>-->
 
 
-          <span class="active-customer-name">
-<p>{{request.channelSession.customer.firstName}}</p>
-<small class="customer_identy">({{request.channelSession.channelData.channelCustomerIdentifier}})</small>
-<span *ngIf="request.id | isAlreadyJoined" class="joined">(Joined)</span>
+<!--          <span class="active-customer-name">-->
+<!--<p>{{request.channelSession.customer.firstName}}</p>-->
+<!--<small class="customer_identy">({{request.channelSession.channelData.channelCustomerIdentifier}})</small>-->
+<!--<span *ngIf="request.id | isAlreadyJoined" class="joined">(Joined)</span>-->
 
-</span>
+<!--</span>-->
 
-        </div>
-        <div class="customer-active-list">
-<span
-  class="active-list">{{_pullModeservice.listNames[request.listId] ? _pullModeservice.listNames[request.listId] : '-'}}</span>
-          <span class="active-since">{{request.time | amTimeAgo:true}}<small> ago</small></span>
-        </div>
+<!--        </div>-->
+<!--        <div class="customer-active-list">-->
+<!--<span-->
+<!--  class="active-list">{{_pullModeservice.listNames[request.listId] ? _pullModeservice.listNames[request.listId] : '-'}}</span>-->
+<!--          <span class="active-since">{{request.time | amTimeAgo:true}}<small> ago</small></span>-->
+<!--        </div>-->
 
-        <span class="table-trigger">
-<button mat-button *ngIf="!(request.id | isAlreadyJoined)" (click)="joinChat(request)"
-        class="chat-btn" matTooltip="Chat">Join</button>
-<button mat-button class="close-btn" (click)="closeChat(request)"
-        matTooltip="Close">Close</button>
-</span>
+<!--        <span class="table-trigger">-->
+<!--<button mat-button *ngIf="!(request.id | isAlreadyJoined)" (click)="joinChat(request)"-->
+<!--        class="chat-btn" matTooltip="Chat">Join</button>-->
+<!--<button mat-button class="close-btn" (click)="closeChat(request)"-->
+<!--        matTooltip="Close">Close</button>-->
+<!--</span>-->
 
-      </li>
-    </ul>
-  </div>
+<!--      </li>-->
+<!--    </ul>-->
+<!--  </div>-->
 
 
 </div>
