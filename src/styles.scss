@@ -4425,3 +4425,131 @@ mat-select {
   padding-left: 0rem !important;
   padding-right: 15px;
 }
+
+
+
+//Scheduled Activity area
+
+.scheduled-activity-area{
+  .custom-message-type{
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+.scheduled_activity {
+  .reply-quoted {
+    display: none !important;
+    visibility: hidden;
+  }
+
+  .profile-pic-area mat-icon {
+    line-height: 35px;
+    color: #CE0101;
+  }
+
+  .panel-divider mat-expansion-panel {
+    box-shadow: none !important;
+    border: 1px solid rgba(206, 1, 1, .5);
+  }
+
+  .delivered {
+    mat-expansion-panel {
+      border-color: $bubble-background;
+    }
+
+    .activity-response {
+      mat-icon {
+        color: $main-color;
+      }
+    }
+
+    .activity-status {
+      span {
+        color: #567E00 !important;
+        border: 1px solid rgba(86, 126, 0, .5) !important;
+        padding: 2px 10px;
+      }
+    }
+  }
+
+  .activity-status {
+    span {
+      color: rgba(206, 1, 1, 1);
+      border: 1px solid rgba(206, 1, 1, .5);
+      border-radius: 15px;
+    }
+  }
+
+  mat-expansion-panel-header {
+    .mat-content {
+      padding-right: 0 !important;
+    }
+
+    .mat-expansion-panel-header-title {
+      display: flex;
+      flex-grow: 1;
+      margin-right: 0;
+      flex-direction: row-reverse;
+    }
+
+    span.mat-expansion-indicator {
+      position: absolute;
+      left: 15px;
+    }
+  }
+
+  .activity-response {
+    span {
+      background: #EFF2F7;
+      border: none;
+    }
+
+    mat-icon {
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      vertical-align: middle;
+      color: #DB2323;
+    }
+  }
+
+}
+.scheduled-activity-main-panel {
+  .mat-expansion-panel-header {
+    .mat-content {
+      overflow: visible;
+    }
+  }
+
+  .mat-accordion {
+    .scheduled-activity-panel {
+      margin: 10px 4px !important;
+
+      span.mat-expansion-indicator {
+        &::after {
+          border-width: 0 1px 1px 0;
+          position: absolute;
+          left: 5px;
+          top: 4px;
+        }
+      }
+
+      .mat-expansion-panel-header {
+        &.mat-expanded {
+          border-radius: 5px 5px 0 0;
+        }
+      }
+
+      .mat-expansion-panel-content {
+        border: 1px solid #f3f6f8;
+        padding: 0;
+
+        .scheduled-activity-data {
+          background: $main-color-background;
+          padding: 10px;
+          margin: 5px 0 15px;
+        }
+      }
+    }
+  }
+}

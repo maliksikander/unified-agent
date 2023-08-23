@@ -110,6 +110,13 @@ export class InteractionsComponent implements OnInit {
   sendTypingStartedEventTimer: any = null;
   onMessageSuggestions = false;
   getDialogData;
+  messageData: any= {
+    name: 'Martin Gupital',
+    phone: '030012345',
+    message: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary,'
+
+  }
+
 
   constructor(
     private _sharedService: sharedService,
@@ -124,10 +131,10 @@ export class InteractionsComponent implements OnInit {
     public _sipService: SipService,
     private _translateService: TranslateService
   ) {
-   
+
    }
   ngOnInit() {
-   
+
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
     }
@@ -163,7 +170,7 @@ export class InteractionsComponent implements OnInit {
       if (this._sipService.isCallActive == true) this.ctiControlBar();
       this.getVoiceChannelSession();
     }
-    //this._cacheService.smsDialogData || 
+    //this._cacheService.smsDialogData ||
    if(this.conversation.conversationId === 'FAKE_CONVERSATION'){
     this.loadPastActivities('FAKE_CONVERSATION');
    }
@@ -301,7 +308,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   openOutboundSmsDialog(){
-    
+
     const dialogRef = this.dialog.open(SendSmsComponent, {
       maxWidth: "700px",
       width: "100%",
@@ -309,12 +316,12 @@ export class InteractionsComponent implements OnInit {
       data: {info:this._cacheService.smsDialogData},
     });
     dialogRef.afterClosed().subscribe((result) => {
-     
+
     });
     this._cacheService.clearOutboundSmsDialogData();
     this._socketService.topicUnsub(this.conversation);
   }
-  
+
   //To open the quoted area
   openQuotedReplyArea(e) {
     this.quotedMessage = e;
@@ -709,7 +716,7 @@ export class InteractionsComponent implements OnInit {
           if (this.commentId && (selectedChannelSession.channel.channelType.name.toLowerCase() == "facebook" ||
             selectedChannelSession.channel.channelType.name.toLowerCase() == "instagram" ||
             selectedChannelSession.channel.channelType.name.toLowerCase() == "twitter")) {
-            // If private reply icon is clicked then msgType would be private reply. 
+            // If private reply icon is clicked then msgType would be private reply.
             if (this.privateMessageReply) {
               msgType = this.privateMessageReply
               this.privateMessageReply = null
@@ -965,7 +972,7 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  // fbchannel session . 
+  // fbchannel session .
   getChannelSession(message) {
     let channelType = message.header.channelSession.channel.channelType.name.toLowerCase()
     let channelSession = this.conversation.activeChannelSessions.find((channelSession) => {

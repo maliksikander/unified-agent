@@ -18,7 +18,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { announcementService } from "./announcement.service";
 
-//const mockTopicData: any = require("../mocks/mockTopicData.json");
+const mockTopicData: any = require("../mocks/mockTopicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -49,7 +49,7 @@ export class socketService {
     private snackBar: MatSnackBar,
     private _translateService: TranslateService
   ) {
-    //this.onTopicData(mockTopicData, "12345", "");
+    this.onTopicData(mockTopicData, "12345", "");
   }
 
   connectToSocket() {
