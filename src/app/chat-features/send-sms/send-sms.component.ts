@@ -363,7 +363,7 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
       <span class="main-notify"><strong>{{'chat-features.send-sms.success-sms'  | translate }} </strong>
            {{'chat-features.send-sms.the-sms-has-been-sent-to-the'  | translate }}
            
-           <span *ngIf="data.info.newProfileCreated == true">new</span> {{'chat-features.send-sms.customer'  | translate }}<b>"{{data.info.customer.firstName}}"</b>{{'chat-features.send-sms.on-this-number'  | translate }} {{data.info.sentNumber}}.<br/> 
+           <span *ngIf="data.info.newProfileCreated == true">{{'chat-features.send-sms.new'  | translate }}</span> {{'chat-features.send-sms.customer'  | translate }} <b>"{{data.info.customer.firstName}}"</b>{{'chat-features.send-sms.on-this-number'  | translate }} {{data.info.sentNumber}}.<br/> 
            <span class="link-span" (click)="openCOnversationView()">click here </span>{{'chat-features.send-sms.to-view-the-customer-profile'  | translate }}<br/>
           
       </span>
@@ -377,6 +377,11 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
       color: white; /* You can adjust the color to match your styling */
       text-decoration: underline;
     }
+    
+    .translation-text:before {
+     content: " "; 
+    }
+
   `],
 
 })

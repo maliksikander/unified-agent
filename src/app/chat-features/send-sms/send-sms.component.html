@@ -65,8 +65,7 @@
 
         <div class="message-trigger right-align">
           <button *ngIf="identifiedCustomer" mat-raised-button type="button"
-            class="send-message message-action float-left" (click)="openCOnversationView(identifiedCustomer)"> See
-            Conversation History </button>
+            class="send-message message-action float-left" (click)="openCOnversationView(identifiedCustomer)">  {{'chat-features.send-sms.see-conversation-history' | translate }}</button>
 
           <button mat-raised-button type="button" [mat-dialog-close]="true"
             class="discard-btn message-action ml-2">{{'chat-features.send-sms.discard' | translate }}
