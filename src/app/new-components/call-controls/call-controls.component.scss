@@ -11,6 +11,17 @@
 .drag-controls{
   z-index: 6;
 }
+
+.customer-info-dp {
+  .agent-showcase {
+    mat-icon {
+      width: 64px;
+      height: 66px;
+      font-size: 28px;
+      line-height: 62px;
+    }
+  }
+}
 vg-player{
   position: absolute;
   left: 0;
@@ -85,5 +96,39 @@ vg-controls{
 }
 
 .assistance-actions{
+  display: flex;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  background: #00000080;
+  border-radius: 50px;
+  height: 50px;
+  line-height: 50px;
+  min-width: 300px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  li{
+    margin: 0 5px !important;
+    vertical-align: middle;
+    display: inline-flex;
 
+    button {
+      width: 32px;
+      height: 32px;
+      text-align: center;
+      padding: 0;
+      background: #000!important;
+      box-shadow: none!important;
+      mat-icon {
+        color: #fff !important;
+        line-height: 29px;
+        font-size: 21px;
+      }
+
+      &.end-call {
+        background: #E03636  !important;
+      }
+    }
+  }
 }
