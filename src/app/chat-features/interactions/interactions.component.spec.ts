@@ -76,7 +76,7 @@ describe("InteractionsComponent", () => {
   describe("when post data api returns data ", () => {
     beforeEach(async () => {
       _httpService = {
-        getPostData: jest.fn((postId,serviceIdentifier) => {
+        getPostData: jest.fn(() => {
           return of([{ data: "comments" }]);
         }),
       };
