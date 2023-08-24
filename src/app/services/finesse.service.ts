@@ -171,8 +171,8 @@ export class finesseService {
           this._snackbarService.open("XMPP Status is Disconnected!", "err");
         }
       } else if (event.event.toLowerCase() == "error") {
-        console.log("error ==>" + event.response.description);
-        this.showErr = true;
+        console.error("Error Event ==>" , event.response.description);
+        // this.showErr = true;
         this._snackbarService.open("CISCO :" + event.response.description, "err");
       } else if (event.event.toLowerCase() == "notreadylogoutreasoncode") {
         this.finesseLogoutReasonCodes = null;
@@ -215,7 +215,7 @@ export class finesseService {
           let data = {
             identifier: agentIdentifier,
             dialogData: dialog,
-            provider:"cisco"
+            provider: "cisco"
           };
           this._sharedService.serviceChangeMessage({ msg: "openExternalModeRequestHeader", data: data });
           // this.setLocalDialogCache(event, "alerting");
@@ -286,7 +286,7 @@ export class finesseService {
             customer: res.customer,
             identifier,
             dialogData: ciscoEvent.response.dialog,
-            provider:"cisco"
+            provider: "cisco"
           };
           if (callType == "INBOUND") {
             this._sharedService.serviceChangeMessage({ msg: "openExternalModeRequestHeader", data: data });
@@ -415,13 +415,17 @@ export class finesseService {
             } else if (currentParticipant.state.toLowerCase() == "dropped") {
               // console.log("handle dialog 12==>");
               let callType;
-              if (dialogState.dialog.callType.toLowerCase() == "transfer" || dialogState.dialog.callType.toLowerCase() == "offered") {
+              if (dialogState.dialog.callType.toLowerCase() == "transfer") {
                 callType = "DIRECT_TRANSFER";
                 if (
                   this._appConfigService.finesseConfig.finesseFlavor.toLowerCase() == "uccx" ||
                   this._appConfigService.finesseConfig.finesseFlavor.toLowerCase() == "ccx"
                 ) {
                   callType = "CONSULT_TRANSFER";
+                }
+
+                if(dialogState.dialog.callType.toLowerCase() == "offered"){
+                  callType = "DIRECT_TRANSFER";
                 }
                 // console.log("handle dialog 13==>");
                 let item: any = this.getDialogFromCache(cacheId);
@@ -431,7 +435,7 @@ export class finesseService {
                 } else if (item && item.dialogState == "alerting") {
                   // console.log("handle dialog 13.3==>");
                   if (dialogState.dialog.state.toLowerCase() == "active") {
-                    // console.log("handle dialog 13.4==>");
+                    console.log("handle dialog 13.4==>");
                     this.handleCiscoRona(cacheId, dialogState);
                   }
                 }
@@ -447,7 +451,7 @@ export class finesseService {
                 callType = "CONSULT_CONFERENCE";
                 this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, callType);
               } else {
-                // console.log("handle dialog 16==>");
+                console.log("handle dialog 16==>");
                 this.handleCiscoRona(cacheId, dialogState);
               }
             } else if (
@@ -485,7 +489,7 @@ export class finesseService {
             let callType = "DIRECT_TRANSFER";
             this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, callType);
           } else {
-            // console.log("handle dialog 22==>");
+            console.log("handle dialog 22==>");
             //rona Case
             this.handleCiscoRona(cacheId, dialogState);
           }
@@ -538,7 +542,7 @@ export class finesseService {
       // this.updateCallVariables(dialogState.dialog);
       this.removeNotification(dialogState);
       let channelCustomerIdentifier = dialogState.dialog.customerNumber;
-      let serviceIdentifier = dialogState.dialog.dialedNumber;
+      let serviceIdentifier = dialogState.dialog.primaryDN;
       let callId = dialogState.dialog.id;
       let leg = `${this.finesseAgent.extension}:${this._cacheService.agent.id}:${dialogState.dialog.id}`;
       let callType;
@@ -583,7 +587,7 @@ export class finesseService {
     try {
       if (methodCalledOn != "onRefresh") this.clearLocalDialogCache(cacheId);
       let channelCustomerIdentifier = dialogState.dialog.customerNumber;
-      let serviceIdentifier = dialogState.dialog.dialedNumber;
+      let serviceIdentifier = dialogState.dialog.primaryDN;
       let leg = `${this.finesseAgent.extension}:${this._cacheService.agent.id}:${dialogState.dialog.id}`;
       let timeStamp = this.getStartOREndTimeStamp(dialogState.dialog, "endCall");
       let callId = dialogState.dialog.id;
@@ -881,57 +885,111 @@ export class finesseService {
         });
       } else if (resp.state.toLowerCase() == "not_ready" || resp.state.toLowerCase() == "ready" || resp.state.toLowerCase() == "talking") {
         const voiceMrdObj = this.getVoiceMrd(this._cacheService.agentPresence.agentMrdStates);
-
         if (resp.state != voiceMrdObj.state) {
-          if (resp.state.toLowerCase() == "ready") {
-            if (this._cacheService.agentPresence.state.name.toLowerCase() != "ready") {
-              // If state in finesse is ready and aur agent state in not readtthen make the agent ready first
-              // and then make voice mrd ready
-              this._socketService.emit("changeAgentState", {
-                agentId: this._cacheService.agent.id,
-                action: "agentState",
-                state: { name: "READY", reasonCode: null }
-              });
-
-              // for this particular request we dont need to listen its response so making it ignorable when receiving
-              this.ignoreAgentState = true;
-
-              setTimeout(() => {
-                this._socketService.emit("changeAgentState", {
-                  agentId: this._cacheService.agent.id,
-                  action: "agentMRDState",
-                  state: "READY",
-                  mrdId: voiceMrdObj.mrd.id
-                });
-              }, 500);
-            } else {
-              this._socketService.emit("changeAgentState", {
-                agentId: this._cacheService.agent.id,
-                action: "agentMRDState",
-                state: "READY",
-                mrdId: voiceMrdObj.mrd.id
-              });
-            }
-          } else if (resp.state.toLowerCase() == "not_ready") {
-            // If state in finesse is not_ready then make the agent voice mrd not_ready
-            this._socketService.emit("changeAgentState", {
-              agentId: this._cacheService.agent.id,
-              action: "agentMRDState",
-              state: "NOT_READY",
-              mrdId: voiceMrdObj.mrd.id
-            });
-          } else if (resp.state.toLowerCase() == "talking") {
-            this._socketService.emit("changeAgentState", {
-              agentId: this._cacheService.agent.id,
-              action: "agentMRDState",
-              state: "BUSY",
-              mrdId: voiceMrdObj.mrd.id
-            });
-          }
+          this.handleDifferentAgentAndMrdState(resp, voiceMrdObj);
+        } else {
+          // this.handleSameAgentAndMrdState(resp, voiceMrdObj)
         }
       }
     } catch (e) {
       console.error("[Error] handleAgentStateFromFinesse ==>", e);
+    }
+  }
+
+  handleSameAgentAndMrdState(resp, voiceMrdObj) {
+    if (resp.state.toLowerCase() == "ready") {
+      // if (this._cacheService.agentPresence.state.name.toLowerCase() != "ready") {
+      // If state in finesse is ready and aur agent state in not readtthen make the agent ready first
+      // and then make voice mrd ready
+      this._socketService.emit("changeAgentState", {
+        agentId: this._cacheService.agent.id,
+        action: "agentState",
+        state: { name: "READY", reasonCode: null }
+      });
+
+      // for this particular request we dont need to listen its response so making it ignorable when receiving
+      this.ignoreAgentState = true;
+
+      setTimeout(() => {
+        this._socketService.emit("changeAgentState", {
+          agentId: this._cacheService.agent.id,
+          action: "agentMRDState",
+          state: "READY",
+          mrdId: voiceMrdObj.mrd.id
+        });
+      }, 500);
+      // }
+      // else {
+      //   this._socketService.emit("changeAgentState", {
+      //     agentId: this._cacheService.agent.id,
+      //     action: "agentMRDState",
+      //     state: "READY",
+      //     mrdId: voiceMrdObj.mrd.id
+      //   });
+      // }
+    } else if (resp.state.toLowerCase() == "not_ready") {
+      // If state in finesse is not_ready then make the agent voice mrd not_ready
+      this._socketService.emit("changeAgentState", {
+        agentId: this._cacheService.agent.id,
+        action: "agentMRDState",
+        state: "NOT_READY",
+        mrdId: voiceMrdObj.mrd.id
+      });
+    } else if (resp.state.toLowerCase() == "talking") {
+      this._socketService.emit("changeAgentState", {
+        agentId: this._cacheService.agent.id,
+        action: "agentMRDState",
+        state: "BUSY",
+        mrdId: voiceMrdObj.mrd.id
+      });
+    }
+  }
+
+  handleDifferentAgentAndMrdState(resp, voiceMrdObj) {
+    if (resp.state.toLowerCase() == "ready") {
+      if (this._cacheService.agentPresence.state.name.toLowerCase() != "ready") {
+        // If state in finesse is ready and aur agent state in not readtthen make the agent ready first
+        // and then make voice mrd ready
+        this._socketService.emit("changeAgentState", {
+          agentId: this._cacheService.agent.id,
+          action: "agentState",
+          state: { name: "READY", reasonCode: null }
+        });
+
+        // for this particular request we dont need to listen its response so making it ignorable when receiving
+        this.ignoreAgentState = true;
+
+        setTimeout(() => {
+          this._socketService.emit("changeAgentState", {
+            agentId: this._cacheService.agent.id,
+            action: "agentMRDState",
+            state: "READY",
+            mrdId: voiceMrdObj.mrd.id
+          });
+        }, 500);
+      } else {
+        this._socketService.emit("changeAgentState", {
+          agentId: this._cacheService.agent.id,
+          action: "agentMRDState",
+          state: "READY",
+          mrdId: voiceMrdObj.mrd.id
+        });
+      }
+    } else if (resp.state.toLowerCase() == "not_ready") {
+      // If state in finesse is not_ready then make the agent voice mrd not_ready
+      this._socketService.emit("changeAgentState", {
+        agentId: this._cacheService.agent.id,
+        action: "agentMRDState",
+        state: "NOT_READY",
+        mrdId: voiceMrdObj.mrd.id
+      });
+    } else if (resp.state.toLowerCase() == "talking") {
+      this._socketService.emit("changeAgentState", {
+        agentId: this._cacheService.agent.id,
+        action: "agentMRDState",
+        state: "BUSY",
+        mrdId: voiceMrdObj.mrd.id
+      });
     }
   }
 
