@@ -150,15 +150,10 @@ export class ActiveChatsComponent implements OnInit {
     this._httpService.getAllActiveChatsWithBots().subscribe(
       (e) => {
         this.activeChatListWithBots = e;
+        console.log("bots chats", this.activeChatListWithBots)
         // Sort the activeChatListWithBots array by activeSince property
         for (let data of this.activeChatListWithBots) {
-          return data.chats.sort((a, b) => {
-            if (this.sortOrder === "asc") {
-              return a.activeSince - b.activeSince;
-            } else {
-              return b.activeSince - a.activeSince;
-            }
-          });
+          this.sortChatsByActiveSince(data.chats)
         }
       },
       (err) => {
@@ -173,44 +168,43 @@ export class ActiveChatsComponent implements OnInit {
     try {
       this.filteredData = [];
       if (this.selectedQueues.length == 0) {
-        this.filteredData = this.activeChatListWithAgents;
+        this.activeChatListWithAgents.forEach((chats) => {
+          chats.chats.forEach((innerChat) => {
+            innerChat["queueName"] = chats.queueName
+            this.filteredData.push(innerChat);
+          })
+        });
       } else {
         this.selectedQueues.forEach((data) => {
-          this.activeChatListWithAgents.forEach((chat) => {
-            if (data.queueId == chat.queueId) this.filteredData.push(chat);
-          });
-        });
+          console.log("activeChatListagnts", this.activeChatListWithAgents)
+          this.activeChatListWithAgents.forEach((chats) => {
+            if (data.queueId == chats.queueId) {
+              chats.chats.forEach((innerchat) => {
+                innerchat["queueName"] = chats.queueName;
+                this.filteredData.push(innerchat)
+              })
+            }
+          })
+        })
       }
+
       // Sort the filteredData array by activeSince property
-      this.sortChatsByActiveSince()
+      this.sortChatsByActiveSince(this.filteredData)
+
+
     } catch (err) {
       console.error("[filterData] Error :", err);
     }
   }
-  sortChatsByActiveSince() {
-    console.log("here is the filtered data", this.filteredData)
-    this.filteredData.sort((a, b) => {
-      if (a.chats.length === 0 && b.chats.length === 0) return 0;
-      if (a.chats.length === 0) return this.sortOrder === "asc" ? 1 : -1;
-      if (b.chats.length === 0) return this.sortOrder === "asc" ? -1 : 1;
 
+  sortChatsByActiveSince(dataToBeSorted) {
+    return dataToBeSorted.sort((a, b) => {
       if (this.sortOrder === "asc") {
-        return a.chats[0].activeSince - b.chats[0].activeSince;
+        return a.activeSince - b.activeSince;
       } else {
-        return b.chats[0].activeSince - a.chats[0].activeSince;
+        return b.activeSince - a.activeSince;
       }
     });
-    for (let data of this.filteredData) {
-      console.log("I am in", data)
-      data.chats.sort((a, b) => {
-        if (this.sortOrder === "asc") {
-          return a.activeSince - b.activeSince;
-        } else {
-          return b.activeSince - a.activeSince;
-        }
-      });
-    }
-    console.log("here is the filtered data after the dfsaaaaaaaaaaaaaaa", this.filteredData)
   }
 
   // team selection change callback event

@@ -107,36 +107,38 @@ export class QueueChatsComponent implements OnInit {
     try {
       this.filteredData = [];
       if (this.selectedQueues.length == 0) {
-        this.filteredData = this.queuedChatList;
+        this.queuedChatList.forEach((chats) => {
+          chats.chats.forEach((innerChat)=> {
+            console.log("here are chat in the above",innerChat)
+            innerChat["queueName"] = chats.queueName
+            this.filteredData.push(innerChat);
+          })
+        });
       } else {
         this.selectedQueues.forEach((data) => {
-          this.queuedChatList.forEach((chat) => {
-            if (data.queueId == chat.queueId) this.filteredData.push(chat);
+          this.queuedChatList.forEach((chats) => {
+            if (data.queueId == chats.queueId) {
+              chats.chats.forEach((innerChat) => {
+                innerChat["queueName"] = chats.queueName
+                this.filteredData.push(innerChat);
+              })
+            } 
           });
         });
       }
-
-      this.sortFilteredDataInQueues() 
+      this.sortFilteredDataInQueues(this.filteredData) 
     } catch (err) {
       console.error("[filterData] Error :", err);
     }
   }
 
-  sortFilteredDataInQueues() {
-    this.filteredData.sort((a, b) => {
-      if (a.chats.length === 0 && b.chats.length === 0) return 0;
-      if (a.chats.length === 0) return this.sortOrder === "asc" ? 1 : -1;
-      if (b.chats.length === 0) return this.sortOrder === "asc" ? -1 : 1;
-  
-      const aWaitingSince = a.chats[0].waitingSince;
-      const bWaitingSince = b.chats[0].waitingSince;
-
-      return (this.sortOrder === "asc" ? 1 : -1) * (aWaitingSince - bWaitingSince);
-    });
-    this.filteredData.forEach(data => {
-      data.chats.sort((a, b) => {
-        return (this.sortOrder === "asc" ? 1 : -1) * (a.waitingSince - b.waitingSince);
-      });
+  sortFilteredDataInQueues(dataToBeSorted) {
+    return dataToBeSorted.sort((a, b) => {
+      if (this.sortOrder === "asc") {
+        return a.waitingSince - b.waitingSince;
+      } else {
+        return b.waitingSince - a.waitingSince;
+      }
     });
   }
   
