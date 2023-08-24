@@ -14,7 +14,6 @@ import { VgBufferingModule } from "videogular2/compiled/src/buffering/buffering"
 import { WrapUpFormComponent } from "./wrap-up-form/wrap-up-form.component";
 import {HighlightModule} from 'ngx-highlightjs';
 
-
 @NgModule({
   declarations: [ChatsComponent, InteractionsComponent, CustomerInfoComponent, WrapUpFormComponent],
   imports: [

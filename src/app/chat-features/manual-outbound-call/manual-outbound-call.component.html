@@ -1,0 +1,47 @@
+<div class="call-dialog-main announcement-dialog-main">
+  <div class="dialog-header">
+    <h4>Dial a number</h4>
+    <button mat-icon-button  [mat-dialog-close]="true"><i class="material-icons">close</i></button>
+  </div>
+  <div class="call-container mat-dialog-content m-0 p-0">
+    <form [formGroup]="outboundCall">
+      <div class="new-call-form new-announcement-form">
+        <label>Channel Identity</label>
+        <div class="text-field call-field send-sms-field">
+          <mat-form-field appearance="outline">
+            <input #outboundPhoneControl id="phoneField" placeholder="Enter Phone Number" aria-label="Number" matInput [ngStyle]="{'width': outboundPhoneControl.value?.length+'ch'}"
+                   formControlName="phoneControl" maxlength="20" minLength="3" [matAutocomplete]="auto"
+                   (keyup)="handleThrottledKeyUp()">
+            <!--            <span matTextPrefix  *ngIf="identifiedCustomer">[{{identifiedCustomer.firstName}}]</span>-->
+            <!-- this.smsData.info.customer.firstName -->
+            <span class="field-suffix" *ngIf="identifiedCustomer" matTextSuffix>({{identifiedCustomer.firstName}})</span>
+            <!-- <span *ngIf="identifiedCustomer || smsData" matTextSuffix>[{{smsData?.info?.customer?.firstName}}]</span>
+             -->
+            <mat-error>
+              <div *ngIf="outboundCall.get('phoneControl').hasError('required')">
+                *{{'chat-features.send-sms.not-empty' | translate }}
+              </div>
+              <div *ngIf="outboundCall.get('phoneControl').hasError('pattern')">
+                *{{'chat-features.send-sms.invalid-pattern' | translate }}
+              </div>
+              <div
+                *ngIf="outboundCall.get('phoneControl').hasError('minlength') || outboundCall.get('phoneControl').hasError('maxlength')">
+                *{{'chat-features.send-sms.number-should-be-in-range-3-to-15' | translate }}
+              </div>
+            </mat-error>
+            <mat-autocomplete autoActiveFirstOption hidden="outboundCall.get('phoneControl').value.length < 1"
+                              #auto="matAutocomplete">
+              <mat-optgroup *ngFor="let option of userData" [label]="option.firstName" class="outbound-customer-list">
+                <mat-option *ngFor="let number of option.phoneNumber" [value]="number"
+                            (onSelectionChange)="updateMySelection(option)">
+                  {{number}}
+                </mat-option>
+              </mat-optgroup>
+            </mat-autocomplete>
+          </mat-form-field>
+          <button mat-button class="outbound-call-trigger"><mat-icon>call</mat-icon></button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

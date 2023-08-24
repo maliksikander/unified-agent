@@ -14,6 +14,7 @@ import { snackbarService } from "../services/snackbar.service";
 import { announcementService } from "../services/announcement.service";
 import {getMatIconFailedToSanitizeLiteralError, MatDialog} from '@angular/material';
 import {SendSmsComponent} from '../chat-features/send-sms/send-sms.component';
+import {ManualOutboundCallComponent} from '../chat-features/manual-outbound-call/manual-outbound-call.component';
 
 @Component({
   selector: "app-header",
@@ -357,7 +358,17 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
       panelClass: "send-sms-dialog"
     });
     dialogRef.afterClosed().subscribe((result) => {
-     
+
+    });
+  }
+  openCallDialog(){
+    const dialogRef = this.dialog.open(ManualOutboundCallComponent, {
+      maxWidth: "700px",
+      width: "100%",
+      panelClass: "send-sms-dialog"
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+
     });
   }
 }

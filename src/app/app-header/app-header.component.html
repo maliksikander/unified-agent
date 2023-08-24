@@ -112,6 +112,8 @@
           <span class="time_state">{{display | date :"HH:mm:ss":'UTC'}}</span>
 
         </div> -->
+        <button (click)="openCallDialog()" class="sms-trigger"  mat-icon-button color="primary"><mat-icon >dialpad</mat-icon></button>
+
         <button *ngIf="_sharedService.conversationSettings.isOutboundSmsEnabled && _sharedService.conversationSettings.isOutboundSmsEnabled == true" class="sms-trigger"  mat-icon-button color="primary"
          (click)="openMessageDialog()"><mat-icon >message</mat-icon></button>
 
