@@ -10,6 +10,7 @@ import {cacheService} from '../../services/cache.service';
 import {Router} from '@angular/router';
 import {v4 as uuidv4} from 'uuid';
 import {CustomerActionsComponent} from '../../customer-actions/customer-actions.component';
+import {CallControlsComponent} from '../../new-components/call-controls/call-controls.component';
 
 @Component({
   selector: 'app-manual-outbound-call',
@@ -40,9 +41,7 @@ export class ManualOutboundCallComponent implements OnInit, AfterViewInit  {
     private _sharedService: sharedService,
     private _cacheService: cacheService,
     private _router: Router,
-
-
-
+    private dialog: MatDialog,
     public fb: FormBuilder) {
 
     this.defaultPrefixOutbound = this._sharedService.conversationSettings.prefixCode;
@@ -93,20 +92,6 @@ export class ManualOutboundCallComponent implements OnInit, AfterViewInit  {
     });
 
   }
-
-  // fetchSMSServiceIdentifier() {
-  //   const SMSChannelType = this._sharedService.channelTypeList.find((channelType) => { return channelType.name.toLowerCase() == "sms" });
-  //   // console.log("SMSChannelType",SMSChannelType.id)
-  //   if (SMSChannelType) {
-  //     this._httpService.getDefaultOutboundChannel(SMSChannelType.id.toString()).subscribe((res) => {
-  //
-  //       this.SMSServiceIdentifier = res.serviceIdentifier;
-  //
-  //     }, (error) => { this._snackbarService.open(this._translateService.instant("snackbar.unable-to-fetch-service-identifier-messages-cant-be-sent"), "err") });
-  //   }
-  //
-  //
-  // }
 
   formatePhoneNumber(phoneNumber) {
 
@@ -199,107 +184,21 @@ export class ManualOutboundCallComponent implements OnInit, AfterViewInit  {
     this.identifiedCustomer = option;
   }
 
-  // openCOnversationView(customer) {
-  //   this._socketService.onTopicData({ customer }, "FAKE_CONVERSATION", "");
-  //   this._router.navigate(["customers"]);
-  //   if (this.SMSServiceIdentifier) {
-  //     this._cacheService.storeOutboundSmsDialogData({ customer: this.identifiedCustomer ? this.identifiedCustomer : null, channelCustomerIdentifier: this.outboundCall.get("phoneControl").value, markdownText: this.outboundCall.get("textAreaControl").value });
-  //   }
-  //
-  //   this.smsDialog.closeAll();
-  // }
 
-
-  // sendSMS() {
-  //
-  //
-  //   if (this.SMSServiceIdentifier) {
-  //
-  //     let message = {
-  //       id: uuidv4(),
-  //       header: {
-  //         channelData: {
-  //           channelCustomerIdentifier: this.outboundCall.get("phoneControl").value,
-  //           serviceIdentifier: this.SMSServiceIdentifier,
-  //           additionalAttributes: [{ key: 'messageDirection', value: 'outbound', type: 'String2000' }]
-  //         },
-  //         sender: {
-  //           id: this._cacheService.agent.id,
-  //           senderName: this._cacheService.agent.username,
-  //           type: "AGENT"
-  //         },
-  //         customer: this.identifiedCustomer ? this.identifiedCustomer : null
-  //       },
-  //       body: {
-  //         type: "PLAIN",
-  //         markdownText: this.outboundCall.get("textAreaControl").value
-  //       }
-  //     };
-  //
-  //     this._httpService.sendOutboundSms(message).subscribe((res) => {
-  //
-  //       if (message.header.customer == null || message.header.customer == "" || message.header.customer == undefined) {
-  //         message['header']['customer'] = res.additionalDetails.customer;
-  //
-  //
-  //
-  //         this.openSuccessDialog({ newProfileCreated: true, customer: message.header.customer, sentNumber: message.header.channelData.channelCustomerIdentifier })
-  //
-  //       } else {
-  //         this.openSuccessDialog({ newProfileCreated: false, customer: message.header.customer, sentNumber: message.header.channelData.channelCustomerIdentifier })
-  //
-  //
-  //       }
-  //
-  //
-  //
-  //
-  //
-  //       this._httpService.saveActivies(message).subscribe((res) => {
-  //         if (this.isOutboundSmsSendandClose) {
-  //           //console.log("------------this.smsDialog.closeAll();------------",this.isOutboundSmsSendandClose)
-  //           this.smsDialog.closeAll();
-  //         }
-  //       })
-  //
-  //     }, (error) => {
-  //
-  //       this._snackbarService.open(error.error.description, "err");
-  //
-  //     });
-  //
-  //   } else {
-  //     this._snackbarService.open(this._translateService.instant("snackbar.unable-to-fetch-service-identifier-messages-cant-be-sent"), "err");
-  //   }
-  //
-  // }
-  //
-  // ngOnDestroy() {
-  //   this.phoneNumberFieldSubscriber.unsubscribe();
-  // }
-
-
-  getAgentDeskSettings() {
-
-    if (this._cacheService.agent.id) {
-      this._httpService.getConversationSettings().subscribe(
-        (e) => {
-
-          this.defaultPrefixOutbound = e[0].prefixCode;
-        },
-        (error) => {
-          this._sharedService.Interceptor(error.error, "err");
-          console.error("error getting agent settings", error);
-        }
-      );
-
-
-
-    }
-
+  initiatingOutboundCall() {
+    this.dialog.closeAll();
+    const dialogRef = this.dialog.open(CallControlsComponent, {
+      panelClass: "call-controls-dialog",
+      hasBackdrop: false,
+      position: {
+        top: "8%",
+        right: "8%"
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+    });
 
 
   }
-
 
 }
