@@ -9,6 +9,7 @@ import { map, retry } from "rxjs/operators";
 import { snackbarService } from "src/app/services/snackbar.service";
 import { TranslateService } from "@ngx-translate/core";
 import { CustomerLabels } from "src/app/models/labels/labels";
+import { appConfigService } from "src/app/services/appConfig.service";
 
 @Component({
   selector: "app-queue-chats",
@@ -33,7 +34,8 @@ export class QueueChatsComponent implements OnInit {
     private _httpService: httpService,
     private route: ActivatedRoute,
     private _snackBarService: snackbarService,
-    private _cacheService: cacheService
+    private _cacheService: cacheService,
+    public _appConfigService: appConfigService
   ) {}
 
   ngOnInit(): void {
@@ -66,7 +68,7 @@ export class QueueChatsComponent implements OnInit {
   // to start timer using rxjs `timer`
   startRefreshTimer() {
     try {
-      this.timerSubscription = timer(0, 10000)
+      this.timerSubscription = timer(0, this._appConfigService.config.DASHBOARD_REFRESH_TIME)
         .pipe(
           map(() => {
             this.getAllQueuedChats(this.selectedTeam);

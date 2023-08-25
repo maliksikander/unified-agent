@@ -17,6 +17,7 @@ import { snackbarService } from "src/app/services/snackbar.service";
 import { TranslateService } from "@ngx-translate/core";
 import { TopicParticipant } from "src/app/models/User/Interfaces";
 import { CustomerLabels } from "src/app/models/labels/labels";
+import { appConfigService } from "src/app/services/appConfig.service";
 
 @Component({
   selector: "app-active-chats",
@@ -53,7 +54,8 @@ export class ActiveChatsComponent implements OnInit {
     private dialog: MatDialog,
     public _pullModeservice: pullModeService,
     private _socketService: socketService,
-    private _router: Router
+    private _router: Router,
+    public _appConfigService: appConfigService
   ) { }
 
   ngOnInit(): void {
@@ -101,7 +103,7 @@ export class ActiveChatsComponent implements OnInit {
   }
   startRefreshTimer() {
     try {
-      this.timerSubscription = timer(0, 10000)
+      this.timerSubscription = timer(0, this._appConfigService.config.DASHBOARD_REFRESH_TIME)
         .pipe(
           map(() => {
             if (this.FilterSelected == "agents" && this.supervisedTeams && this.supervisedTeams.length > 0)
