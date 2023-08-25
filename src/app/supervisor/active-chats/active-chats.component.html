@@ -75,7 +75,8 @@
               <button
                 mat-icon-button
                 (click)="FilterSelected === 'agents' ? handleAgentTabClick() : handleBotTabClick()"
-                matTooltip="Sort by Active Since">
+                matTooltip="Sort by Active Since"
+              >
                 <mat-icon></mat-icon>
               </button>
             </th>
@@ -92,8 +93,21 @@
                   <span class="channel-icon {{ chat.channelType }}"><img [src]="chat.channelType | channelName | channelLogo | async" /></span>
                 </td>
                 <td>
-                  {{ chat.customerName }} <small matTooltip="{{ 'globals.channel-identifier' | translate }}">({{ chat.channelIdentity }})</small>
-                  <ul class="customer-labels" *ngIf="labels">
+                  <span *ngIf="'customer' | authPipe: 'view_pii' as result; else maskedpii">
+                    <span class="table-main-data" matTooltip="{{ chat.customerName }}">{{ chat.customerName }}</span>
+                    <small matTooltip="{{ 'globals.channel-identifier' | translate }}">({{ chat.channelIdentity }})</small>
+                  </span>
+
+                  <ng-template #maskedpii>
+                    <span class="table-main-data" matTooltip="{{ chat.customerName }}">{{
+                      chat.customerName | maskPIIAttribute: ("firstName" | returnSchemaByKey)
+                    }}</span>
+                    <small matTooltip="{{ 'globals.channel-identifier' | translate }}"
+                      >({{ chat.channelIdentity | maskPIIAttribute: (chat.channelType | returnSchemaByChannelType) }})</small
+                    >
+                  </ng-template>
+
+                  <ul class="customer-labels" *ngIf="(labels && ('customer-labels' | authPipe : 'assign_label')) as result">
                     <li
                       *ngFor="let lbl of labels | fetchLabels: chat.customerLabels"
                       matTooltip="{{ lbl.name }}"
@@ -125,8 +139,20 @@
                   <span class="channel-icon {{ chat.channelType }}"><img [src]="chat.channelType | channelName | channelLogo | async" /></span>
                 </td>
                 <td>
-                  <span class="table-main-data"  matTooltip="{{ chat.customerName }}">{{ chat.customerName }}</span> <small matTooltip="{{ 'globals.channel-identifier' | translate }} {{ chat.channelIdentity }}">({{ chat.channelIdentity }})</small>
-                  <ul class="customer-labels" *ngIf="labels">
+                  <span *ngIf="'customer' | authPipe: 'view_pii' as result; else maskedpii">
+                    <span class="table-main-data" matTooltip="{{ chat.customerName }}">{{ chat.customerName }}</span>
+                    <small matTooltip="{{ 'globals.channel-identifier' | translate }}">({{ chat.channelIdentity }})</small>
+                  </span>
+
+                  <ng-template #maskedpii>
+                    <span class="table-main-data" matTooltip="{{ chat.customerName }}">{{
+                      chat.customerName | maskPIIAttribute: ("firstName" | returnSchemaByKey)
+                    }}</span>
+                    <small matTooltip="{{ 'globals.channel-identifier' | translate }}"
+                      >({{ chat.channelIdentity | maskPIIAttribute: (chat.channelType | returnSchemaByChannelType) }})</small
+                    >
+                  </ng-template>
+                  <ul class="customer-labels" *ngIf="(labels && ('customer-labels' | authPipe : 'assign_label')) as result">
                     <li
                       *ngFor="let lbl of labels | fetchLabels: chat.customerLabels"
                       matTooltip="{{ lbl.name }}"
@@ -135,12 +161,12 @@
                   </ul>
                 </td>
                 <td>
-                  <span class="table-main-data">{{ chat.activeSince | amDuration: "seconds" }}</span> <small>{{ "supervisor.ago" | translate }}</small>
+                  <span class="table-main-data">{{ chat.activeSince | amDuration: "seconds" }}</span>
+                  <small>{{ "supervisor.ago" | translate }}</small>
                 </td>
                 <td>
                   <span class="table-main-data" matTooltip="{{ chat.agentName }}">{{ chat.agentName }}</span>
-                  <small matTooltip="{{ 'globals.agent-username' | translate }}">({{ chat.agentUsername
-                    }})</small>
+                  <small matTooltip="{{ 'globals.agent-username' | translate }}">({{ chat.agentUsername }})</small>
                 </td>
                 <td><span class="table-main-data"  matTooltip="{{ chat.queueName }}">{{ chat.queueName }}</span></td>
                 <span *ngIf="chat.channelSession.conversationId | isAlreadyJoined" class="joined">{{ "pull-mode.joined" | translate }}</span>

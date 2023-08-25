@@ -68,7 +68,6 @@ export class CreateCustomerComponent implements OnInit {
   getCustomerSchema() {
     this._httpService.getCustomerSchema().subscribe((res) => {
       let temp = res.filter((item) => item.key != "isAnonymous");
-      console.log("got customer schema",temp);
       this.schemaAttributes = temp.sort((a, b) => {
         return a.sortOrder - b.sortOrder;
       });
@@ -82,7 +81,6 @@ export class CreateCustomerComponent implements OnInit {
     this._httpService.getLabels().subscribe(
       (e) => {
         this.labelList = e;
-        console.log("got all labels",this.labelList);
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -98,16 +96,13 @@ export class CreateCustomerComponent implements OnInit {
         let validatorArray: any = this.addFormValidations(item);
         if (item.isChannelIdentifier == false) {
           this.customerForm.addControl(item.key, new FormControl(item.defaultValue ? item.defaultValue : "", validatorArray));
-          console.log("channel identifier false",item);
         } else {
           this.customerForm.addControl(item.key, this.fb.array([new FormControl(item.defaultValue ? item.defaultValue : "", validatorArray)]));
         }
         if (item.type == "boolean" && item.defaultValue == "") {
           this.customerForm.controls[item.key].setValue(item.defaultValue);
-          console.log("boolean chk");
         }
       });
-       console.log("control==>", this.customerForm.controls);
     } catch (e) {
       console.error("Error in add form control :", e);
     }
@@ -126,7 +121,6 @@ export class CreateCustomerComponent implements OnInit {
         temp.push(Validators.max(maxVal));
         temp.push(Validators.min(minVal));
       }
-      console.log("form validations");
       return temp;
     } catch (e) {
       console.error("Error in add validion method :", e);
@@ -145,7 +139,6 @@ export class CreateCustomerComponent implements OnInit {
         this.formValidation = this.convertArrayToObject(this.attributeTypes, "type");
         this.addFormControls(this.schemaAttributes);
         this.dataReady = true;
-        console.log("attr types",this.formValidation);
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -201,11 +194,9 @@ export class CreateCustomerComponent implements OnInit {
 
   onSave() {
     let data = this.customerForm.value;
-    console.log("save-data",data);
     if (data.labels == "") data.labels = [];
     data = this.fetchTheIdsOfLabels(data);
     data.isAnonymous = false;
-     console.log("save result==>", data);
     
     this.createCustomer(data);
   }
@@ -215,7 +206,6 @@ export class CreateCustomerComponent implements OnInit {
     for (let key in a) {
       this.customerForm.get(key).markAsTouched();
     }
-     console.log("valdiate result==>", this.customerForm);
   }
 
   createCustomer(data) {

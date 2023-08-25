@@ -60,9 +60,20 @@
             <tr *ngFor="let chat of filteredData">
               <td>
                 <span class="channel-icon"><img [src]="chat.channelType | channelName | channelLogo | async" /></span>
-                {{ chat.customerName }}
-                <small>({{ chat.channelIdentity }})</small>
-                <ul class="customer-labels" *ngIf="labels">
+                <span *ngIf="'customer' | authPipe: 'view_pii' as result; else maskedpii">
+                  <span class="table-main-data" matTooltip="{{ chat.customerName }}">{{
+                    chat.customerName 
+                  }}</span>
+                  <small matTooltip="{{ 'globals.channel-identifier' | translate }}"
+                    >({{ chat.channelIdentity  }})</small
+                  >
+                </span>
+
+                <ng-template #maskedpii>
+                  <span class="table-main-data" matTooltip="{{ chat.customerName }}">{{ chat.customerName | maskPIIAttribute: ("firstName" | returnSchemaByKey) }}</span>
+                  <small matTooltip="{{ 'globals.channel-identifier' | translate }}">({{ chat.channelIdentity | maskPIIAttribute: (chat.channelType | returnSchemaByChannelType) }})</small>
+                </ng-template>
+                <ul class="customer-labels" *ngIf="(labels && ('customer-labels' | authPipe : 'assign_label')) as result">
                   <li
                     *ngFor="let lbl of labels | fetchLabels: chat.customerLabels"
                     matTooltip="{{ lbl.name }}"
