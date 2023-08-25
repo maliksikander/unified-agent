@@ -2368,40 +2368,40 @@
   </div>
 
   <div class="customer-info-main">
-    <div class="call-controls-view" *ngIf="isBarOpened && ctiBarView && _sipService.isCallActive">
-      <div class="right-call-controls row doc-bar">
-        <div class="main-showcase customer-info-dp">
-          <div class="agent-showcase">
-            <img src="assets/images/dummy-user.svg" alt="Customer" />
-            <mat-icon routerLink="/customers/chats">flip_to_back</mat-icon>
-          </div>
-          <h4 matTooltip="{{ this._sipService.customerNumber }}">
-            {{ this._sipService.customerNumber }}<span class="timer-call">{{ timer }}</span>
-          </h4>
-        </div>
-        <!-- <ul class="assistance-actions"> -->
-        <!-- <li><button disabled mat-fab><img src="assets/images/consult-colored.svg"></button></li>
-          <li><button disabled mat-fab><img src="assets/images/transfer-colored.svg"></button></li>
-          <li><button disabled mat-fab><img src="assets/images/conference-colored.svg"></button></li> -->
-        <!-- </ul> -->
+<!--    <div class="call-controls-view" *ngIf="isBarOpened && ctiBarView && _sipService.isCallActive">-->
+<!--      <div class="right-call-controls row doc-bar">-->
+<!--        <div class="main-showcase customer-info-dp">-->
+<!--          <div class="agent-showcase">-->
+<!--            <img src="assets/images/dummy-user.svg" alt="Customer" />-->
+<!--            <mat-icon routerLink="/customers/chats">flip_to_back</mat-icon>-->
+<!--          </div>-->
+<!--          <h4 matTooltip="{{ this._sipService.customerNumber }}">-->
+<!--            {{ this._sipService.customerNumber }}<span class="timer-call">{{ timer }}</span>-->
+<!--          </h4>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; <ul class="assistance-actions"> &ndash;&gt;-->
+<!--        &lt;!&ndash; <li><button disabled mat-fab><img src="assets/images/consult-colored.svg"></button></li>-->
+<!--          <li><button disabled mat-fab><img src="assets/images/transfer-colored.svg"></button></li>-->
+<!--          <li><button disabled mat-fab><img src="assets/images/conference-colored.svg"></button></li> &ndash;&gt;-->
+<!--        &lt;!&ndash; </ul> &ndash;&gt;-->
 
-        <ul class="call-actions">
-          <!-- <li><button disabled mat-fab><mat-icon>mic</mat-icon></button></li> -->
-          <li><button (click)="ctiControlBar()" mat-fab><mat-icon>picture_in_picture_alt
-              </mat-icon></button></li>
-          <li *ngIf="_sipService.isMuted == false"><button matTooltip="{{('globals.mute' | translate)}}"
-              (click)="_sipService.muteCallOnSip()" mat-fab><mat-icon>mic</mat-icon></button></li>
-          <li *ngIf="_sipService.isMuted == true"><button matTooltip="{{('globals.unMute' | translate)}}"
-              (click)="_sipService.unmuteCallOnSip()" mat-fab><mat-icon>mic_off</mat-icon></button></li>
-          <li *ngIf="_sipService.isCallHold == false" matTooltip="{{('globals.hold' | translate)}}"
-            (click)="_sipService.holdCallOnSip()"><button mat-fab><mat-icon>pause</mat-icon></button></li>
-          <li *ngIf="_sipService.isCallHold == true" matTooltip="{{('globals.resume' | translate)}}"
-            (click)="_sipService.resumeCallOnSip()"><button mat-fab><mat-icon>pause_circle_filled</mat-icon></button>
-          </li>
-          <li (click)="endCallOnSip()"><button class="end-call" mat-fab><mat-icon>call_end</mat-icon></button></li>
-        </ul>
-      </div>
-    </div>
+<!--        <ul class="call-actions">-->
+<!--          &lt;!&ndash; <li><button disabled mat-fab><mat-icon>mic</mat-icon></button></li> &ndash;&gt;-->
+<!--          <li><button (click)="ctiControlBar()" mat-fab><mat-icon>picture_in_picture_alt-->
+<!--              </mat-icon></button></li>-->
+<!--          <li *ngIf="_sipService.isMuted == false"><button matTooltip="{{('globals.mute' | translate)}}"-->
+<!--              (click)="_sipService.muteCallOnSip()" mat-fab><mat-icon>mic</mat-icon></button></li>-->
+<!--          <li *ngIf="_sipService.isMuted == true"><button matTooltip="{{('globals.unMute' | translate)}}"-->
+<!--              (click)="_sipService.unmuteCallOnSip()" mat-fab><mat-icon>mic_off</mat-icon></button></li>-->
+<!--          <li *ngIf="_sipService.isCallHold == false" matTooltip="{{('globals.hold' | translate)}}"-->
+<!--            (click)="_sipService.holdCallOnSip()"><button mat-fab><mat-icon>pause</mat-icon></button></li>-->
+<!--          <li *ngIf="_sipService.isCallHold == true" matTooltip="{{('globals.resume' | translate)}}"-->
+<!--            (click)="_sipService.resumeCallOnSip()"><button mat-fab><mat-icon>pause_circle_filled</mat-icon></button>-->
+<!--          </li>-->
+<!--          <li (click)="endCallOnSip()"><button class="end-call" mat-fab><mat-icon>call_end</mat-icon></button></li>-->
+<!--        </ul>-->
+<!--      </div>-->
+<!--    </div>-->
 
     <app-customer-info
       [activeChannelSessions]="conversation.activeChannelSessions"
