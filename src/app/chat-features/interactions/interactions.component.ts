@@ -156,7 +156,7 @@ export class InteractionsComponent implements OnInit {
     });
 
     if (this.conversation && this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
-      if (this._sipService.isCallActive == true) this.ctiControlBar();
+      if (this._sipService.isCallActive == true && this._sipService.isToolbarActive == false) this.ctiControlBar();
       this.getVoiceChannelSession();
     }
   }
@@ -1202,6 +1202,7 @@ export class InteractionsComponent implements OnInit {
   ctiControlBar() {
     this.ctiBoxView = true;
     this.ctiBarView = false;
+    this._sipService.isToolbarActive = true;
     const dialogRef = this.dialog.open(CallControlsComponent, {
       panelClass: "call-controls-dialog",
       hasBackdrop: false,
