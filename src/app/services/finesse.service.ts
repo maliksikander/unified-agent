@@ -136,7 +136,16 @@ export class finesseService {
     } else if (voiceMrdObj.state.toLowerCase() == "not_ready" || voiceMrdObj.state.toLowerCase() == "pending_not_ready") {
       // if voice mrd state is not_ready and finesse state is not not_ready then change the finsess state to not_ready
       if (this.finesseAgentState.state.toLowerCase() != "not_ready") {
-        executeCommands({ action: "makeNotReadyWithReason", parameter: { reasonCode: this.finesseNotReadyReasonCodes[0].code } });
+        if (this.finesseLogoutReasonCodes) {
+          executeCommands({ action: "makeNotReadyWithReason", parameter: { reasonCode: this.finesseNotReadyReasonCodes[0].code } });
+        } else {
+          let loginParameters = localStorage.getItem("loginParameters");
+          if (loginParameters) {
+            let params = JSON.parse(loginParameters);
+            let loginId = params.parameter.loginId;
+            executeCommands({ action: "makeNotReadyWithReason", parameter: { userId: loginId } });
+          }
+        }
       }
     }
   }
@@ -171,7 +180,7 @@ export class finesseService {
           this._snackbarService.open("XMPP Status is Disconnected!", "err");
         }
       } else if (event.event.toLowerCase() == "error") {
-        console.log("error ==>" + event.response.description);
+        console.log("Error Event ==>", event.response.description);
         this.showErr = true;
         this._snackbarService.open("CISCO :" + event.response.description, "err");
       } else if (event.event.toLowerCase() == "notreadylogoutreasoncode") {
@@ -415,13 +424,17 @@ export class finesseService {
             } else if (currentParticipant.state.toLowerCase() == "dropped") {
               // console.log("handle dialog 12==>");
               let callType;
-              if (dialogState.dialog.callType.toLowerCase() == "transfer" || dialogState.dialog.callType.toLowerCase() == "offered") {
+              if (dialogState.dialog.callType.toLowerCase() == "transfer") {
                 callType = "DIRECT_TRANSFER";
                 if (
                   this._appConfigService.finesseConfig.finesseFlavor.toLowerCase() == "uccx" ||
                   this._appConfigService.finesseConfig.finesseFlavor.toLowerCase() == "ccx"
                 ) {
                   callType = "CONSULT_TRANSFER";
+                }
+
+                if (dialogState.dialog.callType.toLowerCase() == "offered") {
+                  callType = "DIRECT_TRANSFER";
                 }
                 // console.log("handle dialog 13==>");
                 let item: any = this.getDialogFromCache(cacheId);
@@ -503,42 +516,12 @@ export class finesseService {
     }
   }
 
-  // updateCallVariables(dialog) {
-  //   try {
-  //     if (dialog && dialog.callVariables && dialog.callVariables.CallVariable) {
-  //       let variablesTemp: Array<any> = JSON.parse(JSON.stringify(dialog.callVariables.CallVariable));
-
-  //       let mainDN = {
-  //         name: "mainDN",
-  //         value: dialog.dialedNumber
-  //       };
-  //       // if (variablesTemp) {
-  //         variablesTemp.push(mainDN);
-  //         console.log("variables==>", variablesTemp);
-  //         let command = {
-  //           action: "updateCallVariableData",
-  //           parameter: {
-  //             dialogId: dialog.id,
-  //             callVariables: {
-  //               callVariable: variablesTemp
-  //             }
-  //           }
-  //         };
-  //         console.log("variable command==>", command);
-  //         executeCommands(command);
-  //       }
-  //     // }
-  //   } catch (e) {
-  //     console.error("[Error] updateCallVariables ==>", e);
-  //   }
-  // }
-
   handleCallActiveEvent(dialogEvent, dialogState) {
     try {
       // this.updateCallVariables(dialogState.dialog);
       this.removeNotification(dialogState);
       let channelCustomerIdentifier = dialogState.dialog.customerNumber;
-      let serviceIdentifier = dialogState.dialog.dialedNumber;
+      let serviceIdentifier = dialogState.dialog.primaryDN;
       let callId = dialogState.dialog.id;
       let leg = `${this.finesseAgent.extension}:${this._cacheService.agent.id}:${dialogState.dialog.id}`;
       let callType;
@@ -583,7 +566,7 @@ export class finesseService {
     try {
       if (methodCalledOn != "onRefresh") this.clearLocalDialogCache(cacheId);
       let channelCustomerIdentifier = dialogState.dialog.customerNumber;
-      let serviceIdentifier = dialogState.dialog.dialedNumber;
+      let serviceIdentifier = dialogState.dialog.primaryDN;
       let leg = `${this.finesseAgent.extension}:${this._cacheService.agent.id}:${dialogState.dialog.id}`;
       let timeStamp = this.getStartOREndTimeStamp(dialogState.dialog, "endCall");
       let callId = dialogState.dialog.id;
@@ -851,21 +834,6 @@ export class finesseService {
       console.error("[Error on Get Call Variables List] ==>", err);
     }
   }
-
-  // getCurrentAgentFromParticipantList(list: Array<any>) {
-  //   try {
-  //     let currentParticpant;
-  //     for (let i = 0; i <= list.length; i++) {
-  //       if (list[i].mediaAddress == this.finesseAgent.extension) {
-  //         currentParticpant = list[i];
-  //         return currentParticpant;
-  //       }
-  //     }
-  //     return null;
-  //   } catch (e) {
-  //     console.error("[Error] getCurrentAgentFromParticipantList ==>", e);
-  //   }
-  // }
 
   // if the receiving event from the CISCO is agentState then this will be called
   handleAgentStateFromFinesse(resp) {

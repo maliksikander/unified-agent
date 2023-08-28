@@ -31,6 +31,7 @@ export class SipService implements OnInit {
   customerNumber: any = "";
   isSubscriptionFailed = false;
   isMuted: boolean = false;
+  isToolbarActive: boolean = false;
 
   constructor(
     private _appConfigService: appConfigService,
@@ -629,6 +630,7 @@ export class SipService implements OnInit {
   handleCallDroppedEvent(cacheId, dialogState, methodCalledOn, event, callType, state) {
     try {
       let taskState;
+      this.isToolbarActive = false;
       if (state && state.taskId) taskState = state;
       let channelCustomerIdentifier = dialogState.dialog.customerNumber;
       let serviceIdentifier = dialogState.dialog.dnis;
