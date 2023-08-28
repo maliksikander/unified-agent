@@ -38,7 +38,7 @@ export class sharedService {
     isMessageFormattingEnabled: false,
     isOutboundSmsSendandClose: false,
     isOutboundSmsEnabled: false,
-    prefixCode : ''
+    prefixCode: ""
   };
 
   //preffered language code of agent
@@ -61,9 +61,9 @@ export class sharedService {
     this.conversationSettings.isWrapUpEnabled = setting.isWrapUpEnabled;
     this.conversationSettings.wrapUpTime = setting.wrapUpTime;
     this.conversationSettings.isMessageFormattingEnabled = setting.isMessageFormattingEnabled;
-    this.conversationSettings.isOutboundSmsSendandClose=setting.isOutboundSmsSendandClose;
+    this.conversationSettings.isOutboundSmsSendandClose = setting.isOutboundSmsSendandClose;
     this.conversationSettings.isOutboundSmsEnabled = setting.isOutboundSmsEnabled;
-    this.conversationSettings.prefixCode = setting.prefixCode ? setting.prefixCode : '' 
+    this.conversationSettings.prefixCode = setting.prefixCode ? setting.prefixCode : "";
   }
   getIndexFromConversationId(conversationId, array) {
     let index = array.findIndex((e) => {
@@ -76,7 +76,6 @@ export class sharedService {
     array.splice(index, 1);
   }
 
-  
   setChannelIcons(channelTypes) {
     this.channelTypeList = channelTypes;
     try {

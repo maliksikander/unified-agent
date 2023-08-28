@@ -14,7 +14,7 @@ import { GrafanaComponent } from "./supervisor/grafana/grafana.component";
 import { ActiveChatsComponent } from "./supervisor/active-chats/active-chats.component";
 import { AuthGuard } from "./auth.guard";
 import { QueueChatsComponent } from "./supervisor/queue-chats/queue-chats.component";
-import {ActiveAgentDetailsComponent} from './supervisor/active-agent-details/active-agent-details.component';
+import { ActiveAgentDetailsComponent } from "./supervisor/active-agent-details/active-agent-details.component";
 
 export const appRoutes: Routes = [
   { path: "login", component: LoginComponent },

@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ManualOutboundCallComponent } from './manual-outbound-call.component';
+import { ManualOutboundCallComponent } from "./manual-outbound-call.component";
 
-describe('ManualOutboundCallComponent', () => {
+describe("ManualOutboundCallComponent", () => {
   let component: ManualOutboundCallComponent;
   let fixture: ComponentFixture<ManualOutboundCallComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ManualOutboundCallComponent ]
-    })
-    .compileComponents();
+      declarations: [ManualOutboundCallComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('ManualOutboundCallComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

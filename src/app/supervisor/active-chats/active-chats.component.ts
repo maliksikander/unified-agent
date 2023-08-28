@@ -30,7 +30,7 @@ export class ActiveChatsComponent implements OnInit {
   queuesList = [];
   timerSubscription: Subscription;
   filter: string;
-  labels:CustomerLabels[]
+  labels: CustomerLabels[];
   filteredData = [];
   activeChatListWithAgents: any = [];
   activeChatListWithBots: any = [];
@@ -57,7 +57,7 @@ export class ActiveChatsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadLabels()
+    this.loadLabels();
     this.filter = this.route.snapshot.queryParamMap.get("filter") ? this.route.snapshot.queryParamMap.get("filter") : "agents";
     if (this.filter == "agents") {
       this.FilterSelected = "agents";
@@ -92,7 +92,7 @@ export class ActiveChatsComponent implements OnInit {
     this._socketService.emit("JoinAsSilentMonitor", obj);
     this._router.navigate(["customers"]);
   }
-  loadLabels():void {
+  loadLabels(): void {
     this._httpService.getLabels().subscribe((e) => {
       this.labels = e;
     });
@@ -202,12 +202,11 @@ export class ActiveChatsComponent implements OnInit {
   // answered by selection change callback event
   onAnsweredByfilterChange(e) {
     try {
-      if (e.value == "agents")
-      {
+      if (e.value == "agents") {
         if (this.supervisedTeams && this.supervisedTeams.length > 0) {
           this.getAllActiveChatsWithTeam(this.selectedTeam, []);
         }
-       } else if (e.value == "bots") this.getAllActiveChatsWithBots();
+      } else if (e.value == "bots") this.getAllActiveChatsWithBots();
     } catch (err) {
       console.error("[onAnsweredByfilterChange] Error :", err);
     }

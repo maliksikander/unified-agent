@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
     private _router: Router,
     private _httpService: httpService,
     private _isLoggedInservice: isLoggedInService,
-    private _sipService : SipService,
+    private _sipService: SipService,
     private _sharedService: sharedService,
     private _translateService: TranslateService
   ) {}

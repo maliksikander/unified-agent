@@ -20,7 +20,7 @@ describe("Socket service", () => {
   let _authService: any;
   let _snackService: MatSnackBar;
   let _translateService: any;
-  
+
   const mockConversation = {
     conversationId: "12345",
     messages: [],

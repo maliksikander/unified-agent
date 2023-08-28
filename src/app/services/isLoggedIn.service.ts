@@ -36,7 +36,7 @@ export class isLoggedInService {
     private _translateService: TranslateService,
     private _authService: AuthService,
     private _appConfigService: appConfigService,
-    private _announcementService:announcementService
+    private _announcementService: announcementService
   ) {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       this._cacheService.isMobileDevice = true;
@@ -168,7 +168,7 @@ export class isLoggedInService {
 
     if (this._appConfigService.config.isCxVoiceEnabled) {
       this._sipService.initMe();
-      this._sipService.checkActiveTasks(this._cacheService.agent.id,undefined,undefined);
+      this._sipService.checkActiveTasks(this._cacheService.agent.id, undefined, undefined);
     }
     // if (this._cacheService.isMobileDevice) {
 

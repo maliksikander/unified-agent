@@ -23,7 +23,7 @@ export class ChatNotificationsComponent implements OnInit {
   externalModeRequests = [];
   notificationArea: boolean = false;
   voiceChannelType;
-  isCallAcceptClicked:boolean = false;
+  isCallAcceptClicked: boolean = false;
   //newAnnouncement =true;
 
   constructor(
@@ -37,7 +37,7 @@ export class ChatNotificationsComponent implements OnInit {
     private _translateService: TranslateService,
     private _sipService: SipService,
     private _appConfigService: appConfigService,
-    public _announcementService:announcementService
+    public _announcementService: announcementService
   ) {
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       try {
@@ -100,9 +100,8 @@ export class ChatNotificationsComponent implements OnInit {
 
   ngOnInit() {}
 
-  onDismiss(announcement){
+  onDismiss(announcement) {
     this._announcementService.removeAnnoucementFromNotificationList(announcement);
-
   }
 
   getVoiceChannelType(provider) {
@@ -122,7 +121,7 @@ export class ChatNotificationsComponent implements OnInit {
         dialogId: data.dialogData.id
       }
     };
-    console.log("accept Data==>",acceptCommand)
+    console.log("accept Data==>", acceptCommand);
     if (data.provider == "cx_voice") {
       this._sipService.acceptCallOnSip(acceptCommand);
     } else if (data.provider == "cisco") {

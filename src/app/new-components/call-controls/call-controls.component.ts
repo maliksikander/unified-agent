@@ -40,7 +40,6 @@ export class CallControlsComponent implements OnInit {
     setTimeout(() => {
       this.isCalling = false;
       this.callConnected = true;
-
     }, 5000);
 
     this._sipService._isActiveSub.subscribe((val) => {

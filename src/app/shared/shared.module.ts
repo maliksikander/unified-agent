@@ -98,11 +98,11 @@ import { checkOutboundCallPipe } from "./pipes/checkOutboundCall.pipe";
 import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
 import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements.pipe";
 import { getMatchedStringPipe } from "./pipes/getMatchedString.pipe";
-import {  returnSchemaByKeyPipe } from "./pipes/returnSchemaByKey.pipe";
-import {  returnSchemaByChannelTypePipe } from "./pipes/returnSchemaByChannelType.pipe";
+import { returnSchemaByKeyPipe } from "./pipes/returnSchemaByKey.pipe";
+import { returnSchemaByChannelTypePipe } from "./pipes/returnSchemaByChannelType.pipe";
 
 import { getIVRTrailPipe } from "./pipes/getIVRTrail.pipe";
-import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
+import { SearchSuggestionsPipe } from "./pipes/searchSuggestions.pipe";
 
 @NgModule({
   declarations: [
@@ -218,7 +218,7 @@ import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
     AngularMultiSelectModule,
     NgScrollbarModule,
     NgxTimerModule,
-    TranslateModule,
+    TranslateModule
   ],
   exports: [
     NgxTimerModule,

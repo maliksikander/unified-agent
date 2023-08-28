@@ -215,7 +215,7 @@ export class finesseService {
           let data = {
             identifier: agentIdentifier,
             dialogData: dialog,
-            provider:"cisco"
+            provider: "cisco"
           };
           this._sharedService.serviceChangeMessage({ msg: "openExternalModeRequestHeader", data: data });
           // this.setLocalDialogCache(event, "alerting");
@@ -286,7 +286,7 @@ export class finesseService {
             customer: res.customer,
             identifier,
             dialogData: ciscoEvent.response.dialog,
-            provider:"cisco"
+            provider: "cisco"
           };
           if (callType == "INBOUND") {
             this._sharedService.serviceChangeMessage({ msg: "openExternalModeRequestHeader", data: data });

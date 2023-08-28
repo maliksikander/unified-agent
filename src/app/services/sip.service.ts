@@ -564,7 +564,7 @@ export class SipService implements OnInit {
       this._httpService.ccmVOICEChannelSession(data).subscribe(
         (res) => {
           console.log("CCM API Success Sip==>");
-          if (methodCalledOn == "call_end")  this.clearLocalDialogCache(cacheId);
+          if (methodCalledOn == "call_end") this.clearLocalDialogCache(cacheId);
         },
         (error) => {
           console.error("[Error on CCM Channel Session API] ==>", error);

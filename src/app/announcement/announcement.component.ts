@@ -8,46 +8,41 @@ import { cacheService } from "../services/cache.service";
 import { TranslateService } from "@ngx-translate/core";
 import { snackbarService } from "../services/snackbar.service";
 
-
 @Component({
   selector: "app-announcement",
   templateUrl: "./announcement.component.html",
   styleUrls: ["./announcement.component.scss"]
 })
-
 export class AnnouncementComponent implements OnInit {
   FilterSelected = "all";
   currentItemsToShow: any;
   displayAnnouncements = [];
-  status = '';
+  status = "";
   specficId: String = "";
   updateData: any;
-  obj = {}
+  obj = {};
   pageSize: Number = 25;
-  supervisorId
+  supervisorId;
   constructor(
-
     private dialog: MatDialog,
     private _httpService: httpService,
     private _sharedService: sharedService,
     private _cacheService: cacheService,
     private _snackbarService: snackbarService,
-    private _translateService: TranslateService) {
-
-  }
+    private _translateService: TranslateService
+  ) {}
 
   ngOnInit() {
     this.supervisorId = this._cacheService.agent.id;
     this.getAllAnnouncements();
   }
 
-
   onNewAnnouncement() {
     const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
       panelClass: "new-announcement-dialog"
     });
     dialogRef.afterClosed().subscribe((result) => {
-      dialogRef.close()
+      dialogRef.close();
       this.getAllAnnouncements();
     });
   }
@@ -61,29 +56,28 @@ export class AnnouncementComponent implements OnInit {
 
   onPageChange($event) {
     this.currentItemsToShow = this.displayAnnouncements.slice(
-      $event.pageIndex * $event.pageSize, $event.pageIndex * $event.pageSize + $event.pageSize);
+      $event.pageIndex * $event.pageSize,
+      $event.pageIndex * $event.pageSize + $event.pageSize
+    );
   }
 
   onUpdateAnnouncement(value, index) {
-     this._httpService.getAnnouncementsById(value).subscribe(res => {
+    this._httpService.getAnnouncementsById(value).subscribe((res) => {
       if (res.status === "scheduled") {
         const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
           data: {
-            value: value,
+            value: value
           }
         });
         dialogRef.afterClosed().subscribe((result) => {
-          dialogRef.close()
+          dialogRef.close();
           this.getAllAnnouncements();
         });
-      }
-      else {
+      } else {
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-edit-Active-Announcements"), "err");
       }
     });
   }
-
-
 
   confirmationDialog(templateRef, id, status) {
     if (id) {
@@ -92,7 +86,9 @@ export class AnnouncementComponent implements OnInit {
         width: "490px",
         panelClass: "confirm-dialog"
       });
-      dialogRef.afterClosed().subscribe((result) => { dialogRef.close() });
+      dialogRef.afterClosed().subscribe((result) => {
+        dialogRef.close();
+      });
       this.specficId = id;
     }
   }
@@ -106,13 +102,7 @@ export class AnnouncementComponent implements OnInit {
       error: (err: any) => {
         console.error(err);
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-Delete-Announcement"), "err");
-       
-      
-      },
-      
-    })
-
-
+      }
+    });
   }
-
 }
