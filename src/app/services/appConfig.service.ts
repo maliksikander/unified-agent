@@ -93,8 +93,8 @@ export class appConfigService {
           uri: e.SIP_URI,
           agentStaticPassword: e.EXT_STATIC_PASSWORD,
           enable_sip_log: e.ENABLE_SIP_LOGS,
-          staticQueueTransferDn: e.STATIC_QUEUE_TRANSFER_DN,
-          autoCallAnswer: e.AUTO_CALL_ANSWER_TIMER
+          // staticQueueTransferDn: e.STATIC_QUEUE_TRANSFER_DN,
+          // autoCallAnswer: e.AUTO_CALL_ANSWER_TIMER
         };
         this.cxSipConfig = sipConfig;
         // this.sipConfig = sipConfig;
