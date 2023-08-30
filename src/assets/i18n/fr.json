@@ -168,7 +168,7 @@
       "invalid-text":"invalid text_fr",
       "not-empty":"This field can't be empty_fr",
       "invalid-pattern":"Invalid pattern_fr",
-      "number-should-be-in-range-3-to-15":"number should be in range 3 to 15_fr",
+      "number-should-be-in-range-3-to-15":"Number should be in range 3 to 15_fr",
       "see-conversation-history":"See Conversation History_fr",
       "discard":"Discard_fr",
       "send-sms":"Send SMS_fr",
@@ -180,9 +180,9 @@
       "new":"new",
       "customer":" customer",
       "characters-limit-1500":"1500 characters_fr",
-      "to-view-the-customer-profile":" to view the customer profile_fr"
-      
-
+      "to-view-the-customer-profile":" to view the customer profile_fr",
+      "number-should-be-in-range-3-to-20":"Number should be in range 3 to 20_fr",
+      "enter-phone-number":"Enter Phone Number_fr"
     },
     
     "customer-info": {

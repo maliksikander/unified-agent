@@ -171,6 +171,7 @@
           *ngIf="_appConfigService.config.isCxVoiceEnabled && _sipService.isSipConnected && _sipService.isSipLoggedIn"
           (click)="openCallDialog()"
           class="sms-trigger"
+          [disabled]="_sipService.isCallActive"
           mat-icon-button
           color="primary"
         >

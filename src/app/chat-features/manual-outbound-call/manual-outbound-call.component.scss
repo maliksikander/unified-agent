@@ -42,6 +42,10 @@
     margin-left: 15px;
     color: #fff;
     min-width: 60px;
+
+    &:disabled {
+      background: #e6e6e6 !important;
+    }
   }
 }
 

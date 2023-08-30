@@ -1127,4 +1127,8 @@ button {
   mat-icon{
     color: $blue-text-color;
   }
+
+  &:disabled {
+    background: #e6e6e6 !important;
+  }
 }

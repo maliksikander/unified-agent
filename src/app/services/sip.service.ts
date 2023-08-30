@@ -737,6 +737,22 @@ export class SipService implements OnInit {
     }
   }
 
+  makeCallOnSip(number) {
+    try {
+      let command = {
+        action: "makeCall",
+        parameter: {
+          calledNumber: number,
+          clientCallbackFunction: this.clientCallback
+        }
+      };
+      console.log("makeCallOnSip ==>", command);
+      // postMessage(command);
+    } catch (error) {
+      console.error("[Error on makeCallOnSip] ==>", error);
+    }
+  }
+
   muteCallOnSip() {
     try {
       let command = {

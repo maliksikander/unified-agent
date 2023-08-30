@@ -37,10 +37,10 @@ export class CallControlsComponent implements OnInit {
     //   this.minutes = Math.floor(value / 60);
     //   this.seconds = value % 60;
     // });
-    setTimeout(() => {
-      this.isCalling = false;
-      this.callConnected = true;
-    }, 5000);
+    // setTimeout(() => {
+      // this.isCalling = false;
+      // this.callConnected = true;
+    // }, 5000);
 
     this._sipService._isActiveSub.subscribe((val) => {
       if (val == false) this.cancel();

@@ -8,9 +8,8 @@ import { snackbarService } from "../../services/snackbar.service";
 import { sharedService } from "../../services/shared.service";
 import { cacheService } from "../../services/cache.service";
 import { Router } from "@angular/router";
-import { v4 as uuidv4 } from "uuid";
-import { CustomerActionsComponent } from "../../customer-actions/customer-actions.component";
 import { CallControlsComponent } from "../../new-components/call-controls/call-controls.component";
+import { SipService } from "src/app/services/sip.service";
 
 @Component({
   selector: "app-manual-outbound-call",
@@ -24,10 +23,10 @@ export class ManualOutboundCallComponent implements OnInit, AfterViewInit {
   userData: any = [];
   defaultPrefixOutbound = "";
   isOutboundSmsSendandClose;
-  identifiedCustomer = null;
+  identifiedCustomer;
   phoneNumber;
   phoneNumberFieldSubscriber;
-  outboundCall: FormGroup;
+  outboundCallForm: FormGroup;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -37,13 +36,14 @@ export class ManualOutboundCallComponent implements OnInit, AfterViewInit {
     private _snackbarService: snackbarService,
     private _sharedService: sharedService,
     private _cacheService: cacheService,
+    private _sipService: SipService,
     private _router: Router,
     private dialog: MatDialog,
     public fb: FormBuilder
   ) {
     this.defaultPrefixOutbound = this._sharedService.conversationSettings.prefixCode;
 
-    this.outboundCall = this.fb.group({
+    this.outboundCallForm = this.fb.group({
       phoneControl: [
         this.defaultPrefixOutbound,
         [Validators.required, Validators.pattern("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$"), Validators.minLength(3), Validators.maxLength(20)]
@@ -57,7 +57,7 @@ export class ManualOutboundCallComponent implements OnInit, AfterViewInit {
 
     phoneField.addEventListener("keydown", (event) => {
       // Check your conditions here
-      if (this.outboundCall.get("phoneControl").value == this.defaultPrefixOutbound) {
+      if (this.outboundCallForm.get("phoneControl").value == this.defaultPrefixOutbound) {
         // Prevent the default behavior of the backspace key (key code 8)
         if (event.key === "ArrowLeft" || event.key === "Backspace") {
           event.preventDefault();
@@ -67,9 +67,9 @@ export class ManualOutboundCallComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.phoneNumberFieldSubscriber = this.outboundCall.get("phoneControl").valueChanges.subscribe((phoneNumber) => {
+    this.phoneNumberFieldSubscriber = this.outboundCallForm.get("phoneControl").valueChanges.subscribe((phoneNumber) => {
       if (phoneNumber != null && phoneNumber != "" && phoneNumber != undefined) {
-        this.outboundCall.get("phoneControl").setValue("", { emitEvent: false });
+        this.outboundCallForm.get("phoneControl").setValue("", { emitEvent: false });
 
         this.formatePhoneNumber(phoneNumber);
       } else {
@@ -85,7 +85,7 @@ export class ManualOutboundCallComponent implements OnInit, AfterViewInit {
 
     //   setTimeout(() => {
     let plusExists = false;
-    this.outboundCall.get("phoneControl").setValue("", { emitEvent: false });
+    this.outboundCallForm.get("phoneControl").setValue("", { emitEvent: false });
     if (phoneNumber[0] == "+") {
       plusExists = true;
     }
@@ -94,7 +94,7 @@ export class ManualOutboundCallComponent implements OnInit, AfterViewInit {
       phoneNumber = "+" + phoneNumber;
     }
     this.phoneNumber = this.applyPrefix(phoneNumber);
-    this.outboundCall.get("phoneControl").setValue(this.phoneNumber, { emitEvent: false });
+    this.outboundCallForm.get("phoneControl").setValue(this.phoneNumber, { emitEvent: false });
     // }, 100);
   }
 
@@ -146,16 +146,16 @@ export class ManualOutboundCallComponent implements OnInit, AfterViewInit {
   }
 
   handleThrottledKeyUp() {
-    this.identifiedCustomer = "";
-    if (this.outboundCall.get("phoneControl").value.length > 2) {
+    this.identifiedCustomer = undefined;
+    if (this.outboundCallForm.get("phoneControl").value.length > 2) {
       this.getCustomers(this.limit, this.offSet, this.sort, {
-        field: "phoneNumber",
-        value: encodeURIComponent(this.outboundCall.get("phoneControl").value)
+        field: "voice",
+        value: encodeURIComponent(this.outboundCallForm.get("phoneControl").value)
       });
     }
 
-    if (this.outboundCall.get("phoneControl").value == "") {
-      this.outboundCall.get("phoneControl").setValue(this.defaultPrefixOutbound, { emitEvent: false });
+    if (this.outboundCallForm.get("phoneControl").value == "") {
+      this.outboundCallForm.get("phoneControl").setValue(this.defaultPrefixOutbound, { emitEvent: false });
     }
   }
 
@@ -165,14 +165,34 @@ export class ManualOutboundCallComponent implements OnInit, AfterViewInit {
 
   initiatingOutboundCall() {
     this.dialog.closeAll();
-    const dialogRef = this.dialog.open(CallControlsComponent, {
-      panelClass: "call-controls-dialog",
-      hasBackdrop: false,
-      position: {
-        top: "8%",
-        right: "8%"
-      }
-    });
-    dialogRef.afterClosed().subscribe((result) => {});
+    let inputValue = this.outboundCallForm.get("phoneControl").value;
+    if (!this.identifiedCustomer) this.getCustomerByVoiceIdentifier(inputValue);
+    else this._sipService.makeCallOnSip(inputValue);
+
+    // this._sipService.makeCallOnSip()
+    // const dialogRef = this.dialog.open(CallControlsComponent, {
+    //   panelClass: "call-controls-dialog",
+    //   hasBackdrop: false,
+    //   position: {
+    //     top: "8%",
+    //     right: "8%"
+    //   }
+    // });
+    // dialogRef.afterClosed().subscribe((result) => {});
+  }
+
+  getCustomerByVoiceIdentifier(identifier) {
+    try {
+      this._httpService.getCustomerByChannelTypeAndIdentifier("CX_VOICE", identifier).subscribe(
+        (res) => {
+          if (res.customer) this._sipService.makeCallOnSip(identifier);
+        },
+        (error) => {
+          this._sharedService.Interceptor(error.error, "err");
+        }
+      );
+    } catch (e) {
+      console.error("[Error] getCustomerByVoiceIdentifier Sip ==>", e);
+    }
   }
 }
