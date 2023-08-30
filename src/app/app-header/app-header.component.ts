@@ -350,6 +350,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe((result) => {});
   }
+
   openCallDialog() {
     const dialogRef = this.dialog.open(ManualOutboundCallComponent, {
       maxWidth: "700px",

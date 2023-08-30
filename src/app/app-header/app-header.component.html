@@ -9,65 +9,120 @@
                mat-menu-item class="main-menu-item">
                   <span>Dashboard</span>
                </button> -->
-        <button routerLink="/supervisor/announcement" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
-          mat-menu-item class="main-menu-item" *ngIf="('supervisor' | authPipe : 'view_all') as result">
+        <button
+          routerLink="/supervisor/announcement"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          mat-menu-item
+          class="main-menu-item"
+          *ngIf="'supervisor' | authPipe: 'view_all' as result"
+        >
           <span>Team Announcements </span>
         </button>
-        <button routerLink="/customers/chats" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
-          mat-menu-item class="main-menu-item">
-          <span>{{'app-header.customer-conversation-view' | translate}}</span>
+        <button
+          routerLink="/customers/chats"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          mat-menu-item
+          class="main-menu-item"
+        >
+          <span>{{ "app-header.customer-conversation-view" | translate }}</span>
         </button>
-        <button *ngIf="('customer' | authPipe : 'view') as result" routerLink="/customers/phonebook"
-          routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
-          <span>{{'app-header.customer-list-view' | translate}}</span>
+        <button
+          *ngIf="'customer' | authPipe: 'view' as result"
+          routerLink="/customers/phonebook"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          mat-menu-item
+          class="main-menu-item"
+        >
+          <span>{{ "app-header.customer-list-view" | translate }}</span>
         </button>
-        <button *ngIf="('customer-labels' | authPipe : 'assign_label') as result" routerLink="/label"
-          routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" [routerLinkActiveOptions]="{exact:true}"
-          mat-menu-item class="main-menu-item">
-          <span>{{'app-header.customer-labels' | translate}}</span>
+        <button
+          *ngIf="'customer-labels' | authPipe: 'assign_label' as result"
+          routerLink="/label"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          [routerLinkActiveOptions]="{ exact: true }"
+          mat-menu-item
+          class="main-menu-item"
+        >
+          <span>{{ "app-header.customer-labels" | translate }}</span>
         </button>
-        <button *ngIf="('subscribed-list' | authPipe : 'view') as result" routerLink="/subscribed-list"
-          routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
-          <span>{{'app-header.subscribed-lists' | translate}}</span>
+        <button
+          *ngIf="'subscribed-list' | authPipe: 'view' as result"
+          routerLink="/subscribed-list"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          mat-menu-item
+          class="main-menu-item"
+        >
+          <span>{{ "app-header.subscribed-lists" | translate }}</span>
         </button>
-        <button *ngIf="('customer-schema' | authPipe : 'view') as result" routerLink="/customer-schema"
-          routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
-          <span>{{'app-header.customer-schema' | translate}}</span>
+        <button
+          *ngIf="'customer-schema' | authPipe: 'view' as result"
+          routerLink="/customer-schema"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          mat-menu-item
+          class="main-menu-item"
+        >
+          <span>{{ "app-header.customer-schema" | translate }}</span>
         </button>
-        <button mat-menu-item [matMenuTriggerFor]="supervisor" *ngIf="('supervisor' | authPipe : 'view_all') as result"
-          mat-menu-item class="main-menu-item">
-          <span>{{'app-header.dashboard' | translate}}</span>
+        <button
+          mat-menu-item
+          [matMenuTriggerFor]="supervisor"
+          *ngIf="'supervisor' | authPipe: 'view_all' as result"
+          mat-menu-item
+          class="main-menu-item"
+        >
+          <span>{{ "app-header.dashboard" | translate }}</span>
         </button>
       </mat-menu>
       <mat-menu #supervisor="matMenu">
-        <button routerLink="/supervisor/dashboards" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
-          mat-menu-item class="main-menu-item">
-          <span>{{'app-header.summary-dashboard' | translate}}</span>
+        <button
+          routerLink="/supervisor/dashboards"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          mat-menu-item
+          class="main-menu-item"
+        >
+          <span>{{ "app-header.summary-dashboard" | translate }}</span>
         </button>
-        <button routerLink="/supervisor/active-chats" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
-          mat-menu-item class="main-menu-item">
-          <span>{{'app-header.active-conversations-detail' | translate}}</span>
+        <button
+          routerLink="/supervisor/active-chats"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          mat-menu-item
+          class="main-menu-item"
+        >
+          <span>{{ "app-header.active-conversations-detail" | translate }}</span>
         </button>
-        <button routerLink="/supervisor/queue-chats" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
-          mat-menu-item class="main-menu-item">
-          <span>{{'app-header.queued-conversations-detail' | translate}}
-          </span>
+        <button
+          routerLink="/supervisor/queue-chats"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          mat-menu-item
+          class="main-menu-item"
+        >
+          <span>{{ "app-header.queued-conversations-detail" | translate }} </span>
         </button>
-        <button routerLink="/supervisor/active-agents-detail" routerLinkActive="active"
-          [routerLinkActiveOptions]="{exact:true}" mat-menu-item class="main-menu-item">
-          <span>{{'app-header.active-agents-detail' | translate | titlecase}}
-          </span>
+        <button
+          routerLink="/supervisor/active-agents-detail"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          mat-menu-item
+          class="main-menu-item"
+        >
+          <span>{{ "app-header.active-agents-detail" | translate | titlecase }} </span>
         </button>
-
       </mat-menu>
 
-      <img src="assets/images/expertflow-logo.png">
+      <img src="assets/images/expertflow-logo.png" />
     </div>
     <!-- <span [innerHTML]="'Linkify the following URL: https://github.com/anthonynahas/ngx-linkifyjs and share it <3' | linkify"></span> -->
 
-
     <div class="col-md-8 col-sm-7 right-profile-area">
-
       <div class="info">
         <!--        <span class="theme-switcher">-->
         <!--          <mat-icon (click)="themeSwitch()"-->
@@ -112,19 +167,32 @@
           <span class="time_state">{{display | date :"HH:mm:ss":'UTC'}}</span>
 
         </div> -->
-        <button (click)="openCallDialog()" class="sms-trigger"  mat-icon-button color="primary"><mat-icon >dialpad</mat-icon></button>
+        <button
+          *ngIf="_appConfigService.config.isCxVoiceEnabled && _sipService.isSipConnected && _sipService.isSipLoggedIn"
+          (click)="openCallDialog()"
+          class="sms-trigger"
+          mat-icon-button
+          color="primary"
+        >
+          <mat-icon>dialpad</mat-icon>
+        </button>
 
-        <button *ngIf="_sharedService.conversationSettings.isOutboundSmsEnabled && _sharedService.conversationSettings.isOutboundSmsEnabled == true" class="sms-trigger"  mat-icon-button color="primary"
-         (click)="openMessageDialog()"><mat-icon >message</mat-icon></button>
+        <button
+          *ngIf="_sharedService.conversationSettings.isOutboundSmsEnabled && _sharedService.conversationSettings.isOutboundSmsEnabled == true"
+          class="sms-trigger"
+          mat-icon-button
+          color="primary"
+          (click)="openMessageDialog()"
+        >
+          <mat-icon>message</mat-icon>
+        </button>
 
         <div class="announcement-trigger-area">
           <span class="notification-hint" *ngIf="unreadAnnouncements > 0">{{ unreadAnnouncements }}</span>
-          <button mat-icon-button class="announcement-trigger" [ngClass]="{'announcement-tab-opened': sidenav.opened}"
-            (click)="sidenav.toggle()">
+          <button mat-icon-button class="announcement-trigger" [ngClass]="{ 'announcement-tab-opened': sidenav.opened }" (click)="sidenav.toggle()">
             <!--            <img src="assets/images/announcement.svg">-->
             <mat-icon>notifications</mat-icon>
           </button>
-
         </div>
 
         <!-- <div class="multi-language">
@@ -149,8 +217,8 @@
         <div class="vert-dropdown">
           <button mat-button [matMenuTriggerFor]="menu" class="vert-button">
             <div class="agent-showcase-mini">
-              <mat-icon class="material-icons {{_cacheService.agentPresence.state.name | lowercase}}">lens</mat-icon>
-              <img src="assets/images/dummy-user.svg" alt="Agent">
+              <mat-icon class="material-icons {{ _cacheService.agentPresence.state.name | lowercase }}">lens</mat-icon>
+              <img src="assets/images/dummy-user.svg" alt="Agent" />
             </div>
           </button>
           <!-- <span class="agent-time">{{display | date :"HH:mm:ss":'UTC'}}</span> -->
@@ -158,111 +226,124 @@
             <countup-timer class="agent-time" [countUpTimerConfig]="timerConfigs"></countup-timer>
           </span>
 
-
-
-          <mat-menu (click)="$event.stopPropagation()" #menu="matMenu" class="custom-user-menu matMenu"
-            xPosition="after">
+          <mat-menu (click)="$event.stopPropagation()" #menu="matMenu" class="custom-user-menu matMenu" xPosition="after">
             <div class="menu-list-content" (click)="$event.stopPropagation()">
               <div *ngIf="stateView">
                 <div class="main-showcase">
                   <div class="agent-showcase">
-                    <img src="assets/images/dummy-user.svg" alt="Agent">
+                    <img src="assets/images/dummy-user.svg" alt="Agent" />
                   </div>
-                  <h4 [matTooltip]="_cacheService.agent.username">{{_cacheService.agent.username}}</h4>
-                  <span
-                    *ngIf="_finesseService?.finesseAgent?.extension || _cacheService?.agent?.attributes?.agentExtension">(Ext:
-                    {{_finesseService?.finesseAgent?.extension ? _finesseService?.finesseAgent?.extension :
-                    (_cacheService?.agent?.attributes.agentExtension && _cacheService?.agent?.attributes.agentExtension
-                    != "" && _cacheService?.agent?.attributes.agentExtension != null &&
-                    _cacheService?.agent?.attributes.agentExtension != undefined &&
-                    _cacheService?.agent?.attributes.agentExtension[0] != "" ?
-                    _cacheService?.agent?.attributes.agentExtension[0] : 'N/A')}})</span>
+                  <h4 [matTooltip]="_cacheService.agent.username">{{ _cacheService.agent.username }}</h4>
+                  <span *ngIf="_finesseService?.finesseAgent?.extension || _cacheService?.agent?.attributes?.agentExtension"
+                    >(Ext:
+                    {{
+                      _finesseService?.finesseAgent?.extension
+                        ? _finesseService?.finesseAgent?.extension
+                        : _cacheService?.agent?.attributes.agentExtension &&
+                          _cacheService?.agent?.attributes.agentExtension != "" &&
+                          _cacheService?.agent?.attributes.agentExtension != null &&
+                          _cacheService?.agent?.attributes.agentExtension != undefined &&
+                          _cacheService?.agent?.attributes.agentExtension[0] != ""
+                        ? _cacheService?.agent?.attributes.agentExtension[0]
+                        : "N/A"
+                    }})</span
+                  >
                 </div>
-                <p *ngIf="('state-change' | authPipe : 'manage_state_change') as result"
-                  class="menu-trigger-custom state-trigger">
-                  <span class="inner-btn">{{'globals.state' | translate}}</span>
+                <p *ngIf="'state-change' | authPipe: 'manage_state_change' as result" class="menu-trigger-custom state-trigger">
+                  <span class="inner-btn">{{ "globals.state" | translate }}</span>
 
-                  <button [disabled]="disableMrdActions" mat-button #stateTrigger="matMenuTrigger"
-                    [matMenuTriggerFor]="agentState" (click)="$event.stopPropagation()"
-                    class="{{_cacheService.agentPresence.state.name | lowercase}} mat-menu-item-submenu-trigger">
-                    <span class="ellipsis">{{(_cacheService.agentPresence.state.name | removeUnderscore | titlecase) +
-                      (_cacheService.agentPresence.state.reasonCode != null ?' - '+
-                      _cacheService.agentPresence.state.reasonCode.name :
-                      '') }}</span>
+                  <button
+                    [disabled]="disableMrdActions"
+                    mat-button
+                    #stateTrigger="matMenuTrigger"
+                    [matMenuTriggerFor]="agentState"
+                    (click)="$event.stopPropagation()"
+                    class="{{ _cacheService.agentPresence.state.name | lowercase }} mat-menu-item-submenu-trigger"
+                  >
+                    <span class="ellipsis">{{
+                      (_cacheService.agentPresence.state.name | removeUnderscore | titlecase) +
+                        (_cacheService.agentPresence.state.reasonCode != null ? " - " + _cacheService.agentPresence.state.reasonCode.name : "")
+                    }}</span>
                   </button>
                 </p>
                 <!-- <p class="menu-trigger-custom logged-time ">{{display | date :"HH:mm:ss":'UTC'}} -->
                 <!-- <p class="menu-trigger-custom logged-time "><countup-timer [countUpTimerConfig]="timerConfigs"></countup-timer></p> -->
 
-
-
-                <div *ngIf="('state-change' | authPipe : 'manage_state_change') as result" class="mrd-states"
-                  (click)="$event.stopPropagation()">
-                  <span class="mrd-text">{{'app-header.change-mrd-state' | translate}}</span>
-                  <div class="state-main-wrapper"
-                    *ngFor="let agentMrdState of _cacheService.agentPresence.agentMrdStates">
-                    <p class="menu-trigger-custom select-state {{agentMrdState.state | lowercase}}">
-                      <span class="inner-btn ">{{agentMrdState.mrd.name}}<small>({{agentMrdState.state}})</small></span>
+                <div *ngIf="'state-change' | authPipe: 'manage_state_change' as result" class="mrd-states" (click)="$event.stopPropagation()">
+                  <span class="mrd-text">{{ "app-header.change-mrd-state" | translate }}</span>
+                  <div class="state-main-wrapper" *ngFor="let agentMrdState of _cacheService.agentPresence.agentMrdStates">
+                    <p class="menu-trigger-custom select-state {{ agentMrdState.state | lowercase }}">
+                      <span class="inner-btn"
+                        >{{ agentMrdState.mrd.name }}<small>({{ agentMrdState.state }})</small></span
+                      >
                       <mat-slide-toggle
-                        [disabled]="disableMrdActions || (agentMrdState.mrd.id == _appConfigService.config.CX_VOICE_MRD && _appConfigService.config.isCxVoiceEnabled &&  !_sipService.isSipLoggedIn)"
-                        (change)="changeMRD($event,agentMrdState)" [checked]="agentMrdState.state | getmrdswitches"
-                        color="primary"></mat-slide-toggle>
+                        [disabled]="
+                          disableMrdActions ||
+                          (agentMrdState.mrd.id == _appConfigService.config.CX_VOICE_MRD &&
+                            _appConfigService.config.isCxVoiceEnabled &&
+                            !_sipService.isSipLoggedIn)
+                        "
+                        (change)="changeMRD($event, agentMrdState)"
+                        [checked]="agentMrdState.state | getmrdswitches"
+                        color="primary"
+                      ></mat-slide-toggle>
                     </p>
                   </div>
                 </div>
 
                 <p class="menu-trigger-custom select-language">
-                  <span class="inner-btn">{{'app-header.selected-language' | translate}}</span>
+                  <span class="inner-btn">{{ "app-header.selected-language" | translate }}</span>
 
                   <!--                <button mat-menu-item [matMenuTriggerFor]="languageSelection" class="language-trigger">-->
                   <!--                  <img src="assets/flags/{{languageFlag}}" width="20"-->
                   <!--                    onError="this.src='assets/flags/generic.png';">{{languageName}} </button>-->
 
-
-
                   <button (click)="$event.stopPropagation(); updateLanguage()" mat-button class="language-trigger">
-                    <img src="{{languageFlag}}" width="20" onError="this.src='assets/flags/generic.png';">
-                    {{languageName}} <mat-icon>keyboard_arrow_right</mat-icon>
+                    <img src="{{ languageFlag }}" width="20" onError="this.src='assets/flags/generic.png';" />
+                    {{ languageName }} <mat-icon>keyboard_arrow_right</mat-icon>
                   </button>
                 </p>
 
                 <p class="menu-trigger-custom logged-out-trigger">
-                  <button mat-menu-item class="theme-switcher" (click)="themeSwitch(false)"
-                    matTooltip="{{(isdarkMode ? 'app-header.switch-light' : 'app-header.switch-dark') | translate}}">
-                    <span class="theme-sub-text">{{'app-header.theme' | translate}}<small>{{'app-header.light-dark' |
-                        translate}}</small></span>
-                    <mat-icon>
-                      {{isdarkMode ? 'brightness_7' : 'brightness_6'}}</mat-icon>
+                  <button
+                    mat-menu-item
+                    class="theme-switcher"
+                    (click)="themeSwitch(false)"
+                    matTooltip="{{ (isdarkMode ? 'app-header.switch-light' : 'app-header.switch-dark') | translate }}"
+                  >
+                    <span class="theme-sub-text"
+                      >{{ "app-header.theme" | translate }}<small>{{ "app-header.light-dark" | translate }}</small></span
+                    >
+                    <mat-icon> {{ isdarkMode ? "brightness_7" : "brightness_6" }}</mat-icon>
                   </button>
                 </p>
 
-
                 <p *ngIf="_finesseService.finesseAgent.loginId == ''" class="menu-trigger-custom logged-out-trigger">
-                  <button mat-menu-item (click)="logoutReasonList = true; stateView = false;">
-                    {{'app-header.logout' | translate}}
-                    <mat-icon style="color: gray;font-size: 20px;">exit_to_app</mat-icon>
+                  <button mat-menu-item (click)="logoutReasonList = true; stateView = false">
+                    {{ "app-header.logout" | translate }}
+                    <mat-icon style="color: gray; font-size: 20px">exit_to_app</mat-icon>
                   </button>
                 </p>
               </div>
 
               <!-- Language list -->
               <div *ngIf="changeLanguage" class="language-change-list" (click)="$event.stopPropagation()">
-                <p>{{'app-header.selected-language' | translate}}<mat-icon
-                    (click)="changeLanguage = false; stateView = true">close</mat-icon>
-                </p>
-                <button mat-menu-item class="language-selection"
-                  [ngClass]="{'selected-language': language.code == changeLanguageCode}"
-                  *ngFor="let language of languages" (click)="lang(language.code)">
-                  <img src="{{language.flag}}" width="20"
-                    onError="this.src='assets/flags/generic.png';">{{language.name}}
+                <p>{{ "app-header.selected-language" | translate }}<mat-icon (click)="changeLanguage = false; stateView = true">close</mat-icon></p>
+                <button
+                  mat-menu-item
+                  class="language-selection"
+                  [ngClass]="{ 'selected-language': language.code == changeLanguageCode }"
+                  *ngFor="let language of languages"
+                  (click)="lang(language.code)"
+                >
+                  <img src="{{ language.flag }}" width="20" onError="this.src='assets/flags/generic.png';" />{{ language.name }}
                 </button>
               </div>
 
               <div *ngIf="logoutReasonList" class="language-change-list" (click)="$event.stopPropagation()">
                 <p>
                   {{ "app-header.select-reason" | translate }}
-                  <mat-icon (click)="logoutReasonList = false; stateView = true"
-                    (click)="selectedReasonCode=null">close</mat-icon>
+                  <mat-icon (click)="logoutReasonList = false; stateView = true" (click)="selectedReasonCode = null">close</mat-icon>
                 </p>
                 <!-- <div *ngFor="let reason of reasonCodes; let i = index">
                   <span *ngIf="(reason.type | lowercase ) == 'logout'" class="logout-reason-inner">
@@ -273,54 +354,42 @@
                 <mat-radio-group aria-label="Select an option">
                   <div *ngFor="let reason of reasonCodes; let i = index">
                     <span *ngIf="(reason.type | lowercase) == 'logout'" class="logout-reason-inner">
-                      <mat-radio-button value="{{ reason.name }}" (change)="onChange(reason)">{{ reason.name
-                        }}</mat-radio-button>
+                      <mat-radio-button value="{{ reason.name }}" (change)="onChange(reason)">{{ reason.name }}</mat-radio-button>
                     </span>
                   </div>
                 </mat-radio-group>
                 <button (click)="logout()" mat-button class="main-logout">{{ "app-header.logout" | translate }}</button>
               </div>
-
             </div>
           </mat-menu>
           <mat-menu #agentState="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
-            <button (click)="changeState(1); $event.stopPropagation(); closeStateMenu(stateTrigger)" mat-menu-item
-              class="state-trigger">
-
-              <mat-icon style="color: #79a31d !important;">lens
-              </mat-icon>
-              {{'app-header.ready' | translate}}
+            <button (click)="changeState(1); $event.stopPropagation(); closeStateMenu(stateTrigger)" mat-menu-item class="state-trigger">
+              <mat-icon style="color: #79a31d !important">lens </mat-icon>
+              {{ "app-header.ready" | translate }}
             </button>
             <div *ngFor="let reason of reasonCodes">
-              <button *ngIf="(reason.type | lowercase) == 'not_ready'"
-                (click)="changeState(reason); $event.stopPropagation(); closeStateMenu(stateTrigger)" mat-menu-item
-                class="state-trigger">
-                <mat-icon style="color:#b4b4b4;">
-                  lens
-                </mat-icon>
-                {{reason.name}}
+              <button
+                *ngIf="(reason.type | lowercase) == 'not_ready'"
+                (click)="changeState(reason); $event.stopPropagation(); closeStateMenu(stateTrigger)"
+                mat-menu-item
+                class="state-trigger"
+              >
+                <mat-icon style="color: #b4b4b4"> lens </mat-icon>
+                {{ reason.name }}
               </button>
             </div>
           </mat-menu>
         </div>
-
       </div>
     </div>
   </div>
 
-
-
-  <mat-sidenav-container hasBackdrop="true" class="right-canned-message-list announcement-tab"
-    [ngClass]="{'mat-drawer-opened': sidenav?.opened}">
+  <mat-sidenav-container hasBackdrop="true" class="right-canned-message-list announcement-tab" [ngClass]="{ 'mat-drawer-opened': sidenav?.opened }">
     <mat-sidenav #sidenav position="end" mode="over" disableClose mode="over">
-
-
       <div class="announcement-tab-header">
         <h4>Announcements</h4>
       </div>
       <app-agent-announcements></app-agent-announcements>
-
     </mat-sidenav>
-
   </mat-sidenav-container>
 </div>

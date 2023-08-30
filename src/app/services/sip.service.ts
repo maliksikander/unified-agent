@@ -16,7 +16,6 @@ declare var postMessage;
 })
 export class SipService implements OnInit {
   public _isActiveSub = new Subject();
-
   extension: number;
   customer: any;
   startTime: any;
@@ -27,6 +26,7 @@ export class SipService implements OnInit {
   isCallHold: boolean = false;
   activeDialog: any;
   isSipLoggedIn: boolean = false;
+  isSipConnected: boolean = false;
   agentMrdStates: any;
   customerNumber: any = "";
   isSubscriptionFailed = false;
@@ -127,7 +127,13 @@ export class SipService implements OnInit {
         }
       } else if (event.event.toLowerCase() == "xmppevent") {
         if (event.response && event.response.type == "IN_SERVICE") {
+          this.isSipConnected = true;
+          if (this.isSipLoggedIn) this.readyAgentState();
           this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-Connected"), "succ");
+          console.log("Connection Established, CTI Status is Connected ==>");
+        } else if (event.response && event.response.type == "OUT_OF_SERVICE") {
+          this.isSipConnected = false;
+          this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-connection-failed"), "err");
           console.log("Connection Established, CTI Status is Connected ==>");
         }
       } else if (event.event.toLowerCase() == "dialogstate") {
@@ -154,6 +160,9 @@ export class SipService implements OnInit {
           this.isSubscriptionFailed = true;
           this.notReadyAgentState();
           this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-invalid-credentials"), "err");
+        } else if (event.response.type.toLowerCase() == "networkissue") {
+          this.notReadyAgentState();
+          // this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-invalid-credentials"), "err");
         } else if (event.response.type.toLowerCase() == "generalerror") {
           if (event.response.description.toLowerCase() == "canceled") {
             this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-call-canceled"), "err");
