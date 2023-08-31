@@ -18,7 +18,7 @@ export class CallControlsComponent implements OnInit {
   customerNumber: any = this._sipService.customerNumber;
   // ciscoVoiceSession;
   cxVoiceSession;
-  isCalling = true;
+  isCalling: boolean = false;
   // callConnected = false;
 
   constructor(
@@ -38,14 +38,15 @@ export class CallControlsComponent implements OnInit {
     //   this.seconds = value % 60;
     // });
     // setTimeout(() => {
-      // this.isCalling = false;
-      // this.callConnected = true;
+    // this.isCalling = false;
+    // this.callConnected = true;
     // }, 5000);
 
     this._sipService._isActiveSub.subscribe((val) => {
       if (val == false) this.cancel();
     });
     if (this.data.conversation) this.getVoiceChannelSession();
+    else if (this.data && this.data.isOurbound && this.data.isOutbound == true) this.handleOBCall(this.data);
   }
 
   cancel() {
@@ -75,6 +76,11 @@ export class CallControlsComponent implements OnInit {
     }
   }
 
+  handleOBCall(data) {
+    console.log("test==>",data)
+    this.setToolbarTimer(data.dialogData.id);
+    if(data.isManualOB == true) this.isCalling = true;
+  }
   // stopTimer(): void {
   //   this._sipService.stopTimer();
   // }
@@ -85,24 +91,41 @@ export class CallControlsComponent implements OnInit {
         return channelSession.channel.channelType.name.toLowerCase() === "cx_voice";
       });
       if (this.cxVoiceSession) {
-        const cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
-        const cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
-        if (cacheDialog) {
-          const currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
-          const startTime = new Date(currentParticipant.startTime);
-          this._sipService.timeoutId = setInterval(() => {
-            const currentTime = new Date();
-            const timedurationinMS = currentTime.getTime() - startTime.getTime();
-            this.msToHMS(timedurationinMS);
-          }, 1000);
-        } else {
-          console.log("No Dialog Found==>");
-        }
+        this.setToolbarTimer(this.cxVoiceSession.id);
+        // const cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
+        // const cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
+        // if (cacheDialog) {
+        //   const currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
+        //   const startTime = new Date(currentParticipant.startTime);
+        //   this._sipService.timeoutId = setInterval(() => {
+        //     const currentTime = new Date();
+        //     const timedurationinMS = currentTime.getTime() - startTime.getTime();
+        //     this.msToHMS(timedurationinMS);
+        //   }, 1000);
+        // } else {
+        //   console.log("No Dialog Found==>");
+        // }
       } else {
         clearInterval(this._sipService.timeoutId);
       }
     } catch (e) {
       console.error("[getVoiceChannelSession] Error:", e);
+    }
+  }
+
+  setToolbarTimer(dialogId) {
+    const cacheId = `${this._cacheService.agent.id}:${dialogId}`;
+    const cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
+    if (cacheDialog) {
+      const currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
+      const startTime = new Date(currentParticipant.startTime);
+      this._sipService.timeoutId = setInterval(() => {
+        const currentTime = new Date();
+        const timedurationinMS = currentTime.getTime() - startTime.getTime();
+        this.msToHMS(timedurationinMS);
+      }, 1000);
+    } else {
+      console.log("No Cache Dialog Found==>");
     }
   }
 

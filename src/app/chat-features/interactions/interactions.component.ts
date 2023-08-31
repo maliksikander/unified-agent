@@ -53,8 +53,8 @@ export class InteractionsComponent implements OnInit {
   pastActivitiesloadedOnce: boolean = false;
   // isTransfer = false;
   // isConsult = false;
-  ctiBarView = true;
-  ctiBoxView = false;
+  // ctiBarView = true;
+  // ctiBoxView = false;
   timer: any = "00:00";
   cxVoiceSession: any;
   isDialogClosed;
@@ -156,9 +156,15 @@ export class InteractionsComponent implements OnInit {
     });
 
     if (this.conversation && this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
-      if (this._sipService.isCallActive == true  && this._sipService.isToolbarActive == false) this.ctiControlBar();
+      if (this._sipService.isCallActive == true && this._sipService.isToolbarActive == false) this.ctiControlBar({ conversation: this.conversation });
       this.getVoiceChannelSession();
     }
+
+    this._sipService._activateToolbarSub.subscribe((res: any) => {
+      console.log("test4==>",res)
+      if (res.isManualOB == true) this.ctiControlBar(res);
+    });
+
     //this._cacheService.smsDialogData ||
     if (this.conversation.conversationId === "FAKE_CONVERSATION") {
       this.loadPastActivities("FAKE_CONVERSATION");
@@ -467,8 +473,8 @@ export class InteractionsComponent implements OnInit {
     }
   }
   eventFromChild(data) {
-    console.log("isbaropened " + data);
-    console.log("ctiBarView " + this.ctiBarView);
+    // console.log("isbaropened " + data);
+    // console.log("ctiBarView " + this.ctiBarView);
     this.isBarOpened = data;
   }
   eventFromChildForUpdatedLabel(data) {
@@ -1234,9 +1240,9 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  ctiControlBar() {
-    this.ctiBoxView = true;
-    this.ctiBarView = false;
+  ctiControlBar(data) {
+    // this.ctiBoxView = true;
+    // this.ctiBarView = false;
     this._sipService.isToolbarActive = true;
     const dialogRef = this.dialog.open(CallControlsComponent, {
       panelClass: "call-controls-dialog",
@@ -1245,11 +1251,11 @@ export class InteractionsComponent implements OnInit {
         top: "8%",
         right: "8%"
       },
-      data: { conversation: this.conversation }
+      data
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.ctiBoxView = false;
-      this.ctiBarView = true;
+      // this.ctiBoxView = false;
+      // this.ctiBarView = true;
       if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
     });
   }

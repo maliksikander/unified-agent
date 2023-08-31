@@ -8,6 +8,9 @@ import { socketService } from "./socket.service";
 import { httpService } from "./http.service";
 import { sharedService } from "./shared.service";
 import * as uuid from "uuid";
+// import { CtiToolbarService } from "./cti-toolbar.service";
+// import { CallControlsComponent } from "../new-components/call-controls/call-controls.component";
+// import { MatDialog, MatDialogRef } from "@angular/material";
 
 declare var postMessage;
 
@@ -16,6 +19,7 @@ declare var postMessage;
 })
 export class SipService implements OnInit {
   public _isActiveSub = new Subject();
+  public _activateToolbarSub = new Subject();
   extension: number;
   customer: any;
   startTime: any;
@@ -32,6 +36,8 @@ export class SipService implements OnInit {
   isSubscriptionFailed = false;
   isMuted: boolean = false;
   isToolbarActive: boolean = false;
+  isOBActive:boolean = false;
+  // dialogRef;
 
   constructor(
     private _appConfigService: appConfigService,
@@ -40,7 +46,10 @@ export class SipService implements OnInit {
     private _socketService: socketService,
     private _httpService: httpService,
     private _snackbarService: snackbarService,
-    private _sharedService: sharedService
+    private _sharedService: sharedService,
+    // private _ctiToolbarService:CtiToolbarService
+    // private dialog: MatDialog,
+    // public dialogRef: MatDialogRef<CallControlsComponent>
   ) {}
   ngOnInit(): void {}
 
@@ -152,6 +161,11 @@ export class SipService implements OnInit {
         this.handleInboundAndCampaignCallEvent(event, "INBOUND");
       } else if (event.event.toLowerCase() == "campaigncall") {
         this.handleInboundAndCampaignCallEvent(event, "OUTBOUND_CAMPAIGN");
+      } else if (event.event.toLowerCase() == "outbounddialing") {
+        if (event.response.dialog.customerNumber && event.response.dialog.state.toLowerCase() == "initiated") {
+          console.log("test1==>")
+          this.identifyCustomer(event, event.response.dialog.customerNumber, "OUTBOUND");
+        }
       } else if (event.event == "Error") {
         if (event.response.type.toLowerCase() == "invalidstate") {
           this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-incorrect-request"), "err");
@@ -167,7 +181,7 @@ export class SipService implements OnInit {
           if (event.response.description.toLowerCase() == "canceled") {
             this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-call-canceled"), "err");
           } else {
-            let cacheId = `${this._cacheService.agent.id}:${event.response.dialog.id}`;
+            let cacheId = `${this._cacheService.agent.id}:${event.response.dialog && event.response.dialog.id ? event.response.dialog.id : ''}`;
             let dialogCache: any = this.getDialogFromCache(cacheId);
             if (dialogCache && dialogCache.dialogState == "active") {
               this.handleCallDroppedEvent(cacheId, event.dialog, "call_end", undefined, "DIALOG_ENDED", undefined);
@@ -219,13 +233,20 @@ export class SipService implements OnInit {
             identifier,
             dialogData: sipEvent.response.dialog,
             provider: "cx_voice",
-            isOutbound: false
+            isOutbound: false,
+            isManualOB:false
           };
           if (callType == "INBOUND" || callType == "OUTBOUND_CAMPAIGN") {
             if (callType == "OUTBOUND_CAMPAIGN") data.isOutbound = true;
-            this._sharedService.serviceChangeMessage({ msg: "openExternalModeRequestHeader", data: data });
+            this._sharedService.serviceChangeMessage({ msg: "openExternalModeRequestHeader", data: data });  
             this.setDialogCache(sipEvent, "ALERTING");
+          } else if(callType == "OUTBOUND"){
+            console.log("test2==>")
+            data.isManualOB = true;
+            this.setDialogCache(sipEvent, "ALERTING");
+            this.handleOBRequest(data);
           }
+          // this.setDialogCache(sipEvent, "ALERTING");
         },
         (error) => {
           this._sharedService.Interceptor(error.error, "err");
@@ -235,6 +256,18 @@ export class SipService implements OnInit {
       console.error("[Error] getCustomerByVoiceIdentifier Sip ==>", e);
     }
   }
+
+  handleOBRequest(data){
+    this.customerNumber = data.dialogData.customerNumber;
+    this.activeDialog = data.dialogData;
+    this.isOBActive = true;
+    console.log("test3==>")
+    this._activateToolbarSub.next(data);
+    // this._ctiToolbarService.openCTIToolbar(data);
+  }
+
+
+
 
   getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, dialogEvent, intent, customerData, timeStamp, methodCalledOn) {
     let customer = customerData ? customerData : this.customer;

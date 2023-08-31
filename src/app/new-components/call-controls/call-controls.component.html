@@ -49,7 +49,7 @@
     <!--    <mat-icon class="control-adjust" (click)="fullView = !fullView">{{fullView ? 'fullscreen_exit'  : 'fullscreen'}}</mat-icon>-->
     <div class="mini-audio-call">
       <div class="main-showcase customer-info-dp">
-        <!-- <h3 *ngIf="isCalling">Initiating Audio Call</h3> -->
+        <h3 *ngIf="isCalling">Initiating Audio Call</h3>
         <div class="agent-showcase {{ isCalling ? 'calling' : '' }}">
           <!--          <img src="assets/images/user11.png" alt="customer">-->
           <img src="assets/images/dummy-user.svg" alt="Customer" />
@@ -58,12 +58,12 @@
 
         <h4 matTooltip="{{ customerNumber }}">
           {{ customerNumber }}
-          <span class="timer-call">call in progress</span>
+          <span *ngIf="!isCalling" class="timer-call">Call in progress</span>
           <span class="timer-call">{{ timer }}</span>
         </h4>
       </div>
 
-      <ul class="assistance-actions call-actions">
+      <ul *ngIf="!isCalling" class="assistance-actions call-actions">
         <!--        <li><button mat-fab (click)="cancel()"><mat-icon>picture_in_picture</mat-icon></button></li>-->
 
         <li>
@@ -90,7 +90,7 @@
         </li>
       </ul>
 
-      <!-- <button class="initial-trigger" mat-button><mat-icon>call_end</mat-icon></button> -->
+      <button *ngIf="isCalling" class="initial-trigger" mat-button><mat-icon>call_end</mat-icon></button>
     </div>
   </div>
 </div>

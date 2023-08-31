@@ -1,21 +1,21 @@
 import { EventEmitter, Injectable, Output } from "@angular/core";
-import { MatDialog } from "@angular/material";
 import { TranslateService } from "@ngx-translate/core";
 import { Subject } from "rxjs";
 import { LinkConversationDialogComponent } from "../dialogs/link-conversation-dialog/link-conversation-dialog.component";
 import { ConfirmationDialogComponent } from "../new-components/confirmation-dialog/confirmation-dialog.component";
 import { httpService } from "./http.service";
 import { snackbarService } from "./snackbar.service";
+import { MatDialog } from "@angular/material";
 
 @Injectable({
   providedIn: "root"
 })
 export class sharedService {
   constructor(
-    private dialog: MatDialog,
     private _translateService: TranslateService,
     private _snackbarService: snackbarService,
-    private _httpService: httpService
+    private _httpService: httpService,
+    private dialog: MatDialog
   ) {
     this._translateService.stream("snackbar.FETCHING-CHATS").subscribe((data: string) => {
       this.mainPagetile = data;
@@ -158,4 +158,7 @@ export class sharedService {
   snackErrorMessage(msg) {
     this._snackbarService.open(msg, "err");
   }
+
+ 
+
 }

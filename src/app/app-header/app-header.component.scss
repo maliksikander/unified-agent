@@ -1130,5 +1130,6 @@ button {
 
   &:disabled {
     background: #e6e6e6 !important;
+    cursor: not-allowed;
   }
 }
