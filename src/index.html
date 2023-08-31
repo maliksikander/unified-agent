@@ -35,10 +35,14 @@
 
       let sipLib = document.createElement('script');
       let sipWrapper = document.createElement('script');
+      let serviceNow = document.createElement('script');
       sipLib.setAttribute('src', 'assets/cti/sip-libraries/sip-0.21.2.js');
       sipWrapper.setAttribute('src', 'assets/cti/sip-libraries/sip-wrapper.js');
+      serviceNow.setAttribute('src', 'assets/cti/sip-libraries/new_serviceNow.js');
+
       document.head.appendChild(sipLib);
       document.head.appendChild(sipWrapper);
+      document.head.appendChild(serviceNow);
 
     })();
 
