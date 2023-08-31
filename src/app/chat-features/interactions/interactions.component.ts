@@ -234,6 +234,7 @@ export class InteractionsComponent implements OnInit {
 
   //This is for private comment reply for Instagram for now.
   privateReplyToComment(message) {
+    console.log("here is themessage", message)
     this.privateMessageReply = "PRIVATE_REPLY"
     this.replyToComment(message)
   }
