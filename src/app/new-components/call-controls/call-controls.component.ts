@@ -19,7 +19,7 @@ export class CallControlsComponent implements OnInit {
   // ciscoVoiceSession;
   cxVoiceSession;
   isCalling = true;
-  callConnected = false;
+  // callConnected = false;
 
   constructor(
     public _cacheService: cacheService,

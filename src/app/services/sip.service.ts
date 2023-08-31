@@ -747,7 +747,7 @@ export class SipService implements OnInit {
         }
       };
       console.log("makeCallOnSip ==>", command);
-      // postMessage(command);
+      postMessage(command);
     } catch (error) {
       console.error("[Error on makeCallOnSip] ==>", error);
     }

@@ -42,49 +42,55 @@
 <!--  </div>-->
 <!--</div>-->
 
-
-
-
-
-
 <div class="call-control-box call-controls-view box-view expand-view-controls" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
   <mat-icon class="drag-controls" cdkDragHandle>more_vert</mat-icon>
 
   <div class="right-call-controls">
     <!--    <mat-icon class="control-adjust" (click)="fullView = !fullView">{{fullView ? 'fullscreen_exit'  : 'fullscreen'}}</mat-icon>-->
-    <div  class="mini-audio-call">
+    <div class="mini-audio-call">
       <div class="main-showcase customer-info-dp">
-        <h3 *ngIf="isCalling">Initiating Audio Call</h3>
-        <div class="agent-showcase {{isCalling ? 'calling': ''}}">
-<!--          <img src="assets/images/user11.png" alt="customer">-->
-          <img src="assets/images/dummy-user.svg" alt="Customer">
+        <!-- <h3 *ngIf="isCalling">Initiating Audio Call</h3> -->
+        <div class="agent-showcase {{ isCalling ? 'calling' : '' }}">
+          <!--          <img src="assets/images/user11.png" alt="customer">-->
+          <img src="assets/images/dummy-user.svg" alt="Customer" />
           <mat-icon routerLink="/customers/chats">flip_to_back</mat-icon>
         </div>
 
-
-          <h4  matTooltip="{{customerNumber}}">{{customerNumber}}
-          <span *ngIf="callConnected" class="timer-call">call in progress</span>
-          <span *ngIf="callConnected" class="timer-call">{{timer}}</span>
+        <h4 matTooltip="{{ customerNumber }}">
+          {{ customerNumber }}
+          <span class="timer-call">call in progress</span>
+          <span class="timer-call">{{ timer }}</span>
         </h4>
       </div>
 
-      <ul class="assistance-actions call-actions" *ngIf="callConnected">
-<!--        <li><button mat-fab (click)="cancel()"><mat-icon>picture_in_picture</mat-icon></button></li>-->
+      <ul class="assistance-actions call-actions">
+        <!--        <li><button mat-fab (click)="cancel()"><mat-icon>picture_in_picture</mat-icon></button></li>-->
 
-        <li><button matTooltip="{{_sipService.isMuted == false ? ('globals.mute' | translate) : ('globals.unMute' | translate)}}" (click)="muteUnmuteCall()" mat-fab><mat-icon>
-<!--          <ng-container *ngIf="_sipService.isMuted == false">mic</ng-container>-->
-<!--          <ng-container *ngIf="_sipService.isMuted == true">mic_off</ng-container>-->
-          {{_sipService.isMuted ? 'mic_off' : 'mic'}}
-        </mat-icon></button></li>
-        <li matTooltip="{{('globals.hold' | translate)}}" *ngIf="_sipService.isCallHold == false"><button (click)="holdCallOnSip()"
-                                                                                                          mat-fab><mat-icon>pause</mat-icon></button></li>
-        <li matTooltip="{{('globals.resume' | translate)}}" *ngIf="_sipService.isCallHold == true"><button (click)="resumeCallOnSip()"
-                                                                                                           mat-fab><mat-icon>pause_circle_filled</mat-icon></button></li>
-        <li><button (click)="endCallOnSip()" class="end-call" mat-fab><mat-icon>call_end</mat-icon></button></li>
+        <li>
+          <button
+            matTooltip="{{ _sipService.isMuted == false ? ('globals.mute' | translate) : ('globals.unMute' | translate) }}"
+            (click)="muteUnmuteCall()"
+            mat-fab
+          >
+            <mat-icon>
+              <!--          <ng-container *ngIf="_sipService.isMuted == false">mic</ng-container>-->
+              <!--          <ng-container *ngIf="_sipService.isMuted == true">mic_off</ng-container>-->
+              {{ _sipService.isMuted ? "mic_off" : "mic" }}
+            </mat-icon>
+          </button>
+        </li>
+        <li matTooltip="{{ 'globals.hold' | translate }}" *ngIf="_sipService.isCallHold == false">
+          <button (click)="holdCallOnSip()" mat-fab><mat-icon>pause</mat-icon></button>
+        </li>
+        <li matTooltip="{{ 'globals.resume' | translate }}" *ngIf="_sipService.isCallHold == true">
+          <button (click)="resumeCallOnSip()" mat-fab><mat-icon>pause_circle_filled</mat-icon></button>
+        </li>
+        <li>
+          <button (click)="endCallOnSip()" class="end-call" mat-fab><mat-icon>call_end</mat-icon></button>
+        </li>
       </ul>
 
-      <button class="initial-trigger" *ngIf="isCalling" mat-button><mat-icon>call_end</mat-icon></button>
-
+      <!-- <button class="initial-trigger" mat-button><mat-icon>call_end</mat-icon></button> -->
     </div>
   </div>
 </div>
