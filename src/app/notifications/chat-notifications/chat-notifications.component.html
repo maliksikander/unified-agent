@@ -111,22 +111,31 @@
             <p class="channel-icon"><img [src]="voiceChannelType?.channelLogo | channelLogo | async">
             </p>
           </div>
-          <div class="requested-name">
-            <p matTooltip="{{request?.customer?.firstName ? (('customer' | authPipe : 'view_pii')?request?.customer?.firstName:request?.customer?.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey)) : ('globals.UNIDENTIFIED-CUSTOMER' | translate) }}">
-              {{request?.customer?.firstName ? (('customer' | authPipe : 'view_pii')?request?.customer?.firstName:request?.customer?.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey)) : ('globals.UNIDENTIFIED-CUSTOMER' | translate) }}</p>
-            <p>
-            <p matTooltip="{{request?.customer?.firstName ? request?.customer?.firstName : 'UNIDENTIFIED CUSTOMER' }}">
-              <span *ngIf="request.isOutbound">{{'snackbar.Calling' | translate}}   </span> <span
-                class="voice-customer">{{request?.customer?.firstName ? request?.customer?.firstName : 'UNIDENTIFIED CUSTOMER' }}</span>
+            <div class="requested-name">
+            <p
+              matTooltip="{{
+                request?.customer?.firstName
+                  ? ('customer' | authPipe: 'view_pii')
+                    ? request?.customer?.firstName
+                    : (request?.customer?.firstName | maskPIIAttribute: ('firstName' | returnSchemaByKey))
+                  : ('globals.UNIDENTIFIED-CUSTOMER' | translate)
+              }}"
+            >
+              <span *ngIf="request.isOutbound">{{ "snackbar.Calling" | translate }} </span>
+              <span class="voice-customer">
+                {{
+                  request?.customer?.firstName
+                    ? ("customer" | authPipe: "view_pii")
+                      ? request?.customer?.firstName
+                      : (request?.customer?.firstName | maskPIIAttribute: ("firstName" | returnSchemaByKey))
+                    : ("globals.UNIDENTIFIED-CUSTOMER" | translate)
+                }}</span
+              >
               <span *ngIf="request.isOutbound" class="dot-container">
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
+                <span class="dot"></span> <span class="dot"></span> <span class="dot"></span>
               </span>
             </p>
-            <p class="voice-customer">
-              {{request?.identifier ?
-              request?.identifier : 'N/A' }}</p>
+            <p class="voice-customer">{{ request?.identifier ? request?.identifier : "N/A" }}</p>
           </div>
           <div *ngIf="!request?.isOutbound" class="notification-trigger">
             <button [disabled]="isCallAcceptClicked" (click)="onExternalRequestAccept(request)" class="mat-flat-button" mat-button>{{'globals.accept' |
