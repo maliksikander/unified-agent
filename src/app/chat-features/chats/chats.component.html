@@ -36,7 +36,7 @@
                     <span class="badge1" [hidden]="conversation.unReadCount == 0">{{ conversation.unReadCount }}</span>
                     <span *ngIf="conversation.topicParticipant.role == 'SILENT_MONITOR'" class="badge1 channel-badge"><img src="assets/images/monitoring.svg"> </span>
                     <!-- topicData.topicParticipant.role == 'SILENT_MONITOR' -->
-                    <span *ngIf="isWrapUpTimer == true" class="badge1 channel-badge"><img src="assets/images/clock-time.svg"> </span>
+                    <span *ngIf="conversation.wrapUpDialog.show" class="badge1 channel-badge"><img src="assets/images/clock-time.svg"> </span>
 
                   </div>
                   <span class="user-name">{{ conversation.customer.firstName }}</span>

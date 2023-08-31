@@ -496,9 +496,9 @@ export class InteractionsComponent implements OnInit {
         //   // this._socketService.emitCimEvent({agentId:this.cc}"start-wrap-up-time")
         // } else {
         //   this.openWrapUpDialog(true);
-          this.wrapUpDialog(true);
+          // this.wrapUpDialog(true);
 
-          // this.unsubscribeFromConversation();
+          this.unsubscribeFromConversation();
         // }
       }
     });
@@ -1326,7 +1326,7 @@ export class InteractionsComponent implements OnInit {
     return num.toString().padStart(2, "0");
   }
 
-  wrapUpDialog(timerEnabled: boolean): void {
+  openWrapUpDialog(timerEnabled: boolean): void {
   console.log(" wrapupdialog called timer enabled ",timerEnabled)
    
 

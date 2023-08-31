@@ -182,11 +182,11 @@ export class WrapUpFormComponent implements OnInit {
 //   }, 1000);
 // }
 
-stopTimer() {
-  if (this.interval) {
-    clearInterval(this.interval);
-  }
-}
+// stopTimer() {
+//   if (this.interval) {
+//     clearInterval(this.interval);
+//   }
+// }
 customerLeft(message: string, action: string) {
   setTimeout(() => {
     this.snackBar.open( message, ' ', {

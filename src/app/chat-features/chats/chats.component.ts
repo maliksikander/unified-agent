@@ -12,8 +12,7 @@ import { socketService } from "src/app/services/socket.service";
 export class ChatsComponent implements OnInit {
   // conversations = [];
   barExpand = false;
-  isWrapUpTimer = true;
-  // labels :Array<any>=[];
+    // labels :Array<any>=[];
   constructor(private _httpService: httpService, public _socketService: socketService, public _sharedService: sharedService) {}
   ngOnInit() {
     // this.loadLabels()

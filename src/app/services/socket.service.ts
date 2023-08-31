@@ -259,8 +259,8 @@ export class socketService {
       let sameTopicConversation = this.conversations.find((e) => {
         return e.conversationId == res.conversationId;
       });
-      sameTopicConversation.wrapUpDialog.show=true;
-      sameTopicConversation.wrapUpDialog.durationLeft=res.duration;
+      sameTopicConversation.wrapUpDialog.show = true;
+      sameTopicConversation.wrapUpDialog.durationLeft = res.duration;
 
       this.startWrapUpTimer(sameTopicConversation);
     });
@@ -272,7 +272,7 @@ export class socketService {
       //   return e.conversationId == res.conversationId;
       // });
       // delete sameTopicConversation["agentState"];
-      this.removeConversation(res.conversationId);
+      // this.removeConversation(res.conversationId);
     });
 
     this.socket.on("socketSessionRemoved", (res: any) => {
@@ -470,11 +470,11 @@ export class socketService {
     let conversation = {
       conversationId: conversationId,
       taskId,
-      wrapUpDialog:{
-        show:false,
-        durationLeft:null,
-        timeLeft:null,
-        ref:null
+      wrapUpDialog: {
+        show: false,
+        durationLeft: null,
+        timeLeft: null,
+        ref: null
       },
       isTyping: null,
       messages: [],
@@ -509,7 +509,7 @@ export class socketService {
         event.data.header.sender.id = event.data.header.customer._id;
         event.data.header.sender.type = "CUSTOMER";
       }
-      if (    
+      if (
         event.name.toLowerCase() == "agent_message" ||
         event.name.toLowerCase() == "bot_message" ||
         event.name.toLowerCase() == "customer_message"
@@ -832,7 +832,7 @@ export class socketService {
 
   removeConversation(conversationId) {
     // fetching the whole conversation which needs to be removed
-    console.log("emovin conversation", conversationId);
+    console.log("removing conversation", conversationId);
     let index;
     const removedConversation = this.conversations.find((conversation, indx) => {
       if (conversation.conversationId == conversationId || conversation.customer._id == conversationId) {
@@ -840,8 +840,12 @@ export class socketService {
         return conversation;
       }
     });
+    if(removedConversation.wrapUpDialog.ref)
+    {
+      this.stopWrapUpTimer(removedConversation);
+    }
     if (index != -1) {
-      console.log("index ound for removing")
+      console.log("index ound for removing");
       this._sharedService.spliceArray(index, this.conversations);
       --this.conversationIndex;
 
@@ -1641,28 +1645,38 @@ export class socketService {
     return message;
   }
   startWrapUpTimer(conversation) {
-    console.log("star wrap up timer called called");
+    console.log("start wrap up timer called");
     conversation.wrapUpDialog.ref = setInterval(() => {
-      if (conversation.wrapUpDialog.durationLeft > 0) {
-        conversation.wrapUpDialog.durationLeft--;
-  
-      } else {
-        if (conversation.wrapUpDialog.durationLeft == 0) {
-          conversation.wrapUpDialog.show=false;
-  
-  
-          // this.customerLeft('Wrap-up time for the conversation with ‘Jason Slayer’ has expired.', '');
-          this.stopTimer(conversation);
+      if (conversation.wrapUpDialog) {
+        if (conversation.wrapUpDialog.durationLeft > 0) {
+          console.log("wrapUp dialog",conversation.wrapUpDialog)
+          console.log("tick",conversation.wrapUpDialog.durationLeft)
+          conversation.wrapUpDialog.durationLeft--;
+        } else {
+          if (conversation.wrapUpDialog.durationLeft == 0) {
+            conversation.wrapUpDialog.show = false;
+
+            // this.customerLeft('Wrap-up time for the conversation with ‘Jason Slayer’ has expired.', '');
+            this.stopWrapUpTimer(conversation);
+          }
         }
+      }
+      else
+      {
+        this.stopWrapUpTimer(conversation);
+
       }
     }, 1000);
   }
 
-  stopTimer(conversation) {
+  stopWrapUpTimer(conversation) {
+    console.log("stop wrap up timer called",conversation);
     if (conversation.wrapUpDialog.ref) {
       clearInterval(conversation.wrapUpDialog.ref);
     }
-  }  topicUnsub(conversation) {
+  }
+
+  topicUnsub(conversation) {
     console.log("going to unsub from topic==>" + conversation.conversationId);
 
     if (conversation.state === "ACTIVE") {
