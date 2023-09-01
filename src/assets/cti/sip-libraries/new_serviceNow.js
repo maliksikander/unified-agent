@@ -1,9 +1,9 @@
 let entity = "";
 let currentRecordId = "";
 let UserName, userId;
-let entities = config.entities.split(',');
+let entities = config && config.entities ? config.entities.split(',') : undefined;
 let clicktoDial="";
-let URL="";
+let newURL="";
 
 var script = document.createElement( "script" )
 script.type = "text/javascript";
