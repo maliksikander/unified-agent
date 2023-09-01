@@ -12,7 +12,7 @@ import * as uuid from "uuid";
 // import { CallControlsComponent } from "../new-components/call-controls/call-controls.component";
 import { MatDialog, MatDialogRef } from "@angular/material";
 
-declare var postMessage;
+declare var postMessages;
 
 @Injectable({
   providedIn: "root"
@@ -87,7 +87,7 @@ export class SipService implements OnInit {
           }
         };
         console.log("login SIP command sip==>", command);
-        postMessage(command);
+        postMessages(command);
       } else {
         console.log("No Extension configured for agent==>");
         this._snackbarService.open(this._translateService.instant("snackbar.No-Extension-Found"), "err");
@@ -720,7 +720,7 @@ export class SipService implements OnInit {
   }
 
   acceptCallOnSip(command: { action: string; parameter: { dialogId: any } }) {
-    postMessage(command);
+    postMessages(command);
   }
 
   endCallOnSip() {
@@ -732,7 +732,7 @@ export class SipService implements OnInit {
         }
       };
       console.log("EndCallOnSip ==>", command);
-      postMessage(command);
+      postMessages(command);
     } catch (error) {
       console.error("[Error on initMe] Sip ==>", error);
     }
@@ -748,7 +748,7 @@ export class SipService implements OnInit {
         }
       };
       console.log("holdCallOnSip==>", command);
-      postMessage(command);
+      postMessages(command);
     } catch (error) {
       console.error("[Error on holdCallOnSip] ==>", error);
     }
@@ -764,7 +764,7 @@ export class SipService implements OnInit {
         }
       };
       console.log("resumeCallOnSip sip==>", command);
-      postMessage(command);
+      postMessages(command);
     } catch (error) {
       console.error("[Error on resumeCallOnSip] ==>", error);
     }
@@ -780,7 +780,7 @@ export class SipService implements OnInit {
         }
       };
       console.log("makeCallOnSip ==>", command);
-      postMessage(command);
+      postMessages(command);
     } catch (error) {
       console.error("[Error on makeCallOnSip] ==>", error);
     }
@@ -796,7 +796,7 @@ export class SipService implements OnInit {
         }
       };
       console.log("muteCallOnSip ==>", command);
-      postMessage(command);
+      postMessages(command);
     } catch (error) {
       console.error("[Error on muteCallOnSip] ==>", error);
     }
@@ -812,7 +812,7 @@ export class SipService implements OnInit {
         }
       };
       console.log("unmuteCallOnSip ==>", command);
-      postMessage(command);
+      postMessages(command);
     } catch (error) {
       console.error("[Error on unmuteCallOnSip] ==>", error);
     }
@@ -832,7 +832,7 @@ export class SipService implements OnInit {
       };
 
       console.log("directQueueTransferOnSip ==>", command);
-      postMessage(command);
+      postMessages(command);
     } catch (error) {
       console.error("[Error on directQueueTransferOnSip] ==>", error);
     }
@@ -929,7 +929,7 @@ export class SipService implements OnInit {
             clientCallbackFunction: this.clientCallback
           }
         };
-        postMessage(command);
+        postMessages(command);
       }
     } catch (error) {
       console.error("[Error] Handle Logout for Sip==>", error);
