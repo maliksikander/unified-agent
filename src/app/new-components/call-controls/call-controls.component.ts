@@ -46,7 +46,7 @@ export class CallControlsComponent implements OnInit {
       if (val == false) this.cancel();
     });
     if (this.data.conversation) this.getVoiceChannelSession();
-    else if (this.data && this.data.isOurbound && this.data.isOutbound == true) this.handleOBCall(this.data);
+    else if (this.data && this.data.isManualOB && this.data.isManualOB == true) this.handleOBCall(this.data);
   }
 
   cancel() {
@@ -77,7 +77,6 @@ export class CallControlsComponent implements OnInit {
   }
 
   handleOBCall(data) {
-    console.log("test==>",data)
     this.setToolbarTimer(data.dialogData.id);
     if(data.isManualOB == true) this.isCalling = true;
   }

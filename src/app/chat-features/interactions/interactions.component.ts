@@ -123,6 +123,7 @@ export class InteractionsComponent implements OnInit {
     public _sipService: SipService,
     private _translateService: TranslateService
   ) {}
+
   ngOnInit() {
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
@@ -159,11 +160,6 @@ export class InteractionsComponent implements OnInit {
       if (this._sipService.isCallActive == true && this._sipService.isToolbarActive == false) this.ctiControlBar({ conversation: this.conversation });
       this.getVoiceChannelSession();
     }
-
-    this._sipService._activateToolbarSub.subscribe((res: any) => {
-      console.log("test4==>",res)
-      if (res.isManualOB == true) this.ctiControlBar(res);
-    });
 
     //this._cacheService.smsDialogData ||
     if (this.conversation.conversationId === "FAKE_CONVERSATION") {
@@ -1243,7 +1239,7 @@ export class InteractionsComponent implements OnInit {
   ctiControlBar(data) {
     // this.ctiBoxView = true;
     // this.ctiBarView = false;
-    this._sipService.isToolbarActive = true;
+    // this._sipService.isToolbarActive = true;
     const dialogRef = this.dialog.open(CallControlsComponent, {
       panelClass: "call-controls-dialog",
       hasBackdrop: false,

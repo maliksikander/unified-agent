@@ -15,6 +15,7 @@ import { announcementService } from "../services/announcement.service";
 import { getMatIconFailedToSanitizeLiteralError, MatDialog } from "@angular/material";
 import { SendSmsComponent } from "../chat-features/send-sms/send-sms.component";
 import { ManualOutboundCallComponent } from "../chat-features/manual-outbound-call/manual-outbound-call.component";
+import { CallControlsComponent } from "../new-components/call-controls/call-controls.component";
 
 @Component({
   selector: "app-header",
@@ -123,12 +124,38 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
         this.countUnreadAnnouncements();
       }
     });
+
+    this._sipService._activateToolbarSub.subscribe((res: any) => {
+      if (res.isManualOB == true) this.ctiControlBar(res);
+    });
   }
 
   ngAfterViewInit() {
     this.getSupportedLanguages();
     this.getReasonCodes();
   }
+
+  ctiControlBar(data) {
+    // this.ctiBoxView = true;
+    // this.ctiBarView = false;
+    this._sipService.isToolbarActive = true;
+    this._sipService.dialogRef = this.dialog.open(CallControlsComponent, {
+      panelClass: "call-controls-dialog",
+      hasBackdrop: false,
+      position: {
+        top: "8%",
+        right: "8%"
+      },
+      data
+    });
+    this._sipService.dialogRef.afterClosed().subscribe((result) => {
+      // this.ctiBoxView = false;
+      // this.ctiBarView = true;
+      if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
+    });
+  }
+
+
   countUnreadAnnouncements() {
     this.unreadAnnouncements = 0;
     let agentId = this._cacheService.agent.id;
