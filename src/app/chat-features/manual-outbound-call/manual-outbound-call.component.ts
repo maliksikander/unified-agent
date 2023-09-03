@@ -1,14 +1,11 @@
-import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { MAT_DIALOG_DATA, MAT_SNACK_BAR_DATA, MatDialog, MatSnackBar, MatSnackBarRef } from "@angular/material";
-import { socketService } from "../../services/socket.service";
+import { MatDialog } from "@angular/material";
 import { httpService } from "../../services/http.service";
 import { TranslateService } from "@ngx-translate/core";
 import { snackbarService } from "../../services/snackbar.service";
 import { sharedService } from "../../services/shared.service";
 import { cacheService } from "../../services/cache.service";
-import { Router } from "@angular/router";
-import { CallControlsComponent } from "../../new-components/call-controls/call-controls.component";
 import { SipService } from "src/app/services/sip.service";
 
 @Component({
@@ -29,15 +26,12 @@ export class ManualOutboundCallComponent implements OnInit, AfterViewInit {
   outboundCallForm: FormGroup;
 
   constructor(
-    private snackBar: MatSnackBar,
-    private _socketService: socketService,
     private _httpService: httpService,
     private _translateService: TranslateService,
     private _snackbarService: snackbarService,
     private _sharedService: sharedService,
     private _cacheService: cacheService,
     private _sipService: SipService,
-    private _router: Router,
     private dialog: MatDialog,
     public fb: FormBuilder
   ) {

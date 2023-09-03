@@ -160,6 +160,10 @@
     "search": "Search_fr",
     "no-data-available": "No Data Available_fr"
   },
+  "call-controls":{
+    "call-in-progress":"Call in progress_fr",
+    "initiating-audio-call":"Initiating Audio Call_fr"
+  },
   "chat-features": {
     "send-sms":{
       "info":"SEND SMS_fr",

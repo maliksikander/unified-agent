@@ -159,6 +159,10 @@
     "search": "Search_spa",
     "no-data-available": "No Data Available_spa"
   },
+  "call-controls":{
+    "call-in-progress":"Call in progress_spa",
+    "initiating-audio-call":"Initiating Audio Call_spa"
+  },
   "chat-features": {
     "send-sms":{
       "info":"SEND SMS_spa",

@@ -170,8 +170,8 @@
         <button
           *ngIf="_appConfigService.config.isCxVoiceEnabled && _sipService.isSipConnected && _sipService.isSipLoggedIn"
           (click)="openCallDialog()"
-          class="sms-trigger"
-          [disabled]="_sipService.isCallActive"
+          class="sms-trigger call-trigger"
+          [disabled]="_sipService.isCallActive || _sipService.isOBCallRequested || _sipService.isCallAlerting"
           mat-icon-button
           color="primary"
         >
@@ -282,7 +282,8 @@
                           disableMrdActions ||
                           (agentMrdState.mrd.id == _appConfigService.config.CX_VOICE_MRD &&
                             _appConfigService.config.isCxVoiceEnabled &&
-                            !_sipService.isSipLoggedIn)
+                            !_sipService.isSipLoggedIn) ||
+                          _sipService.isOBCallRequested
                         "
                         (change)="changeMRD($event, agentMrdState)"
                         [checked]="agentMrdState.state | getmrdswitches"

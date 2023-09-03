@@ -159,6 +159,10 @@
     "search": "Search_ita",
     "no-data-available": "No Data Available_ita"
   },
+  "call-controls":{
+    "call-in-progress":"Call in progress_ita",
+    "initiating-audio-call":"Initiating Audio Call_ita"
+  },
   "chat-features": {
     "send-sms":{
       "info":"SEND SMS_ita",
