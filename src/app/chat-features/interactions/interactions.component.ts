@@ -120,7 +120,10 @@ export class InteractionsComponent implements OnInit {
     private snackBar: MatSnackBar,
     public _sipService: SipService,
     private _translateService: TranslateService
-  ) { }
+  ) {
+
+    console.log("conversation2==>",this.conversation);
+   }
   ngOnInit() {
     //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
@@ -155,6 +158,7 @@ export class InteractionsComponent implements OnInit {
       }
     });
 
+    console.log("conversation==>",this.conversation);
     if (this.conversation && this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
       if (this._sipService.isCallActive == true && this._sipService.isToolbarActive == false) this.ctiControlBar();
       this.getVoiceChannelSession();
