@@ -118,7 +118,10 @@
                         <button
                           *ngIf="'agent-conversation-control' | authPipe: 'view_direct_transfer' as result"
                           [disabled]="
-                            !_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0 || queue?.totalAvailableAgents == 0
+                            !_socketService.isSocketConnected ||
+                            conversation.activeChannelSessions.length == 0 ||
+                            queue?.totalAvailableAgents == 0 ||
+                            (conversation.activeChannelSessions | checkCiscoSession)
                           "
                           mat-icon-button
                           matTooltip="{{ 'chat-features.interactions.queue-transfer' | translate }}"
@@ -131,7 +134,10 @@
                           <button
                             *ngIf="!isCXVoiceSessionActive()"
                             [disabled]="
-                              !_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0 || queue?.totalAvailableAgents == 0
+                              !_socketService.isSocketConnected ||
+                              conversation.activeChannelSessions.length == 0 ||
+                              queue?.totalAvailableAgents == 0 ||
+                              (conversation.activeChannelSessions | checkCiscoSession)
                             "
                             mat-icon-button
                             matTooltip="{{ 'chat-features.interactions.queue-conference' | translate }}"

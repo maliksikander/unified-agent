@@ -29,6 +29,7 @@ export class finesseService {
   timeoutId;
   customer;
   taskList: Array<any>;
+  conversationID;
 
   constructor(
     private _snackbarService: snackbarService,
@@ -803,15 +804,19 @@ export class finesseService {
           dialog
         }
       };
+      let voiceConversationId;
       if (intent == "CALL_LEG_ENDED") {
-        let conversationId = this.getCurrentConversationIdORConversation("id");
+        voiceConversationId = this.getCurrentConversationIdORConversation("id");
+        if (!voiceConversationId) voiceConversationId = this.conversationID;
+        if (voiceConversationId) cimMessage.header["conversationId"] = voiceConversationId;
         let obj = {
           key: "conversationId",
           type: "String2000",
-          value: conversationId
+          value: voiceConversationId
         };
         cimMessage.header.channelData.additionalAttributes.push(obj);
       }
+
       return cimMessage;
     } catch (e) {
       console.error("[Error] createCIMMessage ==>", e);
@@ -821,6 +826,7 @@ export class finesseService {
   getCurrentConversationIdORConversation(type) {
     try {
       let conversationList: Array<any> = this._socketService.conversations;
+      console.log("list==>", conversationList);
       for (let i = 0; i <= conversationList.length; i++) {
         if (conversationList[i] && conversationList[i].activeChannelSessions) {
           let voiceSession = conversationList[i].activeChannelSessions.find((item) => {
@@ -1065,24 +1071,43 @@ export class finesseService {
       let customer;
       let timeStamp = this.getStartOREndTimeStamp(dialog, "endCall");
       if (this.customer) customer = JSON.parse(JSON.stringify(this.customer));
-      let cimMessage = this.createCIMMessage(
-        "VOICE",
+      let obj = {
+        // type:"VOICE",
         channelCustomerIdentifier,
         serviceIdentifier,
-        "CALL_LEG_ENDED",
+        // intent:"CALL_LEG_ENDED",
         customer,
         leg,
         dialog,
         callType,
         timeStamp,
         callId
-      );
-      console.log("[Consult End CIM Message]==>", cimMessage);
-      this.ccmChannelSessionApi(cimMessage, "", "", undefined);
-      this.customer = undefined;
+      };
+
+      let voiceConversationId = this.getCurrentConversationIdORConversation("id");
+      if (!voiceConversationId) this.checkActiveTasks(this._cacheService.agent.id, "consult_ended", obj);
+      else this.handleConsultEnding(obj);
     } catch (e) {
       console.error("[Error] onConsultCallEndCall ==>", e);
     }
+  }
+
+  handleConsultEnding(obj) {
+    let cimMessage = this.createCIMMessage(
+      "VOICE",
+      obj.channelCustomerIdentifier,
+      obj.serviceIdentifier,
+      "CALL_LEG_ENDED",
+      obj.customer,
+      obj.leg,
+      obj.dialog,
+      obj.callType,
+      obj.timeStamp,
+      obj.callId
+    );
+    console.log("[Consult End CIM Message]==>", cimMessage);
+    this.ccmChannelSessionApi(cimMessage, "", "", undefined);
+    this.customer = undefined;
   }
 
   handleActiveConsultCall(dialogEvent, dialog) {
@@ -1176,14 +1201,17 @@ export class finesseService {
     }
   }
 
-  checkActiveTasks(agentId) {
+  checkActiveTasks(agentId, method, callData) {
     try {
       this._httpService.getRETasksList(agentId).subscribe(
         (res) => {
           this.taskList = res;
-          console.log("task list==>", this.taskList);
           if (this.taskList.length > 0) {
-            this.getVoiceTask();
+            let task = this.getVoiceTask();
+            if (task && method == "consult_ended") {
+              this.conversationID = task.channelSession.conversationId;
+              this.handleConsultEnding(callData);
+            }
           }
         },
         (error) => {
