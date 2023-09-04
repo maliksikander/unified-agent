@@ -424,7 +424,10 @@ export class socketService {
         this.handleNoAgentEvent(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "message_delivery_notification") {
         this.handleDeliveryNotification(cimEvent, conversationId);
-      } else if (cimEvent.name.toLowerCase() == "typing_indicator" && cimEvent.data.header.sender.type.toLowerCase() == "connector") {
+      }else if (cimEvent.type.toLowerCase() == "activity"){
+           console.log("DELIVERYNOTIFICATION event");
+           this.handleDeliveryNotification(cimEvent,conversationId);
+      }else if (cimEvent.name.toLowerCase() == "typing_indicator" && cimEvent.data.header.sender.type.toLowerCase() == "connector") {
         this.handleTypingStartedEvent(cimEvent, sameTopicConversation);
       } else if (cimEvent.name.toLowerCase() == "participant_role_changed") {
         this.handleParticipantRoleChangedEvent(cimEvent, conversationId);
@@ -504,7 +507,26 @@ export class socketService {
           event.data.header["status"] = "sent";
           conversation.messages.push(event.data);
         }
-      } else if (
+      } else if (event.name.toLowerCase() == "third_party_activity") {
+
+        if (event.data.header.channelData.additionalAttributes.length > 0) {
+
+          const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => { return e.value.toLowerCase() == "outbound" });
+          if (isOutBoundSMSType) {
+            event.data.body['type'] = 'outboundsms';
+
+            const smsChannelType = this.filterChannelType('sms');
+            if (smsChannelType) {
+              event.data.header.channelSession.channel.channelType = smsChannelType;
+            }
+            conversation.messages.push(event.data);
+          }
+        }else if(event.data.header.schedulingMetaData ){
+          conversation.messages.push(event.data);
+
+        }
+      }
+      else if (
         [
           "task_enqueued",
           "no_agent_available",
@@ -525,6 +547,7 @@ export class socketService {
         event.data.body["isWhisper"] = true;
         conversation.messages.push(event.data);
       }
+      
     });
 
     this.processSeenMessages(conversation, topicEvents);
@@ -614,6 +637,8 @@ export class socketService {
 
     // console.log("conversations==>", this.conversations);
     this._conversationsListener.next(this.conversations);
+
+    console.log("conversation.messages",conversation.messages)
   }
 
   processSeenMessages(conversation, events) {
@@ -938,6 +963,7 @@ export class socketService {
 
   handleDeliveryNotification(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
+      console.log("converstion id",e)
       return e.conversationId == conversationId;
     });
     if (
@@ -1653,6 +1679,14 @@ export class socketService {
       taskId: taskId
     });
   }
+
+  filterChannelType(channelTypeName) {
+    const channelType = this._sharedService.channelTypeList.find((channelType) => { return channelType.name.toLowerCase() == channelTypeName.toLowerCase() });
+
+    return channelType;
+
+  }
+
 
   createConversationDataMessage(cimEvent) {
     let message: any = {

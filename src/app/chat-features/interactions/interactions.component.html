@@ -432,16 +432,17 @@
                     *ngIf="
                       (message.body.type | lowercase) != 'voice' &&
                       (message.header.sender.type | lowercase) != 'bot' &&
-                      (message.header.sender.type | lowercase) != 'customer'
+                      (message.header.sender.type | lowercase) != 'customer' &&
+                      (message.header.sender.type | lowercase) !== 'app'
                     "
                     class="profile-pic-area user-img"
                   >
                     {{ message.header.sender | getSenderName: conversation.customer | getFirstTwoLetters }}
                   </div>
 
-                  <div *ngIf="(message.header.sender.type | lowercase) == 'bot'" class="profile-pic-area user-img">
-                    <img *ngIf="(message.status | lowercase) !== 'scheduled'" src="assets/images/robot-dark.svg" />
-                    <mat-icon  *ngIf="(message.status | lowercase) == 'scheduled'">event</mat-icon>
+                  <div *ngIf="((message.header.schedulingMetaData ))" class="profile-pic-area user-img">
+                    <!-- *ngIf="((message.header.sender.type | lowercase) == 'app' && (message.header.schedulingMetaData ) )"<img *ngIf="(message.status | lowercase) !== 'scheduled'" src="assets/images/robot-dark.svg" /> -->
+                    <mat-icon *ngIf="((message.header.schedulingMetaData ))">event</mat-icon>
                   </div>
 
                   <div
@@ -855,11 +856,12 @@
                     <mat-menu #menu="matMenu">
                       <button mat-menu-item class="reply-trigger" (click)="onQuotedReply(message)">reply</button>
                     </mat-menu>
-                    <div *ngIf="
-                               ((message.body.type | lowercase) != 'outboundsms' && (message.body.type | lowercase) != 'comment' && (message.body.type | lowercase) != 'url' && message.body.markdownText) ||
-                               ((message.body.type | lowercase) == 'comment' && (message.body.itemType | lowercase) == 'text' && (message.header.sender.type | lowercase) == 'agent') ||
-                              ((message.body.type | lowercase) == 'comment' && (message.body.itemType | lowercase) == 'private_reply' && (message.header.sender.type | lowercase) == 'agent')
-                               ">
+                    <div class="{{(message.header.sender.type | lowercase) !== 'app' && !(message.header.schedulingMetaData) && (message.body.type | lowercase) !== 'delieverynotification' }}" 
+                    *ngIf="((message.header.sender.type | lowercase) !== 'app' && !(message.header.schedulingMetaData) && (message.body.type | lowercase) !== 'delieverynotification' ) 
+                           || ((message.body.type | lowercase) != 'outboundsms' && (message.body.type | lowercase) != 'comment' && (message.body.type | lowercase) != 'url' && message.body.markdownText)
+                           || ((message.body.type | lowercase) == 'comment' && (message.body.itemType | lowercase) == 'text' && (message.header.sender.type | lowercase) == 'agent') 
+                           ||((message.body.type | lowercase) == 'comment' && (message.body.itemType | lowercase) == 'private_reply' && (message.header.sender.type | lowercase) == 'agent')
+                      ">
 
 
                       <p class="{{
@@ -1450,44 +1452,43 @@
                     </div>
                     <!-- <--------------------------------------------WRAP UP MESSAGE END-------------------------------------------->
 
-
+                   <!-- <div *ngIf="((message.header.sender.type | lowercase) == 'app' && (message.header.schedulingMetaData) )" class="abc"> {{message.header.sender.type | json}}</div>  -->
                     <!-- <-------------------------------------Scheduled Activity--------------------------------------------------->
-
-                    <div *ngIf="(message.body.type | lowercase) == 'scheduled_activity'"
-                         class="voice-activity-main panel-divider single scheduled-activity-area {{message.status | lowercase}}">
+                      
+                    <div *ngIf="((message.header.sender.type | lowercase) == 'app' && (message.header.schedulingMetaData) )"
+                         class="voice-activity-main panel-divider single scheduled-activity-area activity ">
                       <mat-expansion-panel>
                         <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
                           <mat-panel-title>
                             <div class="panel-header">
                               <ul>
-                                <li *ngIf="(message.status | lowercase) == 'delivered'" class="activity-status" matTooltip="Activity Status"><span>Delivered</span></li>
-                                <li matTooltip="Queue">Marketing </li>
-                                <li *ngIf="(message.status | lowercase) == 'delivered'" matTooltip="Execute Time">
+                                <li *ngIf="(message.body.type | lowercase) == 'deliverynotification' " class="activity-status" matTooltip="Activity Status"><span>{{message.body.status | lowercase}}</span></li>
+                                <li *ngIf="(message.header.schedulingMetaData.queue)"  matTooltip="Queue"> {{message.header.schedulingMetaData.queue}}</li>
+                                <!-- <li *ngIf="(message.body.status | lowercase) " matTooltip="Execute Time">
                                   {{ message.header.timestamp | date: "shortTime" }}
-                                </li>
-                                <li *ngIf="(message.status | lowercase) !== 'delivered'" matTooltip="Execute Time">
-                                  Jul 5, 2023
-                                </li>
-                                <li *ngIf="(message.status | lowercase) !== 'delivered'" matTooltip="Scheduled Time">
-                                  {{ message.header.timestamp | date}} - {{ message.header.timestamp | date: "shortTime" }}
+                                </li> -->
+                                <li  matTooltip="Execute Time">
+                                  {{ message.header.schedulingMetaData.scheduledDatetime | date}} </li>
+                                <li  matTooltip="Scheduled Time">
+                                  {{ message.header.timestamp | date }}
                                 </li>
 
-                                <li matTooltip="Campaign Name">Broadband Package Upgrade</li>
-                                <li *ngIf="(message.status | lowercase) !== 'delivered'"  matTooltip="Channel" class="multiple-users agent-pic participant-agent call-services activity-response">
+                                <li *ngIf="(message.header.sender.senderName)"  matTooltip="Campaign Name">{{message.header.sender.senderName}}</li>
+                                <li  matTooltip="Channel" class="multiple-users agent-pic participant-agent call-services activity-response">
                                   <span><mat-icon>phone_forwarded</mat-icon></span>
                                   <!--                                <span><img src="assets/images/groups.svg" alt="group" /></span>-->
                                 </li>
-                                <li  matTooltip="Channel Identity"> {{ messageData.phone }}
+                                <li  matTooltip="Channel Identity"> {{ message.header.channelData.channelCustomerIdentifier }}
                                 </li>
-                                <li *ngIf="(message.status | lowercase) !== 'delivered'"  class="agent-pic participant-agent call-services"  matTooltip="Agent - Farhan">
+                                <li   class="agent-pic participant-agent call-services"  matTooltip="Agent - Farhan">
                                   <span>FA</span>
                                 </li>
                               </ul>
                             </div>
                           </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <div class="custom-message-type">
-                          <p>{{  messageData.message }}</p>
+                        <div *ngIf="((message.body.type | lowercase) == 'plain' && (message.body.type | lowercase) !== 'delieverynotification')"  class="custom-message-type">
+                          <p>{{  message.body.markdownText }}</p>
 
                         </div>
                       </mat-expansion-panel>
