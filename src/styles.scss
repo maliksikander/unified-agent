@@ -4055,7 +4055,6 @@ mat-select {
   0 1px 5px 0 rgba(0, 0, 0, 0.12);
 
   &.expand-view-controls{
-    padding: 5px !important;
     height: 258px;
     width: 400px;
     transition: all .1s;
@@ -4161,11 +4160,11 @@ mat-select {
 .call-controls-view{
   background: #F3F6F8;
   margin: 5px;
-  padding: 5px;
+  padding: 0;
 
   &.call-control-box{
-    padding: 5px 5px 5px 15px;
     margin: 0;
+    border: 0;
 
     .assistance-actions:after {
       display: none;
@@ -4190,7 +4189,7 @@ mat-select {
 .right-call-controls {
   text-align: center;
   background: #fff;
-  border-radius: 5px;
+  border-radius: 0;
 
   ul {
     display: inline-block;

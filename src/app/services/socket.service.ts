@@ -451,6 +451,7 @@ export class socketService {
     // this.removeConversation(conversationId);
     let conversation = {
       conversationId: conversationId,
+      botSuggestions: [],
       taskId,
       isTyping: null,
       messages: [],
@@ -499,7 +500,7 @@ export class socketService {
           event.data.body.itemType.toLowerCase() != "private_reply"
         ) {
           this.processCommentActions(conversation.messages, event.data);
-         
+
         } else {
           event.data.header["status"] = "sent";
           conversation.messages.push(event.data);
@@ -834,6 +835,7 @@ export class socketService {
   }
 
   mergeBotSuggestions(conversation, suggestionMessage) {
+    conversation.botSuggestions.push(suggestionMessage)
     if (suggestionMessage && suggestionMessage.requestedMessage && suggestionMessage.requestedMessage.id) {
       let message = conversation.messages.find((e) => {
         if (e.header.sender.type.toLowerCase() == "customer") {

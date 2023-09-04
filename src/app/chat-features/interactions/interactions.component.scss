@@ -4008,9 +4008,11 @@ vg-controls.hide {
     h4 {
       font-size: 24px;
       max-width: inherit;
+      color: $light-gray-color;
       span{
         font-size: 14px;
         text-align: center;
+        color: $light-gray-color;
       }
     }
   }

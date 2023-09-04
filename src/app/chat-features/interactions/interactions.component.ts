@@ -55,49 +55,49 @@ export class InteractionsComponent implements OnInit {
   pastActivitiesloadedOnce: boolean = false;
   // isTransfer = false;
   // isConsult = false;
-  ctiBarView = true;
+  ctiBarView = false;
   ctiBoxView = false;
   timer: any = "00:00";
   cxVoiceSession: any;
   chatDuringCall = false;
   isVideoCam = false;
   isMute = false;
-  isVideoCall = true;
+  isVideoCall = false;
   isAudioCall = false;
   isBotSuggestions = false;
-  isConversationView = false;
+  isConversationView = true;
   fullScreenView = false;
   videoSrc = 'assets/video/angry-birds.mp4';
   element;
-  intents = [
-    {
-      type: 'messageSuggestion',
-      title: 'Share number where I can call in emergency situations.',
-      message: `Dear Customer,
-      You may contact our 24/7 available support team via E-mail or Call.
-      Customer Support Email:  support@abctelecom.com`
-    },
-    {
-      type: 'knowledgeBase',
-      title: 'Share customer support email address with customer',
-      message: `Dear Customer,
-      You may contact our 24/7 available support team via E-mail or Call.
-      Customer Support Email:
-      'support@abctelecom.com
-      Customer Support Voice:
-      +4489858785, +4444787485`
-    },
-    {
-      type: 'inCallSuggestion',
-      title: 'What are the customer support official timings?',
-      message: `Dear Customer,
-      You may contact our 24/7 available support team via E-mail or Call.
-      Customer Support Email:
-      support@abctelecom.com
-      Customer Support Voice:
-      +4489858785, +4444787485`
-    },
-  ];
+  // intents = [
+  //   {
+  //     type: 'messageSuggestion',
+  //     title: 'Share number where I can call in emergency situations.',
+  //     message: `Dear Customer,
+  //     You may contact our 24/7 available support team via E-mail or Call.
+  //     Customer Support Email:  support@abctelecom.com`
+  //   },
+  //   {
+  //     type: 'knowledgeBase',
+  //     title: 'Share customer support email address with customer',
+  //     message: `Dear Customer,
+  //     You may contact our 24/7 available support team via E-mail or Call.
+  //     Customer Support Email:
+  //     'support@abctelecom.com
+  //     Customer Support Voice:
+  //     +4489858785, +4444787485`
+  //   },
+  //   {
+  //     type: 'inCallSuggestion',
+  //     title: 'What are the customer support official timings?',
+  //     message: `Dear Customer,
+  //     You may contact our 24/7 available support team via E-mail or Call.
+  //     Customer Support Email:
+  //     support@abctelecom.com
+  //     Customer Support Voice:
+  //     +4489858785, +4444787485`
+  //   },
+  // ];
   dragPosition = {x: 0, y: 0};
 
   ngAfterViewInit() {
@@ -1248,9 +1248,13 @@ export class InteractionsComponent implements OnInit {
   ctiControlBar() {
     this.ctiBoxView = true;
     this.ctiBarView = true;
+    this.chatDuringCall = !this.chatDuringCall;
+    this.isConversationView = !this.isConversationView;
     if (this.fullScreenView) {
       this.exitFullscreen();
     }
+
+
 
     const dialogRef = this.dialog.open(CallControlsComponent, {
       panelClass: "call-controls-dialog",
@@ -1268,7 +1272,7 @@ export class InteractionsComponent implements OnInit {
       this.isConversationView = false;
       console.log(this.chatDuringCall, 'chat chatDuringCall')
       this.ctiBoxView = false;
-      this.ctiBarView = true;
+      this.ctiBarView = false;
       if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
     });
   }

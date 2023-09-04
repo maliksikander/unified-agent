@@ -35,7 +35,7 @@
         <div class="col-md-8 col-sm-8 agent-actions">
           <ul class="list-group list-group-horizontal agent-controls call-controls">
             <li class="list-group-item">
-              <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}"
+              <button mat-icon-button (click)="chatInCall()" *ngIf=" _sipService.isCallActive" [ngClass]="{'active-action': chatDuringCall}"
                       matTooltip="Chat" aria-label="Chat">
                 <mat-icon>question_answer</mat-icon>
               </button>
@@ -291,7 +291,54 @@
 {{fullScreenView ? 'full-screen-call':''}}"
      [ngClass]="{'call-in-progress': isVideoCall || isAudioCall, 'smart-call-controls':ctiBarView, 'bot-suggestions-active': isBotSuggestions, 'chat-view-active': isConversationView, 'multi-column-display' : chatDuringCall && isBotSuggestions, 'chat-suggestion-view' : isConversationView && isBotSuggestions && !chatDuringCall}">
 
-    <div class="video-feature-main" *ngIf="(isVideoCall && !ctiBarView) || (isAudioCall && !ctiBarView)">
+
+<!--
+
+      <div class="call-controls-view" *ngIf="isBarOpened">
+        <div class="right-call-controls row doc-bar">
+          <div class="main-showcase customer-info-dp">
+            <div class="agent-showcase">
+              <img src="assets/images/dummy-user.svg" alt="Customer" />
+              <mat-icon routerLink="/customers/chats">flip_to_back</mat-icon>
+            </div>
+            <h4 matTooltip="{{ this._sipService.customerNumber }}">
+              {{ this._sipService.customerNumber }}<span class="timer-call">{{ timer }}</span>
+            </h4>
+          </div>
+
+
+          <ul class="call-actions">
+            <li><button (click)="ctiControlBar()" mat-fab><mat-icon>picture_in_picture_alt
+                </mat-icon></button></li>
+            <li *ngIf="_sipService.isMuted == false"><button matTooltip="{{('globals.mute' | translate)}}"
+                (click)="_sipService.muteCallOnSip()" mat-fab><mat-icon>mic</mat-icon></button></li>
+            <li *ngIf="_sipService.isMuted == true"><button matTooltip="{{('globals.unMute' | translate)}}"
+                (click)="_sipService.unmuteCallOnSip()" mat-fab><mat-icon>mic_off</mat-icon></button></li>
+            <li *ngIf="_sipService.isCallHold == false" matTooltip="{{('globals.hold' | translate)}}"
+              (click)="_sipService.holdCallOnSip()"><button mat-fab><mat-icon>pause</mat-icon></button></li>
+            <li *ngIf="_sipService.isCallHold == true" matTooltip="{{('globals.resume' | translate)}}"
+              (click)="_sipService.resumeCallOnSip()"><button mat-fab><mat-icon>pause_circle_filled</mat-icon></button>
+            </li>
+            <li (click)="endCallOnSip()"><button class="end-call" mat-fab><mat-icon>call_end</mat-icon></button></li>
+          </ul>
+        </div>
+      </div>
+
+  -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="video-feature-main" *ngIf="(isVideoCall && !ctiBarView &&  _sipService.isCallActive) || (isAudioCall && !ctiBarView &&  _sipService.isCallActive) " >
       <div class="sub-call-participants">
         <span (click)="videoSwitch('jm')">
 <!--           <video #media [vgMedia]="media" id="76655" preload="auto" class="main-video-screen">&ndash;&gt;-->
@@ -314,11 +361,11 @@
 
         <div *ngIf="isAudioCall" class="main-showcase customer-info-dp main-audio-call">
           <div class="agent-showcase">
-            <img src="assets/images/user11.png" alt="customer">
+            <img src="assets/images/dummy-user.svg" alt="customer">
           </div>
-          <h4 matTooltip="john taylor">John Taylor
+          <h4 matTooltip="{{_sipService.customerNumber }}">{{_sipService.customerNumber ? _sipService.customerNumber: 'John Tylor' }}
             <span class="timer-call">call in progress</span>
-            <span class="timer-call">03:37</span>
+            <span class="timer-call">{{ timer }}</span>
           </h4>
         </div>
 
@@ -326,18 +373,42 @@
       <vg-player>
         <vg-controls class="video-call-controlls">
           <ul>
-<!--            <li (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}"><mat-icon>question_answer</mat-icon></li>-->
-<!--            <li (click)="isBotSuggestions = !isBotSuggestions" [ngClass]="{'active-action': isBotSuggestions}"><mat-icon>notes</mat-icon></li>-->
-            <li><mat-icon>present_to_all</mat-icon></li>
             <li *ngIf="fullScreenView && isVideoCall" (click)="exitFullscreen()"><mat-icon>fullscreen_exit</mat-icon></li>
-            <li class="full-screen-action"  (click)="ctiControlBar()"><mat-icon>picture_in_picture</mat-icon></li>
             <li  *ngIf="!fullScreenView && isVideoCall" class="full-screen-action"  (click)="requestFullscreen(fullViewConversation)"><mat-icon>fullscreen</mat-icon></li>
-            <li class="mute-call"  [ngClass]="{'active-action': isMute}" (click)="isMute = !isMute" ><vg-mute></vg-mute><mat-icon>{{isMute ? 'mic_off' : 'mic'}}</mat-icon></li>
+
+            <li (click)="ctiControlBar()" ><mat-icon>picture_in_picture_alt</mat-icon></li>
+            <li *ngIf="_sipService.isMuted == false"  matTooltip="{{('globals.mute' | translate)}}"
+                                                             (click)="_sipService.muteCallOnSip()"><mat-icon>mic</mat-icon></li>
+            <li *ngIf="_sipService.isMuted == true"  matTooltip="{{('globals.unMute' | translate)}}"
+                                                            (click)="_sipService.unmuteCallOnSip()" ><mat-icon>mic_off</mat-icon></li>
+            <li *ngIf="_sipService.isCallHold == false" matTooltip="{{('globals.hold' | translate)}}"
+                (click)="_sipService.holdCallOnSip()"><mat-icon>pause</mat-icon></li>
+            <li *ngIf="_sipService.isCallHold == true" matTooltip="{{('globals.resume' | translate)}}"
+                (click)="_sipService.resumeCallOnSip()"><mat-icon>pause_circle_filled</mat-icon><
+            </li>
             <li *ngIf="isVideoCall" class="video-cam" [ngClass]="{'active-action': isVideoCam}" (click)="isVideoCam = !isVideoCam"><mat-icon>{{isVideoCam ? 'videocam' : 'videocam_off'}}</mat-icon><vg-play-pause></vg-play-pause>
             </li>
-            <!--          <li class="mute-call"><mat-icon>pause</mat-icon></li>-->
-            <li class="end-call" (click)="endActiveCall()"><mat-icon>call_end</mat-icon></li>
+            <li (click)="endCallOnSip()" class="end-call" mat-fab><mat-icon>call_end</mat-icon></li>
           </ul>
+
+
+
+
+
+<!--          <ul>-->
+<!--&lt;!&ndash;            <li (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}"><mat-icon>question_answer</mat-icon></li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li (click)="isBotSuggestions = !isBotSuggestions" [ngClass]="{'active-action': isBotSuggestions}"><mat-icon>notes</mat-icon></li>&ndash;&gt;-->
+<!--            <li><mat-icon>present_to_all</mat-icon></li>-->
+<!--            <li *ngIf="fullScreenView && isVideoCall" (click)="exitFullscreen()"><mat-icon>fullscreen_exit</mat-icon></li>-->
+<!--            <li class="full-screen-action"  (click)="ctiControlBar()"><mat-icon>picture_in_picture</mat-icon></li>-->
+
+<!--            <li  *ngIf="!fullScreenView && isVideoCall" class="full-screen-action"  (click)="requestFullscreen(fullViewConversation)"><mat-icon>fullscreen</mat-icon></li>-->
+<!--            <li class="mute-call"  [ngClass]="{'active-action': isMute}" (click)="isMute = !isMute" ><vg-mute></vg-mute><mat-icon>{{isMute ? 'mic_off' : 'mic'}}</mat-icon></li>-->
+<!--            <li *ngIf="isVideoCall" class="video-cam" [ngClass]="{'active-action': isVideoCam}" (click)="isVideoCam = !isVideoCam"><mat-icon>{{isVideoCam ? 'videocam' : 'videocam_off'}}</mat-icon><vg-play-pause></vg-play-pause>-->
+<!--            </li>-->
+<!--            &lt;!&ndash;          <li class="mute-call"><mat-icon>pause</mat-icon></li>&ndash;&gt;-->
+<!--            <li class="end-call" (click)="endActiveCall()"><mat-icon>call_end</mat-icon></li>-->
+<!--          </ul>-->
         </vg-controls>
         <video [hidden]="!isVideoCam" #media [vgMedia]="media" id="76655"  preload="auto" class="main-video-screen">
           <source [src]="videoSrc" />
@@ -2401,28 +2472,39 @@
               <mat-icon matSuffix>search</mat-icon>
             </mat-form-field>
           </div>
+          <div class="main-suggestion-panel">
           <div class="intents-inner">
-            <div class="suggestion-main {{intent.type}}" *ngFor="let intent of intents">
+<!--            <p *ngFor="let opt of convers">-->
+<!--              {{opt.body?.markdownText}} ==llloooll== {{conversation.messages[conversation.messages.length - 1]?.botSuggestions.messageBody.markdownText}} </p>-->
+            <div class="suggestion-main"  *ngFor="let botSuggestion of conversation.botSuggestions">
+
+              <ng-container *ngFor="let suggestion of botSuggestion.suggestions">
+
+
+
+<!--                <ng-container *ngIf="suggestion.messageBody.type == 'PLAIN'">-->
               <div class="suggestion-title">
                   <span class="suggestion-type">
-                <mat-icon>{{intent.type == 'inCallSuggestion' ? 'call' : intent.type == 'knowledgeBase' ? 'wb_incandescent' : 'chat_bubble' }}</mat-icon>
+                <mat-icon>chat_bubble</mat-icon>
               </span>
-                {{intent.title}}
+<!--                {{conversation.messages.body.markdownText}}-->
                 <time>11:22 AM</time>
               </div>
-              <span class="suggestion-message">{{intent.message}}</span>
+              <span class="suggestion-message" (click)="replyInput.value = suggestion.messageBody.markdownText">{{suggestion.messageBody.markdownText}}</span>
               <!--              <b>{{intent.confidence.toFixed(2)}}</b>-->
-              <button mat-mini-fab class="canned-trigger edit-trigger">
-                <i class="material-icons">
-                  edit
-                </i>
-              </button>
-              <button mat-mini-fab class="canned-trigger send-suggestion">
-                <i class="material-icons">
-                  send
-                </i>
-              </button>
+                  <button
+                    mat-mini-fab
+                    class="canned-trigger edit-trigger"
+                    (click)="replyInput.value = suggestion.messageBody.markdownText"
+                  >
+                    <i class="material-icons">edit </i>
+                  </button>
+                  <button (click)="onSend(suggestion.messageBody.markdownText)" mat-mini-fab class="canned-trigger send-suggestion">
+                    <i class="material-icons">send </i>
+                  </button>
+                </ng-container>
             </div>
+          </div>
           </div>
         </div>
 
@@ -2433,41 +2515,6 @@
   </div>
 
   <div class="customer-info-main">
-    <div class="call-controls-view" *ngIf="isBarOpened">
-      <div class="right-call-controls row doc-bar">
-        <div class="main-showcase customer-info-dp">
-          <div class="agent-showcase">
-            <img src="assets/images/dummy-user.svg" alt="Customer" />
-            <mat-icon routerLink="/customers/chats">flip_to_back</mat-icon>
-          </div>
-          <h4 matTooltip="{{ this._sipService.customerNumber }}">
-            {{ this._sipService.customerNumber }}<span class="timer-call">{{ timer }}</span>
-          </h4>
-        </div>
-        <!-- <ul class="assistance-actions"> -->
-        <!-- <li><button disabled mat-fab><img src="assets/images/consult-colored.svg"></button></li>
-          <li><button disabled mat-fab><img src="assets/images/transfer-colored.svg"></button></li>
-          <li><button disabled mat-fab><img src="assets/images/conference-colored.svg"></button></li> -->
-        <!-- </ul> -->
-
-        <ul class="call-actions">
-          <!-- <li><button disabled mat-fab><mat-icon>mic</mat-icon></button></li> -->
-          <li><button (click)="ctiControlBar()" mat-fab><mat-icon>picture_in_picture_alt
-              </mat-icon></button></li>
-          <li *ngIf="_sipService.isMuted == false"><button matTooltip="{{('globals.mute' | translate)}}"
-              (click)="_sipService.muteCallOnSip()" mat-fab><mat-icon>mic</mat-icon></button></li>
-          <li *ngIf="_sipService.isMuted == true"><button matTooltip="{{('globals.unMute' | translate)}}"
-              (click)="_sipService.unmuteCallOnSip()" mat-fab><mat-icon>mic_off</mat-icon></button></li>
-          <li *ngIf="_sipService.isCallHold == false" matTooltip="{{('globals.hold' | translate)}}"
-            (click)="_sipService.holdCallOnSip()"><button mat-fab><mat-icon>pause</mat-icon></button></li>
-          <li *ngIf="_sipService.isCallHold == true" matTooltip="{{('globals.resume' | translate)}}"
-            (click)="_sipService.resumeCallOnSip()"><button mat-fab><mat-icon>pause_circle_filled</mat-icon></button>
-          </li>
-          <li (click)="endCallOnSip()"><button class="end-call" mat-fab><mat-icon>call_end</mat-icon></button></li>
-        </ul>
-      </div>
-    </div>
-
     <app-customer-info
       [activeChannelSessions]="conversation.activeChannelSessions"
       [customer]="conversation.customer"
