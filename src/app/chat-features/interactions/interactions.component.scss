@@ -2928,7 +2928,7 @@ vg-controls.hide {
   }
 }
 
-.chat-message.voice, .chat-message.custom {
+.chat-message.voice, .chat-message.custom ,.chat-message.app{
   .file-type-stamp {
     display: none !important;
   }
@@ -3916,4 +3916,16 @@ button.back-to-sms{
 
 .abc{
   position: absolute;
+}
+
+.chat-message.app{
+  opacity: 1 !important;
+  .profile-pic-area mat-icon {
+    line-height: 35px; 
+    color: #CE0101;
+  }
+ mat-expansion-panel-header{
+  padding-left: 2em;
+
+ }
 }

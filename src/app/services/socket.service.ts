@@ -507,9 +507,19 @@ export class socketService {
           event.data.header["status"] = "sent";
           conversation.messages.push(event.data);
         }
-      } else if (event.name.toLowerCase() == "third_party_activity") {
-
-        if (event.data.header.channelData.additionalAttributes.length > 0) {
+      } else if (event.name.toLowerCase() == "third_party_activity"  ) {
+        if(event.data.body.type.toLowerCase() == 'deliverynotification'){
+          let status=event.data.body['status'].toLowerCase();
+          console.log("satata",status);
+          const selectedMessage = conversation.messages.find((message) => {
+            return message.id == event.data.body.messageId;
+          });
+          if (selectedMessage) {
+            selectedMessage["header"]["status"] = event.data.body.status.toLowerCase();
+            console.log("schduled Activity ", selectedMessage );
+          }
+        }
+        else if ( event.data.header.channelData.additionalAttributes.length > 0) {
 
           const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => { return e.value.toLowerCase() == "outbound" });
           if (isOutBoundSMSType) {
@@ -522,7 +532,17 @@ export class socketService {
             conversation.messages.push(event.data);
           }
         }else if(event.data.header.schedulingMetaData ){
+          const fakeChannelSession={
+            "channel":{
+              "channelType": event.data.header.schedulingMetaData.channelType,
+            },
+            "channelData":event.data.header.channelData,
+          }
+          event.data.header['channelSession']=fakeChannelSession;
+
+
           conversation.messages.push(event.data);
+         // if(event.data.body.type == 'PLAIN')
 
         }
       }
@@ -993,7 +1013,19 @@ export class socketService {
           selectedMessage["header"]["status"] = "failed";
         }
       }
-    }
+    } 
+    //else if(cimEvent.data.header.sender.type.toLowerCase() == "app" 
+    // &&(cimEvent.data.body.status.toLowerCase() == "failed" || cimEvent.data.body.status.toLowerCase() == "read" 
+    // || cimEvent.data.body.status.toLowerCase() == "delivered")){
+    //  console.log("schduled Activity ");
+    //  const selectedMessage = conversation.messages.find((message) => {
+    //   return message.id == cimEvent.data.body.messageId;
+    // });
+    // if (selectedMessage) {
+    //   selectedMessage["header"]["status"] = cimEvent.data.body.status.toLowerCase();
+    //   console.log("schduled Activity ", selectedMessage["header"]["status"] );
+    // }
+    // }
   }
 
   markAgentMessagesToSeenTillId(messages, id, sender) {

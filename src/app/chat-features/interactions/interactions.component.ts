@@ -841,8 +841,19 @@ export class InteractionsComponent implements OnInit {
           event.data.header["status"] = "seen";
           msgs.push(event.data);
         } else if (event.name.toLowerCase() == "third_party_activity") {
+          if(event.data.body.type.toLowerCase() == 'deliverynotification'){
+            let status=event.data.body['status'].toLowerCase();
+            console.log("satata",status);
+            const selectedMessage = this.conversation.messages.find((message) => {
+              return message.id == event.data.body.messageId;
+            });
+            if (selectedMessage) {
+              selectedMessage["header"]["status"] = event.data.body.status.toLowerCase();
+              console.log("schduled Activity ", selectedMessage );
+            }
+          }
 
-          if (event.data.header.channelData.additionalAttributes.length > 0) {
+          else if (event.data.header.channelData.additionalAttributes.length > 0) {
 
             const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => { return e.value.toLowerCase() == "outbound" });
             if (isOutBoundSMSType) {
@@ -855,6 +866,14 @@ export class InteractionsComponent implements OnInit {
               msgs.push(event.data);
             }
           }else if(event.data.header.schedulingMetaData ){
+            const fakeChannelSession={
+              "channel":{
+                "channelType": event.data.header.schedulingMetaData.channelType,
+              },
+              "channelData":event.data.header.channelData,
+            }
+            event.data.header['channelSession']=fakeChannelSession;
+
             msgs.push(event.data);
 
           }
