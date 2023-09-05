@@ -102,6 +102,7 @@ import {  returnSchemaByChannelTypePipe } from "./pipes/returnSchemaByChannelTyp
 
 import { getIVRTrailPipe } from "./pipes/getIVRTrail.pipe";
 import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
+import { checkCiscoSessionPipe } from "./pipes/checkCiscoSession.pipe";
 
 @NgModule({
   declarations: [
@@ -144,6 +145,7 @@ import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
     getCustomerAniPipe,
     checkOutboundCallPipe,
     checkConsultCallPipe,
+    checkCiscoSessionPipe,
     returnSchemaByKeyPipe,
     returnSchemaByChannelTypePipe
     ],
@@ -323,6 +325,7 @@ import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
     checkConsultCallPipe,
     MatPaginatorModule,
     TableFilterPipe,
+    checkCiscoSessionPipe,
     returnSchemaByKeyPipe,
     returnSchemaByChannelTypePipe
   ]
