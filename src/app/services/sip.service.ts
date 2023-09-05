@@ -440,7 +440,7 @@ export class SipService implements OnInit {
         callType = "OUTBOUND";
         serviceIdentifier = "VOICE";
         let intent = "CALL_LEG_STARTED";
-        // this.getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, dialogEvent, intent, undefined, timeStamp, undefined);
+        this.getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, dialogEvent, intent, undefined, timeStamp, undefined);
       } else {
         this.setDialogCache(dialogEvent, "active");
         let cimMessage = this.createCIMMessage(
@@ -611,7 +611,7 @@ export class SipService implements OnInit {
       this._httpService.ccmVOICEChannelSession(data).subscribe(
         (res) => {
           console.log("CCM API Success Sip==>");
-          console.log("methodCalled-n==>", methodCalledOn);
+          // console.log("methodCalled==>", methodCalledOn);
           if (methodCalledOn == "call_end") this.clearLocalDialogCache(cacheId);
         },
         (error) => {
@@ -697,7 +697,7 @@ export class SipService implements OnInit {
           this.clearLocalDialogCache(cacheId);
           if (this.dialogRef) this.dialogRef.close();
         } else {
-          // this.getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, event, intent, customer, timeStamp, methodCalledOn);
+          this.getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, event, intent, customer, timeStamp, methodCalledOn);
         }
       } else {
         let cimMessage = this.createCIMMessage(

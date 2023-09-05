@@ -163,11 +163,11 @@ export class CustomerInfoComponent implements OnInit {
           return channelSession;
         }
       });
-      this.cxVoiceSession = this.activeChannelSessions.find((channelSession) => {
-        if (channelSession.channel.channelType.name.toLowerCase() == "cx_voice") {
-          return channelSession;
-        }
-      });
+      // this.cxVoiceSession = this.activeChannelSessions.find((channelSession) => {
+      //   if (channelSession.channel.channelType.name.toLowerCase() == "cx_voice") {
+      //     return channelSession;
+      //   }
+      // });
 
       if (this.ciscoVoiceSession) {
         let cacheId = `${this._cacheService.agent.id}:${this.ciscoVoiceSession.id}`;
@@ -184,24 +184,26 @@ export class CustomerInfoComponent implements OnInit {
         } else {
           console.log("No Dialog Found==>");
         }
-      } else if (this.cxVoiceSession) {
-        let cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
-        let cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
-        if (cacheDialog) {
-          let currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
-          let startTime = new Date(currentParticipant.startTime);
+      }
+      // else if (this.cxVoiceSession) {
+      //   let cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
+      //   let cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
+      //   if (cacheDialog) {
+      //     let currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
+      //     let startTime = new Date(currentParticipant.startTime);
 
-          this._sipService.timeoutId = setInterval(() => {
-            let currentTime = new Date();
-            let timedurationinMS = currentTime.getTime() - startTime.getTime();
-            this.msToHMS(timedurationinMS);
-          }, 1000);
-        } else {
-          console.log("No Dialog Found==>");
-        }
-      } else {
+      //     // this._sipService.timeoutId = setInterval(() => {
+      //     //   let currentTime = new Date();
+      //     //   let timedurationinMS = currentTime.getTime() - startTime.getTime();
+      //     //   this.msToHMS(timedurationinMS);
+      //     // }, 1000);
+      //   } else {
+      //     console.log("No Dialog Found==>");
+      //   }
+      // }
+      else {
         if (this._finesseService.timeoutId) clearInterval(this._finesseService.timeoutId);
-        if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
+        // if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
       }
     } catch (e) {
       console.error("[getVoiceChannelSession] Error :", e);

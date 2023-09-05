@@ -157,7 +157,20 @@ export class InteractionsComponent implements OnInit {
     });
 
     if (this.conversation && this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
-      if (this._sipService.isCallActive == true && this._sipService.isToolbarActive == false) this.ctiControlBar({ conversation: this.conversation });
+      if (this._sipService.dialogRef) {
+        // console.log("yo==>");
+        this._sipService.isToolbarActive = false;
+        this._sipService.dialogRef.close();
+        if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
+      }
+      if (this._sipService.isCallActive == true && this._sipService.isToolbarActive == false) {
+        // console.log("Test1==>");
+        this.ctiControlBar({ conversation: this.conversation });
+      } 
+      // else {
+        // console.log("Test==>");
+        // this._sipService.dialogRef
+      // }
       this.getVoiceChannelSession();
     }
 
@@ -1266,23 +1279,23 @@ export class InteractionsComponent implements OnInit {
       this.cxVoiceSession = this.conversation.activeChannelSessions.find((channelSession) => {
         return channelSession.channel.channelType.name.toLowerCase() === "cx_voice";
       });
-      if (this.cxVoiceSession) {
-        const cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
-        const cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
-        if (cacheDialog) {
-          const currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
-          const startTime = new Date(currentParticipant.startTime);
-          this._sipService.timeoutId = setInterval(() => {
-            const currentTime = new Date();
-            const timedurationinMS = currentTime.getTime() - startTime.getTime();
-            this.msToHMS(timedurationinMS);
-          }, 1000);
-        } else {
-          console.log("No Dialog Found==>");
-        }
-      } else {
-        clearInterval(this._sipService.timeoutId);
-      }
+      // if (this.cxVoiceSession) {
+      //   const cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
+      //   const cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
+      //   if (cacheDialog) {
+      //     const currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
+      //     const startTime = new Date(currentParticipant.startTime);
+      //     this._sipService.timeoutId = setInterval(() => {
+      //       const currentTime = new Date();
+      //       const timedurationinMS = currentTime.getTime() - startTime.getTime();
+      //       this.msToHMS(timedurationinMS);
+      //     }, 1000);
+      //   } else {
+      //     console.log("No Dialog Found==>");
+      //   }
+      // } else {
+      //   clearInterval(this._sipService.timeoutId);
+      // }
     } catch (e) {
       console.error("[getVoiceChannelSession] Error:", e);
     }
