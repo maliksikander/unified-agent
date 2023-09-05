@@ -38,8 +38,8 @@
   "silentMonitorType": "SUPERVISOR_MONITOR",
   "bargeInType": "BARGE_IN_CONSULT",
   "ronaStateOnCisco":"Call Not Answered",
-  "isCiscoEnabled":true,
-  "isCxVoiceEnabled":false,
+  "isCiscoEnabled":false,
+  "isCxVoiceEnabled":true,
   "CISCO_CC_MRD":"20316843be924c8ab4f57a7a",
   "CX_VOICE_MRD": "62f9e360ea5311eda05b0242",
   "SIP_SOCKET_URL": "wss://192.168.1.17:7443",
@@ -47,5 +47,6 @@
   "EXT_STATIC_PASSWORD": 1234,
   "ENABLE_SIP_LOGS": true,
   "STATIC_QUEUE_TRANSFER_DN":"99887766",
-  "AUTO_CALL_ANSWER_TIMER":3
+  "AUTO_CALL_ANSWER_TIMER":3,
+  "DASHBOARD_REFRESH_TIME" : 10000
 }
