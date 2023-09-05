@@ -826,7 +826,7 @@ export class finesseService {
   getCurrentConversationIdORConversation(type) {
     try {
       let conversationList: Array<any> = this._socketService.conversations;
-      console.log("list==>", conversationList);
+      // console.log("list==>", conversationList);
       for (let i = 0; i <= conversationList.length; i++) {
         if (conversationList[i] && conversationList[i].activeChannelSessions) {
           let voiceSession = conversationList[i].activeChannelSessions.find((item) => {
