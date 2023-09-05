@@ -445,7 +445,7 @@ export class finesseService {
                 } else if (item && item.dialogState == "alerting") {
                   // console.log("handle dialog 13.3==>");
                   if (dialogState.dialog.state.toLowerCase() == "active") {
-                    console.log("handle dialog 13.4==>");
+                    // console.log("handle dialog 13.4==>");
                     this.handleCiscoRona(cacheId, dialogState);
                   }
                 }
@@ -461,7 +461,7 @@ export class finesseService {
                 callType = "CONSULT_CONFERENCE";
                 this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, callType);
               } else {
-                console.log("handle dialog 16==>");
+                // console.log("handle dialog 16==>");
                 this.handleCiscoRona(cacheId, dialogState);
               }
             } else if (
@@ -499,7 +499,7 @@ export class finesseService {
             let callType = "DIRECT_TRANSFER";
             this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, callType);
           } else {
-            console.log("handle dialog 22==>");
+            // console.log("handle dialog 22==>");
             //rona Case
             this.handleCiscoRona(cacheId, dialogState);
           }
