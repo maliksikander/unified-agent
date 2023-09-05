@@ -52,7 +52,7 @@ var dialogStatedata1 = {
                         ]
                     },
                     "mediaAddress": null,
-                    "mediaAddressType": "SIP.js/0.15.11-CTI/Expertflow",
+                    "mediaAddressType": "SIP.js/0.21.2-CTI/Expertflow",
                     "startTime": null,
                     "state": null,
                     "stateCause": null,
@@ -114,7 +114,7 @@ var outboundDialingdata1 = {
                         ]
                     },
                     "mediaAddress": null,
-                    "mediaAddressType": "SIP.js/0.15.11-CTI/Expertflow",
+                    "mediaAddressType": "SIP.js/0.21.2-CTI/Expertflow",
                     "startTime": null,
                     "state": null,
                     "stateCause": null,
@@ -164,7 +164,7 @@ var ConsultCalldata1 = {
                         ]
                     },
                     "mediaAddress": null,
-                    "mediaAddressType": "SIP.js/0.15.11-CTI/Expertflow",
+                    "mediaAddressType": "SIP.js/0.21.2-CTI/Expertflow",
                     "startTime": null,
                     "state": null,
                     "stateCause": null,
@@ -211,7 +211,7 @@ var invitedata1 = {
                         ]
                     },
                     "mediaAddress": null,
-                    "mediaAddressType": "SIP.js/0.15.11-CTI/Expertflow",
+                    "mediaAddressType": "SIP.js/0.21.2-CTI/Expertflow",
                     "startTime": null,
                     "state": null,
                     "stateCause": null,
@@ -264,7 +264,7 @@ function postMessages(obj, callback) {
             console.log('Freeswitch do not support silentMonitor currently');
             break;
         case 'answerCall':
-            respond_call(obj.parameter.clientCallbackFunction, obj.parameter.clientCallbackFunction);
+            respond_call(obj.parameter.clientCallbackFunction, obj.parameter.dialogId);
             break;
         case 'releaseCall':
             terminate_call(obj.parameter.dialogId);
@@ -279,16 +279,16 @@ function postMessages(obj, callback) {
             console.log(obj);
             break;
         case 'holdCall':
-            phone_hold(obj.parameter.clientCallbackFunction, obj.parameter.clientCallbackFunction);
+            phone_hold(obj.parameter.clientCallbackFunction, obj.parameter.dialogId);
             break;
         case 'retrieveCall':
-            phone_unhold(obj.parameter.clientCallbackFunction, obj.parameter.clientCallbackFunction);
+            phone_unhold(obj.parameter.clientCallbackFunction, obj.parameter.dialogId);
             break;
         case 'mute_call':
-            phone_mute(obj.parameter.clientCallbackFunction, obj.parameter.clientCallbackFunction);
+            phone_mute(obj.parameter.clientCallbackFunction, obj.parameter.dialogId);
             break;
         case 'unmute_call':
-            phone_unmute(obj.parameter.clientCallbackFunction, obj.parameter.clientCallbackFunction);
+            phone_unmute(obj.parameter.clientCallbackFunction, obj.parameter.dialogId);
             break;
         case 'SST':
             console.log('Freeswitch do not support SST currently');
@@ -802,6 +802,7 @@ function initiate_call(calledNumber, callback) {
                     outboundDialingdata.response.dialog.state = "INITIATED";
                     var { session, ...dataToPass } = outboundDialingdata;
                     callback(dataToPass);
+                    SendPostMessage(dataToPass);
                 },
                 onTrying: (response) => {
                     console.log("INITIATING response = onTrying", response);
@@ -841,7 +842,7 @@ function initiate_call(calledNumber, callback) {
                         dialogStatedata.response.dialog.participants[0].state = "INITIATING";
                         dialogStatedata.response.dialog.state = "INITIATING";
                         callback(outboundDialingdata);
-                        SendPostMessage(outboundDialingdata);
+                       
 
                         var index = getCallIndex(outboundDialingdata.response.dialog.id);
                         if (index == -1) {
@@ -1594,17 +1595,17 @@ function addsipcallback(temp_session, call_type, callback) {
             }
         });
         temp_session.delegate = {
-            onBye(bye) {
-                console.log(`we received a bye message!`, bye);
-            },
-            onRejec: (invitation) => {
-                console.log("onReject received", invitation);
-                //invitation.accept();
-            },
-            onRejected: (invitation) => {
-                console.log("onRejected received", invitation);
-                //invitation.accept();
-            },
+            // onBye(bye) {
+            //     console.log(`we received a bye message!`, bye);
+            // },
+            // onRejec: (invitation) => {
+            //     console.log("onReject received", invitation);
+            //     //invitation.accept();
+            // },
+            // onRejected: (invitation) => {
+            //     console.log("onRejected received", invitation);
+            //     //invitation.accept();
+            // },
             onCancel: (invitation) => {
                 console.log("onCancel received", invitation);
                 var dialogId;
@@ -1856,6 +1857,24 @@ function getParameterNames(func) {
     return [];
 }
 function SendPostMessage(data){
-    window.postMessage(JSON.stringify(data), "*"); // "*" means sending to all origins
-    console.log('post message sent', data);
+    try{
+        var obj = JSON.stringify(data, getCircularReplacer());
+        window.postMessage(obj, "*"); // "*" means sending to all origins
+        console.log('post message sent');
+    }catch(e){
+        console.log("Exception: ",e);
+    }
 }
+
+const getCircularReplacer = () => {
+    const seen = new WeakSet();
+    return (key, value) => {
+      if (typeof value === 'object' && value !== null) {
+        if (seen.has(value)) {
+          return;
+        }
+        seen.add(value);
+      }
+      return value;
+    };
+  };

@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { cacheService } from "src/app/services/cache.service";
 import { finesseService } from "src/app/services/finesse.service";
 import { SipService } from "src/app/services/sip.service";
+import { interval } from "rxjs";
 
 @Component({
   selector: "app-call-controls",
@@ -46,7 +47,6 @@ export class CallControlsComponent implements OnInit {
       if (val == false) this.cancel();
     });
     if (this.data.conversation) {
-      console.log("1==>");
       this.getVoiceChannelSession();
     } else if (this.data && this.data.isManualOB && this.data.isManualOB == true) this.handleOBCall(this.data);
   }
@@ -88,25 +88,11 @@ export class CallControlsComponent implements OnInit {
 
   getVoiceChannelSession() {
     try {
-      console.log("2==>");
       this.cxVoiceSession = this.data.conversation.activeChannelSessions.find((channelSession) => {
         return channelSession.channel.channelType.name.toLowerCase() === "cx_voice";
       });
       if (this.cxVoiceSession) {
         this.setToolbarTimer(this.cxVoiceSession.id);
-        // const cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
-        // const cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
-        // if (cacheDialog) {
-        //   const currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
-        //   const startTime = new Date(currentParticipant.startTime);
-        //   this._sipService.timeoutId = setInterval(() => {
-        //     const currentTime = new Date();
-        //     const timedurationinMS = currentTime.getTime() - startTime.getTime();
-        //     this.msToHMS(timedurationinMS);
-        //   }, 1000);
-        // } else {
-        //   console.log("No Dialog Found==>");
-        // }
       } else {
         clearInterval(this._sipService.timeoutId);
       }
@@ -116,29 +102,16 @@ export class CallControlsComponent implements OnInit {
   }
 
   setToolbarTimer(dialogId) {
-    console.log("3==>");
     const cacheId = `${this._cacheService.agent.id}:${dialogId}`;
     const cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
-    console.log("4==>", cacheId);
     if (cacheDialog) {
-      console.log("5==>");
       const currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
       const startTime = new Date(currentParticipant.startTime);
-      console.log("6==>",startTime);
-      console.log("8==>",this._sipService.timeoutId);
       this._sipService.timeoutId = setInterval(() => {
-        console.log("7==>");
         const currentTime = new Date();
         const timedurationinMS = currentTime.getTime() - startTime.getTime();
         this.msToHMS(timedurationinMS);
       }, 1000);
-
-      //  setInterval(() => {
-      //   console.log("9==>");
-      //   const currentTime = new Date();
-      //   const timedurationinMS = currentTime.getTime() - startTime.getTime();
-      //   this.msToHMS(timedurationinMS);
-      // }, 1000);
     } else {
       console.log("No Cache Dialog Found==>");
     }

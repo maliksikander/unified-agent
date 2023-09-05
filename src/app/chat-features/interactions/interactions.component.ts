@@ -161,7 +161,7 @@ export class InteractionsComponent implements OnInit {
         // console.log("yo==>");
         this._sipService.isToolbarActive = false;
         this._sipService.dialogRef.close();
-        if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
+        // if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
       }
       if (this._sipService.isCallActive == true && this._sipService.isToolbarActive == false) {
         // console.log("Test1==>");
@@ -171,7 +171,7 @@ export class InteractionsComponent implements OnInit {
         // console.log("Test==>");
         // this._sipService.dialogRef
       // }
-      this.getVoiceChannelSession();
+      // this.getVoiceChannelSession();
     }
 
     //this._cacheService.smsDialogData ||

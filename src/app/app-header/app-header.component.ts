@@ -151,7 +151,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     this._sipService.dialogRef.afterClosed().subscribe((result) => {
       // this.ctiBoxView = false;
       // this.ctiBarView = true;
-      if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
+      // if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
     });
   }
 

@@ -23,6 +23,7 @@ export class SipService implements OnInit {
   startTime: any;
   endTime: any;
   timeoutId;
+  timeoutIdInCustomerInfo;
   taskList: Array<any>;
   isCallActive: boolean = false;
   isCallHold: boolean = false;
@@ -719,6 +720,7 @@ export class SipService implements OnInit {
       this.isCallActive = false;
       this._isActiveSub.next(false);
       if (this.timeoutId) clearInterval(this.timeoutId);
+      if (this.timeoutIdInCustomerInfo) clearInterval(this.timeoutIdInCustomerInfo);
     } catch (e) {
       console.error("[Error] handleCallDropEvent Sip==>", e);
     }
