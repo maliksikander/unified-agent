@@ -1462,20 +1462,24 @@
                           <mat-panel-title>
                             <div class="panel-header">
                               <ul>
-                                <li *ngIf="message.header.status " class="activity-status" matTooltip="Activity Status"><span>{{message.header.status}}</span></li>
+                                <li *ngIf="message.header.scheduledStatus " class="activity-status" matTooltip="Activity Status"><span>{{message.header.scheduledStatus}}</span></li>
                                 <li *ngIf="message.header.schedulingMetaData.queue"  matTooltip="Queue"> {{message.header.schedulingMetaData.queue}}</li>
                                 <!-- <li *ngIf="(message.body.status | lowercase) " matTooltip="Execute Time">
                                   {{ message.header.timestamp | date: "shortTime" }}
                                 </li> -->
                                 <li  matTooltip="Execute Time">
-                                  {{ message.header.schedulingMetaData.scheduledDatetime | date}} </li>
+                                  {{ message.header.schedulingMetaData.scheduledDatetime | date:'medium'}} </li>
                                 <li  matTooltip="Scheduled Time">
-                                  {{ message.header.timestamp | date }}
+                                  {{ message.header.timestamp | date:'medium' }}
                                 </li>
 
                                 <li *ngIf="(message.header.sender.senderName)"  matTooltip="Campaign Name">{{message.header.sender.senderName}}</li>
                                 <li  matTooltip="Channel" class="multiple-users agent-pic participant-agent call-services activity-response">
-                                  <span><mat-icon>phone_forwarded</mat-icon></span>
+                                  <span><img
+                                   
+                                    width="20"
+                                    [src]="message.header.channelSession.channel.channelType.channelLogo | channelLogo | async"
+                                  /></span>
                                   <!-- <img [src]="getFileURL(message.header.schedulingMetaData.channelType.channelLogo" alt="group" />)" alt="type_logo"> -->
                                   <!--                                <span><img src="assets/images/groups.svg" alt="group" /></span>-->
                                 </li>

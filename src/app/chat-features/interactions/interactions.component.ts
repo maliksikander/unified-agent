@@ -172,7 +172,9 @@ export class InteractionsComponent implements OnInit {
     }
     //this._cacheService.smsDialogData ||
    if(this.conversation.conversationId === 'FAKE_CONVERSATION'){
+    this.conversation.messages = [];
     this.loadPastActivities('FAKE_CONVERSATION');
+    
    }
 
   }
@@ -830,30 +832,30 @@ export class InteractionsComponent implements OnInit {
         if (
           event.name.toLowerCase() == "agent_message" ||
           event.name.toLowerCase() == "bot_message" ||
-          event.name.toLowerCase() == "customer_message" ||
-          event.name.toLowerCase() == "third_party_activity"
+          event.name.toLowerCase() == "customer_message" 
         ) {
           if (event.name.toLowerCase() == "customer_message" && event.data.header.sender.type.toLowerCase() == "connector") {
             event.data.header.sender.senderName = event.data.header.customer.firstName + " " + event.data.header.customer.lastName;
             event.data.header.sender.id = event.data.header.customer._id;
             event.data.header.sender.type = "CUSTOMER";
           }
-          event.data.header["status"] = "seen";
+        
+        event.data.header["status"] = "seen";
           msgs.push(event.data);
         } else if (event.name.toLowerCase() == "third_party_activity") {
-          if(event.data.body.type.toLowerCase() == 'deliverynotification'){
-            let status=event.data.body['status'].toLowerCase();
-            console.log("satata",status);
-            const selectedMessage = this.conversation.messages.find((message) => {
-              return message.id == event.data.body.messageId;
-            });
-            if (selectedMessage) {
-              selectedMessage["header"]["status"] = event.data.body.status.toLowerCase();
-              console.log("schduled Activity ", selectedMessage );
-            }
-          }
+          // if(event.data.body.type.toLowerCase() == 'deliverynotification'){
+          //   let status=event.data.body['status'].toLowerCase();
+          //   console.log("satata",status);
+          //   const selectedMessage = this.conversation.messages.find((message) => {
+          //     return message.id == event.data.body.messageId;
+          //   });
+          //   if (selectedMessage) {
+          //     selectedMessage["header"]["status"] = event.data.body.status.toLowerCase();
+          //     console.log("schduled Activity ", selectedMessage );
+          //   }
+          // }
 
-          else if (event.data.header.channelData.additionalAttributes.length > 0) {
+           if (event.data.header.channelData.additionalAttributes.length > 0) {
 
             const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => { return e.value.toLowerCase() == "outbound" });
             if (isOutBoundSMSType) {
@@ -873,6 +875,11 @@ export class InteractionsComponent implements OnInit {
               "channelData":event.data.header.channelData,
             }
             event.data.header['channelSession']=fakeChannelSession;
+            let status = this._socketService.getSchduledActivityStatus(cimEvents,event.data.id);
+
+            if(status){
+             event.data.header['scheduledStatus'] = status;
+            }
 
             msgs.push(event.data);
 
