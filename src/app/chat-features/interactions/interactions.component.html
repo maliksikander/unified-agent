@@ -1456,13 +1456,13 @@
                     <!-- <-------------------------------------Scheduled Activity--------------------------------------------------->
                       <!-- *ngIf="(message.header.status | lowercase) == 'deliverynotification' " -->
                     <div *ngIf="((message.header.sender.type | lowercase) == 'app' && (message.header.schedulingMetaData) )"
-                         class="voice-activity-main panel-divider single scheduled-activity-area activity {{message.header.status}}">
+                         class="voice-activity-main panel-divider single scheduled-activity-area activity {{message.header.scheduledStatus | lowercase}}">
                       <mat-expansion-panel>
                         <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
                           <mat-panel-title>
                             <div class="panel-header">
                               <ul>
-                                <li *ngIf="message.header.scheduledStatus " class="activity-status" matTooltip="Activity Status"><span>{{message.header.scheduledStatus}}</span></li>
+                                <li *ngIf="message.header.scheduledStatus | lowercase  " class="activity-status" matTooltip="Activity Status"><span>{{message.header.scheduledStatus | lowercase}}</span></li>
                                 <li *ngIf="message.header.schedulingMetaData.queue"  matTooltip="Queue"> {{message.header.schedulingMetaData.queue}}</li>
                                 <!-- <li *ngIf="(message.body.status | lowercase) " matTooltip="Execute Time">
                                   {{ message.header.timestamp | date: "shortTime" }}

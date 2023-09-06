@@ -545,6 +545,7 @@ export class socketService {
           event.data.header['scheduledStatus'] = status;
          }
           conversation.messages.push(event.data);
+          console.log("event.data",conversation.messages)
          // if(event.data.body.type == 'PLAIN')
 
         }

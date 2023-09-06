@@ -867,7 +867,7 @@ export class InteractionsComponent implements OnInit {
               }
               msgs.push(event.data);
             }
-          }else if(event.data.header.schedulingMetaData ){
+          }else if(event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain' ){
             const fakeChannelSession={
               "channel":{
                 "channelType": event.data.header.schedulingMetaData.channelType,
@@ -880,9 +880,9 @@ export class InteractionsComponent implements OnInit {
             if(status){
              event.data.header['scheduledStatus'] = status;
             }
-
+            
             msgs.push(event.data);
-
+            console.log(msgs,"msgs")
           }
         } else if (
           [
