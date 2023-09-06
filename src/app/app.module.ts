@@ -46,6 +46,7 @@ import { cacheService } from "./services/cache.service";
 import { Observable,from } from "rxjs";
 import { ActiveAgentDetailsComponent } from './supervisor/active-agent-details/active-agent-details.component';
 import { CallControlsComponent } from './new-components/call-controls/call-controls.component';
+import {SendSmsComponent, SendSmsSnackbarComponent} from './chat-features/send-sms/send-sms.component';
 // import { ActiveChatsComponent } from "./supervisor/active-chats/active-chats.component";
 // import { QueueChatsComponent } from "./supervisor/queue-chats/queue-chats.component";
 
@@ -131,7 +132,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     ActiveChatsComponent,
     QueueChatsComponent,
     ActiveAgentDetailsComponent,
-    CallControlsComponent
+    CallControlsComponent,
+    SendSmsComponent,
+    SendSmsSnackbarComponent
   ],
   imports: [
     BrowserModule,
@@ -177,7 +180,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     CreateLabelComponent,
     FilePreviewComponent,
     LinkConversationDialogComponent,
-    CallControlsComponent
+    CallControlsComponent,
+    SendSmsComponent,
+    SendSmsSnackbarComponent
   ],
   providers: [
     {
