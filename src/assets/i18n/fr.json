@@ -97,7 +97,8 @@
     "unable-to-fetch-service-identifier-messages-cant-be-sent":"Unable to fetch service identifier, messages cant be sent_fr",
     "Socket-Connected":"Socket Connected_fr",
     "Calling":"Calling_fr",
-    "CX-Voice-Connected":"CX VOICE Connected_fr"
+    "CX-Voice-Connected":"CX VOICE Connected_fr",
+    "Call-Ended":"Call Ended_fr"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_fr",

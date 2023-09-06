@@ -31,6 +31,7 @@ export class SipService implements OnInit {
   customerNumber: any = "";
   isSubscriptionFailed = false;
   isMuted: boolean = false;
+  isToolbarActive: boolean = false;
 
   constructor(
     private _appConfigService: appConfigService,
@@ -564,7 +565,7 @@ export class SipService implements OnInit {
       this._httpService.ccmVOICEChannelSession(data).subscribe(
         (res) => {
           console.log("CCM API Success Sip==>");
-          if (methodCalledOn == "call_end")  this.clearLocalDialogCache(cacheId);
+          if (methodCalledOn == "call_end") this.clearLocalDialogCache(cacheId);
         },
         (error) => {
           console.error("[Error on CCM Channel Session API] ==>", error);
@@ -628,7 +629,9 @@ export class SipService implements OnInit {
 
   handleCallDroppedEvent(cacheId, dialogState, methodCalledOn, event, callType, state) {
     try {
+      
       let taskState;
+      this.isToolbarActive = false;
       if (state && state.taskId) taskState = state;
       let channelCustomerIdentifier = dialogState.dialog.customerNumber;
       let serviceIdentifier = dialogState.dialog.dnis;

@@ -9,6 +9,7 @@ import { map, retry } from "rxjs/operators";
 import { snackbarService } from "src/app/services/snackbar.service";
 import { TranslateService } from "@ngx-translate/core";
 import { CustomerLabels } from "src/app/models/labels/labels";
+import { appConfigService } from "src/app/services/appConfig.service";
 
 @Component({
   selector: "app-queue-chats",
@@ -33,7 +34,8 @@ export class QueueChatsComponent implements OnInit {
     private _httpService: httpService,
     private route: ActivatedRoute,
     private _snackBarService: snackbarService,
-    private _cacheService: cacheService
+    private _cacheService: cacheService,
+    public _appConfigService: appConfigService
   ) {}
 
   ngOnInit(): void {
@@ -66,7 +68,7 @@ export class QueueChatsComponent implements OnInit {
   // to start timer using rxjs `timer`
   startRefreshTimer() {
     try {
-      this.timerSubscription = timer(0, 10000)
+      this.timerSubscription = timer(0, this._appConfigService.config.DASHBOARD_REFRESH_TIME)
         .pipe(
           map(() => {
             this.getAllQueuedChats(this.selectedTeam);
@@ -107,30 +109,41 @@ export class QueueChatsComponent implements OnInit {
     try {
       this.filteredData = [];
       if (this.selectedQueues.length == 0) {
-        this.filteredData = this.queuedChatList;
+        this.queuedChatList.forEach((chats) => {
+          chats.chats.forEach((innerChat)=> {
+            console.log("here are chat in the above",innerChat)
+            innerChat["queueName"] = chats.queueName
+            this.filteredData.push(innerChat);
+          })
+        });
       } else {
         this.selectedQueues.forEach((data) => {
-          this.queuedChatList.forEach((chat) => {
-            if (data.queueId == chat.queueId) this.filteredData.push(chat);
+          this.queuedChatList.forEach((chats) => {
+            if (data.queueId == chats.queueId) {
+              chats.chats.forEach((innerChat) => {
+                innerChat["queueName"] = chats.queueName
+                this.filteredData.push(innerChat);
+              })
+            } 
           });
         });
       }
-
-      // Sort the filteredData array in descending order by waitingSince property
-      for (let data of this.filteredData) {
-        data.chats.sort((a, b) => {
-          if (this.sortOrder === "asc") {
-            return a.waitingSince - b.waitingSince;
-          } else {
-            return b.waitingSince - a.waitingSince;
-          }
-        });
-      }
+      this.sortFilteredDataInQueues(this.filteredData) 
     } catch (err) {
       console.error("[filterData] Error :", err);
     }
   }
 
+  sortFilteredDataInQueues(dataToBeSorted) {
+    return dataToBeSorted.sort((a, b) => {
+      if (this.sortOrder === "asc") {
+        return a.waitingSince - b.waitingSince;
+      } else {
+        return b.waitingSince - a.waitingSince;
+      }
+    });
+  }
+  
   onItemSelect(item: any) {
     // this.getAllQueuedChats(this.selectedTeam);
   }

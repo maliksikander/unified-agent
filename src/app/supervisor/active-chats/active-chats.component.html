@@ -131,8 +131,7 @@
             </ng-container>
           </ng-container>
           <ng-container *ngIf="FilterSelected == 'agents'">
-            <ng-container *ngFor="let data of filteredData">
-              <tr *ngFor="let chat of data.chats | LockFilter: agentSearch:['agentName']">
+              <tr *ngFor="let chat of filteredData | LockFilter: agentSearch:['agentName']">
                 <td>
                   <span class="material-icons direction-icon md-18 {{ chat.direction | lowercase }}"> call_received </span>
                 </td>
@@ -169,9 +168,7 @@
                   <span class="table-main-data" matTooltip="{{ chat.agentName }}">{{ chat.agentName }}</span>
                   <small matTooltip="{{ 'globals.agent-username' | translate }}">({{ chat.agentUsername }})</small>
                 </td>
-                <td>
-                  <span class="table-main-data" matTooltip="{{ data.queueName }}">{{ data.queueName }}</span>
-                </td>
+                <td><span class="table-main-data"  matTooltip="{{ chat.queueName }}">{{ chat.queueName }}</span></td>
                 <span *ngIf="chat.channelSession.conversationId | isAlreadyJoined" class="joined">{{ "pull-mode.joined" | translate }}</span>
                 <span class="table-trigger">
                   <button
@@ -189,7 +186,6 @@
                   src="assets/images/close.svg" alt="Close"></button> -->
                 </span>
               </tr>
-            </ng-container>
           </ng-container>
         </tbody>
       </table>
