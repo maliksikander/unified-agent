@@ -4118,7 +4118,7 @@ mat-select {
         .agent-showcase {
           width: 65px;
           height: 65px;
-          margin: 0 auto;
+          margin: 15px auto;
           transition: all .1s;
 
          img {
@@ -4133,12 +4133,14 @@ mat-select {
           max-width: inherit;
           margin-top: 2px;
           transition: all .1s;
+          color: $light-gray-color;
 
           span {
             text-align: center;
             font-size: 13px;
             margin-top: 5px;
             transition: all .1s;
+            color: $light-gray-color;
           }
         }
       }

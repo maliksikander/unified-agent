@@ -202,7 +202,7 @@ export class InteractionsComponent implements OnInit {
     });
 
     if (this.conversation && this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
-      if (this._sipService.isCallActive == true) this.ctiControlBar();
+      if (this._sipService.isCallActive == true) this.ctiCallActive();
       this.getVoiceChannelSession();
     }
   }
@@ -1245,17 +1245,20 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  ctiControlBar() {
-    this.ctiBoxView = true;
-    this.ctiBarView = true;
-    this.chatDuringCall = !this.chatDuringCall;
-    this.isConversationView = !this.isConversationView;
+  ctiCallActive() {
+    this.ctiBoxView = false;
+    this.ctiBarView = false;
+    this.isAudioCall = true;
+    this.isConversationView = false;
     if (this.fullScreenView) {
       this.exitFullscreen();
     }
-
-
-
+  }
+  ctiControlBar() {
+    this.isConversationView = true;
+    this.ctiBoxView = true;
+    this.ctiBarView = true;
+    this.chatDuringCall = false;
     const dialogRef = this.dialog.open(CallControlsComponent, {
       panelClass: "call-controls-dialog",
       hasBackdrop: false,
@@ -1267,9 +1270,9 @@ export class InteractionsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       this.router.navigate(["/customers/chats"]);
-      this.chatDuringCall = false;
+      this.chatDuringCall = true;
       this.isBotSuggestions = false;
-      this.isConversationView = false;
+      this.isConversationView = true;
       console.log(this.chatDuringCall, 'chat chatDuringCall')
       this.ctiBoxView = false;
       this.ctiBarView = false;

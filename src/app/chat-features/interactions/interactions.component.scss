@@ -2083,6 +2083,14 @@ ul.delivery-report {
       //}
       &.full-column-display{
         width: calc(100% - 320px) !important;
+        &.smart-call-controls{
+          .chat-feature-main{
+            display: flex;
+            visibility: visible;
+            flex: 0 0 1px;
+          }
+        }
+
       }
     }
 }
@@ -4030,14 +4038,27 @@ vg-controls.hide {
     z-index: 2;
   }
   &.dual-column-display{
-    .video-feature-main {
-      flex: 0 0 calc(100% - 460px);
 
-    }
+   &.chat-view-active{
+
     .chat-feature-main{
-      display: flex;
-      visibility: visible;
-      flex: 0 0 460px;
+      width: calc(100% - 460px);
+      position: relative;
+    }
+    }
+
+    &.call-in-progress {
+      .video-feature-main {
+        flex: 0 0 calc(100% - 460px);
+
+      }
+
+      .chat-feature-main {
+        display: flex;
+        visibility: visible;
+        flex: 0 0 460px;
+        position: relative;
+      }
     }
 
     &.smart-call-controls{
@@ -4072,6 +4093,12 @@ vg-controls.hide {
     position: relative;
     flex: 0 0 100%;
     padding: 10px;
+
+    .main-showcase.customer-info-dp{
+      h4{
+        text-align: center;
+      }
+    }
 
     .main-video-screen{
       height: 100%;
@@ -4189,12 +4216,12 @@ vg-controls.hide {
     }
   }
   .chat-feature-main{
-    flex: 0 0 460px;
-    min-width: 460px;
-    position: relative;
-    display: none;
-    visibility: hidden;
-    background: #fff;
+    //flex: 0 0 460px;
+    //min-width: 460px;
+    //position: relative;
+    //display: none;
+    //visibility: hidden;
+    //background: #fff;
 
     .chat-session-main{
       width: 100% !important;

@@ -29,6 +29,7 @@ export class SipService implements OnInit {
   isSipLoggedIn: boolean = false;
   agentMrdStates: any;
   customerNumber: any = "";
+  callData: any;
   isSubscriptionFailed = false;
   isMuted: boolean = false;
 
@@ -175,6 +176,9 @@ export class SipService implements OnInit {
 
   handleInboundAndCampaignCallEvent(event, callType) {
     this.customerNumber = event.response.dialog.customerNumber;
+    this.callData = event.response.dialog;
+
+    console.log('call Data =======>', this.callData)
     let cacheId = `${this._cacheService.agent.id}:${event.response.dialog.id}`;
     let cacheDialog: any = this.getDialogFromCache(cacheId);
     if (!cacheDialog) this.identifyCustomer(event, event.response.dialog.customerNumber, callType);

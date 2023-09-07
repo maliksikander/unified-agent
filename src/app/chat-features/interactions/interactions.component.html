@@ -34,8 +34,8 @@
         </div>
         <div class="col-md-8 col-sm-8 agent-actions">
           <ul class="list-group list-group-horizontal agent-controls call-controls">
-            <li class="list-group-item">
-              <button mat-icon-button (click)="chatInCall()" *ngIf=" _sipService.isCallActive" [ngClass]="{'active-action': chatDuringCall}"
+            <li class="list-group-item" *ngIf="_sipService.isCallActive">
+              <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}"
                       matTooltip="Chat" aria-label="Chat">
                 <mat-icon>question_answer</mat-icon>
               </button>
@@ -287,75 +287,32 @@
       </div>
     </div>
     <!--/Top bar-->
-<div #fullViewConversation class="main-conversation-feature {{chatDuringCall || (isAudioCall && isBotSuggestions) || (isVideoCall && isBotSuggestions) ||  (isConversationView && isBotSuggestions) ? 'dual-column-display' : isAudioCall || isVideoCall && !isBotSuggestions && !isConversationView ? 'full-column-display nnnn'  :'full-column-display'}}
+<div #fullViewConversation class="main-conversation-feature {{chatDuringCall || ( _sipService.isCallActive && isBotSuggestions) ||  (isConversationView && isBotSuggestions) ? 'dual-column-display' :  (_sipService.isCallActive || isConversationView) && !isBotSuggestions ? 'full-column-display nnnn'  :'full-column-display'}}
 {{fullScreenView ? 'full-screen-call':''}}"
      [ngClass]="{'call-in-progress': isVideoCall || isAudioCall, 'smart-call-controls':ctiBarView, 'bot-suggestions-active': isBotSuggestions, 'chat-view-active': isConversationView, 'multi-column-display' : chatDuringCall && isBotSuggestions, 'chat-suggestion-view' : isConversationView && isBotSuggestions && !chatDuringCall}">
 
 
-<!--
-
-      <div class="call-controls-view" *ngIf="isBarOpened">
-        <div class="right-call-controls row doc-bar">
-          <div class="main-showcase customer-info-dp">
-            <div class="agent-showcase">
-              <img src="assets/images/dummy-user.svg" alt="Customer" />
-              <mat-icon routerLink="/customers/chats">flip_to_back</mat-icon>
-            </div>
-            <h4 matTooltip="{{ this._sipService.customerNumber }}">
-              {{ this._sipService.customerNumber }}<span class="timer-call">{{ timer }}</span>
-            </h4>
-          </div>
-
-
-          <ul class="call-actions">
-            <li><button (click)="ctiControlBar()" mat-fab><mat-icon>picture_in_picture_alt
-                </mat-icon></button></li>
-            <li *ngIf="_sipService.isMuted == false"><button matTooltip="{{('globals.mute' | translate)}}"
-                (click)="_sipService.muteCallOnSip()" mat-fab><mat-icon>mic</mat-icon></button></li>
-            <li *ngIf="_sipService.isMuted == true"><button matTooltip="{{('globals.unMute' | translate)}}"
-                (click)="_sipService.unmuteCallOnSip()" mat-fab><mat-icon>mic_off</mat-icon></button></li>
-            <li *ngIf="_sipService.isCallHold == false" matTooltip="{{('globals.hold' | translate)}}"
-              (click)="_sipService.holdCallOnSip()"><button mat-fab><mat-icon>pause</mat-icon></button></li>
-            <li *ngIf="_sipService.isCallHold == true" matTooltip="{{('globals.resume' | translate)}}"
-              (click)="_sipService.resumeCallOnSip()"><button mat-fab><mat-icon>pause_circle_filled</mat-icon></button>
-            </li>
-            <li (click)="endCallOnSip()"><button class="end-call" mat-fab><mat-icon>call_end</mat-icon></button></li>
-          </ul>
-        </div>
-      </div>
-
-  -->
-
-
-
-
-
-
-
-
-
-
-
-
-
     <div class="video-feature-main" *ngIf="(isVideoCall && !ctiBarView &&  _sipService.isCallActive) || (isAudioCall && !ctiBarView &&  _sipService.isCallActive) " >
       <div class="sub-call-participants">
-        <span (click)="videoSwitch('jm')">
+
+
+
+        <span (click)="videoSwitch('jm')" *ngFor="let callParticipant of _sipService?.callData?.participants">
 <!--           <video #media [vgMedia]="media" id="76655" preload="auto" class="main-video-screen">&ndash;&gt;-->
 <!--                  <source src="assets/video/angry-birds.mp4" />-->
 <!--                </video>-->
                <mat-icon class="camera-mode">videocam_off</mat-icon>
-          <strong>JM</strong>
+          <strong>{{callParticipant.mediaAddress}}</strong>
 
         </span>
-        <span (click)="videoSwitch('fa')">
-<!--           <video #media [vgMedia]="media" id="76655" preload="auto" class="main-video-screen">&ndash;&gt;-->
-<!--                  <source src="assets/video/angry-birds.mp4" />-->
-<!--                </video>-->
-               <mat-icon class="camera-mode">videocam_off</mat-icon>
-                    <strong>FA</strong>
+<!--        <span (click)="videoSwitch('fa')">-->
+<!--&lt;!&ndash;           <video #media [vgMedia]="media" id="76655" preload="auto" class="main-video-screen">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                  <source src="assets/video/angry-birds.mp4" />&ndash;&gt;-->
+<!--&lt;!&ndash;                </video>&ndash;&gt;-->
+<!--               <mat-icon class="camera-mode">videocam_off</mat-icon>-->
+<!--                    <strong>FA</strong>-->
 
-        </span>
+<!--        </span>-->
       </div>
      <mat-icon *ngIf="!isVideoCam && isVideoCall" class="camera-mode">videocam_off</mat-icon>
 
@@ -384,7 +341,7 @@
             <li *ngIf="_sipService.isCallHold == false" matTooltip="{{('globals.hold' | translate)}}"
                 (click)="_sipService.holdCallOnSip()"><mat-icon>pause</mat-icon></li>
             <li *ngIf="_sipService.isCallHold == true" matTooltip="{{('globals.resume' | translate)}}"
-                (click)="_sipService.resumeCallOnSip()"><mat-icon>pause_circle_filled</mat-icon><
+                (click)="_sipService.resumeCallOnSip()"><mat-icon>phone_paused</mat-icon><
             </li>
             <li *ngIf="isVideoCall" class="video-cam" [ngClass]="{'active-action': isVideoCam}" (click)="isVideoCam = !isVideoCam"><mat-icon>{{isVideoCam ? 'videocam' : 'videocam_off'}}</mat-icon><vg-play-pause></vg-play-pause>
             </li>
