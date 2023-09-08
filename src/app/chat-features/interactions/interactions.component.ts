@@ -126,7 +126,6 @@ export class InteractionsComponent implements OnInit {
     private snackBar: MatSnackBar,
     public _sipService: SipService,
     private _translateService: TranslateService,
-    private _router: Router
   ) {}
   ngOnInit() {
     //  console.log("i am called hello")
