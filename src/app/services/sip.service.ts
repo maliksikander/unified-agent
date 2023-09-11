@@ -687,7 +687,7 @@ export class SipService implements OnInit {
       let command = {
         action: "releaseCall",
         parameter: {
-          dialogId: this.activeDialog.id
+          dialogId: this.activeDialog && this.activeDialog.id ? this.activeDialog.id : null
         }
       };
       console.log("EndCallOnSip ==>", command);
