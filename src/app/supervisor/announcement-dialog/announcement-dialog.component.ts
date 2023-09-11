@@ -60,7 +60,7 @@ export class AnnouncementDialogComponent implements OnInit {
     let date = new Date(this.expireDateMin);
     date.setMinutes(date.getMinutes() + 10);
     this.expireDate = new FormControl(date, [Validators.required]);
-
+    this.onValidateExpiryDate(new Date());
     // let _date = new Date();
     // _date.setDate(this.expireDateMin.getDate() + 5);
     // this.maxDate = _date;
