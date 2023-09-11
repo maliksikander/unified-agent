@@ -519,6 +519,22 @@ export class SipService implements OnInit {
     });
   }
 
+  makeCXVoiceMrdNotReady() {
+    try {
+      const voiceMrdObj = this.getVoiceMrd(this.agentMrdStates.agentMrdStates);
+      if (this.agentMrdStates.state.name.toLowerCase() != "not_ready") {
+        this._socketService.emit("changeAgentState", {
+          agentId: this.agentMrdStates.agent.id,
+          action: "agentMRDState",
+          state: "NOT_READY",
+          mrdId: voiceMrdObj.mrd.id
+        });
+      }
+    } catch (error) {
+      console.error("Not Ready State for Sip==>", error);
+    }
+  }
+
   // from the list of mrds, it will return voice mrd
   getVoiceMrd(mrds) {
     try {
@@ -787,17 +803,26 @@ export class SipService implements OnInit {
 
   makeCallOnSip(number) {
     try {
-      let command = {
-        action: "makeCall",
-        parameter: {
-          calledNumber: number,
-          clientCallbackFunction: this.clientCallback
-        }
-      };
-      console.log("makeCallOnSip ==>", command);
-      postMessages(command);
       this.isOBCallRequested = true;
-      this.notReadyAgentState();
+      this, this.makeCXVoiceMrdNotReady();
+      setTimeout(() => {
+        let cxMrd = this.getVoiceMrd(this.agentMrdStates.agentMrdStates);
+        if (cxMrd && cxMrd.state.toLowerCase() == "not_ready") {
+          let command = {
+            action: "makeCall",
+            parameter: {
+              calledNumber: number,
+              clientCallbackFunction: this.clientCallback
+            }
+          };
+
+          console.log("makeCallOnSip ==>", command);
+          postMessages(command);
+        } else {
+          this.isOBCallRequested = false;
+          this._snackbarService.open(this._translateService.instant("snackbar.OB-Call-Request"), "err");
+        }
+      }, 700);
     } catch (error) {
       console.error("[Error on makeCallOnSip] ==>", error);
     }

@@ -2,10 +2,7 @@ import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialog } from "@angular/material";
 import { httpService } from "../../services/http.service";
-import { TranslateService } from "@ngx-translate/core";
-import { snackbarService } from "../../services/snackbar.service";
 import { sharedService } from "../../services/shared.service";
-import { cacheService } from "../../services/cache.service";
 import { SipService } from "src/app/services/sip.service";
 
 @Component({
@@ -27,10 +24,7 @@ export class ManualOutboundCallComponent implements OnInit, AfterViewInit {
 
   constructor(
     private _httpService: httpService,
-    private _translateService: TranslateService,
-    private _snackbarService: snackbarService,
     private _sharedService: sharedService,
-    private _cacheService: cacheService,
     private _sipService: SipService,
     private dialog: MatDialog,
     public fb: FormBuilder
@@ -160,8 +154,8 @@ export class ManualOutboundCallComponent implements OnInit, AfterViewInit {
   initiatingOutboundCall() {
     this.dialog.closeAll();
     let inputValue = this.outboundCallForm.get("phoneControl").value;
-    if (!this.identifiedCustomer) this.getCustomerByVoiceIdentifier(inputValue);
-    else this._sipService.makeCallOnSip(inputValue);
+    this.getCustomerByVoiceIdentifier(inputValue);
+    // else this._sipService.makeCallOnSip(inputValue);
 
     // this._sipService.makeCallOnSip()
     // const dialogRef = this.dialog.open(CallControlsComponent, {
@@ -179,6 +173,7 @@ export class ManualOutboundCallComponent implements OnInit, AfterViewInit {
     try {
       this._httpService.getCustomerByChannelTypeAndIdentifier("CX_VOICE", identifier).subscribe(
         (res) => {
+          console.log("customer==>",res);
           if (res.customer) this._sipService.makeCallOnSip(identifier);
         },
         (error) => {

@@ -3,7 +3,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { cacheService } from "src/app/services/cache.service";
 import { finesseService } from "src/app/services/finesse.service";
 import { SipService } from "src/app/services/sip.service";
-import { interval } from "rxjs";
 
 @Component({
   selector: "app-call-controls",
@@ -17,6 +16,7 @@ export class CallControlsComponent implements OnInit {
   timer = "00:00";
   fullView = false;
   customerNumber: any = this._sipService.customerNumber;
+  customer: any;
   // ciscoVoiceSession;
   cxVoiceSession;
   isCalling: boolean = false;
@@ -42,7 +42,7 @@ export class CallControlsComponent implements OnInit {
     // this.isCalling = false;
     // this.callConnected = true;
     // }, 5000);
-
+    this.customer = this._sipService.customer;
     this._sipService._isActiveSub.subscribe((val) => {
       if (val == false) this.cancel();
     });

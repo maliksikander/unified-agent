@@ -98,8 +98,8 @@
     "Socket-Connected":"Socket Connected",
     "Calling":"Calling",
     "CX-Voice-Connected":"CX VOICE Connected",
-    "Call-Ended":"Call Ended"
-
+    "Call-Ended":"Call Ended",
+    "OB-Call-Request":"Outbound call request can not be initated"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View",

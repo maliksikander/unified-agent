@@ -58,7 +58,7 @@
 
         <h4 matTooltip="{{ customerNumber }}">
           {{ customerNumber }}
-          <span *ngIf="!isCalling" class="timer-call"> {{ "call-controls.call-in-progress" | translate }}</span>
+          <span class="timer-call"> {{ customer?.firstName }}</span>
           <span *ngIf="!isCalling" class="timer-call">{{ timer }}</span>
         </h4>
       </div>

@@ -42,7 +42,7 @@
               </mat-optgroup>
             </mat-autocomplete>
           </mat-form-field>
-          <button [disabled]="outboundCallForm.get('phoneControl').value?.length < 3 || (this.userData.length > 0 && !identifiedCustomer) " mat-button class="outbound-call-trigger" (click)="initiatingOutboundCall()"><mat-icon>call</mat-icon></button>
+          <button [disabled]="outboundCallForm.get('phoneControl').value?.length < 3" mat-button class="outbound-call-trigger" (click)="initiatingOutboundCall()"><mat-icon>call</mat-icon></button>
         </div>
       </div>
     </form>
