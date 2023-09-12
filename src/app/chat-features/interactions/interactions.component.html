@@ -34,18 +34,18 @@
         </div>
         <div class="col-md-8 col-sm-8 agent-actions">
           <ul class="list-group list-group-horizontal agent-controls call-controls">
-            <li class="list-group-item" *ngIf="_sipService.isCallActive">
+            <li class="list-group-item" *ngIf="_sipService.isCallActive && !ctiBarView">
               <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}"
                       matTooltip="Chat" aria-label="Chat">
                 <mat-icon>question_answer</mat-icon>
               </button>
             </li>
-            <li class="list-group-item">
-              <button mat-icon-button (click)="isBotSuggestions = !isBotSuggestions" [ngClass]="{'active-action': isBotSuggestions}"
-                      matTooltip="Suggestions" aria-label="Suggestions">
-                <img src="assets/images/robot-dark.svg" alt="Suggestions"/>
-              </button>
-            </li>
+<!--            <li class="list-group-item">-->
+<!--              <button mat-icon-button (click)="isBotSuggestions = !isBotSuggestions" [ngClass]="{'active-action': isBotSuggestions}"-->
+<!--                      matTooltip="Suggestions" aria-label="Suggestions">-->
+<!--                <img src="assets/images/robot-dark.svg" alt="Suggestions"/>-->
+<!--              </button>-->
+<!--            </li>-->
           </ul>
           <ul class="list-group list-group-horizontal agent-controls">
             <ng-container
@@ -292,7 +292,7 @@
      [ngClass]="{'call-in-progress': isVideoCall || isAudioCall, 'smart-call-controls':ctiBarView, 'bot-suggestions-active': isBotSuggestions, 'chat-view-active': isConversationView, 'multi-column-display' : chatDuringCall && isBotSuggestions, 'chat-suggestion-view' : isConversationView && isBotSuggestions && !chatDuringCall}">
 
 
-    <div class="video-feature-main" *ngIf="(isVideoCall && !ctiBarView &&  _sipService.isCallActive) || (isAudioCall && !ctiBarView &&  _sipService.isCallActive) " >
+    <div class="video-feature-main  nn {{isAudioCall}} nn {{isCallActive}} kk {{ctiBarView}}" *ngIf="!ctiBarView &&  isCallActive" >
       <div class="sub-call-participants">
 
 
@@ -321,7 +321,7 @@
             <img src="assets/images/dummy-user.svg" alt="customer">
           </div>
           <h4 matTooltip="{{_sipService.customerNumber }}">{{_sipService.customerNumber ? _sipService.customerNumber: 'John Tylor' }}
-            <span class="timer-call">call in progress</span>
+<!--            <span class="timer-call">call in progress</span>-->
             <span class="timer-call">{{ timer }}</span>
           </h4>
         </div>

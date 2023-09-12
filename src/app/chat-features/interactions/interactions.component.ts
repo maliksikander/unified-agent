@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
@@ -55,6 +55,8 @@ export class InteractionsComponent implements OnInit {
   pastActivitiesloadedOnce: boolean = false;
   // isTransfer = false;
   // isConsult = false;
+
+
   ctiBarView = false;
   ctiBoxView = false;
   timer: any = "00:00";
@@ -149,6 +151,7 @@ export class InteractionsComponent implements OnInit {
   postComments: any = null;
   sendTypingStartedEventTimer: any = null;
   onMessageSuggestions = false;
+  isCallActive = false;
 
   constructor(
     private _sharedService: sharedService,
@@ -166,8 +169,9 @@ export class InteractionsComponent implements OnInit {
     @Inject(DOCUMENT) private document: any
   ) { }
   ngOnInit() {
+    this.isCallActive = this._sipService.isCallActive;
     this.element = document.documentElement;
-    //  console.log("i am called hello")
+     console.log("i am called hello", this._sipService.isCallActive)
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
     }
@@ -202,7 +206,7 @@ export class InteractionsComponent implements OnInit {
     });
 
     if (this.conversation && this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
-      if (this._sipService.isCallActive == true) this.ctiCallActive();
+      if (this._sipService.isCallActive == true) this.ctiControlBar();
       this.getVoiceChannelSession();
     }
   }
@@ -621,9 +625,9 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  ngOnDestroy() {
-    this.scrollSubscriber.unsubscribe();
-  }
+  // ngOnDestroy() {
+  //   this.scrollSubscriber.unsubscribe();
+  // }
 
   adjustHeightOnComposerResize() {
     if (this.currentScrollPosition > 95) {
@@ -1269,13 +1273,15 @@ export class InteractionsComponent implements OnInit {
       data: { conversation: this.conversation }
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.router.navigate(["/customers/chats"]);
-      this.chatDuringCall = true;
-      this.isBotSuggestions = false;
-      this.isConversationView = true;
-      console.log(this.chatDuringCall, 'chat chatDuringCall')
-      this.ctiBoxView = false;
-      this.ctiBarView = false;
+      // this.router.navigate(["/customers/chats"]);
+      this.isAudioCall = true;
+      this.ctiCallActive();
+      // this.chatDuringCall = true;
+      // this.isBotSuggestions = false;
+      // this.isConversationView = true;
+      // console.log(this.chatDuringCall, 'chat chatDuringCall')
+      // this.ctiBoxView = false;
+      // this.ctiBarView = false;
       if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
     });
   }
@@ -1393,5 +1399,29 @@ export class InteractionsComponent implements OnInit {
     this.isAudioCall = false;
     this.chatDuringCall = false;
   }
+  //
+  // // canDeactivate(): Observable<boolean> | boolean {
+  // //   console.log('hello2222')
+  // //   return true;
+  // //
+  // // }
+  // confirm() {
+  //   return this.isAudioCall;
+  //
+  // }
+  // canDeactivate(): Promise<any> | boolean {
+  //   const confirmResult = confirm('Are you sure you want to leave this page ? ');
+  //   if (confirmResult === true) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
+  //
+  //
+  // ngOnDestroy() {
+  //   this.unsubscribe.next();
+  //   console.log('hello')
+  // }
 
 }
