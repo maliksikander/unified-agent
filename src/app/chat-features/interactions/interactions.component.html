@@ -2355,7 +2355,17 @@
   </div>
 
   <div class="customer-info-main">
-    <div class="call-controls-view" *ngIf="isBarOpened && ctiBarView && _sipService.isCallActive && (conversation.activeChannelSessions | checkCXSession)">
+    <div
+      class="call-controls-view"
+      *ngIf="
+        isBarOpened &&
+        ctiBarView &&
+        _sipService.isCallActive &&
+        _sipService.isToolbarActive &&
+        _sipService.isToolbarDocked &&
+        (conversation.activeChannelSessions | checkCXSession)
+      "
+    >
       <div class="right-call-controls row doc-bar">
         <div class="main-showcase customer-info-dp">
           <div class="agent-showcase">

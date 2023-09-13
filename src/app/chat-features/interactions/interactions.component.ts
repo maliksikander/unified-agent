@@ -1196,6 +1196,7 @@ export class InteractionsComponent implements OnInit {
     this.ctiBoxView = true;
     this.ctiBarView = false;
     this._sipService.isToolbarActive = true;
+    this._sipService.isToolbarDocked = false;
     const dialogRef = this.dialog.open(CallControlsComponent, {
       panelClass: "call-controls-dialog",
       hasBackdrop: false,
@@ -1208,6 +1209,7 @@ export class InteractionsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.ctiBoxView = false;
       this.ctiBarView = true;
+      this._sipService.isToolbarDocked = true;
       if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
     });
   }
