@@ -10,12 +10,12 @@
   "UNIFIED_ADMIN_URL":"https://cim-dev2.expertflow.com/unified-admin",
   "TEAM_ANNOUNCEMENT_URL":"https://cim-dev2.expertflow.com/team-announcement",
   "ENV": "prod",
-  "domain": "uccx12-5p.ucce.ipcc",
-  "subDomain" : "uccx12-5p.ucce.ipcc",
+  "domain": "uccx12-5.ucce.ipcc",
+  "subDomain" : "uccx12-5.ucce.ipcc",
   "adminUsername": "administrator",
-  "adminPassword": "Expertflow464",
-  "boshUrl": "https://uccx12-5p.ucce.ipcc:7443/http-bind/",
-  "subBoshUrl" : "https://uccx12-5p.ucce.ipccc:7443/http-bind/",
+  "adminPassword": "Expertflow465",
+  "boshUrl": "https://uccx12-5.ucce.ipcc:7443/http-bind/",
+  "subBoshUrl" : "https://uccx12-5.ucce.ipcc:7443/http-bind/",
   "finesseFlavor": "UCCX",
   "callVariable": "callVariable1",
   "getQueuesDelay": 15,
@@ -47,5 +47,6 @@
   "EXT_STATIC_PASSWORD": 1234,
   "ENABLE_SIP_LOGS": true,
   "STATIC_QUEUE_TRANSFER_DN":"99887766",
-  "AUTO_CALL_ANSWER_TIMER":3
+  "AUTO_CALL_ANSWER_TIMER":3,
+  "DASHBOARD_REFRESH_TIME" : 10000
 }

@@ -25,7 +25,7 @@ export class fcmService {
           }
         })
         .catch((err) => {
-          console.log("An error occurred while retrieving token. ", err);
+          console.error("An error occurred while retrieving token. ", err);
           reject(err);
         });
     });
@@ -43,7 +43,7 @@ export class fcmService {
           resolve("ok");
         })
         .catch((err) => {
-          console.log(err);
+          console.log("err",err);
           resolve("ok");
         });
       //}

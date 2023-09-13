@@ -10,8 +10,6 @@ import { cacheService } from "./cache.service";
 export class httpService {
   apiEndpoints;
   supervisorId ;
-  mockurl = "https://57be0c49-6ed4-469c-a93a-13f49e48e8c2.mock.pstmn.io";
-  url="https://3e4a011b-523f-403d-9b76-3d5054db5a09.mock.pstmn.io";
 
   constructor(public _appConfigService: appConfigService, private _httpClient: HttpClient) {
     this.apiEndpoints = {
@@ -34,10 +32,30 @@ export class httpService {
       getAllMRDs: "/media-routing-domains",
       defaultOutboundChannel: "/channels/defaultoutbound",
       announcement: "/announcement",
-      announcementSeenBy:"/announcement/seenStatus"
+      announcementSeenBy:"/announcement/seenStatus",
+      sendSms:"/message/send",
+      saveActivities:"/activities"
+
     };
   }
 
+  ////////////////////////////  OutBound SMS ////////////////////////////////////////////
+
+  sendOutboundSms(obj): Observable<any> {
+    return this._httpClient.post<any>(`${this._appConfigService.config.CCM_URL}${this.apiEndpoints.sendSms}`, obj, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+  saveActivies(obj):Observable<any> {
+    return this._httpClient.post<any>(`${this._appConfigService.config.CONVERSATION_MANAGER_URL}${this.apiEndpoints.saveActivities}`, obj, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
  ///////////////////////////// Announcements CURD /////////////////////////////////////
 
   addAnnouncemenent(obj): Observable<any> {

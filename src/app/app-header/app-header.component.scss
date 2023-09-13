@@ -1122,7 +1122,11 @@ button {
   text-overflow: ellipsis;
   width: 140px;
 }
-
+.sms-trigger{
+  mat-icon{
+    color: $blue-text-color;
+  }
+}
 .agent-menu-trigger{
   position: absolute;
   right: 15px;

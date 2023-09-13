@@ -86,7 +86,7 @@ export class CustomerInfoComponent implements OnInit {
     private _cacheService: cacheService,
     private _snackBarService: snackbarService,
     private _translateService: TranslateService
-  ) {}
+  ) { }
 
   ngOnInit() {
 
@@ -286,12 +286,15 @@ export class CustomerInfoComponent implements OnInit {
       this.mediaChannelData = [];
       let mediaChannelData = [];
       this._sharedService.schema.forEach((e) => {
+
         if (e.isChannelIdentifier == true && this.customer.hasOwnProperty(e.key)) {
           this.customer[e.key].forEach((value) => {
             mediaChannelData.push({
               fieldType: e.type,
               value: value,
               label: e.label,
+              isPii:e.isPii,
+              key:e.key,
               channelList: e.channelTypes
             });
           });
@@ -329,6 +332,11 @@ export class CustomerInfoComponent implements OnInit {
                         serviceIdentifier: data.serviceIdentifier,
                         additionalAttributes: [{ key: "agentId", type: "String100", value: this._cacheService.agent.id }]
                       },
+                      sender: {
+                        id: this._cacheService.agent.id,
+                        senderName: this._cacheService.agent.firstName,
+                        type: "AGENT"
+                      },
                       language: {},
                       timestamp: "",
                       securityInfo: {},
@@ -344,7 +352,7 @@ export class CustomerInfoComponent implements OnInit {
                   };
                   console.log("cim==>", cimMessage);
                   this._httpService.startOutboundConversation(cimMessage).subscribe(
-                    (e) => {},
+                    (e) => { },
                     (err) => {
                       this._sharedService.Interceptor(err.error, "err");
                       console.error("Error Starting Outbound Conversation", err);

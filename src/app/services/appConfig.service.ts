@@ -21,7 +21,8 @@ export class appConfigService {
     isCiscoEnabled: false,
     isCxVoiceEnabled: false,
     CISCO_CC_MRD: "",
-    CX_VOICE_MRD: ""
+    CX_VOICE_MRD: "",
+    DASHBOARD_REFRESH_TIME:0
   };
   // public sipConfig = {
   //   wss: "",
@@ -50,6 +51,7 @@ export class appConfigService {
         this.config.CIM_REPORTING_URL = e.CIM_REPORTING_URL;
         this.config.UNIFIED_ADMIN_URL = e.UNIFIED_ADMIN_URL;
         this.config.CCM_URL = e.CCM_URL;
+        this.config.DASHBOARD_REFRESH_TIME=e.DASHBOARD_REFRESH_TIME;
         (this.config.isCiscoEnabled = e.isCiscoEnabled),
           (this.config.isCxVoiceEnabled = e.isCxVoiceEnabled),
           (this.config.CX_VOICE_MRD = e.CX_VOICE_MRD),

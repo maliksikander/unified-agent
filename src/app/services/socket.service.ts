@@ -18,7 +18,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { announcementService } from "./announcement.service";
 
-// const mockTopicData: any = require("../mocks/mockTopicData.json");
+//const mockTopicData: any = require("../mocks/mockTopicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -49,7 +49,7 @@ export class socketService {
     private snackBar: MatSnackBar,
     private _translateService: TranslateService
   ) {
-     // this.onTopicData(mockTopicData, "12345", "");
+    //this.onTopicData(mockTopicData, "12345", "");
   }
 
   connectToSocket() {
@@ -96,12 +96,12 @@ export class socketService {
             "err"
           );
         }
-      } catch (err) {}
+      } catch (err) { }
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -113,7 +113,7 @@ export class socketService {
       this.isSocketConnected = true;
       this._sharedService.serviceChangeMessage({ msg: "closeAllPushModeRequests", data: null });
       // this._snackbarService.open("Connected", "succ");
-      this._snackbarService.open(this._translateService.instant("snackbar.Socket-Connected"), "succ");
+      this._snackbarService.open(this._translateService.instant("snackbar.Socket-Connected"), "succ",1000);
       console.log("socket connect " + e);
       if (this._router.url == "/login") {
         // this._router.navigate(["customers"]);
@@ -136,7 +136,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -191,8 +191,8 @@ export class socketService {
         }
       } else {
         if (res.channelSession.channel.channelType.name.toLowerCase() !== "cx_voice") {
-        // } else {
-        this.triggerNewChatRequest(res);
+          // } else {
+          this.triggerNewChatRequest(res);
         }
         // this.triggerNewChatRequest(res);
       }
@@ -310,7 +310,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) {}
+    } catch (err) { }
   }
 
   listen(eventName: string) {
@@ -375,7 +375,7 @@ export class socketService {
           cimEvent.data.body.itemType.toLowerCase() != "text" &&
           cimEvent.data.body.itemType.toLowerCase() != "video" &&
           cimEvent.data.body.itemType.toLowerCase() != "image" &&
-          cimEvent.data.body.itemType.toLowerCase() !="private_reply"
+          cimEvent.data.body.itemType.toLowerCase() != "private_reply"
         ) {
           this.processCommentActions(sameTopicConversation.messages, cimEvent.data);
         }
@@ -442,7 +442,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._snackbarService.open(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"), "err");
     alert(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"));
@@ -499,7 +499,7 @@ export class socketService {
           event.data.body.itemType.toLowerCase() != "private_reply"
         ) {
           this.processCommentActions(conversation.messages, event.data);
-         
+
         } else {
           event.data.header["status"] = "sent";
           conversation.messages.push(event.data);
@@ -1192,7 +1192,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
@@ -1262,13 +1262,13 @@ export class socketService {
                     console.log("limit exceed");
                     this._snackbarService.open(
                       this._translateService.instant("snackbar.The-conversation-is-going-to-linking-with") +
-                        selectedCustomer.firstName +
-                        this._translateService.instant("snackbar.However-the-channel-identifier") +
-                        channelIdentifier +
-                        this._translateService.instant("snackbar.can-not-be-added-in") +
-                        selectedCustomer.firstName +
-                        attr +
-                        this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
+                      selectedCustomer.firstName +
+                      this._translateService.instant("snackbar.However-the-channel-identifier") +
+                      channelIdentifier +
+                      this._translateService.instant("snackbar.can-not-be-added-in") +
+                      selectedCustomer.firstName +
+                      attr +
+                      this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
                       "succ",
                       20000,
                       "Ok"
