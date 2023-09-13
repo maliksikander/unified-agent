@@ -16,8 +16,7 @@ import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
 import { TranslateService } from "@ngx-translate/core";
 import { CallControlsComponent } from "../../new-components/call-controls/call-controls.component";
 import { SipService } from "src/app/services/sip.service";
-import { HighlightResult } from 'ngx-highlightjs';
-
+import { HighlightResult } from "ngx-highlightjs";
 
 // declare var EmojiPicker: any;
 
@@ -45,7 +44,7 @@ export class InteractionsComponent implements OnInit {
   labels: Array<any> = [];
   quotedMessage: any;
   replyToMessageId: any;
-  privateMessageReply: any
+  privateMessageReply: any;
   viewFullCommentAction: boolean = false;
   fullPostView: boolean = false;
   selectedCommentId: string;
@@ -172,7 +171,7 @@ export class InteractionsComponent implements OnInit {
       }
     );
   }
-  emoji() { }
+  emoji() {}
 
   BargeIn() {
     let obj = {
@@ -192,11 +191,8 @@ export class InteractionsComponent implements OnInit {
 
   // This was fb page comment action / Generalizing it.
   commentAction(message, action) {
-
     if (action == "like" && message["isLiked"]) {
-    }
-    else if (this._socketService.isSocketConnected) {
-
+    } else if (this._socketService.isSocketConnected) {
       let commentId = message.header.providerMessageId;
       if (commentId && message.body.postId) {
         let channelSession = this.getChannelSession(message);
@@ -212,12 +208,10 @@ export class InteractionsComponent implements OnInit {
       } else {
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-the-request"), "err");
       }
-    }
-    else {
+    } else {
       this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-connect-with-server"), "err");
     }
   }
-
 
   constructAndSendCommentAction(commentId, postId, channelSession, replyToMessageId, action) {
     let message = this.getCimMessage();
@@ -235,8 +229,8 @@ export class InteractionsComponent implements OnInit {
 
   //This is for private comment reply for Instagram for now.
   privateReplyToComment(message) {
-    this.privateMessageReply = "PRIVATE_REPLY"
-    this.replyToComment(message)
+    this.privateMessageReply = "PRIVATE_REPLY";
+    this.replyToComment(message);
   }
   //replyToFBComment
   replyToComment(message) {
@@ -455,11 +449,9 @@ export class InteractionsComponent implements OnInit {
       }
     }
   }
-  eventFromChild(data) {
-    console.log("isbaropened " + data);
-    console.log("ctiBarView " + this.ctiBarView);
-    this.isBarOpened = data;
-  }
+  eventFromChild(data) { this.isBarOpened = data;}
+
+  
   eventFromChildForUpdatedLabel(data) {
     this.labels = data;
   }
@@ -539,7 +531,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -547,7 +539,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -617,7 +609,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => { });
+    dialogRef.afterClosed().subscribe((result: any) => {});
   }
   externalfilePreviewOpener(url, fileName, type) {
     const dialogRef = this.dialog.open(FilePreviewComponent, {
@@ -627,7 +619,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => { });
+    dialogRef.afterClosed().subscribe((result: any) => {});
   }
 
   uploadFile(files) {
@@ -662,7 +654,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   isInstagramChannel(channel) {
-    if (this.replyToMessageId && this.privateMessageReply || this.replyToMessageId) {
+    if ((this.replyToMessageId && this.privateMessageReply) || this.replyToMessageId) {
       return channel.channelType.name === "INSTAGRAM";
     }
   }
@@ -682,13 +674,16 @@ export class InteractionsComponent implements OnInit {
         let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
 
         if (selectedChannelSession) {
-          if (this.commentId && (selectedChannelSession.channel.channelType.name.toLowerCase() == "facebook" ||
-            selectedChannelSession.channel.channelType.name.toLowerCase() == "instagram" ||
-            selectedChannelSession.channel.channelType.name.toLowerCase() == "twitter")) {
-            // If private reply icon is clicked then msgType would be private reply. 
+          if (
+            this.commentId &&
+            (selectedChannelSession.channel.channelType.name.toLowerCase() == "facebook" ||
+              selectedChannelSession.channel.channelType.name.toLowerCase() == "instagram" ||
+              selectedChannelSession.channel.channelType.name.toLowerCase() == "twitter")
+          ) {
+            // If private reply icon is clicked then msgType would be private reply.
             if (this.privateMessageReply) {
-              msgType = this.privateMessageReply
-              this.privateMessageReply = null
+              msgType = this.privateMessageReply;
+              this.privateMessageReply = null;
             }
             message = this.constructCommentEvent(message, msgType, selectedChannelSession, fileMimeType, fileName, fileSize, text);
 
@@ -919,11 +914,11 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  // fbchannel session . 
+  // fbchannel session .
   getChannelSession(message) {
-    let channelType = message.header.channelSession.channel.channelType.name.toLowerCase()
+    let channelType = message.header.channelSession.channel.channelType.name.toLowerCase();
     let channelSession = this.conversation.activeChannelSessions.find((channelSession) => {
-      return channelSession.channel.channelType.name.toLowerCase() == channelType
+      return channelSession.channel.channelType.name.toLowerCase() == channelType;
     });
 
     return channelSession;
@@ -999,10 +994,9 @@ export class InteractionsComponent implements OnInit {
         size: fileSize,
         thumbnail: ""
       };
-    }
-    else if (msgType.toLowerCase() == "private_reply") {
-      message.body.itemType = "PRIVATE_REPLY"
-      message.body.markdownText = text.trim()
+    } else if (msgType.toLowerCase() == "private_reply") {
+      message.body.itemType = "PRIVATE_REPLY";
+      message.body.markdownText = text.trim();
     }
     return message;
   }
@@ -1180,14 +1174,13 @@ export class InteractionsComponent implements OnInit {
   }
 
   fullPostViewData(serviceIdentifier, postId, selectedCommentId) {
-    this.selectedCommentId = null
+    this.selectedCommentId = null;
     if (serviceIdentifier && postId && selectedCommentId) {
       this._httpService.getPostData(postId, serviceIdentifier).subscribe(
-
         (res: any) => {
           this.postData = res;
           this.fullPostView = true;
-          this.selectedCommentId= selectedCommentId
+          this.selectedCommentId = selectedCommentId;
         },
         (error) => {
           this._sharedService.Interceptor(error.error, "err");
@@ -1275,5 +1268,4 @@ export class InteractionsComponent implements OnInit {
   formatNumber(num) {
     return num.toString().padStart(2, "0");
   }
-
 }

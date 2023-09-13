@@ -100,6 +100,7 @@ import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements
 import { getIVRTrailPipe } from "./pipes/getIVRTrail.pipe";
 import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
 import { checkCiscoSessionPipe } from "./pipes/checkCiscoSession.pipe";
+import { checkCXSessionPipe } from "./pipes/checkCXSession.pipe";
 
 @NgModule({
   declarations: [
@@ -142,7 +143,8 @@ import { checkCiscoSessionPipe } from "./pipes/checkCiscoSession.pipe";
     getCustomerAniPipe,
     checkOutboundCallPipe,
     checkConsultCallPipe,
-    checkCiscoSessionPipe
+    checkCiscoSessionPipe,
+    checkCXSessionPipe 
   ],
   imports: [
     NgxDocViewerModule,
@@ -320,7 +322,8 @@ import { checkCiscoSessionPipe } from "./pipes/checkCiscoSession.pipe";
     checkConsultCallPipe,
     MatPaginatorModule,
     TableFilterPipe,
-    checkCiscoSessionPipe
+    checkCiscoSessionPipe,
+    checkCXSessionPipe 
   ]
 })
 export class SharedModule {}
