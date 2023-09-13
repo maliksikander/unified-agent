@@ -151,7 +151,7 @@ export class socketService {
     });
 
     this.socket.on("ANNOUNCEMENT_CREATED", (res: any) => {
-      if ((res.supervisorId !== this._cacheService.agent.id)) {
+      if (res.supervisorId !== this._cacheService.agent.id) {
         this._announcementService.addCreatedAnnoucement(res);
       }
     });
@@ -160,12 +160,10 @@ export class socketService {
       this._announcementService.removeAnnoucement(res);
     });
 
-
     this.socket.on("errors", (res: any) => {
       console.error("socket errors ", res);
       this.onSocketErrors(res);
     });
-
 
     this.socket.on("taskRequest", (res: any) => {
       console.log("taskRequest==>", res);
@@ -499,7 +497,6 @@ export class socketService {
           event.data.body.itemType.toLowerCase() != "private_reply"
         ) {
           this.processCommentActions(conversation.messages, event.data);
-
         } else {
           event.data.header["status"] = "sent";
           conversation.messages.push(event.data);
@@ -614,6 +611,14 @@ export class socketService {
 
     // console.log("conversations==>", this.conversations);
     this._conversationsListener.next(this.conversations);
+
+    if (
+      topicData &&
+      topicData.channelSession &&
+      (topicData.channelSession.channel.channelType.name == "CX_VOICE" ||
+        (topicData && topicData.channelSession.channel.channelType.name == "CISCO_CC"))
+    )
+      this._router.navigate(["customers"]);
   }
 
   processSeenMessages(conversation, events) {
@@ -1552,14 +1557,14 @@ export class socketService {
       }
       if (cimEvent.data.task.type.direction == "DIRECT_TRANSFER") {
         let text = " transfer request has been placed by ";
-        let translationKey ="socket-service.transfer-request-has-been-placed-by";
-        if(!cimEvent.data.task.type.metadata.requestedBy) translationKey ="socket-service.transfer-request-has-been-placed"
+        let translationKey = "socket-service.transfer-request-has-been-placed-by";
+        if (!cimEvent.data.task.type.metadata.requestedBy) translationKey = "socket-service.transfer-request-has-been-placed";
         this._translateService.stream(`${translationKey}`).subscribe((data: string) => {
           text = data;
         });
 
         let string;
-        if(cimEvent.data.task.type.metadata.requestedBy) string = mode + " " + text + " " + cimEvent.data.task.type.metadata.requestedBy;
+        if (cimEvent.data.task.type.metadata.requestedBy) string = mode + " " + text + " " + cimEvent.data.task.type.metadata.requestedBy;
         else string = mode + " " + text;
         message.body["displayText"] = "";
         message.body.markdownText = string;
