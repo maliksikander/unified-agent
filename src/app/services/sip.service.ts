@@ -146,6 +146,11 @@ export class SipService implements OnInit {
         this.handleInboundAndCampaignCallEvent(event, "INBOUND");
       } else if (event.event.toLowerCase() == "campaigncall") {
         this.handleInboundAndCampaignCallEvent(event, "OUTBOUND_CAMPAIGN");
+        if (event.response.dialog.state.toLowerCase() == "active") {
+          this.isCallHold = false;
+        } else if (event.response.dialog.state.toLowerCase() == "held") {
+          this.isCallHold = true;
+        }
       } else if (event.event == "Error") {
         if (event.response.type.toLowerCase() == "invalidstate") {
           this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-incorrect-request"), "err");
@@ -629,7 +634,6 @@ export class SipService implements OnInit {
 
   handleCallDroppedEvent(cacheId, dialogState, methodCalledOn, event, callType, state) {
     try {
-      
       let taskState;
       this.isToolbarActive = false;
       if (state && state.taskId) taskState = state;
