@@ -96,12 +96,12 @@ export class socketService {
             "err"
           );
         }
-      } catch (err) {}
+      } catch (err) { }
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -113,7 +113,7 @@ export class socketService {
       this.isSocketConnected = true;
       this._sharedService.serviceChangeMessage({ msg: "closeAllPushModeRequests", data: null });
       // this._snackbarService.open("Connected", "succ");
-      this._snackbarService.open(this._translateService.instant("snackbar.Socket-Connected"), "succ");
+      this._snackbarService.open(this._translateService.instant("snackbar.Socket-Connected"), "succ",1000);
       console.log("socket connect " + e);
       if (this._router.url == "/login") {
         // this._router.navigate(["customers"]);
@@ -136,7 +136,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -308,7 +308,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) {}
+    } catch (err) { }
   }
 
   listen(eventName: string) {
@@ -440,7 +440,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._snackbarService.open(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"), "err");
     alert(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"));
@@ -1197,7 +1197,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
@@ -1267,13 +1267,13 @@ export class socketService {
                     console.log("limit exceed");
                     this._snackbarService.open(
                       this._translateService.instant("snackbar.The-conversation-is-going-to-linking-with") +
-                        selectedCustomer.firstName +
-                        this._translateService.instant("snackbar.However-the-channel-identifier") +
-                        channelIdentifier +
-                        this._translateService.instant("snackbar.can-not-be-added-in") +
-                        selectedCustomer.firstName +
-                        attr +
-                        this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
+                      selectedCustomer.firstName +
+                      this._translateService.instant("snackbar.However-the-channel-identifier") +
+                      channelIdentifier +
+                      this._translateService.instant("snackbar.can-not-be-added-in") +
+                      selectedCustomer.firstName +
+                      attr +
+                      this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
                       "succ",
                       20000,
                       "Ok"
