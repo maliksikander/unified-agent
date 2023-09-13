@@ -63,8 +63,8 @@
                         </td>
                         <td #customerCell><span class="channel-icon"><img
                                     [src]="request.channelSession.channel.channelType.channelLogo | channelLogo | async"></span>
-                            {{request.channelSession.customer.firstName}} <small
-                                class="customer_identy">({{request.channelSession.channelData.channelCustomerIdentifier}})</small>
+                            {{(('customer' | authPipe : 'view_pii')?request?.channelSession?.customer?.firstName : request?.channelSession?.customer?.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey)) }} <small
+                                class="customer_identy">({{('customer' | authPipe : 'view_pii') ? request.channelSession.channelData.channelCustomerIdentifier : (request.channelSession.channelData.channelCustomerIdentifier | maskPIIAttribute : (request.channelSession.channel.channelType.name | returnSchemaByChannelType))}})</small>
                             <!-- <ul class="customer-labels">
                                 <li matTooltip="Marketing" style="background: #32b67a;"></li>
                                 <li matTooltip="Corporate" style="background: #f34f1b;"></li>

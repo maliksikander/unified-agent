@@ -10,6 +10,10 @@
     <div class="container-fluid main-chat-bar">
       <div class="row">
         <div class="col-md-4 col-sm-4 customer-showcase">
+          <!-- //*ngIf="isDialogClosed" -->
+          <button *ngIf="_cacheService.smsDialogData"
+          class="back-to-sms" mat-icon-button (click)="openOutboundSmsDialog()" matTooltip="Back to send-sms">
+           <mat-icon>keyboard_backspace</mat-icon></button>
           <h3 matTooltipPosition="right" class="customer-highlight">
             {{ conversation.customer.firstName | getFirstTwoLetters }}
             <!--            <span class="channel-icon">-->
@@ -18,7 +22,9 @@
             <!--            </span>-->
           </h3>
           <h5 class="customer-name">
-            {{ conversation.customer.firstName | slice: 0:50 }}
+            <span *ngIf="'customer' | authPipe: 'view_pii' as result; else manage_pii"> {{ conversation.customer.firstName | slice: 0:50 }}</span>
+            <ng-template #manage_pii> {{ conversation.customer.firstName | maskPIIAttribute: ("firstName" | returnSchemaByKey) }}</ng-template>
+
             <!-- <span class="chat-timer">( 11:32 )</span> -->
 
             <ul *ngIf="conversation.customer.labels && ('customer-labels' | authPipe: 'assign_label') as result" class="customer-labels">
@@ -174,7 +180,16 @@
               <h5 class="transfer-heading participants-heading">{{ "chat-features.interactions.participants" | translate }}</h5>
               <button mat-menu-item>
                 <span class="agent-detail">
-                  <span>{{ conversation.customer.firstName }} {{ conversation.customer.lastName }}</span>
+                  <span *ngIf="'customer' | authPipe: 'view_pii' as result; else manage_pii">
+                    {{ conversation.customer.firstName}}
+                    {{ conversation.customer.lastName }}
+                  </span>
+                  <ng-template #manage_pii>
+                    <span>
+                      {{ conversation.customer.firstName  | maskPIIAttribute: ("firstName" | returnSchemaByKey)  }}
+                      {{ conversation.customer.lastName }}
+                    </span>
+                  </ng-template>
                   <small class="joined-customer">{{ "chat-features.interactions.customer" | translate }}</small>
                 </span>
               </button>
@@ -376,9 +391,8 @@
                 </mat-menu>
               </div>
               <!-- -------------------------------------------------------- -->
-              <div
-                *ngIf="(message.body.type | lowercase) != 'systemnotification' && message.header.channelSession"
-                class="chat-message {{ message.body.isWhisper ? 'whisper-body' : '' }} {{
+              <div *ngIf="(message.body.type | lowercase) != 'systemnotification' && message.header.channelSession"
+                class="chat-message {{(message.body.type | lowercase)  == 'outboundsms' ? 'voice' : ''}}  {{ message.body.isWhisper ? 'whisper-body' : '' }} {{
                   message.id != selectedCommentId && (message.isDeleted || message.isHidden) ? 'deleted-hidden-comment' : ''
                 }} {{
                   index == 0 ||
@@ -690,6 +704,39 @@
                           </mat-expansion-panel>
                         </div>
 
+
+                         <!--------------------------------- Outbound message start----------------------------------------------->
+
+                         <div *ngIf="(referredMessage.body.type | lowercase) == 'outboundsms'"
+                         class="voice-activity-main custom-data-type panel-divider user-data customer-side single outboundsms">
+                      <mat-expansion-panel hideToggle="{{ referredMessage.body.markdownText.length > 50 ? false : true }}"
+                                           disabled="{{   referredMessage.body.markdownText.length > 50 ? false : true }}">
+                        <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+                          <mat-panel-title>
+                            <div class="panel-header">
+                              <ul>
+                                <li class="agent-pic participant-agent call-services">
+                                  <span matTooltip="test agent">{{referredMessage.header.sender.senderName | getFirstTwoLetters}}</span>
+                                </li>
+                                <li> {{ referredMessage.header.channelData.channelCustomerIdentifier }}
+                                </li>
+                                <li class="message-activity-text" #activityText> {{  referredMessage.body.markdownText }}
+                                </li>
+                                <li>
+                                  <time>{{ referredMessage.header.timestamp | date: "shortTime" }}</time>
+                                </li>
+                              </ul>
+                            </div>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="custom-message-type">
+                          <p>{{  referredMessage.body.markdownText }}</p>
+
+                        </div>
+                      </mat-expansion-panel>
+                    </div>
+
+
                         <!-- -----------------------------audio--------------------------------------- -->
 
                         <div *ngIf="(referredMessage.body.type | lowercase) == 'audio'" class="file-type-content audio-file">
@@ -823,19 +870,14 @@
                     <mat-menu #menu="matMenu">
                       <button mat-menu-item class="reply-trigger" (click)="onQuotedReply(message)">reply</button>
                     </mat-menu>
-                    <div
-                      *ngIf="
-                        ((message.body.type | lowercase) != 'comment' && (message.body.type | lowercase) != 'url' && message.body.markdownText) ||
-                        ((message.body.type | lowercase) == 'comment' &&
-                          (message.body.itemType | lowercase) == 'text' &&
-                          (message.header.sender.type | lowercase) == 'agent') ||
-                        ((message.body.type | lowercase) == 'comment' &&
-                          (message.body.itemType | lowercase) == 'private_reply' &&
-                          (message.header.sender.type | lowercase) == 'agent')
-                      "
-                    >
-                      <p
-                        class="{{
+                    <div *ngIf="
+                               ((message.body.type | lowercase) != 'outboundsms' && (message.body.type | lowercase) != 'comment' && (message.body.type | lowercase) != 'url' && message.body.markdownText) ||
+                               ((message.body.type | lowercase) == 'comment' && (message.body.itemType | lowercase) == 'text' && (message.header.sender.type | lowercase) == 'agent') ||
+                              ((message.body.type | lowercase) == 'comment' && (message.body.itemType | lowercase) == 'private_reply' && (message.header.sender.type | lowercase) == 'agent')
+                               ">
+
+
+                      <p class="{{
                           (message.header.sender.type | lowercase) == 'customer' && message.botSuggestions ? 'plain-text-p' : ''
                         }} plain-text-check"
                       >
@@ -1034,6 +1076,40 @@
                         </div>
                       </mat-expansion-panel>
                     </div>
+
+
+                    <!--------------------------------- Outbound message start----------------------------------------------->
+
+                    <div *ngIf="(message.body.type | lowercase) == 'outboundsms'"
+                      class="voice-activity-main custom-data-type panel-divider user-data customer-side single">
+                   <mat-expansion-panel hideToggle="{{ message.body.markdownText.length > 60 ? false : true }}"
+                                        disabled="{{   message.body.markdownText.length > 60 ? false : true }}">
+                     <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+                       <mat-panel-title>
+                         <div class="panel-header">
+                           <ul>
+                             <li class="agent-pic participant-agent call-services">
+                               <span matTooltip="{{message.header.sender.senderName}}">{{message.header.sender.senderName | getFirstTwoLetters}}</span>
+                             </li>
+                             <li> {{ message.header.channelData.channelCustomerIdentifier }}
+                             </li>
+                             <li class="message-activity-text"> {{ message.body.markdownText }}
+                             </li>
+                             <li>
+                               <time>{{ message.header.timestamp | date: "shortTime" }}</time>
+                             </li>
+                           </ul>
+                         </div>
+                       </mat-panel-title>
+                     </mat-expansion-panel-header>
+                     <div class="custom-message-type">
+                       <p>{{  message.body.markdownText }}</p>
+
+                     </div>
+                   </mat-expansion-panel>
+                 </div>
+
+
 
                     <!-- -----------------------------audio--------------------------------------- -->
 
@@ -2019,7 +2095,12 @@
             class="customer-mode message-mode"
             mat-button
           >
-            {{ conversation.customer?.firstName ? conversation.customer.firstName : ("globals.not-applicable" | translate) }}
+          <span *ngIf="'customer' | authPipe: 'view_pii' as result; else manage_pii">{{ conversation.customer?.firstName ? conversation.customer.firstName : ("globals.not-applicable" | translate) }}</span>
+          <ng-template #manage_pii>
+            <span>
+              {{ conversation.customer?.firstName ? ((conversation.customer.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey))) : ("globals.not-applicable" | translate) }}
+            </span>
+          </ng-template>
           </button>
           <button (click)="isWhisperMode = true" [ngClass]="{ 'whisper-select': isWhisperMode }" class="whisper-mode message-mode" mat-button>
             {{ "chat-features.interactions.whisper" | translate }}
