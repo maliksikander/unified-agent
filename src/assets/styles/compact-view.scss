@@ -437,7 +437,7 @@
       display: block;
       text-align: left;
       padding: 0 8px;
-      background: #F8F8F8;
+      //background: #F8F8F8;
       margin-bottom: 6px;
     }
     button{
@@ -560,9 +560,9 @@ button.close-menu-mobile {
         .chat-messages-main{
           padding: 0 !important;
 
-          @media(max-width: 575px){
-            padding-bottom: 30px !important;
-          }
+          //@media(max-width: 575px){
+          //  padding-bottom: 30px !important;
+          //}
 
           .chat-session-main {
             padding: 0 15px;

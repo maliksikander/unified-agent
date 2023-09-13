@@ -3490,6 +3490,10 @@ span.note-icon {
       white-space: pre;
       overflow: hidden;
       text-overflow: ellipsis;
+      line-height: 35px;
+      span{
+        height: inherit !important;
+      }
 
       span.ivr-tag {
         background: #333;
