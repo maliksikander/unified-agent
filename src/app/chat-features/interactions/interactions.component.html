@@ -43,14 +43,6 @@
                 </h5>
               </div>
               <ul (click)="$event.stopPropagation()" class="list-group list-group-vertical agent-controls agent-controls-mobile">
-                <ng-container *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
-<!--                  <li class="list-group-item">-->
-<!--                    <button mat-icon-button matTooltip="Wrapup" aria-label="WrapUp" (click)="openWrapUpDialog('Wrap-up')">-->
-<!--                      <mat-icon>note_add</mat-icon>-->
-<!--                      Add Wrap-up-->
-<!--                    </button>-->
-<!--                  </li>-->
-
                   <ng-container
                     *ngIf="conversation.conversationId != 'FAKE_CONVERSATION' && conversation.topicParticipant.role != 'SILENT_MONITOR' && ('agent-conversation-control' | authPipe: 'view_wrap_up') as result">
                     <li class="list-group-item">
@@ -84,13 +76,11 @@
                     </button>
                   </li>
                   <li *ngIf="'agent-conversation-control' | authPipe: 'view_leave_chat' as result" class="list-group-item">
-                    <button mat-icon-button>
-                      <mat-icon (click)="onLeaveClick()">close</mat-icon>
+                    <button mat-icon-button (click)="onLeaveClick()">
+                      <mat-icon>close</mat-icon>
                       Leave Chat
                     </button>
                   </li>
-                </ng-container>
-
               </ul>
             </div>
           </mat-menu>

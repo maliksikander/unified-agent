@@ -1122,3 +1122,10 @@ button {
   text-overflow: ellipsis;
   width: 140px;
 }
+
+.agent-menu-trigger{
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  z-index: 2;
+}

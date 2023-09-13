@@ -341,7 +341,4 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     this._sharedService.prefferedLanguageCode = languageCode;
     this.languageSwitcher.emit({ language: languageCode });
   }
-  closeAgentMenu() {
-    this.trigger.closeMenu();
-  }
 }
