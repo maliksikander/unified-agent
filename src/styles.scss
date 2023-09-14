@@ -3480,6 +3480,12 @@ span.note-icon {
 }
 
 .voice-activity-main {
+  
+  .mat-expansion-panel-body{
+    p{
+    font-size:15px !important;
+    }
+    }
 
   ul{
     display: flex;

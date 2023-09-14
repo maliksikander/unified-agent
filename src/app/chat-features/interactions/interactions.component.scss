@@ -2494,6 +2494,7 @@ vg-controls.hide {
   }
 
   &.voice {
+   
     .profile-pic {
       visibility: visible;
     }
@@ -3928,4 +3929,10 @@ button.back-to-sms{
   padding-left: 2em;
 
  }
+}
+
+.voice{
+  .plain-text-check{
+    display: none !important;
+    }
 }

@@ -508,6 +508,7 @@ export class socketService {
           conversation.messages.push(event.data);
         }
       } else if (event.name.toLowerCase() == "third_party_activity"  ) {
+       
         // if(event.data.body.type.toLowerCase() == 'deliverynotification'){
         //   let status=event.data.body['status'].toLowerCase();
         //   console.log("satata",status);
@@ -532,6 +533,8 @@ export class socketService {
             conversation.messages.push(event.data);
           }
         }else if(event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain'){
+          console.log("Metadata",event.data.header.schedulingMetaData)
+          console.log("DDDDDDDDDDD",event.data.body)
           const fakeChannelSession={
             "channel":{
               "channelType": event.data.header.schedulingMetaData.channelType,
@@ -548,6 +551,8 @@ export class socketService {
           console.log("event.data",conversation.messages)
          // if(event.data.body.type == 'PLAIN')
 
+
+         
         }
       }
       else if (

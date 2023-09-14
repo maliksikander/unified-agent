@@ -439,6 +439,9 @@
                   >
                     {{ message.header.sender | getSenderName: conversation.customer | getFirstTwoLetters }}
                   </div>
+                  <div *ngIf="(message.header.sender.type | lowercase) == 'bot'" class="profile-pic-area user-img">
+                    <img src="assets/images/robot-dark.svg" />
+                  </div>
 
                   <div *ngIf="(message.header.sender.type | lowercase) == 'app' " class="profile-pic-area user-img">
                     <!-- *ngIf="((message.header.sender.type | lowercase) == 'app' && (message.header.schedulingMetaData ) )"<img *ngIf="(message.status | lowercase) !== 'scheduled'" src="assets/images/robot-dark.svg" /> -->
