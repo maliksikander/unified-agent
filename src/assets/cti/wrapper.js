@@ -41,6 +41,7 @@ function executeCommands(commandRequest) {
         case "registerCallback":
             console.log(commandRequest);
             storeCallback(commandRequest);
+            break;
         case "login":
             commandRequest.parameter.clientCallbackFunction = wrapperCallbackFunction;
             login(commandRequest);
