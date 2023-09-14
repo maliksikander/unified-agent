@@ -57,6 +57,9 @@
             <p>{{request | json}}</p>
 
             <p *ngIf="(request.status | lowercase) != 'wrap_up'">9999</p> -->
+
+            <p>{{request.channelSession.conversationId }}</p>
+
             <ng-container *ngIf="(request.status | lowercase)">
               <td class="status-data">
                 <span

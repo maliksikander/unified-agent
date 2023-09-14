@@ -614,7 +614,7 @@ export class socketService {
     conversation.messageComposerState = this.isNonVoiceChannelSessionExists(conversation.activeChannelSessions);
     let index;
     let oldConversation = this.conversations.find((e, indx) => {
-      if (e.customer._id == topicData.customer._id) {
+      if (e.customer._id == topicData.customer._id && !e.wrapUpDialog.show) {
         index = indx;
         conversation.index = e.index;
         return e;
@@ -1139,6 +1139,23 @@ export class socketService {
         conversation.topicParticipant = cimEvent.data.conversationParticipant;
         console.log("updated participant", conversation.topicParticipant);
       }
+      else
+      {
+        let agentParticipants=[]
+        conversation.agentParticipants.forEach((agentParticipant,index)=>
+        {
+          console.log("agetPar",agentParticipant)
+          if(agentParticipant.participant.id==cimEvent.data.conversationParticipant.participant.id)
+          {
+            console.log("true",agentParticipant)
+
+            agentParticipant=cimEvent.data.conversationParticipant;
+          }
+          agentParticipants.push(agentParticipant)
+        })
+        conversation.agentParticipants=agentParticipants
+        console.log("co",conversation.agentParticipants)
+      }
       let message = this.createSystemNotificationMessage(cimEvent);
 
       if (message) {
@@ -1649,8 +1666,8 @@ export class socketService {
     conversation.wrapUpDialog.ref = setInterval(() => {
       if (conversation.wrapUpDialog) {
         if (conversation.wrapUpDialog.durationLeft > 0) {
-          console.log("wrapUp dialog",conversation.wrapUpDialog)
-          console.log("tick",conversation.wrapUpDialog.durationLeft)
+          // console.log("wrapUp dialog",conversation.wrapUpDialog)
+          // console.log("tick",conversation.wrapUpDialog.durationLeft)
           conversation.wrapUpDialog.durationLeft--;
         } else {
           if (conversation.wrapUpDialog.durationLeft == 0) {
