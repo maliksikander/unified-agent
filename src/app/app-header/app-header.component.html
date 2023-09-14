@@ -169,7 +169,7 @@
             xPosition="after">
             <button mat-button class="close-menu-mobile agent-menu-trigger" *ngIf="isMobile"><mat-icon>close</mat-icon></button>
             <div class="menu-list-content" (click)="$event.stopPropagation()">
-              <div class="menu-header-mobile">
+              <div class="menu-header-mobile" *ngIf="isMobile">
                 <h5>Agent Menu</h5>
               </div>
               <div *ngIf="stateView">

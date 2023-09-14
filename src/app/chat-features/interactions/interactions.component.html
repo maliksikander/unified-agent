@@ -674,7 +674,7 @@
                           class="file-type-content"
                         >
                           <span class="display-file">
-                            <img src="assets/file-types/{{ referredMessage.body.attachment.mimeType | getFileExt }}.svg" />
+                            <img src="assets/file-types/{{ referredMessage.body.attachment.mediaUrl | getFileExt }}.svg" />
                           </span>
                           <span class="display-file-name">
                             <span class="show-file-name" [matTooltip]="referredMessage.body.additionalDetails.fileName">{{
@@ -1052,7 +1052,7 @@
                       class="file-type-content"
                     >
                       <span class="display-file">
-                        <img src="assets/file-types/{{ message.body.attachment.mimeType | getFileExt }}.svg" />
+                        <img src="assets/file-types/{{ message.body.attachment.mediaUrl  | getFileExt }}.svg" />
                       </span>
                       <span class="display-file-name">
                         <span class="show-file-name" [matTooltip]="message.body.additionalDetails.fileName">{{
@@ -2191,7 +2191,7 @@
                 <img *ngIf="(quotedMessage.body.type | lowercase) == 'audio'" src="assets/file-types/audio.svg" />
                 <img
                   *ngIf="(quotedMessage.body.type | lowercase) == 'file'"
-                  src="assets/file-types/{{ quotedMessage.body.attachment.mimeType | getFileExt }}.svg"
+                  src="assets/file-types/{{ quotedMessage.body.attachment.mediaUrl | getFileExt }}.svg"
                 />
 
                 {{ quotedMessage.body.caption }}

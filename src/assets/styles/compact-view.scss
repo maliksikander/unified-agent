@@ -527,9 +527,7 @@ button.close-menu-mobile {
     }
   }
 }
-.mobile-menu-backdrop{
-  background: rgba(204, 204, 204, .40);
-}
+
 //.mobile-menu-backdrop + * .cdk-overlay-pane > div.mat-menu-panel {
 //  position: relative;
 //  top: -17px;
@@ -659,6 +657,9 @@ button.close-menu-mobile {
 }
 
 @media(max-width: 768px) {
+  .mobile-menu-backdrop{
+    background: rgba(204, 204, 204, .40);
+  }
   .characters-length{
     padding-left: 15px !important;
   }
