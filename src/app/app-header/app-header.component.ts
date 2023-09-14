@@ -136,8 +136,6 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
   }
 
   ctiControlBar(data) {
-    // this.ctiBoxView = true;
-    // this.ctiBarView = false;
     this._sipService.isToolbarActive = true;
     this._sipService.dialogRef = this.dialog.open(CallControlsComponent, {
       panelClass: "call-controls-dialog",

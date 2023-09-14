@@ -56,9 +56,9 @@
           <mat-icon routerLink="/customers/chats">flip_to_back</mat-icon>
         </div>
 
-        <h4 matTooltip="{{ customerNumber }}">
-          {{ customerNumber }}
-          <span class="timer-call"> {{ customer?.firstName }}</span>
+        <h4>
+          {{ customer?.firstName }}
+          <span class="timer-call" class="timer-call"> {{ customerNumber}}</span>
           <span *ngIf="!isCalling" class="timer-call">{{ timer }}</span>
         </h4>
       </div>

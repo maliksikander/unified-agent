@@ -163,6 +163,13 @@ export class SipService implements OnInit {
         if (event.response.dialog.customerNumber && event.response.dialog.state.toLowerCase() == "initiated") {
           this.identifyCustomer(event, event.response.dialog.customerNumber, "OUTBOUND");
         }
+        setTimeout(() => {
+          if (event.response.dialog && event.response.dialog.isCallEnded == 1) {
+            this.isOBCallRequested = false;
+            this.isToolbarActive = false;
+            this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-call-canceled"), "err");
+          }
+        }, 100);
       } else if (event.event == "Error") {
         if (event.response.type.toLowerCase() == "invalidstate") {
           this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-incorrect-request"), "err");
@@ -371,7 +378,8 @@ export class SipService implements OnInit {
             this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, callType, undefined);
           }
         } else {
-          this.handleCallDroppedEvent(cacheId, dialogState, "call_end", dialogEvent, callType, undefined);
+          let dialogCache: any = this.getDialogFromCache(cacheId);
+          if (dialogCache) this.handleCallDroppedEvent(cacheId, dialogState, "call_end", dialogEvent, callType, undefined);
         }
       }
     } catch (e) {
@@ -801,7 +809,7 @@ export class SipService implements OnInit {
     }
   }
 
-  makeCallOnSip(number) {
+  makeCallOnSip(customer, number) {
     try {
       this.isOBCallRequested = true;
       this, this.makeCXVoiceMrdNotReady();

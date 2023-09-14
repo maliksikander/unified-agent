@@ -886,7 +886,7 @@ function initiate_call(calledNumber, callback) {
             sessionDescriptionHandlerOptions: {
                 constraints: {
                     audio: true,
-                    video: true
+                    video: false
                 }
             },
             earlyMedia: true,
