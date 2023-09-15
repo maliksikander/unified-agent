@@ -104,8 +104,19 @@ if (window.addEventListener) {
                 window.parent.postMessage(message, "*");
             }
             if (e.data.event = "Agent_Desk_Event") {
+                if(e.data.agentData.agentPresence)
                 this.localStorage.setItem("agentId", e.data.agentData.agentPresence.agent.id);
             }
+            // if(e.data.event == "CRM_Event"){
+            //     switch(e.data.state){
+            //         case "READY" :
+            //             ReadyPostMessage();
+            //             break;
+            //         case "NOT_READY" :
+            //             NotReadyPostMessage();
+            //             break;
+            //     }
+            // }
 
             //
 
