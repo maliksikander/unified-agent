@@ -82,11 +82,11 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
   ) {
     let _THIS = this;
     window.addEventListener("message", function (e) {
-      console.log("receiving post==>",e)
+      console.log("receiving post==>", e);
       if (e.data && e.data.event && e.data.event == "Connector_Event") {
-        console.log("receiving post1==>")
+        console.log("receiving post1==>");
         if (e.data.agentData.action == "agentState") {
-          console.log("receiving post2==>")
+          console.log("receiving post2==>");
           _THIS.pocStateChange(e);
         }
       }
@@ -204,11 +204,13 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     // let state;
     // if(e.data.agentData.state == "NOT_READY") state = { name: e.data.agentData.state, reasonCode: null }
     // if(e.data.agentData.state == "READY") state = { name: e.data.agentData.state, reasonCode: null }
-    this._socketService.emit("changeAgentState", {
-      agentId: e.data.agentData.agentId,
-      action: "agentState",
-      state: { name: e.data.agentData.state, reasonCode: null }
-    });
+    if (e.data.agentData.agentId) {
+      this._socketService.emit("changeAgentState", {
+        agentId: e.data.agentData.agentId,
+        action: "agentState",
+        state: { name: e.data.agentData.state, reasonCode: null }
+      });
+    }
   }
 
   changeState(state) {

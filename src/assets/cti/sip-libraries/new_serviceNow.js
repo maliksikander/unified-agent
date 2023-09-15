@@ -29,7 +29,7 @@ script.onload = function () {
 //fillMatchedRecords is function name
 //let recordsArray = [];
 //for (let i = 0; i < count; i++) {
-//    recordsArray.push({ Id: res[i][Id], Name: res[i][Name] });
+//    recordsArray.push({ Id: res[i][Id], Name: res[i][Name] });
 //}
 
 //if (window.addEventListener) {
@@ -69,8 +69,12 @@ if (window.addEventListener) {
 
     window.addEventListener("message", function (e) {
         try {
+            var incomingData;
             console.log('in the Application CTI' + JSON.stringify(e));
-            var incomingData = JSON.parse(e.data);
+            if(typeof e.data == "string")
+             incomingData = JSON.parse(e.data);
+             else
+             incomingData= e.data;
             //new code jazeb
             if (incomingData.event == "newInboundCall") {
                 console.log("ringing call event data ", incomingData);
@@ -99,13 +103,13 @@ if (window.addEventListener) {
                 }
                 window.parent.postMessage(message, "*");
             }
-            if (e.data.event = "Agent_Desk_Event") {
+            if (e.data.event == "Agent_Desk_Event") {
                 this.localStorage.setItem("agentId", e.data.agentData.agentPresence.agent.id);
                 switch (e.data.agentData.agentPresence.state.name) {
-                    case "READY":
+                    case "NOT_READY":
                         setTimeout(ReadyPostMessage, 15000);
                         break;
-                    case "NOT_READY":
+                    case "READY":
                         setTimeout(NotReadyPostMessage, 15000);
                         break;
                     case "LOGOUT":
@@ -837,7 +841,7 @@ function initCTI() {
     //   Microsoft.CIFramework.addHandler("onclicktoact", clickToActHandler);
 }
 function ReadyPostMessage() {
-    var agentId = localStorage.getItem(agentId);
+    var agentId = localStorage.getItem("agentId");
     var obj = {
         event: "Connector_Event",
         agentData: {
@@ -847,9 +851,10 @@ function ReadyPostMessage() {
         }
     }
     window.postMessage(obj, "*");
+    console.log("postMessasge sent ",obj);
 }
 function NotReadyPostMessage() {
-    var agentId = localStorage.getItem(agentId);
+    var agentId = localStorage.getItem("agentId");
     var obj = {
         event: "Connector_Event", agentData: {
             agentId: agentId,
@@ -858,9 +863,10 @@ function NotReadyPostMessage() {
         }
     }
     window.postMessage(obj, "*");
+    console.log("postMessasge sent ",obj);
 }
 function LogoutPostMessage() {
-    var agentId = localStorage.getItem(agentId);
+    var agentId = localStorage.getItem("agentId");
     var obj = {
         event: "Connector_Event", agentData: {
             agentId: agentId,
@@ -869,4 +875,5 @@ function LogoutPostMessage() {
         }
     }
     window.postMessage(obj, "*");
+    console.log("postMessasge sent ",obj);
 }
