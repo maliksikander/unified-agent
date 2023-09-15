@@ -26,7 +26,7 @@ export class appConfigService {
   };
   finesseConfig: any;
   cxSipConfig: any;
-  private passphrase: string = "und09lusia4400";
+  private passphrase: string = "und09lusia0$0EF%";
 
   constructor(private _httpClient: HttpClient) {}
 
@@ -64,6 +64,7 @@ export class appConfigService {
           adminUsername: CryptoJS.AES.decrypt(e.ctiParam, this.passphrase).toString(CryptoJS.enc.Utf8),
           adminPassword: CryptoJS.AES.decrypt(e.ctiParam2, this.passphrase).toString(CryptoJS.enc.Utf8)
         };
+
         this.finesseConfig = config;
 
         callTypes = {
