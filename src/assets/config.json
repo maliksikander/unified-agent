@@ -12,13 +12,13 @@
   "ENV": "prod",
   "domain": "uccx12-5.ucce.ipcc",
   "subDomain" : "uccx12-5.ucce.ipcc",
-  "adminUsername": "administrator",
-  "adminPassword": "Expertflow465",
   "boshUrl": "https://uccx12-5.ucce.ipcc:7443/http-bind/",
   "subBoshUrl" : "https://uccx12-5.ucce.ipcc:7443/http-bind/",
   "finesseFlavor": "UCCX",
   "callVariable": "callVariable1",
   "getQueuesDelay": 15,
+  "ctiParam": "U2FsdGVkX1+KvqMjrdbAumi6PyD0XVOQj7RXonQrXlA=",
+  "ctiParam2": "U2FsdGVkX1/lYPqGVpzbGsZNkZc6X+GItwv0KlvfHuY=",
   "ssoBackendUrl": "https://192.168.1.104:1123/",
   "isGadget": true,
   "inboundTypeCCE": "PREROUTE_ACD_IN",
@@ -48,4 +48,5 @@
   "ENABLE_SIP_LOGS": true,
   "STATIC_QUEUE_TRANSFER_DN":"99887766",
   "AUTO_CALL_ANSWER_TIMER":3
+
 }

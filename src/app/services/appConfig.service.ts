@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import * as CryptoJS from "crypto-js";
 declare var config, callTypes, sipConfig;
 
 @Injectable()
@@ -23,14 +24,9 @@ export class appConfigService {
     CISCO_CC_MRD: "",
     CX_VOICE_MRD: ""
   };
-  // public sipConfig = {
-  //   wss: "",
-  //   uri: "",
-  //   agentStaticPassword: 1234,
-  //   enable_sip_log: false,
-  // }
   finesseConfig: any;
   cxSipConfig: any;
+  private passphrase: string = "und09lusia4400";
 
   constructor(private _httpClient: HttpClient) {}
 
@@ -65,8 +61,8 @@ export class appConfigService {
           getQueuesDelay: e.getQueuesDelay,
           ssoBackendUrl: e.ssoBackendUrl,
           isGadget: e.isGadget,
-          adminUsername: e.adminUsername,
-          adminPassword: e.adminPassword
+          adminUsername: CryptoJS.AES.decrypt(e.ctiParam, this.passphrase).toString(CryptoJS.enc.Utf8),
+          adminPassword: CryptoJS.AES.decrypt(e.ctiParam2, this.passphrase).toString(CryptoJS.enc.Utf8)
         };
         this.finesseConfig = config;
 
