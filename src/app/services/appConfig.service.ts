@@ -66,6 +66,7 @@ export class appConfigService {
         };
 
         this.finesseConfig = config;
+        // console.log("test==>",config)
 
         callTypes = {
           inboundTypeCCE: e.inboundTypeCCE,
@@ -88,13 +89,15 @@ export class appConfigService {
         sipConfig = {
           wss: e.SIP_SOCKET_URL,
           uri: e.SIP_URI,
-          agentStaticPassword: e.EXT_STATIC_PASSWORD,
+          agentStaticPassword: JSON.parse(CryptoJS.AES.decrypt(e.EXT_STATIC, this.passphrase).toString(CryptoJS.enc.Utf8)),
           enable_sip_log: e.ENABLE_SIP_LOGS,
           staticQueueTransferDn: e.STATIC_QUEUE_TRANSFER_DN,
           autoCallAnswer: e.AUTO_CALL_ANSWER_TIMER
         };
         this.cxSipConfig = sipConfig;
+        // console.log("sipconfig==>",sipConfig)
         // this.sipConfig = sipConfig;
       });
+      
   }
 }
