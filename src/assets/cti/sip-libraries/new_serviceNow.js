@@ -103,19 +103,8 @@ if (window.addEventListener) {
                 }
                 window.parent.postMessage(message, "*");
             }
-            if (e.data.event == "Agent_Desk_Event") {
+            if (e.data.event = "Agent_Desk_Event") {
                 this.localStorage.setItem("agentId", e.data.agentData.agentPresence.agent.id);
-                switch (e.data.agentData.agentPresence.state.name) {
-                    case "NOT_READY":
-                        setTimeout(ReadyPostMessage, 15000);
-                        break;
-                    case "READY":
-                        setTimeout(NotReadyPostMessage, 15000);
-                        break;
-                    case "LOGOUT":
-                        setTimeout(LogoutPostMessage, 15000);
-                        break;
-                }
             }
 
             //
