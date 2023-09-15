@@ -49,7 +49,7 @@ export class socketService {
     private snackBar: MatSnackBar,
     private _translateService: TranslateService
   ) {
-     // this.onTopicData(mockTopicData, "12345", "");
+    // this.onTopicData(mockTopicData, "12345", "");
   }
 
   connectToSocket() {
@@ -124,6 +124,16 @@ export class socketService {
     this.subscribeToSocketEvents();
   }
 
+  sendPostMessage(res) {
+    
+    let obj = {
+      event: "Agent_Desk_Event",
+      agentData: res
+    };
+    console.log("sending post==>",res)
+    window.postMessage(obj, "*");
+  }
+
   subscribeToSocketEvents() {
     this.socket.on("disconnect", (reason) => {
       console.error("socket disconnect " + reason);
@@ -146,12 +156,16 @@ export class socketService {
     });
 
     this.socket.on("agentPresence", (res: any) => {
-      console.log("agent presence", res);
+      console.log("agent presence==>", res);
+      if (res.action == "AGENT_STATE_CHANGED") {
+        this.sendPostMessage(res);
+      }
+
       this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: res.agentPresence });
     });
 
     this.socket.on("ANNOUNCEMENT_CREATED", (res: any) => {
-      if ((res.supervisorId !== this._cacheService.agent.id)) {
+      if (res.supervisorId !== this._cacheService.agent.id) {
         this._announcementService.addCreatedAnnoucement(res);
       }
     });
@@ -160,12 +174,10 @@ export class socketService {
       this._announcementService.removeAnnoucement(res);
     });
 
-
     this.socket.on("errors", (res: any) => {
       console.error("socket errors ", res);
       this.onSocketErrors(res);
     });
-
 
     this.socket.on("taskRequest", (res: any) => {
       console.log("taskRequest==>", res);
@@ -191,8 +203,8 @@ export class socketService {
         }
       } else {
         if (res.channelSession.channel.channelType.name.toLowerCase() !== "cx_voice") {
-        // } else {
-        this.triggerNewChatRequest(res);
+          // } else {
+          this.triggerNewChatRequest(res);
         }
         // this.triggerNewChatRequest(res);
       }
@@ -375,7 +387,7 @@ export class socketService {
           cimEvent.data.body.itemType.toLowerCase() != "text" &&
           cimEvent.data.body.itemType.toLowerCase() != "video" &&
           cimEvent.data.body.itemType.toLowerCase() != "image" &&
-          cimEvent.data.body.itemType.toLowerCase() !="private_reply"
+          cimEvent.data.body.itemType.toLowerCase() != "private_reply"
         ) {
           this.processCommentActions(sameTopicConversation.messages, cimEvent.data);
         }
@@ -499,7 +511,6 @@ export class socketService {
           event.data.body.itemType.toLowerCase() != "private_reply"
         ) {
           this.processCommentActions(conversation.messages, event.data);
-         
         } else {
           event.data.header["status"] = "sent";
           conversation.messages.push(event.data);
@@ -1552,14 +1563,14 @@ export class socketService {
       }
       if (cimEvent.data.task.type.direction == "DIRECT_TRANSFER") {
         let text = " transfer request has been placed by ";
-        let translationKey ="socket-service.transfer-request-has-been-placed-by";
-        if(!cimEvent.data.task.type.metadata.requestedBy) translationKey ="socket-service.transfer-request-has-been-placed"
+        let translationKey = "socket-service.transfer-request-has-been-placed-by";
+        if (!cimEvent.data.task.type.metadata.requestedBy) translationKey = "socket-service.transfer-request-has-been-placed";
         this._translateService.stream(`${translationKey}`).subscribe((data: string) => {
           text = data;
         });
 
         let string;
-        if(cimEvent.data.task.type.metadata.requestedBy) string = mode + " " + text + " " + cimEvent.data.task.type.metadata.requestedBy;
+        if (cimEvent.data.task.type.metadata.requestedBy) string = mode + " " + text + " " + cimEvent.data.task.type.metadata.requestedBy;
         else string = mode + " " + text;
         message.body["displayText"] = "";
         message.body.markdownText = string;

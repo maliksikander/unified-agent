@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
 import { cacheService } from "../services/cache.service";
 import { sharedService } from "../services/shared.service";
 import { socketService } from "../services/socket.service";
@@ -23,12 +23,12 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
   @ViewChild("stateTrigger", { static: false }) stateTrigger: any;
   @Output() themeSwitcher = new EventEmitter<any>();
   @Output() languageSwitcher = new EventEmitter<any>();
-  @ViewChild('menuTrigger' , { static: false }) trigger;
+  @ViewChild("menuTrigger", { static: false }) trigger;
   @Input() isMobile: any;
 
   isdarkMode = false;
-  checkRoles:any=[];
-  setAgent=true;
+  checkRoles: any = [];
+  setAgent = true;
   unreadAnnouncements = 0;
   agent = {
     state: "ready",
@@ -51,7 +51,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
   // stopTime: Date;
   // active: boolean = false;
   timerConfigs;
-  disableMrdActions : boolean = false;
+  disableMrdActions: boolean = false;
   // get display() {
   //   return this.startTime && this.stopTime ? +this.stopTime - +this.startTime : 0;
   // }
@@ -73,13 +73,25 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     private _sharedService: sharedService,
     public _finesseService: finesseService,
     public _sipService: SipService,
-    public _appConfigService:appConfigService,
+    public _appConfigService: appConfigService,
     private _fcmService: fcmService,
     private _httpService: httpService,
     private _snackBarService: snackbarService,
     private _translateService: TranslateService,
-    private _announcementService: announcementService,
-  ) { }
+    private _announcementService: announcementService
+  ) {
+    let _THIS = this;
+    window.addEventListener("message", function (e) {
+      console.log("receiving post==>",e)
+      if (e.data && e.data.event && e.data.event == "Connector_Event") {
+        console.log("receiving post1==>")
+        if (e.data.agentData.action == "agentState") {
+          console.log("receiving post2==>")
+          _THIS.pocStateChange(e);
+        }
+      }
+    });
+  }
 
   ngOnInit() {
     this.timerConfigs = new countUpTimerConfigModel();
@@ -88,10 +100,10 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     this.timerConfigs.timerTexts.minuteText = ":"; //default - mm
     this.timerConfigs.timerTexts.secondsText = " "; //default - ss
     this.timerConfigs.timerClass = "state-timer";
-    this.checkRoles=this._cacheService.agent.roles.filter(value => {value == "agent"
-     this.setAgent=true;
-  }
-    )
+    this.checkRoles = this._cacheService.agent.roles.filter((value) => {
+      value == "agent";
+      this.setAgent = true;
+    });
     //   e=>{
     //   console.log("arry val",e);
     //   if(e == "agent")
@@ -99,10 +111,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
 
     // }
 
-
     // }
-
-
 
     this.stateChangedSubscription = this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       if (e.msg == "stateChanged") {
@@ -119,9 +128,9 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     });
     this._announcementService.countUnreadAnnouncementSubject.subscribe((e: any) => {
       if (e) {
-        this.countUnreadAnnouncements()
+        this.countUnreadAnnouncements();
       }
-    })
+    });
   }
 
   ngAfterViewInit() {
@@ -133,17 +142,14 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     let agentId = this._cacheService.agent.id;
     let announcementList = this._announcementService.announcementList;
     if (agentId && announcementList) {
-      announcementList.forEach(element => {
+      announcementList.forEach((element) => {
         if (element.seenBy.includes(agentId)) {
           // seenByCount = seenByCount;
         } else {
           this.unreadAnnouncements = this.unreadAnnouncements + 1;
         }
-
       });
-
     }
-
   }
   getReasonCodes() {
     this._httpService.getReasonCodes().subscribe(
@@ -194,6 +200,17 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     this.countupTimerService.startTimer();
   }
 
+  pocStateChange(e) {
+    // let state;
+    // if(e.data.agentData.state == "NOT_READY") state = { name: e.data.agentData.state, reasonCode: null }
+    // if(e.data.agentData.state == "READY") state = { name: e.data.agentData.state, reasonCode: null }
+    this._socketService.emit("changeAgentState", {
+      agentId: e.data.agentData.agentId,
+      action: "agentState",
+      state: { name: e.data.agentData.state, reasonCode: null }
+    });
+  }
+
   changeState(state) {
     console.log("current state", state);
 
@@ -231,7 +248,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
       this.languageFlag = selectedLanguage.flag;
       this.changeLanguageCode = languageCode;
       try {
-        this._httpService.updateAgentSettings({ language: "en" }, this._cacheService.agent.id).subscribe((e) => { });
+        this._httpService.updateAgentSettings({ language: "en" }, this._cacheService.agent.id).subscribe((e) => {});
       } catch (error) {
         this._sharedService.Interceptor(error.error, "err");
         console.error(`error updating language`, error);
@@ -247,7 +264,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
       this.changeLanguageCode = languageCode;
       this.changeAgentDeskLanguage(languageCode);
       try {
-        this._httpService.updateAgentSettings({ language: languageCode }, this._cacheService.agent.id).subscribe((e) => { });
+        this._httpService.updateAgentSettings({ language: languageCode }, this._cacheService.agent.id).subscribe((e) => {});
       } catch (error) {
         this._sharedService.Interceptor(error.error, "err");
         console.error(`error updating theme`, error);
@@ -286,7 +303,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
       state: { name: "LOGOUT", reasonCode: this.selectedReasonCode }
     });
 
-    if(this._appConfigService.config.isCxVoiceEnabled) this._sipService.logout();
+    if (this._appConfigService.config.isCxVoiceEnabled) this._sipService.logout();
   }
 
   changeMRD(event, agentMrdState) {
@@ -301,7 +318,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     this.disableMrdActions = true;
   }
 
-  close() { }
+  close() {}
 
   onChange(reason) {
     this.selectedReasonCode = reason;
@@ -311,7 +328,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) { }
+    } catch (e) {}
 
     this._cacheService.resetCache();
     this._socketService.socket.disconnect();
