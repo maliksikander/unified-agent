@@ -8,7 +8,6 @@ import { pullModeService } from "src/app/services/pullMode.service";
 import { soundService } from "src/app/services/sounds.service";
 import { finesseService } from "src/app/services/finesse.service";
 import { TranslateService } from "@ngx-translate/core";
-import { appConfigService } from "src/app/services/appConfig.service";
 import { SipService } from "src/app/services/sip.service";
 import { announcementService } from "src/app/services/announcement.service";
 
@@ -23,6 +22,7 @@ export class ChatNotificationsComponent implements OnInit {
   externalModeRequests = [];
   notificationArea: boolean = false;
   voiceChannelType;
+  isCallAcceptClicked:boolean = false;
   //newAnnouncement =true;
 
   constructor(
@@ -35,7 +35,6 @@ export class ChatNotificationsComponent implements OnInit {
     private _finesseService: finesseService,
     private _translateService: TranslateService,
     private _sipService: SipService,
-    private _appConfigService: appConfigService,
     public _announcementService:announcementService
   ) {
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
@@ -75,9 +74,10 @@ export class ChatNotificationsComponent implements OnInit {
           } else {
             this.externalModeRequests.push(e.data);
           }
+          this._soundService.playRing();
           console.log("external requests==>", this.externalModeRequests);
         } else if (e.msg == "closeExternalModeRequestHeader") {
-          // this.externalModeRequests = e.data;
+          this.isCallAcceptClicked = false;
           let dialog = e.data.dialog ? e.data.dialog : e.data;
           if (this.externalModeRequests.length > 0) {
             let index = this.externalModeRequests.findIndex((item) => {
@@ -85,6 +85,7 @@ export class ChatNotificationsComponent implements OnInit {
             });
             console.log("Closing Index==>", index);
             if (index != -1) this.externalModeRequests.splice(index, 1);
+            this._soundService.stopRing();
           }
         } else if (e.msg == "closeAllPushModeRequests") {
           this.pushModeRequests = [];
@@ -132,6 +133,7 @@ export class ChatNotificationsComponent implements OnInit {
   }
 
   onExternalRequestAccept(data) {
+    this.isCallAcceptClicked = true;
     this.acceptCall(data);
   }
 

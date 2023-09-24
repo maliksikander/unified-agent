@@ -1,0 +1,81 @@
+<div class="message-dialog-main announcement-dialog-main">
+  <div class="dialog-header">
+    <h4>{{'chat-features.send-sms.info' | translate }}</h4>
+    <button mat-icon-button><i class="material-icons" [mat-dialog-close]="true">close</i></button>
+  </div>
+  <div class="message-container mat-dialog-content m-0 p-0">
+    <form [formGroup]="smsForm">
+      <div class="new-message-form new-announcement-form">
+        <div class="text-field message-field send-sms-field">
+          <label>{{'chat-features.send-sms.channel-identity' | translate }}</label>
+          <!--          <span class="icustomer"-->
+          <!--            *ngIf="identifiedCustomer">[{{identifiedCustomer.firstName}}]</span>-->
+          <mat-form-field appearance="outline">
+            <input id="phoneField" placeholder="Enter Phone Number" aria-label="Number" matInput
+              formControlName="phoneControl" maxlength="20" minLength="3" [matAutocomplete]="auto"
+              (keyup)="handleThrottledKeyUp()">
+            <!--            <span matTextPrefix  *ngIf="identifiedCustomer">[{{identifiedCustomer.firstName}}]</span>-->
+            <!-- this.smsData.info.customer.firstName -->
+            <span *ngIf="identifiedCustomer || smsData" matTextSuffix>[{{identifiedCustomer?.firstName ? identifiedCustomer?.firstName : smsData?.info?.customer?.firstName}}]</span>
+            <!-- <span *ngIf="identifiedCustomer || smsData" matTextSuffix>[{{smsData?.info?.customer?.firstName}}]</span>
+             -->
+            <mat-error>
+              <div *ngIf="smsForm.get('phoneControl').hasError('required')">
+                *{{'chat-features.send-sms.not-empty' | translate }}
+              </div>
+              <div *ngIf="smsForm.get('phoneControl').hasError('pattern')">
+                *{{'chat-features.send-sms.invalid-pattern' | translate }}
+              </div>
+              <div
+                *ngIf="smsForm.get('phoneControl').hasError('minlength') || smsForm.get('phoneControl').hasError('maxlength')">
+                *{{'chat-features.send-sms.number-should-be-in-range-3-to-15' | translate }}
+              </div>
+            </mat-error>
+
+            <!-- <mat-error>
+              <div *ngIf="phoneControl.hasError('minlength')">
+                *below minLength
+              </div>
+            </mat-error> -->
+
+            <mat-autocomplete autoActiveFirstOption hidden="smsForm.get('phoneControl').value.length < 1"
+              #auto="matAutocomplete">
+
+
+              <mat-optgroup *ngFor="let option of userData" [label]="option.firstName" class="outbound-customer-list">
+                <mat-option *ngFor="let number of option.phoneNumber" [value]="number"
+                  (onSelectionChange)="updateMySelection(option)">
+                  {{number}}
+                </mat-option>
+              </mat-optgroup>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div class="text-field message-field">
+          <label>{{'chat-features.send-sms.type-sms' | translate }}</label>
+          <mat-form-field appearance="outline">
+            <textarea #message matInput formControlName="textAreaControl" maxlength="1500"></textarea>
+            <mat-hint align="end"> {{ smsForm.get('textAreaControl').value?.length || 0 }} /
+              {{'chat-features.send-sms.characters-limit-1500' | translate }}</mat-hint>
+            <mat-error *ngIf="smsForm.get('textAreaControl').hasError('required')">
+              *{{'chat-features.send-sms.invalid-text' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="message-trigger right-align">
+          <button *ngIf="identifiedCustomer" mat-raised-button type="button"
+            class="send-message message-action float-left" (click)="openCOnversationView(identifiedCustomer)">  {{'chat-features.send-sms.see-conversation-history' | translate }}</button>
+
+          <button mat-raised-button type="button" [mat-dialog-close]="true"
+            class="discard-btn message-action ml-2">{{'chat-features.send-sms.discard' | translate }}
+          </button>
+          <button *ngIf="(smsForm.valid)" mat-raised-button type="button" 
+          class="send-message message-action ml-2"(click)="sendSMS()">
+          {{'chat-features.send-sms.send-sms' | translate }}</button>
+
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

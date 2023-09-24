@@ -1080,7 +1080,7 @@
         display: inline-block;
         border-right: 1px solid #ccc;
         margin: 0;
-        padding: 0 10px;
+        padding: 1px 10px;
         vertical-align: middle;
         min-width: 42px;
 
@@ -1110,6 +1110,13 @@
         time {
           font-size: 12px;
           color: #707070;
+        }
+
+        &.message-activity-text {
+          max-width: 450px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
         }
       }
 
@@ -2492,6 +2499,12 @@ vg-controls.hide {
   }
 }
 
+.not-same-sender{
+  .profile-pic {
+    visibility:visible !important;
+  }
+}
+
 
 .quoted-reply-time {
   display: inline-block;
@@ -2914,7 +2927,7 @@ vg-controls.hide {
   }
 }
 
-.chat-message.voice {
+.chat-message.voice, .chat-message.custom {
   .file-type-stamp {
     display: none !important;
   }
@@ -3813,6 +3826,12 @@ vg-controls.hide {
 .doc-bar {
   margin-left: 0px;
   margin-right: 0px;
+  flex-direction: row;
+  justify-content: space-between;
+  .customer-info-dp{
+    width: auto;
+    max-width: 170px;
+  }
 }
 
 .url-title, .url-link{
@@ -3837,5 +3856,49 @@ vg-controls.hide {
   justify-content: center;
   app-wrap-up-form{
     width: 100%;
+  }
+}
+//custom-message-type
+.custom-message-type{
+  width: 100%;
+  max-width: 800px;
+  pre:last-child{
+    margin-bottom: 0;
+  }
+}
+
+.private-reply-icon{
+  cursor: pointer;
+}
+
+
+//
+.outboundsms{
+  .panel-header{
+    li{
+      color: #000;
+    }
+  }
+}
+
+button.back-to-sms{
+  background: $main-color-background;
+ 
+  margin-right: 10px;
+  
+  
+  border: 2px;
+  margin-right: 10px;
+  border-radius: 100%;
+  width: 32px;
+  height: 32px;
+
+
+  mat-icon{
+    font-size: 20px;
+    color: $main-color;
+    text-align: center;
+    display: inline;
+    vertical-align: baseline;
   }
 }

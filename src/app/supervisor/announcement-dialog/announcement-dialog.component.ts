@@ -60,7 +60,7 @@ export class AnnouncementDialogComponent implements OnInit {
     let date = new Date(this.expireDateMin);
     date.setMinutes(date.getMinutes() + 10);
     this.expireDate = new FormControl(date, [Validators.required]);
-
+    this.onValidateExpiryDate(new Date());
     // let _date = new Date();
     // _date.setDate(this.expireDateMin.getDate() + 5);
     // this.maxDate = _date;
@@ -195,18 +195,14 @@ export class AnnouncementDialogComponent implements OnInit {
   // }
 
   onItemSelect(item: any) {
-    console.log(item);
-    console.log(this.selectedTeams);
+    // console.log(this.selectedTeams);
   }
   OnItemDeSelect(item: any) {
-    console.log("DeSelected  Team",item);
     //console.log(this.selectedTeams);
   }
   onSelectAll(items: any) {
-    console.log("Selected All Teams",items);
   }
   onDeSelectAll(items: any) {
-    console.log("DeSelected All Teams",items);
   }
   changeData() {
     this.selectedTeams = [];

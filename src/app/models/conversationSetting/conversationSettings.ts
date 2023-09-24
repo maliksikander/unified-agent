@@ -3,4 +3,7 @@ export interface ConversationSettings {
     isEmojisEnabled: boolean;
     isConversationParticipantsEnabled: boolean;
     isMessageFormattingEnabled: boolean;
+    isOutboundSmsSendandClose:boolean,
+    isOutboundSmsEnabled:boolean,
+    prefixCode:string
   }

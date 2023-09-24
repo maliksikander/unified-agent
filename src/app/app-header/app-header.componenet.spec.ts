@@ -22,6 +22,7 @@ describe("Appheader component", () => {
   let _translateService: any
   let _sipService: any;
   let _appConfigService:any;
+  let _matDialog:any;
 
   // private countupTimerService: CountupTimerService,
     // private _router: Router,
@@ -52,7 +53,8 @@ describe("Appheader component", () => {
         _httpService,
         _snackBarService,
         _translateService,
-        _announcementService
+        _announcementService,
+        _matDialog
       );
     });
     it("selectedReasonCode should be undefined on component initiation", () => {

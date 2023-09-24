@@ -10,8 +10,6 @@ import { cacheService } from "./cache.service";
 export class httpService {
   apiEndpoints;
   supervisorId ;
-  mockurl = "https://57be0c49-6ed4-469c-a93a-13f49e48e8c2.mock.pstmn.io";
-  url="https://3e4a011b-523f-403d-9b76-3d5054db5a09.mock.pstmn.io";
 
   constructor(public _appConfigService: appConfigService, private _httpClient: HttpClient) {
     this.apiEndpoints = {
@@ -34,10 +32,30 @@ export class httpService {
       getAllMRDs: "/media-routing-domains",
       defaultOutboundChannel: "/channels/defaultoutbound",
       announcement: "/announcement",
-      announcementSeenBy:"/announcement/seenStatus"
+      announcementSeenBy:"/announcement/seenStatus",
+      sendSms:"/message/send",
+      saveActivities:"/activities"
+
     };
   }
 
+  ////////////////////////////  OutBound SMS ////////////////////////////////////////////
+
+  sendOutboundSms(obj): Observable<any> {
+    return this._httpClient.post<any>(`${this._appConfigService.config.CCM_URL}${this.apiEndpoints.sendSms}`, obj, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+  saveActivies(obj):Observable<any> {
+    return this._httpClient.post<any>(`${this._appConfigService.config.CONVERSATION_MANAGER_URL}${this.apiEndpoints.saveActivities}`, obj, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
  ///////////////////////////// Announcements CURD /////////////////////////////////////
 
   addAnnouncemenent(obj): Observable<any> {
@@ -492,24 +510,17 @@ getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
     );
   }
 
-  getFBPostData(postId, accessToken, FBHOSTAPI): Observable<any> {
-    return this._httpClient.get<any>(`${FBHOSTAPI}${postId}?access_token=${accessToken}&fields=attachments,from,created_time,story,message`, {
-      headers: new HttpHeaders({
-        "Content-Type": "application/json"
-      })
-    });
-  }
-  getFBPostComments(postId, accessToken, FBHOSTAPI): Observable<any> {
-    return this._httpClient.get<any>(
-      `${FBHOSTAPI}${postId}/comments?access_token=${accessToken}&limit=4&order=reverse_chronological&fields=created_time,name,from,message,attachment,comments.filter(stream)`,
+  getPostData(postId, serviceIdentifier) : Observable<any> {
+    //https://expertflow.postman.co/workspace/Expertflow~f8480e26-6001-4a5f-8435-d0adbf5d7f5c/request/8262326-85e2374a-2aab-4ea2-b2da-907101b94f35
+    return this._httpClient.get<any> (
+      `${this._appConfigService.config.CCM_URL}/social-media-post?postId=${postId}&serviceIdentifier=${serviceIdentifier}&limit=4`,
       {
         headers: new HttpHeaders({
           "Content-Type": "application/json"
         })
       }
-    );
+    )
   }
-
   ccmVOICEChannelSession(data): Observable<any> {
     return this._httpClient.post<any>(`${this._appConfigService.config.CCM_URL}${this.apiEndpoints.ccmChannelSession}`, data, {
       headers: new HttpHeaders({

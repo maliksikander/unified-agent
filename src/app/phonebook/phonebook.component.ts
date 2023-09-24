@@ -138,6 +138,7 @@ export class PhonebookComponent implements OnInit {
         this.userPreferenceObj = res.docs[0];
         this.getCustomerSchema(savedPref);
         this.getCustomers(limit, offSet, sort, query);
+        //console.log(res,"customers")
       } else {
         this._snackbarService.open(this._translateService.instant("snackbar.No-Preference-Added"), "err");
       }
@@ -263,6 +264,7 @@ export class PhonebookComponent implements OnInit {
   }
   //to open conversation view for outbound chat
   openCOnversationView(customer) {
+    console.log("customer ---->>>",customer)
     this._socketService.onTopicData({ customer }, "FAKE_CONVERSATION", "");
     this._router.navigate(["customers"]);
   }

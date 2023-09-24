@@ -29,10 +29,13 @@
 
     <ul class="call-actions">
       <li><button mat-fab (click)="cancel()"><mat-icon>picture_in_picture</mat-icon></button></li>
-      <!-- <li><button mat-fab><mat-icon>mic</mat-icon></button></li> -->
-      <li *ngIf="_sipService.isCallHold == false"><button (click)="holdCallOnSip()"
+      <li><button matTooltip="{{_sipService.isMuted == false ? ('globals.mute' | translate) : ('globals.unMute' | translate)}}" (click)="muteUnmuteCall()" mat-fab><mat-icon>
+            <ng-container *ngIf="_sipService.isMuted == false">mic</ng-container>
+            <ng-container *ngIf="_sipService.isMuted == true">mic_off</ng-container>
+          </mat-icon></button></li>
+      <li matTooltip="{{('globals.hold' | translate)}}" *ngIf="_sipService.isCallHold == false"><button (click)="holdCallOnSip()"
           mat-fab><mat-icon>pause</mat-icon></button></li>
-      <li *ngIf="_sipService.isCallHold == true"><button (click)="resumeCallOnSip()"
+      <li class="resume-icon" matTooltip="{{('globals.resume' | translate)}}" *ngIf="_sipService.isCallHold == true"><button (click)="resumeCallOnSip()"
           mat-fab><mat-icon>pause_circle_filled</mat-icon></button></li>
       <li><button (click)="endCallOnSip()" class="end-call" mat-fab><mat-icon>call_end</mat-icon></button></li>
     </ul>

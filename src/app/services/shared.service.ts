@@ -35,7 +35,12 @@ export class sharedService {
     isFileSharingEnabled: false,
     isEmojisEnabled: false,
     isConversationParticipantsEnabled: false,
-    isMessageFormattingEnabled: false
+    isMessageFormattingEnabled: false,
+    isOutboundSmsSendandClose:false,
+    isOutboundSmsEnabled:false,
+    prefixCode:"45"
+
+
   };
 
   //preffered language code of agent
@@ -56,6 +61,9 @@ export class sharedService {
     this.conversationSettings.isFileSharingEnabled = setting.isFileSharingEnabled;
     this.conversationSettings.isEmojisEnabled = setting.isEmojisEnabled;
     this.conversationSettings.isMessageFormattingEnabled = setting.isMessageFormattingEnabled;
+    this.conversationSettings.isOutboundSmsSendandClose=setting.isOutboundSmsSendandClose;
+    this.conversationSettings.isOutboundSmsEnabled = setting.isOutboundSmsEnabled;
+    this.conversationSettings.prefixCode = setting.prefixCode ? setting.prefixCode : '' 
   }
   getIndexFromConversationId(conversationId, array) {
     let index = array.findIndex((e) => {
