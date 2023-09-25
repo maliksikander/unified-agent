@@ -457,11 +457,18 @@ export class finesseService {
                 dialogState.dialog.callType.toLowerCase() == "conference" ||
                 dialogState.dialog.callType.toLowerCase() == "preroute_acd_in"
               ) {
-                // console.log("handle dialog 15==>");
+                console.log("handle dialog 15==>");
                 callType = "CONSULT_CONFERENCE";
                 this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, callType);
+              } else if (dialogState.dialog.callType.toLowerCase() == "offered") {
+                console.log("ccx direct transfer case 1==>");
+                let item: any = this.getDialogFromCache(cacheId);
+                if (item && item.dialogState == "active") {
+                  let callType = "DIRECT_TRANSFER";
+                  this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, callType);
+                }
               } else {
-                // console.log("handle dialog 16==>");
+                // console.log("handle dialog 16.1==>");
                 this.handleCiscoRona(cacheId, dialogState);
               }
             } else if (
