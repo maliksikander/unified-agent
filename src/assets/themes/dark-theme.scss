@@ -1171,7 +1171,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
   //  Dialog
   .dialog-header {
-    background: mat-color($dark-primary, A700);
+    background: mat-color($dark-primary, A700) !important;
 
     h4 {
       color: mat-contrast($dark-primary, 300) !important;
@@ -1225,7 +1225,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
   .field-set {
     .field-label {
-      color: #9D9B9B;
+      color: #e0e0e0;
     }
 
     input {
@@ -1868,5 +1868,51 @@ em{
       }
     }
   }
+  .announcement-container {
+    .multi-select-team {
+      background: transparent !important;
 
+      .c-label label {
+        color: $light-gray-color !important;
+      }
+    }
+    form{
+      label{
+          color: #cacaca !important;
+      }
+      textarea{
+        background: transparent;
+      }
+    }
+  }
+
+
+  .mat-form-field-appearance-outline:not(.mat-form-field-disabled) .mat-form-field-flex:hover .mat-form-field-outline-thick {
+    opacity: .5;
+
+  }
+
+  .discard-btn{
+    background: transparent !important;
+    box-shadow: 0 0 1px #ccc !important;
+
+    &:hover{
+      background: darken($light-gray-color, 50%);
+    }
+  }
+  .mat-datepicker-content {
+    background-color: #313145;
+  }
+
+  .lbl {
+    color:  mat-contrast($dark-primary, 300)  !important;
+  }
+
+  .create-label mat-form-field{
+    background: #283f6a;
+  }
+
+  .darkMode .mat-input-element {
+    caret-color: $light-gray-color !important;
+  }
 }

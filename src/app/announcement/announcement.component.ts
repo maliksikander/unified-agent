@@ -68,6 +68,7 @@ export class AnnouncementComponent implements OnInit {
      this._httpService.getAnnouncementsById(value).subscribe(res => {
       if (res.status === "scheduled") {
         const dialogRef = this.dialog.open(AnnouncementDialogComponent, {
+          panelClass: "new-announcement-dialog",
           data: {
             value: value,
           }

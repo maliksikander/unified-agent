@@ -17,7 +17,7 @@
     padding: 0;
     text-align: center;
     z-index: 2;
-    border-right: 1px solid #fff;
+    border-right: 1px solid #8f8f8f40;
     &:after {
       content: "";
       width: 15px;
@@ -363,13 +363,14 @@
   .page-heading{
     width: 100% !important;
     padding: 10px 0px 10px 50px;
-    border-bottom: 1px solid gold;
-    border-bottom: 1px solid $highlight-color;
+    //border-bottom: 1px solid gold;
+    //border-bottom: 1px solid $highlight-color;
 
 
     h4{
       font-size: 16px;
       color: #7f7f7f;
+      padding-left: 15px;
     }
 
     .header-action-trigger {
@@ -496,4 +497,7 @@
     }
   }
 
+}
+.header-action-trigger{
+  display: none;
 }

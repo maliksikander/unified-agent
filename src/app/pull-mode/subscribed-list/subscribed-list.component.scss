@@ -168,9 +168,6 @@
 mat-checkbox{
   font-size: 13px;
 }
-.header-action-trigger{
-  display: none;
-}
 //Compact & mobile view
 @media(max-width: 1019px) {
   .page-header{
@@ -234,4 +231,8 @@ mat-checkbox{
   .customer-heading{
     width: 50% !important;
   }
+}
+
+.header-action-trigger{
+  display: none;
 }
