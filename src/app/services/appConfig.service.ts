@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import * as CryptoJS from "crypto-js";
 declare var config, callTypes, sipConfig;
 
 @Injectable()
@@ -24,14 +25,9 @@ export class appConfigService {
     CX_VOICE_MRD: "",
     DASHBOARD_REFRESH_TIME:0
   };
-  // public sipConfig = {
-  //   wss: "",
-  //   uri: "",
-  //   agentStaticPassword: 1234,
-  //   enable_sip_log: false,
-  // }
   finesseConfig: any;
   cxSipConfig: any;
+  private passphrase: string = "und09lusia0$0EF%";
 
   constructor(private _httpClient: HttpClient) {}
 
@@ -67,10 +63,12 @@ export class appConfigService {
           getQueuesDelay: e.getQueuesDelay,
           ssoBackendUrl: e.ssoBackendUrl,
           isGadget: e.isGadget,
-          adminUsername: e.adminUsername,
-          adminPassword: e.adminPassword
+          adminUsername: CryptoJS.AES.decrypt(e.ctiParam, this.passphrase).toString(CryptoJS.enc.Utf8),
+          adminPassword: CryptoJS.AES.decrypt(e.ctiParam2, this.passphrase).toString(CryptoJS.enc.Utf8)
         };
+
         this.finesseConfig = config;
+        // console.log("test==>",config)
 
         callTypes = {
           inboundTypeCCE: e.inboundTypeCCE,
@@ -93,13 +91,15 @@ export class appConfigService {
         sipConfig = {
           wss: e.SIP_SOCKET_URL,
           uri: e.SIP_URI,
-          agentStaticPassword: e.EXT_STATIC_PASSWORD,
+          agentStaticPassword: JSON.parse(CryptoJS.AES.decrypt(e.EXT_STATIC, this.passphrase).toString(CryptoJS.enc.Utf8)),
           enable_sip_log: e.ENABLE_SIP_LOGS,
           staticQueueTransferDn: e.STATIC_QUEUE_TRANSFER_DN,
           autoCallAnswer: e.AUTO_CALL_ANSWER_TIMER
         };
         this.cxSipConfig = sipConfig;
+        // console.log("sipconfig==>",sipConfig)
         // this.sipConfig = sipConfig;
       });
+      
   }
 }
