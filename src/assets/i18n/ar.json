@@ -94,6 +94,7 @@
     "Unable-to-Create-New-Announcement":"Unable to Create New Announcement_ar",
     "Unable-to-Update-Announcement":"Unable to Update Announcement_ar",
     "Unable-to-Delete-Announcement":"Unable to Delete Announcement_ar",
+    "unable-to-fetch-service-identifier-messages-cant-be-sent":"Unable to fetch service identifier, messages cant be sent_ar",
     "Socket-Connected":"Socket Connected_ar",
     "Calling":"Calling_ar",
     "CX-Voice-Connected":"CX VOICE Connected_ar",
@@ -159,6 +160,27 @@
     "no-data-available": "No Data Available_ar"
   },
   "chat-features": {
+    "send-sms":{
+      "info":"SEND SMS_ar",
+      "channel-identity":"Channel Identity_ar",
+      "type-sms":"Type SMS_ar",
+      "invalid-text":"invalid text_ar",
+      "not-empty":"This field can't be empty_ar",
+      "invalid-pattern":"Invalid pattern_ar",
+      "number-should-be-in-range-3-to-15":"number should be in range 3 to 15_ar",
+      "see-conversation-history":"See Conversation History_ar",
+      "discard":"Discard_ar",
+      "send-sms":"Send SMS_ar",
+      "success-sms":"SMS sent successfully_ar",
+      "update-profile":"To update the customer profile",
+      "click-here":"click here_ar",
+      "the-sms-has-been-sent-to-the":"The SMS has been sent to the\u0020",
+      "on-this-number":" on this number_ar",
+      "new":"new",
+      "customer":"customer",
+      "characters-limit-1500":"1500 characters_ar",
+      "to-view-the-customer-profile":" to view the customer profile_ar"
+    },
     "customer-info": {
       "info": "Customer Info_ar",
       "customer-profile": " Customer Profile_ar",

@@ -15,9 +15,8 @@
           </div>
           <div class="requested-name">
             <p
-              matTooltip="{{request.channelSession.customer.firstName ? request.channelSession.customer.firstName : ('globals.UNIDENTIFIED-CUSTOMER' | translate) }}">
-              {{request.channelSession.customer.firstName ? request.channelSession.customer.firstName : 'UNIDENTIFIED
-              CUSTOMER' }}
+              matTooltip="{{request.channelSession.customer.firstName ? (('customer' | authPipe : 'view_pii')?request.channelSession.customer.firstName:request.channelSession.customer.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey)) : ('globals.UNIDENTIFIED-CUSTOMER' | translate) }}">
+              {{request.channelSession.customer.firstName ? (('customer' | authPipe : 'view_pii')?request.channelSession.customer.firstName:request.channelSession.customer.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey)) : ('globals.UNIDENTIFIED-CUSTOMER' | translate) }}
             </p>
             <p *ngIf="request?.cisco_data">
               {{request.channelSession.channelData.channelCustomerIdentifier ?
@@ -45,10 +44,9 @@
             </p>
           </div>
           <div class="requested-name">
-            <strong>{{'globals.chat' | translate }} {{ (request?.taskDirection == 'DIRECT_CONFERENCE' ?
-              'globals.conference' : 'globals.transfer') | translate}} {{'globals.request-from' | translate }}
-              '{{request?.requestedBy | titlecase}}' {{'globals.with-customer' | translate }}
-              '{{request?.channelSession?.customer?.firstName | titlecase }}'</strong>
+            <strong>{{'globals.chat' | translate }} {{ (request?.taskDirection == 'DIRECT_CONFERENCE' ? 'globals.conference' : 'globals.transfer') | translate}} {{'globals.request-from'  | translate }}
+              '{{request?.requestedBy | titlecase}}' {{'globals.with-customer'  | translate }}
+              '{{(('customer' | authPipe : 'view_pii') ? (request?.channelSession?.customer.firstName | titlecase) : (request?.channelSession?.customer.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey)))}}'</strong>
             <p *ngIf="request?.note">
               {{request?.note}}
             </p>
@@ -77,7 +75,7 @@
               </div>
               <div class="requested-name">
                 <p>{{'globals.new-chat-message' | translate }}
-                  <span>{{request.channelSession.customer.firstName}}</span> {{'globals.in' | translate }}
+                  <span>{{('customer' | authPipe : 'view_pii') ? request?.channelSession?.customer?.firstName : request?.channelSession?.customer?.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey) }}</span> {{'globals.in' | translate }}
                   <span>'{{_pullModeservice.listNames[request.listId] ? _pullModeservice.listNames[request.listId] :
                     '-'}}'</span>
                 </p>
@@ -113,20 +111,31 @@
             <p class="channel-icon"><img [src]="voiceChannelType?.channelLogo | channelLogo | async">
             </p>
           </div>
-          <div class="requested-name">
-            <p matTooltip="{{request?.customer?.firstName ? request?.customer?.firstName : 'UNIDENTIFIED CUSTOMER' }}">
-              <span *ngIf="request.isOutbound">{{'snackbar.Calling' | translate}}   </span> <span
-                class="voice-customer">{{request?.customer?.firstName ? request?.customer?.firstName : 'UNIDENTIFIED
-                CUSTOMER' }}</span>
+            <div class="requested-name">
+            <p
+              matTooltip="{{
+                request?.customer?.firstName
+                  ? ('customer' | authPipe: 'view_pii')
+                    ? request?.customer?.firstName
+                    : (request?.customer?.firstName | maskPIIAttribute: ('firstName' | returnSchemaByKey))
+                  : ('globals.UNIDENTIFIED-CUSTOMER' | translate)
+              }}"
+            >
+              <span *ngIf="request.isOutbound">{{ "snackbar.Calling" | translate }} </span>
+              <span class="voice-customer">
+                {{
+                  request?.customer?.firstName
+                    ? ("customer" | authPipe: "view_pii")
+                      ? request?.customer?.firstName
+                      : (request?.customer?.firstName | maskPIIAttribute: ("firstName" | returnSchemaByKey))
+                    : ("globals.UNIDENTIFIED-CUSTOMER" | translate)
+                }}</span
+              >
               <span *ngIf="request.isOutbound" class="dot-container">
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
+                <span class="dot"></span> <span class="dot"></span> <span class="dot"></span>
               </span>
             </p>
-            <p class="voice-customer">
-              {{request?.identifier ?
-              request?.identifier : 'N/A' }}</p>
+            <p class="voice-customer">{{ request?.identifier ? request?.identifier : "N/A" }}</p>
           </div>
           <div *ngIf="!request?.isOutbound" class="notification-trigger">
             <button [disabled]="isCallAcceptClicked" (click)="onExternalRequestAccept(request)" class="mat-flat-button" mat-button>{{'globals.accept' |

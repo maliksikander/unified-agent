@@ -16,7 +16,9 @@ import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
 import { TranslateService } from "@ngx-translate/core";
 import { CallControlsComponent } from "../../new-components/call-controls/call-controls.component";
 import { SipService } from "src/app/services/sip.service";
-import { HighlightResult } from "ngx-highlightjs";
+import { HighlightResult } from 'ngx-highlightjs';
+import { SendSmsComponent } from "../send-sms/send-sms.component";
+
 
 // declare var EmojiPicker: any;
 
@@ -56,6 +58,7 @@ export class InteractionsComponent implements OnInit {
   ctiBoxView = false;
   timer: any = "00:00";
   cxVoiceSession: any;
+  isDialogClosed;
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -106,6 +109,7 @@ export class InteractionsComponent implements OnInit {
   postComments: any = null;
   sendTypingStartedEventTimer: any = null;
   onMessageSuggestions = false;
+  getDialogData;
 
   constructor(
     private _sharedService: sharedService,
@@ -121,7 +125,7 @@ export class InteractionsComponent implements OnInit {
     private _translateService: TranslateService
   ) {}
   ngOnInit() {
-    //  console.log("i am called hello")
+   
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
     }
@@ -129,7 +133,6 @@ export class InteractionsComponent implements OnInit {
     // setTimeout(() => {
     //   new EmojiPicker();
     // }, 500);
-
     this.isWhisperMode = this.conversation.topicParticipant.role == "SILENT_MONITOR" ? true : false;
     this.conversationSettings = this._sharedService.conversationSettings;
     this.loadLabels();
@@ -158,6 +161,11 @@ export class InteractionsComponent implements OnInit {
       if (this._sipService.isCallActive == true && this._sipService.isToolbarActive == false) this.ctiControlBar();
       this.getVoiceChannelSession();
     }
+    //this._cacheService.smsDialogData || 
+   if(this.conversation.conversationId === 'FAKE_CONVERSATION'){
+    this.loadPastActivities('FAKE_CONVERSATION');
+   }
+
   }
 
   loadLabels() {
@@ -285,6 +293,21 @@ export class InteractionsComponent implements OnInit {
     });
   }
 
+  openOutboundSmsDialog(){
+    
+    const dialogRef = this.dialog.open(SendSmsComponent, {
+      maxWidth: "700px",
+      width: "100%",
+      panelClass: "send-sms-dialog",
+      data: {info:this._cacheService.smsDialogData},
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+     
+    });
+    this._cacheService.clearOutboundSmsDialogData();
+    this._socketService.topicUnsub(this.conversation);
+  }
+  
   //To open the quoted area
   openQuotedReplyArea(e) {
     this.quotedMessage = e;
@@ -803,6 +826,21 @@ export class InteractionsComponent implements OnInit {
           }
           event.data.header["status"] = "seen";
           msgs.push(event.data);
+        } else if (event.name.toLowerCase() == "third_party_activity") {
+
+          if (event.data.header.channelData.additionalAttributes.length > 0) {
+
+            const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => { return e.value.toLowerCase() == "outbound" });
+            if (isOutBoundSMSType) {
+              event.data.body['type'] = 'outboundsms';
+
+              const smsChannelType = this.filterChannelType('sms');
+              if (smsChannelType) {
+                event.data.header.channelSession.channel.channelType = smsChannelType;
+              }
+              msgs.push(event.data);
+            }
+          }
         } else if (
           [
             "task_enqueued",
@@ -858,6 +896,13 @@ export class InteractionsComponent implements OnInit {
     } catch (e) {
       console.error("[Load Past Activity] Filter Error :", e);
     }
+  }
+
+  filterChannelType(channelTypeName) {
+    const channelType = this._sharedService.channelTypeList.find((channelType) => { return channelType.name.toLowerCase() == channelTypeName.toLowerCase() });
+
+    return channelType;
+
   }
 
   //when enter key is pressed

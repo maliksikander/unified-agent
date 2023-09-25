@@ -1111,6 +1111,13 @@
           font-size: 12px;
           color: #707070;
         }
+
+        &.message-activity-text {
+          max-width: 450px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
       }
 
       .agent-pic {
@@ -2492,6 +2499,12 @@ vg-controls.hide {
   }
 }
 
+.not-same-sender{
+  .profile-pic {
+    visibility:visible !important;
+  }
+}
+
 
 .quoted-reply-time {
   display: inline-block;
@@ -3837,8 +3850,38 @@ vg-controls.hide {
   }
 }
 
-
-
 .private-reply-icon{
   cursor: pointer;
+}
+
+
+//
+.outboundsms{
+  .panel-header{
+    li{
+      color: #000;
+    }
+  }
+}
+
+button.back-to-sms{
+  background: $main-color-background;
+ 
+  margin-right: 10px;
+  
+  
+  border: 2px;
+  margin-right: 10px;
+  border-radius: 100%;
+  width: 32px;
+  height: 32px;
+
+
+  mat-icon{
+    font-size: 20px;
+    color: $main-color;
+    text-align: center;
+    display: inline;
+    vertical-align: baseline;
+  }
 }
