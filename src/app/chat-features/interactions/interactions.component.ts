@@ -175,6 +175,7 @@ export class InteractionsComponent implements OnInit {
     }
     //this._cacheService.smsDialogData ||
    if(this.conversation.conversationId === 'FAKE_CONVERSATION'){
+    this.conversation.messages = [];
     this.loadPastActivities('FAKE_CONVERSATION');
    }
 
@@ -852,6 +853,22 @@ export class InteractionsComponent implements OnInit {
               }
               msgs.push(event.data);
             }
+          }else if(event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain' ){
+            const fakeChannelSession={
+              "channel":{
+                "channelType": event.data.header.schedulingMetaData.channelType,
+              },
+              "channelData":event.data.header.channelData,
+            }
+            event.data.header['channelSession']=fakeChannelSession;
+            let status = this._socketService.getSchduledActivityStatus(cimEvents,event.data.id);
+
+            if(status){
+             event.data.header['scheduledStatus'] = status;
+            }
+
+            msgs.push(event.data);
+            console.log(msgs,"msgs")
           }
         } else if (
           [
