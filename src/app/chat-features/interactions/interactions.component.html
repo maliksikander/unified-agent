@@ -848,7 +848,8 @@
                         (message.body.type | lowercase) != 'voice' &&
                         (message.body.type | lowercase) != 'comment' &&
                         (message.header.status | lowercase) != 'sending' &&
-                        (message.header.status | lowercase) != 'failed'
+                        (message.header.status | lowercase) != 'failed' &&
+                        (!(message.header.schedulingMetaData))
                       "
                       class="reply-quoted"
                       mat-icon-button

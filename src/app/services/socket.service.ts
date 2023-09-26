@@ -480,6 +480,11 @@ export class socketService {
           event.data.header.channelSession = event.channelSession;
         }
       }
+      if(event.data.header.sender.type.toLowerCase() == "connector"){
+        event.data.header.sender.senderName = event.data.header.customer.firstName;
+        event.data.header.sender.id = event.data.header.customer._id;
+        event.data.header.sender.type = "CUSTOMER";
+      }
       if (
         (event.name.toLowerCase() == "message_delivery_notification" || event.name.toLowerCase() == "customer_message") &&
         event.data.header.sender.type.toLowerCase() == "connector"
@@ -532,7 +537,8 @@ export class socketService {
             }
             conversation.messages.push(event.data);
           }
-        }else if(event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain'){
+        }
+         if(event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain'){
           console.log("Metadata",event.data.header.schedulingMetaData)
           console.log("DDDDDDDDDDD",event.data.body)
           const fakeChannelSession={

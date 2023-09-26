@@ -30,7 +30,7 @@ export class httpService {
       ccmChannelSession: "/message/receive",
       tasks: "/tasks",
       getAllMRDs: "/media-routing-domains",
-      defaultOutboundChannel: "/channels/defaultoutbound",
+      defaultOutboundChannel: "/channels/default-outbound",
       announcement: "/announcement",
       announcementSeenBy:"/announcement/seenStatus",
       sendSms:"/message/send",
