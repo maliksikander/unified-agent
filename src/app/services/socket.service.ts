@@ -49,7 +49,7 @@ export class socketService {
     private snackBar: MatSnackBar,
     private _translateService: TranslateService
   ) {
-    this.onTopicData(mockTopicData, "12345", "");
+    //this.onTopicData(mockTopicData, "12345", "");
   }
 
   connectToSocket() {
@@ -151,7 +151,7 @@ export class socketService {
     });
 
     this.socket.on("ANNOUNCEMENT_CREATED", (res: any) => {
-      if ((res.supervisorId !== this._cacheService.agent.id)) {
+      if (res.supervisorId !== this._cacheService.agent.id) {
         this._announcementService.addCreatedAnnoucement(res);
       }
     });
@@ -160,12 +160,10 @@ export class socketService {
       this._announcementService.removeAnnoucement(res);
     });
 
-
     this.socket.on("errors", (res: any) => {
       console.error("socket errors ", res);
       this.onSocketErrors(res);
     });
-
 
     this.socket.on("taskRequest", (res: any) => {
       console.log("taskRequest==>", res);
@@ -480,7 +478,7 @@ export class socketService {
           event.data.header.channelSession = event.channelSession;
         }
       }
-      if(event.data.header.sender.type.toLowerCase() == "connector"){
+      if(event.data.header && event.data.header.sender && event.data.header.sender.type.toLowerCase() == "connector"){
         event.data.header.sender.senderName = event.data.header.customer.firstName;
         event.data.header.sender.id = event.data.header.customer._id;
         event.data.header.sender.type = "CUSTOMER";
@@ -507,24 +505,12 @@ export class socketService {
           event.data.body.itemType.toLowerCase() != "private_reply"
         ) {
           this.processCommentActions(conversation.messages, event.data);
-
         } else {
           event.data.header["status"] = "sent";
           conversation.messages.push(event.data);
         }
       } else if (event.name.toLowerCase() == "third_party_activity"  ) {
-       
-        // if(event.data.body.type.toLowerCase() == 'deliverynotification'){
-        //   let status=event.data.body['status'].toLowerCase();
-        //   console.log("satata",status);
-        //   const selectedMessage = conversation.messages.find((message) => {
-        //     return message.id == event.data.body.messageId;
-        //   });
-        //   if (selectedMessage) {
-        //     selectedMessage["header"]["status"] = event.data.body.status.toLowerCase();
-        //     console.log("schduled Activity ", selectedMessage );
-        //   }
-        // }
+     
          if ( event.data.header.channelData.additionalAttributes.length > 0) {
 
           const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => { return e.value.toLowerCase() == "outbound" });
@@ -539,8 +525,7 @@ export class socketService {
           }
         }
          if(event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain'){
-          console.log("Metadata",event.data.header.schedulingMetaData)
-          console.log("DDDDDDDDDDD",event.data.body)
+          
           const fakeChannelSession={
             "channel":{
               "channelType": event.data.header.schedulingMetaData.channelType,
@@ -674,6 +659,13 @@ export class socketService {
     this._conversationsListener.next(this.conversations);
 
     console.log("conversation.messages",conversation.messages)
+    if (
+      topicData &&
+      topicData.channelSession &&
+      (topicData.channelSession.channel.channelType.name == "CX_VOICE" ||
+        (topicData && topicData.channelSession.channel.channelType.name == "CISCO_CC"))
+    )
+      this._router.navigate(["customers"]);
   }
 
   processSeenMessages(conversation, events) {
@@ -1625,14 +1617,14 @@ export class socketService {
       }
       if (cimEvent.data.task.type.direction == "DIRECT_TRANSFER") {
         let text = " transfer request has been placed by ";
-        let translationKey ="socket-service.transfer-request-has-been-placed-by";
-        if(!cimEvent.data.task.type.metadata.requestedBy) translationKey ="socket-service.transfer-request-has-been-placed"
+        let translationKey = "socket-service.transfer-request-has-been-placed-by";
+        if (!cimEvent.data.task.type.metadata.requestedBy) translationKey = "socket-service.transfer-request-has-been-placed";
         this._translateService.stream(`${translationKey}`).subscribe((data: string) => {
           text = data;
         });
 
         let string;
-        if(cimEvent.data.task.type.metadata.requestedBy) string = mode + " " + text + " " + cimEvent.data.task.type.metadata.requestedBy;
+        if (cimEvent.data.task.type.metadata.requestedBy) string = mode + " " + text + " " + cimEvent.data.task.type.metadata.requestedBy;
         else string = mode + " " + text;
         message.body["displayText"] = "";
         message.body.markdownText = string;
@@ -1698,20 +1690,37 @@ export class socketService {
   }
 
   getSchduledActivityStatus(events,messageId){
-    let status;
-    events.forEach((event)=>{
+    
+    let statusEvent = events.find((event)=>{
       if(event.name.toLowerCase()== 'third_party_activity'  && event.data.body.type.toLowerCase() == 'deliverynotification'){
-        if(event.data.id == messageId){
-          status =event.data.body.status;
-        }
-        
+        return event.data.body.messageId == messageId
+       
       }
 
     });
-    // if (event){
-    //   return event.data.body.status;
-    // }
-    return status;
+    if (statusEvent){
+       return statusEvent.data.body.status;
+    }else{
+      return null;
+    }
+
+
+    // let status;
+    // events.forEach((event)=>{
+    //   if(event.name.toLowerCase()== 'third_party_activity'  && event.data.body.type.toLowerCase() == 'deliverynotification'){
+    //     if(event.data.id == messageId){
+    //       status =event.data.body.status;
+    //     }
+        
+    //   }
+
+    // });
+    // // if (event){
+    // //   return event.data.body.status;
+    // // }
+    // return status;
+
+    
   }
 
   topicUnsub(conversation) {

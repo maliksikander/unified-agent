@@ -8,7 +8,6 @@ import { pullModeService } from "src/app/services/pullMode.service";
 import { soundService } from "src/app/services/sounds.service";
 import { finesseService } from "src/app/services/finesse.service";
 import { TranslateService } from "@ngx-translate/core";
-import { appConfigService } from "src/app/services/appConfig.service";
 import { SipService } from "src/app/services/sip.service";
 import { announcementService } from "src/app/services/announcement.service";
 
@@ -36,7 +35,6 @@ export class ChatNotificationsComponent implements OnInit {
     private _finesseService: finesseService,
     private _translateService: TranslateService,
     private _sipService: SipService,
-    private _appConfigService: appConfigService,
     public _announcementService:announcementService
   ) {
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {

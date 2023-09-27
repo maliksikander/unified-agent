@@ -35,7 +35,7 @@
           </mat-icon></button></li>
       <li matTooltip="{{('globals.hold' | translate)}}" *ngIf="_sipService.isCallHold == false"><button (click)="holdCallOnSip()"
           mat-fab><mat-icon>pause</mat-icon></button></li>
-      <li matTooltip="{{('globals.resume' | translate)}}" *ngIf="_sipService.isCallHold == true"><button (click)="resumeCallOnSip()"
+      <li class="resume-icon" matTooltip="{{('globals.resume' | translate)}}" *ngIf="_sipService.isCallHold == true"><button (click)="resumeCallOnSip()"
           mat-fab><mat-icon>pause_circle_filled</mat-icon></button></li>
       <li><button (click)="endCallOnSip()" class="end-call" mat-fab><mat-icon>call_end</mat-icon></button></li>
     </ul>

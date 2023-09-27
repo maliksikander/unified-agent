@@ -46,7 +46,7 @@
               <!--<button mat-mini-fab (click)="confirmationDialog(isConfirm, announcement)"><i-->
               <!--  class="material-icons">{{'announcements.delete' | translate}}</i></button>-->
 
-              <button mat-mini-fab (click)="onUpdateAnnouncement(announcement.id ,i)" matTooltip="edit"><i
+              <button *ngIf="announcement.status === 'scheduled' "   mat-mini-fab (click)="onUpdateAnnouncement(announcement.id ,i)" matTooltip="edit"><i
                   class="material-icons">edit</i></button>
               <button mat-mini-fab (click)="confirmationDialog(isConfirm,announcement.id,announcement.status)" matTooltip="delete"><i
                   class="material-icons">delete</i></button>

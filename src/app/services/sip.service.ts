@@ -31,6 +31,8 @@ export class SipService implements OnInit {
   customerNumber: any = "";
   isSubscriptionFailed = false;
   isMuted: boolean = false;
+  isToolbarActive: boolean = false;
+  isToolbarDocked:boolean = false;
 
   constructor(
     private _appConfigService: appConfigService,
@@ -145,6 +147,11 @@ export class SipService implements OnInit {
         this.handleInboundAndCampaignCallEvent(event, "INBOUND");
       } else if (event.event.toLowerCase() == "campaigncall") {
         this.handleInboundAndCampaignCallEvent(event, "OUTBOUND_CAMPAIGN");
+        if (event.response.dialog.state.toLowerCase() == "active") {
+          this.isCallHold = false;
+        } else if (event.response.dialog.state.toLowerCase() == "held") {
+          this.isCallHold = true;
+        }
       } else if (event.event == "Error") {
         if (event.response.type.toLowerCase() == "invalidstate") {
           this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-incorrect-request"), "err");
@@ -564,7 +571,7 @@ export class SipService implements OnInit {
       this._httpService.ccmVOICEChannelSession(data).subscribe(
         (res) => {
           console.log("CCM API Success Sip==>");
-          if (methodCalledOn == "call_end")  this.clearLocalDialogCache(cacheId);
+          if (methodCalledOn == "call_end") this.clearLocalDialogCache(cacheId);
         },
         (error) => {
           console.error("[Error on CCM Channel Session API] ==>", error);
@@ -629,6 +636,8 @@ export class SipService implements OnInit {
   handleCallDroppedEvent(cacheId, dialogState, methodCalledOn, event, callType, state) {
     try {
       let taskState;
+      this.isToolbarActive = false;
+      this.isToolbarDocked = false;
       if (state && state.taskId) taskState = state;
       let channelCustomerIdentifier = dialogState.dialog.customerNumber;
       let serviceIdentifier = dialogState.dialog.dnis;
@@ -684,7 +693,7 @@ export class SipService implements OnInit {
       let command = {
         action: "releaseCall",
         parameter: {
-          dialogId: this.activeDialog.id
+          dialogId: this.activeDialog && this.activeDialog.id ? this.activeDialog.id : null
         }
       };
       console.log("EndCallOnSip ==>", command);

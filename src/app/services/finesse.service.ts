@@ -29,6 +29,7 @@ export class finesseService {
   timeoutId;
   customer;
   taskList: Array<any>;
+  conversationID;
 
   constructor(
     private _snackbarService: snackbarService,
@@ -136,7 +137,16 @@ export class finesseService {
     } else if (voiceMrdObj.state.toLowerCase() == "not_ready" || voiceMrdObj.state.toLowerCase() == "pending_not_ready") {
       // if voice mrd state is not_ready and finesse state is not not_ready then change the finsess state to not_ready
       if (this.finesseAgentState.state.toLowerCase() != "not_ready") {
-        executeCommands({ action: "makeNotReadyWithReason", parameter: { reasonCode: this.finesseNotReadyReasonCodes[0].code } });
+        if (this.finesseLogoutReasonCodes) {
+          executeCommands({ action: "makeNotReadyWithReason", parameter: { reasonCode: this.finesseNotReadyReasonCodes[0].code } });
+        } else {
+          let loginParameters = localStorage.getItem("loginParameters");
+          if (loginParameters) {
+            let params = JSON.parse(loginParameters);
+            let loginId = params.parameter.loginId;
+            executeCommands({ action: "makeNotReadyWithReason", parameter: { userId: loginId } });
+          }
+        }
       }
     }
   }
@@ -171,8 +181,8 @@ export class finesseService {
           this._snackbarService.open("XMPP Status is Disconnected!", "err");
         }
       } else if (event.event.toLowerCase() == "error") {
-        console.log("error ==>" + event.response.description);
-        this.showErr = true;
+        console.error("Error Event ==>", event.response.description);
+        // this.showErr = true;
         this._snackbarService.open("CISCO :" + event.response.description, "err");
       } else if (event.event.toLowerCase() == "notreadylogoutreasoncode") {
         this.finesseLogoutReasonCodes = null;
@@ -215,7 +225,7 @@ export class finesseService {
           let data = {
             identifier: agentIdentifier,
             dialogData: dialog,
-            provider:"cisco"
+            provider: "cisco"
           };
           this._sharedService.serviceChangeMessage({ msg: "openExternalModeRequestHeader", data: data });
           // this.setLocalDialogCache(event, "alerting");
@@ -286,7 +296,7 @@ export class finesseService {
             customer: res.customer,
             identifier,
             dialogData: ciscoEvent.response.dialog,
-            provider:"cisco"
+            provider: "cisco"
           };
           if (callType == "INBOUND") {
             this._sharedService.serviceChangeMessage({ msg: "openExternalModeRequestHeader", data: data });
@@ -415,13 +425,17 @@ export class finesseService {
             } else if (currentParticipant.state.toLowerCase() == "dropped") {
               // console.log("handle dialog 12==>");
               let callType;
-              if (dialogState.dialog.callType.toLowerCase() == "transfer" || dialogState.dialog.callType.toLowerCase() == "offered") {
+              if (dialogState.dialog.callType.toLowerCase() == "transfer") {
                 callType = "DIRECT_TRANSFER";
                 if (
                   this._appConfigService.finesseConfig.finesseFlavor.toLowerCase() == "uccx" ||
                   this._appConfigService.finesseConfig.finesseFlavor.toLowerCase() == "ccx"
                 ) {
                   callType = "CONSULT_TRANSFER";
+                }
+
+                if (dialogState.dialog.callType.toLowerCase() == "offered") {
+                  callType = "DIRECT_TRANSFER";
                 }
                 // console.log("handle dialog 13==>");
                 let item: any = this.getDialogFromCache(cacheId);
@@ -443,11 +457,18 @@ export class finesseService {
                 dialogState.dialog.callType.toLowerCase() == "conference" ||
                 dialogState.dialog.callType.toLowerCase() == "preroute_acd_in"
               ) {
-                // console.log("handle dialog 15==>");
+                console.log("handle dialog 15==>");
                 callType = "CONSULT_CONFERENCE";
                 this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, callType);
+              } else if (dialogState.dialog.callType.toLowerCase() == "offered") {
+                console.log("ccx direct transfer case 1==>");
+                let item: any = this.getDialogFromCache(cacheId);
+                if (item && item.dialogState == "active") {
+                  let callType = "DIRECT_TRANSFER";
+                  this.handleCallDroppedEvent(cacheId, dialogState, "", undefined, callType);
+                }
               } else {
-                // console.log("handle dialog 16==>");
+                // console.log("handle dialog 16.1==>");
                 this.handleCiscoRona(cacheId, dialogState);
               }
             } else if (
@@ -538,7 +559,7 @@ export class finesseService {
       // this.updateCallVariables(dialogState.dialog);
       this.removeNotification(dialogState);
       let channelCustomerIdentifier = dialogState.dialog.customerNumber;
-      let serviceIdentifier = dialogState.dialog.dialedNumber;
+      let serviceIdentifier = dialogState.dialog.primaryDN;
       let callId = dialogState.dialog.id;
       let leg = `${this.finesseAgent.extension}:${this._cacheService.agent.id}:${dialogState.dialog.id}`;
       let callType;
@@ -583,7 +604,7 @@ export class finesseService {
     try {
       if (methodCalledOn != "onRefresh") this.clearLocalDialogCache(cacheId);
       let channelCustomerIdentifier = dialogState.dialog.customerNumber;
-      let serviceIdentifier = dialogState.dialog.dialedNumber;
+      let serviceIdentifier = dialogState.dialog.primaryDN;
       let leg = `${this.finesseAgent.extension}:${this._cacheService.agent.id}:${dialogState.dialog.id}`;
       let timeStamp = this.getStartOREndTimeStamp(dialogState.dialog, "endCall");
       let callId = dialogState.dialog.id;
@@ -790,15 +811,19 @@ export class finesseService {
           dialog
         }
       };
+      let voiceConversationId;
       if (intent == "CALL_LEG_ENDED") {
-        let conversationId = this.getCurrentConversationIdORConversation("id");
+        voiceConversationId = this.getCurrentConversationIdORConversation("id");
+        if (!voiceConversationId) voiceConversationId = this.conversationID;
+        if (voiceConversationId) cimMessage.header["conversationId"] = voiceConversationId;
         let obj = {
           key: "conversationId",
           type: "String2000",
-          value: conversationId
+          value: voiceConversationId
         };
         cimMessage.header.channelData.additionalAttributes.push(obj);
       }
+
       return cimMessage;
     } catch (e) {
       console.error("[Error] createCIMMessage ==>", e);
@@ -808,6 +833,7 @@ export class finesseService {
   getCurrentConversationIdORConversation(type) {
     try {
       let conversationList: Array<any> = this._socketService.conversations;
+      // console.log("list==>", conversationList);
       for (let i = 0; i <= conversationList.length; i++) {
         if (conversationList[i] && conversationList[i].activeChannelSessions) {
           let voiceSession = conversationList[i].activeChannelSessions.find((item) => {
@@ -935,6 +961,103 @@ export class finesseService {
     }
   }
 
+  // handleSameAgentAndMrdState(resp, voiceMrdObj) {
+  //   if (resp.state.toLowerCase() == "ready") {
+  //     // if (this._cacheService.agentPresence.state.name.toLowerCase() != "ready") {
+  //     // If state in finesse is ready and aur agent state in not readtthen make the agent ready first
+  //     // and then make voice mrd ready
+  //     this._socketService.emit("changeAgentState", {
+  //       agentId: this._cacheService.agent.id,
+  //       action: "agentState",
+  //       state: { name: "READY", reasonCode: null }
+  //     });
+
+  //     // for this particular request we dont need to listen its response so making it ignorable when receiving
+  //     this.ignoreAgentState = true;
+
+  //     setTimeout(() => {
+  //       this._socketService.emit("changeAgentState", {
+  //         agentId: this._cacheService.agent.id,
+  //         action: "agentMRDState",
+  //         state: "READY",
+  //         mrdId: voiceMrdObj.mrd.id
+  //       });
+  //     }, 500);
+  //     // }
+  //     // else {
+  //     //   this._socketService.emit("changeAgentState", {
+  //     //     agentId: this._cacheService.agent.id,
+  //     //     action: "agentMRDState",
+  //     //     state: "READY",
+  //     //     mrdId: voiceMrdObj.mrd.id
+  //     //   });
+  //     // }
+  //   } else if (resp.state.toLowerCase() == "not_ready") {
+  //     // If state in finesse is not_ready then make the agent voice mrd not_ready
+  //     this._socketService.emit("changeAgentState", {
+  //       agentId: this._cacheService.agent.id,
+  //       action: "agentMRDState",
+  //       state: "NOT_READY",
+  //       mrdId: voiceMrdObj.mrd.id
+  //     });
+  //   } else if (resp.state.toLowerCase() == "talking") {
+  //     this._socketService.emit("changeAgentState", {
+  //       agentId: this._cacheService.agent.id,
+  //       action: "agentMRDState",
+  //       state: "BUSY",
+  //       mrdId: voiceMrdObj.mrd.id
+  //     });
+  //   }
+  // }
+
+  // handleDifferentAgentAndMrdState(resp, voiceMrdObj) {
+  //   if (resp.state.toLowerCase() == "ready") {
+  //     if (this._cacheService.agentPresence.state.name.toLowerCase() != "ready") {
+  //       // If state in finesse is ready and aur agent state in not readtthen make the agent ready first
+  //       // and then make voice mrd ready
+  //       this._socketService.emit("changeAgentState", {
+  //         agentId: this._cacheService.agent.id,
+  //         action: "agentState",
+  //         state: { name: "READY", reasonCode: null }
+  //       });
+
+  //       // for this particular request we dont need to listen its response so making it ignorable when receiving
+  //       this.ignoreAgentState = true;
+
+  //       setTimeout(() => {
+  //         this._socketService.emit("changeAgentState", {
+  //           agentId: this._cacheService.agent.id,
+  //           action: "agentMRDState",
+  //           state: "READY",
+  //           mrdId: voiceMrdObj.mrd.id
+  //         });
+  //       }, 500);
+  //     } else {
+  //       this._socketService.emit("changeAgentState", {
+  //         agentId: this._cacheService.agent.id,
+  //         action: "agentMRDState",
+  //         state: "READY",
+  //         mrdId: voiceMrdObj.mrd.id
+  //       });
+  //     }
+  //   } else if (resp.state.toLowerCase() == "not_ready") {
+  //     // If state in finesse is not_ready then make the agent voice mrd not_ready
+  //     this._socketService.emit("changeAgentState", {
+  //       agentId: this._cacheService.agent.id,
+  //       action: "agentMRDState",
+  //       state: "NOT_READY",
+  //       mrdId: voiceMrdObj.mrd.id
+  //     });
+  //   } else if (resp.state.toLowerCase() == "talking") {
+  //     this._socketService.emit("changeAgentState", {
+  //       agentId: this._cacheService.agent.id,
+  //       action: "agentMRDState",
+  //       state: "BUSY",
+  //       mrdId: voiceMrdObj.mrd.id
+  //     });
+  //   }
+  // }
+
   handleDroppedConsultCall(event, cacheId, dialog) {
     let cacheDialog: any = this.getDialogFromCache(cacheId);
     this.removeNotification(dialog);
@@ -955,24 +1078,43 @@ export class finesseService {
       let customer;
       let timeStamp = this.getStartOREndTimeStamp(dialog, "endCall");
       if (this.customer) customer = JSON.parse(JSON.stringify(this.customer));
-      let cimMessage = this.createCIMMessage(
-        "VOICE",
+      let obj = {
+        // type:"VOICE",
         channelCustomerIdentifier,
         serviceIdentifier,
-        "CALL_LEG_ENDED",
+        // intent:"CALL_LEG_ENDED",
         customer,
         leg,
         dialog,
         callType,
         timeStamp,
         callId
-      );
-      console.log("[Consult End CIM Message]==>", cimMessage);
-      this.ccmChannelSessionApi(cimMessage, "", "", undefined);
-      this.customer = undefined;
+      };
+
+      let voiceConversationId = this.getCurrentConversationIdORConversation("id");
+      if (!voiceConversationId) this.checkActiveTasks(this._cacheService.agent.id, "consult_ended", obj);
+      else this.handleConsultEnding(obj);
     } catch (e) {
       console.error("[Error] onConsultCallEndCall ==>", e);
     }
+  }
+
+  handleConsultEnding(obj) {
+    let cimMessage = this.createCIMMessage(
+      "VOICE",
+      obj.channelCustomerIdentifier,
+      obj.serviceIdentifier,
+      "CALL_LEG_ENDED",
+      obj.customer,
+      obj.leg,
+      obj.dialog,
+      obj.callType,
+      obj.timeStamp,
+      obj.callId
+    );
+    console.log("[Consult End CIM Message]==>", cimMessage);
+    this.ccmChannelSessionApi(cimMessage, "", "", undefined);
+    this.customer = undefined;
   }
 
   handleActiveConsultCall(dialogEvent, dialog) {
@@ -1066,14 +1208,17 @@ export class finesseService {
     }
   }
 
-  checkActiveTasks(agentId) {
+  checkActiveTasks(agentId, method, callData) {
     try {
       this._httpService.getRETasksList(agentId).subscribe(
         (res) => {
           this.taskList = res;
-          console.log("task list==>", this.taskList);
           if (this.taskList.length > 0) {
-            this.getVoiceTask();
+            let task = this.getVoiceTask();
+            if (task && method == "consult_ended") {
+              this.conversationID = task.channelSession.conversationId;
+              this.handleConsultEnding(callData);
+            }
           }
         },
         (error) => {
