@@ -1083,6 +1083,7 @@
         padding: 1px 10px;
         vertical-align: middle;
         min-width: 42px;
+        line-height: 21px;
 
         &:last-child {
           border-right: 0;
@@ -2493,6 +2494,7 @@ vg-controls.hide {
   }
 
   &.voice {
+   
     .profile-pic {
       visibility: visible;
     }
@@ -2927,7 +2929,7 @@ vg-controls.hide {
   }
 }
 
-.chat-message.voice, .chat-message.custom {
+.chat-message.voice, .chat-message.custom ,.chat-message.app{
   .file-type-stamp {
     display: none !important;
   }
@@ -3866,10 +3868,10 @@ vg-controls.hide {
 
 button.back-to-sms{
   background: $main-color-background;
- 
+
   margin-right: 10px;
-  
-  
+
+
   border: 2px;
   margin-right: 10px;
   border-radius: 100%;
@@ -3884,4 +3886,53 @@ button.back-to-sms{
     display: inline;
     vertical-align: baseline;
   }
+}
+
+//Scheduled activity
+.sms{
+  .chat-time.file-type-stamp{
+    display: none;
+  }
+  .wrap-up-header{
+    ul{
+      &:after{
+        display: none !important;
+      }
+    }
+  }
+
+  .profile-pic{
+    .active-channel{
+      display: none;
+      opacity: 0;
+    }
+    .user-img{
+      img{
+        width: 17px !important;
+        top: -2px !important;
+      }
+    }
+  }
+}
+
+.abc{
+  position: absolute;
+}
+
+.chat-message.app{
+  opacity: 1 !important;
+  .profile-pic-area mat-icon {
+    line-height: 35px; 
+    color: #CE0101;
+  }
+ mat-expansion-panel-header{
+  padding-left: 2em;
+
+ }
+}
+
+.voice{
+  .plain-text-check{
+    display: none !important;
+    }
 }
