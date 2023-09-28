@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from "@angular/core";
+import {Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
@@ -18,6 +18,8 @@ import { CallControlsComponent } from "../../new-components/call-controls/call-c
 import { SipService } from "src/app/services/sip.service";
 import { HighlightResult } from 'ngx-highlightjs';
 import { SendSmsComponent } from "../send-sms/send-sms.component";
+import {Router} from '@angular/router';
+import {DOCUMENT} from '@angular/common';
 
 
 // declare var EmojiPicker: any;
@@ -54,11 +56,23 @@ export class InteractionsComponent implements OnInit {
   pastActivitiesloadedOnce: boolean = false;
   // isTransfer = false;
   // isConsult = false;
-  ctiBarView = true;
+  ctiBarView = false;
   ctiBoxView = false;
   timer: any = "00:00";
   cxVoiceSession: any;
   isDialogClosed;
+
+  chatDuringCall = false;
+  isVideoCam = false;
+  isMute = false;
+  isVideoCall = false;
+  isAudioCall = false;
+  isBotSuggestions = false;
+  isConversationView = true;
+  fullScreenView = false;
+  videoSrc = 'assets/video/angry-birds.mp4';
+  element;
+  dragPosition = {x: 0, y: 0};
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -86,7 +100,6 @@ export class InteractionsComponent implements OnInit {
   expanedHeight = 0;
   selectedLanguage = "";
   isRTLView = false;
-
   message = "";
   convers: any[];
   ringing = false;
@@ -115,6 +128,8 @@ export class InteractionsComponent implements OnInit {
   @Input() max: any;
   today = new Date();
   interactionSearch = false;
+  isCallActive = false;
+
 
   constructor(
     private _sharedService: sharedService,
@@ -127,9 +142,14 @@ export class InteractionsComponent implements OnInit {
     public _finesseService: finesseService,
     private snackBar: MatSnackBar,
     public _sipService: SipService,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
+    private router: Router,
+    @Inject(DOCUMENT) private document: any
   ) {}
   ngOnInit() {
+    this.isCallActive = this._sipService.isCallActive;
+    this.element = document.documentElement;
+    console.log("i am called hello", this._sipService.isCallActive)
     if (this._sharedService.isCompactView) {
       this.isMobileDevice = true;
       console.log('this is a compact view Interactions view ?', this.isMobileDevice);
@@ -170,7 +190,7 @@ export class InteractionsComponent implements OnInit {
     });
 
     if (this.conversation && this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
-      if (this._sipService.isCallActive == true && this._sipService.isToolbarActive == false) this.ctiControlBar();
+      if (this._sipService.isCallActive == true) this.ctiControlBar();
       this.getVoiceChannelSession();
     }
     //this._cacheService.smsDialogData ||
@@ -1266,14 +1286,48 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  ctiControlBar() {
-    this.ctiBoxView = true;
+  ctiCallActive() {
+    this.ctiBoxView = false;
     this.ctiBarView = false;
-    this._sipService.isToolbarActive = true;
-    this._sipService.isToolbarDocked = false;
+    this.isAudioCall = true;
+    this.isConversationView = false;
+    if (this.fullScreenView) {
+      this.exitFullscreen();
+    }
+  }
+  // ctiControlBar() {
+  //   this.isConversationView = true;
+  //   this.ctiBoxView = true;
+  //   this.ctiBarView = true;
+  //   this.chatDuringCall = false;
+  //   this._sipService.isToolbarActive = true;
+  //   this._sipService.isToolbarDocked = false;
+  //   const dialogRef = this.dialog.open(CallControlsComponent, {
+  //     panelClass: "call-controls-dialog",
+  //     hasBackdrop: false,
+  //     position: {
+  //       top: "8%",
+  //       right: "8%"
+  //     },
+  //     data: { conversation: this.conversation }
+  //   });
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     this.isAudioCall = true;
+  //     this.ctiCallActive();
+  //     // this._sipService.isToolbarDocked = true;
+  //     if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
+  //   });
+  // }
+
+  ctiControlBar() {
+    this.isConversationView = true;
+    this.ctiBoxView = true;
+    this.ctiBarView = true;
+    this.chatDuringCall = false;
     const dialogRef = this.dialog.open(CallControlsComponent, {
       panelClass: "call-controls-dialog",
       hasBackdrop: false,
+      minWidth: '300px',
       position: {
         top: "8%",
         right: "8%"
@@ -1281,9 +1335,15 @@ export class InteractionsComponent implements OnInit {
       data: { conversation: this.conversation }
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.ctiBoxView = false;
-      this.ctiBarView = true;
-      this._sipService.isToolbarDocked = true;
+      // this.router.navigate(["/customers/chats"]);
+      this.isAudioCall = true;
+      this.ctiCallActive();
+      // this.chatDuringCall = true;
+      // this.isBotSuggestions = false;
+      // this.isConversationView = true;
+      // console.log(this.chatDuringCall, 'chat chatDuringCall')
+      // this.ctiBoxView = false;
+      // this.ctiBarView = false;
       if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
     });
   }
@@ -1344,4 +1404,86 @@ export class InteractionsComponent implements OnInit {
   formatNumber(num) {
     return num.toString().padStart(2, "0");
   }
+
+
+  chatInCall(){
+    this.chatDuringCall = !this.chatDuringCall;
+    this.isConversationView = !this.isConversationView;
+  }
+  videoSwitch(e){
+    if(e == 'jm'){
+      this.videoSrc = 'assets/video/sample-vid.mp4';
+    }else{
+      this.videoSrc = 'assets/video/angry-birds.mp4';
+    }
+  }
+  requestFullscreen(element: Element): void {
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+      this.fullScreenView = true;
+    } else if (this.element.webkitRequestFullscreen) {
+      this.element.webkitRequestFullscreen();
+      this.fullScreenView = true;
+    } else if (this.element.webkitRequestFullScreen) {
+      this.element.webkitRequestFullScreen();
+      this.fullScreenView = true;
+    } else if ((this.element as any).mozRequestFullScreen) {
+      this.fullScreenView = true;
+      (this.element as any).mozRequestFullScreen();
+    } else if ((this.element as any).msRequestFullScreen) {
+      this.fullScreenView = true;
+      (this.element as any).msRequestFullScreen();
+    }
+  }
+  /*  Close fullscreen  */
+  exitFullscreen() {
+    if (this.fullScreenView) {
+      if (document.exitFullscreen) {
+        this.document.exitFullscreen();
+        this.fullScreenView = false;
+      } else if (this.document.mozCancelFullScreen) {
+        /* Firefox */
+        this.document.mozCancelFullScreen();
+      } else if (this.document.webkitExitFullscreen) {
+        /* Chrome, Safari and Opera */
+        this.document.webkitExitFullscreen();
+      } else if (this.document.msExitFullscreen) {
+        /* IE/Edge */
+        this.document.msExitFullscreen();
+      }
+    } else {
+      return;
+    }
+  }
+
+  endActiveCall(){
+    this.isVideoCall = false;
+    this.isAudioCall = false;
+    this.chatDuringCall = false;
+  }
+  //
+  // // canDeactivate(): Observable<boolean> | boolean {
+  // //   console.log('hello2222')
+  // //   return true;
+  // //
+  // // }
+  // confirm() {
+  //   return this.isAudioCall;
+  //
+  // }
+  // canDeactivate(): Promise<any> | boolean {
+  //   const confirmResult = confirm('Are you sure you want to leave this page ? ');
+  //   if (confirmResult === true) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
+  //
+  //
+  // ngOnDestroy() {
+  //   this.unsubscribe.next();
+  //   console.log('hello')
+  // }
+
 }

@@ -115,16 +115,16 @@
                 {{ "chat-features.customer-info.info" | translate }}
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <div class="custom-tab-area">
-              <ul>
-                <li (click)="displayProfile = true; displayCustomerChannels = false" [ngClass]="{ 'tab-active': displayProfile }">
-                  Customer Profile
-                </li>
-                <li class="no-mobile-view" (click)="displayProfile = false; displayCustomerChannels = true" [ngClass]="{ 'tab-active': displayCustomerChannels }">
-                  Media Channels
-                </li>
-              </ul>
-            </div>
+<!--            <div class="custom-tab-area">-->
+<!--              <ul>-->
+<!--                <li (click)="displayProfile = true; displayCustomerChannels = false" [ngClass]="{ 'tab-active': displayProfile }">-->
+<!--                  Customer Profile-->
+<!--                </li>-->
+<!--                <li class="no-mobile-view" (click)="displayProfile = false; displayCustomerChannels = true" [ngClass]="{ 'tab-active': displayCustomerChannels }">-->
+<!--                  Media Channels-->
+<!--                </li>-->
+<!--              </ul>-->
+<!--            </div>-->
             <div class="user-pre-detail">
               <div class="user-detail-area" *ngFor="let data of customerProfileFormData">
                 <div>

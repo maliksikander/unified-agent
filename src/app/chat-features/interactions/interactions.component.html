@@ -46,6 +46,24 @@
 <!--          </button>-->
 <!--        </div>-->
         <div class="col-md-8 col-sm-8 agent-actions">
+          <button mat-icon-button (click)="ctiControlBar()"
+                  matTooltip="Chat" aria-label="Chat">
+            <mat-icon>question_answer</mat-icon>
+          </button>
+          <ul class="list-group list-group-horizontal agent-controls call-controls" *ngIf="_sipService.isCallActive && !ctiBarView">
+            <li class="list-group-item" *ngIf="_sipService.isCallActive && !ctiBarView">
+              <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}"
+                      matTooltip="Chat" aria-label="Chat">
+                <mat-icon>question_answer</mat-icon>
+              </button>
+            </li>
+            <!--            <li class="list-group-item">-->
+            <!--              <button mat-icon-button (click)="isBotSuggestions = !isBotSuggestions" [ngClass]="{'active-action': isBotSuggestions}"-->
+            <!--                      matTooltip="Suggestions" aria-label="Suggestions">-->
+            <!--                <img src="assets/images/robot-dark.svg" alt="Suggestions"/>-->
+            <!--              </button>-->
+            <!--            </li>-->
+          </ul>
           <mat-menu #agentControllForMobile="matMenu" [overlapTrigger]="true"  backdropClass="mobile-menu-backdrop" panelClass="custom-pane">
             <div class="{{isMobileDevice ? 'mobile-chat-controls'  : ''}}" >
               <div class="menu-header-mobile">
@@ -342,6 +360,116 @@
       </div>
     </div>
     <!--/Top bar-->
+<div #fullViewConversation class="main-conversation-feature {{chatDuringCall || ( _sipService.isCallActive && isBotSuggestions) ||  (isConversationView && isBotSuggestions) ? 'dual-column-display' :  (_sipService.isCallActive || isConversationView) && !isBotSuggestions ? 'full-column-display nnnn'  :'full-column-display'}}
+{{fullScreenView ? 'full-screen-call':''}}"
+     [ngClass]="{'call-in-progress': isVideoCall || isAudioCall, 'smart-call-controls':ctiBarView, 'bot-suggestions-active': isBotSuggestions, 'chat-view-active': isConversationView, 'multi-column-display' : chatDuringCall && isBotSuggestions, 'chat-suggestion-view' : isConversationView && isBotSuggestions && !chatDuringCall}">
+
+
+    <div class="video-feature-main  nn {{isAudioCall}} nn {{isCallActive}} kk {{ctiBarView}}" *ngIf="!ctiBarView &&  isCallActive" >
+      <div class="sub-call-participants">
+
+
+
+        <span (click)="videoSwitch('jm')" *ngFor="let callParticipant of _sipService?.callData?.participants">
+<!--           <video #media [vgMedia]="media" id="76655" preload="auto" class="main-video-screen">&ndash;&gt;-->
+<!--                  <source src="assets/video/angry-birds.mp4" />-->
+<!--                </video>-->
+               <mat-icon class="camera-mode">videocam_off</mat-icon>
+          <strong>{{callParticipant.mediaAddress}}</strong>
+
+        </span>
+<!--        <span (click)="videoSwitch('fa')">-->
+<!--&lt;!&ndash;           <video #media [vgMedia]="media" id="76655" preload="auto" class="main-video-screen">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                  <source src="assets/video/angry-birds.mp4" />&ndash;&gt;-->
+<!--&lt;!&ndash;                </video>&ndash;&gt;-->
+<!--               <mat-icon class="camera-mode">videocam_off</mat-icon>-->
+<!--                    <strong>FA</strong>-->
+
+<!--        </span>-->
+      </div>
+     <mat-icon *ngIf="!isVideoCam && isVideoCall" class="camera-mode">videocam_off</mat-icon>
+
+        <div *ngIf="isAudioCall" class="main-showcase customer-info-dp main-audio-call">
+          <div class="agent-showcase">
+            <img src="assets/images/dummy-user.svg" alt="customer">
+          </div>
+          <h4 matTooltip="{{_sipService.customerNumber }}">{{_sipService.customerNumber ? _sipService.customerNumber: 'John Tylor' }}
+<!--            <span class="timer-call">call in progress</span>-->
+            <span class="timer-call">{{ timer }}</span>
+          </h4>
+        </div>
+
+
+      <vg-player>
+        <vg-controls class="video-call-controlls">
+          <ul>
+            <li *ngIf="fullScreenView && isVideoCall" (click)="exitFullscreen()"><mat-icon>fullscreen_exit</mat-icon></li>
+            <li  *ngIf="!fullScreenView && isVideoCall" class="full-screen-action"  (click)="requestFullscreen(fullViewConversation)"><mat-icon>fullscreen</mat-icon></li>
+
+            <li (click)="ctiControlBar()" ><mat-icon>picture_in_picture_alt</mat-icon></li>
+            <li *ngIf="_sipService.isMuted == false"  matTooltip="{{('globals.mute' | translate)}}"
+                                                             (click)="_sipService.muteCallOnSip()"><mat-icon>mic</mat-icon></li>
+            <li *ngIf="_sipService.isMuted == true"  matTooltip="{{('globals.unMute' | translate)}}"
+                                                            (click)="_sipService.unmuteCallOnSip()" ><mat-icon>mic_off</mat-icon></li>
+            <li *ngIf="_sipService.isCallHold == false" matTooltip="{{('globals.hold' | translate)}}"
+                (click)="_sipService.holdCallOnSip()"><mat-icon>pause</mat-icon></li>
+            <li *ngIf="_sipService.isCallHold == true" matTooltip="{{('globals.resume' | translate)}}"
+                (click)="_sipService.resumeCallOnSip()"><mat-icon>phone_paused</mat-icon>
+            </li>
+            <li *ngIf="isVideoCall" class="video-cam" [ngClass]="{'active-action': isVideoCam}" (click)="isVideoCam = !isVideoCam"><mat-icon>{{isVideoCam ? 'videocam' : 'videocam_off'}}</mat-icon><vg-play-pause></vg-play-pause>
+            </li>
+            <li (click)="endCallOnSip()" class="end-call" mat-fab><mat-icon>call_end</mat-icon></li>
+          </ul>
+
+
+
+
+
+<!--          <ul>-->
+<!--&lt;!&ndash;            <li (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}"><mat-icon>question_answer</mat-icon></li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li (click)="isBotSuggestions = !isBotSuggestions" [ngClass]="{'active-action': isBotSuggestions}"><mat-icon>notes</mat-icon></li>&ndash;&gt;-->
+<!--            <li><mat-icon>present_to_all</mat-icon></li>-->
+<!--            <li *ngIf="fullScreenView && isVideoCall" (click)="exitFullscreen()"><mat-icon>fullscreen_exit</mat-icon></li>-->
+<!--            <li class="full-screen-action"  (click)="ctiControlBar()"><mat-icon>picture_in_picture</mat-icon></li>-->
+
+<!--            <li  *ngIf="!fullScreenView && isVideoCall" class="full-screen-action"  (click)="requestFullscreen(fullViewConversation)"><mat-icon>fullscreen</mat-icon></li>-->
+<!--            <li class="mute-call"  [ngClass]="{'active-action': isMute}" (click)="isMute = !isMute" ><vg-mute></vg-mute><mat-icon>{{isMute ? 'mic_off' : 'mic'}}</mat-icon></li>-->
+<!--            <li *ngIf="isVideoCall" class="video-cam" [ngClass]="{'active-action': isVideoCam}" (click)="isVideoCam = !isVideoCam"><mat-icon>{{isVideoCam ? 'videocam' : 'videocam_off'}}</mat-icon><vg-play-pause></vg-play-pause>-->
+<!--            </li>-->
+<!--            &lt;!&ndash;          <li class="mute-call"><mat-icon>pause</mat-icon></li>&ndash;&gt;-->
+<!--            <li class="end-call" (click)="endActiveCall()"><mat-icon>call_end</mat-icon></li>-->
+<!--          </ul>-->
+        </vg-controls>
+        <video [hidden]="!isVideoCam" #media [vgMedia]="media" id="76655"  preload="auto" class="main-video-screen">
+          <source [src]="videoSrc" />
+        </video>
+
+<!--        <audio #audio [vgMedia]="audio"  preload="auto">-->
+<!--          <source [src]="" />-->
+<!--        </audio>-->
+      </vg-player>
+
+
+
+<!--      <div class="video-call-controlls">-->
+<!--        <ul>-->
+<!--          <li (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}"><mat-icon>question_answer</mat-icon></li>-->
+<!--          <li><mat-icon>groups</mat-icon></li>-->
+<!--          <li (click)="videoPIP('76655')"><mat-icon>fullscreen</mat-icon></li>-->
+<!--          <li class="mute-call"><mat-icon>mic</mat-icon></li>-->
+<!--          <li class="video-cam"><mat-icon>videocam</mat-icon></li>-->
+<!--&lt;!&ndash;          <li class="mute-call"><mat-icon>pause</mat-icon></li>&ndash;&gt;-->
+<!--          <li class="end-call"><mat-icon>call_end</mat-icon></li>-->
+<!--        </ul>-->
+<!--      </div>-->
+    </div>
+
+    <div class="chat-feature-main  {{(!isConversationView && isAudioCall) || (!isConversationView && isVideoCall) ? 'hide-conversation-view' :''}}">
+
+<!--      <div class="video-chat-trigger">-->
+<!--        <span (click)="isConversationView = false; isBotSuggestions = true" [ngClass]="{'active-action' : isBotSuggestions}"><img src="assets/images/robot-dark.svg" alt="bot"></span>-->
+<!--        <span (click)="isConversationView = true; isBotSuggestions = false" [ngClass]="{'active-action' : isConversationView}"><mat-icon>question_answer</mat-icon></span>-->
+<!--      </div>-->
     <!--Interactions Area Start -->
 
     <div id="chat-content" class="container-fluid main-chat-area">
@@ -2549,6 +2677,61 @@
     </ng-template>
   </div>
 
+<!--  Bot suggestios panel with the conversation view-->
+  <div class="suggestion-main-area" *ngIf="isBotSuggestions">
+
+    <div class="bot-suggestion-area">
+      <div class="chat-intents">
+        <div class="chat-intents">
+          <div class="search-wrapper">
+            <mat-form-field appearance="outline">
+              <input matInput type="text" placeholder="Search knowledge base" />
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="main-suggestion-panel">
+            <div class="intents-inner">
+              <!--            <p *ngFor="let opt of convers">-->
+              <!--              {{opt.body?.markdownText}} ==llloooll== {{conversation.messages[conversation.messages.length - 1]?.botSuggestions.messageBody.markdownText}} </p>-->
+              <div class="suggestion-main"  *ngFor="let botSuggestion of conversation.botSuggestions">
+
+                <ng-container *ngFor="let suggestion of botSuggestion.suggestions">
+
+
+
+                  <!--                <ng-container *ngIf="suggestion.messageBody.type == 'PLAIN'">-->
+                  <div class="suggestion-title">
+                  <span class="suggestion-type">
+                <mat-icon>chat_bubble</mat-icon>
+              </span>
+                    <!--                {{conversation.messages.body.markdownText}}-->
+                    <time>11:22 AM</time>
+                  </div>
+                  <span class="suggestion-message" (click)="replyInput.value = suggestion.messageBody.markdownText">{{suggestion.messageBody.markdownText}}</span>
+                  <!--              <b>{{intent.confidence.toFixed(2)}}</b>-->
+                  <button
+                    mat-mini-fab
+                    class="canned-trigger edit-trigger"
+                    (click)="replyInput.value = suggestion.messageBody.markdownText"
+                  >
+                    <i class="material-icons">edit </i>
+                  </button>
+                  <button (click)="onSend(suggestion.messageBody.markdownText)" mat-mini-fab class="canned-trigger send-suggestion">
+                    <i class="material-icons">send </i>
+                  </button>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+
+<!--./Bot suggestions-->
   <div class="customer-info-main">
     <div
       class="call-controls-view"
