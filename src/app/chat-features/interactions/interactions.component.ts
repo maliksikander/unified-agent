@@ -873,7 +873,7 @@ export class InteractionsComponent implements OnInit {
             }
             
             msgs.push(event.data);
-            console.log(msgs,"msgs")
+            
           }
         } else if (
           [
