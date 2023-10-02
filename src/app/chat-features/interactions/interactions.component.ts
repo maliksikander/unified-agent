@@ -110,6 +110,13 @@ export class InteractionsComponent implements OnInit {
   sendTypingStartedEventTimer: any = null;
   onMessageSuggestions = false;
   getDialogData;
+  // messageData: any= {
+  //   name: 'Martin Gupital',
+  //   //phone: '030012345',
+  //  // message: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary,'
+
+  // }
+
 
   constructor(
     private _sharedService: sharedService,
@@ -125,7 +132,7 @@ export class InteractionsComponent implements OnInit {
     private _translateService: TranslateService
   ) {}
   ngOnInit() {
-   
+
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
     }
@@ -161,9 +168,11 @@ export class InteractionsComponent implements OnInit {
       if (this._sipService.isCallActive == true && this._sipService.isToolbarActive == false) this.ctiControlBar();
       this.getVoiceChannelSession();
     }
-    //this._cacheService.smsDialogData || 
+    //this._cacheService.smsDialogData ||
    if(this.conversation.conversationId === 'FAKE_CONVERSATION'){
+    this.conversation.messages = [];
     this.loadPastActivities('FAKE_CONVERSATION');
+    
    }
 
   }
@@ -294,7 +303,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   openOutboundSmsDialog(){
-    
+
     const dialogRef = this.dialog.open(SendSmsComponent, {
       maxWidth: "700px",
       width: "100%",
@@ -302,12 +311,12 @@ export class InteractionsComponent implements OnInit {
       data: {info:this._cacheService.smsDialogData},
     });
     dialogRef.afterClosed().subscribe((result) => {
-     
+
     });
     this._cacheService.clearOutboundSmsDialogData();
     this._socketService.topicUnsub(this.conversation);
   }
-  
+
   //To open the quoted area
   openQuotedReplyArea(e) {
     this.quotedMessage = e;
@@ -814,21 +823,29 @@ export class InteractionsComponent implements OnInit {
             event.data.header.channelSession = event.channelSession;
           }
         }
+
+        //(event.data.header && event.data.header.sender && event.data.header.sender.type.toLowerCase() == "connector")
+        if (event.data.header && event.data.header.sender && event.data.header.sender.type.toLowerCase() == "connector") {
+          event.data.header.sender.senderName = event.data.header.customer.firstName + " " + event.data.header.customer.lastName;
+          event.data.header.sender.id = event.data.header.customer._id;
+          event.data.header.sender.type = "CUSTOMER";
+        }
         if (
           event.name.toLowerCase() == "agent_message" ||
           event.name.toLowerCase() == "bot_message" ||
-          event.name.toLowerCase() == "customer_message"
+          event.name.toLowerCase() == "customer_message" 
         ) {
           if (event.name.toLowerCase() == "customer_message" && event.data.header.sender.type.toLowerCase() == "connector") {
             event.data.header.sender.senderName = event.data.header.customer.firstName + " " + event.data.header.customer.lastName;
             event.data.header.sender.id = event.data.header.customer._id;
             event.data.header.sender.type = "CUSTOMER";
           }
-          event.data.header["status"] = "seen";
+        
+        event.data.header["status"] = "seen";
           msgs.push(event.data);
         } else if (event.name.toLowerCase() == "third_party_activity") {
-
-          if (event.data.header.channelData.additionalAttributes.length > 0) {
+         
+           if (event.data.header.channelData.additionalAttributes.length > 0) {
 
             const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => { return e.value.toLowerCase() == "outbound" });
             if (isOutBoundSMSType) {
@@ -840,6 +857,23 @@ export class InteractionsComponent implements OnInit {
               }
               msgs.push(event.data);
             }
+          } 
+          if(event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain' ){
+            const fakeChannelSession={
+              "channel":{
+                "channelType": event.data.header.schedulingMetaData.channelType,
+              },
+              "channelData":event.data.header.channelData,
+            }
+            event.data.header['channelSession']=fakeChannelSession;
+            let status = this._socketService.getSchduledActivityStatus(cimEvents,event.data.id);
+
+            if(status){
+             event.data.header['scheduledStatus'] = status;
+            }
+            
+            msgs.push(event.data);
+            console.log(msgs,"msgs")
           }
         } else if (
           [
