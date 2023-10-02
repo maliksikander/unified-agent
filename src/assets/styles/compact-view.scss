@@ -829,6 +829,18 @@ button.close-menu-mobile {
       }
     }
   }
+
+
+  .right-call-controls {
+    display: flex;
+    .customer-info-dp{
+      //float: left;
+      width: 165px !important;
+    }
+    .call-actions{
+      min-width: 170px !important;
+    }
+  }
 }
 
 

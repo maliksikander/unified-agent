@@ -1,5 +1,5 @@
 <!--<div class="call-control-box call-controls-view box-view {{fullView ? 'expand-view-controls'  : ''}}" cdkDrag cdkDragRootElement=".cdk-overlay-pane">-->
-<div class="call-control-box call-controls-view box-view {{!_sharedService.isCompactView ? 'expand-view-controls'  : ''}}" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+<div class="call-controls-view call-controls-area {{!_sharedService.isCompactView ? 'expand-view-controls call-control-box box-view'  : 'call-control-bar'}}" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
   <mat-icon class="drag-controls" cdkDragHandle>more_vert</mat-icon>
 
   <div class="right-call-controls">
