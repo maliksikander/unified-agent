@@ -3273,7 +3273,7 @@ vg-controls.hide {
       display: flex;
 
       li {
-        margin: 0 3px;
+        margin: 0 5px;
 
         &.view-all-options {
           margin-left: 0;
@@ -3295,6 +3295,9 @@ vg-controls.hide {
           cursor: pointer;
         }
 
+        img{
+          width: 17px;
+        }
         mat-icon {
           height: 18px !important;
           line-height: 18px !important;
@@ -3303,6 +3306,8 @@ vg-controls.hide {
           top: 4px;
           color: $blue-text-color;
           cursor: pointer;
+          text-align: center;
+          width: auto;
 
           &.liked {
             background: $blue-text-color;
