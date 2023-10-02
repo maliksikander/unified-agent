@@ -370,7 +370,7 @@
                   message.body.type | lowercase
                 }} {{ message.header.replyToMessageId != null ? 'quoted-message-main' : '' }} {{ message.header.sender.type | lowercase }} {{
                   fullPostView && 'full-post-view' && message.id == selectedCommentId ? 'full-post-view' : ''
-                }}"
+                }} {{index == 0 ? 'not-same-sender' : ''}} "
                 [ngClass]="
                   (message.header.sender.type | lowercase) == 'customer' || (message.body.type | lowercase) == 'voice'
                     ? 'user-message slide-in-left'

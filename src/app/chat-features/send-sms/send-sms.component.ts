@@ -225,7 +225,7 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
   updateMySelection(option) {
 
     this.identifiedCustomer = option;
-    console.log("option",option);
+    
     this.userData=[];
 
   }
