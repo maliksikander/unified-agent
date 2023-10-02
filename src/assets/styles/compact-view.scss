@@ -841,6 +841,16 @@ button.close-menu-mobile {
       min-width: 170px !important;
     }
   }
+  .manage-dashboard {
+    overflow: auto;
+    table {
+      min-width: 990px;
+      // tr {
+      //   position: static !important;
+      //}
+    }
+  }
+
 }
 
 
