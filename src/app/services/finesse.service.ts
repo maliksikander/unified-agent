@@ -93,7 +93,7 @@ export class finesseService {
   // this will used to subscribe to cisco events
   subscribeToCiscoEvents() {
     this.registerCallBack();
-    this.finesseLogin();
+    //this.finesseLogin();
   }
 
   registerCallBack() {

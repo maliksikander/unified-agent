@@ -819,7 +819,7 @@ function parseDialogEvent(dialogEvent, eventType) {
             ani: null,
             state: dialogEvent.state,
             wrapUpReason: wrapUpReason,
-            wrapUpItems: dialogEvent.mediaProperties.wrapUpItems ? dialogEvent.mediaProperties.wrapUpItems : null,
+            wrapUpItems: dialogEvent.mediaProperties.wrapUpItems ? dialogEvent.mediaProperties.wrapUpItems.wrapUpItem : null,
             queueName: queueName,
             associatedDialogUri: getDigits(dialogEvent.associatedDialogUri),
             secondaryId: secondaryId,
