@@ -113,7 +113,7 @@ export class finesseService {
       }
       document.head.appendChild(ctiLib);
     } catch (err) {
-        console.error("==>", err);
+        console.error("[registerCallBack] Error ==>", err);
     }
   }
 

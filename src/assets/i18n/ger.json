@@ -58,7 +58,7 @@
     "Confirm":"Confirm_ger",
     "Cancel":"Cancel_ger",
     "Incoming-Call-Alert":"Incoming Call Alert_ger",
-    "Incoming-call-alert-request":"Incoming call alert request : _ger",
+    "Incoming-call-alert-request":"Incoming call alert request from : _ger",
     "CHAT-REQUESTED":"CHAT REQUESTED_ger",
     "Incoming-chat-request-on-push-mode-on":"Incoming chat request on push mode on _ger",
     "Incoming-chat-request-on-pull-mode-on":"Incoming chat request on pull mode on _ger",
@@ -97,7 +97,9 @@
     "Socket-Connected":"Socket Connected_ger",
     "Calling":"Calling_ger",
     "CX-Voice-Connected":"CX VOICE Connected_ger",
-    "Call-Ended":"Call Ended_ger"
+    "Call-Ended":"Call Ended_ger",
+    "Customer-No":"Customer No_ger",
+    "queue-name":"Queue Name_ger"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ger",

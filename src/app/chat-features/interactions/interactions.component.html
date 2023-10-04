@@ -177,12 +177,12 @@
               <button mat-menu-item>
                 <span class="agent-detail">
                   <span *ngIf="'customer' | authPipe: 'view_pii' as result; else manage_pii">
-                    {{ conversation.customer.firstName}}
+                    {{ conversation.customer.firstName }}
                     {{ conversation.customer.lastName }}
                   </span>
                   <ng-template #manage_pii>
                     <span>
-                      {{ conversation.customer.firstName  | maskPIIAttribute: ("firstName" | returnSchemaByKey)  }}
+                      {{ conversation.customer.firstName | maskPIIAttribute: ("firstName" | returnSchemaByKey) }}
                       {{ conversation.customer.lastName }}
                     </span>
                   </ng-template>
@@ -1182,13 +1182,21 @@
                           <mat-panel-title>
                             <div class="panel-header">
                               <ul>
-                                <li>
+                                <li matTooltip="{{ 'snackbar.Customer-No' | translate }}: {{ message.body.data.callLegs | getCustomerAni }}">
                                   <span class="phone-number">
                                     {{ message.body.data.callLegs | getCustomerAni }}
                                   </span>
                                 </li>
 
-                                <li *ngIf="message.body.data.callLegs.length < 2" class="agent-pic call-services">
+                                <li
+                                  matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
+                                    message.body.data.callLegs[0].additionalDetail.dialog?.queueName
+                                      ? message.body.data.callLegs[0].additionalDetail.dialog?.queueName
+                                      : 'N/A'
+                                  }}"
+                                  *ngIf="message.body.data.callLegs.length < 2"
+                                  class="agent-pic call-services"
+                                >
                                   <span>{{
                                     message.body.data.callLegs[0].additionalDetail.dialog?.queueName
                                       ? message.body.data.callLegs[0].additionalDetail.dialog?.queueName
@@ -1196,7 +1204,13 @@
                                   }}</span>
                                 </li>
                                 <ng-container *ngIf="message.body.data.callLegs.length == 2">
-                                  <li *ngIf="message.body.data.callLegs | checkConsultCall" class="agent-pic call-services">
+                                  <li
+                                    matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
+                                      callLeg?.additionalDetail?.dialog?.queueName ? callLeg?.additionalDetail?.dialog?.queueName : 'N/A'
+                                    }}"
+                                    *ngIf="message.body.data.callLegs | checkConsultCall"
+                                    class="agent-pic call-services"
+                                  >
                                     <span>
                                       <ng-container *ngFor="let callLeg of message.body.data.callLegs">
                                         <ng-container *ngIf="callLeg.startDirection != 'CONSULT'">
@@ -1318,7 +1332,9 @@
                                       </ng-container>
                                     </li>
 
-                                    <li class="agent-pic call-services">
+                                    <li matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
+                                      callData?.additionalDetail?.dialog?.queueName ? callData?.additionalDetail?.dialog?.queueName : 'N/A'
+                                    }}" class="agent-pic call-services">
                                       <span>{{
                                         callData?.additionalDetail?.dialog?.queueName ? callData?.additionalDetail?.dialog?.queueName : "N/A"
                                       }}</span>
@@ -1939,7 +1955,7 @@
                 <!--                </span>-->
                 <span class="inner-text">
                   <span>{{ message.body.displayText }}</span> <span>{{ " " + message.body.markdownText }}</span>
-                  <span class="notification-time">{{ message.header.timestamp | date: "H:mm:ss" }}</span>
+                  <span class="notification-time">{{ message.header.timestamp | date: "shortTime" }}</span>
                 </span>
               </div>
               <!-- ----------------------------------system Notifications ended-------------------------------- -->
@@ -2030,12 +2046,18 @@
             class="customer-mode message-mode"
             mat-button
           >
-          <span *ngIf="'customer' | authPipe: 'view_pii' as result; else manage_pii">{{ conversation.customer?.firstName ? conversation.customer.firstName : ("globals.not-applicable" | translate) }}</span>
-          <ng-template #manage_pii>
-            <span>
-              {{ conversation.customer?.firstName ? ((conversation.customer.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey))) : ("globals.not-applicable" | translate) }}
-            </span>
-          </ng-template>
+            <span *ngIf="'customer' | authPipe: 'view_pii' as result; else manage_pii">{{
+              conversation.customer?.firstName ? conversation.customer.firstName : ("globals.not-applicable" | translate)
+            }}</span>
+            <ng-template #manage_pii>
+              <span>
+                {{
+                  conversation.customer?.firstName
+                    ? (conversation.customer.firstName | maskPIIAttribute: ("firstName" | returnSchemaByKey))
+                    : ("globals.not-applicable" | translate)
+                }}
+              </span>
+            </ng-template>
           </button>
           <button (click)="isWhisperMode = true" [ngClass]="{ 'whisper-select': isWhisperMode }" class="whisper-mode message-mode" mat-button>
             {{ "chat-features.interactions.whisper" | translate }}
