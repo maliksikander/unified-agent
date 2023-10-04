@@ -38,6 +38,10 @@
 <!--            <mat-icon>search</mat-icon>-->
 <!--          </button>-->
           <button mat-button class="chat-controls-mobile" *ngIf="isMobileDevice"  [matMenuTriggerFor]="agentControllForMobile" ><mat-icon>more_vert</mat-icon></button>
+          <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}" *ngIf="_sipService.isCallActive && !ctiBarView"
+                  matTooltip="Chat" aria-label="Chat">
+            <mat-icon>question_answer</mat-icon>
+          </button>
         </div>
 <!--        <div class="instruction-search" *ngIf="interactionSearch && isMobileDevice">-->
 <!--          <input placeholder="Search Interactions" type="text" [(ngModel)]="searchInteraction">-->
@@ -46,11 +50,11 @@
 <!--          </button>-->
 <!--        </div>-->
         <div class="col-md-8 col-sm-8 agent-actions">
-          <button mat-icon-button (click)="ctiControlBar()"
-                  matTooltip="Chat" aria-label="Chat">
-            <mat-icon>question_answer</mat-icon>
-          </button>
-          <ul class="list-group list-group-horizontal agent-controls call-controls" *ngIf="_sipService.isCallActive && !ctiBarView">
+<!--          <button mat-icon-button (click)="ctiControlBar()"-->
+<!--                  matTooltip="Chat" aria-label="Chat">-->
+<!--            <mat-icon>question_answer</mat-icon>-->
+<!--          </button>-->
+          <ul class="list-group list-group-horizontal agent-controls call-controls" *ngIf="_sipService.isCallActive && !ctiBarView && !isMobileDevice">
             <li class="list-group-item" *ngIf="_sipService.isCallActive && !ctiBarView">
               <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}"
                       matTooltip="Chat" aria-label="Chat">

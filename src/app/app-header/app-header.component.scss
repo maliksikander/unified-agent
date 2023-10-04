@@ -753,6 +753,8 @@ button.main-menu-item {
 //MRD states
 .mrd-states {
   //background: #f3f6f8;
+  max-height: 360px;
+  overflow: auto;
 
   .mrd-text {
     display: block;
