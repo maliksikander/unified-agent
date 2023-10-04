@@ -190,13 +190,14 @@ export class InteractionsComponent implements OnInit {
     });
 
     if (this.conversation && this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
-      if (this._sipService.isCallActive == true) this.ctiControlBar();
+      if (this._sipService.isCallActive == true && this._sipService.isToolbarActive == false) this.ctiControlBar();
       this.getVoiceChannelSession();
     }
     //this._cacheService.smsDialogData ||
    if(this.conversation.conversationId === 'FAKE_CONVERSATION'){
     this.conversation.messages = [];
     this.loadPastActivities('FAKE_CONVERSATION');
+
    }
 
   }
@@ -847,6 +848,13 @@ export class InteractionsComponent implements OnInit {
             event.data.header.channelSession = event.channelSession;
           }
         }
+
+        //(event.data.header && event.data.header.sender && event.data.header.sender.type.toLowerCase() == "connector")
+        if (event.data.header && event.data.header.sender && event.data.header.sender.type.toLowerCase() == "connector") {
+          event.data.header.sender.senderName = event.data.header.customer.firstName + " " + event.data.header.customer.lastName;
+          event.data.header.sender.id = event.data.header.customer._id;
+          event.data.header.sender.type = "CUSTOMER";
+        }
         if (
           event.name.toLowerCase() == "agent_message" ||
           event.name.toLowerCase() == "bot_message" ||
@@ -857,11 +865,12 @@ export class InteractionsComponent implements OnInit {
             event.data.header.sender.id = event.data.header.customer._id;
             event.data.header.sender.type = "CUSTOMER";
           }
-          event.data.header["status"] = "seen";
+
+        event.data.header["status"] = "seen";
           msgs.push(event.data);
         } else if (event.name.toLowerCase() == "third_party_activity") {
 
-          if (event.data.header.channelData.additionalAttributes.length > 0) {
+           if (event.data.header.channelData.additionalAttributes.length > 0) {
 
             const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => { return e.value.toLowerCase() == "outbound" });
             if (isOutBoundSMSType) {
@@ -873,7 +882,8 @@ export class InteractionsComponent implements OnInit {
               }
               msgs.push(event.data);
             }
-          }else if(event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain' ){
+          }
+          if(event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain' ){
             const fakeChannelSession={
               "channel":{
                 "channelType": event.data.header.schedulingMetaData.channelType,
@@ -888,7 +898,7 @@ export class InteractionsComponent implements OnInit {
             }
 
             msgs.push(event.data);
-            console.log(msgs,"msgs")
+
           }
         } else if (
           [

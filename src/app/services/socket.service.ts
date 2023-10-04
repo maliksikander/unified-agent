@@ -478,6 +478,11 @@ export class socketService {
           event.data.header.channelSession = event.channelSession;
         }
       }
+      if(event.data.header && event.data.header.sender && event.data.header.sender.type.toLowerCase() == "connector"){
+        event.data.header.sender.senderName = event.data.header.customer.firstName;
+        event.data.header.sender.id = event.data.header.customer._id;
+        event.data.header.sender.type = "CUSTOMER";
+      }
       if (
         (event.name.toLowerCase() == "message_delivery_notification" || event.name.toLowerCase() == "customer_message") &&
         event.data.header.sender.type.toLowerCase() == "connector"
@@ -506,17 +511,6 @@ export class socketService {
         }
       } else if (event.name.toLowerCase() == "third_party_activity"  ) {
 
-        // if(event.data.body.type.toLowerCase() == 'deliverynotification'){
-        //   let status=event.data.body['status'].toLowerCase();
-        //   console.log("satata",status);
-        //   const selectedMessage = conversation.messages.find((message) => {
-        //     return message.id == event.data.body.messageId;
-        //   });
-        //   if (selectedMessage) {
-        //     selectedMessage["header"]["status"] = event.data.body.status.toLowerCase();
-        //     console.log("schduled Activity ", selectedMessage );
-        //   }
-        // }
          if ( event.data.header.channelData.additionalAttributes.length > 0) {
 
           const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => { return e.value.toLowerCase() == "outbound" });
@@ -529,9 +523,9 @@ export class socketService {
             }
             conversation.messages.push(event.data);
           }
-        }else if(event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain'){
-          console.log("Metadata",event.data.header.schedulingMetaData)
-          console.log("DDDDDDDDDDD",event.data.body)
+        }
+         if(event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain'){
+
           const fakeChannelSession={
             "channel":{
               "channelType": event.data.header.schedulingMetaData.channelType,
@@ -994,7 +988,6 @@ export class socketService {
 
   handleDeliveryNotification(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
-      console.log("converstion id",e)
       return e.conversationId == conversationId;
     });
     if (
@@ -1682,20 +1675,37 @@ export class socketService {
   }
 
   getSchduledActivityStatus(events,messageId){
-    let status;
-    events.forEach((event)=>{
+
+    let statusEvent = events.find((event)=>{
       if(event.name.toLowerCase()== 'third_party_activity'  && event.data.body.type.toLowerCase() == 'deliverynotification'){
-        if(event.data.id == messageId){
-          status =event.data.body.status;
-        }
+        return event.data.body.messageId == messageId
 
       }
 
     });
-    // if (event){
-    //   return event.data.body.status;
-    // }
-    return status;
+    if (statusEvent){
+       return statusEvent.data.body.status;
+    }else{
+      return null;
+    }
+
+
+    // let status;
+    // events.forEach((event)=>{
+    //   if(event.name.toLowerCase()== 'third_party_activity'  && event.data.body.type.toLowerCase() == 'deliverynotification'){
+    //     if(event.data.id == messageId){
+    //       status =event.data.body.status;
+    //     }
+
+    //   }
+
+    // });
+    // // if (event){
+    // //   return event.data.body.status;
+    // // }
+    // return status;
+
+
   }
 
   topicUnsub(conversation) {
