@@ -18,7 +18,9 @@
             <!--            </span>-->
           </h3>
           <h5 class="customer-name">
-            {{ conversation.customer.firstName | slice: 0:50 }}
+            <span *ngIf="'customer' | authPipe: 'view_pii' as result; else manage_pii"> {{ conversation.customer.firstName | slice: 0:50 }}</span>
+            <ng-template #manage_pii> {{ conversation.customer.firstName | maskPIIAttribute: ("firstName" | returnSchemaByKey) }}</ng-template>
+
             <!-- <span class="chat-timer">( 11:32 )</span> -->
 
             <ul *ngIf="conversation.customer.labels && ('customer-labels' | authPipe: 'assign_label') as result" class="customer-labels">
@@ -174,7 +176,16 @@
               <h5 class="transfer-heading participants-heading">{{ "chat-features.interactions.participants" | translate }}</h5>
               <button mat-menu-item>
                 <span class="agent-detail">
-                  <span>{{ conversation.customer.firstName }} {{ conversation.customer.lastName }}</span>
+                  <span *ngIf="'customer' | authPipe: 'view_pii' as result; else manage_pii">
+                    {{ conversation.customer.firstName}}
+                    {{ conversation.customer.lastName }}
+                  </span>
+                  <ng-template #manage_pii>
+                    <span>
+                      {{ conversation.customer.firstName  | maskPIIAttribute: ("firstName" | returnSchemaByKey)  }}
+                      {{ conversation.customer.lastName }}
+                    </span>
+                  </ng-template>
                   <small class="joined-customer">{{ "chat-features.interactions.customer" | translate }}</small>
                 </span>
               </button>
@@ -2019,7 +2030,12 @@
             class="customer-mode message-mode"
             mat-button
           >
-            {{ conversation.customer?.firstName ? conversation.customer.firstName : ("globals.not-applicable" | translate) }}
+          <span *ngIf="'customer' | authPipe: 'view_pii' as result; else manage_pii">{{ conversation.customer?.firstName ? conversation.customer.firstName : ("globals.not-applicable" | translate) }}</span>
+          <ng-template #manage_pii>
+            <span>
+              {{ conversation.customer?.firstName ? ((conversation.customer.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey))) : ("globals.not-applicable" | translate) }}
+            </span>
+          </ng-template>
           </button>
           <button (click)="isWhisperMode = true" [ngClass]="{ 'whisper-select': isWhisperMode }" class="whisper-mode message-mode" mat-button>
             {{ "chat-features.interactions.whisper" | translate }}

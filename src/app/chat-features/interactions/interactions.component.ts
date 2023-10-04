@@ -129,7 +129,6 @@ export class InteractionsComponent implements OnInit {
     // setTimeout(() => {
     //   new EmojiPicker();
     // }, 500);
-
     this.isWhisperMode = this.conversation.topicParticipant.role == "SILENT_MONITOR" ? true : false;
     this.conversationSettings = this._sharedService.conversationSettings;
     this.loadLabels();
