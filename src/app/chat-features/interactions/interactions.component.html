@@ -2087,7 +2087,7 @@
       </mat-menu>
 
       <div class="message-composer">
-        <div class="whisper-selection" *ngIf="conversation?.agentParticipants?.length > 0">
+        <div class="whisper-selection" *ngIf="conversation?.agentParticipants | countPrimaryAgentPartcipants">
           <button
             (click)="isWhisperMode = false"
             [ngClass]="{ 'customer-select': !isWhisperMode }"
@@ -2164,7 +2164,7 @@
         </div>
 
         <form
-          class="reply-form {{ conversation?.agentParticipants?.length > 0 ? 'whisper-tabs' : '' }}"
+          class="reply-form {{ (conversation?.agentParticipants | countPrimaryAgentPartcipants )? 'whisper-tabs' : '' }}"
           [ngClass]="{ 'whisper-mode': isWhisperMode }"
         >
           <label *ngIf="message.length > 0" class="count-reply">{{ replyInput.value.length }}/1000</label>

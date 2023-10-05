@@ -33,11 +33,10 @@ export class WrapUpFormComponent implements OnInit {
 
    // wrapUpData;
   categoryOptions;
-  timeLeft: number = 30;
-  timeProgress: number = this.timeLeft;
   interval;
   @Input() wrapUpData: any;
   @Output() closeWrapDialog = new EventEmitter<any>();
+  timeProgress: number;
 
   constructor(
     // @Inject(MAT_DIALOG_DATA) public data: any,
@@ -49,6 +48,7 @@ export class WrapUpFormComponent implements OnInit {
 
   ngOnInit() {
     this.getWrapUpForm();
+    this.timeProgress=this.wrapUpData.wrapUpDialog.durationLeft;
   }
 
   // to remove selected wrap up from list

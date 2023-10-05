@@ -510,7 +510,7 @@ export class InteractionsComponent implements OnInit {
           this._translateService.instant("chat-features.interactions.Are-you-sure-you-want-to-leave-the-conversation-with") +
           " '" +
           this.conversation.customer.firstName +
-          "'"
+          "'?"
       }
     });
     dialogRef.afterClosed().subscribe((result: any) => {

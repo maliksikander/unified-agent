@@ -1,8 +1,6 @@
 <div class="note-dialog-main wrap-main-dialog"  [ngClass]="{'right-align-view': wrapUpData.RTLDirection}">
   <div class="dialog-header">
     <h4 mat-dialog-title>{{wrapUpData.header}}
-
-      <p>{{wrapUpData | json}}</p>
       <button *ngIf="wrapUpData.wrapUpDialog.show == false" mat-button (click)="closeDialog()">
         <mat-icon>close</mat-icon>
       </button>

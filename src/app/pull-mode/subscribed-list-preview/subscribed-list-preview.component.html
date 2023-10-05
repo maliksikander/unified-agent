@@ -53,10 +53,10 @@
         </thead>
         <tbody *ngIf="'subscribed-list' | authPipe: 'view' as result">
           <tr *ngFor="let request of _pullModeservice.subscribedListRequests | filterPullModeRequests: filterStatus:filterListId">
-            <!-- <p>{{request.status}}</p>
+            <p>{{request.status}}</p>
             <p>{{request | json}}</p>
 
-            <p *ngIf="(request.status | lowercase) != 'wrap_up'">9999</p> -->
+            <p *ngIf="(request.status | lowercase) != 'wrap_up'">9999</p>
 
             <p>{{request.channelSession.conversationId }}</p>
 

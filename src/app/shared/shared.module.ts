@@ -104,6 +104,8 @@ import { getIVRTrailPipe } from "./pipes/getIVRTrail.pipe";
 import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
 import { checkCiscoSessionPipe } from "./pipes/checkCiscoSession.pipe";
 import { checkCXSessionPipe } from "./pipes/checkCXSession.pipe";
+import { countPrimaryAgentPartcipantsPipe } from "./pipes/countPrimaryAgentParticipants.pipe";
+
 
 @NgModule({
   declarations: [
@@ -120,6 +122,7 @@ import { checkCXSessionPipe } from "./pipes/checkCXSession.pipe";
     SearchSuggestionsPipe,
     sentenceCasePipe,
     convertToFormDataPipe,
+    countPrimaryAgentPartcipantsPipe,
     getFirstTwoLettersPipe,
     fetchLabelsPipe,
     columnsFilterClass,
@@ -327,6 +330,7 @@ import { checkCXSessionPipe } from "./pipes/checkCXSession.pipe";
     checkOutboundCallPipe,
     getCustomerAniPipe,
     checkConsultCallPipe,
+    countPrimaryAgentPartcipantsPipe,
     MatPaginatorModule,
     TableFilterPipe,
     checkCiscoSessionPipe,

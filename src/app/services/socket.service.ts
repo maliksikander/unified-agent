@@ -1155,13 +1155,19 @@ export class socketService {
         conversation.agentParticipants.forEach((agentParticipant,index)=>
         {
           console.log("agetPar",agentParticipant)
-          if(agentParticipant.participant.id==cimEvent.data.conversationParticipant.participant.id)
+          if(agentParticipant.participant.id==cimEvent.data.conversationParticipant.participant.id )
           {
             console.log("true",agentParticipant)
+            if(cimEvent.data.conversationParticipant.role.toLowerCase()!="wrap_up")
+            {
+              agentParticipants.push(cimEvent.data.conversationParticipant)
 
-            agentParticipant=cimEvent.data.conversationParticipant;
+            }
           }
+          else
+          {
           agentParticipants.push(agentParticipant)
+          }
         })
         conversation.agentParticipants=agentParticipants
         console.log("co",conversation.agentParticipants)
@@ -1575,16 +1581,34 @@ export class socketService {
           message.body.markdownText = data;
         });
       }
-    } else if (cimEvent.name.toLowerCase() == "participant_role_changed" && cimEvent.data.conversationParticipant.role.toLowerCase() == "primary") {
-      message = CimMessage;
+    } else if (cimEvent.name.toLowerCase() == "participant_role_changed") {
+
+
+      if(cimEvent.data.conversationParticipant.role.toLowerCase() == "primary")
+      {
+        message = CimMessage;
+        message.body["displayText"] =
+          this._cacheService.agent.id == cimEvent.data.conversationParticipant.participant.keycloakUser.id
+            ? "You"
+            : cimEvent.data.conversationParticipant.participant.keycloakUser.username;
+        this._translateService.stream("socket-service.has-joined-the-conversation").subscribe((data: string) => {
+          message.body.markdownText = data;
+        });
+      }
+      else if(cimEvent.data.conversationParticipant.role.toLowerCase() == "wrap_up")
+      {
+        message = CimMessage;
       message.body["displayText"] =
         this._cacheService.agent.id == cimEvent.data.conversationParticipant.participant.keycloakUser.id
           ? "You"
           : cimEvent.data.conversationParticipant.participant.keycloakUser.username;
-      this._translateService.stream("socket-service.has-joined-the-conversation").subscribe((data: string) => {
+
+      this._translateService.stream("socket-service.left-the-conversation").subscribe((data: string) => {
         message.body.markdownText = data;
       });
-    } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed" && cimEvent.data.agentParticipant.role.toLowerCase() != "silent_monitor") {
+      }
+     
+    } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed" && (cimEvent.data.agentParticipant.role.toLowerCase() != "silent_monitor" && cimEvent.data.agentParticipant.role.toLowerCase() != "wrap_up")) {
       message = CimMessage;
       message.body["displayText"] =
         this._cacheService.agent.id == cimEvent.data.agentParticipant.participant.keycloakUser.id
