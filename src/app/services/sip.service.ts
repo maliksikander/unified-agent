@@ -327,6 +327,7 @@ export class SipService implements OnInit {
           if (dialogEvent.response.dialog.callEndReason == "NO_ANSWER" || dialogEvent.response.dialog.callEndReason == "ORIGINATOR_CANCEL") {
             let endReason = dialogEvent.response.dialog.callEndReason;
             if (dialogEvent.response.dialog.callEndReason == "NO_ANSWER") this.notReadyAgentState();
+            console.log("test1==>")
             let agentId = this._cacheService.agent.id;
             this.checkActiveTasks(agentId, dialogEvent.response, endReason);
           } else {
@@ -825,6 +826,7 @@ export class SipService implements OnInit {
   }
 
   handleNoAnwerEvent(dialogState) {
+    console.log("test3==>")
     let voiceTask = this.getVoiceTask();
     let state;
     let cacheId = `${this._cacheService.agent.id}:${dialogState.id}`;
@@ -834,6 +836,7 @@ export class SipService implements OnInit {
 
   checkActiveTasks(agentId, dialog, state) {
     try {
+      console.log("test2==>")
       this._httpService.getRETasksList(agentId).subscribe(
         (res) => {
           this.taskList = res;
