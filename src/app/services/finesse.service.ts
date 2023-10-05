@@ -905,7 +905,7 @@ export class finesseService {
           action: "agentState",
           state: { name: "LOGOUT", reasonCode: "" }
         });
-      } else if (resp.state.toLowerCase() == "not_ready" || resp.state.toLowerCase() == "ready" || resp.state.toLowerCase() == "talking") {
+      } else if (resp.state.toLowerCase() == "not_ready" || resp.state.toLowerCase() == "ready" ) { //|| resp.state.toLowerCase() == "talking"
         const voiceMrdObj = this.getVoiceMrd(this._cacheService.agentPresence.agentMrdStates);
 
         if (resp.state != voiceMrdObj.state) {
@@ -946,14 +946,15 @@ export class finesseService {
               state: "NOT_READY",
               mrdId: voiceMrdObj.mrd.id
             });
-          } else if (resp.state.toLowerCase() == "talking") {
-            this._socketService.emit("changeAgentState", {
-              agentId: this._cacheService.agent.id,
-              action: "agentMRDState",
-              state: "BUSY",
-              mrdId: voiceMrdObj.mrd.id
-            });
           }
+          //  else if (resp.state.toLowerCase() == "talking") {
+          //   this._socketService.emit("changeAgentState", {
+          //     agentId: this._cacheService.agent.id,
+          //     action: "agentMRDState",
+          //     state: "BUSY",
+          //     mrdId: voiceMrdObj.mrd.id
+          //   });
+          // }
         }
       }
     } catch (e) {
