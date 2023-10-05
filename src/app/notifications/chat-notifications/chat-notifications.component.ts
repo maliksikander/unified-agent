@@ -38,7 +38,6 @@ export class ChatNotificationsComponent implements OnInit {
     public _announcementService:announcementService
   ) {
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
-      console.log("data==>",e)
       try {
         if (e.msg == "openPushModeRequestHeader") {
           this.pushModeRequests.push(e.data);

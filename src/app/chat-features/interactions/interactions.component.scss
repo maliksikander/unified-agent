@@ -3837,7 +3837,21 @@ vg-controls.hide {
   }
 }
 
+.activity-number-ellipsis{
+  max-width: 7.188rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+  display: inherit;
+}
 
+.activity-queue-ellipsis{
+    max-width: 12.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre;
+    border-radius: 0 !important;
+}
 
 .private-reply-icon{
   cursor: pointer;

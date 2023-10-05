@@ -32,7 +32,7 @@ export class SipService implements OnInit {
   isSubscriptionFailed = false;
   isMuted: boolean = false;
   isToolbarActive: boolean = false;
-  isToolbarDocked:boolean = false;
+  isToolbarDocked: boolean = false;
 
   constructor(
     private _appConfigService: appConfigService,
@@ -327,7 +327,6 @@ export class SipService implements OnInit {
           if (dialogEvent.response.dialog.callEndReason == "NO_ANSWER" || dialogEvent.response.dialog.callEndReason == "ORIGINATOR_CANCEL") {
             let endReason = dialogEvent.response.dialog.callEndReason;
             if (dialogEvent.response.dialog.callEndReason == "NO_ANSWER") this.notReadyAgentState();
-            console.log("test1==>")
             let agentId = this._cacheService.agent.id;
             this.checkActiveTasks(agentId, dialogEvent.response, endReason);
           } else {
@@ -826,17 +825,19 @@ export class SipService implements OnInit {
   }
 
   handleNoAnwerEvent(dialogState) {
-    console.log("test3==>")
-    let voiceTask = this.getVoiceTask();
-    let state;
-    let cacheId = `${this._cacheService.agent.id}:${dialogState.id}`;
-    if (voiceTask) state = { state: "alerting", taskId: voiceTask.id };
-    this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, "DIALOG_ENDED", state);
+    try {
+      let voiceTask = this.getVoiceTask();
+      let state;
+      let cacheId = `${this._cacheService.agent.id}:${dialogState.dialog && dialogState.dialog.id ? dialogState.dialog && dialogState.dialog.id : null}`;
+      if (voiceTask) state = { state: "alerting", taskId: voiceTask.id };
+      this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, "DIALOG_ENDED", state);
+    } catch (e) {
+      console.error("[handleNoAnwerEvent] Sip Error ==>", e);
+    }
   }
 
   checkActiveTasks(agentId, dialog, state) {
     try {
-      console.log("test2==>")
       this._httpService.getRETasksList(agentId).subscribe(
         (res) => {
           this.taskList = res;

@@ -1183,7 +1183,7 @@
                             <div class="panel-header">
                               <ul>
                                 <li matTooltip="{{ 'snackbar.Customer-No' | translate }}: {{ message.body.data.callLegs | getCustomerAni }}">
-                                  <span class="phone-number">
+                                  <span class="phone-number activity-number-ellipsis">
                                     {{ message.body.data.callLegs | getCustomerAni }}
                                   </span>
                                 </li>
@@ -1197,7 +1197,7 @@
                                   *ngIf="message.body.data.callLegs.length < 2"
                                   class="agent-pic call-services"
                                 >
-                                  <span>{{
+                                  <span class="activity-queue-ellipsis">{{
                                     message.body.data.callLegs[0].additionalDetail.dialog?.queueName
                                       ? message.body.data.callLegs[0].additionalDetail.dialog?.queueName
                                       : "N/A"
@@ -1211,7 +1211,7 @@
                                     *ngIf="message.body.data.callLegs | checkConsultCall"
                                     class="agent-pic call-services"
                                   >
-                                    <span>
+                                    <span class="activity-queue-ellipsis">
                                       <ng-container *ngFor="let callLeg of message.body.data.callLegs">
                                         <ng-container *ngIf="callLeg.startDirection != 'CONSULT'">
                                           {{ callLeg?.additionalDetail?.dialog?.queueName ? callLeg?.additionalDetail?.dialog?.queueName : "N/A" }}
@@ -1335,15 +1335,12 @@
                                     <li matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
                                       callData?.additionalDetail?.dialog?.queueName ? callData?.additionalDetail?.dialog?.queueName : 'N/A'
                                     }}" class="agent-pic call-services">
-                                      <span>{{
+                                      <span class="activity-queue-ellipsis">{{
                                         callData?.additionalDetail?.dialog?.queueName ? callData?.additionalDetail?.dialog?.queueName : "N/A"
                                       }}</span>
                                     </li>
 
                                     <li class="section-duration">
-                                      <!-- <time>{{ callData.duration ? callData.duration :
-                                      "N/A"
-                                      }}sec</time> -->
                                       <time *ngIf="callData.duration > 0"
                                         >{{ callData.duration * 1000 | date: "mm" }}min {{ callData.duration * 1000 | date: "ss" }}sec</time
                                       >
