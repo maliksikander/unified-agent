@@ -711,7 +711,6 @@ export class SipService implements OnInit {
       let customer;
       let timeStamp = this.getStartOREndTimeStamp(dialogState.dialog, "endCall");
       if (this.customer) customer = JSON.parse(JSON.stringify(this.customer));
-
       if (dialogState.dialog.callType.toLowerCase() == "outbound" || dialogState.dialog.callType.toLowerCase() == "out") {
         this.isOBCallRequested = false;
         // callType = "DIALOG_ENDED";
@@ -919,6 +918,13 @@ export class SipService implements OnInit {
         //     }
         //   }
         // }
+      }
+      else if(dialogState.dialog && dialogState.dialog.callType && (dialogState.dialog.callType.toLowerCase() == "outbound" || dialogState.dialog.callType.toLowerCase() == "out")){
+        if (dialogState.dialog && dialogState.dialog.isCallEnded == 1) {
+          this.isOBCallRequested = false;
+          this.isToolbarActive = false;
+          this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-call-canceled"), "err");
+        }
       }
     } catch (e) {
       console.error("[Error] handleRefreshCase Sip==>", e);
