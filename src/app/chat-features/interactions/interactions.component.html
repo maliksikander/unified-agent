@@ -1272,14 +1272,31 @@
 
                                 <ng-container *ngIf="message.body.data.callLegs.length < 2">
                                   <li *ngIf="message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason" class="section-tags">
-                                    <span>
-                                      {{
-                                        message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason
-                                          ? message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason
-                                          : "N/A"
-                                      }}
-                                    </span>
+                                    <ng-container
+                                      *ngIf="
+                                        message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems &&
+                                        message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems.length == 0
+                                      "
+                                    >
+                                      <span>
+                                        {{
+                                          message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason
+                                            ? message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason
+                                            : "N/A"
+                                        }}
+                                      </span>
+                                    </ng-container>
 
+                                    <ng-container
+                                      *ngIf="
+                                        message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems &&
+                                        message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems.length > 0
+                                      "
+                                    >
+                                      <span *ngFor="let wrapup of message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems">
+                                        {{ wrapup }}
+                                      </span>
+                                    </ng-container>
                                     <!-- <span
                                   *ngFor="let reasonCode of message.body.data?.dialog?.wrapUpReason | sliceFilter:0:2">
                                   {{reasonCode }}
@@ -1332,9 +1349,12 @@
                                       </ng-container>
                                     </li>
 
-                                    <li matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
-                                      callData?.additionalDetail?.dialog?.queueName ? callData?.additionalDetail?.dialog?.queueName : 'N/A'
-                                    }}" class="agent-pic call-services">
+                                    <li
+                                      matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
+                                        callData?.additionalDetail?.dialog?.queueName ? callData?.additionalDetail?.dialog?.queueName : 'N/A'
+                                      }}"
+                                      class="agent-pic call-services"
+                                    >
                                       <span class="activity-queue-ellipsis">{{
                                         callData?.additionalDetail?.dialog?.queueName ? callData?.additionalDetail?.dialog?.queueName : "N/A"
                                       }}</span>
@@ -1367,11 +1387,27 @@
 
                                     <!-- <ng-container *ngIf="message.body.data.callLegs.length < 2"> -->
                                     <li *ngIf="callData.additionalDetail?.dialog?.wrapUpReason" class="section-tags">
-                                      <span>
-                                        {{
-                                          callData?.additionalDetail?.dialog?.wrapUpReason ? callData?.additionalDetail?.dialog?.wrapUpReason : "N/A"
-                                        }}
-                                      </span>
+                                      <ng-container
+                                        *ngIf="
+                                          callData.additionalDetail?.dialog?.wrapUpItems && callData.additionalDetail?.dialog?.wrapUpItems.length == 0
+                                        "
+                                      >
+                                        <span>
+                                          {{
+                                            callData.additionalDetail?.dialog?.wrapUpReason ? callData.additionalDetail?.dialog?.wrapUpReason : "N/A"
+                                          }}
+                                        </span>
+                                      </ng-container>
+
+                                      <ng-container
+                                        *ngIf="
+                                          callData.additionalDetail?.dialog?.wrapUpItems && callData.additionalDetail?.dialog?.wrapUpItems.length > 0
+                                        "
+                                      >
+                                        <span *ngFor="let wrapup of callData.additionalDetail?.dialog?.wrapUpItems">
+                                          {{ wrapup }}
+                                        </span>
+                                      </ng-container>
                                       <!-- <span *ngFor="let reasonCode of callData.dialog?.wrapUpReason | sliceFilter:0:2">
                                   {{reasonCode }}
                                 </span>
@@ -1380,9 +1416,6 @@
                                   [matMenuTriggerFor]="multiVoiceTags">+{{callData.dialog?.wrapUpReason.length -
                                   2}}</span> -->
                                     </li>
-                                    <!-- <li>
-                                  <time>{{ message.header.timestamp | date: "shortTime" }}</time>
-                                </li> -->
                                   </ul>
                                 </div>
                               </div>
