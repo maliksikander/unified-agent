@@ -50,6 +50,7 @@ export class InteractionsComponent implements OnInit {
   selectedCommentId: string;
   lastSeenMessageId;
   pastActivitiesloadedOnce: boolean = false;
+  disablingAttatchButtonForInstagramReply: boolean = false
   // isTransfer = false;
   // isConsult = false;
   ctiBarView = true;
@@ -233,6 +234,7 @@ export class InteractionsComponent implements OnInit {
   }
   //replyToFBComment
   replyToComment(message) {
+    this.checkChannelTypeForAttatchementButton(message)
     this.commentPostId = message.body.postId;
     this.replyToMessageId = message.id;
     this.commentId = message.header.providerMessageId;
@@ -255,6 +257,14 @@ export class InteractionsComponent implements OnInit {
     } else {
       this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-the-request"), "err");
     }
+  }
+
+  checkChannelTypeForAttatchementButton(message) {
+    if(message.body.type === "COMMENT" &&  message.header.channelSession.channel.channelType.name === "INSTAGRAM")
+    this.disablingAttatchButtonForInstagramReply = true
+  else {
+    console.log("it is false buddy .....")
+  }
   }
 
   //Quoted Reply
@@ -652,11 +662,6 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  isInstagramChannel(channel) {
-    if ((this.replyToMessageId && this.privateMessageReply) || this.replyToMessageId) {
-      return channel.channelType.name === "INSTAGRAM";
-    }
-  }
   constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?, wrapups?, note?) {
     if (this._socketService.isSocketConnected) {
       let message = this.getCimMessage();
