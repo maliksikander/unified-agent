@@ -39,7 +39,7 @@
   "bargeInType": "BARGE_IN_CONSULT",
   "ronaStateOnCisco":"Call Not Answered",
   "isCiscoEnabled":true,
-  "isCxVoiceEnabled":true,
+  "isCxVoiceEnabled":false,
   "CISCO_CC_MRD":"20316843be924c8ab4f57a7a",
   "CX_VOICE_MRD": "62f9e360ea5311eda05b0242",
   "SIP_SOCKET_URL": "wss://192.168.1.17:7443",
