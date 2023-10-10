@@ -2152,8 +2152,7 @@
             <button
               mat-icon-button
               class="quoted-message-cancel"
-              (click)="quotedMessage = ''; replyToMessageId = null; commentId = null; privateMessageReply = null"
-            >
+              (click)="quotedMessage = ''; replyToMessageId = null; commentId = null; privateMessageReply = null; disablingAttatchButtonForInstagramReply = false">
               <mat-icon>close</mat-icon>
             </button>
           </div>
@@ -2344,7 +2343,7 @@
                 conversation.messageComposerState &&
                 conversationSettings.isFileSharingEnabled &&
                 _socketService.isSocketConnected &&
-                !isInstagramChannel(conversation.activeChannelSessions[0].channel)
+                !disablingAttatchButtonForInstagramReply
               "
             >
               <input
