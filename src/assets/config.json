@@ -3,7 +3,7 @@
   "SOCKET_URL": "https://devops216.ef.com/agent-manager",
   "FILE_SERVER_URL": "https://devops216.ef.com/file-engine",
   "CCM_URL": "https://devops216.ef.com/ccm",
-  "CIM_CUSTOMER_URL": "https://devops216.ef.com/cim",
+  "CIM_CUSTOMER_URL": "https://devops216.ef.com/cim-customer",
   "CONVERSATION_MANAGER_URL": "https://devops216.ef.com/conversation-manager",
   "ROUTING_ENGINE_URL": "https://devops216.ef.com/routing-engine",
   "CIM_REPORTING_URL":"https://devops216.ef.com/realtime-reports",
