@@ -4,6 +4,7 @@ let UserName, userId;
 let entities = config && config.entities ? config.entities.split(',') : undefined;
 let clicktoDial = "";
 let newURL = "";
+var agentMrdStates;
 
 var script = document.createElement("script")
 script.type = "text/javascript";
@@ -71,10 +72,10 @@ if (window.addEventListener) {
         try {
             var incomingData;
             console.log('in the Application CTI' + JSON.stringify(e));
-            if(typeof e.data == "string")
-             incomingData = JSON.parse(e.data);
-             else
-             incomingData= e.data;
+            if (typeof e.data == "string")
+                incomingData = JSON.parse(e.data);
+            else
+                incomingData = e.data;
             //new code jazeb
             if (incomingData.event == "newInboundCall") {
                 console.log("ringing call event data ", incomingData);
@@ -103,21 +104,24 @@ if (window.addEventListener) {
                 }
                 window.parent.postMessage(message, "*");
             }
-            if (e.data.event = "Agent_Desk_Event") {
-                if(e.data.agentData.agentPresence)
-                this.localStorage.setItem("agentId", e.data.agentData.agentPresence.agent.id);
+            if (e.data.event == "Agent_Desk_Event") {
+                if (e.data.agentData.agentPresence)
+                    this.localStorage.setItem("agentId", e.data.agentData.agentPresence.agent.id);
+                agentMrdStates = e.data.agentData.agentPresence.agentMrdStates;
             }
-            // if(e.data.event == "CRM_Event"){
-            //     switch(e.data.state){
-            //         case "READY" :
-            //             ReadyPostMessage();
-            //             break;
-            //         case "NOT_READY" :
-            //             NotReadyPostMessage();
-            //             break;
-            //     }
-            // }
-
+            if (e.data.event == "Connector_Event_CRM") {
+                switch (e.data.agentData.state) {
+                    case "READY":
+                        ReadyPostMessage();
+                        break;
+                    case "NOT_READY":
+                        NotReadyPostMessage();
+                        break;
+                }
+            }
+            if (e.data.event == "Connector_Event_CRM_MRD") {
+                changeMrdPostMessage(e.data.agentData.name, e.data.agentData.state);
+            }
             //
 
             if (e.data.type == "multimatch") {
@@ -851,7 +855,7 @@ function ReadyPostMessage() {
         }
     }
     window.postMessage(obj, "*");
-    console.log("postMessasge sent ",obj);
+    console.log("postMessasge sent ", obj);
 }
 function NotReadyPostMessage() {
     var agentId = localStorage.getItem("agentId");
@@ -863,17 +867,24 @@ function NotReadyPostMessage() {
         }
     }
     window.postMessage(obj, "*");
-    console.log("postMessasge sent ",obj);
+    console.log("postMessasge sent ", obj);
 }
-function LogoutPostMessage() {
+function changeMrdPostMessage(name, state) {
     var agentId = localStorage.getItem("agentId");
+    var mrdID = findMrdIdByName(name);
+
     var obj = {
-        event: "Connector_Event", agentData: {
+        event: "changeAgentState", agentData: {
             agentId: agentId,
-            action: "agentState",
-            state: "LOGOUT"
+            action: "agentMRDState",
+            state: state,
+            mrdId: mrdID
         }
     }
     window.postMessage(obj, "*");
-    console.log("postMessasge sent ",obj);
+    console.log("postMessasge sent ", obj);
+}
+function findMrdIdByName(mrdName) {
+    const mrd = agentMrdStates.find(m => m.mrd.name === mrdName);
+    return mrd ? mrd.mrd.id : null;
 }
