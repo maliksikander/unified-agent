@@ -1204,10 +1204,11 @@
                                   }}</span>
                                 </li>
                                 <ng-container *ngIf="message.body.data.callLegs.length == 2">
+                                  <!-- matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
+                                    message.body.data.callLegs[0]?.additionalDetail?.dialog?.queueName ? message.body.data.callLegs[0]?.additionalDetail?.dialog?.queueName : 'N/A'
+                                  }}" -->
                                   <li
-                                    matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
-                                      callLeg?.additionalDetail?.dialog?.queueName ? callLeg?.additionalDetail?.dialog?.queueName : 'N/A'
-                                    }}"
+                                   
                                     *ngIf="message.body.data.callLegs | checkConsultCall"
                                     class="agent-pic call-services"
                                   >
@@ -1313,14 +1314,6 @@
                                         </ng-container>
                                       </ng-container>
                                     </ng-container>
-                                    <!-- <span
-                                  *ngFor="let reasonCode of message.body.data?.dialog?.wrapUpReason | sliceFilter:0:2">
-                                  {{reasonCode }}
-                                </span>
-
-                                <span *ngIf="message.body.data?.dialog?.wrapUpReason.length > 2" class="sub-tags"
-                                  [matMenuTriggerFor]="voiceTags">+{{message.body.data?.dialog?.wrapUpReason.length -
-                                  2}}</span> -->
                                   </li>
                                 </ng-container>
                                 <li>
@@ -1331,12 +1324,6 @@
                                 </li>
                               </ul>
                             </div>
-                            <!-- <mat-menu #voiceTags="matMenu">
-                            <div class="more-section-tags">
-                              <span
-                                *ngFor="let reasonCode of message.body.data?.dialog?.wrapUpReason">{{reasonCode}}</span>
-                            </div>
-                          </mat-menu> -->
                           </mat-panel-title>
                         </mat-expansion-panel-header>
                         <ng-container *ngIf="message.body.data.callLegs.length > 1 && !(message.body.data.callLegs | checkConsultCall)">
