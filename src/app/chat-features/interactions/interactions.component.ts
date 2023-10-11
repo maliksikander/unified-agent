@@ -16,7 +16,9 @@ import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
 import { TranslateService } from "@ngx-translate/core";
 import { CallControlsComponent } from "../../new-components/call-controls/call-controls.component";
 import { SipService } from "src/app/services/sip.service";
-import { HighlightResult } from "ngx-highlightjs";
+import { HighlightResult } from 'ngx-highlightjs';
+import { SendSmsComponent } from "../send-sms/send-sms.component";
+
 
 // declare var EmojiPicker: any;
 
@@ -59,6 +61,7 @@ export class InteractionsComponent implements OnInit {
   timer: any = "00:00";
   cxVoiceSession: any;
   isAudioPlaying: boolean[] = [];
+  isDialogClosed;
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -109,6 +112,14 @@ export class InteractionsComponent implements OnInit {
   postComments: any = null;
   sendTypingStartedEventTimer: any = null;
   onMessageSuggestions = false;
+  getDialogData;
+  // messageData: any= {
+  //   name: 'Martin Gupital',
+  //   //phone: '030012345',
+  //  // message: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary,'
+
+  // }
+
 
   constructor(
     private _sharedService: sharedService,
@@ -124,7 +135,7 @@ export class InteractionsComponent implements OnInit {
     private _translateService: TranslateService
   ) {}
   ngOnInit() {
-    //  console.log("i am called hello")
+
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
     }
@@ -160,6 +171,13 @@ export class InteractionsComponent implements OnInit {
       if (this._sipService.isCallActive == true && this._sipService.isToolbarActive == false) this.ctiControlBar();
       this.getVoiceChannelSession();
     }
+    //this._cacheService.smsDialogData ||
+   if(this.conversation.conversationId === 'FAKE_CONVERSATION'){
+    this.conversation.messages = [];
+    this.loadPastActivities('FAKE_CONVERSATION');
+    
+   }
+
   }
 
   loadLabels() {
@@ -294,6 +312,21 @@ export class InteractionsComponent implements OnInit {
     this.dialog.open(templateRef, {
       panelClass: "wrap-dialog"
     });
+  }
+
+  openOutboundSmsDialog(){
+
+    const dialogRef = this.dialog.open(SendSmsComponent, {
+      maxWidth: "700px",
+      width: "100%",
+      panelClass: "send-sms-dialog",
+      data: {info:this._cacheService.smsDialogData},
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+
+    });
+    this._cacheService.clearOutboundSmsDialogData();
+    this._socketService.topicUnsub(this.conversation);
   }
 
   //To open the quoted area
@@ -798,18 +831,58 @@ export class InteractionsComponent implements OnInit {
             event.data.header.channelSession = event.channelSession;
           }
         }
+
+        //(event.data.header && event.data.header.sender && event.data.header.sender.type.toLowerCase() == "connector")
+        if (event.data.header && event.data.header.sender && event.data.header.sender.type.toLowerCase() == "connector") {
+          event.data.header.sender.senderName = event.data.header.customer.firstName + " " + event.data.header.customer.lastName;
+          event.data.header.sender.id = event.data.header.customer._id;
+          event.data.header.sender.type = "CUSTOMER";
+        }
         if (
           event.name.toLowerCase() == "agent_message" ||
           event.name.toLowerCase() == "bot_message" ||
-          event.name.toLowerCase() == "customer_message"
+          event.name.toLowerCase() == "customer_message" 
         ) {
           if (event.name.toLowerCase() == "customer_message" && event.data.header.sender.type.toLowerCase() == "connector") {
             event.data.header.sender.senderName = event.data.header.customer.firstName + " " + event.data.header.customer.lastName;
             event.data.header.sender.id = event.data.header.customer._id;
             event.data.header.sender.type = "CUSTOMER";
           }
-          event.data.header["status"] = "seen";
+        
+        event.data.header["status"] = "seen";
           msgs.push(event.data);
+        } else if (event.name.toLowerCase() == "third_party_activity") {
+         
+           if (event.data.header.channelData.additionalAttributes.length > 0) {
+
+            const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => { return e.value.toLowerCase() == "outbound" });
+            if (isOutBoundSMSType) {
+              event.data.body['type'] = 'outboundsms';
+
+              const smsChannelType = this.filterChannelType('sms');
+              if (smsChannelType) {
+                event.data.header.channelSession.channel.channelType = smsChannelType;
+              }
+              msgs.push(event.data);
+            }
+          } 
+          if(event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain' ){
+            const fakeChannelSession={
+              "channel":{
+                "channelType": event.data.header.schedulingMetaData.channelType,
+              },
+              "channelData":event.data.header.channelData,
+            }
+            event.data.header['channelSession']=fakeChannelSession;
+            let status = this._socketService.getSchduledActivityStatus(cimEvents,event.data.id);
+
+            if(status){
+             event.data.header['scheduledStatus'] = status;
+            }
+            
+            msgs.push(event.data);
+            
+          }
         } else if (
           [
             "task_enqueued",
@@ -865,6 +938,13 @@ export class InteractionsComponent implements OnInit {
     } catch (e) {
       console.error("[Load Past Activity] Filter Error :", e);
     }
+  }
+
+  filterChannelType(channelTypeName) {
+    const channelType = this._sharedService.channelTypeList.find((channelType) => { return channelType.name.toLowerCase() == channelTypeName.toLowerCase() });
+
+    return channelType;
+
   }
 
   //when enter key is pressed
