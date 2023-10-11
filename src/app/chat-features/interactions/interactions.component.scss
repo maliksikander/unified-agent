@@ -1084,6 +1084,19 @@
         vertical-align: middle;
         min-width: 42px;
 
+        &.section-tags{
+          display: flex;
+          flex-flow: nowrap;
+          justify-content: flex-start;
+            span{
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: pre;
+              max-width: 150px;
+              align-self: center;
+            }
+          }
+
         &:last-child {
           border-right: 0;
         }
