@@ -157,7 +157,7 @@ export class socketService {
 
     this.socket.on("agentPresence", (res: any) => {
       console.log("agent presence==>", res);
-      if (res.action == "AGENT_STATE_CHANGED") {
+      if (res.action == "AGENT_STATE_CHANGED" || res.action == "AGENT_STATE_UNCHANGED" ) {
         this.sendPostMessage(res);
       }
 

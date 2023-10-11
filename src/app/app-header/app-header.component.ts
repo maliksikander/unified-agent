@@ -84,8 +84,11 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     window.addEventListener("message", function (e) {
       if (e.data && e.data.event && e.data.event == "Connector_Event") {
         if (e.data.agentData.action == "agentState") {
-          console.log("agentstate event received==>");
-          _THIS.pocStateChange(e);
+          console.log("agent state event received==>", e);
+          _THIS.pocAgentStateChange(e);
+        } else if (e.data.agentData.action == "agentMRDState") {
+          console.log("mrd state event received==>", e);
+          _THIS.pocMRDStateChange(e);
         }
       }
     });
@@ -198,16 +201,32 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     this.countupTimerService.startTimer();
   }
 
-  pocStateChange(e) {
-    // let state;
-    // if(e.data.agentData.state == "NOT_READY") state = { name: e.data.agentData.state, reasonCode: null }
-    // if(e.data.agentData.state == "READY") state = { name: e.data.agentData.state, reasonCode: null }
-    if (e.data.agentData.agentId) {
-      this._socketService.emit("changeAgentState", {
-        agentId: e.data.agentData.agentId,
-        action: "agentState",
-        state: { name: e.data.agentData.state, reasonCode: null }
-      });
+  pocAgentStateChange(e) {
+    try {
+      if (e.data.agentData.agentId) {
+        this._socketService.emit("changeAgentState", {
+          agentId: e.data.agentData.agentId,
+          action: "agentState",
+          state: { name: e.data.agentData.state, reasonCode: null }
+        });
+      }
+    } catch (e) {
+      console.error("[Error] pocAgentStateChange ==>", e);
+    }
+  }
+
+  pocMRDStateChange(e) {
+    try {
+      if (e.data.agentData.agentId) {
+        this._socketService.emit("changeAgentState", {
+          agentId: e.data.agentData.agentId,
+          action: "agentMRDState",
+          state: e.data.agentData.state,
+          mrdId: e.data.agentData.mrdId
+        });
+      }
+    } catch (e) {
+      console.error("[Error] pocMRDStateChange ==>", e);
     }
   }
 

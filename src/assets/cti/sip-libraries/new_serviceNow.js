@@ -1,3 +1,4 @@
+
 let entity = "";
 let currentRecordId = "";
 let UserName, userId;
@@ -30,7 +31,7 @@ script.onload = function () {
 //fillMatchedRecords is function name
 //let recordsArray = [];
 //for (let i = 0; i < count; i++) {
-//    recordsArray.push({ Id: res[i][Id], Name: res[i][Name] });
+//    recordsArray.push({ Id: res[i][Id], Name: res[i][Name] });
 //}
 
 //if (window.addEventListener) {
