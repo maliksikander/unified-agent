@@ -1085,6 +1085,19 @@
         min-width: 42px;
         line-height: 21px;
 
+        &.section-tags{
+          display: flex;
+          flex-flow: nowrap;
+          justify-content: flex-start;
+            span{
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: pre;
+              max-width: 150px;
+              align-self: center;
+            }
+          }
+
         &:last-child {
           border-right: 0;
         }
@@ -3857,87 +3870,45 @@ vg-controls.hide {
   }
 }
 
+.activity-number-ellipsis{
+  max-width: 7.188rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+  display: inherit;
+}
+
+.activity-queue-ellipsis{
+    max-width: 12.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre;
+    border-radius: 0 !important;
+}
+
 .private-reply-icon{
   cursor: pointer;
 }
 
-
-//
-.outboundsms{
-  .panel-header{
-    li{
-      color: #000;
-    }
-  }
+.play-btn{
+  .mat-flat-button.mat-accent,
+  .mat-raised-button.mat-accent,
+  .mat-fab.mat-accent,
+  .mat-mini-fab.mat-accent {
+    background-color: #BDDBB1 !important;
 }
 
-button.back-to-sms{
-  background: $main-color-background;
-
-  margin-right: 10px;
-
-
-  border: 2px;
-  margin-right: 10px;
-  border-radius: 100%;
-  width: 32px;
-  height: 32px;
-
-
-  mat-icon{
-    font-size: 20px;
-    color: $main-color;
-    text-align: center;
-    display: inline;
-    vertical-align: baseline;
+  button.mat-mini-fab.mat-button-base.mat-accent {
+      width: 1.5rem;
+      height: 1.5rem;
+      vertical-align: middle;
+      box-shadow: none;
+     
   }
-}
-
-//Scheduled activity
-.sms{
-  .chat-time.file-type-stamp{
-    display: none;
+  i.material-icons {
+    position: relative;
+    top: -0.563rem;
+    font-size: 1.125rem;
+    place-content: center;
   }
-  .wrap-up-header{
-    ul{
-      &:after{
-        display: none !important;
-      }
-    }
-  }
-
-  .profile-pic{
-    .active-channel{
-      display: none;
-      opacity: 0;
-    }
-    .user-img{
-      img{
-        width: 17px !important;
-        top: -2px !important;
-      }
-    }
-  }
-}
-
-.abc{
-  position: absolute;
-}
-
-.chat-message.app{
-  opacity: 1 !important;
-  .profile-pic-area mat-icon {
-    line-height: 35px; 
-    color: #CE0101;
-  }
- mat-expansion-panel-header{
-  padding-left: 2em;
-
- }
-}
-
-.voice{
-  .plain-text-check{
-    display: none !important;
-    }
 }

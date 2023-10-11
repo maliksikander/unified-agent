@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, SimpleChanges, ViewChild, ViewChildren } from "@angular/core";
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
@@ -39,6 +39,7 @@ export class InteractionsComponent implements OnInit {
   @ViewChild("media", { static: false }) media: ElementRef;
   @ViewChild("mainScreen", { static: false }) elementViewSuggestions: ElementRef;
   @ViewChild("consultTransferTrigger", { static: false }) consultTransferTrigger: any;
+  @ViewChildren("callRecording") audioPlayers: QueryList<ElementRef>;
 
   isWhisperMode: boolean = false;
   dispayVideoPIP = true;
@@ -52,12 +53,14 @@ export class InteractionsComponent implements OnInit {
   selectedCommentId: string;
   lastSeenMessageId;
   pastActivitiesloadedOnce: boolean = false;
+  disablingAttatchButtonForInstagramReply: boolean = false;
   // isTransfer = false;
   // isConsult = false;
   ctiBarView = true;
   ctiBoxView = false;
   timer: any = "00:00";
   cxVoiceSession: any;
+  isAudioPlaying: boolean[] = [];
   isDialogClosed;
 
   ngAfterViewInit() {
@@ -251,6 +254,7 @@ export class InteractionsComponent implements OnInit {
   }
   //replyToFBComment
   replyToComment(message) {
+    this.checkChannelTypeForAttatchementButton(message);
     this.commentPostId = message.body.postId;
     this.replyToMessageId = message.id;
     this.commentId = message.header.providerMessageId;
@@ -272,6 +276,14 @@ export class InteractionsComponent implements OnInit {
       }
     } else {
       this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-the-request"), "err");
+    }
+  }
+
+  checkChannelTypeForAttatchementButton(message) {
+    if (message.body.type === "COMMENT" && message.header.channelSession.channel.channelType.name === "INSTAGRAM")
+      this.disablingAttatchButtonForInstagramReply = true;
+    else {
+      console.log("it is false buddy .....");
     }
   }
 
@@ -481,9 +493,10 @@ export class InteractionsComponent implements OnInit {
       }
     }
   }
-  eventFromChild(data) { this.isBarOpened = data;}
+  eventFromChild(data) {
+    this.isBarOpened = data;
+  }
 
-  
   eventFromChildForUpdatedLabel(data) {
     this.labels = data;
   }
@@ -685,11 +698,6 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  isInstagramChannel(channel) {
-    if ((this.replyToMessageId && this.privateMessageReply) || this.replyToMessageId) {
-      return channel.channelType.name === "INSTAGRAM";
-    }
-  }
   constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?, wrapups?, note?) {
     if (this._socketService.isSocketConnected) {
       let message = this.getCimMessage();
@@ -1348,5 +1356,20 @@ export class InteractionsComponent implements OnInit {
 
   formatNumber(num) {
     return num.toString().padStart(2, "0");
+  }
+
+  previousRecording;
+  toggleAudioPlayback(index: number): void {
+    let audioArray: Array<any> = this.audioPlayers.toArray();
+    const arrayIndex = audioArray.findIndex((item) => index == item.nativeElement.id);
+    const audioElement: HTMLAudioElement = this.audioPlayers.toArray()[arrayIndex].nativeElement;
+    if (audioElement.paused) {
+      if (this.previousRecording) this.previousRecording.pause();
+      audioElement.play();
+      this.previousRecording = audioElement;
+    } else {
+      audioElement.pause();
+    }
+    this.isAudioPlaying[arrayIndex] = !audioElement.paused;
   }
 }

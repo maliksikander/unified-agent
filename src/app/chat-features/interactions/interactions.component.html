@@ -155,7 +155,7 @@
               <button mat-menu-item>
                 <span class="agent-detail">
                   <span *ngIf="'customer' | authPipe: 'view_pii' as result; else manage_pii">
-                    {{ conversation.customer.firstName}}
+                    {{ conversation.customer.firstName }}
                     {{ conversation.customer.lastName }}
                   </span>
                   <ng-template #manage_pii>
@@ -1150,27 +1150,39 @@
                           <mat-panel-title>
                             <div class="panel-header">
                               <ul>
-                                <li>
-                                  <span class="phone-number">
+                                <li matTooltip="{{ 'snackbar.Customer-No' | translate }}: {{ message.body.data.callLegs | getCustomerAni }}">
+                                  <span class="phone-number activity-number-ellipsis">
                                     {{ message.body.data.callLegs | getCustomerAni }}
                                   </span>
                                 </li>
 
-                                <li *ngIf="message.body.data.callLegs.length < 2" class="agent-pic call-services">
-                                  <span>{{
+                                <li
+                                  matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
+                                    message.body.data.callLegs[0].additionalDetail.dialog?.queueName
+                                      ? message.body.data.callLegs[0].additionalDetail.dialog?.queueName
+                                      : 'N/A'
+                                  }}"
+                                  *ngIf="message.body.data.callLegs.length < 2"
+                                  class="agent-pic call-services"
+                                >
+                                  <span class="activity-queue-ellipsis">{{
                                     message.body.data.callLegs[0].additionalDetail.dialog?.queueName
                                     ? message.body.data.callLegs[0].additionalDetail.dialog?.queueName
                                     : "N/A"
                                     }}</span>
                                 </li>
                                 <ng-container *ngIf="message.body.data.callLegs.length == 2">
-                                  <li *ngIf="message.body.data.callLegs | checkConsultCall"
-                                    class="agent-pic call-services">
-                                    <span>
+                                  <li *ngIf="message.body.data.callLegs | checkConsultCall" class="agent-pic call-services">
+                                    <span class="activity-queue-ellipsis">
                                       <ng-container *ngFor="let callLeg of message.body.data.callLegs">
                                         <ng-container *ngIf="callLeg.startDirection != 'CONSULT'">
-                                          {{ callLeg?.additionalDetail?.dialog?.queueName ?
-                                          callLeg?.additionalDetail?.dialog?.queueName : "N/A" }}
+                                          <span
+                                            matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
+                                              callLeg?.additionalDetail?.dialog?.queueName ? callLeg?.additionalDetail?.dialog?.queueName : 'N/A'
+                                            }}"
+                                          >
+                                            {{ callLeg?.additionalDetail?.dialog?.queueName ? callLeg?.additionalDetail?.dialog?.queueName : "N/A" }}
+                                          </span>
                                         </ng-container>
                                       </ng-container>
                                     </span>
@@ -1227,24 +1239,48 @@
                                 </li>
 
                                 <ng-container *ngIf="message.body.data.callLegs.length < 2">
-                                  <li *ngIf="message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason"
-                                    class="section-tags">
-                                    <span>
-                                      {{
-                                      message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason
-                                      ? message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason
-                                      : "N/A"
-                                      }}
-                                    </span>
+                                  <li *ngIf="message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason" class="section-tags">
+                                    <ng-container
+                                      *ngIf="
+                                        message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems &&
+                                        message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems.length == 0
+                                      "
+                                    >
+                                      <span>
+                                        {{
+                                          message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason
+                                            ? message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason
+                                            : "N/A"
+                                        }}
+                                      </span>
+                                    </ng-container>
 
-                                    <!-- <span
-                                  *ngFor="let reasonCode of message.body.data?.dialog?.wrapUpReason | sliceFilter:0:2">
-                                  {{reasonCode }}
-                                </span>
-
-                                <span *ngIf="message.body.data?.dialog?.wrapUpReason.length > 2" class="sub-tags"
-                                  [matMenuTriggerFor]="voiceTags">+{{message.body.data?.dialog?.wrapUpReason.length -
-                                  2}}</span> -->
+                                    <ng-container
+                                      *ngIf="
+                                        message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems &&
+                                        message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems.length > 0
+                                      "
+                                    >
+                                      <span
+                                        matTooltip="{{ wrapup }}"
+                                        *ngFor="let wrapup of message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems | sliceFilter: 0:1"
+                                      >
+                                        {{ wrapup }}
+                                      </span>
+                                      <ng-container *ngIf="message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems?.length > 1">
+                                        <ng-container
+                                          *ngIf="
+                                            message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems
+                                              | sliceFilter: 1:message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems?.length;
+                                            let remainingValues
+                                          "
+                                        >
+                                          <span matTooltip="{{ remainingValues?.join(', ') }}"
+                                            >+{{ message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems?.length - 1 }}</span
+                                          >
+                                        </ng-container>
+                                      </ng-container>
+                                    </ng-container>
                                   </li>
                                 </ng-container>
                                 <li>
@@ -1252,14 +1288,15 @@
                                   <time *ngIf="message.body.data.callLegs | checkConferenceCall">-{{
                                     message.body.data.endTime | date: "shortTime" }}</time>
                                 </li>
+
+                                <li *ngIf="message?.body?.data?.recordingUrl" class="agent-pic play-btn">
+                                  <button mat-mini-fab (click)="toggleAudioPlayback(index)">
+                                    <i class="material-icons">{{ callRecording.paused ? "play_arrow" : "pause" }} </i>
+                                  </button>
+                                  <audio id="{{ index }}" #callRecording src="{{message?.body?.data?.recordingUrl}}"></audio>
+                                </li>
                               </ul>
                             </div>
-                            <!-- <mat-menu #voiceTags="matMenu">
-                            <div class="more-section-tags">
-                              <span
-                                *ngFor="let reasonCode of message.body.data?.dialog?.wrapUpReason">{{reasonCode}}</span>
-                            </div>
-                          </mat-menu> -->
                           </mat-panel-title>
                         </mat-expansion-panel-header>
                         <ng-container
@@ -1291,19 +1328,21 @@
                                       </ng-container>
                                     </li>
 
-                                    <li class="agent-pic call-services">
-                                      <span>{{
-                                        callData?.additionalDetail?.dialog?.queueName ?
-                                        callData?.additionalDetail?.dialog?.queueName : "N/A"
-                                        }}</span>
+                                    <li
+                                      matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
+                                        callData?.additionalDetail?.dialog?.queueName ? callData?.additionalDetail?.dialog?.queueName : 'N/A'
+                                      }}"
+                                      class="agent-pic call-services"
+                                    >
+                                      <span class="activity-queue-ellipsis">{{
+                                        callData?.additionalDetail?.dialog?.queueName ? callData?.additionalDetail?.dialog?.queueName : "N/A"
+                                      }}</span>
                                     </li>
 
                                     <li class="section-duration">
-                                      <!-- <time>{{ callData.duration ? callData.duration :
-                                      "N/A"
-                                      }}sec</time> -->
-                                      <time *ngIf="callData.duration > 0">{{ callData.duration * 1000 | date: "mm" }}min
-                                        {{ callData.duration * 1000 | date: "ss" }}sec</time>
+                                      <time *ngIf="callData.duration > 0"
+                                        >{{ callData.duration * 1000 | date: "mm" }}min {{ callData.duration * 1000 | date: "ss" }}sec</time
+                                      >
                                       <time *ngIf="callData.duration == 0">{{ callData.duration }} sec</time>
                                     </li>
 
@@ -1326,12 +1365,27 @@
 
                                     <!-- <ng-container *ngIf="message.body.data.callLegs.length < 2"> -->
                                     <li *ngIf="callData.additionalDetail?.dialog?.wrapUpReason" class="section-tags">
-                                      <span>
-                                        {{
-                                        callData?.additionalDetail?.dialog?.wrapUpReason ?
-                                        callData?.additionalDetail?.dialog?.wrapUpReason : "N/A"
-                                        }}
-                                      </span>
+                                      <ng-container
+                                        *ngIf="
+                                          callData.additionalDetail?.dialog?.wrapUpItems && callData.additionalDetail?.dialog?.wrapUpItems.length == 0
+                                        "
+                                      >
+                                        <span>
+                                          {{
+                                            callData.additionalDetail?.dialog?.wrapUpReason ? callData.additionalDetail?.dialog?.wrapUpReason : "N/A"
+                                          }}
+                                        </span>
+                                      </ng-container>
+
+                                      <ng-container
+                                        *ngIf="
+                                          callData.additionalDetail?.dialog?.wrapUpItems && callData.additionalDetail?.dialog?.wrapUpItems.length > 0
+                                        "
+                                      >
+                                        <span *ngFor="let wrapup of callData.additionalDetail?.dialog?.wrapUpItems">
+                                          {{ wrapup }}
+                                        </span>
+                                      </ng-container>
                                       <!-- <span *ngFor="let reasonCode of callData.dialog?.wrapUpReason | sliceFilter:0:2">
                                   {{reasonCode }}
                                 </span>
@@ -1340,9 +1394,6 @@
                                   [matMenuTriggerFor]="multiVoiceTags">+{{callData.dialog?.wrapUpReason.length -
                                   2}}</span> -->
                                     </li>
-                                    <!-- <li>
-                                  <time>{{ message.header.timestamp | date: "shortTime" }}</time>
-                                </li> -->
                                   </ul>
                                 </div>
                               </div>
@@ -1950,7 +2001,7 @@
                 <!--                </span>-->
                 <span class="inner-text">
                   <span>{{ message.body.displayText }}</span> <span>{{ " " + message.body.markdownText }}</span>
-                  <span class="notification-time">{{ message.header.timestamp | date: "H:mm:ss" }}</span>
+                  <span class="notification-time">{{ message.header.timestamp | date: "shortTime" }}</span>
                 </span>
               </div>
               <!-- ----------------------------------system Notifications ended-------------------------------- -->
@@ -2017,16 +2068,23 @@
 
       <div class="message-composer">
         <div class="whisper-selection" *ngIf="conversation?.agentParticipants?.length > 0">
-          <button (click)="isWhisperMode = false" [ngClass]="{ 'customer-select': !isWhisperMode }"
-            *ngIf="conversation.topicParticipant.role != 'SILENT_MONITOR'" class="customer-mode message-mode"
-            mat-button>
+          <button
+            (click)="isWhisperMode = false"
+            [ngClass]="{ 'customer-select': !isWhisperMode }"
+            *ngIf="conversation.topicParticipant.role != 'SILENT_MONITOR'"
+            class="customer-mode message-mode"
+            mat-button
+          >
             <span *ngIf="'customer' | authPipe: 'view_pii' as result; else manage_pii">{{
-              conversation.customer?.firstName ? conversation.customer.firstName : ("globals.not-applicable" |
-              translate) }}</span>
+              conversation.customer?.firstName ? conversation.customer.firstName : ("globals.not-applicable" | translate)
+            }}</span>
             <ng-template #manage_pii>
               <span>
-                {{ conversation.customer?.firstName ? ((conversation.customer.firstName | maskPIIAttribute :
-                ('firstName' | returnSchemaByKey))) : ("globals.not-applicable" | translate) }}
+                {{
+                  conversation.customer?.firstName
+                    ? (conversation.customer.firstName | maskPIIAttribute: ("firstName" | returnSchemaByKey))
+                    : ("globals.not-applicable" | translate)
+                }}
               </span>
             </ng-template>
           </button>
@@ -2072,7 +2130,13 @@
             <button
               mat-icon-button
               class="quoted-message-cancel"
-              (click)="quotedMessage = ''; replyToMessageId = null; commentId = null; privateMessageReply = null"
+              (click)="
+                quotedMessage = '';
+                replyToMessageId = null;
+                commentId = null;
+                privateMessageReply = null;
+                disablingAttatchButtonForInstagramReply = false
+              "
             >
               <mat-icon>close</mat-icon>
             </button>
@@ -2243,7 +2307,7 @@
                 conversation.messageComposerState &&
                 conversationSettings.isFileSharingEnabled &&
                 _socketService.isSocketConnected &&
-                !isInstagramChannel(conversation.activeChannelSessions[0].channel)
+                !disablingAttatchButtonForInstagramReply
               "
             >
               <input
