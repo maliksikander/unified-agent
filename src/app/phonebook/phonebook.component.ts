@@ -248,9 +248,9 @@ export class PhonebookComponent implements OnInit {
   // to open user customer action dialog
   onRowClick(id, tab, col) {
     const dialogRef = this.dialog.open(CustomerActionsComponent, {
-      panelClass: "edit-customer-dialog",
+      panelClass: "create-customer-dialog",
       maxWidth: "80vw",
-      maxHeight: "88vh",
+      // maxHeight: "88vh",
       // width: "818px",
       // height: "88vh",
       data: { id: id, tab: "edit" }

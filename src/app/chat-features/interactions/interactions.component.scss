@@ -3869,3 +3869,26 @@ vg-controls.hide {
 .private-reply-icon{
   cursor: pointer;
 }
+
+.play-btn{
+  .mat-flat-button.mat-accent,
+  .mat-raised-button.mat-accent,
+  .mat-fab.mat-accent,
+  .mat-mini-fab.mat-accent {
+    background-color: #BDDBB1 !important;
+}
+
+  button.mat-mini-fab.mat-button-base.mat-accent {
+      width: 1.5rem;
+      height: 1.5rem;
+      vertical-align: middle;
+      box-shadow: none;
+     
+  }
+  i.material-icons {
+    position: relative;
+    top: -0.563rem;
+    font-size: 1.125rem;
+    place-content: center;
+  }
+}

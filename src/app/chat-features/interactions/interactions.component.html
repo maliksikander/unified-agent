@@ -1204,18 +1204,17 @@
                                   }}</span>
                                 </li>
                                 <ng-container *ngIf="message.body.data.callLegs.length == 2">
-                                  <!-- matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
-                                    message.body.data.callLegs[0]?.additionalDetail?.dialog?.queueName ? message.body.data.callLegs[0]?.additionalDetail?.dialog?.queueName : 'N/A'
-                                  }}" -->
-                                  <li
-                                   
-                                    *ngIf="message.body.data.callLegs | checkConsultCall"
-                                    class="agent-pic call-services"
-                                  >
+                                  <li *ngIf="message.body.data.callLegs | checkConsultCall" class="agent-pic call-services">
                                     <span class="activity-queue-ellipsis">
                                       <ng-container *ngFor="let callLeg of message.body.data.callLegs">
                                         <ng-container *ngIf="callLeg.startDirection != 'CONSULT'">
-                                          {{ callLeg?.additionalDetail?.dialog?.queueName ? callLeg?.additionalDetail?.dialog?.queueName : "N/A" }}
+                                          <span
+                                            matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
+                                              callLeg?.additionalDetail?.dialog?.queueName ? callLeg?.additionalDetail?.dialog?.queueName : 'N/A'
+                                            }}"
+                                          >
+                                            {{ callLeg?.additionalDetail?.dialog?.queueName ? callLeg?.additionalDetail?.dialog?.queueName : "N/A" }}
+                                          </span>
                                         </ng-container>
                                       </ng-container>
                                     </span>
@@ -1321,6 +1320,13 @@
                                   <time *ngIf="message.body.data.callLegs | checkConferenceCall"
                                     >-{{ message.body.data.endTime | date: "shortTime" }}</time
                                   >
+                                </li>
+
+                                <li *ngIf="message?.body?.data?.recordingLink" class="agent-pic play-btn">
+                                  <button mat-mini-fab (click)="toggleAudioPlayback(index)">
+                                    <i class="material-icons">{{ callRecording.paused ? "play_arrow" : "pause" }} </i>
+                                  </button>
+                                  <audio id="{{ index }}" #callRecording src="{{message?.body?.data?.recordingLink}}"></audio>
                                 </li>
                               </ul>
                             </div>
@@ -2139,7 +2145,14 @@
             <button
               mat-icon-button
               class="quoted-message-cancel"
-              (click)="quotedMessage = ''; replyToMessageId = null; commentId = null; privateMessageReply = null; disablingAttatchButtonForInstagramReply = false">
+              (click)="
+                quotedMessage = '';
+                replyToMessageId = null;
+                commentId = null;
+                privateMessageReply = null;
+                disablingAttatchButtonForInstagramReply = false
+              "
+            >
               <mat-icon>close</mat-icon>
             </button>
           </div>
