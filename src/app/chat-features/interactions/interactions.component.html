@@ -1322,11 +1322,11 @@
                                   >
                                 </li>
 
-                                <li *ngIf="message?.body?.data?.recordingLink" class="agent-pic play-btn">
+                                <li *ngIf="message?.body?.data?.recordingUrl" class="agent-pic play-btn">
                                   <button mat-mini-fab (click)="toggleAudioPlayback(index)">
                                     <i class="material-icons">{{ callRecording.paused ? "play_arrow" : "pause" }} </i>
                                   </button>
-                                  <audio id="{{ index }}" #callRecording src="{{message?.body?.data?.recordingLink}}"></audio>
+                                  <audio id="{{ index }}" #callRecording src="{{message?.body?.data?.recordingUrl}}"></audio>
                                 </li>
                               </ul>
                             </div>
