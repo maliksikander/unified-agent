@@ -836,6 +836,12 @@ button.close-menu-mobile {
     .customer-info-dp{
       //float: left;
       width: 165px !important;
+
+      mat-icon{
+        width: 40px !important;
+        height: 40px !important;
+        line-height: 40px !important;
+      }
     }
     .call-actions{
       min-width: 170px !important;
@@ -864,6 +870,8 @@ button.close-menu-mobile {
     display: inline-block !important;
   }
 }
+
+
 }
 
 

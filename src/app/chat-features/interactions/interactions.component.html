@@ -38,7 +38,7 @@
 <!--            <mat-icon>search</mat-icon>-->
 <!--          </button>-->
           <button mat-button class="chat-controls-mobile" *ngIf="isMobileDevice"  [matMenuTriggerFor]="agentControllForMobile" ><mat-icon>more_vert</mat-icon></button>
-          <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}" *ngIf="_sipService.isCallActive && !ctiBarView"
+          <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}" *ngIf="isCallActive && !ctiBarView"
                   matTooltip="Chat" aria-label="Chat">
             <mat-icon>question_answer</mat-icon>
           </button>
@@ -54,8 +54,12 @@
 <!--                  matTooltip="Chat" aria-label="Chat">-->
 <!--            <mat-icon>question_answer</mat-icon>-->
 <!--          </button>-->
-          <ul class="list-group list-group-horizontal agent-controls call-controls" *ngIf="_sipService.isCallActive && !ctiBarView && !isMobileDevice">
-            <li class="list-group-item" *ngIf="_sipService.isCallActive && !ctiBarView">
+          <button mat-icon-button (click)="ctiControlBar()"
+                  matTooltip="Chat" aria-label="Chat">
+            <mat-icon>question_answer</mat-icon>
+          </button>
+          <ul class="list-group list-group-horizontal agent-controls call-controls" *ngIf="isCallActive && !ctiBarView && !isMobileDevice">
+            <li class="list-group-item" *ngIf="isCallActive && !ctiBarView">
               <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}"
                       matTooltip="Chat" aria-label="Chat">
                 <mat-icon>question_answer</mat-icon>
@@ -349,14 +353,20 @@
       </div>
     </div>
     <!--/Top bar-->
-<div #fullViewConversation class="main-conversation-feature {{chatDuringCall || ( _sipService.isCallActive && isBotSuggestions) ||  (isConversationView && isBotSuggestions) ? 'dual-column-display' :  (_sipService.isCallActive || isConversationView) && !isBotSuggestions ? 'full-column-display nnnn'  :'full-column-display'}}
+<!--<div #fullViewConversation class="main-conversation-feature {{chatDuringCall || ( isCallActive && isBotSuggestions) ||  (isConversationView && isBotSuggestions) ? 'dual-column-display' :  (isCallActive || isConversationView) && !isBotSuggestions ? 'full-column-display nnnn'  :'full-column-display'}}-->
+<!--{{fullScreenView ? 'full-screen-call':''}}"-->
+<!--     [ngClass]="{'call-in-progress': isVideoCall || isAudioCall, 'smart-call-controls':ctiBarView, 'bot-suggestions-active': isBotSuggestions, 'chat-view-active': isConversationView, 'multi-column-display' : chatDuringCall && isBotSuggestions, 'chat-suggestion-view' : isConversationView && isBotSuggestions && !chatDuringCall}">-->
+
+
+<!--    <div class="video-feature-main  nn {{isAudioCall}} nn {{isCallActive}} kk {{ctiBarView}}" *ngIf="!ctiBarView" >-->
+<!--      <div class="sub-call-participants">-->
+    <div #fullViewConversation class="main-conversation-feature {{chatDuringCall || ( isCallActive && isBotSuggestions) ||  (isConversationView && isBotSuggestions) ? 'dual-column-display' :  (isCallActive || isConversationView) && !isBotSuggestions ? 'full-column-display nnnn'  :'full-column-display'}}
 {{fullScreenView ? 'full-screen-call':''}}"
-     [ngClass]="{'call-in-progress': isVideoCall || isAudioCall, 'smart-call-controls':ctiBarView, 'bot-suggestions-active': isBotSuggestions, 'chat-view-active': isConversationView, 'multi-column-display' : chatDuringCall && isBotSuggestions, 'chat-suggestion-view' : isConversationView && isBotSuggestions && !chatDuringCall}">
+         [ngClass]="{'call-in-progress': isVideoCall || isAudioCall, 'smart-call-controls':ctiBarView, 'bot-suggestions-active': isBotSuggestions, 'chat-view-active': isConversationView, 'multi-column-display' : chatDuringCall && isBotSuggestions, 'chat-suggestion-view' : isConversationView && isBotSuggestions && !chatDuringCall}">
 
 
-    <div class="video-feature-main  nn {{isAudioCall}} nn {{isCallActive}} kk {{ctiBarView}}" *ngIf="!ctiBarView &&  isCallActive" >
-      <div class="sub-call-participants">
-
+      <div class="video-feature-main  nn {{isAudioCall}} nn {{isCallActive}} kk {{ctiBarView}}" *ngIf="!ctiBarView &&  isCallActive" >
+        <div class="sub-call-participants">
 
 
         <span (click)="videoSwitch('jm')" *ngFor="let callParticipant of _sipService?.callData?.participants">

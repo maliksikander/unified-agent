@@ -1333,6 +1333,8 @@ export class InteractionsComponent implements OnInit {
     this.isConversationView = true;
     this.ctiBoxView = true;
     this.ctiBarView = true;
+    this.isAudioCall = true;
+this.isCallActive = true;
     this.chatDuringCall = false;
     const dialogRef = this.dialog.open(CallControlsComponent, {
       panelClass: "call-controls-dialog",
