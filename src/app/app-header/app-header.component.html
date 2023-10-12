@@ -112,6 +112,9 @@
           <span class="time_state">{{display | date :"HH:mm:ss":'UTC'}}</span>
 
         </div> -->
+        <button *ngIf="_sharedService.conversationSettings.isOutboundSmsEnabled && _sharedService.conversationSettings.isOutboundSmsEnabled == true" class="sms-trigger"  mat-icon-button color="primary"
+         (click)="openMessageDialog()"><mat-icon >message</mat-icon></button>
+
         <div class="announcement-trigger-area">
           <span class="notification-hint" *ngIf="unreadAnnouncements > 0">{{ unreadAnnouncements }}</span>
           <button mat-icon-button class="announcement-trigger" [ngClass]="{'announcement-tab-opened': sidenav.opened}"
