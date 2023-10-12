@@ -11,11 +11,14 @@
   </button>
 </div>
 
-<mat-dialog-content class="main-content main-content-action main-action-form">
-  <div *ngIf="userIni && schemaIni" class="main-content-create-customer">
+<mat-dialog-content class="main-content-create-customer">
+  <ng-container *ngIf="userIni && schemaIni">
     <form [formGroup]="customerForm">
       <div class="row row-customer-form">
-        <ng-container *ngFor="let schemaAttribute of schemaAttributes">
+        <ng-container  *ngFor="let schemaAttribute of schemaAttributes">
+          <!-- <div class="main-col"> -->
+          <!-- [ngStyle]="{'display':  !editTab && (customerForm.get(schemaAttribute.key).value == undefined || customerForm.get(schemaAttribute.key).value.length == 0 || customerForm.get(schemaAttribute.key).value == null || customerForm.get(schemaAttribute.key).value == '' || customerForm.get(schemaAttribute.key)?.value[0] == '') ? 'none' : 'inline-block' }" -->
+
           <div
             [ngClass]="[schemaAttribute.length >= 116 ? 'col-md-12' : 'col-md-6']"
             class="input-field {{ schemaAttribute.key }}"
@@ -73,9 +76,9 @@
 
             <ng-container *ngIf="schemaAttribute.isChannelIdentifier == false">
               <div class="field-set" *ngIf="schemaAttribute.type != 'boolean' && schemaAttribute.key != 'labels'">
-                <div [ngClass]="{ 'header-padding': !editTab }" class="lbl">
+                <label [ngClass]="{ 'header-padding': !editTab }" class="field-label">
                   {{ schemaAttribute.label }}<span class="red-clr" *ngIf="schemaAttribute.isRequired">*</span>
-                </div>
+                </label>
 
                 <mat-form-field [ngClass]="{ 'read-view': !editTab }" class="field" appearance="outline">
                   <input [readonly]="!editTab" formControlName="{{ schemaAttribute.key }}" matInput />
@@ -96,7 +99,7 @@
 
             <ng-container *ngIf="schemaAttribute.isChannelIdentifier == true" formArrayName="{{ schemaAttribute.key }}">
               <div class="field-set" *ngIf="schemaAttribute.type != 'boolean'">
-                <div [ngClass]="{ 'header-padding': !editTab }" class="lbl">
+                <label [ngClass]="{ 'header-padding': !editTab }" class="field-label">
                   {{ schemaAttribute.label }}<span class="red-clr" *ngIf="schemaAttribute.isRequired">*</span>
                   <span class="field-channel"
                     ><img
@@ -104,7 +107,7 @@
                       [src]="channelType | channelName | channelLogo | async"
                       matTooltip="{{ channelType }}"
                   /></span>
-                </div>
+                </label>
                 <ng-container *ngFor="let attr of getFormControls(schemaAttribute); let i = index">
                   <mat-form-field [ngClass]="{ 'read-view': !editTab }" class="field" appearance="outline">
                     <input [readonly]="!editTab" matInput [formControlName]="i" />
@@ -170,7 +173,7 @@
 
             <!-- Boolean -->
             <div *ngIf="schemaAttribute.type == 'boolean' && schemaAttribute.key != 'isAnonymous'" class="check-box">
-              <div [ngClass]="{ 'header-padding': !editTab }" class="lbl">{{ schemaAttribute.label }}</div>
+              <label [ngClass]="{ 'header-padding': !editTab }" class="field-label">{{ schemaAttribute.label }}</label>
               <mat-checkbox *ngIf="editTab" [ngClass]="{ 'margin-left': !editTab }" [formControlName]="schemaAttribute.key" matInput></mat-checkbox>
               <div class="check-box-readview" *ngIf="!editTab">
                 {{ customerForm.get(schemaAttribute.key).value == true ? "TRUE" : "FALSE" }}
@@ -262,7 +265,7 @@
         </ng-container>
       </div>
     </form>
-  </div>
+  </ng-container>
 </mat-dialog-content>
 <mat-dialog-actions>
   <!--  <div class="sticky-buttons">-->

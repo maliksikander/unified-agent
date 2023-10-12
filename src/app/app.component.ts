@@ -45,9 +45,9 @@ export class AppComponent implements OnInit, AfterViewInit{
       this.isMobile = true;
       console.log('this.mainArea.nativeElement.offsetWidth ', this.mainArea.nativeElement.offsetWidth);
 
-      this.chackCompactView(this.isMobile);
+      this.checkCompactView(this.isMobile);
     } else {
-      this.chackCompactView(false);
+      this.checkCompactView(false);
 
     }
 
@@ -83,7 +83,7 @@ export class AppComponent implements OnInit, AfterViewInit{
       this._sharedService.channelTypeList = channelTypes;
     }
   }
-  chackCompactView(e) {
+  checkCompactView(e) {
     this._sharedService.isCompactView = e;
   }
   ngAfterViewInit() {

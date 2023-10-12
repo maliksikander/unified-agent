@@ -58,7 +58,7 @@
     "Confirm":"Confirm_ita",
     "Cancel":"Cancel_ita",
     "Incoming-Call-Alert":"Incoming Call Alert_ita",
-    "Incoming-call-alert-request":"Incoming call alert request : _ita",
+    "Incoming-call-alert-request":"Incoming call request from : _ita",
     "CHAT-REQUESTED":"CHAT REQUESTED_ita",
     "Incoming-chat-request-on-push-mode-on":"Incoming chat request on push mode on _ita",
     "Incoming-chat-request-on-pull-mode-on":"Incoming chat request on pull mode on _ita",
@@ -98,7 +98,9 @@
     "Socket-Connected":"Socket Connected_ita",
     "Calling":"Calling_ita",
     "CX-Voice-Connected":"CX VOICE Connected_ita",
-    "Call-Ended":"Call Ended_ita"
+    "Call-Ended":"Call Ended_ita",
+    "Customer-No":"Customer No_ita",
+    "queue-name":"Queue Name_ita"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ita",

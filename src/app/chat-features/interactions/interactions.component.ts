@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input,Inject, OnInit, Output, QueryList, SimpleChanges, ViewChild, ViewChildren } from "@angular/core";
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
@@ -41,6 +41,7 @@ export class InteractionsComponent implements OnInit {
   @ViewChild("media", { static: false }) media: ElementRef;
   @ViewChild("mainScreen", { static: false }) elementViewSuggestions: ElementRef;
   @ViewChild("consultTransferTrigger", { static: false }) consultTransferTrigger: any;
+  @ViewChildren("callRecording") audioPlayers: QueryList<ElementRef>;
 
   isWhisperMode: boolean = false;
   dispayVideoPIP = true;
@@ -54,12 +55,14 @@ export class InteractionsComponent implements OnInit {
   selectedCommentId: string;
   lastSeenMessageId;
   pastActivitiesloadedOnce: boolean = false;
+  disablingAttatchButtonForInstagramReply: boolean = false;
   // isTransfer = false;
   // isConsult = false;
   ctiBarView = false;
   ctiBoxView = false;
   timer: any = "00:00";
   cxVoiceSession: any;
+  isAudioPlaying: boolean[] = [];
   isDialogClosed;
 
   chatDuringCall = false;
@@ -276,6 +279,7 @@ export class InteractionsComponent implements OnInit {
   }
   //replyToFBComment
   replyToComment(message) {
+    this.checkChannelTypeForAttatchementButton(message);
     this.commentPostId = message.body.postId;
     this.replyToMessageId = message.id;
     this.commentId = message.header.providerMessageId;
@@ -297,6 +301,14 @@ export class InteractionsComponent implements OnInit {
       }
     } else {
       this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-the-request"), "err");
+    }
+  }
+
+  checkChannelTypeForAttatchementButton(message) {
+    if (message.body.type === "COMMENT" && message.header.channelSession.channel.channelType.name === "INSTAGRAM")
+      this.disablingAttatchButtonForInstagramReply = true;
+    else {
+      console.log("it is false buddy .....");
     }
   }
 
@@ -506,8 +518,9 @@ export class InteractionsComponent implements OnInit {
       }
     }
   }
-  eventFromChild(data) { this.isBarOpened = data;}
-
+  eventFromChild(data) {
+    this.isBarOpened = data;
+  }
 
   eventFromChildForUpdatedLabel(data) {
     this.labels = data;
@@ -710,11 +723,6 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  isInstagramChannel(channel) {
-    if ((this.replyToMessageId && this.privateMessageReply) || this.replyToMessageId) {
-      return channel.channelType.name === "INSTAGRAM";
-    }
-  }
   constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?, wrapups?, note?) {
     if (this._socketService.isSocketConnected) {
       let message = this.getCimMessage();
@@ -1334,8 +1342,10 @@ export class InteractionsComponent implements OnInit {
     this.ctiBoxView = true;
     this.ctiBarView = true;
     this.isAudioCall = true;
-this.isCallActive = true;
+    this.isCallActive = true;
     this.chatDuringCall = false;
+    this._sipService.isToolbarActive = true;
+    this._sipService.isToolbarDocked = false;
     const dialogRef = this.dialog.open(CallControlsComponent, {
       panelClass: "call-controls-dialog",
       hasBackdrop: false,
@@ -1347,15 +1357,9 @@ this.isCallActive = true;
       data: { conversation: this.conversation }
     });
     dialogRef.afterClosed().subscribe((result) => {
-      // this.router.navigate(["/customers/chats"]);
       this.isAudioCall = true;
       this.ctiCallActive();
-      // this.chatDuringCall = true;
-      // this.isBotSuggestions = false;
-      // this.isConversationView = true;
-      // console.log(this.chatDuringCall, 'chat chatDuringCall')
-      // this.ctiBoxView = false;
-      // this.ctiBarView = false;
+      this._sipService.isToolbarDocked = true;
       if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
     });
   }
@@ -1417,6 +1421,21 @@ this.isCallActive = true;
     return num.toString().padStart(2, "0");
   }
 
+  previousRecording;
+  toggleAudioPlayback(index: number): void {
+    let audioArray: Array<any> = this.audioPlayers.toArray();
+    const arrayIndex = audioArray.findIndex((item) => index == item.nativeElement.id);
+    const audioElement: HTMLAudioElement = this.audioPlayers.toArray()[arrayIndex].nativeElement;
+    if (audioElement.paused) {
+      if (this.previousRecording) this.previousRecording.pause();
+      audioElement.play();
+      this.previousRecording = audioElement;
+    } else {
+      audioElement.pause();
+    }
+    this.isAudioPlaying[arrayIndex] = !audioElement.paused;
+  }
+
 
   chatInCall(){
     this.chatDuringCall = !this.chatDuringCall;
@@ -1473,29 +1492,4 @@ this.isCallActive = true;
     this.isAudioCall = false;
     this.chatDuringCall = false;
   }
-  //
-  // // canDeactivate(): Observable<boolean> | boolean {
-  // //   console.log('hello2222')
-  // //   return true;
-  // //
-  // // }
-  // confirm() {
-  //   return this.isAudioCall;
-  //
-  // }
-  // canDeactivate(): Promise<any> | boolean {
-  //   const confirmResult = confirm('Are you sure you want to leave this page ? ');
-  //   if (confirmResult === true) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-  //
-  //
-  // ngOnDestroy() {
-  //   this.unsubscribe.next();
-  //   console.log('hello')
-  // }
-
 }

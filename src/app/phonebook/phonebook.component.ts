@@ -36,11 +36,8 @@ export class PhonebookComponent implements OnInit {
     this._translateService.stream("globals.Search").subscribe((data: string) => {
       this.labelSettings.searchPlaceholderText = data;
     });
-    // this.getScreenSize();
   }
-  // @HostListener('window:resize', ['$event'])
-  // screenHeight: number;
-  // screenWidth: number;
+
   customers;
   topicCustomerId;
   paramsSubscription;
@@ -264,11 +261,10 @@ export class PhonebookComponent implements OnInit {
 
   // to open user customer action dialog
   onRowClick(id, tab, col) {
-    console.log(id, 'customer-id')
     const dialogRef = this.dialog.open(CustomerActionsComponent, {
-      panelClass: "edit-customer-dialog" + `${this.isMobileDevice ? '-mobile-view-panel' : ''}`,
+      panelClass: "create-customer-dialog" + `${this.isMobileDevice ? '-mobile-view-panel' : ''}`,
       maxWidth: "80vw",
-      maxHeight: "88vh",
+      // maxHeight: "88vh",
       // width: "818px",
       // height: "88vh",
       data: { id: id, tab: "edit" }
@@ -398,14 +394,4 @@ export class PhonebookComponent implements OnInit {
     this.selectedSearchLabel = e.value;
     this.selectedSearchField = field;
   }
-
-  // getScreenSize() {
-  //   // this.screenHeight = window.innerHeight;
-  //   // this.screenWidth = window.innerWidth;
-  //   this.screenWidth = window.innerWidth;
-  //   console.log(this.screenWidth);
-  //   if (this.screenWidth < 768) {
-  //     this.isMobileDevice = true;
-  //   }
-  // }
 }

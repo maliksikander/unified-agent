@@ -1,6 +1,7 @@
 var CIMCallback = {};
 var dialogsIdArray = [];
 var callsResumedArray = [];
+var callsDNArray = [];
 
 $(document).ready(function (){
     var logoutFlag = localStorage.getItem("logoutFlag");
@@ -9,6 +10,7 @@ $(document).ready(function (){
         CIMCallback.callbackFunction = window[parameter];
         dialogsIdArray = JSON.parse(localStorage.getItem("dialogsIdArray"));
         callsResumedArray = JSON.parse(localStorage.getItem("callsResumedArray"));
+        callsDNArray = JSON.parse(localStorage.getItem("callsDNArray"));
     }
 });
 
@@ -19,7 +21,7 @@ var wrapperCallbackFunction = function (event) {
         event = wrapper_processDialog(event);
     let shouldClearDialogsArray = wrapper_checkIfShouldClearDialogsArray(event);
     if(shouldClearDialogsArray)
-        wrapper_clearDialogsArray();
+        wrapper_clearDialogsArray(event);
     CIMCallback.callbackFunction(event)
     //console.log(CIMCallback.callbackFunction)
 }
@@ -41,6 +43,7 @@ function executeCommands(commandRequest) {
         case "registerCallback":
             console.log(commandRequest);
             storeCallback(commandRequest);
+            break;
         case "login":
             commandRequest.parameter.clientCallbackFunction = wrapperCallbackFunction;
             login(commandRequest);
@@ -240,7 +243,10 @@ function wrapper_processDialog(event){
         if(event.response.dialog.state == "DROPPED" || event.response.dialog.state == "FAILED"){
             wrapper_removeDialog(event.response.dialog.id);
             wrapper_removeResumedCall(event.response.dialog.id);
+            wrapper_removeDNCalls(event.response.dialog.id);
         }
+        if(event.response.dialog && event.response.dialog.dialedNumber)
+            wrapper_storeDN(event);
 
         var currentCallVariableValue = wrapper_getCurrentCallVariableValue(event.response.dialog, config.callVariable);
         if(currentCallVariableValue == ""){
@@ -255,6 +261,13 @@ function wrapper_processDialog(event){
             else
                 event.response.dialog.primaryDN = event.response.dialog.dialedNumber;
         }
+
+        if(config.finesseFlavor == "UCCX" && event.response.dialog.dialedNumber == "" && wrapper_checkIfCallDNExist(event.response.dialog.id) == true){
+            event.response.dialog.dialedNumber = wrapper_getDialedNumberFailoverCase(event.response.dialog.id)
+            if(event.response.dialog.primaryDN == "")
+                event.response.dialog.primaryDN = event.response.dialog.dialedNumber;
+        }
+
         if(wrapper_callExist)
             return event;
     }catch(err){
@@ -263,11 +276,46 @@ function wrapper_processDialog(event){
 
 }
 
-function wrapper_clearDialogsArray(){
+function wrapper_checkIfCallDNExist(callId) {
+    if(callsDNArray){
+        for (let i = 0; i < callsDNArray.length; i++) {
+            if (callsDNArray[i] && callsDNArray[i].callId == callId) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function wrapper_getDialedNumberFailoverCase(callId) {
+    if(callsDNArray){
+        for (let i = 0; i < callsDNArray.length; i++) {
+            if (callsDNArray[i] && callsDNArray[i].callId == callId) {
+                return callsDNArray[i].DN;
+            }
+        }
+    }
+    return "";
+}
+
+function wrapper_storeDN(event){
+    let DN = event.response.dialog.dialedNumber;
+    let callId = event.response.dialog.id;
+    let isDNAlreadyPushed = wrapper_checkIfCallDNExist(callId);
+    if(isDNAlreadyPushed == false){
+        callsDNArray.push({"DN": DN, "callId":callId})
+        localStorage.setItem("callsDNArray", JSON.stringify(callsDNArray));
+    }
+}
+
+function wrapper_clearDialogsArray(event){
     dialogsIdArray = [];
     callsResumedArray = [];
+    callsDNArray = [];
     localStorage.setItem("dialogsIdArray", JSON.stringify(dialogsIdArray));
     localStorage.setItem("callsResumedArray", JSON.stringify(callsResumedArray));
+    if(event.event == "agentState" && event.response.state == "READY")
+        localStorage.setItem("callsDNArray", JSON.stringify(callsDNArray));
 }
 
 function wrapper_removeDialog(callid){
@@ -290,6 +338,24 @@ function wrapper_removeResumedCall(id) {
                     callsResumedArray = [];
                 }
                 localStorage.setItem("callsResumedArray", JSON.stringify(callsResumedArray));
+            }
+        }
+    }catch(err){
+        console.error(err);
+    }
+}
+
+function wrapper_removeDNCalls(id) {
+    try{
+        var i = 0;
+        var callsInList = callsDNArray.length;
+        for (var i = 0; i < callsDNArray.length; i++) {
+            if (callsDNArray[i].callId == id) {
+                callsDNArray.splice(i, 1);
+                if (callsInList == 1) {
+                    callsDNArray = [];
+                }
+                localStorage.setItem("callsDNArray", JSON.stringify(callsDNArray));
             }
         }
     }catch(err){

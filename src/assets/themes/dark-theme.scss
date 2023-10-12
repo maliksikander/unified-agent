@@ -1885,7 +1885,12 @@ em{
       }
     }
   }
+  .play-btn{
 
+    i.material-icons {
+      color: #2e2e42 !important;
+    }
+  }
 
   .mat-form-field-appearance-outline:not(.mat-form-field-disabled) .mat-form-field-flex:hover .mat-form-field-outline-thick {
     opacity: .5;
