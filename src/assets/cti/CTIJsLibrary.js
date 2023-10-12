@@ -705,7 +705,7 @@ function checkLoginAfterFailover(userEvent){
             }
         break;
         case "UCCE":
-            if(userEvent.state == "NOT_READY" && userEvent.reasonCode && userEvent.reasonCode.label == "Connection Failure" ){ //|| userEvent.state == "TALKING"
+            if(userEvent.state == "NOT_READY" && userEvent.reasonCode && userEvent.reasonCode.label == "Connection Failure" || userEvent.state == "TALKING" ){ //|| userEvent.state == "TALKING"
                 console.log("failoverAgentStateData.state: ", failoverAgentStateData.state);
                 if(failoverAgentStateData.state != null && failoverAgentStateData.state.toLowerCase() == "ready"){
                     makeUserReady(params.username);
