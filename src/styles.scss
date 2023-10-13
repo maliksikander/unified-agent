@@ -1321,6 +1321,8 @@ snack-bar-container {
 .new-announcement-dialog {
   max-width: 900px !important;
   width: 100%;
+  margin-left: 15px;
+  margin-right: 15px;
 
   .mat-dialog-container {
     padding: 0 !important;

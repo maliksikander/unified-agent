@@ -28,7 +28,8 @@
 <!--    </ul>-->
 
     <ul class="call-actions">
-      <li><button mat-fab (click)="cancel()"><mat-icon>picture_in_picture</mat-icon></button></li>
+
+<!--      <li><button mat-fab (click)="cancel()"><mat-icon>picture_in_picture</mat-icon></button></li>-->
 
       <li><button matTooltip="{{_sipService.isMuted == false ? ('globals.mute' | translate) : ('globals.unMute' | translate)}}" (click)="muteUnmuteCall()" mat-fab><mat-icon>
             <ng-container *ngIf="_sipService.isMuted == false">mic</ng-container>

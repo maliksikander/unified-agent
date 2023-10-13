@@ -1357,8 +1357,8 @@ export class InteractionsComponent implements OnInit {
       data: { conversation: this.conversation }
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.isAudioCall = true;
-      this.ctiCallActive();
+      // this.isAudioCall = true;
+      // this.ctiCallActive();
       this._sipService.isToolbarDocked = true;
       if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
     });
