@@ -18,7 +18,7 @@ import { CallControlsComponent } from "../../new-components/call-controls/call-c
 import { SipService } from "src/app/services/sip.service";
 import { HighlightResult } from 'ngx-highlightjs';
 import { SendSmsComponent } from "../send-sms/send-sms.component";
-import {DOCUMENT} from '@angular/common';
+// import {DOCUMENT} from '@angular/common';
 
 
 // declare var EmojiPicker: any;
@@ -145,7 +145,7 @@ export class InteractionsComponent implements OnInit {
     private snackBar: MatSnackBar,
     public _sipService: SipService,
     private _translateService: TranslateService,
-    @Inject(DOCUMENT) private document: any
+    // @Inject(DOCUMENT) public documentScreen: any
   ) {}
   ngOnInit() {
     this.isCallActive = this._sipService.isCallActive;
@@ -1302,15 +1302,15 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  ctiCallActive() {
-    this.ctiBoxView = false;
-    this.ctiBarView = false;
-    this.isAudioCall = true;
-    this.isConversationView = false;
-    if (this.fullScreenView) {
-      this.exitFullscreen();
-    }
-  }
+  // ctiCallActive() {
+  //   this.ctiBoxView = false;
+  //   this.ctiBarView = false;
+  //   this.isAudioCall = true;
+  //   this.isConversationView = false;
+  //   if (this.fullScreenView) {
+  //     this.exitFullscreen();
+  //   }
+  // }
   // ctiControlBar() {
   //   this.isConversationView = true;
   //   this.ctiBoxView = true;
@@ -1465,25 +1465,25 @@ export class InteractionsComponent implements OnInit {
     }
   }
   /*  Close fullscreen  */
-  exitFullscreen() {
-    if (this.fullScreenView) {
-      if (document.exitFullscreen) {
-        this.document.exitFullscreen();
-        this.fullScreenView = false;
-      } else if (this.document.mozCancelFullScreen) {
-        /* Firefox */
-        this.document.mozCancelFullScreen();
-      } else if (this.document.webkitExitFullscreen) {
-        /* Chrome, Safari and Opera */
-        this.document.webkitExitFullscreen();
-      } else if (this.document.msExitFullscreen) {
-        /* IE/Edge */
-        this.document.msExitFullscreen();
-      }
-    } else {
-      return;
-    }
-  }
+  // exitFullscreen() {
+  //   if (this.fullScreenView) {
+  //     if (document.exitFullscreen) {
+  //       this.documentScreen.exitFullscreen();
+  //       this.fullScreenView = false;
+  //     } else if (this.documentScreen.mozCancelFullScreen) {
+  //       /* Firefox */
+  //       this.documentScreen.mozCancelFullScreen();
+  //     } else if (this.documentScreen.webkitExitFullscreen) {
+  //       /* Chrome, Safari and Opera */
+  //       this.documentScreen.webkitExitFullscreen();
+  //     } else if (this.documentScreen.msExitFullscreen) {
+  //       /* IE/Edge */
+  //       this.documentScreen.msExitFullscreen();
+  //     }
+  //   } else {
+  //     return;
+  //   }
+  // }
 
   endActiveCall(){
     this.isVideoCall = false;
