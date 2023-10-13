@@ -145,7 +145,7 @@ export class InteractionsComponent implements OnInit {
     // setTimeout(() => {
     //   new EmojiPicker();
     // }, 500);
-    this.isWhisperMode = this.conversation.topicParticipant.role == "SILENT_MONITOR" ? true : false;
+    this.isWhisperMode = (this.conversation.topicParticipant.role == "SILENT_MONITOR" || this.conversation.topicParticipant.role == "ASSISTANT") ? true : false;
     this.conversationSettings = this._sharedService.conversationSettings;
     this.loadLabels();
 
@@ -208,6 +208,14 @@ export class InteractionsComponent implements OnInit {
       conversationId: this.conversation.conversationId
     };
     this._socketService.emit("JoinAsBargin", obj);
+  }
+
+  moveToWhisperMode() {
+    let obj = {
+      participantId: this.conversation.topicParticipant.participant.id,
+      conversationId: this.conversation.conversationId
+    };
+    this._socketService.emit("moveToWhisperMode", obj);
   }
 
   onSend(text) {
@@ -361,7 +369,8 @@ export class InteractionsComponent implements OnInit {
       document.hasFocus() &&
       messageForSeenNotification &&
       messageForSeenNotification.id != this.lastSeenMessageId &&
-      this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor"
+      this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor" &&
+      this.conversation.topicParticipant.role.toLowerCase() != "assistant"
     ) {
       const data = {
         id: uuidv4(),
@@ -458,7 +467,7 @@ export class InteractionsComponent implements OnInit {
   //to send typing event
   sendTypingEvent() {
     if (!this.sendTypingStartedEventTimer) {
-      if (this._socketService.isSocketConnected && this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor" && !this.isWhisperMode) {
+      if (this._socketService.isSocketConnected && this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor" && this.conversation.topicParticipant.role.toLowerCase() != "assistant" && !this.isWhisperMode) {
         let message = this.getCimMessage();
         let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
         if (selectedChannelSession) {

@@ -11,9 +11,15 @@
       <div class="row">
         <div class="col-md-4 col-sm-4 customer-showcase">
           <!-- //*ngIf="isDialogClosed" -->
-          <button *ngIf="_cacheService.smsDialogData"
-          class="back-to-sms" mat-icon-button (click)="openOutboundSmsDialog()" matTooltip="Back to send-sms">
-           <mat-icon>keyboard_backspace</mat-icon></button>
+          <button
+            *ngIf="_cacheService.smsDialogData"
+            class="back-to-sms"
+            mat-icon-button
+            (click)="openOutboundSmsDialog()"
+            matTooltip="Back to send-sms"
+          >
+            <mat-icon>keyboard_backspace</mat-icon>
+          </button>
           <h3 matTooltipPosition="right" class="customer-highlight">
             {{ conversation.customer.firstName | getFirstTwoLetters }}
             <!--            <span class="channel-icon">-->
@@ -42,16 +48,21 @@
               *ngIf="
                 conversation.conversationId != 'FAKE_CONVERSATION' &&
                 conversation.topicParticipant.role != 'SILENT_MONITOR' &&
+                conversation.topicParticipant.role != 'ASSISTANT' &&
                 ('agent-conversation-control' | authPipe: 'view_wrap_up') as result
               "
             >
               <li class="list-group-item">
-<!--                <button mat-fab matTooltip="{{ 'chat-features.interactions.wrapup' | translate }}" aria-label="WrapUp"-->
-<!--                  (click)="openWrapUpDialog(false)">-->
-<!--                  <img alt="Note" src="assets/images/note.svg" />-->
-<!--                </button>-->
-                <button mat-fab matTooltip="{{ 'chat-features.interactions.wrapup' | translate }}" aria-label="WrapUp"
-                        (click)="openWrapUpDialog(false)">
+                <!--                <button mat-fab matTooltip="{{ 'chat-features.interactions.wrapup' | translate }}" aria-label="WrapUp"-->
+                <!--                  (click)="openWrapUpDialog(false)">-->
+                <!--                  <img alt="Note" src="assets/images/note.svg" />-->
+                <!--                </button>-->
+                <button
+                  mat-fab
+                  matTooltip="{{ 'chat-features.interactions.wrapup' | translate }}"
+                  aria-label="WrapUp"
+                  (click)="openWrapUpDialog(false)"
+                >
                   <img alt="Note" src="assets/images/note.svg" />
                 </button>
               </li>
@@ -67,6 +78,14 @@
               </button>
             </li>
             <li class="list-group-item" *ngIf="conversation.topicParticipant.role == 'SILENT_MONITOR'">
+              <button mat-icon-button class="barge-in" matTooltip="Whisper" (click)="moveToWhisperMode()">
+                <img alt="whisper" src="assets/images/whisper.svg" />
+              </button>
+            </li>
+            <li
+              class="list-group-item"
+              *ngIf="conversation.topicParticipant.role == 'SILENT_MONITOR' || conversation.topicParticipant.role == 'ASSISTANT'"
+            >
               <button mat-icon-button class="barge-in" matTooltip="Barge-in" (click)="BargeIn()">
                 <mat-icon>chat_bubble</mat-icon>
               </button>
@@ -181,12 +200,12 @@
               <button mat-menu-item>
                 <span class="agent-detail">
                   <span *ngIf="'customer' | authPipe: 'view_pii' as result; else manage_pii">
-                    {{ conversation.customer.firstName}}
+                    {{ conversation.customer.firstName }}
                     {{ conversation.customer.lastName }}
                   </span>
                   <ng-template #manage_pii>
                     <span>
-                      {{ conversation.customer.firstName  | maskPIIAttribute: ("firstName" | returnSchemaByKey)  }}
+                      {{ conversation.customer.firstName | maskPIIAttribute: ("firstName" | returnSchemaByKey) }}
                       {{ conversation.customer.lastName }}
                     </span>
                   </ng-template>
@@ -391,10 +410,11 @@
                 </mat-menu>
               </div>
               <!-- -------------------------------------------------------- -->
-              <div *ngIf="(message.body.type | lowercase) != 'systemnotification' && message.header.channelSession"
-                class="chat-message {{(message.body.type | lowercase)  == 'outboundsms' ? 'voice' : ''}}  {{ message.body.isWhisper ? 'whisper-body' : '' }} {{
-                  message.id != selectedCommentId && (message.isDeleted || message.isHidden) ? 'deleted-hidden-comment' : ''
-                }} {{
+              <div
+                *ngIf="(message.body.type | lowercase) != 'systemnotification' && message.header.channelSession"
+                class="chat-message {{ (message.body.type | lowercase) == 'outboundsms' ? 'voice' : '' }}  {{
+                  message.body.isWhisper ? 'whisper-body' : ''
+                }} {{ message.id != selectedCommentId && (message.isDeleted || message.isHidden) ? 'deleted-hidden-comment' : '' }} {{
                   index == 0 ||
                   ((conversation.messages[index - 1].body.type | lowercase) != 'systemnotification' &&
                     (message.header.sender | getSenderId) == (conversation.messages[index - 1].header.sender | getSenderId) &&
@@ -704,38 +724,37 @@
                           </mat-expansion-panel>
                         </div>
 
+                        <!--------------------------------- Outbound message start----------------------------------------------->
 
-                         <!--------------------------------- Outbound message start----------------------------------------------->
-
-                         <div *ngIf="(referredMessage.body.type | lowercase) == 'outboundsms'"
-                         class="voice-activity-main custom-data-type panel-divider user-data customer-side single outboundsms">
-                      <mat-expansion-panel hideToggle="{{ referredMessage.body.markdownText.length > 50 ? false : true }}"
-                                           disabled="{{   referredMessage.body.markdownText.length > 50 ? false : true }}">
-                        <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
-                          <mat-panel-title>
-                            <div class="panel-header">
-                              <ul>
-                                <li class="agent-pic participant-agent call-services">
-                                  <span matTooltip="test agent">{{referredMessage.header.sender.senderName | getFirstTwoLetters}}</span>
-                                </li>
-                                <li> {{ referredMessage.header.channelData.channelCustomerIdentifier }}
-                                </li>
-                                <li class="message-activity-text" #activityText> {{  referredMessage.body.markdownText }}
-                                </li>
-                                <li>
-                                  <time>{{ referredMessage.header.timestamp | date: "shortTime" }}</time>
-                                </li>
-                              </ul>
+                        <div
+                          *ngIf="(referredMessage.body.type | lowercase) == 'outboundsms'"
+                          class="voice-activity-main custom-data-type panel-divider user-data customer-side single outboundsms"
+                        >
+                          <mat-expansion-panel
+                            hideToggle="{{ referredMessage.body.markdownText.length > 50 ? false : true }}"
+                            disabled="{{ referredMessage.body.markdownText.length > 50 ? false : true }}"
+                          >
+                            <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+                              <mat-panel-title>
+                                <div class="panel-header">
+                                  <ul>
+                                    <li class="agent-pic participant-agent call-services">
+                                      <span matTooltip="test agent">{{ referredMessage.header.sender.senderName | getFirstTwoLetters }}</span>
+                                    </li>
+                                    <li>{{ referredMessage.header.channelData.channelCustomerIdentifier }}</li>
+                                    <li class="message-activity-text" #activityText>{{ referredMessage.body.markdownText }}</li>
+                                    <li>
+                                      <time>{{ referredMessage.header.timestamp | date: "shortTime" }}</time>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="custom-message-type">
+                              <p>{{ referredMessage.body.markdownText }}</p>
                             </div>
-                          </mat-panel-title>
-                        </mat-expansion-panel-header>
-                        <div class="custom-message-type">
-                          <p>{{  referredMessage.body.markdownText }}</p>
-
+                          </mat-expansion-panel>
                         </div>
-                      </mat-expansion-panel>
-                    </div>
-
 
                         <!-- -----------------------------audio--------------------------------------- -->
 
@@ -870,14 +889,22 @@
                     <mat-menu #menu="matMenu">
                       <button mat-menu-item class="reply-trigger" (click)="onQuotedReply(message)">reply</button>
                     </mat-menu>
-                    <div *ngIf="
-                               ((message.body.type | lowercase) != 'outboundsms' && (message.body.type | lowercase) != 'comment' && (message.body.type | lowercase) != 'url' && message.body.markdownText) ||
-                               ((message.body.type | lowercase) == 'comment' && (message.body.itemType | lowercase) == 'text' && (message.header.sender.type | lowercase) == 'agent') ||
-                              ((message.body.type | lowercase) == 'comment' && (message.body.itemType | lowercase) == 'private_reply' && (message.header.sender.type | lowercase) == 'agent')
-                               ">
-
-
-                      <p class="{{
+                    <div
+                      *ngIf="
+                        ((message.body.type | lowercase) != 'outboundsms' &&
+                          (message.body.type | lowercase) != 'comment' &&
+                          (message.body.type | lowercase) != 'url' &&
+                          message.body.markdownText) ||
+                        ((message.body.type | lowercase) == 'comment' &&
+                          (message.body.itemType | lowercase) == 'text' &&
+                          (message.header.sender.type | lowercase) == 'agent') ||
+                        ((message.body.type | lowercase) == 'comment' &&
+                          (message.body.itemType | lowercase) == 'private_reply' &&
+                          (message.header.sender.type | lowercase) == 'agent')
+                      "
+                    >
+                      <p
+                        class="{{
                           (message.header.sender.type | lowercase) == 'customer' && message.botSuggestions ? 'plain-text-p' : ''
                         }} plain-text-check"
                       >
@@ -1077,39 +1104,39 @@
                       </mat-expansion-panel>
                     </div>
 
-
                     <!--------------------------------- Outbound message start----------------------------------------------->
 
-                    <div *ngIf="(message.body.type | lowercase) == 'outboundsms'"
-                      class="voice-activity-main custom-data-type panel-divider user-data customer-side single">
-                   <mat-expansion-panel hideToggle="{{ message.body.markdownText.length > 60 ? false : true }}"
-                                        disabled="{{   message.body.markdownText.length > 60 ? false : true }}">
-                     <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
-                       <mat-panel-title>
-                         <div class="panel-header">
-                           <ul>
-                             <li class="agent-pic participant-agent call-services">
-                               <span matTooltip="{{message.header.sender.senderName}}">{{message.header.sender.senderName | getFirstTwoLetters}}</span>
-                             </li>
-                             <li> {{ message.header.channelData.channelCustomerIdentifier }}
-                             </li>
-                             <li class="message-activity-text"> {{ message.body.markdownText }}
-                             </li>
-                             <li>
-                               <time>{{ message.header.timestamp | date: "shortTime" }}</time>
-                             </li>
-                           </ul>
-                         </div>
-                       </mat-panel-title>
-                     </mat-expansion-panel-header>
-                     <div class="custom-message-type">
-                       <p>{{  message.body.markdownText }}</p>
-
-                     </div>
-                   </mat-expansion-panel>
-                 </div>
-
-
+                    <div
+                      *ngIf="(message.body.type | lowercase) == 'outboundsms'"
+                      class="voice-activity-main custom-data-type panel-divider user-data customer-side single"
+                    >
+                      <mat-expansion-panel
+                        hideToggle="{{ message.body.markdownText.length > 60 ? false : true }}"
+                        disabled="{{ message.body.markdownText.length > 60 ? false : true }}"
+                      >
+                        <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+                          <mat-panel-title>
+                            <div class="panel-header">
+                              <ul>
+                                <li class="agent-pic participant-agent call-services">
+                                  <span matTooltip="{{ message.header.sender.senderName }}">{{
+                                    message.header.sender.senderName | getFirstTwoLetters
+                                  }}</span>
+                                </li>
+                                <li>{{ message.header.channelData.channelCustomerIdentifier }}</li>
+                                <li class="message-activity-text">{{ message.body.markdownText }}</li>
+                                <li>
+                                  <time>{{ message.header.timestamp | date: "shortTime" }}</time>
+                                </li>
+                              </ul>
+                            </div>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="custom-message-type">
+                          <p>{{ message.body.markdownText }}</p>
+                        </div>
+                      </mat-expansion-panel>
+                    </div>
 
                     <!-- -----------------------------audio--------------------------------------- -->
 
@@ -2087,20 +2114,32 @@
       </mat-menu>
 
       <div class="message-composer">
-        <div class="whisper-selection" *ngIf="conversation?.agentParticipants | countPrimaryAgentPartcipants">
+        <div
+          class="whisper-selection"
+          *ngIf="
+            (conversation.topicParticipant.role | lowercase) != 'silent_monitor' && conversation?.agentParticipants
+              | countAgentPartcipants: ['PRIMARY', 'ASSISTANT']
+          "
+        >
           <button
             (click)="isWhisperMode = false"
             [ngClass]="{ 'customer-select': !isWhisperMode }"
-            *ngIf="conversation.topicParticipant.role != 'SILENT_MONITOR'"
+            *ngIf="conversation.topicParticipant.role == 'PRIMARY'"
             class="customer-mode message-mode"
             mat-button
           >
-          <span *ngIf="'customer' | authPipe: 'view_pii' as result; else manage_pii">{{ conversation.customer?.firstName ? conversation.customer.firstName : ("globals.not-applicable" | translate) }}</span>
-          <ng-template #manage_pii>
-            <span>
-              {{ conversation.customer?.firstName ? ((conversation.customer.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey))) : ("globals.not-applicable" | translate) }}
-            </span>
-          </ng-template>
+            <span *ngIf="'customer' | authPipe: 'view_pii' as result; else manage_pii">{{
+              conversation.customer?.firstName ? conversation.customer.firstName : ("globals.not-applicable" | translate)
+            }}</span>
+            <ng-template #manage_pii>
+              <span>
+                {{
+                  conversation.customer?.firstName
+                    ? (conversation.customer.firstName | maskPIIAttribute: ("firstName" | returnSchemaByKey))
+                    : ("globals.not-applicable" | translate)
+                }}
+              </span>
+            </ng-template>
           </button>
           <button (click)="isWhisperMode = true" [ngClass]="{ 'whisper-select': isWhisperMode }" class="whisper-mode message-mode" mat-button>
             {{ "chat-features.interactions.whisper" | translate }}
@@ -2164,7 +2203,8 @@
         </div>
 
         <form
-          class="reply-form {{ (conversation?.agentParticipants | countPrimaryAgentPartcipants )? 'whisper-tabs' : '' }}"
+          *ngIf="(conversation.topicParticipant.role | lowercase) != 'silent_monitor'"
+          class="reply-form {{ (conversation?.agentParticipants | countAgentPartcipants : ['PRIMARY','ASSISTANT'] ) ? 'whisper-tabs' : '' }}"
           [ngClass]="{ 'whisper-mode': isWhisperMode }"
         >
           <label *ngIf="message.length > 0" class="count-reply">{{ replyInput.value.length }}/1000</label>
@@ -2434,7 +2474,7 @@
       </div>
     </ng-template>
     <div class="custom-dialog-main" *ngIf="openWrapDialog || conversation.wrapUpDialog.show">
-      <app-wrap-up-form  [wrapUpData]="wrapUpFormData"  (closeWrapDialog)="closeWrapDialog($event)"></app-wrap-up-form>
+      <app-wrap-up-form [wrapUpData]="wrapUpFormData" (closeWrapDialog)="closeWrapDialog($event)"></app-wrap-up-form>
     </div>
   </div>
 
