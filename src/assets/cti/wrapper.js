@@ -1,7 +1,7 @@
 var CIMCallback = {};
 var dialogsIdArray = [];
 var callsResumedArray = [];
-var callsDNArray = [];
+var callsFailoverData = [];
 
 $(document).ready(function (){
     var logoutFlag = localStorage.getItem("logoutFlag");
@@ -10,7 +10,7 @@ $(document).ready(function (){
         CIMCallback.callbackFunction = window[parameter];
         dialogsIdArray = JSON.parse(localStorage.getItem("dialogsIdArray"));
         callsResumedArray = JSON.parse(localStorage.getItem("callsResumedArray"));
-        callsDNArray = JSON.parse(localStorage.getItem("callsDNArray"));
+        callsFailoverData = JSON.parse(localStorage.getItem("callsFailoverData"));
     }
 });
 
@@ -263,7 +263,8 @@ function wrapper_processDialog(event){
         }
 
         if(config.finesseFlavor == "UCCX" && event.response.dialog.dialedNumber == "" && wrapper_checkIfCallDNExist(event.response.dialog.id) == true){
-            event.response.dialog.dialedNumber = wrapper_getDialedNumberFailoverCase(event.response.dialog.id)
+            event.response.dialog.dialedNumber = wrapper_getDialogDataFailoverCase(event.response.dialog.id, "dialedNumber");
+            event.response.dialog.queueName = wrapper_getDialogDataFailoverCase(event.response.dialog.id, "queueName");
             if(event.response.dialog.primaryDN == "")
                 event.response.dialog.primaryDN = event.response.dialog.dialedNumber;
         }
@@ -277,9 +278,9 @@ function wrapper_processDialog(event){
 }
 
 function wrapper_checkIfCallDNExist(callId) {
-    if(callsDNArray){
-        for (let i = 0; i < callsDNArray.length; i++) {
-            if (callsDNArray[i] && callsDNArray[i].callId == callId) {
+    if(callsFailoverData){
+        for (let i = 0; i < callsFailoverData.length; i++) {
+            if (callsFailoverData[i] && callsFailoverData[i].callId == callId) {
                 return true;
             }
         }
@@ -287,11 +288,11 @@ function wrapper_checkIfCallDNExist(callId) {
     return false;
 }
 
-function wrapper_getDialedNumberFailoverCase(callId) {
-    if(callsDNArray){
-        for (let i = 0; i < callsDNArray.length; i++) {
-            if (callsDNArray[i] && callsDNArray[i].callId == callId) {
-                return callsDNArray[i].DN;
+function wrapper_getDialogDataFailoverCase(callId, propertyToFetch) {
+    if(callsFailoverData){
+        for (let i = 0; i < callsFailoverData.length; i++) {
+            if (callsFailoverData[i] && callsFailoverData[i].callId == callId) {
+                return callsFailoverData[i].dialog[propertyToFetch];
             }
         }
     }
@@ -299,23 +300,24 @@ function wrapper_getDialedNumberFailoverCase(callId) {
 }
 
 function wrapper_storeDN(event){
-    let DN = event.response.dialog.dialedNumber;
+    //let DN = event.response.dialog.dialedNumber;
     let callId = event.response.dialog.id;
+    let callObj = event.response.dialog;
     let isDNAlreadyPushed = wrapper_checkIfCallDNExist(callId);
     if(isDNAlreadyPushed == false){
-        callsDNArray.push({"DN": DN, "callId":callId})
-        localStorage.setItem("callsDNArray", JSON.stringify(callsDNArray));
+        callsFailoverData.push({"dialog": callObj, "callId":callId})
+        localStorage.setItem("callsFailoverData", JSON.stringify(callsFailoverData));
     }
 }
 
 function wrapper_clearDialogsArray(event){
     dialogsIdArray = [];
     callsResumedArray = [];
-    callsDNArray = [];
+    callsFailoverData = [];
     localStorage.setItem("dialogsIdArray", JSON.stringify(dialogsIdArray));
     localStorage.setItem("callsResumedArray", JSON.stringify(callsResumedArray));
     if(event.event == "agentState" && event.response.state == "READY")
-        localStorage.setItem("callsDNArray", JSON.stringify(callsDNArray));
+        localStorage.setItem("callsFailoverData", JSON.stringify(callsFailoverData));
 }
 
 function wrapper_removeDialog(callid){
@@ -348,14 +350,14 @@ function wrapper_removeResumedCall(id) {
 function wrapper_removeDNCalls(id) {
     try{
         var i = 0;
-        var callsInList = callsDNArray.length;
-        for (var i = 0; i < callsDNArray.length; i++) {
-            if (callsDNArray[i].callId == id) {
-                callsDNArray.splice(i, 1);
+        var callsInList = callsFailoverData.length;
+        for (var i = 0; i < callsFailoverData.length; i++) {
+            if (callsFailoverData[i].callId == id) {
+                callsFailoverData.splice(i, 1);
                 if (callsInList == 1) {
-                    callsDNArray = [];
+                    callsFailoverData = [];
                 }
-                localStorage.setItem("callsDNArray", JSON.stringify(callsDNArray));
+                localStorage.setItem("callsFailoverData", JSON.stringify(callsFailoverData));
             }
         }
     }catch(err){
