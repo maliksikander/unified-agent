@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input,Inject, OnInit, Output, QueryList, SimpleChanges, ViewChild, ViewChildren } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, Inject, OnInit, Output, QueryList, SimpleChanges, ViewChild, ViewChildren } from "@angular/core";
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
@@ -18,7 +18,6 @@ import { CallControlsComponent } from "../../new-components/call-controls/call-c
 import { SipService } from "src/app/services/sip.service";
 import { HighlightResult } from 'ngx-highlightjs';
 import { SendSmsComponent } from "../send-sms/send-sms.component";
-import {Router} from '@angular/router';
 import {DOCUMENT} from '@angular/common';
 
 
@@ -146,7 +145,6 @@ export class InteractionsComponent implements OnInit {
     private snackBar: MatSnackBar,
     public _sipService: SipService,
     private _translateService: TranslateService,
-    private router: Router,
     @Inject(DOCUMENT) private document: any
   ) {}
   ngOnInit() {
