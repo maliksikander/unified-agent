@@ -875,7 +875,7 @@ function changeMrdPostMessage(name, state) {
     var mrdID = findMrdIdByName(name);
 
     var obj = {
-        event: "changeAgentState", agentData: {
+        event: "Connector_Event", agentData: {
             agentId: agentId,
             action: "agentMRDState",
             state: state,
