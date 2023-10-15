@@ -399,7 +399,7 @@ export class finesseService {
             if (currentParticipant.state.toLowerCase() == "active") {
               // console.log("handle dialog 4==>");
               let dialogCache: any = this.getDialogFromCache(cacheId);
-              // console.log("dialog cache==>", dialogCache);
+              console.log("dialog cache==>", dialogCache);
               if (dialogCache && dialogCache.dialogState == "alerting") {
                 // console.log("handle dialog 5==>");
                 this.handleCallActiveEvent(dialogEvent, dialogState);
@@ -615,7 +615,7 @@ export class finesseService {
 
   handleCallDroppedEvent(cacheId, dialogState, methodCalledOn, event, callType) {
     try {
-      if (methodCalledOn != "onRefresh") this.clearLocalDialogCache(cacheId);
+      // if (methodCalledOn != "onRefresh") this.clearLocalDialogCache(cacheId);
       let channelCustomerIdentifier = dialogState.dialog.customerNumber;
       if (
         channelCustomerIdentifier == undefined ||
@@ -806,6 +806,8 @@ export class finesseService {
           if (methodCalledOn == "onRefresh") {
             if (event) this.handleCallActiveEvent(event, event.response);
             else this.clearLocalDialogCache(cacheId);
+          } else{
+            this.clearLocalDialogCache(cacheId);
           }
         },
         (error) => {
