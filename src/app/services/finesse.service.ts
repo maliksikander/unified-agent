@@ -802,7 +802,7 @@ export class finesseService {
     try {
       this._httpService.ccmVOICEChannelSession(data).subscribe(
         (res) => {
-          console.log("CCM API Success==>");
+          console.log("CCM API Success==>",cacheId);
           if (methodCalledOn == "onRefresh") {
             if (event) this.handleCallActiveEvent(event, event.response);
             else this.clearLocalDialogCache(cacheId);
@@ -1104,7 +1104,7 @@ export class finesseService {
     let cacheDialog: any = this.getDialogFromCache(cacheId);
     this.removeNotification(dialog);
     if (cacheDialog && cacheDialog.dialogState == "active") {
-      this.clearLocalDialogCache(cacheId);
+      // this.clearLocalDialogCache(cacheId);
       this.onConsultCallEndCall(event, dialog, cacheId);
     }
   }
@@ -1162,13 +1162,13 @@ export class finesseService {
 
       let voiceConversationId = this.getCurrentConversationIdORConversation("id");
       if (!voiceConversationId) this.checkActiveTasks(this._cacheService.agent.id, "consult_ended", obj);
-      else this.handleConsultEnding(obj);
+      else this.handleConsultEnding(obj,cacheId);
     } catch (e) {
       console.error("[Error] onConsultCallEndCall ==>", e);
     }
   }
 
-  handleConsultEnding(obj) {
+  handleConsultEnding(obj,cacheId) {
     let cimMessage = this.createCIMMessage(
       "VOICE",
       obj.channelCustomerIdentifier,
@@ -1182,7 +1182,7 @@ export class finesseService {
       obj.callId
     );
     console.log("[Consult End CIM Message]==>", cimMessage);
-    this.ccmChannelSessionApi(cimMessage, "", "", undefined);
+    this.ccmChannelSessionApi(cimMessage, "", cacheId, undefined);
     this.customer = undefined;
   }
 
