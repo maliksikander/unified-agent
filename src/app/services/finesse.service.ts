@@ -105,15 +105,15 @@ export class finesseService {
     };
     console.log("register command==>", command);
     executeCommands(command);
-    try{
-      let ctiLib = document.createElement('script');
-      ctiLib.setAttribute('src', 'assets/cti/CTIJsLibrary.js');
-      ctiLib.onload =() => {
+    try {
+      let ctiLib = document.createElement("script");
+      ctiLib.setAttribute("src", "assets/cti/CTIJsLibrary.js");
+      ctiLib.onload = () => {
         this.finesseLogin();
-      }
+      };
       document.head.appendChild(ctiLib);
     } catch (err) {
-        console.error("[registerCallBack] Error ==>", err);
+      console.error("[registerCallBack] Error ==>", err);
     }
   }
 
@@ -131,7 +131,7 @@ export class finesseService {
     };
 
     let logoutStatus = localStorage.getItem("logoutFlag");
-    if(logoutStatus == null || logoutStatus == undefined || logoutStatus == "true"){
+    if (logoutStatus == null || logoutStatus == undefined || logoutStatus == "true") {
       console.log("login command==>", command);
       executeCommands(command);
     }
@@ -617,7 +617,34 @@ export class finesseService {
     try {
       if (methodCalledOn != "onRefresh") this.clearLocalDialogCache(cacheId);
       let channelCustomerIdentifier = dialogState.dialog.customerNumber;
+      if (
+        channelCustomerIdentifier == undefined ||
+        channelCustomerIdentifier == null ||
+        channelCustomerIdentifier == "" ||
+        channelCustomerIdentifier == " " ||
+        channelCustomerIdentifier == "null"
+      ) {
+        console.log("cacheId in drop1 ==>", cacheId);
+        let cacheDialog: any = this.getDialogFromCache(cacheId);
+        console.log("cache dialog in drop1 ==>", cacheDialog);
+        if (cacheDialog) channelCustomerIdentifier = cacheDialog.dialog.customerNumber;
+        console.log("customer no in drop1 ==>", channelCustomerIdentifier);
+      }
       let serviceIdentifier = dialogState.dialog.primaryDN;
+
+      if (
+        serviceIdentifier == undefined ||
+        serviceIdentifier == null ||
+        serviceIdentifier == "" ||
+        serviceIdentifier == " " ||
+        serviceIdentifier == "null"
+      ) {
+        console.log("cacheId in drop1 ==>", cacheId);
+        let cacheDialog: any = this.getDialogFromCache(cacheId);
+        console.log("cache dialog in drop1 ==>", cacheDialog);
+        if (cacheDialog) serviceIdentifier = cacheDialog.dialog.primaryDN;
+        console.log("primary DN in drop1 ==>", channelCustomerIdentifier);
+      }
       let leg = `${this.finesseAgent.extension}:${this._cacheService.agent.id}:${dialogState.dialog.id}`;
       let timeStamp = this.getStartOREndTimeStamp(dialogState.dialog, "endCall");
       let callId = dialogState.dialog.id;
@@ -1076,15 +1103,42 @@ export class finesseService {
     this.removeNotification(dialog);
     if (cacheDialog && cacheDialog.dialogState == "active") {
       this.clearLocalDialogCache(cacheId);
-      this.onConsultCallEndCall(event, dialog);
+      this.onConsultCallEndCall(event, dialog, cacheId);
     }
   }
 
-  onConsultCallEndCall(dialogEvent, dialog) {
+  onConsultCallEndCall(dialogEvent, dialog, cacheId) {
     try {
       // if (methodCalledOn != "onRefresh") this.clearLocalDialogCache(cacheId);
       let channelCustomerIdentifier = dialog.customerNumber;
+      if (
+        channelCustomerIdentifier == undefined ||
+        channelCustomerIdentifier == null ||
+        channelCustomerIdentifier == "" ||
+        channelCustomerIdentifier == " " ||
+        channelCustomerIdentifier == "null"
+      ) {
+        console.log("cacheId in drop2 ==>", cacheId);
+        let cacheDialog: any = this.getDialogFromCache(cacheId);
+        console.log("cache dialog in drop2 ==>", cacheDialog);
+        if (cacheDialog) channelCustomerIdentifier = cacheDialog.dialog.customerNumber;
+        console.log("customer no in drop2 ==>", channelCustomerIdentifier);
+      }
       let serviceIdentifier = dialog.primaryDN;
+      if (
+        serviceIdentifier == undefined ||
+        serviceIdentifier == null ||
+        serviceIdentifier == "" ||
+        serviceIdentifier == " " ||
+        serviceIdentifier == "null"
+      ) {
+        console.log("cacheId in drop2 ==>", cacheId);
+        let cacheDialog: any = this.getDialogFromCache(cacheId);
+        console.log("cache dialog in drop2 ==>", cacheDialog);
+        if (cacheDialog) serviceIdentifier = cacheDialog.dialog.primaryDN;
+        console.log("primary DN in drop2 ==>", channelCustomerIdentifier);
+      }
+
       let leg = `${this.finesseAgent.extension}:${this._cacheService.agent.id}:${dialog.id}`;
       let callType = "CONSULT_ENDED";
       let callId = dialog.id;
