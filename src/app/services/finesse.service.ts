@@ -354,7 +354,7 @@ export class finesseService {
           dialogState.dialog.callType.toLowerCase() == "consult_offered" ||
           dialogState.dialog.callType.toLowerCase() == "conference")
       ) {
-        console.log("direct transfer case cce==>");
+        // console.log("direct transfer case ==>");
         // console.log("Dialog State 4==>");
         let participants = dialogState.dialog.participants;
         let cacheId = `${this._cacheService.agent.id}:${dialogState.dialog.id}`;
@@ -405,6 +405,16 @@ export class finesseService {
                 this.handleCallActiveEvent(dialogEvent, dialogState);
               } else {
                 // console.log("handle dialog 6==>");
+                if (dialogState.dialog.callType.toLowerCase() == "conference") {
+                  console.log("handle dialog conf ==>");
+                  if (!dialogCache) {
+                    // this.setLocalDialogCache(dialogEvent, "active");
+                    // this.handleCallActiveEvent(dialogEvent, dialogState);
+                    this.handleActiveConsultTransferORConferenceCCall(dialogEvent, "CONFERENCE");
+                  }
+
+                  // if(dialogCache && dialogCache.dialogState == "active") this.handleCallActiveEvent(dialogEvent, dialogState);
+                }
                 // if (dialogState.dialog.callType == "AGENT_INSIDE" || dialogState.dialog.callType == "OUT") {
                 //   this.handleCallActiveEvent(dialogEvent, dialogState);
                 // } else
@@ -421,19 +431,20 @@ export class finesseService {
                     // console.log("handle dialog 8==>");
                     this.handleActiveConsultTransferORConferenceCCall(dialogEvent, "CONSULT_OFFERED");
                   }
-                } else if (dialogState.dialog.callType.toLowerCase() == "conference") {
-                  // console.log("handle dialog 9==>");
-                  if (!dialogCache) {
-                    // console.log("handle dialog 10==>");
-                    let consultDialogId = dialogState.dialog.secondaryId;
-                    let consultCallDialogCacheId = `${this._cacheService.agent.id}:${consultDialogId}`;
-                    let consultCacheDialog = this.getDialogFromCache(consultCallDialogCacheId);
-                    if (!consultCacheDialog) {
-                      // console.log("handle dialog 11==>");
-                      this.handleActiveConsultTransferORConferenceCCall(dialogEvent, "CONFERENCE");
-                    }
-                  }
                 }
+                // else if (dialogState.dialog.callType.toLowerCase() == "conference") {
+                // console.log("handle dialog 9==>");
+                // if (!dialogCache) {
+                //   console.log("handle dialog 10==>");
+                //   let consultDialogId = dialogState.dialog.secondaryId;
+                //   let consultCallDialogCacheId = `${this._cacheService.agent.id}:${consultDialogId}`;
+                //   let consultCacheDialog = this.getDialogFromCache(consultCallDialogCacheId);
+                //   if (!consultCacheDialog) {
+                //     console.log("handle dialog 11==>");
+                //     // this.handleActiveConsultTransferORConferenceCCall(dialogEvent, "CONFERENCE");
+                //   }
+                // }
+                // }
               }
             } else if (currentParticipant.state.toLowerCase() == "dropped") {
               // console.log("handle dialog 12==>");
@@ -802,12 +813,12 @@ export class finesseService {
     try {
       this._httpService.ccmVOICEChannelSession(data).subscribe(
         (res) => {
-          console.log("CCM API Success==>",cacheId);
+          console.log("CCM API Success==>");
           if (methodCalledOn == "onRefresh") {
             if (event) this.handleCallActiveEvent(event, event.response);
             else this.clearLocalDialogCache(cacheId);
-          } else{
-            this.clearLocalDialogCache(cacheId);
+          } else {
+            if (data && data.header && data.header.intent && data.header.intent == "CALL_LEG_ENDED") this.clearLocalDialogCache(cacheId);
           }
         },
         (error) => {
