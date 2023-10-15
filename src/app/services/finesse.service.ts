@@ -1162,13 +1162,13 @@ export class finesseService {
 
       let voiceConversationId = this.getCurrentConversationIdORConversation("id");
       if (!voiceConversationId) this.checkActiveTasks(this._cacheService.agent.id, "consult_ended", obj);
-      else this.handleConsultEnding(obj,cacheId);
+      else this.handleConsultEnding(obj);
     } catch (e) {
       console.error("[Error] onConsultCallEndCall ==>", e);
     }
   }
 
-  handleConsultEnding(obj,cacheId) {
+  handleConsultEnding(obj) {
     let cimMessage = this.createCIMMessage(
       "VOICE",
       obj.channelCustomerIdentifier,
@@ -1181,6 +1181,7 @@ export class finesseService {
       obj.timeStamp,
       obj.callId
     );
+    let cacheId = `${this._cacheService.agent.id}:${obj.callId}`;
     console.log("[Consult End CIM Message]==>", cimMessage);
     this.ccmChannelSessionApi(cimMessage, "", cacheId, undefined);
     this.customer = undefined;
