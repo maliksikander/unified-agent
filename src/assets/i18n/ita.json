@@ -347,7 +347,7 @@
     "valid-credentials": "Please provide a valid username and password to login to your account._ita",
     "username": "Username_ita",
     "password": "Password_ita",
-    "agent-desk": "Agent Desk_ita",
+    "agent-desk": "AgentDesk_ita",
     "call-center-experts": "Your Call Center Experts._ita",
     "": ""
   },
@@ -389,7 +389,7 @@
     "create-new-customer": "Create New Customer_ita",
     "unable-connect-finesse": "Unable to connect with finesse, try refreshing may resolve the problem_ita",
     "enable-javascript": "Please enable JavaScript to continue using this application._ita",
-    "agent-desk": "Agent Desk_ita",
+    "agent-desk": "AgentDesk_ita",
     "select-all": "Select all _ita",
     "unselect-all": "Unselect all_ita",
     "Search": "Search _ita",

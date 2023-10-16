@@ -1,10 +1,16 @@
 <div class="profile-detail container-fluid">
   <div class="row main-header">
-    <div class="main-logo col-md-4 col-sm-5">
+    <div class="main-logo col-md-4 col-sm-6">
       <button class="main-menu" mat-icon-button [matMenuTriggerFor]="mainMenu" aria-label="menu">
         <mat-icon>menu</mat-icon>
       </button>
-      <mat-menu #mainMenu="matMenu">
+      <mat-menu #mainMenu="matMenu" backdropClass="mobile-menu-backdrop">
+        <div class="menu-main-wrapper  {{isMobile ? 'mobile-view'  : ''}}" >
+          <div class="menu-header-mobile"  *ngIf="isMobile">
+            <h5> <mat-icon class="menu-icon">menu</mat-icon>
+              Menu <button mat-button class="close-menu-mobile"><mat-icon>close</mat-icon></button>
+            </h5>
+          </div>
         <!-- <button routerLink="/supervisor/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
                mat-menu-item class="main-menu-item">
                   <span>Dashboard</span>
@@ -38,6 +44,7 @@
           mat-menu-item class="main-menu-item">
           <span>{{'app-header.dashboard' | translate}}</span>
         </button>
+        </div>
       </mat-menu>
       <mat-menu #supervisor="matMenu">
         <button routerLink="/supervisor/dashboards" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
@@ -66,7 +73,7 @@
     <!-- <span [innerHTML]="'Linkify the following URL: https://github.com/anthonynahas/ngx-linkifyjs and share it <3' | linkify"></span> -->
 
 
-    <div class="col-md-8 col-sm-7 right-profile-area">
+    <div class="col-md-8 col-sm-6 right-profile-area">
 
       <div class="info">
         <!--        <span class="theme-switcher">-->
@@ -158,9 +165,13 @@
 
 
 
-          <mat-menu (click)="$event.stopPropagation()" #menu="matMenu" class="custom-user-menu matMenu"
+          <mat-menu  #menu="matMenu" class="custom-user-menu matMenu"  backdropClass="mobile-menu-backdrop" class="custom-user-menu matMenu {{isMobile ? 'agent-mobile-menu'  : ''}}"
             xPosition="after">
+            <button mat-button class="close-menu-mobile agent-menu-trigger" *ngIf="isMobile"><mat-icon>close</mat-icon></button>
             <div class="menu-list-content" (click)="$event.stopPropagation()">
+              <div class="menu-header-mobile" *ngIf="isMobile">
+                <h5>Agent Menu</h5>
+              </div>
               <div *ngIf="stateView">
                 <div class="main-showcase">
                   <div class="agent-showcase">
