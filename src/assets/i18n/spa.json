@@ -58,7 +58,7 @@
     "Confirm":"Confirm_spa",
     "Cancel":"Cancel_spa",
     "Incoming-Call-Alert":"Incoming Call Alert_spa",
-    "Incoming-call-alert-request":"Incoming call alert request : _spa",
+    "Incoming-call-alert-request":"Incoming call request from: _spa",
     "CHAT-REQUESTED":"CHAT REQUESTED_spa",
     "Incoming-chat-request-on-push-mode-on":"Incoming chat request on push mode on _spa",
     "Incoming-chat-request-on-pull-mode-on":"Incoming chat request on pull mode on _spa",
@@ -98,7 +98,9 @@
     "Socket-Connected":"Socket Connected_spa",
     "Calling":"Calling_spa",
     "CX-Voice-Connected":"CX VOICE Connected_spa",
-    "Call-Ended":"Call Ended_spa"
+    "Call-Ended":"Call Ended_spa",
+    "Customer-No":"Customer No_spa",
+    "queue-name":"Queue Name_spa"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_spa",

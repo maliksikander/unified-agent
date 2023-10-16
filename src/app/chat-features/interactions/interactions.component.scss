@@ -1083,6 +1083,20 @@
         padding: 1px 10px;
         vertical-align: middle;
         min-width: 42px;
+        line-height: 21px;
+
+        &.section-tags{
+          display: flex;
+          flex-flow: nowrap;
+          justify-content: flex-start;
+            span{
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: pre;
+              max-width: 150px;
+              align-self: center;
+            }
+          }
 
         &:last-child {
           border-right: 0;
@@ -2493,6 +2507,7 @@ vg-controls.hide {
   }
 
   &.voice {
+   
     .profile-pic {
       visibility: visible;
     }
@@ -2927,7 +2942,7 @@ vg-controls.hide {
   }
 }
 
-.chat-message.voice, .chat-message.custom {
+.chat-message.voice, .chat-message.custom ,.chat-message.app{
   .file-type-stamp {
     display: none !important;
   }
@@ -3271,7 +3286,7 @@ vg-controls.hide {
       display: flex;
 
       li {
-        margin: 0 3px;
+        margin: 0 5px;
 
         &.view-all-options {
           margin-left: 0;
@@ -3293,6 +3308,9 @@ vg-controls.hide {
           cursor: pointer;
         }
 
+        img{
+          width: 17px;
+        }
         mat-icon {
           height: 18px !important;
           line-height: 18px !important;
@@ -3301,6 +3319,8 @@ vg-controls.hide {
           top: 4px;
           color: $blue-text-color;
           cursor: pointer;
+          text-align: center;
+          width: auto;
 
           &.liked {
             background: $blue-text-color;
@@ -3867,38 +3887,45 @@ vg-controls.hide {
   }
 }
 
+.activity-number-ellipsis{
+  max-width: 7.188rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+  display: inherit;
+}
+
+.activity-queue-ellipsis{
+    max-width: 12.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre;
+    border-radius: 0 !important;
+}
+
 .private-reply-icon{
   cursor: pointer;
 }
 
-
-//
-.outboundsms{
-  .panel-header{
-    li{
-      color: #000;
-    }
-  }
+.play-btn{
+  .mat-flat-button.mat-accent,
+  .mat-raised-button.mat-accent,
+  .mat-fab.mat-accent,
+  .mat-mini-fab.mat-accent {
+    background-color: #BDDBB1 !important;
 }
 
-button.back-to-sms{
-  background: $main-color-background;
- 
-  margin-right: 10px;
-  
-  
-  border: 2px;
-  margin-right: 10px;
-  border-radius: 100%;
-  width: 32px;
-  height: 32px;
-
-
-  mat-icon{
-    font-size: 20px;
-    color: $main-color;
-    text-align: center;
-    display: inline;
-    vertical-align: baseline;
+  button.mat-mini-fab.mat-button-base.mat-accent {
+      width: 1.5rem;
+      height: 1.5rem;
+      vertical-align: middle;
+      box-shadow: none;
+     
+  }
+  i.material-icons {
+    position: relative;
+    top: -0.563rem;
+    font-size: 1.125rem;
+    place-content: center;
   }
 }

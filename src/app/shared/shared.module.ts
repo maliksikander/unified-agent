@@ -151,6 +151,8 @@ import { countAgentPartcipantsPipe } from "./pipes/countAgentParticipants.pipe";
     checkConsultCallPipe,
     checkCiscoSessionPipe,
     checkCXSessionPipe,
+    returnSchemaByKeyPipe,
+    returnSchemaByChannelTypePipe,
     getMatchedStringPipe,
     checkCiscoSessionPipe,
     returnSchemaByKeyPipe,

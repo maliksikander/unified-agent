@@ -33,7 +33,7 @@ export class soundService {
 
   openBrowserNotification(head, message) {
     if (!Notification) {
-      console.log("Browser does not support notifications.");
+      console.log("== > Browser does not support notifications.");
     } else {
       // check if permission is already granted
       if (Notification.permission === "granted") {
@@ -53,7 +53,7 @@ export class soundService {
                 body: message
               });
             } else {
-              console.log("User blocked notifications.");
+              console.log("==> User blocked notifications.");
             }
           })
           .catch(function (err) {

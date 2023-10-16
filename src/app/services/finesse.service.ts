@@ -93,7 +93,7 @@ export class finesseService {
   // this will used to subscribe to cisco events
   subscribeToCiscoEvents() {
     this.registerCallBack();
-    this.finesseLogin();
+    //this.finesseLogin();
   }
 
   registerCallBack() {
@@ -105,6 +105,16 @@ export class finesseService {
     };
     console.log("register command==>", command);
     executeCommands(command);
+    try{
+      let ctiLib = document.createElement('script');
+      ctiLib.setAttribute('src', 'assets/cti/CTIJsLibrary.js');
+      ctiLib.onload =() => {
+        this.finesseLogin();
+      }
+      document.head.appendChild(ctiLib);
+    } catch (err) {
+        console.error("[registerCallBack] Error ==>", err);
+    }
   }
 
   finesseLogin() {
@@ -120,8 +130,11 @@ export class finesseService {
       }
     };
 
-    console.log("login command==>", command);
-    executeCommands(command);
+    let logoutStatus = localStorage.getItem("logoutFlag");
+    if(logoutStatus == null || logoutStatus == undefined || logoutStatus == "true"){
+      console.log("login command==>", command);
+      executeCommands(command);
+    }
   }
 
   // send the commands to the finesse
