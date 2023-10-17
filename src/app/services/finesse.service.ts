@@ -402,6 +402,8 @@ export class finesseService {
               console.log("dialog cache==>", dialogCache);
               if (dialogCache && dialogCache.dialogState == "alerting") {
                 // console.log("handle dialog 5==>");
+                if (dialogState.dialog.callType.toLowerCase() == "agent_inside" || dialogState.dialog.callType.toLowerCase() == "out")
+                  this.setLocalDialogCache(dialogEvent, "active");
                 this.handleCallActiveEvent(dialogEvent, dialogState);
               } else {
                 // console.log("handle dialog 6==>");
@@ -593,9 +595,9 @@ export class finesseService {
         serviceIdentifier = "VOICE";
         let intent = "CALL_LEG_STARTED";
         let callId = dialogState.dialog.id;
-        if (intent == "CALL_LEG_STARTED") this.setLocalDialogCache(dialogEvent, "active");
-        let cacheId = `${this._cacheService.agent.id}:${dialogState.dialog.id}`;
-        let dialogCache: any = this.getDialogFromCache(cacheId);
+
+        // let cacheId = `${this._cacheService.agent.id}:${dialogState.dialog.id}`;
+        // let dialogCache: any = this.getDialogFromCache(cacheId);
         this.getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, dialogEvent, intent, undefined, timeStamp, callId);
       } else {
         if (dialogState.dialog.callType.toLowerCase() == "consult_offered") {
