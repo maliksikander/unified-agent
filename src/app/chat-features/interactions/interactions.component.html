@@ -2286,7 +2286,7 @@
         </button>
       </mat-menu>
 
-      <div class="message-composer" *ngIf="(conversation.topicParticipant.role | lowercase) != 'silent_monitor'">
+      <div class="message-composer" >
         <div
           class="whisper-selection"
           *ngIf="
@@ -2393,6 +2393,8 @@
                 !_socketService.isSocketConnected ||
                 conversation.activeChannelSessions.length == 0 ||
                 !conversation.messageComposerState ||
+                conversation.topicParticipant.role == 'SILENT_MONITOR'
+                ||
                 (!isWhisperMode && conversation.topicParticipant.role == 'ASSISTANT')
               "
               (keyup.enter)="onSend(replyInput.value); replyInput.value = null"

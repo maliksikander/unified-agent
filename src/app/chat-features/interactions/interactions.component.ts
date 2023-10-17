@@ -36,7 +36,7 @@ export class InteractionsComponent implements OnInit {
   @Input() changeDetecter: any;
   @Output() expandCustomerInfo = new EventEmitter<any>();
   @Output() updatedlabels = new EventEmitter<boolean>();
-  @ViewChild("replyInput", { static: false }) elementView: ElementRef;
+  @ViewChild("replyInput", { static: true }) elementView: ElementRef;
   @ViewChild(NgScrollbar, { static: true }) scrollbarRef: NgScrollbar;
   @ViewChild("media", { static: false }) media: ElementRef;
   @ViewChild("mainScreen", { static: false }) elementViewSuggestions: ElementRef;
