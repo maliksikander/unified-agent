@@ -1,3 +1,6 @@
+// Initialize an object to keep track of function locks
+const functionLocks = {};
+
 var canCallFunction = true;
 var callendDialogId;
 var endcal = false;
@@ -245,13 +248,13 @@ function postMessages(obj, callback) {
             loader3(obj.parameter.clientCallbackFunction);
             break;
         case 'makeCall':
-            initiate_call(obj.parameter.calledNumber, obj.parameter.clientCallbackFunction);
+            initiate_call(obj.parameter.calledNumber,obj.parameter.Destination_Number, obj.parameter.clientCallbackFunction);
             break;
         case 'SST':
-            blind_transfer(obj.parameter.numberToTransfer, obj.parameter.clientCallbackFunction,obj.parameter.dialogId);
+            blind_transfer(obj.parameter.numberToTransfer,obj.parameter.DN, obj.parameter.clientCallbackFunction,obj.parameter.dialogId);
             break;
         case 'SST_Queue':
-            blind_transfer_queue(obj.parameter.numberToTransfer, obj.parameter.queue, obj.parameter.queueType, obj.parameter.clientCallbackFunction);
+            blind_transfer_queue(obj.parameter.numberToTransfer,obj.parameter.DN, obj.parameter.queue, obj.parameter.queueType, obj.parameter.clientCallbackFunction);
             break;
         case 'makeConsult':
             makeConsultCall(obj.parameter.numberToConsult, obj.parameter.clientCallbackFunction);
@@ -356,14 +359,10 @@ function postMessages(obj, callback) {
 
 function connect_useragent(extension, sip_uri, sip_password, wss, sip_log, callback) {
     //
-    if (canCallFunction) {
-        // Your functionality here
-        console.log("Function called");
-    
-        // Set canCallFunction to false to prevent further calls
-        canCallFunction = false;
 
 
+    var res= lockFunction("connect_useragent", 500); // --- seconds cooldown
+    if(!res)return;
         const undefinedParams = checkUndefinedParams(connect_useragent, [extension, sip_uri, sip_password, wss, sip_log, callback]);
 
         if (undefinedParams.length > 0) {
@@ -661,7 +660,7 @@ function connect_useragent(extension, sip_uri, sip_password, wss, sip_log, callb
                                 dialogStatedata = dialogStatedata1;
                             if (dialogStatedata.response.dialog.state == "ACTIVE" && endcal == true) {
                                 //need to setup for loop here . 
-                                setTimeout(terminate_call, 5000, dialogId);
+                                setTimeout(terminateAllCalls, 5000);
                                 endcal = false;
                             }
                             loginid = extension;
@@ -757,15 +756,15 @@ function connect_useragent(extension, sip_uri, sip_password, wss, sip_log, callb
         setTimeout(() => {
           canCallFunction = true;
         }, 1000); // 5000 milliseconds = 5 seconds
-      }else{
-        console.log("Function is not allowed to be called yet");
-      }
+
     //
 
 
 }
-function initiate_call(calledNumber, callback) {
-    const undefinedParams = checkUndefinedParams(initiate_call, [calledNumber, callback]);
+function initiate_call(calledNumber,DN ,callback) {
+    var res= lockFunction("initiate_call", 500); // --- seconds cooldown
+    if(!res)return;
+    const undefinedParams = checkUndefinedParams(initiate_call, [calledNumber,DN, callback]);
 
     if (undefinedParams.length > 0) {
         // console.log(`Error: The following parameter(s) are undefined or null: ${undefinedParams.join(', ')}`);
@@ -785,8 +784,8 @@ function initiate_call(calledNumber, callback) {
         sessionall = new SIP.Inviter(userAgent, sip_uri);
         const request = sessionall.request;
 
-        request.extraHeaders.push('X-Custom-Header: Value1');
-        request.extraHeaders.push('Another-Header: Value2');
+        request.extraHeaders.push('X-Destination-Number:'+DN);
+       // request.extraHeaders.push('Another-Header: Value2');
 
 
         // Options including delegate to capture response messages
@@ -797,7 +796,7 @@ function initiate_call(calledNumber, callback) {
                 },
                 onReject: (response) => {
                     console.log("onReject response = ", response);
-                   // error("generalError", loginid, response.message.reasonPhrase, callback);
+                    error("generalError", loginid, response.message.reasonPhrase, callback);
                 },
                 onCancel: (response) => {
                     console.log("onCancel response = ", response);
@@ -919,8 +918,10 @@ function initiate_call(calledNumber, callback) {
     }
 }
 function terminate_call(dialogId) {
+    var res= lockFunction("terminate_call", 500); // --- seconds cooldown
+    if(!res)return;
     var index = getCallIndex(dialogId);
-    var sessionToEnd;
+    var sessionToEnd= null;
     if (index !== -1) {
         sessionToEnd = calls[index].session;
     }
@@ -962,14 +963,16 @@ function reject_call() {
         error('invalidState', loginid, "invalid action rejectCall", callback);
     }
 }
-function blind_transfer(numberToTransfer, callback,dialogId) {
-    // const undefinedParams = checkUndefinedParams(blind_transfer, [numberToTransfer, callback]);
+function blind_transfer(numberToTransfer,DN, callback,dialogId) {
+    var res= lockFunction("blind_transfer", 500); // --- seconds cooldown
+    if(!res)return;
+    const undefinedParams = checkUndefinedParams(blind_transfer, [numberToTransfer,DN, callback,dialogId]);
 
-    // if (undefinedParams.length > 0) {
-    //     // console.log(`Error: The following parameter(s) are undefined or null: ${undefinedParams.join(', ')}`);
-    //     error("generalError", loginid, `Error: The following parameter(s) are undefined or null or empty: ${undefinedParams.join(', ')}`, callback);
-    //     return;
-    // }
+    if (undefinedParams.length > 0) {
+        // console.log(`Error: The following parameter(s) are undefined or null: ${undefinedParams.join(', ')}`);
+        error("generalError", loginid, `Error: The following parameter(s) are undefined or null or empty: ${undefinedParams.join(', ')}`, callback);
+        return;
+    }
     var index = getCallIndex(dialogId);
     if (index !== -1) {
         sessionall = calls[index].session;
@@ -1004,6 +1007,13 @@ function blind_transfer(numberToTransfer, callback,dialogId) {
             }
         },
     };
+    if(DN){
+        options.requestOptions ={
+            extraHeaders: [
+                'X-DN: ' + DN, // Replace with your desired header and value
+            ]
+        }
+    }
     sessionall.refer(target, options).then((res) => {
         console.log('success blind_transfer', res);
         dialogStatedata.response.dialog.callEndReason = "direct-transfered";
@@ -1013,13 +1023,19 @@ function blind_transfer(numberToTransfer, callback,dialogId) {
         error("generalError", loginid, e.message, callback);
     })
 }
-function blind_transfer_queue(numberToTransfer, queue, queuetype, callback) {
-    const undefinedParams = checkUndefinedParams(blind_transfer_queue, [numberToTransfer, queue, queuetype, callback]);
+function blind_transfer_queue(numberToTransfer,DN, queue, queuetype, callback,dialogId) {
+    var res= lockFunction("blind_transfer_queue", 500); // --- seconds cooldown
+    if(!res)return;
+    const undefinedParams = checkUndefinedParams(blind_transfer_queue, [numberToTransfer,DN, queue, queuetype, callback,dialogId]);
 
     if (undefinedParams.length > 0) {
         // console.log(`Error: The following parameter(s) are undefined or null: ${undefinedParams.join(', ')}`);
         error("generalError", loginid, `Error: The following parameter(s) are undefined or null or empty: ${undefinedParams.join(', ')}`, callback);
         return;
+    }
+    var index = getCallIndex(dialogId);
+    if (index !== -1) {
+        sessionall = calls[index].session;
     }
 
     if (!sessionall) {
@@ -1057,6 +1073,9 @@ function blind_transfer_queue(numberToTransfer, queue, queuetype, callback) {
             }
         },
     };
+    if(DN){
+        options.requestOptions.extraHeaders["DN"] = DN; 
+    }
 
     sessionall.refer(target, options).then((res) => {
         console.log('success blind_transfer_queue', res);
@@ -1068,6 +1087,8 @@ function blind_transfer_queue(numberToTransfer, queue, queuetype, callback) {
 
 }
 function phone_hold(callback, dialogId) {
+    var res= lockFunction("phone_hold", 500); // --- seconds cooldown
+    if(!res)return;
     var index = getCallIndex(dialogId);
     if (index !== -1) {
         sessionall = calls[index].session;
@@ -1115,6 +1136,8 @@ function phone_hold(callback, dialogId) {
 
 }
 function phone_unhold(callback, dialogId) {
+    var res= lockFunction("phone_unhold", 500); // --- seconds cooldown
+    if(!res)return;
     var index = getCallIndex(dialogId);
     if (index !== -1) {
         sessionall = calls[index].session;
@@ -1161,6 +1184,8 @@ function phone_unhold(callback, dialogId) {
         });
 }
 function phone_mute(callback, dialogId) {
+    var res= lockFunction("phone_mute", 500); // --- seconds cooldown
+    if(!res)return;
     var index = getCallIndex(dialogId);
     if (index !== -1) {
         sessionall = calls[index].session;
@@ -1191,6 +1216,8 @@ function phone_mute(callback, dialogId) {
     }
 }
 function phone_unmute(callback, dialogId) {
+    var res= lockFunction("phone_unmute", 500); // --- seconds cooldown
+    if(!res)return;
     var index = getCallIndex(dialogId);
     if (index !== -1) {
         sessionall = calls[index].session;
@@ -1221,6 +1248,8 @@ function phone_unmute(callback, dialogId) {
     }
 }
 function respond_call(callback, dialogId) {
+    var res= lockFunction("respond_call", 500); // --- seconds cooldown
+    if(!res)return;
     var index = getCallIndex(dialogId);
     if (index !== -1) {
         sessionall = calls[index].session;
@@ -1267,6 +1296,8 @@ function respond_call(callback, dialogId) {
 
 }
 function makeConsultCall(calledNumber, callback) {
+    var res= lockFunction("makeConsultCall", 500); // --- seconds cooldown
+    if(!res)return;
     const undefinedParams = checkUndefinedParams(makeConsultCall, [calledNumber, callback]);
 
     if (undefinedParams.length > 0) {
@@ -1505,6 +1536,8 @@ function makeConsultCall(calledNumber, callback) {
     //sessionall.refer(consultSessioin);
 }
 function makeConsultTransferCall(callback) {
+    var res= lockFunction("makeConsultTransferCall", 500); // --- seconds cooldown
+    if(!res)return;
     sessionall = calls[0].session;
     consultSessioin = calls[1].session;
     sessionall.refer(consultSessioin);
@@ -1601,13 +1634,16 @@ function addsipcallback(temp_session, call_type, callback) {
                         dialogStatedata.response.dialog.participants[0].stateChangeTime = datetime;
                         dialogStatedata.response.dialog.participants[0].state = "DROPPED";
                         if (dialogStatedata.response.dialog.callEndReason == "direct-transfered") {
+                          //  dialogStatedata.response.dialog.callEndReason = "transfered";
                             dialogStatedata.response.dialog.isCallEnded = 0;
                         } else {
+                           // dialogStatedata.response.dialog.callEndReason = null;
                             dialogStatedata.response.dialog.isCallEnded = 1;
                         }
                         dialogStatedata.response.dialog.state = "DROPPED";
                         dialogStatedata.response.dialog.isCallAlreadyActive = false;
                         callback(dialogStatedata);
+                        console.log('call end reason :',dialogStatedata.response.dialog.callEndReason);
                         SendPostMessage(dialogStatedata);
                         dialogStatedata.response.dialog.callEndReason = null;
                         // clearTimeout(myTimeout);
@@ -1687,8 +1723,8 @@ function addsipcallback(temp_session, call_type, callback) {
     }
 }
 window.addEventListener('beforeunload', (event) => {
-    //need to check here. 
-    // terminate_call();
+    //need to check here.
+    terminateAllCalls();
     call_variable_array = {};
     dialogStatedata = null;
     invitedata = null;
@@ -1827,7 +1863,11 @@ function setupRemoteMedia(session) {
     var receiver = pc.getReceivers()[0];
     var receivervideo = pc.getReceivers()[1];
     remoteStream.addTrack(receiver.track);
-    if(receivervideo)remoteStream.addTrack(receivervideo.track);
+    if(receivervideo){
+        console.log('vdieo found');
+        remoteStream.addTrack(receivervideo.track);
+    }
+   
     remoteVideo.srcObject = remoteStream;
 
 
@@ -1890,13 +1930,13 @@ function getParameterNames(func) {
     return [];
 }
 function SendPostMessage(data){
-    try{
-        var obj = JSON.stringify(data, getCircularReplacer());
-        window.postMessage(obj, "*"); // "*" means sending to all origins
-        console.log('post message sent');
-    }catch(e){
-        console.log("Exception: ",e);
-    }
+    // try{
+    //     var obj = JSON.stringify(data, getCircularReplacer());
+    //     window.postMessage(obj, "*"); // "*" means sending to all origins
+    //     console.log('post message sent');
+    // }catch(e){
+    //     console.log("Exception: ",e);
+    // }
 }
 
 const getCircularReplacer = () => {
@@ -1911,3 +1951,29 @@ const getCircularReplacer = () => {
       return value;
     };
   };
+
+function terminateAllCalls(){
+    if(calls.length > 0)
+    for (let index = 0; index < calls.length; index++) {
+        var element = calls[index];
+        if (element.response.dialog.id) {
+             terminate_call(element.response.dialog.id);
+        }
+    }
+}
+// Reusable function to check and set the lock state for a specific function
+function lockFunction(funcName, delay) {
+    if (!functionLocks[funcName]) {
+      // If the function is not locked, lock it and allow execution
+      functionLocks[funcName] = true;
+  
+      setTimeout(() => {
+        // After the specified delay, unlock the function
+        functionLocks[funcName] = false;
+      }, delay);
+      return true;
+    } else {
+      console.log(`${funcName} is not allowed to be called yet`);
+      return false;
+    }
+  }

@@ -3885,3 +3885,12 @@ button.back-to-sms{
     vertical-align: baseline;
   }
 }
+
+.typing-counter {
+  // position: absolute;
+  // right: 50px;
+  // top: -27px;
+  float: right;
+  font-size: 10px;
+  color: #707070;
+}

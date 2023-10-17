@@ -273,30 +273,38 @@ export class SipService implements OnInit {
   }
 
   getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, dialogEvent, intent, customerData, timeStamp, methodCalledOn) {
-    let customer = customerData ? customerData : this.customer;
-    let cacheId = `${this._cacheService.agent.id}:${dialogState.dialog.id}`;
-    let voiceChannel = this._sharedService.channelTypeList.find((item) => {
-      return item.name == "CX_VOICE";
-    });
     try {
+      let voiceChannel = this._sharedService.channelTypeList.find((item) => {
+        return item.name == "CX_VOICE";
+      });
+
       this._httpService.getDefaultOutboundChannel(voiceChannel.id).subscribe(
         (res) => {
           if (res) {
-            if (intent == "CALL_LEG_STARTED") this.setDialogCache(dialogEvent, "active");
-            let cimMessage = this.createCIMMessage(
-              "VOICE",
-              channelCustomerIdentifier,
-              res.serviceIdentifier,
-              intent,
-              customer,
-              leg,
-              dialogState.dialog,
-              callType,
-              timeStamp,
-              undefined
-            );
-            console.log("[OutBoundChannel] CIM Message==>", cimMessage);
-            this.ccmChannelSessionApi(cimMessage, methodCalledOn, cacheId, undefined);
+            if (methodCalledOn && methodCalledOn.action && methodCalledOn.action == "makeCall") {
+              let command = methodCalledOn.command;
+              command["Destination_Number"] = res.serviceIdentifier;
+              console.log("makeCallOnSip ==>", command);
+              postMessages(command);
+            } else {
+              let customer = customerData ? customerData : this.customer;
+              let cacheId = `${this._cacheService.agent.id}:${dialogState.dialog.id}`;
+              if (intent == "CALL_LEG_STARTED") this.setDialogCache(dialogEvent, "active");
+              let cimMessage = this.createCIMMessage(
+                "VOICE",
+                channelCustomerIdentifier,
+                res.serviceIdentifier,
+                intent,
+                customer,
+                leg,
+                dialogState.dialog,
+                callType,
+                timeStamp,
+                undefined
+              );
+              console.log("[OutBoundChannel] CIM Message==>", cimMessage);
+              this.ccmChannelSessionApi(cimMessage, methodCalledOn, cacheId, undefined);
+            }
           }
         },
         (error) => {
@@ -811,7 +819,7 @@ export class SipService implements OnInit {
   makeCallOnSip(customer, number) {
     try {
       this.isOBCallRequested = true;
-      this, this.makeCXVoiceMrdNotReady();
+      this.makeCXVoiceMrdNotReady();
       setTimeout(() => {
         let cxMrd = this.getVoiceMrd(this.agentMrdStates.agentMrdStates);
         if (cxMrd && cxMrd.state.toLowerCase() == "not_ready") {
@@ -822,9 +830,14 @@ export class SipService implements OnInit {
               clientCallbackFunction: this.clientCallback
             }
           };
+          let data = {
+            action: "makeCall",
+            command
+          };
 
-          console.log("makeCallOnSip ==>", command);
-          postMessages(command);
+          // console.log("makeCallOnSip ==>", command);
+          this.getDefaultOutBoundChannel(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, data);
+          // postMessages(command);
         } else {
           this.isOBCallRequested = false;
           this._snackbarService.open(this._translateService.instant("snackbar.OB-Call-Request"), "err");
@@ -918,8 +931,11 @@ export class SipService implements OnInit {
         //     }
         //   }
         // }
-      }
-      else if(dialogState.dialog && dialogState.dialog.callType && (dialogState.dialog.callType.toLowerCase() == "outbound" || dialogState.dialog.callType.toLowerCase() == "out")){
+      } else if (
+        dialogState.dialog &&
+        dialogState.dialog.callType &&
+        (dialogState.dialog.callType.toLowerCase() == "outbound" || dialogState.dialog.callType.toLowerCase() == "out")
+      ) {
         if (dialogState.dialog && dialogState.dialog.isCallEnded == 1) {
           this.isOBCallRequested = false;
           this.isToolbarActive = false;
