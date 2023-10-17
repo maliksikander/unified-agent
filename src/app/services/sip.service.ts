@@ -283,7 +283,7 @@ export class SipService implements OnInit {
           if (res) {
             if (methodCalledOn && methodCalledOn.action && methodCalledOn.action == "makeCall") {
               let command = methodCalledOn.command;
-              command["Destination_Number"] = res.serviceIdentifier;
+              command.parameter["Destination_Number"] = res.serviceIdentifier;
               console.log("makeCallOnSip ==>", command);
               postMessages(command);
             } else {
