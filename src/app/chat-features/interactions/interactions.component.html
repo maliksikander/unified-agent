@@ -36,30 +36,30 @@
 <!--            <mat-icon>search</mat-icon>-->
 <!--          </button>-->
           <button mat-button class="chat-controls-mobile" *ngIf="isMobileDevice"  [matMenuTriggerFor]="agentControllForMobile" ><mat-icon>more_vert</mat-icon></button>
-          <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}" *ngIf="isCallActive && !ctiBarView"
-                  matTooltip="Chat" aria-label="Chat">
-            <mat-icon>question_answer</mat-icon>
-          </button>
-        </div>
-        <div class="col-md-8 col-sm-8 agent-actions">
-<!--          <button mat-icon-button (click)="ctiControlBar()"-->
+<!--          <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}" *ngIf="isCallActive && !ctiBarView"-->
 <!--                  matTooltip="Chat" aria-label="Chat">-->
 <!--            <mat-icon>question_answer</mat-icon>-->
 <!--          </button>-->
-          <ul class="list-group list-group-horizontal agent-controls call-controls" *ngIf="isCallActive && !ctiBarView && !isMobileDevice">
-            <li class="list-group-item" *ngIf="isCallActive && !ctiBarView">
-              <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}"
-                      matTooltip="Chat" aria-label="Chat">
-                <mat-icon>question_answer</mat-icon>
-              </button>
-            </li>
+        </div>
+        <div class="col-md-8 col-sm-8 agent-actions">
+          <button mat-icon-button (click)="ctiControlBar()"
+                  matTooltip="Chat" aria-label="Chat">
+            <mat-icon>question_answer</mat-icon>
+          </button>
+<!--          <ul class="list-group list-group-horizontal agent-controls call-controls" *ngIf="isCallActive && !ctiBarView && !isMobileDevice">-->
+<!--            <li class="list-group-item" *ngIf="isCallActive && !ctiBarView">-->
+<!--              <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}"-->
+<!--                      matTooltip="Chat" aria-label="Chat">-->
+<!--                <mat-icon>question_answer</mat-icon>-->
+<!--              </button>-->
+<!--            </li>-->
             <!--            <li class="list-group-item">-->
             <!--              <button mat-icon-button (click)="isBotSuggestions = !isBotSuggestions" [ngClass]="{'active-action': isBotSuggestions}"-->
             <!--                      matTooltip="Suggestions" aria-label="Suggestions">-->
             <!--                <img src="assets/images/robot-dark.svg" alt="Suggestions"/>-->
             <!--              </button>-->
             <!--            </li>-->
-          </ul>
+<!--          </ul>-->
           <mat-menu #agentControllForMobile="matMenu" [overlapTrigger]="true"  backdropClass="mobile-menu-backdrop" panelClass="custom-pane">
             <div class="{{isMobileDevice ? 'mobile-chat-controls'  : ''}}" >
               <div class="menu-header-mobile">
@@ -139,7 +139,8 @@
               <button mat-icon-button #consultTransferTrigger="matMenuTrigger"
                 [matMenuTriggerFor]="ConsultTransferConversation" (click)="getAgentsInQueue()"
                 matTooltip="{{ 'chat-features.interactions.agent-assistance' | translate }}" aria-label="Consult Chat">
-                <mat-icon>person_add</mat-icon>
+<!--                <mat-icon>person_add</mat-icon>-->
+                <img alt="Note" src="assets/images/face-agent.svg" height="17"  />
               </button>
             </li>
             <li *ngIf="'agent-conversation-control' | authPipe: 'view_leave_chat' as result" class="list-group-item">
@@ -161,7 +162,7 @@
               </div>
 
               <mat-accordion>
-                <mat-expansion-panel [disabled]="true" class="consultants-list"
+                <mat-expansion-panel [disabled]="false" class="consultants-list"
                   *ngFor="let queue of queueList | LockFilter: queueSearch; let i = index">
                   <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
                     <mat-panel-title>
@@ -205,21 +206,62 @@
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <!-- <input type="text" placeholder="search agent" (click)="$event.stopPropagation()"
-                    [(ngModel)]="queue.i">
-                  <button mat-menu-item *ngFor="let list of queue?.totalAvailableAgents | LockFilter:option.i"
-                    [ngClass]="{'last-team': list.activeCount}" [disabled]="list.isDisabled">
-                    {{list.name}}
-                    <div class="consult-action-main">
-                      <span matTooltip="Agent Consult" class="transfer-selection"
-                        (click)="agentAssistanceRequest(chatConsultTemplate, list, 'Consult')"><img
-                          src="assets/images/consult-colored.svg" alt="consult" /> </span>
-                      <span matTooltip="Direct Transfer" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, list, 'Transfer')"><img src="assets/images/transfer-colored.svg" alt="transfer"/></span>
-                      <span matTooltip="Conference" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, list, 'Conference')"><img src="assets/images/conference-colored.svg" alt="conference"/></span>
-                    </div> -->
+                    [(ngModel)]="queue.i"> -->
+<!--                  <button mat-menu-item *ngFor="let list of queue?.totalAvailableAgents"-->
+<!--                    [ngClass]="{'last-team': list.activeCount}" [disabled]="list.isDisabled">-->
+<!--                    {{list.name}}-->
+<!--                    <div class="consult-action-main">-->
+<!--                      <span matTooltip="Agent Consult" class="transfer-selection"-->
+<!--                        (click)="agentAssistanceRequest(chatConsultTemplate, list, 'Consult')"><img-->
+<!--                          src="assets/images/consult-colored.svg" alt="consult" /> </span>-->
+<!--                      <span matTooltip="Direct Transfer" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, list, 'Transfer')"><img src="assets/images/transfer-colored.svg" alt="transfer"/></span>-->
+<!--                      <span matTooltip="Conference" class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, list, 'Conference')"><img src="assets/images/conference-colored.svg" alt="conference"/></span>-->
+<!--                    </div>-->
 
-                  <!-- </button> -->
+<!--                   </button>-->
+                  <ng-container class="consultants-list" *ngFor="let option of userList; let i = index ">
+                    <button mat-menu-item *ngFor="let list of option.availableAgents" [ngClass]="{'last-team': list.activeCount}" >
+                      <span class="agent-status {{ list.status == 'available' ? 'available' : 'not-available'}}"></span>{{list.name}}
+                      <div class="consult-action-main">
+                        <span class="transfer-selection" (click)="agentAssistanceRequest(chatConsultTemplate, list.name, 'consult', 'queue')"><img src="assets/images/consult-colored.svg" alt="consult"/> </span>
+                        <span class="transfer-selection" (click)="agentAssistanceRequest(chatConsultTemplate, list.name, 'transfer', 'queue')"><img src="assets/images/transfer-colored.svg" alt="transfer"/></span>
+                        <span class="transfer-selection" (click)="agentAssistanceRequest(chatConsultTemplate, list.name, 'conference', 'queue')"><img src="assets/images/conference-colored.svg" alt="conference"/></span>
+                      </div>
+
+                    </button>
+                  </ng-container>
                 </mat-expansion-panel>
               </mat-accordion>
+
+
+
+
+
+<!--              <mat-accordion>-->
+<!--                <mat-expansion-panel class="consultants-list" *ngFor="let option of userList; let i = index ">-->
+<!--                  <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">-->
+<!--                    <mat-panel-title>-->
+<!--                      {{option.team}} ({{option.availableAgents.length}})-->
+<!--                      &lt;!&ndash;                      <span class="transfer-selection" (click)="transferOrConsult(chatConsultTemplate, option)">Consult</span>&ndash;&gt;-->
+<!--                      <div class="consult-action-main">-->
+<!--                        <span class="transfer-selection"  (click)="transferOrConsult(chatConsultTemplate, option)"><img src="assets/images/consult-colored.svg" alt="consult"/> </span>-->
+<!--                        <span class="transfer-selection"  (click)="transferOrConsult(chatConsultTemplate, option)"><img src="assets/images/transfer-colored.svg" alt="transfer"/></span>-->
+<!--                      </div>-->
+<!--                    </mat-panel-title>-->
+<!--                  </mat-expansion-panel-header>-->
+<!--                  <input type="text" placeholder="search agent" (click)="$event.stopPropagation()" [(ngModel)]="option.i">-->
+<!--                  <button mat-menu-item *ngFor="let list of option.availableAgents | LockFilter:option.i" [ngClass]="{'last-team': list.activeCount}" >-->
+<!--                    {{list.name}}-->
+<!--                    <div class="consult-action-main">-->
+<!--                      <span class="transfer-selection" (click)="agentAssistanceRequest(chatConsultTemplate, list, 'Consult', 'queue')"><img src="assets/images/consult-colored.svg" alt="consult"/> </span>-->
+<!--                      <span class="transfer-selection" (click)="agentAssistanceRequest(chatConsultTemplate, list, 'Transfer', 'queue')"><img src="assets/images/transfer-colored.svg" alt="transfer"/></span>-->
+<!--                      <span class="transfer-selection" (click)="agentAssistanceRequest(chatConsultTemplate, list, 'Conference', 'queue')"><img src="assets/images/conference-colored.svg" alt="conference"/></span>-->
+<!--                    </div>-->
+
+<!--                  </button>-->
+<!--                </mat-expansion-panel>-->
+<!--              </mat-accordion>-->
+
             </div>
           </mat-menu>
 
@@ -1645,7 +1687,7 @@
                    <!-- <div *ngIf="((message.header.sender.type | lowercase) == 'app' && (message.header.schedulingMetaData) )" class="abc"> {{message.header.sender.type | json}}</div>  -->
                     <!-- <-------------------------------------Scheduled Activity--------------------------------------------------->
                       <!-- *ngIf="(message.header.status | lowercase) == 'deliverynotification' " -->
-                    <div *ngIf="((message.header.sender.type | lowercase) == 'app' && (message.header.schedulingMetaData) )"
+                    <div *ngIf="message.header.schedulingMetaData"
                          class="voice-activity-main panel-divider single scheduled-activity-area activity {{message.header.scheduledStatus | lowercase}}">
                       <mat-expansion-panel>
                         <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
@@ -2736,11 +2778,23 @@
     </div>
 
     <div class="action-trigger text-right">
-      <button mat-button mat-dialog-close class="close-btn">{{ "chat-features.interactions.cancel" | translate
-        }}</button>
+<!--      <button mat-button mat-dialog-close class="close-btn">{{ "chat-features.interactions.cancel" | translate-->
+<!--        }}</button>-->
+<!--      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial-->
+<!--        (click)="sendAssistanceRequest()">-->
+<!--        {{ noteDialogBtnText }}-->
+<!--      </button>-->
+
+
+
       <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial
         (click)="sendAssistanceRequest()">
-        {{ noteDialogBtnText }}
+        {{ requestAction }} Call
+      </button>
+
+      <button mat-button [mat-dialog-close]="true" class="success-btn call-assistance" cdkFocusInitial
+        (click)="sendAssistanceRequest()">
+        {{ requestAction }} Chat
       </button>
       <!--      <button mat-button *ngIf="isTransfer" [mat-dialog-close]="true" class="success-btn" cdkFocusInitial-->
       <!--              (click)="transferRequest(chatConsultTo.name, ' ')">Transfer-->

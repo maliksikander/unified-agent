@@ -1,8 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="11.899" height="10.118" viewBox="0 0 11.899 10.118">
-  <g id="Group_7052" data-name="Group 7052" transform="translate(-6.416 -6.417)">
-    <g id="Group_6975" data-name="Group 6975" transform="translate(6.416 6.417)">
-      <path id="Path_20" data-name="Path 20" d="M15.146,2.7l-.427.427,1.453,1.453H12v.6h4.171l-1.5,1.5L15.1,7.1l2.18-2.18Z" transform="translate(-5.383 -0.913)" fill="#4773b5"/>
-      <path id="Subtraction_55" data-name="Subtraction 55" d="M0,10.118V1.012A1.013,1.013,0,0,1,1.012,0H7.841A1.013,1.013,0,0,1,8.853,1.012V1.9H6.059a1,1,0,0,0-1,1V5.324a1,1,0,0,0,1,1H8.853v.759A1.014,1.014,0,0,1,7.841,8.095H2.023L0,10.116Z" transform="translate(0 0)" fill="#4773b5"/>
-    </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="13" height="9.395" viewBox="0 0 13 9.395">
+  <g id="Group_7946" data-name="Group 7946" transform="translate(-5114 11391.93)">
+    <path id="account-plus_4_" data-name="account-plus (4)" d="M5.7,9.872c1.568,0,4.7.781,4.7,2.349v1.174H1V12.22c0-1.568,3.13-2.349,4.7-2.349M5.7,8.7A2.349,2.349,0,1,1,8.046,6.349,2.349,2.349,0,0,1,5.7,8.7Z" transform="translate(5113 -11395.93)" fill="#4773b5"/>
+    <path id="arrow-right-thin_1_" data-name="arrow-right-thin (1)" d="M11.043,12.636V10.957H8.07L8.05,9.612h2.993V7.94l2.348,2.348Z" transform="translate(5113.609 -11398.081)" fill="#4773b5"/>
   </g>
 </svg>

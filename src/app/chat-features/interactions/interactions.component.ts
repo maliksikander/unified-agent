@@ -131,6 +131,69 @@ export class InteractionsComponent implements OnInit {
   today = new Date();
   interactionSearch = false;
   isCallActive = false;
+  userList = [
+    {
+      team: 'Technical Support',
+      availableAgents : [
+        {
+          name: 'Ev Gayforth',
+          role: 'supervisor',
+          currentTeam: 'Technical Support',
+          status: 'available'
+
+
+        }, {
+          name: 'Joe Stanler',
+          role: 'supervisor',
+          currentTeam: 'Technical Support',
+          status: 'not-available'
+
+
+        }
+      ]
+
+    },
+    {
+      team: 'Customer Support',
+      availableAgents : [
+         {
+          name: 'Adam',
+          role: 'supervisor',
+          currentTeam: 'Customer Support',
+           status: 'available'
+
+        },
+      ]
+
+    },
+    {
+      team: 'Marketing Support',
+      availableAgents : [
+        {
+          name: 'Ev Gayforth',
+          role: 'supervisor',
+          currentTeam: 'Marketing Support',
+          status: 'available'
+
+        }, {
+          name: 'Ortelt',
+          role: 'supervisor',
+          currentTeam: 'Marketing Support',
+          status: 'available'
+
+        }, {
+          name: 'Joe Stanler',
+          role: 'supervisor',
+          currentTeam: 'Marketing Support',
+          status: 'not-available'
+
+        }
+      ]
+
+    }
+
+  ];
+
 
 
   constructor(

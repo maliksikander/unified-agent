@@ -19,7 +19,10 @@ export class CallControlsComponent implements OnInit {
   customerNumber: any = this._sipService.customerNumber;
   // ciscoVoiceSession;
   cxVoiceSession;
-
+  callOnHold = true;
+  multiParticipants = true;
+  barViewControls = false;
+  initiatingCall = true;
   constructor(
     public _cacheService: cacheService,
     public dialogRef: MatDialogRef<CallControlsComponent>,
@@ -47,6 +50,10 @@ export class CallControlsComponent implements OnInit {
 
   cancel() {
     this.dialogRef.close();
+  }
+  isBarView(){
+    this.barViewControls = !this.barViewControls;
+    console.log(this.barViewControls, 'kkk')
   }
 
   endCallOnSip() {
