@@ -150,7 +150,6 @@ export class ActiveChatsComponent implements OnInit {
     this._httpService.getAllActiveChatsWithBots().subscribe(
       (e) => {
         this.activeChatListWithBots = e;
-        console.log("bots chats", this.activeChatListWithBots)
         // Sort the activeChatListWithBots array by activeSince property
         for (let data of this.activeChatListWithBots) {
           this.sortChatsByActiveSince(data.chats)
@@ -176,7 +175,6 @@ export class ActiveChatsComponent implements OnInit {
         });
       } else {
         this.selectedQueues.forEach((data) => {
-          console.log("activeChatListagnts", this.activeChatListWithAgents)
           this.activeChatListWithAgents.forEach((chats) => {
             if (data.queueId == chats.queueId) {
               chats.chats.forEach((innerchat) => {

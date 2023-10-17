@@ -256,7 +256,6 @@ export class socketService {
     });
 
     this.socket.on("WRAP_UP_TIMER_STARTED", (res: any) => {
-      console.log("WRAP_UP_TIMER_STARTED", res);
       let sameTopicConversation = this.conversations.find((e) => {
         return e.conversationId == res.conversationId;
       });
@@ -566,7 +565,6 @@ export class socketService {
           event.data.header['scheduledStatus'] = status;
          }
           conversation.messages.push(event.data);
-          console.log("event.data",conversation.messages)
          // if(event.data.body.type == 'PLAIN')
 
 
@@ -685,7 +683,6 @@ export class socketService {
     // console.log("conversations==>", this.conversations);
     this._conversationsListener.next(this.conversations);
 
-    console.log("conversation.messages",conversation.messages)
     if (
       topicData &&
       topicData.channelSession &&
@@ -889,7 +886,6 @@ export class socketService {
 
   removeConversation(conversationId) {
     // fetching the whole conversation which needs to be removed
-    console.log("removing conversation", conversationId);
     let index;
     const removedConversation = this.conversations.find((conversation, indx) => {
       if (conversation.conversationId == conversationId || conversation.customer._id == conversationId) {
@@ -902,7 +898,6 @@ export class socketService {
       this.stopWrapUpTimer(removedConversation);
     }
     if (index != -1) {
-      console.log("index ound for removing");
       this._sharedService.spliceArray(index, this.conversations);
       --this.conversationIndex;
 
@@ -1023,7 +1018,6 @@ export class socketService {
 
   handleDeliveryNotification(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
-      console.log("converstion id",e)
       return e.conversationId == conversationId;
     });
     if (
@@ -1207,17 +1201,14 @@ export class socketService {
     if (conversation) {
       if (this._cacheService.agent.id == cimEvent.data.conversationParticipant.participant.keycloakUser.id) {
         conversation.topicParticipant = cimEvent.data.conversationParticipant;
-        console.log("updated participant", conversation.topicParticipant);
       }
       else
       {
         let agentParticipants=[]
         conversation.agentParticipants.forEach((agentParticipant,index)=>
         {
-          console.log("agetPar",agentParticipant)
           if(agentParticipant.participant.id==cimEvent.data.conversationParticipant.participant.id )
           {
-            console.log("true",agentParticipant)
             if(cimEvent.data.conversationParticipant.role.toLowerCase()!="wrap_up")
             {
               agentParticipants.push(cimEvent.data.conversationParticipant)
@@ -1230,7 +1221,6 @@ export class socketService {
           }
         })
         conversation.agentParticipants=agentParticipants
-        console.log("co",conversation.agentParticipants)
       }
       let message = this.createSystemNotificationMessage(cimEvent);
 
@@ -1785,7 +1775,6 @@ export class socketService {
   }
 
   stopWrapUpTimer(conversation) {
-    console.log("stop wrap up timer called",conversation);
     if (conversation.wrapUpDialog.ref) {
       clearInterval(conversation.wrapUpDialog.ref);
     }

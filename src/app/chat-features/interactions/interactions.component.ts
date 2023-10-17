@@ -185,7 +185,6 @@ export class InteractionsComponent implements OnInit {
       this.getVoiceChannelSession();
     }
 
-    console.log("dialog data",this.conversation.wrapUpDialog)
     this.wrapUpFormData = {
       header: this._translateService.instant("chat-features.interactions.wrapup"),
       wrapUpDialog: this.conversation.wrapUpDialog,
@@ -1425,9 +1424,7 @@ export class InteractionsComponent implements OnInit {
     return num.toString().padStart(2, "0");
   }
 
-  openWrapUpDialog(timerEnabled: boolean): void {
-  console.log(" wrapupdialog called timer enabled ",timerEnabled)
-   
+  openWrapUpDialog(timerEnabled: boolean): void {   
 
     if (timerEnabled) {
       this.unsubscribeFromConversation();
@@ -1440,7 +1437,6 @@ export class InteractionsComponent implements OnInit {
   }
 
 closeWrapDialog(data) {
-  console.log("close wrap dialog .... " + data);
   if(data == false){
     this.openWrapDialog = false;
   } else{

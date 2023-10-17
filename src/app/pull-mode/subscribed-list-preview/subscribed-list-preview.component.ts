@@ -69,8 +69,6 @@ export class SubscribedListPreviewComponent implements OnInit {
       channelSession: request.channelSession,
       requestId: request.id
     };
-    console.log("conb id",request.channelSession.conversationId)
-    console.log("request.id",request.id)
 
     this._socketService.emit("joinPullModeRequest", obj);
     this._sharedService.serviceChangeMessage({ msg: "closePullModeRequestHeader", data: request.id });

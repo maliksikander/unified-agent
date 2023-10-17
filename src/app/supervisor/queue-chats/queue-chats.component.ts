@@ -111,7 +111,6 @@ export class QueueChatsComponent implements OnInit {
       if (this.selectedQueues.length == 0) {
         this.queuedChatList.forEach((chats) => {
           chats.chats.forEach((innerChat)=> {
-            console.log("here are chat in the above",innerChat)
             innerChat["queueName"] = chats.queueName
             this.filteredData.push(innerChat);
           })
