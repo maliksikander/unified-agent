@@ -1892,7 +1892,7 @@ export class socketService {
 
   processCommentActions(cimMessages, message) {
     if (["like", "hide", "delete"].includes(message.body.itemType.toLowerCase())) {
-      let commentMessage = this.getCimMessageByMessageId(cimMessages, message.header.replyToMessageId);
+      let commentMessage = this.getCimMessageByMessageId(cimMessages, message.header.originalMessageId);
       if (commentMessage) {
         if (message.body.itemType.toLowerCase() == "like") {
           commentMessage["isLiked"] = true;

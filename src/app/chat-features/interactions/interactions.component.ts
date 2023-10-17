@@ -49,7 +49,7 @@ export class InteractionsComponent implements OnInit {
   scrollSubscriber;
   labels: Array<any> = [];
   quotedMessage: any;
-  replyToMessageId: any;
+  originalMessageId: any;
   privateMessageReply: any;
   viewFullCommentAction: boolean = false;
   fullPostView: boolean = false;
@@ -261,14 +261,14 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  constructAndSendCommentAction(commentId, postId, channelSession, replyToMessageId, action) {
+  constructAndSendCommentAction(commentId, postId, channelSession, originalMessageId, action) {
     let message = this.getCimMessage();
     message.header.providerMessageId = commentId;
     message.body.postId = postId;
     message.body.type = "COMMENT";
     message.header.channelSession = channelSession;
     message.header.channelData = channelSession.channelData;
-    message.header.replyToMessageId = replyToMessageId;
+    message.header.originalMessageId = originalMessageId;
     if (action == "like" || action == "delete" || action == "hide") {
       message.body.itemType = action.toUpperCase();
       this.emitFBActionEvent(message);
@@ -284,7 +284,7 @@ export class InteractionsComponent implements OnInit {
   replyToComment(message) {
     this.checkChannelTypeForAttatchementButton(message);
     this.commentPostId = message.body.postId;
-    this.replyToMessageId = message.id;
+    this.originalMessageId = message.id;
     this.commentId = message.header.providerMessageId;
     if (this.commentPostId && this.commentId) {
       let channelSession = this.getChannelSession(message);
@@ -317,7 +317,7 @@ export class InteractionsComponent implements OnInit {
 
   //Quoted Reply
   onQuotedReply(message) {
-    this.replyToMessageId = message.id;
+    this.originalMessageId = message.id;
     this.openQuotedReplyArea(message);
   }
 
@@ -766,9 +766,10 @@ export class InteractionsComponent implements OnInit {
 
         this.emitCimEvent(message, "AGENT_MESSAGE");
       } else {
-        if (this.replyToMessageId) {
-          message.header.replyToMessageId = this.replyToMessageId;
-          this.replyToMessageId = null;
+        if (this.originalMessageId) {
+          message.intent="REPLY_TO";
+          message.header.originalMessageId = this.originalMessageId;
+          this.originalMessageId = null;
         }
         let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
 
@@ -1080,7 +1081,7 @@ export class InteractionsComponent implements OnInit {
   getCimMessage() {
     let message: any = {
       id: "",
-      header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
+      header: { timestamp: "", sender: {}, channelSession: {}, channelData: {}, intent: null },
       body: { markdownText: "", type: "" }
     };
 

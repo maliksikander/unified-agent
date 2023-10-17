@@ -419,14 +419,14 @@
                   ((conversation.messages[index - 1].body.type | lowercase) != 'systemnotification' &&
                     (message.header.sender | getSenderId) == (conversation.messages[index - 1].header.sender | getSenderId) &&
                     message.body.type == conversation.messages[index - 1].body.type &&
-                    message.header.replyToMessageId == null &&
+                    message.header.originalMessageId == null &&
                     message.header.channelSession.channel.channelType.id ==
                       conversation.messages[index - 1].header.channelSession.channel.channelType.id)
                     ? 'same-sender-msg'
                     : 'not-same-sender'
                 }} {{ message.header.status == 'sending' ? 'low-opacity' : message.header.status == 'failed' ? 'failed' : '' }}  {{
                   message.body.type | lowercase
-                }} {{ message.header.replyToMessageId != null ? 'quoted-message-main' : '' }} {{ message.header.sender.type | lowercase }} {{
+                }} {{ message.header.originalMessageId != null ? 'quoted-message-main' : '' }} {{ message.header.sender.type | lowercase }} {{
                   fullPostView && 'full-post-view' && message.id == selectedCommentId ? 'full-post-view' : ''
                 }} {{ index == 0 ? 'not-same-sender' : '' }} "
                 [ngClass]="
@@ -508,11 +508,11 @@
 
                   <div
                     class="chat-message-content referred-message-content"
-                    *ngIf="message.header.replyToMessageId != null && message.header.replyToMessageId != ''"
+                    *ngIf="message.header.originalMessageId != null && message.header.originalMessageId != ''"
                   >
                     <div
                       class="main-quoted-reply"
-                      *ngFor="let referredMessage of message.header.replyToMessageId | getReferredMsg: conversation.messages"
+                      *ngFor="let referredMessage of message.header.originalMessageId | getReferredMsg: conversation.messages"
                       (click)="navigationToRepliedMessage(referredMessage)"
                     >
                       <strong
@@ -860,7 +860,7 @@
                       </span>
                     </div>
                   </div>
-                  <!-- <div *ngIf="message.header.replyToMessageId != null" class="clear clearfix"></div> -->
+                  <!-- <div *ngIf="message.header.originalMessageId != null" class="clear clearfix"></div> -->
 
                   <!-- -----------------------referred reply message end---------------- -->
 
@@ -871,7 +871,7 @@
                   <div
                     class="chat-message-content"
                     [ngClass]="{
-                      'replied-message': message.header.replyToMessageId != null,
+                      'replied-message': message.header.originalMessageId != null,
                       'file-type-message':
                         (message.body.type | lowercase) != 'plain' &&
                         (message.body.type | lowercase) != 'comment' &&
@@ -2363,7 +2363,7 @@
               class="quoted-message-cancel"
               (click)="
                 quotedMessage = '';
-                replyToMessageId = null;
+                originalMessageId = null;
                 commentId = null;
                 privateMessageReply = null;
                 disablingAttatchButtonForInstagramReply = false

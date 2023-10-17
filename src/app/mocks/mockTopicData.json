@@ -537,7 +537,7 @@
                       "isAnonymous": false,
                       "__v": 0
                   },
-                  "replyToMessageId": "aba035c8-b9a9-4d9b-ae40-6fc9a9c02c07",
+                  "originalMessageId": "aba035c8-b9a9-4d9b-ae40-6fc9a9c02c07",
                   "providerMessageId": "gBEGkjM1UhmVAgl7e3n4iFPD940",
                   "schedulingMetaData": {
                       "scheduledDatetime": "2023-09-14T12:24:51.457180503Z",
@@ -675,7 +675,7 @@
                       "isAnonymous": false,
                       "__v": 0
                   },
-                  "replyToMessageId": null,
+                  "originalMessageId": null,
                   "providerMessageId": null,
                   "schedulingMetaData": {
                       "scheduledDatetime": "2023-09-14T12:24:51.457180503Z",
@@ -816,7 +816,7 @@
                       "isAnonymous": false,
                       "__v": 0
                   },
-                  "replyToMessageId": null,
+                  "originalMessageId": null,
                   "providerMessageId": null,
                   "schedulingMetaData": {
                       "scheduledDatetime": "2023-09-14T12:24:51.457180503Z",

@@ -792,7 +792,7 @@
           "stamps": [],
           "intent": "END_VOICE",
           "entities": {},
-          "replyToMessageId": null,
+          "originalMessageId": null,
           "providerMessageId": "",
           "status": "sent"
         },
@@ -2331,9 +2331,9 @@
           "timestamp": 1636360718624,
           "securityInfo": {},
           "stamps": [],
-          "intent": null,
+          "intent": "REPLY_TO",
           "entities": {},
-          "replyToMessageId": "7a1120f8-3235-884f8558ae0"
+          "originalMessageId": "7a1120f8-3235-884f8558ae0"
         },
         "body": {
           "type": "PLAIN",
@@ -2468,8 +2468,8 @@
           "timestamp": 1636360718624,
           "securityInfo": {},
           "stamps": [],
-          "replyToMessageId": "888336cc-f021-4103-bbfd-01bf913e941f",
-          "intent": null,
+          "originalMessageId": "888336cc-f021-4103-bbfd-01bf913e941f",
+          "intent": "REPLY_TO",
           "entities": {}
         },
         "body": {
@@ -2605,8 +2605,8 @@
           "timestamp": 1636360718624,
           "securityInfo": {},
           "stamps": [],
-          "replyToMessageId": "4515b200-406f-11ec-b464-a52108c6c",
-          "intent": null,
+          "originalMessageId": "4515b200-406f-11ec-b464-a52108c6c",
+          "intent": "REPLY_TO",
           "entities": {}
         },
         "body": {
@@ -2742,8 +2742,8 @@
           "timestamp": 1636360721224,
           "securityInfo": {},
           "stamps": [],
-          "replyToMessageId": "46a26c80-406f-11ec-512121214-a55184008c6c",
-          "intent": null,
+          "originalMessageId": "46a26c80-406f-11ec-512121214-a55184008c6c",
+          "intent": "REPLY_TO",
           "entities": {}
         },
         "body": {
