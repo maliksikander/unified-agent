@@ -2218,7 +2218,7 @@
     <div
       class="chat-footer"
       [ngClass]="{
-        'textarea-disable': !_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0 || !conversation.messageComposerState
+        'textarea-disable': !_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0 || !conversation.messageComposerState || conversation.topicParticipant.role=='SILENT_MONITOR'
       }"
     >
       <div
@@ -2239,10 +2239,10 @@
           }}</label>
         <label *ngIf="conversation.activeChannelSessions.length == 0" style="color: grey"> None </label>
       </span> -->
-
-      <span class="selected-channel"
+      <div>
+      <span class="selected-channel" 
         ><span>{{ "chat-features.interactions.selected-channel" | translate }}</span>
-        <button
+        <button               
           *ngIf="conversation.activeChannelSessions.length > 0"
           mat-button
           [matMenuTriggerFor]="channelSwitching"
@@ -2267,6 +2267,7 @@
           >{{ "chat-features.interactions.none" | translate }}
         </label>
       </span>
+    </div>
 
       <mat-menu #channelSwitching="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
         <button
@@ -2318,7 +2319,7 @@
             {{ "chat-features.interactions.whisper" | translate }}
           </button>
         </div>
-        <div class="quoted-message-selected-area" *ngIf="quotedMessage">
+        <div class="quoted-message-selected-area" *ngIf="quotedMessage && (conversation.topicParticipant.role | lowercase) != 'silent_monitor'">
           <div class="message-selected-inner">
             <span *ngIf="quotedMessage.header.sender">
               {{ quotedMessage.header.sender | getSenderName: conversation.customer | titlecase }}
@@ -2382,8 +2383,9 @@
         </div>
 
         <form
-          class="reply-form {{ (conversation?.agentParticipants | countAgentPartcipants: ['PRIMARY', 'ASSISTANT']) ? 'whisper-tabs' : '' }}"
-          [ngClass]="{ 'whisper-mode': isWhisperMode }"
+          class="reply-form {{ (conversation.topicParticipant.role != 'SILENT_MONITOR' && (conversation?.agentParticipants | countAgentPartcipants: ['PRIMARY', 'ASSISTANT']) ) ? 'whisper-tabs' : '' }}"
+          [ngClass]="{ 'whisper-mode':( conversation.topicParticipant.role != 'SILENT_MONITOR' && isWhisperMode) }"
+
         >
           <label *ngIf="message.length > 0" class="count-reply">{{ replyInput.value.length }}/1000</label>
           <div class="mat-form-field chat-area" [ngClass]="{ 'expand-area-height': expanedHeight > 50 }">
@@ -2392,9 +2394,8 @@
               [disabled]="
                 !_socketService.isSocketConnected ||
                 conversation.activeChannelSessions.length == 0 ||
-                !conversation.messageComposerState ||
-                conversation.topicParticipant.role == 'SILENT_MONITOR'
-                ||
+                !conversation.messageComposerState                ||
+                conversation.topicParticipant.role == 'SILENT_MONITOR' ||
                 (!isWhisperMode && conversation.topicParticipant.role == 'ASSISTANT')
               "
               (keyup.enter)="onSend(replyInput.value); replyInput.value = null"
@@ -2561,6 +2562,7 @@
                 conversation.messageComposerState &&
                 conversationSettings.isFileSharingEnabled &&
                 _socketService.isSocketConnected &&
+                conversation.topicParticipant.role!='SILENT_MONITOR' &&
                 !disablingAttatchButtonForInstagramReply
               "
             >
