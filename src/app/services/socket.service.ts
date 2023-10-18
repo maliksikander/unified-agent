@@ -18,7 +18,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { announcementService } from "./announcement.service";
 
-const mockTopicData: any = require("../mocks/mockTopicData.json");
+//const mockTopicData: any = require("../mocks/mockTopicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -536,7 +536,7 @@ export class socketService {
           conversation.messages.push(event.data);
         }
       } else if (event.name.toLowerCase() == "third_party_activity"  ) {
-     
+
          if ( event.data.header.channelData.additionalAttributes.length > 0) {
 
           const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => { return e.value.toLowerCase() == "outbound" });
@@ -551,7 +551,7 @@ export class socketService {
           }
         }
          if(event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain'){
-          
+
           const fakeChannelSession={
             "channel":{
               "channelType": event.data.header.schedulingMetaData.channelType,
@@ -568,7 +568,7 @@ export class socketService {
          // if(event.data.body.type == 'PLAIN')
 
 
-         
+
         }
       }
       else if (
@@ -592,7 +592,6 @@ export class socketService {
         event.data.body["isWhisper"] = true;
         conversation.messages.push(event.data);
       }
-      
     });
 
     this.processSeenMessages(conversation, topicEvents);
@@ -1047,19 +1046,7 @@ export class socketService {
           selectedMessage["header"]["status"] = "failed";
         }
       }
-    } 
-    //else if(cimEvent.data.header.sender.type.toLowerCase() == "app" 
-    // &&(cimEvent.data.body.status.toLowerCase() == "failed" || cimEvent.data.body.status.toLowerCase() == "read" 
-    // || cimEvent.data.body.status.toLowerCase() == "delivered")){
-    //  console.log("schduled Activity ");
-    //  const selectedMessage = conversation.messages.find((message) => {
-    //   return message.id == cimEvent.data.body.messageId;
-    // });
-    // if (selectedMessage) {
-    //   selectedMessage["header"]["status"] = cimEvent.data.body.status.toLowerCase();
-    //   console.log("schduled Activity ", selectedMessage["header"]["status"] );
-    // }
-    // }
+    }
   }
 
   markAgentMessagesToSeenTillId(messages, id, sender) {
@@ -1781,11 +1768,11 @@ export class socketService {
   }
 
   getSchduledActivityStatus(events,messageId){
-    
+
     let statusEvent = events.find((event)=>{
       if(event.name.toLowerCase()== 'third_party_activity'  && event.data.body.type.toLowerCase() == 'deliverynotification'){
         return event.data.body.messageId == messageId
-       
+
       }
 
     });
@@ -1802,7 +1789,7 @@ export class socketService {
     //     if(event.data.id == messageId){
     //       status =event.data.body.status;
     //     }
-        
+
     //   }
 
     // });
@@ -1811,7 +1798,7 @@ export class socketService {
     // // }
     // return status;
 
-    
+
   }
 
   topicUnsub(conversation) {

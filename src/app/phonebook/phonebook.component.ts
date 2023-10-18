@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from "@angular/core";
+import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import { DateAdapter, MatDialog } from "@angular/material";
 import { CreateCustomerComponent } from "../create-customer/create-customer.component";
 import { FormControl } from "@angular/forms";
@@ -30,7 +30,7 @@ export class PhonebookComponent implements OnInit {
     private _router: Router,
     private route: ActivatedRoute,
     private _socketService: socketService,
-    private _snackbarService: snackbarService
+    private _snackbarService: snackbarService,
   ) {
     this.dateAdapter.setLocale("en-GB");
     this._translateService.stream("globals.Search").subscribe((data: string) => {
@@ -43,11 +43,13 @@ export class PhonebookComponent implements OnInit {
   paramsSubscription;
   isEmbededView: boolean = false;
   conversationId: string;
+  isMobileDevice = false;
   totalRecords: number;
   FilterSelected = "action";
   selectedTeam = "us-corporate";
   showLblTooltip: boolean = false;
   LblTooltipId;
+  advanceFilter = false;
   lblSearch: boolean = false;
   labelsForFilter = new FormControl("");
   labelSettings = {
@@ -69,6 +71,7 @@ export class PhonebookComponent implements OnInit {
   sort = {};
   query = {};
   filterQuery = [];
+  selectedValue: string;
   enableTable: boolean = false;
   selectedSearchLabel = "";
   submitted: boolean;
@@ -83,6 +86,15 @@ export class PhonebookComponent implements OnInit {
   ngOnInit() {
     this.processURLParams();
     this.loadLabelsAndCustomer();
+
+    if (this._sharedService.isCompactView) {
+      this.isMobileDevice = true;
+      console.log('this is a compact view phonebook?', this.isMobileDevice);
+    }
+
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      this.isMobileDevice = true;
+    }
   }
 
   processURLParams() {
@@ -219,7 +231,7 @@ export class PhonebookComponent implements OnInit {
   // to open create customer dialog
   createCustomer() {
     const dialogRef = this.dialog.open(CreateCustomerComponent, {
-      panelClass: "create-customer-dialog",
+      panelClass: "create-customer-dialog" + `${this.isMobileDevice ? '-mobile-view-panel' : ''}`,
       maxWidth: "80vw"
       // height: "80vh",
       // maxHeight: "80vh"
@@ -234,6 +246,7 @@ export class PhonebookComponent implements OnInit {
   // to open user prefernce dialog
   actions() {
     const dialogRef = this.dialog.open(columnPreferences, {
+      panelClass: "edit-customer-dialog" + `${this.isMobileDevice ? '-mobile-view-panel' : ''}`,
       maxWidth: "92vw",
       maxHeight: "88vh",
       width: "818px",
@@ -249,7 +262,7 @@ export class PhonebookComponent implements OnInit {
   // to open user customer action dialog
   onRowClick(id, tab, col) {
     const dialogRef = this.dialog.open(CustomerActionsComponent, {
-      panelClass: "create-customer-dialog",
+      panelClass: "create-customer-dialog" + `${this.isMobileDevice ? '-mobile-view-panel' : ''}`,
       maxWidth: "80vw",
       // maxHeight: "88vh",
       // width: "818px",

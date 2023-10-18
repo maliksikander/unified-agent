@@ -16,7 +16,7 @@
                   <div class="user-badge" >
                     <!-- [ngClass]="{'consult-monitor':conversation.customer.isConsultMonitor && _sharedService.consultRequestAccept == true && (_sharedService.requestAction | lowercase) !== 'conference'}" -->
                     <circle-progress
-                      class="laft-bar-data"
+                      class="left-bar-data"
                       [percent]="100"
                       [radius]="15"
                       [outerStrokeWidth]="2"
@@ -62,6 +62,10 @@
           </div>
         </mat-tab>
       </mat-tab-group>
+      <div class="menu-header-mobile chat-tab {{barExpand ? 'customer-tab-expand' : 'customer-tab-collapsed'}}">
+        <h5>Active Chats <button (click)="barExpand = !barExpand" mat-button class="close-menu-mobile"><mat-icon>close</mat-icon></button>
+        </h5>
+      </div>
       <button *ngIf="(('customer' | authPipe : 'view') && ('agent-conversation-control' | authPipe : 'view_initiate_chat')) as result" class="add-customer" [ngClass]="{'expand-view': barExpand}" mat-fab routerLink="/customers/phonebook">
         <mat-icon>add</mat-icon>
         <span class="start-con">New Conversation</span>

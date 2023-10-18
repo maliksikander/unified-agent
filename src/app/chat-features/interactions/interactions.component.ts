@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, SimpleChanges, ViewChild, ViewChildren } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, Inject, OnInit, Output, QueryList, SimpleChanges, ViewChild, ViewChildren } from "@angular/core";
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
@@ -19,6 +19,7 @@ import { ConversationSettings } from "../../models/conversationSetting/conversat
 import { SipService } from "src/app/services/sip.service";
 import { HighlightResult } from 'ngx-highlightjs';
 import { SendSmsComponent } from "../send-sms/send-sms.component";
+// import {DOCUMENT} from '@angular/common';
 
 
 // declare var EmojiPicker: any;
@@ -59,7 +60,7 @@ export class InteractionsComponent implements OnInit {
   disablingAttatchButtonForInstagramReply: boolean = false;
   // isTransfer = false;
   // isConsult = false;
-  ctiBarView = true;
+  ctiBarView = false;
   ctiBoxView = false;
   timer: any = "00:00";
   cxVoiceSession: any;
@@ -68,6 +69,18 @@ export class InteractionsComponent implements OnInit {
 
   isAudioPlaying: boolean[] = [];
   isDialogClosed;
+
+  chatDuringCall = false;
+  isVideoCam = false;
+  isMute = false;
+  isVideoCall = false;
+  isAudioCall = false;
+  isBotSuggestions = false;
+  isConversationView = true;
+  fullScreenView = false;
+  videoSrc = 'assets/video/angry-birds.mp4';
+  element;
+  dragPosition = {x: 0, y: 0};
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -101,12 +114,11 @@ export class InteractionsComponent implements OnInit {
   expanedHeight = 0;
   selectedLanguage = "";
   isRTLView = false;
-
   message = "";
   convers: any[];
   ringing = false;
   callControls = true;
-
+  searchInteraction = '';
   isSuggestion = false;
   displaySuggestionsArea = false;
   cannedTabOpen = false;
@@ -125,12 +137,12 @@ export class InteractionsComponent implements OnInit {
   sendTypingStartedEventTimer: any = null;
   onMessageSuggestions = false;
   getDialogData;
-  // messageData: any= {
-  //   name: 'Martin Gupital',
-  //   //phone: '030012345',
-  //  // message: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary,'
 
-  // }
+  isMobileDevice = false;
+  @Input() max: any;
+  today = new Date();
+  interactionSearch = false;
+  isCallActive = false;
 
 
   constructor(
@@ -145,9 +157,20 @@ export class InteractionsComponent implements OnInit {
     private snackBar: MatSnackBar,
     public _sipService: SipService,
     private _translateService: TranslateService,
+    // @Inject(DOCUMENT) public documentScreen: any
   ) {}
   ngOnInit() {
-
+    this.isCallActive = this._sipService.isCallActive;
+    this.element = document.documentElement;
+    console.log("i am called hello", this._sipService.isCallActive)
+    if (this._sharedService.isCompactView) {
+      this.isMobileDevice = true;
+      console.log('this is a compact view Interactions view ?', this.isMobileDevice);
+    }
+    // if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    //   this.isMobileDevice = true;
+    // }
+    //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
     }
@@ -195,7 +218,7 @@ export class InteractionsComponent implements OnInit {
    if(this.conversation.conversationId === 'FAKE_CONVERSATION'){
     this.conversation.messages = [];
     this.loadPastActivities('FAKE_CONVERSATION');
-    
+
    }
 
   }
@@ -901,18 +924,18 @@ export class InteractionsComponent implements OnInit {
         if (
           event.name.toLowerCase() == "agent_message" ||
           event.name.toLowerCase() == "bot_message" ||
-          event.name.toLowerCase() == "customer_message" 
+          event.name.toLowerCase() == "customer_message"
         ) {
           if (event.name.toLowerCase() == "customer_message" && event.data.header.sender.type.toLowerCase() == "connector") {
             event.data.header.sender.senderName = event.data.header.customer.firstName + " " + event.data.header.customer.lastName;
             event.data.header.sender.id = event.data.header.customer._id;
             event.data.header.sender.type = "CUSTOMER";
           }
-        
+
         event.data.header["status"] = "seen";
           msgs.push(event.data);
         } else if (event.name.toLowerCase() == "third_party_activity") {
-         
+
            if (event.data.header.channelData.additionalAttributes.length > 0) {
 
             const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => { return e.value.toLowerCase() == "outbound" });
@@ -925,7 +948,7 @@ export class InteractionsComponent implements OnInit {
               }
               msgs.push(event.data);
             }
-          } 
+          }
           if(event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain' ){
             const fakeChannelSession={
               "channel":{
@@ -939,9 +962,9 @@ export class InteractionsComponent implements OnInit {
             if(status){
              event.data.header['scheduledStatus'] = status;
             }
-            
+
             msgs.push(event.data);
-            
+
           }
         } else if (
           [
@@ -1346,14 +1369,52 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
+  // ctiCallActive() {
+  //   this.ctiBoxView = false;
+  //   this.ctiBarView = false;
+  //   this.isAudioCall = true;
+  //   this.isConversationView = false;
+  //   if (this.fullScreenView) {
+  //     this.exitFullscreen();
+  //   }
+  // }
+  // ctiControlBar() {
+  //   this.isConversationView = true;
+  //   this.ctiBoxView = true;
+  //   this.ctiBarView = true;
+  //   this.chatDuringCall = false;
+  //   this._sipService.isToolbarActive = true;
+  //   this._sipService.isToolbarDocked = false;
+  //   const dialogRef = this.dialog.open(CallControlsComponent, {
+  //     panelClass: "call-controls-dialog",
+  //     hasBackdrop: false,
+  //     position: {
+  //       top: "8%",
+  //       right: "8%"
+  //     },
+  //     data: { conversation: this.conversation }
+  //   });
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     this.isAudioCall = true;
+  //     this.ctiCallActive();
+  //     // this._sipService.isToolbarDocked = true;
+  //     if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
+  //   });
+  // }
+
   ctiControlBar() {
+    this.isConversationView = true;
     this.ctiBoxView = true;
-    this.ctiBarView = false;
+    this.ctiBarView = true;
+    this.isAudioCall = true;
+    this.isCallActive = true;
+    this.chatDuringCall = false;
     this._sipService.isToolbarActive = true;
     this._sipService.isToolbarDocked = false;
     const dialogRef = this.dialog.open(CallControlsComponent, {
       panelClass: "call-controls-dialog",
       hasBackdrop: false,
+      minWidth: '300px',
       position: {
         top: "8%",
         right: "8%"
@@ -1361,8 +1422,8 @@ export class InteractionsComponent implements OnInit {
       data: { conversation: this.conversation }
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.ctiBoxView = false;
-      this.ctiBarView = true;
+      // this.isAudioCall = true;
+      // this.ctiCallActive();
       this._sipService.isToolbarDocked = true;
       if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
     });
@@ -1465,5 +1526,62 @@ closeWrapDialog(data) {
       audioElement.pause();
     }
     this.isAudioPlaying[arrayIndex] = !audioElement.paused;
+  }
+
+
+  chatInCall(){
+    this.chatDuringCall = !this.chatDuringCall;
+    this.isConversationView = !this.isConversationView;
+  }
+  videoSwitch(e){
+    if(e == 'jm'){
+      this.videoSrc = 'assets/video/sample-vid.mp4';
+    }else{
+      this.videoSrc = 'assets/video/angry-birds.mp4';
+    }
+  }
+  requestFullscreen(element: Element): void {
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+      this.fullScreenView = true;
+    } else if (this.element.webkitRequestFullscreen) {
+      this.element.webkitRequestFullscreen();
+      this.fullScreenView = true;
+    } else if (this.element.webkitRequestFullScreen) {
+      this.element.webkitRequestFullScreen();
+      this.fullScreenView = true;
+    } else if ((this.element as any).mozRequestFullScreen) {
+      this.fullScreenView = true;
+      (this.element as any).mozRequestFullScreen();
+    } else if ((this.element as any).msRequestFullScreen) {
+      this.fullScreenView = true;
+      (this.element as any).msRequestFullScreen();
+    }
+  }
+  /*  Close fullscreen  */
+  // exitFullscreen() {
+  //   if (this.fullScreenView) {
+  //     if (document.exitFullscreen) {
+  //       this.documentScreen.exitFullscreen();
+  //       this.fullScreenView = false;
+  //     } else if (this.documentScreen.mozCancelFullScreen) {
+  //       /* Firefox */
+  //       this.documentScreen.mozCancelFullScreen();
+  //     } else if (this.documentScreen.webkitExitFullscreen) {
+  //       /* Chrome, Safari and Opera */
+  //       this.documentScreen.webkitExitFullscreen();
+  //     } else if (this.documentScreen.msExitFullscreen) {
+  //       /* IE/Edge */
+  //       this.documentScreen.msExitFullscreen();
+  //     }
+  //   } else {
+  //     return;
+  //   }
+  // }
+
+  endActiveCall(){
+    this.isVideoCall = false;
+    this.isAudioCall = false;
+    this.chatDuringCall = false;
   }
 }

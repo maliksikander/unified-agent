@@ -346,7 +346,7 @@
     "valid-credentials": "Please provide a valid username and password to login to your account._ar",
     "username": "Username_ar",
     "password": "Password_ar",
-    "agent-desk": "Agent Desk_ar",
+    "agent-desk": "AgentDesk_ar",
     "call-center-experts": "Your Call Center Experts._ar",
     "": ""
   },
@@ -388,7 +388,7 @@
     "create-new-customer": "Create New Customer_ar",
     "unable-connect-finesse": "Unable to connect with finesse, try refreshing may resolve the problem_ar",
     "enable-javascript": "Please enable JavaScript to continue using this application._ar",
-    "agent-desk": "Agent Desk_ar",
+    "agent-desk": "AgentDesk_ar",
     "select-all": "Select all _ar",
     "unselect-all": "Unselect all_ar",
     "Search": "Search _ar",
