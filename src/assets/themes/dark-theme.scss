@@ -565,7 +565,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
         }
       }
 
-      .textarea-disable .reply-form {
+      .textarea-disable .reply-form, .textarea-disable .whisper-mode  {
         border-top: 1px solid mat-color($dark-primary, 800) !important;
         background: mat-color($dark-primary) !important;
       }
