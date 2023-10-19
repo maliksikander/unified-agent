@@ -97,9 +97,9 @@ import { getCustomerAniPipe } from "./pipes/getCustomerAni.pipe";
 import { checkOutboundCallPipe } from "./pipes/checkOutboundCall.pipe";
 import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
 import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements.pipe";
+import { getMatchedStringPipe } from "./pipes/getMatchedString.pipe";
 import {  returnSchemaByKeyPipe } from "./pipes/returnSchemaByKey.pipe";
 import {  returnSchemaByChannelTypePipe } from "./pipes/returnSchemaByChannelType.pipe";
-
 import { getIVRTrailPipe } from "./pipes/getIVRTrail.pipe";
 import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
 import { checkCiscoSessionPipe } from "./pipes/checkCiscoSession.pipe";
@@ -149,8 +149,12 @@ import { checkCXSessionPipe } from "./pipes/checkCXSession.pipe";
     checkCiscoSessionPipe,
     checkCXSessionPipe,
     returnSchemaByKeyPipe,
+    returnSchemaByChannelTypePipe,
+    getMatchedStringPipe,
+    checkCiscoSessionPipe,
+    returnSchemaByKeyPipe,
     returnSchemaByChannelTypePipe
-    ],
+  ],
   imports: [
     NgxDocViewerModule,
     MatIconModule,
@@ -220,7 +224,7 @@ import { checkCXSessionPipe } from "./pipes/checkCXSession.pipe";
     AngularMultiSelectModule,
     NgScrollbarModule,
     NgxTimerModule,
-    TranslateModule
+    TranslateModule,
   ],
   exports: [
     NgxTimerModule,
@@ -329,6 +333,8 @@ import { checkCXSessionPipe } from "./pipes/checkCXSession.pipe";
     TableFilterPipe,
     checkCiscoSessionPipe,
     checkCXSessionPipe,
+    getMatchedStringPipe,
+    checkCiscoSessionPipe,
     returnSchemaByKeyPipe,
     returnSchemaByChannelTypePipe
   ]
