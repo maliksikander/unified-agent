@@ -94,6 +94,7 @@
     "Unable-to-Create-New-Announcement":"Unable to Create New Announcement_fr",
     "Unable-to-Update-Announcement":"Unable to Update Announcement_fr",
     "Unable-to-Delete-Announcement":"Unable to Delete Announcement_fr",
+    "unable-to-fetch-service-identifier-messages-cant-be-sent":"Unable to fetch service identifier, messages cant be sent_fr",
     "Socket-Connected":"Socket Connected_fr",
     "Calling":"Calling_fr",
     "CX-Voice-Connected":"CX VOICE Connected_fr",
@@ -161,6 +162,30 @@
     "no-data-available": "No Data Available_fr"
   },
   "chat-features": {
+    "send-sms":{
+      "info":"SEND SMS_fr",
+      "channel-identity":"Channel Identity_fr",
+      "type-sms":"Type SMS_fr",
+      "invalid-text":"invalid text_fr",
+      "not-empty":"This field can't be empty_fr",
+      "invalid-pattern":"Invalid pattern_fr",
+      "number-should-be-in-range-3-to-15":"number should be in range 3 to 15_fr",
+      "see-conversation-history":"See Conversation History_fr",
+      "discard":"Discard_fr",
+      "send-sms":"Send SMS_fr",
+      "success-sms":"SMS sent successfully_fr",
+      "update-profile":"To update the customer profile",
+      "click-here":"click here_fr",
+      "the-sms-has-been-sent-to-the":"The SMS has been sent to the\u0020",
+      "on-this-number":" on this number_fr",
+      "new":"new",
+      "customer":" customer",
+      "characters-limit-1500":"1500 characters_fr",
+      "to-view-the-customer-profile":" to view the customer profile_fr"
+      
+
+    },
+    
     "customer-info": {
       "info": "Customer Info_fr",
       "customer-profile": " Customer Profile_fr",
@@ -324,7 +349,7 @@
     "valid-credentials": "Please provide a valid username and password to login to your account._fr",
     "username": "Username_fr",
     "password": "Password_fr",
-    "agent-desk": "Agent Desk_fr",
+    "agent-desk": "AgentDesk_fr",
     "call-center-experts": "Your Call Center Experts._fr",
     "": ""
   },
@@ -366,7 +391,7 @@
     "create-new-customer": "Create New Customer_fr",
     "unable-connect-finesse": "Unable to connect with finesse, try refreshing may resolve the problem_fr",
     "enable-javascript": "Please enable JavaScript to continue using this application._fr",
-    "agent-desk": "Agent Desk_fr",
+    "agent-desk": "AgentDesk_fr",
     "select-all": "Select all _fr",
     "unselect-all": "Unselect all_fr",
     "Search": "Search _fr",

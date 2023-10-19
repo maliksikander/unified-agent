@@ -12,6 +12,7 @@ export class cacheService {
   agentPresence: IAgentPresence;
   agentFcmkey = null;
   isMobileDevice: boolean = false;
+  smsDialogData: any=null;
 
   constructor(private _httpService: httpService, private _pullModeService: pullModeService, private _sharedService: sharedService) {
     this.resetCache();
@@ -42,4 +43,14 @@ export class cacheService {
   loadPullModeList() {
     this._pullModeService.getPullModeList();
   }
+
+  storeOutboundSmsDialogData(data) {
+    this.smsDialogData = data;
+  }
+
+  clearOutboundSmsDialogData() {
+    this.smsDialogData = null;
+  }
+
+
 }
