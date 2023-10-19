@@ -101,11 +101,11 @@
     "Call-Ended":"Call Ended_fr"
   },
   "app-header": {
-    "customer-conversation-view": "Customer Conversation View_fr",
-    "customer-list-view": "Customer List View_fr",
+    "customer-conversation-view": "Customer Interactions_fr",
+    "customer-list-view": "Customers_fr",
     "customer-labels": "Customer Labels_fr",
     "subscribed-lists": "Subscribed Lists_fr",
-    "customer-schema": "Customer Schema_fr",
+    "customer-schema": "Customer Attributes_fr",
     "dashboard": "Dashboard_fr",
     "summary-dashboard": "Summary Dashboard_fr",
     "active-conversations-detail": "Active Conversations Detail_fr",
