@@ -1,3 +1,6 @@
+// Initialize an object to keep track of function locks
+const functionLocks = {};
+
 var endcal = false;
 var calls = [];
 var consultSessioin;
@@ -302,6 +305,8 @@ function postMessage(obj, callback) {
 
 
 function connect_useragent(extension, sip_uri, sip_password, wss, sip_log, callback) {
+    var res= lockFunction("connect_useragent", 500); // --- seconds cooldown
+    if(!res)return;
     const undefinedParams = checkUndefinedParams(connect_useragent, [extension, sip_uri, sip_password, wss, sip_log, callback]);
 
     if (undefinedParams.length > 0) {
@@ -1622,3 +1627,19 @@ function getParameterNames(func) {
     }
     return [];
 }
+// Reusable function to check and set the lock state for a specific function
+function lockFunction(funcName, delay) {
+    if (!functionLocks[funcName]) {
+      // If the function is not locked, lock it and allow execution
+      functionLocks[funcName] = true;
+  
+      setTimeout(() => {
+        // After the specified delay, unlock the function
+        functionLocks[funcName] = false;
+      }, delay);
+      return true;
+    } else {
+      console.log(`${funcName} is not allowed to be called yet`);
+      return false;
+    }
+  }
