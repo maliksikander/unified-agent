@@ -790,7 +790,7 @@ export class InteractionsComponent implements OnInit {
         this.emitCimEvent(message, "AGENT_MESSAGE");
       } else {
         if (this.originalMessageId) {
-          message.intent="REPLY_TO";
+          message.header.intent="REPLY_TO";
           message.header.originalMessageId = this.originalMessageId;
           this.originalMessageId = null;
         }
