@@ -57,22 +57,34 @@
           </tr>
         </thead>
         <tbody>
-          <ng-container *ngFor="let data of filteredData">
-            <tr *ngFor="let chat of data.chats">
+            <tr *ngFor="let chat of filteredData">
               <td>
                 <span class="channel-icon"><img [src]="chat.channelType | channelName | channelLogo | async" /></span>
-                {{ chat.customerName }}
-                <small>({{ chat.channelIdentity }})</small>
-                <!-- <ul class="customer-labels">
-                <li matTooltip="Marketing" style="background: #32b67a;"></li>
-                <li matTooltip="Corporate" style="background: #f34f1b;"></li>
-                <li matTooltip="Product Support" style="background: #536ce8;"></li>
-              </ul> -->
+                <span *ngIf="'customer' | authPipe: 'view_pii' as result; else maskedpii">
+                  <span class="table-main-data" matTooltip="{{ chat.customerName }}">{{
+                    chat.customerName 
+                  }}</span>
+                  <small matTooltip="{{ 'globals.channel-identifier' | translate }}"
+                    >({{ chat.channelIdentity  }})</small
+                  >
+                </span>
+
+                <ng-template #maskedpii>
+                  <span class="table-main-data" matTooltip="{{ chat.customerName }}">{{ chat.customerName | maskPIIAttribute: ("firstName" | returnSchemaByKey) }}</span>
+                  <small matTooltip="{{ 'globals.channel-identifier' | translate }}">({{ chat.channelIdentity | maskPIIAttribute: (chat.channelType | returnSchemaByChannelType) }})</small>
+                </ng-template>
+                <ul class="customer-labels" *ngIf="(labels && ('customer-labels' | authPipe : 'assign_label')) as result">
+                  <li
+                    *ngFor="let lbl of labels | fetchLabels: chat.customerLabels"
+                    matTooltip="{{ lbl.name }}"
+                    [ngStyle]="{ 'background-color': lbl.colorCode }"
+                  ></li>
+                </ul>
               </td>
               <td>
                 {{ chat.waitingSince | amDuration: "seconds" }} <small>{{ "supervisor.ago" | translate }}</small>
               </td>
-              <td>{{ data.queueName }}</td>
+              <td>{{ chat.queueName }}</td>
               <!-- <span class="table-trigger">
                 <button mat-mini-fab class="chat-btn" matTooltip="Chat"><img src="assets/images/joinchat.svg"
                     alt="Chat"></button>
@@ -82,7 +94,6 @@
                     src="assets/images/close.svg" alt="Close"></button>
               </span> -->
             </tr>
-          </ng-container>
         </tbody>
       </table>
       <div *ngIf="this.supervisedTeams && this.supervisedTeams.length == 0" class="no-data-warning">

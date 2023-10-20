@@ -21,21 +21,21 @@
         console.log("injecting CTI lib ==>");
 
         let jabber = document.createElement('script');
-        let ctiLib = document.createElement('script');
+        //let ctiLib = document.createElement('script');
         let ctiWrapper = document.createElement('script');
 
         jabber.setAttribute('src', 'assets/cti/jabberwerx.js');
-        ctiLib.setAttribute('src', 'assets/cti/CTIJsLibrary.js');
+        //ctiLib.setAttribute('src', 'assets/cti/CTIJsLibrary.js');
         ctiWrapper.setAttribute('src', 'assets/cti/wrapper.js');
 
         document.head.appendChild(jabber);
-        document.head.appendChild(ctiLib);
+        //document.head.appendChild(ctiLib);
         document.head.appendChild(ctiWrapper);
       }
 
       let sipLib = document.createElement('script');
       let sipWrapper = document.createElement('script');
-      sipLib.setAttribute('src', 'assets/cti/sip-libraries/sip-0.15.11.js');
+      sipLib.setAttribute('src', 'assets/cti/sip-libraries/sip-0.21.2.js');
       sipWrapper.setAttribute('src', 'assets/cti/sip-libraries/sip-wrapper.js');
       document.head.appendChild(sipLib);
       document.head.appendChild(sipWrapper);

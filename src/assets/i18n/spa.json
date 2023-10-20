@@ -58,7 +58,7 @@
     "Confirm":"Confirm_spa",
     "Cancel":"Cancel_spa",
     "Incoming-Call-Alert":"Incoming Call Alert_spa",
-    "Incoming-call-alert-request":"Incoming call alert request : _spa",
+    "Incoming-call-alert-request":"Incoming call request from: _spa",
     "CHAT-REQUESTED":"CHAT REQUESTED_spa",
     "Incoming-chat-request-on-push-mode-on":"Incoming chat request on push mode on _spa",
     "Incoming-chat-request-on-pull-mode-on":"Incoming chat request on pull mode on _spa",
@@ -81,9 +81,10 @@
     "Cisco-State-Sync-Success":"CISCO : Synchronizing state with cisco_spa",
     "Unable-To-End-Voice-Session":"Unable to end voice session_spa",
     "CX-Voice-incorrect-request":"CX VOICE : Incorrect object for call request!_spa",
-    "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed, Invalid Credentials!_spa",
+    "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed!_spa",
     "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed!_spa",
-    "CX-Voice-Login-Success":"CX VOICE : Successfully login with EF Switch_spa",
+    "CX-Voice-Login-Success":"CX VOICE: Login Successful with EF Switch_spa",
+    "CX-Voice-call-canceled" : "CX VOICE : Voice Call canceled_spa",
     "SIP-Logout-Successful":"SIP Logout Successful_spa",
     "No-Extension-Found":"No Extension Found For Sip Agent_spa",
     "Unable-to-edit-Active-Announcements":"Unable to edit Active Announcement_spa",
@@ -92,7 +93,13 @@
     "Announcement-Updated":"Announcement Updated_spa",
     "Unable-to-Create-New-Announcement":"Unable to Create New Announcement_spa",
     "Unable-to-Update-Announcement":"Unable to Update Announcement_spa",
-    "Unable-to-Delete-Announcement":"Unable to Delete Announcement_spa"
+    "Unable-to-Delete-Announcement":"Unable to Delete Announcement_spa",
+    "Socket-Connected":"Socket Connected_spa",
+    "Calling":"Calling_spa",
+    "CX-Voice-Connected":"CX VOICE Connected_spa",
+    "Call-Ended":"Call Ended_spa",
+    "Customer-No":"Customer No_spa",
+    "queue-name":"Queue Name_spa"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_spa",
@@ -196,7 +203,7 @@
       "whisper": "Whisper_spa",
       "bot-suggestions-available": "Bot suggestions are available type / for viewing_spa",
       "for-reply-to-a-comment":"for reply to a comment_spa",
-      "Type-a-reply-to-comment":"Type a reply to a facebook comment_spa",
+      "Type-a-reply-to-comment":"Type a reply to a comment_spa",
       "Type-a-message": "Type a message here..._spa",
       "Unable-to-send-message":"Unable to send message_spa",
       "bot-suggestions-available-for-reply-to-a-comment":"Bot suggestions available for reply to a comment_spa",
@@ -328,6 +335,7 @@
    "session-ended":"session ended_spa",
    "left-the-conversation":"left the conversation_spa",
    "transfer-request-has-been-placed-by":"transfer request has been placed by_spa",
+   "transfer-request-has-been-placed":"transfer request has been placed_spa",
    "conference-request-has-been-placed-by":"conference request has been placed by_spa",
    "No-agent-is-available-for":"No agent is available for_spa",
    "conference-request-has-cancelled": "Conference request has been cancelled_spa"
@@ -379,7 +387,11 @@
     "agent-id":"Agent Id_spa",
     "channel":"channel_spa",
     "direction":"direction_spa",
-    "Select-All":"Select All_spa"
+    "Select-All":"Select All_spa",
+    "mute":"Mute_spa",
+    "unMute":"Unmute_spa",
+    "hold":"Hold_spa",
+    "resume":"Resume_spa"
   },
   "pull-mode": {
     "all-list": "All List_spa",

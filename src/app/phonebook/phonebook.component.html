@@ -62,7 +62,7 @@
       <!--    </mat-form-field>-->
     </div>
 
-    <div *ngIf="'customer' | authPipe: 'manage' as result" class="right-actions text-right">
+    <div  class="right-actions text-right">
       <button mat-button class="btn-action add-new" (click)="actions()">{{ "globals.column-preference" | translate }}</button>
       <mat-menu #columnMenu="matMenu">
         <div class="check-menu" (click)="$event.stopPropagation()">
@@ -72,7 +72,7 @@
         </div>
       </mat-menu>
 
-      <div *ngIf="labels" class="lbl-filter-search custom-dropdown">
+      <div *ngIf="(labels && ('customer-labels' | authPipe : 'assign_label')) as result" class="lbl-filter-search custom-dropdown">
         <span (click)="lblSearch = !lblSearch" class="lbl-search-lbl">
           {{ "globals.filter-across-labels" | translate }}
         </span>
@@ -239,14 +239,14 @@
 
               <span *ngIf="'customer' | authPipe: 'view_pii' as result; else maskedpii">{{ rowData[col.field] | spaceInArray }}</span>
               <ng-template #maskedpii >{{
-                rowData[col.field] | spaceInArray | isPII: col.isPii :col.type : col.key
+                rowData[col.field] | spaceInArray | maskPIIAttribute: {isPii:col.isPii , type:col.type , key: col.key}
               }}</ng-template>
             </span>
     
             <span *ngIf="col.field == 'firstName'">
               <span *ngIf="('customer' | authPipe: 'view_pii') as result; else manage_pii">{{ rowData[col.field] | spaceInArray }}</span>
               <ng-template #manage_pii>{{
-                rowData[col.field] | spaceInArray | isPII: col.isPii:col.type:col.key
+                rowData[col.field] | spaceInArray | maskPIIAttribute: {isPii:col.isPii , type:col.type , key: col.key}
               }}</ng-template>
 
               <!--              <span *ngIf="labels" (mouseleave)="showLblTooltip = false"-->
@@ -255,7 +255,7 @@
               <!--                  [ngStyle]="{'background-color':lbl.colorCode}" class="dot"></span>-->
               <!--              </span>-->
 
-              <ul class="customer-labels" *ngIf="labels">
+              <ul class="customer-labels" *ngIf="(labels && ('customer-labels' | authPipe : 'assign_label')) as result">
                 <li
                   *ngFor="let lbl of labels | fetchLabels: rowData.labels"
                   matTooltip="{{ lbl.name }}"
@@ -282,7 +282,7 @@
             </button>
             <ng-container>
               <button
-                *ngIf="'agent-conversation-control' | authPipe: 'view_initiate_chat' as result"
+                *ngIf="!isEmbededView && ('agent-conversation-control' | authPipe: 'view_initiate_chat') as result"
                 (click)="openCOnversationView(rowData)"
                 class="p-button-rounded p-button-success p-mr-2"
               >

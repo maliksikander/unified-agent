@@ -80,7 +80,7 @@ import { getFileExtPipe } from "./pipes/getFileExt.pipe";
 import { getFormattedBytesPipe } from "./pipes/formatBytes.pipe";
 import { getReferredMessagePipe } from "./pipes/getReferredMsg.pipe";
 import { spaceInArrayPipe } from "./pipes/spaceInArray.pipe";
-import { isPIIPipe } from "./pipes/isPII.pipe";
+import { maskPIIAttributePipe } from "./pipes/maskPIIAttribute.pipe";
 import { channelNamePipe } from "./pipes/getChannelLogoByName.pipe";
 import { NgxTimerModule } from "ngx-timer";
 import { getSenderIdPipe } from "./pipes/getSenderId.pipe";
@@ -97,7 +97,13 @@ import { getCustomerAniPipe } from "./pipes/getCustomerAni.pipe";
 import { checkOutboundCallPipe } from "./pipes/checkOutboundCall.pipe";
 import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
 import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements.pipe";
+import {  returnSchemaByKeyPipe } from "./pipes/returnSchemaByKey.pipe";
+import {  returnSchemaByChannelTypePipe } from "./pipes/returnSchemaByChannelType.pipe";
+
+import { getIVRTrailPipe } from "./pipes/getIVRTrail.pipe";
 import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
+import { checkCiscoSessionPipe } from "./pipes/checkCiscoSession.pipe";
+import { checkCXSessionPipe } from "./pipes/checkCXSession.pipe";
 
 @NgModule({
   declarations: [
@@ -109,6 +115,7 @@ import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
     isAlreadyJoinedPipe,
     ibsformatPipe,
     getSenderNamePipe,
+    getIVRTrailPipe,
     SearchPipe,
     SearchSuggestionsPipe,
     sentenceCasePipe,
@@ -127,7 +134,7 @@ import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
     getFileExtPipe,
     getReferredMessagePipe,
     spaceInArrayPipe,
-    isPIIPipe,
+    maskPIIAttributePipe,
     channelNamePipe,
     getSenderIdPipe,
     AuthPipe,
@@ -138,8 +145,12 @@ import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
     checkConferenceCallPipe,
     getCustomerAniPipe,
     checkOutboundCallPipe,
-    checkConsultCallPipe
-  ],
+    checkConsultCallPipe,
+    checkCiscoSessionPipe,
+    checkCXSessionPipe,
+    returnSchemaByKeyPipe,
+    returnSchemaByChannelTypePipe
+    ],
   imports: [
     NgxDocViewerModule,
     MatIconModule,
@@ -278,6 +289,7 @@ import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
     SearchPipe,
     SearchSuggestionsPipe,
     getSenderNamePipe,
+    getIVRTrailPipe,
     sentenceCasePipe,
     convertToFormDataPipe,
     getFirstTwoLettersPipe,
@@ -299,7 +311,7 @@ import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
     getFormattedBytesPipe,
     getReferredMessagePipe,
     spaceInArrayPipe,
-    isPIIPipe,
+    maskPIIAttributePipe,
     channelNamePipe,
     getSenderIdPipe,
     timeDurationPipe,
@@ -314,7 +326,11 @@ import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
     getCustomerAniPipe,
     checkConsultCallPipe,
     MatPaginatorModule,
-    TableFilterPipe
+    TableFilterPipe,
+    checkCiscoSessionPipe,
+    checkCXSessionPipe,
+    returnSchemaByKeyPipe,
+    returnSchemaByChannelTypePipe
   ]
 })
 export class SharedModule {}

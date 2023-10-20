@@ -16,7 +16,7 @@ import { snackbarService } from "src/app/services/snackbar.service";
 export class AnnouncementDialogComponent implements OnInit {
   announceDateMin = new Date();
   maxDate;
-  expireDateMax=new Date();
+  expireDateMax = new Date();
   expireDateMin = new Date();
   FilterSelected = "all";
   announcements = [];
@@ -54,8 +54,8 @@ export class AnnouncementDialogComponent implements OnInit {
     private _translateService: TranslateService,
     private _snackbarService: snackbarService,
     public dialogRef: MatDialogRef<AnnouncementDialogComponent>, @Inject(MAT_DIALOG_DATA) public dataID: any
-  ) {}
-  
+  ) { }
+
   ngOnInit() {
     let date = new Date(this.expireDateMin);
     date.setMinutes(date.getMinutes() + 10);
@@ -70,7 +70,7 @@ export class AnnouncementDialogComponent implements OnInit {
     // this.maxDate= this.expireDateMax.setHours(120);
 
 
-  
+
     if (this.dataID !== null) {
       this.currentAnnouncement = this._httpService.getAnnouncementsById(this.dataID.value).subscribe(res => {
         this.setRowObj = {
@@ -119,7 +119,7 @@ export class AnnouncementDialogComponent implements OnInit {
       "supervisorId": this.supervisorId,
       "supervisorName": this.supervisor
     }
-   
+
     this._httpService.addAnnouncemenent(this.postData).subscribe({
       next: (val: any) => {
         this.dialog.closeAll();
@@ -131,11 +131,11 @@ export class AnnouncementDialogComponent implements OnInit {
         this.dialog.closeAll();
       },
     });
-    this.dialog.closeAll();  
+    this.dialog.closeAll();
   }
 
   updateAnnouncement() {
-   
+
     this.editAnnouncementObj = {
       "teams": this.selectedTeams,
       "announcementText": this.announcementMessage.value,
@@ -153,7 +153,7 @@ export class AnnouncementDialogComponent implements OnInit {
         console.error(err);
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-Update-Announcement"), "err");
         this.dialog.closeAll();
-      
+
       },
     });
 
@@ -171,8 +171,8 @@ export class AnnouncementDialogComponent implements OnInit {
     _date.setMinutes(_date.getMinutes() + 10);
 
 
-    this.expireDateMax=new Date(this.expireDateMin);
-    this.maxDate= this.expireDateMax.setHours(120);
+    this.expireDateMax = new Date(this.expireDateMin);
+    this.maxDate = this.expireDateMax.setHours(120);
 
     this.expireDate = new FormControl(_date, [Validators.required]);
   }
@@ -195,18 +195,14 @@ export class AnnouncementDialogComponent implements OnInit {
   // }
 
   onItemSelect(item: any) {
-    //console.log(item);
-    //console.log(this.selectedTeams);
+    // console.log(this.selectedTeams);
   }
   OnItemDeSelect(item: any) {
-    //console.log(item);
-   // console.log(this.selectedTeams);
+    //console.log(this.selectedTeams);
   }
   onSelectAll(items: any) {
-   // console.log(items);
   }
   onDeSelectAll(items: any) {
-   // console.log(items);
   }
   changeData() {
     this.selectedTeams = [];

@@ -1080,9 +1080,22 @@
         display: inline-block;
         border-right: 1px solid #ccc;
         margin: 0;
-        padding: 0 10px;
+        padding: 1px 10px;
         vertical-align: middle;
         min-width: 42px;
+
+        &.section-tags{
+          display: flex;
+          flex-flow: nowrap;
+          justify-content: flex-start;
+            span{
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: pre;
+              max-width: 150px;
+              align-self: center;
+            }
+          }
 
         &:last-child {
           border-right: 0;
@@ -2914,7 +2927,7 @@ vg-controls.hide {
   }
 }
 
-.chat-message.voice {
+.chat-message.voice, .chat-message.custom {
   .file-type-stamp {
     display: none !important;
   }
@@ -3813,4 +3826,69 @@ vg-controls.hide {
 .doc-bar {
   margin-left: 0px;
   margin-right: 0px;
+  flex-direction: row;
+  justify-content: space-between;
+  .customer-info-dp{
+    width: auto;
+    max-width: 170px;
+  }
+}
+
+.url-title, .url-link{
+  text-align: center;
+  display: inline-block;
+  max-width: 300px;
+}
+
+
+//custom-message-type
+.custom-message-type{
+  width: 100%;
+  max-width: 800px;
+  pre:last-child{
+    margin-bottom: 0;
+  }
+}
+
+.activity-number-ellipsis{
+  max-width: 7.188rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+  display: inherit;
+}
+
+.activity-queue-ellipsis{
+    max-width: 12.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre;
+    border-radius: 0 !important;
+}
+
+.private-reply-icon{
+  cursor: pointer;
+}
+
+.play-btn{
+  .mat-flat-button.mat-accent,
+  .mat-raised-button.mat-accent,
+  .mat-fab.mat-accent,
+  .mat-mini-fab.mat-accent {
+    background-color: #BDDBB1 !important;
+}
+
+  button.mat-mini-fab.mat-button-base.mat-accent {
+      width: 1.5rem;
+      height: 1.5rem;
+      vertical-align: middle;
+      box-shadow: none;
+     
+  }
+  i.material-icons {
+    position: relative;
+    top: -0.563rem;
+    font-size: 1.125rem;
+    place-content: center;
+  }
 }

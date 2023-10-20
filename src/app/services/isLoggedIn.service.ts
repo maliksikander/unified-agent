@@ -36,7 +36,7 @@ export class isLoggedInService {
     private _translateService: TranslateService,
     private _authService: AuthService,
     private _appConfigService: appConfigService,
-    private _announcementService:announcementService
+    private _announcementService: announcementService
   ) {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       this._cacheService.isMobileDevice = true;
@@ -95,48 +95,56 @@ export class isLoggedInService {
   }
 
   fetchCCuserAndMoveToLogin(obj, loginType) {
-    this._httpService.login(obj).subscribe(
-      (e) => {
-        window["dataLayer"].push({
-          event: "login",
-          data: {
-            agent_name: e.data.keycloak_User.username,
-            message: this._translateService.instant("Agent-Logged-In-Successfully")
+    try {
+      this._httpService.login(obj).subscribe(
+        (e) => {
+          window["dataLayer"].push({
+            event: "login",
+            data: {
+              agent_name: e.data.keycloak_User.username,
+              message: this._translateService.instant("Agent-Logged-In-Successfully")
+            }
+          });
+          console.log("this is login resp ==>", e.data);
+          this._cacheService.agent = e.data.keycloak_User;
+          const attributes = e.data.keycloak_User.attributes;
+          if (this._appConfigService.config.isCxVoiceEnabled) this.initiateSipService(attributes);
+          if (loginType == "3rdparty") {
+            console.log("finesse auto 12==>");
+            this._finesseService.checkActiveTasks(e.data.keycloak_User.id, undefined, undefined);
           }
-        });
-        console.log("this is login resp ==>", e.data);
-        this._cacheService.agent = e.data.keycloak_User;
-        const attributes = e.data.keycloak_User.attributes;
-        if (this._appConfigService.config.isCxVoiceEnabled) this.initiateSipService(attributes);
-        if (loginType == "3rdparty") {
-          console.log("finesse auto 12==>");
-          this._finesseService.checkActiveTasks(e.data.keycloak_User.id);
-        }
-        try {
-          localStorage.setItem("ccUser", btoa(JSON.stringify(e.data.keycloak_User)));
-          localStorage.setItem("sipPass", btoa(JSON.stringify(obj.password)));
-        } catch (e) {}
-        this._socketService.disConnectSocket();
-        this.validateFcmKeyAndConnectToSocket(false);
-      },
-      (error) => {
-        window["dataLayer"].push({
-          event: "error",
-          data: {
-            message: this._translateService.instant("snackbar.error-on-login-request"),
-            error: error.error
-          }
-        });
+          try {
+            localStorage.setItem("ccUser", btoa(JSON.stringify(e.data.keycloak_User)));
+            localStorage.setItem("sipPass", btoa(JSON.stringify(obj.password)));
+          } catch (e) {}
+          this._socketService.disConnectSocket();
+          this.validateFcmKeyAndConnectToSocket(false);
+        },
+        (error) => {
+          window["dataLayer"].push({
+            event: "error",
+            data: {
+              message: this._translateService.instant("snackbar.error-on-login-request"),
+              error: error.error
+            }
+          });
 
-        this._sharedService.Interceptor(error.error, "err");
-        this._router.navigate(["login"]);
-      }
-    );
+          this._sharedService.Interceptor(error.error, "err");
+          this._router.navigate(["login"]);
+        }
+      );
+    } catch (e) {
+      console.error("[fetchCCuserAndMoveToLogin] Error==>", e);
+    }
   }
 
   initiateSipService(attributes) {
-    if (this._sipService.checkAgentExtensionAttribute(attributes)) {
-      this._sipService.extension = attributes.agentExtension[0];
+    try {
+      if (this._sipService.checkAgentExtensionAttribute(attributes)) {
+        this._sipService.extension = attributes.agentExtension[0];
+      }
+    } catch (e) {
+      console.error("[initiateSipService] Error==>", e);
     }
   }
 
@@ -168,7 +176,7 @@ export class isLoggedInService {
 
     if (this._appConfigService.config.isCxVoiceEnabled) {
       this._sipService.initMe();
-      this._sipService.checkActiveTasks(this._cacheService.agent.id);
+      this._sipService.checkActiveTasks(this._cacheService.agent.id, undefined, undefined);
     }
     // if (this._cacheService.isMobileDevice) {
 

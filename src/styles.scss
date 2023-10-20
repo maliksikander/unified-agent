@@ -3003,6 +3003,15 @@ body {
   min-width: 5px;
 }
 
+.mat-form-field-appearance-outline{
+  .mat-form-field-outline-start {
+    border-right-style: none !important;
+  }
+  .mat-form-field-outline-end {
+    border-left-style: none !important;
+  }
+}
+
 .schema-box.cdk-drag.cdk-drag-dragging,
 .schema-box.cdk-drag.cdk-drag-preview {
   box-shadow: 0 0 10px darken($main-color-background, 50%);
@@ -3468,6 +3477,26 @@ span.note-icon {
 }
 
 .voice-activity-main {
+
+  ul{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    li{
+      max-width: 700px;
+      white-space: pre;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      span.ivr-tag {
+        background: #333;
+        color: #fff !important;
+        border-color: #333 !important;
+        font-size: 11px !important;
+
+      }
+    }
+  }
   .mat-expansion-panel-body {
     padding: 5px;
   }
@@ -3478,7 +3507,7 @@ span.note-icon {
     }
 
     .mat-content {
-      padding-right: 6rem;
+      padding-right: 2rem;
     }
   }
 }
@@ -4205,4 +4234,17 @@ mat-select {
   z-index: 2;
   cursor: pointer;
   color: #999;
+}
+
+.custom {
+  .mat-expansion-indicator{
+    margin-right: 17px;
+    margin-bottom: 4px;
+}
+  
+
+.plain-text-check{
+visibility: hidden;
+display: none;
+}
 }

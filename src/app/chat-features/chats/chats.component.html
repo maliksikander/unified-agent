@@ -37,8 +37,14 @@
                     <span *ngIf="conversation.topicParticipant.role == 'SILENT_MONITOR'" class="badge1 channel-badge"><img src="assets/images/monitoring.svg"> </span>
                     <!-- topicData.topicParticipant.role == 'SILENT_MONITOR' -->
                   </div>
-                  <span class="user-name">{{ conversation.customer.firstName }}</span>
+                  <span class="user-name" *ngIf="('customer' | authPipe: 'view_pii') as result; else manage_pii">
+                    {{ conversation.customer.firstName }}</span>
+                    <ng-template #manage_pii >
+                      <span class="user-name">{{ conversation.customer.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey) }}</span>
+                    </ng-template>
                 </span>
+           
+
               </ng-template>
             </div>
             <div class="chat-contents">
@@ -54,7 +60,7 @@
           </div>
         </mat-tab>
       </mat-tab-group>
-      <button *ngIf="('customer' | authPipe : 'view') as result" class="add-customer" [ngClass]="{'expand-view': barExpand}" mat-fab routerLink="/customers/phonebook">
+      <button *ngIf="(('customer' | authPipe : 'view') && ('agent-conversation-control' | authPipe : 'view_initiate_chat')) as result" class="add-customer" [ngClass]="{'expand-view': barExpand}" mat-fab routerLink="/customers/phonebook">
         <mat-icon>add</mat-icon>
         <span class="start-con">New Conversation</span>
       </button>
@@ -70,7 +76,7 @@
     </span>
 
     <p>{{ _sharedService.mainPagetile | titlecase }}</p>
-    <button *ngIf="('customer' | authPipe : 'view') as result" routerLink="/customers/phonebook"
+    <button *ngIf="(('customer' | authPipe : 'view') && ('agent-conversation-control' | authPipe : 'view_initiate_chat')) as result" routerLink="/customers/phonebook"
     routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-button color="primary">{{'chat-features.chats.start' | translate}}</button>
   </div>
 </div>
