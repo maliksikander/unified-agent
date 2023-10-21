@@ -25,12 +25,12 @@ import {MatChipInputEvent} from "@angular/material/chips";
 
 
 // declare var EmojiPicker: any;
-interface emailSender {
+interface EmailSender {
   value: string;
   viewValue: string;
 }
 export interface Email {
-  name: string;
+  email: string;
 }
 @Component({
   selector: "app-interactions",
@@ -51,7 +51,7 @@ export class InteractionsComponent implements OnInit {
   @ViewChild("consultTransferTrigger", { static: false }) consultTransferTrigger: any;
   @ViewChildren("callRecording") audioPlayers: QueryList<ElementRef>;
 
-  emailFrom: emailSender[] = [
+  emailFrom: EmailSender[] = [
     {value: 'adam.stanler@test.com', viewValue: 'adam.stanler@test.com'},
     {value: 'john.miller@test.com', viewValue: 'john.miller@test.com'},
     {value: 'steve.alax@test.com', viewValue: 'steve.alax@test.com'},
