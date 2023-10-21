@@ -168,4 +168,71 @@
 mat-checkbox{
   font-size: 13px;
 }
+//Compact & mobile view
+@media(max-width: 1019px) {
+  .page-header{
+    background: lighten($bubble-background, 2%);
+    border-bottom: 1px solid $highlight-color;
+    margin: 0 !important;
+    .header-action-trigger{
+      display: inline-block;
+    }
+  }
+  .page-heading{
+    width: 100% !important;
 
+    h4{
+      font-size: 20px;
+      color: #7f7f7f;
+    }
+
+    mat-icon {
+      position: absolute;
+      right: 0;
+      margin: 3px 10px;
+      color: #4773b5;
+      cursor: pointer;
+      font-size: 24px;
+    }
+  }
+  .container-fluid{
+    padding: 0;
+  }
+  //.create-label{
+  //  display: none;
+  //}
+  .manage-dashboard{
+    thead{
+      display: none;
+    }
+    tbody{
+      td {
+        font-size: 18px;
+        height: 60px;
+        line-height: 60px;
+
+        &:after {
+          content: '';
+          position: absolute;
+          right: 20px;
+          width: 12px;
+          height: 12px;
+          border: 1px solid transparent;
+          border-top-color: #707070;
+          border-right-color: #707070;
+          transform: rotate(45deg) translate(0, -50%);
+          top: 50%;
+        }
+      }
+    }
+  }
+}
+@media(max-width: 768px){
+  .customer-heading{
+    width: 50% !important;
+  }
+}
+
+.header-action-trigger{
+  display: none;
+}

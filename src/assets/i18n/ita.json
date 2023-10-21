@@ -94,6 +94,7 @@
     "Unable-to-Create-New-Announcement":"Unable to Create New Announcement_ita",
     "Unable-to-Update-Announcement":"Unable to Update Announcement_ita",
     "Unable-to-Delete-Announcement":"Unable to Delete Announcement_ita",
+    "unable-to-fetch-service-identifier-messages-cant-be-sent":"Unable to fetch service identifier, messages cant be sent_ita",
     "Socket-Connected":"Socket Connected_ita",
     "Calling":"Calling_ita",
     "CX-Voice-Connected":"CX VOICE Connected_ita",
@@ -161,6 +162,28 @@
     "no-data-available": "No Data Available_ita"
   },
   "chat-features": {
+    "send-sms":{
+      "info":"SEND SMS_ita",
+      "channel-identity":"Channel Identity_ita",
+      "type-sms":"Type SMS_ita",
+      "invalid-text":"invalid text_ita",
+      "not-empty":"This field can't be empty_ita",
+      "invalid-pattern":"Invalid pattern_ita",
+      "number-should-be-in-range-3-to-15":"number should be in range 3 to 15_ita",
+      "see-conversation-history":"See Conversation History_ita",
+      "discard":"Discard_ita",
+      "send-sms":"Send SMS_ita",
+      "success-sms":"SMS sent successfully_ita",
+      "update-profile":"To update the customer profile",
+      "click-here":"click here_ita",
+      "the-sms-has-been-sent-to-the":"The SMS has been sent to the\u0020",
+      "on-this-number":" on this number_ita",
+      "new":"new",
+      "customer":"customer",
+      "characters-limit-1500":"1500 characters_ita",
+      "to-view-the-customer-profile":" to view the customer profile_ita"
+    },
+
     "customer-info": {
       "info": "Customer Info_ita",
       "customer-profile": " Customer Profile_ita",
@@ -324,7 +347,7 @@
     "valid-credentials": "Please provide a valid username and password to login to your account._ita",
     "username": "Username_ita",
     "password": "Password_ita",
-    "agent-desk": "Agent Desk_ita",
+    "agent-desk": "AgentDesk_ita",
     "call-center-experts": "Your Call Center Experts._ita",
     "": ""
   },
@@ -366,7 +389,7 @@
     "create-new-customer": "Create New Customer_ita",
     "unable-connect-finesse": "Unable to connect with finesse, try refreshing may resolve the problem_ita",
     "enable-javascript": "Please enable JavaScript to continue using this application._ita",
-    "agent-desk": "Agent Desk_ita",
+    "agent-desk": "AgentDesk_ita",
     "select-all": "Select all _ita",
     "unselect-all": "Unselect all_ita",
     "Search": "Search _ita",

@@ -1,4 +1,4 @@
-<div class="phonebook-main-area">
+<div  class="phonebook-main-area" *ngIf="!isMobileDevice" >
   <div class="phonebook-main row m-0">
     <button
       *ngIf="isEmbededView"
@@ -20,7 +20,7 @@
             (keyup.enter)="filter(selectedSearchField); this.isFilterListOpened = false"
           />
           <span *ngIf="selectedSearchLabel.length > 0" matPrefix>{{ selectedSearchLabel }}:</span>
-          <mat-icon matSuffix matSuffix *ngIf="selectedSearchLabel.length == 0">search</mat-icon>
+          <mat-icon matSuffix *ngIf="selectedSearchLabel.length == 0">search</mat-icon>
           <mat-icon matSuffix *ngIf="selectedSearchLabel.length > 0" (click)="cancelFilter()">close</mat-icon>
         </mat-form-field>
         <button class="filter-action-trigger" [ngClass]="{ clicked: isFilterListOpened }" (click)="isFilterList()" mat-icon-button>
@@ -242,7 +242,7 @@
                 rowData[col.field] | spaceInArray | maskPIIAttribute: {isPii:col.isPii , type:col.type , key: col.key}
               }}</ng-template>
             </span>
-    
+
             <span *ngIf="col.field == 'firstName'">
               <span *ngIf="('customer' | authPipe: 'view_pii') as result; else manage_pii">{{ rowData[col.field] | spaceInArray }}</span>
               <ng-template #manage_pii>{{
@@ -302,3 +302,89 @@
     </p-table>
   </div>
 </div>
+
+
+<!--Main PhoneBook for the Mobile Devices-->
+
+<div class="phonebook-main-mobile" *ngIf="isMobileDevice">
+  <div class="page-header mobile-view-header row m-0">
+    <div class="head-cover col">
+    <div class="customer-heading page-heading">
+      <h4>Customer List</h4>
+    </div>
+    <div class="customer-control page-heading">
+      <button mat-button (click)="createCustomer()"><mat-icon>add</mat-icon></button>
+      <button mat-button (click)="advanceFilter = !advanceFilter"><img src="assets/images/filter.svg" width="20px" alt="filter"></button>
+      <button mat-button (click)="actions()"><mat-icon>more_vert</mat-icon></button>
+    </div>
+    </div>
+    <div class="customer-search-mobile">
+      <mat-form-field *ngIf="advanceFilter" class="col p-0" appearance="outline">
+        <mat-label *ngIf="!selectedValue">Select column for Searching</mat-label>
+
+
+        <mat-select  name="search">
+          <mat-option class="option-label">Select column for Searching</mat-option>
+          <mat-option class="option-label-list" *ngFor="let col of cols" [value]="col.header">
+            <mat-radio-button color="primary" [value]="col.header" (change)="selectedFilter($event, col.field)">
+              {{col.header}}
+            </mat-radio-button>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+      <div class="global-search-mobile" *ngIf="advanceFilter">
+        <input type="text" placeholder="search" [(ngModel)]="filterValue"
+               (keyup.enter)="filter(selectedSearchField); this.isFilterListOpened = false">
+        <mat-icon matSuffix *ngIf="selectedSearchLabel.length == 0">search</mat-icon>
+        <mat-icon matSuffix *ngIf="selectedSearchLabel.length > 0" (click)="cancelFilter()">close</mat-icon>
+        <button *ngIf="advanceFilter"  (click)="filter(selectedSearchField); isFilterList()" mat-button>Search</button>
+      </div>
+    </div>
+  </div>
+  <div class="phonebook-area-mobile row m-0">
+
+    <ul class="phonebook-name-list">
+      <li *ngFor="let customer of rows">
+        <span>{{customer.firstName}}
+          <ul>
+            <li matTooltip="Marketing" style="background: #32b67a;">
+            </li>
+            <li matTooltip="Corporate"
+                style="background: #f34f1b;"></li><li
+            matTooltip="Product Support" style="background: #536ce8;">
+          </li>
+          </ul>
+        </span>
+<!--        <mat-icon>navigate_next</mat-icon>-->
+        <button
+          *ngIf="!isEmbededView && ('customer' | authPipe: 'manage') as result"
+          (click)="onRowClick(customer._id, 'edit', null)"
+          class="p-button-rounded p-button-success p-mr-2"
+        >
+          <mat-icon matTooltip="{{ 'globals.edit' | translate }}">edit</mat-icon>
+        </button>
+        <ng-container>
+          <button
+            *ngIf="'agent-conversation-control' | authPipe: 'view_initiate_chat' as result"
+            (click)="openCOnversationView(customer)"
+            class="p-button-rounded p-button-success p-mr-2"
+          >
+            <mat-icon matTooltip="{{ 'globals.start-conversation' | translate }}">person</mat-icon>
+          </button>
+        </ng-container>
+        <button
+          *ngIf="isEmbededView && customer._id != topicCustomerId && ('customer' | authPipe: 'view') as result"
+          (click)="linkCustomer(customer)"
+          class="p-button-rounded p-button-warning link-btn"
+        >
+          <mat-icon>insert_link</mat-icon>
+        </button>
+      </li>
+
+    </ul>
+  </div>
+
+</div>
+

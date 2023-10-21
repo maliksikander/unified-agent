@@ -30,6 +30,7 @@ export class CustomerInfoComponent implements OnInit {
   @Input() firstChannelSession: any;
   @Output() updatedlabels = new EventEmitter<boolean>();
   @Output() expandCustomerInfo = new EventEmitter<any>();
+  @Input() isMobileDevice: any;
 
   customerProfileFormData: any;
   timeoutId;
@@ -85,9 +86,14 @@ export class CustomerInfoComponent implements OnInit {
     private _cacheService: cacheService,
     private _snackBarService: snackbarService,
     private _translateService: TranslateService
-  ) {}
+  ) { }
 
   ngOnInit() {
+
+    if (this._sharedService.isCompactView) {
+      this.isMobileDevice = true;
+      console.log('this is a compact view Interactions view ?', this.isMobileDevice);
+    }
     if (this.activeChannelSessions) this.setActiveChannelSessions(this.activeChannelSessions);
     // this._sipService.getTimer().subscribe((value) => {
     //   this.hours = Math.floor(value / 3600);
@@ -326,6 +332,11 @@ export class CustomerInfoComponent implements OnInit {
                         serviceIdentifier: data.serviceIdentifier,
                         additionalAttributes: [{ key: "agentId", type: "String100", value: this._cacheService.agent.id }]
                       },
+                      sender: {
+                        id: this._cacheService.agent.id,
+                        senderName: this._cacheService.agent.firstName,
+                        type: "AGENT"
+                      },
                       language: {},
                       timestamp: "",
                       securityInfo: {},
@@ -341,7 +352,7 @@ export class CustomerInfoComponent implements OnInit {
                   };
                   console.log("cim==>", cimMessage);
                   this._httpService.startOutboundConversation(cimMessage).subscribe(
-                    (e) => {},
+                    (e) => { },
                     (err) => {
                       this._sharedService.Interceptor(err.error, "err");
                       console.error("Error Starting Outbound Conversation", err);
