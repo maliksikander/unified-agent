@@ -1434,6 +1434,7 @@ export class InteractionsComponent implements OnInit {
     this.isAudioPlaying[arrayIndex] = !audioElement.paused;
   }
 
+  isString(val): boolean { return typeof val === 'string'; }
 
   chatInCall(){
     this.chatDuringCall = !this.chatDuringCall;
