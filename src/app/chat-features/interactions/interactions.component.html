@@ -46,6 +46,11 @@
 <!--                  matTooltip="Chat" aria-label="Chat">-->
 <!--            <mat-icon>question_answer</mat-icon>-->
 <!--          </button>-->
+
+                    <button mat-icon-button (click)="openEmailComposer(emailComposeTemplate)"
+                  matTooltip="Chat" aria-label="Chat">
+            <mat-icon>email</mat-icon>
+          </button>
           <ul class="list-group list-group-horizontal agent-controls call-controls" *ngIf="isCallActive && !ctiBarView && !isMobileDevice">
             <li class="list-group-item" *ngIf="isCallActive && !ctiBarView">
               <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}"
@@ -2727,6 +2732,89 @@
           </p>
           <!-- <p *ngIf="requestedQueue?.queueName">
             ({{requestedQueue?.queueName}})</p> -->
+        </div>
+        <div class="note-area col-md-12">
+          <h4>{{ "chat-features.interactions.message" | translate }}</h4>
+          <textarea [(ngModel)]="assistanceRequestNote" rows="5"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-trigger text-right">
+      <button mat-button mat-dialog-close class="close-btn">{{ "chat-features.interactions.cancel" | translate
+        }}</button>
+      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial
+        (click)="sendAssistanceRequest()">
+        {{ noteDialogBtnText }}
+      </button>
+      <!--      <button mat-button *ngIf="isTransfer" [mat-dialog-close]="true" class="success-btn" cdkFocusInitial-->
+      <!--              (click)="transferRequest(chatConsultTo.name, ' ')">Transfer-->
+      <!--      </button>-->
+    </div>
+  </div>
+</ng-template>
+
+
+
+<!--Email compose dialog-->
+<ng-template #emailComposeTemplate>
+  <div class="compose-dialog-main">
+<div class=" email-compose-dialog-header">
+  <div class="email-compose-head">
+    <button mat-button mat-dialog-close>
+      <mat-icon>reply</mat-icon>
+    </button>
+    <span>
+          <button mat-button>
+           <mat-icon>web_asset</mat-icon>
+          </button>
+          <button mat-button mat-dialog-close>
+           <mat-icon>cancel_presentation</mat-icon>
+          </button>
+        </span>
+  </div>
+
+  <div class="email-compose-head email-selection-option">
+  <div class="sender-selection">
+    <label>From</label>
+    <mat-form-field>
+      <mat-select [(ngModel)]="selectedValue" name="emailFrom">
+        <mat-option *ngFor="let sender of emailFrom" [value]="sender.value">
+          {{sender.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+</div>
+  </div>
+
+  <div class="email-compose-head email-to">
+    <div class="sender-selection w-100">
+      <label>To</label>
+      <mat-form-field class="email-to-list">
+        <mat-chip-list #emailToList>
+          <mat-chip *ngFor="let email of emailTo" [selectable]="selectable"
+                    [removable]="removable" (removed)="remove(email)">
+            {{email.email}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input
+            [matChipInputFor]="emailToList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+      </mat-form-field>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+    <div class="dialog-main-content">
+      <div class="row m-0">
+        <div class="transfer-to text-center col">
         </div>
         <div class="note-area col-md-12">
           <h4>{{ "chat-features.interactions.message" | translate }}</h4>

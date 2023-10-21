@@ -4517,3 +4517,57 @@ button.back-to-sms{
   display: none !important;
 }
 
+
+//Email composer
+.compose-dialog-main{
+  .email-compose-head {
+    background: #fff;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    border-bottom: 1px solid #EFF2F7;
+    align-items: center;
+    height: 30px;
+    padding: 0 15px;
+
+    button {
+      color: #888888;
+      padding: 0 10px !important;
+      min-width: 20px;
+      mat-icon{
+        font-size: 20px;
+        height: 20px;
+        width: 20px;
+        line-height: 20px;
+      }
+    }
+    label{
+      color: #888888;
+      font-size: 12px;
+      font-weight: 500;
+      padding-right: 15px;
+    }
+  }
+
+  .email-to{
+    .email-to-list{
+      width: 100%;
+      max-width: 500px;
+      margin-left: 20px;
+
+      mat-chip {
+        padding: 0 5px;
+        margin: 0 5px;
+        font-size: 14px;
+        min-height: 20px;
+        border-radius: 5px;
+        background-color: #EBEBEB;
+        mat-icon{
+          color: #C6C6C6;
+        }
+      }
+    }
+  }
+}
+

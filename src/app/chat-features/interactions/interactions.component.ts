@@ -19,10 +19,19 @@ import { SipService } from "src/app/services/sip.service";
 import { HighlightResult } from 'ngx-highlightjs';
 import { SendSmsComponent } from "../send-sms/send-sms.component";
 // import {DOCUMENT} from '@angular/common';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatChipInputEvent} from "@angular/material/chips";
+
 
 
 // declare var EmojiPicker: any;
-
+interface emailSender {
+  value: string;
+  viewValue: string;
+}
+export interface Email {
+  name: string;
+}
 @Component({
   selector: "app-interactions",
   templateUrl: "./interactions.component.html",
@@ -42,6 +51,20 @@ export class InteractionsComponent implements OnInit {
   @ViewChild("consultTransferTrigger", { static: false }) consultTransferTrigger: any;
   @ViewChildren("callRecording") audioPlayers: QueryList<ElementRef>;
 
+  emailFrom: emailSender[] = [
+    {value: 'adam.stanler@test.com', viewValue: 'adam.stanler@test.com'},
+    {value: 'john.miller@test.com', viewValue: 'john.miller@test.com'},
+    {value: 'steve.alax@test.com', viewValue: 'steve.alax@test.com'},
+  ];
+  visible = true;
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  emailTo: Email[] = [
+    {email: 'amdam.s@gmail.com'},
+  ];
+  selectedValue = this.emailFrom[2].value;
   isWhisperMode: boolean = false;
   dispayVideoPIP = true;
   scrollSubscriber;
@@ -1489,5 +1512,40 @@ export class InteractionsComponent implements OnInit {
     this.isVideoCall = false;
     this.isAudioCall = false;
     this.chatDuringCall = false;
+  }
+  openEmailComposer(templateRef): void {
+
+    const dialogRef = this.dialog.open(templateRef, {
+      width: "70vw",
+      maxWidth: '950px',
+      panelClass: "email-composer-dialog"
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+
+    });
+
+  }
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add our fruit
+    if ((value || '').trim()) {
+      this.emailTo.push({email: value.trim()});
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  remove(emailTo: Email): void {
+    const index = this.emailTo.indexOf(emailTo);
+
+    if (index >= 0) {
+      this.emailTo.splice(index, 1);
+    }
   }
 }
