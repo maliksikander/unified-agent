@@ -98,6 +98,8 @@ export class InteractionsComponent implements OnInit {
   videoSrc = 'assets/video/angry-birds.mp4';
   element;
   dragPosition = {x: 0, y: 0};
+  emailCc = false;
+  emailBcc = false;
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -1529,13 +1531,10 @@ export class InteractionsComponent implements OnInit {
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
-
-    // Add our fruit
     if ((value || '').trim()) {
       this.emailTo.push({email: value.trim()});
     }
 
-    // Reset the input value
     if (input) {
       input.value = '';
     }

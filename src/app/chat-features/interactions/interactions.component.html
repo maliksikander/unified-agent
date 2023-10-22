@@ -2788,8 +2788,9 @@
   </div>
 
   <div class="email-compose-head email-to">
-    <div class="sender-selection w-100">
+    <div class="sender-selection">
       <label>To</label>
+
       <mat-form-field class="email-to-list">
         <mat-chip-list #emailToList>
           <mat-chip *ngFor="let email of emailTo" [selectable]="selectable"
@@ -2803,6 +2804,62 @@
             [matChipInputAddOnBlur]="addOnBlur"
             (matChipInputTokenEnd)="add($event)">
         </mat-chip-list>
+      </mat-form-field>
+    </div>
+    <div class="bcc-selection">
+      <label class="pr-2" *ngIf="!emailCc" (click)="emailCc = true">Cc</label>
+      <label *ngIf="!emailBcc" (click)="emailBcc = true">Bcc</label>
+    </div>
+  </div>
+
+  <div class="email-compose-head email-to" *ngIf="emailCc">
+    <div class="sender-selection">
+      <label>Cc</label>
+
+      <mat-form-field class="email-to-list">
+        <mat-chip-list #emailCc>
+          <mat-chip *ngFor="let email of emailTo" [selectable]="selectable"
+                    [removable]="removable" (removed)="remove(email)">
+            {{email.email}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input
+            [matChipInputFor]="emailCc"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="email-compose-head email-to" *ngIf="emailBcc">
+    <div class="sender-selection">
+      <label>Bcc</label>
+
+      <mat-form-field class="email-to-list">
+        <mat-chip-list #emailToBcc>
+          <mat-chip *ngFor="let email of emailTo" [selectable]="selectable"
+                    [removable]="removable" (removed)="remove(email)">
+            {{email.email}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input
+            [matChipInputFor]="emailToBcc"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="email-compose-head email-to">
+    <div class="sender-selection">
+      <label>Subject</label>
+
+      <mat-form-field class="email-to-list">
+          <input matInput>
       </mat-form-field>
     </div>
   </div>

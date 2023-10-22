@@ -4547,13 +4547,23 @@ button.back-to-sms{
       font-size: 12px;
       font-weight: 500;
       padding-right: 15px;
+      min-width: 50px;
+    }
+    .sender-selection {
+      width: calc(100% - 130px);
     }
   }
 
   .email-to{
+    .bcc-selection{
+      label{
+        cursor: pointer;
+        min-width: inherit;
+      }
+    }
     .email-to-list{
       width: 100%;
-      max-width: 500px;
+      max-width: 700px;
       margin-left: 20px;
 
       mat-chip {
