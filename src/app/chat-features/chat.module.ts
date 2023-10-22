@@ -13,22 +13,24 @@ import { VgOverlayPlayModule } from "videogular2/compiled/src/overlay-play/overl
 import { VgBufferingModule } from "videogular2/compiled/src/buffering/buffering";
 import { WrapUpFormComponent } from "./wrap-up-form/wrap-up-form.component";
 import {HighlightModule} from 'ngx-highlightjs';
+import {QuillModule} from "ngx-quill";
 
 
 @NgModule({
   declarations: [ChatsComponent, InteractionsComponent, CustomerInfoComponent, WrapUpFormComponent],
-  imports: [
-    AgmCoreModule.forRoot({
-      apiKey: "AIzaSyA_dm2C9FEp26nXSEjfN9G76juYi-CtiLE"
-    }),
-    SharedModule,
-    ChatRoutingModule,
-    VgCoreModule,
-    VgControlsModule,
-    VgOverlayPlayModule,
-    VgBufferingModule,
-    HighlightModule
-  ],
+    imports: [
+        AgmCoreModule.forRoot({
+            apiKey: "AIzaSyA_dm2C9FEp26nXSEjfN9G76juYi-CtiLE"
+        }),
+        SharedModule,
+        ChatRoutingModule,
+        VgCoreModule,
+        VgControlsModule,
+        VgOverlayPlayModule,
+        VgBufferingModule,
+        HighlightModule,
+        QuillModule
+    ],
   entryComponents: [WrapUpFormComponent]
 })
 export class ChatModule {}

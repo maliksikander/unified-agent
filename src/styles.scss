@@ -7,6 +7,8 @@
 @import "~primeng/resources/primeng.min.css";
 @import "~@progress/kendo-theme-default/dist/all.css";
 @import "~ng-pick-datetime/assets/style/picker.min.css";
+@import "~quill/dist/quill.bubble.css";
+@import "~quill/dist/quill.snow.css";
 
 
 //@import "primeicons/primeicons.css";
@@ -4774,4 +4776,15 @@ mat-select {
     border: 0 !important;
     margin: 0;
   }
+}
+
+
+//Rich text editor
+
+.ql-editor {
+  min-height: 250px;
+}
+quill-editor {
+  display: flex;
+  flex-direction: column-reverse;
 }

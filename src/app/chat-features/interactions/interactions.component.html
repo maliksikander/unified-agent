@@ -2875,7 +2875,10 @@
         </div>
         <div class="note-area col-md-12">
           <h4>{{ "chat-features.interactions.message" | translate }}</h4>
-          <textarea [(ngModel)]="assistanceRequestNote" rows="5"></textarea>
+          <form>
+
+            <quill-editor  [modules]="quillConfig" customToolbarPosition="bottom"> </quill-editor>
+          </form>
         </div>
       </div>
     </div>
