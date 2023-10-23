@@ -84,7 +84,7 @@
     "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed!_ger",
     "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed!_ger",
     "CX-Voice-Login-Success":"CX VOICE: Login Successful with EF Switch_ger",
-    "CX-Voice-call-canceled" : "CX VOICE : Voice Call canceled_ger",
+    "CX-Voice-call-canceled" : "CX VOICE : Voice Call Canceled_ger",
     "SIP-Logout-Successful":"SIP Logout Successful_ger",
     "No-Extension-Found":"No Extension Found For Sip Agent_ger",
     "Unable-to-edit-Active-Announcements":"Unable to edit Active Announcement_ger",
