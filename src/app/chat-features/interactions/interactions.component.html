@@ -581,11 +581,6 @@
                     <mat-icon *ngIf="((message.header.schedulingMetaData ))">event</mat-icon>
                   </div>
 
-                  <div *ngIf="(message.header.sender.type | lowercase) == 'app' " class="profile-pic-area user-img">
-                    <!-- *ngIf="((message.header.sender.type | lowercase) == 'app' && (message.header.schedulingMetaData ) )"<img *ngIf="(message.status | lowercase) !== 'scheduled'" src="assets/images/robot-dark.svg" /> -->
-                    <mat-icon *ngIf="((message.header.schedulingMetaData ))">event</mat-icon>
-                  </div>
-
                   <div
                     *ngIf="(message.header.sender.type | lowercase) == 'customer' || (message.body.type | lowercase) == 'voice'"
                     class="profile-pic-area user-img customer-channel-showcase">
@@ -1537,7 +1532,7 @@
 
 
                                     <li *ngIf="callData.additionalDetail?.dialog?.wrapUpReason" class="section-tags">
-                                  
+
                                         <ng-container
                                           *ngIf="
                                           callData.additionalDetail?.dialog?.wrapUpItems &&
@@ -1552,7 +1547,7 @@
                                             }}
                                           </span>
                                         </ng-container>
-    
+
                                         <ng-container
                                           *ngIf="
                                           callData.additionalDetail?.dialog?.wrapUpItems &&
