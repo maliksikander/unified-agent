@@ -254,7 +254,7 @@ function postMessages(obj, callback) {
             blind_transfer(obj.parameter.numberToTransfer,obj.parameter.DN, obj.parameter.clientCallbackFunction,obj.parameter.dialogId);
             break;
         case 'SST_Queue':
-            blind_transfer_queue(obj.parameter.numberToTransfer,obj.parameter.DN, obj.parameter.queue, obj.parameter.queueType, obj.parameter.clientCallbackFunction);
+            blind_transfer_queue(obj.parameter.numberToTransfer, obj.parameter.queue, obj.parameter.queueType, obj.parameter.clientCallbackFunction,obj.parameter.dialogId);
             break;
         case 'makeConsult':
             makeConsultCall(obj.parameter.numberToConsult, obj.parameter.clientCallbackFunction);
@@ -1023,10 +1023,10 @@ function blind_transfer(numberToTransfer,DN, callback,dialogId) {
         error("generalError", loginid, e.message, callback);
     })
 }
-function blind_transfer_queue(numberToTransfer,DN, queue, queuetype, callback,dialogId) {
+function blind_transfer_queue(numberToTransfer, queue, queuetype, callback,dialogId) {
     var res= lockFunction("blind_transfer_queue", 500); // --- seconds cooldown
     if(!res)return;
-    const undefinedParams = checkUndefinedParams(blind_transfer_queue, [numberToTransfer,DN, queue, queuetype, callback,dialogId]);
+    const undefinedParams = checkUndefinedParams(blind_transfer_queue, [numberToTransfer, queue, queuetype, callback,dialogId]);
 
     if (undefinedParams.length > 0) {
         // console.log(`Error: The following parameter(s) are undefined or null: ${undefinedParams.join(', ')}`);
@@ -1073,9 +1073,6 @@ function blind_transfer_queue(numberToTransfer,DN, queue, queuetype, callback,di
             }
         },
     };
-    if(DN){
-        options.requestOptions.extraHeaders["DN"] = DN; 
-    }
 
     sessionall.refer(target, options).then((res) => {
         console.log('success blind_transfer_queue', res);
