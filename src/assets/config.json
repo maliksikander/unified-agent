@@ -40,7 +40,11 @@
   "silentMonitorType": "SUPERVISOR_MONITOR",
   "bargeInType": "BARGE_IN_CONSULT",
   "ronaStateOnCisco":"Call Not Answered",
+<<<<<<< HEAD
   "isCiscoEnabled":false,
+=======
+  "isCiscoEnabled":true,
+>>>>>>> develop
   "isCxVoiceEnabled":true,
   "CISCO_CC_MRD":"20316843be924c8ab4f57a7a",
   "CX_VOICE_MRD": "62f9e360ea5311eda05b0242",

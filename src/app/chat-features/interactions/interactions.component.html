@@ -651,11 +651,6 @@
                     <mat-icon *ngIf="message.header.schedulingMetaData">event</mat-icon>
                   </div>
 
-                  <div *ngIf="(message.header.sender.type | lowercase) == 'app' " class="profile-pic-area user-img">
-                    <!-- *ngIf="((message.header.sender.type | lowercase) == 'app' && (message.header.schedulingMetaData ) )"<img *ngIf="(message.status | lowercase) !== 'scheduled'" src="assets/images/robot-dark.svg" /> -->
-                    <mat-icon *ngIf="((message.header.schedulingMetaData ))">event</mat-icon>
-                  </div>
-
                   <div
                     *ngIf="(message.header.sender.type | lowercase) == 'customer' || (message.body.type | lowercase) == 'voice'"
                     class="profile-pic-area user-img customer-channel-showcase"
@@ -1545,10 +1540,10 @@
                                     <ng-container
                                       *ngIf="
                                         message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems &&
-                                        message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems.length == 0
+                                       ( isString(message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems) || message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems.length == 0 )
                                       "
                                     >
-                                      <span>
+                                      <span  matTooltip="{{ message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason}}">
                                         {{
                                           message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason
                                             ? message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason
@@ -1560,7 +1555,7 @@
                                     <ng-container
                                       *ngIf="
                                         message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems &&
-                                        message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems.length > 0
+                                        message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems.length > 0 && !isString(message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems)
                                       "
                                     >
                                       <span
@@ -1578,7 +1573,7 @@
                                           "
                                         >
                                           <span matTooltip="{{ remainingValues?.join(', ') }}"
-                                            >+{{ message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems?.length - 1 }}</span
+                                            >+{{ message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems?.length - 2 }}</span
                                           >
                                         </ng-container>
                                       </ng-container>
@@ -1673,18 +1668,8 @@
 
 >>>>>>> develop
                                     <li *ngIf="callData.additionalDetail?.dialog?.wrapUpReason" class="section-tags">
-                                      <ng-container
-                                        *ngIf="
-                                          callData.additionalDetail?.dialog?.wrapUpItems && callData.additionalDetail?.dialog?.wrapUpItems.length == 0
-                                        "
-                                      >
-                                        <span>
-                                          {{
-                                            callData.additionalDetail?.dialog?.wrapUpReason ? callData.additionalDetail?.dialog?.wrapUpReason : "N/A"
-                                          }}
-                                        </span>
-                                      </ng-container>
 
+<<<<<<< HEAD
                                       <ng-container
                                         *ngIf="
                                           callData.additionalDetail?.dialog?.wrapUpItems && callData.additionalDetail?.dialog?.wrapUpItems.length > 0
@@ -1726,6 +1711,49 @@
                                 <span *ngIf="callData.dialog?.wrapUpReason.length > 2" class="sub-tags"
                                   [matMenuTriggerFor]="multiVoiceTags">+{{callData.dialog?.wrapUpReason.length -
                                   2}}</span> -->
+=======
+                                        <ng-container
+                                          *ngIf="
+                                          callData.additionalDetail?.dialog?.wrapUpItems &&
+                                           ( isString(callData.additionalDetail?.dialog?.wrapUpItems) || callData.additionalDetail?.dialog?.wrapUpItems.length == 0 )
+                                          "
+                                        >
+                                          <span  matTooltip="{{ callData.additionalDetail?.dialog?.wrapUpReason}}">
+                                            {{
+                                              callData.additionalDetail?.dialog?.wrapUpReason
+                                                ? callData.additionalDetail?.dialog?.wrapUpReason
+                                                : "N/A"
+                                            }}
+                                          </span>
+                                        </ng-container>
+
+                                        <ng-container
+                                          *ngIf="
+                                          callData.additionalDetail?.dialog?.wrapUpItems &&
+                                          callData.additionalDetail?.dialog?.wrapUpItems.length > 0 && !isString(callData.additionalDetail?.dialog?.wrapUpItems)
+                                          "
+                                        >
+                                          <span
+                                            matTooltip="{{ wrapup }}"
+                                            *ngFor="let wrapup of callData.additionalDetail?.dialog?.wrapUpItems | sliceFilter: 0:2"
+                                          >
+                                            {{ wrapup }}
+                                          </span>
+                                          <ng-container *ngIf="callData.additionalDetail?.dialog?.wrapUpItems?.length > 2">
+                                            <ng-container
+                                              *ngIf="
+                                              callData.additionalDetail?.dialog?.wrapUpItems
+                                                  | sliceFilter: 2:callData.additionalDetail?.dialog?.wrapUpItems?.length;
+                                                let remainingValues
+                                              "
+                                            >
+                                              <span matTooltip="{{ remainingValues?.join(', ') }}"
+                                                >+{{ callData.additionalDetail?.dialog?.wrapUpItems?.length - 2 }}</span
+                                              >
+                                            </ng-container>
+                                          </ng-container>
+                                        </ng-container>
+>>>>>>> develop
                                     </li>
                                   </ul>
                                 </div>
