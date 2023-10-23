@@ -1,11 +1,8 @@
 // Initialize an object to keep track of function locks
 const functionLocks = {};
 
-<<<<<<< HEAD
 var canCallFunction = true;
 var callendDialogId;
-=======
->>>>>>> develop
 var endcal = false;
 var calls = [];
 var consultSessioin;
@@ -361,13 +358,7 @@ function postMessages(obj, callback) {
 
 
 function connect_useragent(extension, sip_uri, sip_password, wss, sip_log, callback) {
-<<<<<<< HEAD
     //
-=======
-    var res= lockFunction("connect_useragent", 500); // --- seconds cooldown
-    if(!res)return;
-    const undefinedParams = checkUndefinedParams(connect_useragent, [extension, sip_uri, sip_password, wss, sip_log, callback]);
->>>>>>> develop
 
 
     var res= lockFunction("connect_useragent", 500); // --- seconds cooldown
