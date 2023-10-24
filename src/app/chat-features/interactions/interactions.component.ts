@@ -179,6 +179,7 @@ export class InteractionsComponent implements OnInit {
   requestedAgentForAssistance;
   requestAction: string;
   previousRecording;
+  emailThreadedView: any;
   quillConfig = {
     toolbar: {
       container: [
@@ -1547,6 +1548,20 @@ export class InteractionsComponent implements OnInit {
   }
   openEmailComposer(templateRef): void {
 
+    const dialogRef = this.dialog.open(templateRef, {
+      width: '70vw',
+      maxWidth: '950px',
+      panelClass: 'email-composer-dialog'
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+
+    });
+
+  }
+
+  openEmailThreaded(templateRef, e): void {
+    this.emailThreadedView = e;
     const dialogRef = this.dialog.open(templateRef, {
       width: '70vw',
       maxWidth: '950px',

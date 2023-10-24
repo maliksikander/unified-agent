@@ -555,7 +555,7 @@
                     *ngIf="(message.header.sender.type | lowercase) !== 'customer' && (message.body.type | lowercase) !== 'voice'  && (message.status | lowercase) !== 'scheduled' && (message.header.sender.type | lowercase) != 'app' "
                   >
                     <img
-                      *ngIf="message?.body?.type != 'WRAPUP'"
+                      *ngIf="message?.body?.type != 'WRAPUP' && message?.body?.type != 'EMAIL'"
                       width="20"
                       [src]="message.header.channelSession.channel.channelType.channelLogo | channelLogo | async"
                     />
@@ -566,13 +566,22 @@
                       width="20"
                       src="assets/images/wrap-up.svg"
                     />
+                    <img
+                      matTooltip="{{ 'chat-features.interactions.wrapup' | translate }}"
+                      class="wrap-up-icon"
+                      *ngIf="message?.body?.type == 'EMAIL'"
+                      width="20"
+                      src="assets/images/email.svg"
+                    />
                   </div>
+                  <div class="profile-pic-area user-img" matTooltip="{{ message.header.sender | getSenderName: conversation.customer }}">FA</div>
 
                   <div matTooltip="{{ message.header.sender | getSenderName: conversation.customer }}" *ngIf="
                       (message.body.type | lowercase) != 'voice' &&
                       (message.header.sender.type | lowercase) != 'bot' &&
                       (message.header.sender.type | lowercase) != 'customer' &&
-                      (message.header.sender.type | lowercase) != 'app'"
+                      (message.header.sender.type | lowercase) != 'app' &&
+                      (message.header.sender.type | lowercase) != 'email'"
                     class="profile-pic-area user-img"
                   >
                     {{ message.header.sender | getSenderName: conversation.customer | getFirstTwoLetters }}
@@ -582,12 +591,6 @@
                   </div>
 
                   <div *ngIf="(message.header.sender.type | lowercase) == 'app' " class="profile-pic-area user-img">
-                    <!-- *ngIf="((message.header.sender.type | lowercase) == 'app' && (message.header.schedulingMetaData ) )"<img *ngIf="(message.status | lowercase) !== 'scheduled'" src="assets/images/robot-dark.svg" /> -->
-                    <mat-icon *ngIf="((message.header.schedulingMetaData ))">event</mat-icon>
-                  </div>
-
-                  <div *ngIf="(message.header.sender.type | lowercase) == 'app' " class="profile-pic-area user-img">
-                    <!-- *ngIf="((message.header.sender.type | lowercase) == 'app' && (message.header.schedulingMetaData ) )"<img *ngIf="(message.status | lowercase) !== 'scheduled'" src="assets/images/robot-dark.svg" /> -->
                     <mat-icon *ngIf="((message.header.schedulingMetaData ))">event</mat-icon>
                   </div>
 
@@ -975,7 +978,7 @@
                     <mat-menu #menu="matMenu">
                       <button mat-menu-item class="reply-trigger" (click)="onQuotedReply(message)">reply</button>
                     </mat-menu>
-                    <div [style.display]="(message.header.sender.type | lowercase) == 'app' ? 'none' : '' " class="{{(message.header.sender.type | lowercase) !== 'app' && !(message.header.schedulingMetaData) && (message.body.type | lowercase) !== 'delieverynotification' }}"
+                    <div [style.display]="(message.header.sender.type | lowercase) == 'app'  || (message.header.sender.type | lowercase) == 'email' ? 'none' : '' " class="{{(message.header.sender.type | lowercase) !== 'app' && !(message.header.schedulingMetaData) && (message.body.type | lowercase) !== 'delieverynotification' }}"
                     *ngIf="((message.header.sender.type | lowercase) !== 'app' && !(message.header.schedulingMetaData) && (message.body.type | lowercase) !== 'delieverynotification' && (message.body.type | lowercase) != 'comment')
                            || ((message.body.type | lowercase) != 'outboundsms' && (message.body.type | lowercase) != 'comment' && (message.body.type | lowercase) != 'url' && message.body.markdownText)
                            || ((message.body.type | lowercase) == 'comment' && (message.body.itemType | lowercase) == 'text' && (message.header.sender.type | lowercase) == 'agent')
@@ -1647,7 +1650,6 @@
                     </div>
                     <!-- <--------------------------------------------WRAP UP MESSAGE END-------------------------------------------->
 
-                   <!-- <div *ngIf="((message.header.sender.type | lowercase) == 'app' && (message.header.schedulingMetaData) )" class="abc"> {{message.header.sender.type | json}}</div>  -->
                     <!-- <-------------------------------------Scheduled Activity--------------------------------------------------->
                       <!-- *ngIf="(message.header.status | lowercase) == 'deliverynotification' " -->
                     <div *ngIf="((message.header.sender.type | lowercase) == 'app' && (message.header.schedulingMetaData) )"
@@ -1695,6 +1697,48 @@
                     </div>
 
                     <!-- <--------------------------------------------Scheduled Activity END-------------------------------------------->
+
+
+                    <!-- <-------------------------------------Email Activity--------------------------------------------------->
+                    <div *ngIf="(message.header.sender.type | lowercase) == 'email'"
+                         class="voice-activity-main panel-divider single scheduled-activity-area activity {{message.header.sender.type | lowercase}}">
+                      <mat-expansion-panel>
+                        <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+                          <mat-panel-title>
+                            <div class="panel-header">
+                              <ul>
+                                <li  matTooltip="{{message.header.sender.senderEmail}}"><span>From:</span> {{message.header.sender.senderEmail}}</li>
+                                <li  matTooltip="{{message.header.sender.emailTo}}"><span>To:</span> {{message.header.sender.emailTo}}</li>
+                                <li  matTooltip="{{message.header.sender.emailSubject}}"><span>Subject:</span> {{message.header.sender.emailSubject}}</li>
+                                 <li>
+                                  {{ message.header.timestamp | date: "EEEE, mm d, y, h:mm:ss a" }}
+                                </li>
+                              </ul>
+                            </div>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="custom-message-type email-view">
+<!--                          <p>{{  message.body.markdownText }}</p>-->
+
+                          <quill-editor  [(ngModel)]="message.body.markdownText"   [readOnly]="true"
+                                         [style]= "{ border:0}"
+                                         [modules]="{ toolbar: false }" customToolbarPosition="bottom"> </quill-editor>
+
+
+                        </div>
+                        <div class="email-view-actions">
+                          <span class="view-email-thread" (click)="openEmailThreaded(emailThreadedViewTemplate, message.body.markdownText)">view full thread</span>
+                          <ul>
+                            <li  (click)="openEmailComposer(emailComposeTemplate)"><mat-icon>reply</mat-icon></li>
+                            <li><mat-icon>reply_all</mat-icon></li>
+                            <li><mat-icon>forward</mat-icon></li>
+                            <li><mat-icon>print</mat-icon></li>
+                          </ul>
+                        </div>
+                      </mat-expansion-panel>
+                    </div>
+
+                    <!-- <--------------------------------------------Email Activity END-------------------------------------------->
 
 
                     <!-- ---------------------------------- Social Media COMMENT STARTED -------------------------------- -->
@@ -2865,34 +2909,77 @@
   </div>
 </div>
 
-
-
-
-
-    <div class="dialog-main-content">
+    <div class="dialog-main-content m-0">
       <div class="row m-0">
-        <div class="transfer-to text-center col">
-        </div>
-        <div class="note-area col-md-12">
-          <h4>{{ "chat-features.interactions.message" | translate }}</h4>
+        <div class="email-compose-area w-100">
           <form>
-
             <quill-editor  [modules]="quillConfig" customToolbarPosition="bottom"> </quill-editor>
           </form>
         </div>
       </div>
     </div>
 
-    <div class="action-trigger text-right">
-      <button mat-button mat-dialog-close class="close-btn">{{ "chat-features.interactions.cancel" | translate
-        }}</button>
-      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial
-        (click)="sendAssistanceRequest()">
-        {{ noteDialogBtnText }}
+    <div class="action-trigger email-trigger">
+      <span>
+      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial>
+        Send Email
       </button>
-      <!--      <button mat-button *ngIf="isTransfer" [mat-dialog-close]="true" class="success-btn" cdkFocusInitial-->
-      <!--              (click)="transferRequest(chatConsultTo.name, ' ')">Transfer-->
-      <!--      </button>-->
+      <button mat-button mat-dialog-close class="close-btn">Save as draft</button>
+      </span>
+      <button mat-icon-button matTooltip="delete" class="discard-email">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+
+
+<!--Email Threaded view dialog-->
+<ng-template #emailThreadedViewTemplate>
+  <div class="compose-dialog-main">
+    <div class="email-subject-view"><span>Upgrade my current broadband package and install new modem</span>   <button mat-button mat-dialog-close>
+      <mat-icon>cancel_presentation</mat-icon>
+    </button></div>
+    <div class=" email-compose-dialog-header">
+      <div class="email-compose-head email-selection-option">
+        <div class="sender-selection">
+          <label>From</label>
+         <span>{{selectedValue}}</span>
+        </div>
+      </div>
+
+      <div class="email-compose-head email-to">
+        <div class="sender-selection">
+          <label>To</label>
+          <span>alex.franco@gmail.com</span>
+        </div>
+      </div>
+      <div class="email-compose-head email-to">
+        <div class="sender-selection">
+          <label>Subject</label>
+          <span>Re: Upgrade my current broadband package and install new modem</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dialog-main-content m-0">
+      <div class="row m-0">
+        <div class="email-compose-area w-100">
+          <quill-editor  [(ngModel)]="emailThreadedView"   [readOnly]="true"
+                         [style]= "{ border:0}"
+                         [modules]="{ toolbar: false }" customToolbarPosition="bottom"> </quill-editor>
+        </div>
+      </div>
+    </div>
+
+    <div class="email-view-actions justify-content-end">
+      <ul>
+        <li  (click)="openEmailComposer(emailComposeTemplate)"><mat-icon>reply</mat-icon></li>
+        <li><mat-icon>reply_all</mat-icon></li>
+        <li><mat-icon>forward</mat-icon></li>
+        <li><mat-icon>print</mat-icon></li>
+      </ul>
     </div>
   </div>
 </ng-template>

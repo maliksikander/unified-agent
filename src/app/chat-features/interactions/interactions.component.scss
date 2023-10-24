@@ -1771,6 +1771,7 @@
     &.success-btn {
       background: $blue-text-color;
       margin-left: 12px;
+      color: #fff;
     }
   }
 }
@@ -3086,7 +3087,7 @@ vg-controls.hide {
   }
 }
 
-.chat-message.voice, .chat-message.custom ,.chat-message.app{
+.chat-message.voice, .chat-message.custom ,.chat-message.app, .chat-message.email{
   .file-type-stamp {
     display: none !important;
   }
@@ -4010,6 +4011,10 @@ vg-controls.hide {
 .custom-message-type{
   width: 100%;
   max-width: 800px;
+  &.email-view {
+    max-width: 100%;
+  }
+
   pre:last-child{
     margin-bottom: 0;
   }
@@ -4581,4 +4586,49 @@ button.back-to-sms{
     }
   }
 }
+.email-trigger{
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  button{
+    margin: 0 5px;
+    background: #E5E5E5;
+    color: #737373;
 
+    &.discard-email{
+      min-width: inherit;
+      padding: 0;
+      background: transparent;
+      color: #A8A8A8;
+    }
+  }
+}
+.email-view-actions{
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  padding: 5px 0;
+  align-items: center;
+  border-top: 1px solid #f1f1f1;
+  margin: 0 auto;
+  max-width: calc(100% - 60px);
+  color: $blue-text-color;
+  span{
+    &:hover{
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+  ul{
+    margin: 0;
+    padding: 0;
+
+    li{
+      height: 24px;
+      line-height: 24px;
+      margin: 0 3px;
+      cursor: pointer;
+      display: inline-block;
+    }
+  }
+}
