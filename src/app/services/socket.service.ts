@@ -255,7 +255,7 @@ export class socketService {
       this.removeConversation(res.conversationId);
     });
 
-    this.socket.on("WRAP_UP_TIMER_STARTED", (res: any) => {
+    this.socket.on("wrapupTimerStarted", (res: any) => {
       let sameTopicConversation = this.conversations.find((e) => {
         return e.conversationId == res.conversationId;
       });
@@ -263,16 +263,6 @@ export class socketService {
       sameTopicConversation.wrapUpDialog.durationLeft = res.duration;
 
       this.startWrapUpTimer(sameTopicConversation);
-    });
-
-    this.socket.on("WRAP_UP_CLOSED", (res: any) => {
-      console.log("WRAP_UP_CLOSED", res);
-
-      // let sameTopicConversation = this.conversations.find((e) => {
-      //   return e.conversationId == res.conversationId;
-      // });
-      // delete sameTopicConversation["agentState"];
-      // this.removeConversation(res.conversationId);
     });
 
     this.socket.on("socketSessionRemoved", (res: any) => {
