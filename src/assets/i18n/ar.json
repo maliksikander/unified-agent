@@ -215,6 +215,7 @@
       "start": "Start a New Conversation_ar"
     },
     "interactions": {
+      "Are-you-sure-you-want-to-leave-the-conversation-with":"Are you sure you want to leave the conversation with_ar",
       "Consult":"Consult_ar",
       "Transfer":"Transfer_ar",
       "Conference":"Conference_ar",
@@ -263,6 +264,8 @@
       "queue-conference": "Queue Conference_ar"
     },
     "wrap-up-form": {
+      "Add-Wrap-Up": "Add Wrap-Up_ar",
+      "Leave-without-wrap-up":"Leave Without Wrap-Up_ar",
       "wrap-up-codes": "Wrap-Up Codes_ar",
       "selected": "Selected_ar",
       "cancel": "Cancel_ar",

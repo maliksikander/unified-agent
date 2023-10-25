@@ -1501,16 +1501,23 @@ export class InteractionsComponent implements OnInit {
 closeWrapDialog(data) {
   if(data == false){
     this.openWrapDialog = false;
+    if(this.conversation.wrapUpDialog.show)
+    {
+      this._socketService.emit("WRAP_UP_CLOSED",{
+        conversationId: this.conversation.conversationId,
+          agentId: this._cacheService.agent.id
+      })
+    }
   } else{
       this.constructAndSendCimEvent("wrapup", "", "", "", "", data.wrapups, data.note);
       this.openWrapDialog = false;
-  }
-  if(this.conversation.wrapUpDialog.show)
-  {
-    this._socketService.emit("WRAP_UP_CLOSED",{
-      conversationId: this.conversation.conversationId,
-        agentId: this._cacheService.agent.id
-    })
+      if(this.conversation.wrapUpDialog.show)
+      {
+        this._socketService.emit("WRAP_UP_CLOSED",{
+          conversationId: this.conversation.conversationId,
+          agentId: this._cacheService.agent.id
+        })
+      }
   }
 }
   previousRecording;

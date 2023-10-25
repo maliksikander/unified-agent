@@ -216,6 +216,7 @@
       "start": "Start a New Conversation_spa"
     },
     "interactions": {
+      "Are-you-sure-you-want-to-leave-the-conversation-with":"Are you sure you want to leave the conversation with_spa",
       "Consult":"Consult_spa",
       "Transfer":"Transfer_spa",
       "Conference":"Conference_spa",
@@ -264,6 +265,8 @@
       "queue-conference": "Queue Conference_spa"
     },
     "wrap-up-form": {
+      "Add-Wrap-Up": "Add Wrap-Up_spa",
+      "Leave-without-wrap-up":"Leave Without Wrap-Up_spa",
       "wrap-up-codes": "Wrap-Up Codes_spa",
       "selected": "Selected_spa",
       "cancel": "Cancel_spa",
