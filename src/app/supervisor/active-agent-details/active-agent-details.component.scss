@@ -35,6 +35,7 @@
         td,th{
           &:nth-child(1){
             width: 35%;
+            text-transform: inherit;
           }
           &:nth-child(2){
             text-align: center;

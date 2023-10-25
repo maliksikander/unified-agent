@@ -221,7 +221,7 @@
       "Add-To-Conference":"Add To Conference_ar",
       "Search-Queue":"Search Queue_ar",
       "whisper": "Whisper_ar",
-      "bot-suggestions-available": "Bot suggestions are available type / for viewing_ar",
+      "bot-suggestions-available": "Bot suggestions are available. Type '/' for viewing_ar",
       "for-reply-to-a-comment":"for reply to a comment_ar",
       "Type-a-reply-to-comment":"Type a reply to a comment_ar",
       "Type-a-message": "Type a message here..._ar",
@@ -495,11 +495,11 @@
     "origin":"Origin",
     "joined":"joined_ar",
     "active-conversation":"active conversation_ar",
-    "mrd-states":"mrd states_ar",
+    "mrd-states":"MRD States_ar",
     "search-agent":"search agent_ar",
     "agent-stats":"agent stats_ar",
-    "pending-not-ready":"Pending-Not Ready_ar",
-    "agent(s)":"agent(S)_ar",
+    "pending-not-ready":"Pending-Not-Ready_ar",
+    "agent(s)":"agent(s)_ar",
     "direction":"direction_ar",
     "No-Teams-Available":"No Teams Available_ar"
   }
