@@ -180,6 +180,7 @@ export class InteractionsComponent implements OnInit {
   requestAction: string;
   previousRecording;
   emailThreadedView: any;
+  emailThreadedData: any = [];
   quillConfig = {
     toolbar: {
       container: [
@@ -1562,6 +1563,11 @@ export class InteractionsComponent implements OnInit {
 
   openEmailThreaded(templateRef, e): void {
     this.emailThreadedView = e;
+
+    for (let i = 0; i < (3); i++) {
+      this.emailThreadedData.push(this.emailThreadedView)
+    }
+    console.log(this.emailThreadedData, 'hello');
     const dialogRef = this.dialog.open(templateRef, {
       width: '70vw',
       maxWidth: '950px',

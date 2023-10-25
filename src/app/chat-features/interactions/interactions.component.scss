@@ -4525,6 +4525,17 @@ button.back-to-sms{
 
 //Email composer
 .compose-dialog-main{
+  .email-preview-dialog-header {
+    .email-compose-head {
+      border: 0;
+      height: 25px;
+
+      span {
+        color: #000000;
+        font-size: 14px;
+      }
+    }
+  }
   .email-compose-head {
     background: #fff;
     display: flex;
@@ -4551,8 +4562,8 @@ button.back-to-sms{
       color: #888888;
       font-size: 12px;
       font-weight: 500;
-      padding-right: 15px;
-      min-width: 50px;
+      padding-right: 10px;
+      min-width: 55px;
       margin-bottom: 0;
     }
     .sender-selection {
@@ -4584,6 +4595,11 @@ button.back-to-sms{
         }
       }
     }
+  }
+
+  .threaded-main-view {
+    max-height: 80vh;
+    overflow: auto;
   }
 }
 .email-trigger{
@@ -4629,6 +4645,27 @@ button.back-to-sms{
       margin: 0 3px;
       cursor: pointer;
       display: inline-block;
+    }
+  }
+}
+.email-subject-view {
+  justify-content: space-between;
+  padding: 0 15px;
+  align-items: center;
+  margin: 0;
+  border-bottom: 1px solid #EFF2F7;
+
+  span {
+    color: #000000;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  button {
+    padding: 0;
+    min-width: inherit;
+    mat-icon{
+      color: #888888;
     }
   }
 }

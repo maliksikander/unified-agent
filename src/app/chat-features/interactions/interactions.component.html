@@ -2938,10 +2938,13 @@
 <!--Email Threaded view dialog-->
 <ng-template #emailThreadedViewTemplate>
   <div class="compose-dialog-main">
-    <div class="email-subject-view"><span>Upgrade my current broadband package and install new modem</span>   <button mat-button mat-dialog-close>
+    <div class="email-subject-view row"><span>Upgrade my current broadband package and install new modem</span>   <button mat-button mat-dialog-close>
       <mat-icon>cancel_presentation</mat-icon>
-    </button></div>
-    <div class=" email-compose-dialog-header">
+    </button>
+    </div>
+    <div class="threaded-main-view">
+    <ng-container *ngFor="let emailData of emailThreadedData">
+    <div class=" email-compose-dialog-header email-preview-dialog-header">
       <div class="email-compose-head email-selection-option">
         <div class="sender-selection">
           <label>From</label>
@@ -2963,12 +2966,12 @@
       </div>
     </div>
 
-    <div class="dialog-main-content m-0">
+    <div class="dialog-main-content m-0 mt-3">
       <div class="row m-0">
         <div class="email-compose-area w-100">
-          <quill-editor  [(ngModel)]="emailThreadedView"   [readOnly]="true"
-                         [style]= "{ border:0}"
-                         [modules]="{ toolbar: false }" customToolbarPosition="bottom"> </quill-editor>
+          <quill-editor [(ngModel)]="emailThreadedView" [readOnly]="true"
+                        [style]="{ border:0}"
+                        [modules]="{ toolbar: false }" customToolbarPosition="bottom"></quill-editor>
         </div>
       </div>
     </div>
@@ -2980,6 +2983,8 @@
         <li><mat-icon>forward</mat-icon></li>
         <li><mat-icon>print</mat-icon></li>
       </ul>
+    </div>
+    </ng-container>
     </div>
   </div>
 </ng-template>
