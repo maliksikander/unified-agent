@@ -9,7 +9,7 @@ import { httpService } from "./http.service";
 import { sharedService } from "./shared.service";
 import * as uuid from "uuid";
 
-declare var postMessages;
+declare var postMessage;
 
 @Injectable({
   providedIn: "root"
@@ -29,7 +29,6 @@ export class SipService implements OnInit {
   isSipLoggedIn: boolean = false;
   agentMrdStates: any;
   customerNumber: any = "";
-  callData: any;
   isSubscriptionFailed = false;
   isMuted: boolean = false;
   isToolbarActive: boolean = false;
@@ -82,7 +81,7 @@ export class SipService implements OnInit {
           }
         };
         console.log("login SIP command sip==>", command);
-        postMessages(command);
+        postMessage(command);
       } else {
         console.log("No Extension configured for agent==>");
         this._snackbarService.open(this._translateService.instant("snackbar.No-Extension-Found"), "err");
@@ -183,9 +182,6 @@ export class SipService implements OnInit {
 
   handleInboundAndCampaignCallEvent(event, callType) {
     this.customerNumber = event.response.dialog.customerNumber;
-    this.callData = event.response.dialog;
-
-    console.log('call Data =======>', this.callData)
     let cacheId = `${this._cacheService.agent.id}:${event.response.dialog.id}`;
     let cacheDialog: any = this.getDialogFromCache(cacheId);
     if (!cacheDialog) this.identifyCustomer(event, event.response.dialog.customerNumber, callType);
@@ -689,7 +685,7 @@ export class SipService implements OnInit {
   }
 
   acceptCallOnSip(command: { action: string; parameter: { dialogId: any } }) {
-    postMessages(command);
+    postMessage(command);
   }
 
   endCallOnSip() {
@@ -701,7 +697,7 @@ export class SipService implements OnInit {
         }
       };
       console.log("EndCallOnSip ==>", command);
-      postMessages(command);
+      postMessage(command);
     } catch (error) {
       console.error("[Error on initMe] Sip ==>", error);
     }
@@ -717,7 +713,7 @@ export class SipService implements OnInit {
         }
       };
       console.log("holdCallOnSip==>", command);
-      postMessages(command);
+      postMessage(command);
     } catch (error) {
       console.error("[Error on holdCallOnSip] ==>", error);
     }
@@ -733,7 +729,7 @@ export class SipService implements OnInit {
         }
       };
       console.log("resumeCallOnSip sip==>", command);
-      postMessages(command);
+      postMessage(command);
     } catch (error) {
       console.error("[Error on resumeCallOnSip] ==>", error);
     }
@@ -749,7 +745,7 @@ export class SipService implements OnInit {
         }
       };
       console.log("muteCallOnSip ==>", command);
-      postMessages(command);
+      postMessage(command);
     } catch (error) {
       console.error("[Error on muteCallOnSip] ==>", error);
     }
@@ -765,7 +761,7 @@ export class SipService implements OnInit {
         }
       };
       console.log("unmuteCallOnSip ==>", command);
-      postMessages(command);
+      postMessage(command);
     } catch (error) {
       console.error("[Error on unmuteCallOnSip] ==>", error);
     }
@@ -785,7 +781,7 @@ export class SipService implements OnInit {
       };
 
       console.log("directQueueTransferOnSip ==>", command);
-      postMessages(command);
+      postMessage(command);
     } catch (error) {
       console.error("[Error on directQueueTransferOnSip] ==>", error);
     }
@@ -886,7 +882,7 @@ export class SipService implements OnInit {
             clientCallbackFunction: this.clientCallback
           }
         };
-        postMessages(command);
+        postMessage(command);
       }
     } catch (error) {
       console.error("[Error] Handle Logout for Sip==>", error);
