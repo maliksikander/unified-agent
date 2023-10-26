@@ -58,8 +58,6 @@ export class sharedService {
     this.conversationSettings.isConversationParticipantsEnabled = setting.isConversationParticipantsEnabled;
     this.conversationSettings.isFileSharingEnabled = setting.isFileSharingEnabled;
     this.conversationSettings.isEmojisEnabled = setting.isEmojisEnabled;
-    this.conversationSettings.isWrapUpEnabled = setting.isWrapUpEnabled;
-    this.conversationSettings.wrapUpTime = setting.wrapUpTime;
     this.conversationSettings.isMessageFormattingEnabled = setting.isMessageFormattingEnabled;
     this.conversationSettings.isOutboundSmsSendandClose = setting.isOutboundSmsSendandClose;
     this.conversationSettings.isOutboundSmsEnabled = setting.isOutboundSmsEnabled;

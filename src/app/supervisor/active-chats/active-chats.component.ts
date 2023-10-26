@@ -17,6 +17,7 @@ import { snackbarService } from "src/app/services/snackbar.service";
 import { TranslateService } from "@ngx-translate/core";
 import { TopicParticipant } from "src/app/models/User/Interfaces";
 import { CustomerLabels } from "src/app/models/labels/labels";
+import { appConfigService } from "src/app/services/appConfig.service";
 
 @Component({
   selector: "app-active-chats",
@@ -30,7 +31,7 @@ export class ActiveChatsComponent implements OnInit {
   queuesList = [];
   timerSubscription: Subscription;
   filter: string;
-  labels: CustomerLabels[];
+  labels: CustomerLabels[]
   filteredData = [];
   activeChatListWithAgents: any = [];
   activeChatListWithBots: any = [];
@@ -53,8 +54,9 @@ export class ActiveChatsComponent implements OnInit {
     private dialog: MatDialog,
     public _pullModeservice: pullModeService,
     private _socketService: socketService,
-    private _router: Router
-  ) {}
+    private _router: Router,
+    public _appConfigService: appConfigService
+  ) { }
 
   ngOnInit(): void {
     this.loadLabels();
@@ -99,7 +101,7 @@ export class ActiveChatsComponent implements OnInit {
   }
   startRefreshTimer() {
     try {
-      this.timerSubscription = timer(0, 10000)
+      this.timerSubscription = timer(0, this._appConfigService.config.DASHBOARD_REFRESH_TIME)
         .pipe(
           map(() => {
             if (this.FilterSelected == "agents" && this.supervisedTeams && this.supervisedTeams.length > 0)
@@ -148,9 +150,10 @@ export class ActiveChatsComponent implements OnInit {
     this._httpService.getAllActiveChatsWithBots().subscribe(
       (e) => {
         this.activeChatListWithBots = e;
+        console.log("bots chats", this.activeChatListWithBots)
         // Sort the activeChatListWithBots array by activeSince property
         for (let data of this.activeChatListWithBots) {
-          data.chats = this.sortChatsByActiveSince(data.chats);
+          this.sortChatsByActiveSince(data.chats)
         }
       },
       (err) => {
@@ -165,26 +168,37 @@ export class ActiveChatsComponent implements OnInit {
     try {
       this.filteredData = [];
       if (this.selectedQueues.length == 0) {
-        this.filteredData = this.activeChatListWithAgents;
+        this.activeChatListWithAgents.forEach((chats) => {
+          chats.chats.forEach((innerChat) => {
+            innerChat["queueName"] = chats.queueName
+            this.filteredData.push(innerChat);
+          })
+        });
       } else {
         this.selectedQueues.forEach((data) => {
-          this.activeChatListWithAgents.forEach((chat) => {
-            if (data.queueId == chat.queueId) this.filteredData.push(chat);
-          });
-        });
+          console.log("activeChatListagnts", this.activeChatListWithAgents)
+          this.activeChatListWithAgents.forEach((chats) => {
+            if (data.queueId == chats.queueId) {
+              chats.chats.forEach((innerchat) => {
+                innerchat["queueName"] = chats.queueName;
+                this.filteredData.push(innerchat)
+              })
+            }
+          })
+        })
       }
 
       // Sort the filteredData array by activeSince property
-      for (let data of this.filteredData) {
-        data.chats = this.sortChatsByActiveSince(data.chats);
-      }
+      this.sortChatsByActiveSince(this.filteredData)
+
+
     } catch (err) {
       console.error("[filterData] Error :", err);
     }
   }
 
-  sortChatsByActiveSince(chats: any[]) {
-    return chats.sort((a, b) => {
+  sortChatsByActiveSince(dataToBeSorted) {
+    return dataToBeSorted.sort((a, b) => {
       if (this.sortOrder === "asc") {
         return a.activeSince - b.activeSince;
       } else {
@@ -216,10 +230,10 @@ export class ActiveChatsComponent implements OnInit {
     if (this.timerSubscription) this.timerSubscription.unsubscribe();
   }
 
-  onItemSelect(item: any) {}
-  OnItemDeSelect(item: any) {}
-  onSelectAll(items: any) {}
-  onDeSelectAll(items: any) {}
+  onItemSelect(item: any) { }
+  OnItemDeSelect(item: any) { }
+  onSelectAll(items: any) { }
+  onDeSelectAll(items: any) { }
 
   // closeChat() {
   //   const dialogRef = this.dialog.open(ConfirmationDialogComponent, {

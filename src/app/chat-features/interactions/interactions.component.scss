@@ -1080,9 +1080,22 @@
         display: inline-block;
         border-right: 1px solid #ccc;
         margin: 0;
-        padding: 0 10px;
+        padding: 1px 10px;
         vertical-align: middle;
         min-width: 42px;
+
+        &.section-tags{
+          display: flex;
+          flex-flow: nowrap;
+          justify-content: flex-start;
+            span{
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: pre;
+              max-width: 150px;
+              align-self: center;
+            }
+          }
 
         &:last-child {
           border-right: 0;
@@ -3850,6 +3863,22 @@ vg-controls.hide {
   }
 }
 
+.activity-number-ellipsis{
+  max-width: 7.188rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+  display: inherit;
+}
+
+.activity-queue-ellipsis{
+    max-width: 12.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre;
+    border-radius: 0 !important;
+}
+
 .private-reply-icon{
   cursor: pointer;
 }
@@ -3893,4 +3922,26 @@ button.back-to-sms{
   float: right;
   font-size: 10px;
   color: #707070;
+}
+.play-btn{
+  .mat-flat-button.mat-accent,
+  .mat-raised-button.mat-accent,
+  .mat-fab.mat-accent,
+  .mat-mini-fab.mat-accent {
+    background-color: #BDDBB1 !important;
+}
+
+  button.mat-mini-fab.mat-button-base.mat-accent {
+      width: 1.5rem;
+      height: 1.5rem;
+      vertical-align: middle;
+      box-shadow: none;
+     
+  }
+  i.material-icons {
+    position: relative;
+    top: -0.563rem;
+    font-size: 1.125rem;
+    place-content: center;
+  }
 }

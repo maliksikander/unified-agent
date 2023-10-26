@@ -52,9 +52,8 @@ export class AnnouncementDialogComponent implements OnInit {
     private _httpService: httpService,
     private _translateService: TranslateService,
     private _snackbarService: snackbarService,
-    public dialogRef: MatDialogRef<AnnouncementDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public dataID: any
-  ) {}
+    public dialogRef: MatDialogRef<AnnouncementDialogComponent>, @Inject(MAT_DIALOG_DATA) public dataID: any
+  ) { }
 
   ngOnInit() {
     let date = new Date(this.expireDateMin);
@@ -67,6 +66,8 @@ export class AnnouncementDialogComponent implements OnInit {
 
     // this.expireDateMax=new Date(this.expireDateMin);
     // this.maxDate= this.expireDateMax.setHours(120);
+
+
 
     if (this.dataID !== null) {
       this.currentAnnouncement = this._httpService.getAnnouncementsById(this.dataID.value).subscribe((res) => {
@@ -104,13 +105,13 @@ export class AnnouncementDialogComponent implements OnInit {
 
   onCreateAnnouncement() {
     this.postData = {
-      teams: this.selectedTeams,
-      announcementText: this.announcementMessage.value,
-      expiryTime: this.expireDate.value,
-      scheduledTime: this.announceDate.value,
-      supervisorId: this.supervisorId,
-      supervisorName: this.supervisor
-    };
+      "teams": this.selectedTeams,
+      "announcementText": this.announcementMessage.value,
+      "expiryTime": this.expireDate.value,
+      "scheduledTime": this.announceDate.value,
+      "supervisorId": this.supervisorId,
+      "supervisorName": this.supervisor
+    }
 
     this._httpService.addAnnouncemenent(this.postData).subscribe({
       next: (val: any) => {
@@ -144,7 +145,8 @@ export class AnnouncementDialogComponent implements OnInit {
         console.error(err);
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-Update-Announcement"), "err");
         this.dialog.closeAll();
-      }
+
+      },
     });
   }
 

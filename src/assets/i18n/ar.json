@@ -58,7 +58,7 @@
     "Confirm":"Confirm_ar",
     "Cancel":"Cancel_ar",
     "Incoming-Call-Alert":"Incoming Call Alert_ar",
-    "Incoming-call-alert-request":"Incoming call alert request : _ar",
+    "Incoming-call-alert-request":"Incoming call request from : _ar",
     "CHAT-REQUESTED":"CHAT REQUESTED_ar",
     "Incoming-chat-request-on-push-mode-on":"Incoming chat request on push mode on _ar",
     "Incoming-chat-request-on-pull-mode-on":"Incoming chat request on pull mode on _ar",
@@ -99,8 +99,9 @@
     "Calling":"Calling_ar",
     "CX-Voice-Connected":"CX VOICE Connected_ar",
     "Call-Ended":"Call Ended_ar",
-    "OB-Call-Request":"Outbound call request can not be initated_ar"
-
+    "OB-Call-Request":"Outbound call request can not be initated_ar",
+    "Customer-No":"Customer No_ar",
+    "queue-name":"Queue Name_ar"
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ar",

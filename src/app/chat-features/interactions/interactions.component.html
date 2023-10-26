@@ -124,7 +124,10 @@
                         <button
                           *ngIf="'agent-conversation-control' | authPipe: 'view_direct_transfer' as result"
                           [disabled]="
-                            !_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0 || queue?.totalAvailableAgents == 0
+                            !_socketService.isSocketConnected ||
+                            conversation.activeChannelSessions.length == 0 ||
+                            queue?.totalAvailableAgents == 0 ||
+                            (conversation.activeChannelSessions | checkCiscoSession)
                           "
                           mat-icon-button
                           matTooltip="{{ 'chat-features.interactions.queue-transfer' | translate }}"
@@ -133,19 +136,23 @@
                         >
                           <img src="assets/images/transfer-colored.svg" alt="transfer" />
                         </button>
-
-                        <button
-                          *ngIf="'agent-conversation-control' | authPipe: 'view_conference' as result"
-                          [disabled]="
-                            !_socketService.isSocketConnected || conversation.activeChannelSessions.length == 0 || queue?.totalAvailableAgents == 0
-                          "
-                          mat-icon-button
-                          matTooltip="{{ 'chat-features.interactions.queue-conference' | translate }}"
-                          class="transfer-selection"
-                          (click)="agentAssistanceRequest(chatConsultTemplate, queue, 'conference', 'queue')"
-                        >
-                          <img src="assets/images/conference-colored.svg" alt="conference" />
-                        </button>
+                        <ng-container *ngIf="'agent-conversation-control' | authPipe: 'view_conference' as result">
+                          <button
+                            *ngIf="!isCXVoiceSessionActive()"
+                            [disabled]="
+                              !_socketService.isSocketConnected ||
+                              conversation.activeChannelSessions.length == 0 ||
+                              queue?.totalAvailableAgents == 0 ||
+                              (conversation.activeChannelSessions | checkCiscoSession)
+                            "
+                            mat-icon-button
+                            matTooltip="{{ 'chat-features.interactions.queue-conference' | translate }}"
+                            class="transfer-selection"
+                            (click)="agentAssistanceRequest(chatConsultTemplate, queue, 'conference', 'queue')"
+                          >
+                            <img src="assets/images/conference-colored.svg" alt="conference" />
+                          </button>
+                        </ng-container>
                       </div>
                     </mat-panel-title>
                   </mat-expansion-panel-header>
@@ -174,12 +181,12 @@
               <button mat-menu-item>
                 <span class="agent-detail">
                   <span *ngIf="'customer' | authPipe: 'view_pii' as result; else manage_pii">
-                    {{ conversation.customer.firstName}}
+                    {{ conversation.customer.firstName }}
                     {{ conversation.customer.lastName }}
                   </span>
                   <ng-template #manage_pii>
                     <span>
-                      {{ conversation.customer.firstName  | maskPIIAttribute: ("firstName" | returnSchemaByKey)  }}
+                      {{ conversation.customer.firstName | maskPIIAttribute: ("firstName" | returnSchemaByKey) }}
                       {{ conversation.customer.lastName }}
                     </span>
                   </ng-template>
@@ -400,8 +407,9 @@
                 }} {{ message.header.status == 'sending' ? 'low-opacity' : message.header.status == 'failed' ? 'failed' : '' }}  {{
                   message.body.type | lowercase
                 }} {{ message.header.replyToMessageId != null ? 'quoted-message-main' : '' }} {{ message.header.sender.type | lowercase }} {{
-                  fullPostView && message.id == selectedCommentId ? 'full-post-view' : ''
-                }} {{index == 0 ? 'not-same-sender' : ''}}" [ngClass]="
+                  fullPostView && 'full-post-view' && message.id == selectedCommentId ? 'full-post-view' : ''
+                }}"
+                [ngClass]="
                   (message.header.sender.type | lowercase) == 'customer' || (message.body.type | lowercase) == 'voice'
                     ? 'user-message slide-in-left'
                     : 'agent-message'
@@ -475,29 +483,35 @@
                     <div
                       class="main-quoted-reply"
                       *ngFor="let referredMessage of message.header.replyToMessageId | getReferredMsg: conversation.messages"
-                      (click)="navigationToRepliedMessage(referredMessage)">
-                      <strong class="message-author"
-                        [ngClass]="(referredMessage.header.sender.type | lowercase) == 'customer' ? '' : 'current-agents'">
+                      (click)="navigationToRepliedMessage(referredMessage)"
+                    >
+                      <strong
+                        class="message-author"
+                        [ngClass]="(referredMessage.header.sender.type | lowercase) == 'customer' ? '' : 'current-agents'"
+                      >
                         <span *ngIf="referredMessage.header.sender">
                           {{ referredMessage.header.sender | getSenderName: conversation.customer | titlecase }}
                         </span>
                       </strong>
 
-                      <div [ngClass]="{
+                      <div
+                        [ngClass]="{
                           'file-type-message':
                             (referredMessage.body.type | lowercase) != 'plain' &&
                             (referredMessage.body.type | lowercase) != 'comment' &&
                             (referredMessage.body.type | lowercase) != 'button'
-                        }">
-
+                        }"
+                      >
                         <!-- ---------------Comments---------------------- -->
                         <div *ngIf="(referredMessage.body.type | lowercase) == 'comment'">
                           <p>
-                            <span [innerHTML]="
+                            <span
+                              [innerHTML]="
                                 conversationSettings.isMessageFormattingEnabled
                                   ? (referredMessage.body.markdownText | linkify | ibsformat)
                                   : (referredMessage.body.markdownText | linkify)
-                              "></span>
+                              "
+                            ></span>
                             <!--                            <span class="message-stamp yellow">-->
                             <!--                              <span class="chat-time red">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
                             <!--                            </span>-->
@@ -823,9 +837,11 @@
 
                   <span *ngIf="message.id != selectedCommentId && (message.isDeleted || message.isHidden)" class="comment-action">{{
                     message.isDeleted ? "deleted Message" : "Hidden Message"
-                    }}</span>
+                  }}</span>
 
-                  <div class="chat-message-content" [ngClass]="{
+                  <div
+                    class="chat-message-content"
+                    [ngClass]="{
                       'replied-message': message.header.replyToMessageId != null,
                       'file-type-message':
                         (message.body.type | lowercase) != 'plain' &&
@@ -854,14 +870,19 @@
                     <mat-menu #menu="matMenu">
                       <button mat-menu-item class="reply-trigger" (click)="onQuotedReply(message)">reply</button>
                     </mat-menu>
-                    <div *ngIf="
-                               ((message.body.type | lowercase) != 'outboundsms' && (message.body.type | lowercase) != 'comment' && (message.body.type | lowercase) != 'url' && message.body.markdownText) ||
-                               ((message.body.type | lowercase) == 'comment' && (message.body.itemType | lowercase) == 'text' && (message.header.sender.type | lowercase) == 'agent') ||
-                              ((message.body.type | lowercase) == 'comment' && (message.body.itemType | lowercase) == 'private_reply' && (message.header.sender.type | lowercase) == 'agent')
-                               ">
-
-
-                      <p class="{{
+                    <div
+                      *ngIf="
+                        ((message.body.type | lowercase) != 'comment' && (message.body.type | lowercase) != 'url' && message.body.markdownText) ||
+                        ((message.body.type | lowercase) == 'comment' &&
+                          (message.body.itemType | lowercase) == 'text' &&
+                          (message.header.sender.type | lowercase) == 'agent') ||
+                        ((message.body.type | lowercase) == 'comment' &&
+                          (message.body.itemType | lowercase) == 'private_reply' &&
+                          (message.header.sender.type | lowercase) == 'agent')
+                      "
+                    >
+                      <p
+                        class="{{
                           (message.header.sender.type | lowercase) == 'customer' && message.botSuggestions ? 'plain-text-p' : ''
                         }} plain-text-check"
                       >
@@ -885,9 +906,12 @@
                         <!--                    <p [innerHTML]="message.body.markdownText | linkify | ibsformat"></p>-->
                         <!--                    <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
 
-                        <button mat-icon-button class="user_settings"
+                        <button
+                          mat-icon-button
+                          class="user_settings"
                           *ngIf="(message.header.sender.type | lowercase) == 'customer' && message.botSuggestions && onMessageSuggestions"
-                          (click)="message.showBotSuggestions = !message.showBotSuggestions"></button>
+                          (click)="message.showBotSuggestions = !message.showBotSuggestions"
+                        ></button>
                       </p>
                     </div>
 
@@ -921,9 +945,12 @@
                       <span class="message-stamp">
                         <span class="chat-time">{{ message.header.timestamp | date: "shortTime" }}</span>
                       </span>
-                      <button mat-icon-button class="user_settings"
+                      <button
+                        mat-icon-button
+                        class="user_settings"
                         *ngIf="(message.header.sender.type | lowercase) == 'customer' && message.botSuggestions && onMessageSuggestions"
-                        (click)="message.showBotSuggestions = !message.showBotSuggestions"></button>
+                        (click)="message.showBotSuggestions = !message.showBotSuggestions"
+                      ></button>
                     </div>
 
                     <!-- --------------------sticker--------------------- -->
@@ -1225,14 +1252,22 @@
                           <mat-panel-title>
                             <div class="panel-header">
                               <ul>
-                                <li>
-                                  <span class="phone-number">
+                                <li matTooltip="{{ 'snackbar.Customer-No' | translate }}: {{ message.body.data.callLegs | getCustomerAni }}">
+                                  <span class="phone-number activity-number-ellipsis">
                                     {{ message.body.data.callLegs | getCustomerAni }}
                                   </span>
                                 </li>
 
-                                <li *ngIf="message.body.data.callLegs.length < 2" class="agent-pic call-services">
-                                  <span>{{
+                                <li
+                                  matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
+                                    message.body.data.callLegs[0].additionalDetail.dialog?.queueName
+                                      ? message.body.data.callLegs[0].additionalDetail.dialog?.queueName
+                                      : 'N/A'
+                                  }}"
+                                  *ngIf="message.body.data.callLegs.length < 2"
+                                  class="agent-pic call-services"
+                                >
+                                  <span class="activity-queue-ellipsis">{{
                                     message.body.data.callLegs[0].additionalDetail.dialog?.queueName
                                       ? message.body.data.callLegs[0].additionalDetail.dialog?.queueName
                                       : "N/A"
@@ -1240,10 +1275,16 @@
                                 </li>
                                 <ng-container *ngIf="message.body.data.callLegs.length == 2">
                                   <li *ngIf="message.body.data.callLegs | checkConsultCall" class="agent-pic call-services">
-                                    <span>
+                                    <span class="activity-queue-ellipsis">
                                       <ng-container *ngFor="let callLeg of message.body.data.callLegs">
                                         <ng-container *ngIf="callLeg.startDirection != 'CONSULT'">
-                                          {{ callLeg?.additionalDetail?.dialog?.queueName ? callLeg?.additionalDetail?.dialog?.queueName : "N/A" }}
+                                          <span
+                                            matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
+                                              callLeg?.additionalDetail?.dialog?.queueName ? callLeg?.additionalDetail?.dialog?.queueName : 'N/A'
+                                            }}"
+                                          >
+                                            {{ callLeg?.additionalDetail?.dialog?.queueName ? callLeg?.additionalDetail?.dialog?.queueName : "N/A" }}
+                                          </span>
                                         </ng-container>
                                       </ng-container>
                                     </span>
@@ -1252,27 +1293,40 @@
 
                                 <li class="agent-pic participant-agent call-services aa">
                                   <ng-container *ngFor="let callData of message.body.data.callLegs">
-                                    <span matTooltip="{{ callData.sender.senderName }}" class=" {{ (callData.sender.senderName | getFirstTwoLetters | lowercase) == 'ivr'  ? 'ivr-tag': 'non-ivr' }}"
-                                      *ngIf="callData?.startDirection != 'CONSULT'">{{
-                                      callData.sender.senderName | getFirstTwoLetters
-                                    }}</span>
+                                    <span
+                                      matTooltip="{{ callData.sender.senderName }}"
+                                      class=" {{ (callData.sender.senderName | getFirstTwoLetters | lowercase) == 'ivr' ? 'ivr-tag' : 'non-ivr' }}"
+                                      *ngIf="callData?.startDirection != 'CONSULT'"
+                                      >{{ callData.sender.senderName | getFirstTwoLetters }}</span
+                                    >
                                   </ng-container>
                                 </li>
 
                                 <ng-container *ngIf="message.body.data.callLegs.length == 1">
-                                  <li matTooltip="{{message.body.data?.callLegs[0]?.additionalDetail?.activities | getIVRTrail }}"
-                                    *ngIf="message.body.data?.callLegs[0]?.sender.type == 'IVR' && message.body.data?.callLegs[0]?.additionalDetail?.activities?.length > 0">
+                                  <li
+                                    matTooltip="{{ message.body.data?.callLegs[0]?.additionalDetail?.activities | getIVRTrail }}"
+                                    *ngIf="
+                                      message.body.data?.callLegs[0]?.sender.type == 'IVR' &&
+                                      message.body.data?.callLegs[0]?.additionalDetail?.activities?.length > 0
+                                    "
+                                  >
                                     <ng-container
-                                      *ngFor="let ivrDetail of message.body.data?.callLegs[0]?.additionalDetail?.activities; let j = index">
-                                      <span >{{ivrDetail?.menu}} > {{ivrDetail?.selection}} <ng-container
-                                          *ngIf="j !== message.body.data?.callLegs[0]?.additionalDetail?.activities?.length - 1">
-                                          > </ng-container> </span>
+                                      *ngFor="let ivrDetail of message.body.data?.callLegs[0]?.additionalDetail?.activities; let j = index"
+                                    >
+                                      <span
+                                        >{{ ivrDetail?.menu }} > {{ ivrDetail?.selection }}
+                                        <ng-container *ngIf="j !== message.body.data?.callLegs[0]?.additionalDetail?.activities?.length - 1">
+                                          >
+                                        </ng-container>
+                                      </span>
                                     </ng-container>
                                   </li>
                                 </ng-container>
 
-                                <li *ngIf="message.body.data.callLegs | checkConferenceCall"
-                                  class="multiple-users agent-pic participant-agent call-services">
+                                <li
+                                  *ngIf="message.body.data.callLegs | checkConferenceCall"
+                                  class="multiple-users agent-pic participant-agent call-services"
+                                >
                                   <span><img src="assets/images/groups.svg" alt="group" /></span>
                                 </li>
 
@@ -1288,22 +1342,47 @@
 
                                 <ng-container *ngIf="message.body.data.callLegs.length < 2">
                                   <li *ngIf="message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason" class="section-tags">
-                                    <span>
-                                      {{
-                                        message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason
-                                          ? message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason
-                                          : "N/A"
-                                      }}
-                                    </span>
+                                    <ng-container
+                                      *ngIf="
+                                        message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems &&
+                                       ( isString(message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems) || message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems.length == 0 )
+                                      "
+                                    >
+                                      <span  matTooltip="{{ message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason}}">
+                                        {{
+                                          message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason
+                                            ? message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpReason
+                                            : "N/A"
+                                        }}
+                                      </span>
+                                    </ng-container>
 
-                                    <!-- <span
-                                  *ngFor="let reasonCode of message.body.data?.dialog?.wrapUpReason | sliceFilter:0:2">
-                                  {{reasonCode }}
-                                </span>
-
-                                <span *ngIf="message.body.data?.dialog?.wrapUpReason.length > 2" class="sub-tags"
-                                  [matMenuTriggerFor]="voiceTags">+{{message.body.data?.dialog?.wrapUpReason.length -
-                                  2}}</span> -->
+                                    <ng-container
+                                      *ngIf="
+                                        message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems &&
+                                        message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems.length > 0 && !isString(message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems)
+                                      "
+                                    >
+                                      <span
+                                        matTooltip="{{ wrapup }}"
+                                        *ngFor="let wrapup of message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems | sliceFilter: 0:2"
+                                      >
+                                        {{ wrapup }}
+                                      </span>
+                                      <ng-container *ngIf="message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems?.length > 2">
+                                        <ng-container
+                                          *ngIf="
+                                            message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems
+                                              | sliceFilter: 2:message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems?.length;
+                                            let remainingValues
+                                          "
+                                        >
+                                          <span matTooltip="{{ remainingValues?.join(', ') }}"
+                                            >+{{ message.body.data.callLegs[0]?.additionalDetail?.dialog?.wrapUpItems?.length - 2 }}</span
+                                          >
+                                        </ng-container>
+                                      </ng-container>
+                                    </ng-container>
                                   </li>
                                 </ng-container>
                                 <li>
@@ -1312,14 +1391,15 @@
                                     >-{{ message.body.data.endTime | date: "shortTime" }}</time
                                   >
                                 </li>
+
+                                <li *ngIf="message?.body?.data?.recordingUrl" class="agent-pic play-btn">
+                                  <button mat-mini-fab (click)="toggleAudioPlayback(index)">
+                                    <i class="material-icons">{{ callRecording.paused ? "play_arrow" : "pause" }} </i>
+                                  </button>
+                                  <audio id="{{ index }}" #callRecording src="{{message?.body?.data?.recordingUrl}}"></audio>
+                                </li>
                               </ul>
                             </div>
-                            <!-- <mat-menu #voiceTags="matMenu">
-                            <div class="more-section-tags">
-                              <span
-                                *ngFor="let reasonCode of message.body.data?.dialog?.wrapUpReason">{{reasonCode}}</span>
-                            </div>
-                          </mat-menu> -->
                           </mat-panel-title>
                         </mat-expansion-panel-header>
                         <ng-container *ngIf="message.body.data.callLegs.length > 1 && !(message.body.data.callLegs | checkConsultCall)">
@@ -1329,32 +1409,37 @@
                                 <div class="panel-header">
                                   <ul>
                                     <li class="agent-pic participant-agent call-services">
-                                      <span class=" {{ (callData.sender.senderName | getFirstTwoLetters | lowercase) == 'ivr'  ? 'ivr-tag': 'non-ivr' }}" matTooltip="{{ callData.sender.senderName }}">{{ callData.sender.senderName
-                                        |
-                                        getFirstTwoLetters }}</span>
+                                      <span
+                                        class=" {{ (callData.sender.senderName | getFirstTwoLetters | lowercase) == 'ivr' ? 'ivr-tag' : 'non-ivr' }}"
+                                        matTooltip="{{ callData.sender.senderName }}"
+                                        >{{ callData.sender.senderName | getFirstTwoLetters }}</span
+                                      >
                                     </li>
 
-                                    <li  matTooltip="{{callData?.additionalDetail?.activities | getIVRTrail }}"
+                                    <li
+                                      matTooltip="{{ callData?.additionalDetail?.activities | getIVRTrail }}"
                                       *ngIf="callData.sender.type == 'IVR' && callData?.additionalDetail?.activities?.length > 0"
-                                      >
-                                      <ng-container
-                                        *ngFor="let ivrDetail of callData?.additionalDetail?.activities; let j = index">
-                                        <span>{{ivrDetail?.menu}} > {{ivrDetail?.selection}} <ng-container
-                                            *ngIf="j !== callData?.additionalDetail?.activities?.length - 1">
-                                            > </ng-container> </span>
+                                    >
+                                      <ng-container *ngFor="let ivrDetail of callData?.additionalDetail?.activities; let j = index">
+                                        <span
+                                          >{{ ivrDetail?.menu }} > {{ ivrDetail?.selection }}
+                                          <ng-container *ngIf="j !== callData?.additionalDetail?.activities?.length - 1"> > </ng-container>
+                                        </span>
                                       </ng-container>
                                     </li>
 
-                                    <li class="agent-pic call-services">
-                                      <span>{{
+                                    <li
+                                      matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
+                                        callData?.additionalDetail?.dialog?.queueName ? callData?.additionalDetail?.dialog?.queueName : 'N/A'
+                                      }}"
+                                      class="agent-pic call-services"
+                                    >
+                                      <span class="activity-queue-ellipsis">{{
                                         callData?.additionalDetail?.dialog?.queueName ? callData?.additionalDetail?.dialog?.queueName : "N/A"
                                       }}</span>
                                     </li>
 
                                     <li class="section-duration">
-                                      <!-- <time>{{ callData.duration ? callData.duration :
-                                      "N/A"
-                                      }}sec</time> -->
                                       <time *ngIf="callData.duration > 0"
                                         >{{ callData.duration * 1000 | date: "mm" }}min {{ callData.duration * 1000 | date: "ss" }}sec</time
                                       >
@@ -1372,27 +1457,58 @@
                                         src="assets/images/call-transfer.svg"
                                       />
                                       <img *ngIf="callData.endDirection == 'CONSULT_CONFERENCE'" src="assets/images/call-end.svg" />
-                                      <img matTooltip="{{'snackbar.Call-Ended' | translate}}" *ngIf="callData.endDirection == 'DIALOG_ENDED'" src="assets/images/call-end.svg" />
+                                      <img
+                                        matTooltip="{{ 'snackbar.Call-Ended' | translate }}"
+                                        *ngIf="callData.endDirection == 'DIALOG_ENDED'"
+                                        src="assets/images/call-end.svg"
+                                      />
                                     </li>
 
                                     <!-- <ng-container *ngIf="message.body.data.callLegs.length < 2"> -->
                                     <li *ngIf="callData.additionalDetail?.dialog?.wrapUpReason" class="section-tags">
-                                      <span>
-                                        {{
-                                          callData?.additionalDetail?.dialog?.wrapUpReason ? callData?.additionalDetail?.dialog?.wrapUpReason : "N/A"
-                                        }}
-                                      </span>
-                                      <!-- <span *ngFor="let reasonCode of callData.dialog?.wrapUpReason | sliceFilter:0:2">
-                                  {{reasonCode }}
-                                </span>
-
-                                <span *ngIf="callData.dialog?.wrapUpReason.length > 2" class="sub-tags"
-                                  [matMenuTriggerFor]="multiVoiceTags">+{{callData.dialog?.wrapUpReason.length -
-                                  2}}</span> -->
+                                  
+                                        <ng-container
+                                          *ngIf="
+                                          callData.additionalDetail?.dialog?.wrapUpItems &&
+                                           ( isString(callData.additionalDetail?.dialog?.wrapUpItems) || callData.additionalDetail?.dialog?.wrapUpItems.length == 0 )
+                                          "
+                                        >
+                                          <span  matTooltip="{{ callData.additionalDetail?.dialog?.wrapUpReason}}">
+                                            {{
+                                              callData.additionalDetail?.dialog?.wrapUpReason
+                                                ? callData.additionalDetail?.dialog?.wrapUpReason
+                                                : "N/A"
+                                            }}
+                                          </span>
+                                        </ng-container>
+    
+                                        <ng-container
+                                          *ngIf="
+                                          callData.additionalDetail?.dialog?.wrapUpItems &&
+                                          callData.additionalDetail?.dialog?.wrapUpItems.length > 0 && !isString(callData.additionalDetail?.dialog?.wrapUpItems)
+                                          "
+                                        >
+                                          <span
+                                            matTooltip="{{ wrapup }}"
+                                            *ngFor="let wrapup of callData.additionalDetail?.dialog?.wrapUpItems | sliceFilter: 0:2"
+                                          >
+                                            {{ wrapup }}
+                                          </span>
+                                          <ng-container *ngIf="callData.additionalDetail?.dialog?.wrapUpItems?.length > 2">
+                                            <ng-container
+                                              *ngIf="
+                                              callData.additionalDetail?.dialog?.wrapUpItems
+                                                  | sliceFilter: 2:callData.additionalDetail?.dialog?.wrapUpItems?.length;
+                                                let remainingValues
+                                              "
+                                            >
+                                              <span matTooltip="{{ remainingValues?.join(', ') }}"
+                                                >+{{ callData.additionalDetail?.dialog?.wrapUpItems?.length - 2 }}</span
+                                              >
+                                            </ng-container>
+                                          </ng-container>
+                                        </ng-container>
                                     </li>
-                                    <!-- <li>
-                                  <time>{{ message.header.timestamp | date: "shortTime" }}</time>
-                                </li> -->
                                   </ul>
                                 </div>
                               </div>
@@ -1458,19 +1574,16 @@
                       *ngIf="(message.body.type | lowercase) == 'comment' && (message.header.sender.type | lowercase) == 'customer'"
                     >
                       <div class="post-main-area">
-                        <div class="post-message-header"
-                          *ngIf="fullPostView && postData  && message.id == selectedCommentId">
+                        <div class="post-message-header" *ngIf="fullPostView && postData && message.id == selectedCommentId">
                           <div class="post-by">
                             <!-- <strong>{{ postData?.from?.name }} <span>Posted on {{ postData?.from?.name }}</span> </strong> -->
                           </div>
                           <div *ngIf="message.header.channelSession.channel.channelType.name === 'INSTAGRAM'" class="post-info">
-                            <span><img src="assets/images/instagram-color-icon.webp" /> {{ postData?.socialMediaPost
-                              ?.username }}</span>
+                            <span><img src="assets/images/instagram-color-icon.webp" /> {{ postData?.socialMediaPost?.username }}</span>
                             <mat-icon (click)="fullPostView = false; selectedCommentId = null">close</mat-icon>
                           </div>
                           <div *ngIf="message.header.channelSession.channel.channelType.name === 'FACEBOOK'" class="post-info">
-                            <span><img src="assets/images/facebook-colored.svg" /> {{ postData?.socialMediaPost
-                              ?.username }}</span>
+                            <span><img src="assets/images/facebook-colored.svg" /> {{ postData?.socialMediaPost?.username }}</span>
                             <mat-icon (click)="fullPostView = false; selectedCommentId = null">close</mat-icon>
                           </div>
                         </div>
@@ -1481,16 +1594,13 @@
                         >
                           <ul>
                             <li>
-                              <mat-icon (click)="replyToComment(message) "> chat_bubble_outline</mat-icon>
+                              <mat-icon (click)="replyToComment(message)"> chat_bubble_outline</mat-icon>
                             </li>
                             <li *ngIf="message.header.channelSession.channel.channelType.name.includes('FACEBOOK')">
-                              <mat-icon [ngClass]="{ 'liked': message.isLiked }"
-                                (click)="commentAction(message, 'like')">
-                                thumb_up
-                              </mat-icon>
+                              <mat-icon [ngClass]="{ liked: message.isLiked }" (click)="commentAction(message, 'like')"> thumb_up </mat-icon>
                             </li>
                             <li class="private-reply-icon" (click)="privateReplyToComment(message)">
-                              <img width="22px" src="assets/images/private-reply.png">
+                              <img width="22px" src="assets/images/private-reply.png" />
                             </li>
                             <li class="view-all-options">
                               <ul *ngIf="viewFullCommentAction">
@@ -1503,8 +1613,10 @@
                                 <li>
                                   <mat-icon (click)="commentAction(message, 'hide')"> visibility_off</mat-icon>
                                 </li>
-                                <li class="view-post"
-                                  (click)="fullPostViewData(message.header.channelSession.channel.serviceIdentifier, message.body.postId, message.id)">
+                                <li
+                                  class="view-post"
+                                  (click)="fullPostViewData(message.header.channelSession.channel.serviceIdentifier, message.body.postId, message.id)"
+                                >
                                   {{ "chat-features.interactions.view-full-post" | translate }}
                                 </li>
                               </ul>
@@ -1528,8 +1640,7 @@
                               <span class="post-page-info">
                                 <strong>{{ postData?.socialMediaPost?.username }}</strong>
                                 <small>
-                                  {{ postData.socialMediaPost.timestamp
-                                  | date: "shortTime" }}
+                                  {{ postData.socialMediaPost.timestamp | date: "shortTime" }}
                                 </small>
                               </span>
                             </div>
@@ -1542,7 +1653,8 @@
                         <div class="main-comment" *ngIf="!fullPostView || message.id != selectedCommentId">
                           <div class="post-inner-content">
                             <p [id]="message.id">
-                              <span [innerHTML]="
+                              <span
+                                [innerHTML]="
                                   conversationSettings.isMessageFormattingEnabled
                                     ? (message.body.markdownText | linkify | ibsformat)
                                     : (message.body.markdownText | linkify)
@@ -1600,11 +1712,11 @@
                                   conversationSettings.isMessageFormattingEnabled
                                     ? (postData?.socialMediaPost.text | linkify | ibsformat)
                                     : (postData?.socialMediaPost.text | linkify)
-                                "></span>
+                                "
+                              ></span>
                             </p>
                             <div *ngFor="let post of postData?.socialMediaPost?.attachments">
-                              <div class="shared-url shared-card-content video-player p-0"
-                                *ngIf="post?.mimeType.includes('VIDEO')">
+                              <div class="shared-url shared-card-content video-player p-0" *ngIf="post?.mimeType.includes('VIDEO')">
                                 <div class="media-main" *ngIf="post?.mediaUrl">
                                   <vg-player>
                                     <vg-overlay-play></vg-overlay-play>
@@ -1630,10 +1742,13 @@
                               </div>
 
                               <p *ngIf="post?.mimeType == 'IMAGE' || 'GIF'">
-                                <a style="cursor: pointer"
+                                <a
+                                  style="cursor: pointer"
                                   (click)="externalfilePreviewOpener(post?.mediaUrl, post.mimeType, 'image')"
-                                  class="display-file display-image" [ngClass]="{ 'pt-2': postData.socialMediaPost.text }">
-                                  <img src="{{ post?.mediaUrl }}"  alt="image" />
+                                  class="display-file display-image"
+                                  [ngClass]="{ 'pt-2': postData.socialMediaPost.text }"
+                                >
+                                  <img src="{{ post?.mediaUrl }}" alt="image" />
                                 </a>
                               </p>
                             </div>
@@ -1644,8 +1759,7 @@
 
                         <!-------------------------- SUB COMMENTS -------------------------------->
 
-                        <div class="post-sub-comments-area"
-                          *ngIf="fullPostView && message.id == selectedCommentId">
+                        <div class="post-sub-comments-area" *ngIf="fullPostView && message.id == selectedCommentId">
                           <div class="total-comment-count"></div>
                           <div class="post-sub-comments" *ngFor="let postComments of postData?.socialMediaPost?.comments">
                             <div class="sub-profile-picture">
@@ -1661,9 +1775,13 @@
                                         conversationSettings.isMessageFormattingEnabled
                                           ? (postComments.text | linkify | ibsformat)
                                           : (postComments.text | linkify)
-                                      "></span>
+                                      "
+                                    ></span>
                                   </p>
-                                  <div class="shared-url shared-card-content video-player p-0" *ngIf="postComments?.attachment?.mimeType?.includes('VIDEO')">
+                                  <div
+                                    class="shared-url shared-card-content video-player p-0"
+                                    *ngIf="postComments?.attachment?.mimeType?.includes('VIDEO')"
+                                  >
                                     <div class="media-main" *ngIf="postComments?.attachment?.mediaUrl">
                                       <vg-player>
                                         <vg-overlay-play></vg-overlay-play>
@@ -1688,13 +1806,16 @@
                                     </div>
                                   </div>
 
-                                  <p
-                                    *ngIf="postComments?.attachment?.mimeType == 'IMAGE'">
-                                    <a style="cursor: pointer"
-                                      *ngIf="postComments?.attachment?.mediaUrl?.length > 0" (click)="
+                                  <p *ngIf="postComments?.attachment?.mimeType == 'IMAGE'">
+                                    <a
+                                      style="cursor: pointer"
+                                      *ngIf="postComments?.attachment?.mediaUrl?.length > 0"
+                                      (click)="
                                         externalfilePreviewOpener(postComments?.attachment?.mediaUrl, postComments?.attachment?.mimeType, 'image')
-                                      " class="display-file display-image"
-                                      [ngClass]="{ 'pt-2': message.body.markdownText?.length > 0 }">
+                                      "
+                                      class="display-file display-image"
+                                      [ngClass]="{ 'pt-2': message.body.markdownText?.length > 0 }"
+                                    >
                                       <img src="{{ postComments?.attachment?.mediaUrl }}" alt="image" />
                                     </a>
                                   </p>
@@ -1710,8 +1831,7 @@
                               </div>
                             </div>
 
-                            <div class="post-sub-comments post-nested-comments"
-                              *ngFor="let nestedComments of postComments.subComments">
+                            <div class="post-sub-comments post-nested-comments" *ngFor="let nestedComments of postComments.subComments">
                               <div class="sub-profile-picture">
                                 <img src="assets/images/dummy-user.svg" />
                               </div>
@@ -1725,10 +1845,13 @@
                                       conversationSettings.isMessageFormattingEnabled
                                         ? (nestedComments.text | linkify | ibsformat)
                                         : (nestedComments.text | linkify)
-                                    "></span>
+                                    "
+                                  ></span>
                                 </p>
-                                <div class="shared-url shared-card-content video-player p-0"
-                                  *ngIf="nestedComments?.attachment?.mimeType?.includes('VIDEO')">
+                                <div
+                                  class="shared-url shared-card-content video-player p-0"
+                                  *ngIf="nestedComments?.attachment?.mimeType?.includes('VIDEO')"
+                                >
                                   <div class="media-main" *ngIf="nestedComments?.attachment?.mediaUrl?.length > 0">
                                     <vg-player>
                                       <vg-overlay-play></vg-overlay-play>
@@ -1753,17 +1876,16 @@
                                   </div>
                                 </div>
 
-                                <p class="asdfg"
-                                  *ngIf="nestedComments?.attachment?.mimeType == 'IMAGE'">
-                                  <a style="cursor: pointer"
-                                    *ngIf="nestedComments?.attachment?.mediaUr?.length > 0" (click)="
-                                      externalfilePreviewOpener(
-                                        nestedComments?.attachment?.mediaUrl,
-                                        nestedComments?.attachment?.mimeType,
-                                        'image'
-                                      )
-                                    " class="display-file display-image"
-                                    [ngClass]="{ 'pt-2': message.body.markdownText?.length > 0 }">
+                                <p class="asdfg" *ngIf="nestedComments?.attachment?.mimeType == 'IMAGE'">
+                                  <a
+                                    style="cursor: pointer"
+                                    *ngIf="nestedComments?.attachment?.mediaUr?.length > 0"
+                                    (click)="
+                                      externalfilePreviewOpener(nestedComments?.attachment?.mediaUrl, nestedComments?.attachment?.mimeType, 'image')
+                                    "
+                                    class="display-file display-image"
+                                    [ngClass]="{ 'pt-2': message.body.markdownText?.length > 0 }"
+                                  >
                                     <img src="{{ nestedComments?.attachment?.mediaUrl }}" alt="image" />
                                   </a>
                                 </p>
@@ -1799,15 +1921,11 @@
                                   <li>
                                     <mat-icon (click)="replyToComment(message)"> chat_bubble_outline</mat-icon>
                                   </li>
-                                  <li
-                                    *ngIf="message.header.channelSession.channel.channelType.name.includes('FACEBOOK')">
-                                    <mat-icon [ngClass]="{ 'liked': message.isLiked }"
-                                      (click)="commentAction(message, 'like')">
-                                      thumb_up
-                                    </mat-icon>
+                                  <li *ngIf="message.header.channelSession.channel.channelType.name.includes('FACEBOOK')">
+                                    <mat-icon [ngClass]="{ liked: message.isLiked }" (click)="commentAction(message, 'like')"> thumb_up </mat-icon>
                                   </li>
                                   <li class="private-reply-icon" (click)="privateReplyToComment(message)">
-                                    <img width="22px" src="assets/images/private-reply.png">
+                                    <img width="22px" src="assets/images/private-reply.png" />
                                   </li>
                                   <li class="view-all-options">
                                     <ul *ngIf="viewFullCommentAction">
@@ -1912,8 +2030,8 @@
                         (message.body.type | lowercase) == 'comment' &&
                         (message.body.itemType | lowercase) != 'text' &&
                         (message.body.itemType | lowercase) != 'private_reply'
-
-                      ">
+                      "
+                    >
                       <span class="chat-time">{{ message.header.timestamp | date: "shortTime" }} </span>
                     </span>
                   </div>
@@ -1960,7 +2078,7 @@
                 <!--                </span>-->
                 <span class="inner-text">
                   <span>{{ message.body.displayText }}</span> <span>{{ " " + message.body.markdownText }}</span>
-                  <span class="notification-time">{{ message.header.timestamp | date: "H:mm:ss" }}</span>
+                  <span class="notification-time">{{ message.header.timestamp | date: "shortTime" }}</span>
                 </span>
               </div>
               <!-- ----------------------------------system Notifications ended-------------------------------- -->
@@ -2051,12 +2169,18 @@
             class="customer-mode message-mode"
             mat-button
           >
-          <span *ngIf="'customer' | authPipe: 'view_pii' as result; else manage_pii">{{ conversation.customer?.firstName ? conversation.customer.firstName : ("globals.not-applicable" | translate) }}</span>
-          <ng-template #manage_pii>
-            <span>
-              {{ conversation.customer?.firstName ? ((conversation.customer.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey))) : ("globals.not-applicable" | translate) }}
-            </span>
-          </ng-template>
+            <span *ngIf="'customer' | authPipe: 'view_pii' as result; else manage_pii">{{
+              conversation.customer?.firstName ? conversation.customer.firstName : ("globals.not-applicable" | translate)
+            }}</span>
+            <ng-template #manage_pii>
+              <span>
+                {{
+                  conversation.customer?.firstName
+                    ? (conversation.customer.firstName | maskPIIAttribute: ("firstName" | returnSchemaByKey))
+                    : ("globals.not-applicable" | translate)
+                }}
+              </span>
+            </ng-template>
           </button>
           <button (click)="isWhisperMode = true" [ngClass]="{ 'whisper-select': isWhisperMode }" class="whisper-mode message-mode" mat-button>
             {{ "chat-features.interactions.whisper" | translate }}
@@ -2102,8 +2226,17 @@
               {{ quotedMessage.body.markdownText }}
             </p>
 
-            <button mat-icon-button class="quoted-message-cancel"
-              (click)="quotedMessage = ''; replyToMessageId = null; commentId = null; privateMessageReply = null">
+            <button
+              mat-icon-button
+              class="quoted-message-cancel"
+              (click)="
+                quotedMessage = '';
+                replyToMessageId = null;
+                commentId = null;
+                privateMessageReply = null;
+                disablingAttatchButtonForInstagramReply = false
+              "
+            >
               <mat-icon>close</mat-icon>
             </button>
           </div>
@@ -2134,20 +2267,31 @@
               (focus)="onTextAreaFocus()"
               (keydown.enter)="onEnterKey($event)"
               [attr.data-emoji-picker]="conversation.activeChannelSessions.length > 0 ? true : false"
-              [(ngModel)]="message" (keyup)="onKey($event)" name="message" [matAutocomplete]="auto" matInput
-              cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" id="messageTextarea" class="resize-none"
-              #replyInput name="message" placeholder="{{
-            (conversation.messages[conversation.messages.length - 1]?.botSuggestions
-              ? commentId
-                ? 'chat-features.interactions.bot-suggestions-available-for-reply-to-a-comment'
-                : 'chat-features.interactions.bot-suggestions-available'
-              : _socketService.isSocketConnected && conversation.activeChannelSessions.length > 0 && conversation.messageComposerState
-              ? commentId
-                ? 'chat-features.interactions.Type-a-reply-to-comment'
-                : 'chat-features.interactions.Type-a-message'
-              : 'chat-features.interactions.Unable-to-send-message'
-            ) | translate
-          }}"></textarea>
+              [(ngModel)]="message"
+              (keyup)="onKey($event)"
+              name="message"
+              [matAutocomplete]="auto"
+              matInput
+              cdkTextareaAutosize
+              cdkAutosizeMinRows="1"
+              cdkAutosizeMaxRows="5"
+              id="messageTextarea"
+              class="resize-none"
+              #replyInput
+              name="message"
+              placeholder="{{
+                (conversation.messages[conversation.messages.length - 1]?.botSuggestions
+                  ? commentId
+                    ? 'chat-features.interactions.bot-suggestions-available-for-reply-to-a-comment'
+                    : 'chat-features.interactions.bot-suggestions-available'
+                  : _socketService.isSocketConnected && conversation.activeChannelSessions.length > 0 && conversation.messageComposerState
+                  ? commentId
+                    ? 'chat-features.interactions.Type-a-reply-to-comment'
+                    : 'chat-features.interactions.Type-a-message'
+                  : 'chat-features.interactions.Unable-to-send-message'
+                ) | translate
+              }}"
+            ></textarea>
             <!-- [ngClass]="{'animate-content': displaySuggestionsAnimation}" -->
 
             <mat-autocomplete
@@ -2223,7 +2367,10 @@
 
                     <mat-tab label="Bot Suggestions">
                       <ng-container
-                        *ngFor="let botSuggestion of conversation.messages[conversation.messages.length - 1]?.botSuggestions | SuggestionsFilter: message">
+                        *ngFor="
+                          let botSuggestion of conversation.messages[conversation.messages.length - 1]?.botSuggestions | SuggestionsFilter: message
+                        "
+                      >
                         <ng-container *ngIf="botSuggestion?.messageBody.type == 'PLAIN'">
                           <mat-option
                             [value]="botSuggestion?.messageBody.markdownText"
@@ -2280,11 +2427,18 @@
                 conversation.messageComposerState &&
                 conversationSettings.isFileSharingEnabled &&
                 _socketService.isSocketConnected &&
-                !isInstagramChannel(conversation.activeChannelSessions[0].channel)
-              ">
-              <input accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx,.mp4,mp3" #myFileInput
-                type="file" (change)="uploadFile($event.target.files); $event.target.value = ''"
-                name="ef_chatbox_chat_file_upload" id="uploadFileBtn" class="file-upload-input" />
+                !disablingAttatchButtonForInstagramReply
+              "
+            >
+              <input
+                accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx,.mp4,mp3"
+                #myFileInput
+                type="file"
+                (change)="uploadFile($event.target.files); $event.target.value = ''"
+                name="ef_chatbox_chat_file_upload"
+                id="uploadFileBtn"
+                class="file-upload-input"
+              />
             </button>
 
             <!--            <span class="attachment-btn" >-->
@@ -2368,40 +2522,58 @@
   </div>
 
   <div class="customer-info-main">
-<!--    <div class="call-controls-view" *ngIf="isBarOpened && ctiBarView && _sipService.isCallActive">-->
-<!--      <div class="right-call-controls row doc-bar">-->
-<!--        <div class="main-showcase customer-info-dp">-->
-<!--          <div class="agent-showcase">-->
-<!--            <img src="assets/images/dummy-user.svg" alt="Customer" />-->
-<!--            <mat-icon routerLink="/customers/chats">flip_to_back</mat-icon>-->
-<!--          </div>-->
-<!--          <h4 matTooltip="{{ this._sipService.customerNumber }}">-->
-<!--            {{ this._sipService.customerNumber }}<span class="timer-call">{{ timer }}</span>-->
-<!--          </h4>-->
-<!--        </div>-->
-<!--        &lt;!&ndash; <ul class="assistance-actions"> &ndash;&gt;-->
-<!--        &lt;!&ndash; <li><button disabled mat-fab><img src="assets/images/consult-colored.svg"></button></li>-->
-<!--          <li><button disabled mat-fab><img src="assets/images/transfer-colored.svg"></button></li>-->
-<!--          <li><button disabled mat-fab><img src="assets/images/conference-colored.svg"></button></li> &ndash;&gt;-->
-<!--        &lt;!&ndash; </ul> &ndash;&gt;-->
+    <div
+      class="call-controls-view"
+      *ngIf="
+        isBarOpened &&
+        ctiBarView &&
+        _sipService.isCallActive &&
+        _sipService.isToolbarActive &&
+        _sipService.isToolbarDocked &&
+        (conversation.activeChannelSessions | checkCXSession)
+      "
+    >
+      <div class="right-call-controls row doc-bar">
+        <div class="main-showcase customer-info-dp">
+          <div class="agent-showcase">
+            <img src="assets/images/dummy-user.svg" alt="Customer" />
+            <mat-icon routerLink="/customers/chats">flip_to_back</mat-icon>
+          </div>
+          <h4 matTooltip="{{ this._sipService.customerNumber }}">
+            {{ this._sipService.customerNumber }}<span class="timer-call">{{ timer }}</span>
+          </h4>
+        </div>
+        <!-- <ul class="assistance-actions"> -->
+        <!-- <li><button disabled mat-fab><img src="assets/images/consult-colored.svg"></button></li>
+          <li><button disabled mat-fab><img src="assets/images/transfer-colored.svg"></button></li>
+          <li><button disabled mat-fab><img src="assets/images/conference-colored.svg"></button></li> -->
+        <!-- </ul> -->
 
-<!--        <ul class="call-actions">-->
-<!--          &lt;!&ndash; <li><button disabled mat-fab><mat-icon>mic</mat-icon></button></li> &ndash;&gt;-->
-<!--          <li><button (click)="ctiControlBar()" mat-fab><mat-icon>picture_in_picture_alt-->
-<!--              </mat-icon></button></li>-->
-<!--          <li *ngIf="_sipService.isMuted == false"><button matTooltip="{{('globals.mute' | translate)}}"-->
-<!--              (click)="_sipService.muteCallOnSip()" mat-fab><mat-icon>mic</mat-icon></button></li>-->
-<!--          <li *ngIf="_sipService.isMuted == true"><button matTooltip="{{('globals.unMute' | translate)}}"-->
-<!--              (click)="_sipService.unmuteCallOnSip()" mat-fab><mat-icon>mic_off</mat-icon></button></li>-->
-<!--          <li *ngIf="_sipService.isCallHold == false" matTooltip="{{('globals.hold' | translate)}}"-->
-<!--            (click)="_sipService.holdCallOnSip()"><button mat-fab><mat-icon>pause</mat-icon></button></li>-->
-<!--          <li *ngIf="_sipService.isCallHold == true" matTooltip="{{('globals.resume' | translate)}}"-->
-<!--            (click)="_sipService.resumeCallOnSip()"><button mat-fab><mat-icon>pause_circle_filled</mat-icon></button>-->
-<!--          </li>-->
-<!--          <li (click)="endCallOnSip()"><button class="end-call" mat-fab><mat-icon>call_end</mat-icon></button></li>-->
-<!--        </ul>-->
-<!--      </div>-->
-<!--    </div>-->
+        <ul class="call-actions">
+          <!-- <li><button disabled mat-fab><mat-icon>mic</mat-icon></button></li> -->
+          <li>
+            <button (click)="ctiControlBar()" mat-fab><mat-icon>picture_in_picture_alt </mat-icon></button>
+          </li>
+          <li *ngIf="_sipService.isMuted == false">
+            <button matTooltip="{{ 'globals.mute' | translate }}" (click)="_sipService.muteCallOnSip()" mat-fab><mat-icon>mic</mat-icon></button>
+          </li>
+          <li *ngIf="_sipService.isMuted == true">
+            <button matTooltip="{{ 'globals.unMute' | translate }}" (click)="_sipService.unmuteCallOnSip()" mat-fab>
+              <mat-icon>mic_off</mat-icon>
+            </button>
+          </li>
+          <li *ngIf="_sipService.isCallHold == false" matTooltip="{{ 'globals.hold' | translate }}" (click)="_sipService.holdCallOnSip()">
+            <button mat-fab><mat-icon>pause</mat-icon></button>
+          </li>
+          <li *ngIf="_sipService.isCallHold == true" matTooltip="{{ 'globals.resume' | translate }}" (click)="_sipService.resumeCallOnSip()">
+            <button mat-fab><mat-icon>pause_circle_filled</mat-icon></button>
+          </li>
+          <li (click)="endCallOnSip()">
+            <button class="end-call" mat-fab><mat-icon>call_end</mat-icon></button>
+          </li>
+        </ul>
+      </div>
+    </div>
 
     <app-customer-info
       [activeChannelSessions]="conversation.activeChannelSessions"

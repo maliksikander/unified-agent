@@ -8,9 +8,9 @@ import { pullModeService } from "src/app/services/pullMode.service";
 import { soundService } from "src/app/services/sounds.service";
 import { finesseService } from "src/app/services/finesse.service";
 import { TranslateService } from "@ngx-translate/core";
-import { appConfigService } from "src/app/services/appConfig.service";
 import { SipService } from "src/app/services/sip.service";
 import { announcementService } from "src/app/services/announcement.service";
+import { appConfigService } from "src/app/services/appConfig.service";
 
 @Component({
   selector: "app-chat-notifications",
@@ -77,6 +77,10 @@ export class ChatNotificationsComponent implements OnInit {
             this.externalModeRequests.push(e.data);
           }
           this._soundService.playRing();
+          this._soundService.openBrowserNotification(
+            this._translateService.instant("snackbar.Incoming-Call-Alert"),
+            `${this._translateService.instant("snackbar.Incoming-call-alert-request")} ${e.data && e.data.customer && e.data.customer.firstName ? e.data.customer.firstName : 'N/A'} (${e.data && e.data.identifier ? e.data.identifier : 'N/A'})` 
+          );
           console.log("external requests==>", this.externalModeRequests);
         } else if (e.msg == "closeExternalModeRequestHeader") {
           this.isCallAcceptClicked = false;

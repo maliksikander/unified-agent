@@ -100,9 +100,10 @@ import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements
 import { getMatchedStringPipe } from "./pipes/getMatchedString.pipe";
 import { returnSchemaByKeyPipe } from "./pipes/returnSchemaByKey.pipe";
 import { returnSchemaByChannelTypePipe } from "./pipes/returnSchemaByChannelType.pipe";
-
 import { getIVRTrailPipe } from "./pipes/getIVRTrail.pipe";
 import { SearchSuggestionsPipe } from "./pipes/searchSuggestions.pipe";
+import { checkCiscoSessionPipe } from "./pipes/checkCiscoSession.pipe";
+import { checkCXSessionPipe } from "./pipes/checkCXSession.pipe";
 
 @NgModule({
   declarations: [
@@ -146,6 +147,8 @@ import { SearchSuggestionsPipe } from "./pipes/searchSuggestions.pipe";
     checkOutboundCallPipe,
     checkConsultCallPipe,
     getMatchedStringPipe,
+    checkCiscoSessionPipe,
+    checkCXSessionPipe,
     returnSchemaByKeyPipe,
     returnSchemaByChannelTypePipe
   ],
@@ -326,6 +329,8 @@ import { SearchSuggestionsPipe } from "./pipes/searchSuggestions.pipe";
     MatPaginatorModule,
     TableFilterPipe,
     getMatchedStringPipe,
+    checkCiscoSessionPipe,
+    checkCXSessionPipe,
     returnSchemaByKeyPipe,
     returnSchemaByChannelTypePipe
   ]

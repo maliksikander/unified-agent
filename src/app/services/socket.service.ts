@@ -611,6 +611,14 @@ export class socketService {
 
     // console.log("conversations==>", this.conversations);
     this._conversationsListener.next(this.conversations);
+
+    if (
+      topicData &&
+      topicData.channelSession &&
+      (topicData.channelSession.channel.channelType.name == "CX_VOICE" ||
+        (topicData && topicData.channelSession.channel.channelType.name == "CISCO_CC"))
+    )
+      this._router.navigate(["customers"]);
   }
 
   processSeenMessages(conversation, events) {
@@ -1526,9 +1534,16 @@ export class socketService {
         this._cacheService.agent.id == cimEvent.data.conversationParticipant.participant.keycloakUser.id
           ? "You"
           : cimEvent.data.conversationParticipant.participant.keycloakUser.username;
-      this._translateService.stream("socket-service.has-joined-the-conversation").subscribe((data: string) => {
-        message.body.markdownText = data;
-      });
+          if (message.body.displayText == "You") {
+            this._translateService.stream("socket-service.have-joined-the-conversation").subscribe((data: string) => {
+              message.body.markdownText = data;
+            });
+          }
+          else {
+            this._translateService.stream("socket-service.has-joined-the-conversation").subscribe((data: string) => {
+              message.body.markdownText = data;
+            });
+          }    
     } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed" && cimEvent.data.agentParticipant.role.toLowerCase() != "silent_monitor") {
       message = CimMessage;
       message.body["displayText"] =
