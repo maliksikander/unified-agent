@@ -425,7 +425,7 @@
         border-radius: 3px;
         min-width: 80px;
         min-height: 30px;
-        max-width: 800px;
+        max-width: 990px;
         //max-width: calc(100% - 112px);
 
         &:before {
@@ -3106,6 +3106,7 @@ vg-controls.hide {
       padding: 0 !important;
       box-shadow: none !important;
       width: 100%;
+      display: inline-block !important;
 
       .call-history-panel {
         // background: #f7f7f7;
@@ -4600,6 +4601,12 @@ button.back-to-sms{
   .threaded-main-view {
     max-height: 80vh;
     overflow: auto;
+
+    .email-view-actions{
+      border-top: none !important;
+      border-bottom: 1px solid #f1f1f1;
+      margin-bottom: 1.2em;
+    }
   }
 }
 .email-trigger{
@@ -4627,7 +4634,7 @@ button.back-to-sms{
   align-items: center;
   border-top: 1px solid #f1f1f1;
   margin: 0 auto;
-  max-width: calc(100% - 60px);
+  max-width: calc(100% - 30px);
   color: $blue-text-color;
   span{
     &:hover{

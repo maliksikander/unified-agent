@@ -1701,11 +1701,11 @@
 
                     <!-- <-------------------------------------Email Activity--------------------------------------------------->
                     <div *ngIf="(message.header.sender.type | lowercase) == 'email'"
-                         class="voice-activity-main panel-divider single scheduled-activity-area activity {{message.header.sender.type | lowercase}}">
+                         class="voice-activity-main panel-divider {{message.header.sender.type | lowercase}}">
                       <mat-expansion-panel>
                         <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
                           <mat-panel-title>
-                            <div class="panel-header">
+                            <div class="panel-header email-panel-header">
                               <ul>
                                 <li  matTooltip="{{message.header.sender.senderEmail}}"><span>From:</span> {{message.header.sender.senderEmail}}</li>
                                 <li  matTooltip="{{message.header.sender.emailTo}}"><span>To:</span> {{message.header.sender.emailTo}}</li>
