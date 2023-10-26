@@ -826,7 +826,8 @@ export class SipService implements OnInit {
   makeCallOnSip(customer, number) {
     try {
       this.isOBCallRequested = true;
-      this.makeCXVoiceMrdNotReady();
+      this.notReadyAgentState();
+      // this.makeCXVoiceMrdNotReady();
       setTimeout(() => {
         let cxMrd = this.getVoiceMrd(this.agentMrdStates.agentMrdStates);
         if (cxMrd && cxMrd.state.toLowerCase() == "not_ready") {

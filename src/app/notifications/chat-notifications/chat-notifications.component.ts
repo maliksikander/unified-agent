@@ -44,17 +44,11 @@ export class ChatNotificationsComponent implements OnInit {
         if (e.msg == "openPushModeRequestHeader") {
           this.pushModeRequests.push(e.data);
           this._soundService.playRing();
-          if (e.data.cisco_data) {
-            this._soundService.openBrowserNotification(
-              this._translateService.instant("snackbar.Incoming-Call-Alert"),
-              this._translateService.instant("snackbar.Incoming-call-alert-request") + e.data.channelSession.channel.channelType.name
-            );
-          } else {
             this._soundService.openBrowserNotification(
               this._translateService.instant("snackbar.CHAT-REQUESTED"),
               this._translateService.instant("snackbar.Incoming-chat-request-on-push-mode-on") + e.data.channelSession.channel.channelType.name
             );
-          }
+          
         } else if (e.msg == "closePushModeRequestHeader") {
           this.removePushModeRequestFromRequestArray(e.data.conversationId);
         } else if (e.msg == "openPullModeRequestHeader") {

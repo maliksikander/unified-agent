@@ -93,16 +93,16 @@
       <button (click)="endCallOnSip()" *ngIf="isCalling" class="initial-trigger" mat-button><mat-icon>call_end</mat-icon></button>
     </div>
 
-    <ul class="assistance-actions">
+    <!-- <ul class="assistance-actions"> -->
       <!--      <li><button mat-fab><img src="assets/images/chat1.svg"></button></li>-->
       <!--      <li><button mat-fab (click)="fullView = !fullView"><mat-icon>{{fullView ? 'fullscreen_exit'  : 'fullscreen'}}</mat-icon></button></li>-->
 
       <!-- <li><button mat-fab><img src="assets/images/consult-colored.svg"></button></li>
       <li><button mat-fab><img src="assets/images/transfer-colored.svg"></button></li>
       <li><button mat-fab><img src="assets/images/conference-colored.svg"></button></li> -->
-    </ul>
+    <!-- </ul> -->
 
-    <ul class="call-actions">
+    <!-- <ul class="call-actions">
       <li><button mat-fab (click)="cancel()"><mat-icon>picture_in_picture</mat-icon></button></li>
       <li><button matTooltip="{{_sipService.isMuted == false ? ('globals.mute' | translate) : ('globals.unMute' | translate)}}" (click)="muteUnmuteCall()" mat-fab><mat-icon>
             <ng-container *ngIf="_sipService.isMuted == false">mic</ng-container>
@@ -113,6 +113,6 @@
       <li class="resume-icon" matTooltip="{{('globals.resume' | translate)}}" *ngIf="_sipService.isCallHold == true"><button (click)="resumeCallOnSip()"
           mat-fab><mat-icon>pause_circle_filled</mat-icon></button></li>
       <li><button (click)="endCallOnSip()" class="end-call" mat-fab><mat-icon>call_end</mat-icon></button></li>
-    </ul>
+    </ul> -->
   </div>
 </div>

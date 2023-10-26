@@ -2552,7 +2552,7 @@
         <ul class="call-actions">
           <!-- <li><button disabled mat-fab><mat-icon>mic</mat-icon></button></li> -->
           <li>
-            <button (click)="ctiControlBar()" mat-fab><mat-icon>picture_in_picture_alt </mat-icon></button>
+            <button (click)="ctiControlBar(conversation)" mat-fab><mat-icon>picture_in_picture_alt </mat-icon></button>
           </li>
           <li *ngIf="_sipService.isMuted == false">
             <button matTooltip="{{ 'globals.mute' | translate }}" (click)="_sipService.muteCallOnSip()" mat-fab><mat-icon>mic</mat-icon></button>
