@@ -12,8 +12,6 @@
   "ENV": "prod",
   "domain": "uccx12-5p.ucce.ipcc",
   "subDomain" : "uccx12-5p.ucce.ipcc",
-  "adminUsername": "administrator",
-  "adminPassword": "Expertflow464",
   "boshUrl": "https://uccx12-5p.ucce.ipcc:7443/http-bind/",
   "subBoshUrl" : "https://uccx12-5p.ucce.ipcc:7443/http-bind/",
   "finesseFlavor": "UCCX",
