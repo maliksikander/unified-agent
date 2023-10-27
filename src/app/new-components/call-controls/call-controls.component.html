@@ -1,5 +1,4 @@
 <!--<div class="call-control-box call-controls-view box-view {{fullView ? 'expand-view-controls'  : ''}}" cdkDrag cdkDragRootElement=".cdk-overlay-pane">-->
-<<<<<<< HEAD
 <!--<div class="call-control-box call-controls-view box-view" cdkDrag cdkDragRootElement=".cdk-overlay-pane">-->
 <!--  <mat-icon class="drag-controls" cdkDragHandle>more_vert</mat-icon>-->
 
@@ -44,9 +43,9 @@
 <!--</div>-->
 
 <div class="call-control-box call-controls-view box-view expand-view-controls" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
-=======
+
 <div class="call-controls-view call-controls-area {{!_sharedService.isCompactView ? 'expand-view-controls call-control-box box-view'  : 'call-control-bar'}}" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
->>>>>>> 4.3-SR2_f-CIM-6432
+
   <mat-icon class="drag-controls" cdkDragHandle>more_vert</mat-icon>
 
   <div class="right-call-controls">
@@ -97,30 +96,30 @@
       <button (click)="endCallOnSip()" *ngIf="isCalling" class="initial-trigger" mat-button><mat-icon>call_end</mat-icon></button>
     </div>
 
-<<<<<<< HEAD
+
     <!-- <ul class="assistance-actions"> -->
-=======
+
 <!--    <ul class="assistance-actions">-->
->>>>>>> 4.3-SR2_f-CIM-6432
+
+
+<!--    <ul class="assistance-actions">-->
+
       <!--      <li><button mat-fab><img src="assets/images/chat1.svg"></button></li>-->
       <!--      <li><button mat-fab (click)="fullView = !fullView"><mat-icon>{{fullView ? 'fullscreen_exit'  : 'fullscreen'}}</mat-icon></button></li>-->
 
       <!-- <li><button mat-fab><img src="assets/images/consult-colored.svg"></button></li>
       <li><button mat-fab><img src="assets/images/transfer-colored.svg"></button></li>
       <li><button mat-fab><img src="assets/images/conference-colored.svg"></button></li> -->
-<<<<<<< HEAD
+
     <!-- </ul> -->
 
     <!-- <ul class="call-actions">
       <li><button mat-fab (click)="cancel()"><mat-icon>picture_in_picture</mat-icon></button></li>
-=======
-<!--    </ul>-->
+<!-   </ul>-->
 
     <ul class="call-actions">
 
 <!--      <li><button mat-fab (click)="cancel()"><mat-icon>picture_in_picture</mat-icon></button></li>-->
-
->>>>>>> 4.3-SR2_f-CIM-6432
       <li><button matTooltip="{{_sipService.isMuted == false ? ('globals.mute' | translate) : ('globals.unMute' | translate)}}" (click)="muteUnmuteCall()" mat-fab><mat-icon>
             <ng-container *ngIf="_sipService.isMuted == false">mic</ng-container>
             <ng-container *ngIf="_sipService.isMuted == true">mic_off</ng-container>
@@ -128,14 +127,16 @@
 
       <li matTooltip="{{('globals.hold' | translate)}}" *ngIf="_sipService.isCallHold == false"><button (click)="holdCallOnSip()"
           mat-fab><mat-icon>pause</mat-icon></button></li>
-<<<<<<< HEAD
+
       <li class="resume-icon" matTooltip="{{('globals.resume' | translate)}}" *ngIf="_sipService.isCallHold == true"><button (click)="resumeCallOnSip()"
           mat-fab><mat-icon>pause_circle_filled</mat-icon></button></li>
-=======
+
       <li matTooltip="{{('globals.resume' | translate)}}" *ngIf="_sipService.isCallHold == true"><button (click)="resumeCallOnSip()"
           mat-fab><mat-icon>phone_paused</mat-icon></button></li>
->>>>>>> 4.3-SR2_f-CIM-6432
+
+      <li matTooltip="{{('globals.resume' | translate)}}" *ngIf="_sipService.isCallHold == true"><button (click)="resumeCallOnSip()"
+          mat-fab><mat-icon>phone_paused</mat-icon></button></li>
       <li><button (click)="endCallOnSip()" class="end-call" mat-fab><mat-icon>call_end</mat-icon></button></li>
-    </ul> -->
+    </ul>
   </div>
 </div>

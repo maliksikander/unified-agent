@@ -15,7 +15,6 @@ import { ConfirmationDialogComponent } from "src/app/new-components/confirmation
 import { TranslateService } from "@ngx-translate/core";
 import { CallControlsComponent } from "../../new-components/call-controls/call-controls.component";
 import { ConversationSettings } from "../../models/conversationSetting/conversationSettings";
-
 import { SipService } from "src/app/services/sip.service";
 import { HighlightResult } from "ngx-highlightjs";
 import { SendSmsComponent } from "../send-sms/send-sms.component";
@@ -80,6 +79,7 @@ export class InteractionsComponent implements OnInit {
   videoSrc = 'assets/video/angry-birds.mp4';
   element;
   dragPosition = {x: 0, y: 0};
+
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -1438,7 +1438,6 @@ export class InteractionsComponent implements OnInit {
       console.error("[getVoiceChannelSession] Error:", e);
     }
   }
-
   msToHMS(ms) {
     try {
       // Convert to seconds:
@@ -1459,6 +1458,7 @@ export class InteractionsComponent implements OnInit {
       console.error("[msToHMS] Error:", e);
     }
   }
+
 
   formatNumber(num) {
     return num.toString().padStart(2, "0");

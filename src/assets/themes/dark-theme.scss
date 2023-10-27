@@ -1830,6 +1830,9 @@ em{
 .typing-indicator {
   background-color: #283F6A !important;
 }
+  .announcement-table-area{
+    .manage-dashboard{
+      table{
 
   .announcement-table-area{
     .manage-dashboard{
@@ -1922,3 +1925,6 @@ em{
     caret-color: $light-gray-color !important;
   }
 }
+     }
+    }
+   }
