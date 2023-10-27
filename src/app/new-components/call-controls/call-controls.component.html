@@ -117,9 +117,8 @@
       <li><button mat-fab (click)="cancel()"><mat-icon>picture_in_picture</mat-icon></button></li>
 <!-   </ul>-->
 
-    <ul class="call-actions">
+    <!-- <ul class="call-actions">
 
-<!--      <li><button mat-fab (click)="cancel()"><mat-icon>picture_in_picture</mat-icon></button></li>-->
       <li><button matTooltip="{{_sipService.isMuted == false ? ('globals.mute' | translate) : ('globals.unMute' | translate)}}" (click)="muteUnmuteCall()" mat-fab><mat-icon>
             <ng-container *ngIf="_sipService.isMuted == false">mic</ng-container>
             <ng-container *ngIf="_sipService.isMuted == true">mic_off</ng-container>
@@ -137,6 +136,6 @@
       <li matTooltip="{{('globals.resume' | translate)}}" *ngIf="_sipService.isCallHold == true"><button (click)="resumeCallOnSip()"
           mat-fab><mat-icon>phone_paused</mat-icon></button></li>
       <li><button (click)="endCallOnSip()" class="end-call" mat-fab><mat-icon>call_end</mat-icon></button></li>
-    </ul>
+    </ul> -->
   </div>
 </div>
