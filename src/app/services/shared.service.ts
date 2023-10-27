@@ -126,8 +126,14 @@ export class sharedService {
   }
 
   Interceptor(e, res) {
-    if (res == "err") {
-      console.error("[Error]:", e);
+
+    if (res == "err" && e && e.error.error_detail && e.error.error_detail.reason && e.error.error_message) {
+
+      let reason: string = e.error.error_detail.reason;
+      this._snackbarService.open(reason, "err");
+    }
+
+    else if (res == "err") {
       if (e.statusCode == 401) {
         this._snackbarService.open(this._translateService.instant("snackbar.UNAUTHORIZED-USER"), "err");
       } else if (e.statusCode == 400) {
