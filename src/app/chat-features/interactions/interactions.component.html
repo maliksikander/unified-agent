@@ -44,30 +44,30 @@
 <!--            <mat-icon>search</mat-icon>-->
 <!--          </button>-->
           <button mat-button class="chat-controls-mobile" *ngIf="isMobileDevice"  [matMenuTriggerFor]="agentControllForMobile" ><mat-icon>more_vert</mat-icon></button>
-          <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}" *ngIf="isCallActive && !ctiBarView"
+          <!-- <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}" *ngIf="isCallActive && !ctiBarView"
                   matTooltip="Chat" aria-label="Chat">
             <mat-icon>question_answer</mat-icon>
-          </button>
+          </button> -->
         </div>
         <div class="col-md-8 col-sm-8 agent-actions">
 <!--          <button mat-icon-button (click)="ctiControlBar()"-->
 <!--                  matTooltip="Chat" aria-label="Chat">-->
 <!--            <mat-icon>question_answer</mat-icon>-->
 <!--          </button>-->
-          <ul class="list-group list-group-horizontal agent-controls call-controls" *ngIf="isCallActive && !ctiBarView && !isMobileDevice">
+          <!-- <ul class="list-group list-group-horizontal agent-controls call-controls" *ngIf="isCallActive && !ctiBarView && !isMobileDevice">
             <li class="list-group-item" *ngIf="isCallActive && !ctiBarView">
               <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}"
                       matTooltip="Chat" aria-label="Chat">
                 <mat-icon>question_answer</mat-icon>
               </button>
             </li>
-            <!--            <li class="list-group-item">-->
-            <!--              <button mat-icon-button (click)="isBotSuggestions = !isBotSuggestions" [ngClass]="{'active-action': isBotSuggestions}"-->
-            <!--                      matTooltip="Suggestions" aria-label="Suggestions">-->
-            <!--                <img src="assets/images/robot-dark.svg" alt="Suggestions"/>-->
-            <!--              </button>-->
-            <!--            </li>-->
-          </ul>
+                       <li class="list-group-item">
+                         <button mat-icon-button (click)="isBotSuggestions = !isBotSuggestions" [ngClass]="{'active-action': isBotSuggestions}"
+                                 matTooltip="Suggestions" aria-label="Suggestions">
+                           <img src="assets/images/robot-dark.svg" alt="Suggestions"/>
+                         </button>
+                       </li>
+          </ul> -->
           <mat-menu #agentControllForMobile="matMenu" [overlapTrigger]="true"  backdropClass="mobile-menu-backdrop" panelClass="custom-pane">
             <div class="{{isMobileDevice ? 'mobile-chat-controls'  : ''}}" >
               <div class="menu-header-mobile">
