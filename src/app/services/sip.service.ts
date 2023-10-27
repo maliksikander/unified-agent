@@ -8,31 +8,37 @@ import { socketService } from "./socket.service";
 import { httpService } from "./http.service";
 import { sharedService } from "./shared.service";
 import * as uuid from "uuid";
+import { MatDialogRef } from "@angular/material";
 
-declare var postMessage;
+declare var postMessages;
 
 @Injectable({
   providedIn: "root"
 })
 export class SipService implements OnInit {
   public _isActiveSub = new Subject();
-
+  public _activateToolbarSub = new Subject();
   extension: number;
   customer: any;
   startTime: any;
   endTime: any;
   timeoutId;
+  timeoutIdInCustomerInfo;
   taskList: Array<any>;
   isCallActive: boolean = false;
   isCallHold: boolean = false;
   activeDialog: any;
   isSipLoggedIn: boolean = false;
+  isSipConnected: boolean = false;
   agentMrdStates: any;
   customerNumber: any = "";
-  callData: any;
   isSubscriptionFailed = false;
   isMuted: boolean = false;
   isToolbarActive: boolean = false;
+  isOBActive: boolean = false;
+  dialogRef: MatDialogRef<any>;
+  isOBCallRequested: boolean = false;
+  isCallAlerting: boolean = false;
   isToolbarDocked: boolean = false;
 
   constructor(
@@ -82,7 +88,7 @@ export class SipService implements OnInit {
           }
         };
         console.log("login SIP command sip==>", command);
-        postMessage(command);
+        postMessages(command);
       } else {
         console.log("No Extension configured for agent==>");
         this._snackbarService.open(this._translateService.instant("snackbar.No-Extension-Found"), "err");
@@ -129,7 +135,13 @@ export class SipService implements OnInit {
         }
       } else if (event.event.toLowerCase() == "xmppevent") {
         if (event.response && event.response.type == "IN_SERVICE") {
+          this.isSipConnected = true;
+          if (this.isSipLoggedIn) this.readyAgentState();
           this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-Connected"), "succ");
+          console.log("Connection Established, CTI Status is Connected ==>");
+        } else if (event.response && event.response.type == "OUT_OF_SERVICE") {
+          this.isSipConnected = false;
+          this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-connection-failed"), "err");
           console.log("Connection Established, CTI Status is Connected ==>");
         }
       } else if (event.event.toLowerCase() == "dialogstate") {
@@ -148,6 +160,17 @@ export class SipService implements OnInit {
         this.handleInboundAndCampaignCallEvent(event, "INBOUND");
       } else if (event.event.toLowerCase() == "campaigncall") {
         this.handleInboundAndCampaignCallEvent(event, "OUTBOUND_CAMPAIGN");
+      } else if (event.event.toLowerCase() == "outbounddialing") {
+        if (event.response.dialog.customerNumber && event.response.dialog.state.toLowerCase() == "initiated") {
+          this.identifyCustomer(event, event.response.dialog.customerNumber, "OUTBOUND");
+        }
+        setTimeout(() => {
+          if (event.response.dialog && event.response.dialog.isCallEnded == 1) {
+            this.isOBCallRequested = false;
+            this.isToolbarActive = false;
+            this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-call-canceled"), "err");
+          }
+        }, 100);
         if (event.response.dialog.state.toLowerCase() == "active") {
           this.isCallHold = false;
         } else if (event.response.dialog.state.toLowerCase() == "held") {
@@ -161,20 +184,26 @@ export class SipService implements OnInit {
           this.isSubscriptionFailed = true;
           this.notReadyAgentState();
           this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-invalid-credentials"), "err");
+        } else if (event.response.type.toLowerCase() == "networkissue") {
+          this.notReadyAgentState();
+          // this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-invalid-credentials"), "err");
         } else if (event.response.type.toLowerCase() == "generalerror") {
           if (event.response.description.toLowerCase() == "canceled") {
             this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-call-canceled"), "err");
           } else {
-            let cacheId = `${this._cacheService.agent.id}:${event.response.dialog.id}`;
+            let cacheId = `${this._cacheService.agent.id}:${event.response.dialog && event.response.dialog.id ? event.response.dialog.id : ""}`;
             let dialogCache: any = this.getDialogFromCache(cacheId);
             if (dialogCache && dialogCache.dialogState == "active") {
               this.handleCallDroppedEvent(cacheId, event.dialog, "call_end", undefined, "DIALOG_ENDED", undefined);
             }
             this.removeNotification(event.response.dialog);
-            this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-connection-failed"), "err");
+            if (event.response.description) this._snackbarService.open(`CX Voice: ${event.response.description}`, "err");
+            else this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-connection-failed"), "err");
             this.notReadyAgentState();
           }
         }
+        this.isOBCallRequested = false;
+        this.isCallAlerting = false;
       }
     } catch (e) {
       console.error("SIP ERROR sip==>", e);
@@ -183,9 +212,6 @@ export class SipService implements OnInit {
 
   handleInboundAndCampaignCallEvent(event, callType) {
     this.customerNumber = event.response.dialog.customerNumber;
-    this.callData = event.response.dialog;
-
-    console.log('call Data =======>', this.callData)
     let cacheId = `${this._cacheService.agent.id}:${event.response.dialog.id}`;
     let cacheDialog: any = this.getDialogFromCache(cacheId);
     if (!cacheDialog) this.identifyCustomer(event, event.response.dialog.customerNumber, callType);
@@ -195,6 +221,7 @@ export class SipService implements OnInit {
       (event.response.dialog.state.toLowerCase() == "active" || event.response.dialog.state.toLowerCase() == "dropped")
     )
       this.handleDialogStateEvent(event);
+    this.isCallAlerting = true;
   }
 
   identifyCustomer(sipEvent: { event?: string; response: any }, ani: any, callType: string) {
@@ -220,13 +247,19 @@ export class SipService implements OnInit {
             identifier,
             dialogData: sipEvent.response.dialog,
             provider: "cx_voice",
-            isOutbound: false
+            isOutbound: false,
+            isManualOB: false
           };
           if (callType == "INBOUND" || callType == "OUTBOUND_CAMPAIGN") {
             if (callType == "OUTBOUND_CAMPAIGN") data.isOutbound = true;
             this._sharedService.serviceChangeMessage({ msg: "openExternalModeRequestHeader", data: data });
             this.setDialogCache(sipEvent, "ALERTING");
+          } else if (callType == "OUTBOUND") {
+            data.isManualOB = true;
+            this.setDialogCache(sipEvent, "ALERTING");
+            this.handleOBRequest(data);
           }
+          // this.setDialogCache(sipEvent, "ALERTING");
         },
         (error) => {
           this._sharedService.Interceptor(error.error, "err");
@@ -237,31 +270,47 @@ export class SipService implements OnInit {
     }
   }
 
+  handleOBRequest(data) {
+    this.customerNumber = data.dialogData.customerNumber;
+    this.activeDialog = data.dialogData;
+    this.isOBActive = true;
+    this._activateToolbarSub.next(data);
+    // this._ctiToolbarService.openCTIToolbar(data);
+  }
+
   getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, dialogEvent, intent, customerData, timeStamp, methodCalledOn) {
-    let customer = customerData ? customerData : this.customer;
-    let cacheId = `${this._cacheService.agent.id}:${dialogState.dialog.id}`;
-    let voiceChannel = this._sharedService.channelTypeList.find((item) => {
-      return item.name == "CX_VOICE";
-    });
     try {
+      let voiceChannel = this._sharedService.channelTypeList.find((item) => {
+        return item.name == "CX_VOICE";
+      });
+
       this._httpService.getDefaultOutboundChannel(voiceChannel.id).subscribe(
         (res) => {
           if (res) {
-            if (intent == "CALL_LEG_STARTED") this.setDialogCache(dialogEvent, "active");
-            let cimMessage = this.createCIMMessage(
-              "VOICE",
-              channelCustomerIdentifier,
-              res.serviceIdentifier,
-              intent,
-              customer,
-              leg,
-              dialogState.dialog,
-              callType,
-              timeStamp,
-              undefined
-            );
-            console.log("[OutBoundChannel] CIM Message==>", cimMessage);
-            this.ccmChannelSessionApi(cimMessage, methodCalledOn, cacheId, undefined);
+            if (methodCalledOn && methodCalledOn.action && methodCalledOn.action == "makeCall") {
+              let command = methodCalledOn.command;
+              command.parameter["Destination_Number"] = res.serviceIdentifier;
+              console.log("makeCallOnSip ==>", command);
+              postMessages(command);
+            } else {
+              let customer = customerData ? customerData : this.customer;
+              let cacheId = `${this._cacheService.agent.id}:${dialogState.dialog.id}`;
+              if (intent == "CALL_LEG_STARTED") this.setDialogCache(dialogEvent, "active");
+              let cimMessage = this.createCIMMessage(
+                "VOICE",
+                channelCustomerIdentifier,
+                res.serviceIdentifier,
+                intent,
+                customer,
+                leg,
+                dialogState.dialog,
+                callType,
+                timeStamp,
+                undefined
+              );
+              console.log("[OutBoundChannel] CIM Message==>", cimMessage);
+              this.ccmChannelSessionApi(cimMessage, methodCalledOn, cacheId, undefined);
+            }
           }
         },
         (error) => {
@@ -343,7 +392,8 @@ export class SipService implements OnInit {
             this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, callType, undefined);
           }
         } else {
-          this.handleCallDroppedEvent(cacheId, dialogState, "call_end", dialogEvent, callType, undefined);
+          let dialogCache: any = this.getDialogFromCache(cacheId);
+          if (dialogCache) this.handleCallDroppedEvent(cacheId, dialogState, "call_end", dialogEvent, callType, undefined);
         }
       }
     } catch (e) {
@@ -354,6 +404,7 @@ export class SipService implements OnInit {
   removeNotification(dialog) {
     try {
       this._sharedService.serviceChangeMessage({ msg: "closeExternalModeRequestHeader", data: dialog });
+      this.isCallAlerting = false;
     } catch (e) {
       console.error("[Error Sip] removeNotification ==>", e);
     }
@@ -374,15 +425,21 @@ export class SipService implements OnInit {
   getStartOREndTimeStamp(dialog, status) {
     try {
       let currentParticipant = this.getCurrentParticipantFromDialog(dialog);
-      let time;
-      if (status == "startCall") {
-        time = currentParticipant.startTime;
-      } else if (status == "endCall") {
-        time = currentParticipant.stateChangeTime;
+      if (currentParticipant) {
+        let time;
+        if (status == "startCall") {
+          time = currentParticipant.startTime;
+        } else if (status == "endCall") {
+          time = currentParticipant.stateChangeTime;
+        }
+        let unixTimeStamp = Math.floor(new Date(time).getTime() / 1000); // in seconds
+        unixTimeStamp = unixTimeStamp * 1000;
+        return unixTimeStamp;
+      } else {
+        console.log("Current participant not found ==>");
+        return Math.floor(Date.now() / 1000);
       }
-      let unixTimeStamp = Math.floor(new Date(time).getTime() / 1000); // in seconds
-      unixTimeStamp = unixTimeStamp * 1000;
-      return unixTimeStamp;
+      return null;
     } catch (e) {
       console.error("[Error Sip] getStartOREndTimeStamp ==>", e);
     }
@@ -399,8 +456,10 @@ export class SipService implements OnInit {
       let callType;
       let timeStamp = this.getStartOREndTimeStamp(dialogState.dialog, "startCall");
       callType = "INBOUND";
-
-      if (dialogEvent.event.toLowerCase() == "campaigncall") {
+      if (
+        dialogEvent.event.toLowerCase() == "campaigncall" ||
+        (dialogState.dialog && dialogState.dialog.callType && dialogState.dialog.callType.toLowerCase() == "out")
+      ) {
         callType = "OUTBOUND";
         serviceIdentifier = "VOICE";
         let intent = "CALL_LEG_STARTED";
@@ -480,6 +539,22 @@ export class SipService implements OnInit {
       state: "READY",
       mrdId: voiceMrdObj.mrd.id
     });
+  }
+
+  makeCXVoiceMrdNotReady() {
+    try {
+      const voiceMrdObj = this.getVoiceMrd(this.agentMrdStates.agentMrdStates);
+      if (this.agentMrdStates.state.name.toLowerCase() != "not_ready") {
+        this._socketService.emit("changeAgentState", {
+          agentId: this.agentMrdStates.agent.id,
+          action: "agentMRDState",
+          state: "NOT_READY",
+          mrdId: voiceMrdObj.mrd.id
+        });
+      }
+    } catch (error) {
+      console.error("Not Ready State for Sip==>", error);
+    }
   }
 
   // from the list of mrds, it will return voice mrd
@@ -575,6 +650,7 @@ export class SipService implements OnInit {
       this._httpService.ccmVOICEChannelSession(data).subscribe(
         (res) => {
           console.log("CCM API Success Sip==>");
+          // console.log("methodCalled==>", methodCalledOn);
           if (methodCalledOn == "call_end") this.clearLocalDialogCache(cacheId);
         },
         (error) => {
@@ -650,11 +726,18 @@ export class SipService implements OnInit {
       let customer;
       let timeStamp = this.getStartOREndTimeStamp(dialogState.dialog, "endCall");
       if (this.customer) customer = JSON.parse(JSON.stringify(this.customer));
-
-      if (dialogState.dialog.callType.toLowerCase() == "outbound") {
+      if (dialogState.dialog.callType.toLowerCase() == "outbound" || dialogState.dialog.callType.toLowerCase() == "out") {
+        this.isOBCallRequested = false;
         // callType = "DIALOG_ENDED";
         serviceIdentifier = "VOICE";
-        this.getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, event, intent, customer, timeStamp, methodCalledOn);
+        let cacheDialog: any = this.getDialogFromCache(cacheId);
+        console.log(cacheId, "<==test==>", cacheDialog);
+        if (cacheDialog && cacheDialog.dialogState == "ALERTING") {
+          this.clearLocalDialogCache(cacheId);
+          if (this.dialogRef) this.dialogRef.close();
+        } else {
+          this.getDefaultOutBoundChannel(channelCustomerIdentifier, leg, dialogState, callType, event, intent, customer, timeStamp, methodCalledOn);
+        }
       } else {
         let cimMessage = this.createCIMMessage(
           "VOICE",
@@ -675,6 +758,7 @@ export class SipService implements OnInit {
       this.isCallActive = false;
       this._isActiveSub.next(false);
       if (this.timeoutId) clearInterval(this.timeoutId);
+      if (this.timeoutIdInCustomerInfo) clearInterval(this.timeoutIdInCustomerInfo);
     } catch (e) {
       console.error("[Error] handleCallDropEvent Sip==>", e);
     }
@@ -689,7 +773,7 @@ export class SipService implements OnInit {
   }
 
   acceptCallOnSip(command: { action: string; parameter: { dialogId: any } }) {
-    postMessage(command);
+    postMessages(command);
   }
 
   endCallOnSip() {
@@ -701,7 +785,7 @@ export class SipService implements OnInit {
         }
       };
       console.log("EndCallOnSip ==>", command);
-      postMessage(command);
+      postMessages(command);
     } catch (error) {
       console.error("[Error on initMe] Sip ==>", error);
     }
@@ -717,7 +801,7 @@ export class SipService implements OnInit {
         }
       };
       console.log("holdCallOnSip==>", command);
-      postMessage(command);
+      postMessages(command);
     } catch (error) {
       console.error("[Error on holdCallOnSip] ==>", error);
     }
@@ -733,9 +817,42 @@ export class SipService implements OnInit {
         }
       };
       console.log("resumeCallOnSip sip==>", command);
-      postMessage(command);
+      postMessages(command);
     } catch (error) {
       console.error("[Error on resumeCallOnSip] ==>", error);
+    }
+  }
+
+  makeCallOnSip(customer, number) {
+    try {
+      this.isOBCallRequested = true;
+      this.notReadyAgentState();
+      // this.makeCXVoiceMrdNotReady();
+      setTimeout(() => {
+        let cxMrd = this.getVoiceMrd(this.agentMrdStates.agentMrdStates);
+        if (cxMrd && cxMrd.state.toLowerCase() == "not_ready") {
+          let command = {
+            action: "makeCall",
+            parameter: {
+              calledNumber: number,
+              clientCallbackFunction: this.clientCallback
+            }
+          };
+          let data = {
+            action: "makeCall",
+            command
+          };
+
+          // console.log("makeCallOnSip ==>", command);
+          this.getDefaultOutBoundChannel(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, data);
+          // postMessages(command);
+        } else {
+          this.isOBCallRequested = false;
+          this._snackbarService.open(this._translateService.instant("snackbar.OB-Call-Request"), "err");
+        }
+      }, 700);
+    } catch (error) {
+      console.error("[Error on makeCallOnSip] ==>", error);
     }
   }
 
@@ -749,7 +866,7 @@ export class SipService implements OnInit {
         }
       };
       console.log("muteCallOnSip ==>", command);
-      postMessage(command);
+      postMessages(command);
     } catch (error) {
       console.error("[Error on muteCallOnSip] ==>", error);
     }
@@ -765,7 +882,7 @@ export class SipService implements OnInit {
         }
       };
       console.log("unmuteCallOnSip ==>", command);
-      postMessage(command);
+      postMessages(command);
     } catch (error) {
       console.error("[Error on unmuteCallOnSip] ==>", error);
     }
@@ -785,7 +902,7 @@ export class SipService implements OnInit {
       };
 
       console.log("directQueueTransferOnSip ==>", command);
-      postMessage(command);
+      postMessages(command);
     } catch (error) {
       console.error("[Error on directQueueTransferOnSip] ==>", error);
     }
@@ -822,6 +939,16 @@ export class SipService implements OnInit {
         //     }
         //   }
         // }
+      } else if (
+        dialogState.dialog &&
+        dialogState.dialog.callType &&
+        (dialogState.dialog.callType.toLowerCase() == "outbound" || dialogState.dialog.callType.toLowerCase() == "out")
+      ) {
+        if (dialogState.dialog && dialogState.dialog.isCallEnded == 1) {
+          this.isOBCallRequested = false;
+          this.isToolbarActive = false;
+          this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-call-canceled"), "err");
+        }
       }
     } catch (e) {
       console.error("[Error] handleRefreshCase Sip==>", e);
@@ -886,7 +1013,7 @@ export class SipService implements OnInit {
             clientCallbackFunction: this.clientCallback
           }
         };
-        postMessage(command);
+        postMessages(command);
       }
     } catch (error) {
       console.error("[Error] Handle Logout for Sip==>", error);

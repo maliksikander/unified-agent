@@ -59,7 +59,7 @@ export class ActiveChatsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadLabels()
+    this.loadLabels();
     this.filter = this.route.snapshot.queryParamMap.get("filter") ? this.route.snapshot.queryParamMap.get("filter") : "agents";
     if (this.filter == "agents") {
       this.FilterSelected = "agents";
@@ -176,7 +176,6 @@ export class ActiveChatsComponent implements OnInit {
         });
       } else {
         this.selectedQueues.forEach((data) => {
-          console.log("activeChatListagnts", this.activeChatListWithAgents)
           this.activeChatListWithAgents.forEach((chats) => {
             if (data.queueId == chats.queueId) {
               chats.chats.forEach((innerchat) => {

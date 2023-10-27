@@ -10,6 +10,7 @@ import { finesseService } from "src/app/services/finesse.service";
 import { TranslateService } from "@ngx-translate/core";
 import { SipService } from "src/app/services/sip.service";
 import { announcementService } from "src/app/services/announcement.service";
+import { appConfigService } from "src/app/services/appConfig.service";
 
 @Component({
   selector: "app-chat-notifications",
@@ -22,7 +23,7 @@ export class ChatNotificationsComponent implements OnInit {
   externalModeRequests = [];
   notificationArea: boolean = false;
   voiceChannelType;
-  isCallAcceptClicked:boolean = false;
+  isCallAcceptClicked: boolean = false;
   //newAnnouncement =true;
 
   constructor(
@@ -35,24 +36,19 @@ export class ChatNotificationsComponent implements OnInit {
     private _finesseService: finesseService,
     private _translateService: TranslateService,
     private _sipService: SipService,
-    public _announcementService:announcementService
+    private _appConfigService: appConfigService,
+    public _announcementService: announcementService
   ) {
     this._sharedService.serviceCurrentMessage.subscribe((e: any) => {
       try {
         if (e.msg == "openPushModeRequestHeader") {
           this.pushModeRequests.push(e.data);
           this._soundService.playRing();
-          if (e.data.cisco_data) {
-            this._soundService.openBrowserNotification(
-              this._translateService.instant("snackbar.Incoming-Call-Alert"),
-              this._translateService.instant("snackbar.Incoming-call-alert-request") + e.data.channelSession.channel.channelType.name
-            );
-          } else {
             this._soundService.openBrowserNotification(
               this._translateService.instant("snackbar.CHAT-REQUESTED"),
               this._translateService.instant("snackbar.Incoming-chat-request-on-push-mode-on") + e.data.channelSession.channel.channelType.name
             );
-          }
+          
         } else if (e.msg == "closePushModeRequestHeader") {
           this.removePushModeRequestFromRequestArray(e.data.conversationId);
         } else if (e.msg == "openPullModeRequestHeader") {
@@ -102,9 +98,8 @@ export class ChatNotificationsComponent implements OnInit {
 
   ngOnInit() {}
 
-  onDismiss(announcement){
+  onDismiss(announcement) {
     this._announcementService.removeAnnoucementFromNotificationList(announcement);
-
   }
 
   getVoiceChannelType(provider) {
@@ -124,7 +119,7 @@ export class ChatNotificationsComponent implements OnInit {
         dialogId: data.dialogData.id
       }
     };
-    console.log("accept Data==>",acceptCommand)
+    console.log("accept Data==>", acceptCommand);
     if (data.provider == "cx_voice") {
       this._sipService.acceptCallOnSip(acceptCommand);
     } else if (data.provider == "cisco") {

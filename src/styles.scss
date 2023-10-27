@@ -4401,7 +4401,7 @@ mat-select {
   }
 }
 
-      .main-chat-area, .chat-messages-main {
+  .main-chat-area, .chat-messages-main {
         width: 100% !important;
       }
 
@@ -4577,8 +4577,8 @@ mat-select {
   //}
   input{
     width: fit-content;
-    min-width: 2ch;
-    max-width: 20ch;
+    // min-width: 2ch;
+    // max-width: 20ch;
   }
 }
 

@@ -34,4 +34,3 @@ export class SearchPipe implements PipeTransform {
     return false;
   }
 }
-

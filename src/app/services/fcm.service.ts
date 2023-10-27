@@ -43,7 +43,7 @@ export class fcmService {
           resolve("ok");
         })
         .catch((err) => {
-          console.log("err",err);
+          console.log("err", err);
           resolve("ok");
         });
       //}

@@ -16,18 +16,18 @@ export interface IKeycloakUser {
   permittedResources?: [];
   // supervisedTeams?:[]
   // userTeam?:[]
-  attributes?:any;
-  supervisedTeams?:[{ teamId :string, teamName:string}]
-  userTeam?:{teamId :string, teamName:string}
+  attributes?: any;
+  supervisedTeams?: [{ teamId: string; teamName: string }];
+  userTeam?: { teamId: string; teamName: string };
 }
 
 export class sender {
   id: string;
   senderName: string;
   type: string;
-  constructor(id:string,type: string, senderName:string) {
+  constructor(id: string, type: string, senderName: string) {
     this.id = uuidv4();
-    this.senderName=senderName;
+    this.senderName = senderName;
     this.type = type;
   }
 }

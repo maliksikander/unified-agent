@@ -71,6 +71,7 @@ export class SubscribedListPreviewComponent implements OnInit {
       channelSession: request.channelSession,
       requestId: request.id
     };
+
     this._socketService.emit("joinPullModeRequest", obj);
     this._sharedService.serviceChangeMessage({ msg: "closePullModeRequestHeader", data: request.id });
     this._router.navigate(["customers"]);

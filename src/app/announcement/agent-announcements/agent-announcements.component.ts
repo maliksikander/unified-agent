@@ -12,23 +12,18 @@ export class AgentAnnouncementsComponent implements OnInit {
   agentsId = {};
   announcements = [];
 
-  constructor(
-    private _cacheService: cacheService,
-    private _httpService: httpService,
-    public _announcementService: announcementService
-  ) { }
+  constructor(private _cacheService: cacheService, private _httpService: httpService, public _announcementService: announcementService) {}
 
   ngOnInit() {
-    this.agentsId = this._cacheService.agent.id; 
+    this.agentsId = this._cacheService.agent.id;
     this.sortList();
   }
-  
+
   onUnreadClick(announcement, announcementId) {
-   
     if (!announcement.seenBy.includes(this.agentsId)) {
       let obj = {
-        "userId": this.agentsId
-      }
+        userId: this.agentsId
+      };
       this._httpService.AnnouncementSeenByUser(announcementId, obj).subscribe({
         next: (val: any) => {
           announcement.seenBy = val.result.seenBy;
@@ -36,10 +31,9 @@ export class AgentAnnouncementsComponent implements OnInit {
         },
         error: (err: any) => {
           console.error(err);
-        },
+        }
       });
     }
-
   }
 
   sortList() {

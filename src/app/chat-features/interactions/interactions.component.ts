@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Inject, OnInit, Output, QueryList, SimpleChanges, ViewChild, ViewChildren } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, SimpleChanges, ViewChild, ViewChildren,Inject } from "@angular/core";
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
@@ -12,14 +12,13 @@ import { appConfigService } from "src/app/services/appConfig.service";
 import { httpService } from "src/app/services/http.service";
 import { finesseService } from "src/app/services/finesse.service";
 import { ConfirmationDialogComponent } from "src/app/new-components/confirmation-dialog/confirmation-dialog.component";
-import { WrapUpFormComponent } from "../wrap-up-form/wrap-up-form.component";
 import { TranslateService } from "@ngx-translate/core";
 import { CallControlsComponent } from "../../new-components/call-controls/call-controls.component";
+import { ConversationSettings } from "../../models/conversationSetting/conversationSettings";
 import { SipService } from "src/app/services/sip.service";
-import { HighlightResult } from 'ngx-highlightjs';
+import { HighlightResult } from "ngx-highlightjs";
 import { SendSmsComponent } from "../send-sms/send-sms.component";
 // import {DOCUMENT} from '@angular/common';
-
 
 // declare var EmojiPicker: any;
 
@@ -30,6 +29,7 @@ import { SendSmsComponent } from "../send-sms/send-sms.component";
 })
 export class InteractionsComponent implements OnInit {
   @Input() conversation: any;
+  // @Input() wrapUpData: any;
   @Input() customerBar: any;
   @Input() currentTabIndex: any;
   @Input() changeDetecter: any;
@@ -44,10 +44,12 @@ export class InteractionsComponent implements OnInit {
 
   isWhisperMode: boolean = false;
   dispayVideoPIP = true;
+  wrapUpFormData
   scrollSubscriber;
   labels: Array<any> = [];
   quotedMessage: any;
   replyToMessageId: any;
+  originalMessageId: any;
   privateMessageReply: any;
   viewFullCommentAction: boolean = false;
   fullPostView: boolean = false;
@@ -61,9 +63,11 @@ export class InteractionsComponent implements OnInit {
   ctiBoxView = false;
   timer: any = "00:00";
   cxVoiceSession: any;
+  openWrapDialog = false;
+ 
+
   isAudioPlaying: boolean[] = [];
   isDialogClosed;
-
   chatDuringCall = false;
   isVideoCam = false;
   isMute = false;
@@ -76,6 +80,7 @@ export class InteractionsComponent implements OnInit {
   element;
   dragPosition = {x: 0, y: 0};
 
+
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
       let scroller = scrolle.target;
@@ -87,6 +92,12 @@ export class InteractionsComponent implements OnInit {
       if (percent > 80) {
         this.showNewMessageNotif = false;
       }
+
+      // console.log("hjhjwdhjwjwh",this.conversation.wrapUpDialog)
+      // if(this.conversation.wrapUpDialog.show)
+      // {
+      //   this.wrapUpDialog(false)
+      // }
     });
   }
 
@@ -144,9 +155,9 @@ export class InteractionsComponent implements OnInit {
     public _finesseService: finesseService,
     private snackBar: MatSnackBar,
     public _sipService: SipService,
-    private _translateService: TranslateService,
-    // @Inject(DOCUMENT) public documentScreen: any
+    private _translateService: TranslateService
   ) {}
+
   ngOnInit() {
     this.isCallActive = this._sipService.isCallActive;
     this.element = document.documentElement;
@@ -166,7 +177,7 @@ export class InteractionsComponent implements OnInit {
     // setTimeout(() => {
     //   new EmojiPicker();
     // }, 500);
-    this.isWhisperMode = this.conversation.topicParticipant.role == "SILENT_MONITOR" ? true : false;
+    this.isWhisperMode = (this.conversation.topicParticipant.role == "SILENT_MONITOR" || this.conversation.topicParticipant.role == "ASSISTANT") ? true : false;
     this.conversationSettings = this._sharedService.conversationSettings;
     this.loadLabels();
 
@@ -177,6 +188,7 @@ export class InteractionsComponent implements OnInit {
     this._sharedService.selectedlangugae.subscribe((data: string) => {
       this.selectedLanguage = data;
     });
+
 
     if (this.selectedLanguage == "ar") {
       this.isRTLView = true;
@@ -191,16 +203,41 @@ export class InteractionsComponent implements OnInit {
     });
 
     if (this.conversation && this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
-      if (this._sipService.isCallActive == true && this._sipService.isToolbarActive == false) this.ctiControlBar();
-      this.getVoiceChannelSession();
+      if (this._sipService.dialogRef) {
+        // console.log("yo==>");
+        this._sipService.isToolbarActive = false;
+        this._sipService.dialogRef.close();
+        // if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
+      }
+      if (this._sipService.isCallActive == true && this._sipService.isToolbarActive == false) {
+        // console.log("Test1==>");
+        this.ctiControlBar({ conversation: this.conversation });
+        this.getVoiceChannelSession();
+      } 
+      // else {
+        // console.log("Test==>");
+        // this._sipService.dialogRef
+      // }
+      // this.getVoiceChannelSession();
     }
-    //this._cacheService.smsDialogData ||
+ 
+    this.wrapUpFormData = {
+      header: this._translateService.instant("chat-features.interactions.wrapup"),
+      wrapUpDialog: this.conversation.wrapUpDialog,
+      conversation: this.conversation,
+      RTLDirection: this.isRTLView
+    };
+    //this._cacheService.smsDialogData || 
    if(this.conversation.conversationId === 'FAKE_CONVERSATION'){
     this.conversation.messages = [];
     this.loadPastActivities('FAKE_CONVERSATION');
 
    }
 
+    //this._cacheService.smsDialogData ||
+    if (this.conversation.conversationId === "FAKE_CONVERSATION") {
+      this.loadPastActivities("FAKE_CONVERSATION");
+    }
   }
 
   loadLabels() {
@@ -222,6 +259,14 @@ export class InteractionsComponent implements OnInit {
       conversationId: this.conversation.conversationId
     };
     this._socketService.emit("JoinAsBargin", obj);
+  }
+
+  moveToWhisperMode() {
+    let obj = {
+      participantId: this.conversation.topicParticipant.participant.id,
+      conversationId: this.conversation.conversationId
+    };
+    this._socketService.emit("moveToWhisperMode", obj);
   }
 
   onSend(text) {
@@ -256,14 +301,14 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  constructAndSendCommentAction(commentId, postId, channelSession, replyToMessageId, action) {
+  constructAndSendCommentAction(commentId, postId, channelSession, originalMessageId, action) {
     let message = this.getCimMessage();
     message.header.providerMessageId = commentId;
     message.body.postId = postId;
     message.body.type = "COMMENT";
     message.header.channelSession = channelSession;
     message.header.channelData = channelSession.channelData;
-    message.header.replyToMessageId = replyToMessageId;
+    message.header.originalMessageId = originalMessageId;
     if (action == "like" || action == "delete" || action == "hide") {
       message.body.itemType = action.toUpperCase();
       this.emitFBActionEvent(message);
@@ -279,7 +324,7 @@ export class InteractionsComponent implements OnInit {
   replyToComment(message) {
     this.checkChannelTypeForAttatchementButton(message);
     this.commentPostId = message.body.postId;
-    this.replyToMessageId = message.id;
+    this.originalMessageId = message.id;
     this.commentId = message.header.providerMessageId;
     if (this.commentPostId && this.commentId) {
       let channelSession = this.getChannelSession(message);
@@ -312,7 +357,7 @@ export class InteractionsComponent implements OnInit {
 
   //Quoted Reply
   onQuotedReply(message) {
-    this.replyToMessageId = message.id;
+    this.originalMessageId = message.id;
     this.openQuotedReplyArea(message);
   }
 
@@ -345,11 +390,8 @@ export class InteractionsComponent implements OnInit {
       panelClass: "send-sms-dialog",
       data: {info:this._cacheService.smsDialogData},
     });
-    dialogRef.afterClosed().subscribe((result) => {
-
-    });
+    dialogRef.afterClosed().subscribe((result) => {});
     this._cacheService.clearOutboundSmsDialogData();
-    this._socketService.topicUnsub(this.conversation);
   }
 
   //To open the quoted area
@@ -384,7 +426,8 @@ export class InteractionsComponent implements OnInit {
       document.hasFocus() &&
       messageForSeenNotification &&
       messageForSeenNotification.id != this.lastSeenMessageId &&
-      this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor"
+      this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor" &&
+      this.conversation.topicParticipant.role.toLowerCase() != "assistant"
     ) {
       const data = {
         id: uuidv4(),
@@ -481,7 +524,7 @@ export class InteractionsComponent implements OnInit {
   //to send typing event
   sendTypingEvent() {
     if (!this.sendTypingStartedEventTimer) {
-      if (this._socketService.isSocketConnected && this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor" && !this.isWhisperMode) {
+      if (this._socketService.isSocketConnected && this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor" && this.conversation.topicParticipant.role.toLowerCase() != "assistant" && !this.isWhisperMode) {
         let message = this.getCimMessage();
         let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
         if (selectedChannelSession) {
@@ -525,6 +568,36 @@ export class InteractionsComponent implements OnInit {
   }
 
   onLeaveClick() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: "490px",
+      panelClass: "confirm-dialog",
+      data: {
+        header: this._translateService.instant("chat-features.interactions.leave-conversation").toUpperCase(),
+        message:
+          this._translateService.instant("chat-features.interactions.Are-you-sure-you-want-to-leave-the-conversation-with") +
+          " '" +
+          this.conversation.customer.firstName +
+          "'?"
+      }
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result && result.event == "confirm") {
+        // if (this.conversationSettings.isWrapUpEnabled && this.conversationSettings.wrapUpTime >= 15) {
+        //   this.openWrapUpDialog(true);
+        //   // this._socketService.emitCimEvent({agentId:this.cc}"start-wrap-up-time")
+        // } else {
+        //   this.openWrapUpDialog(true);
+          // this.wrapUpDialog(true);
+
+          this.unsubscribeFromConversation();
+        // }
+      }
+    });
+  }
+
+  unsubscribeFromConversation() {
+    console.log("calles", this.conversationSettings);
+
     if (this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
       this.closeConversationConfirmation();
     } else {
@@ -730,9 +803,10 @@ export class InteractionsComponent implements OnInit {
 
         this.emitCimEvent(message, "AGENT_MESSAGE");
       } else {
-        if (this.replyToMessageId) {
-          message.header.replyToMessageId = this.replyToMessageId;
-          this.replyToMessageId = null;
+        if (this.originalMessageId) {
+          message.header.intent="REPLY_TO";
+          message.header.originalMessageId = this.originalMessageId;
+          this.originalMessageId = null;
         }
         let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
 
@@ -880,9 +954,9 @@ export class InteractionsComponent implements OnInit {
 
             const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => { return e.value.toLowerCase() == "outbound" });
             if (isOutBoundSMSType) {
-              event.data.body['type'] = 'outboundsms';
+              event.data.body["type"] = "outboundsms";
 
-              const smsChannelType = this.filterChannelType('sms');
+              const smsChannelType = this.filterChannelType("sms");
               if (smsChannelType) {
                 event.data.header.channelSession.channel.channelType = smsChannelType;
               }
@@ -964,10 +1038,11 @@ export class InteractionsComponent implements OnInit {
   }
 
   filterChannelType(channelTypeName) {
-    const channelType = this._sharedService.channelTypeList.find((channelType) => { return channelType.name.toLowerCase() == channelTypeName.toLowerCase() });
+    const channelType = this._sharedService.channelTypeList.find((channelType) => {
+      return channelType.name.toLowerCase() == channelTypeName.toLowerCase();
+    });
 
     return channelType;
-
   }
 
   //when enter key is pressed
@@ -988,22 +1063,29 @@ export class InteractionsComponent implements OnInit {
   // }
 
   // to open dialog form
-  openWrapUpDialog(e): void {
-    const dialogRef = this.dialog.open(WrapUpFormComponent, {
-      panelClass: "wrap-dialog",
-      data: {
-        header: this._translateService.instant("chat-features.interactions.wrapup"),
-        conversation: this.conversation,
-        RTLDirection: this.isRTLView
-      }
-    });
-
-    dialogRef.afterClosed().subscribe((res) => {
-      if (res.event == "apply") {
-        this.constructAndSendCimEvent("wrapup", "", "", "", "", res.data.wrapups, res.data.note);
-      }
-    });
-  }
+  // openWrapUpDialog(timerEnabled: boolean): void {
+  //   if (timerEnabled) {
+  //     this.unsubscribeFromConversation();
+  //   }
+  //   const dialogRef = this.dialog.open(WrapUpFormComponent, {
+  //     disableClose: true,
+  //     panelClass: "wrap-dialog",
+  //     data: {
+  //       header: this._translateService.instant("chat-features.interactions.wrapup"),
+  //       timerEnabled: timerEnabled,
+  //       wrapUpTime: this._sharedService.conversationSettings.wrapUpTime,
+  //       conversation: this.conversation,
+  //       RTLDirection: this.isRTLView
+  //     }
+  //   });
+  //
+  //   dialogRef.afterClosed().subscribe((res) => {
+  //     if (res.event == "apply") {
+  //       this.constructAndSendCimEvent("wrapup", "", "", "", "", res.data.wrapups, res.data.note);
+  //     }
+  //
+  //   });
+  // }
 
   switchChannelSession(channelSession, channelIndex) {
     try {
@@ -1037,7 +1119,7 @@ export class InteractionsComponent implements OnInit {
   getCimMessage() {
     let message: any = {
       id: "",
-      header: { timestamp: "", sender: {}, channelSession: {}, channelData: {} },
+      header: { timestamp: "", sender: {}, channelSession: {}, channelData: {}, intent: null },
       body: { markdownText: "", type: "" }
     };
 
@@ -1302,46 +1384,9 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  // ctiCallActive() {
-  //   this.ctiBoxView = false;
-  //   this.ctiBarView = false;
-  //   this.isAudioCall = true;
-  //   this.isConversationView = false;
-  //   if (this.fullScreenView) {
-  //     this.exitFullscreen();
-  //   }
-  // }
-  // ctiControlBar() {
-  //   this.isConversationView = true;
-  //   this.ctiBoxView = true;
-  //   this.ctiBarView = true;
-  //   this.chatDuringCall = false;
-  //   this._sipService.isToolbarActive = true;
-  //   this._sipService.isToolbarDocked = false;
-  //   const dialogRef = this.dialog.open(CallControlsComponent, {
-  //     panelClass: "call-controls-dialog",
-  //     hasBackdrop: false,
-  //     position: {
-  //       top: "8%",
-  //       right: "8%"
-  //     },
-  //     data: { conversation: this.conversation }
-  //   });
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     this.isAudioCall = true;
-  //     this.ctiCallActive();
-  //     // this._sipService.isToolbarDocked = true;
-  //     if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
-  //   });
-  // }
-
-  ctiControlBar() {
-    this.isConversationView = true;
+  ctiControlBar(data) {
     this.ctiBoxView = true;
-    this.ctiBarView = true;
-    this.isAudioCall = true;
-    this.isCallActive = true;
-    this.chatDuringCall = false;
+    this.ctiBarView = false;
     this._sipService.isToolbarActive = true;
     this._sipService.isToolbarDocked = false;
     const dialogRef = this.dialog.open(CallControlsComponent, {
@@ -1352,11 +1397,11 @@ export class InteractionsComponent implements OnInit {
         top: "8%",
         right: "8%"
       },
-      data: { conversation: this.conversation }
+      data
     });
     dialogRef.afterClosed().subscribe((result) => {
-      // this.isAudioCall = true;
-      // this.ctiCallActive();
+      this.ctiBoxView = false;
+      this.ctiBarView = true;
       this._sipService.isToolbarDocked = true;
       if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
     });
@@ -1372,28 +1417,27 @@ export class InteractionsComponent implements OnInit {
       this.cxVoiceSession = this.conversation.activeChannelSessions.find((channelSession) => {
         return channelSession.channel.channelType.name.toLowerCase() === "cx_voice";
       });
-      if (this.cxVoiceSession) {
-        const cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
-        const cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
-        if (cacheDialog) {
-          const currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
-          const startTime = new Date(currentParticipant.startTime);
-          this._sipService.timeoutId = setInterval(() => {
-            const currentTime = new Date();
-            const timedurationinMS = currentTime.getTime() - startTime.getTime();
-            this.msToHMS(timedurationinMS);
-          }, 1000);
-        } else {
-          console.log("No Dialog Found==>");
-        }
-      } else {
-        clearInterval(this._sipService.timeoutId);
-      }
+      // if (this.cxVoiceSession) {
+      //   const cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
+      //   const cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
+      //   if (cacheDialog) {
+      //     const currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
+      //     const startTime = new Date(currentParticipant.startTime);
+      //     this._sipService.timeoutId = setInterval(() => {
+      //       const currentTime = new Date();
+      //       const timedurationinMS = currentTime.getTime() - startTime.getTime();
+      //       this.msToHMS(timedurationinMS);
+      //     }, 1000);
+      //   } else {
+      //     console.log("No Dialog Found==>");
+      //   }
+      // } else {
+      //   clearInterval(this._sipService.timeoutId);
+      // }
     } catch (e) {
       console.error("[getVoiceChannelSession] Error:", e);
     }
   }
-
   msToHMS(ms) {
     try {
       // Convert to seconds:
@@ -1415,10 +1459,45 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
+
   formatNumber(num) {
     return num.toString().padStart(2, "0");
   }
 
+  openWrapUpDialog(timerEnabled: boolean): void {   
+
+    if (timerEnabled) {
+      this.unsubscribeFromConversation();
+    }
+    else
+    {
+      this.openWrapDialog = true;
+    }
+
+  }
+
+closeWrapDialog(data) {
+  if(data == false){
+    this.openWrapDialog = false;
+    if(this.conversation.wrapUpDialog.show)
+    {
+      this._socketService.emit("WRAP_UP_CLOSED",{
+        conversationId: this.conversation.conversationId,
+          agentId: this._cacheService.agent.id
+      })
+    }
+  } else{
+      this.constructAndSendCimEvent("wrapup", "", "", "", "", data.wrapups, data.note);
+      this.openWrapDialog = false;
+      if(this.conversation.wrapUpDialog.show)
+      {
+        this._socketService.emit("WRAP_UP_CLOSED",{
+          conversationId: this.conversation.conversationId,
+          agentId: this._cacheService.agent.id
+        })
+      }
+  }
+}
   previousRecording;
   toggleAudioPlayback(index: number): void {
     let audioArray: Array<any> = this.audioPlayers.toArray();

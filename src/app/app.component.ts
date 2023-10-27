@@ -32,7 +32,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     private _router: Router,
     private _httpService: httpService,
     private _isLoggedInservice: isLoggedInService,
-    private _sipService : SipService,
+    private _sipService: SipService,
     private _sharedService: sharedService,
     private _translateService: TranslateService,
     private ref: ChangeDetectorRef

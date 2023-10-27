@@ -14,14 +14,13 @@
             </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="selection-trigger">
-            <mat-select [(ngModel)]="filterListId">
-                <mat-option value='all'>{{'pull-mode.all-list'  | translate }}</mat-option>
-                <mat-option *ngFor="let list of _pullModeservice.subscribedList" value="{{list.id}}">
-                    {{list.name}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div>
+    <mat-form-field appearance="outline" class="selection-trigger">
+      <mat-select [(ngModel)]="filterListId">
+        <mat-option value="all">{{ "pull-mode.all-list" | translate }}</mat-option>
+        <mat-option *ngFor="let list of _pullModeservice.subscribedList" value="{{ list.id }}"> {{ list.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 </div>
 <!-- <div class="create-label col-md-6 text-right col-sm-8">
         <button [style.backgroundColor]="filterStatus == 'all' ? '#9abcef' : '' " (click)="filterStatus = 'all'"
@@ -42,47 +41,60 @@
     </div> -->
 <!-- </div> -->
 <div class="container-fluid">
+  <div class="table-container manage-dashboard">
+    <div class="active-chat-list-area">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="status-data" scope="col">{{ "pull-mode.status" | translate }}</th>
+            <th scope="col">{{ "pull-mode.customer" | translate }}</th>
+            <th scope="col">{{ "pull-mode.time" | translate }}</th>
+            <th scope="col">{{ "pull-mode.list" | translate }}</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="'subscribed-list' | authPipe: 'view' as result">
+          <tr *ngFor="let request of _pullModeservice.subscribedListRequests | filterPullModeRequests: filterStatus:filterListId">
+            <!-- <p>{{request.status}}</p>
+            <p>{{request | json}}</p>
 
-    <div class="table-container manage-dashboard">
-        <div class="active-chat-list-area">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th class="status-data" scope="col">{{'pull-mode.status'  | translate }}</th>
-                        <th scope="col">{{'pull-mode.customer'  | translate }}</th>
-                        <th scope="col">{{'pull-mode.time'  | translate }}</th>
-                        <th scope="col">{{'pull-mode.list'  | translate }}</th>
-                    </tr>
-                </thead>
-                <tbody *ngIf="('subscribed-list' | authPipe : 'view') as result">
+            <p *ngIf="(request.status | lowercase) != 'wrap_up'">9999</p>
 
-                    <tr
-                        *ngFor="let request of _pullModeservice.subscribedListRequests | filterPullModeRequests:filterStatus:filterListId">
-                        <td class="status-data"><span class="status-icon"
-                                matTooltip="{{(request.status | lowercase) == 'created' ? ('pull-mode.UNREAD'  | translate ) : (request.status | uppercase) }}"
-                                [style.backgroundColor]="(request.status | lowercase) == 'active' ? '#29C671' : ((request.status | lowercase) == 'inactive' ? '#ccc' : 'red')"></span>
-                        </td>
-                        <td #customerCell><span class="channel-icon"><img
-                                    [src]="request.channelSession.channel.channelType.channelLogo | channelLogo | async"></span>
-                            {{(('customer' | authPipe : 'view_pii')?request?.channelSession?.customer?.firstName : request?.channelSession?.customer?.firstName | maskPIIAttribute : ('firstName' | returnSchemaByKey)) }} <small
-                                class="customer_identy">({{('customer' | authPipe : 'view_pii') ? request.channelSession.channelData.channelCustomerIdentifier : (request.channelSession.channelData.channelCustomerIdentifier | maskPIIAttribute : (request.channelSession.channel.channelType.name | returnSchemaByChannelType))}})</small>
-                            <!-- <ul class="customer-labels">
+            <p>{{request.channelSession.conversationId }}</p> -->
+
+            <ng-container *ngIf="(request.status | lowercase)!= 'wrap_up' && (request.status | lowercase)!= 'customer_left' ">
+              <td class="status-data">
+                <span
+                  class="status-icon"
+                  matTooltip="{{ (request.status | lowercase) == 'created' ? ('pull-mode.UNREAD' | translate) : (request.status | uppercase) }}"
+                  [style.backgroundColor]="
+                    (request.status | lowercase) == 'active' ? '#29C671' : (request.status | lowercase) == 'inactive' ? '#ccc' : 'red'
+                  "
+                ></span>
+              </td>
+              <td #customerCell>
+                <span class="channel-icon"><img [src]="request.channelSession.channel.channelType.channelLogo | channelLogo | async" /></span>
+                {{ request.channelSession.customer.firstName }}
+                <small class="customer_identy">({{ request.channelSession.channelData.channelCustomerIdentifier }})</small>
+                <!-- <ul class="customer-labels">
                                 <li matTooltip="Marketing" style="background: #32b67a;"></li>
                                 <li matTooltip="Corporate" style="background: #f34f1b;"></li>
                                 <li matTooltip="Product Support" style="background: #536ce8;"></li>
                             </ul> -->
-                            <!-- <span *ngIf="_pullModeservice.labels" class="lblswithname">
+                <!-- <span *ngIf="_pullModeservice.labels" class="lblswithname">
                                 <span
                                     *ngFor="let lbl of labels | fetchLabels : request.channelSession.customer?.labels"
                                     [ngStyle]="{'background-color':lbl.colorCode}" class="dot"></span>
                             </span> -->
 
-                            <span *ngIf="labels"
-                                class="lblswithname">
-                                <span matTooltip="{{lbl?.name}}" *ngFor="let lbl of labels | fetchLabels : request.channelSession?.customer?.labels"
-                                    [ngStyle]="{'background-color':lbl?.colorCode}" class="dot"></span>
-                            </span>
-                            <!-- <div class="lbl-tooltip"
+                <span *ngIf="labels" class="lblswithname">
+                  <span
+                    matTooltip="{{ lbl?.name }}"
+                    *ngFor="let lbl of labels | fetchLabels: request.channelSession?.customer?.labels"
+                    [ngStyle]="{ 'background-color': lbl?.colorCode }"
+                    class="dot"
+                  ></span>
+                </span>
+                <!-- <div class="lbl-tooltip"
                                 *ngIf="showLblTooltip && LblTooltipId == request.channelSession.customer?._id">
                                 <div matTooltip="{{lbl.name}}" *ngFor="let lbl of labels | fetchLabels : request.channelSession.customer?.labels">
                                     <span [ngStyle]="{'background-color':lbl.colorCode}"
@@ -90,23 +102,36 @@
                                 </div>
                             </div> -->
 
-
-                            <span *ngIf="request.id | isAlreadyJoined" class="joined">{{'pull-mode.joined'  | translate }}</span>
-                        </td>
-                        <td>{{request.time | amTimeAgo:true}}<small> {{'pull-mode.ago'  | translate }}</small></td>
-                        <td>{{_pullModeservice.listNames[request.listId] ? _pullModeservice.listNames[request.listId] :
-                            '-'}}</td>
-                        <span class="table-trigger">
-                            <button mat-button *ngIf="!(request.id | isAlreadyJoined)" (click)="joinChat(request)"
-                                class="chat-btn" matTooltip="{{'pull-mode.chat'  | translate }}">{{'pull-mode.join'  | translate }}</button>
-                            <button *ngIf="('subscribed-list' | authPipe : 'manage') as result" mat-button
-                                class="close-btn" (click)="closeChat(request)" matTooltip="{{'pull-mode.close'  | translate }}">{{'pull-mode.end'  | translate }}</button>
-                        </span>
-                    </tr>
-                </tbody>
-            </table>
-
-        </div>
+                <span *ngIf="request.id | isAlreadyJoined" class="joined">{{ "pull-mode.joined" | translate }}</span>
+              </td>
+              <td>
+                {{ request.time | amTimeAgo: true }}<small> {{ "pull-mode.ago" | translate }}</small>
+              </td>
+              <td>{{ _pullModeservice.listNames[request.listId] ? _pullModeservice.listNames[request.listId] : "-" }}</td>
+              <span class="table-trigger">
+                <button
+                  mat-button
+                  *ngIf="!(request.id | isAlreadyJoined)"
+                  (click)="joinChat(request)"
+                  class="chat-btn"
+                  matTooltip="{{ 'pull-mode.chat' | translate }}"
+                >
+                  {{ "pull-mode.join" | translate }}
+                </button>
+                <button
+                  *ngIf="'subscribed-list' | authPipe: 'manage' as result"
+                  mat-button
+                  class="close-btn"
+                  (click)="closeChat(request)"
+                  matTooltip="{{ 'pull-mode.close' | translate }}"
+                >
+                  {{ "pull-mode.end" | translate }}
+                </button>
+              </span>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
 <!--  <div class="manage-dashboard list-for-compact">-->

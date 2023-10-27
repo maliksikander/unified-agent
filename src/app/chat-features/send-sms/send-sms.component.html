@@ -11,12 +11,12 @@
           <!--          <span class="icustomer"-->
           <!--            *ngIf="identifiedCustomer">[{{identifiedCustomer.firstName}}]</span>-->
           <mat-form-field appearance="outline">
-            <input id="phoneField" placeholder="Enter Phone Number" aria-label="Number" matInput
+            <input #outboundPhoneControl id="phoneField" placeholder="Enter Phone Number" aria-label="Number" matInput [ngStyle]="{'width': outboundPhoneControl.value?.length+'ch'}"
               formControlName="phoneControl" maxlength="20" minLength="3" [matAutocomplete]="auto"
               (keyup)="handleThrottledKeyUp()">
             <!--            <span matTextPrefix  *ngIf="identifiedCustomer">[{{identifiedCustomer.firstName}}]</span>-->
             <!-- this.smsData.info.customer.firstName -->
-            <span *ngIf="identifiedCustomer || smsData" matTextSuffix>[{{identifiedCustomer?.firstName ? identifiedCustomer?.firstName : smsData?.info?.customer?.firstName}}]</span>
+            <span class="field-suffix"  *ngIf="identifiedCustomer || smsData" matTextSuffix>({{identifiedCustomer?.firstName ? identifiedCustomer?.firstName : smsData?.info?.customer?.firstName}})</span>
             <!-- <span *ngIf="identifiedCustomer || smsData" matTextSuffix>[{{smsData?.info?.customer?.firstName}}]</span>
              -->
             <mat-error>
@@ -70,7 +70,7 @@
           <button mat-raised-button type="button" [mat-dialog-close]="true"
             class="discard-btn message-action ml-2">{{'chat-features.send-sms.discard' | translate }}
           </button>
-          <button *ngIf="(smsForm.valid)" mat-raised-button type="button" 
+          <button *ngIf="(smsForm.valid)" mat-raised-button type="button"
           class="send-message message-action ml-2"(click)="sendSMS()">
           {{'chat-features.send-sms.send-sms' | translate }}</button>
 

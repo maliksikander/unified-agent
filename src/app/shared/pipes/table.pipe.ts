@@ -1,7 +1,7 @@
-import { PipeTransform, Pipe } from '@angular/core';
+import { PipeTransform, Pipe } from "@angular/core";
 @Pipe({
-  name: 'tableFilter',
-  pure: true,
+  name: "tableFilter",
+  pure: true
 })
 export class TableFilterPipe implements PipeTransform {
   transform(list: any[], value: string) {
