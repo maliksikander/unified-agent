@@ -27,7 +27,7 @@ describe("ActiveAgentDetailsComponent", () => {
           return of(() => {
             throw HttpErrorResponse;
           });
-        }),
+        })
         // getAllActiveAgentsDetailsOnQueue: jest.fn((queueId) => {
         //   return of(() => {
         //     throw HttpErrorResponse;

@@ -31,46 +31,35 @@
   }
 }
 
+.call-field{
+  display: flex;
+  flex-wrap: nowrap;
 
+  .outbound-call-trigger{
+    background: $theme-green;
+    height: 45px;
+    top: 4px;
+    margin-left: 15px;
+    color: #fff;
+    min-width: 60px;
 
-.new-message-form {
+    &:disabled {
+      background: #e6e6e6 !important;
+    }
+  }
+}
+
+.new-call-form {
   padding: 10px 15px;
 
   .mat-form-field{
     width: 100%;
-
-    textarea{
-      height: 70px;
-    }
   }
   label {
     color: #5B5B5B;
     font-size: 13px;
   }
 
-}
-
-.message-trigger{
-  padding-bottom: 12px;
-  text-align: right;
-  .message-action {
-    color: #fff;
-    background: #919191;
-
-    &.send-message{
-      background: $blue-text-color;
-      color: #fff;
-    }
-    //
-    //&[disabled][disabled]{
-    //  background: #e3e3e3 !important;
-    //  color: #aeaaaa !important;
-    //}
-  }
-}
-
-.icustomer{
-  margin-left: 15px;
 }
 
 .field-suffix{

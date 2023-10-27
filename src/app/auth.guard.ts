@@ -22,29 +22,26 @@ export class AuthGuard implements CanActivate {
       let resource, scope;
       if (path.includes("schema")) {
         resource = "customer-schema";
-        scope='view'
+        scope = "view";
       }
       // else if (path.includes("dashboard")) {
       //   resource = "dashboard";
       // }
       else if (path.includes("supervisor")) {
         resource = "supervisor";
-        scope='view_all';
+        scope = "view_all";
       } else if (path.includes("subscribed")) {
         resource = "subscribed-list";
-        scope='view'
+        scope = "view";
       } else if (path.includes("phonebook")) {
         resource = "customer";
-        scope='view'
-      }
-      else if (path.includes("label")) {
+        scope = "view";
+      } else if (path.includes("label")) {
         resource = "customer-labels";
-        scope="assign_label";
+        scope = "assign_label";
       }
-  if(!scope)
-  return true;
+      if (!scope) return true;
       let value = this.checkScope(resource, scope);
-      
 
       return value;
     } catch (e) {
@@ -79,14 +76,13 @@ export class AuthGuard implements CanActivate {
       if (ccUser != null) {
         let permittedResources: Array<any> = ccUser.permittedResources.Resources;
         for (let i = 0; i < permittedResources.length; i++) {
-          if (permittedResources[i].rsname.trim()===resource.trim()) {
+          if (permittedResources[i].rsname.trim() === resource.trim()) {
             let resourceScopes: Array<any> = permittedResources[i].scopes;
             for (let j = 0; j < resourceScopes.length; j++) {
-              if (resourceScopes[j].trim() === scope.trim())
-              { 
+              if (resourceScopes[j].trim() === scope.trim()) {
                 return true;
               }
-          }
+            }
           }
         }
       }

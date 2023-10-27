@@ -24,7 +24,7 @@ export class QueueChatsComponent implements OnInit {
   supervisedTeams: any = [];
   selectedTeam: any = "";
   settings: any = {};
-  labels:CustomerLabels[]
+  labels: CustomerLabels[];
   selectedQueues: any = [];
   sortOrder: "asc" | "desc" = "asc";
 
@@ -39,7 +39,7 @@ export class QueueChatsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadLabels()
+    this.loadLabels();
     this.settings = {
       text: "All Queues",
       selectAllText: "Select All",
@@ -58,11 +58,10 @@ export class QueueChatsComponent implements OnInit {
       this.startRefreshTimer();
     }
   }
-  loadLabels():void {
+  loadLabels(): void {
     this._httpService.getLabels().subscribe((e) => {
       this.labels = e;
       // console.log("labels",this.labels)
-
     });
   }
   // to start timer using rxjs `timer`

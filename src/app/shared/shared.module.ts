@@ -98,15 +98,13 @@ import { checkOutboundCallPipe } from "./pipes/checkOutboundCall.pipe";
 import { checkConsultCallPipe } from "./pipes/checkConsultCall.pipe";
 import { filterSeenByAnnouncementsPipe } from "./pipes/filterSeenByAnnouncements.pipe";
 import { getMatchedStringPipe } from "./pipes/getMatchedString.pipe";
-import {  returnSchemaByKeyPipe } from "./pipes/returnSchemaByKey.pipe";
-import {  returnSchemaByChannelTypePipe } from "./pipes/returnSchemaByChannelType.pipe";
+import { returnSchemaByKeyPipe } from "./pipes/returnSchemaByKey.pipe";
+import { returnSchemaByChannelTypePipe } from "./pipes/returnSchemaByChannelType.pipe";
 import { getIVRTrailPipe } from "./pipes/getIVRTrail.pipe";
-import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
+import { SearchSuggestionsPipe } from "./pipes/searchSuggestions.pipe";
 import { checkCiscoSessionPipe } from "./pipes/checkCiscoSession.pipe";
 import { checkCXSessionPipe } from "./pipes/checkCXSession.pipe";
 import { countAgentPartcipantsPipe } from "./pipes/countAgentParticipants.pipe";
-
-
 @NgModule({
   declarations: [
     getFormattedBytesPipe,
@@ -155,6 +153,7 @@ import { countAgentPartcipantsPipe } from "./pipes/countAgentParticipants.pipe";
     returnSchemaByChannelTypePipe,
     getMatchedStringPipe,
     checkCiscoSessionPipe,
+    checkCXSessionPipe,
     returnSchemaByKeyPipe,
     returnSchemaByChannelTypePipe
   ],
@@ -227,7 +226,7 @@ import { countAgentPartcipantsPipe } from "./pipes/countAgentParticipants.pipe";
     AngularMultiSelectModule,
     NgScrollbarModule,
     NgxTimerModule,
-    TranslateModule,
+    TranslateModule
   ],
   exports: [
     NgxTimerModule,
@@ -339,6 +338,7 @@ import { countAgentPartcipantsPipe } from "./pipes/countAgentParticipants.pipe";
     checkCXSessionPipe,
     getMatchedStringPipe,
     checkCiscoSessionPipe,
+    checkCXSessionPipe,
     returnSchemaByKeyPipe,
     returnSchemaByChannelTypePipe
   ]

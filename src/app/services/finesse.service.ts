@@ -550,36 +550,6 @@ export class finesseService {
     }
   }
 
-  // updateCallVariables(dialog) {
-  //   try {
-  //     if (dialog && dialog.callVariables && dialog.callVariables.CallVariable) {
-  //       let variablesTemp: Array<any> = JSON.parse(JSON.stringify(dialog.callVariables.CallVariable));
-
-  //       let mainDN = {
-  //         name: "mainDN",
-  //         value: dialog.dialedNumber
-  //       };
-  //       // if (variablesTemp) {
-  //         variablesTemp.push(mainDN);
-  //         console.log("variables==>", variablesTemp);
-  //         let command = {
-  //           action: "updateCallVariableData",
-  //           parameter: {
-  //             dialogId: dialog.id,
-  //             callVariables: {
-  //               callVariable: variablesTemp
-  //             }
-  //           }
-  //         };
-  //         console.log("variable command==>", command);
-  //         executeCommands(command);
-  //       }
-  //     // }
-  //   } catch (e) {
-  //     console.error("[Error] updateCallVariables ==>", e);
-  //   }
-  // }
-
   handleCallActiveEvent(dialogEvent, dialogState) {
     try {
       // this.updateCallVariables(dialogState.dialog);
@@ -935,21 +905,6 @@ export class finesseService {
       console.error("[Error on Get Call Variables List] ==>", err);
     }
   }
-
-  // getCurrentAgentFromParticipantList(list: Array<any>) {
-  //   try {
-  //     let currentParticpant;
-  //     for (let i = 0; i <= list.length; i++) {
-  //       if (list[i].mediaAddress == this.finesseAgent.extension) {
-  //         currentParticpant = list[i];
-  //         return currentParticpant;
-  //       }
-  //     }
-  //     return null;
-  //   } catch (e) {
-  //     console.error("[Error] getCurrentAgentFromParticipantList ==>", e);
-  //   }
-  // }
 
   // if the receiving event from the CISCO is agentState then this will be called
   handleAgentStateFromFinesse(resp) {

@@ -84,7 +84,7 @@
     "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed!_fr",
     "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed_fr",
     "CX-Voice-Login-Success":"CX VOICE: Login Successful with EF Switch_fr",
-    "CX-Voice-call-canceled" : "CX VOICE : Voice Call canceled_fr",
+    "CX-Voice-call-canceled" : "CX VOICE : Voice Call Canceled_fr",
     "SIP-Logout-Successful":"SIP Logout Successful_fr",
     "No-Extension-Found":"No Extension Found For Sip Agent_fr",
     "Unable-to-edit-Active-Announcements":"Unable to edit Active Announcement_fr",
@@ -99,6 +99,7 @@
     "Calling":"Calling_fr",
     "CX-Voice-Connected":"CX VOICE Connected_fr",
     "Call-Ended":"Call Ended_fr",
+    "OB-Call-Request":"Outbound call request can not be initated_fr",
     "Customer-No":"Customer No_fr",
     "queue-name":"Queue Name_fr"
   },
@@ -161,6 +162,10 @@
     "search": "Search_fr",
     "no-data-available": "No Data Available_fr"
   },
+  "call-controls":{
+    "call-in-progress":"Call in progress_fr",
+    "initiating-audio-call":"Initiating Audio Call_fr"
+  },
   "chat-features": {
     "send-sms":{
       "info":"SEND SMS_fr",
@@ -169,7 +174,7 @@
       "invalid-text":"invalid text_fr",
       "not-empty":"This field can't be empty_fr",
       "invalid-pattern":"Invalid pattern_fr",
-      "number-should-be-in-range-3-to-15":"number should be in range 3 to 15_fr",
+      "number-should-be-in-range-3-to-15":"Number should be in range 3 to 15_fr",
       "see-conversation-history":"See Conversation History_fr",
       "discard":"Discard_fr",
       "send-sms":"Send SMS_fr",
@@ -181,9 +186,9 @@
       "new":"new",
       "customer":" customer",
       "characters-limit-1500":"1500 characters_fr",
-      "to-view-the-customer-profile":" to view the customer profile_fr"
-      
-
+      "to-view-the-customer-profile":" to view the customer profile_fr",
+      "number-should-be-in-range-3-to-20":"Number should be in range 3 to 20_fr",
+      "enter-phone-number":"Enter Phone Number_fr"
     },
     
     "customer-info": {

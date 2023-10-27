@@ -710,7 +710,8 @@
                                 conversationSettings.isMessageFormattingEnabled
                                   ? (referredMessage.body.markdownText | linkify | ibsformat)
                                   : (referredMessage.body.markdownText | linkify)
-                              "></span>
+                              "
+                            ></span>
                             <!--                            <span class="message-stamp yellow">-->
                             <!--                              <span class="chat-time red">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
                             <!--                            </span>-->
@@ -1591,7 +1592,7 @@
                                   <button mat-mini-fab (click)="toggleAudioPlayback(index)">
                                     <i class="material-icons">{{ callRecording.paused ? "play_arrow" : "pause" }} </i>
                                   </button>
-                                  <audio id="{{ index }}" #callRecording src="{{ message?.body?.data?.recordingUrl }}"></audio>
+                                  <audio id="{{ index }}" #callRecording src="{{message?.body?.data?.recordingUrl}}"></audio>
                                 </li>
                               </ul>
                             </div>
@@ -1623,8 +1624,13 @@
                                       </ng-container>
                                     </li>
 
-                                    <li class="agent-pic call-services">
-                                      <span>{{
+                                    <li
+                                      matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
+                                        callData?.additionalDetail?.dialog?.queueName ? callData?.additionalDetail?.dialog?.queueName : 'N/A'
+                                      }}"
+                                      class="agent-pic call-services"
+                                    >
+                                      <span class="activity-queue-ellipsis">{{
                                         callData?.additionalDetail?.dialog?.queueName ? callData?.additionalDetail?.dialog?.queueName : "N/A"
                                       }}</span>
                                     <li
@@ -1664,8 +1670,6 @@
                                     </li>
 
                                     <li *ngIf="callData.additionalDetail?.dialog?.wrapUpReason" class="section-tags">
-
-<<<<<<< HEAD
                                       <ng-container
                                         *ngIf="
                                           callData.additionalDetail?.dialog?.wrapUpItems && callData.additionalDetail?.dialog?.wrapUpItems.length > 0
@@ -1696,10 +1700,6 @@
                                         </ng-container>
                                       </ng-container>
 
-<<<<<<< HEAD
-=======
-
->>>>>>> develop
                                       <!-- <span *ngFor="let reasonCode of callData.dialog?.wrapUpReason | sliceFilter:0:2">
                                   {{reasonCode }}
                                 </span>
@@ -1707,7 +1707,7 @@
                                 <span *ngIf="callData.dialog?.wrapUpReason.length > 2" class="sub-tags"
                                   [matMenuTriggerFor]="multiVoiceTags">+{{callData.dialog?.wrapUpReason.length -
                                   2}}</span> -->
-=======
+
                                         <ng-container
                                           *ngIf="
                                           callData.additionalDetail?.dialog?.wrapUpItems &&
@@ -1722,7 +1722,7 @@
                                             }}
                                           </span>
                                         </ng-container>
-
+    
                                         <ng-container
                                           *ngIf="
                                           callData.additionalDetail?.dialog?.wrapUpItems &&
@@ -1749,7 +1749,6 @@
                                             </ng-container>
                                           </ng-container>
                                         </ng-container>
->>>>>>> develop
                                     </li>
                                   </ul>
                                 </div>
@@ -2554,6 +2553,7 @@
               class="quoted-message-cancel"
               (click)="
                 quotedMessage = '';
+                replyToMessageId = null;
                 originalMessageId = null;
                 commentId = null;
                 privateMessageReply = null;
@@ -2936,7 +2936,7 @@
         <ul class="call-actions">
           <!-- <li><button disabled mat-fab><mat-icon>mic</mat-icon></button></li> -->
           <li>
-            <button (click)="ctiControlBar()" mat-fab><mat-icon>picture_in_picture_alt </mat-icon></button>
+            <button (click)="ctiControlBar(conversation)" mat-fab><mat-icon>picture_in_picture_alt </mat-icon></button>
           </li>
           <li *ngIf="_sipService.isMuted == false">
             <button matTooltip="{{ 'globals.mute' | translate }}" (click)="_sipService.muteCallOnSip()" mat-fab><mat-icon>mic</mat-icon></button>
@@ -3004,8 +3004,10 @@
         </div>
         <div class="note-area col-md-12">
           <h4>{{ "chat-features.interactions.message" | translate }}</h4>
-          <textarea [(ngModel)]="assistanceRequestNote" rows="5"></textarea>
+          <textarea maxlength="1000" [(ngModel)]="assistanceRequestNote" rows="5"></textarea>
+          <label *ngIf="assistanceRequestNote?.length > 0" class="typing-counter">{{ assistanceRequestNote?.length }}/1000</label>
         </div>
+
       </div>
     </div>
 

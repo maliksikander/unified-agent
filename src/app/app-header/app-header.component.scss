@@ -1129,6 +1129,15 @@ button {
     color: $blue-text-color;
   }
 }
+
+.call-trigger{
+  &:disabled {
+    mat-icon{
+      color: #e6e6e6 !important;
+    }
+    cursor: not-allowed;
+  }
+}
 .agent-menu-trigger{
   position: absolute;
   right: 15px;

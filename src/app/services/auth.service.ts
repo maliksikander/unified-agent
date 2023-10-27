@@ -23,12 +23,11 @@ export class AuthService {
       // let conversationResourceIndex = resources.findIndex((item) => item.rsname.includes("conversation-view"));
       let conversationResourceIndex = 1;
 
-
       if (conversationResourceIndex != -1) {
         // let scopes: Array<any> = resources[conversationResourceIndex].scopes;
         // scopes.forEach((scope: any) => {
         //   if (scope == "view") {
-            this.router.navigate(["/customers/chats"]);
+        this.router.navigate(["/customers/chats"]);
         //     routeCheck = true;
         //   }
         // });
@@ -88,14 +87,13 @@ export class AuthService {
         let permittedResources: Array<any> = ccUser.permittedResources.Resources;
 
         for (let i = 0; i < permittedResources.length; i++) {
-          if (permittedResources[i].rsname.trim()===resource.trim()) {
+          if (permittedResources[i].rsname.trim() === resource.trim()) {
             let resourceScopes: Array<any> = permittedResources[i].scopes;
             for (let j = 0; j < resourceScopes.length; j++) {
-              if (resourceScopes[j].trim() === scope.trim())
-              { 
+              if (resourceScopes[j].trim() === scope.trim()) {
                 return true;
               }
-          }
+            }
           }
         }
       }

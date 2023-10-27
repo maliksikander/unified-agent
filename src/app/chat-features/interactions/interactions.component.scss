@@ -1116,6 +1116,19 @@
             }
           }
 
+        &.section-tags{
+          display: flex;
+          flex-flow: nowrap;
+          justify-content: flex-start;
+            span{
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: pre;
+              max-width: 150px;
+              align-self: center;
+            }
+          }
+
         &:last-child {
           border-right: 0;
         }
@@ -4103,6 +4116,36 @@ button.back-to-sms{
   }
 }
 
+.typing-counter {
+  // position: absolute;
+  // right: 50px;
+  // top: -27px;
+  float: right;
+  font-size: 10px;
+  color: #707070;
+}
+.play-btn{
+  .mat-flat-button.mat-accent,
+  .mat-raised-button.mat-accent,
+  .mat-fab.mat-accent,
+  .mat-mini-fab.mat-accent {
+    background-color: #BDDBB1 !important;
+}
+
+  button.mat-mini-fab.mat-button-base.mat-accent {
+      width: 1.5rem;
+      height: 1.5rem;
+      vertical-align: middle;
+      box-shadow: none;
+     
+  }
+  i.material-icons {
+    position: relative;
+    top: -0.563rem;
+    font-size: 1.125rem;
+    place-content: center;
+  }
+}
 //Scheduled activity
 .sms{
   .chat-time.file-type-stamp{

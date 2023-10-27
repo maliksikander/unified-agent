@@ -123,56 +123,38 @@ describe("Finesse service", () => {
   describe("handlePresence", () => {
     // it("should call subscribeToCiscoEvents when subscription is not already done", () => {
     //   spyOn(component, "subscribeToCiscoEvents");
-
     //   component.isAlreadysubscribed = false;
-
     //   component.handlePresence(mockAgentPresence);
-
     //   expect(component.subscribeToCiscoEvents).toHaveBeenCalled();
     // });
-
     // it("should not call subscribeToCiscoEvents when subscription is already done", () => {
     //   spyOn(component, "subscribeToCiscoEvents");
     //   spyOn(component, "changeFinesseState");
-
     //   component.isAlreadysubscribed = true;
-
     //   component.handlePresence(mockAgentPresence);
-
     //   expect(component.subscribeToCiscoEvents).not.toHaveBeenCalled();
     // });
-
     // it("should not call subscribeToCiscoEvents when voice mrd is not configured", () => {
     //   spyOn(component, "subscribeToCiscoEvents");
     //   spyOn(component, "changeFinesseState");
-
     //   delete mockAgentPresence.agentMrdStates[2];
     //   component.handlePresence(mockAgentPresence);
-
     //   expect(component.subscribeToCiscoEvents).not.toHaveBeenCalled();
     // });
-
     // it("should call changeFinesseState when voice mrd is configured and not already subscribed and ignore state also false", () => {
     //   spyOn(component, "subscribeToCiscoEvents");
     //   spyOn(component, "changeFinesseState");
-
     //   component.isAlreadysubscribed = true;
     //   component.ignoreAgentState = false;
-
     //   component.handlePresence(mockAgentPresence);
-
     //   expect(component.changeFinesseState).toHaveBeenCalled();
     // });
-
     // it("should not call changeFinesseState when voice mrd is configured and not already subscribed but need to ignore the state", () => {
     //   spyOn(component, "subscribeToCiscoEvents");
     //   spyOn(component, "changeFinesseState");
-
     //   component.isAlreadysubscribed = true;
     //   component.ignoreAgentState = true;
-
     //   component.handlePresence(mockAgentPresence);
-
     //   expect(component.changeFinesseState).not.toHaveBeenCalled();
     // });
   });
