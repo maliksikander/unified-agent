@@ -104,6 +104,7 @@ import { getIVRTrailPipe } from "./pipes/getIVRTrail.pipe";
 import {SearchSuggestionsPipe} from './pipes/searchSuggestions.pipe';
 import { checkCiscoSessionPipe } from "./pipes/checkCiscoSession.pipe";
 import { checkCXSessionPipe } from "./pipes/checkCXSession.pipe";
+import {QuillModule} from "ngx-quill";
 
 @NgModule({
   declarations: [
@@ -225,6 +226,7 @@ import { checkCXSessionPipe } from "./pipes/checkCXSession.pipe";
     NgScrollbarModule,
     NgxTimerModule,
     TranslateModule,
+    QuillModule.forRoot()
   ],
   exports: [
     NgxTimerModule,
@@ -336,7 +338,8 @@ import { checkCXSessionPipe } from "./pipes/checkCXSession.pipe";
     getMatchedStringPipe,
     checkCiscoSessionPipe,
     returnSchemaByKeyPipe,
-    returnSchemaByChannelTypePipe
+    returnSchemaByChannelTypePipe,
+    QuillModule
   ]
 })
 export class SharedModule {}

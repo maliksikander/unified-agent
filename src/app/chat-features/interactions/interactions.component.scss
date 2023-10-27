@@ -4552,6 +4552,8 @@ button.back-to-sms{
       color: #888888;
       padding: 0 10px !important;
       min-width: 20px;
+      height: 30px;
+      line-height: 30px;
       mat-icon{
         font-size: 20px;
         height: 20px;
@@ -4623,6 +4625,10 @@ button.back-to-sms{
       padding: 0;
       background: transparent;
       color: #A8A8A8;
+
+      &:hover{
+        color: $red-color;
+      }
     }
   }
 }
@@ -4657,7 +4663,7 @@ button.back-to-sms{
 }
 .email-subject-view {
   justify-content: space-between;
-  padding: 0 15px;
+  padding: 5px 15px;
   align-items: center;
   margin: 0;
   border-bottom: 1px solid #EFF2F7;
@@ -4671,6 +4677,9 @@ button.back-to-sms{
   button {
     padding: 0;
     min-width: inherit;
+    height: 30px;
+    line-height: 30px;
+    width: 30px;
     mat-icon{
       color: #888888;
     }

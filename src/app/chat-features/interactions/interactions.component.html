@@ -552,7 +552,7 @@
                 <div class="profile-pic">
                   <div [ngClass]="{ 'wrapup-active-icon': message?.body?.type == 'WRAPUP' }"
                     class="active-channel channel-icon"
-                    *ngIf="(message.header.sender.type | lowercase) !== 'customer' && (message.body.type | lowercase) !== 'voice'  && (message.status | lowercase) !== 'scheduled' && (message.header.sender.type | lowercase) != 'app' "
+                    *ngIf="(message.header.sender.type | lowercase) !== 'customer' && (message.body.type | lowercase) !== 'voice'  && (message.status | lowercase) !== 'scheduled' && (message.header.sender.type | lowercase) !== 'app' "
                   >
                     <img
                       *ngIf="message?.body?.type != 'WRAPUP' && message?.body?.type != 'EMAIL'"
@@ -571,10 +571,10 @@
                       class="wrap-up-icon"
                       *ngIf="message?.body?.type == 'EMAIL'"
                       width="20"
-                      src="assets/images/email.svg"
+                      src="assets/attr-types/email.svg"
                     />
                   </div>
-                  <div class="profile-pic-area user-img" matTooltip="{{ message.header.sender | getSenderName: conversation.customer }}">FA</div>
+                  <div class="profile-pic-area user-img" *ngIf="(message.header.sender.type | lowercase) != 'customer'">FA</div>
 
                   <div matTooltip="{{ message.header.sender | getSenderName: conversation.customer }}" *ngIf="
                       (message.body.type | lowercase) != 'voice' &&
@@ -597,8 +597,7 @@
                   <div
                     *ngIf="(message.header.sender.type | lowercase) == 'customer' || (message.body.type | lowercase) == 'voice'"
                     class="profile-pic-area user-img customer-channel-showcase">
-                    <img *ngIf="message?.body?.type != 'VOICE'" width="20"
-                      [src]="message.header.channelSession.channel.channelType.channelLogo | channelLogo | async"
+                    <img *ngIf="message?.body?.type != 'VOICE'" width="20"src="assets/attr-types/email.svg"
                       alt="Channel Icon" />
                     <ng-container *ngIf="message?.body?.type == 'VOICE'">
                       <img *ngIf="!(message?.body?.data?.callLegs | checkOutboundCall)" width="20"
@@ -978,7 +977,7 @@
                     <mat-menu #menu="matMenu">
                       <button mat-menu-item class="reply-trigger" (click)="onQuotedReply(message)">reply</button>
                     </mat-menu>
-                    <div [style.display]="(message.header.sender.type | lowercase) == 'app'  || (message.header.sender.type | lowercase) == 'email' ? 'none' : '' " class="{{(message.header.sender.type | lowercase) !== 'app' && !(message.header.schedulingMetaData) && (message.body.type | lowercase) !== 'delieverynotification' }}"
+                    <div [style.display]="(message.header.sender.type | lowercase) == 'app'  || (message.body.type | lowercase) == 'email' ? 'none' : '' " class="{{(message.header.sender.type | lowercase) !== 'app' && !(message.header.schedulingMetaData) && (message.body.type | lowercase) !== 'delieverynotification' }}"
                     *ngIf="((message.header.sender.type | lowercase) !== 'app' && !(message.header.schedulingMetaData) && (message.body.type | lowercase) !== 'delieverynotification' && (message.body.type | lowercase) != 'comment')
                            || ((message.body.type | lowercase) != 'outboundsms' && (message.body.type | lowercase) != 'comment' && (message.body.type | lowercase) != 'url' && message.body.markdownText)
                            || ((message.body.type | lowercase) == 'comment' && (message.body.itemType | lowercase) == 'text' && (message.header.sender.type | lowercase) == 'agent')
@@ -1700,7 +1699,7 @@
 
 
                     <!-- <-------------------------------------Email Activity--------------------------------------------------->
-                    <div *ngIf="(message.header.sender.type | lowercase) == 'email'"
+                    <div *ngIf="(message.body.type | lowercase) == 'email'"
                          class="voice-activity-main panel-divider {{message.header.sender.type | lowercase}}">
                       <mat-expansion-panel>
                         <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
