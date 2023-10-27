@@ -75,7 +75,7 @@ describe("InteractionsComponent", () => {
   describe("when post data api returns data ", () => {
     beforeEach(async () => {
       _httpService = {
-        getPostData: jest.fn((postId, serviceIdentifier) => {
+        getPostData: jest.fn(() => {
           return of([{ data: "comments" }]);
         })
       };
@@ -170,12 +170,12 @@ describe("InteractionsComponent", () => {
       );
     });
 
-    it("replyToMessageId should be defined", () => {
+    it("originalMessageId should be defined", () => {
       let message = {
         id: "123"
       };
       component.onQuotedReply(message);
-      expect(component.replyToMessageId).toEqual(message.id);
+      expect(component.originalMessageId).toEqual(message.id);
     });
     it("quoted message should be defined", () => {
       let message = {

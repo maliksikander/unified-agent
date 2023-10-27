@@ -224,6 +224,7 @@
     },
     "interactions": {
       "Consult":"Consult_ger",
+      "Are-you-sure-you-want-to-leave-the-conversation-with":"Are you sure you want to leave the conversation with_ger",
       "Transfer":"Transfer_ger",
       "Conference":"Conference_ger",
       "Transfer-To-Queue":"Transfer To Queue_ger",
@@ -271,6 +272,8 @@
       "queue-conference": "Queue Conference_ger"
     },
     "wrap-up-form": {
+      "Add-Wrap-Up": "Add Wrap-Up_ger",
+      "Leave-without-wrap-up":"Leave Without Wrap-Up_ger",
       "wrap-up-codes": "Wrap-Up Codes_ger",
       "selected": "Selected_ger",
       "cancel": "Cancel_ger",
@@ -354,7 +357,7 @@
     "valid-credentials": "Please provide a valid username and password to login to your account._ger",
     "username": "Username_ger",
     "password": "Password_ger",
-    "agent-desk": "Agent Desk_ger",
+    "agent-desk": "AgentDesk_ger",
     "call-center-experts": "Your Call Center Experts._ger",
     "": ""
   },
@@ -396,7 +399,7 @@
     "create-new-customer": "Create New Customer_ger",
     "unable-connect-finesse": "Unable to connect with finesse, try refreshing may resolve the problem_ger",
     "enable-javascript": "Please enable JavaScript to continue using this application._ger",
-    "agent-desk": "Agent Desk_ger",
+    "agent-desk": "AgentDesk_ger",
     "select-all": "Select all _ger",
     "unselect-all": "Unselect all_ger",
     "Search": "Search _ger",

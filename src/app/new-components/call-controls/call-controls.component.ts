@@ -1,8 +1,9 @@
-import { Component, OnInit, Inject } from "@angular/core";
+import {Component, OnInit, Inject, Input} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { cacheService } from "src/app/services/cache.service";
 import { finesseService } from "src/app/services/finesse.service";
 import { SipService } from "src/app/services/sip.service";
+import {sharedService} from '../../services/shared.service';
 
 @Component({
   selector: "app-call-controls",
@@ -27,6 +28,7 @@ export class CallControlsComponent implements OnInit {
     public dialogRef: MatDialogRef<CallControlsComponent>,
     public _sipService: SipService,
     public _finesseService: finesseService,
+    public _sharedService: sharedService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     // console.log("data==>",this.data)

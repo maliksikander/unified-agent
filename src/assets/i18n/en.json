@@ -224,6 +224,8 @@
       "start": "Start a New Conversation"
     },
     "interactions": {
+      "leave-conversation":"Leave Conversation",
+      "Are-you-sure-you-want-to-leave-the-conversation-with":"Are you sure you want to leave the conversation with",
       "Consult":"Consult",
       "Transfer":"Transfer",
       "Conference":"Conference",
@@ -272,6 +274,8 @@
       "queue-conference": "Queue Conference"
     },
     "wrap-up-form": {
+      "Add-Wrap-Up": "Add Wrap-Up",
+      "Leave-without-wrap-up":"Leave Without Wrap-Up",
       "wrap-up-codes": "Wrap-Up Codes",
       "selected": "Selected",
       "cancel": "Cancel",
@@ -355,7 +359,7 @@
     "valid-credentials": "Please provide a valid username and password to login to your account.",
     "username": "Username",
     "password": "Password",
-    "agent-desk": "Agent Desk",
+    "agent-desk": "AgentDesk",
     "call-center-experts": "Your Call Center Experts.",
     "": ""
   },
@@ -396,7 +400,7 @@
     "create-new-customer": "Create New Customer",
     "unable-connect-finesse": "Unable to connect with finesse, try refreshing may resolve the problem",
     "enable-javascript": "Please enable JavaScript to continue using this application.",
-    "agent-desk": "Agent Desk",
+    "agent-desk": "AgentDesk",
     "select-all": "Select all ",
     "unselect-all": "Unselect all",
     "Search": "Search ",

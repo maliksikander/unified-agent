@@ -176,7 +176,6 @@ export class ActiveChatsComponent implements OnInit {
         });
       } else {
         this.selectedQueues.forEach((data) => {
-          console.log("activeChatListagnts", this.activeChatListWithAgents)
           this.activeChatListWithAgents.forEach((chats) => {
             if (data.queueId == chats.queueId) {
               chats.chats.forEach((innerchat) => {

@@ -1,11 +1,10 @@
 @import "src/app/shared/globalVariables";
 
-//.label-main{
-//  background: #F3F6F8;
-//  margin-bottom: 15px !important;
-//  min-height: 50px;
-//  position: relative;
-//}
+.label-main{
+justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
 .create-label {
   padding-right: 0;
   text-align: right;

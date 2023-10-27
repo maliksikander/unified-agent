@@ -223,6 +223,7 @@
       "start": "Start a New Conversation_fr"
     },
     "interactions": {
+      "Are-you-sure-you-want-to-leave-the-conversation-with":"Are you sure you want to leave the conversation with_fr",
       "Consult":"Consult_fr",
       "Transfer":"Transfer_fr",
       "Conference":"Conference_fr",
@@ -271,6 +272,8 @@
       "queue-conference": "Queue Conference_fr"
     },
     "wrap-up-form": {
+      "Add-Wrap-Up": "Add Wrap-Up_fr",
+      "Leave-without-wrap-up":"Leave Without Wrap-Up_fr",
       "wrap-up-codes": "Wrap-Up Codes_fr",
       "selected": "Selected_fr",
       "cancel": "Cancel_fr",
@@ -354,7 +357,7 @@
     "valid-credentials": "Please provide a valid username and password to login to your account._fr",
     "username": "Username_fr",
     "password": "Password_fr",
-    "agent-desk": "Agent Desk_fr",
+    "agent-desk": "AgentDesk_fr",
     "call-center-experts": "Your Call Center Experts._fr",
     "": ""
   },
@@ -396,7 +399,7 @@
     "create-new-customer": "Create New Customer_fr",
     "unable-connect-finesse": "Unable to connect with finesse, try refreshing may resolve the problem_fr",
     "enable-javascript": "Please enable JavaScript to continue using this application._fr",
-    "agent-desk": "Agent Desk_fr",
+    "agent-desk": "AgentDesk_fr",
     "select-all": "Select all _fr",
     "unselect-all": "Unselect all_fr",
     "Search": "Search _fr",

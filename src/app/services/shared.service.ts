@@ -6,6 +6,8 @@ import { ConfirmationDialogComponent } from "../new-components/confirmation-dial
 import { httpService } from "./http.service";
 import { snackbarService } from "./snackbar.service";
 import { MatDialog } from "@angular/material";
+import { ConversationSettings } from '../models/conversationSetting/conversationSettings';
+
 
 @Injectable({
   providedIn: "root"
@@ -21,6 +23,7 @@ export class sharedService {
       this.mainPagetile = data;
     });
   }
+  @Output() isCompactView = new EventEmitter<string>();
 
   schema;
   mainPagetile: any;
@@ -29,16 +32,14 @@ export class sharedService {
   serviceCurrentMessage = new Subject();
   selectedlangugae = new Subject();
   channelTypeList;
-  conversationSettings = {
+  conversationSettings:ConversationSettings = {
     isFileSharingEnabled: false,
     isEmojisEnabled: false,
     isConversationParticipantsEnabled: false,
-    isWrapUpEnabled: false,
-    wrapUpTime: 15,
     isMessageFormattingEnabled: false,
-    isOutboundSmsSendandClose: false,
-    isOutboundSmsEnabled: false,
-    prefixCode: ""
+    isOutboundSmsSendandClose:false,
+    isOutboundSmsEnabled:false,
+    prefixCode:"45"
   };
 
   //preffered language code of agent
@@ -61,7 +62,7 @@ export class sharedService {
     this.conversationSettings.isMessageFormattingEnabled = setting.isMessageFormattingEnabled;
     this.conversationSettings.isOutboundSmsSendandClose = setting.isOutboundSmsSendandClose;
     this.conversationSettings.isOutboundSmsEnabled = setting.isOutboundSmsEnabled;
-    this.conversationSettings.prefixCode = setting.prefixCode ? setting.prefixCode : "";
+    this.conversationSettings.prefixCode = setting.prefixCode ? setting.prefixCode : ''
   }
   getIndexFromConversationId(conversationId, array) {
     let index = array.findIndex((e) => {
@@ -157,6 +158,8 @@ export class sharedService {
     this._snackbarService.open(msg, "err");
   }
 
- 
 
+  checkCompactView(e) {
+    this.isCompactView.emit(e);
+  }
 }

@@ -59,7 +59,7 @@ export class AnnouncementDialogComponent implements OnInit {
     let date = new Date(this.expireDateMin);
     date.setMinutes(date.getMinutes() + 10);
     this.expireDate = new FormControl(date, [Validators.required]);
-
+    this.onValidateExpiryDate(new Date());
     // let _date = new Date();
     // _date.setDate(this.expireDateMin.getDate() + 5);
     // this.maxDate = _date;
@@ -68,6 +68,18 @@ export class AnnouncementDialogComponent implements OnInit {
     // this.maxDate= this.expireDateMax.setHours(120);
 
 
+
+    if (this.dataID !== null) {
+      this.currentAnnouncement = this._httpService.getAnnouncementsById(this.dataID.value).subscribe(res => {
+        this.setRowObj = {
+          "teams": this.selectedTeams = res.teams,
+          "announcementText": this.announcementMessage.setValue(res.announcementText),
+          "expiryTime": this.expireDate.setValue(res.expiryTime),
+          "scheduledTime": this.announceDate.setValue(res.scheduledTime),
+          "supervisorId": this.supervisorId,
+          "supervisorName": this.supervisor,
+        }
+      });
 
     if (this.dataID !== null) {
       this.currentAnnouncement = this._httpService.getAnnouncementsById(this.dataID.value).subscribe((res) => {
@@ -96,6 +108,7 @@ export class AnnouncementDialogComponent implements OnInit {
       primaryKey: "teamId"
     };
   }
+}
 
   getAllAnnouncementList() {
     this._httpService.getAnnouncements(this.supervisorId).subscribe((data) => {

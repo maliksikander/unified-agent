@@ -198,6 +198,9 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
 
   updateMySelection(option) {
     this.identifiedCustomer = option;
+    
+    this.userData=[];
+
   }
 
   openCOnversationView(customer) {

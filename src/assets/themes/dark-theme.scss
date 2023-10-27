@@ -286,7 +286,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
 }
 
 
-  
+
   @include mat-core();
 
   color: $light-primary-text;
@@ -1108,11 +1108,13 @@ $theme: mat-light-theme($primary, $accent, $warn);
       }
     }
     tbody {
+      border-bottom: none !important;
       tr {
         background: mat-color($dark-primary, 300) !important;
 
         td {
           color: mat-contrast($dark-primary, 600) !important;
+          border-color: rgb(40 40 55);
         }
 
         &:nth-child(even) {
@@ -1169,7 +1171,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
   //  Dialog
   .dialog-header {
-    background: mat-color($dark-primary, A700);
+    background: mat-color($dark-primary, A700) !important;
 
     h4 {
       color: mat-contrast($dark-primary, 300) !important;
@@ -1223,7 +1225,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
   .field-set {
     .field-label {
-      color: #9D9B9B;
+      color: #e0e0e0;
     }
 
     input {
@@ -1374,8 +1376,16 @@ $theme: mat-light-theme($primary, $accent, $warn);
   }
 
   .manage-dashboard {
-    tr{
+    table{
+      background: mat-color($dark-primary, 500) !important;
+    }
+    tr {
       border-bottom-color: mat-color($dark-primary, 800) !important;
+
+      span.active-team {
+        background: #f1f1f121;
+      }
+
     }
 
     .filter-area{
@@ -1821,11 +1831,94 @@ em{
   background-color: #283F6A !important;
 }
 
-.play-btn{
+  .announcement-table-area{
+    .manage-dashboard{
+      table{
 
-  i.material-icons {
-    color: #2e2e42 !important;
+        .announcement-status {
+          span {
+            background: #f0f0f033 !important;
+            border: 1px solid #c2c2c252 !important;
+
+            &.scheduled {
+              color: #ff761a !important;
+              background: #703f1a42 !important;
+              border: 1px solid #ffd2b380 !important;
+            }
+
+            &.active {
+              color: #25CB8D !important;
+              background: #437a668c !important;
+              border: 1px solid #b2f1d957 !important;
+            }
+          }
+        }
+        tr{
+          &:hover{
+            td{
+              &:nth-child(4){
+                opacity: 1 !important;
+              }
+            }
+          }
+          .table-trigger{
+            height: 35px;
+            line-height: 32px;
+          }
+        }
+      }
+    }
   }
-}
+  .announcement-container {
+    .multi-select-team {
+      background: transparent !important;
 
+      .c-label label {
+        color: $light-gray-color !important;
+      }
+    }
+    form{
+      label{
+          color: #cacaca !important;
+      }
+      textarea{
+        background: transparent;
+      }
+    }
+  }
+  .play-btn{
+
+    i.material-icons {
+      color: #2e2e42 !important;
+    }
+  }
+
+  .mat-form-field-appearance-outline:not(.mat-form-field-disabled) .mat-form-field-flex:hover .mat-form-field-outline-thick {
+    opacity: .5;
+
+  }
+
+  .discard-btn{
+    background: transparent !important;
+    box-shadow: 0 0 1px #ccc !important;
+
+    &:hover{
+      background: darken($light-gray-color, 50%);
+    }
+  }
+  .mat-datepicker-content {
+    background-color: #313145;
+  }
+
+  .lbl {
+    color:  mat-contrast($dark-primary, 300)  !important;
+  }
+
+  .create-label mat-form-field{
+    background: #283f6a;
+  }
+
+  .mat-input-element {
+    caret-color: $light-gray-color !important;
+  }
 }
