@@ -1762,9 +1762,6 @@ $theme: mat-light-theme($primary, $accent, $warn);
   .announcement-table-area {
     .manage-dashboard {
       table {
-        .announcement-table-area {
-          .manage-dashboard {
-            table {
               .announcement-status {
                 span {
                   background: #f0f0f033 !important;
@@ -1796,26 +1793,23 @@ $theme: mat-light-theme($primary, $accent, $warn);
                   line-height: 32px;
                 }
               }
-            }
-          }
-        }
-        .announcement-container {
-          .multi-select-team {
-            background: transparent !important;
-
-            .c-label label {
-              color: $light-gray-color !important;
-            }
-          }
-          form {
-            label {
-              color: #cacaca !important;
-            }
-            textarea {
-              background: transparent;
-            }
-          }
-        }
+        //.announcement-container {
+        //  .multi-select-team {
+        //    background: transparent !important;
+        //
+        //    .c-label label {
+        //      color: $light-gray-color !important;
+        //    }
+        //  }
+        //  form {
+        //    label {
+        //      color: #cacaca !important;
+        //    }
+        //    textarea {
+        //      background: transparent;
+        //    }
+        //  }
+        //}
         .play-btn {
           i.material-icons {
             color: #2e2e42 !important;
@@ -1849,6 +1843,23 @@ $theme: mat-light-theme($primary, $accent, $warn);
         .mat-input-element {
           caret-color: #ccc !important;
         }
+      }
+    }
+  }
+  .announcement-container {
+    .multi-select-team, .form-control {
+      background: transparent !important;
+
+      .c-label label {
+        color: $light-gray-color !important;
+      }
+    }
+    form {
+      label {
+        color: #cacaca !important;
+      }
+      textarea {
+        background: transparent;
       }
     }
   }
