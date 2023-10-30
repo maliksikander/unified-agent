@@ -234,10 +234,6 @@ export class InteractionsComponent implements OnInit {
 
    }
 
-    //this._cacheService.smsDialogData ||
-    if (this.conversation.conversationId === "FAKE_CONVERSATION") {
-      this.loadPastActivities("FAKE_CONVERSATION");
-    }
   }
 
   loadLabels() {
