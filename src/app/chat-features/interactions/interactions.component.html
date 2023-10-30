@@ -1661,17 +1661,14 @@
                                     </li>
 
                                     <li *ngIf="callData.additionalDetail?.dialog?.wrapUpReason" class="section-tags">
-                                      <ng-container
+                                      <!-- <ng-container
                                         *ngIf="
                                           callData.additionalDetail?.dialog?.wrapUpItems && callData.additionalDetail?.dialog?.wrapUpItems.length > 0
                                         "
                                       >
-                                        <!-- <span *ngFor="let wrapup of callData.additionalDetail?.dialog?.wrapUpItems">
-                                          {{ wrapup }}
-                                        </span> -->
 
                                         <span
-                                          matTooltip="{{ wrapup }}"
+                                          matTooltip="{{ wrapup }}ee"
                                           *ngFor="let wrapup of callData?.additionalDetail?.dialog?.wrapUpItems | sliceFilter: 0:2"
                                         >
                                           {{ wrapup }}
@@ -1685,11 +1682,11 @@
                                             "
                                           >
                                             <span matTooltip="{{ remainingValues?.join(', ') }}"
-                                              >+{{ callData.additionalDetail?.dialog?.wrapUpItems?.length - 1 }}</span
+                                              >+{{ callData.additionalDetail?.dialog?.wrapUpItems?.length - 2 }}</span
                                             >
                                           </ng-container>
                                         </ng-container>
-                                      </ng-container>
+                                      </ng-container> -->
 
                                       <!-- <span *ngFor="let reasonCode of callData.dialog?.wrapUpReason | sliceFilter:0:2">
                                   {{reasonCode }}
@@ -1721,7 +1718,7 @@
                                           "
                                         >
                                           <span
-                                            matTooltip="{{ wrapup }}"
+                                            matTooltip="{{ wrapup}}"
                                             *ngFor="let wrapup of callData.additionalDetail?.dialog?.wrapUpItems | sliceFilter: 0:2"
                                           >
                                             {{ wrapup }}

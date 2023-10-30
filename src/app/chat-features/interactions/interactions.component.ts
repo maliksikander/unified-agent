@@ -161,7 +161,7 @@ export class InteractionsComponent implements OnInit {
   ngOnInit() {
     this.isCallActive = this._sipService.isCallActive;
     this.element = document.documentElement;
-    console.log("i am called hello", this._sipService.isCallActive)
+    // console.log("i am called hello", this._sipService.isCallActive)
     if (this._sharedService.isCompactView) {
       this.isMobileDevice = true;
       console.log('this is a compact view Interactions view ?', this.isMobileDevice);
