@@ -29,7 +29,7 @@ export class ManualOutboundCallComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     public fb: FormBuilder
   ) {
-    this.defaultPrefixOutbound = this._sharedService.conversationSettings.prefixCode;
+    // this.defaultPrefixOutbound = this._sharedService.conversationSettings.prefixCode;
 
     this.outboundCallForm = this.fb.group({
       phoneControl: [

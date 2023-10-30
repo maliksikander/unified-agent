@@ -6,8 +6,7 @@ import { ConfirmationDialogComponent } from "../new-components/confirmation-dial
 import { httpService } from "./http.service";
 import { snackbarService } from "./snackbar.service";
 import { MatDialog } from "@angular/material";
-import { ConversationSettings } from '../models/conversationSetting/conversationSettings';
-
+import { ConversationSettings } from "../models/conversationSetting/conversationSettings";
 
 @Injectable({
   providedIn: "root"
@@ -32,14 +31,14 @@ export class sharedService {
   serviceCurrentMessage = new Subject();
   selectedlangugae = new Subject();
   channelTypeList;
-  conversationSettings:ConversationSettings = {
+  conversationSettings: ConversationSettings = {
     isFileSharingEnabled: false,
     isEmojisEnabled: false,
     isConversationParticipantsEnabled: false,
     isMessageFormattingEnabled: false,
-    isOutboundSmsSendandClose:false,
-    isOutboundSmsEnabled:false,
-    prefixCode:"45"
+    isOutboundSmsSendandClose: false,
+    isOutboundSmsEnabled: false,
+    prefixCode: "45"
   };
 
   //preffered language code of agent
@@ -62,7 +61,7 @@ export class sharedService {
     this.conversationSettings.isMessageFormattingEnabled = setting.isMessageFormattingEnabled;
     this.conversationSettings.isOutboundSmsSendandClose = setting.isOutboundSmsSendandClose;
     this.conversationSettings.isOutboundSmsEnabled = setting.isOutboundSmsEnabled;
-    this.conversationSettings.prefixCode = setting.prefixCode ? setting.prefixCode : ''
+    this.conversationSettings.prefixCode = setting.prefixCode ? setting.prefixCode : "";
   }
   getIndexFromConversationId(conversationId, array) {
     let index = array.findIndex((e) => {
@@ -126,14 +125,10 @@ export class sharedService {
   }
 
   Interceptor(e, res) {
-
-    if (res == "err" && e && e.error.error_detail && e.error.error_detail.reason && e.error.error_message) {
-
+    if (res == "err" && e && e.error && e.error.error_detail && e.error.error_detail.reason && e.error.error_message) {
       let reason: string = e.error.error_detail.reason;
       this._snackbarService.open(reason, "err");
-    }
-
-    else if (res == "err") {
+    } else if (res == "err") {
       if (e.statusCode == 401) {
         this._snackbarService.open(this._translateService.instant("snackbar.UNAUTHORIZED-USER"), "err");
       } else if (e.statusCode == 400) {
@@ -163,7 +158,6 @@ export class sharedService {
   snackErrorMessage(msg) {
     this._snackbarService.open(msg, "err");
   }
-
 
   checkCompactView(e) {
     this.isCompactView.emit(e);
