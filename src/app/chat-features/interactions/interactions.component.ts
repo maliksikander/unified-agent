@@ -153,9 +153,8 @@ export class InteractionsComponent implements OnInit {
     public _finesseService: finesseService,
     private snackBar: MatSnackBar,
     public _sipService: SipService,
-    private _translateService: TranslateService
-  ) // @Inject(DOCUMENT) public documentScreen: any
-  {}
+    private _translateService: TranslateService // @Inject(DOCUMENT) public documentScreen: any
+  ) {}
   ngOnInit() {
     this.isCallActive = this._sipService.isCallActive;
     this.element = document.documentElement;
@@ -582,7 +581,17 @@ export class InteractionsComponent implements OnInit {
     console.log("calles", this.conversationSettings);
 
     if (this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
-      this.closeConversationConfirmation();
+      let voiceSessionId = this.getVoiceChannelSessionID();
+      console.log("test==>", voiceSessionId);
+      let cacheId = `${this._cacheService.agent.id}:${voiceSessionId}`;
+      console.log("test2==>", cacheId);
+      let cacheDialog = this._sipService.getDialogFromCache(cacheId);
+      console.log("test3==>", cacheDialog);
+      if (cacheDialog) {
+        this.closeConversationConfirmation();
+      } else {
+        this._socketService.topicUnsub(this.conversation);
+      }
     } else {
       this._socketService.topicUnsub(this.conversation);
     }
@@ -1498,7 +1507,7 @@ export class InteractionsComponent implements OnInit {
         this._socketService.emit("closeWrapup", {
           conversationId: this.conversation.conversationId,
           agentId: this._cacheService.agent.id,
-          reason:null
+          reason: null
           // reason:"WRAP_UP_NOT_APPLIED"
         });
       }
@@ -1509,7 +1518,7 @@ export class InteractionsComponent implements OnInit {
         this._socketService.emit("closeWrapup", {
           conversationId: this.conversation.conversationId,
           agentId: this._cacheService.agent.id,
-          reason:null
+          reason: null
           // reason:"WRAP_UP_APPLIED"
         });
       }
@@ -1588,5 +1597,18 @@ export class InteractionsComponent implements OnInit {
     this.isVideoCall = false;
     this.isAudioCall = false;
     this.chatDuringCall = false;
+  }
+
+  getVoiceChannelSessionID() {
+    for (let i = 0; i <= this.conversation.activeChannelSessions.length; i++) {
+      if (
+        (this.conversation.activeChannelSessions[i] &&
+          this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cisco_cc") ||
+        this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cx_voice"
+      ) {
+        return this.conversation.activeChannelSessions[i].id;
+      }
+    }
+    return -1;
   }
 }
