@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { DateAdapter, MatDialog } from "@angular/material";
 import { CreateCustomerComponent } from "../create-customer/create-customer.component";
 import { FormControl } from "@angular/forms";
@@ -277,9 +277,15 @@ export class PhonebookComponent implements OnInit {
   }
   //to open conversation view for outbound chat
   openCOnversationView(customer) {
-    // console.log("customer ---->>>", customer);
-    this._socketService.onTopicData({ customer }, "FAKE_CONVERSATION", "");
+
+    let conversation = this._socketService.conversations.find((conversation) => {
+      return conversation.customer._id == customer._id
+    })
+    if (!conversation) {
+      this._socketService.onTopicData({ customer }, "FAKE_CONVERSATION", "");
+    }
     this._router.navigate(["customers"]);
+
   }
 
   onColReorder(event) {
@@ -338,7 +344,7 @@ export class PhonebookComponent implements OnInit {
     completeSelectedCustomer["_id"] = selectedCustomer._id;
     this._socketService.linkCustomerWithTopic(completeSelectedCustomer, this.conversationId);
   }
-  backToChat() {}
+  backToChat() { }
   ngOnDestroy() {
     this.paramsSubscription.unsubscribe();
   }
@@ -374,7 +380,7 @@ export class PhonebookComponent implements OnInit {
       this.getCustomers(this.limit, this.offSet, this.sort, this.query);
     }
   }
-  onSelectAll(items: any) {}
+  onSelectAll(items: any) { }
   onDeSelectAll(items: any) {
     this.cancelFilter();
   }

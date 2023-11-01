@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, SimpleChanges, ViewChild, ViewChildren,Inject } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, SimpleChanges, ViewChild, ViewChildren, Inject } from "@angular/core";
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
@@ -154,7 +154,7 @@ export class InteractionsComponent implements OnInit {
     private snackBar: MatSnackBar,
     public _sipService: SipService,
     private _translateService: TranslateService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.isCallActive = this._sipService.isCallActive;
@@ -211,14 +211,14 @@ export class InteractionsComponent implements OnInit {
         // console.log("Test1==>");
         this.ctiControlBar({ conversation: this.conversation });
         this.getVoiceChannelSession();
-      } 
+      }
       // else {
-        // console.log("Test==>");
-        // this._sipService.dialogRef
+      // console.log("Test==>");
+      // this._sipService.dialogRef
       // }
       // this.getVoiceChannelSession();
     }
- 
+
     this.wrapUpFormData = {
       header: this._translateService.instant("chat-features.interactions.wrapup"),
       wrapUpDialog: this.conversation.wrapUpDialog,
@@ -243,7 +243,7 @@ export class InteractionsComponent implements OnInit {
       }
     );
   }
-  emoji() {}
+  emoji() { }
 
   BargeIn() {
     let obj = {
@@ -381,7 +381,7 @@ export class InteractionsComponent implements OnInit {
       panelClass: "send-sms-dialog",
       data: { info: this._cacheService.smsDialogData }
     });
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe((result) => { });
     this._cacheService.clearOutboundSmsDialogData();
   }
 
@@ -417,6 +417,7 @@ export class InteractionsComponent implements OnInit {
       document.hasFocus() &&
       messageForSeenNotification &&
       messageForSeenNotification.id != this.lastSeenMessageId &&
+      this.conversation.topicParticipant &&
       this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor" &&
       this.conversation.topicParticipant.role.toLowerCase() != "assistant"
     ) {
@@ -678,7 +679,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -686,7 +687,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -756,7 +757,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
   externalfilePreviewOpener(url, fileName, type) {
     const dialogRef = this.dialog.open(FilePreviewComponent, {
@@ -766,7 +767,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
 
   uploadFile(files) {
