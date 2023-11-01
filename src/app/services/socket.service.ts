@@ -654,7 +654,12 @@ export class socketService {
     conversation.messageComposerState = this.isNonVoiceChannelSessionExists(conversation.activeChannelSessions);
     let index;
     let oldConversation = this.conversations.find((e, indx) => {
-      if (e.customer._id == topicData.customer._id && !e.wrapUpDialog.show) {
+      // if (e.customer._id == topicData.customer._id && !e.wrapUpDialog.show) {
+      //   index = indx;
+      //   conversation.index = e.index;
+      //   return e;
+      // }
+      if (e.conversationId == topicData.conversationId) {
         index = indx;
         conversation.index = e.index;
         return e;
