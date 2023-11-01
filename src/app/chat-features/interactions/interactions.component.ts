@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, SimpleChanges, ViewChild, ViewChildren,Inject } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, SimpleChanges, ViewChild, ViewChildren, Inject } from "@angular/core";
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
@@ -64,7 +64,7 @@ export class InteractionsComponent implements OnInit {
   timer: any = "00:00";
   cxVoiceSession: any;
   openWrapDialog = false;
- 
+
 
   isAudioPlaying: boolean[] = [];
   isDialogClosed;
@@ -78,7 +78,7 @@ export class InteractionsComponent implements OnInit {
   fullScreenView = false;
   videoSrc = 'assets/video/angry-birds.mp4';
   element;
-  dragPosition = {x: 0, y: 0};
+  dragPosition = { x: 0, y: 0 };
 
 
   ngAfterViewInit() {
@@ -156,7 +156,7 @@ export class InteractionsComponent implements OnInit {
     private snackBar: MatSnackBar,
     public _sipService: SipService,
     private _translateService: TranslateService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.isCallActive = this._sipService.isCallActive;
@@ -213,14 +213,14 @@ export class InteractionsComponent implements OnInit {
         // console.log("Test1==>");
         this.ctiControlBar({ conversation: this.conversation });
         this.getVoiceChannelSession();
-      } 
+      }
       // else {
-        // console.log("Test==>");
-        // this._sipService.dialogRef
+      // console.log("Test==>");
+      // this._sipService.dialogRef
       // }
       // this.getVoiceChannelSession();
     }
- 
+
     this.wrapUpFormData = {
       header: this._translateService.instant("chat-features.interactions.wrapup"),
       wrapUpDialog: this.conversation.wrapUpDialog,
@@ -228,11 +228,11 @@ export class InteractionsComponent implements OnInit {
       RTLDirection: this.isRTLView
     };
     //this._cacheService.smsDialogData || 
-   if(this.conversation.conversationId === 'FAKE_CONVERSATION'){
-    this.conversation.messages = [];
-    this.loadPastActivities('FAKE_CONVERSATION');
+    if (this.conversation.conversationId === 'FAKE_CONVERSATION') {
+      this.conversation.messages = [];
+      this.loadPastActivities('FAKE_CONVERSATION');
 
-   }
+    }
 
   }
 
@@ -247,7 +247,7 @@ export class InteractionsComponent implements OnInit {
       }
     );
   }
-  emoji() {}
+  emoji() { }
 
   BargeIn() {
     let obj = {
@@ -378,15 +378,15 @@ export class InteractionsComponent implements OnInit {
     });
   }
 
-  openOutboundSmsDialog(){
+  openOutboundSmsDialog() {
 
     const dialogRef = this.dialog.open(SendSmsComponent, {
       maxWidth: "700px",
       width: "100%",
       panelClass: "send-sms-dialog",
-      data: {info:this._cacheService.smsDialogData},
+      data: { info: this._cacheService.smsDialogData },
     });
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe((result) => { });
     this._cacheService.clearOutboundSmsDialogData();
   }
 
@@ -422,6 +422,7 @@ export class InteractionsComponent implements OnInit {
       document.hasFocus() &&
       messageForSeenNotification &&
       messageForSeenNotification.id != this.lastSeenMessageId &&
+      this.conversation.topicParticipant &&
       this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor" &&
       this.conversation.topicParticipant.role.toLowerCase() != "assistant"
     ) {
@@ -583,9 +584,9 @@ export class InteractionsComponent implements OnInit {
         //   // this._socketService.emitCimEvent({agentId:this.cc}"start-wrap-up-time")
         // } else {
         //   this.openWrapUpDialog(true);
-          // this.wrapUpDialog(true);
+        // this.wrapUpDialog(true);
 
-          this.unsubscribeFromConversation();
+        this.unsubscribeFromConversation();
         // }
       }
     });
@@ -668,7 +669,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -676,7 +677,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -746,7 +747,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
   externalfilePreviewOpener(url, fileName, type) {
     const dialogRef = this.dialog.open(FilePreviewComponent, {
@@ -756,7 +757,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
 
   uploadFile(files) {
@@ -800,7 +801,7 @@ export class InteractionsComponent implements OnInit {
         this.emitCimEvent(message, "AGENT_MESSAGE");
       } else {
         if (this.originalMessageId) {
-          message.header.intent="REPLY_TO";
+          message.header.intent = "REPLY_TO";
           message.header.originalMessageId = this.originalMessageId;
           this.originalMessageId = null;
         }
@@ -942,11 +943,11 @@ export class InteractionsComponent implements OnInit {
             event.data.header.sender.type = "CUSTOMER";
           }
 
-        event.data.header["status"] = "seen";
+          event.data.header["status"] = "seen";
           msgs.push(event.data);
         } else if (event.name.toLowerCase() == "third_party_activity") {
 
-           if (event.data.header.channelData.additionalAttributes.length > 0) {
+          if (event.data.header.channelData.additionalAttributes.length > 0) {
 
             const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => { return e.value.toLowerCase() == "outbound" });
             if (isOutBoundSMSType) {
@@ -959,18 +960,18 @@ export class InteractionsComponent implements OnInit {
               msgs.push(event.data);
             }
           }
-          if(event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain' ){
-            const fakeChannelSession={
-              "channel":{
+          if (event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain') {
+            const fakeChannelSession = {
+              "channel": {
                 "channelType": event.data.header.schedulingMetaData.channelType,
               },
-              "channelData":event.data.header.channelData,
+              "channelData": event.data.header.channelData,
             }
-            event.data.header['channelSession']=fakeChannelSession;
-            let status = this._socketService.getSchduledActivityStatus(cimEvents,event.data.id);
+            event.data.header['channelSession'] = fakeChannelSession;
+            let status = this._socketService.getSchduledActivityStatus(cimEvents, event.data.id);
 
-            if(status){
-             event.data.header['scheduledStatus'] = status;
+            if (status) {
+              event.data.header['scheduledStatus'] = status;
             }
 
             msgs.push(event.data);
@@ -1460,40 +1461,37 @@ export class InteractionsComponent implements OnInit {
     return num.toString().padStart(2, "0");
   }
 
-  openWrapUpDialog(timerEnabled: boolean): void {   
+  openWrapUpDialog(timerEnabled: boolean): void {
 
     if (timerEnabled) {
       this.unsubscribeFromConversation();
     }
-    else
-    {
+    else {
       this.openWrapDialog = true;
     }
 
   }
 
-closeWrapDialog(data) {
-  if(data == false){
-    this.openWrapDialog = false;
-    if(this.conversation.wrapUpDialog.show)
-    {
-      this._socketService.emit("WRAP_UP_CLOSED",{
-        conversationId: this.conversation.conversationId,
-          agentId: this._cacheService.agent.id
-      })
-    }
-  } else{
-      this.constructAndSendCimEvent("wrapup", "", "", "", "", data.wrapups, data.note);
+  closeWrapDialog(data) {
+    if (data == false) {
       this.openWrapDialog = false;
-      if(this.conversation.wrapUpDialog.show)
-      {
-        this._socketService.emit("WRAP_UP_CLOSED",{
+      if (this.conversation.wrapUpDialog.show) {
+        this._socketService.emit("WRAP_UP_CLOSED", {
           conversationId: this.conversation.conversationId,
           agentId: this._cacheService.agent.id
         })
       }
+    } else {
+      this.constructAndSendCimEvent("wrapup", "", "", "", "", data.wrapups, data.note);
+      this.openWrapDialog = false;
+      if (this.conversation.wrapUpDialog.show) {
+        this._socketService.emit("WRAP_UP_CLOSED", {
+          conversationId: this.conversation.conversationId,
+          agentId: this._cacheService.agent.id
+        })
+      }
+    }
   }
-}
   previousRecording;
   toggleAudioPlayback(index: number): void {
     let audioArray: Array<any> = this.audioPlayers.toArray();
@@ -1511,14 +1509,14 @@ closeWrapDialog(data) {
 
   isString(val): boolean { return typeof val === 'string'; }
 
-  chatInCall(){
+  chatInCall() {
     this.chatDuringCall = !this.chatDuringCall;
     this.isConversationView = !this.isConversationView;
   }
-  videoSwitch(e){
-    if(e == 'jm'){
+  videoSwitch(e) {
+    if (e == 'jm') {
       this.videoSrc = 'assets/video/sample-vid.mp4';
-    }else{
+    } else {
       this.videoSrc = 'assets/video/angry-birds.mp4';
     }
   }
@@ -1561,7 +1559,7 @@ closeWrapDialog(data) {
   //   }
   // }
 
-  endActiveCall(){
+  endActiveCall() {
     this.isVideoCall = false;
     this.isAudioCall = false;
     this.chatDuringCall = false;
