@@ -659,7 +659,7 @@ export class socketService {
       //   conversation.index = e.index;
       //   return e;
       // }
-      if (e.conversationId == topicData.conversationId) {
+      if (e.conversationId == conversationId) {
         index = indx;
         conversation.index = e.index;
         return e;
