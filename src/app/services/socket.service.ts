@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable, OnInit, ɵCompiler_compileModuleAndAllComponentsAsync__POST_R3__ } from "@angular/core";
 import { io } from "socket.io-client";
 import { BehaviorSubject, Observable } from "rxjs";
 import { Router } from "@angular/router";
@@ -649,7 +649,7 @@ export class socketService {
       //   conversation.index = e.index;
       //   return e;
       // }
-      if (e.conversationId == topicData.conversationId) {
+      if (e.conversationId == conversationId) {
         index = indx;
         conversation.index = e.index;
         return e;
@@ -660,7 +660,6 @@ export class socketService {
       // if that conversation already exists update it
       if (conversation.conversationId != "FAKE_CONVERSATION") {
         this.conversations[index] = conversation;
-        // console.log("old convo ===>", oldConversation);
       }
     } else {
       // else push that conversation
