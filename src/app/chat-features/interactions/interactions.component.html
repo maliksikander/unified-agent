@@ -44,30 +44,30 @@
 <!--            <mat-icon>search</mat-icon>-->
 <!--          </button>-->
           <button mat-button class="chat-controls-mobile" *ngIf="isMobileDevice"  [matMenuTriggerFor]="agentControllForMobile" ><mat-icon>more_vert</mat-icon></button>
-          <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}" *ngIf="isCallActive && !ctiBarView"
+          <!-- <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}" *ngIf="isCallActive && !ctiBarView"
                   matTooltip="Chat" aria-label="Chat">
             <mat-icon>question_answer</mat-icon>
-          </button>
+          </button> -->
         </div>
         <div class="col-md-8 col-sm-8 agent-actions">
 <!--          <button mat-icon-button (click)="ctiControlBar()"-->
 <!--                  matTooltip="Chat" aria-label="Chat">-->
 <!--            <mat-icon>question_answer</mat-icon>-->
 <!--          </button>-->
-          <ul class="list-group list-group-horizontal agent-controls call-controls" *ngIf="isCallActive && !ctiBarView && !isMobileDevice">
+          <!-- <ul class="list-group list-group-horizontal agent-controls call-controls" *ngIf="isCallActive && !ctiBarView && !isMobileDevice">
             <li class="list-group-item" *ngIf="isCallActive && !ctiBarView">
               <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}"
                       matTooltip="Chat" aria-label="Chat">
                 <mat-icon>question_answer</mat-icon>
               </button>
             </li>
-            <!--            <li class="list-group-item">-->
-            <!--              <button mat-icon-button (click)="isBotSuggestions = !isBotSuggestions" [ngClass]="{'active-action': isBotSuggestions}"-->
-            <!--                      matTooltip="Suggestions" aria-label="Suggestions">-->
-            <!--                <img src="assets/images/robot-dark.svg" alt="Suggestions"/>-->
-            <!--              </button>-->
-            <!--            </li>-->
-          </ul>
+                       <li class="list-group-item">
+                         <button mat-icon-button (click)="isBotSuggestions = !isBotSuggestions" [ngClass]="{'active-action': isBotSuggestions}"
+                                 matTooltip="Suggestions" aria-label="Suggestions">
+                           <img src="assets/images/robot-dark.svg" alt="Suggestions"/>
+                         </button>
+                       </li>
+          </ul> -->
           <mat-menu #agentControllForMobile="matMenu" [overlapTrigger]="true"  backdropClass="mobile-menu-backdrop" panelClass="custom-pane">
             <div class="{{isMobileDevice ? 'mobile-chat-controls'  : ''}}" >
               <div class="menu-header-mobile">
@@ -710,7 +710,8 @@
                                 conversationSettings.isMessageFormattingEnabled
                                   ? (referredMessage.body.markdownText | linkify | ibsformat)
                                   : (referredMessage.body.markdownText | linkify)
-                              "></span>
+                              "
+                            ></span>
                             <!--                            <span class="message-stamp yellow">-->
                             <!--                              <span class="chat-time red">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
                             <!--                            </span>-->
@@ -1591,7 +1592,7 @@
                                   <button mat-mini-fab (click)="toggleAudioPlayback(index)">
                                     <i class="material-icons">{{ callRecording.paused ? "play_arrow" : "pause" }} </i>
                                   </button>
-                                  <audio id="{{ index }}" #callRecording src="{{ message?.body?.data?.recordingUrl }}"></audio>
+                                  <audio id="{{ index }}" #callRecording src="{{message?.body?.data?.recordingUrl}}"></audio>
                                 </li>
                               </ul>
                             </div>
@@ -1623,10 +1624,6 @@
                                       </ng-container>
                                     </li>
 
-                                    <li class="agent-pic call-services">
-                                      <span>{{
-                                        callData?.additionalDetail?.dialog?.queueName ? callData?.additionalDetail?.dialog?.queueName : "N/A"
-                                      }}</span>
                                     <li
                                       matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
                                         callData?.additionalDetail?.dialog?.queueName ? callData?.additionalDetail?.dialog?.queueName : 'N/A'
@@ -1669,12 +1666,9 @@
                                           callData.additionalDetail?.dialog?.wrapUpItems && callData.additionalDetail?.dialog?.wrapUpItems.length > 0
                                         "
                                       >
-                                        <!-- <span *ngFor="let wrapup of callData.additionalDetail?.dialog?.wrapUpItems">
-                                          {{ wrapup }}
-                                        </span> -->
 
                                         <span
-                                          matTooltip="{{ wrapup }}"
+                                          matTooltip="{{ wrapup }}ee"
                                           *ngFor="let wrapup of callData?.additionalDetail?.dialog?.wrapUpItems | sliceFilter: 0:2"
                                         >
                                           {{ wrapup }}
@@ -1688,7 +1682,7 @@
                                             "
                                           >
                                             <span matTooltip="{{ remainingValues?.join(', ') }}"
-                                              >+{{ callData.additionalDetail?.dialog?.wrapUpItems?.length - 1 }}</span
+                                              >+{{ callData.additionalDetail?.dialog?.wrapUpItems?.length - 2 }}</span
                                             >
                                           </ng-container>
                                         </ng-container>
@@ -1715,7 +1709,7 @@
                                             }}
                                           </span>
                                         </ng-container>
-
+    
                                         <ng-container
                                           *ngIf="
                                           callData.additionalDetail?.dialog?.wrapUpItems &&
@@ -1723,7 +1717,7 @@
                                           "
                                         >
                                           <span
-                                            matTooltip="{{ wrapup }}"
+                                            matTooltip="{{ wrapup}}"
                                             *ngFor="let wrapup of callData.additionalDetail?.dialog?.wrapUpItems | sliceFilter: 0:2"
                                           >
                                             {{ wrapup }}
@@ -2546,6 +2540,7 @@
               class="quoted-message-cancel"
               (click)="
                 quotedMessage = '';
+                replyToMessageId = null;
                 originalMessageId = null;
                 commentId = null;
                 privateMessageReply = null;
@@ -2928,7 +2923,7 @@
         <ul class="call-actions">
           <!-- <li><button disabled mat-fab><mat-icon>mic</mat-icon></button></li> -->
           <li>
-            <button (click)="ctiControlBar()" mat-fab><mat-icon>picture_in_picture_alt </mat-icon></button>
+            <button (click)="ctiControlBar(conversation)" mat-fab><mat-icon>picture_in_picture_alt </mat-icon></button>
           </li>
           <li *ngIf="_sipService.isMuted == false">
             <button matTooltip="{{ 'globals.mute' | translate }}" (click)="_sipService.muteCallOnSip()" mat-fab><mat-icon>mic</mat-icon></button>
@@ -2996,8 +2991,10 @@
         </div>
         <div class="note-area col-md-12">
           <h4>{{ "chat-features.interactions.message" | translate }}</h4>
-          <textarea [(ngModel)]="assistanceRequestNote" rows="5"></textarea>
+          <textarea maxlength="1000" [(ngModel)]="assistanceRequestNote" rows="5"></textarea>
+          <label *ngIf="assistanceRequestNote?.length > 0" class="typing-counter">{{ assistanceRequestNote?.length }}/1000</label>
         </div>
+
       </div>
     </div>
 

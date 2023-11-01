@@ -16,7 +16,7 @@ import { snackbarService } from "src/app/services/snackbar.service";
 export class AnnouncementDialogComponent implements OnInit {
   announceDateMin = new Date();
   maxDate;
-  expireDateMax = new Date();
+  expireDateMax=new Date();
   expireDateMin = new Date();
   FilterSelected = "all";
   announcements = [];
@@ -54,7 +54,7 @@ export class AnnouncementDialogComponent implements OnInit {
     private _translateService: TranslateService,
     private _snackbarService: snackbarService,
     public dialogRef: MatDialogRef<AnnouncementDialogComponent>, @Inject(MAT_DIALOG_DATA) public dataID: any
-  ) { }
+  ) {}
 
   ngOnInit() {
     let date = new Date(this.expireDateMin);
@@ -80,7 +80,7 @@ export class AnnouncementDialogComponent implements OnInit {
           "scheduledTime": this.announceDate.setValue(res.scheduledTime),
           "supervisorId": this.supervisorId,
           "supervisorName": this.supervisor,
-        }
+        };
       });
 
     }
@@ -171,8 +171,8 @@ export class AnnouncementDialogComponent implements OnInit {
     _date.setMinutes(_date.getMinutes() + 10);
 
 
-    this.expireDateMax = new Date(this.expireDateMin);
-    this.maxDate = this.expireDateMax.setHours(120);
+    this.expireDateMax=new Date(this.expireDateMin);
+    this.maxDate= this.expireDateMax.setHours(120);
 
     this.expireDate = new FormControl(_date, [Validators.required]);
   }

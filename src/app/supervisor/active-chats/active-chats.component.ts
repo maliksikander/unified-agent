@@ -59,7 +59,7 @@ export class ActiveChatsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadLabels()
+    this.loadLabels();
     this.filter = this.route.snapshot.queryParamMap.get("filter") ? this.route.snapshot.queryParamMap.get("filter") : "agents";
     if (this.filter == "agents") {
       this.FilterSelected = "agents";
@@ -150,6 +150,7 @@ export class ActiveChatsComponent implements OnInit {
     this._httpService.getAllActiveChatsWithBots().subscribe(
       (e) => {
         this.activeChatListWithBots = e;
+        console.log("bots chats", this.activeChatListWithBots)
         // Sort the activeChatListWithBots array by activeSince property
         for (let data of this.activeChatListWithBots) {
           this.sortChatsByActiveSince(data.chats)

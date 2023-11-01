@@ -201,7 +201,15 @@ function postMessage(obj, callback) {
             blind_transfer(obj.parameter.numberToTransfer, obj.parameter.clientCallbackFunction);
             break;
         case 'SST_Queue':
-            blind_transfer_queue(obj.parameter.numberToTransfer, obj.parameter.queue, obj.parameter.queueType, obj.parameter.clientCallbackFunction);
+            blind_transfer_queue(obj.parameter.numberToTransfer, obj.parameter.queue, obj.parameter.queueType, obj.parameter.clientCallbackFunction,obj.parameter.dialogId);
+            break;
+        case 'makeConsult':
+            makeConsultCall(obj.parameter.numberToConsult, obj.parameter.clientCallbackFunction);
+            // console.log('Freeswitch do not support makeConsult currently');
+            break;
+        case 'consultTransfer':
+            makeConsultTransferCall(obj.parameter.clientCallbackFunction);
+            // console.log('Freeswitch do not support consultTransfer currently');
             break;
         case 'silentMonitor':
             console.log('Freeswitch do not support silentMonitor currently');
@@ -739,7 +747,10 @@ function initiate_call(calledNumber, callback) {
                     outboundDialingdata.response.dialog.participants[0].startTime = datetime;
                     outboundDialingdata.response.dialog.participants[0].state = "INITIATED";
                     outboundDialingdata.response.dialog.state = "INITIATED";
-                    callback(JSON.parse(JSON.stringify(outboundDialingdata)));
+                    outboundDialingdata.response.dialog.isCallEnded = 0;
+                    var { session, ...dataToPass } = outboundDialingdata;
+                    callback(dataToPass);
+                    SendPostMessage(dataToPass);
                 },
                 onTrying: (response) => {
                     console.log("INITIATING response = onTrying", response);
@@ -774,7 +785,7 @@ function initiate_call(calledNumber, callback) {
                         outboundDialingdata.response.dialog.participants[0].startTime = datetime;
                         outboundDialingdata.response.dialog.participants[0].state = "INITIATING";
                         outboundDialingdata.response.dialog.state = "INITIATING";
-
+                        outboundDialingdata.response.dialog.isCallEnded = 0;
                         dialogStatedata.response.dialog.participants[0].startTime = datetime;
                         dialogStatedata.response.dialog.participants[0].state = "INITIATING";
                         dialogStatedata.response.dialog.state = "INITIATING";
@@ -912,8 +923,10 @@ function blind_transfer(numberToTransfer, callback) {
         error("generalError", loginid, e.message, callback);
     })
 }
-function blind_transfer_queue(numberToTransfer, queue, queuetype, callback) {
-    const undefinedParams = checkUndefinedParams(blind_transfer_queue, [numberToTransfer, queue, queuetype, callback]);
+function blind_transfer_queue(numberToTransfer, queue, queuetype, callback,dialogId) {
+    var res= lockFunction("blind_transfer_queue", 500); // --- seconds cooldown
+    if(!res)return;
+    const undefinedParams = checkUndefinedParams(blind_transfer_queue, [numberToTransfer, queue, queuetype, callback,dialogId]);
 
     if (undefinedParams.length > 0) {
         // console.log(`Error: The following parameter(s) are undefined or null: ${undefinedParams.join(', ')}`);
@@ -1626,6 +1639,38 @@ function getParameterNames(func) {
         return match[1].split(',').map(param => param.trim());
     }
     return [];
+}
+function SendPostMessage(data){
+    // try{
+    //     var obj = JSON.stringify(data, getCircularReplacer());
+    //     window.postMessage(obj, "*"); // "*" means sending to all origins
+    //     console.log('post message sent');
+    // }catch(e){
+    //     console.log("Exception: ",e);
+    // }
+}
+
+const getCircularReplacer = () => {
+    const seen = new WeakSet();
+    return (key, value) => {
+      if (typeof value === 'object' && value !== null) {
+        if (seen.has(value)) {
+          return;
+        }
+        seen.add(value);
+      }
+      return value;
+    };
+  };
+
+function terminateAllCalls(){
+    if(calls.length > 0)
+    for (let index = 0; index < calls.length; index++) {
+        var element = calls[index];
+        if (element.response.dialog.id) {
+             terminate_call(element.response.dialog.id);
+        }
+    }
 }
 // Reusable function to check and set the lock state for a specific function
 function lockFunction(funcName, delay) {

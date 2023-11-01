@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Inject, OnInit, Output, QueryList, SimpleChanges, ViewChild, ViewChildren } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, SimpleChanges, ViewChild, ViewChildren,Inject } from "@angular/core";
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
@@ -15,7 +15,6 @@ import { ConfirmationDialogComponent } from "src/app/new-components/confirmation
 import { TranslateService } from "@ngx-translate/core";
 import { CallControlsComponent } from "../../new-components/call-controls/call-controls.component";
 import { ConversationSettings } from "../../models/conversationSetting/conversationSettings";
-
 import { SipService } from "src/app/services/sip.service";
 import { HighlightResult } from "ngx-highlightjs";
 import { SendSmsComponent } from "../send-sms/send-sms.component";
@@ -49,6 +48,7 @@ export class InteractionsComponent implements OnInit {
   scrollSubscriber;
   labels: Array<any> = [];
   quotedMessage: any;
+  replyToMessageId: any;
   originalMessageId: any;
   privateMessageReply: any;
   viewFullCommentAction: boolean = false;
@@ -67,7 +67,6 @@ export class InteractionsComponent implements OnInit {
 
   isAudioPlaying: boolean[] = [];
   isDialogClosed;
-
   chatDuringCall = false;
   isVideoCam = false;
   isMute = false;
@@ -79,6 +78,7 @@ export class InteractionsComponent implements OnInit {
   videoSrc = "assets/video/angry-birds.mp4";
   element;
   dragPosition = { x: 0, y: 0 };
+
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -153,12 +153,13 @@ export class InteractionsComponent implements OnInit {
     public _finesseService: finesseService,
     private snackBar: MatSnackBar,
     public _sipService: SipService,
-    private _translateService: TranslateService // @Inject(DOCUMENT) public documentScreen: any
+    private _translateService: TranslateService
   ) {}
+
   ngOnInit() {
     this.isCallActive = this._sipService.isCallActive;
     this.element = document.documentElement;
-    console.log("i am called hello", this._sipService.isCallActive);
+    // console.log("i am called hello", this._sipService.isCallActive)
     if (this._sharedService.isCompactView) {
       this.isMobileDevice = true;
       console.log("this is a compact view Interactions view ?", this.isMobileDevice);
@@ -200,10 +201,24 @@ export class InteractionsComponent implements OnInit {
     });
 
     if (this.conversation && this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
-      if (this._sipService.isCallActive == true && this._sipService.isToolbarActive == false) this.ctiControlBar();
-      this.getVoiceChannelSession();
+      if (this._sipService.dialogRef) {
+        // console.log("yo==>");
+        this._sipService.isToolbarActive = false;
+        this._sipService.dialogRef.close();
+        // if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
+      }
+      if (this._sipService.isCallActive == true && this._sipService.isToolbarActive == false) {
+        // console.log("Test1==>");
+        this.ctiControlBar({ conversation: this.conversation });
+        this.getVoiceChannelSession();
+      } 
+      // else {
+        // console.log("Test==>");
+        // this._sipService.dialogRef
+      // }
+      // this.getVoiceChannelSession();
     }
-
+ 
     this.wrapUpFormData = {
       header: this._translateService.instant("chat-features.interactions.wrapup"),
       wrapUpDialog: this.conversation.wrapUpDialog,
@@ -368,7 +383,6 @@ export class InteractionsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {});
     this._cacheService.clearOutboundSmsDialogData();
-    this._socketService.topicUnsub(this.conversation);
   }
 
   //To open the quoted area
@@ -1375,46 +1389,9 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  // ctiCallActive() {
-  //   this.ctiBoxView = false;
-  //   this.ctiBarView = false;
-  //   this.isAudioCall = true;
-  //   this.isConversationView = false;
-  //   if (this.fullScreenView) {
-  //     this.exitFullscreen();
-  //   }
-  // }
-  // ctiControlBar() {
-  //   this.isConversationView = true;
-  //   this.ctiBoxView = true;
-  //   this.ctiBarView = true;
-  //   this.chatDuringCall = false;
-  //   this._sipService.isToolbarActive = true;
-  //   this._sipService.isToolbarDocked = false;
-  //   const dialogRef = this.dialog.open(CallControlsComponent, {
-  //     panelClass: "call-controls-dialog",
-  //     hasBackdrop: false,
-  //     position: {
-  //       top: "8%",
-  //       right: "8%"
-  //     },
-  //     data: { conversation: this.conversation }
-  //   });
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     this.isAudioCall = true;
-  //     this.ctiCallActive();
-  //     // this._sipService.isToolbarDocked = true;
-  //     if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
-  //   });
-  // }
-
-  ctiControlBar() {
-    this.isConversationView = true;
+  ctiControlBar(data) {
     this.ctiBoxView = true;
-    this.ctiBarView = true;
-    this.isAudioCall = true;
-    this.isCallActive = true;
-    this.chatDuringCall = false;
+    this.ctiBarView = false;
     this._sipService.isToolbarActive = true;
     this._sipService.isToolbarDocked = false;
     const dialogRef = this.dialog.open(CallControlsComponent, {
@@ -1425,11 +1402,11 @@ export class InteractionsComponent implements OnInit {
         top: "8%",
         right: "8%"
       },
-      data: { conversation: this.conversation }
+      data
     });
     dialogRef.afterClosed().subscribe((result) => {
-      // this.isAudioCall = true;
-      // this.ctiCallActive();
+      this.ctiBoxView = false;
+      this.ctiBarView = true;
       this._sipService.isToolbarDocked = true;
       if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
     });
@@ -1445,28 +1422,27 @@ export class InteractionsComponent implements OnInit {
       this.cxVoiceSession = this.conversation.activeChannelSessions.find((channelSession) => {
         return channelSession.channel.channelType.name.toLowerCase() === "cx_voice";
       });
-      if (this.cxVoiceSession) {
-        const cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
-        const cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
-        if (cacheDialog) {
-          const currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
-          const startTime = new Date(currentParticipant.startTime);
-          this._sipService.timeoutId = setInterval(() => {
-            const currentTime = new Date();
-            const timedurationinMS = currentTime.getTime() - startTime.getTime();
-            this.msToHMS(timedurationinMS);
-          }, 1000);
-        } else {
-          console.log("No Dialog Found==>");
-        }
-      } else {
-        clearInterval(this._sipService.timeoutId);
-      }
+      // if (this.cxVoiceSession) {
+      //   const cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
+      //   const cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
+      //   if (cacheDialog) {
+      //     const currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
+      //     const startTime = new Date(currentParticipant.startTime);
+      //     this._sipService.timeoutId = setInterval(() => {
+      //       const currentTime = new Date();
+      //       const timedurationinMS = currentTime.getTime() - startTime.getTime();
+      //       this.msToHMS(timedurationinMS);
+      //     }, 1000);
+      //   } else {
+      //     console.log("No Dialog Found==>");
+      //   }
+      // } else {
+      //   clearInterval(this._sipService.timeoutId);
+      // }
     } catch (e) {
       console.error("[getVoiceChannelSession] Error:", e);
     }
   }
-
   msToHMS(ms) {
     try {
       // Convert to seconds:
@@ -1487,6 +1463,7 @@ export class InteractionsComponent implements OnInit {
       console.error("[msToHMS] Error:", e);
     }
   }
+
 
   formatNumber(num) {
     return num.toString().padStart(2, "0");
