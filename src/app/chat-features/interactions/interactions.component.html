@@ -50,6 +50,10 @@
           </button> -->
         </div>
         <div class="col-md-8 col-sm-8 agent-actions">
+          <button mat-icon-button (click)="openEmailComposer(emailComposeTemplate)"
+                  matTooltip="Chat" aria-label="Chat">
+            <mat-icon>email</mat-icon>
+          </button>
 <!--          <button mat-icon-button (click)="ctiControlBar()"-->
 <!--                  matTooltip="Chat" aria-label="Chat">-->
 <!--            <mat-icon>question_answer</mat-icon>-->
@@ -1070,7 +1074,7 @@
                     <mat-menu #menu="matMenu">
                       <button mat-menu-item class="reply-trigger" (click)="onQuotedReply(message)">reply</button>
                     </mat-menu>
-                    <div [style.display]="(message.header.sender.type | lowercase) == 'app' ? 'none' : '' " class="{{(message.header.sender.type | lowercase) !== 'app' && !(message.header.schedulingMetaData) && (message.body.type | lowercase) !== 'delieverynotification' }}"
+                    <div [style.display]="(message.header.sender.type | lowercase) == 'app' || (message.body.type | lowercase) == 'email' ? 'none' : '' " class="{{(message.header.sender.type | lowercase) !== 'app' && !(message.header.schedulingMetaData) && (message.body.type | lowercase) !== 'delieverynotification' }}"
                     *ngIf="((message.header.sender.type | lowercase) !== 'app' && !(message.header.schedulingMetaData) && (message.body.type | lowercase) !== 'delieverynotification' && (message.body.type | lowercase) != 'comment')
                            || ((message.body.type | lowercase) != 'outboundsms' && (message.body.type | lowercase) != 'comment' && (message.body.type | lowercase) != 'url' && message.body.markdownText)
                            || ((message.body.type | lowercase) == 'comment' && (message.body.itemType | lowercase) == 'text' && (message.header.sender.type | lowercase) == 'agent')
@@ -1856,6 +1860,47 @@
                     </div>
 
                     <!-- <--------------------------------------------Scheduled Activity END-------------------------------------------->
+
+                      <!-- <-------------------------------------Email Activity--------------------------------------------------->
+                    <div *ngIf="(message.body.type | lowercase) == 'email'"
+                    class="voice-activity-main panel-divider {{message.header.sender.type | lowercase}}">
+                 <mat-expansion-panel>
+                   <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+                     <mat-panel-title>
+                       <div class="panel-header email-panel-header">
+                         <ul>
+                           <li  matTooltip="{{message.header.sender.senderEmail}}"><span>From:</span> {{message.header.sender.senderEmail}}</li>
+                           <li  matTooltip="{{message.header.sender.emailTo}}"><span>To:</span> {{message.header.sender.emailTo}}</li>
+                           <li  matTooltip="{{message.header.sender.emailSubject}}"><span>Subject:</span> {{message.header.sender.emailSubject}}</li>
+                            <li>
+                             {{ message.header.timestamp | date: "EEEE, mm d, y, h:mm:ss a" }}
+                           </li>
+                         </ul>
+                       </div>
+                     </mat-panel-title>
+                   </mat-expansion-panel-header>
+                   <div class="custom-message-type email-view">
+<!--                          <p>{{  message.body.markdownText }}</p>-->
+
+                     <quill-editor  [(ngModel)]="message.body.htmlBody"   [readOnly]="true"
+                                    [style]= "{ border:0}"
+                                    [modules]="{ toolbar: false }" customToolbarPosition="bottom"> </quill-editor>
+
+
+                   </div>
+                   <div class="email-view-actions">
+                     <span class="view-email-thread" (click)="openEmailThreaded(emailThreadedViewTemplate, message.body.markdownText)">view full thread</span>
+                     <ul>
+                       <li  (click)="openEmailComposer(emailComposeTemplate)"><mat-icon>reply</mat-icon></li>
+                       <li><mat-icon>reply_all</mat-icon></li>
+                       <li><mat-icon>forward</mat-icon></li>
+                       <li><mat-icon>print</mat-icon></li>
+                     </ul>
+                   </div>
+                 </mat-expansion-panel>
+               </div>
+
+               <!-- <--------------------------------------------Email Activity END-------------------------------------------->
 
                     <!-- ---------------------------------- Social Media COMMENT STARTED -------------------------------- -->
 
@@ -3007,6 +3052,195 @@
       <!--      <button mat-button *ngIf="isTransfer" [mat-dialog-close]="true" class="success-btn" cdkFocusInitial-->
       <!--              (click)="transferRequest(chatConsultTo.name, ' ')">Transfer-->
       <!--      </button>-->
+    </div>
+  </div>
+</ng-template>
+
+<!--Email compose dialog-->
+<ng-template #emailComposeTemplate>
+  <div class="compose-dialog-main">
+<div class=" email-compose-dialog-header">
+  <div class="email-compose-head">
+    <button mat-button mat-dialog-close>
+      <mat-icon>reply</mat-icon>
+    </button>
+    <span>
+          <button mat-button>
+           <mat-icon>web_asset</mat-icon>
+          </button>
+          <button mat-button mat-dialog-close>
+           <mat-icon>cancel_presentation</mat-icon>
+          </button>
+        </span>
+  </div>
+
+  <div class="email-compose-head email-selection-option">
+  <div class="sender-selection">
+    <label>From</label>
+    <mat-form-field>
+      <mat-select [(ngModel)]="selectedValue" name="emailFrom">
+        <mat-option *ngFor="let sender of emailFrom" [value]="sender.value">
+          {{sender.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+</div>
+  </div>
+
+  <div class="email-compose-head email-to">
+    <div class="sender-selection">
+      <label>To</label>
+
+      <mat-form-field class="email-to-list">
+        <mat-chip-list #emailToList>
+          <mat-chip *ngFor="let email of emailTo" [selectable]="selectable"
+                    [removable]="removable" (removed)="remove(email)">
+            {{email.email}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input
+            [matChipInputFor]="emailToList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+      </mat-form-field>
+    </div>
+    <div class="bcc-selection">
+      <label class="pr-2" *ngIf="!emailCc" (click)="emailCc = true">Cc</label>
+      <label *ngIf="!emailBcc" (click)="emailBcc = true">Bcc</label>
+    </div>
+  </div>
+
+  <div class="email-compose-head email-to" *ngIf="emailCc">
+    <div class="sender-selection">
+      <label>Cc</label>
+
+      <mat-form-field class="email-to-list">
+        <mat-chip-list #emailCc>
+          <mat-chip *ngFor="let email of emailTo" [selectable]="selectable"
+                    [removable]="removable" (removed)="remove(email)">
+            {{email.email}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input
+            [matChipInputFor]="emailCc"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="email-compose-head email-to" *ngIf="emailBcc">
+    <div class="sender-selection">
+      <label>Bcc</label>
+
+      <mat-form-field class="email-to-list">
+        <mat-chip-list #emailToBcc>
+          <mat-chip *ngFor="let email of emailTo" [selectable]="selectable"
+                    [removable]="removable" (removed)="remove(email)">
+            {{email.email}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input
+            [matChipInputFor]="emailToBcc"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="email-compose-head email-to">
+    <div class="sender-selection">
+      <label>Subject</label>
+
+      <mat-form-field class="email-to-list">
+          <input matInput>
+      </mat-form-field>
+    </div>
+  </div>
+</div>
+
+    <div class="dialog-main-content m-0">
+      <div class="row m-0">
+        <div class="email-compose-area w-100">
+          <form>
+            <quill-editor  [modules]="quillConfig" customToolbarPosition="bottom"> </quill-editor>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-trigger email-trigger">
+      <span>
+      <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial>
+        Send Email
+      </button>
+      <button mat-button mat-dialog-close class="close-btn">Save as draft</button>
+      </span>
+      <button mat-icon-button matTooltip="delete" class="discard-email">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+
+
+<!--Email Threaded view dialog-->
+<ng-template #emailThreadedViewTemplate>
+  <div class="compose-dialog-main">
+    <div class="email-subject-view row"><span>Upgrade my current broadband package and install new modem</span>   <button mat-button mat-dialog-close>
+      <mat-icon>cancel_presentation</mat-icon>
+    </button>
+    </div>
+    <div class="threaded-main-view">
+    <ng-container *ngFor="let emailData of emailThreadedData">
+    <div class=" email-compose-dialog-header email-preview-dialog-header">
+      <div class="email-compose-head email-selection-option">
+        <div class="sender-selection">
+          <label>From</label>
+         <span>{{selectedValue}}</span>
+        </div>
+      </div>
+
+      <div class="email-compose-head email-to">
+        <div class="sender-selection">
+          <label>To</label>
+          <span>alex.franco@gmail.com</span>
+        </div>
+      </div>
+      <div class="email-compose-head email-to">
+        <div class="sender-selection">
+          <label>Subject</label>
+          <span>Re: Upgrade my current broadband package and install new modem</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dialog-main-content m-0 mt-3">
+      <div class="row m-0">
+        <div class="email-compose-area w-100">
+          <quill-editor [(ngModel)]="emailThreadedView" [readOnly]="true"
+                        [style]="{ border:0}"
+                        [modules]="{ toolbar: false }" customToolbarPosition="bottom"></quill-editor>
+        </div>
+      </div>
+    </div>
+
+    <div class="email-view-actions justify-content-end">
+      <ul>
+        <li  (click)="openEmailComposer(emailComposeTemplate)"><mat-icon>reply</mat-icon></li>
+        <li><mat-icon>reply_all</mat-icon></li>
+        <li><mat-icon>forward</mat-icon></li>
+        <li><mat-icon>print</mat-icon></li>
+      </ul>
+    </div>
+    </ng-container>
     </div>
   </div>
 </ng-template>

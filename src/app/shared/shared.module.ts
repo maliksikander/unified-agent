@@ -105,6 +105,8 @@ import { SearchSuggestionsPipe } from "./pipes/searchSuggestions.pipe";
 import { checkCiscoSessionPipe } from "./pipes/checkCiscoSession.pipe";
 import { checkCXSessionPipe } from "./pipes/checkCXSession.pipe";
 import { countAgentPartcipantsPipe } from "./pipes/countAgentParticipants.pipe";
+import {QuillModule} from "ngx-quill";
+
 @NgModule({
   declarations: [
     getFormattedBytesPipe,
@@ -226,7 +228,9 @@ import { countAgentPartcipantsPipe } from "./pipes/countAgentParticipants.pipe";
     AngularMultiSelectModule,
     NgScrollbarModule,
     NgxTimerModule,
-    TranslateModule
+    TranslateModule,
+    QuillModule.forRoot()
+
   ],
   exports: [
     NgxTimerModule,
@@ -340,7 +344,9 @@ import { countAgentPartcipantsPipe } from "./pipes/countAgentParticipants.pipe";
     checkCiscoSessionPipe,
     checkCXSessionPipe,
     returnSchemaByKeyPipe,
-    returnSchemaByChannelTypePipe
+    returnSchemaByChannelTypePipe,
+    QuillModule
+
   ]
 })
 export class SharedModule {}

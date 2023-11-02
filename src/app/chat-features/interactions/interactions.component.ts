@@ -18,10 +18,20 @@ import { ConversationSettings } from "../../models/conversationSetting/conversat
 import { SipService } from "src/app/services/sip.service";
 import { HighlightResult } from "ngx-highlightjs";
 import { SendSmsComponent } from "../send-sms/send-sms.component";
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatChipInputEvent} from '@angular/material/chips';
+import {FormBuilder, FormGroup} from '@angular/forms';
+
 // import {DOCUMENT} from '@angular/common';
 
 // declare var EmojiPicker: any;
-
+interface EmailSender {
+  value: string;
+  viewValue: string;
+}
+export interface Email {
+  email: string;
+}
 @Component({
   selector: "app-interactions",
   templateUrl: "./interactions.component.html",
@@ -41,7 +51,25 @@ export class InteractionsComponent implements OnInit {
   @ViewChild("mainScreen", { static: false }) elementViewSuggestions: ElementRef;
   @ViewChild("consultTransferTrigger", { static: false }) consultTransferTrigger: any;
   @ViewChildren("callRecording") audioPlayers: QueryList<ElementRef>;
+  
 
+  emailFrom: EmailSender[] = [
+    {value: 'adam.stanler@test.com', viewValue: 'adam.stanler@test.com'},
+    {value: 'john.miller@test.com', viewValue: 'john.miller@test.com'},
+    {value: 'steve.alax@test.com', viewValue: 'steve.alax@test.com'},
+  ];
+  visible = true;
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  emailTo: Email[] = [
+    {email: 'amdam.s@gmail.com'},
+  ];
+  selectedValue = this.emailFrom[2].value;
+  emailCc = false;
+  emailBcc = false;
+  emailForm: FormGroup;
   isWhisperMode: boolean = false;
   dispayVideoPIP = true;
   wrapUpFormData
@@ -79,8 +107,32 @@ export class InteractionsComponent implements OnInit {
   videoSrc = 'assets/video/angry-birds.mp4';
   element;
   dragPosition = {x: 0, y: 0};
+  emailThreadedView: any;
+  emailThreadedData: any = [];
+  quillConfig = {
+    toolbar: {
+      container: [
+        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        ['code-block'],               // custom button values
+        [{'list': 'ordered'}, {'list': 'bullet'}],
+        [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
+        [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
+        [{'direction': 'rtl'}],                         // text direction
 
+        [{'size': ['small', false, 'large', 'huge']}],  // custom dropdown
+        //[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        [{'color': []}, {'background': []}],
 
+        [{'font': []}],
+        [{'align': []}],
+
+        ['clean'],                                         // remove formatting button
+
+        ['link', 'image']
+      ],
+
+    },
+  }
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
       let scroller = scrolle.target;
@@ -1565,5 +1617,55 @@ closeWrapDialog(data) {
     this.isVideoCall = false;
     this.isAudioCall = false;
     this.chatDuringCall = false;
+  }
+  openEmailThreaded(templateRef, e): void {
+    this.emailThreadedView = e;
+
+    for (let i = 0; i < (3); i++) {
+      this.emailThreadedData.push(this.emailThreadedView)
+    }
+    console.log(this.emailThreadedData, 'hello');
+    const dialogRef = this.dialog.open(templateRef, {
+      width: '70vw',
+      maxWidth: '950px',
+      panelClass: 'email-composer-dialog'
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+
+    });
+
+  }
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+    if ((value || '').trim()) {
+      this.emailTo.push({email: value.trim()});
+    }
+
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  remove(emailTo: Email): void {
+    const index = this.emailTo.indexOf(emailTo);
+
+    if (index >= 0) {
+      this.emailTo.splice(index, 1);
+    }
+  }
+  openEmailComposer(templateRef): void {
+
+    const dialogRef = this.dialog.open(templateRef, {
+      width: '70vw',
+      maxWidth: '950px',
+      panelClass: 'email-composer-dialog'
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+
+    });
+
   }
 }
