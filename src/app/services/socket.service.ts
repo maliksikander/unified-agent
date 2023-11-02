@@ -1725,7 +1725,19 @@ export class socketService {
       //     message.body.markdownText = data;
       //   });
       // }
-      message = null;
+
+      if (
+        cimEvent.data.task.state.reasonCode &&
+        cimEvent.data.task.state.reasonCode.toLowerCase() == "force_closed" &&
+        cimEvent.data.task.activeMedia[cimEvent.data.task.activeMedia.length - 1].type.direction.toLowerCase() == "direct_conference"
+      ) {
+        message = CimMessage;
+        message.body["displayText"] = "";
+        this._translateService.stream("socket-service.conference-request-has-cancelled").subscribe((data: string) => {
+          message.body.markdownText = data;
+        });
+
+      }
 
     }
 
