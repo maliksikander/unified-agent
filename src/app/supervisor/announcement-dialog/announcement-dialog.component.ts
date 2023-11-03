@@ -55,7 +55,7 @@ export class AnnouncementDialogComponent implements OnInit {
     private _snackbarService: snackbarService,
     public dialogRef: MatDialogRef<AnnouncementDialogComponent>, @Inject(MAT_DIALOG_DATA) public dataID: any
   ) {}
-  
+
   ngOnInit() {
     let date = new Date(this.expireDateMin);
     date.setMinutes(date.getMinutes() + 10);
@@ -70,7 +70,7 @@ export class AnnouncementDialogComponent implements OnInit {
     // this.maxDate= this.expireDateMax.setHours(120);
 
 
-  
+
     if (this.dataID !== null) {
       this.currentAnnouncement = this._httpService.getAnnouncementsById(this.dataID.value).subscribe(res => {
         this.setRowObj = {
@@ -80,7 +80,7 @@ export class AnnouncementDialogComponent implements OnInit {
           "scheduledTime": this.announceDate.setValue(res.scheduledTime),
           "supervisorId": this.supervisorId,
           "supervisorName": this.supervisor,
-        }
+        };
       });
 
     }
@@ -119,7 +119,7 @@ export class AnnouncementDialogComponent implements OnInit {
       "supervisorId": this.supervisorId,
       "supervisorName": this.supervisor
     }
-   
+
     this._httpService.addAnnouncemenent(this.postData).subscribe({
       next: (val: any) => {
         this.dialog.closeAll();
@@ -131,11 +131,11 @@ export class AnnouncementDialogComponent implements OnInit {
         this.dialog.closeAll();
       },
     });
-    this.dialog.closeAll();  
+    this.dialog.closeAll();
   }
 
   updateAnnouncement() {
-   
+
     this.editAnnouncementObj = {
       "teams": this.selectedTeams,
       "announcementText": this.announcementMessage.value,
@@ -153,7 +153,7 @@ export class AnnouncementDialogComponent implements OnInit {
         console.error(err);
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-Update-Announcement"), "err");
         this.dialog.closeAll();
-      
+
       },
     });
 

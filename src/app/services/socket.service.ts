@@ -18,7 +18,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { announcementService } from "./announcement.service";
 
-const mockTopicData: any = require("../mocks/mockTopicData.json");
+//const mockTopicData: any = require("../mocks/mockTopicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -96,12 +96,12 @@ export class socketService {
             "err"
           );
         }
-      } catch (err) { }
+      } catch (err) {}
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) { }
+        } catch (e) {}
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -113,7 +113,7 @@ export class socketService {
       this.isSocketConnected = true;
       this._sharedService.serviceChangeMessage({ msg: "closeAllPushModeRequests", data: null });
       // this._snackbarService.open("Connected", "succ");
-      this._snackbarService.open(this._translateService.instant("snackbar.Socket-Connected"), "succ",1000);
+      this._snackbarService.open(this._translateService.instant("snackbar.Socket-Connected"), "succ", 1000);
       console.log("socket connect " + e);
       if (this._router.url == "/login") {
         // this._router.navigate(["customers"]);
@@ -136,7 +136,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) { }
+        } catch (e) {}
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -252,8 +252,27 @@ export class socketService {
           verticalPosition: "bottom"
         });
       }
-
       this.removeConversation(res.conversationId);
+    });
+
+    this.socket.on("WRAP_UP_TIMER_STARTED", (res: any) => {
+      let sameTopicConversation = this.conversations.find((e) => {
+        return e.conversationId == res.conversationId;
+      });
+      sameTopicConversation.wrapUpDialog.show = true;
+      sameTopicConversation.wrapUpDialog.durationLeft = res.duration;
+
+      this.startWrapUpTimer(sameTopicConversation);
+    });
+
+    this.socket.on("WRAP_UP_CLOSED", (res: any) => {
+      console.log("WRAP_UP_CLOSED", res);
+
+      // let sameTopicConversation = this.conversations.find((e) => {
+      //   return e.conversationId == res.conversationId;
+      // });
+      // delete sameTopicConversation["agentState"];
+      // this.removeConversation(res.conversationId);
     });
 
     this.socket.on("socketSessionRemoved", (res: any) => {
@@ -308,7 +327,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) { }
+    } catch (err) {}
   }
 
   listen(eventName: string) {
@@ -422,10 +441,10 @@ export class socketService {
         this.handleNoAgentEvent(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "message_delivery_notification") {
         this.handleDeliveryNotification(cimEvent, conversationId);
-      }else if (cimEvent.type.toLowerCase() == "activity"){
-           console.log("DELIVERYNOTIFICATION event");
-           this.handleDeliveryNotification(cimEvent,conversationId);
-      }else if (cimEvent.name.toLowerCase() == "typing_indicator" && cimEvent.data.header.sender.type.toLowerCase() == "connector") {
+      } else if (cimEvent.type.toLowerCase() == "activity") {
+        console.log("DELIVERYNOTIFICATION event");
+        this.handleDeliveryNotification(cimEvent, conversationId);
+      } else if (cimEvent.name.toLowerCase() == "typing_indicator" && cimEvent.data.header.sender.type.toLowerCase() == "connector") {
         this.handleTypingStartedEvent(cimEvent, sameTopicConversation);
       } else if (cimEvent.name.toLowerCase() == "participant_role_changed") {
         this.handleParticipantRoleChangedEvent(cimEvent, conversationId);
@@ -443,16 +462,23 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) { }
+    } catch (e) {}
     this._cacheService.resetCache();
     this._snackbarService.open(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"), "err");
     alert(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"));
   }
+  //call on reload and on every new conversation
   onTopicData(topicData, conversationId, taskId) {
     // this.removeConversation(conversationId);
     let conversation = {
       conversationId: conversationId,
       taskId,
+      wrapUpDialog: {
+        show: false,
+        durationLeft: null,
+        timeLeft: null,
+        ref: null
+      },
       isTyping: null,
       messages: [],
       activeConversationData: topicData.conversationData,
@@ -478,7 +504,7 @@ export class socketService {
           event.data.header.channelSession = event.channelSession;
         }
       }
-      if(event.data.header && event.data.header.sender && event.data.header.sender.type.toLowerCase() == "connector"){
+      if (event.data.header && event.data.header.sender && event.data.header.sender.type.toLowerCase() == "connector") {
         event.data.header.sender.senderName = event.data.header.customer.firstName;
         event.data.header.sender.id = event.data.header.customer._id;
         event.data.header.sender.type = "CUSTOMER";
@@ -509,44 +535,38 @@ export class socketService {
           event.data.header["status"] = "sent";
           conversation.messages.push(event.data);
         }
-      } else if (event.name.toLowerCase() == "third_party_activity"  ) {
-     
-         if ( event.data.header.channelData.additionalAttributes.length > 0) {
-
-          const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => { return e.value.toLowerCase() == "outbound" });
+      } else if (event.name.toLowerCase() == "third_party_activity") {
+        if (event.data.header.channelData.additionalAttributes.length > 0) {
+          const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => {
+            return e.value.toLowerCase() == "outbound";
+          });
           if (isOutBoundSMSType) {
-            event.data.body['type'] = 'outboundsms';
+            event.data.body["type"] = "outboundsms";
 
-            const smsChannelType = this.filterChannelType('sms');
+            const smsChannelType = this.filterChannelType("sms");
             if (smsChannelType) {
               event.data.header.channelSession.channel.channelType = smsChannelType;
             }
             conversation.messages.push(event.data);
           }
         }
-         if(event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain'){
-          
-          const fakeChannelSession={
-            "channel":{
-              "channelType": event.data.header.schedulingMetaData.channelType,
+        if (event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == "plain") {
+          const fakeChannelSession = {
+            channel: {
+              channelType: event.data.header.schedulingMetaData.channelType
             },
-            "channelData":event.data.header.channelData,
+            channelData: event.data.header.channelData
+          };
+          event.data.header["channelSession"] = fakeChannelSession;
+          let status = this.getSchduledActivityStatus(topicEvents, event.data.id);
+
+          if (status) {
+            event.data.header["scheduledStatus"] = status;
           }
-          event.data.header['channelSession']=fakeChannelSession;
-         let status = this.getSchduledActivityStatus(topicEvents,event.data.id);
-
-         if(status){
-          event.data.header['scheduledStatus'] = status;
-         }
           conversation.messages.push(event.data);
-          console.log("event.data",conversation.messages)
-         // if(event.data.body.type == 'PLAIN')
-
-
-         
+          // if(event.data.body.type == 'PLAIN')
         }
-      }
-      else if (
+      } else if (
         [
           "task_enqueued",
           "no_agent_available",
@@ -567,7 +587,6 @@ export class socketService {
         event.data.body["isWhisper"] = true;
         conversation.messages.push(event.data);
       }
-      
     });
 
     this.processSeenMessages(conversation, topicEvents);
@@ -635,7 +654,12 @@ export class socketService {
     conversation.messageComposerState = this.isNonVoiceChannelSessionExists(conversation.activeChannelSessions);
     let index;
     let oldConversation = this.conversations.find((e, indx) => {
-      if (e.customer._id == topicData.customer._id) {
+      // if (e.customer._id == topicData.customer._id && !e.wrapUpDialog.show) {
+      //   index = indx;
+      //   conversation.index = e.index;
+      //   return e;
+      // }
+      if ((e.conversationId !='FAKE_CONVERSATION' && e.conversationId==conversation.conversationId)  ||  (e.customer._id == topicData.customer._id && e.conversationId =='FAKE_CONVERSATION')) {
         index = indx;
         conversation.index = e.index;
         return e;
@@ -658,7 +682,6 @@ export class socketService {
     // console.log("conversations==>", this.conversations);
     this._conversationsListener.next(this.conversations);
 
-    console.log("conversation.messages",conversation.messages)
     if (
       topicData &&
       topicData.channelSession &&
@@ -869,6 +892,9 @@ export class socketService {
         return conversation;
       }
     });
+    if (removedConversation.wrapUpDialog.ref) {
+      this.stopWrapUpTimer(removedConversation);
+    }
     if (index != -1) {
       this._sharedService.spliceArray(index, this.conversations);
       --this.conversationIndex;
@@ -990,7 +1016,6 @@ export class socketService {
 
   handleDeliveryNotification(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
-      console.log("converstion id",e)
       return e.conversationId == conversationId;
     });
     if (
@@ -1020,19 +1045,7 @@ export class socketService {
           selectedMessage["header"]["status"] = "failed";
         }
       }
-    } 
-    //else if(cimEvent.data.header.sender.type.toLowerCase() == "app" 
-    // &&(cimEvent.data.body.status.toLowerCase() == "failed" || cimEvent.data.body.status.toLowerCase() == "read" 
-    // || cimEvent.data.body.status.toLowerCase() == "delivered")){
-    //  console.log("schduled Activity ");
-    //  const selectedMessage = conversation.messages.find((message) => {
-    //   return message.id == cimEvent.data.body.messageId;
-    // });
-    // if (selectedMessage) {
-    //   selectedMessage["header"]["status"] = cimEvent.data.body.status.toLowerCase();
-    //   console.log("schduled Activity ", selectedMessage["header"]["status"] );
-    // }
-    // }
+    }
   }
 
   markAgentMessagesToSeenTillId(messages, id, sender) {
@@ -1174,10 +1187,18 @@ export class socketService {
     if (conversation) {
       if (this._cacheService.agent.id == cimEvent.data.conversationParticipant.participant.keycloakUser.id) {
         conversation.topicParticipant = cimEvent.data.conversationParticipant;
-        console.log("updated participant", conversation.topicParticipant);
       } else {
-        conversation.agentParticipants.push(cimEvent.data.conversationParticipant);
-        conversation.agentParticipants = conversation.agentParticipants.concat([]);
+        let agentParticipants = [];
+        conversation.agentParticipants.forEach((agentParticipant, index) => {
+          if (agentParticipant.participant.id == cimEvent.data.conversationParticipant.participant.id) {
+            if (cimEvent.data.conversationParticipant.role.toLowerCase() != "wrap_up") {
+              agentParticipants.push(cimEvent.data.conversationParticipant);
+            }
+          } else {
+            agentParticipants.push(agentParticipant);
+          }
+        });
+        conversation.agentParticipants = agentParticipants;
       }
       let message = this.createSystemNotificationMessage(cimEvent);
 
@@ -1257,7 +1278,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) { }
+    } catch (e) {}
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
@@ -1327,13 +1348,13 @@ export class socketService {
                     console.log("limit exceed");
                     this._snackbarService.open(
                       this._translateService.instant("snackbar.The-conversation-is-going-to-linking-with") +
-                      selectedCustomer.firstName +
-                      this._translateService.instant("snackbar.However-the-channel-identifier") +
-                      channelIdentifier +
-                      this._translateService.instant("snackbar.can-not-be-added-in") +
-                      selectedCustomer.firstName +
-                      attr +
-                      this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
+                        selectedCustomer.firstName +
+                        this._translateService.instant("snackbar.However-the-channel-identifier") +
+                        channelIdentifier +
+                        this._translateService.instant("snackbar.can-not-be-added-in") +
+                        selectedCustomer.firstName +
+                        attr +
+                        this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
                       "succ",
                       20000,
                       "Ok"
@@ -1694,22 +1715,45 @@ export class socketService {
 
     return message;
   }
+  startWrapUpTimer(conversation) {
+    console.log("start wrap up timer called");
+    conversation.wrapUpDialog.ref = setInterval(() => {
+      if (conversation.wrapUpDialog) {
+        if (conversation.wrapUpDialog.durationLeft > 0) {
+          // console.log("wrapUp dialog",conversation.wrapUpDialog)
+          // console.log("tick",conversation.wrapUpDialog.durationLeft)
+          conversation.wrapUpDialog.durationLeft--;
+        } else {
+          if (conversation.wrapUpDialog.durationLeft == 0) {
+            conversation.wrapUpDialog.show = false;
 
-  getSchduledActivityStatus(events,messageId){
-    
-    let statusEvent = events.find((event)=>{
-      if(event.name.toLowerCase()== 'third_party_activity'  && event.data.body.type.toLowerCase() == 'deliverynotification'){
-        return event.data.body.messageId == messageId
-       
+            // this.customerLeft('Wrap-up time for the conversation with ‘Jason Slayer’ has expired.', '');
+            this.stopWrapUpTimer(conversation);
+          }
+        }
+      } else {
+        this.stopWrapUpTimer(conversation);
       }
+    }, 1000);
+  }
 
+  stopWrapUpTimer(conversation) {
+    if (conversation.wrapUpDialog.ref) {
+      clearInterval(conversation.wrapUpDialog.ref);
+    }
+  }
+
+  getSchduledActivityStatus(events, messageId) {
+    let statusEvent = events.find((event) => {
+      if (event.name.toLowerCase() == "third_party_activity" && event.data.body.type.toLowerCase() == "deliverynotification") {
+        return event.data.body.messageId == messageId;
+      }
     });
-    if (statusEvent){
-       return statusEvent.data.body.status;
-    }else{
+    if (statusEvent) {
+      return statusEvent.data.body.status;
+    } else {
       return null;
     }
-
 
     // let status;
     // events.forEach((event)=>{
@@ -1717,7 +1761,7 @@ export class socketService {
     //     if(event.data.id == messageId){
     //       status =event.data.body.status;
     //     }
-        
+
     //   }
 
     // });
@@ -1725,8 +1769,6 @@ export class socketService {
     // //   return event.data.body.status;
     // // }
     // return status;
-
-    
   }
 
   topicUnsub(conversation) {
@@ -1760,12 +1802,12 @@ export class socketService {
   }
 
   filterChannelType(channelTypeName) {
-    const channelType = this._sharedService.channelTypeList.find((channelType) => { return channelType.name.toLowerCase() == channelTypeName.toLowerCase() });
+    const channelType = this._sharedService.channelTypeList.find((channelType) => {
+      return channelType.name.toLowerCase() == channelTypeName.toLowerCase();
+    });
 
     return channelType;
-
   }
-
 
   createConversationDataMessage(cimEvent) {
     let message: any = {
@@ -1807,7 +1849,7 @@ export class socketService {
 
   processCommentActions(cimMessages, message) {
     if (["like", "hide", "delete"].includes(message.body.itemType.toLowerCase())) {
-      let commentMessage = this.getCimMessageByMessageId(cimMessages, message.header.replyToMessageId);
+      let commentMessage = this.getCimMessageByMessageId(cimMessages, message.header.originalMessageId);
       if (commentMessage) {
         if (message.body.itemType.toLowerCase() == "like") {
           commentMessage["isLiked"] = true;

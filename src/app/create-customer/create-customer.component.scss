@@ -64,6 +64,14 @@
   //.row .col{
   //  height: 60px;
   //}
+  @media (min-width: 768px) {
+    .col-md-6 {
+      -ms-flex: 0 0 49%;
+      flex: 0 0 49%;
+      max-width: 49%;
+    }
+  }
+
 }
 
 .red-clr {
@@ -162,6 +170,7 @@ span.field-channel {
 }
 .mat-dialog-actions {
   border-top: 1px solid #ececec;
+  margin: 0;
 }
 
 .row-customer-form{

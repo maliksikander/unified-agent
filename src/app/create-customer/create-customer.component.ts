@@ -197,7 +197,7 @@ export class CreateCustomerComponent implements OnInit {
     if (data.labels == "") data.labels = [];
     data = this.fetchTheIdsOfLabels(data);
     data.isAnonymous = false;
-    
+
     this.createCustomer(data);
   }
 

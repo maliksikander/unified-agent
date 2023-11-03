@@ -9,7 +9,7 @@ import { cacheService } from "./cache.service";
 })
 export class httpService {
   apiEndpoints;
-  supervisorId ;
+  supervisorId;
 
   constructor(public _appConfigService: appConfigService, private _httpClient: HttpClient) {
     this.apiEndpoints = {
@@ -32,10 +32,9 @@ export class httpService {
       getAllMRDs: "/media-routing-domains",
       defaultOutboundChannel: "/channels/defaultoutbound",
       announcement: "/announcement",
-      announcementSeenBy:"/announcement/seenStatus",
-      sendSms:"/message/send",
-      saveActivities:"/activities"
-
+      announcementSeenBy: "/announcement/seenStatus",
+      sendSms: "/message/send",
+      saveActivities: "/activities"
     };
   }
 
@@ -49,61 +48,72 @@ export class httpService {
     });
   }
 
-  saveActivies(obj):Observable<any> {
+  saveActivies(obj): Observable<any> {
     return this._httpClient.post<any>(`${this._appConfigService.config.CONVERSATION_MANAGER_URL}${this.apiEndpoints.saveActivities}`, obj, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
     });
   }
- ///////////////////////////// Announcements CURD /////////////////////////////////////
+  ///////////////////////////// Announcements CURD /////////////////////////////////////
 
   addAnnouncemenent(obj): Observable<any> {
-  return this._httpClient.post<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT_URL}${this.apiEndpoints.announcement}`, obj, {
-    headers: new HttpHeaders({
-      "Content-Type": "application/json"
-    })
-  });
-}
-
-updateAnnouncemenentById(id,data): Observable<any> {
-  return this._httpClient.put<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT_URL}${this.apiEndpoints.announcement}/${id}`, data, {
-    headers: new HttpHeaders({
-      "Content-Type": "application/json"
-    })
-  });
-}
-
-AnnouncementSeenByUser(id,announcementId): Observable<any>{
-  return this._httpClient.put<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT_URL}${this.apiEndpoints.announcementSeenBy}/${id}`,announcementId, {
-    headers: new HttpHeaders({
-      "Content-Type": "application/json"
-    })
-  });
-}
-
-getAnnouncementsById(id): Observable<any>{
-  return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT_URL}${this.apiEndpoints.announcement}/${id}`, {
-    headers: new HttpHeaders({
-      "Content-Type": "application/json"
-    })
-  });
-}
-getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
-  return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT_URL}${this.apiEndpoints.announcement}/?teamIds=${teamIds.join(',')}&status=${status}`, {
-    headers: new HttpHeaders({
-      "Content-Type": "application/json"
-    })
-  });
-}
-
-  getAnnouncements(supervisorIds): Observable<any>{
-
-    return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT_URL}${this.apiEndpoints.announcement}?page=${1}&limit=${1000},&supervisorIds=${supervisorIds}`, {
+    return this._httpClient.post<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT_URL}${this.apiEndpoints.announcement}`, obj, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
     });
+  }
+
+  updateAnnouncemenentById(id, data): Observable<any> {
+    return this._httpClient.put<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT_URL}${this.apiEndpoints.announcement}/${id}`, data, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+
+  AnnouncementSeenByUser(id, announcementId): Observable<any> {
+    return this._httpClient.put<any>(
+      `${this._appConfigService.config.TEAM_ANNOUNCEMENT_URL}${this.apiEndpoints.announcementSeenBy}/${id}`,
+      announcementId,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }
+    );
+  }
+
+  getAnnouncementsById(id): Observable<any> {
+    return this._httpClient.get<any>(`${this._appConfigService.config.TEAM_ANNOUNCEMENT_URL}${this.apiEndpoints.announcement}/${id}`, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    });
+  }
+  getAnnouncementsByTeamIds(teamIds, status): Observable<any> {
+    return this._httpClient.get<any>(
+      `${this._appConfigService.config.TEAM_ANNOUNCEMENT_URL}${this.apiEndpoints.announcement}/?teamIds=${teamIds.join(",")}&status=${status}`,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }
+    );
+  }
+
+  getAnnouncements(supervisorIds): Observable<any> {
+    return this._httpClient.get<any>(
+      `${this._appConfigService.config.TEAM_ANNOUNCEMENT_URL}${
+        this.apiEndpoints.announcement
+      }?page=${1}&limit=${1000},&supervisorIds=${supervisorIds}`,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }
+    );
   }
 
   deleteAnnouncementById(id): Observable<any> {
@@ -114,13 +124,6 @@ getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
     });
   }
 
-
-
-
-
-
-
-
   login(user): Observable<any> {
     return this._httpClient.post<any>(this._appConfigService.config.GAT_URL + this.apiEndpoints.login, user, {
       headers: new HttpHeaders({
@@ -130,7 +133,6 @@ getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
   }
 
   ///////////////////////// Customer Schema CRUD /////////////////
-
 
   getSchemaTypes(): Observable<any> {
     return this._httpClient.get<any>(`${this._appConfigService.config.CIM_CUSTOMER_URL}${this.apiEndpoints.schemaTypes}`, {
@@ -228,16 +230,20 @@ getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
       })
     });
   }
-  getAllActiveChatsWithAgents(selectedTeam,selectedQueues): Observable<any> {
-    return this._httpClient.post<any>(`${this._appConfigService.config.CIM_REPORTING_URL}/queue-active-chats/detail`,{teamId:selectedTeam,queues:selectedQueues}, {
-      headers: new HttpHeaders({
-        "Content-Type": "application/json"
-      })
-    });
+  getAllActiveChatsWithAgents(selectedTeam, selectedQueues): Observable<any> {
+    return this._httpClient.post<any>(
+      `${this._appConfigService.config.CIM_REPORTING_URL}/queue-active-chats/detail`,
+      { teamId: selectedTeam, queues: selectedQueues },
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }
+    );
   }
   getAllActiveAgentsDetails(teamSelected): Observable<any> {
-    let body={teams:teamSelected}
-    return this._httpClient.post<any>(`${this._appConfigService.config.CIM_REPORTING_URL}/agent-activity/detail`,body, {
+    let body = { teams: teamSelected };
+    return this._httpClient.post<any>(`${this._appConfigService.config.CIM_REPORTING_URL}/agent-activity/detail`, body, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       })
@@ -257,12 +263,16 @@ getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
       })
     });
   }
-  getAllQueuedChats(selectedTeam,selectedQueues): Observable<any> {
-    return this._httpClient.post<any>(`${this._appConfigService.config.CIM_REPORTING_URL}/queued-chats/detail`,{teamId:selectedTeam,queues:selectedQueues}, {
-      headers: new HttpHeaders({
-        "Content-Type": "application/json"
-      })
-    });
+  getAllQueuedChats(selectedTeam, selectedQueues): Observable<any> {
+    return this._httpClient.post<any>(
+      `${this._appConfigService.config.CIM_REPORTING_URL}/queued-chats/detail`,
+      { teamId: selectedTeam, queues: selectedQueues },
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }
+    );
   }
 
   updateUserPreference(obj, id): Observable<any> {
@@ -510,16 +520,16 @@ getAnnouncementsByTeamIds(teamIds,status): Observable<any>{
     );
   }
 
-  getPostData(postId, serviceIdentifier) : Observable<any> {
+  getPostData(postId, serviceIdentifier): Observable<any> {
     //https://expertflow.postman.co/workspace/Expertflow~f8480e26-6001-4a5f-8435-d0adbf5d7f5c/request/8262326-85e2374a-2aab-4ea2-b2da-907101b94f35
-    return this._httpClient.get<any> (
+    return this._httpClient.get<any>(
       `${this._appConfigService.config.CCM_URL}/social-media-post?postId=${postId}&serviceIdentifier=${serviceIdentifier}&limit=4`,
       {
         headers: new HttpHeaders({
           "Content-Type": "application/json"
         })
       }
-    )
+    );
   }
   ccmVOICEChannelSession(data): Observable<any> {
     return this._httpClient.post<any>(`${this._appConfigService.config.CCM_URL}${this.apiEndpoints.ccmChannelSession}`, data, {

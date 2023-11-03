@@ -58,7 +58,7 @@
     "Confirm":"Confirm_ita",
     "Cancel":"Cancel_ita",
     "Incoming-Call-Alert":"Incoming Call Alert_ita",
-    "Incoming-call-alert-request":"Incoming call alert request : _ita",
+    "Incoming-call-alert-request":"Incoming call request from : _ita",
     "CHAT-REQUESTED":"CHAT REQUESTED_ita",
     "Incoming-chat-request-on-push-mode-on":"Incoming chat request on push mode on _ita",
     "Incoming-chat-request-on-pull-mode-on":"Incoming chat request on pull mode on _ita",
@@ -84,7 +84,7 @@
     "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed!_ita",
     "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed!_ita",
     "CX-Voice-Login-Success":"CX VOICE: Login Successful with EF Switch_ita",
-    "CX-Voice-call-canceled" : "CX VOICE : Voice Call canceled_ita",
+    "CX-Voice-call-canceled" : "CX VOICE : Voice Call Canceled_ita",
     "SIP-Logout-Successful":"SIP Logout Successful_ita",
     "No-Extension-Found":"No Extension Found For Sip Agent_ita",
     "Unable-to-edit-Active-Announcements":"Unable to edit Active Announcement_ita",
@@ -98,7 +98,10 @@
     "Socket-Connected":"Socket Connected_ita",
     "Calling":"Calling_ita",
     "CX-Voice-Connected":"CX VOICE Connected_ita",
-    "Call-Ended":"Call Ended_ita"
+    "Call-Ended":"Call Ended_ita",
+    "OB-Call-Request":"Outbound call request can not be initated_ita",
+    "Customer-No":"Customer No_ita",
+    "queue-name":"Queue Name_ita"
   },
   "app-header": {
     "customer-conversation-view": "Customer Interactions_ita",
@@ -159,6 +162,10 @@
     "search": "Search_ita",
     "no-data-available": "No Data Available_ita"
   },
+  "call-controls":{
+    "call-in-progress":"Call in progress_ita",
+    "initiating-audio-call":"Initiating Audio Call_ita"
+  },
   "chat-features": {
     "send-sms":{
       "info":"SEND SMS_ita",
@@ -167,7 +174,7 @@
       "invalid-text":"invalid text_ita",
       "not-empty":"This field can't be empty_ita",
       "invalid-pattern":"Invalid pattern_ita",
-      "number-should-be-in-range-3-to-15":"number should be in range 3 to 15_ita",
+      "number-should-be-in-range-3-to-15":"Number should be in range 3 to 15_ita",
       "see-conversation-history":"See Conversation History_ita",
       "discard":"Discard_ita",
       "send-sms":"Send SMS_ita",
@@ -179,7 +186,9 @@
       "new":"new",
       "customer":"customer",
       "characters-limit-1500":"1500 characters_ita",
-      "to-view-the-customer-profile":" to view the customer profile_ita"
+      "to-view-the-customer-profile":" to view the customer profile_ita",
+      "number-should-be-in-range-3-to-20":"Number should be in range 3 to 20_ita",
+      "enter-phone-number":"Enter Phone Number_ita"
     },
 
     "customer-info": {
@@ -214,6 +223,7 @@
       "start": "Start a New Conversation_ita"
     },
     "interactions": {
+      "Are-you-sure-you-want-to-leave-the-conversation-with":"Are you sure you want to leave the conversation with_ita",
       "Consult":"Consult_ita",
       "Transfer":"Transfer_ita",
       "Conference":"Conference_ita",
@@ -262,6 +272,8 @@
       "queue-conference": "Queue Conference_ita"
     },
     "wrap-up-form": {
+      "Add-Wrap-Up": "Add Wrap-Up_ita",
+      "Leave-without-wrap-up":"Leave Without Wrap-Up_ita",
       "wrap-up-codes": "Wrap-Up Codes_ita",
       "selected": "Selected_ita",
       "cancel": "Cancel_ita",
@@ -345,7 +357,7 @@
     "valid-credentials": "Please provide a valid username and password to login to your account._ita",
     "username": "Username_ita",
     "password": "Password_ita",
-    "agent-desk": "Agent Desk_ita",
+    "agent-desk": "AgentDesk_ita",
     "call-center-experts": "Your Call Center Experts._ita",
     "": ""
   },
@@ -387,7 +399,7 @@
     "create-new-customer": "Create New Customer_ita",
     "unable-connect-finesse": "Unable to connect with finesse, try refreshing may resolve the problem_ita",
     "enable-javascript": "Please enable JavaScript to continue using this application._ita",
-    "agent-desk": "Agent Desk_ita",
+    "agent-desk": "AgentDesk_ita",
     "select-all": "Select all _ita",
     "unselect-all": "Unselect all_ita",
     "Search": "Search _ita",

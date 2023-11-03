@@ -58,7 +58,7 @@
     "Confirm":"Confirm",
     "Cancel":"Cancel",
     "Incoming-Call-Alert":"Incoming Call Alert",
-    "Incoming-call-alert-request":"Incoming call alert request : ",
+    "Incoming-call-alert-request":"Incoming call request from : ",
     "CHAT-REQUESTED":"CHAT REQUESTED",
     "Incoming-chat-request-on-push-mode-on":"Incoming chat request on push mode on ",
     "Incoming-chat-request-on-pull-mode-on":"Incoming chat request on pull mode on ",
@@ -84,7 +84,7 @@
     "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed!",
     "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed!",
     "CX-Voice-Login-Success":"CX VOICE: Login Successful with EF Switch",
-    "CX-Voice-call-canceled" : "CX VOICE : Voice Call canceled",
+    "CX-Voice-call-canceled" : "CX VOICE : Voice Call Canceled",
     "SIP-Logout-Successful":"SIP Logout Successful",
     "No-Extension-Found":"No Extension Found For Sip Agent",
     "Unable-to-edit-Active-Announcements":"Unable to edit Active Announcement",
@@ -98,7 +98,11 @@
     "Socket-Connected":"Socket Connected",
     "Calling":"Calling",
     "CX-Voice-Connected":"CX VOICE Connected",
-    "Call-Ended":"Call Ended"
+    "Call-Ended":"Call Ended",
+    "OB-Call-Request":"Outbound call request can not be initated",
+    "queue-name":"Queue Name",
+    "Customer-No":"Customer No"
+
   },
   "app-header": {
     "customer-conversation-view": "Customer Interactions",
@@ -159,6 +163,10 @@
     "search": "Search",
     "no-data-available": "No Data Available"
   },
+  "call-controls":{
+    "call-in-progress":"Call in progress",
+    "initiating-audio-call":"Initiating Audio Call"
+  },
   "chat-features": {
     "send-sms":{
       "info":"SEND SMS",
@@ -167,7 +175,7 @@
       "invalid-text":"invalid text",
       "not-empty":"This field can't be empty",
       "invalid-pattern":"Invalid pattern",
-      "number-should-be-in-range-3-to-15":"number should be in range 3 to 15",
+      "number-should-be-in-range-3-to-15":"Number should be in range 3 to 15",
       "see-conversation-history":"See Conversation History",
       "discard":"Discard",
       "send-sms":"Send SMS",
@@ -179,9 +187,9 @@
       "new":"new",
       "customer":"customer ",
       "characters-limit-1500":"1500 characters",
-      "to-view-the-customer-profile":" to view the customer profile"
-
-
+      "to-view-the-customer-profile":" to view the customer profile",
+      "number-should-be-in-range-3-to-20":"Number should be in range 3 to 20",
+      "enter-phone-number":"Enter Phone Number"
     },
 
     "customer-info": {
@@ -216,6 +224,8 @@
       "start": "Start a New Conversation"
     },
     "interactions": {
+      "leave-conversation":"Leave Conversation",
+      "Are-you-sure-you-want-to-leave-the-conversation-with":"Are you sure you want to leave the conversation with",
       "Consult":"Consult",
       "Transfer":"Transfer",
       "Conference":"Conference",
@@ -264,6 +274,8 @@
       "queue-conference": "Queue Conference"
     },
     "wrap-up-form": {
+      "Add-Wrap-Up": "Add Wrap-Up",
+      "Leave-without-wrap-up":"Leave Without Wrap-Up",
       "wrap-up-codes": "Wrap-Up Codes",
       "selected": "Selected",
       "cancel": "Cancel",
@@ -347,7 +359,7 @@
     "valid-credentials": "Please provide a valid username and password to login to your account.",
     "username": "Username",
     "password": "Password",
-    "agent-desk": "Agent Desk",
+    "agent-desk": "AgentDesk",
     "call-center-experts": "Your Call Center Experts.",
     "": ""
   },
@@ -388,7 +400,7 @@
     "create-new-customer": "Create New Customer",
     "unable-connect-finesse": "Unable to connect with finesse, try refreshing may resolve the problem",
     "enable-javascript": "Please enable JavaScript to continue using this application.",
-    "agent-desk": "Agent Desk",
+    "agent-desk": "AgentDesk",
     "select-all": "Select all ",
     "unselect-all": "Unselect all",
     "Search": "Search ",

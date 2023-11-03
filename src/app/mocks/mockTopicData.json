@@ -419,7 +419,7 @@
   ],
   "customerSuggestions": [],
   "topicEvents": [
-    
+
       {
           "id": "6502fbaf98106a677bea93ea",
           "name": "THIRD_PARTY_ACTIVITY",
@@ -537,7 +537,7 @@
                       "isAnonymous": false,
                       "__v": 0
                   },
-                  "replyToMessageId": "aba035c8-b9a9-4d9b-ae40-6fc9a9c02c07",
+                  "originalMessageId": "aba035c8-b9a9-4d9b-ae40-6fc9a9c02c07",
                   "providerMessageId": "gBEGkjM1UhmVAgl7e3n4iFPD940",
                   "schedulingMetaData": {
                       "scheduledDatetime": "2023-09-14T12:24:51.457180503Z",
@@ -675,7 +675,7 @@
                       "isAnonymous": false,
                       "__v": 0
                   },
-                  "replyToMessageId": null,
+                  "originalMessageId": null,
                   "providerMessageId": null,
                   "schedulingMetaData": {
                       "scheduledDatetime": "2023-09-14T12:24:51.457180503Z",
@@ -816,7 +816,7 @@
                       "isAnonymous": false,
                       "__v": 0
                   },
-                  "replyToMessageId": null,
+                  "originalMessageId": null,
                   "providerMessageId": null,
                   "schedulingMetaData": {
                       "scheduledDatetime": "2023-09-14T12:24:51.457180503Z",
@@ -843,7 +843,7 @@
               }
           }
       }
-  
+
   ],
   "topicParticipant": {
     "id": "6e2cc497-0caa-423e-a8e5-28cbadfabfb1",
