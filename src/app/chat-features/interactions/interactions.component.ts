@@ -63,9 +63,9 @@ export class InteractionsComponent implements OnInit {
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  emailTo: Email[] = [
-    {email: 'amdam.s@gmail.com'},
-  ];
+  emailTo: Email[] = [];
+  recipientsCc: Email[] = [];
+  recipientsBcc: Email[] = [];
   selectedValue = this.emailFrom[2].value;
   emailCc = false;
   emailBcc = false;
@@ -207,8 +207,19 @@ export class InteractionsComponent implements OnInit {
     public _finesseService: finesseService,
     private snackBar: MatSnackBar,
     public _sipService: SipService,
-    private _translateService: TranslateService
-  ) {}
+    private _translateService: TranslateService,
+    public fb: FormBuilder
+  ) {
+    this.emailForm = this.fb.group({
+      markdownText:'',
+      htmlBody:'',
+      subject: '', 
+      recipientsTo: this.emailTo, 
+      recipientsCc: this.recipientsCc,
+      recipientsBcc: this.recipientsBcc,
+      from: [], 
+    })
+  }
 
   ngOnInit() {
     this.isCallActive = this._sipService.isCallActive;
@@ -1618,6 +1629,13 @@ closeWrapDialog(data) {
     this.isAudioCall = false;
     this.chatDuringCall = false;
   }
+
+  sendEmailButton() {
+    const formValues = this.emailForm.value
+    console.log("composed values..", formValues)
+    this.constructAndSendCimEvent('EMAIL','','','','','','')
+    this.emailForm.reset()
+  }
   openEmailThreaded(templateRef, e): void {
     this.emailThreadedView = e;
 
@@ -1636,11 +1654,14 @@ closeWrapDialog(data) {
     });
 
   }
-  add(event: MatChipInputEvent): void {
+  add(event: MatChipInputEvent, recipientControlName: string, recepient: string): void {
     const input = event.input;
     const value = event.value;
     if ((value || '').trim()) {
-      this.emailTo.push({email: value.trim()});
+      // this.emailTo.push({email: value.trim()});
+      // this.emailForm.get('recipientsTo').patchValue(this.emailTo);
+      this[recipientControlName].push({ email: value.trim() });
+      this.emailForm.get(recepient).patchValue(this[recipientControlName]);
     }
 
     if (input) {
