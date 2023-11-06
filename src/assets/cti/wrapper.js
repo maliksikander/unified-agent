@@ -268,6 +268,9 @@ function wrapper_processDialog(event){
             if(event.response.dialog.primaryDN == "")
                 event.response.dialog.primaryDN = event.response.dialog.dialedNumber;
         }
+        event.response.dialog.isCallEnded = wrapper_checkIfCallEnded(event.response.dialog, loggedParticipantState);
+        if(event.response.dialog.isCallEnded == 1 && event.event != "consultCall")
+            event.response.dialog.ani = wrapper_getCurrentCallVariableValue(event.response.dialog, config.callVariable);
 
         if(wrapper_callExist)
             return event;
@@ -275,6 +278,45 @@ function wrapper_processDialog(event){
         console.error(err);
     }
 
+}
+
+function wrapper_checkIfCallEnded(dialog, loggedParticipantState){
+    try{
+        if(dialog.state && dialog.state == "DROPPED")
+            return 1;
+
+        if(dialog.state && dialog.state == "ACTIVE")
+        {
+            let participants = dialog.participants;
+            if(participants.length && participants.length == 2){
+                for(participant of participants){
+                    if(participant.state == "DROPPED" && dialog.eventType == "DELETE")
+                        return 1;
+                }
+                return 0;
+            }
+            else if(participants.length && participants.length == 3) { // Added for pcs configured with CCX
+                let customerTypeParticipantCounter = 0;
+                for(let participant of participants){
+                    if(participant.mediaAddressType == "NULL" || !participant.mediaAddressType)
+                        customerTypeParticipantCounter++;        
+                }
+                if(customerTypeParticipantCounter > 1 && loggedParticipantState == "DROPPED" && dialog.eventType == "DELETE")
+                    return 1;
+                return 0;
+            }
+            else if(participants.length == undefined || participants.length && participants.length == 1){
+                let participant = participants[0];
+                if(participant.state != "DROPPED")
+                    return 0;
+                else
+                    return 1;
+            }
+        }
+        return 0;
+    }catch(err){
+        console.error(err);
+    }
 }
 
 function wrapper_checkIfCallDNExist(callId) {
