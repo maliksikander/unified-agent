@@ -684,6 +684,7 @@ export class InteractionsComponent implements OnInit {
     if (changes.changeDetecter && changes.changeDetecter.currentValue && this.conversation.index == this._sharedService.matCurrentTabIndex) {
       if (changes.changeDetecter.currentValue.header.sender.id == this._cacheService.agent.id) {
         this.downTheScrollAfterMilliSecs(50, "smooth");
+       
       } else {
         if (this.currentScrollPosition < 95) {
           this.showNewMessageNotif = true;
@@ -694,6 +695,7 @@ export class InteractionsComponent implements OnInit {
             changes.changeDetecter.currentValue.header.sender.type.toLowerCase() == "agent"
           ) {
             this.publishMessageSeenEvent(changes.changeDetecter.currentValue);
+
           }
         }
       }
@@ -701,6 +703,9 @@ export class InteractionsComponent implements OnInit {
     if (changes.currentTabIndex) {
       this.downTheScrollAfterMilliSecs(500, "auto");
       //this.publishLatestMessageSeenEvent();
+     // console.log("chatSwitch",this.currentTabIndex)
+      //this.conversation
+      
     }
   }
 

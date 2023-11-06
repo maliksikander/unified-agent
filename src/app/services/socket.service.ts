@@ -17,6 +17,7 @@ import { TopicParticipant } from "../models/User/Interfaces";
 import { TranslateService } from "@ngx-translate/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { announcementService } from "./announcement.service";
+import { crmEventsService } from "./crmEvents.service";
 
 //const mockTopicData: any = require("../mocks/mockTopicData.json");
 
@@ -40,6 +41,7 @@ export class socketService {
     private _appConfigService: appConfigService,
     private _cacheService: cacheService,
     private _sharedService: sharedService,
+    private _crmEventsService: crmEventsService,
     private _pullModeService: pullModeService,
     private _router: Router,
     private _soundService: soundService,
@@ -50,6 +52,7 @@ export class socketService {
     private _translateService: TranslateService
   ) {
     //this.onTopicData(mockTopicData, "12345", "");
+   
   }
 
   connectToSocket() {
@@ -146,8 +149,10 @@ export class socketService {
     });
 
     this.socket.on("agentPresence", (res: any) => {
-      console.log("agent presence", res);
+      console.log("agent presence==>", res);
       this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: res.agentPresence });
+      this._crmEventsService.agentStateChanged(res);
+
     });
 
     this.socket.on("ANNOUNCEMENT_CREATED", (res: any) => {
@@ -353,6 +358,7 @@ export class socketService {
 
   onCimEventHandler(cimEvent, conversationId) {
     console.log("cim event ", JSON.parse(JSON.stringify(cimEvent)));
+    this._crmEventsService.taskStateChanged( JSON.parse(JSON.stringify(cimEvent)));
     if (cimEvent.channelSession) {
       if (cimEvent.data && cimEvent.data.header) {
         cimEvent.data.header.channelSession = cimEvent.channelSession;
