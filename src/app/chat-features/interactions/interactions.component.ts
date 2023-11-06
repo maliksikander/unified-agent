@@ -79,7 +79,6 @@ export class InteractionsComponent implements OnInit {
   element;
   dragPosition = { x: 0, y: 0 };
 
-
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
       let scroller = scrolle.target;
@@ -154,7 +153,7 @@ export class InteractionsComponent implements OnInit {
     private snackBar: MatSnackBar,
     public _sipService: SipService,
     private _translateService: TranslateService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.isCallActive = this._sipService.isCallActive;
@@ -243,7 +242,7 @@ export class InteractionsComponent implements OnInit {
       }
     );
   }
-  emoji() { }
+  emoji() {}
 
   BargeIn() {
     let obj = {
@@ -381,7 +380,7 @@ export class InteractionsComponent implements OnInit {
       panelClass: "send-sms-dialog",
       data: { info: this._cacheService.smsDialogData }
     });
-    dialogRef.afterClosed().subscribe((result) => { });
+    dialogRef.afterClosed().subscribe((result) => {});
     this._cacheService.clearOutboundSmsDialogData();
   }
 
@@ -597,11 +596,11 @@ export class InteractionsComponent implements OnInit {
 
     if (this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
       let voiceSessionId = this.getVoiceChannelSessionID();
-      console.log("test==>", voiceSessionId);
+      // console.log("test==>", voiceSessionId);
       let cacheId = `${this._cacheService.agent.id}:${voiceSessionId}`;
-      console.log("test2==>", cacheId);
+      // console.log("test2==>", cacheId);
       let cacheDialog = this._sipService.getDialogFromCache(cacheId);
-      console.log("test3==>", cacheDialog);
+      // console.log("test3==>", cacheDialog);
       if (cacheDialog) {
         this.closeConversationConfirmation();
       } else {
@@ -679,7 +678,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -687,7 +686,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -757,7 +756,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => { });
+    dialogRef.afterClosed().subscribe((result: any) => {});
   }
   externalfilePreviewOpener(url, fileName, type) {
     const dialogRef = this.dialog.open(FilePreviewComponent, {
@@ -767,7 +766,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => { });
+    dialogRef.afterClosed().subscribe((result: any) => {});
   }
 
   uploadFile(files) {
@@ -1323,7 +1322,22 @@ export class InteractionsComponent implements OnInit {
     this.showRequestNotification();
   }
 
-  filterCXQueues(queues: Array<any>) {
+  filterNonVoiceQueues(queues: Array<any>) {
+    try {
+      let chatQueues: Array<any> = [];
+      // console.log("CX MRD ID==>",this._appConfigService.config.CX_VOICE_MRD)
+      queues.forEach((item: any) => {
+        console.log(this._appConfigService.config.CX_VOICE_MRD, "<==item ID==>", item.mrdId);
+        if (item.mrdId != this._appConfigService.config.CX_VOICE_MRD && item.mrdId != this._appConfigService.config.CISCO_CC_MRD) chatQueues.push(item);
+      });
+      // console.log("let==>", chatQueues);
+      this.queueList = chatQueues;
+    } catch (e) {
+      console.error("[filterCXQueues] Error :", e);
+    }
+  }
+
+  filterVoiceQueues(queues: Array<any>) {
     try {
       let cxQueues: Array<any> = [];
       queues.forEach((item: any) => {
@@ -1335,14 +1349,28 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
+  isDialogExisting() {
+    let voiceSessionId = this.getVoiceChannelSessionID();
+    // console.log("test==>", voiceSessionId);
+    let cacheId = `${this._cacheService.agent.id}:${voiceSessionId}`;
+    // console.log("test2==>", cacheId);
+    let cacheDialog = this._sipService.getDialogFromCache(cacheId);
+    // console.log("cacheDialog==>", cacheDialog);
+    if (cacheDialog) return true;
+    return false;
+  }
+
   getAgentsInQueue() {
     try {
       this._httpService.getAgentsInQueue(this.conversation.conversationId).subscribe(
         (res: any) => {
-          if (this.isCXVoiceSessionActive() && res) {
-            this.filterCXQueues(res);
+          if (this.isCXVoiceSessionActive() && res && this.isDialogExisting()) {
+            // console.log("test4==>");
+            this.filterVoiceQueues(res);
           } else {
-            this.queueList = res;
+            // console.log("test5==>");
+            this.filterNonVoiceQueues(res);
+            // this.queueList = res;
           }
 
           // this.queueList = res;
@@ -1464,7 +1492,6 @@ export class InteractionsComponent implements OnInit {
       console.error("[msToHMS] Error:", e);
     }
   }
-
 
   formatNumber(num) {
     return num.toString().padStart(2, "0");
