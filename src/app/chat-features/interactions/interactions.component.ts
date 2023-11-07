@@ -1598,6 +1598,23 @@ export class InteractionsComponent implements OnInit {
   //   }
   // }
 
+  clear(){
+    this._socketService.stopSLACountDown(this.conversation.conversationId)
+  }
+
+  warn(){
+    this.conversation.SLACountdown.color = "sla-warn"
+  }
+
+  ended(){
+      this.conversation.SLACountdown.color = "sla-ended"
+
+  }
+
+  popUp(){
+    this._socketService.showSLAPopUp(this.conversation.conversationId)
+  }
+
   endActiveCall() {
     this.isVideoCall = false;
     this.isAudioCall = false;

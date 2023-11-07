@@ -18,7 +18,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { announcementService } from "./announcement.service";
 
-//const mockTopicData: any = require("../mocks/mockTopicData.json");
+const mockTopicData: any = require("../mocks/mockTopicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -49,7 +49,19 @@ export class socketService {
     private snackBar: MatSnackBar,
     private _translateService: TranslateService
   ) {
-    //this.onTopicData(mockTopicData, "12345", "");
+    this.createFakeConversation(2);
+  }
+
+  createFakeConversation(count) {
+
+    this.onTopicData(mockTopicData, "12345", "11220");
+
+    if (count == 2) {
+      let anotherTopicdata: any = JSON.parse(JSON.stringify(mockTopicData));
+      anotherTopicdata.customer._id = '12345431213';
+      this.onTopicData(anotherTopicdata, "1234567", "2211");
+    }
+
   }
 
   connectToSocket() {
@@ -481,6 +493,7 @@ export class socketService {
       topicParticipant: topicData.topicParticipant ? topicData.topicParticipant : "", //own ccuser of Agent
       firstChannelSession: topicData.channelSession ? topicData.channelSession : "",
       messageComposerState: false,
+      SLACountdown: { inPopUpShow: false, inViewShow: true, ref: null, value: 100, color: 'sla-normal' },
       agentParticipants: [] //all Agents in conversations except itself
     };
 
@@ -671,6 +684,8 @@ export class socketService {
     // console.log("conversations==>", this.conversations);
     this._conversationsListener.next(this.conversations);
 
+    this.startSLACountDown(conversation.SLACountdown);
+
     if (
       topicData &&
       topicData.channelSession &&
@@ -678,6 +693,52 @@ export class socketService {
         (topicData && topicData.channelSession.channel.channelType.name == "CISCO_CC"))
     )
       this._router.navigate(["customers"]);
+  }
+
+  // starts the conversation SLA countdown
+  startSLACountDown(SLACountdown) {
+
+    if (SLACountdown.value > 0) {
+      SLACountdown.ref = setInterval(() => {
+        SLACountdown.value--;
+
+        if (SLACountdown.value === 0) {
+          clearInterval(SLACountdown.ref); // Stop the interval when countdown reaches 0
+        }
+      }, 1000); // Update countdown every second
+    }
+  }
+
+
+  // stops the conversation SLA countdown
+  stopSLACountDown(conversationId) {
+
+    let conversation = this.conversations.find((e) => {
+      //console.log("this is conversation id"+e.conversationId);
+      return e.conversationId == conversationId;
+    });
+
+    if (conversation) {
+      conversation.SLACountdown.value = 0;
+      clearInterval(conversation.SLACountdown.ref);
+      conversation.SLACountdown.ref = null;
+      conversation.SLACountdown.inViewShow = false;
+      conversation.SLACountdown.inPopUpShow = false;
+      conversation.SLACountdown.color = "sla-normal"
+    }
+
+  }
+
+  showSLAPopUp(conversationId) {
+    let conversation = this.conversations.find((e) => {
+      //console.log("this is conversation id"+e.conversationId);
+      return e.conversationId == conversationId;
+    });
+
+    if (conversation) {
+      conversation.SLACountdown.inViewShow = false;
+      conversation.SLACountdown.inPopUpShow = true;
+    }
   }
 
   processSeenMessages(conversation, events) {

@@ -4728,3 +4728,19 @@ mat-select {
 .manage-dashboard{
   padding-top: 5px;
 }
+
+.left-bar-data{
+
+  &.sla-ended{
+    circle,path{
+      stroke:#BE0000
+    }
+  }
+
+  &.sla-warn{
+    circle,path{
+      stroke:#FFAA00
+    }
+  }
+
+}
