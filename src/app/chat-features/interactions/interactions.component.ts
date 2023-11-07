@@ -853,10 +853,17 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?, wrapups?, note?) {
+  constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?, wrapups?, note?, emailFormValues?:any[]) {
     if (this._socketService.isSocketConnected) {
       let message = this.getCimMessage();
 
+      if(msgType.toLowerCase() == "email") {
+        let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
+        message = this.constructEmailEvent(message,emailFormValues, selectedChannelSession)
+        console.log("here is the event constructed", message)
+
+        this.emitCimEvent(message, "AGENT_MESSAGE");
+      }
       if (msgType.toLowerCase() == "wrapup") {
         message = this.constructWrapUpEvent(message, wrapups, note, this.conversation.firstChannelSession);
 
@@ -1193,6 +1200,24 @@ export class InteractionsComponent implements OnInit {
     return message;
   }
 
+  constructEmailEvent(message,formValues, channelSession) {
+    let sendingActiveChannelSession = JSON.parse(JSON.stringify(channelSession));
+    delete sendingActiveChannelSession["webChannelData"];
+    delete sendingActiveChannelSession["isChecked"];
+    delete sendingActiveChannelSession["isDisabled"];
+    message.body.type = "EMAIL"
+    message.body.from = formValues.from
+    message.body.recipientsTo = formValues.recipientsTo
+    message.body.recipientsBcc = formValues.recipientsBcc
+    message.body.recipientsCc = formValues.recipientsCc
+    message.body.subject = formValues.subject
+    message.body.markdownText = formValues.markdownText
+    message.body.htmlBody = formValues.htmlBody
+    message.header.channelSession = sendingActiveChannelSession
+    message.header.channelData = sendingActiveChannelSession.channelData
+
+    return message
+  }
   constructWrapUpEvent(message, wrapups, note, channelSession) {
     let sendingActiveChannelSession = JSON.parse(JSON.stringify(channelSession));
     delete sendingActiveChannelSession["webChannelData"];
@@ -1633,7 +1658,10 @@ closeWrapDialog(data) {
   sendEmailButton() {
     const formValues = this.emailForm.value
     console.log("composed values..", formValues)
-    this.constructAndSendCimEvent('EMAIL','','','','','','')
+    this.constructAndSendCimEvent('EMAIL','','','','','','',formValues)
+    this.emailTo = []
+    this.recipientsBcc = []
+    this.recipientsCc = []
     this.emailForm.reset()
   }
   openEmailThreaded(templateRef, e): void {
