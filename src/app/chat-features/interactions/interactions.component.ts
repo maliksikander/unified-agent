@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, SimpleChanges, ViewChild, ViewChildren,Inject } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, SimpleChanges, ViewChild, ViewChildren, Inject } from "@angular/core";
 import { cacheService } from "src/app/services/cache.service";
 import { sharedService } from "src/app/services/shared.service";
 import { socketService } from "src/app/services/socket.service";
@@ -18,9 +18,9 @@ import { ConversationSettings } from "../../models/conversationSetting/conversat
 import { SipService } from "src/app/services/sip.service";
 import { HighlightResult } from "ngx-highlightjs";
 import { SendSmsComponent } from "../send-sms/send-sms.component";
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatChipInputEvent} from '@angular/material/chips';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import { MatChipInputEvent } from "@angular/material/chips";
+import { FormBuilder, FormGroup } from "@angular/forms";
 
 // import {DOCUMENT} from '@angular/common';
 
@@ -51,12 +51,11 @@ export class InteractionsComponent implements OnInit {
   @ViewChild("mainScreen", { static: false }) elementViewSuggestions: ElementRef;
   @ViewChild("consultTransferTrigger", { static: false }) consultTransferTrigger: any;
   @ViewChildren("callRecording") audioPlayers: QueryList<ElementRef>;
-  
 
   emailFrom: EmailSender[] = [
-    {value: 'adam.stanler@test.com', viewValue: 'adam.stanler@test.com'},
-    {value: 'john.miller@test.com', viewValue: 'john.miller@test.com'},
-    {value: 'steve.alax@test.com', viewValue: 'steve.alax@test.com'},
+    { value: "adam.stanler@test.com", viewValue: "adam.stanler@test.com" },
+    { value: "john.miller@test.com", viewValue: "john.miller@test.com" },
+    { value: "steve.alax@test.com", viewValue: "steve.alax@test.com" }
   ];
   visible = true;
   selectable = true;
@@ -72,7 +71,7 @@ export class InteractionsComponent implements OnInit {
   emailForm: FormGroup;
   isWhisperMode: boolean = false;
   dispayVideoPIP = true;
-  wrapUpFormData
+  wrapUpFormData;
   scrollSubscriber;
   labels: Array<any> = [];
   quotedMessage: any;
@@ -92,7 +91,6 @@ export class InteractionsComponent implements OnInit {
   timer: any = "00:00";
   cxVoiceSession: any;
   openWrapDialog = false;
- 
 
   isAudioPlaying: boolean[] = [];
   isDialogClosed;
@@ -104,35 +102,34 @@ export class InteractionsComponent implements OnInit {
   isBotSuggestions = false;
   isConversationView = true;
   fullScreenView = false;
-  videoSrc = 'assets/video/angry-birds.mp4';
+  videoSrc = "assets/video/angry-birds.mp4";
   element;
-  dragPosition = {x: 0, y: 0};
+  dragPosition = { x: 0, y: 0 };
   emailThreadedView: any;
   emailThreadedData: any = [];
   quillConfig = {
     toolbar: {
       container: [
-        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-        ['code-block'],               // custom button values
-        [{'list': 'ordered'}, {'list': 'bullet'}],
-        [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
-        [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
-        [{'direction': 'rtl'}],                         // text direction
+        ["bold", "italic", "underline", "strike"], // toggled buttons
+        ["code-block"], // custom button values
+        [{ list: "ordered" }, { list: "bullet" }],
+        [{ script: "sub" }, { script: "super" }], // superscript/subscript
+        [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+        [{ direction: "rtl" }], // text direction
 
-        [{'size': ['small', false, 'large', 'huge']}],  // custom dropdown
+        [{ size: ["small", false, "large", "huge"] }], // custom dropdown
         //[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-        [{'color': []}, {'background': []}],
+        [{ color: [] }, { background: [] }],
 
-        [{'font': []}],
-        [{'align': []}],
+        [{ font: [] }],
+        [{ align: [] }],
 
-        ['clean'],                                         // remove formatting button
+        ["clean"], // remove formatting button
 
-        ['link', 'image']
-      ],
-
-    },
-  }
+        ["link", "image"]
+      ]
+    }
+  };
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
       let scroller = scrolle.target;
@@ -169,7 +166,7 @@ export class InteractionsComponent implements OnInit {
   convers: any[];
   ringing = false;
   callControls = true;
-  searchInteraction = '';
+  searchInteraction = "";
   isSuggestion = false;
   displaySuggestionsArea = false;
   cannedTabOpen = false;
@@ -195,7 +192,6 @@ export class InteractionsComponent implements OnInit {
   interactionSearch = false;
   isCallActive = false;
 
-
   constructor(
     private _sharedService: sharedService,
     public _cacheService: cacheService,
@@ -211,14 +207,14 @@ export class InteractionsComponent implements OnInit {
     public fb: FormBuilder
   ) {
     this.emailForm = this.fb.group({
-      markdownText:'',
-      htmlBody:'',
-      subject: '', 
-      recipientsTo: this.emailTo, 
+      markdownText: "",
+      htmlBody: "",
+      subject: "",
+      recipientsTo: this.emailTo,
       recipientsCc: this.recipientsCc,
       recipientsBcc: this.recipientsBcc,
-      from: [], 
-    })
+      from: []
+    });
   }
 
   ngOnInit() {
@@ -227,7 +223,7 @@ export class InteractionsComponent implements OnInit {
     // console.log("i am called hello", this._sipService.isCallActive)
     if (this._sharedService.isCompactView) {
       this.isMobileDevice = true;
-      console.log('this is a compact view Interactions view ?', this.isMobileDevice);
+      console.log("this is a compact view Interactions view ?", this.isMobileDevice);
     }
     // if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     //   this.isMobileDevice = true;
@@ -240,7 +236,8 @@ export class InteractionsComponent implements OnInit {
     // setTimeout(() => {
     //   new EmojiPicker();
     // }, 500);
-    this.isWhisperMode = (this.conversation.topicParticipant.role == "SILENT_MONITOR" || this.conversation.topicParticipant.role == "ASSISTANT") ? true : false;
+    this.isWhisperMode =
+      this.conversation.topicParticipant.role == "SILENT_MONITOR" || this.conversation.topicParticipant.role == "ASSISTANT" ? true : false;
     this.conversationSettings = this._sharedService.conversationSettings;
     this.loadLabels();
 
@@ -251,7 +248,6 @@ export class InteractionsComponent implements OnInit {
     this._sharedService.selectedlangugae.subscribe((data: string) => {
       this.selectedLanguage = data;
     });
-
 
     if (this.selectedLanguage == "ar") {
       this.isRTLView = true;
@@ -276,27 +272,25 @@ export class InteractionsComponent implements OnInit {
         // console.log("Test1==>");
         this.ctiControlBar({ conversation: this.conversation });
         this.getVoiceChannelSession();
-      } 
+      }
       // else {
-        // console.log("Test==>");
-        // this._sipService.dialogRef
+      // console.log("Test==>");
+      // this._sipService.dialogRef
       // }
       // this.getVoiceChannelSession();
     }
- 
+
     this.wrapUpFormData = {
       header: this._translateService.instant("chat-features.interactions.wrapup"),
       wrapUpDialog: this.conversation.wrapUpDialog,
       conversation: this.conversation,
       RTLDirection: this.isRTLView
     };
-    //this._cacheService.smsDialogData || 
-   if(this.conversation.conversationId === 'FAKE_CONVERSATION'){
-    this.conversation.messages = [];
-    this.loadPastActivities('FAKE_CONVERSATION');
-
-   }
-
+    //this._cacheService.smsDialogData ||
+    if (this.conversation.conversationId === "FAKE_CONVERSATION") {
+      this.conversation.messages = [];
+      this.loadPastActivities("FAKE_CONVERSATION");
+    }
   }
 
   loadLabels() {
@@ -441,13 +435,12 @@ export class InteractionsComponent implements OnInit {
     });
   }
 
-  openOutboundSmsDialog(){
-
+  openOutboundSmsDialog() {
     const dialogRef = this.dialog.open(SendSmsComponent, {
       maxWidth: "700px",
       width: "100%",
       panelClass: "send-sms-dialog",
-      data: {info:this._cacheService.smsDialogData},
+      data: { info: this._cacheService.smsDialogData }
     });
     dialogRef.afterClosed().subscribe((result) => {});
     this._cacheService.clearOutboundSmsDialogData();
@@ -583,7 +576,12 @@ export class InteractionsComponent implements OnInit {
   //to send typing event
   sendTypingEvent() {
     if (!this.sendTypingStartedEventTimer) {
-      if (this._socketService.isSocketConnected && this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor" && this.conversation.topicParticipant.role.toLowerCase() != "assistant" && !this.isWhisperMode) {
+      if (
+        this._socketService.isSocketConnected &&
+        this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor" &&
+        this.conversation.topicParticipant.role.toLowerCase() != "assistant" &&
+        !this.isWhisperMode
+      ) {
         let message = this.getCimMessage();
         let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
         if (selectedChannelSession) {
@@ -646,9 +644,9 @@ export class InteractionsComponent implements OnInit {
         //   // this._socketService.emitCimEvent({agentId:this.cc}"start-wrap-up-time")
         // } else {
         //   this.openWrapUpDialog(true);
-          // this.wrapUpDialog(true);
+        // this.wrapUpDialog(true);
 
-          this.unsubscribeFromConversation();
+        this.unsubscribeFromConversation();
         // }
       }
     });
@@ -853,14 +851,14 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?, wrapups?, note?, emailFormValues?:any[]) {
+  constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?, wrapups?, note?, emailFormValues?: any[]) {
     if (this._socketService.isSocketConnected) {
       let message = this.getCimMessage();
 
-      if(msgType.toLowerCase() == "email") {
+      if (msgType.toLowerCase() == "email") {
         let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
-        message = this.constructEmailEvent(message,emailFormValues, selectedChannelSession)
-        console.log("here is the event constructed", message)
+        message = this.constructEmailEvent(message, emailFormValues, selectedChannelSession);
+        console.log("here is the event constructed", message);
 
         this.emitCimEvent(message, "AGENT_MESSAGE");
       }
@@ -870,7 +868,7 @@ export class InteractionsComponent implements OnInit {
         this.emitCimEvent(message, "AGENT_MESSAGE");
       } else {
         if (this.originalMessageId) {
-          message.header.intent="REPLY_TO";
+          message.header.intent = "REPLY_TO";
           message.header.originalMessageId = this.originalMessageId;
           this.originalMessageId = null;
         }
@@ -1012,13 +1010,13 @@ export class InteractionsComponent implements OnInit {
             event.data.header.sender.type = "CUSTOMER";
           }
 
-        event.data.header["status"] = "seen";
+          event.data.header["status"] = "seen";
           msgs.push(event.data);
         } else if (event.name.toLowerCase() == "third_party_activity") {
-
-           if (event.data.header.channelData.additionalAttributes.length > 0) {
-
-            const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => { return e.value.toLowerCase() == "outbound" });
+          if (event.data.header.channelData.additionalAttributes.length > 0) {
+            const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => {
+              return e.value.toLowerCase() == "outbound";
+            });
             if (isOutBoundSMSType) {
               event.data.body["type"] = "outboundsms";
 
@@ -1029,22 +1027,21 @@ export class InteractionsComponent implements OnInit {
               msgs.push(event.data);
             }
           }
-          if(event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain' ){
-            const fakeChannelSession={
-              "channel":{
-                "channelType": event.data.header.schedulingMetaData.channelType,
+          if (event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == "plain") {
+            const fakeChannelSession = {
+              channel: {
+                channelType: event.data.header.schedulingMetaData.channelType
               },
-              "channelData":event.data.header.channelData,
-            }
-            event.data.header['channelSession']=fakeChannelSession;
-            let status = this._socketService.getSchduledActivityStatus(cimEvents,event.data.id);
+              channelData: event.data.header.channelData
+            };
+            event.data.header["channelSession"] = fakeChannelSession;
+            let status = this._socketService.getSchduledActivityStatus(cimEvents, event.data.id);
 
-            if(status){
-             event.data.header['scheduledStatus'] = status;
+            if (status) {
+              event.data.header["scheduledStatus"] = status;
             }
 
             msgs.push(event.data);
-
           }
         } else if (
           [
@@ -1200,23 +1197,23 @@ export class InteractionsComponent implements OnInit {
     return message;
   }
 
-  constructEmailEvent(message,formValues, channelSession) {
+  constructEmailEvent(message, formValues, channelSession) {
     let sendingActiveChannelSession = JSON.parse(JSON.stringify(channelSession));
     delete sendingActiveChannelSession["webChannelData"];
     delete sendingActiveChannelSession["isChecked"];
     delete sendingActiveChannelSession["isDisabled"];
-    message.body.type = "EMAIL"
-    message.body.from = formValues.from
-    message.body.recipientsTo = formValues.recipientsTo
-    message.body.recipientsBcc = formValues.recipientsBcc
-    message.body.recipientsCc = formValues.recipientsCc
-    message.body.subject = formValues.subject
-    message.body.markdownText = formValues.markdownText
-    message.body.htmlBody = formValues.htmlBody
-    message.header.channelSession = sendingActiveChannelSession
-    message.header.channelData = sendingActiveChannelSession.channelData
+    message.body.type = "EMAIL";
+    message.body.from = formValues.from;
+    message.body.recipientsTo = formValues.recipientsTo;
+    message.body.recipientsBcc = formValues.recipientsBcc;
+    message.body.recipientsCc = formValues.recipientsCc;
+    message.body.subject = formValues.subject;
+    message.body.markdownText = formValues.markdownText;
+    message.body.htmlBody = formValues.htmlBody;
+    message.header.channelSession = sendingActiveChannelSession;
+    message.header.channelData = sendingActiveChannelSession.channelData;
 
-    return message
+    return message;
   }
   constructWrapUpEvent(message, wrapups, note, channelSession) {
     let sendingActiveChannelSession = JSON.parse(JSON.stringify(channelSession));
@@ -1476,7 +1473,7 @@ export class InteractionsComponent implements OnInit {
     const dialogRef = this.dialog.open(CallControlsComponent, {
       panelClass: "call-controls-dialog",
       hasBackdrop: false,
-      minWidth: '300px',
+      minWidth: "300px",
       position: {
         top: "8%",
         right: "8%"
@@ -1543,45 +1540,38 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-
   formatNumber(num) {
     return num.toString().padStart(2, "0");
   }
 
-  openWrapUpDialog(timerEnabled: boolean): void {   
-
+  openWrapUpDialog(timerEnabled: boolean): void {
     if (timerEnabled) {
       this.unsubscribeFromConversation();
-    }
-    else
-    {
+    } else {
       this.openWrapDialog = true;
     }
-
   }
 
-closeWrapDialog(data) {
-  if(data == false){
-    this.openWrapDialog = false;
-    if(this.conversation.wrapUpDialog.show)
-    {
-      this._socketService.emit("WRAP_UP_CLOSED",{
-        conversationId: this.conversation.conversationId,
-          agentId: this._cacheService.agent.id
-      })
-    }
-  } else{
-      this.constructAndSendCimEvent("wrapup", "", "", "", "", data.wrapups, data.note);
+  closeWrapDialog(data) {
+    if (data == false) {
       this.openWrapDialog = false;
-      if(this.conversation.wrapUpDialog.show)
-      {
-        this._socketService.emit("WRAP_UP_CLOSED",{
+      if (this.conversation.wrapUpDialog.show) {
+        this._socketService.emit("WRAP_UP_CLOSED", {
           conversationId: this.conversation.conversationId,
           agentId: this._cacheService.agent.id
-        })
+        });
       }
+    } else {
+      this.constructAndSendCimEvent("wrapup", "", "", "", "", data.wrapups, data.note);
+      this.openWrapDialog = false;
+      if (this.conversation.wrapUpDialog.show) {
+        this._socketService.emit("WRAP_UP_CLOSED", {
+          conversationId: this.conversation.conversationId,
+          agentId: this._cacheService.agent.id
+        });
+      }
+    }
   }
-}
   previousRecording;
   toggleAudioPlayback(index: number): void {
     let audioArray: Array<any> = this.audioPlayers.toArray();
@@ -1597,17 +1587,19 @@ closeWrapDialog(data) {
     this.isAudioPlaying[arrayIndex] = !audioElement.paused;
   }
 
-  isString(val): boolean { return typeof val === 'string'; }
+  isString(val): boolean {
+    return typeof val === "string";
+  }
 
-  chatInCall(){
+  chatInCall() {
     this.chatDuringCall = !this.chatDuringCall;
     this.isConversationView = !this.isConversationView;
   }
-  videoSwitch(e){
-    if(e == 'jm'){
-      this.videoSrc = 'assets/video/sample-vid.mp4';
-    }else{
-      this.videoSrc = 'assets/video/angry-birds.mp4';
+  videoSwitch(e) {
+    if (e == "jm") {
+      this.videoSrc = "assets/video/sample-vid.mp4";
+    } else {
+      this.videoSrc = "assets/video/angry-birds.mp4";
     }
   }
   requestFullscreen(element: Element): void {
@@ -1649,43 +1641,45 @@ closeWrapDialog(data) {
   //   }
   // }
 
-  endActiveCall(){
+  endActiveCall() {
     this.isVideoCall = false;
     this.isAudioCall = false;
     this.chatDuringCall = false;
   }
 
-  sendEmailButton() {
-    const formValues = this.emailForm.value
-    console.log("composed values..", formValues)
-    this.constructAndSendCimEvent('EMAIL','','','','','','',formValues)
-    this.emailTo = []
-    this.recipientsBcc = []
-    this.recipientsCc = []
-    this.emailForm.reset()
+  sendEmailButton(message) {
+    if (this._socketService.isSocketConnected) {
+      console.log("here is the message", message)
+      const formValues = this.emailForm.value;
+      console.log("composed values..", formValues);
+      this.constructAndSendCimEvent("EMAIL", "", "", "", "", "", "", formValues);
+      this.emailTo = [];
+      this.recipientsBcc = [];
+      this.recipientsCc = [];
+      this.emailForm.reset();
+    } else {
+      this.snackBar.open("socket service is not openend..");
+    }
   }
   openEmailThreaded(templateRef, e): void {
     this.emailThreadedView = e;
 
-    for (let i = 0; i < (3); i++) {
-      this.emailThreadedData.push(this.emailThreadedView)
+    for (let i = 0; i < 3; i++) {
+      this.emailThreadedData.push(this.emailThreadedView);
     }
-    console.log(this.emailThreadedData, 'hello');
+    console.log(this.emailThreadedData, "hello");
     const dialogRef = this.dialog.open(templateRef, {
-      width: '70vw',
-      maxWidth: '950px',
-      panelClass: 'email-composer-dialog'
+      width: "70vw",
+      maxWidth: "950px",
+      panelClass: "email-composer-dialog"
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-
-    });
-
+    dialogRef.afterClosed().subscribe((result) => {});
   }
   add(event: MatChipInputEvent, recipientControlName: string, recepient: string): void {
     const input = event.input;
     const value = event.value;
-    if ((value || '').trim()) {
+    if ((value || "").trim()) {
       // this.emailTo.push({email: value.trim()});
       // this.emailForm.get('recipientsTo').patchValue(this.emailTo);
       this[recipientControlName].push({ email: value.trim() });
@@ -1693,7 +1687,7 @@ closeWrapDialog(data) {
     }
 
     if (input) {
-      input.value = '';
+      input.value = "";
     }
   }
 
@@ -1705,16 +1699,12 @@ closeWrapDialog(data) {
     }
   }
   openEmailComposer(templateRef): void {
-
     const dialogRef = this.dialog.open(templateRef, {
-      width: '70vw',
-      maxWidth: '950px',
-      panelClass: 'email-composer-dialog'
+      width: "70vw",
+      maxWidth: "950px",
+      panelClass: "email-composer-dialog"
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-
-    });
-
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 }
