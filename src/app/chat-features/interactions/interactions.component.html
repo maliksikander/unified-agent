@@ -1717,11 +1717,20 @@
                           </mat-panel-title>
                         </mat-expansion-panel-header>
                         <div class="custom-message-type email-view">
-<!--                          <p>{{  message.body.markdownText }}</p>-->
-
                           <quill-editor  [(ngModel)]="message.body.markdownText"   [readOnly]="true"
                                          [style]= "{ border:0}"
                                          [modules]="{ toolbar: false }" customToolbarPosition="bottom"> </quill-editor>
+
+
+                          <div class="attach-file-preview" *ngIf="fileList[0]">
+                            <a href="">
+                              <mat-icon>file_download</mat-icon>
+                            <img src="assets/file-types/clip.png">
+                            </a>
+                            <span> <span>{{getFileType}}</span>
+                            <strong>{{fileList[0]?.name}} </strong>
+                           </span>
+                          </div>
 
 
                         </div>
@@ -2908,11 +2917,23 @@
   </div>
 </div>
 
+
     <div class="dialog-main-content m-0">
       <div class="row m-0">
         <div class="email-compose-area w-100">
-          <form>
-            <quill-editor  [modules]="quillConfig" customToolbarPosition="bottom"> </quill-editor>
+          <form class="compose-form">
+            <quill-editor  [modules]="quillConfig" customToolbarPosition="bottom">
+            </quill-editor>
+
+           <div class="attached-files">
+            <span class="uploaded-file" *ngFor="let selected of listOfFiles; let index = index">
+              <span class="attachment-cover">
+              {{ selected }}
+              <mat-icon (click)="removeSelectedFile(index)">highlight_off</mat-icon>
+            </span>
+            </span>
+           </div>
+            <input id="fileInput" style="display:none" type="file" (change)="onChange($event)">
           </form>
         </div>
       </div>

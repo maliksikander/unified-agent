@@ -159,6 +159,10 @@ export class InteractionsComponent implements OnInit {
   sendTypingStartedEventTimer: any = null;
   onMessageSuggestions = false;
   getDialogData;
+  fileList: File[] = [];
+  listOfFiles: any[] = [];
+  isLoading = false;
+  getFileType: any;
 
   isMobileDevice = false;
   @Input() max: any;
@@ -166,6 +170,7 @@ export class InteractionsComponent implements OnInit {
   interactionSearch = false;
   isCallActive = false;
   emailForm: FormGroup;
+
 
   queueList: any = [];
 
@@ -181,6 +186,7 @@ export class InteractionsComponent implements OnInit {
   previousRecording;
   emailThreadedView: any;
   emailThreadedData: any = [];
+  fileContent: any = '';
   quillConfig = {
     toolbar: {
       container: [
@@ -200,8 +206,12 @@ export class InteractionsComponent implements OnInit {
 
         ['clean'],                                         // remove formatting button
 
-        ['link', 'image']
+        ['link', 'image'],
+        ['attachment'],
       ],
+      handlers: {'attachment': () =>  {
+          this.initUpload();
+        }}
 
     },
   };
@@ -274,6 +284,7 @@ export class InteractionsComponent implements OnInit {
    }
 
   }
+
 
   loadLabels() {
     this._httpService.getLabels().subscribe(
@@ -1598,4 +1609,35 @@ export class InteractionsComponent implements OnInit {
       this.emailTo.splice(index, 1);
     }
   }
+
+// Attachment for email
+  initUpload() {
+    let fileInput = document.getElementById('fileInput');
+    console.log(fileInput);
+    if (fileInput) {
+      fileInput.click();
+    } else {
+      console.log('ERROR: cannot find file input');
+    }
+  }
+
+  onChange(event: any): void {
+    for (var i = 0; i <= event.target.files.length - 1; i++) {
+      var selectedFile = event.target.files[i];
+      if (this.listOfFiles.indexOf(selectedFile.name) === -1) {
+        this.fileList.push(selectedFile);
+        this.listOfFiles.push(selectedFile.name);
+        this.getFileType = selectedFile.name.substr(selectedFile.name.lastIndexOf(".") + 1);
+
+      }
+    }
+
+  }
+  removeSelectedFile(index) {
+    // Delete the item from fileNames list
+    this.listOfFiles.splice(index, 1);
+    // delete file from FileList
+    this.fileList.splice(index, 1);
+  }
+
 }

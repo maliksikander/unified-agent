@@ -4817,7 +4817,7 @@ mat-select {
     }
     .ql-container .ql-editor {
       min-height: 120px;
-      height: 50vh;
+      height: 40vh;
       max-height: 900px;
     }
     .ql-snow .ql-picker.ql-expanded .ql-picker-options {
@@ -4840,6 +4840,9 @@ mat-select {
       border: 1px solid #EFF2F7 !important;
       border-left-width:0 !important;
       border-right-width:0 !important;
+      position: absolute;
+      bottom: 0;
+      z-index: 9;
     }
     //.ql-snow .ql-stroke, .ql-snow .ql-fill, .ql-snow .ql-stroke.ql-fill{
     //  stroke: #888;
@@ -4873,3 +4876,10 @@ mat-select {
     }
   }
 
+button.ql-attachment {
+  background-image: url('/assets/images/paperclip.svg') !important;
+  background-repeat: no-repeat !important;
+  background-size: 10px !important;
+  background-position: center center !important;
+  filter: brightness(0.5);
+}
