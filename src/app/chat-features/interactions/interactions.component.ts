@@ -20,7 +20,7 @@ import { HighlightResult } from "ngx-highlightjs";
 import { SendSmsComponent } from "../send-sms/send-sms.component";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { MatChipInputEvent } from "@angular/material/chips";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
 
 // import {DOCUMENT} from '@angular/common';
 
@@ -205,19 +205,10 @@ export class InteractionsComponent implements OnInit {
     public _sipService: SipService,
     private _translateService: TranslateService,
     public fb: FormBuilder
-  ) {
-    this.emailForm = this.fb.group({
-      markdownText: "",
-      htmlBody: "",
-      subject: "",
-      recipientsTo: this.emailTo,
-      recipientsCc: this.recipientsCc,
-      recipientsBcc: this.recipientsBcc,
-      from: []
-    });
-  }
+  ) {}
 
   ngOnInit() {
+    this.initializeForm();
     this.isCallActive = this._sipService.isCallActive;
     this.element = document.documentElement;
     // console.log("i am called hello", this._sipService.isCallActive)
@@ -291,6 +282,18 @@ export class InteractionsComponent implements OnInit {
       this.conversation.messages = [];
       this.loadPastActivities("FAKE_CONVERSATION");
     }
+  }
+
+  initializeForm(): void {
+    this.emailForm = this.fb.group({
+      markdownText: "",
+      htmlBody: "",
+      subject: "",
+      recipientsTo: this.fb.array([]),
+      recipientsCc: this.fb.array([]),
+      recipientsBcc: this.fb.array([]),
+      from: []
+    });
   }
 
   loadLabels() {
@@ -1649,7 +1652,7 @@ export class InteractionsComponent implements OnInit {
 
   sendEmailButton(message) {
     if (this._socketService.isSocketConnected) {
-      console.log("here is the message", message)
+      console.log("here is the message", message);
       const formValues = this.emailForm.value;
       console.log("composed values..", formValues);
       this.constructAndSendCimEvent("EMAIL", "", "", "", "", "", "", formValues);
@@ -1676,27 +1679,27 @@ export class InteractionsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {});
   }
-  add(event: MatChipInputEvent, recipientControlName: string, recepient: string): void {
+  add(event: MatChipInputEvent, recepient: string): void {
+    const recipientsToControl = this.emailForm.get(recepient) as FormArray;
     const input = event.input;
     const value = event.value;
-    if ((value || "").trim()) {
-      // this.emailTo.push({email: value.trim()});
-      // this.emailForm.get('recipientsTo').patchValue(this.emailTo);
-      this[recipientControlName].push({ email: value.trim() });
-      this.emailForm.get(recepient).patchValue(this[recipientControlName]);
-    }
+    const trimmedValue = (value || "").trim();
 
-    if (input) {
-      input.value = "";
+    if (trimmedValue) {
+      const isValidEmail = Validators.email({ value: trimmedValue } as any) === null;
+      if (isValidEmail) {
+        recipientsToControl.push(this.fb.control(trimmedValue));
+      } else {
+        this._snackbarService.open("Please provide a valid email address", "err");
+      }
+      if (input) {
+        input.value = "";
+      }
     }
   }
-
-  remove(emailTo: Email): void {
-    const index = this.emailTo.indexOf(emailTo);
-
-    if (index >= 0) {
-      this.emailTo.splice(index, 1);
-    }
+  remove(index: number, recepient: string): void {
+    const recipientsToControl = this.emailForm.get(recepient) as FormArray;
+    recipientsToControl.removeAt(index);
   }
   openEmailComposer(templateRef): void {
     const dialogRef = this.dialog.open(templateRef, {

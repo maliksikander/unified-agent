@@ -3204,15 +3204,15 @@
 
             <mat-form-field class="email-to-list">
               <mat-chip-list #emailToList formControlName="recipientsTo">
-                <mat-chip *ngFor="let email of emailTo" [value]="email.value" [selectable]="selectable" [removable]="removable" (removed)="remove(email)">
-                  {{ email.email }}
+                <mat-chip *ngFor="let recipient of emailForm.get('recipientsTo').controls; let i = index" [selectable]="selectable" [removable]="removable" (removed)="remove(i, 'recipientsTo')">
+                  {{ recipient.value }}
                   <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                 </mat-chip>
                 <input
                   [matChipInputFor]="emailToList"
                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                   [matChipInputAddOnBlur]="addOnBlur"
-                  (matChipInputTokenEnd)="add($event, 'emailTo', 'recipientsTo')"
+                  (matChipInputTokenEnd)="add($event, 'recipientsTo')"
                 />
               </mat-chip-list>
             </mat-form-field>
@@ -3229,15 +3229,15 @@
 
             <mat-form-field class="email-to-list">
               <mat-chip-list #emailCc>
-                <mat-chip *ngFor="let email of recipientsCc" [selectable]="selectable" [removable]="removable" (removed)="remove(email)">
-                  {{ email.email }}
+                <mat-chip *ngFor="let recipient of emailForm.get('recipientsCc').controls; let i = index" [selectable]="selectable" [removable]="removable" (removed)="remove(i, 'recipientsCc')">
+                  {{ recipient.value }}
                   <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                 </mat-chip>
                 <input
                   [matChipInputFor]="emailCc"
                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                   [matChipInputAddOnBlur]="addOnBlur"
-                  (matChipInputTokenEnd)="add($event, 'recipientsCc', 'recipientsCc')"
+                  (matChipInputTokenEnd)="add($event, 'recipientsCc')"
                 />
               </mat-chip-list>
             </mat-form-field>
@@ -3250,15 +3250,15 @@
 
             <mat-form-field class="email-to-list">
               <mat-chip-list #emailToBcc>
-                <mat-chip *ngFor="let email of recipientsBcc" [selectable]="selectable" [removable]="removable" (removed)="remove(email)">
-                  {{ email.email }}
+                <mat-chip *ngFor="let recipient of emailForm.get('recipientsBcc').controls; let i = index" [selectable]="selectable" [removable]="removable" (removed)="remove(i, 'recipientsBcc')">
+                  {{ recipient.value }}
                   <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                 </mat-chip>
                 <input
                   [matChipInputFor]="emailToBcc"
                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                   [matChipInputAddOnBlur]="addOnBlur"
-                  (matChipInputTokenEnd)="add($event, 'recipientsBcc', 'recipientsBcc')"
+                  (matChipInputTokenEnd)="add($event,'recipientsBcc')"
                 />
               </mat-chip-list>
             </mat-form-field>
