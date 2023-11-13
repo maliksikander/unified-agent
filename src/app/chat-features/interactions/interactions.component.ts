@@ -22,6 +22,7 @@ import { SendSmsComponent } from '../send-sms/send-sms.component';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {FormBuilder, FormGroup} from '@angular/forms';
+import {AudioPlayerComponent} from "../../new-components/audio-player/audio-player.component";
 
 
 
@@ -1429,6 +1430,18 @@ export class InteractionsComponent implements OnInit {
       // this.ctiCallActive();
       this._sipService.isToolbarDocked = true;
       if (this._sipService.timeoutId) { clearInterval(this._sipService.timeoutId); }
+    });
+  }
+
+  playSelectedAudio() {
+    this.dialog.closeAll();
+    const dialogRef = this.dialog.open(AudioPlayerComponent, {
+      hasBackdrop: false,
+      minWidth: '300px',
+      panelClass: 'audio-player-dialog'
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+
     });
   }
 

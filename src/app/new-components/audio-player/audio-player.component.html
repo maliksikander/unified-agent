@@ -1,0 +1,34 @@
+<div class="call-controls-view call-controls-area" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <mat-icon class="drag-controls" cdkDragHandle>more_vert</mat-icon>
+  <div class="audio-file">
+  <div class="shared-url shared-card-content audio-player video-player p-0">
+    <div class="media-main">
+      <span>
+      <strong>Thomas Miller <small>+921254784558</small></strong>
+        <small>11/10/2023</small>
+
+        <button mat-button mat-dialog-close class="cancel-call"><mat-icon>close</mat-icon></button>
+
+      </span>
+      <vg-player>
+        <vg-controls>
+          <vg-play-pause></vg-play-pause>
+          <vg-scrub-bar>
+            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+            <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+          </vg-scrub-bar>
+          <div class="clearfix clear"></div>
+          <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+          <vg-time-display class="total-time" vgProperty="total" vgFormat="mm:ss"> </vg-time-display>
+        </vg-controls>
+
+        <audio #audio [vgMedia]="audio" id="myAudio" preload="auto">
+          <source src="assets/sounds/ring.mp3" />
+        </audio>
+      </vg-player>
+
+    </div>
+</div>
+    <!--                      <span class="chat-time">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
+  </div>
+</div>

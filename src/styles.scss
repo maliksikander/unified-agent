@@ -4883,3 +4883,46 @@ button.ql-attachment {
   background-position: center center !important;
   filter: brightness(0.5);
 }
+
+//Audio player for call activity
+.audio-player-dialog{
+  width: 100%;
+  max-width: 400px !important;
+  position: absolute !important;
+  bottom: 95px;
+  right: 15px;
+
+  .mat-dialog-container{
+    background: #edf0f3;
+    border: 1px solid #cacaca;
+    border-radius: 0;
+    box-shadow: 0 0 11px #00000026;
+  }
+
+  .audio-player vg-play-pause .icon {
+    align-self: center;
+    border: 0;
+    &:before{
+      color: #000000;
+      font-size: 34px;
+      top: -2px;
+      position: relative;
+    }
+  }
+  vg-scrub-bar-buffering-time {
+    background: #0000002e;
+  }
+
+  vg-scrub-bar-current-time {
+
+    .background {
+      background-color: #75a21a;
+      z-index: 2;
+
+      &:after {
+        padding: 6px;
+        top: -4px;
+      }
+    }
+  }
+}

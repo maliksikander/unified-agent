@@ -48,6 +48,9 @@ import { ActiveAgentDetailsComponent } from './supervisor/active-agent-details/a
 import { CallControlsComponent } from './new-components/call-controls/call-controls.component';
 import {SendSmsComponent, SendSmsSnackbarComponent} from './chat-features/send-sms/send-sms.component';
 import {QuillModule} from "ngx-quill";
+import { AudioPlayerComponent } from './new-components/audio-player/audio-player.component';
+import {VgControlsModule} from "videogular2/compiled/src/controls/controls";
+import {VgCoreModule} from "videogular2/compiled/src/core/core";
 // import { ActiveChatsComponent } from "./supervisor/active-chats/active-chats.component";
 // import { QueueChatsComponent } from "./supervisor/queue-chats/queue-chats.component";
 
@@ -135,7 +138,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ActiveAgentDetailsComponent,
     CallControlsComponent,
     SendSmsComponent,
-    SendSmsSnackbarComponent
+    SendSmsSnackbarComponent,
+    AudioPlayerComponent
   ],
   imports: [
     BrowserModule,
@@ -170,6 +174,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     // ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' })
     QuillModule.forRoot(),
+    VgControlsModule,
+    VgCoreModule,
   ],
   entryComponents: [
     EditAttributeComponent,
@@ -184,7 +190,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     LinkConversationDialogComponent,
     CallControlsComponent,
     SendSmsComponent,
-    SendSmsSnackbarComponent
+    SendSmsSnackbarComponent,
+    AudioPlayerComponent
   ],
   providers: [
     {
