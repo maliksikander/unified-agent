@@ -1639,7 +1639,7 @@ export class InteractionsComponent implements OnInit {
       var selectedFile = event.target.files[i];
       if (this.listOfFiles.indexOf(selectedFile.name) === -1) {
         this.fileList.push(selectedFile);
-        this.listOfFiles.push(selectedFile.name);
+        this.listOfFiles.push(selectedFile);
         this.getFileType = selectedFile.name.substr(selectedFile.name.lastIndexOf(".") + 1);
 
       }

@@ -4694,7 +4694,7 @@ button.back-to-sms{
 .attached-files{
   .uploaded-file {
     display: block;
-    padding: 0 20px;
+    padding: 0 15px;
     margin: 5px 0;
   }
   .attachment-cover {
@@ -4704,16 +4704,24 @@ button.back-to-sms{
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 12px;
-    color: #191919;
+    font-size: 14px;
+    color: #1a50a3;
     border-radius: 3px;
+    background: #0000000f;
+    font-weight: 500;
+    small{
+      color: #3a3a3a;
+      font-size: 12px;
+      font-weight: 500;
+      margin: 0 5px;
+    }
 
     mat-icon{
-      color: #CCCCCC;
+      color: #9b9696;
       cursor: pointer;
       transition: color 2s;
       &:hover{
-        color: darken(#ccc, 10%);
+        color: darken(#9b9696, 10%);
         transition: color 2s;
       }
     }

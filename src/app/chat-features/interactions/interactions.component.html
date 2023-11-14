@@ -2931,7 +2931,7 @@
            <div class="attached-files">
             <span class="uploaded-file" *ngFor="let selected of listOfFiles; let index = index">
               <span class="attachment-cover">
-              {{ selected }}
+              {{ selected.name }} <small> ({{selected.size / 1000}} kb)</small>
               <mat-icon (click)="removeSelectedFile(index)">highlight_off</mat-icon>
             </span>
             </span>

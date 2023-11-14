@@ -4843,6 +4843,7 @@ mat-select {
       position: absolute;
       bottom: 0;
       z-index: 9;
+      width: 100%;
     }
     //.ql-snow .ql-stroke, .ql-snow .ql-fill, .ql-snow .ql-stroke.ql-fill{
     //  stroke: #888;
@@ -4877,11 +4878,27 @@ mat-select {
   }
 
 button.ql-attachment {
-  background-image: url('/assets/images/paperclip.svg') !important;
-  background-repeat: no-repeat !important;
-  background-size: 10px !important;
-  background-position: center center !important;
-  filter: brightness(0.5);
+
+  &:after {
+    font-family: 'Material Icons';
+    font-style: normal;
+    color: #000000bd;
+    font-size: 22px;
+    line-height: 18px;
+    text-align: center;
+    margin: 0;
+    left: -2px;
+    position: relative;
+    content: 'attachment';
+    transform: rotate(-90deg);
+    display: inline-block;
+  }
+  &:hover{
+    &:after {
+      color: #06c;
+    }
+
+  }
 }
 
 //Audio player for call activity
