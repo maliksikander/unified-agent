@@ -1,7 +1,7 @@
-<button (click)="clear()">clear</button>
+<!-- <button (click)="clear()">clear</button>
 <button (click)="warn()">warn</button>
 <button (click)="ended()">ended</button>
-<button (click)="popUp()">popUp</button>
+<button (click)="popUp()">popUp</button> -->
 <div
   class="interaction-main"
   [ngClass]="{
@@ -2913,14 +2913,15 @@
     <div class="dialog-main-content sla-dialog-content">
       <div class="container text-center">
         <strong>SLA breached!</strong>
-          <p>Would you like to stay in the conversation?</p>
+          <p *ngIf="conversation.SLACountdown.value > 0">Would you like to stay in the conversation?</p>
+          <p *ngIf="conversation.SLACountdown.value < 1">You will soon remove from the conversation</p>
 
       </div>
     </div>
 
-    <div class="action-trigger text-center">
+    <div *ngIf="conversation.SLACountdown.value > 0" class="action-trigger text-center">
       <button mat-button  class="close-btn">Leave</button>
-      <button mat-button class="success-btn" cdkFocusInitial >
+      <button mat-button class="success-btn">
         Stay
       </button>
     </div>
