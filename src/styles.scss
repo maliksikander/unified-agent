@@ -4839,6 +4839,10 @@ mat-select {
       border: 1px solid #EFF2F7 !important;
       border-left-width:0 !important;
       border-right-width:0 !important;
+      position: absolute;
+      bottom: 0;
+      z-index: 9;
+      width: 100%;
     }
     //.ql-snow .ql-stroke, .ql-snow .ql-fill, .ql-snow .ql-stroke.ql-fill{
     //  stroke: #888;
@@ -4869,5 +4873,28 @@ mat-select {
     }
     .ql-picker-label{
       padding-top: 0 !important;
+    }
+  }
+  button.ql-attachment {
+
+    &:after {
+      font-family: 'Material Icons';
+      font-style: normal;
+      color: #000000bd;
+      font-size: 22px;
+      line-height: 18px;
+      text-align: center;
+      margin: 0;
+      left: -2px;
+      position: relative;
+      content: 'attachment';
+      transform: rotate(-90deg);
+      display: inline-block;
+    }
+    &:hover{
+      &:after {
+        color: #06c;
+      }
+  
     }
   }

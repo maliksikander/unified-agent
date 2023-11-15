@@ -101,6 +101,9 @@ export class InteractionsComponent implements OnInit {
   isConversationView = true;
   fullScreenView = false;
   videoSrc = "assets/video/angry-birds.mp4";
+  fileList: File[] = [];
+  listOfFiles: any[] = [];
+  getFileType: any;
   element;
   dragPosition = { x: 0, y: 0 };
   emailThreadedView: any;
@@ -124,8 +127,14 @@ export class InteractionsComponent implements OnInit {
 
         ["clean"], // remove formatting button
 
-        ["link", "image"]
-      ]
+        ["link", "image"], 
+        ["attachment"]
+      ],
+      handlers: {
+        attachment: () => {
+          this.initUpload();
+        }
+      }
     }
   };
   ngAfterViewInit() {
@@ -1714,7 +1723,6 @@ export class InteractionsComponent implements OnInit {
     message.body.recipientsCc.forEach((recipient: string) => {
       (this.emailForm.get("recipientsCc") as FormArray).push(this.fb.control(recipient));
     });
-
   }
   openEmailComposer(templateRef): void {
     (this.emailForm.get("recipientsTo") as FormArray).clear();
@@ -1729,5 +1737,33 @@ export class InteractionsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {});
+  }
+  // Attachment for email
+  initUpload() {
+    let fileInput = document.getElementById('fileInput');
+    console.log(fileInput);
+    if (fileInput) {
+      fileInput.click();
+    } else {
+      console.log('ERROR: cannot find file input');
+    }
+  }
+
+  onChange(event: any): void {
+    for (var i = 0; i <= event.target.files.length - 1; i++) {
+      var selectedFile = event.target.files[i];
+      if (this.listOfFiles.indexOf(selectedFile.name) === -1) {
+        this.fileList.push(selectedFile);
+        this.listOfFiles.push(selectedFile);
+        this.getFileType = selectedFile.name.substr(selectedFile.name.lastIndexOf(".") + 1);
+  
+      }
+    }
+  }
+  removeSelectedFile(index) {
+    // Delete the item from fileNames list
+    this.listOfFiles.splice(index, 1);
+    // delete file from FileList
+    this.fileList.splice(index, 1);
   }
 }
