@@ -207,7 +207,6 @@
 
               <mat-accordion>
                 <mat-expansion-panel
-                  [disabled]="true"
                   class="consultants-list"
                   *ngFor="let queue of queueList | LockFilter: queueSearch; let i = index"
                 >
@@ -231,7 +230,7 @@
                           mat-icon-button
                           matTooltip="{{ 'chat-features.interactions.queue-transfer' | translate }}"
                           class="transfer-selection"
-                          (click)="agentAssistanceRequest(chatConsultTemplate, queue, 'transfer', 'queue')"
+                          (click)="agentAssistanceRequest(chatConsultTemplate, queue, 'transfer', 'queue',null)"
                         >
                           <img src="assets/images/transfer-colored.svg" alt="transfer" />
                         </button>
@@ -247,7 +246,7 @@
                             mat-icon-button
                             matTooltip="{{ 'chat-features.interactions.queue-conference' | translate }}"
                             class="transfer-selection"
-                            (click)="agentAssistanceRequest(chatConsultTemplate, queue, 'conference', 'queue')"
+                            (click)="agentAssistanceRequest(chatConsultTemplate, queue, 'conference', 'queue',null)"
                           >
                             <img src="assets/images/conference-colored.svg" alt="conference" />
                           </button>
@@ -269,6 +268,19 @@
                     </div> -->
 
                   <!-- </button> -->
+
+                  <ng-container *ngFor="let user of queue.availableAgents; let i = index ">
+                    <button  mat-menu-item >
+                      <span class="agent-status {{ user.state == 'READY' ? 'available' : 'not-available'}}"></span>{{user.agent.name}}
+                      <div class="consult-action-main">
+                        <!-- <span class="transfer-selection" (click)="agentAssistanceRequest(chatConsultTemplate, user, 'consult', 'agent')"><img src="assets/images/consult-colored.svg" alt="consult"/> </span> -->
+                        <span class="transfer-selection" (click)="agentAssistanceRequest(chatConsultTemplate, queue, 'transfer', 'agent',user)"><img src="assets/images/transfer-colored.svg" alt="transfer"/></span>
+                        <!-- <span class="transfer-selection" (click)="agentAssistanceRequest(chatConsultTemplate, user, 'conference', 'agent')"><img src="assets/images/conference-colored.svg" alt="conference"/></span> -->
+                      </div>
+
+                    </button>
+                  </ng-container>
+
                 </mat-expansion-panel>
               </mat-accordion>
             </div>
@@ -2980,12 +2992,23 @@
           <!--          <div class="support-showcase">-->
           <!--            <img src="assets/images/{{chatConsultTo.team ? 'technical-support.svg': 'user-light.svg'}}">-->
           <!--          </div>-->
-          <h3>{{ requestedQueue?.queueName ? requestedQueue?.queueName : "N/A" }}</h3>
-          <p class="consult-team">
-            ({{ requestedQueue?.totalAvailableAgents ? requestedQueue?.totalAvailableAgents : 0 }}
-            {{ (requestedQueue?.totalAvailableAgents > 1 ? "globals.agents" : "globals.agent") | translate }}
-            {{ "chat-features.interactions.available" | translate }} )
-          </p>
+          <ng-container *ngIf="requestType == 'queue'">
+            <h3 >{{ requestedQueue?.queueName ? requestedQueue?.queueName : "N/A" }}</h3>
+            <p class="consult-team">
+              ({{ requestedQueue?.totalAvailableAgents ? requestedQueue?.totalAvailableAgents : 0 }}
+              {{ (requestedQueue?.totalAvailableAgents > 1 ? "globals.agents" : "globals.agent") | translate }}
+              {{ "chat-features.interactions.available" | translate }} )
+            </p>
+          </ng-container>
+
+          <ng-container *ngIf="requestType == 'agent'">
+            <h3 >{{ requestedAgent?.agent?.name ? requestedAgent?.agent?.name : "N/A" }}</h3>
+            <p class="consult-team">
+              ({{ requestedQueue?.queueName ? requestedQueue?.queueName : "N/A" }})
+            </p>
+          </ng-container>
+          
+        
           <!-- <p *ngIf="requestedQueue?.queueName">
             ({{requestedQueue?.queueName}})</p> -->
         </div>

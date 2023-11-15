@@ -79,6 +79,38 @@ export class InteractionsComponent implements OnInit {
   element;
   dragPosition = { x: 0, y: 0 };
 
+  queueList: any = [
+    {
+      queueId: "1",
+      mrdId: "1",
+      queueName: "Queue 1",
+      totalAvailableAgents: 2,
+      availableAgents: [
+        {
+          state: "READY",
+          agent: {
+            id: "1",
+            name: "Agent 1"
+          }
+        },
+        {
+          state: "ACTIVE",
+          agent: {
+            id: "2",
+            name: "Agent 2"
+          }
+        }
+      ]
+    }
+  ];
+
+  queueSearch = "";
+  requestedQueue: any;
+  requestedAgent:any;
+  requestTitle: string;
+  requestType: string;
+  noteDialogBtnText: string;
+
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
       let scroller = scrolle.target;
@@ -1241,14 +1273,6 @@ export class InteractionsComponent implements OnInit {
     }, 40);
   }
 
-  queueList: any = [];
-
-  queueSearch = "";
-  requestedQueue: any;
-  requestTitle: string;
-  requestType: string;
-  noteDialogBtnText: string;
-
   isCXVoiceSessionActive() {
     let session = this.conversation.activeChannelSessions.find((channelSession) => {
       return channelSession.channel.channelType.name.toLowerCase() === "cx_voice";
@@ -1257,7 +1281,7 @@ export class InteractionsComponent implements OnInit {
     return false;
   }
 
-  agentAssistanceRequest(templateRef, data, action, requestType): void {
+  agentAssistanceRequest(templateRef, queueData, action, requestType,agentData): void {
     try {
       this.requestType = requestType;
       this.requestAction = action;
@@ -1265,12 +1289,12 @@ export class InteractionsComponent implements OnInit {
       if (this.isCXVoiceSessionActive()) {
         if (requestType == "queue") {
           if (action == "transfer") {
-            this._sipService.directQueueTransferOnSip(data);
+            this._sipService.directQueueTransferOnSip(queueData)
           }
         }
       } else {
         if (requestType == "queue") {
-          this.requestedQueue = data;
+          this.requestedQueue = queueData;
           if (action == "transfer") {
             this.requestTitle = this._translateService.instant("chat-features.interactions.Transfer-To-Queue");
             this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Transfer");
@@ -1278,6 +1302,18 @@ export class InteractionsComponent implements OnInit {
             this.requestTitle = this._translateService.instant("chat-features.interactions.Conference-Request");
             this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Add-To-Conference");
           }
+        }
+        else{
+          this.requestedAgent = agentData;
+          // console.log("test11==>",this.requestedAgent)
+          if (action == "transfer") {
+            this.requestTitle = this._translateService.instant("chat-features.interactions.Transfer-To-Agent");
+            this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Transfer");
+          } 
+          // else if (action == "conference") {
+          //   this.requestTitle = this._translateService.instant("chat-features.interactions.Conference-Request");
+          //   this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Add-To-Conference");
+          // }
         }
 
         // this.requestAction = action;
@@ -1305,6 +1341,9 @@ export class InteractionsComponent implements OnInit {
     if (this.requestType == "queue") {
       this.sendQueueRequest();
     }
+    else if (this.requestType == "agent") {
+      console.log("testt===>")
+    }
     this.assistanceRequestNote = "";
   }
 
@@ -1327,11 +1366,12 @@ export class InteractionsComponent implements OnInit {
       let chatQueues: Array<any> = [];
       // console.log("CX MRD ID==>",this._appConfigService.config.CX_VOICE_MRD)
       queues.forEach((item: any) => {
-        console.log(this._appConfigService.config.CX_VOICE_MRD, "<==item ID==>", item.mrdId);
-        if (item.mrdId != this._appConfigService.config.CX_VOICE_MRD && item.mrdId != this._appConfigService.config.CISCO_CC_MRD) chatQueues.push(item);
+        // console.log(this._appConfigService.config.CX_VOICE_MRD, "<==item ID==>", item.mrdId);
+        if (item.mrdId != this._appConfigService.config.CX_VOICE_MRD && item.mrdId != this._appConfigService.config.CISCO_CC_MRD)
+          chatQueues.push(item);
       });
       // console.log("let==>", chatQueues);
-      this.queueList = chatQueues;
+      // this.queueList = chatQueues;
     } catch (e) {
       console.error("[filterCXQueues] Error :", e);
     }
@@ -1343,7 +1383,7 @@ export class InteractionsComponent implements OnInit {
       queues.forEach((item: any) => {
         if (item.mrdId == this._appConfigService.config.CX_VOICE_MRD) cxQueues.push(item);
       });
-      this.queueList = cxQueues;
+      // this.queueList = cxQueues;
     } catch (e) {
       console.error("[filterCXQueues] Error :", e);
     }
@@ -1362,7 +1402,7 @@ export class InteractionsComponent implements OnInit {
 
   getAgentsInQueue() {
     try {
-      this._httpService.getAgentsInQueue(this.conversation.conversationId).subscribe(
+      this._httpService.getAgentsInQueue(this.conversation.conversationId,this._cacheService.agent.id).subscribe(
         (res: any) => {
           if (this.isCXVoiceSessionActive() && res && this.isDialogExisting()) {
             // console.log("test4==>");

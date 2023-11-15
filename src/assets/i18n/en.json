@@ -230,6 +230,7 @@
       "Transfer":"Transfer",
       "Conference":"Conference",
       "Transfer-To-Queue":"Transfer To Queue",
+      "Transfer-To-Agent":"Transfer To Agent",
       "Conference-Request":"Conference Request",
       "Add-To-Conference":"Add To Conference",
       "Search-Queue":"Search Queue",
