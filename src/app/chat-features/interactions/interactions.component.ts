@@ -62,13 +62,11 @@ export class InteractionsComponent implements OnInit {
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  emailTo: Email[] = [];
-  recipientsCc: Email[] = [];
-  recipientsBcc: Email[] = [];
   selectedValue = this.emailFrom[2].value;
   emailCc = false;
   emailBcc = false;
   emailForm: FormGroup;
+  hasErrors: boolean = false;
   isWhisperMode: boolean = false;
   dispayVideoPIP = true;
   wrapUpFormData;
@@ -292,7 +290,7 @@ export class InteractionsComponent implements OnInit {
       recipientsTo: this.fb.array([]),
       recipientsCc: this.fb.array([]),
       recipientsBcc: this.fb.array([]),
-      from: []
+      from: ""
     });
   }
 
@@ -1650,15 +1648,10 @@ export class InteractionsComponent implements OnInit {
     this.chatDuringCall = false;
   }
 
-  sendEmailButton(message) {
+  sendEmail() {
     if (this._socketService.isSocketConnected) {
-      console.log("here is the message", message);
       const formValues = this.emailForm.value;
-      console.log("composed values..", formValues);
       this.constructAndSendCimEvent("EMAIL", "", "", "", "", "", "", formValues);
-      this.emailTo = [];
-      this.recipientsBcc = [];
-      this.recipientsCc = [];
       this.emailForm.reset();
     } else {
       this.snackBar.open("socket service is not openend..");
@@ -1701,7 +1694,34 @@ export class InteractionsComponent implements OnInit {
     const recipientsToControl = this.emailForm.get(recepient) as FormArray;
     recipientsToControl.removeAt(index);
   }
+  replyToEmail(message) {
+    this.emailForm.patchValue({
+      markdownText: "",
+      htmlBody: "", // Set the value as needed
+      subject: `Re: ${message.body.subject}`,
+      recipientsCc: [], // Set the value as needed
+      recipientsBcc: [], // Set the value as needed
+      from: [""]
+    });
+
+    // Create new FormControls and add them to the FormArray
+    message.body.recipientsTo.forEach((recipient: string) => {
+      (this.emailForm.get("recipientsTo") as FormArray).push(this.fb.control(recipient));
+    });
+    message.body.recipientsBcc.forEach((recipient: string) => {
+      (this.emailForm.get("recipientsBcc") as FormArray).push(this.fb.control(recipient));
+    });
+    message.body.recipientsCc.forEach((recipient: string) => {
+      (this.emailForm.get("recipientsCc") as FormArray).push(this.fb.control(recipient));
+    });
+
+  }
   openEmailComposer(templateRef): void {
+    (this.emailForm.get("recipientsTo") as FormArray).clear();
+    (this.emailForm.get("recipientsBcc") as FormArray).clear();
+    (this.emailForm.get("recipientsCc") as FormArray).clear();
+    this.emailForm.reset();
+
     const dialogRef = this.dialog.open(templateRef, {
       width: "70vw",
       maxWidth: "950px",

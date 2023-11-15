@@ -1106,6 +1106,7 @@
                             (message.body.type | lowercase) != 'wrapup' &&
                             (message.body.type | lowercase) != 'voice' &&
                             (message.body.type | lowercase) != 'comment' &&
+                            (message.body.type | lowercase) != 'email' &&
                             (message.header.status | lowercase) != 'sending' &&
                             (message.header.status | lowercase) != 'failed' &&
                             !message.header.schedulingMetaData
@@ -1982,7 +1983,7 @@
                                 >view full thread</span
                               >
                               <ul>
-                                <li (click)="openEmailComposer(emailComposeTemplate)"><mat-icon>reply</mat-icon></li>
+                                <li (click)="openEmailComposer(emailComposeTemplate, false)"  (click)="replyToEmail(message)"><mat-icon>reply</mat-icon></li>
                                 <li><mat-icon>reply_all</mat-icon></li>
                                 <li><mat-icon>forward</mat-icon></li>
                                 <li><mat-icon>print</mat-icon></li>
@@ -3288,7 +3289,7 @@
 
       <div class="action-trigger email-trigger">
         <span>
-          <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial (click)="sendEmailButton(message)">Send Email</button>
+          <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial (click)="sendEmail()" [disabled]="hasErrors">Send Email</button>
           <button mat-button mat-dialog-close class="close-btn">Save as draft</button>
         </span>
         <button mat-icon-button matTooltip="delete" class="discard-email">
