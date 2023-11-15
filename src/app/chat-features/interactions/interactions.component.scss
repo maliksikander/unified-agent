@@ -2747,27 +2747,46 @@ vg-controls.hide {
   }
 }
 
+
+.agent-status {
+  display: block;
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  border-radius: 100%;
+  border: 2px solid #fff;
+  left: 0;
+  top: 8px;
+
+  &.not-available {
+    background: #FF7F00;
+  }
+  &.available {
+    background: #46B71F;
+  }
+}
+
 .chat-transfer-main {
   padding: 10px 5px;
   min-width: 280px;
 
-  .agent-status {
-    display: block;
-    width: 12px;
-    height: 12px;
-    position: absolute;
-    border-radius: 100%;
-    border: 2px solid #fff;
-    left: 0;
-    top: 8px;
+  // .agent-status {
+  //   display: block;
+  //   width: 12px;
+  //   height: 12px;
+  //   position: absolute;
+  //   border-radius: 100%;
+  //   border: 2px solid #fff;
+  //   left: 0;
+  //   top: 8px;
 
-    &.not-available {
-      background: #FF7F00;
-    }
-    &.available {
-      background: #46B71F;
-    }
-  }
+  //   &.not-available {
+  //     background: #FF7F00;
+  //   }
+  //   &.available {
+  //     background: #46B71F;
+  //   }
+  // }
 
   .transfer-heading {
     font-size: 10px;
@@ -2995,7 +3014,7 @@ vg-controls.hide {
 
 .transfer-to {
   color: #818181;
-  padding: 25px 0;
+  // padding: 25px 0;
 
   .support-showcase {
     margin: 0 auto 10px;
@@ -3005,6 +3024,13 @@ vg-controls.hide {
     //background: #F3F6F8;
     line-height: 84px;
     border-radius: 100%;
+    position: relative;
+
+    .agent-status{
+      width:15px;
+      height:15px
+    }
+
   }
 
   h3 {

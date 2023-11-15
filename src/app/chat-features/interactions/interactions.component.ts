@@ -1293,8 +1293,9 @@ export class InteractionsComponent implements OnInit {
           }
         }
       } else {
+        this.requestedQueue = queueData;
         if (requestType == "queue") {
-          this.requestedQueue = queueData;
+          // this.requestedQueue = queueData;
           if (action == "transfer") {
             this.requestTitle = this._translateService.instant("chat-features.interactions.Transfer-To-Queue");
             this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Transfer");
@@ -1304,6 +1305,7 @@ export class InteractionsComponent implements OnInit {
           }
         }
         else{
+        
           this.requestedAgent = agentData;
           // console.log("test11==>",this.requestedAgent)
           if (action == "transfer") {

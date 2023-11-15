@@ -11,7 +11,7 @@
   "TEAM_ANNOUNCEMENT_URL":"https://cim-dev.expertflow.com/team-announcement",
   "ENV": "prod",
   "domain": "uccx12-5p.ucce.ipcc",
-  "subDomain" : "uccx-sub.ucce.ipcc",
+  "subDomain" : "uccx12-5p.ucce.ipcc",
   "boshUrl": "https://uccx12-5p.ucce.ipcc:7443/http-bind/",
   "subBoshUrl" : "https://uccx-sub.ucce.ipcc:7443/http-bind/",
   "finesseFlavor": "UCCX",
