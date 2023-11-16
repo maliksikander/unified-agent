@@ -4529,7 +4529,7 @@ button.back-to-sms{
   .email-preview-dialog-header {
     .email-compose-head {
       border: 0;
-      height: 25px;
+      min-height: 25px;
 
       span {
         color: #000000;
@@ -4545,8 +4545,8 @@ button.back-to-sms{
     justify-content: space-between;
     border-bottom: 1px solid #EFF2F7;
     align-items: center;
-    height: 30px;
-    padding: 0 15px;
+    min-height: 30px;
+    padding: 5px 15px;
 
     button {
       color: #888888;
@@ -4571,6 +4571,8 @@ button.back-to-sms{
     }
     .sender-selection {
       width: calc(100% - 130px);
+      display: flex;
+      flex-wrap: nowrap;
     }
   }
 
@@ -4588,7 +4590,7 @@ button.back-to-sms{
 
       mat-chip {
         padding: 0 5px;
-        margin: 0 5px;
+        margin: 3px 5px;
         font-size: 14px;
         min-height: 20px;
         border-radius: 5px;
@@ -4667,6 +4669,7 @@ button.back-to-sms{
   align-items: center;
   margin: 0;
   border-bottom: 1px solid #EFF2F7;
+  flex-wrap: nowrap;
 
   span {
     color: #000000;

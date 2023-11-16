@@ -412,11 +412,13 @@
   }
   button.main-menu-item{
     border: 0 !important;
-    height: 40px !important;
-    line-height: 40px !important;
+    height: 50px !important;
+    //line-height: 40px !important;
     color: #000 !important;
     background: transparent !important;
     font-size: 16px !important;
+    padding: 0 18px !important;
+
   }
 }
 .agent-mobile-menu{
@@ -870,7 +872,36 @@ button.close-menu-mobile {
     display: inline-block !important;
   }
 }
+.dashboard-table{
+  overflow: auto;
+  padding: 0 !important;
 
+  table{
+    min-width: 600px;
+
+    thead{
+      th{
+        padding: 0 5px !important;
+      }
+    }
+  }
+}
+  .active-chat-list-area{
+    .page-action {
+      align-self: center;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      .multi-selection-list, .search-wrapper, mat-form-field {
+        margin: 3px 10px !important;
+        flex: calc(50% - 20px);
+        top: inherit;
+        max-width: none;
+      }
+    }
+
+  }
 
 }
 
@@ -892,4 +923,5 @@ button.close-menu-mobile {
       padding: 10px !important;
     }
   }
+
 }

@@ -4943,3 +4943,10 @@ button.ql-attachment {
     }
   }
 }
+
+@media(max-width: 768px){
+  .email-composer-dialog {
+    width: calc(100% - 20px) !important;
+  }
+}
+

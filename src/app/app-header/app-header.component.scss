@@ -371,12 +371,11 @@
 .mat-menu-item {
   line-height: 25px !important;
   height: 29px !important;
-  padding: 0 11px !important;
   color: #535353;
   font-size: 11px;
   background: #fdfdfd;
   position: relative;
-  padding-left: 26px !important;
+  padding:0 25px !important;
 
   &.state-trigger {
     min-width: 160px;

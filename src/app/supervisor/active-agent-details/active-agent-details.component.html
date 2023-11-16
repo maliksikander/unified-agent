@@ -6,7 +6,7 @@
 
 <div class="container-fluid">
   <div class="table-container manage-dashboard">
-    <div class="active-chat-list-area">
+    <div class="active-chat-list-area  active-agent-list-area">
       <div class="filter-area d-flex">
         <div class="create-label col pl-0">
           <div class="search-wrapper">
@@ -34,7 +34,7 @@
         </div>
 
         <div class="mrd-stats-label">
-          <span>{{ 'supervisor.mrd-states' | translate | titlecase }}</span>
+          <span class="stats-label">{{ 'supervisor.mrd-states' | translate | titlecase }}</span>
           <ul>
             <li><span class="busy-label"></span> {{ 'supervisor.busy' | translate | titlecase }}</li>
             <li><span class="active-label"></span> {{ 'supervisor.active' | translate | titlecase }}</li>
@@ -45,7 +45,7 @@
           </ul>
         </div>
       </div>
-
+      <div class="col dashboard-table">
       <table class="table active-agent-table">
         <thead>
           <tr>
@@ -89,6 +89,7 @@
         </tbody>
 
       </table>
+      </div>
       <div *ngIf="this.supervisedTeams && this.supervisedTeams.length == 0" class="no-data-warning">
         <i class="material-icons">warning_amber</i>
         <span>{{'supervisor.No-Teams-Available' | translate}}</span>
