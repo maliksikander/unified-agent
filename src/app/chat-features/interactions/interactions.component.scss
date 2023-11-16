@@ -2788,6 +2788,14 @@ vg-controls.hide {
   //   }
   // }
 
+  .agent-name{
+    display: inline-block;
+    max-width: 150px;
+    text-overflow: ellipsis;
+    white-space: pre;
+    overflow: hidden;
+  }
+
   .transfer-heading {
     font-size: 10px;
     display: block;

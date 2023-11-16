@@ -101,10 +101,32 @@ export class InteractionsComponent implements OnInit {
           }
         }
       ]
+    },
+    {
+      queueId: "1",
+      mrdId: "1",
+      queueName: "DEsk",
+      totalAvailableAgents: 2,
+      availableAgents: [
+        {
+          state: "READY",
+          agent: {
+            id: "3",
+            name: "Agent 3"
+          }
+        },
+        {
+          state: "ACTIVE",
+          agent: {
+            id: "4",
+            name: "Agent 4"
+          }
+        }
+      ]
     }
   ];
 
-  queueSearch = "";
+  queueORAgentSearch = "";
   requestedQueue: any;
   requestedAgent:any;
   requestTitle: string;

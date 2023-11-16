@@ -230,10 +230,8 @@
       "Transfer":"Transfer",
       "Conference":"Conference",
       "Transfer-To-Queue":"Transfer To Queue",
-      "Transfer-To-Agent":"Transfer To Agent",
       "Conference-Request":"Conference Request",
       "Add-To-Conference":"Add To Conference",
-      "Search-Queue":"Search Queue",
       "whisper": "Whisper",
       "bot-suggestions-available": "Bot suggestions are available type / for viewing",
       "for-reply-to-a-comment":"for reply to a comment",
@@ -272,7 +270,10 @@
       "wrap-up-notes": "Wrap-up Notesen",
       "agent-assistance": "Agent Assistance",
       "queue-transfer": "Queue Transfer",
-      "queue-conference": "Queue Conference"
+      "queue-conference": "Queue Conference",
+      "Transfer-To-Agent":"Transfer To Agent",
+      "agent-transfer":"Agent Transfer",
+      "Search-Queue-OR-Agent":"Search by Queue/Agent Name"
     },
     "wrap-up-form": {
       "Add-Wrap-Up": "Add Wrap-Up",

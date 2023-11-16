@@ -225,15 +225,15 @@
               <div class="search-wrapper">
                 <input
                   type="text"
-                  placeholder="{{ 'chat-features.interactions.Search-Queue' | translate }}"
+                  placeholder="{{ 'chat-features.interactions.Search-Queue-OR-Agent' | translate }}"
                   (click)="$event.stopPropagation()"
-                  [(ngModel)]="queueSearch"
+                  [(ngModel)]="queueORAgentSearch"
                 />
                 <mat-icon>search</mat-icon>
               </div>
 
               <mat-accordion>
-                <mat-expansion-panel class="consultants-list" *ngFor="let queue of queueList | LockFilter: queueSearch; let i = index">
+                <mat-expansion-panel class="consultants-list" *ngFor="let queue of queueList | queueFilter: queueORAgentSearch; let i = index">
                   <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
                     <mat-panel-title>
                       <span class="queue-name"
@@ -295,10 +295,11 @@
 
                   <ng-container *ngFor="let user of queue.availableAgents; let i = index">
                     <button mat-menu-item>
-                      <span class="agent-status {{ user.state == 'READY' ? 'available' : 'not-available' }}"></span>{{ user.agent.name }}
+                      <span class="agent-status {{ user.state == 'READY' ? 'available' : 'not-available' }}"></span>
+                      <span class="agent-name">{{ user.agent.name }}</span>
                       <div class="consult-action-main">
                         <!-- <span class="transfer-selection" (click)="agentAssistanceRequest(chatConsultTemplate, user, 'consult', 'agent')"><img src="assets/images/consult-colored.svg" alt="consult"/> </span> -->
-                        <span class="transfer-selection" (click)="agentAssistanceRequest(chatConsultTemplate, queue, 'transfer', 'agent', user)"
+                        <span matTooltip="{{ 'chat-features.interactions.agent-transfer' | translate }}" class="transfer-selection" (click)="agentAssistanceRequest(chatConsultTemplate, queue, 'transfer', 'agent', user)"
                           ><img src="assets/images/transfer-colored.svg" alt="transfer"
                         /></span>
                         <!-- <span class="transfer-selection" (click)="agentAssistanceRequest(chatConsultTemplate, user, 'conference', 'agent')"><img src="assets/images/conference-colored.svg" alt="conference"/></span> -->
