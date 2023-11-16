@@ -173,7 +173,7 @@ export class socketService {
           this.consultTask = res;
           console.log("taskRequest1==>");
           this.emit("topicSubscription", {
-            topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.roomId, "ASSISTANT", "SUBSCRIBED"),
+            topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent,res.conversationId, "ASSISTANT", "SUBSCRIBED"),
             agentId: this._cacheService.agent.id,
             roomId: res.roomId,
             taskId: res.taskId
@@ -181,9 +181,10 @@ export class socketService {
         } else {
           console.log("taskRequest2==>");
           this.emit("topicSubscription", {
-            topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.roomId, "PRIMARY", "SUBSCRIBED"),
+            topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.conversationId, "PRIMARY", "SUBSCRIBED"),
             agentId: this._cacheService.agent.id,
             roomId: res.roomId,
+            conversationId:res.conversationId,
             taskId: res.taskId
           });
         }
@@ -208,7 +209,7 @@ export class socketService {
 
     this.socket.on("onCimEvent", (res: any) => {
       try {
-        this.onCimEventHandler(JSON.parse(res.cimEvent), res.roomId);
+        this.onCimEventHandler(JSON.parse(res.cimEvent), res.roomId,res.conversationId);
       } catch (err) {
         console.error("error on onCimEvent ==>" + err);
         // If got any error while receiving cimEvent then simply unsubscribe to the topic
@@ -233,6 +234,7 @@ export class socketService {
         // If got any error while receiving topicData then simply unsubscribe to the topic
         this.emit("topicUnsubscription", {
           roomId: res.roomId,
+          conversationId:res.conversationId,
           agentId: this._cacheService.agent.id
         });
       }
@@ -351,7 +353,7 @@ export class socketService {
   }
   //this.socket.on(){}
 
-  onCimEventHandler(cimEvent, roomId) {
+  onCimEventHandler(cimEvent, roomId,conversationId) {
     console.log("cim event ", JSON.parse(JSON.stringify(cimEvent)));
     if (cimEvent.channelSession) {
       if (cimEvent.data && cimEvent.data.header) {
@@ -453,6 +455,7 @@ export class socketService {
       this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-event-unsubscribing"), "err");
       this.emit("topicUnsubscription", {
         roomId: roomId,
+        conversationId:conversationId,
         agentId: this._cacheService.agent.id
       });
     }
@@ -1796,6 +1799,7 @@ export class socketService {
       // if the topic state is 'ACTIVE' then agent needs to request the agent manager for unsubscribe
       this.emit("topicUnsubscription", {
         roomId: conversation.roomId,
+        conversationId:conversation.conversationId,
         agentId: this._cacheService.agent.id
       });
     } else if (conversation.state === "CLOSED") {
@@ -1810,12 +1814,13 @@ export class socketService {
     }
   }
 
-  getTopicSubscription(roomId, taskId) {
+  getTopicSubscription(conversationId,roomId, taskId) {
     this.emit("topicSubscription", {
-      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, roomId, "PRIMARY", "SUBSCRIBED"),
+      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent,conversationId, "PRIMARY", "SUBSCRIBED"),
       agentId: this._cacheService.agent.id,
       roomId: roomId,
-      taskId: taskId
+      taskId: taskId,
+      conversationId:conversationId
     });
   }
 

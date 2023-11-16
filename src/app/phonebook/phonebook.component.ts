@@ -282,7 +282,7 @@ export class PhonebookComponent implements OnInit {
       return conversation.customer._id == customer._id
     })
     if (!conversation) {
-      this._socketService.onTopicData({ customer }, "FAKE_CONVERSATION", "");
+      this._socketService.onTopicData({ customer },"FAKE_CONVERSATION", "FAKE_CONVERSATION", "");
     }
     this._router.navigate(["customers"]);
 
