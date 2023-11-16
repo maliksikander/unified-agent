@@ -103,8 +103,8 @@ export class InteractionsComponent implements OnInit {
       ]
     },
     {
-      queueId: "1",
-      mrdId: "1",
+      queueId: "2",
+      mrdId: "2",
       queueName: "DEsk",
       totalAvailableAgents: 2,
       availableAgents: [
@@ -1366,9 +1366,23 @@ export class InteractionsComponent implements OnInit {
       this.sendQueueRequest();
     }
     else if (this.requestType == "agent") {
-      console.log("testt===>")
+      console.log("testt===>");
+      this.sendAgentRequest();
     }
     this.assistanceRequestNote = "";
+  }
+
+  sendAgentRequest() {
+    let data = {
+      channelSession: this.conversation.firstChannelSession,
+      agentParticipant: this.conversation.topicParticipant,
+      mode: "mode",
+      requestedAgentId: this._cacheService.agent.id,
+      note: this.assistanceRequestNote
+    };
+    // if (this.requestAction == "transfer") this._socketService.emit("directTransferRequest", data);
+   
+    this.showRequestNotification();
   }
 
   sendQueueRequest() {

@@ -1,29 +1,33 @@
 import { Pipe, PipeTransform } from "@angular/core";
+import { fileToArray } from "ngx-doc-viewer";
 
 @Pipe({ name: "queueFilter", pure: true })
 export class QueueSearchPipe implements PipeTransform {
-  transform(value: any, args?: any): any {
-    if (!value) return null;
-    if (!args) return value;
+  transform(inputData: any, searchTerm?: any): any {
+    if (!inputData) return null;
 
-    args = args.toLowerCase();
-    args = args.replace("/", "");
-    return value.filter((item) => this.checkQueueAndAgentName(item, args));
-  }
+    searchTerm = searchTerm.toLowerCase();
+    searchTerm = searchTerm.replace("/", "");
 
-  private checkQueueAndAgentName(data: any, searchValue) {
-    if (data && data.queueName.toLowerCase().includes(searchValue.toLowerCase())) {
-      return true;
-    } else {
-      let agentList = data.availableAgents;
-      if (Array.isArray(agentList) && agentList.length > 0) {
-        for (let i = 0; i <= agentList.length; i++) {
-          if (agentList[i] && agentList[i].agent.name.toLowerCase().includes(searchValue.toLowerCase())) {
-            return true;
-          }
+    const filteredData = inputData.reduce((result, queue) => {
+      // Check if the search term matches the queueName
+      if (queue.queueName && queue.queueName.toLowerCase().includes(searchTerm.toLowerCase())) {
+        result.push(queue);
+      } else {
+        // Check if the search term matches the agent name in any availableAgents
+        const matchingAgent = queue.availableAgents.find(
+          (agent) => agent.agent.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        if (matchingAgent) {
+          result.push({
+            ...queue,
+            availableAgents: [matchingAgent]
+          });
         }
       }
-      return false;
-    }
+      return result;
+    }, []);
+
+    return filteredData;
   }
 }

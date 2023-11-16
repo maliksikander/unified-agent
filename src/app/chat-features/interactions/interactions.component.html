@@ -295,8 +295,9 @@
 
                   <ng-container *ngFor="let user of queue.availableAgents; let i = index">
                     <button mat-menu-item>
-                      <span class="agent-status {{ user.state == 'READY' ? 'available' : 'not-available' }}"></span>
-                      <span class="agent-name">{{ user.agent.name }}</span>
+                      <span class="agent-status {{ user?.state == 'READY' ? 'available' : 'not-available' }}"></span>
+                      <span class="agent-name">{{ user?.agent?.name }}</span>
+                      <!-- <span class="agent-name">{{ user | json }}</span> -->
                       <div class="consult-action-main">
                         <!-- <span class="transfer-selection" (click)="agentAssistanceRequest(chatConsultTemplate, user, 'consult', 'agent')"><img src="assets/images/consult-colored.svg" alt="consult"/> </span> -->
                         <span matTooltip="{{ 'chat-features.interactions.agent-transfer' | translate }}" class="transfer-selection" (click)="agentAssistanceRequest(chatConsultTemplate, queue, 'transfer', 'agent', user)"
