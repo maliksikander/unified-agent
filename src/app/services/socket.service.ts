@@ -175,6 +175,7 @@ export class socketService {
           this.emit("topicSubscription", {
             topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent,res.conversationId, "ASSISTANT", "SUBSCRIBED"),
             agentId: this._cacheService.agent.id,
+            conversationId: res.conversationId,
             roomId: res.roomId,
             taskId: res.taskId
           });
@@ -934,6 +935,7 @@ export class socketService {
   linkCustomerWithInteraction(customerId,conversationId, roomId) {
     this.emit("publishCimEvent", {
       cimEvent: new CimEvent("ASSOCIATED_CUSTOMER_CHANGED", "NOTIFICATION",conversationId, roomId, { Id: customerId }, null),
+      conversationId: conversationId,
       agentId: this._cacheService.agent.id,
       roomId: roomId
     });

@@ -252,6 +252,7 @@ export class InteractionsComponent implements OnInit {
   BargeIn() {
     let obj = {
       participantId: this.conversation.topicParticipant.participant.id,
+      conversationId: this.conversation.conversationId,
       roomId: this.conversation.roomId
     };
     this._socketService.emit("JoinAsBargin", obj);
@@ -260,6 +261,7 @@ export class InteractionsComponent implements OnInit {
   moveToWhisperMode() {
     let obj = {
       participantId: this.conversation.topicParticipant.participant.id,
+      conversationId: this.conversation.conversationId,
       roomId: this.conversation.roomId
     };
     this._socketService.emit("moveToWhisperMode", obj);
@@ -467,6 +469,7 @@ export class InteractionsComponent implements OnInit {
       this._socketService.emit("publishCimEvent", {
         cimEvent: event,
         agentId: this._cacheService.agent.id,
+        conversationId: this.conversation.conversationId,
         roomId: this.conversation.roomId
       });
 
@@ -548,6 +551,7 @@ export class InteractionsComponent implements OnInit {
           this._socketService.emit("publishCimEvent", {
             cimEvent: event,
             agentId: this._cacheService.agent.id,
+            conversationId: this.conversation.conversationId,
             roomId: this.conversation.roomId
           });
           this.sendTypingStartedEventTimer = setTimeout(() => {
@@ -1200,6 +1204,7 @@ export class InteractionsComponent implements OnInit {
     this._socketService.emit("publishCimEvent", {
       cimEvent: event,
       agentId: this._cacheService.agent.id,
+      conversationId: this.conversation.conversationId,
       roomId: this.conversation.roomId
     });
 
@@ -1223,6 +1228,7 @@ export class InteractionsComponent implements OnInit {
     this._socketService.emit("publishCimEvent", {
       cimEvent: event,
       agentId: this._cacheService.agent.id,
+      conversationId: this.conversation.conversationId,
       roomId: this.conversation.roomId
     });
 
@@ -1479,6 +1485,7 @@ export class InteractionsComponent implements OnInit {
       if (this.conversation.wrapUpDialog.show) {
         this._socketService.emit("WRAP_UP_CLOSED", {
           roomId: this.conversation.roomId,
+          conversationId: this.conversation.conversationId,
           agentId: this._cacheService.agent.id
         })
       }
@@ -1488,6 +1495,7 @@ export class InteractionsComponent implements OnInit {
       if (this.conversation.wrapUpDialog.show) {
         this._socketService.emit("WRAP_UP_CLOSED", {
           roomId: this.conversation.roomId,
+          conversationId: this.conversation.conversationId,
           agentId: this._cacheService.agent.id
         })
       }
