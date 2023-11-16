@@ -631,11 +631,11 @@ export class SipService implements OnInit {
         }
       };
       if (intent == "CALL_LEG_ENDED") {
-        let conversationId = this.getCurrentConversationIdORConversation("id");
+        let roomId = this.getCurrentroomIdORConversation("id");
         let obj = {
-          key: "conversationId",
+          key: "roomId",
           type: "String2000",
-          value: conversationId
+          value: roomId
         };
         cimMessage.header.channelData.additionalAttributes.push(obj);
       }
@@ -683,7 +683,7 @@ export class SipService implements OnInit {
     }
   }
 
-  getCurrentConversationIdORConversation(type) {
+  getCurrentroomIdORConversation(type) {
     try {
       let conversationList: Array<any> = this._socketService.conversations;
       for (let i = 0; i <= conversationList.length; i++) {
@@ -692,14 +692,14 @@ export class SipService implements OnInit {
             return item.channel.channelType.name.toLowerCase() == "cx_voice";
           });
           if (voiceSession && type == "id") {
-            return voiceSession.conversationId;
+            return voiceSession.roomId;
           } else if (voiceSession && type == "conversation") {
             return conversationList[i];
           }
         }
       }
     } catch (e) {
-      console.error("[Error] getConversationIdOrConversation Sip==>", e);
+      console.error("[Error] getroomIdOrConversation Sip==>", e);
     }
   }
 
@@ -932,7 +932,7 @@ export class SipService implements OnInit {
         //     this.handleCallDroppedEvent(cacheId, D1, "call_end", dialogEvent, "DIALOG_ENDED", state);
         //   } else if (D1.dialog.id == dialogState.dialog.id) {
         //     if (D1.dialogState == "active") {
-        //       let conversation = this.getCurrentConversationIdORConversation("conversation");
+        //       let conversation = this.getCurrentroomIdORConversation("conversation");
         //       if (conversation) {
         //         this.customer = conversation.customer;
         //       }

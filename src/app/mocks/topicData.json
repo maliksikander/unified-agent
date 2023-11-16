@@ -257,7 +257,7 @@
       "value": null
     },
     "isActive": true,
-    "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+    "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
     "state": "STARTED",
     "active": true
   },
@@ -273,7 +273,7 @@
       "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
       "joiningTime": "2021-11-08T08:37:25.775+00:00",
       "token": null,
-      "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+      "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
       "isActive": true,
       "userCredentials": {},
       "state": "SUBSCRIBED",
@@ -420,14 +420,14 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       },
       "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
       "joiningTime": "2021-11-08T08:37:26.203+00:00",
       "token": null,
-      "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+      "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
       "isActive": true,
       "userCredentials": {},
       "state": null,
@@ -533,14 +533,14 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       },
       "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
       "joiningTime": "2021-11-08T08:37:26.203+00:00",
       "token": null,
-      "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+      "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
       "isActive": true,
       "userCredentials": {},
       "state": null,
@@ -645,7 +645,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -655,7 +655,7 @@
       "name": "CUSTOMER_MESSAGE",
       "type": "MESSAGE",
       "timestamp": "2022-06-24T09:08:13.978+00:00",
-      "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
       "data": {
         "id": "2d6b1410-f39d-11ec-b2eb-1579505a1c2e",
         "header": {
@@ -760,14 +760,14 @@
                 "value": null
               },
               "isActive": true,
-              "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+              "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
               "state": "STARTED",
               "active": true
             },
             "id": "1495bb50-d105-4325-8703-6e396bb34140",
             "joiningTime": 1656060694039,
             "token": null,
-            "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+            "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -1096,7 +1096,7 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -1206,7 +1206,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -1226,7 +1226,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -1342,7 +1342,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -1362,7 +1362,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -1478,7 +1478,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -1498,7 +1498,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -1614,7 +1614,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -1633,7 +1633,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -1749,7 +1749,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -1769,7 +1769,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -1885,7 +1885,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -1905,7 +1905,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -2021,7 +2021,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -2041,7 +2041,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -2158,7 +2158,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -2178,7 +2178,7 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -2294,7 +2294,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -2314,7 +2314,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -2431,7 +2431,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -2451,7 +2451,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -2568,7 +2568,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -2588,7 +2588,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -2705,7 +2705,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -2725,7 +2725,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -2848,7 +2848,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -2868,7 +2868,7 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -3005,7 +3005,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -3025,7 +3025,7 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -3147,7 +3147,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -3167,7 +3167,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -3283,7 +3283,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -3303,7 +3303,7 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -3413,7 +3413,7 @@
               "value": null
             },
             "isActive": true,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "state": "STARTED",
             "active": true
           }
@@ -3522,7 +3522,7 @@
             "value": null
           },
           "isActive": true,
-          "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+          "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
           "state": "STARTED",
           "active": true
         },
@@ -3558,7 +3558,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -3701,7 +3701,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -3804,7 +3804,7 @@
             "value": null
           },
           "isActive": true,
-          "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+          "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
           "state": "STARTED",
           "active": true
         },
@@ -3840,7 +3840,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -3963,7 +3963,7 @@
               "value": null
             },
             "isActive": true,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "state": "STARTED",
             "active": true
           }
@@ -3983,7 +3983,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -4105,7 +4105,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -4125,7 +4125,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -4247,7 +4247,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -4268,7 +4268,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -4393,7 +4393,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -4413,7 +4413,7 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -4543,7 +4543,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -4563,7 +4563,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -4681,7 +4681,7 @@
               "value": null
             },
             "isActive": true,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "state": "STARTED",
             "active": true
           }
@@ -4701,7 +4701,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -4826,7 +4826,7 @@
               "value": null
             },
             "isActive": true,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "state": "STARTED",
             "active": true
           }
@@ -4846,7 +4846,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -4964,7 +4964,7 @@
               "value": null
             },
             "isActive": true,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "state": "STARTED",
             "active": true
           }
@@ -4984,7 +4984,7 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -5101,7 +5101,7 @@
               "value": null
             },
             "isActive": true,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "state": "STARTED",
             "active": true
           }
@@ -5121,7 +5121,7 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -5238,7 +5238,7 @@
               "value": null
             },
             "isActive": true,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "state": "STARTED",
             "active": true
           }
@@ -5258,7 +5258,7 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -5377,7 +5377,7 @@
               "value": null
             },
             "isActive": true,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "state": "STARTED",
             "active": true
           }
@@ -5397,7 +5397,7 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -5679,7 +5679,7 @@
               "value": null
             },
             "isActive": true,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "state": "STARTED",
             "active": true
           }
@@ -5699,7 +5699,7 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -5810,7 +5810,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -5830,7 +5830,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -6033,7 +6033,7 @@
               "value": null
             },
             "isActive": true,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "state": "STARTED",
             "active": true
           }
@@ -6053,7 +6053,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -6340,7 +6340,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -6360,7 +6360,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -6509,7 +6509,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -6518,7 +6518,7 @@
       "id": "1ed1c1af-4f8f-417c-be0a-5e3d804b518f",
       "name": "AGENT_MESSAGE",
       "type": "MESSAGE",
-      "conversationId": "522c3d2d-2397-44ff-900f-6c1e99629a08",
+      "roomId": "522c3d2d-2397-44ff-900f-6c1e99629a08",
       "timestamp": 1657694228202,
       "data": {
           "id": "6ab91f4f-c5e8-4c65-8271-ab3f64b8d0ae",
@@ -6529,7 +6529,7 @@
                   "type": "AGENT",
                   "senderName":"RAZA",
                   "token": null,
-                  "conversationId": "522c3d2d-2397-44ff-900f-6c1e99629a08",
+                  "roomId": "522c3d2d-2397-44ff-900f-6c1e99629a08",
                   "role": "PRIMARY",
                   "userCredentials": null,
                   "state": "SUBSCRIBED"
@@ -6750,7 +6750,7 @@
                       "value": null
                   },
                   "isActive": true,
-                  "conversationId": "522c3d2d-2397-44ff-900f-6c1e99629a08",
+                  "roomId": "522c3d2d-2397-44ff-900f-6c1e99629a08",
                   "state": "STARTED",
                   "active": true
               }
@@ -6770,7 +6770,7 @@
           "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
           "joiningTime": 1636360646203,
           "token": null,
-          "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+          "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
           "isActive": true,
           "userCredentials": {},
           "state": "SUBSCRIBED",
@@ -6889,7 +6889,7 @@
         "value": null
       },
       "isActive": true,
-      "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+      "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
       "state": "STARTED",
       "active": true
     }
@@ -6909,7 +6909,7 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -7025,7 +7025,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -7046,7 +7046,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b52b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b52b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -7170,7 +7170,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -7190,7 +7190,7 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -7306,7 +7306,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -7327,7 +7327,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b52b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b52b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -7451,7 +7451,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -7471,7 +7471,7 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -7587,7 +7587,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -7608,7 +7608,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "conversationId": "15584d31-df86-4052-818f-d2bfdba5b52b",
+            "roomId": "15584d31-df86-4052-818f-d2bfdba5b52b",
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -7732,7 +7732,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
         "state": "STARTED",
         "active": true
       }
@@ -7767,7 +7767,7 @@
       "associatedRoutingAttributes": []
     },
     "token": null,
-    "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+    "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
     "role": "PRIMARY",
     "userCredentials": null,
     "state": "SUBSCRIBED"

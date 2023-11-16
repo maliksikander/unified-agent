@@ -87,7 +87,7 @@ export class ActiveChatsComponent implements OnInit {
 
   SilentMonitor(_channelSession) {
     let obj = {
-      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, _channelSession.conversationId, "SILENT_MONITOR", "SUBSCRIBED"),
+      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, _channelSession.roomId, "SILENT_MONITOR", "SUBSCRIBED"),
       agentId: this._cacheService.agent.id,
       channelSession: _channelSession
     };

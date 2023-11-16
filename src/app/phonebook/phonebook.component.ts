@@ -42,7 +42,7 @@ export class PhonebookComponent implements OnInit {
   topicCustomerId;
   paramsSubscription;
   isEmbededView: boolean = false;
-  conversationId: string;
+  roomId: string;
   isMobileDevice = false;
   totalRecords: number;
   FilterSelected = "action";
@@ -102,7 +102,7 @@ export class PhonebookComponent implements OnInit {
       // console.log("params ", params);
       if (params["q"] == "linking") {
         this.isEmbededView = true;
-        this.conversationId = params["conversationId"];
+        this.roomId = params["roomId"];
         this.topicCustomerId = params["topicCustomerId"];
         if (params["filterKey"]) {
           this.selectedSearchLabel = params["filterLabel"];
@@ -342,7 +342,7 @@ export class PhonebookComponent implements OnInit {
       }
     });
     completeSelectedCustomer["_id"] = selectedCustomer._id;
-    this._socketService.linkCustomerWithTopic(completeSelectedCustomer, this.conversationId);
+    this._socketService.linkCustomerWithTopic(completeSelectedCustomer, this.roomId);
   }
   backToChat() { }
   ngOnDestroy() {

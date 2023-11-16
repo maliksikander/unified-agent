@@ -7,7 +7,7 @@ export class isAlreadyJoinedPipe implements PipeTransform {
 
   transform(requestId: any, args?: any): any {
     let index = this._socketService.conversations.findIndex((conversation) => {
-      return conversation.conversationId == requestId;
+      return conversation.roomId == requestId;
     });
     if (index == -1) {
       return false;

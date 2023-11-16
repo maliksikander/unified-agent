@@ -49,7 +49,7 @@ export class socketService {
     private snackBar: MatSnackBar,
     private _translateService: TranslateService
   ) {
-    //this.onTopicData(mockTopicData, "12345", "");
+    //this.onTopicData(mockTopicData,"1234" "12345", "");
   }
 
   connectToSocket() {
@@ -173,17 +173,17 @@ export class socketService {
           this.consultTask = res;
           console.log("taskRequest1==>");
           this.emit("topicSubscription", {
-            topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.conversationId, "ASSISTANT", "SUBSCRIBED"),
+            topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.roomId, "ASSISTANT", "SUBSCRIBED"),
             agentId: this._cacheService.agent.id,
-            conversationId: res.conversationId,
+            roomId: res.roomId,
             taskId: res.taskId
           });
         } else {
           console.log("taskRequest2==>");
           this.emit("topicSubscription", {
-            topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.conversationId, "PRIMARY", "SUBSCRIBED"),
+            topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.roomId, "PRIMARY", "SUBSCRIBED"),
             agentId: this._cacheService.agent.id,
-            conversationId: res.conversationId,
+            roomId: res.roomId,
             taskId: res.taskId
           });
         }
@@ -208,13 +208,13 @@ export class socketService {
 
     this.socket.on("onCimEvent", (res: any) => {
       try {
-        this.onCimEventHandler(JSON.parse(res.cimEvent), res.conversationId);
+        this.onCimEventHandler(JSON.parse(res.cimEvent), res.roomId);
       } catch (err) {
         console.error("error on onCimEvent ==>" + err);
         // If got any error while receiving cimEvent then simply unsubscribe to the topic
         this._snackbarService.open(this._translateService.instant("snackbar.Malfunction-event"), "err");
         // this.emit("topicUnsubscription", {
-        //   conversationId: res.conversationId,
+        //   roomId: res.roomId,
         //   agentId: this._cacheService.agent.id
         // });
       }
@@ -223,7 +223,7 @@ export class socketService {
     this.socket.on("onTopicData", (res: any, callback: any) => {
       console.log("onTopicData==>", JSON.parse(JSON.stringify(res)));
       try {
-        this.onTopicData(res.topicData, res.conversationId, res.taskId);
+        this.onTopicData(res.topicData,res.conversationId, res.roomId, res.taskId);
         if (callback) {
           callback({ status: "ok" });
         }
@@ -232,7 +232,7 @@ export class socketService {
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-chat-unsubscribing"), "err");
         // If got any error while receiving topicData then simply unsubscribe to the topic
         this.emit("topicUnsubscription", {
-          conversationId: res.conversationId,
+          roomId: res.roomId,
           agentId: this._cacheService.agent.id
         });
       }
@@ -252,12 +252,12 @@ export class socketService {
           verticalPosition: "bottom"
         });
       }
-      this.removeConversation(res.conversationId);
+      this.removeConversation(res.roomId);
     });
 
     this.socket.on("WRAP_UP_TIMER_STARTED", (res: any) => {
       let sameTopicConversation = this.conversations.find((e) => {
-        return e.conversationId == res.conversationId;
+        return e.roomId == res.roomId;
       });
       sameTopicConversation.wrapUpDialog.show = true;
       sameTopicConversation.wrapUpDialog.durationLeft = res.duration;
@@ -269,10 +269,10 @@ export class socketService {
       console.log("WRAP_UP_CLOSED", res);
 
       // let sameTopicConversation = this.conversations.find((e) => {
-      //   return e.conversationId == res.conversationId;
+      //   return e.roomId == res.roomId;
       // });
       // delete sameTopicConversation["agentState"];
-      // this.removeConversation(res.conversationId);
+      // this.removeConversation(res.roomId);
     });
 
     this.socket.on("socketSessionRemoved", (res: any) => {
@@ -351,7 +351,7 @@ export class socketService {
   }
   //this.socket.on(){}
 
-  onCimEventHandler(cimEvent, conversationId) {
+  onCimEventHandler(cimEvent, roomId) {
     console.log("cim event ", JSON.parse(JSON.stringify(cimEvent)));
     if (cimEvent.channelSession) {
       if (cimEvent.data && cimEvent.data.header) {
@@ -360,7 +360,7 @@ export class socketService {
     }
 
     let sameTopicConversation = this.conversations.find((e) => {
-      return e.conversationId == conversationId;
+      return e.roomId == roomId;
     });
 
     if (sameTopicConversation) {
@@ -422,37 +422,37 @@ export class socketService {
       } else if (cimEvent.type.toLowerCase() == "suggestion") {
         this.mergeBotSuggestions(sameTopicConversation, cimEvent.data);
       } else if (cimEvent.name.toLowerCase() == "channel_session_started") {
-        this.addChannelSession(cimEvent, conversationId);
+        this.addChannelSession(cimEvent, roomId);
       } else if (cimEvent.name.toLowerCase() == "conversation_data_changed") {
-        this.upateActiveConversationData(cimEvent, conversationId);
+        this.upateActiveConversationData(cimEvent, roomId);
       } else if (cimEvent.name.toLowerCase() == "channel_session_ended") {
-        this.removeChannelSession(cimEvent, conversationId);
+        this.removeChannelSession(cimEvent, roomId);
       } else if (cimEvent.name.toLowerCase() == "associated_customer_changed") {
-        this.changeTopicCustomer(cimEvent, conversationId);
+        this.changeTopicCustomer(cimEvent, roomId);
       } else if (cimEvent.name.toLowerCase() == "agent_subscribed") {
-        this.handleAgentSubscription(cimEvent, conversationId);
+        this.handleAgentSubscription(cimEvent, roomId);
       } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
-        this.handleAgentSubscription(cimEvent, conversationId);
+        this.handleAgentSubscription(cimEvent, roomId);
       } else if (cimEvent.name.toLowerCase() == "task_enqueued") {
-        this.handleTaskEnqueuedEvent(cimEvent, conversationId);
+        this.handleTaskEnqueuedEvent(cimEvent, roomId);
       } else if (cimEvent.name.toLowerCase() == "task_state_changed") {
-        this.handleTaskStateChangedEvent(cimEvent, conversationId);
+        this.handleTaskStateChangedEvent(cimEvent, roomId);
       } else if (cimEvent.name.toLowerCase() == "no_agent_available") {
-        this.handleNoAgentEvent(cimEvent, conversationId);
+        this.handleNoAgentEvent(cimEvent, roomId);
       } else if (cimEvent.name.toLowerCase() == "message_delivery_notification") {
-        this.handleDeliveryNotification(cimEvent, conversationId);
+        this.handleDeliveryNotification(cimEvent, roomId);
       } else if (cimEvent.type.toLowerCase() == "activity") {
         console.log("DELIVERYNOTIFICATION event");
-        this.handleDeliveryNotification(cimEvent, conversationId);
+        this.handleDeliveryNotification(cimEvent, roomId);
       } else if (cimEvent.name.toLowerCase() == "typing_indicator" && cimEvent.data.header.sender.type.toLowerCase() == "connector") {
         this.handleTypingStartedEvent(cimEvent, sameTopicConversation);
       } else if (cimEvent.name.toLowerCase() == "participant_role_changed") {
-        this.handleParticipantRoleChangedEvent(cimEvent, conversationId);
+        this.handleParticipantRoleChangedEvent(cimEvent, roomId);
       }
     } else {
       this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-event-unsubscribing"), "err");
       this.emit("topicUnsubscription", {
-        conversationId: conversationId,
+        roomId: roomId,
         agentId: this._cacheService.agent.id
       });
     }
@@ -468,10 +468,11 @@ export class socketService {
     alert(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"));
   }
   //call on reload and on every new conversation
-  onTopicData(topicData, conversationId, taskId) {
-    // this.removeConversation(conversationId);
+  onTopicData(topicData,conversationId, roomId, taskId) {
+    // this.removeConversation(roomId);
     let conversation = {
-      conversationId: conversationId,
+      roomId: roomId,
+      conversationId:conversationId,
       taskId,
       wrapUpDialog: {
         show: false,
@@ -485,7 +486,7 @@ export class socketService {
       activeChannelSessions: [],
       unReadCount: undefined,
       index: null,
-      state: conversationId == "FAKE_CONVERSATION" ? "CLOSED" : "ACTIVE",
+      state: roomId == "FAKE_CONVERSATION" ? "CLOSED" : "ACTIVE",
       customer: topicData.customer,
       customerSuggestions: topicData.channelSession ? topicData.channelSession.customerSuggestions : [],
       topicParticipant: topicData.topicParticipant ? topicData.topicParticipant : "", //own ccuser of Agent
@@ -659,7 +660,7 @@ export class socketService {
       //   conversation.index = e.index;
       //   return e;
       // }
-      if ((e.conversationId !='FAKE_CONVERSATION' && e.conversationId==conversation.conversationId)  ||  (e.customer._id == topicData.customer._id && e.conversationId =='FAKE_CONVERSATION')) {
+      if ((e.roomId !='FAKE_CONVERSATION' && e.roomId==conversation.roomId)  ||  (e.customer._id == topicData.customer._id && e.roomId =='FAKE_CONVERSATION')) {
         index = indx;
         conversation.index = e.index;
         return e;
@@ -668,7 +669,7 @@ export class socketService {
 
     if (oldConversation) {
       // if that conversation already exists update it
-      if (conversation.conversationId != "FAKE_CONVERSATION") {
+      if (conversation.roomId != "FAKE_CONVERSATION") {
         this.conversations[index] = conversation;
         // console.log("old convo ===>", oldConversation);
       }
@@ -870,10 +871,10 @@ export class socketService {
     }
   }
 
-  changeTopicCustomer(cimEvent, conversationId) {
+  changeTopicCustomer(cimEvent, roomId) {
     let conversation = this.conversations.find((e) => {
-      //console.log("this is conversation id"+e.conversationId);
-      return e.conversationId == conversationId;
+      //console.log("this is conversation id"+e.roomId);
+      return e.roomId == roomId;
     });
 
     if (conversation) {
@@ -883,11 +884,11 @@ export class socketService {
     }
   }
 
-  removeConversation(conversationId) {
+  removeConversation(roomId) {
     // fetching the whole conversation which needs to be removed
     let index;
     const removedConversation = this.conversations.find((conversation, indx) => {
-      if (conversation.conversationId == conversationId || conversation.customer._id == conversationId) {
+      if (conversation.roomId == roomId || conversation.customer._id == roomId) {
         index = indx;
         return conversation;
       }
@@ -927,18 +928,18 @@ export class socketService {
     }
   }
 
-  linkCustomerWithInteraction(customerId, conversationId) {
+  linkCustomerWithInteraction(customerId,conversationId, roomId) {
     this.emit("publishCimEvent", {
-      cimEvent: new CimEvent("ASSOCIATED_CUSTOMER_CHANGED", "NOTIFICATION", conversationId, { Id: customerId }, null),
+      cimEvent: new CimEvent("ASSOCIATED_CUSTOMER_CHANGED", "NOTIFICATION",conversationId, roomId, { Id: customerId }, null),
       agentId: this._cacheService.agent.id,
-      conversationId: conversationId
+      roomId: roomId
     });
     this._snackbarService.open(this._translateService.instant("snackbar.CUSTOMER-LINKED-SUCCESSFULLY"), "succ");
   }
 
-  handleTaskStateChangedEvent(cimEvent, conversationId) {
+  handleTaskStateChangedEvent(cimEvent, roomId) {
     let conversation = this.conversations.find((e) => {
-      return e.conversationId == conversationId;
+      return e.roomId == roomId;
     });
 
     if (conversation) {
@@ -949,9 +950,9 @@ export class socketService {
     }
   }
 
-  removeChannelSession(cimEvent, conversationId) {
+  removeChannelSession(cimEvent, roomId) {
     let conversation = this.conversations.find((e) => {
-      return e.conversationId == conversationId;
+      return e.roomId == roomId;
     });
 
     if (conversation) {
@@ -1001,9 +1002,9 @@ export class socketService {
     }
   }
 
-  handleTaskEnqueuedEvent(cimEvent, conversationId) {
+  handleTaskEnqueuedEvent(cimEvent, roomId) {
     let conversation = this.conversations.find((e) => {
-      return e.conversationId == conversationId;
+      return e.roomId == roomId;
     });
 
     if (conversation) {
@@ -1014,9 +1015,9 @@ export class socketService {
     }
   }
 
-  handleDeliveryNotification(cimEvent, conversationId) {
+  handleDeliveryNotification(cimEvent, roomId) {
     let conversation = this.conversations.find((e) => {
-      return e.conversationId == conversationId;
+      return e.roomId == roomId;
     });
     if (
       conversation &&
@@ -1107,9 +1108,9 @@ export class socketService {
       }
     }
   }
-  handleNoAgentEvent(cimEvent, conversationId) {
+  handleNoAgentEvent(cimEvent, roomId) {
     let conversation = this.conversations.find((e) => {
-      return e.conversationId == conversationId;
+      return e.roomId == roomId;
     });
 
     if (conversation) {
@@ -1120,9 +1121,9 @@ export class socketService {
     }
   }
 
-  addChannelSession(cimEvent, conversationId) {
+  addChannelSession(cimEvent, roomId) {
     let conversation = this.conversations.find((e) => {
-      return e.conversationId == conversationId;
+      return e.roomId == roomId;
     });
 
     if (conversation) {
@@ -1179,9 +1180,9 @@ export class socketService {
       }, 5000);
     }
   }
-  handleParticipantRoleChangedEvent(cimEvent, conversationId) {
+  handleParticipantRoleChangedEvent(cimEvent, roomId) {
     let conversation = this.conversations.find((e) => {
-      return e.conversationId == conversationId;
+      return e.roomId == roomId;
     });
 
     if (conversation) {
@@ -1208,9 +1209,9 @@ export class socketService {
     }
   }
 
-  upateActiveConversationData(cimEvent, conversationId) {
+  upateActiveConversationData(cimEvent, roomId) {
     let conversation = this.conversations.find((e) => {
-      return e.conversationId == conversationId;
+      return e.roomId == roomId;
     });
 
     if (conversation) {
@@ -1218,9 +1219,9 @@ export class socketService {
     }
   }
 
-  handleAgentSubscription(cimEvent, conversationId) {
+  handleAgentSubscription(cimEvent, roomId) {
     let conversation = this.conversations.find((e) => {
-      return e.conversationId == conversationId;
+      return e.roomId == roomId;
     });
 
     if (conversation) {
@@ -1287,14 +1288,14 @@ export class socketService {
    * to link the incoming customer requests to identified customers
    *
    * @param {Object} selectedCustomer the customer object which is selected to link the incoming customer with
-   * @param {UUID} conversationId selected topic ID
+   * @param {UUID} roomId selected topic ID
    * @returns {Object}
    */
 
-  async linkCustomerWithTopic(selectedCustomer, conversationId) {
+  async linkCustomerWithTopic(selectedCustomer, roomId) {
     try {
       const conversation = this.conversations.find((e) => {
-        return e.conversationId == conversationId;
+        return e.roomId == roomId;
       });
       const topicCustomer = conversation.customer;
       const channelSession = conversation.firstChannelSession;
@@ -1323,7 +1324,7 @@ export class socketService {
                   topicCustomer,
                   false,
                   topicCustomer.isAnonymous == true ? topicCustomer._id : null,
-                  conversationId,
+                  roomId,
                   resp.isAttributeMerge
                 );
               }
@@ -1340,7 +1341,7 @@ export class socketService {
                       topicCustomer,
                       true,
                       topicCustomer.isAnonymous == true ? topicCustomer._id : null,
-                      conversationId,
+                      roomId,
                       resp.isAttributeMerge
                     );
                     console.log("limit not exceed");
@@ -1359,7 +1360,7 @@ export class socketService {
                       20000,
                       "Ok"
                     );
-                    // this.updateTopiCustomer(selectedCustomer, false, topicCustomer.isAnonymous == true ? topicCustomer._id : null, conversationId);
+                    // this.updateTopiCustomer(selectedCustomer, false, topicCustomer.isAnonymous == true ? topicCustomer._id : null, roomId);
                   }
                 } else {
                   this.updateTopiCustomer(
@@ -1367,7 +1368,7 @@ export class socketService {
                     topicCustomer,
                     false,
                     topicCustomer.isAnonymous == true ? topicCustomer._id : null,
-                    conversationId,
+                    roomId,
                     resp.isAttributeMerge
                   );
                 }
@@ -1381,7 +1382,7 @@ export class socketService {
                 topicCustomer,
                 false,
                 topicCustomer.isAnonymous == true ? topicCustomer._id : null,
-                conversationId,
+                roomId,
                 resp.isAttributeMerge
               );
             }
@@ -1396,13 +1397,13 @@ export class socketService {
               topicCustomer,
               false,
               topicCustomer.isAnonymous == true ? topicCustomer._id : null,
-              conversationId,
+              roomId,
               resp.isAttributeMerge
             );
           }
           //  this.snackErrorMessage("Unable to link profile");
         }
-        //  this._socketService.linkCustomerWithInteraction(customerId, this.conversationId);
+        //  this._socketService.linkCustomerWithInteraction(customerId, this.roomId);
       } else {
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-link-customer"), "err");
       }
@@ -1419,12 +1420,12 @@ export class socketService {
    * @param {Object} topicCustomer the incoming request customer object
    * @param {Boolean} needToBeUpdate to check if identifier needs to be updated in the selected
    * @param {ObjectID} toBeDeletedCustomerId the incoming request customer object ID
-   * @param {UUID} conversationId selected topic ID
+   * @param {UUID} roomId selected topic ID
    * @param {Boolean} addChannelIdentifier to check if identifier is required to be added in the selected customer or not
    * @returns {Object}
    */
 
-  updateTopiCustomer(selectedCustomer, topicCustomer, needToBeUpdate: boolean, toBeDeletedCustomerId, conversationId, addChannelIdentifier) {
+  updateTopiCustomer(selectedCustomer, topicCustomer, needToBeUpdate: boolean, toBeDeletedCustomerId, roomId, addChannelIdentifier) {
     console.log("topic updated");
     console.log("need to be updated " + needToBeUpdate);
     console.log("toBeDeletedCustomerId " + toBeDeletedCustomerId);
@@ -1442,7 +1443,7 @@ export class socketService {
           selectedCustomer["_id"] = selectedCustomerId;
           // this._snackbarService.open(this._translateService.instant("snackbar.Profile-linked-successfully"), "succ");
           // updating customer topic
-          this._httpService.updateConversationCustomer(conversationId, selectedCustomer).subscribe(
+          this._httpService.updateConversationCustomer(roomId, selectedCustomer).subscribe(
             (e) => {
               if (addChannelIdentifier && toBeDeletedCustomerId != null) {
                 let requestPayload = { currentCustomer: topicCustomer, newCustomer: selectedCustomer };
@@ -1465,7 +1466,7 @@ export class socketService {
     } else {
       selectedCustomer["_id"] = selectedCustomerId;
       // updating customer topic
-      this._httpService.updateConversationCustomer(conversationId, selectedCustomer).subscribe(
+      this._httpService.updateConversationCustomer(roomId, selectedCustomer).subscribe(
         (e) => {
           if (toBeDeletedCustomerId != null) {
             this.checkPastActivitiesAndDeleteCustomer(topicCustomer._id);
@@ -1789,31 +1790,31 @@ export class socketService {
   }
 
   topicUnsub(conversation) {
-    console.log("going to unsub from topic==>" + conversation.conversationId);
+    console.log("going to unsub from topic==>" + conversation.roomId);
 
     if (conversation.state === "ACTIVE") {
       // if the topic state is 'ACTIVE' then agent needs to request the agent manager for unsubscribe
       this.emit("topicUnsubscription", {
-        conversationId: conversation.conversationId,
+        roomId: conversation.roomId,
         agentId: this._cacheService.agent.id
       });
     } else if (conversation.state === "CLOSED") {
       // if the topic state is 'CLOSED' it means agent is already unsubscribed by the agent manager
       // now it only needs to clear the conversation from conversations array
 
-      if (conversation.conversationId == "FAKE_CONVERSATION") {
+      if (conversation.roomId == "FAKE_CONVERSATION") {
         this.removeConversation(conversation.customer._id);
       } else {
-        this.removeConversation(conversation.conversationId);
+        this.removeConversation(conversation.roomId);
       }
     }
   }
 
-  getTopicSubscription(conversationId, taskId) {
+  getTopicSubscription(roomId, taskId) {
     this.emit("topicSubscription", {
-      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, conversationId, "PRIMARY", "SUBSCRIBED"),
+      topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, roomId, "PRIMARY", "SUBSCRIBED"),
       agentId: this._cacheService.agent.id,
-      conversationId: conversationId,
+      roomId: roomId,
       taskId: taskId
     });
   }

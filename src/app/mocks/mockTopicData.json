@@ -141,7 +141,7 @@
       "value": null
     },
     "isActive": true,
-    "conversationId": "64a28b0764717d48646830ff",
+    "roomId": "64a28b0764717d48646830ff",
     "state": {
       "name": "STARTED",
       "reasonCode": "CUSTOMER"
@@ -165,7 +165,7 @@
       "id": "64a28b0764717d4864683103",
       "joiningTime": "2023-07-03T08:47:03.066+00:00",
       "token": null,
-      "conversationId": null,
+      "roomId": null,
       "isActive": true,
       "userCredentials": {},
       "state": null,
@@ -305,7 +305,7 @@
           "value": null
         },
         "isActive": true,
-        "conversationId": "64a28b0764717d48646830ff",
+        "roomId": "64a28b0764717d48646830ff",
         "state": {
           "name": "STARTED",
           "reasonCode": "CUSTOMER"
@@ -316,7 +316,7 @@
       "id": "64a28b0764717d4864683189",
       "joiningTime": "2023-07-03T08:47:03.120+00:00",
       "token": null,
-      "conversationId": "64a28b0764717d48646830ff",
+      "roomId": "64a28b0764717d48646830ff",
       "isActive": true,
       "userCredentials": {},
       "state": "SUBSCRIBED",
@@ -410,7 +410,7 @@
       "id": "6e2cc497-0caa-423e-a8e5-28cbadfabfb1",
       "joiningTime": "2023-07-03T08:47:07.867+00:00",
       "token": null,
-      "conversationId": "64a28b0764717d48646830ff",
+      "roomId": "64a28b0764717d48646830ff",
       "isActive": true,
       "userCredentials": null,
       "state": "SUBSCRIBED",
@@ -425,7 +425,7 @@
           "name": "THIRD_PARTY_ACTIVITY",
           "type": "ACTIVITY",
           "timestamp": "2023-09-14T12:25:19.764+00:00",
-          "conversationId": null,
+          "roomId": null,
           "eventEmitter": {
               "id": "360-cf741209-ac87-4db9-8dbe-21f3bb28ff41",
               "type": "CONNECTOR",
@@ -496,7 +496,7 @@
                   "value": null
               },
               "isActive": true,
-              "conversationId": null,
+              "roomId": null,
               "state": null,
               "channelSessionDirection": null,
               "active": true
@@ -529,7 +529,7 @@
                   "intent": null,
                   "entities": null,
                   "channelSessionId": null,
-                  "conversationId": null,
+                  "roomId": null,
                   "customer": {
                       "_id": "6502fb3e3733b656f11000ae",
                       "firstName": null,
@@ -569,7 +569,7 @@
           "name": "THIRD_PARTY_ACTIVITY",
           "type": "ACTIVITY",
           "timestamp": "2023-09-14T12:24:53.169+00:00",
-          "conversationId": null,
+          "roomId": null,
           "eventEmitter": {
               "id": "39051a3b-ed8a-4740-b8fb-47c51b4743bb",
               "type": "APP",
@@ -640,7 +640,7 @@
                   "value": null
               },
               "isActive": true,
-              "conversationId": null,
+              "roomId": null,
               "state": null,
               "channelSessionDirection": null,
               "active": true
@@ -667,7 +667,7 @@
                   "intent": null,
                   "entities": null,
                   "channelSessionId": null,
-                  "conversationId": null,
+                  "roomId": null,
                   "customer": {
                       "_id": "6502fb3e3733b656f11000ae",
                       "firstName": null,
@@ -710,7 +710,7 @@
           "name": "THIRD_PARTY_ACTIVITY",
           "type": "ACTIVITY",
           "timestamp": "2023-09-14T12:24:51.530+00:00",
-          "conversationId": null,
+          "roomId": null,
           "eventEmitter": {
               "id": "39051a3b-ed8a-4740-b8fb-47c51b4743bb",
               "type": "APP",
@@ -781,7 +781,7 @@
                   "value": null
               },
               "isActive": true,
-              "conversationId": null,
+              "roomId": null,
               "state": null,
               "channelSessionDirection": null,
               "active": true
@@ -808,7 +808,7 @@
                   "intent": null,
                   "entities": null,
                   "channelSessionId": null,
-                  "conversationId": null,
+                  "roomId": null,
                   "customer": {
                       "_id": "6502fb3e3733b656f11000ae",
                       "firstName": null,
@@ -930,7 +930,7 @@
       "associatedRoutingAttributes": []
     },
     "token": null,
-    "conversationId": "64a28b0764717d48646830ff",
+    "roomId": "64a28b0764717d48646830ff",
     "role": "PRIMARY",
     "userCredentials": null,
     "state": "SUBSCRIBED"

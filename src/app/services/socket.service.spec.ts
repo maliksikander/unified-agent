@@ -22,7 +22,7 @@ describe("Socket service", () => {
   let _translateService: any;
 
   const mockConversation = {
-    conversationId: "12345",
+    roomId: "12345",
     messages: [],
     activeChannelSessions: [],
     unReadCount: undefined,

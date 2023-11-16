@@ -50,7 +50,7 @@ export class ChatNotificationsComponent implements OnInit {
             );
           
         } else if (e.msg == "closePushModeRequestHeader") {
-          this.removePushModeRequestFromRequestArray(e.data.conversationId);
+          this.removePushModeRequestFromRequestArray(e.data.roomId);
         } else if (e.msg == "openPullModeRequestHeader") {
           this.pullModeRequests.push(e.data);
           this._soundService.playRing();
@@ -127,8 +127,8 @@ export class ChatNotificationsComponent implements OnInit {
     }
   }
 
-  onAcceptCallback(conversationId, taskId, taskDirection) {
-    this.getTopicSubscription(conversationId, taskId, taskDirection);
+  onAcceptCallback(roomId, taskId, taskDirection) {
+    this.getTopicSubscription(roomId, taskId, taskDirection);
   }
 
   onExternalRequestAccept(data) {
@@ -136,35 +136,35 @@ export class ChatNotificationsComponent implements OnInit {
     this.acceptCall(data);
   }
 
-  getTopicSubscription(conversationId, taskId, taskDirection) {
+  getTopicSubscription(roomId, taskId, taskDirection) {
     this._socketService.emit("topicSubscription", {
       topicParticipant: new TopicParticipant(
         "AGENT",
         this._cacheService.agent,
-        conversationId,
+        roomId,
         taskDirection == "CONSULT" ? "ASSISTANT" : "PRIMARY",
         "SUBSCRIBED"
       ),
       agentId: this._cacheService.agent.id,
-      conversationId: conversationId,
+      roomId: roomId,
       taskId: taskId
     });
 
-    this.removePushModeRequestFromRequestArray(conversationId);
+    this.removePushModeRequestFromRequestArray(roomId);
     this._router.navigate(["customers"]);
   }
 
-  removePushModeRequestFromRequestArray(conversationId) {
-    let index = this._sharedService.getIndexFromConversationId(conversationId, this.pushModeRequests);
+  removePushModeRequestFromRequestArray(roomId) {
+    let index = this._sharedService.getIndexFromroomId(roomId, this.pushModeRequests);
     if (index != -1) {
       this._sharedService.spliceArray(index, this.pushModeRequests);
     }
     this._soundService.stopRing();
   }
 
-  removeExternalModeRequestFromRequestArray(identifier, conversationId) {
+  removeExternalModeRequestFromRequestArray(identifier, roomId) {
     this.pushModeRequests.forEach((item, index) => {
-      if (item.conversationId == conversationId) {
+      if (item.roomId == roomId) {
         if (item.channelSession.channelData.channelCustomerIdentifier == identifier) {
           this.pushModeRequests.splice(index, 1);
         }

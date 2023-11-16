@@ -77,7 +77,7 @@
               <ul (click)="$event.stopPropagation()" class="list-group list-group-vertical agent-controls agent-controls-mobile">
                   
                 <ng-container
-                    *ngIf="conversation.conversationId != 'FAKE_CONVERSATION' && conversation.topicParticipant.role != 'SILENT_MONITOR' && conversation.topicParticipant.role != 'ASSISTANT' && ('agent-conversation-control' | authPipe: 'view_wrap_up') as result">
+                    *ngIf="conversation.roomId != 'FAKE_CONVERSATION' && conversation.topicParticipant.role != 'SILENT_MONITOR' && conversation.topicParticipant.role != 'ASSISTANT' && ('agent-conversation-control' | authPipe: 'view_wrap_up') as result">
                     <li class="list-group-item">
                       <button mat-icon-button matTooltip="{{ 'chat-features.interactions.wrapup' | translate }}" aria-label="WrapUp"
                               (click)="openWrapUpDialog(false)">
@@ -86,7 +86,7 @@
                       </button>
                     </li>
                   </ng-container>
-                  <li class="list-group-item" *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
+                  <li class="list-group-item" *ngIf="conversation.roomId != 'FAKE_CONVERSATION'">
                     <button mat-icon-button [matMenuTriggerFor]="ParticipantsList"
                             matTooltip="{{ 'chat-features.interactions.participants' | translate }}" aria-label="Participants">
                       <mat-icon>group</mat-icon>
@@ -105,7 +105,7 @@
                     </button>
                   </li>
 
-                  <li class="list-group-item" *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
+                  <li class="list-group-item" *ngIf="conversation.roomId != 'FAKE_CONVERSATION'">
                     <button mat-icon-button #consultTransferTrigger="matMenuTrigger"
                             [matMenuTriggerFor]="ConsultTransferConversation" (click)="getAgentsInQueue()"
                             matTooltip="{{ 'chat-features.interactions.agent-assistance' | translate }}" aria-label="Consult Chat">
@@ -126,7 +126,7 @@
           <ul class="list-group list-group-horizontal agent-controls" *ngIf="!isMobileDevice">
             <ng-container
               *ngIf="
-                conversation.conversationId != 'FAKE_CONVERSATION' &&
+                conversation.roomId != 'FAKE_CONVERSATION' &&
                 conversation.topicParticipant.role != 'SILENT_MONITOR' &&
                 conversation.topicParticipant.role != 'ASSISTANT' &&
                 ('agent-conversation-control' | authPipe: 'view_wrap_up') as result
@@ -147,7 +147,7 @@
                 </button>
               </li>
             </ng-container>
-            <li class="list-group-item" *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
+            <li class="list-group-item" *ngIf="conversation.roomId != 'FAKE_CONVERSATION'">
               <button
                 mat-icon-button
                 [matMenuTriggerFor]="ParticipantsList"
@@ -171,7 +171,7 @@
               </button>
             </li>
 
-            <li class="list-group-item" *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
+            <li class="list-group-item" *ngIf="conversation.roomId != 'FAKE_CONVERSATION'">
               <button
                 mat-icon-button
                 #consultTransferTrigger="matMenuTrigger"
@@ -275,7 +275,7 @@
           </mat-menu>
 
           <mat-menu #ParticipantsList="matMenu" xPosition="before">
-            <div *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'" class="chat-transfer-main participants-list">
+            <div *ngIf="conversation.roomId != 'FAKE_CONVERSATION'" class="chat-transfer-main participants-list">
               <h5 class="transfer-heading participants-heading">{{ "chat-features.interactions.participants" | translate }}</h5>
               <button mat-menu-item>
                 <span class="agent-detail">
@@ -497,7 +497,7 @@
               <p
                 *ngIf="
                   ('agent-conversation-control' | authPipe: 'view_history') ||
-                  (conversation.conversationId != 'FAKE_CONVERSATION' &&
+                  (conversation.roomId != 'FAKE_CONVERSATION' &&
                     ('agent-conversation-control' | authPipe: 'view_history_active_customer')) as result
                 "
               >
@@ -514,11 +514,11 @@
           <!-- simple chat area -->
           <div id="chat-area-start"></div>
           <div class="instruction-content chat-session-main">
-            <ng-container *ngIf="pastActivitiesloadedOnce || conversation.conversationId != 'FAKE_CONVERSATION'">
+            <ng-container *ngIf="pastActivitiesloadedOnce || conversation.roomId != 'FAKE_CONVERSATION'">
               <div
                 *ngIf="
                   ('agent-conversation-control' | authPipe: 'view_history') ||
-                  (conversation.conversationId != 'FAKE_CONVERSATION' &&
+                  (conversation.roomId != 'FAKE_CONVERSATION' &&
                     ('agent-conversation-control' | authPipe: 'view_history_active_customer')) as result
                 "
                 class="int-date load-more"
@@ -2952,7 +2952,7 @@
       [customer]="conversation.customer"
       [customerSuggestions]="conversation.customerSuggestions"
       [firstChannelSession]="conversation.firstChannelSession"
-      [conversationId]="conversation.conversationId"
+      [roomId]="conversation.roomId"
       [conversation]="conversation"
       [activeConversationData]="conversation.activeConversationData"
       (expandCustomerInfo)="eventFromChild($event)"
