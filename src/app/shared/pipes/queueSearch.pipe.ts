@@ -11,12 +11,12 @@ export class QueueSearchPipe implements PipeTransform {
 
     const filteredData = inputData.reduce((result, queue) => {
       // Check if the search term matches the queueName
-      if (queue.queueName && queue.queueName.toLowerCase().includes(searchTerm.toLowerCase())) {
+      if (queue.queueName && queue.queueName.toLowerCase().includes(searchTerm)) {
         result.push(queue);
       } else {
         // Check if the search term matches the agent name in any availableAgents
         const matchingAgent = queue.availableAgents.find(
-          (agent) => agent.agent.name.toLowerCase().includes(searchTerm.toLowerCase())
+          (agent) => agent.agent.name.toLowerCase().includes(searchTerm)
         );
         if (matchingAgent) {
           result.push({
