@@ -50,7 +50,6 @@ export class ActiveAgentDetailsComponent implements OnInit {
     this._httpService.getAllMRDs().subscribe(
       (e) => {
         this.MRDsList = e;
-        console.log("here are the mrdsList", this.MRDsList)
       },
       (err) => {
         this._snackBarService.open(this._translateService.instant("snackbar.Error-Getting-MRDs-List"), "err");
