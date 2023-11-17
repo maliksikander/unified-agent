@@ -1609,22 +1609,39 @@ export class socketService {
           message.body.markdownText = data;
         });
       }
-    } else if (cimEvent.name.toLowerCase() == "participant_role_changed" && cimEvent.data.conversationParticipant.role.toLowerCase() == "primary") {
-      message = CimMessage;
-      message.body["displayText"] =
-        this._cacheService.agent.id == cimEvent.data.conversationParticipant.participant.keycloakUser.id
-          ? "You"
-          : cimEvent.data.conversationParticipant.participant.keycloakUser.username;
-          if(message.body.displayText == "You") {
-            this._translateService.stream("socket-service.have-joined-the-conversation").subscribe((data: string) => {
-              message.body.markdownText = data;
-            });
-          } else {
-            this._translateService.stream("socket-service.has-joined-the-conversation").subscribe((data: string) => {
-              message.body.markdownText = data;
-            });
-          }
-    } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed" && cimEvent.data.agentParticipant.role.toLowerCase() != "silent_monitor") {
+    } else if (cimEvent.name.toLowerCase() == "participant_role_changed") {
+      if (cimEvent.data.conversationParticipant.role.toLowerCase() == "primary") {
+        message = CimMessage;
+        message.body["displayText"] =
+          this._cacheService.agent.id == cimEvent.data.conversationParticipant.participant.keycloakUser.id
+            ? "You"
+            : cimEvent.data.conversationParticipant.participant.keycloakUser.username;
+            if (message.body.displayText == "You") {
+              this._translateService.stream("socket-service.have-joined-the-conversation").subscribe((data: string) => {
+                message.body.markdownText = data;
+              });
+            }
+            else {
+              this._translateService.stream("socket-service.has-joined-the-conversation").subscribe((data: string) => {
+                message.body.markdownText = data;
+              });
+            }
+      } else if (cimEvent.data.conversationParticipant.role.toLowerCase() == "wrap_up") {
+        message = CimMessage;
+        message.body["displayText"] =
+          this._cacheService.agent.id == cimEvent.data.conversationParticipant.participant.keycloakUser.id
+            ? "You"
+            : cimEvent.data.conversationParticipant.participant.keycloakUser.username;
+
+        this._translateService.stream("socket-service.left-the-conversation").subscribe((data: string) => {
+          message.body.markdownText = data;
+        });
+      }
+    } else if (
+      cimEvent.name.toLowerCase() == "agent_unsubscribed" &&
+      cimEvent.data.agentParticipant.role.toLowerCase() != "silent_monitor" &&
+      cimEvent.data.agentParticipant.role.toLowerCase() != "wrap_up"
+    ) {
       message = CimMessage;
       message.body["displayText"] =
         this._cacheService.agent.id == cimEvent.data.agentParticipant.participant.keycloakUser.id
