@@ -79,7 +79,8 @@ export class InteractionsComponent implements OnInit {
   element;
   dragPosition = { x: 0, y: 0 };
 
-  queueList: any = [
+  queueList: any 
+  = [
     {
       queueId: "1",
       mrdId: "1",
@@ -1380,7 +1381,7 @@ export class InteractionsComponent implements OnInit {
       requestedAgentId: this._cacheService.agent.id,
       note: this.assistanceRequestNote
     };
-    // if (this.requestAction == "transfer") this._socketService.emit("directTransferRequest", data);
+    if (this.requestAction == "transfer") this._socketService.emit("directTransferRequest", data);
    
     this.showRequestNotification();
   }
