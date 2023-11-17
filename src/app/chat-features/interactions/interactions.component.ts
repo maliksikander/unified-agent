@@ -198,6 +198,7 @@ export class InteractionsComponent implements OnInit {
   today = new Date();
   interactionSearch = false;
   isCallActive = false;
+  isReplyToAllEmail: boolean = false;
 
   constructor(
     private _sharedService: sharedService,
@@ -231,6 +232,7 @@ export class InteractionsComponent implements OnInit {
       this.dispayVideoPIP = false;
     }
     this.convers = this.conversation.messages;
+    console.log("here are the messages in the converation", this.convers)
     // setTimeout(() => {
     //   new EmojiPicker();
     // }, 500);
@@ -1703,18 +1705,24 @@ export class InteractionsComponent implements OnInit {
     const recipientsToControl = this.emailForm.get(recepient) as FormArray;
     recipientsToControl.removeAt(index);
   }
-  replyToEmail(message) {
+  replyToEmail(message, isReplyToAllEmail) {
     this.emailForm.patchValue({
       markdownText: "",
-      htmlBody: "", // Set the value as needed
+      htmlBody: "", 
       subject: `Re: ${message.body.subject}`,
-      recipientsCc: [], // Set the value as needed
-      recipientsBcc: [], // Set the value as needed
-      from: [""]
+      recipientsCc: [], 
+      recipientsBcc: [], 
+      from: message.header.channelData.channelCustomerIdentifier
     });
 
-    // Create new FormControls and add them to the FormArray
-    message.body.recipientsTo.forEach((recipient: string) => {
+    const recipientsToControl = this.emailForm.get("recipientsTo") as FormArray;
+    recipientsToControl.clear();
+
+    recipientsToControl.push(this.fb.control(message.header.channelData.serviceIdentifier));
+
+    if(isReplyToAllEmail) {
+
+      message.body.recipientsTo.forEach((recipient: string) => {
       (this.emailForm.get("recipientsTo") as FormArray).push(this.fb.control(recipient));
     });
     message.body.recipientsBcc.forEach((recipient: string) => {
@@ -1723,6 +1731,7 @@ export class InteractionsComponent implements OnInit {
     message.body.recipientsCc.forEach((recipient: string) => {
       (this.emailForm.get("recipientsCc") as FormArray).push(this.fb.control(recipient));
     });
+    }
   }
   openEmailComposer(templateRef): void {
     (this.emailForm.get("recipientsTo") as FormArray).clear();

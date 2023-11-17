@@ -1950,8 +1950,8 @@
                               <mat-panel-title>
                                 <div class="panel-header email-panel-header">
                                   <ul>
-                                    <li matTooltip="{{ message.header.sender.senderEmail }}"><span>From:</span> {{ message.body.from }}</li>
-                                    <li matTooltip="{{ message.body.recipientsTo }}"><span>To:</span> {{ message.body.recipientsTo }}</li>
+                                    <li matTooltip="{{ message.header.channelData.channelCustomerIdentifier }}"><span>From:</span> {{ message.header.channelData.channelCustomerIdentifier }}</li>
+                                    <li matTooltip="{{ message.header.channelData.serviceIdentifier }}"><span>To:</span> {{message.header.channelData.serviceIdentifier}} {{ message.body.recipientsTo }}</li>
                                     <li matTooltip="{{ message.header.sender.emailSubject }}"><span>Subject:</span> {{ message.body.subject }}</li>
                                     <li>
                                       {{ message.header.timestamp | date: "EEEE, mm d, y, h:mm:ss a" }}
@@ -1987,10 +1987,10 @@
                                 >view full thread</span
                               >
                               <ul>
-                                <li (click)="openEmailComposer(emailComposeTemplate, false)" (click)="replyToEmail(message)">
+                                <li (click)="openEmailComposer(emailComposeTemplate)" (click)="replyToEmail(message, false)">
                                   <mat-icon>reply</mat-icon>
                                 </li>
-                                <li><mat-icon>reply_all</mat-icon></li>
+                                <li (click)="openEmailComposer(emailComposeTemplate)" (click)="replyToEmail(message, true)"><mat-icon>reply_all</mat-icon></li>
                                 <li><mat-icon>forward</mat-icon></li>
                                 <li><mat-icon>print</mat-icon></li>
                               </ul>
