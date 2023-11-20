@@ -29,7 +29,7 @@ export class finesseService {
   timeoutId;
   customer;
   taskList: Array<any>;
-  roomId;
+  conversationId;
 
   constructor(
     private _snackbarService: snackbarService,
@@ -839,15 +839,15 @@ export class finesseService {
           dialog
         }
       };
-      let voiceroomId;
+      let voiceconversationId;
       if (intent == "CALL_LEG_ENDED") {
-        voiceroomId = this.getCurrentroomIdORConversation("id");
-        if (!voiceroomId) voiceroomId = this.roomId;
-        if (voiceroomId) cimMessage.header["roomId"] = voiceroomId;
+        voiceconversationId = this.getCurrentconversationIdORConversation("id");
+        if (!voiceconversationId) voiceconversationId = this.conversationId;
+        if (voiceconversationId) cimMessage.header["conversationId"] = voiceconversationId;
         let obj = {
-          key: "roomId",
+          key: "conversationId",
           type: "String2000",
-          value: voiceroomId
+          value: voiceconversationId
         };
         cimMessage.header.channelData.additionalAttributes.push(obj);
       }
@@ -858,7 +858,7 @@ export class finesseService {
     }
   }
 
-  getCurrentroomIdORConversation(type) {
+  getCurrentconversationIdORConversation(type) {
     try {
       let conversationList: Array<any> = this._socketService.conversations;
       // console.log("list==>", conversationList);
@@ -868,14 +868,14 @@ export class finesseService {
             return item.channel.channelType.name.toLowerCase() == "cisco_cc";
           });
           if (voiceSession && type == "id") {
-            return voiceSession.roomId;
+            return voiceSession.conversationId;
           } else if (voiceSession && type == "conversation") {
             return conversationList[i];
           }
         }
       }
     } catch (e) {
-      console.error("[Error] getroomIdOrConversation ==>", e);
+      console.error("[Error] getconversationIdOrConversation ==>", e);
     }
   }
 
@@ -1131,8 +1131,8 @@ export class finesseService {
         callId
       };
 
-      let voiceroomId = this.getCurrentroomIdORConversation("id");
-      if (!voiceroomId) this.checkActiveTasks(this._cacheService.agent.id, "consult_ended", obj);
+      let voiceconversationId = this.getCurrentconversationIdORConversation("id");
+      if (!voiceconversationId) this.checkActiveTasks(this._cacheService.agent.id, "consult_ended", obj);
       else this.handleConsultEnding(obj);
     } catch (e) {
       console.error("[Error] onConsultCallEndCall ==>", e);
@@ -1235,7 +1235,7 @@ export class finesseService {
             // console.log("refresh called 5==>");
             if (D1.dialogState == "active") {
               // console.log("refresh called 6==>");
-              let conversation = this.getCurrentroomIdORConversation("conversation");
+              let conversation = this.getCurrentconversationIdORConversation("conversation");
               if (conversation) {
                 // console.log("refresh called 7==>");
                 this.customer = conversation.customer;
@@ -1257,7 +1257,7 @@ export class finesseService {
           if (this.taskList.length > 0) {
             let task = this.getVoiceTask();
             if (task && method == "consult_ended") {
-              this.roomId = task.channelSession.roomId;
+              this.conversationId = task.channelSession.conversationId;
               this.handleConsultEnding(callData);
             }
           }

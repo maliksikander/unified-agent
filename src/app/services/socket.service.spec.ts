@@ -23,6 +23,7 @@ describe("Socket service", () => {
 
   const mockConversation = {
     roomId: "12345",
+    conversationId: "12345",
     messages: [],
     activeChannelSessions: [],
     unReadCount: undefined,

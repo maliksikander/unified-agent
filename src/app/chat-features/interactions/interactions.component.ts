@@ -228,7 +228,7 @@ export class InteractionsComponent implements OnInit {
       RTLDirection: this.isRTLView
     };
     //this._cacheService.smsDialogData || 
-    if (this.conversation.roomId === 'FAKE_CONVERSATION') {
+    if (this.conversation.conversationId === 'FAKE_CONVERSATION') {
       this.conversation.messages = [];
       this.loadPastActivities('FAKE_CONVERSATION');
 

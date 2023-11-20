@@ -141,10 +141,10 @@
               <ng-container>
                 <div *ngIf="(conversation.topicParticipant.role | lowercase) != 'silent_monitor'" class="crm-trigger">
                   <!-- <p>Not a correct customer profile?</p> -->
-                  <button *ngIf="('customer' | authPipe: 'view') && ( ('customer' | authPipe: 'manage') || (conversation.roomId != 'FAKE_CONVERSATION' &&  ('customer' | authPipe: 'manage_in_conversation'))) as result" mat-raised-button (click)="gotoEmbedView()">
+                  <button *ngIf="('customer' | authPipe: 'view') && ( ('customer' | authPipe: 'manage') || (conversation.conversationId != 'FAKE_CONVERSATION' &&  ('customer' | authPipe: 'manage_in_conversation'))) as result" mat-raised-button (click)="gotoEmbedView()">
                     {{ "chat-features.customer-info.link-profile" | translate }}
                   </button>
-                  <button *ngIf="('customer' | authPipe: 'manage') || (conversation.roomId != 'FAKE_CONVERSATION' && ('customer' | authPipe: 'manage_in_conversation')) as result" (click)="updateProfile()" mat-raised-button>
+                  <button *ngIf="('customer' | authPipe: 'manage') || (conversation.conversationId != 'FAKE_CONVERSATION' && ('customer' | authPipe: 'manage_in_conversation')) as result" (click)="updateProfile()" mat-raised-button>
                     {{ "chat-features.customer-info.update-profile" | translate }}
                   </button>
                 </div>
@@ -244,7 +244,7 @@
           <!--                  <p class="label-detail">{{ data.value | spaceInArray }}</p>-->
           <!--                </div>-->
           <!--              </div>-->
-          <!--              <ng-container *ngIf="roomId != 'FAKE_CONVERSATION'">-->
+          <!--              <ng-container *ngIf="conversationId != 'FAKE_CONVERSATION'">-->
           <!--                <div *ngIf="'customer-list' | authPipe: 'manage' as result" class="crm-trigger">-->
           <!--                  &lt;!&ndash; <p>Not a correct customer profile?</p> &ndash;&gt;-->
           <!--                  <button mat-raised-button (click)="gotoEmbedView()">{{'chat-features.customer-info.link-profile' | translate}}</button>-->
@@ -295,7 +295,7 @@
           <!-- customer Suggestions Tab start-->
           <mat-expansion-panel class="drag-expansion-panel" *ngIf="customerSuggestions.length !== 0">
             <mat-expansion-panel-header [collapsedHeight]="'36px'" [expandedHeight]="'36px'">
-              <mat-panel-title *ngIf="conversation.roomId != 'FAKE_CONVERSATION' && ('customer' | authPipe: 'manage_in_conversation') as result"
+              <mat-panel-title *ngIf="conversation.conversationId != 'FAKE_CONVERSATION' && ('customer' | authPipe: 'manage_in_conversation') as result"
                 ><span class="material-icons drag-icon">more_vert</span>{{ "chat-features.customer-info.link-profile" | translate }}</mat-panel-title
               >
             </mat-expansion-panel-header>

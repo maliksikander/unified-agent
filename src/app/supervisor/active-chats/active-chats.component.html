@@ -169,10 +169,10 @@
                   <small matTooltip="{{ 'globals.agent-username' | translate }}">({{ chat.agentUsername }})</small>
                 </td>
                 <td><span class="table-main-data"  matTooltip="{{ chat.queueName }}">{{ chat.queueName }}</span></td>
-                <span *ngIf="chat.channelSession.roomId | isAlreadyJoined" class="joined">{{ "pull-mode.joined" | translate }}</span>
+                <span *ngIf="chat.channelSession.conversationId | isAlreadyJoined" class="joined">{{ "pull-mode.joined" | translate }}</span>
                 <span class="table-trigger">
                   <button
-                    [hidden]="chat.channelSession.roomId | isAlreadyJoined"
+                    [hidden]="chat.channelSession.conversationId | isAlreadyJoined"
                     (click)="SilentMonitor(chat.channelSession)"
                     mat-mini-fab
                     class="silent-monitor-btn"

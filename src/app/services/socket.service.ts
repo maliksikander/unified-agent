@@ -255,14 +255,14 @@ export class socketService {
           verticalPosition: "bottom"
         });
       }
-      this.removeConversation(res.roomId);
+      this.removeConversation(res.conversationId);
     });
 
     this.socket.on("WRAP_UP_TIMER_STARTED", (res: any) => {
 
       console.log("WRAP_UP_TIMER_STARTED event",res)
       let sameTopicConversation = this.conversations.find((e) => {
-        return e.roomId == res.roomId;
+        return e.conversationId == res.conversationId;
       });
       if(sameTopicConversation)
       {
@@ -273,7 +273,7 @@ export class socketService {
       }
       else
       {
-        console.error("conversation not for roomId",res.roomId)
+        console.error("conversation not for conversationId",res.conversationId)
       }
       
 
@@ -374,7 +374,7 @@ export class socketService {
     }
 
     let sameTopicConversation = this.conversations.find((e) => {
-      return e.roomId == roomId;
+      return e.conversationId == conversationId;
     });
 
     if (sameTopicConversation) {
@@ -436,32 +436,32 @@ export class socketService {
       } else if (cimEvent.type.toLowerCase() == "suggestion") {
         this.mergeBotSuggestions(sameTopicConversation, cimEvent.data);
       } else if (cimEvent.name.toLowerCase() == "channel_session_started") {
-        this.addChannelSession(cimEvent, roomId);
+        this.addChannelSession(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "conversation_data_changed") {
-        this.upateActiveConversationData(cimEvent, roomId);
+        this.upateActiveConversationData(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "channel_session_ended") {
-        this.removeChannelSession(cimEvent, roomId);
+        this.removeChannelSession(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "associated_customer_changed") {
-        this.changeTopicCustomer(cimEvent, roomId);
+        this.changeTopicCustomer(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "agent_subscribed") {
-        this.handleAgentSubscription(cimEvent, roomId);
+        this.handleAgentSubscription(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "agent_unsubscribed") {
-        this.handleAgentSubscription(cimEvent, roomId);
+        this.handleAgentSubscription(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "task_enqueued") {
-        this.handleTaskEnqueuedEvent(cimEvent, roomId);
+        this.handleTaskEnqueuedEvent(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "task_state_changed") {
-        this.handleTaskStateChangedEvent(cimEvent, roomId);
+        this.handleTaskStateChangedEvent(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "no_agent_available") {
-        this.handleNoAgentEvent(cimEvent, roomId);
+        this.handleNoAgentEvent(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "message_delivery_notification") {
-        this.handleDeliveryNotification(cimEvent, roomId);
+        this.handleDeliveryNotification(cimEvent, conversationId);
       } else if (cimEvent.type.toLowerCase() == "activity") {
         console.log("DELIVERYNOTIFICATION event");
-        this.handleDeliveryNotification(cimEvent, roomId);
+        this.handleDeliveryNotification(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "typing_indicator" && cimEvent.data.header.sender.type.toLowerCase() == "connector") {
         this.handleTypingStartedEvent(cimEvent, sameTopicConversation);
       } else if (cimEvent.name.toLowerCase() == "participant_role_changed") {
-        this.handleParticipantRoleChangedEvent(cimEvent, roomId);
+        this.handleParticipantRoleChangedEvent(cimEvent, conversationId);
       }
     } else {
       this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-event-unsubscribing"), "err");
@@ -501,7 +501,7 @@ export class socketService {
       activeChannelSessions: [],
       unReadCount: undefined,
       index: null,
-      state: roomId == "FAKE_CONVERSATION" ? "CLOSED" : "ACTIVE",
+      state: conversationId == "FAKE_CONVERSATION" ? "CLOSED" : "ACTIVE",
       customer: topicData.customer,
       customerSuggestions: topicData.channelSession ? topicData.channelSession.customerSuggestions : [],
       topicParticipant: topicData.topicParticipant ? topicData.topicParticipant : "", //own ccuser of Agent
@@ -675,7 +675,7 @@ export class socketService {
       //   conversation.index = e.index;
       //   return e;
       // }
-      if ((e.roomId !='FAKE_CONVERSATION' && e.roomId==conversation.roomId)  ||  (e.customer._id == topicData.customer._id && e.roomId =='FAKE_CONVERSATION')) {
+      if ((e.conversationId !='FAKE_CONVERSATION' && e.conversationId==conversation.conversationId)  ||  (e.customer._id == topicData.customer._id && e.conversationId =='FAKE_CONVERSATION')) {
         index = indx;
         conversation.index = e.index;
         return e;
@@ -684,7 +684,7 @@ export class socketService {
 
     if (oldConversation) {
       // if that conversation already exists update it
-      if (conversation.roomId != "FAKE_CONVERSATION") {
+      if (conversation.conversationId != "FAKE_CONVERSATION") {
         this.conversations[index] = conversation;
         // console.log("old convo ===>", oldConversation);
       }
@@ -886,10 +886,10 @@ export class socketService {
     }
   }
 
-  changeTopicCustomer(cimEvent, roomId) {
+  changeTopicCustomer(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
-      //console.log("this is conversation id"+e.roomId);
-      return e.roomId == roomId;
+      //console.log("this is conversation id"+e.conversationId);
+      return e.conversationId == conversationId;
     });
 
     if (conversation) {
@@ -899,11 +899,11 @@ export class socketService {
     }
   }
 
-  removeConversation(roomId) {
+  removeConversation(conversationId) {
     // fetching the whole conversation which needs to be removed
     let index;
     const removedConversation = this.conversations.find((conversation, indx) => {
-      if (conversation.roomId == roomId || conversation.customer._id == roomId) {
+      if (conversation.conversationId == conversationId || conversation.customer._id == conversationId) {
         index = indx;
         return conversation;
       }
@@ -953,9 +953,9 @@ export class socketService {
     this._snackbarService.open(this._translateService.instant("snackbar.CUSTOMER-LINKED-SUCCESSFULLY"), "succ");
   }
 
-  handleTaskStateChangedEvent(cimEvent, roomId) {
+  handleTaskStateChangedEvent(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
-      return e.roomId == roomId;
+      return e.conversationId == conversationId;
     });
 
     if (conversation) {
@@ -966,9 +966,9 @@ export class socketService {
     }
   }
 
-  removeChannelSession(cimEvent, roomId) {
+  removeChannelSession(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
-      return e.roomId == roomId;
+      return e.conversationId == conversationId;
     });
 
     if (conversation) {
@@ -1018,9 +1018,9 @@ export class socketService {
     }
   }
 
-  handleTaskEnqueuedEvent(cimEvent, roomId) {
+  handleTaskEnqueuedEvent(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
-      return e.roomId == roomId;
+      return e.conversationId == conversationId;
     });
 
     if (conversation) {
@@ -1031,9 +1031,9 @@ export class socketService {
     }
   }
 
-  handleDeliveryNotification(cimEvent, roomId) {
+  handleDeliveryNotification(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
-      return e.roomId == roomId;
+      return e.conversationId == conversationId;
     });
     if (
       conversation &&
@@ -1124,9 +1124,9 @@ export class socketService {
       }
     }
   }
-  handleNoAgentEvent(cimEvent, roomId) {
+  handleNoAgentEvent(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
-      return e.roomId == roomId;
+      return e.conversationId == conversationId;
     });
 
     if (conversation) {
@@ -1137,9 +1137,9 @@ export class socketService {
     }
   }
 
-  addChannelSession(cimEvent, roomId) {
+  addChannelSession(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
-      return e.roomId == roomId;
+      return e.conversationId == conversationId;
     });
 
     if (conversation) {
@@ -1196,9 +1196,9 @@ export class socketService {
       }, 5000);
     }
   }
-  handleParticipantRoleChangedEvent(cimEvent, roomId) {
+  handleParticipantRoleChangedEvent(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
-      return e.roomId == roomId;
+      return e.conversationId == conversationId;
     });
 
     if (conversation) {
@@ -1225,9 +1225,9 @@ export class socketService {
     }
   }
 
-  upateActiveConversationData(cimEvent, roomId) {
+  upateActiveConversationData(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
-      return e.roomId == roomId;
+      return e.conversationId == conversationId;
     });
 
     if (conversation) {
@@ -1235,9 +1235,9 @@ export class socketService {
     }
   }
 
-  handleAgentSubscription(cimEvent, roomId) {
+  handleAgentSubscription(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
-      return e.roomId == roomId;
+      return e.conversationId == conversationId;
     });
 
     if (conversation) {
@@ -1304,7 +1304,7 @@ export class socketService {
    * to link the incoming customer requests to identified customers
    *
    * @param {Object} selectedCustomer the customer object which is selected to link the incoming customer with
-   * @param {UUID} roomId selected topic ID
+   * @param {UUID} conversationId selected topic ID
    * @returns {Object}
    */
 
@@ -1376,7 +1376,7 @@ export class socketService {
                       20000,
                       "Ok"
                     );
-                    // this.updateTopiCustomer(selectedCustomer, false, topicCustomer.isAnonymous == true ? topicCustomer._id : null, roomId);
+                    // this.updateTopiCustomer(selectedCustomer, false, topicCustomer.isAnonymous == true ? topicCustomer._id : null, conversationId);
                   }
                 } else {
                   this.updateTopiCustomer(
@@ -1419,7 +1419,7 @@ export class socketService {
           }
           //  this.snackErrorMessage("Unable to link profile");
         }
-        //  this._socketService.linkCustomerWithInteraction(customerId, this.roomId);
+        //  this._socketService.linkCustomerWithInteraction(customerId, this.conversationId);
       } else {
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-link-customer"), "err");
       }
@@ -1436,7 +1436,7 @@ export class socketService {
    * @param {Object} topicCustomer the incoming request customer object
    * @param {Boolean} needToBeUpdate to check if identifier needs to be updated in the selected
    * @param {ObjectID} toBeDeletedCustomerId the incoming request customer object ID
-   * @param {UUID} roomId selected topic ID
+   * @param {UUID} conversationId selected topic ID
    * @param {Boolean} addChannelIdentifier to check if identifier is required to be added in the selected customer or not
    * @returns {Object}
    */
@@ -1806,7 +1806,7 @@ export class socketService {
   }
 
   topicUnsub(conversation) {
-    console.log("going to unsub from topic==>" + conversation.roomId);
+    console.log("going to unsub from topic==>" + conversation.conversationId);
 
     if (conversation.state === "ACTIVE") {
       // if the topic state is 'ACTIVE' then agent needs to request the agent manager for unsubscribe
@@ -1819,10 +1819,10 @@ export class socketService {
       // if the topic state is 'CLOSED' it means agent is already unsubscribed by the agent manager
       // now it only needs to clear the conversation from conversations array
 
-      if (conversation.roomId == "FAKE_CONVERSATION") {
+      if (conversation.conversationId == "FAKE_CONVERSATION") {
         this.removeConversation(conversation.customer._id);
       } else {
-        this.removeConversation(conversation.roomId);
+        this.removeConversation(conversation.conversationId);
       }
     }
   }

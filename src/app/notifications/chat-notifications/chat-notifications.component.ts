@@ -50,7 +50,7 @@ export class ChatNotificationsComponent implements OnInit {
             );
           
         } else if (e.msg == "closePushModeRequestHeader") {
-          this.removePushModeRequestFromRequestArray(e.data.roomId);
+          this.removePushModeRequestFromRequestArray(e.data.conversationId);
         } else if (e.msg == "openPullModeRequestHeader") {
           this.pullModeRequests.push(e.data);
           this._soundService.playRing();
@@ -151,21 +151,21 @@ export class ChatNotificationsComponent implements OnInit {
       taskId: taskId
     });
 
-    this.removePushModeRequestFromRequestArray(roomId);
+    this.removePushModeRequestFromRequestArray(conversationId);
     this._router.navigate(["customers"]);
   }
 
-  removePushModeRequestFromRequestArray(roomId) {
-    let index = this._sharedService.getIndexFromroomId(roomId, this.pushModeRequests);
+  removePushModeRequestFromRequestArray(conversationId) {
+    let index = this._sharedService.getIndexFromconversationId(conversationId, this.pushModeRequests);
     if (index != -1) {
       this._sharedService.spliceArray(index, this.pushModeRequests);
     }
     this._soundService.stopRing();
   }
 
-  removeExternalModeRequestFromRequestArray(identifier, roomId) {
+  removeExternalModeRequestFromRequestArray(identifier, conversationId) {
     this.pushModeRequests.forEach((item, index) => {
-      if (item.roomId == roomId) {
+      if (item.conversationId == conversationId) {
         if (item.channelSession.channelData.channelCustomerIdentifier == identifier) {
           this.pushModeRequests.splice(index, 1);
         }

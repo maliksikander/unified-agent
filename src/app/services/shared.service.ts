@@ -63,9 +63,9 @@ export class sharedService {
     this.conversationSettings.isOutboundSmsEnabled = setting.isOutboundSmsEnabled;
     this.conversationSettings.prefixCode = setting.prefixCode ? setting.prefixCode : "";
   }
-  getIndexFromroomId(roomId, array) {
+  getIndexFromconversationId(conversationId, array) {
     let index = array.findIndex((e) => {
-      return e.roomId == roomId;
+      return e.conversationId == conversationId;
     });
     return index;
   }

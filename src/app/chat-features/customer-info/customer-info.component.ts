@@ -485,7 +485,7 @@ export class CustomerInfoComponent implements OnInit {
     let attr;
     let label;
     this._socketService.conversations.find((e) => {
-      if (e.roomId == this.roomId) {
+      if (e.conversationId == this.conversationId) {
         channelType = e.firstChannelSession.channel.channelType.name;
         channelIdentifier = e.firstChannelSession.channelData.channelCustomerIdentifier;
         return;
