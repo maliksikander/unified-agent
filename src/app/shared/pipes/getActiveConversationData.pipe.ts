@@ -4,10 +4,10 @@ import { httpService } from "src/app/services/http.service";
 @Pipe({ name: "activeConversation" })
 export class activeConversationPipe implements PipeTransform {
   constructor(private _httpService: httpService) {}
-  transform(roomId: any): any {
+  transform(conversationId: any): any {
     return new Promise((reject, resolve) => {
-      if (roomId) {
-        this._httpService.getActiveConversationData(roomId).subscribe(
+      if (conversationId) {
+        this._httpService.getActiveConversationData(conversationId).subscribe(
           (data) => {
             resolve(data);
           },

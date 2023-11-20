@@ -199,9 +199,9 @@ export class httpService {
       })
     });
   }
-  getActiveConversationData(roomId): Observable<any> {
+  getActiveConversationData(conversationId): Observable<any> {
     return this._httpClient.get<any>(
-      `${this._appConfigService.config.CONVERSATION_MANAGER_URL}/customer-topics/${roomId}/conversation-data`,
+      `${this._appConfigService.config.CONVERSATION_MANAGER_URL}/customer-topics/${conversationId}/conversation-data`,
       {
         headers: new HttpHeaders({
           "Content-Type": "application/json"
@@ -349,9 +349,9 @@ export class httpService {
   }
 
   ////////////////////////////////////////////
-  updateConversationCustomer(roomId, customer): Observable<any> {
+  updateConversationCustomer(conversationId, customer): Observable<any> {
     return this._httpClient.put<any>(
-      this._appConfigService.config.CONVERSATION_MANAGER_URL + "/customer-topics/" + roomId + "/update-customer",
+      this._appConfigService.config.CONVERSATION_MANAGER_URL + "/customer-topics/" + conversationId + "/update-customer",
       customer,
       {
         headers: new HttpHeaders({
@@ -485,9 +485,9 @@ export class httpService {
     });
   }
 
-  getAgentsInQueue(roomId): Observable<any> {
+  getAgentsInQueue(conversationId): Observable<any> {
     return this._httpClient.get<any>(
-      `${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.agentInQueueList}?roomId=${roomId}`,
+      `${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.agentInQueueList}?conversationId=${conversationId}`,
       {
         headers: new HttpHeaders({
           "Content-Type": "application/json"

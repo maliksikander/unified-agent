@@ -1335,7 +1335,7 @@ export class InteractionsComponent implements OnInit {
 
   getAgentsInQueue() {
     try {
-      this._httpService.getAgentsInQueue(this.conversation.roomId).subscribe(
+      this._httpService.getAgentsInQueue(this.conversation.conversationId).subscribe(
         (res: any) => {
           if (this.isCXVoiceSessionActive() && res) {
             this.filterCXQueues(res);

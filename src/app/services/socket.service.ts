@@ -259,17 +259,28 @@ export class socketService {
     });
 
     this.socket.on("WRAP_UP_TIMER_STARTED", (res: any) => {
+
+      console.log("WRAP_UP_TIMER_STARTED event",res)
       let sameTopicConversation = this.conversations.find((e) => {
         return e.roomId == res.roomId;
       });
-      sameTopicConversation.wrapUpDialog.show = true;
+      if(sameTopicConversation)
+      {
+        sameTopicConversation.wrapUpDialog.show = true;
       sameTopicConversation.wrapUpDialog.durationLeft = res.duration;
-
       this.startWrapUpTimer(sameTopicConversation);
+
+      }
+      else
+      {
+        console.error("conversation not for roomId",res.roomId)
+      }
+      
+
     });
 
     this.socket.on("WRAP_UP_CLOSED", (res: any) => {
-      console.log("WRAP_UP_CLOSED", res);
+      console.log("WRAP_UP_CLOSED event", res);
 
       // let sameTopicConversation = this.conversations.find((e) => {
       //   return e.roomId == res.roomId;
@@ -279,12 +290,12 @@ export class socketService {
     });
 
     this.socket.on("socketSessionRemoved", (res: any) => {
-      console.log("socketSessionRemoved", res);
+      console.log("socketSessionRemoved event", res);
       this.onSocketSessionRemoved();
     });
 
     this.socket.on("onPullModeSubscribedList", (res: any) => {
-      console.log("onPullModeSubscribedList", res);
+      console.log("onPullModeSubscribedList event", res);
       this._translateService.stream("globals.no-new-conversation").subscribe(
         (text: string) => {
           this._sharedService.mainPagetile = text;
@@ -1297,10 +1308,10 @@ export class socketService {
    * @returns {Object}
    */
 
-  async linkCustomerWithTopic(selectedCustomer, roomId) {
+  async linkCustomerWithTopic(selectedCustomer, conversationId) {
     try {
       const conversation = this.conversations.find((e) => {
-        return e.roomId == roomId;
+        return e.conversationId == conversationId;
       });
       const topicCustomer = conversation.customer;
       const channelSession = conversation.firstChannelSession;
@@ -1329,7 +1340,7 @@ export class socketService {
                   topicCustomer,
                   false,
                   topicCustomer.isAnonymous == true ? topicCustomer._id : null,
-                  roomId,
+                  conversationId,
                   resp.isAttributeMerge
                 );
               }
@@ -1346,7 +1357,7 @@ export class socketService {
                       topicCustomer,
                       true,
                       topicCustomer.isAnonymous == true ? topicCustomer._id : null,
-                      roomId,
+                      conversationId,
                       resp.isAttributeMerge
                     );
                     console.log("limit not exceed");
@@ -1373,7 +1384,7 @@ export class socketService {
                     topicCustomer,
                     false,
                     topicCustomer.isAnonymous == true ? topicCustomer._id : null,
-                    roomId,
+                    conversationId,
                     resp.isAttributeMerge
                   );
                 }
@@ -1387,7 +1398,7 @@ export class socketService {
                 topicCustomer,
                 false,
                 topicCustomer.isAnonymous == true ? topicCustomer._id : null,
-                roomId,
+                conversationId,
                 resp.isAttributeMerge
               );
             }
@@ -1402,7 +1413,7 @@ export class socketService {
               topicCustomer,
               false,
               topicCustomer.isAnonymous == true ? topicCustomer._id : null,
-              roomId,
+              conversationId,
               resp.isAttributeMerge
             );
           }
@@ -1430,7 +1441,7 @@ export class socketService {
    * @returns {Object}
    */
 
-  updateTopiCustomer(selectedCustomer, topicCustomer, needToBeUpdate: boolean, toBeDeletedCustomerId, roomId, addChannelIdentifier) {
+  updateTopiCustomer(selectedCustomer, topicCustomer, needToBeUpdate: boolean, toBeDeletedCustomerId, conversationId, addChannelIdentifier) {
     console.log("topic updated");
     console.log("need to be updated " + needToBeUpdate);
     console.log("toBeDeletedCustomerId " + toBeDeletedCustomerId);
@@ -1448,7 +1459,7 @@ export class socketService {
           selectedCustomer["_id"] = selectedCustomerId;
           // this._snackbarService.open(this._translateService.instant("snackbar.Profile-linked-successfully"), "succ");
           // updating customer topic
-          this._httpService.updateConversationCustomer(roomId, selectedCustomer).subscribe(
+          this._httpService.updateConversationCustomer(conversationId, selectedCustomer).subscribe(
             (e) => {
               if (addChannelIdentifier && toBeDeletedCustomerId != null) {
                 let requestPayload = { currentCustomer: topicCustomer, newCustomer: selectedCustomer };
@@ -1471,7 +1482,7 @@ export class socketService {
     } else {
       selectedCustomer["_id"] = selectedCustomerId;
       // updating customer topic
-      this._httpService.updateConversationCustomer(roomId, selectedCustomer).subscribe(
+      this._httpService.updateConversationCustomer(conversationId, selectedCustomer).subscribe(
         (e) => {
           if (toBeDeletedCustomerId != null) {
             this.checkPastActivitiesAndDeleteCustomer(topicCustomer._id);

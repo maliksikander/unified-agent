@@ -25,6 +25,7 @@ export class CustomerInfoComponent implements OnInit {
   @Input() customerSuggestions: any;
   @Input() activeChannelSessions: any;
   @Input() roomId: any;
+  @Input() conversationId: any;
   @Input() conversation: any;
   @Input() activeConversationData: any;
   @Input() firstChannelSession: any;
@@ -429,7 +430,7 @@ export class CustomerInfoComponent implements OnInit {
         this.updatedlabels.emit(result.data);
         this._httpService.getCustomerById(this.customer._id).subscribe(
           (customer) => {
-            this._httpService.updateConversationCustomer(this.roomId, customer).subscribe();
+            this._httpService.updateConversationCustomer(this.conversationId, customer).subscribe();
           },
           (error) => {
             this._sharedService.Interceptor(error.error, "err");
@@ -453,7 +454,7 @@ export class CustomerInfoComponent implements OnInit {
       }
     });
     completeSelectedCustomer["_id"] = selectedCustomer._id;
-    this._socketService.linkCustomerWithTopic(completeSelectedCustomer, this.roomId);
+    this._socketService.linkCustomerWithTopic(completeSelectedCustomer, this.conversationId);
 
     // this._socketService.changeTopicCustomer(
     //   {
@@ -508,7 +509,7 @@ export class CustomerInfoComponent implements OnInit {
         filterKey: attr ? attr : null,
         filterLabel: label,
         filterValue: channelIdentifier ? channelIdentifier : null,
-        roomId: this.roomId,
+        conversationId: this.conversationId,
         topicCustomerId: this.customer._id
       }
     };
@@ -520,7 +521,7 @@ export class CustomerInfoComponent implements OnInit {
     let navigationExtras: NavigationExtras = {
       queryParams: {
         q: "linking",
-        roomId: this.roomId,
+        conversationId: this.conversationId,
         topicCustomerId: this.customer._id
       }
     };

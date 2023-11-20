@@ -19,6 +19,7 @@ export class CimEvent {
     this.roomId = roomId;
     this.timestamp = Date.now();
     this.data = data;
+    this.data["header"]["conversationId"] = conversationId;
     this.data["header"]["roomId"] = roomId;
     this.data["header"]["channelSessionId"] = data.header.channelSession.id;
     this.data["header"]["customer"] = customer;
