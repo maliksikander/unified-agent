@@ -79,57 +79,61 @@ export class InteractionsComponent implements OnInit {
   element;
   dragPosition = { x: 0, y: 0 };
 
-  queueList: any 
-  = [
-    {
-      queueId: "1",
-      mrdId: "1",
-      queueName: "Queue 1",
-      totalAvailableAgents: 2,
-      availableAgents: [
-        {
-          state: "READY",
-          agent: {
-            id: "1",
-            name: "Agent 1"
-          }
-        },
-        {
-          state: "ACTIVE",
-          agent: {
-            id: "2",
-            name: "Agent 2"
-          }
-        }
-      ]
-    },
-    {
-      queueId: "2",
-      mrdId: "2",
-      queueName: "DEsk",
-      totalAvailableAgents: 2,
-      availableAgents: [
-        {
-          state: "READY",
-          agent: {
-            id: "3",
-            name: "Agent 3"
-          }
-        },
-        {
-          state: "ACTIVE",
-          agent: {
-            id: "4",
-            name: "Agent 4"
-          }
-        }
-      ]
-    }
-  ];
+  queueList: Array<any>;
+  // = [
+  //   {
+  //     queueId: "1",
+  //     mrdId: "1",
+  //     queueName: "Queue 1",
+  //     totalAvailableAgents: 2,
+  //     availableAgents: [
+  //       {
+  //         state: "READY",
+  //         agent: {
+  //           id: "1",
+  //           name: "Agent 1",
+  //           ext:"111"
+  //         }
+  //       },
+  //       {
+  //         state: "ACTIVE",
+  //         agent: {
+  //           id: "2",
+  //           name: "Agent 2",
+  //            ext:"222"
+  //         }
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     queueId: "2",
+  //     mrdId: "2",
+  //     queueName: "DEsk",
+  //     totalAvailableAgents: 2,
+  //     availableAgents: [
+  //       {
+  //         state: "READY",
+  //         agent: {
+  //           id: "3",
+  //           name: "Agent 3",
+  //            ext:"333"
+  //         }
+  //       },
+  //       {
+  //         state: "ACTIVE",
+  //         agent: {
+  //           id: "4",
+  //           name: "Agent 4",
+  //            ext:"444"
+  //         }
+  //       }
+  //     ]
+  //   }
+  // ];
 
   queueORAgentSearch = "";
   requestedQueue: any;
-  requestedAgent:any;
+  requestedAgent: any;
   requestTitle: string;
   requestType: string;
   noteDialogBtnText: string;
@@ -273,6 +277,32 @@ export class InteractionsComponent implements OnInit {
       // this.getVoiceChannelSession();
     }
 
+    this._socketService._namedAgentTransferTask.subscribe((data: any) => {
+      try {
+        if (data) {
+          this.showRequestNotification();
+          if (this.conversation.conversationId == data.conversationId) {
+            if (this.isCXVoiceSessionActive()) {
+              //send command to Sip.js
+              let requestAgentId = data.agentTask.assignedTo ? data.agentTask.assignedTo.id : null;
+              let requestedAgent = this.findAgentinQueueList(this.queueList, requestAgentId);
+              console.log("requested agent ==>", requestedAgent);
+              this._sipService.directAgentTransferOnSip(requestedAgent.ext);
+            } else {
+               //send socket event to agent manage to unsubscribe with reason
+              this._socketService.emit("topicUnsubscription", {
+                conversationId: this.conversation.conversationId,
+                agentId: this._cacheService.agent.id,
+                reason: "DIRECT_TRANSFER"
+              });
+            }
+          }
+        }
+      } catch (e) {
+        console.error("[Agent Transfer Subcriber]==>", e);
+      }
+    });
+
     this.wrapUpFormData = {
       header: this._translateService.instant("chat-features.interactions.wrapup"),
       wrapUpDialog: this.conversation.wrapUpDialog,
@@ -283,6 +313,16 @@ export class InteractionsComponent implements OnInit {
     if (this.conversation.conversationId === "FAKE_CONVERSATION") {
       this.conversation.messages = [];
       this.loadPastActivities("FAKE_CONVERSATION");
+    }
+  }
+
+  findAgentinQueueList(array, agentId) {
+    try {
+      const agent = array.reduce((agents, obj) => agents.concat(obj.availableAgents || []), []).find((agent) => agent.agent.id === agentId);
+
+      return agent;
+    } catch (e) {
+      console.error("[findAgentinQueueList] ==>", e);
     }
   }
 
@@ -1055,7 +1095,7 @@ export class InteractionsComponent implements OnInit {
           ].includes(event.name.toLowerCase())
         ) {
           let message = this._socketService.createSystemNotificationMessage(event);
-          // console.log("test1==>", event.name);
+          console.log("test1==>", event.name);
           // if (event.name == "VOICE_ACTIVITY") console.log("past==>", message);
           if (message) {
             msgs.push(message);
@@ -1304,7 +1344,7 @@ export class InteractionsComponent implements OnInit {
     return false;
   }
 
-  agentAssistanceRequest(templateRef, queueData, action, requestType,agentData): void {
+  agentAssistanceRequest(templateRef, queueData, action, requestType, agentData): void {
     try {
       this.requestType = requestType;
       this.requestAction = action;
@@ -1312,7 +1352,7 @@ export class InteractionsComponent implements OnInit {
       if (this.isCXVoiceSessionActive()) {
         if (requestType == "queue") {
           if (action == "transfer") {
-            this._sipService.directQueueTransferOnSip(queueData)
+            this._sipService.directQueueTransferOnSip(queueData);
           }
         }
       } else {
@@ -1326,15 +1366,13 @@ export class InteractionsComponent implements OnInit {
             this.requestTitle = this._translateService.instant("chat-features.interactions.Conference-Request");
             this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Add-To-Conference");
           }
-        }
-        else{
-        
+        } else {
           this.requestedAgent = agentData;
           // console.log("test11==>",this.requestedAgent)
           if (action == "transfer") {
             this.requestTitle = this._translateService.instant("chat-features.interactions.Transfer-To-Agent");
             this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Transfer");
-          } 
+          }
           // else if (action == "conference") {
           //   this.requestTitle = this._translateService.instant("chat-features.interactions.Conference-Request");
           //   this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Add-To-Conference");
@@ -1365,8 +1403,7 @@ export class InteractionsComponent implements OnInit {
   sendAssistanceRequest() {
     if (this.requestType == "queue") {
       this.sendQueueRequest();
-    }
-    else if (this.requestType == "agent") {
+    } else if (this.requestType == "agent") {
       console.log("testt===>");
       this.sendAgentRequest();
     }
@@ -1382,8 +1419,6 @@ export class InteractionsComponent implements OnInit {
       note: this.assistanceRequestNote
     };
     if (this.requestAction == "transfer") this._socketService.emit("directTransferRequest", data);
-   
-    this.showRequestNotification();
   }
 
   sendQueueRequest() {
@@ -1410,7 +1445,7 @@ export class InteractionsComponent implements OnInit {
           chatQueues.push(item);
       });
       // console.log("let==>", chatQueues);
-      // this.queueList = chatQueues;
+      this.queueList = chatQueues;
     } catch (e) {
       console.error("[filterCXQueues] Error :", e);
     }
@@ -1422,7 +1457,7 @@ export class InteractionsComponent implements OnInit {
       queues.forEach((item: any) => {
         if (item.mrdId == this._appConfigService.config.CX_VOICE_MRD) cxQueues.push(item);
       });
-      // this.queueList = cxQueues;
+      this.queueList = cxQueues;
     } catch (e) {
       console.error("[filterCXQueues] Error :", e);
     }
@@ -1441,7 +1476,7 @@ export class InteractionsComponent implements OnInit {
 
   getAgentsInQueue() {
     try {
-      this._httpService.getAgentsInQueue(this.conversation.conversationId,this._cacheService.agent.id).subscribe(
+      this._httpService.getAgentsInQueue(this.conversation.conversationId, this._cacheService.agent.id).subscribe(
         (res: any) => {
           if (this.isCXVoiceSessionActive() && res && this.isDialogExisting()) {
             // console.log("test4==>");

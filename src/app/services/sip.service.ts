@@ -908,6 +908,26 @@ export class SipService implements OnInit {
     }
   }
 
+  directAgentTransferOnSip(ext){
+    try {
+      let command = {
+        action: "SST",
+        parameter: {
+          dialogId: this.activeDialog.id,
+          // queue: data.queueId,
+          // queueType: "ID",
+          numberToTransfer: ext,
+          clientCallbackFunction: this.clientCallback
+        }
+      };
+
+      console.log("directAgentTransferOnSip ==>", command);
+      // postMessage(command);
+    } catch (error) {
+      console.error("[Error on directAgentTransferOnSip] ==>", error);
+    }
+  }
+
   getCurrentAgentFromParticipantList(list: Array<any>) {
     try {
       return list[0];
