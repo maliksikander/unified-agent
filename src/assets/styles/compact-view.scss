@@ -864,8 +864,12 @@ button.close-menu-mobile {
 
   .date-selection{
     margin-top: 15px;
-    display: block;
-    margin-right: 0;
+    display: block !important;
+    margin-right: 0 !important;
+
+    &.exp-date-selection{
+      margin-top: 0 !important;
+    }
   }
 .voice{
   .chat-message-content{
@@ -900,15 +904,48 @@ button.close-menu-mobile {
         max-width: none;
       }
     }
-
+    .search-wrapper{
+      min-width: inherit !important;
+    }
   }
+  //.voice-activity-main mat-expansion-panel-header .panel-header ul li{
+  //  display: none !important;
+  //}
+  .voice-activity-main mat-expansion-panel-header {
+    //&.mat-expanded {
+      height: auto !important;
+      .panel-header ul {
+        display: inline-block !important;
+        li {
+          position: relative;
+          border: none !important;
+
+          &:after{
+              content: '';
+              background: #979797;
+              height: 10px;
+              display: inline-block;
+              width: 1px;
+              position: absolute;
+              right: 0;
+              top: 50%;
+              transform: translate(0, -50%);
+          }
+        }
+      }
+    //}
+  }
+  //.voice-activity-main mat-expansion-panel-header .panel-header ul li:nth-child(1), .voice-activity-main mat-expansion-panel-header .panel-header ul li:last-child {
+  //  display: inline-block !important;
+  //}
 
 }
 
 
 //Dialog for mobile
 //
-.edit-customer-dialog-mobile-view-panel, .create-customer-dialog-mobile-view-panel {
+.edit-customer-dialog-mobile-view-panel, .create-customer-dialog-mobile-view-panel, .add-attrribute-dialog {
+  max-width: 100% !important;
   .dialog-header {
     position: sticky;
     top: 0;

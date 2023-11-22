@@ -52,7 +52,7 @@
             <th class="status-data" scope="col" matTooltip="{{ 'supervisor.agent(s)' | translate | titlecase }}">{{
               'supervisor.agent(s)' | translate | titlecase }}</th>
             <!-- <th scope="col">State</th> -->
-            <th scope="col" matTooltip="{{ 'supervisor.active-conversation' | translate | titlecase }}">{{
+            <th scope="col" class="mrd-status-cell"  matTooltip="{{ 'supervisor.active-conversation' | translate | titlecase }}">{{
               'supervisor.active-conversation' | translate | titlecase }}</th>
             <!--          <th scope="col">Queue(s)</th>-->
             <th scope="col" class="mrd-status-cell" matTooltip="{{ mrd?.name }}" *ngFor="let mrd of MRDsList">
@@ -70,7 +70,7 @@
             <!-- <td>
               {{ agent.state.replace('_',' ') | titlecase }}
             </td> -->
-            <td>
+            <td class="mrd-status-cell" >
               {{ agent.activeChatsCount }}
             </td>
             <!--          <td>-->
