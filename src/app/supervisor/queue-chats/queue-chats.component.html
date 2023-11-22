@@ -65,7 +65,7 @@
                     chat.customerName 
                   }}</span>
                   <small matTooltip="{{ 'globals.channel-identifier' | translate }}"
-                    >({{ chat.channelIdentity  }})</small
+                    > ({{ chat.channelIdentity  }})</small
                   >
                 </span>
 
@@ -82,7 +82,7 @@
                 </ul>
               </td>
               <td>
-                {{ chat.waitingSince | amDuration: "seconds" }} <small>{{ "supervisor.ago" | translate }}</small>
+                {{ chat.waitingSince | amDuration: "seconds" }}
               </td>
               <td>{{ chat.queueName }}</td>
               <!-- <span class="table-trigger">

@@ -1888,10 +1888,10 @@
                             <li>
                               <mat-icon (click)="replyToComment(message)"> chat_bubble_outline</mat-icon>
                             </li>
-                            <li *ngIf="message.header.channelSession.channel.channelType.name.includes('FACEBOOK')">
+                            <li *ngIf="!message.header.channelSession.channel.channelType.name.includes('INSTAGRAM')">
                               <mat-icon [ngClass]="{ liked: message.isLiked }" (click)="commentAction(message, 'like')"> thumb_up </mat-icon>
                             </li>
-                            <li class="private-reply-icon" (click)="privateReplyToComment(message)">
+                            <li *ngIf="message.header.channelSession.channel.channelType.name == 'FACEBOOK' || message.header.channelSession.channel.channelType.name == 'INSTAGRAM'" class="private-reply-icon" (click)="privateReplyToComment(message)">
                               <img
                                 *ngIf="message.header.channelSession.channel.channelType.name == 'FACEBOOK'"
                                 src="assets/images/facebook-messenger.svg"
@@ -2221,10 +2221,10 @@
                                   <li>
                                     <mat-icon (click)="replyToComment(message)"> chat_bubble_outline</mat-icon>
                                   </li>
-                                  <li *ngIf="message.header.channelSession.channel.channelType.name.includes('FACEBOOK')">
+                                  <li *ngIf="!message.header.channelSession.channel.channelType.name.includes('INSTAGRAM')">
                                     <mat-icon [ngClass]="{ liked: message.isLiked }" (click)="commentAction(message, 'like')"> thumb_up </mat-icon>
                                   </li>
-                                  <li class="private-reply-icon" (click)="privateReplyToComment(message)">
+                                  <li *ngIf="message.header.channelSession.channel.channelType.name == 'FACEBOOK' || message.header.channelSession.channel.channelType.name == 'INSTAGRAM'" class="private-reply-icon" (click)="privateReplyToComment(message)">
                                     <img
                                       *ngIf="message.header.channelSession.channel.channelType.name == 'FACEBOOK'"
                                       src="assets/images/facebook-messenger.svg"
@@ -2562,7 +2562,7 @@
 
         <form
           class="reply-form {{ (conversation.topicParticipant.role != 'SILENT_MONITOR' && (conversation?.agentParticipants | countAgentPartcipants: ['PRIMARY', 'ASSISTANT']) ) ? 'whisper-tabs' : '' }}"
-          [ngClass]="{ 'whisper-mode':( conversation.topicParticipant.role != 'SILENT_MONITOR' && isWhisperMode) }"
+          [ngClass]="{ 'whisper-mode':( conversation.topicParticipant.role != 'SILENT_MONITOR' && isWhisperMode && conversation?.agentParticipants.length > 0 )}"
 
         >
           <label *ngIf="message.length > 0" class="count-reply">{{ replyInput.value.length }}/1000</label>

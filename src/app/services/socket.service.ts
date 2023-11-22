@@ -18,7 +18,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { announcementService } from "./announcement.service";
 
-//const mockTopicData: any = require("../mocks/mockTopicData.json");
+////const mockTopicData: any = require("../mocks/mockTopicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -1625,7 +1625,7 @@ export class socketService {
               this._translateService.stream("socket-service.has-joined-the-conversation").subscribe((data: string) => {
                 message.body.markdownText = data;
               });
-            }    
+            }
       } else if (cimEvent.data.conversationParticipant.role.toLowerCase() == "wrap_up") {
         message = CimMessage;
         message.body["displayText"] =

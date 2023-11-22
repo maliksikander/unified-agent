@@ -346,9 +346,6 @@ export class InteractionsComponent implements OnInit {
   checkChannelTypeForAttatchementButton(message) {
     if (message.body.type === "COMMENT" && message.header.channelSession.channel.channelType.name === "INSTAGRAM")
       this.disablingAttatchButtonForInstagramReply = true;
-    else {
-      console.log("it is false buddy .....");
-    }
   }
 
   //Quoted Reply
