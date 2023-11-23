@@ -441,7 +441,33 @@
           "recipientsBcc": ["ahsan.jalil@expertflow.com", "bcchello@gmail.com", "bccthird@gmail.com"],
           "from": "ahsan.jll746@gmail.com",
           "replyTo": ["ahsan.jll746@gmail.com"],
-          "emailThreads": []
+          "emailThreads": [],
+          "attachments": [
+            {
+              "mediaUrl": "https://cim-dev.expertflow.com/file-engine/api/downloadFileStream?filename=1698834446984_download.jpeg",
+              "thumbnail": null,
+              "mimeType": "image/jpeg",
+              "size": 64174
+            },
+            {
+              "mediaUrl": "https://cim-dev.expertflow.com/file-engine/api/downloadFileStream?filename=1698834446984_download.jpeg",
+              "thumbnail": null,
+              "mimeType": "image/jpeg",
+              "size": 64167
+            },
+            {
+              "mediaUrl": "https://cim-dev.expertflow.com/file-engine/api/downloadFileStream?filename=1698834446984_download.jpeg",
+              "thumbnail": null,
+              "mimeType": "image/jpeg",
+              "size": 64167
+            },
+            {
+              "mediaUrl": "https://cim-dev.expertflow.com/file-engine/api/downloadFileStream?filename=1698834446984_download.jpeg",
+              "thumbnail": null,
+              "mimeType": "image/jpeg",
+              "size": 64167
+            }
+          ]
         }
       },
 

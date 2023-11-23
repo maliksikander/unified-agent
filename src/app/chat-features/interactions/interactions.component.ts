@@ -52,17 +52,11 @@ export class InteractionsComponent implements OnInit {
   @ViewChild("consultTransferTrigger", { static: false }) consultTransferTrigger: any;
   @ViewChildren("callRecording") audioPlayers: QueryList<ElementRef>;
 
-  emailFrom: EmailSender[] = [
-    { value: "adam.stanler@test.com", viewValue: "adam.stanler@test.com" },
-    { value: "john.miller@test.com", viewValue: "john.miller@test.com" },
-    { value: "steve.alax@test.com", viewValue: "steve.alax@test.com" }
-  ];
   visible = true;
   selectable = true;
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  selectedValue = this.emailFrom[2].value;
   emailCc = false;
   emailBcc = false;
   emailForm: FormGroup;
@@ -127,7 +121,7 @@ export class InteractionsComponent implements OnInit {
 
         ["clean"], // remove formatting button
 
-        ["link", "image"], 
+        ["link", "image"],
         ["attachment"]
       ],
       handlers: {
@@ -232,7 +226,6 @@ export class InteractionsComponent implements OnInit {
       this.dispayVideoPIP = false;
     }
     this.convers = this.conversation.messages;
-    console.log("here are the messages in the converation", this.convers)
     // setTimeout(() => {
     //   new EmojiPicker();
     // }, 500);
@@ -832,7 +825,7 @@ export class InteractionsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {});
   }
 
-  uploadFile(files) {
+  uploadFileAndConstructAndSendEvent(files) {
     let availableExtentions: any = ["txt", "png", "jpg", "jpeg", "pdf", "ppt", "xlsx", "xls", "doc", "docx", "rtf", "mp4", "mp3"];
     let ln = files.length;
     if (ln > 0) {
@@ -863,13 +856,50 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?, wrapups?, note?, emailFormValues?: any[]) {
+  uploadFiles(files) {
+    let availableExtentions: any = ["txt", "png", "jpg", "jpeg", "pdf", "ppt", "xlsx", "xls", "doc", "docx", "rtf", "mp4", "mp3"];
+    let ln = files.length;
+    if (ln > 0) {
+      const uploadedFilesArray = [];
+      for (var i = 0; i < ln; i++) {
+        const fileSize = files[i].size;
+        const fileMimeType = files[i].name.split(".").pop();
+
+        if (fileSize <= 5000000) {
+          if (availableExtentions.includes(fileMimeType.toLowerCase())) {
+            let fd = new FormData();
+            fd.append("file", files[i]);
+            fd.append("conversationId", `${Math.floor(Math.random() * 90000) + 10000}`);
+            this._httpService.uploadToFileEngine(fd).subscribe(
+              (e) => {
+                uploadedFilesArray.push(e);
+              },
+              (error) => {
+                this._snackbarService.open(error, "err");
+              }
+            );
+          } else {
+            this._snackbarService.open(files[i].name + this._translateService.instant("snackbar.unsupported-type"), "err");
+          }
+        } else {
+          this._snackbarService.open(files[i].name + this._translateService.instant("snackbar.File-size-should-be-less-than-5MB"), "err");
+        }
+      }
+      return uploadedFilesArray;
+    }
+  }
+  getFileExtension(mediaUrl: string): string {
+    return mediaUrl.split('.').pop(); 
+  }
+  
+  constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?, wrapups?, note?, emailFormValues?: any[], fileList?) {
     if (this._socketService.isSocketConnected) {
       let message = this.getCimMessage();
 
       if (msgType.toLowerCase() == "email") {
         let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
-        message = this.constructEmailEvent(message, emailFormValues, selectedChannelSession);
+        this.uploadFiles(fileList);
+        message = this.constructEmailEvent(message, emailFormValues, selectedChannelSession, fileList);
         console.log("here is the event constructed", message);
 
         this.emitCimEvent(message, "AGENT_MESSAGE");
@@ -1209,21 +1239,31 @@ export class InteractionsComponent implements OnInit {
     return message;
   }
 
-  constructEmailEvent(message, formValues, channelSession) {
+  constructEmailEvent(message, formValues, channelSession, listOfFiles) {
     let sendingActiveChannelSession = JSON.parse(JSON.stringify(channelSession));
     delete sendingActiveChannelSession["webChannelData"];
     delete sendingActiveChannelSession["isChecked"];
     delete sendingActiveChannelSession["isDisabled"];
-    message.body.type = "EMAIL";
-    message.body.from = formValues.from;
-    message.body.recipientsTo = formValues.recipientsTo;
-    message.body.recipientsBcc = formValues.recipientsBcc;
-    message.body.recipientsCc = formValues.recipientsCc;
-    message.body.subject = formValues.subject;
-    message.body.markdownText = formValues.markdownText;
-    message.body.htmlBody = formValues.htmlBody;
     message.header.channelSession = sendingActiveChannelSession;
     message.header.channelData = sendingActiveChannelSession.channelData;
+    message.header.channelData.channelCustomerIdentifier = formValues.from;
+    message.header.channelData.serviceIdentifier = formValues.recipientsTo;
+
+    message.body.type = "EMAIL";
+    message.body.markdownText = formValues.markdownText;
+    message.body.htmlBody = formValues.htmlBody;
+    message.body.subject = formValues.subject;
+    message.body.recipientsTo = formValues.recipientsTo;
+    message.body.recipientsCc = formValues.recipientsCc;
+    message.body.recipientsBcc = formValues.recipientsBcc;
+    message.body.from = formValues.from;
+    message.body.replyTo = formValues.recipientsTo;
+    message.body.attachments = listOfFiles.map((file) => ({
+      mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + file.name,
+      thumbnail: "",
+      mimeType: file.type,
+      size: file.size
+    }));
 
     return message;
   }
@@ -1662,7 +1702,7 @@ export class InteractionsComponent implements OnInit {
   sendEmail() {
     if (this._socketService.isSocketConnected) {
       const formValues = this.emailForm.value;
-      this.constructAndSendCimEvent("EMAIL", "", "", "", "", "", "", formValues);
+      this.constructAndSendCimEvent("EMAIL", "", "", "", "", "", "", formValues, this.listOfFiles);
       this.emailForm.reset();
     } else {
       this.snackBar.open("socket service is not openend..");
@@ -1708,29 +1748,28 @@ export class InteractionsComponent implements OnInit {
   replyToEmail(message, isReplyToAllEmail) {
     this.emailForm.patchValue({
       markdownText: "",
-      htmlBody: "", 
+      htmlBody: "",
       subject: `Re: ${message.body.subject}`,
-      recipientsCc: [], 
-      recipientsBcc: [], 
-      from: message.header.channelData.channelCustomerIdentifier
+      recipientsCc: [],
+      recipientsBcc: [],
+      from: message.header.channelData.serviceIdentifier
     });
 
     const recipientsToControl = this.emailForm.get("recipientsTo") as FormArray;
     recipientsToControl.clear();
 
-    recipientsToControl.push(this.fb.control(message.header.channelData.serviceIdentifier));
+    recipientsToControl.push(this.fb.control(message.header.channelData.channelCustomerIdentifier));
 
-    if(isReplyToAllEmail) {
-
+    if (isReplyToAllEmail) {
       message.body.recipientsTo.forEach((recipient: string) => {
-      (this.emailForm.get("recipientsTo") as FormArray).push(this.fb.control(recipient));
-    });
-    message.body.recipientsBcc.forEach((recipient: string) => {
-      (this.emailForm.get("recipientsBcc") as FormArray).push(this.fb.control(recipient));
-    });
-    message.body.recipientsCc.forEach((recipient: string) => {
-      (this.emailForm.get("recipientsCc") as FormArray).push(this.fb.control(recipient));
-    });
+        (this.emailForm.get("recipientsTo") as FormArray).push(this.fb.control(recipient));
+      });
+      message.body.recipientsBcc.forEach((recipient: string) => {
+        (this.emailForm.get("recipientsBcc") as FormArray).push(this.fb.control(recipient));
+      });
+      message.body.recipientsCc.forEach((recipient: string) => {
+        (this.emailForm.get("recipientsCc") as FormArray).push(this.fb.control(recipient));
+      });
     }
   }
   openEmailComposer(templateRef): void {
@@ -1738,7 +1777,7 @@ export class InteractionsComponent implements OnInit {
     (this.emailForm.get("recipientsBcc") as FormArray).clear();
     (this.emailForm.get("recipientsCc") as FormArray).clear();
     this.emailForm.reset();
-
+    this.listOfFiles = [];
     const dialogRef = this.dialog.open(templateRef, {
       width: "70vw",
       maxWidth: "950px",
@@ -1749,23 +1788,23 @@ export class InteractionsComponent implements OnInit {
   }
   // Attachment for email
   initUpload() {
-    let fileInput = document.getElementById('fileInput');
+    let fileInput = document.getElementById("fileInput");
     console.log(fileInput);
     if (fileInput) {
       fileInput.click();
     } else {
-      console.log('ERROR: cannot find file input');
+      console.log("ERROR: cannot find file input");
     }
   }
 
   onChange(event: any): void {
+    console.log("hre is the fileLisit", this.fileList);
     for (var i = 0; i <= event.target.files.length - 1; i++) {
       var selectedFile = event.target.files[i];
       if (this.listOfFiles.indexOf(selectedFile.name) === -1) {
         this.fileList.push(selectedFile);
         this.listOfFiles.push(selectedFile);
         this.getFileType = selectedFile.name.substr(selectedFile.name.lastIndexOf(".") + 1);
-  
       }
     }
   }

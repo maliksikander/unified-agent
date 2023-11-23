@@ -1971,14 +1971,14 @@
                                 customToolbarPosition="bottom"
                               >
                               </quill-editor>
-                              <div class="attach-file-preview" *ngIf="fileList[0]">
-                                <a href="">
+                              <div class="attach-file-preview" *ngFor="let attachment of message.body.attachments">
+                                <a [href]="attachment.mediaUrl">
                                   <mat-icon>file_download</mat-icon>
                                   <img src="assets/file-types/clip.png" />
                                 </a>
                                 <span>
-                                  <span>{{ getFileType }}</span>
-                                  <strong>{{ fileList[0]?.name }} </strong>
+                                  <span>{{ getFileExtension(attachment.mediaUrl) }}</span>
+                                  <small> ({{ attachment.size / 1000 }} kb)</small>
                                 </span>
                               </div>
                             </div>
@@ -2919,7 +2919,7 @@
                     accept=".rtf,.txt,.png,.jpg,.jpeg,.pdf,.ppt,.xlsx,.xls,.doc,.docx,.mp4,mp3"
                     #myFileInput
                     type="file"
-                    (change)="uploadFile($event.target.files); $event.target.value = ''"
+                    (change)="uploadFileAndConstructAndSendEvent($event.target.files); $event.target.value = ''"
                     name="ef_chatbox_chat_file_upload"
                     id="uploadFileBtn"
                     class="file-upload-input"
@@ -2927,7 +2927,7 @@
                 </button>
 
                 <!--            <span class="attachment-btn" >-->
-                <!--            <input #myFileInput *ngIf="replyInput.value.length < 1" (change)="uploadFile($event.target.files)" type="file" [disabled]="chatServerDown || conversation.state =='ended'"-->
+                <!--            <input #myFileInput *ngIf="replyInput.value.length < 1" (change)="uploadFileAndConstructAndSendEvent($event.target.files)" type="file" [disabled]="chatServerDown || conversation.state =='ended'"-->
                 <!--                   name="ef_chatbox_chat_file_upload" id="uploadFileBtn" class="file-upload-input">-->
                 <!--            <i class="material-icons" *ngIf="replyInput.value.length < 1">-->
                 <!--                attach_file-->
@@ -3196,11 +3196,7 @@
           <div class="sender-selection">
             <label>From</label>
             <mat-form-field>
-              <mat-select formControlName="from">
-                <mat-option *ngFor="let sender of emailFrom" [value]="sender.value">
-                  {{ sender.viewValue }}
-                </mat-option>
-              </mat-select>
+              <input matInput formControlName="from">
             </mat-form-field>
           </div>
         </div>
@@ -3210,13 +3206,13 @@
             <label>To</label>
 
             <mat-form-field class="email-to-list">
-              <mat-chip-list #emailToList formControlName="recipientsTo">
+              <mat-chip-list #emailToList>
                 <mat-chip
                   *ngFor="let recipient of emailForm.get('recipientsTo').controls; let i = index"
                   [selectable]="selectable"
                   [removable]="removable"
                   (removed)="remove(i, 'recipientsTo')"
-                >
+                  [value]="recipient.value">
                   {{ recipient.value }}
                   <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                 </mat-chip>
@@ -3347,7 +3343,7 @@
           <div class="email-compose-head email-selection-option">
             <div class="sender-selection">
               <label>From</label>
-              <span>{{ selectedValue }}</span>
+              <!-- <span>{{ selectedValue }}</span> -->
             </div>
           </div>
 
