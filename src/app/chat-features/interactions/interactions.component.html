@@ -2906,23 +2906,23 @@
       <!-- <h4 mat-dialog-title>{{requestAction ? requestAction + ' Request' : requestedAgentForAssistance.team && isTransfer
         ? 'Transfer to Queue' : 'Conversation Transfer'}} -->
       <h4 mat-dialog-title>
-        SLA Expired
-          <span class="float-right">SLA Timer | {{conversation.SLACountdown.value | duration}}</span>
+        {{'chat-features.interactions.sla-dialog-expired' | translate}}
+          <span *ngIf="conversation.SLACountdown.value > 0" class="float-right">Time remaining | {{conversation.SLACountdown.value | duration}}</span>
       </h4>
     </div>
     <div class="dialog-main-content sla-dialog-content">
       <div class="container text-center">
-        <strong>SLA breached!</strong>
-          <p *ngIf="conversation.SLACountdown.value > 0">Would you like to stay in the conversation?</p>
-          <p *ngIf="conversation.SLACountdown.value < 1">You will soon remove from the conversation</p>
+        <strong>{{'chat-features.interactions.sla-dialog-brached' | translate}}</strong>
+          <p *ngIf="conversation.SLACountdown.value > 0">{{ 'chat-features.interactions.sla-dialog-stay-here' | translate }}</p>
+          <p *ngIf="conversation.SLACountdown.value < 1">{{ 'chat-features.interactions.sla-dialog-warning' | translate }}</p>
 
       </div>
     </div>
 
     <div *ngIf="conversation.SLACountdown.value > 0" class="action-trigger text-center">
-      <button mat-button  class="close-btn">Leave</button>
-      <button mat-button class="success-btn">
-        Stay
+      <button mat-button (click)="onLeaveClick()" class="close-btn">{{'chat-features.interactions.sla-dialog-leave' | translate}}</button>
+      <button (click)="extendSlaTime()" mat-button class="success-btn">
+        {{'chat-features.interactions.sla-dialog-stay' | translate}}
       </button>
     </div>
   </div>

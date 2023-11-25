@@ -271,10 +271,14 @@ export class socketService {
       let sameTopicConversation = this.conversations.find((e) => {
         return e.conversationId == res.conversationId;
       });
-      sameTopicConversation.wrapUpDialog.show = true;
-      sameTopicConversation.wrapUpDialog.durationLeft = res.duration;
 
-      this.startWrapUpTimer(sameTopicConversation);
+      if (sameTopicConversation) {
+        sameTopicConversation.wrapUpDialog.show = true;
+        sameTopicConversation.SLACountdown.inPopUpShow = false;
+        sameTopicConversation.wrapUpDialog.durationLeft = res.duration;
+
+        this.startWrapUpTimer(sameTopicConversation);
+      }
     });
 
     this.socket.on("socketSessionRemoved", (res: any) => {
@@ -452,7 +456,7 @@ export class socketService {
         this.handleParticipantRoleChangedEvent(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "agent_sla_started") {
         this.handleAgentSlaStartedEvent(cimEvent, conversationId);
-      } else if (cimEvent.name.toLowerCase() == "agent_sla_stopped" || cimEvent.name.toLowerCase() == "agent_sla_expired") {
+      } else if (cimEvent.name.toLowerCase() == "agent_sla_stopped") {
         this.handleAgentSlaStoppedEvent(cimEvent, conversationId);
       }
     } else {
@@ -512,16 +516,16 @@ export class socketService {
         }
       }
       if (event.data.header && event.data.header.sender && event.data.header.sender.type.toLowerCase() == "connector") {
-        event.data.header.sender.senderName = event.data.header.customer.firstName;
-        event.data.header.sender.id = event.data.header.customer._id;
+        event.data.header.sender.senderName = topicData.customer.firstName;
+        event.data.header.sender.id = topicData.customer._id;
         event.data.header.sender.type = "CUSTOMER";
       }
       if (
         (event.name.toLowerCase() == "message_delivery_notification" || event.name.toLowerCase() == "customer_message") &&
         event.data.header.sender.type.toLowerCase() == "connector"
       ) {
-        event.data.header.sender.senderName = event.data.header.customer.firstName;
-        event.data.header.sender.id = event.data.header.customer._id;
+        event.data.header.sender.senderName = topicData.customer.firstName;
+        event.data.header.sender.id = topicData.customer._id;
         event.data.header.sender.type = "CUSTOMER";
       }
       if (
@@ -688,7 +692,12 @@ export class socketService {
     // console.log("conversations==>", this.conversations);
     this._conversationsListener.next(this.conversations);
 
-    //this.startSLACountDown(conversation.SLACountdown);
+
+    // recover agent SLA
+    if (topicData.agentSla && topicData.agentSla.action && topicData.agentSla.action != '') {
+
+      this.recoverAgentSla(topicData.agentSla, conversation.SLACountdown, conversationId);
+    }
 
     if (
       topicData &&
@@ -699,10 +708,39 @@ export class socketService {
       this._router.navigate(["customers"]);
   }
 
+
+  recoverAgentSla(agentSla, SLACountdown, conversationId) {
+
+    if (agentSla.action.toLowerCase() == "change_color") {
+      SLACountdown.color = "sla-warn";
+
+    } else if (agentSla.action.toLowerCase() == "show_popup") {
+      SLACountdown.color = "sla-ended";
+      this.showSLAPopUp(conversationId)
+    } else if (agentSla.action.toLowerCase() == "remove_all_agents") {
+      SLACountdown.color = "sla-ended";
+      this.showSLAPopUp(conversationId)
+    }
+    SLACountdown.value = this.calculateDateDifferenceInSeconds(agentSla.startTime, Date.now(), agentSla.totalDuration);
+    this.startSLACountDown(SLACountdown);
+
+
+  }
+
+  calculateDateDifferenceInSeconds(timeWhenTimerStarted, currentTime, totalDurationOfTimer) {
+    const dateObj1: any = new Date(timeWhenTimerStarted);
+    const dateObj2: any = new Date(currentTime);
+    const timeDifference = Math.abs(dateObj2 - dateObj1);
+    const differenceInSeconds = timeDifference / 1000;
+    return Math.round(totalDurationOfTimer - differenceInSeconds);
+  }
+
+
   // starts the conversation SLA countdown
   startSLACountDown(SLACountdown) {
 
     if (SLACountdown.value > 0) {
+      SLACountdown.inViewShow = true;
       SLACountdown.ref = setInterval(() => {
         SLACountdown.value--;
 
@@ -750,6 +788,10 @@ export class socketService {
         conversation.SLACountdown.value = cimEvent.data.totalDuration;
 
         this.startSLACountDown(conversation.SLACountdown);
+
+        conversation.SLACountdown.inPopUpShow = false;
+
+        conversation.SLACountdown.color = "sla-normal"
 
         console.log("///////////////////////////////////////////// start_timer called")
 

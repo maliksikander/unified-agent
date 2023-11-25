@@ -22,7 +22,7 @@
     "Something-went-wrong":"Something went wrong_fr",
     "The-license-is":"The license is :_fr",
     "Unable-to-process-chat-unsubscribing":"Unable to process chat, unsubscribing..._fr",
-    "Conversation-is-closed-due-to":"Conversation is closed due to _fr",
+    "Conversation-is-closed-due-to":"You are removed due to _fr",
     "Unable-to-process-event-unsubscribing":"Unable to process event, unsubscribing..._fr",
     "you-are-logged-In-from-another-session":"you are logged In from another session_fr",
     "Profile-linked-successfully":"Profile linked successfully_fr",
@@ -269,7 +269,13 @@
       "wrap-up-notes": "Wrap-up Notesen_fr",
       "agent-assistance": "Agent Assistance_fr",
       "queue-transfer": "Queue Transfer_fr",
-      "queue-conference": "Queue Conference_fr"
+      "queue-conference": "Queue Conference_fr",
+      "sla-dialog-leave": "Leave",
+      "sla-dialog-stay": "Stay",
+      "sla-dialog-brached": "SLA breached!",
+      "sla-dialog-expired": "SLA Expired",
+      "sla-dialog-stay-here": "Would you like to stay in the conversation?",
+      "sla-dialog-warning": "You will soon be removed from the conversation"
     },
     "wrap-up-form": {
       "Add-Wrap-Up": "Add Wrap-Up_fr",

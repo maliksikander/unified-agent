@@ -153,7 +153,7 @@ export class InteractionsComponent implements OnInit {
     private snackBar: MatSnackBar,
     public _sipService: SipService,
     private _translateService: TranslateService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.isCallActive = this._sipService.isCallActive;
@@ -242,7 +242,7 @@ export class InteractionsComponent implements OnInit {
       }
     );
   }
-  emoji() {}
+  emoji() { }
 
   BargeIn() {
     let obj = {
@@ -380,7 +380,7 @@ export class InteractionsComponent implements OnInit {
       panelClass: "send-sms-dialog",
       data: { info: this._cacheService.smsDialogData }
     });
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe((result) => { });
     this._cacheService.clearOutboundSmsDialogData();
   }
 
@@ -678,7 +678,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -686,7 +686,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -756,7 +756,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
   externalfilePreviewOpener(url, fileName, type) {
     const dialogRef = this.dialog.open(FilePreviewComponent, {
@@ -766,7 +766,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
 
   uploadFile(files) {
@@ -1598,21 +1598,40 @@ export class InteractionsComponent implements OnInit {
   //   }
   // }
 
-  clear(){
+  clear() {
     this._socketService.stopSLACountDown(this.conversation.conversationId)
   }
 
-  warn(){
+  warn() {
     this.conversation.SLACountdown.color = "sla-warn"
   }
 
-  ended(){
-      this.conversation.SLACountdown.color = "sla-ended"
+  ended() {
+    this.conversation.SLACountdown.color = "sla-ended"
 
   }
 
-  popUp(){
+  popUp() {
     this._socketService.showSLAPopUp(this.conversation.conversationId)
+  }
+
+  extendSlaTime() {
+
+    const event = {
+      id: uuidv4(),
+      name: "RESET_AGENT_SLA",
+      type: "NOTIFICATION",
+      timestamp: Date.now(),
+      conversationId: this.conversation.conversationId,
+      "data": {}
+    }
+
+    this._socketService.emit("publishCimEvent", {
+      cimEvent: event,
+      agentId: this._cacheService.agent.id,
+      conversationId: this.conversation.conversationId
+    });
+
   }
 
   endActiveCall() {
