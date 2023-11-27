@@ -108,7 +108,7 @@ export class isLoggedInService {
             }
           });
           console.log("this is login resp ==>", e.data);
-          this._crmEventsService.login(e.data);
+          this._crmEventsService.postCRMEvent(e.data);
           this._cacheService.agent = e.data.keycloak_User;
           const attributes = e.data.keycloak_User.attributes;
           if (this._appConfigService.config.isCxVoiceEnabled) this.initiateSipService(attributes);

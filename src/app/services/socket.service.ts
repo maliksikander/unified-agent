@@ -151,7 +151,7 @@ export class socketService {
     this.socket.on("agentPresence", (res: any) => {
       console.log("agent presence==>", res);
       this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: res.agentPresence });
-      this._crmEventsService.agentStateChanged(res);
+      this._crmEventsService.postCRMEvent(res);
 
     });
 
@@ -168,9 +168,10 @@ export class socketService {
     this.socket.on("errors", (res: any) => {
       console.error("socket errors ", res);
       this.onSocketErrors(res);
-    });
+    })
 
     this.socket.on("taskRequest", (res: any) => {
+      this._crmEventsService.postCRMEvent(res);
       console.log("taskRequest==>", res);
       if (res.taskState && res.taskState.name.toLowerCase() == "started") {
         if (res.taskDirection.toLowerCase() == "consult") {
@@ -245,6 +246,8 @@ export class socketService {
 
     this.socket.on("topicUnsubscription", (res: any) => {
       console.log("topicUnsubscription", res);
+      this._crmEventsService.postCRMEvent(res);
+      console.log("chat end",res);
       if (res.reason.toUpperCase() != "UNSUBSCRIBED" && res.reason.toUpperCase() != "CHAT TRANSFERRED") {
         this._snackbarService.open(this._translateService.instant("snackbar.Conversation-is-closed-due-to") + res.reason, "err");
       }
@@ -358,7 +361,10 @@ export class socketService {
 
   onCimEventHandler(cimEvent, conversationId) {
     console.log("cim event ", JSON.parse(JSON.stringify(cimEvent)));
-    this._crmEventsService.taskStateChanged( JSON.parse(JSON.stringify(cimEvent)));
+    if(JSON.parse(JSON.stringify(cimEvent)).name == 'TASK_STATE_CHANGED'){
+      this._crmEventsService.postCRMEvent( JSON.parse(JSON.stringify(cimEvent)));
+    }
+    
     if (cimEvent.channelSession) {
       if (cimEvent.data && cimEvent.data.header) {
         cimEvent.data.header.channelSession = cimEvent.channelSession;
@@ -1801,8 +1807,10 @@ export class socketService {
       // if the topic state is 'ACTIVE' then agent needs to request the agent manager for unsubscribe
       this.emit("topicUnsubscription", {
         conversationId: conversation.conversationId,
-        agentId: this._cacheService.agent.id
-      });
+        agentId: this._cacheService.agent.id,
+       });
+       console.log("topicUnsubscription", {  conversationId: conversation.conversationId,agentId: this._cacheService.agent.id})
+      
     } else if (conversation.state === "CLOSED") {
       // if the topic state is 'CLOSED' it means agent is already unsubscribed by the agent manager
       // now it only needs to clear the conversation from conversations array

@@ -16,6 +16,8 @@ import { getMatIconFailedToSanitizeLiteralError, MatDialog } from "@angular/mate
 import { SendSmsComponent } from "../chat-features/send-sms/send-sms.component";
 import { ManualOutboundCallComponent } from "../chat-features/manual-outbound-call/manual-outbound-call.component";
 import { CallControlsComponent } from "../new-components/call-controls/call-controls.component";
+import { crmEventsService } from '../services/crmEvents.service';
+
 
 @Component({
   selector: "app-header",
@@ -84,9 +86,33 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     private _httpService: httpService,
     private _snackBarService: snackbarService,
     private _translateService: TranslateService,
+    private _crmEventsService : crmEventsService ,
     private _announcementService: announcementService,
     private dialog: MatDialog
-  ) {}
+  ) {
+
+    let _THIS = this;
+    window.addEventListener("message", function (e) {
+       if (e.data && e.data.event && e.data.event == "Connector_Action") {
+        // if (e.data.agentData.action == "agentState") {
+        //   console.log("agent state event received==>", e);
+        //   _THIS.agentStateChange(e);
+        // } else 
+        if (e.data.agentData.action == "agentMRDState") {
+          console.log("mrd state event received==>", e);
+          _THIS.mrdStateChange(e);
+        } else if(e.data.agentData.action == "agentLogout"){
+          console.log("agent logout event received==>", e);
+          //_THIS.mrdStateChange(e);
+        }
+     }
+    });
+
+
+
+
+
+  }
 
   ngOnInit() {
     this.timerConfigs = new countUpTimerConfigModel();
@@ -112,6 +138,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
       if (e.msg == "stateChanged") {
         this.disableMrdActions = false;
         if (e.data.state.name.toLowerCase() == "logout") {
+          this._crmEventsService.postCRMEvent({event:"Logout",message:"Agent Logout Successfully"})
           this.moveToLogin();
         } else if (this._cacheService.agentPresence.state.name == null) {
           this.reStartTimer();
@@ -222,8 +249,55 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     this.countupTimerService.startTimer();
   }
 
+  agentStateChange(e) {
+    try {
+      if (e.data.agentData.agentId) {
+        this._socketService.emit("changeAgentState", {
+          agentId: e.data.agentData.agentId,
+          action: "agentState",
+          state: { name: e.data.agentData.state, reasonCode: null }
+        });
+      }
+    } catch (e) {
+      console.error("[Error] pocAgentStateChange ==>", e);
+    }
+  }
+
+  mrdStateChange(e) {
+    try {
+      if (e.data.agentData.agentId) {
+        this._socketService.emit("changeAgentMRDState", {
+          agentId: e.data.agentData.agentId,
+          action: "agentMRDState",
+          state: e.data.agentData.state,
+          mrdId: e.data.agentData.mrdId
+        });
+        console.error("[Success] MRDStateChange ==>", e);
+      }
+    } catch (e) {
+      console.error("[Error] MRDStateChange ==>", e);
+    }
+  }
+  logoutStateChange(e) {
+    try {
+      if (e.data.agentData.agentId) {
+        this._socketService.emit("changeAgentState", {
+          agentId: e.data.agentData.agentId,
+          action: "agentLogoutState",
+          state: e.data.agentData.state,
+           
+        });
+        console.error("[Success] Agent Logout ==>", e);
+      }
+    } catch (e) {
+      console.error("[Error] Agent Logout ==>", e);
+    }
+  }
+
+
+
   changeState(state) {
-    console.log("current state", state);
+    console.log("Sana current state", state);
 
     if (state == 0) {
       this._socketService.emit("changeAgentState", {
