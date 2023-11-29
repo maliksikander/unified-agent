@@ -1,3 +1,7 @@
+<!-- <button (click)="clear()">clear</button>
+<button (click)="warn()">warn</button>
+<button (click)="ended()">ended</button>
+<button (click)="popUp()">popUp</button> -->
 <div
   class="interaction-main"
   [ngClass]="{
@@ -42,12 +46,10 @@
               ></li>
             </ul>
           </h5>
-          <!--          <button mat-button class="chat-controls-mobile search-trigger" *ngIf="isMobileDevice" aria-label="search" (click)="interactionSearch = true">-->
-          <!--            <mat-icon>search</mat-icon>-->
-          <!--          </button>-->
-          <button mat-button class="chat-controls-mobile" *ngIf="isMobileDevice" [matMenuTriggerFor]="agentControllForMobile">
-            <mat-icon>more_vert</mat-icon>
-          </button>
+<!--          <button mat-button class="chat-controls-mobile search-trigger" *ngIf="isMobileDevice" aria-label="search" (click)="interactionSearch = true">-->
+<!--            <mat-icon>search</mat-icon>-->
+<!--          </button>-->
+          <button mat-button class="chat-controls-mobile" *ngIf="isMobileDevice"  [matMenuTriggerFor]="agentControllForMobile" ><mat-icon>more_vert</mat-icon></button>
           <!-- <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}" *ngIf="isCallActive && !ctiBarView"
                   matTooltip="Chat" aria-label="Chat">
             <mat-icon>question_answer</mat-icon>
@@ -75,8 +77,8 @@
                          </button>
                        </li>
           </ul> -->
-          <mat-menu #agentControllForMobile="matMenu" [overlapTrigger]="true" backdropClass="mobile-menu-backdrop" panelClass="custom-pane">
-            <div class="{{ isMobileDevice ? 'mobile-chat-controls' : '' }}">
+          <mat-menu #agentControllForMobile="matMenu" [overlapTrigger]="true"  backdropClass="mobile-menu-backdrop" panelClass="custom-pane">
+            <div class="{{isMobileDevice ? 'mobile-chat-controls'  : ''}}" >
               <div class="menu-header-mobile">
                 <h5>
                   Chat Action Items <button mat-button class="close-menu-mobile" *ngIf="isMobileDevice"><mat-icon>close</mat-icon></button>
@@ -741,29 +743,29 @@
                             </span>
                           </strong>
 
-                          <div
-                            [ngClass]="{
-                              'file-type-message':
-                                (referredMessage.body.type | lowercase) != 'plain' &&
-                                (referredMessage.body.type | lowercase) != 'comment' &&
-                                (referredMessage.body.type | lowercase) != 'button'
-                            }"
-                          >
-                            <!-- ---------------Comments---------------------- -->
-                            <div *ngIf="(referredMessage.body.type | lowercase) == 'comment'">
-                              <p>
-                                <span
-                                  [innerHTML]="
-                                    conversationSettings.isMessageFormattingEnabled
-                                      ? (referredMessage.body.markdownText | linkify | ibsformat)
-                                      : (referredMessage.body.markdownText | linkify)
-                                  "
-                                ></span>
-                                <!--                            <span class="message-stamp yellow">-->
-                                <!--                              <span class="chat-time red">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
-                                <!--                            </span>-->
-                              </p>
-                            </div>
+                      <div
+                        [ngClass]="{
+                          'file-type-message':
+                            (referredMessage.body.type | lowercase) != 'plain' &&
+                            (referredMessage.body.type | lowercase) != 'comment' &&
+                            (referredMessage.body.type | lowercase) != 'button'
+                        }"
+                      >
+                        <!-- ---------------Comments---------------------- -->
+                        <div *ngIf="(referredMessage.body.type | lowercase) == 'comment'">
+                          <p>
+                            <span
+                              [innerHTML]="
+                                conversationSettings.isMessageFormattingEnabled
+                                  ? (referredMessage.body.markdownText | linkify | ibsformat)
+                                  : (referredMessage.body.markdownText | linkify)
+                              "
+                            ></span>
+                            <!--                            <span class="message-stamp yellow">-->
+                            <!--                              <span class="chat-time red">{{referredMessage.header.timestamp | date:'shortTime'}}</span>-->
+                            <!--                            </span>-->
+                          </p>
+                        </div>
 
                             <!-- ---------------plain---------------------- -->
                             <div *ngIf="(referredMessage.body.type | lowercase) == 'plain'">
@@ -1667,31 +1669,29 @@
                                       >
                                     </li>
 
-                                    <li *ngIf="message?.body?.data?.recordingUrl" class="agent-pic play-btn">
-                                      <button mat-mini-fab (click)="toggleAudioPlayback(index)">
-                                        <i class="material-icons">{{ callRecording.paused ? "play_arrow" : "pause" }} </i>
-                                      </button>
-                                      <audio id="{{ index }}" #callRecording src="{{ message?.body?.data?.recordingUrl }}"></audio>
+                                <li *ngIf="message?.body?.data?.recordingUrl" class="agent-pic play-btn">
+                                  <button mat-mini-fab (click)="toggleAudioPlayback(index)">
+                                    <i class="material-icons">{{ callRecording.paused ? "play_arrow" : "pause" }} </i>
+                                  </button>
+                                  <audio id="{{ index }}" #callRecording src="{{message?.body?.data?.recordingUrl}}"></audio>
+                                </li>
+                              </ul>
+                            </div>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <ng-container *ngIf="message.body.data.callLegs.length > 1 && !(message.body.data.callLegs | checkConsultCall)">
+                          <ng-container *ngFor="let callData of message.body.data.callLegs">
+                            <div *ngIf="callData?.startDirection != 'CONSULT'" class="panel-header call-history-panel inner-detail">
+                              <div *ngIf="callData?.startDirection != 'CONSULT'" class="history-detail inner-detail-history">
+                                <div class="panel-header">
+                                  <ul>
+                                    <li class="agent-pic participant-agent call-services">
+                                      <span
+                                        class=" {{ (callData.sender.senderName | getFirstTwoLetters | lowercase) == 'ivr' ? 'ivr-tag' : 'non-ivr' }}"
+                                        matTooltip="{{ callData.sender.senderName }}"
+                                        >{{ callData.sender.senderName | getFirstTwoLetters }}</span
+                                      >
                                     </li>
-                                  </ul>
-                                </div>
-                              </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <ng-container *ngIf="message.body.data.callLegs.length > 1 && !(message.body.data.callLegs | checkConsultCall)">
-                              <ng-container *ngFor="let callData of message.body.data.callLegs">
-                                <div *ngIf="callData?.startDirection != 'CONSULT'" class="panel-header call-history-panel inner-detail">
-                                  <div *ngIf="callData?.startDirection != 'CONSULT'" class="history-detail inner-detail-history">
-                                    <div class="panel-header">
-                                      <ul>
-                                        <li class="agent-pic participant-agent call-services">
-                                          <span
-                                            class=" {{
-                                              (callData.sender.senderName | getFirstTwoLetters | lowercase) == 'ivr' ? 'ivr-tag' : 'non-ivr'
-                                            }}"
-                                            matTooltip="{{ callData.sender.senderName }}"
-                                            >{{ callData.sender.senderName | getFirstTwoLetters }}</span
-                                          >
-                                        </li>
 
                                         <li
                                           matTooltip="{{ callData?.additionalDetail?.activities | getIVRTrail }}"
@@ -1705,16 +1705,16 @@
                                           </ng-container>
                                         </li>
 
-                                        <li
-                                          matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
-                                            callData?.additionalDetail?.dialog?.queueName ? callData?.additionalDetail?.dialog?.queueName : 'N/A'
-                                          }}"
-                                          class="agent-pic call-services"
-                                        >
-                                          <span class="activity-queue-ellipsis">{{
-                                            callData?.additionalDetail?.dialog?.queueName ? callData?.additionalDetail?.dialog?.queueName : "N/A"
-                                          }}</span>
-                                        </li>
+                                    <li
+                                      matTooltip="{{ 'snackbar.queue-name' | translate }}: {{
+                                        callData?.additionalDetail?.dialog?.queueName ? callData?.additionalDetail?.dialog?.queueName : 'N/A'
+                                      }}"
+                                      class="agent-pic call-services"
+                                    >
+                                      <span class="activity-queue-ellipsis">{{
+                                        callData?.additionalDetail?.dialog?.queueName ? callData?.additionalDetail?.dialog?.queueName : "N/A"
+                                      }}</span>
+                                    </li>
 
                                         <li class="section-duration">
                                           <time *ngIf="callData.duration > 0"
@@ -1741,8 +1741,8 @@
                                           />
                                         </li>
 
-                                        <li *ngIf="callData.additionalDetail?.dialog?.wrapUpReason" class="section-tags">
-                                          <!-- <ng-container
+                                    <li *ngIf="callData.additionalDetail?.dialog?.wrapUpReason" class="section-tags">
+                                      <ng-container
                                         *ngIf="
                                           callData.additionalDetail?.dialog?.wrapUpItems && callData.additionalDetail?.dialog?.wrapUpItems.length > 0
                                         "
@@ -1769,62 +1769,59 @@
                                         </ng-container>
                                       </ng-container> -->
 
-                                          <!-- <span *ngFor="let reasonCode of callData.dialog?.wrapUpReason | sliceFilter:0:2">
+                                      <!-- <span *ngFor="let reasonCode of callData.dialog?.wrapUpReason | sliceFilter:0:2">
                                   {{reasonCode }}
                                 </span>
 
                                 <span *ngIf="callData.dialog?.wrapUpReason.length > 2" class="sub-tags"
                                   [matMenuTriggerFor]="multiVoiceTags">+{{callData.dialog?.wrapUpReason.length -
                                   2}}</span> -->
-
-                                          <ng-container
-                                            *ngIf="
-                                              callData.additionalDetail?.dialog?.wrapUpItems &&
-                                              (isString(callData.additionalDetail?.dialog?.wrapUpItems) ||
-                                                callData.additionalDetail?.dialog?.wrapUpItems.length == 0)
-                                            "
+                                        <ng-container
+                                          *ngIf="
+                                          callData.additionalDetail?.dialog?.wrapUpItems &&
+                                           ( isString(callData.additionalDetail?.dialog?.wrapUpItems) || callData.additionalDetail?.dialog?.wrapUpItems.length == 0 )
+                                          "
+                                        >
+                                          <span  matTooltip="{{ callData.additionalDetail?.dialog?.wrapUpReason}}">
+                                            {{
+                                              callData.additionalDetail?.dialog?.wrapUpReason
+                                                ? callData.additionalDetail?.dialog?.wrapUpReason
+                                                : "N/A"
+                                            }}
+                                          </span>
+                                        </ng-container>
+    
+                                        <ng-container
+                                          *ngIf="
+                                          callData.additionalDetail?.dialog?.wrapUpItems &&
+                                          callData.additionalDetail?.dialog?.wrapUpItems.length > 0 && !isString(callData.additionalDetail?.dialog?.wrapUpItems)
+                                          "
+                                        >
+                                          <span
+                                            matTooltip="{{ wrapup}}"
+                                            *ngFor="let wrapup of callData.additionalDetail?.dialog?.wrapUpItems | sliceFilter: 0:2"
                                           >
-                                            <span matTooltip="{{ callData.additionalDetail?.dialog?.wrapUpReason }}">
-                                              {{
-                                                callData.additionalDetail?.dialog?.wrapUpReason
-                                                  ? callData.additionalDetail?.dialog?.wrapUpReason
-                                                  : "N/A"
-                                              }}
-                                            </span>
-                                          </ng-container>
-
-                                          <ng-container
-                                            *ngIf="
-                                              callData.additionalDetail?.dialog?.wrapUpItems &&
-                                              callData.additionalDetail?.dialog?.wrapUpItems.length > 0 &&
-                                              !isString(callData.additionalDetail?.dialog?.wrapUpItems)
-                                            "
-                                          >
-                                            <span
-                                              matTooltip="{{ wrapup }}"
-                                              *ngFor="let wrapup of callData.additionalDetail?.dialog?.wrapUpItems | sliceFilter: 0:2"
+                                            {{ wrapup }}
+                                          </span>
+                                          <ng-container *ngIf="callData.additionalDetail?.dialog?.wrapUpItems?.length > 2">
+                                            <ng-container
+                                              *ngIf="
+                                              callData.additionalDetail?.dialog?.wrapUpItems
+                                                  | sliceFilter: 2:callData.additionalDetail?.dialog?.wrapUpItems?.length;
+                                                let remainingValues
+                                              "
                                             >
-                                              {{ wrapup }}
-                                            </span>
-                                            <ng-container *ngIf="callData.additionalDetail?.dialog?.wrapUpItems?.length > 2">
-                                              <ng-container
-                                                *ngIf="
-                                                  callData.additionalDetail?.dialog?.wrapUpItems
-                                                    | sliceFilter: 2:callData.additionalDetail?.dialog?.wrapUpItems?.length;
-                                                  let remainingValues
-                                                "
+                                              <span matTooltip="{{ remainingValues?.join(', ') }}"
+                                                >+{{ callData.additionalDetail?.dialog?.wrapUpItems?.length - 2 }}</span
                                               >
-                                                <span matTooltip="{{ remainingValues?.join(', ') }}"
-                                                  >+{{ callData.additionalDetail?.dialog?.wrapUpItems?.length - 2 }}</span
-                                                >
-                                              </ng-container>
                                             </ng-container>
                                           </ng-container>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                  <!-- <mat-menu #multiVoiceTags="matMenu">
+                                        </ng-container>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                              <!-- <mat-menu #multiVoiceTags="matMenu">
                             <div class="more-section-tags">
                               <span *ngFor="let reasonCode of callData.dialog?.wrapUpReason">{{reasonCode}}</span>
                             </div>
@@ -2603,14 +2600,18 @@
 
                   <!-- {{conversation.activeChannelSessions[conversation.activeChannelSessions.length
         -1]?.channel.channelType.name}}  -->
-                  <i class="material-icons"> arrow_drop_down </i>
-                </ng-container>
-              </button>
-              <label *ngIf="conversation.activeChannelSessions.length == 0" style="color: grey; padding-left: 2px"
-                >{{ "chat-features.interactions.none" | translate }}
-              </label>
-            </span>
-          </div>
+            <i class="material-icons"> arrow_drop_down </i>
+          </ng-container>
+        </button>
+        <label *ngIf="conversation.activeChannelSessions.length == 0" style="color: grey; padding-left: 2px"
+          >{{ "chat-features.interactions.none" | translate }}
+        </label>
+        <span *ngIf="conversation.SLACountdown.inViewShow" class="agent-sla-timer {{conversation.SLACountdown.color}}">
+          <mat-icon>watch_later</mat-icon>
+          <time>{{conversation.SLACountdown.value | duration}}</time>
+        </span>
+      </span>
+    </div>
 
           <mat-menu #channelSwitching="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
             <button
@@ -2702,22 +2703,22 @@
                   {{ quotedMessage.body.markdownText }}
                 </p>
 
-                <button
-                  mat-icon-button
-                  class="quoted-message-cancel"
-                  (click)="
-                    quotedMessage = '';
-                    replyToMessageId = null;
-                    originalMessageId = null;
-                    commentId = null;
-                    privateMessageReply = null;
-                    disablingAttatchButtonForInstagramReply = false
-                  "
-                >
-                  <mat-icon>close</mat-icon>
-                </button>
-              </div>
-            </div>
+            <button
+              mat-icon-button
+              class="quoted-message-cancel"
+              (click)="
+                quotedMessage = '';
+                replyToMessageId = null;
+                originalMessageId = null;
+                commentId = null;
+                privateMessageReply = null;
+                disablingAttatchButtonForInstagramReply = false
+              "
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
 
             <!--  ========== TYPING INDICATOR ========  -->
             <div class="typing-indicator" *ngIf="conversation.isTyping">
@@ -3009,50 +3010,90 @@
         </div>
       </div>
 
-      <!--  Bot suggestios panel with the conversation view-->
-      <div class="suggestion-main-area" *ngIf="isBotSuggestions">
-        <div class="bot-suggestion-area">
-          <div class="chat-intents">
-            <div class="chat-intents">
-              <div class="search-wrapper">
-                <mat-form-field appearance="outline">
-                  <input matInput type="text" placeholder="Search knowledge base" />
-                  <mat-icon matSuffix>search</mat-icon>
-                </mat-form-field>
-              </div>
-              <div class="main-suggestion-panel">
-                <div class="intents-inner">
-                  <!--            <p *ngFor="let opt of convers">-->
-                  <!--              {{opt.body?.markdownText}} ==llloooll== {{conversation.messages[conversation.messages.length - 1]?.botSuggestions.messageBody.markdownText}} </p>-->
-                  <div class="suggestion-main" *ngFor="let botSuggestion of conversation.botSuggestions">
-                    <ng-container *ngFor="let suggestion of botSuggestion.suggestions">
-                      <!--                <ng-container *ngIf="suggestion.messageBody.type == 'PLAIN'">-->
-                      <div class="suggestion-title">
-                        <span class="suggestion-type">
-                          <mat-icon>chat_bubble</mat-icon>
-                        </span>
-                        <!--                {{conversation.messages.body.markdownText}}-->
-                        <time>11:22 AM</time>
-                      </div>
-                      <span class="suggestion-message" (click)="replyInput.value = suggestion.messageBody.markdownText">{{
-                        suggestion.messageBody.markdownText
-                      }}</span>
-                      <!--              <b>{{intent.confidence.toFixed(2)}}</b>-->
-                      <button mat-mini-fab class="canned-trigger edit-trigger" (click)="replyInput.value = suggestion.messageBody.markdownText">
-                        <i class="material-icons">edit </i>
-                      </button>
-                      <button (click)="onSend(suggestion.messageBody.markdownText)" mat-mini-fab class="canned-trigger send-suggestion">
-                        <i class="material-icons">send </i>
-                      </button>
-                    </ng-container>
+<!--  Bot suggestios panel with the conversation view-->
+  <div class="suggestion-main-area" *ngIf="isBotSuggestions">
+
+    <div class="bot-suggestion-area">
+      <div class="chat-intents">
+        <div class="chat-intents">
+          <div class="search-wrapper">
+            <mat-form-field appearance="outline">
+              <input matInput type="text" placeholder="Search knowledge base" />
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="main-suggestion-panel">
+            <div class="intents-inner">
+              <!--            <p *ngFor="let opt of convers">-->
+              <!--              {{opt.body?.markdownText}} ==llloooll== {{conversation.messages[conversation.messages.length - 1]?.botSuggestions.messageBody.markdownText}} </p>-->
+              <div class="suggestion-main"  *ngFor="let botSuggestion of conversation.botSuggestions">
+
+                <ng-container *ngFor="let suggestion of botSuggestion.suggestions">
+
+
+
+                  <!--                <ng-container *ngIf="suggestion.messageBody.type == 'PLAIN'">-->
+                  <div class="suggestion-title">
+                  <span class="suggestion-type">
+                <mat-icon>chat_bubble</mat-icon>
+              </span>
+                    <!--                {{conversation.messages.body.markdownText}}-->
+                    <time>11:22 AM</time>
                   </div>
-                </div>
+                  <span class="suggestion-message" (click)="replyInput.value = suggestion.messageBody.markdownText">{{suggestion.messageBody.markdownText}}</span>
+                  <!--              <b>{{intent.confidence.toFixed(2)}}</b>-->
+                  <button
+                    mat-mini-fab
+                    class="canned-trigger edit-trigger"
+                    (click)="replyInput.value = suggestion.messageBody.markdownText"
+                  >
+                    <i class="material-icons">edit </i>
+                  </button>
+                  <button (click)="onSend(suggestion.messageBody.markdownText)" mat-mini-fab class="canned-trigger send-suggestion">
+                    <i class="material-icons">send </i>
+                  </button>
+                </ng-container>
               </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
+  </div>
+</div>
+
+
+ <!--Chat SLA dialog-->
+ <div class="sla-main-action" *ngIf="conversation.SLACountdown.inPopUpShow">
+  <div class="note-dialog-main transfer-dialog">
+    <div class="dialog-header">
+      <!-- <h4 mat-dialog-title>{{requestAction ? requestAction + ' Request' : requestedAgentForAssistance.team && isTransfer
+        ? 'Transfer to Queue' : 'Conversation Transfer'}} -->
+      <h4 mat-dialog-title>
+        {{'chat-features.interactions.sla-dialog-expired' | translate}}
+          <span *ngIf="conversation.SLACountdown.value > 0" class="float-right">Time remaining | {{conversation.SLACountdown.value | duration}}</span>
+      </h4>
+    </div>
+    <div class="dialog-main-content sla-dialog-content">
+      <div class="container text-center">
+        <strong>{{'chat-features.interactions.sla-dialog-brached' | translate}}</strong>
+          <p *ngIf="conversation.SLACountdown.value > 0">{{ 'chat-features.interactions.sla-dialog-stay-here' | translate }}</p>
+          <p *ngIf="conversation.SLACountdown.value < 1">{{ 'chat-features.interactions.sla-dialog-warning' | translate }}</p>
+
+      </div>
+    </div>
+
+    <div *ngIf="conversation.SLACountdown.value > 0" class="action-trigger text-center">
+      <button mat-button (click)="onLeaveClick()" class="close-btn">{{'chat-features.interactions.sla-dialog-leave' | translate}}</button>
+      <button (click)="extendSlaTime()" mat-button class="success-btn">
+        {{'chat-features.interactions.sla-dialog-stay' | translate}}
+      </button>
+    </div>
+  </div>
+</div>
+
+
   </div>
 
   <!--./Bot suggestions-->
@@ -3158,6 +3199,7 @@
           <textarea maxlength="1000" [(ngModel)]="assistanceRequestNote" rows="5"></textarea>
           <label *ngIf="assistanceRequestNote?.length > 0" class="typing-counter">{{ assistanceRequestNote?.length }}/1000</label>
         </div>
+
       </div>
     </div>
 

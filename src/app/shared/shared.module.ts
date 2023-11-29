@@ -105,8 +105,7 @@ import { SearchSuggestionsPipe } from "./pipes/searchSuggestions.pipe";
 import { checkCiscoSessionPipe } from "./pipes/checkCiscoSession.pipe";
 import { checkCXSessionPipe } from "./pipes/checkCXSession.pipe";
 import { countAgentPartcipantsPipe } from "./pipes/countAgentParticipants.pipe";
-import {QuillModule} from "ngx-quill";
-
+import {QuillModule} from "ngx-quill";import { DurationPipe } from "./pipes/duration.pipe";
 @NgModule({
   declarations: [
     getFormattedBytesPipe,
@@ -157,7 +156,8 @@ import {QuillModule} from "ngx-quill";
     checkCiscoSessionPipe,
     checkCXSessionPipe,
     returnSchemaByKeyPipe,
-    returnSchemaByChannelTypePipe
+    returnSchemaByChannelTypePipe,
+    DurationPipe
   ],
   imports: [
     NgxDocViewerModule,
@@ -346,7 +346,8 @@ import {QuillModule} from "ngx-quill";
     returnSchemaByKeyPipe,
     returnSchemaByChannelTypePipe,
     QuillModule
-
+,
+    DurationPipe
   ]
 })
 export class SharedModule {}

@@ -309,7 +309,7 @@ export class InteractionsComponent implements OnInit {
       }
     );
   }
-  emoji() {}
+  emoji() { }
 
   BargeIn() {
     let obj = {
@@ -324,7 +324,7 @@ export class InteractionsComponent implements OnInit {
       participantId: this.conversation.topicParticipant.participant.id,
       conversationId: this.conversation.conversationId
     };
-    this._socketService.emit("moveToWhisperMode", obj);
+    this._socketService.emit("joinAsWhisper", obj);
   }
 
   onSend(text) {
@@ -447,7 +447,7 @@ export class InteractionsComponent implements OnInit {
       panelClass: "send-sms-dialog",
       data: { info: this._cacheService.smsDialogData }
     });
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe((result) => { });
     this._cacheService.clearOutboundSmsDialogData();
   }
 
@@ -483,6 +483,7 @@ export class InteractionsComponent implements OnInit {
       document.hasFocus() &&
       messageForSeenNotification &&
       messageForSeenNotification.id != this.lastSeenMessageId &&
+      this.conversation.topicParticipant &&
       this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor" &&
       this.conversation.topicParticipant.role.toLowerCase() != "assistant"
     ) {
@@ -661,7 +662,17 @@ export class InteractionsComponent implements OnInit {
     console.log("calles", this.conversationSettings);
 
     if (this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
-      this.closeConversationConfirmation();
+      let voiceSessionId = this.getVoiceChannelSessionID();
+      // console.log("test==>", voiceSessionId);
+      let cacheId = `${this._cacheService.agent.id}:${voiceSessionId}`;
+      // console.log("test2==>", cacheId);
+      let cacheDialog = this._sipService.getDialogFromCache(cacheId);
+      // console.log("test3==>", cacheDialog);
+      if (cacheDialog) {
+        this.closeConversationConfirmation();
+      } else {
+        this._socketService.topicUnsub(this.conversation);
+      }
     } else {
       this._socketService.topicUnsub(this.conversation);
     }
@@ -734,7 +745,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -742,7 +753,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -812,7 +823,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
   externalfilePreviewOpener(url, fileName, type) {
     const dialogRef = this.dialog.open(FilePreviewComponent, {
@@ -822,7 +833,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
 
   uploadFileAndConstructAndSendEvent(files) {
@@ -1450,7 +1461,22 @@ export class InteractionsComponent implements OnInit {
     this.showRequestNotification();
   }
 
-  filterCXQueues(queues: Array<any>) {
+  filterNonVoiceQueues(queues: Array<any>) {
+    try {
+      let chatQueues: Array<any> = [];
+      // console.log("CX MRD ID==>",this._appConfigService.config.CX_VOICE_MRD)
+      queues.forEach((item: any) => {
+        console.log(this._appConfigService.config.CX_VOICE_MRD, "<==item ID==>", item.mrdId);
+        if (item.mrdId != this._appConfigService.config.CX_VOICE_MRD && item.mrdId != this._appConfigService.config.CISCO_CC_MRD) chatQueues.push(item);
+      });
+      // console.log("let==>", chatQueues);
+      this.queueList = chatQueues;
+    } catch (e) {
+      console.error("[filterCXQueues] Error :", e);
+    }
+  }
+
+  filterVoiceQueues(queues: Array<any>) {
     try {
       let cxQueues: Array<any> = [];
       queues.forEach((item: any) => {
@@ -1462,14 +1488,28 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
+  isDialogExisting() {
+    let voiceSessionId = this.getVoiceChannelSessionID();
+    // console.log("test==>", voiceSessionId);
+    let cacheId = `${this._cacheService.agent.id}:${voiceSessionId}`;
+    // console.log("test2==>", cacheId);
+    let cacheDialog = this._sipService.getDialogFromCache(cacheId);
+    // console.log("cacheDialog==>", cacheDialog);
+    if (cacheDialog) return true;
+    return false;
+  }
+
   getAgentsInQueue() {
     try {
       this._httpService.getAgentsInQueue(this.conversation.conversationId).subscribe(
         (res: any) => {
-          if (this.isCXVoiceSessionActive() && res) {
-            this.filterCXQueues(res);
+          if (this.isCXVoiceSessionActive() && res && this.isDialogExisting()) {
+            // console.log("test4==>");
+            this.filterVoiceQueues(res);
           } else {
-            this.queueList = res;
+            // console.log("test5==>");
+            this.filterNonVoiceQueues(res);
+            // this.queueList = res;
           }
 
           // this.queueList = res;
@@ -1608,18 +1648,22 @@ export class InteractionsComponent implements OnInit {
     if (data == false) {
       this.openWrapDialog = false;
       if (this.conversation.wrapUpDialog.show) {
-        this._socketService.emit("WRAP_UP_CLOSED", {
+        this._socketService.emit("closeWrapup", {
           conversationId: this.conversation.conversationId,
-          agentId: this._cacheService.agent.id
+          agentId: this._cacheService.agent.id,
+          reason: null
+          // reason:"WRAP_UP_NOT_APPLIED"
         });
       }
     } else {
       this.constructAndSendCimEvent("wrapup", "", "", "", "", data.wrapups, data.note);
       this.openWrapDialog = false;
       if (this.conversation.wrapUpDialog.show) {
-        this._socketService.emit("WRAP_UP_CLOSED", {
+        this._socketService.emit("closeWrapup", {
           conversationId: this.conversation.conversationId,
-          agentId: this._cacheService.agent.id
+          agentId: this._cacheService.agent.id,
+          reason: null
+          // reason:"WRAP_UP_APPLIED"
         });
       }
     }
@@ -1693,10 +1737,59 @@ export class InteractionsComponent implements OnInit {
   //   }
   // }
 
+  clear() {
+    this._socketService.stopSLACountDown(this.conversation.conversationId)
+  }
+
+  warn() {
+    this.conversation.SLACountdown.color = "sla-warn"
+  }
+
+  ended() {
+    this.conversation.SLACountdown.color = "sla-ended"
+
+  }
+
+  popUp() {
+    this._socketService.showSLAPopUp(this.conversation.conversationId)
+  }
+
+  extendSlaTime() {
+
+    const event = {
+      id: uuidv4(),
+      name: "RESET_AGENT_SLA",
+      type: "NOTIFICATION",
+      timestamp: Date.now(),
+      conversationId: this.conversation.conversationId,
+      "data": {}
+    }
+
+    this._socketService.emit("publishCimEvent", {
+      cimEvent: event,
+      agentId: this._cacheService.agent.id,
+      conversationId: this.conversation.conversationId
+    });
+
+  }
+
   endActiveCall() {
     this.isVideoCall = false;
     this.isAudioCall = false;
     this.chatDuringCall = false;
+  }
+
+  getVoiceChannelSessionID() {
+    for (let i = 0; i <= this.conversation.activeChannelSessions.length; i++) {
+      if (
+        (this.conversation.activeChannelSessions[i] &&
+          this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cisco_cc") ||
+        this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cx_voice"
+      ) {
+        return this.conversation.activeChannelSessions[i].id;
+      }
+    }
+    return -1;
   }
 
   sendEmail() {
