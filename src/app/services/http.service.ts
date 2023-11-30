@@ -485,7 +485,7 @@ export class httpService {
     });
   }
 
-  getAgentsInQueue(conversationId,agentId): Observable<any> {
+  getAgentsInQueue(conversationId, agentId): Observable<any> {
     return this._httpClient.get<any>(
       `${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.agentInQueueList}?conversationId=${conversationId}&agentId=${agentId}`,
       {

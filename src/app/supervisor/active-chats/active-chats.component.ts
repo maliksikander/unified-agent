@@ -31,7 +31,7 @@ export class ActiveChatsComponent implements OnInit {
   queuesList = [];
   timerSubscription: Subscription;
   filter: string;
-  labels: CustomerLabels[]
+  labels: CustomerLabels[];
   filteredData = [];
   activeChatListWithAgents: any = [];
   activeChatListWithBots: any = [];
@@ -56,7 +56,7 @@ export class ActiveChatsComponent implements OnInit {
     private _socketService: socketService,
     private _router: Router,
     public _appConfigService: appConfigService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loadLabels();
@@ -150,10 +150,10 @@ export class ActiveChatsComponent implements OnInit {
     this._httpService.getAllActiveChatsWithBots().subscribe(
       (e) => {
         this.activeChatListWithBots = e;
-        console.log("bots chats", this.activeChatListWithBots)
+        console.log("bots chats", this.activeChatListWithBots);
         // Sort the activeChatListWithBots array by activeSince property
         for (let data of this.activeChatListWithBots) {
-          this.sortChatsByActiveSince(data.chats)
+          this.sortChatsByActiveSince(data.chats);
         }
       },
       (err) => {
@@ -170,9 +170,9 @@ export class ActiveChatsComponent implements OnInit {
       if (this.selectedQueues.length == 0) {
         this.activeChatListWithAgents.forEach((chats) => {
           chats.chats.forEach((innerChat) => {
-            innerChat["queueName"] = chats.queueName
+            innerChat["queueName"] = chats.queueName;
             this.filteredData.push(innerChat);
-          })
+          });
         });
       } else {
         this.selectedQueues.forEach((data) => {
@@ -180,17 +180,15 @@ export class ActiveChatsComponent implements OnInit {
             if (data.queueId == chats.queueId) {
               chats.chats.forEach((innerchat) => {
                 innerchat["queueName"] = chats.queueName;
-                this.filteredData.push(innerchat)
-              })
+                this.filteredData.push(innerchat);
+              });
             }
-          })
-        })
+          });
+        });
       }
 
       // Sort the filteredData array by activeSince property
-      this.sortChatsByActiveSince(this.filteredData)
-
-
+      this.sortChatsByActiveSince(this.filteredData);
     } catch (err) {
       console.error("[filterData] Error :", err);
     }
@@ -229,10 +227,10 @@ export class ActiveChatsComponent implements OnInit {
     if (this.timerSubscription) this.timerSubscription.unsubscribe();
   }
 
-  onItemSelect(item: any) { }
-  OnItemDeSelect(item: any) { }
-  onSelectAll(items: any) { }
-  onDeSelectAll(items: any) { }
+  onItemSelect(item: any) {}
+  OnItemDeSelect(item: any) {}
+  onSelectAll(items: any) {}
+  onDeSelectAll(items: any) {}
 
   // closeChat() {
   //   const dialogRef = this.dialog.open(ConfirmationDialogComponent, {

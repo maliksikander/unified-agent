@@ -908,7 +908,7 @@ export class SipService implements OnInit {
     }
   }
 
-  directAgentTransferOnSip(ext){
+  directAgentTransferOnSip(ext) {
     try {
       let command = {
         action: "SST",
@@ -979,7 +979,9 @@ export class SipService implements OnInit {
     try {
       let voiceTask = this.getVoiceTask();
       let state;
-      let cacheId = `${this._cacheService.agent.id}:${dialogState.dialog && dialogState.dialog.id ? dialogState.dialog && dialogState.dialog.id : null}`;
+      let cacheId = `${this._cacheService.agent.id}:${
+        dialogState.dialog && dialogState.dialog.id ? dialogState.dialog && dialogState.dialog.id : null
+      }`;
       if (voiceTask) state = { state: "alerting", taskId: voiceTask.id };
       this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, "DIALOG_ENDED", state);
     } catch (e) {

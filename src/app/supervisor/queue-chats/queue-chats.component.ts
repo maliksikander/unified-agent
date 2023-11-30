@@ -109,24 +109,24 @@ export class QueueChatsComponent implements OnInit {
       this.filteredData = [];
       if (this.selectedQueues.length == 0) {
         this.queuedChatList.forEach((chats) => {
-          chats.chats.forEach((innerChat)=> {
-            innerChat["queueName"] = chats.queueName
+          chats.chats.forEach((innerChat) => {
+            innerChat["queueName"] = chats.queueName;
             this.filteredData.push(innerChat);
-          })
+          });
         });
       } else {
         this.selectedQueues.forEach((data) => {
           this.queuedChatList.forEach((chats) => {
             if (data.queueId == chats.queueId) {
               chats.chats.forEach((innerChat) => {
-                innerChat["queueName"] = chats.queueName
+                innerChat["queueName"] = chats.queueName;
                 this.filteredData.push(innerChat);
-              })
-            } 
+              });
+            }
           });
         });
       }
-      this.sortFilteredDataInQueues(this.filteredData) 
+      this.sortFilteredDataInQueues(this.filteredData);
     } catch (err) {
       console.error("[filterData] Error :", err);
     }
@@ -141,7 +141,7 @@ export class QueueChatsComponent implements OnInit {
       }
     });
   }
-  
+
   onItemSelect(item: any) {
     // this.getAllQueuedChats(this.selectedTeam);
   }

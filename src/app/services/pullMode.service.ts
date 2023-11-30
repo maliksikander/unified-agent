@@ -56,7 +56,6 @@ export class pullModeService {
     let found: boolean = false;
     // check if the request is already present here
     this.subscribedListRequests.forEach((request, i) => {
-
       // if yes, then get the index of request
       if (request.id == incomingRequest.id) {
         index = i;
@@ -66,7 +65,6 @@ export class pullModeService {
     });
     // if the request already in it, update the request
     if (found) {
-
       this.subscribedListRequests[index] = incomingRequest;
     } else {
       // else, add a new entry

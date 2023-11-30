@@ -44,11 +44,10 @@ export class ChatNotificationsComponent implements OnInit {
         if (e.msg == "openPushModeRequestHeader") {
           this.pushModeRequests.push(e.data);
           this._soundService.playRing();
-            this._soundService.openBrowserNotification(
-              this._translateService.instant("snackbar.CHAT-REQUESTED"),
-              this._translateService.instant("snackbar.Incoming-chat-request-on-push-mode-on") + e.data.channelSession.channel.channelType.name
-            );
-          
+          this._soundService.openBrowserNotification(
+            this._translateService.instant("snackbar.CHAT-REQUESTED"),
+            this._translateService.instant("snackbar.Incoming-chat-request-on-push-mode-on") + e.data.channelSession.channel.channelType.name
+          );
         } else if (e.msg == "closePushModeRequestHeader") {
           this.removePushModeRequestFromRequestArray(e.data.conversationId);
         } else if (e.msg == "openPullModeRequestHeader") {
@@ -73,7 +72,9 @@ export class ChatNotificationsComponent implements OnInit {
           this._soundService.playRing();
           this._soundService.openBrowserNotification(
             this._translateService.instant("snackbar.Incoming-Call-Alert"),
-            `${this._translateService.instant("snackbar.Incoming-call-alert-request")} ${e.data && e.data.customer && e.data.customer.firstName ? e.data.customer.firstName : 'N/A'} (${e.data && e.data.identifier ? e.data.identifier : 'N/A'})` 
+            `${this._translateService.instant("snackbar.Incoming-call-alert-request")} ${
+              e.data && e.data.customer && e.data.customer.firstName ? e.data.customer.firstName : "N/A"
+            } (${e.data && e.data.identifier ? e.data.identifier : "N/A"})`
           );
           console.log("external requests==>", this.externalModeRequests);
         } else if (e.msg == "closeExternalModeRequestHeader") {

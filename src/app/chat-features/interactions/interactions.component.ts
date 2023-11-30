@@ -289,7 +289,7 @@ export class InteractionsComponent implements OnInit {
               console.log("requested agent ==>", requestedAgent);
               this._sipService.directAgentTransferOnSip(requestedAgent.ext);
             } else {
-               //send socket event to agent manage to unsubscribe with reason
+              //send socket event to agent manage to unsubscribe with reason
               this._socketService.emit("topicUnsubscription", {
                 conversationId: this.conversation.conversationId,
                 agentId: this._cacheService.agent.id,
