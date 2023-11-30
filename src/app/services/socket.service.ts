@@ -230,6 +230,7 @@ export class socketService {
       console.log("onTopicData==>", JSON.parse(JSON.stringify(res)));
       try {
         this.onTopicData(res.topicData, res.conversationId, res.taskId);
+        this._crmEventsService.postCRMEvent(JSON.parse(JSON.stringify(res)));
         if (callback) {
           callback({ status: "ok" });
         }
