@@ -75,7 +75,7 @@
                 </h5>
               </div>
               <ul (click)="$event.stopPropagation()" class="list-group list-group-vertical agent-controls agent-controls-mobile">
-                  
+
                 <ng-container
                     *ngIf="conversation.conversationId != 'FAKE_CONVERSATION' && conversation.topicParticipant.role != 'SILENT_MONITOR' && conversation.topicParticipant.role != 'ASSISTANT' && ('agent-conversation-control' | authPipe: 'view_wrap_up') as result">
                     <li class="list-group-item">
@@ -684,7 +684,8 @@
                       class="main-quoted-reply"
                       *ngFor="let referredMessage of message.header.originalMessageId | getReferredMsg: conversation.messages"
                       (click)="navigationToRepliedMessage(referredMessage)"
-                    >
+                      >
+
                       <strong
                         class="message-author"
                         [ngClass]="(referredMessage.header.sender.type | lowercase) == 'customer' ? '' : 'current-agents'"
@@ -693,6 +694,8 @@
                           {{ referredMessage.header.sender | getSenderName: conversation.customer | titlecase }}
                         </span>
                       </strong>
+                      <app-message-type-view [messageType]="(referredMessage.body.type | lowercase)" [messageTypeData]="referredMessage" [messageBody]="referredMessage.body"></app-message-type-view>
+
 
                       <div
                         [ngClass]="{
@@ -702,6 +705,7 @@
                             (referredMessage.body.type | lowercase) != 'button'
                         }"
                       >
+
                         <!-- ---------------Comments---------------------- -->
                         <div *ngIf="(referredMessage.body.type | lowercase) == 'comment'">
                           <p>
@@ -1050,6 +1054,10 @@
                     }"
                   >
                     <!-- ---------------SIMPLE PLAIN---------------------- -->
+
+
+                                                <app-message-type-view [messageType]="(message.body.type | lowercase)" [messageTypeData]="message" [messageBody]="message.body"></app-message-type-view>
+
 
                     <button
                       [id]="message.id"
@@ -1710,7 +1718,7 @@
                                             }}
                                           </span>
                                         </ng-container>
-    
+
                                         <ng-container
                                           *ngIf="
                                           callData.additionalDetail?.dialog?.wrapUpItems &&
@@ -1797,69 +1805,69 @@
                     <!-- <div *ngIf="((message.header.sender.type | lowercase) == 'app' && (message.header.schedulingMetaData) )" class="abc"> {{message.header.sender.type | json}}</div>  -->
                     <!-- <-------------------------------------Scheduled Activity--------------------------------------------------->
                     <!-- *ngIf="(message.header.status | lowercase) == 'deliverynotification' " -->
-                    <div
-                      *ngIf="(message.header.sender.type | lowercase) == 'app' && message.header.schedulingMetaData"
-                      class="voice-activity-main panel-divider single scheduled-activity-area activity {{
-                        message.header.scheduledStatus | lowercase
-                      }}"
-                    >
-                      <mat-expansion-panel>
-                        <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
-                          <mat-panel-title>
-                            <div class="panel-header">
-                              <ul>
-                                <li *ngIf="message.header.scheduledStatus | lowercase" class="activity-status" matTooltip="Activity Status">
-                                  <span>{{ message.header.scheduledStatus | lowercase }}</span>
-                                </li>
-                                <li *ngIf="message.header.schedulingMetaData.queue" matTooltip="Queue">
-                                  {{ message.header.schedulingMetaData.queue }}
-                                </li>
-                                <!-- <li *ngIf="(message.body.status | lowercase) " matTooltip="Execute Time">
-                                  {{ message.header.timestamp | date: "shortTime" }}
-                                </li> -->
-                                <li matTooltip="Execute Time">
-                                  {{ message.header.schedulingMetaData.scheduledDatetime | date: "medium" }}
-                                </li>
-                                <li matTooltip="Scheduled Time">
-                                  {{ message.header.timestamp | date: "medium" }}
-                                </li>
+<!--                    <div-->
+<!--                      *ngIf="(message.header.sender.type | lowercase) == 'app' && message.header.schedulingMetaData"-->
+<!--                      class="voice-activity-main panel-divider single scheduled-activity-area activity {{-->
+<!--                        message.header.scheduledStatus | lowercase-->
+<!--                      }}"-->
+<!--                    >-->
+<!--                      <mat-expansion-panel>-->
+<!--                        <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">-->
+<!--                          <mat-panel-title>-->
+<!--                            <div class="panel-header">-->
+<!--                              <ul>-->
+<!--                                <li *ngIf="message.header.scheduledStatus | lowercase" class="activity-status" matTooltip="Activity Status">-->
+<!--                                  <span>{{ message.header.scheduledStatus | lowercase }}</span>-->
+<!--                                </li>-->
+<!--                                <li *ngIf="message.header.schedulingMetaData.queue" matTooltip="Queue">-->
+<!--                                  {{ message.header.schedulingMetaData.queue }}-->
+<!--                                </li>-->
+<!--                                &lt;!&ndash; <li *ngIf="(message.body.status | lowercase) " matTooltip="Execute Time">-->
+<!--                                  {{ message.header.timestamp | date: "shortTime" }}-->
+<!--                                </li> &ndash;&gt;-->
+<!--                                <li matTooltip="Execute Time">-->
+<!--                                  {{ message.header.schedulingMetaData.scheduledDatetime | date: "medium" }}-->
+<!--                                </li>-->
+<!--                                <li matTooltip="Scheduled Time">-->
+<!--                                  {{ message.header.timestamp | date: "medium" }}-->
+<!--                                </li>-->
 
-                                <li *ngIf="(message.header.sender.senderName)"  matTooltip="Campaign Name">{{message.header.sender.senderName}}</li>
-                                <li  matTooltip="Channel" class="multiple-users agent-pic participant-agent call-services activity-response">
-                                  <span><img
+<!--                                <li *ngIf="(message.header.sender.senderName)"  matTooltip="Campaign Name">{{message.header.sender.senderName}}</li>-->
+<!--                                <li  matTooltip="Channel" class="multiple-users agent-pic participant-agent call-services activity-response">-->
+<!--                                  <span><img-->
 
-                                    width="20"
-                                    [src]="message.header.channelSession.channel.channelType.channelLogo | channelLogo | async"
-                                  /></span>
-                                  <!-- <img [src]="getFileURL(message.header.schedulingMetaData.channelType.channelLogo" alt="group" />)" alt="type_logo"> -->
-                                  <!--                                <span><img src="assets/images/groups.svg" alt="group" /></span>-->
-                                </li>
-                                <li matTooltip="Channel Identity">{{ message.header.channelData.channelCustomerIdentifier }}</li>
-                                <li
-                                  *ngIf="message.header.schedulingMetaData.queue"
-                                  class="agent-pic participant-agent call-services"
-                                  matTooltip="Agent - Farhan"
-                                >
-                                  <span>{{ message.header.schedulingMetaData.agent }}</span>
-                                </li>
-                              </ul>
-                            </div>
-                          </mat-panel-title>
-                        </mat-expansion-panel-header>
-                        <div
-                          *ngIf="(message.body.type | lowercase) == 'plain' && (message.body.type | lowercase) !== 'delieverynotification'"
-                          class="custom-message-type"
-                        >
-                          <p>{{ message.body.markdownText }}</p>
-                        </div>
-                      </mat-expansion-panel>
-                    </div>
+<!--                                    width="20"-->
+<!--                                    [src]="message.header.channelSession.channel.channelType.channelLogo | channelLogo | async"-->
+<!--                                  /></span>-->
+<!--                                  &lt;!&ndash; <img [src]="getFileURL(message.header.schedulingMetaData.channelType.channelLogo" alt="group" />)" alt="type_logo"> &ndash;&gt;-->
+<!--                                  &lt;!&ndash;                                <span><img src="assets/images/groups.svg" alt="group" /></span>&ndash;&gt;-->
+<!--                                </li>-->
+<!--                                <li matTooltip="Channel Identity">{{ message.header.channelData.channelCustomerIdentifier }}</li>-->
+<!--                                <li-->
+<!--                                  *ngIf="message.header.schedulingMetaData.queue"-->
+<!--                                  class="agent-pic participant-agent call-services"-->
+<!--                                  matTooltip="Agent - Farhan"-->
+<!--                                >-->
+<!--                                  <span>{{ message.header.schedulingMetaData.agent }}</span>-->
+<!--                                </li>-->
+<!--                              </ul>-->
+<!--                            </div>-->
+<!--                          </mat-panel-title>-->
+<!--                        </mat-expansion-panel-header>-->
+<!--                        <div-->
+<!--                          *ngIf="(message.body.type | lowercase) == 'plain' && (message.body.type | lowercase) !== 'delieverynotification'"-->
+<!--                          class="custom-message-type"-->
+<!--                        >-->
+<!--                          <p>{{ message.body.markdownText }}</p>-->
+<!--                        </div>-->
+<!--                      </mat-expansion-panel>-->
+<!--                    </div>-->
 
                     <!-- <--------------------------------------------Scheduled Activity END-------------------------------------------->
 
                     <!-- ---------------------------------- Social Media COMMENT STARTED -------------------------------- -->
 
-                    <!------------------------------------Socila Media post comment type------------------------------------->
+                    <!------------------------------------Social Media post comment type------------------------------------->
 
                     <div
                       class="post-message-main"
@@ -1952,6 +1960,10 @@
 
                         <div class="main-comment" *ngIf="!fullPostView || message.id != selectedCommentId">
                           <div class="post-inner-content">
+<!--                            <app-message-type-view [messageType]="(message.body.type | lowercase)" [messageTypeData]="message" [messageBody]="message.body"></app-message-type-view>-->
+
+
+
                             <p [id]="message.id">
                               <span
                                 [innerHTML]="
@@ -2422,9 +2434,9 @@
         <label *ngIf="conversation.activeChannelSessions.length == 0" style="color: grey"> None </label>
       </span> -->
       <div>
-      <span class="selected-channel" 
+      <span class="selected-channel"
         ><span>{{ "chat-features.interactions.selected-channel" | translate }}</span>
-        <button               
+        <button
           *ngIf="conversation.activeChannelSessions.length > 0"
           mat-button
           [matMenuTriggerFor]="channelSwitching"

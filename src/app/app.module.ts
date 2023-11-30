@@ -48,6 +48,8 @@ import { ActiveAgentDetailsComponent } from "./supervisor/active-agent-details/a
 import { CallControlsComponent } from "./new-components/call-controls/call-controls.component";
 import { SendSmsComponent, SendSmsSnackbarComponent } from "./chat-features/send-sms/send-sms.component";
 import { ManualOutboundCallComponent } from "./chat-features/manual-outbound-call/manual-outbound-call.component";
+import {MessageType} from './models/Message/Enums';
+
 // import { ActiveChatsComponent } from "./supervisor/active-chats/active-chats.component";
 // import { QueueChatsComponent } from "./supervisor/queue-chats/queue-chats.component";
 

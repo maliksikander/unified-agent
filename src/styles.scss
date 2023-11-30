@@ -4728,3 +4728,19 @@ mat-select {
 .manage-dashboard{
   padding-top: 5px;
 }
+
+.login-check-box{
+  label{
+    color: #fff !important;
+    font-size: 13px;
+    margin: 0;
+  }
+  .mat-checkbox-inner-container{
+    width: 20px;
+    height: 20px;
+  }
+  .mat-checkbox-frame {
+    border: 1px solid rgb(255 255 255 / 51%) !important;
+    background: #ffffff4a !important;
+  }
+}
