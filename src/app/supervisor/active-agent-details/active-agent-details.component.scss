@@ -251,3 +251,23 @@
     }
   }
 }
+.stats-label{
+  min-width: 65px;
+}
+@media(max-width: 990px){
+  .active-agent-list-area{
+    padding: 0 5px;
+
+    .filter-area{
+      flex-direction: column;
+    }
+    table{
+      td{
+        padding: 0 5px !important;
+      }
+    }
+  }
+  .container-fluid{
+    padding: 0;
+  }
+}

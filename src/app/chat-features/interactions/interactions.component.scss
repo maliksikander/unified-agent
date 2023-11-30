@@ -425,7 +425,7 @@
         border-radius: 3px;
         min-width: 80px;
         min-height: 30px;
-        max-width: 800px;
+        max-width: 990px;
         //max-width: calc(100% - 112px);
 
         &:before {
@@ -1784,6 +1784,7 @@
     &.success-btn {
       background: $blue-text-color;
       margin-left: 12px;
+      color: #fff;
     }
   }
 }
@@ -3118,6 +3119,7 @@ vg-controls.hide {
       padding: 0 !important;
       box-shadow: none !important;
       width: 100%;
+      display: inline-block !important;
 
       .call-history-panel {
         // background: #f7f7f7;
@@ -4137,7 +4139,7 @@ button.back-to-sms{
       height: 1.5rem;
       vertical-align: middle;
       box-shadow: none;
-     
+
   }
   i.material-icons {
     position: relative;
