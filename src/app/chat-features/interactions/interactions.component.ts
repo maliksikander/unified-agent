@@ -80,7 +80,7 @@ export class InteractionsComponent implements OnInit {
   dragPosition = { x: 0, y: 0 };
 
   queueList: Array<any>;
-  // = [
+  //  [
   //   {
   //     queueId: "1",
   //     mrdId: "1",
@@ -92,7 +92,7 @@ export class InteractionsComponent implements OnInit {
   //         agent: {
   //           id: "1",
   //           name: "Agent 1",
-  //           ext:"111"
+  //           ext: "111"
   //         }
   //       },
   //       {
@@ -100,7 +100,7 @@ export class InteractionsComponent implements OnInit {
   //         agent: {
   //           id: "2",
   //           name: "Agent 2",
-  //            ext:"222"
+  //           ext: "222"
   //         }
   //       }
   //     ]
@@ -116,7 +116,7 @@ export class InteractionsComponent implements OnInit {
   //         agent: {
   //           id: "3",
   //           name: "Agent 3",
-  //            ext:"333"
+  //           ext: "333"
   //         }
   //       },
   //       {
@@ -124,7 +124,7 @@ export class InteractionsComponent implements OnInit {
   //         agent: {
   //           id: "4",
   //           name: "Agent 4",
-  //            ext:"444"
+  //           ext: "444"
   //         }
   //       }
   //     ]
@@ -1397,7 +1397,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   assistanceRequestNote: string;
-  requestedAgentForAssistance;
+  // requestedAgentForAssistance;
   requestAction: string;
 
   sendAssistanceRequest() {
@@ -1415,9 +1415,12 @@ export class InteractionsComponent implements OnInit {
       channelSession: this.conversation.firstChannelSession,
       agentParticipant: this.conversation.topicParticipant,
       mode: "mode",
-      requestedAgentId: this._cacheService.agent.id,
-      note: this.assistanceRequestNote
+      requestedAgentId: this.requestedAgent && this.requestedAgent.agent ? this.requestedAgent.agent.id : null,
+      note: this.assistanceRequestNote,
+      offerToAgent: true
     };
+    if (this.isCXVoiceSessionActive() && this.isDialogExisting()) data.offerToAgent = false;
+    console.log("transfer data==>", data);
     if (this.requestAction == "transfer") this._socketService.emit("directTransferRequest", data);
   }
 
