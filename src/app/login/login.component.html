@@ -20,14 +20,12 @@
             name="password">
             <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
           </div>
-          <!-- <div class="form-group">
-            <label class="text-left">Extension</label>
-            <input formControlName="extention" id="extension" type="text" class="form-control"  name="extension">
-          </div> -->
-          <div class="clearfix"></div>
-          <!-- <div class="input-field radio-field">
-          <mat-checkbox >Keep me logged in</mat-checkbox>
-      </div> -->
+
+          <div *ngIf="_appConfigService.config.isCiscoEnabled" class="input-field login-check-box">
+            <mat-checkbox  (change)="setAll($event.checked)">Log in with Cisco</mat-checkbox>
+          </div>
+
+
           <div class="form-group login-trigger">
             <button [disabled]="!loginForm.valid" (click)="login()" class="button flip-in-ver-right form-control">{{'login.login'  | translate }}</button>
           </div>

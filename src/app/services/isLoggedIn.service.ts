@@ -76,6 +76,8 @@ export class isLoggedInService {
     let roles = JSON.parse(decodeURIComponent(params.get("roles")));
     let finesseUrl = decodeURIComponent(params.get("finesseUrl"));
 
+    console.log("finesseUrl",finesseUrl)
+
     let obj = {
       username: username,
       roles: roles,
