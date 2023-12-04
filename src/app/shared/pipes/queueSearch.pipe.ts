@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { fileToArray } from "ngx-doc-viewer";
 
 @Pipe({ name: "queueFilter", pure: true })
 export class QueueSearchPipe implements PipeTransform {
@@ -16,7 +15,7 @@ export class QueueSearchPipe implements PipeTransform {
           result.push(queue);
         } else {
           // Check if the search term matches the agent name in any availableAgents
-          const matchingAgent = queue.availableAgents.find((agent) => agent.agent.name.toLowerCase().includes(searchTerm));
+          const matchingAgent = queue.availableAgents.find((agent) => agent.name.toLowerCase().includes(searchTerm));
           if (matchingAgent) {
             result.push({
               ...queue,
@@ -29,7 +28,7 @@ export class QueueSearchPipe implements PipeTransform {
 
       return filteredData;
     } catch (e) {
-      console.error("[QueueSearchPipe] Error ==>", e);
+      console.error("[Queue/AgentSearchPipe] Error ==>", e);
     }
   }
 }

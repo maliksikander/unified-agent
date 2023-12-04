@@ -293,10 +293,10 @@
 
                   <!-- </button> -->
 
-                  <ng-container *ngFor="let user of queue.availableAgents; let i = index">
+                  <ng-container *ngFor="let user of queue?.availableAgents; let i = index">
                     <button mat-menu-item>
                       <span class="agent-status {{ user?.state == 'READY' ? 'available' : 'not-available' }}"></span>
-                      <span class="agent-name">{{ user?.agent?.name }}</span>
+                      <span class="agent-name">{{ user?.name }}</span>
                       <!-- <span class="agent-name">{{ user | json }}</span> -->
                       <div class="consult-action-main">
                         <!-- <span class="transfer-selection" (click)="agentAssistanceRequest(chatConsultTemplate, user, 'consult', 'agent')"><img src="assets/images/consult-colored.svg" alt="consult"/> </span> -->
@@ -3100,7 +3100,7 @@
               <span class="agent-status {{ requestedAgent?.state == 'READY' ? 'available' : 'not-available' }}"></span>
               <img src="assets/images/user-light.svg" />
             </div>
-            <h3>{{ requestedAgent?.agent?.name ? requestedAgent?.agent?.name : "N/A" }}</h3>
+            <h3>{{ requestedAgent?.name ? requestedAgent?.name : "N/A" }}</h3>
             <p class="consult-team">({{ requestedQueue?.queueName ? requestedQueue?.queueName : "N/A" }})</p>
           </ng-container>
 

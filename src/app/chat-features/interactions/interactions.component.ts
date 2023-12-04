@@ -285,9 +285,9 @@ export class InteractionsComponent implements OnInit {
             if (this.isCXVoiceSessionActive()) {
               //send command to Sip.js
               let requestAgentId = data.agentTask.assignedTo ? data.agentTask.assignedTo.id : null;
-              let requestedAgent = this.findAgentinQueueList(this.queueList, requestAgentId);
-              console.log("requested agent ==>", requestedAgent);
-              this._sipService.directAgentTransferOnSip(requestedAgent.ext);
+              let requestedAgentFromQueue  = this.findAgentinQueueList(this.queueList, requestAgentId);
+              console.log("requested agent ==>", requestedAgentFromQueue);
+              this._sipService.directAgentTransferOnSip(requestedAgentFromQueue.extensions);
             } else {
               //send socket event to agent manage to unsubscribe with reason
               this._socketService.emit("topicUnsubscription", {
@@ -1415,7 +1415,7 @@ export class InteractionsComponent implements OnInit {
       channelSession: this.conversation.firstChannelSession,
       agentParticipant: this.conversation.topicParticipant,
       mode: "mode",
-      requestedAgentId: this.requestedAgent && this.requestedAgent.agent ? this.requestedAgent.agent.id : null,
+      requestedAgentId: this.requestedAgent ? this.requestedAgent.id : null,
       note: this.assistanceRequestNote,
       offerToAgent: true
     };

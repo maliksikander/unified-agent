@@ -908,20 +908,32 @@ export class SipService implements OnInit {
     }
   }
 
-  directAgentTransferOnSip(ext) {
+  getExtensionForTransfer(extensions) {
     try {
-      let command = {
-        action: "SST",
-        parameter: {
-          dialogId: this.activeDialog.id,
-          // queue: data.queueId,
-          // queueType: "ID",
-          numberToTransfer: ext,
-          clientCallbackFunction: this.clientCallback
-        }
-      };
+      if (extensions && extensions != null && extensions.length > 0) return extensions[0];
+      return null;
+    } catch (error) {
+      console.error("[Error on getExtensionForTransferOnSip] ==>", error);
+    }
+  }
 
-      console.log("directAgentTransferOnSip ==>", command);
+  directAgentTransferOnSip(extensions) {
+    try {
+      let ext = this.getExtensionForTransfer(extensions);
+      if (ext) {
+        let command = {
+          action: "SST",
+          parameter: {
+            dialogId: this.activeDialog.id,
+            numberToTransfer: ext,
+            clientCallbackFunction: this.clientCallback
+          }
+        };
+        console.log("directAgentTransferOnSip ==>", command);
+      } else {
+        this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-call-canceled"), "err");
+        console.error("[Error on directAgentTransferOnSip] ==> Extension Not Found");
+      }
       // postMessage(command);
     } catch (error) {
       console.error("[Error on directAgentTransferOnSip] ==>", error);
