@@ -930,11 +930,12 @@ export class SipService implements OnInit {
           }
         };
         console.log("directAgentTransferOnSip ==>", command);
+        // postMessage(command);
       } else {
         this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-call-canceled"), "err");
         console.error("[Error on directAgentTransferOnSip] ==> Extension Not Found");
       }
-      // postMessage(command);
+     
     } catch (error) {
       console.error("[Error on directAgentTransferOnSip] ==>", error);
     }

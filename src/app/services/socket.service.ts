@@ -172,7 +172,6 @@ export class socketService {
         if (res.taskDirection.toLowerCase() == "consult") {
           this.consultTask = undefined;
           this.consultTask = res;
-          console.log("taskRequest1==>");
           this.emit("topicSubscription", {
             topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.conversationId, "ASSISTANT", "SUBSCRIBED"),
             agentId: this._cacheService.agent.id,
@@ -180,7 +179,6 @@ export class socketService {
             taskId: res.taskId
           });
         } else {
-          console.log("taskRequest2==>");
           this.emit("topicSubscription", {
             topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.conversationId, "PRIMARY", "SUBSCRIBED"),
             agentId: this._cacheService.agent.id,
@@ -219,6 +217,11 @@ export class socketService {
         //   agentId: this._cacheService.agent.id
         // });
       }
+    });
+
+    this.socket.on("agentAssignedForAgentTransfer", (res: any) => {
+      console.log("agentAssignedForAgentTransfer==>", res);
+      // this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: res.agentPresence });
     });
 
     this.socket.on("onTopicData", (res: any, callback: any) => {
@@ -429,20 +432,6 @@ export class socketService {
           this.handleTaskEnqueuedEvent(cimEvent, conversationId);
         } else if (cimEvent.name.toLowerCase() == "task_state_changed") {
           this.handleTaskStateChangedEvent(cimEvent, conversationId);
-          /////////
-          console.log("task 1==>", cimEvent);
-          if (cimEvent && cimEvent.data && cimEvent.data.task && cimEvent.data.task.state && cimEvent.data.task.state.name == "RESERVED") {
-            console.log("task 2==>", cimEvent);
-            let activeMediaList: Array<any> = cimEvent.data.task.activeMedia;
-            if (activeMediaList && activeMediaList.length > 0) {
-              let agentTransferTask = activeMediaList.find((item) => {
-                return item.type.direction == "DIRECT_TRANSFER" && item.type.mode == "AGENT";
-              });
-              console.log("agentTransferTask==>", agentTransferTask);
-              if (agentTransferTask) this.handleDirectTransferTask(cimEvent, conversationId, agentTransferTask);
-            }
-          }
-          ///////
         } else if (cimEvent.name.toLowerCase() == "no_agent_available") {
           this.handleNoAgentEvent(cimEvent, conversationId);
         } else if (cimEvent.name.toLowerCase() == "message_delivery_notification") {
@@ -467,17 +456,31 @@ export class socketService {
     }
   }
 
-  handleDirectTransferTask(cimEvent, conversationId, agentTask) {
+  handleAgentTransfer(res) {
+    //  /////////
+    //  console.log("task 1==>", cimEvent);
+    //  if (cimEvent && cimEvent.data && cimEvent.data.task && cimEvent.data.task.state && cimEvent.data.task.state.name == "RESERVED") {
+    //    console.log("task 2==>", cimEvent);
+    //    let activeMediaList: Array<any> = cimEvent.data.task.activeMedia;
+    //    if (activeMediaList && activeMediaList.length > 0) {
+    //      let agentTransferTask = activeMediaList.find((item) => {
+    //        return item.type.direction == "DIRECT_TRANSFER" && item.type.mode == "AGENT";
+    //      });
+    //      console.log("agentTransferTask==>", agentTransferTask);
+    //      if (agentTransferTask) this.handleDirectTransferTask(cimEvent, conversationId, agentTransferTask);
+    //    }
+    //  }
+    //  ///////
+
     try {
       let data = {
-        event: cimEvent,
-        conversationId,
-        agentTask
+        conversationId: res.conversationId,
+        task: res.task
       };
-      console.log("data==>", data);
+      console.log("[handleAgentTransfer] data==>", data);
       this._namedAgentTransferTask.next(data);
     } catch (e) {
-      console.error("[handleDirectTransferTask] ==>", e);
+      console.error("[handleAgentTransfer] ==>", e);
     }
   }
 

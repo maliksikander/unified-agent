@@ -284,22 +284,23 @@ export class InteractionsComponent implements OnInit {
           if (this.conversation.conversationId == data.conversationId) {
             if (this.isCXVoiceSessionActive()) {
               //send command to Sip.js
-              let requestAgentId = data.agentTask.assignedTo ? data.agentTask.assignedTo.id : null;
-              let requestedAgentFromQueue  = this.findAgentinQueueList(this.queueList, requestAgentId);
+              let requestAgentId = data.task.assignedTo ? data.task.assignedTo.id : null;
+              let requestedAgentFromQueue = this.findAgentinQueueList(this.queueList, requestAgentId);
               console.log("requested agent ==>", requestedAgentFromQueue);
               this._sipService.directAgentTransferOnSip(requestedAgentFromQueue.extensions);
-            } else {
-              //send socket event to agent manage to unsubscribe with reason
-              this._socketService.emit("topicUnsubscription", {
-                conversationId: this.conversation.conversationId,
-                agentId: this._cacheService.agent.id,
-                reason: "DIRECT_TRANSFER"
-              });
             }
+            // else {
+            //send socket event to agent manage to unsubscribe with reason
+            // this._socketService.emit("topicUnsubscription", {
+            //   conversationId: this.conversation.conversationId,
+            //   agentId: this._cacheService.agent.id,
+            //   reason: "DIRECT_TRANSFER"
+            // });
+            // }
           }
         }
       } catch (e) {
-        console.error("[Agent Transfer Subcriber]==>", e);
+        console.error("[Agent Transfer Subscriber]==>", e);
       }
     });
 
