@@ -62,7 +62,7 @@
         </div>
       </div>
     </div>
-    <div class="col">
+    <div class="col dashboard-table">
       <table class="table {{ FilterSelected == 'agents' ? 'agents-answer' : '' }}">
         <thead>
           <tr>
@@ -116,7 +116,7 @@
                   </ul>
                 </td>
                 <td>
-                  {{ chat.activeSince | amDuration: "seconds" }} 
+                  {{ chat.activeSince | amDuration: "seconds" }}
                 </td>
                 <td>{{ data.botName }}</td>
                 <!-- <span class="table-trigger">
