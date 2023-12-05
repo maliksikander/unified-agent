@@ -688,7 +688,7 @@ export class InteractionsComponent implements OnInit {
   }
 
   unsubscribeFromConversation() {
-    console.log("calles", this.conversationSettings);
+    // console.log("calles", this.conversationSettings);
 
     if (this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
       let voiceSessionId = this.getVoiceChannelSessionID();
@@ -1415,7 +1415,7 @@ export class InteractionsComponent implements OnInit {
     let data = {
       channelSession: this.conversation.firstChannelSession,
       agentParticipant: this.conversation.topicParticipant,
-      mode: "mode",
+      mode: "agent",
       requestedAgentId: this.requestedAgent ? this.requestedAgent.id : null,
       note: this.assistanceRequestNote,
       offerToAgent: true

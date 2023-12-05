@@ -249,7 +249,9 @@ export class socketService {
       }
 
       if (res.reason.toUpperCase() == "CHAT TRANSFERRED") {
-        this.snackBar.open("chat has been transferred", "", {
+
+        // this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-event-unsubscribing"), "err");
+        this.snackBar.open(this._translateService.instant("snackbar.Transfer-request-placed-successfully"), "", {
           duration: 4000,
           panelClass: "chat-success-snackbar",
           horizontalPosition: "right",
