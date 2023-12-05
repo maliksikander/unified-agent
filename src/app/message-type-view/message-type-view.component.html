@@ -78,7 +78,7 @@
       Download
       </a>
       </span>
-  <!--                      <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
+  <!--                      <span class="chat-time">{{messageTypeData.header.timestamp | date:'shortTime'}}</span>-->
 </div>
 
 <!--video-->
@@ -136,7 +136,7 @@
         </audio>
       </vg-player>
     </div>
-    <!--                        <span class="chat-time">{{message.header.timestamp | date:'shortTime'}}</span>-->
+    <!--                        <span class="chat-time">{{messageTypeData.header.timestamp | date:'shortTime'}}</span>-->
   </div>
 </div>
 
@@ -272,6 +272,485 @@
     </div>
   </mat-expansion-panel>
 </div>
+
+
+<!--Facebook/Instagram-->
+
+<div
+  *ngIf="(messageTypeData.body.type | lowercase) == 'comment' && (messageTypeData.header.sender.type | lowercase) == 'customer'"
+  class="post-message-main">
+  <div class="post-main-area">
+    <div *ngIf="fullPostView && postData && message.id == selectedCommentId" class="post-message-header">
+      <div class="post-by">
+        <!-- <strong>{{ postData?.from?.name }} <span>Posted on {{ postData?.from?.name }}</span> </strong> -->
+      </div>
+      <div *ngIf="messageTypeData.header.channelSession.channel.channelType.name === 'INSTAGRAM'" class="post-info">
+        <span><img src="assets/images/instagram-color-icon.webp"/> {{ postData?.socialMediaPost?.username }}</span>
+        <mat-icon (click)="fullPostView = false; selectedCommentId = null">close</mat-icon>
+      </div>
+      <div *ngIf="messageTypeData.header.channelSession.channel.channelType.name === 'FACEBOOK'" class="post-info">
+        <span><img src="assets/images/facebook-colored.svg"/> {{ postData?.socialMediaPost?.username }}</span>
+        <mat-icon (click)="fullPostView = false; selectedCommentId = null">close</mat-icon>
+      </div>
+    </div>
+
+    <div
+      *ngIf="!message.isDeleted && !message.isHidden && message.id != selectedCommentId"
+      class="comment-controlls post-controlls"
+    >
+      <ul>
+        <li>
+          <mat-icon (click)="replyToComment(message)"> chat_bubble_outline</mat-icon>
+        </li>
+        <li *ngIf="!messageTypeData.header.channelSession.channel.channelType.name.includes('INSTAGRAM')">
+          <mat-icon (click)="commentAction(message, 'like')" [ngClass]="{ liked: message.isLiked }"> thumb_up</mat-icon>
+        </li>
+        <li
+          (click)="privateReplyToComment(message)"
+          *ngIf="messageTypeData.header.channelSession.channel.channelType.name == 'FACEBOOK' || messageTypeData.header.channelSession.channel.channelType.name == 'INSTAGRAM'"
+          class="private-reply-icon">
+          <img
+            *ngIf="messageTypeData.header.channelSession.channel.channelType.name == 'FACEBOOK'"
+            src="assets/images/facebook-messenger.svg"
+          />
+          <img
+            *ngIf="messageTypeData.header.channelSession.channel.channelType.name == 'INSTAGRAM'"
+            src="assets/images/Instagram-chat-2.svg"
+          />
+          <img *ngIf="messageTypeData.header.channelSession.channel.channelType.name == 'TWITTER'" src=""/>
+        </li>
+        <li class="view-all-options">
+          <ul *ngIf="viewFullCommentAction">
+            <li>
+              <mat-icon (click)="commentAction(message, 'delete')"> delete</mat-icon>
+            </li>
+            <!-- <li>
+            <mat-icon>person_off</mat-icon>
+            </li> -->
+            <li>
+              <mat-icon (click)="commentAction(message, 'hide')"> visibility_off</mat-icon>
+            </li>
+            <li
+              (click)="fullPostViewData(messageTypeData.header.channelSession.channel.serviceIdentifier, messageTypeData.body.postId, message.id)"
+              class="view-post"
+            >
+              {{ "chat-features.interactions.view-full-post" | translate }}
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <span
+        (click)="viewFullCommentAction = !viewFullCommentAction"
+        class="view-all-options-icon {{ viewFullCommentAction ? 'arrow-forward' : 'arrow-back' }}"
+      ><img src="assets/images/arrow-left.svg"
+      /></span>
+    </div>
+
+    <!--------------------------  FB POST HEADER STARTED------------------------------------>
+
+    <div *ngIf="fullPostView && postData && message.id == selectedCommentId" class="post-full-view">
+      <div class="main-post-content">
+        <div class="post-header">
+  <span class="post-page-showcase">
+  <img src="assets/images/dummy-user.svg"/>
+  </span>
+          <span class="post-page-info">
+  <strong>{{ postData?.socialMediaPost?.username }}</strong>
+  <small>
+  {{ postData.socialMediaPost.timestamp | date: "shortTime" }}
+  </small>
+  </span>
+        </div>
+      </div>
+    </div>
+    <!--------------------------  FB POST HEADER END -------------------------------->
+
+    <!-------------------------- MAIN FB COMMENT STARTED -------------------------------->
+
+    <div *ngIf="!fullPostView || message.id != selectedCommentId" class="main-comment">
+      <div class="post-inner-content">
+        <!--                            <app-message-type-view [messageType]="(messageTypeData.body.type | lowercase)" [messageTypeData]="message" [messageBody]="messageTypeData.body"></app-message-type-view>-->
+
+
+        <p [id]="message.id">
+  <span
+    [innerHTML]="
+  conversationSettings.isMessageFormattingEnabled
+  ? (messageTypeData.body.markdownText | linkify | ibsformat)
+  : (messageTypeData.body.markdownText | linkify)
+  "
+  ></span>
+        </p>
+        <div *ngIf="message?.body.itemType == 'VIDEO'" class="shared-url shared-card-content video-player p-0">
+          <div *ngIf="messageTypeData.body.attachment?.mediaUrl.length > 0" class="media-main">
+            <vg-player>
+              <vg-overlay-play></vg-overlay-play>
+              <vg-buffering></vg-buffering>
+              <vg-controls [vgAutohideTime]="3" [vgAutohide]="true">
+                <vg-play-pause></vg-play-pause>
+                <vg-time-display vgFormat="mm:ss" vgProperty="current"></vg-time-display>
+                <vg-volume></vg-volume>
+                <vg-mute></vg-mute>
+                <vg-fullscreen></vg-fullscreen>
+                <mat-icon (click)="videoPIP(message.id)" *ngIf="dispayVideoPIP"> picture_in_picture_alt</mat-icon>
+                <vg-scrub-bar>
+                  <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                  <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+                </vg-scrub-bar>
+                <vg-time-display vgFormat="mm:ss" vgProperty="total"></vg-time-display>
+              </vg-controls>
+              <video #media [vgMedia]="media" id="{{ message.id }}" preload="auto">
+                <source [src]="messageTypeData.body.attachment?.mediaUrl | getFileUrl"/>
+              </video>
+            </vg-player>
+          </div>
+        </div>
+
+        <p *ngIf="messageTypeData.body.itemType == 'IMAGE'">
+          <a
+            (click)="filePreviewOpener(messageTypeData.body.attachment?.mediaUrl, messageTypeData.body.attachment?.thumbnail, 'image')"
+            *ngIf="messageTypeData.body.attachment?.mediaUrl?.length > 0"
+            [ngClass]="{ 'pt-2': messageTypeData.body.markdownText?.length > 0 }"
+            class="display-file display-image"
+            style="cursor: pointer"
+          >
+            <img [src]="messageTypeData.body.attachment?.mediaUrl | getFileUrl" alt="image"/>
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <!-------------------------- MAIN FB COMMENT ENDED-------------------------------->
+
+    <!-------------------------- FULL POST STARTED -------------------------------->
+
+    <div *ngIf="fullPostView && message.id == selectedCommentId" class="main-comment">
+      <div class="post-inner-content">
+        <p>
+  <span
+    [innerHTML]="
+  conversationSettings.isMessageFormattingEnabled
+  ? (postData?.socialMediaPost.text | linkify | ibsformat)
+  : (postData?.socialMediaPost.text | linkify)
+  "
+  ></span>
+        </p>
+        <div *ngFor="let post of postData?.socialMediaPost?.attachments">
+          <div *ngIf="post?.mimeType.includes('VIDEO')" class="shared-url shared-card-content video-player p-0">
+            <div *ngIf="post?.mediaUrl" class="media-main">
+              <vg-player>
+                <vg-overlay-play></vg-overlay-play>
+                <vg-buffering></vg-buffering>
+                <vg-controls [vgAutohideTime]="3" [vgAutohide]="true">
+                  <vg-play-pause></vg-play-pause>
+                  <vg-time-display vgFormat="mm:ss" vgProperty="current"></vg-time-display>
+                  <vg-volume></vg-volume>
+                  <vg-mute></vg-mute>
+                  <vg-fullscreen></vg-fullscreen>
+                  <mat-icon (click)="videoPIP(message.id)" *ngIf="dispayVideoPIP"> picture_in_picture_alt</mat-icon>
+                  <vg-scrub-bar>
+                    <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                    <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+                  </vg-scrub-bar>
+                  <vg-time-display vgFormat="mm:ss" vgProperty="total"></vg-time-display>
+                </vg-controls>
+                <video #media [vgMedia]="media" id="{{ message.id }}" preload="auto">
+                  <source src="{{ post?.mediaUrl }}"/>
+                </video>
+              </vg-player>
+            </div>
+          </div>
+
+          <p *ngIf="post?.mimeType == 'IMAGE' || 'GIF'">
+            <a
+              (click)="externalfilePreviewOpener(post?.mediaUrl, post.mimeType, 'image')"
+              [ngClass]="{ 'pt-2': postData.socialMediaPost.text }"
+              class="display-file display-image"
+              style="cursor: pointer"
+            >
+              <img alt="image" src="{{ post?.mediaUrl }}"/>
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-------------------------- FULL POST ENDED-------------------------------->
+
+    <!-------------------------- SUB COMMENTS -------------------------------->
+
+    <div *ngIf="fullPostView && message.id == selectedCommentId" class="post-sub-comments-area">
+      <div class="total-comment-count"></div>
+      <div *ngFor="let postComments of postData?.socialMediaPost?.comments" class="post-sub-comments">
+        <div class="sub-profile-picture">
+          <img src="assets/images/dummy-user.svg"/>
+        </div>
+        <div class="sub-comment">
+          <strong>{{ postData?.socialMediaPost.username }}</strong>
+          <div>
+            <div>
+              <p>
+  <span
+    [innerHTML]="
+  conversationSettings.isMessageFormattingEnabled
+  ? (postComments.text | linkify | ibsformat)
+  : (postComments.text | linkify)
+  "
+  ></span>
+              </p>
+              <div
+                *ngIf="postComments?.attachment?.mimeType?.includes('VIDEO')"
+                class="shared-url shared-card-content video-player p-0"
+              >
+                <div *ngIf="postComments?.attachment?.mediaUrl" class="media-main">
+                  <vg-player>
+                    <vg-overlay-play></vg-overlay-play>
+                    <vg-buffering></vg-buffering>
+                    <vg-controls [vgAutohideTime]="3" [vgAutohide]="true">
+                      <vg-play-pause></vg-play-pause>
+                      <vg-time-display vgFormat="mm:ss" vgProperty="current"></vg-time-display>
+                      <vg-volume></vg-volume>
+                      <vg-mute></vg-mute>
+                      <vg-fullscreen></vg-fullscreen>
+                      <mat-icon (click)="videoPIP(message.id)" *ngIf="dispayVideoPIP"> picture_in_picture_alt</mat-icon>
+                      <vg-scrub-bar>
+                        <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                        <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+                      </vg-scrub-bar>
+                      <vg-time-display vgFormat="mm:ss" vgProperty="total"></vg-time-display>
+                    </vg-controls>
+                    <video #media [vgMedia]="media" id="{{ message.id }}" preload="auto">
+                      <source src="{{ postComments?.attachment?.mediaUrl }}"/>
+                    </video>
+                  </vg-player>
+                </div>
+              </div>
+
+              <p *ngIf="postComments?.attachment?.mimeType == 'IMAGE'">
+                <a
+                  (click)="
+  externalfilePreviewOpener(postComments?.attachment?.mediaUrl, postComments?.attachment?.mimeType, 'image')
+  "
+                  *ngIf="postComments?.attachment?.mediaUrl?.length > 0"
+                  [ngClass]="{ 'pt-2': messageTypeData.body.markdownText?.length > 0 }"
+                  class="display-file display-image"
+                  style="cursor: pointer"
+                >
+                  <img alt="image" src="{{ postComments?.attachment?.mediaUrl }}"/>
+                </a>
+              </p>
+            </div>
+          </div>
+          <div class="message-footer">
+  <span>
+  <mat-icon></mat-icon>
+  </span>
+            <span class="message-stamp">
+  <span class="chat-time">{{ postComments.timestamp | date: "shortTime" }}</span>
+  </span>
+          </div>
+        </div>
+
+        <div *ngFor="let nestedComments of postComments.subComments" class="post-sub-comments post-nested-comments">
+          <div class="sub-profile-picture">
+            <img src="assets/images/dummy-user.svg"/>
+          </div>
+
+          <div class="sub-comment">
+            <strong>{{ nestedComments?.username }}</strong>
+
+            <p>
+  <span
+    [innerHTML]="
+  conversationSettings.isMessageFormattingEnabled
+  ? (nestedComments.text | linkify | ibsformat)
+  : (nestedComments.text | linkify)
+  "
+  ></span>
+            </p>
+            <div
+              *ngIf="nestedComments?.attachment?.mimeType?.includes('VIDEO')"
+              class="shared-url shared-card-content video-player p-0"
+            >
+              <div *ngIf="nestedComments?.attachment?.mediaUrl?.length > 0" class="media-main">
+                <vg-player>
+                  <vg-overlay-play></vg-overlay-play>
+                  <vg-buffering></vg-buffering>
+                  <vg-controls [vgAutohideTime]="3" [vgAutohide]="true">
+                    <vg-play-pause></vg-play-pause>
+                    <vg-time-display vgFormat="mm:ss" vgProperty="current"></vg-time-display>
+                    <vg-volume></vg-volume>
+                    <vg-mute></vg-mute>
+                    <vg-fullscreen></vg-fullscreen>
+                    <mat-icon (click)="videoPIP(message.id)" *ngIf="dispayVideoPIP"> picture_in_picture_alt</mat-icon>
+                    <vg-scrub-bar>
+                      <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                      <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+                    </vg-scrub-bar>
+                    <vg-time-display vgFormat="mm:ss" vgProperty="total"></vg-time-display>
+                  </vg-controls>
+                  <video #media [vgMedia]="media" id="{{ message.id }}" preload="auto">
+                    <source src="{{ nestedComments?.attachment?.mediaUrl }}"/>
+                  </video>
+                </vg-player>
+              </div>
+            </div>
+
+            <p *ngIf="nestedComments?.attachment?.mimeType == 'IMAGE'" class="asdfg">
+              <a
+                (click)="
+  externalfilePreviewOpener(nestedComments?.attachment?.mediaUrl, nestedComments?.attachment?.mimeType, 'image')
+  "
+                *ngIf="nestedComments?.attachment?.mediaUr?.length > 0"
+                [ngClass]="{ 'pt-2': messageTypeData.body.markdownText?.length > 0 }"
+                class="display-file display-image"
+                style="cursor: pointer"
+              >
+                <img alt="image" src="{{ nestedComments?.attachment?.mediaUrl }}"/>
+              </a>
+            </p>
+
+            <div class="message-footer">
+  <span>
+  <mat-icon></mat-icon>
+  </span>
+              <span class="message-stamp">
+  <span class="chat-time">{{ nestedComments.timestamp | date: "shortTime" }}</span>
+  </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-------------------------- ORIGINAL SUB COMMENT -------------------------------->
+
+      <div *ngIf="fullPostView"
+           class="post-sub-comments original-comment {{message.isHidden || message.isDeleted ? 'deleted-hidden-original-comment' : ''}}">
+        <div class="sub-profile-picture">
+          <img src="assets/images/dummy-user.svg"/>
+        </div>
+        <div class="sub-comment">
+          <!-- <strong>{{ postComments?.from?.name }}</strong> -->
+
+          <div *ngIf="!message.isDeleted && !message.isHidden && fullPostView" class="comment-controlls post-controlls">
+            <ul>
+              <li>
+                <mat-icon (click)="replyToComment(message)"> chat_bubble_outline</mat-icon>
+              </li>
+              <li *ngIf="!messageTypeData.header.channelSession.channel.channelType.name.includes('INSTAGRAM')">
+                <mat-icon (click)="commentAction(message, 'like')" [ngClass]="{ liked: message.isLiked }"> thumb_up
+                </mat-icon>
+              </li>
+              <li
+                (click)="privateReplyToComment(message)"
+                *ngIf="messageTypeData.header.channelSession.channel.channelType.name == 'FACEBOOK' || messageTypeData.header.channelSession.channel.channelType.name == 'INSTAGRAM'"
+                class="private-reply-icon">
+                <img
+                  *ngIf="messageTypeData.header.channelSession.channel.channelType.name == 'FACEBOOK'"
+                  src="assets/images/facebook-messenger.svg"
+                />
+                <img
+                  *ngIf="messageTypeData.header.channelSession.channel.channelType.name == 'INSTAGRAM'"
+                  src="assets/images/Instagram-chat-2.svg"
+                />
+                <img *ngIf="messageTypeData.header.channelSession.channel.channelType.name == 'TWITTER'" src=""/>
+              </li>
+              <li class="view-all-options">
+                <ul *ngIf="viewFullCommentAction">
+                  <li>
+                    <mat-icon (click)="commentAction(message, 'delete')"> delete</mat-icon>
+                  </li>
+                  <!-- <li>
+                  <mat-icon>person_off</mat-icon>
+                  </li> -->
+                  <li>
+                    <mat-icon (click)="commentAction(message, 'hide')"> visibility_off</mat-icon>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <span
+              (click)="viewFullCommentAction = !viewFullCommentAction"
+              class="view-all-options-icon {{ viewFullCommentAction ? 'arrow-forward' : 'arrow-back' }}"
+            ><img src="assets/images/arrow-left.svg"
+            /></span>
+          </div>
+          <div>
+            <p>
+  <span
+    [innerHTML]="
+  conversationSettings.isMessageFormattingEnabled
+  ? (messageTypeData.body.markdownText | linkify | ibsformat)
+  : (messageTypeData.body.markdownText | linkify)
+  "
+  ></span>
+            </p>
+            <div *ngIf="message?.body.itemType == 'VIDEO'" class="shared-url shared-card-content video-player p-0">
+              <div *ngIf="messageTypeData.body.attachment?.mediaUrl.length > 0" class="media-main">
+                <vg-player>
+                  <vg-overlay-play></vg-overlay-play>
+                  <vg-buffering></vg-buffering>
+                  <vg-controls [vgAutohideTime]="3" [vgAutohide]="true">
+                    <vg-play-pause></vg-play-pause>
+                    <vg-time-display vgFormat="mm:ss" vgProperty="current"></vg-time-display>
+                    <vg-volume></vg-volume>
+                    <vg-mute></vg-mute>
+                    <vg-fullscreen></vg-fullscreen>
+                    <mat-icon (click)="videoPIP(message.id)" *ngIf="dispayVideoPIP"> picture_in_picture_alt</mat-icon>
+                    <vg-scrub-bar>
+                      <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                      <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+                    </vg-scrub-bar>
+                    <vg-time-display vgFormat="mm:ss" vgProperty="total"></vg-time-display>
+                  </vg-controls>
+                  <video #media [vgMedia]="media" id="{{ message.id }}" preload="auto">
+                    <source src="{{ messageTypeData.body.attachment?.mediaUrl | getFileUrl }}"/>
+                  </video>
+                </vg-player>
+              </div>
+            </div>
+
+            <p *ngIf="messageTypeData.body.itemType == 'IMAGE'">
+              <a
+                (click)="filePreviewOpener(messageTypeData.body.attachment?.mediaUrl, messageTypeData.body.attachment?.thumbnail, 'image')"
+                *ngIf="messageTypeData.body.attachment?.mediaUrl?.length > 0"
+                [ngClass]="{ 'pt-2': messageTypeData.body.markdownText?.length > 0 }"
+                class="display-file display-image"
+                style="cursor: pointer"
+              >
+                <img alt="image" src="{{ messageTypeData.body.attachment?.mediaUrl | getFileUrl }}"/>
+              </a>
+            </p>
+          </div>
+
+          <div class="message-footer">
+  <span>
+  <mat-icon></mat-icon>
+  </span>
+            <span class="message-stamp">
+  <span class="chat-time">{{ messageTypeData.header.timestamp | date: "shortTime" }}</span>
+  </span>
+          </div>
+        </div>
+      </div>
+
+      <!-------------------------- ORIGINAL SUB ENDED -------------------------------->
+    </div>
+
+    <div class="message-footer">
+  <span>
+  <!-- <strong *ngIf="postData"><span>Posted on</span><b (click)="getFullViewPostData(messageTypeData.header.channelSession,messageTypeData.body.postId, message.id)">{{ postData?.from?.name }}</b></strong> -->
+  </span>
+      <span class="message-stamp">
+  <span class="chat-time">{{ messageTypeData.header.timestamp | date: "shortTime" }}</span>
+  </span>
+    </div>
+  </div>
+</div>
+
+
+<!--./Facebook/Instagram-->
+
 
 
 <span
