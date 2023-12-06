@@ -280,9 +280,10 @@ export class InteractionsComponent implements OnInit {
     this._socketService._namedAgentTransferTask.subscribe((data: any) => {
       try {
         if (data) {
-          this.showRequestNotification();
+       
           if (this.conversation.conversationId == data.conversationId) {
             if (this.isCXVoiceSessionActive()) {
+              // this.showRequestNotification();
               //send command to Sip.js
               let requestAgentId = data.task.assignedTo ? data.task.assignedTo.id : null;
               let requestedAgentFromQueue = this.findAgentinQueueList(this.queueList, requestAgentId);
