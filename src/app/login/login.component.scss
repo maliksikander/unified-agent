@@ -51,6 +51,11 @@
       right: 0 !important;
       padding-left: 4em !important;
       z-index: 2;
+      img {
+        height: 30px;
+        filter: brightness(10);
+        max-width: 145px;
+      }
     }
   }
 

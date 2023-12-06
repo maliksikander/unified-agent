@@ -4744,3 +4744,13 @@ mat-select {
   }
 
 }
+@media(max-width: 768px){
+  .email-composer-dialog {
+    width: calc(100% - 20px) !important;
+  }
+
+  mat-dialog-container{
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}

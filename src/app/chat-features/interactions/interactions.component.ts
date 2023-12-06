@@ -64,7 +64,6 @@ export class InteractionsComponent implements OnInit {
   timer: any = "00:00";
   cxVoiceSession: any;
   openWrapDialog = false;
-
   isAudioPlaying: boolean[] = [];
   isDialogClosed;
   chatDuringCall = false;
@@ -341,9 +340,6 @@ export class InteractionsComponent implements OnInit {
   checkChannelTypeForAttatchementButton(message) {
     if (message.body.type === "COMMENT" && message.header.channelSession.channel.channelType.name === "INSTAGRAM")
       this.disablingAttatchButtonForInstagramReply = true;
-    else {
-      console.log("it is false buddy .....");
-    }
   }
 
   //Quoted Reply
@@ -969,18 +965,18 @@ export class InteractionsComponent implements OnInit {
               msgs.push(event.data);
             }
           }
-          if (event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == "plain") {
+          if (event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain') {
             const fakeChannelSession = {
-              channel: {
-                channelType: event.data.header.schedulingMetaData.channelType
+              "channel": {
+                "channelType": event.data.header.schedulingMetaData.channelType,
               },
-              channelData: event.data.header.channelData
-            };
-            event.data.header["channelSession"] = fakeChannelSession;
+              "channelData": event.data.header.channelData,
+            }
+            event.data.header['channelSession'] = fakeChannelSession;
             let status = this._socketService.getSchduledActivityStatus(cimEvents, event.data.id);
 
             if (status) {
-              event.data.header["scheduledStatus"] = status;
+              event.data.header['scheduledStatus'] = status;
             }
 
             msgs.push(event.data);
@@ -1493,14 +1489,17 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
+
   formatNumber(num) {
     return num.toString().padStart(2, "0");
   }
 
   openWrapUpDialog(timerEnabled: boolean): void {
+
     if (timerEnabled) {
       this.unsubscribeFromConversation();
-    } else {
+    }
+    else {
       this.openWrapDialog = true;
     }
   }
@@ -1553,10 +1552,10 @@ export class InteractionsComponent implements OnInit {
     this.isConversationView = !this.isConversationView;
   }
   videoSwitch(e) {
-    if (e == "jm") {
-      this.videoSrc = "assets/video/sample-vid.mp4";
+    if (e == 'jm') {
+      this.videoSrc = 'assets/video/sample-vid.mp4';
     } else {
-      this.videoSrc = "assets/video/angry-birds.mp4";
+      this.videoSrc = 'assets/video/angry-birds.mp4';
     }
   }
   requestFullscreen(element: Element): void {

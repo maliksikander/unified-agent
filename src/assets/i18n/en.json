@@ -105,11 +105,11 @@
 
   },
   "app-header": {
-    "customer-conversation-view": "Customer Conversation View",
-    "customer-list-view": "Customer List View",
+    "customer-conversation-view": "Customer Interactions",
+    "customer-list-view": "Customers",
     "customer-labels": "Customer Labels",
     "subscribed-lists": "Subscribed Lists",
-    "customer-schema": "Customer Schema",
+    "customer-schema": "Customer Attributes",
     "dashboard": "Dashboard",
     "summary-dashboard": "Summary Dashboard",
     "active-conversations-detail": "Active Conversations Detail",
@@ -234,7 +234,7 @@
       "Add-To-Conference":"Add To Conference",
       "Search-Queue":"Search Queue",
       "whisper": "Whisper",
-      "bot-suggestions-available": "Bot suggestions are available type / for viewing",
+      "bot-suggestions-available": "Bot suggestions are available. Type '/' for viewing",
       "for-reply-to-a-comment":"for reply to a comment",
       "Type-a-reply-to-comment":"Type a reply to a comment",
       "Type-a-message": "Type a message here...",
@@ -516,11 +516,11 @@
     "origin":"Origin",
     "joined":"joined",
     "active-conversation":"active conversation",
-    "mrd-states":"mrd states",
+    "mrd-states":"MRD States",
     "search-agent":"search agent",
     "agent-stats":"agent stats",
-    "pending-not-ready":"Pending-Not Ready",
-    "agent(s)":"agent(S)",
+    "pending-not-ready":"Pending-Not-Ready",
+    "agent(s)":"agent(s)",
     "direction":"direction",
     "No-Teams-Available":"No Teams Available"
   }

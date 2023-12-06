@@ -113,6 +113,7 @@ export class SchemaSettingsComponent implements OnInit {
     const dialogRef = this.dialog.open(EditAttributeComponent, {
       width: "815px",
       minHeight: "225px",
+      panelClass: 'add-attrribute-dialog',
       data: attribute
     });
 
@@ -152,7 +153,8 @@ export class SchemaSettingsComponent implements OnInit {
   addAttr() {
     const dialogRef = this.dialog.open(CreateAttributeComponent, {
       width: "815px",
-      minHeight: "225px"
+      minHeight: "225px",
+      panelClass: 'add-attrribute-dialog'
     });
 
     dialogRef.afterClosed().subscribe((result) => {

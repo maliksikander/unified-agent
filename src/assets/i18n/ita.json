@@ -104,11 +104,11 @@
     "queue-name":"Queue Name_ita"
   },
   "app-header": {
-    "customer-conversation-view": "Customer Conversation View_ita",
-    "customer-list-view": "Customer List View_ita",
+    "customer-conversation-view": "Customer Interactions_ita",
+    "customer-list-view": "Customers_ita",
     "customer-labels": "Customer Labels_ita",
     "subscribed-lists": "Subscribed Lists_ita",
-    "customer-schema": "Customer Schema_ita",
+    "customer-schema": "Customer Attributes_ita",
     "dashboard": "Dashboard_ita",
     "summary-dashboard": "Summary Dashboard_ita",
     "active-conversations-detail": "Active Conversations Detail_ita",
@@ -232,7 +232,7 @@
       "Add-To-Conference":"Add To Conference_ita",
       "Search-Queue":"Search Queue_ita",
       "whisper": "Whisper_ita",
-      "bot-suggestions-available": "Bot suggestions are available type / for viewing_ita",
+      "bot-suggestions-available": "Bot suggestions are available. Type '/' for viewing_ita",
       "for-reply-to-a-comment":"for reply to a comment_ita",
       "Type-a-reply-to-comment":"Type a reply to a comment_ita",
       "Type-a-message": "Type a message here..._ita",
@@ -514,11 +514,11 @@
     "origin":"Origin",
     "joined":"joined_ita",
     "active-conversation":"active conversation_ita",
-    "mrd-states":"mrd states_ita",
+    "mrd-states":"MRD States_ita",
     "search-agent":"search agent_ita",
     "agent-stats":"agent stats_ita",
-    "pending-not-ready":"Pending-Not Ready_ita",
-    "agent(s)":"agent(S)_ita",
+    "pending-not-ready":"Pending-Not-Ready_ita",
+    "agent(s)":"agent(s)_ita",
     "direction":"direction_ita",
     "No-Teams-Available":"No Teams Available_ita"
   }

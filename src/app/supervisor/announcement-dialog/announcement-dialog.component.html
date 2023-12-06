@@ -15,7 +15,7 @@
 <!--            <mat-error *ngIf="announcementMessage.hasError('required')">-->
 <!--              {{'announcements.type-message' | translate}}-->
 <!--            </mat-error>-->
-           <mat-hint align="end">{{messageAnnouncement.value.length}} / {{'supervisor.characters-limit-500'  | translate }}</mat-hint> 
+           <mat-hint align="end">{{messageAnnouncement.value.length}} / {{'supervisor.characters-limit-500'  | translate }}</mat-hint>
           </mat-form-field>
           <!--<span class="right-align character-limit">250 characters</span>-->
         </div>
@@ -62,7 +62,7 @@
             </mat-error>
           </mat-form-field>
         </div>
-        <div class="text-field date-selection">
+        <div class="text-field date-selection exp-date-selection">
           <label>{{'supervisor.expiry-date'  | translate }}</label>
           <mat-form-field appearance="outline" >
             <!-- [max]="maxDateVal" -->

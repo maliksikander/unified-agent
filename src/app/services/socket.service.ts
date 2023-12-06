@@ -18,7 +18,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { announcementService } from "./announcement.service";
 
-//const mockTopicData: any = require("../mocks/mockTopicData.json");
+////const mockTopicData: any = require("../mocks/mockTopicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -108,12 +108,12 @@ export class socketService {
             "err"
           );
         }
-      } catch (err) { }
+      } catch (err) {}
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) { }
+        } catch (e) {}
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -148,7 +148,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) { }
+        } catch (e) {}
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -333,7 +333,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) { }
+    } catch (err) {}
   }
 
   listen(eventName: string) {
@@ -472,7 +472,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) { }
+    } catch (e) {}
     this._cacheService.resetCache();
     this._snackbarService.open(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"), "err");
     alert(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"));
@@ -1412,7 +1412,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) { }
+    } catch (e) {}
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
@@ -1482,13 +1482,13 @@ export class socketService {
                     console.log("limit exceed");
                     this._snackbarService.open(
                       this._translateService.instant("snackbar.The-conversation-is-going-to-linking-with") +
-                      selectedCustomer.firstName +
-                      this._translateService.instant("snackbar.However-the-channel-identifier") +
-                      channelIdentifier +
-                      this._translateService.instant("snackbar.can-not-be-added-in") +
-                      selectedCustomer.firstName +
-                      attr +
-                      this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
+                        selectedCustomer.firstName +
+                        this._translateService.instant("snackbar.However-the-channel-identifier") +
+                        channelIdentifier +
+                        this._translateService.instant("snackbar.can-not-be-added-in") +
+                        selectedCustomer.firstName +
+                        attr +
+                        this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
                       "succ",
                       20000,
                       "Ok"
@@ -1787,41 +1787,33 @@ export class socketService {
       });
     } else if (cimEvent.name.toLowerCase() == "task_enqueued") {
       message = CimMessage;
+      let mode;
+      if (cimEvent.data.task.type.mode.toLowerCase() == "agent") {
+        mode = "Agent";
+      } else if (cimEvent.data.task.type.mode.toLowerCase() == "queue") {
+        mode = "Queue";
+      }
+      if (cimEvent.data.task.type.direction == "DIRECT_TRANSFER") {
+        let text = " transfer request has been placed by ";
+        let translationKey = "socket-service.transfer-request-has-been-placed-by";
+        if (!cimEvent.data.task.type.metadata.requestedBy) translationKey = "socket-service.transfer-request-has-been-placed";
+        this._translateService.stream(`${translationKey}`).subscribe((data: string) => {
+          text = data;
+        });
 
-      const queuedMedia = cimEvent.data.task.activeMedia.find((media) => { return media.state.toLowerCase() == "queued" });
-
-      if (queuedMedia) {
-
-        let mode;
-        if (queuedMedia.type.mode.toLowerCase() == "agent") {
-          mode = "Agent";
-        } else if (queuedMedia.type.mode.toLowerCase() == "queue") {
-          mode = "Queue";
-        }
-        if (queuedMedia.type.direction == "DIRECT_TRANSFER") {
-          let text = " transfer request has been placed by ";
-          let translationKey = "socket-service.transfer-request-has-been-placed-by";
-          if (!queuedMedia.type.metadata.requestedBy) translationKey = "socket-service.transfer-request-has-been-placed";
-          this._translateService.stream(`${translationKey}`).subscribe((data: string) => {
-            text = data;
-          });
-
-          let string;
-          if (queuedMedia.type.metadata.requestedBy) string = mode + " " + text + " " + queuedMedia.type.metadata.requestedBy;
-          else string = mode + " " + text;
-          message.body["displayText"] = "";
-          message.body.markdownText = string;
-        } else if (queuedMedia.type.direction == "DIRECT_CONFERENCE") {
-          let text = "conference request has been placed by";
-          this._translateService.stream("socket-service.conference-request-has-been-placed-by").subscribe((data: string) => {
-            text = data;
-          });
-          let string = mode + " " + text + " " + queuedMedia.type.metadata.requestedBy;
-          message.body["displayText"] = "";
-          message.body.markdownText = string;
-        } else {
-          message = null;
-        }
+        let string;
+        if (cimEvent.data.task.type.metadata.requestedBy) string = mode + " " + text + " " + cimEvent.data.task.type.metadata.requestedBy;
+        else string = mode + " " + text;
+        message.body["displayText"] = "";
+        message.body.markdownText = string;
+      } else if (cimEvent.data.task.type.direction == "DIRECT_CONFERENCE") {
+        let text = "conference request has been placed by";
+        this._translateService.stream("socket-service.conference-request-has-been-placed-by").subscribe((data: string) => {
+          text = data;
+        });
+        let string = mode + " " + text + " " + cimEvent.data.task.type.metadata.requestedBy;
+        message.body["displayText"] = "";
+        message.body.markdownText = string;
       } else {
         message = null;
       }
