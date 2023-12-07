@@ -18,7 +18,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { announcementService } from "./announcement.service";
 
-////const mockTopicData: any = require("../mocks/mockTopicData.json");
+//const mockTopicData: any = require("../mocks/mockTopicData.json");
 
 @Injectable({
   providedIn: "root"
@@ -49,7 +49,7 @@ export class socketService {
     private snackBar: MatSnackBar,
     private _translateService: TranslateService
   ) {
-    //this.createFakeConversation(2);
+   // this.createFakeConversation(2);
   }
 
   // createFakeConversation(count) {
@@ -1787,33 +1787,41 @@ export class socketService {
       });
     } else if (cimEvent.name.toLowerCase() == "task_enqueued") {
       message = CimMessage;
-      let mode;
-      if (cimEvent.data.task.type.mode.toLowerCase() == "agent") {
-        mode = "Agent";
-      } else if (cimEvent.data.task.type.mode.toLowerCase() == "queue") {
-        mode = "Queue";
-      }
-      if (cimEvent.data.task.type.direction == "DIRECT_TRANSFER") {
-        let text = " transfer request has been placed by ";
-        let translationKey = "socket-service.transfer-request-has-been-placed-by";
-        if (!cimEvent.data.task.type.metadata.requestedBy) translationKey = "socket-service.transfer-request-has-been-placed";
-        this._translateService.stream(`${translationKey}`).subscribe((data: string) => {
-          text = data;
-        });
 
-        let string;
-        if (cimEvent.data.task.type.metadata.requestedBy) string = mode + " " + text + " " + cimEvent.data.task.type.metadata.requestedBy;
-        else string = mode + " " + text;
-        message.body["displayText"] = "";
-        message.body.markdownText = string;
-      } else if (cimEvent.data.task.type.direction == "DIRECT_CONFERENCE") {
-        let text = "conference request has been placed by";
-        this._translateService.stream("socket-service.conference-request-has-been-placed-by").subscribe((data: string) => {
-          text = data;
-        });
-        let string = mode + " " + text + " " + cimEvent.data.task.type.metadata.requestedBy;
-        message.body["displayText"] = "";
-        message.body.markdownText = string;
+      const queuedMedia = cimEvent.data.task.activeMedia.find((media) => { return media.state.toLowerCase() == "queued" });
+
+      if (queuedMedia) {
+
+        let mode;
+        if (queuedMedia.type.mode.toLowerCase() == "agent") {
+          mode = "Agent";
+        } else if (queuedMedia.type.mode.toLowerCase() == "queue") {
+          mode = "Queue";
+        }
+        if (queuedMedia.type.direction == "DIRECT_TRANSFER") {
+          let text = " transfer request has been placed by ";
+          let translationKey = "socket-service.transfer-request-has-been-placed-by";
+          if (!queuedMedia.type.metadata.requestedBy) translationKey = "socket-service.transfer-request-has-been-placed";
+          this._translateService.stream(`${translationKey}`).subscribe((data: string) => {
+            text = data;
+          });
+
+          let string;
+          if (queuedMedia.type.metadata.requestedBy) string = mode + " " + text + " " + queuedMedia.type.metadata.requestedBy;
+          else string = mode + " " + text;
+          message.body["displayText"] = "";
+          message.body.markdownText = string;
+        } else if (queuedMedia.type.direction == "DIRECT_CONFERENCE") {
+          let text = "conference request has been placed by";
+          this._translateService.stream("socket-service.conference-request-has-been-placed-by").subscribe((data: string) => {
+            text = data;
+          });
+          let string = mode + " " + text + " " + queuedMedia.type.metadata.requestedBy;
+          message.body["displayText"] = "";
+          message.body.markdownText = string;
+        } else {
+          message = null;
+        }
       } else {
         message = null;
       }
