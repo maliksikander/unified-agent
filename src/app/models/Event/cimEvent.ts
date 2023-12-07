@@ -5,6 +5,7 @@ export class CimEvent {
   name: string;
   conversationId:string;
   roomId: string;
+  roomLabel:string
   type: string;
   timestamp: any;
   data: any;
@@ -17,6 +18,7 @@ export class CimEvent {
     this.type = type;
     this.conversationId=conversationId;
     this.roomId = roomId;
+    this.roomLabel=data.header.channelSession.roomLabel;
     this.timestamp = Date.now();
     this.data = data;
     this.data["header"]["conversationId"] = conversationId;

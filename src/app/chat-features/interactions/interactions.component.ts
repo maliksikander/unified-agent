@@ -1484,16 +1484,21 @@ export class InteractionsComponent implements OnInit {
       this.openWrapDialog = false;
       if (this.conversation.wrapUpDialog.show) {
         this._socketService.emit("WRAP_UP_CLOSED", {
+          cimEvent:null,
           roomId: this.conversation.roomId,
           conversationId: this.conversation.conversationId,
           agentId: this._cacheService.agent.id
         })
       }
     } else {
-      this.constructAndSendCimEvent("wrapup", "", "", "", "", data.wrapups, data.note);
+      let message = this.getCimMessage();
+       message = this.constructWrapUpEvent(message,  data.wrapups, data.note, this.conversation.firstChannelSession);
+       let wrapUpEvent: any = new CimEvent("AGENT_MESSAGE", "MESSAGE",this.conversation.conversationId, this.conversation.roomId, message, this.conversation.customer);
+
       this.openWrapDialog = false;
       if (this.conversation.wrapUpDialog.show) {
         this._socketService.emit("WRAP_UP_CLOSED", {
+          cimEvent:wrapUpEvent,
           roomId: this.conversation.roomId,
           conversationId: this.conversation.conversationId,
           agentId: this._cacheService.agent.id

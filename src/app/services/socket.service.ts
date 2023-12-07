@@ -177,6 +177,7 @@ export class socketService {
             agentId: this._cacheService.agent.id,
             conversationId: res.conversationId,
             roomId: res.roomId,
+            roomLabel:res.roomLabel,
             taskId: res.taskId
           });
         } else {
@@ -185,6 +186,7 @@ export class socketService {
             topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.conversationId, "PRIMARY", "SUBSCRIBED"),
             agentId: this._cacheService.agent.id,
             roomId: res.roomId,
+            roomLabel:res.roomLabel,
             conversationId:res.conversationId,
             taskId: res.taskId
           });
@@ -943,15 +945,14 @@ export class socketService {
     }
   }
 
-  linkCustomerWithInteraction(customerId,conversationId, roomId) {
-    this.emit("publishCimEvent", {
-      cimEvent: new CimEvent("ASSOCIATED_CUSTOMER_CHANGED", "NOTIFICATION",conversationId, roomId, { Id: customerId }, null),
-      conversationId: conversationId,
-      agentId: this._cacheService.agent.id,
-      roomId: roomId
-    });
-    this._snackbarService.open(this._translateService.instant("snackbar.CUSTOMER-LINKED-SUCCESSFULLY"), "succ");
-  }
+  // linkCustomerWithInteraction(customerId,conversationId) {
+  //   this.emit("publishCimEvent", {
+  //     cimEvent: new CimEvent("ASSOCIATED_CUSTOMER_CHANGED", "NOTIFICATION",conversationId, roomId,roomLabel, { Id: customerId }, null),
+  //     conversationId: conversationId,
+  //     agentId: this._cacheService.agent.id
+  //   });
+  //   this._snackbarService.open(this._translateService.instant("snackbar.CUSTOMER-LINKED-SUCCESSFULLY"), "succ");
+  // }
 
   handleTaskStateChangedEvent(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
@@ -1827,11 +1828,12 @@ export class socketService {
     }
   }
 
-  getTopicSubscription(conversationId,roomId, taskId) {
+  getTopicSubscription(conversationId,roomId,roomLabel, taskId) {
     this.emit("topicSubscription", {
       topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent,conversationId, "PRIMARY", "SUBSCRIBED"),
       agentId: this._cacheService.agent.id,
       roomId: roomId,
+      roomLabel:roomLabel,
       taskId: taskId,
       conversationId:conversationId
     });
