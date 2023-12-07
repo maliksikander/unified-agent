@@ -17,6 +17,7 @@ import { TopicParticipant } from "../models/User/Interfaces";
 import { TranslateService } from "@ngx-translate/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { announcementService } from "./announcement.service";
+import { DatePipe } from '@angular/common';
 
 //const mockTopicData: any = require("../mocks/mockTopicData.json");
 
@@ -47,9 +48,10 @@ export class socketService {
     private _httpService: httpService,
     private _authService: AuthService,
     private snackBar: MatSnackBar,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
+    private datePipe: DatePipe
   ) {
-   // this.createFakeConversation(2);
+    // this.createFakeConversation(2);
   }
 
   // createFakeConversation(count) {
@@ -108,12 +110,12 @@ export class socketService {
             "err"
           );
         }
-      } catch (err) {}
+      } catch (err) { }
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -148,7 +150,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -333,7 +335,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) {}
+    } catch (err) { }
   }
 
   listen(eventName: string) {
@@ -472,7 +474,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._snackbarService.open(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"), "err");
     alert(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"));
@@ -721,20 +723,27 @@ export class socketService {
       SLACountdown.color = "sla-ended";
       this.showSLAPopUp(conversationId)
     }
-    SLACountdown.value = this.calculateDateDifferenceInSeconds(agentSla.startTime, Date.now(), agentSla.totalDuration);
+    SLACountdown.value = this.calculateDateDifferenceInSeconds(agentSla.startTime, agentSla.totalDuration);
+    console.log("SLACountdown ", SLACountdown)
     this.startSLACountDown(SLACountdown);
 
 
   }
 
-  calculateDateDifferenceInSeconds(timeWhenTimerStarted, currentTime, totalDurationOfTimer) {
-    const dateObj1: any = new Date(timeWhenTimerStarted);
-    const dateObj2: any = new Date(currentTime);
-    const timeDifference = Math.abs(dateObj2 - dateObj1);
+  calculateDateDifferenceInSeconds(timeWhenTimerStarted, totalDurationOfTimer) {
+
+    const utcDate1: any = new Date(timeWhenTimerStarted).getTime();
+    const utcDate2: any = new Date(this.getCurrentTimeUTC()).getTime();
+
+    const timeDifference = Math.abs(utcDate2 - utcDate1);
     const differenceInSeconds = timeDifference / 1000;
     return Math.round(totalDurationOfTimer - differenceInSeconds);
   }
 
+  getCurrentTimeUTC() {
+    const currentDate = new Date();
+    return this.datePipe.transform(currentDate, 'yyyy-MM-dd HH:mm:ss', 'UTC');
+  }
 
   // starts the conversation SLA countdown
   startSLACountDown(SLACountdown) {
@@ -1412,7 +1421,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
@@ -1482,13 +1491,13 @@ export class socketService {
                     console.log("limit exceed");
                     this._snackbarService.open(
                       this._translateService.instant("snackbar.The-conversation-is-going-to-linking-with") +
-                        selectedCustomer.firstName +
-                        this._translateService.instant("snackbar.However-the-channel-identifier") +
-                        channelIdentifier +
-                        this._translateService.instant("snackbar.can-not-be-added-in") +
-                        selectedCustomer.firstName +
-                        attr +
-                        this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
+                      selectedCustomer.firstName +
+                      this._translateService.instant("snackbar.However-the-channel-identifier") +
+                      channelIdentifier +
+                      this._translateService.instant("snackbar.can-not-be-added-in") +
+                      selectedCustomer.firstName +
+                      attr +
+                      this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
                       "succ",
                       20000,
                       "Ok"
