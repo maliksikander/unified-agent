@@ -460,28 +460,16 @@ export class socketService {
   }
 
   handleAgentTransfer(res) {
-    //  /////////
-    //  console.log("task 1==>", cimEvent);
-    //  if (cimEvent && cimEvent.data && cimEvent.data.task && cimEvent.data.task.state && cimEvent.data.task.state.name == "RESERVED") {
-    //    console.log("task 2==>", cimEvent);
-    //    let activeMediaList: Array<any> = cimEvent.data.task.activeMedia;
-    //    if (activeMediaList && activeMediaList.length > 0) {
-    //      let agentTransferTask = activeMediaList.find((item) => {
-    //        return item.type.direction == "DIRECT_TRANSFER" && item.type.mode == "AGENT";
-    //      });
-    //      console.log("agentTransferTask==>", agentTransferTask);
-    //      if (agentTransferTask) this.handleDirectTransferTask(cimEvent, conversationId, agentTransferTask);
-    //    }
-    //  }
-    //  ///////
-
     try {
-      let data = {
-        conversationId: res.conversationId,
-        task: res.task
-      };
-      console.log("[handleAgentTransfer] data==>", data);
-      this._namedAgentTransferTask.next(data);
+      console.log("handleAgentTransfer==>", res);
+      if (res) {
+        let data = {
+          conversationId: res.conversationId,
+          task: res.task
+        };
+        console.log("[handleAgentTransfer] data==>", data);
+        this._namedAgentTransferTask.next(data);
+      }
     } catch (e) {
       console.error("[handleAgentTransfer] ==>", e);
     }

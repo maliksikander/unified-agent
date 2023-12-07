@@ -1209,12 +1209,12 @@ export class finesseService {
       let voiceTask = this.getVoiceTask();
       if (voiceTask) {
         // console.log("refresh called 1==>");
-        let cacheId = `${this._cacheService.agent.id}:${voiceTask.channelSession.id}`;
+        let cacheId = `${this._cacheService.agent.id}:${voiceTask.channelSessionId}`;
         // console.log("refresh cacheId==>", cacheId);
         let D1: any = this.getDialogFromCache(cacheId);
         // console.log("D1==>", D1);
         if (!D1) {
-          if (voiceTask.type.direction == "CONSULT") {
+          if (voiceTask.activeMedia.type.direction == "CONSULT") {
             let test1: any = localStorage.getItem("consultCallObject");
             if (typeof test1 == "string") test1 = JSON.parse(test1);
             let consultCacheId = `${this._cacheService.agent.id}:${test1.id}`;
@@ -1255,9 +1255,9 @@ export class finesseService {
         (res) => {
           this.taskList = res;
           if (this.taskList.length > 0) {
-            let task = this.getVoiceTask();
-            if (task && method == "consult_ended") {
-              this.conversationID = task.channelSession.conversationId;
+            let taskData = this.getVoiceTask();
+            if (taskData && method == "consult_ended") {
+              this.conversationID = taskData.task.conversationId;
               this.handleConsultEnding(callData);
             }
           }
@@ -1274,10 +1274,22 @@ export class finesseService {
   getVoiceTask() {
     try {
       if (this.taskList && this.taskList.length > 0) {
-        for (let i = 0; i <= this.taskList.length; i++) {
-          // if (this.taskList[i].state && this.taskList[i].state.name.toLowerCase() == "active") {
-          if (this.taskList[i].mrd.id == this._appConfigService.config.CISCO_CC_MRD) return this.taskList[i];
-          // }
+        for (let i = 0; i < this.taskList.length; i++) {
+          let activeMedia:Array<any> = this.taskList[i].activeMedia;         ;
+          for(let j = 0 ; j < activeMedia.length;j++){
+            if(activeMedia[j] && activeMedia[j].requestSession.channel.channelType.name == "CISCO_CC"){
+              let obj ={
+                activeMedia: activeMedia[j],
+                channelSessionId: activeMedia[j].requestSession.id,
+                task:this.taskList[i],
+                // state: activeMedia[j].state
+              }
+              return obj;
+            }
+
+          }
+          // if (this.taskList[i].mrd.id == this._appConfigService.config.CISCO_CC_MRD) return this.taskList[i];
+      
         }
       }
       return null;

@@ -125,7 +125,6 @@
                     Barge In
                   </button>
                 </li>
-
                 <li class="list-group-item" *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
                   <button
                     [disabled]="isCXVoiceSessionActive() && !isDialogExisting()"
@@ -200,15 +199,17 @@
 
             <li class="list-group-item" *ngIf="conversation.conversationId != 'FAKE_CONVERSATION'">
               <button
+                [disabled]="isCXVoiceSessionActive() && !isDialogExisting()"
                 mat-icon-button
                 #consultTransferTrigger="matMenuTrigger"
                 [matMenuTriggerFor]="ConsultTransferConversation"
                 (click)="getAgentsInQueue()"
-                matTooltip="{{ 'chat-features.interactions.agent-assistance' | translate }}"
+                matTooltip="{{ 'chat-features.interactions.agent-assistance' | translate }} |==={{isDialogExisting()}}:Dialog =="
                 aria-label="Consult Chat"
               >
                 <mat-icon>person_add</mat-icon>
               </button>
+              
             </li>
             <li *ngIf="'agent-conversation-control' | authPipe: 'view_leave_chat' as result" class="list-group-item">
               <button mat-icon-button>

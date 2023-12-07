@@ -279,10 +279,12 @@ export class InteractionsComponent implements OnInit {
 
     this._socketService._namedAgentTransferTask.subscribe((data: any) => {
       try {
+        console.log("transfered triggered==>", data);
         if (data) {
-       
           if (this.conversation.conversationId == data.conversationId) {
+            console.log("transfered triggered 2==>");
             if (this.isCXVoiceSessionActive()) {
+              console.log("transfered triggered 3==>");
               // this.showRequestNotification();
               //send command to Sip.js
               let requestAgentId = data.task.assignedTo ? data.task.assignedTo.id : null;
@@ -320,7 +322,7 @@ export class InteractionsComponent implements OnInit {
 
   findAgentinQueueList(array, agentId) {
     try {
-      const agent = array.reduce((agents, obj) => agents.concat(obj.availableAgents || []), []).find((agent) => agent.agent.id === agentId);
+      const agent = array.reduce((agents, obj) => agents.concat(obj.availableAgents || []), []).find((agent) => agent.id === agentId);
 
       return agent;
     } catch (e) {
@@ -1339,15 +1341,20 @@ export class InteractionsComponent implements OnInit {
   }
 
   isCXVoiceSessionActive() {
-    let session = this.conversation.activeChannelSessions.find((channelSession) => {
-      return channelSession.channel.channelType.name.toLowerCase() === "cx_voice";
-    });
-    if (session) return true;
-    return false;
+    try {
+      let session = this.conversation.activeChannelSessions.find((channelSession) => {
+        return channelSession.channel.channelType.name.toLowerCase() === "cx_voice";
+      });
+      if (session) return true;
+      return false;
+    } catch (e) {
+      console.error("[Error] on isCXVoiceSessionActive", e);
+    }
   }
 
   agentAssistanceRequest(templateRef, queueData, action, requestType, agentData): void {
     try {
+      console.log("test1==>", templateRef, "|", queueData, "|", action, "|", requestType, "|", agentData);
       this.requestType = requestType;
       this.requestAction = action;
 
@@ -1356,6 +1363,14 @@ export class InteractionsComponent implements OnInit {
           if (action == "transfer") {
             this._sipService.directQueueTransferOnSip(queueData);
           }
+        } else {
+          this.requestedAgent = agentData;
+          console.log("test2==>", this.requestedAgent);
+          if (action == "transfer") {
+            this.requestTitle = this._translateService.instant("chat-features.interactions.Transfer-To-Agent");
+            this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Transfer");
+          }
+          this.openAssistanceDialog(templateRef);
         }
       } else {
         this.requestedQueue = queueData;
@@ -1370,7 +1385,7 @@ export class InteractionsComponent implements OnInit {
           }
         } else {
           this.requestedAgent = agentData;
-          // console.log("test11==>",this.requestedAgent)
+          console.log("test11==>", this.requestedAgent);
           if (action == "transfer") {
             this.requestTitle = this._translateService.instant("chat-features.interactions.Transfer-To-Agent");
             this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Transfer");
@@ -1381,21 +1396,32 @@ export class InteractionsComponent implements OnInit {
           // }
         }
 
-        // this.requestAction = action;
+        this.openAssistanceDialog(templateRef);
+        // // this.requestAction = action;
 
-        const dialogRef = this.dialog.open(templateRef, {
-          panelClass: "consult-dialog"
-        });
+        // const dialogRef = this.dialog.open(templateRef, {
+        //   panelClass: "consult-dialog"
+        // });
 
-        dialogRef.afterClosed().subscribe((result) => {
-          // console.log("The dialog was closed==>", result);
-        });
+        // dialogRef.afterClosed().subscribe((result) => {
+        //   // console.log("The dialog was closed==>", result);
+        // });
 
         this.consultTransferTrigger.closeMenu();
       }
     } catch (e) {
       console.error("[Error] on Agent Assitance", e);
     }
+  }
+
+  openAssistanceDialog(templateRef) {
+    const dialogRef = this.dialog.open(templateRef, {
+      panelClass: "consult-dialog"
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // console.log("The dialog was closed==>", result);
+    });
   }
 
   assistanceRequestNote: string;
@@ -1469,30 +1495,32 @@ export class InteractionsComponent implements OnInit {
   }
 
   isDialogExisting() {
-    let voiceSessionId = this.getVoiceChannelSessionID();
-    // console.log("test==>", voiceSessionId);
-    let cacheId = `${this._cacheService.agent.id}:${voiceSessionId}`;
-    // console.log("test2==>", cacheId);
-    let cacheDialog = this._sipService.getDialogFromCache(cacheId);
-    // console.log("cacheDialog==>", cacheDialog);
-    if (cacheDialog) return true;
-    return false;
+    try {
+      let voiceSessionId = this.getVoiceChannelSessionID();
+      // console.log("test==>", voiceSessionId);
+      let cacheId = `${this._cacheService.agent.id}:${voiceSessionId}`;
+      // console.log("test2==>", cacheId);
+      let cacheDialog = this._sipService.getDialogFromCache(cacheId);
+      // console.log("cacheDialog==>", cacheDialog);
+      if (cacheDialog) return true;
+      return false;
+    } catch (e) {}
   }
 
   getAgentsInQueue() {
     try {
       this._httpService.getAgentsInQueue(this.conversation.conversationId, this._cacheService.agent.id).subscribe(
         (res: any) => {
-          if (this.isCXVoiceSessionActive() && res && this.isDialogExisting()) {
-            // console.log("test4==>");
-            this.filterVoiceQueues(res);
-          } else {
-            // console.log("test5==>");
-            this.filterNonVoiceQueues(res);
-            // this.queueList = res;
-          }
+          // if (this.isCXVoiceSessionActive() && res && this.isDialogExisting()) {
+          //   // console.log("test4==>");
+          //   this.filterVoiceQueues(res);
+          // } else {
+          //   // console.log("test5==>");
+          //   this.filterNonVoiceQueues(res);
+          //   // this.queueList = res;
+          // }
 
-          // this.queueList = res;
+          this.queueList = res;
         },
         (error) => {
           this._sharedService.Interceptor(error.error, "err");
@@ -1724,15 +1752,19 @@ export class InteractionsComponent implements OnInit {
   }
 
   getVoiceChannelSessionID() {
-    for (let i = 0; i <= this.conversation.activeChannelSessions.length; i++) {
-      if (
-        (this.conversation.activeChannelSessions[i] &&
-          this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cisco_cc") ||
-        this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cx_voice"
-      ) {
-        return this.conversation.activeChannelSessions[i].id;
+    try {
+      for (let i = 0; i < this.conversation.activeChannelSessions.length; i++) {
+        if (
+          (this.conversation.activeChannelSessions[i] &&
+            this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cisco_cc") ||
+          this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cx_voice"
+        ) {
+          return this.conversation.activeChannelSessions[i].id;
+        }
       }
+      return -1;
+    } catch (e) {
+      console.error("[getVoiceChannelSessionID] Error:", e);
     }
-    return -1;
   }
 }
