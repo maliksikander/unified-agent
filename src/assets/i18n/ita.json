@@ -2,31 +2,31 @@
   "snackbar":
   {
     "Default-Outbound-Channel-Not-Found-for-channelType":"Default Outbound Channel Not Found for channelType_ita",
-    "unable-to-connect-to-chat":"unable to connect to chat_ita",
-    "error-on-logout-request":"'error on logout request'_ita",
+    "unable-to-connect-to-chat":"Unable to connect to chat_ita",
+    "error-on-logout-request":"Error on logout request_ita",
     "Agent-Logged-Out-Successfully":"Agent Logged Out Successfully_ita",
     "Requested-session-not-available-at-the-moment":"Requested session not available at the moment_ita",
     "Unable-to-process-the-request":"Unable to process the request_ita",
     "Unable-to-connect-with-server":"Unable to connect with server_ita",
     "Channel-Identifier-Not-Found":"Channel Identifier Not Found_ita",
     "PIP-not-supported-in-this-browser":"PIP not supported in this browser_ita",
-    "unsupported-type":"unsupported type_ita",
+    "unsupported-type":"Unsupported Type_ita",
     "File-size-should-be-less-than-5MB":"File size should be less than 5MB_ita",
     "No-channel-session-selected-at-the-moment":"No channel session selected at the moment _ita",
     "Unable-to-send-the-message-at-the-moment":"Unable to send the message at the moment _ita",
     "No-Preference-Added":"No Preference Added_ita",
-    "you-will-not-receive-browser-notifications":"you will not receive browser notifications_ita",
-    "UNAUTHORIZED-USER":"UNAUTHORIZED USER_ita",
-    "unable-to-fetch-license-status":"unable to fetch license status_ita",
+    "you-will-not-receive-browser-notifications":"You will not receive browser notifications_ita",
+    "UNAUTHORIZED-USER":"Unauthorized User_ita",
+    "unable-to-fetch-license-status":"Unable to fetch license status_ita",
     "Internal-Server-Error":"Internal Server Error_ita",
     "Something-went-wrong":"Something went wrong_ita",
     "The-license-is":"The license is :_ita",
     "Unable-to-process-chat-unsubscribing":"Unable to process chat, unsubscribing..._ita",
     "Conversation-is-closed-due-to":"Conversation is closed due to _ita",
     "Unable-to-process-event-unsubscribing":"Unable to process event, unsubscribing..._ita",
-    "you-are-logged-In-from-another-session":"you are logged In from another session_ita",
+    "you-are-logged-In-from-another-session":"You are logged In from another session_ita",
     "Profile-linked-successfully":"Profile linked successfully_ita",
-    "CUSTOMER-LINKED-SUCCESSFULLY":"CUSTOMER LINKED SUCCESSFULLY_ita",
+    "CUSTOMER-LINKED-SUCCESSFULLY":"Customer Linked Successfully_ita",
     "on":"on_ita",
     "The-conversation-is-going-to-linking-with":"The conversation is going to linking with _ita",
     "However-the-channel-identifier":"However the channel identifier _ita",
@@ -35,15 +35,15 @@
     "Unable-to-link-customer":"Unable to link customer_ita",
     "Error-Getting-Active-Chats-with-Agents":"Error Getting Active Chats with Agents_ita",
     "Error-Getting-Active-Chats-with-Bots":"Error Getting Active Chats with Bots_ita",
-    "Error-Getting-Active-Agent-Details":"Error Getting Active Agent Details",
-    "Error-Getting-MRDs-List":"Error Getting MRDs List",
+    "Error-Getting-Active-Agent-Details":"Error Getting Active Agent Details_ita",
+    "Error-Getting-MRDs-List":"Error Getting MRDs List_ita",
     "Channel-session-not-found":"Channel session not found_ita",
     "Access-Token-or-FB-Host-API-for-FB-is-missing":"Access Token or FB Host API for FB is missing_ita",
     "No-Conversation-Found":"No Conversation Found_ita",
     "No-settings-are-valid":"No settings are valid_ita",
     "Preference-Added":"Preference Added_ita",
     "Preference-Updated!":"Preference Updated!_ita",
-    "CANNOT-ADD-MORE-FIELDS":"CANNOT ADD MORE FIELDS_ita",
+    "CANNOT-ADD-MORE-FIELDS":"Can not add more fields_ita",
     "Name-already-exists":"Name already exists_ita",
     "Max-100-characters-are-allowed":"Max 100 characters are allowed_ita",
     "New-Customer-Created":"New Customer Created_ita",
@@ -65,7 +65,7 @@
     "Close-Chat":"Close Chat_ita",
     "Are-you-sure-you-want-to-close-this-Chat?":"Are you sure you want to close this Chat?_ita",
     "Agent-Logged-In-Successfully":"Agent Logged In Successfully_ita",
-    "error-on-login-request":"error on login request_ita",
+    "error-on-login-request":"Error on login request_ita",
     "is":"is _ita",
     "Bad-Request":"Bad-Request_ita",
     "FETCHING-CHATS":"FETCHING CHATS ..._ita",
@@ -100,8 +100,9 @@
     "CX-Voice-Connected":"CX VOICE Connected_ita",
     "Call-Ended":"Call Ended_ita",
     "OB-Call-Request":"Outbound call request can not be initated_ita",
-    "Customer-No":"Customer No_ita",
-    "queue-name":"Queue Name_ita"
+    "queue-name":"Queue Name_ita",
+    "Customer-No":"Customer No"
+
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_ita",
@@ -122,7 +123,7 @@
     "light-dark": "(Light or dark)_ita",
     "theme": "Theme_ita",
     "logout": "Logout_ita",
-    "active-agents-detail":"active agents detail_ita"
+    "active-agents-detail":"active agents detail"
   },
   "announcements": {
     "team-announcement": "Team Announcement_ita",
@@ -137,11 +138,11 @@
     "delete": "delete_ita",
     "delete-announcement": "Delete Announcement_ita",
     "sure-delete-announcement": "Are you sure You want to delete Announcement_ita",
-    "cancel": "cancel_ita",
-    "confirm": "Confirm_ita"
+    "cancel": "Cancel_ita",
+    "confirm": "Confirm"
   },
   "labels": {
-    "label": "label_ita",
+    "label": "Label_ita",
     "required": "*Field is required_ita",
     "range": "Range should be 1 - 100_ita",
     "already-exists": "That name Already Exists_ita",
@@ -160,11 +161,11 @@
     "select-all": "Select all_ita",
     "unselect-all": "Unselect all_ita",
     "search": "Search_ita",
-    "no-data-available": "No Data Available_ita"
+    "no-data-available": "No Data Available"
   },
   "call-controls":{
     "call-in-progress":"Call in progress_ita",
-    "initiating-audio-call":"Initiating Audio Call_ita"
+    "initiating-audio-call":"Initiating Audio Call"
   },
   "chat-features": {
     "send-sms":{
@@ -179,16 +180,16 @@
       "discard":"Discard_ita",
       "send-sms":"Send SMS_ita",
       "success-sms":"SMS sent successfully_ita",
-      "update-profile":"To update the customer profile",
-      "click-here":"click here_ita",
-      "the-sms-has-been-sent-to-the":"The SMS has been sent to the\u0020",
+      "update-profile":"To update the customer profile_ita",
+      "click-here":"Click here_ita",
+      "the-sms-has-been-sent-to-the":"The SMS has been sent to the\u0020 _ita",
       "on-this-number":" on this number_ita",
-      "new":"new",
-      "customer":"customer",
+      "new":"New_ita",
+      "customer":"Customer _ita",
       "characters-limit-1500":"1500 characters_ita",
       "to-view-the-customer-profile":" to view the customer profile_ita",
       "number-should-be-in-range-3-to-20":"Number should be in range 3 to 20_ita",
-      "enter-phone-number":"Enter Phone Number_ita"
+      "enter-phone-number":"Enter Phone Number"
     },
 
     "customer-info": {
@@ -211,18 +212,19 @@
       "conversation-data": "Conversation Data_ita",
       "re-assign-chat-session-to-your-self?": "Are you sure You want re-assign chat session to your self?_ita",
       "re-route-Whatsapp-chat session-to-another-agent?": "Are you sure You want re-route Whatsapp chat session to another agent?_ita",
-      "initiate-outgoing-call-to": "initiate outgoing call to_ita",
+      "initiate-outgoing-call-to": "Initiate outgoing call to_ita",
       "stacy-miller": "Stacy Miller_ita",
       "mobile": "(Mobile)_ita",
-      "device": "Device:_ita",
-      "browser": "Browser:_ita",
-      "country": "Country:_ita",
-      "language": "Language:_ita"
+      "device": "Device:en_ita",
+      "browser": "Browser:en_ita",
+      "country": "Country:en_ita",
+      "language": "Language:en"
     },
     "chats": {
-      "start": "Start a New Conversation_ita"
+      "start": "Start a New Conversation"
     },
     "interactions": {
+      "leave-conversation":"Leave Conversation_ita",
       "Are-you-sure-you-want-to-leave-the-conversation-with":"Are you sure you want to leave the conversation with_ita",
       "Consult":"Consult_ita",
       "Transfer":"Transfer_ita",
@@ -230,7 +232,6 @@
       "Transfer-To-Queue":"Transfer To Queue_ita",
       "Conference-Request":"Conference Request_ita",
       "Add-To-Conference":"Add To Conference_ita",
-      "Search-Queue":"Search Queue_ita",
       "whisper": "Whisper_ita",
       "bot-suggestions-available": "Bot suggestions are available type / for viewing_ita",
       "for-reply-to-a-comment":"for reply to a comment_ita",
@@ -265,11 +266,15 @@
       "view-full-post": "View full post_ita",
       "selected-channel": "Selected Channel:_ita",
       "check": "check_ita",
-      "wrapup": "Wrap-Up_ita",
+      "wrapup": "Wrap-up_ita",
       "wrap-up-notes": "Wrap-up Notesen_ita",
       "agent-assistance": "Agent Assistance_ita",
       "queue-transfer": "Queue Transfer_ita",
-      "queue-conference": "Queue Conference_ita"
+      "queue-conference": "Queue Conference_ita",
+      "Transfer-To-Agent":"Transfer To Agent_ita",
+      "agent-transfer":"Agent Transfer_ita",
+      "Search-Queue-OR-Agent":"Search by Queue/Agent Name_ita",
+      "no-data-found":"No Data Found"
     },
     "wrap-up-form": {
       "Add-Wrap-Up": "Add Wrap-Up_ita",
@@ -279,7 +284,7 @@
       "cancel": "Cancel_ita",
       "apply": "Apply_ita",
       "notes": "Notes_ita",
-      "New-Wrap-up": "New Wrap-up..._ita"
+      "New-Wrap-up": "New Wrap-up..."
     }
   },
   "column-preferences": {
@@ -287,7 +292,7 @@
     "column-preferences": "Column Preferences_ita",
     "columns": "Columns_ita",
     "selected-columns": "Selected Columns_ita",
-    "save": "Save_ita"
+    "save": "Save"
     },
   "create-customer": {
     "create-new-customer": "Create New Customer_ita",
@@ -296,7 +301,7 @@
     "max": "*Max._ita",
     "characters-allowed": "characters are allowed_ita",
     "cancel": "Cancel_ita",
-    "create": "Create_ita"
+    "create": "Create"
   },
   "customer-actions": {
     "required": "*Field is required_ita",
@@ -305,7 +310,7 @@
     "characters-allowed": "characters are allowed_ita",
     "cancel": "CANCEL_ita",
     "save": "SAVE_ita",
-    "edit-customer": "Edit Customer_ita"
+    "edit-customer": "Edit Customer"
   },
   "customer-schema": {
     "create-attribute": "Create Attribute_ita",
@@ -343,14 +348,14 @@
     "delete": "Delete_ita",
     "customer-attributes": "Customer Attributes_ita",
     "create-new-ttribute": "Create New Attribute_ita",
-    "options": "Options_ita"
+    "options": "Options"
   },
   "link-conversation": {
     "confirm": "Confirm_ita",
     "add-channel-identifeir": "Add channel Identifer_ita",
     "cancel": "Cancel_ita",
     "like-to-link-conversation": "Would you like to link conversation with _ita",
-    "link-conversation": "Link conversation to_ita "
+    "link-conversation": "Link conversation to "
   },
   "login": {
     "login": "Login_ita",
@@ -364,14 +369,14 @@
   "socket-service":{
     "has-joined-the-conversation":"has joined the conversation_ita",
     "have-joined-the-conversation":"have joined the conversation_ita",
-   "session-started":"session started_ita",
-   "session-ended":"session ended_ita",
-   "left-the-conversation":"left the conversation_ita",
-   "transfer-request-has-been-placed-by":"transfer request has been placed by_ita",
-   "transfer-request-has-been-placed":"transfer request has been placed_ita",
-   "conference-request-has-been-placed-by":"conference request has been placed by_ita",
-   "No-agent-is-available-for":"No agent is available for_ita",
-   "conference-request-has-cancelled": "Conference request has been cancelled_ita"
+    "session-started":"session started_ita",
+    "session-ended":"session ended_ita",
+    "left-the-conversation":"left the conversation_ita",
+    "transfer-request-has-been-placed-by":"transfer request has been placed by_ita",
+    "transfer-request-has-been-placed":"transfer request has been placed_ita",
+    "conference-request-has-been-placed-by":"conference request has been placed by_ita",
+    "No-agent-is-available-for":"No agent is available for_ita",
+    "conference-request-has-cancelled": "Conference request has been cancelled"
    },
   "globals": {
     "chat": "Chat_ita",
@@ -379,7 +384,6 @@
     "transfer": "transfer_ita",
     "to": "to_ita",
     "yes": "Yes_ita",
-    "columns":"Columns_ita",
     "page-not-found": "The page you are looking for is not found_ita",
     "agents": "agents_ita",
     "agent": "agent_ita",
@@ -406,7 +410,10 @@
     "no-data-available": "No Data Available_ita",
     "Confirm": "Confirm_ita",
     "not-applicable": "N/A_ita",
-    "channel-identifier": "Channel Identifier",
+    "channel-identifier": "Channel Identifier_ita",
+    "agent-username":"Agent Username_ita",
+    "agent-id":"Agent Id_ita",
+    "columns":"Columns_ita",
     "no-new-conversation": "No New Conversation_ita",
     "state":"State_ita",
     "UNIDENTIFIED-CUSTOMER":"UNIDENTIFIED CUSTOMER_ita",
@@ -416,15 +423,13 @@
     "ascending":"Ascending_ita",
     "edit":"Edit_ita",
     "start-conversation":"Start Conversation_ita",
-    "agent-username":"Agent Username_ita",
-    "agent-id":"Agent Id_ita",
-    "channel":"channel_ita",
-    "direction":"direction_ita",
+    "channel":"Channel_ita",
+    "direction":"Direction_ita",
     "Select-All":"Select All_ita",
     "mute":"Mute_ita",
     "unMute":"Unmute_ita",
     "hold":"Hold_ita",
-    "resume":"Resume_ita"
+    "resume":"Resume"
   },
   "pull-mode": {
     "all-list": "All List_ita",
@@ -447,7 +452,7 @@
     "end": "End_ita",
     "UNREAD": "UNREAD_ita",
     "chat": "Chat_ita",
-    "close": "Close_ita"
+    "close": "Close"
   },
   "supervisor": {
     "active-conversations-detail": "Active Conversations Detail_ita",
@@ -469,7 +474,7 @@
     "search": "search_ita",
     "title": "Title_ita",
     "agent": "Agent_ita",
-    "bot":"Bot",
+    "bot":"Bot_ita",
     "team": "Team_ita",
     "time": "Time_ita",
     "channel": "Channel_ita",
@@ -504,8 +509,8 @@
     "cancel": "Cancel_ita",
     "done": "Done_ita",
     "state": "State_ita",
-    "conversation-direction":"Conversation Direction",
-    "origin":"Origin",
+    "conversation-direction":"Conversation Direction_ita",
+    "origin":"Origin_ita",
     "joined":"joined_ita",
     "active-conversation":"active conversation_ita",
     "mrd-states":"mrd states_ita",
@@ -514,6 +519,6 @@
     "pending-not-ready":"Pending-Not Ready_ita",
     "agent(s)":"agent(S)_ita",
     "direction":"direction_ita",
-    "No-Teams-Available":"No Teams Available_ita"
+    "No-Teams-Available":"No Teams Available"
   }
 }

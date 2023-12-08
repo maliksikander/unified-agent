@@ -78,59 +78,7 @@ export class InteractionsComponent implements OnInit {
   videoSrc = "assets/video/angry-birds.mp4";
   element;
   dragPosition = { x: 0, y: 0 };
-
   queueList: Array<any>;
-  //  [
-  //   {
-  //     queueId: "1",
-  //     mrdId: "1",
-  //     queueName: "Queue 1",
-  //     totalAvailableAgents: 2,
-  //     availableAgents: [
-  //       {
-  //         state: "READY",
-  //         agent: {
-  //           id: "1",
-  //           name: "Agent 1",
-  //           ext: "111"
-  //         }
-  //       },
-  //       {
-  //         state: "ACTIVE",
-  //         agent: {
-  //           id: "2",
-  //           name: "Agent 2",
-  //           ext: "222"
-  //         }
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     queueId: "2",
-  //     mrdId: "2",
-  //     queueName: "DEsk",
-  //     totalAvailableAgents: 2,
-  //     availableAgents: [
-  //       {
-  //         state: "READY",
-  //         agent: {
-  //           id: "3",
-  //           name: "Agent 3",
-  //           ext: "333"
-  //         }
-  //       },
-  //       {
-  //         state: "ACTIVE",
-  //         agent: {
-  //           id: "4",
-  //           name: "Agent 4",
-  //           ext: "444"
-  //         }
-  //       }
-  //     ]
-  //   }
-  // ];
-
   queueORAgentSearch = "";
   requestedQueue: any;
   requestedAgent: any;
@@ -1441,7 +1389,6 @@ export class InteractionsComponent implements OnInit {
           //   this.filterNonVoiceQueues(res);
           //   // this.queueList = res;
           // }
-
           this.queueList = res;
         },
         (error) => {

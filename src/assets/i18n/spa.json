@@ -2,31 +2,31 @@
   "snackbar":
   {
     "Default-Outbound-Channel-Not-Found-for-channelType":"Default Outbound Channel Not Found for channelType_spa",
-    "unable-to-connect-to-chat":"unable to connect to chat_spa",
-    "error-on-logout-request":"'error on logout request'_spa",
+    "unable-to-connect-to-chat":"Unable to connect to chat_spa",
+    "error-on-logout-request":"Error on logout request_spa",
     "Agent-Logged-Out-Successfully":"Agent Logged Out Successfully_spa",
     "Requested-session-not-available-at-the-moment":"Requested session not available at the moment_spa",
     "Unable-to-process-the-request":"Unable to process the request_spa",
     "Unable-to-connect-with-server":"Unable to connect with server_spa",
     "Channel-Identifier-Not-Found":"Channel Identifier Not Found_spa",
     "PIP-not-supported-in-this-browser":"PIP not supported in this browser_spa",
-    "unsupported-type":"unsupported type_spa",
+    "unsupported-type":"Unsupported Type_spa",
     "File-size-should-be-less-than-5MB":"File size should be less than 5MB_spa",
     "No-channel-session-selected-at-the-moment":"No channel session selected at the moment _spa",
     "Unable-to-send-the-message-at-the-moment":"Unable to send the message at the moment _spa",
     "No-Preference-Added":"No Preference Added_spa",
-    "you-will-not-receive-browser-notifications":"you will not receive browser notifications_spa",
-    "UNAUTHORIZED-USER":"UNAUTHORIZED USER_spa",
-    "unable-to-fetch-license-status":"unable to fetch license status_spa",
+    "you-will-not-receive-browser-notifications":"You will not receive browser notifications_spa",
+    "UNAUTHORIZED-USER":"Unauthorized User_spa",
+    "unable-to-fetch-license-status":"Unable to fetch license status_spa",
     "Internal-Server-Error":"Internal Server Error_spa",
     "Something-went-wrong":"Something went wrong_spa",
     "The-license-is":"The license is :_spa",
     "Unable-to-process-chat-unsubscribing":"Unable to process chat, unsubscribing..._spa",
     "Conversation-is-closed-due-to":"Conversation is closed due to _spa",
     "Unable-to-process-event-unsubscribing":"Unable to process event, unsubscribing..._spa",
-    "you-are-logged-In-from-another-session":"you are logged In from another session_spa",
+    "you-are-logged-In-from-another-session":"You are logged In from another session_spa",
     "Profile-linked-successfully":"Profile linked successfully_spa",
-    "CUSTOMER-LINKED-SUCCESSFULLY":"CUSTOMER LINKED SUCCESSFULLY_spa",
+    "CUSTOMER-LINKED-SUCCESSFULLY":"Customer Linked Successfully_spa",
     "on":"on_spa",
     "The-conversation-is-going-to-linking-with":"The conversation is going to linking with _spa",
     "However-the-channel-identifier":"However the channel identifier _spa",
@@ -35,15 +35,15 @@
     "Unable-to-link-customer":"Unable to link customer_spa",
     "Error-Getting-Active-Chats-with-Agents":"Error Getting Active Chats with Agents_spa",
     "Error-Getting-Active-Chats-with-Bots":"Error Getting Active Chats with Bots_spa",
-    "Error-Getting-Active-Agent-Details":"Error Getting Active Agent Details",
-    "Error-Getting-MRDs-List":"Error Getting MRDs List",
+    "Error-Getting-Active-Agent-Details":"Error Getting Active Agent Details_spa",
+    "Error-Getting-MRDs-List":"Error Getting MRDs List_spa",
     "Channel-session-not-found":"Channel session not found_spa",
     "Access-Token-or-FB-Host-API-for-FB-is-missing":"Access Token or FB Host API for FB is missing_spa",
     "No-Conversation-Found":"No Conversation Found_spa",
     "No-settings-are-valid":"No settings are valid_spa",
     "Preference-Added":"Preference Added_spa",
     "Preference-Updated!":"Preference Updated!_spa",
-    "CANNOT-ADD-MORE-FIELDS":"CANNOT ADD MORE FIELDS_spa",
+    "CANNOT-ADD-MORE-FIELDS":"Can not add more fields_spa",
     "Name-already-exists":"Name already exists_spa",
     "Max-100-characters-are-allowed":"Max 100 characters are allowed_spa",
     "New-Customer-Created":"New Customer Created_spa",
@@ -58,14 +58,14 @@
     "Confirm":"Confirm_spa",
     "Cancel":"Cancel_spa",
     "Incoming-Call-Alert":"Incoming Call Alert_spa",
-    "Incoming-call-alert-request":"Incoming call request from: _spa",
+    "Incoming-call-alert-request":"Incoming call request from : _spa",
     "CHAT-REQUESTED":"CHAT REQUESTED_spa",
     "Incoming-chat-request-on-push-mode-on":"Incoming chat request on push mode on _spa",
     "Incoming-chat-request-on-pull-mode-on":"Incoming chat request on pull mode on _spa",
     "Close-Chat":"Close Chat_spa",
     "Are-you-sure-you-want-to-close-this-Chat?":"Are you sure you want to close this Chat?_spa",
     "Agent-Logged-In-Successfully":"Agent Logged In Successfully_spa",
-    "error-on-login-request":"error on login request_spa",
+    "error-on-login-request":"Error on login request_spa",
     "is":"is _spa",
     "Bad-Request":"Bad-Request_spa",
     "FETCHING-CHATS":"FETCHING CHATS ..._spa",
@@ -100,8 +100,9 @@
     "CX-Voice-Connected":"CX VOICE Connected_spa",
     "Call-Ended":"Call Ended_spa",
     "OB-Call-Request":"Outbound call request can not be initated_spa",
-    "Customer-No":"Customer No_spa",
-    "queue-name":"Queue Name_spa"
+    "queue-name":"Queue Name_spa",
+    "Customer-No":"Customer No"
+
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_spa",
@@ -122,7 +123,7 @@
     "light-dark": "(Light or dark)_spa",
     "theme": "Theme_spa",
     "logout": "Logout_spa",
-    "active-agents-detail":"active agents detail_spa"
+    "active-agents-detail":"active agents detail"
   },
   "announcements": {
     "team-announcement": "Team Announcement_spa",
@@ -137,11 +138,11 @@
     "delete": "delete_spa",
     "delete-announcement": "Delete Announcement_spa",
     "sure-delete-announcement": "Are you sure You want to delete Announcement_spa",
-    "cancel": "cancel_spa",
-    "confirm": "Confirm_spa"
+    "cancel": "Cancel_spa",
+    "confirm": "Confirm"
   },
   "labels": {
-    "label": "label_spa",
+    "label": "Label_spa",
     "required": "*Field is required_spa",
     "range": "Range should be 1 - 100_spa",
     "already-exists": "That name Already Exists_spa",
@@ -160,11 +161,11 @@
     "select-all": "Select all_spa",
     "unselect-all": "Unselect all_spa",
     "search": "Search_spa",
-    "no-data-available": "No Data Available_spa"
+    "no-data-available": "No Data Available"
   },
   "call-controls":{
     "call-in-progress":"Call in progress_spa",
-    "initiating-audio-call":"Initiating Audio Call_spa"
+    "initiating-audio-call":"Initiating Audio Call"
   },
   "chat-features": {
     "send-sms":{
@@ -179,18 +180,18 @@
       "discard":"Discard_spa",
       "send-sms":"Send SMS_spa",
       "success-sms":"SMS sent successfully_spa",
-      "update-profile":"To update the customer profile",
-      "click-here":"click here_spa",
-      "the-sms-has-been-sent-to-the":"The SMS has been sent to the\u0020",
+      "update-profile":"To update the customer profile_spa",
+      "click-here":"Click here_spa",
+      "the-sms-has-been-sent-to-the":"The SMS has been sent to the\u0020 _spa",
       "on-this-number":" on this number_spa",
-      "new":"new",
-      "customer":"customer",
+      "new":"New_spa",
+      "customer":"Customer _spa",
       "characters-limit-1500":"1500 characters_spa",
       "to-view-the-customer-profile":" to view the customer profile_spa",
       "number-should-be-in-range-3-to-20":"Number should be in range 3 to 20_spa",
-      "enter-phone-number":"Enter Phone Number_spa"
+      "enter-phone-number":"Enter Phone Number"
     },
-    
+
     "customer-info": {
       "info": "Customer Info_spa",
       "customer-profile": " Customer Profile_spa",
@@ -211,18 +212,19 @@
       "conversation-data": "Conversation Data_spa",
       "re-assign-chat-session-to-your-self?": "Are you sure You want re-assign chat session to your self?_spa",
       "re-route-Whatsapp-chat session-to-another-agent?": "Are you sure You want re-route Whatsapp chat session to another agent?_spa",
-      "initiate-outgoing-call-to": "initiate outgoing call to_spa",
+      "initiate-outgoing-call-to": "Initiate outgoing call to_spa",
       "stacy-miller": "Stacy Miller_spa",
       "mobile": "(Mobile)_spa",
-      "device": "Device:_spa",
-      "browser": "Browser:_spa",
-      "country": "Country:_spa",
-      "language": "Language:_spa"
+      "device": "Device:en_spa",
+      "browser": "Browser:en_spa",
+      "country": "Country:en_spa",
+      "language": "Language:en"
     },
     "chats": {
-      "start": "Start a New Conversation_spa"
+      "start": "Start a New Conversation"
     },
     "interactions": {
+      "leave-conversation":"Leave Conversation_spa",
       "Are-you-sure-you-want-to-leave-the-conversation-with":"Are you sure you want to leave the conversation with_spa",
       "Consult":"Consult_spa",
       "Transfer":"Transfer_spa",
@@ -230,7 +232,6 @@
       "Transfer-To-Queue":"Transfer To Queue_spa",
       "Conference-Request":"Conference Request_spa",
       "Add-To-Conference":"Add To Conference_spa",
-      "Search-Queue":"Search Queue_spa",
       "whisper": "Whisper_spa",
       "bot-suggestions-available": "Bot suggestions are available type / for viewing_spa",
       "for-reply-to-a-comment":"for reply to a comment_spa",
@@ -265,11 +266,15 @@
       "view-full-post": "View full post_spa",
       "selected-channel": "Selected Channel:_spa",
       "check": "check_spa",
-      "wrapup": "Wrap-Up_spa",
+      "wrapup": "Wrap-up_spa",
       "wrap-up-notes": "Wrap-up Notesen_spa",
       "agent-assistance": "Agent Assistance_spa",
       "queue-transfer": "Queue Transfer_spa",
-      "queue-conference": "Queue Conference_spa"
+      "queue-conference": "Queue Conference_spa",
+      "Transfer-To-Agent":"Transfer To Agent_spa",
+      "agent-transfer":"Agent Transfer_spa",
+      "Search-Queue-OR-Agent":"Search by Queue/Agent Name_spa",
+      "no-data-found":"No Data Found"
     },
     "wrap-up-form": {
       "Add-Wrap-Up": "Add Wrap-Up_spa",
@@ -279,7 +284,7 @@
       "cancel": "Cancel_spa",
       "apply": "Apply_spa",
       "notes": "Notes_spa",
-      "New-Wrap-up": "New Wrap-up..._spa"
+      "New-Wrap-up": "New Wrap-up..."
     }
   },
   "column-preferences": {
@@ -287,7 +292,7 @@
     "column-preferences": "Column Preferences_spa",
     "columns": "Columns_spa",
     "selected-columns": "Selected Columns_spa",
-    "save": "Save_spa"
+    "save": "Save"
     },
   "create-customer": {
     "create-new-customer": "Create New Customer_spa",
@@ -296,7 +301,7 @@
     "max": "*Max._spa",
     "characters-allowed": "characters are allowed_spa",
     "cancel": "Cancel_spa",
-    "create": "Create_spa"
+    "create": "Create"
   },
   "customer-actions": {
     "required": "*Field is required_spa",
@@ -305,7 +310,7 @@
     "characters-allowed": "characters are allowed_spa",
     "cancel": "CANCEL_spa",
     "save": "SAVE_spa",
-    "edit-customer": "Edit Customer_spa"
+    "edit-customer": "Edit Customer"
   },
   "customer-schema": {
     "create-attribute": "Create Attribute_spa",
@@ -343,14 +348,14 @@
     "delete": "Delete_spa",
     "customer-attributes": "Customer Attributes_spa",
     "create-new-ttribute": "Create New Attribute_spa",
-    "options": "Options_spa"
+    "options": "Options"
   },
   "link-conversation": {
     "confirm": "Confirm_spa",
     "add-channel-identifeir": "Add channel Identifer_spa",
     "cancel": "Cancel_spa",
     "like-to-link-conversation": "Would you like to link conversation with _spa",
-    "link-conversation": "Link conversation to_spa "
+    "link-conversation": "Link conversation to "
   },
   "login": {
     "login": "Login_spa",
@@ -364,14 +369,14 @@
   "socket-service":{
     "has-joined-the-conversation":"has joined the conversation_spa",
     "have-joined-the-conversation":"have joined the conversation_spa",
-   "session-started":"session started_spa",
-   "session-ended":"session ended_spa",
-   "left-the-conversation":"left the conversation_spa",
-   "transfer-request-has-been-placed-by":"transfer request has been placed by_spa",
-   "transfer-request-has-been-placed":"transfer request has been placed_spa",
-   "conference-request-has-been-placed-by":"conference request has been placed by_spa",
-   "No-agent-is-available-for":"No agent is available for_spa",
-   "conference-request-has-cancelled": "Conference request has been cancelled_spa"
+    "session-started":"session started_spa",
+    "session-ended":"session ended_spa",
+    "left-the-conversation":"left the conversation_spa",
+    "transfer-request-has-been-placed-by":"transfer request has been placed by_spa",
+    "transfer-request-has-been-placed":"transfer request has been placed_spa",
+    "conference-request-has-been-placed-by":"conference request has been placed by_spa",
+    "No-agent-is-available-for":"No agent is available for_spa",
+    "conference-request-has-cancelled": "Conference request has been cancelled"
    },
   "globals": {
     "chat": "Chat_spa",
@@ -379,7 +384,6 @@
     "transfer": "transfer_spa",
     "to": "to_spa",
     "yes": "Yes_spa",
-    "columns":"Columns_spa",
     "page-not-found": "The page you are looking for is not found_spa",
     "agents": "agents_spa",
     "agent": "agent_spa",
@@ -406,7 +410,10 @@
     "no-data-available": "No Data Available_spa",
     "Confirm": "Confirm_spa",
     "not-applicable": "N/A_spa",
-    "channel-identifier": "Channel Identifier",
+    "channel-identifier": "Channel Identifier_spa",
+    "agent-username":"Agent Username_spa",
+    "agent-id":"Agent Id_spa",
+    "columns":"Columns_spa",
     "no-new-conversation": "No New Conversation_spa",
     "state":"State_spa",
     "UNIDENTIFIED-CUSTOMER":"UNIDENTIFIED CUSTOMER_spa",
@@ -416,15 +423,13 @@
     "ascending":"Ascending_spa",
     "edit":"Edit_spa",
     "start-conversation":"Start Conversation_spa",
-    "agent-username":"Agent Username_spa",
-    "agent-id":"Agent Id_spa",
-    "channel":"channel_spa",
-    "direction":"direction_spa",
+    "channel":"Channel_spa",
+    "direction":"Direction_spa",
     "Select-All":"Select All_spa",
     "mute":"Mute_spa",
     "unMute":"Unmute_spa",
     "hold":"Hold_spa",
-    "resume":"Resume_spa"
+    "resume":"Resume"
   },
   "pull-mode": {
     "all-list": "All List_spa",
@@ -447,7 +452,7 @@
     "end": "End_spa",
     "UNREAD": "UNREAD_spa",
     "chat": "Chat_spa",
-    "close": "Close_spa"
+    "close": "Close"
   },
   "supervisor": {
     "active-conversations-detail": "Active Conversations Detail_spa",
@@ -469,7 +474,7 @@
     "search": "search_spa",
     "title": "Title_spa",
     "agent": "Agent_spa",
-    "bot":"Bot",
+    "bot":"Bot_spa",
     "team": "Team_spa",
     "time": "Time_spa",
     "channel": "Channel_spa",
@@ -504,8 +509,8 @@
     "cancel": "Cancel_spa",
     "done": "Done_spa",
     "state": "State_spa",
-    "conversation-direction":"Conversation Direction",
-    "origin":"Origin",
+    "conversation-direction":"Conversation Direction_spa",
+    "origin":"Origin_spa",
     "joined":"joined_spa",
     "active-conversation":"active conversation_spa",
     "mrd-states":"mrd states_spa",
@@ -514,6 +519,6 @@
     "pending-not-ready":"Pending-Not Ready_spa",
     "agent(s)":"agent(S)_spa",
     "direction":"direction_spa",
-    "No-Teams-Available":"No Teams Available_spa"
+    "No-Teams-Available":"No Teams Available"
   }
 }

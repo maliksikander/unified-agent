@@ -2,31 +2,31 @@
   "snackbar":
   {
     "Default-Outbound-Channel-Not-Found-for-channelType":"Default Outbound Channel Not Found for channelType_fr",
-    "unable-to-connect-to-chat":"unable to connect to chat_fr",
-    "error-on-logout-request":"'error on logout request'_fr",
+    "unable-to-connect-to-chat":"Unable to connect to chat_fr",
+    "error-on-logout-request":"Error on logout request_fr",
     "Agent-Logged-Out-Successfully":"Agent Logged Out Successfully_fr",
     "Requested-session-not-available-at-the-moment":"Requested session not available at the moment_fr",
     "Unable-to-process-the-request":"Unable to process the request_fr",
     "Unable-to-connect-with-server":"Unable to connect with server_fr",
     "Channel-Identifier-Not-Found":"Channel Identifier Not Found_fr",
     "PIP-not-supported-in-this-browser":"PIP not supported in this browser_fr",
-    "unsupported-type":"unsupported type_fr",
+    "unsupported-type":"Unsupported Type_fr",
     "File-size-should-be-less-than-5MB":"File size should be less than 5MB_fr",
     "No-channel-session-selected-at-the-moment":"No channel session selected at the moment _fr",
     "Unable-to-send-the-message-at-the-moment":"Unable to send the message at the moment _fr",
     "No-Preference-Added":"No Preference Added_fr",
-    "you-will-not-receive-browser-notifications":"you will not receive browser notifications_fr",
-    "UNAUTHORIZED-USER":"UNAUTHORIZED USER_fr",
-    "unable-to-fetch-license-status":"unable to fetch license status_fr",
+    "you-will-not-receive-browser-notifications":"You will not receive browser notifications_fr",
+    "UNAUTHORIZED-USER":"Unauthorized User_fr",
+    "unable-to-fetch-license-status":"Unable to fetch license status_fr",
     "Internal-Server-Error":"Internal Server Error_fr",
     "Something-went-wrong":"Something went wrong_fr",
     "The-license-is":"The license is :_fr",
     "Unable-to-process-chat-unsubscribing":"Unable to process chat, unsubscribing..._fr",
     "Conversation-is-closed-due-to":"Conversation is closed due to _fr",
     "Unable-to-process-event-unsubscribing":"Unable to process event, unsubscribing..._fr",
-    "you-are-logged-In-from-another-session":"you are logged In from another session_fr",
+    "you-are-logged-In-from-another-session":"You are logged In from another session_fr",
     "Profile-linked-successfully":"Profile linked successfully_fr",
-    "CUSTOMER-LINKED-SUCCESSFULLY":"CUSTOMER LINKED SUCCESSFULLY_fr",
+    "CUSTOMER-LINKED-SUCCESSFULLY":"Customer Linked Successfully_fr",
     "on":"on_fr",
     "The-conversation-is-going-to-linking-with":"The conversation is going to linking with _fr",
     "However-the-channel-identifier":"However the channel identifier _fr",
@@ -35,15 +35,15 @@
     "Unable-to-link-customer":"Unable to link customer_fr",
     "Error-Getting-Active-Chats-with-Agents":"Error Getting Active Chats with Agents_fr",
     "Error-Getting-Active-Chats-with-Bots":"Error Getting Active Chats with Bots_fr",
-    "Error-Getting-Active-Agent-Details":"Error Getting Active Agent Details",
-    "Error-Getting-MRDs-List":"Error Getting MRDs List",
+    "Error-Getting-Active-Agent-Details":"Error Getting Active Agent Details_fr",
+    "Error-Getting-MRDs-List":"Error Getting MRDs List_fr",
     "Channel-session-not-found":"Channel session not found_fr",
     "Access-Token-or-FB-Host-API-for-FB-is-missing":"Access Token or FB Host API for FB is missing_fr",
     "No-Conversation-Found":"No Conversation Found_fr",
     "No-settings-are-valid":"No settings are valid_fr",
     "Preference-Added":"Preference Added_fr",
     "Preference-Updated!":"Preference Updated!_fr",
-    "CANNOT-ADD-MORE-FIELDS":"CANNOT ADD MORE FIELDS_fr",
+    "CANNOT-ADD-MORE-FIELDS":"Can not add more fields_fr",
     "Name-already-exists":"Name already exists_fr",
     "Max-100-characters-are-allowed":"Max 100 characters are allowed_fr",
     "New-Customer-Created":"New Customer Created_fr",
@@ -65,7 +65,7 @@
     "Close-Chat":"Close Chat_fr",
     "Are-you-sure-you-want-to-close-this-Chat?":"Are you sure you want to close this Chat?_fr",
     "Agent-Logged-In-Successfully":"Agent Logged In Successfully_fr",
-    "error-on-login-request":"error on login request_fr",
+    "error-on-login-request":"Error on login request_fr",
     "is":"is _fr",
     "Bad-Request":"Bad-Request_fr",
     "FETCHING-CHATS":"FETCHING CHATS ..._fr",
@@ -82,7 +82,7 @@
     "Unable-To-End-Voice-Session":"Unable to end voice session_fr",
     "CX-Voice-incorrect-request":"CX VOICE : Incorrect object for call request!_fr",
     "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed!_fr",
-    "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed_fr",
+    "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed!_fr",
     "CX-Voice-Login-Success":"CX VOICE: Login Successful with EF Switch_fr",
     "CX-Voice-call-canceled" : "CX VOICE : Voice Call Canceled_fr",
     "SIP-Logout-Successful":"SIP Logout Successful_fr",
@@ -100,8 +100,9 @@
     "CX-Voice-Connected":"CX VOICE Connected_fr",
     "Call-Ended":"Call Ended_fr",
     "OB-Call-Request":"Outbound call request can not be initated_fr",
-    "Customer-No":"Customer No_fr",
-    "queue-name":"Queue Name_fr"
+    "queue-name":"Queue Name_fr",
+    "Customer-No":"Customer No"
+
   },
   "app-header": {
     "customer-conversation-view": "Customer Conversation View_fr",
@@ -122,7 +123,7 @@
     "light-dark": "(Light or dark)_fr",
     "theme": "Theme_fr",
     "logout": "Logout_fr",
-    "active-agents-detail":"active agents detail_fr"
+    "active-agents-detail":"active agents detail"
   },
   "announcements": {
     "team-announcement": "Team Announcement_fr",
@@ -137,11 +138,11 @@
     "delete": "delete_fr",
     "delete-announcement": "Delete Announcement_fr",
     "sure-delete-announcement": "Are you sure You want to delete Announcement_fr",
-    "cancel": "cancel_fr",
-    "confirm": "Confirm_fr"
+    "cancel": "Cancel_fr",
+    "confirm": "Confirm"
   },
   "labels": {
-    "label": "label_fr",
+    "label": "Label_fr",
     "required": "*Field is required_fr",
     "range": "Range should be 1 - 100_fr",
     "already-exists": "That name Already Exists_fr",
@@ -160,11 +161,11 @@
     "select-all": "Select all_fr",
     "unselect-all": "Unselect all_fr",
     "search": "Search_fr",
-    "no-data-available": "No Data Available_fr"
+    "no-data-available": "No Data Available"
   },
   "call-controls":{
     "call-in-progress":"Call in progress_fr",
-    "initiating-audio-call":"Initiating Audio Call_fr"
+    "initiating-audio-call":"Initiating Audio Call"
   },
   "chat-features": {
     "send-sms":{
@@ -179,18 +180,18 @@
       "discard":"Discard_fr",
       "send-sms":"Send SMS_fr",
       "success-sms":"SMS sent successfully_fr",
-      "update-profile":"To update the customer profile",
-      "click-here":"click here_fr",
-      "the-sms-has-been-sent-to-the":"The SMS has been sent to the\u0020",
+      "update-profile":"To update the customer profile_fr",
+      "click-here":"Click here_fr",
+      "the-sms-has-been-sent-to-the":"The SMS has been sent to the\u0020 _fr",
       "on-this-number":" on this number_fr",
-      "new":"new",
-      "customer":" customer",
+      "new":"New_fr",
+      "customer":"Customer _fr",
       "characters-limit-1500":"1500 characters_fr",
       "to-view-the-customer-profile":" to view the customer profile_fr",
       "number-should-be-in-range-3-to-20":"Number should be in range 3 to 20_fr",
-      "enter-phone-number":"Enter Phone Number_fr"
+      "enter-phone-number":"Enter Phone Number"
     },
-    
+
     "customer-info": {
       "info": "Customer Info_fr",
       "customer-profile": " Customer Profile_fr",
@@ -211,18 +212,19 @@
       "conversation-data": "Conversation Data_fr",
       "re-assign-chat-session-to-your-self?": "Are you sure You want re-assign chat session to your self?_fr",
       "re-route-Whatsapp-chat session-to-another-agent?": "Are you sure You want re-route Whatsapp chat session to another agent?_fr",
-      "initiate-outgoing-call-to": "initiate outgoing call to_fr",
+      "initiate-outgoing-call-to": "Initiate outgoing call to_fr",
       "stacy-miller": "Stacy Miller_fr",
       "mobile": "(Mobile)_fr",
-      "device": "Device:_fr",
-      "browser": "Browser:_fr",
-      "country": "Country:_fr",
-      "language": "Language:_fr"
+      "device": "Device:en_fr",
+      "browser": "Browser:en_fr",
+      "country": "Country:en_fr",
+      "language": "Language:en"
     },
     "chats": {
-      "start": "Start a New Conversation_fr"
+      "start": "Start a New Conversation"
     },
     "interactions": {
+      "leave-conversation":"Leave Conversation_fr",
       "Are-you-sure-you-want-to-leave-the-conversation-with":"Are you sure you want to leave the conversation with_fr",
       "Consult":"Consult_fr",
       "Transfer":"Transfer_fr",
@@ -230,7 +232,6 @@
       "Transfer-To-Queue":"Transfer To Queue_fr",
       "Conference-Request":"Conference Request_fr",
       "Add-To-Conference":"Add To Conference_fr",
-      "Search-Queue":"Search Queue_fr",
       "whisper": "Whisper_fr",
       "bot-suggestions-available": "Bot suggestions are available type / for viewing_fr",
       "for-reply-to-a-comment":"for reply to a comment_fr",
@@ -265,11 +266,15 @@
       "view-full-post": "View full post_fr",
       "selected-channel": "Selected Channel:_fr",
       "check": "check_fr",
-      "wrapup": "Wrap-Up_fr",
+      "wrapup": "Wrap-up_fr",
       "wrap-up-notes": "Wrap-up Notesen_fr",
       "agent-assistance": "Agent Assistance_fr",
       "queue-transfer": "Queue Transfer_fr",
-      "queue-conference": "Queue Conference_fr"
+      "queue-conference": "Queue Conference_fr",
+      "Transfer-To-Agent":"Transfer To Agent_fr",
+      "agent-transfer":"Agent Transfer_fr",
+      "Search-Queue-OR-Agent":"Search by Queue/Agent Name_fr",
+      "no-data-found":"No Data Found"
     },
     "wrap-up-form": {
       "Add-Wrap-Up": "Add Wrap-Up_fr",
@@ -279,7 +284,7 @@
       "cancel": "Cancel_fr",
       "apply": "Apply_fr",
       "notes": "Notes_fr",
-      "New-Wrap-up": "New Wrap-up..._fr"
+      "New-Wrap-up": "New Wrap-up..."
     }
   },
   "column-preferences": {
@@ -287,7 +292,7 @@
     "column-preferences": "Column Preferences_fr",
     "columns": "Columns_fr",
     "selected-columns": "Selected Columns_fr",
-    "save": "Save_fr"
+    "save": "Save"
     },
   "create-customer": {
     "create-new-customer": "Create New Customer_fr",
@@ -296,7 +301,7 @@
     "max": "*Max._fr",
     "characters-allowed": "characters are allowed_fr",
     "cancel": "Cancel_fr",
-    "create": "Create_fr"
+    "create": "Create"
   },
   "customer-actions": {
     "required": "*Field is required_fr",
@@ -305,7 +310,7 @@
     "characters-allowed": "characters are allowed_fr",
     "cancel": "CANCEL_fr",
     "save": "SAVE_fr",
-    "edit-customer": "Edit Customer_fr"
+    "edit-customer": "Edit Customer"
   },
   "customer-schema": {
     "create-attribute": "Create Attribute_fr",
@@ -343,14 +348,14 @@
     "delete": "Delete_fr",
     "customer-attributes": "Customer Attributes_fr",
     "create-new-ttribute": "Create New Attribute_fr",
-    "options": "Options_fr"
+    "options": "Options"
   },
   "link-conversation": {
     "confirm": "Confirm_fr",
     "add-channel-identifeir": "Add channel Identifer_fr",
     "cancel": "Cancel_fr",
     "like-to-link-conversation": "Would you like to link conversation with _fr",
-    "link-conversation": "Link conversation to_fr "
+    "link-conversation": "Link conversation to "
   },
   "login": {
     "login": "Login_fr",
@@ -364,14 +369,14 @@
   "socket-service":{
     "has-joined-the-conversation":"has joined the conversation_fr",
     "have-joined-the-conversation":"have joined the conversation_fr",
-   "session-started":"session started_fr",
-   "session-ended":"session ended_fr",
-   "left-the-conversation":"left the conversation_fr",
-   "transfer-request-has-been-placed-by":"transfer request has been placed by_fr",
-   "transfer-request-has-been-placed":"transfer request has been placed_fr",
-   "conference-request-has-been-placed-by":"conference request has been placed by_fr",
-   "No-agent-is-available-for":"No agent is available for_fr",
-   "conference-request-has-cancelled": "Conference request has been cancelled_fr"
+    "session-started":"session started_fr",
+    "session-ended":"session ended_fr",
+    "left-the-conversation":"left the conversation_fr",
+    "transfer-request-has-been-placed-by":"transfer request has been placed by_fr",
+    "transfer-request-has-been-placed":"transfer request has been placed_fr",
+    "conference-request-has-been-placed-by":"conference request has been placed by_fr",
+    "No-agent-is-available-for":"No agent is available for_fr",
+    "conference-request-has-cancelled": "Conference request has been cancelled"
    },
   "globals": {
     "chat": "Chat_fr",
@@ -379,7 +384,6 @@
     "transfer": "transfer_fr",
     "to": "to_fr",
     "yes": "Yes_fr",
-    "columns":"Columns_fr",
     "page-not-found": "The page you are looking for is not found_fr",
     "agents": "agents_fr",
     "agent": "agent_fr",
@@ -406,7 +410,10 @@
     "no-data-available": "No Data Available_fr",
     "Confirm": "Confirm_fr",
     "not-applicable": "N/A_fr",
-    "channel-identifier": "Channel Identifier",
+    "channel-identifier": "Channel Identifier_fr",
+    "agent-username":"Agent Username_fr",
+    "agent-id":"Agent Id_fr",
+    "columns":"Columns_fr",
     "no-new-conversation": "No New Conversation_fr",
     "state":"State_fr",
     "UNIDENTIFIED-CUSTOMER":"UNIDENTIFIED CUSTOMER_fr",
@@ -416,15 +423,13 @@
     "ascending":"Ascending_fr",
     "edit":"Edit_fr",
     "start-conversation":"Start Conversation_fr",
-    "agent-username":"Agent Username_fr",
-    "agent-id":"Agent Id_fr",
-    "channel":"channel_fr",
-    "direction":"direction_fr",
+    "channel":"Channel_fr",
+    "direction":"Direction_fr",
     "Select-All":"Select All_fr",
     "mute":"Mute_fr",
     "unMute":"Unmute_fr",
     "hold":"Hold_fr",
-    "resume":"Resume_fr"
+    "resume":"Resume"
   },
   "pull-mode": {
     "all-list": "All List_fr",
@@ -447,7 +452,7 @@
     "end": "End_fr",
     "UNREAD": "UNREAD_fr",
     "chat": "Chat_fr",
-    "close": "Close_fr"
+    "close": "Close"
   },
   "supervisor": {
     "active-conversations-detail": "Active Conversations Detail_fr",
@@ -469,7 +474,7 @@
     "search": "search_fr",
     "title": "Title_fr",
     "agent": "Agent_fr",
-    "bot":"Bot",
+    "bot":"Bot_fr",
     "team": "Team_fr",
     "time": "Time_fr",
     "channel": "Channel_fr",
@@ -504,8 +509,8 @@
     "cancel": "Cancel_fr",
     "done": "Done_fr",
     "state": "State_fr",
-    "conversation-direction":"Conversation Direction",
-    "origin":"Origin",
+    "conversation-direction":"Conversation Direction_fr",
+    "origin":"Origin_fr",
     "joined":"joined_fr",
     "active-conversation":"active conversation_fr",
     "mrd-states":"mrd states_fr",
@@ -514,6 +519,6 @@
     "pending-not-ready":"Pending-Not Ready_fr",
     "agent(s)":"agent(S)_fr",
     "direction":"direction_fr",
-    "No-Teams-Available":"No Teams Available_fr"
+    "No-Teams-Available":"No Teams Available"
   }
 }

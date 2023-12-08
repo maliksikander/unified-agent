@@ -209,7 +209,6 @@
               >
                 <mat-icon>person_add</mat-icon>
               </button>
-              
             </li>
             <li *ngIf="'agent-conversation-control' | authPipe: 'view_leave_chat' as result" class="list-group-item">
               <button mat-icon-button>
@@ -218,11 +217,12 @@
             </li>
           </ul>
           <mat-menu #ConsultTransferConversation="matMenu" xPosition="before">
-            <div class="chat-transfer-main" (click)="$event.stopPropagation()">
+            <div class="chat-transfer-main" (click)="$event.stopPropagation()" *ngIf="queueList && queueList.length > 0">
               <span class="transfer-heading">
                 {{ "chat-features.interactions.Consult" | translate }} / {{ "chat-features.interactions.Transfer" | translate }} /
                 {{ "chat-features.interactions.Conference" | translate }}</span
               >
+
               <div class="search-wrapper">
                 <input
                   type="text"
@@ -301,7 +301,10 @@
                       <!-- <span class="agent-name">{{ user | json }}</span> -->
                       <div class="consult-action-main">
                         <!-- <span class="transfer-selection" (click)="agentAssistanceRequest(chatConsultTemplate, user, 'consult', 'agent')"><img src="assets/images/consult-colored.svg" alt="consult"/> </span> -->
-                        <span matTooltip="{{ 'chat-features.interactions.agent-transfer' | translate }}" class="transfer-selection" (click)="agentAssistanceRequest(chatConsultTemplate, queue, 'transfer', 'agent', user)"
+                        <span
+                          matTooltip="{{ 'chat-features.interactions.agent-transfer' | translate }}"
+                          class="transfer-selection"
+                          (click)="agentAssistanceRequest(chatConsultTemplate, queue, 'transfer', 'agent', user)"
                           ><img src="assets/images/transfer-colored.svg" alt="transfer"
                         /></span>
                         <!-- <span class="transfer-selection" (click)="agentAssistanceRequest(chatConsultTemplate, user, 'conference', 'agent')"><img src="assets/images/conference-colored.svg" alt="conference"/></span> -->
@@ -310,6 +313,12 @@
                   </ng-container>
                 </mat-expansion-panel>
               </mat-accordion>
+            </div>
+
+            <div class="no-data-warning" *ngIf="!queueList || queueList.length == 0">
+              <!-- <i class="material-icons">warning_amber</i> -->
+              <mat-icon>warning_amber</mat-icon>
+              <span>{{ "chat-features.interactions.no-data-found" | translate }}</span>
             </div>
           </mat-menu>
 
@@ -3086,7 +3095,7 @@
     </div>
     <div class="dialog-main-content">
       <div class="row m-0">
-        <div class="transfer-to text-center col" [ngStyle]="{'padding': requestType == 'queue' ? '25px 0' : '0' }">
+        <div class="transfer-to text-center col" [ngStyle]="{ padding: requestType == 'queue' ? '25px 0' : '0' }">
           <ng-container *ngIf="requestType == 'queue'">
             <h3>{{ requestedQueue?.queueName ? requestedQueue?.queueName : "N/A" }}</h3>
             <p class="consult-team">
