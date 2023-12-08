@@ -1275,21 +1275,19 @@ export class finesseService {
     try {
       if (this.taskList && this.taskList.length > 0) {
         for (let i = 0; i < this.taskList.length; i++) {
-          let activeMedia:Array<any> = this.taskList[i].activeMedia;         ;
-          for(let j = 0 ; j < activeMedia.length;j++){
-            if(activeMedia[j] && activeMedia[j].requestSession.channel.channelType.name == "CISCO_CC"){
-              let obj ={
+          let activeMedia: Array<any> = this.taskList[i].activeMedia;
+          for (let j = 0; j < activeMedia.length; j++) {
+            if (activeMedia[j] && activeMedia[j].requestSession.channel.channelType.name == "CISCO_CC") {
+              let obj = {
                 activeMedia: activeMedia[j],
                 channelSessionId: activeMedia[j].requestSession.id,
-                task:this.taskList[i],
+                task: this.taskList[i]
                 // state: activeMedia[j].state
-              }
+              };
               return obj;
             }
-
           }
           // if (this.taskList[i].mrd.id == this._appConfigService.config.CISCO_CC_MRD) return this.taskList[i];
-      
         }
       }
       return null;

@@ -137,6 +137,8 @@ export class InteractionsComponent implements OnInit {
   requestTitle: string;
   requestType: string;
   noteDialogBtnText: string;
+  assistanceRequestNote: string;
+  requestAction: string;
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -149,12 +151,6 @@ export class InteractionsComponent implements OnInit {
       if (percent > 80) {
         this.showNewMessageNotif = false;
       }
-
-      // console.log("hjhjwdhjwjwh",this.conversation.wrapUpDialog)
-      // if(this.conversation.wrapUpDialog.show)
-      // {
-      //   this.wrapUpDialog(false)
-      // }
     });
   }
 
@@ -217,15 +213,13 @@ export class InteractionsComponent implements OnInit {
   ngOnInit() {
     this.isCallActive = this._sipService.isCallActive;
     this.element = document.documentElement;
-    // console.log("i am called hello", this._sipService.isCallActive)
     if (this._sharedService.isCompactView) {
       this.isMobileDevice = true;
-      console.log("this is a compact view Interactions view ?", this.isMobileDevice);
+      console.log("this is a compact view Interactions view ==>", this.isMobileDevice);
     }
     // if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     //   this.isMobileDevice = true;
     // }
-    //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
     }
@@ -260,46 +254,30 @@ export class InteractionsComponent implements OnInit {
 
     if (this.conversation && this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
       if (this._sipService.dialogRef) {
-        // console.log("yo==>");
         this._sipService.isToolbarActive = false;
         this._sipService.dialogRef.close();
         // if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
       }
       if (this._sipService.isCallActive == true && this._sipService.isToolbarActive == false) {
-        // console.log("Test1==>");
         this.ctiControlBar({ conversation: this.conversation });
         this.getVoiceChannelSession();
       }
-      // else {
-      // console.log("Test==>");
-      // this._sipService.dialogRef
-      // }
-      // this.getVoiceChannelSession();
     }
 
     this._socketService._namedAgentTransferTask.subscribe((data: any) => {
       try {
-        console.log("transfered triggered==>", data);
+        // console.log("transfered triggered==>", data);
         if (data) {
           if (this.conversation.conversationId == data.conversationId) {
-            console.log("transfered triggered 2==>");
+            // console.log("transfered triggered 2==>");
             if (this.isCXVoiceSessionActive()) {
-              console.log("transfered triggered 3==>");
-              // this.showRequestNotification();
+              // console.log("transfered triggered 3==>");
               //send command to Sip.js
               let requestAgentId = data.task.assignedTo ? data.task.assignedTo.id : null;
               let requestedAgentFromQueue = this.findAgentinQueueList(this.queueList, requestAgentId);
               console.log("requested agent ==>", requestedAgentFromQueue);
               this._sipService.directAgentTransferOnSip(requestedAgentFromQueue.extensions);
             }
-            // else {
-            //send socket event to agent manage to unsubscribe with reason
-            // this._socketService.emit("topicUnsubscription", {
-            //   conversationId: this.conversation.conversationId,
-            //   agentId: this._cacheService.agent.id,
-            //   reason: "DIRECT_TRANSFER"
-            // });
-            // }
           }
         }
       } catch (e) {
@@ -441,7 +419,7 @@ export class InteractionsComponent implements OnInit {
     if (message.body.type === "COMMENT" && message.header.channelSession.channel.channelType.name === "INSTAGRAM")
       this.disablingAttatchButtonForInstagramReply = true;
     else {
-      console.log("it is false buddy .....");
+      console.log("[checkChannelTypeForAttatchementButton] Getting 'false' value .....");
     }
   }
 
@@ -691,15 +669,10 @@ export class InteractionsComponent implements OnInit {
   }
 
   unsubscribeFromConversation() {
-    // console.log("calles", this.conversationSettings);
-
     if (this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
       let voiceSessionId = this.getVoiceChannelSessionID();
-      // console.log("test==>", voiceSessionId);
       let cacheId = `${this._cacheService.agent.id}:${voiceSessionId}`;
-      // console.log("test2==>", cacheId);
       let cacheDialog = this._sipService.getDialogFromCache(cacheId);
-      // console.log("test3==>", cacheDialog);
       if (cacheDialog) {
         this.closeConversationConfirmation();
       } else {
@@ -1099,8 +1072,6 @@ export class InteractionsComponent implements OnInit {
           ].includes(event.name.toLowerCase())
         ) {
           let message = this._socketService.createSystemNotificationMessage(event);
-          console.log("test1==>", event.name);
-          // if (event.name == "VOICE_ACTIVITY") console.log("past==>", message);
           if (message) {
             msgs.push(message);
           }
@@ -1157,39 +1128,6 @@ export class InteractionsComponent implements OnInit {
     clearTimeout(this.sendTypingStartedEventTimer);
     this.sendTypingStartedEventTimer = null;
   }
-  // loadBrowserLanguage() {
-  //   let browserLang = navigator.language;
-  //   console.log('Browser language is ' + browserLang);
-  //   // this.selectedLanguage = browserLang;
-  //   if (this.selectedLanguage == "ar") {
-  //     this.isRTLView = true;
-  //   }
-  // }
-
-  // to open dialog form
-  // openWrapUpDialog(timerEnabled: boolean): void {
-  //   if (timerEnabled) {
-  //     this.unsubscribeFromConversation();
-  //   }
-  //   const dialogRef = this.dialog.open(WrapUpFormComponent, {
-  //     disableClose: true,
-  //     panelClass: "wrap-dialog",
-  //     data: {
-  //       header: this._translateService.instant("chat-features.interactions.wrapup"),
-  //       timerEnabled: timerEnabled,
-  //       wrapUpTime: this._sharedService.conversationSettings.wrapUpTime,
-  //       conversation: this.conversation,
-  //       RTLDirection: this.isRTLView
-  //     }
-  //   });
-  //
-  //   dialogRef.afterClosed().subscribe((res) => {
-  //     if (res.event == "apply") {
-  //       this.constructAndSendCimEvent("wrapup", "", "", "", "", res.data.wrapups, res.data.note);
-  //     }
-  //
-  //   });
-  // }
 
   switchChannelSession(channelSession, channelIndex) {
     try {
@@ -1354,18 +1292,17 @@ export class InteractionsComponent implements OnInit {
 
   agentAssistanceRequest(templateRef, queueData, action, requestType, agentData): void {
     try {
-      console.log("test1==>", templateRef, "|", queueData, "|", action, "|", requestType, "|", agentData);
       this.requestType = requestType;
       this.requestAction = action;
-
+      this.requestedQueue = queueData;
+      this.requestedAgent = agentData;
       if (this.isCXVoiceSessionActive()) {
         if (requestType == "queue") {
           if (action == "transfer") {
             this._sipService.directQueueTransferOnSip(queueData);
           }
         } else {
-          this.requestedAgent = agentData;
-          console.log("test2==>", this.requestedAgent);
+          // this.requestedAgent = agentData;
           if (action == "transfer") {
             this.requestTitle = this._translateService.instant("chat-features.interactions.Transfer-To-Agent");
             this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Transfer");
@@ -1384,8 +1321,6 @@ export class InteractionsComponent implements OnInit {
             this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Add-To-Conference");
           }
         } else {
-          this.requestedAgent = agentData;
-          console.log("test11==>", this.requestedAgent);
           if (action == "transfer") {
             this.requestTitle = this._translateService.instant("chat-features.interactions.Transfer-To-Agent");
             this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Transfer");
@@ -1397,100 +1332,87 @@ export class InteractionsComponent implements OnInit {
         }
 
         this.openAssistanceDialog(templateRef);
-        // // this.requestAction = action;
-
-        // const dialogRef = this.dialog.open(templateRef, {
-        //   panelClass: "consult-dialog"
-        // });
-
-        // dialogRef.afterClosed().subscribe((result) => {
-        //   // console.log("The dialog was closed==>", result);
-        // });
 
         this.consultTransferTrigger.closeMenu();
       }
     } catch (e) {
-      console.error("[Error] on Agent Assitance", e);
+      console.error("[Error] on Agent Assitance :", e);
     }
   }
 
   openAssistanceDialog(templateRef) {
-    const dialogRef = this.dialog.open(templateRef, {
-      panelClass: "consult-dialog"
-    });
+    try {
+      const dialogRef = this.dialog.open(templateRef, {
+        panelClass: "consult-dialog"
+      });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      // console.log("The dialog was closed==>", result);
-    });
+      dialogRef.afterClosed().subscribe((result) => {
+        // console.log("The dialog was closed==>", result);
+      });
+    } catch (e) {
+      console.error("[Error] on openAssistanceDialog:", e);
+    }
   }
 
-  assistanceRequestNote: string;
-  // requestedAgentForAssistance;
-  requestAction: string;
-
   sendAssistanceRequest() {
-    if (this.requestType == "queue") {
-      this.sendQueueRequest();
-    } else if (this.requestType == "agent") {
-      console.log("testt===>");
-      this.sendAgentRequest();
+    try {
+      if (this.requestType == "queue") {
+        this.sendQueueRequest();
+      } else if (this.requestType == "agent") {
+        this.sendAgentRequest();
+      }
+      this.assistanceRequestNote = "";
+    } catch (e) {
+      console.error("[Error] on sendAssistanceRequest:", e);
     }
-    this.assistanceRequestNote = "";
   }
 
   sendAgentRequest() {
-    let data = {
-      channelSession: this.conversation.firstChannelSession,
-      agentParticipant: this.conversation.topicParticipant,
-      mode: "agent",
-      requestedAgentId: this.requestedAgent ? this.requestedAgent.id : null,
-      note: this.assistanceRequestNote,
-      offerToAgent: true
-    };
-    if (this.isCXVoiceSessionActive() && this.isDialogExisting()) data.offerToAgent = false;
-    console.log("transfer data==>", data);
-    if (this.requestAction == "transfer") this._socketService.emit("directTransferRequest", data);
-  }
-
-  sendQueueRequest() {
-    let data = {
-      channelSession: this.conversation.firstChannelSession,
-      agentParticipant: this.conversation.topicParticipant,
-      mode: "queue",
-      queueName: this.requestedQueue.queueName,
-      note: this.assistanceRequestNote
-    };
-    if (this.requestAction == "transfer") this._socketService.emit("directTransferRequest", data);
-    else if (this.requestAction == "conference") this._socketService.emit("directConferenceRequest", data);
-
-    this.showRequestNotification();
-  }
-
-  filterNonVoiceQueues(queues: Array<any>) {
     try {
-      let chatQueues: Array<any> = [];
-      // console.log("CX MRD ID==>",this._appConfigService.config.CX_VOICE_MRD)
-      queues.forEach((item: any) => {
-        // console.log(this._appConfigService.config.CX_VOICE_MRD, "<==item ID==>", item.mrdId);
-        if (item.mrdId != this._appConfigService.config.CX_VOICE_MRD && item.mrdId != this._appConfigService.config.CISCO_CC_MRD)
-          chatQueues.push(item);
-      });
-      // console.log("let==>", chatQueues);
-      this.queueList = chatQueues;
+      let data = {
+        channelSession: this.setChannelSessionForTransferRequest(),
+        agentParticipant: this.conversation.topicParticipant,
+        mode: "agent",
+        requestedAgentId: this.requestedAgent ? this.requestedAgent.id : null,
+        note: this.assistanceRequestNote,
+        offerToAgent: true
+      };
+      if (this.isCXVoiceSessionActive() && this.isDialogExisting()) data.offerToAgent = false;
+      console.log("transfer data==>", data);
+      if (this.requestAction == "transfer") this._socketService.emit("directTransferRequest", data);
     } catch (e) {
-      console.error("[filterCXQueues] Error :", e);
+      console.error("[Error] on sendAgentRequest:", e);
     }
   }
 
-  filterVoiceQueues(queues: Array<any>) {
+  sendQueueRequest() {
     try {
-      let cxQueues: Array<any> = [];
-      queues.forEach((item: any) => {
-        if (item.mrdId == this._appConfigService.config.CX_VOICE_MRD) cxQueues.push(item);
-      });
-      this.queueList = cxQueues;
+      let data = {
+        channelSession: this.conversation.firstChannelSession,
+        agentParticipant: this.conversation.topicParticipant,
+        mode: "queue",
+        queueName: this.requestedQueue.queueName,
+        note: this.assistanceRequestNote
+      };
+      if (this.requestAction == "transfer") this._socketService.emit("directTransferRequest", data);
+      else if (this.requestAction == "conference") this._socketService.emit("directConferenceRequest", data);
+
+      this.showRequestNotification();
     } catch (e) {
-      console.error("[filterCXQueues] Error :", e);
+      console.error("[Error] on sendQueueRequest:", e);
+    }
+  }
+
+  setChannelSessionForTransferRequest() {
+    if (this.isCXVoiceSessionActive()) {
+      let session = this.conversation.activeChannelSessions.find((channelSession) => {
+        return channelSession.channel.channelType.name.toLowerCase() === "cx_voice";
+      });
+      if (session) {
+        if (session.id == this._sipService.activeDialog.id) return session;
+      }
+    } else {
+      return this.conversation.firstChannelSession;
     }
   }
 
@@ -1547,45 +1469,53 @@ export class InteractionsComponent implements OnInit {
   }
 
   fullPostViewData(serviceIdentifier, postId, selectedCommentId) {
-    this.selectedCommentId = null;
-    if (serviceIdentifier && postId && selectedCommentId) {
-      this._httpService.getPostData(postId, serviceIdentifier).subscribe(
-        (res: any) => {
-          this.postData = res;
-          this.fullPostView = true;
-          this.selectedCommentId = selectedCommentId;
-        },
-        (error) => {
-          this._sharedService.Interceptor(error.error, "err");
-          console.error("err [getPost]", error.error);
-        }
-      );
-    } else {
-      console.error("err [getFullViewPostData] serviceIdentifier or postId is missing");
+    try {
+      this.selectedCommentId = null;
+      if (serviceIdentifier && postId && selectedCommentId) {
+        this._httpService.getPostData(postId, serviceIdentifier).subscribe(
+          (res: any) => {
+            this.postData = res;
+            this.fullPostView = true;
+            this.selectedCommentId = selectedCommentId;
+          },
+          (error) => {
+            this._sharedService.Interceptor(error.error, "err");
+            console.error("err [getPost]", error.error);
+          }
+        );
+      } else {
+        console.error("err [getFullViewPostData] serviceIdentifier or postId is missing");
+      }
+    } catch (e) {
+      console.error("[fullPostViewData] Error:", e);
     }
   }
 
   ctiControlBar(data) {
-    this.ctiBoxView = true;
-    this.ctiBarView = false;
-    this._sipService.isToolbarActive = true;
-    this._sipService.isToolbarDocked = false;
-    const dialogRef = this.dialog.open(CallControlsComponent, {
-      panelClass: "call-controls-dialog",
-      hasBackdrop: false,
-      minWidth: "300px",
-      position: {
-        top: "8%",
-        right: "8%"
-      },
-      data
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      this.ctiBoxView = false;
-      this.ctiBarView = true;
-      this._sipService.isToolbarDocked = true;
-      if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
-    });
+    try {
+      this.ctiBoxView = true;
+      this.ctiBarView = false;
+      this._sipService.isToolbarActive = true;
+      this._sipService.isToolbarDocked = false;
+      const dialogRef = this.dialog.open(CallControlsComponent, {
+        panelClass: "call-controls-dialog",
+        hasBackdrop: false,
+        minWidth: "300px",
+        position: {
+          top: "8%",
+          right: "8%"
+        },
+        data
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        this.ctiBoxView = false;
+        this.ctiBarView = true;
+        this._sipService.isToolbarDocked = true;
+        if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
+      });
+    } catch (e) {
+      console.error("[ctiControlBar] Error:", e);
+    }
   }
 
   endCallOnSip() {
@@ -1724,6 +1654,68 @@ export class InteractionsComponent implements OnInit {
       (this.element as any).msRequestFullScreen();
     }
   }
+
+  endActiveCall() {
+    try {
+      this.isVideoCall = false;
+      this.isAudioCall = false;
+      this.chatDuringCall = false;
+    } catch (e) {
+      console.error("[endActiveCall] Error:", e);
+    }
+  }
+
+  getVoiceChannelSessionID() {
+    try {
+      for (let i = 0; i < this.conversation.activeChannelSessions.length; i++) {
+        if (
+          (this.conversation.activeChannelSessions[i] &&
+            this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cisco_cc") ||
+          this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cx_voice"
+        ) {
+          return this.conversation.activeChannelSessions[i].id;
+        }
+      }
+      return -1;
+    } catch (e) {
+      console.error("[getVoiceChannelSessionID] Error:", e);
+    }
+  }
+
+  // loadBrowserLanguage() {
+  //   let browserLang = navigator.language;
+  //   console.log('Browser language is ' + browserLang);
+  //   // this.selectedLanguage = browserLang;
+  //   if (this.selectedLanguage == "ar") {
+  //     this.isRTLView = true;
+  //   }
+  // }
+
+  // to open dialog form
+  // openWrapUpDialog(timerEnabled: boolean): void {
+  //   if (timerEnabled) {
+  //     this.unsubscribeFromConversation();
+  //   }
+  //   const dialogRef = this.dialog.open(WrapUpFormComponent, {
+  //     disableClose: true,
+  //     panelClass: "wrap-dialog",
+  //     data: {
+  //       header: this._translateService.instant("chat-features.interactions.wrapup"),
+  //       timerEnabled: timerEnabled,
+  //       wrapUpTime: this._sharedService.conversationSettings.wrapUpTime,
+  //       conversation: this.conversation,
+  //       RTLDirection: this.isRTLView
+  //     }
+  //   });
+  //
+  //   dialogRef.afterClosed().subscribe((res) => {
+  //     if (res.event == "apply") {
+  //       this.constructAndSendCimEvent("wrapup", "", "", "", "", res.data.wrapups, res.data.note);
+  //     }
+  //
+  //   });
+  // }
+
   /*  Close fullscreen  */
   // exitFullscreen() {
   //   if (this.fullScreenView) {
@@ -1745,26 +1737,28 @@ export class InteractionsComponent implements OnInit {
   //   }
   // }
 
-  endActiveCall() {
-    this.isVideoCall = false;
-    this.isAudioCall = false;
-    this.chatDuringCall = false;
-  }
+  // filterNonVoiceQueues(queues: Array<any>) {
+  //   try {
+  //     let chatQueues: Array<any> = [];
+  //     queues.forEach((item: any) => {
+  //       if (item.mrdId != this._appConfigService.config.CX_VOICE_MRD && item.mrdId != this._appConfigService.config.CISCO_CC_MRD)
+  //         chatQueues.push(item);
+  //     });
+  //     this.queueList = chatQueues;
+  //   } catch (e) {
+  //     console.error("[filterCXQueues] Error :", e);
+  //   }
+  // }
 
-  getVoiceChannelSessionID() {
-    try {
-      for (let i = 0; i < this.conversation.activeChannelSessions.length; i++) {
-        if (
-          (this.conversation.activeChannelSessions[i] &&
-            this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cisco_cc") ||
-          this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cx_voice"
-        ) {
-          return this.conversation.activeChannelSessions[i].id;
-        }
-      }
-      return -1;
-    } catch (e) {
-      console.error("[getVoiceChannelSessionID] Error:", e);
-    }
-  }
+  // filterVoiceQueues(queues: Array<any>) {
+  //   try {
+  //     let cxQueues: Array<any> = [];
+  //     queues.forEach((item: any) => {
+  //       if (item.mrdId == this._appConfigService.config.CX_VOICE_MRD) cxQueues.push(item);
+  //     });
+  //     this.queueList = cxQueues;
+  //   } catch (e) {
+  //     console.error("[filterCXQueues] Error :", e);
+  //   }
+  // }
 }

@@ -38,9 +38,8 @@ export class WrapUpFormComponent implements OnInit {
     // @Inject(MAT_DIALOG_DATA) public data: any,
     private _httpService: httpService,
     private _sharedService: sharedService,
-    private snackBar: snackbarService
-  ) // private dialogRef: MatDialogRef<WrapUpFormComponent>,
-  {}
+    private snackBar: snackbarService // private dialogRef: MatDialogRef<WrapUpFormComponent>,
+  ) {}
 
   ngOnInit() {
     this.getWrapUpForm();
