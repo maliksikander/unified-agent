@@ -11,7 +11,7 @@ import { appConfigService } from "../services/appConfig.service";
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   hide = true;
-  isCiscoLogin:boolean=false
+  // isCiscoLogin:boolean=false
 
   constructor(private fb: FormBuilder, private _isLoggedInservice: isLoggedInService, private _appConfigService: appConfigService) {
     this.loginForm = this.fb.group({
@@ -21,11 +21,13 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {}
-  setAll(checked:boolean)
-  {
-  this.isCiscoLogin=checked
-  }
+
+  // setAll(checked:boolean)
+  // {
+  // this.isCiscoLogin=checked
+  // }
+  
   login() {
-    this._isLoggedInservice.fetchCCuserAndMoveToLogin({...this.loginForm.value,isCiscoLogin:this.isCiscoLogin}, this.isCiscoLogin?"3rdparty":"");
+    this._isLoggedInservice.fetchCCuserAndMoveToLogin({...this.loginForm.value,isCiscoLogin:this._appConfigService.config.isCiscoEnabled}, this._appConfigService.config.isCiscoEnabled?"3rdparty":"");
   }
 }
