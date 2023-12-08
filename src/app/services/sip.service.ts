@@ -389,8 +389,9 @@ export class SipService implements OnInit {
             } else if (dialogEvent.response.dialog.callEndReason.toLowerCase() == "direct-transfered") {
               console.log("direct transfer case==>");
               callType = "DIRECT_TRANSFER";
+              this.showTransferNotification();
             }
-            this.showTransferNotification();
+          
             this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, callType, undefined);
           }
         } else {

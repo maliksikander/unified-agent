@@ -289,6 +289,14 @@
           color: $main-color;
           //background: $main-color-background !important;
         }
+
+        &:disabled {
+          background: #e6e6e6 !important;
+          cursor: not-allowed;
+          mat-icon {
+            color: rgba(0, 0, 0, 0.2) !important;
+          }
+        }
       }
     }
   }
