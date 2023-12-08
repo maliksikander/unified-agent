@@ -20,7 +20,9 @@ import { HighlightResult } from "ngx-highlightjs";
 import { SendSmsComponent } from "../send-sms/send-sms.component";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { MatChipInputEvent } from "@angular/material/chips";
-import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from "@angular/forms";
+import { forkJoin, of } from "rxjs";
+import { catchError } from "rxjs/operators";
 
 // import {DOCUMENT} from '@angular/common';
 
@@ -294,7 +296,8 @@ export class InteractionsComponent implements OnInit {
       recipientsTo: this.fb.array([]),
       recipientsCc: this.fb.array([]),
       recipientsBcc: this.fb.array([]),
-      from: ""
+      from: "",
+      replyTo: []
     });
   }
 
@@ -309,7 +312,7 @@ export class InteractionsComponent implements OnInit {
       }
     );
   }
-  emoji() { }
+  emoji() {}
 
   BargeIn() {
     let obj = {
@@ -447,7 +450,7 @@ export class InteractionsComponent implements OnInit {
       panelClass: "send-sms-dialog",
       data: { info: this._cacheService.smsDialogData }
     });
-    dialogRef.afterClosed().subscribe((result) => { });
+    dialogRef.afterClosed().subscribe((result) => {});
     this._cacheService.clearOutboundSmsDialogData();
   }
 
@@ -745,7 +748,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -753,7 +756,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -823,7 +826,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => { });
+    dialogRef.afterClosed().subscribe((result: any) => {});
   }
   externalfilePreviewOpener(url, fileName, type) {
     const dialogRef = this.dialog.open(FilePreviewComponent, {
@@ -833,7 +836,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => { });
+    dialogRef.afterClosed().subscribe((result: any) => {});
   }
 
   uploadFileAndConstructAndSendEvent(files) {
@@ -868,56 +871,65 @@ export class InteractionsComponent implements OnInit {
   }
 
   uploadFiles(files) {
-    let availableExtentions: any = ["txt", "png", "jpg", "jpeg", "pdf", "ppt", "xlsx", "xls", "doc", "docx", "rtf", "mp4", "mp3"];
-    let ln = files.length;
-    if (ln > 0) {
-      const uploadedFilesArray = [];
-      for (var i = 0; i < ln; i++) {
-        const fileSize = files[i].size;
-        const fileMimeType = files[i].name.split(".").pop();
+    try {
+      const results = [];
+      let availableExtentions: any = ["txt", "png", "jpg", "jpeg", "pdf", "ppt", "xlsx", "xls", "doc", "docx", "rtf", "mp4", "mp3"];
+      let ln = files.length;
+      if (ln > 0) {
+        for (var i = 0; i < ln; i++) {
+          const fileSize = files[i].size;
+          const fileMimeType = files[i].name.split(".").pop();
 
-        if (fileSize <= 5000000) {
-          if (availableExtentions.includes(fileMimeType.toLowerCase())) {
-            let fd = new FormData();
-            fd.append("file", files[i]);
-            fd.append("conversationId", `${Math.floor(Math.random() * 90000) + 10000}`);
-            this._httpService.uploadToFileEngine(fd).subscribe(
-              (e) => {
-                uploadedFilesArray.push(e);
-              },
-              (error) => {
-                this._snackbarService.open(error, "err");
-              }
-            );
+          if (fileSize <= 5000000) {
+            if (availableExtentions.includes(fileMimeType.toLowerCase())) {
+              let fd = new FormData();
+              fd.append("file", files[i]);
+              fd.append("conversationId", `${Math.floor(Math.random() * 90000) + 10000}`);
+              let result = this._httpService.uploadToFileEngine(fd).pipe(
+                catchError((error) => {
+                  this._snackbarService.open(`Error while uploading file on Server ${error.error }`, "err");
+                  return of(null); // Return observable with a null value to keep processing other files
+                })
+              );
+              results.push(result);
+            } else {
+              this._snackbarService.open(files[i].name + this._translateService.instant(" snackbar.unsupported-type"), "err");
+            }
           } else {
-            this._snackbarService.open(files[i].name + this._translateService.instant("snackbar.unsupported-type"), "err");
+            this._snackbarService.open(files[i].name + this._translateService.instant("snackbar.File-size-should-be-less-than-5MB"), "err");
           }
-        } else {
-          this._snackbarService.open(files[i].name + this._translateService.instant("snackbar.File-size-should-be-less-than-5MB"), "err");
         }
+        return forkJoin(results)
       }
-      return uploadedFilesArray;
+    } catch (e) {
+      return of([]);
     }
+    return of([]);
   }
   getFileExtension(mediaUrl: string): string {
-    return mediaUrl.split('.').pop(); 
+    return mediaUrl.split(".").pop();
   }
-  
-  constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?, wrapups?, note?, emailFormValues?: any[], fileList?) {
+
+  constructAndSendCimEvent(msgType, fileMimeType?, fileName?, fileSize?, text?, wrapups?, note?, emailFormValues?: any[], fileList?: any[]) {
     if (this._socketService.isSocketConnected) {
       let message = this.getCimMessage();
 
-      if (msgType.toLowerCase() == "email") {
+      if (msgType.toLowerCase() === "email") {
         let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
-        this.uploadFiles(fileList);
-        message = this.constructEmailEvent(message, emailFormValues, selectedChannelSession, fileList);
-        console.log("here is the event constructed", message);
-
-        this.emitCimEvent(message, "AGENT_MESSAGE");
+        this.uploadFiles(fileList).subscribe(
+          (results) => {
+            console.log("Files uploaded sucessfully are:", results);
+            message = this.constructEmailEvent(message, emailFormValues, selectedChannelSession, results);
+            this.emitCimEvent(message, "AGENT_MESSAGE");
+          },
+          (uploadError) => {
+            console.error("Error uploading files:", uploadError);
+          }
+        );
       }
+
       if (msgType.toLowerCase() == "wrapup") {
         message = this.constructWrapUpEvent(message, wrapups, note, this.conversation.firstChannelSession);
-
         this.emitCimEvent(message, "AGENT_MESSAGE");
       } else {
         if (this.originalMessageId) {
@@ -945,55 +957,56 @@ export class InteractionsComponent implements OnInit {
             this.commentId = null;
           } else {
             // channel is web or whatsApp
+            if (msgType.toLowerCase() != "email") {
+              let sendingActiveChannelSession = JSON.parse(JSON.stringify(selectedChannelSession));
 
-            let sendingActiveChannelSession = JSON.parse(JSON.stringify(selectedChannelSession));
+              delete sendingActiveChannelSession["webChannelData"];
+              delete sendingActiveChannelSession["isChecked"];
+              delete sendingActiveChannelSession["isDisabled"];
 
-            delete sendingActiveChannelSession["webChannelData"];
-            delete sendingActiveChannelSession["isChecked"];
-            delete sendingActiveChannelSession["isDisabled"];
+              message.header.sender = {
+                id: this.conversation.topicParticipant.participant.keycloakUser.id,
+                senderName: this.conversation.topicParticipant.participant.keycloakUser.username,
+                type: "AGENT"
+              };
+              message.header.channelSession = sendingActiveChannelSession;
+              message.header.channelData = sendingActiveChannelSession.channelData;
+              if (msgType.toLowerCase() == "plain") {
+                message.body.type = "PLAIN";
+                message.body.markdownText = text.trim();
+              } else if (msgType.toLowerCase() == "application" || msgType.toLowerCase() == "text") {
+                message.body.type = "FILE";
+                message.body["caption"] = "";
+                message.body["additionalDetails"] = { fileName: fileName };
+                message.body["attachment"] = {
+                  mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
+                  mimeType: fileMimeType,
+                  size: fileSize
+                };
+              } else if (msgType.toLowerCase() == "image") {
+                message.body.type = "IMAGE";
+                message.body["caption"] = fileName;
+                message.body["additionalDetails"] = {};
+                message.body["attachment"] = {
+                  mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
+                  mimeType: fileMimeType,
+                  size: fileSize,
+                  thumbnail: ""
+                };
+              } else if (msgType.toLowerCase() == "video") {
+                message.body.type = "VIDEO";
+                message.body["caption"] = fileName;
+                message.body["additionalDetails"] = {};
+                message.body["attachment"] = {
+                  mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
+                  mimeType: fileMimeType,
+                  size: fileSize,
+                  thumbnail: ""
+                };
+              }
 
-            message.header.sender = {
-              id: this.conversation.topicParticipant.participant.keycloakUser.id,
-              senderName: this.conversation.topicParticipant.participant.keycloakUser.username,
-              type: "AGENT"
-            };
-            message.header.channelSession = sendingActiveChannelSession;
-            message.header.channelData = sendingActiveChannelSession.channelData;
-            if (msgType.toLowerCase() == "plain") {
-              message.body.type = "PLAIN";
-              message.body.markdownText = text.trim();
-            } else if (msgType.toLowerCase() == "application" || msgType.toLowerCase() == "text") {
-              message.body.type = "FILE";
-              message.body["caption"] = "";
-              message.body["additionalDetails"] = { fileName: fileName };
-              message.body["attachment"] = {
-                mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
-                mimeType: fileMimeType,
-                size: fileSize
-              };
-            } else if (msgType.toLowerCase() == "image") {
-              message.body.type = "IMAGE";
-              message.body["caption"] = fileName;
-              message.body["additionalDetails"] = {};
-              message.body["attachment"] = {
-                mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
-                mimeType: fileMimeType,
-                size: fileSize,
-                thumbnail: ""
-              };
-            } else if (msgType.toLowerCase() == "video") {
-              message.body.type = "VIDEO";
-              message.body["caption"] = fileName;
-              message.body["additionalDetails"] = {};
-              message.body["attachment"] = {
-                mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
-                mimeType: fileMimeType,
-                size: fileSize,
-                thumbnail: ""
-              };
+              this.emitCimEvent(message, this.conversation.agentParticipants.length > 0 && this.isWhisperMode ? "WHISPER_MESSAGE" : "AGENT_MESSAGE");
             }
-
-            this.emitCimEvent(message, this.conversation.agentParticipants.length > 0 && this.isWhisperMode ? "WHISPER_MESSAGE" : "AGENT_MESSAGE");
           }
         } else {
           this._snackbarService.open(this._translateService.instant("snackbar.No-channel-session-selected-at-the-moment"), "err");
@@ -1250,15 +1263,13 @@ export class InteractionsComponent implements OnInit {
     return message;
   }
 
-  constructEmailEvent(message, formValues, channelSession, listOfFiles) {
+  constructEmailEvent(message, formValues, channelSession, listOfFiles: any[]) {
     let sendingActiveChannelSession = JSON.parse(JSON.stringify(channelSession));
     delete sendingActiveChannelSession["webChannelData"];
     delete sendingActiveChannelSession["isChecked"];
     delete sendingActiveChannelSession["isDisabled"];
     message.header.channelSession = sendingActiveChannelSession;
     message.header.channelData = sendingActiveChannelSession.channelData;
-    message.header.channelData.channelCustomerIdentifier = formValues.from;
-    message.header.channelData.serviceIdentifier = formValues.recipientsTo;
 
     message.body.type = "EMAIL";
     message.body.markdownText = formValues.markdownText;
@@ -1268,13 +1279,15 @@ export class InteractionsComponent implements OnInit {
     message.body.recipientsCc = formValues.recipientsCc;
     message.body.recipientsBcc = formValues.recipientsBcc;
     message.body.from = formValues.from;
-    message.body.replyTo = formValues.recipientsTo;
-    message.body.attachments = listOfFiles.map((file) => ({
-      mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + file.name,
-      thumbnail: "",
-      mimeType: file.type,
-      size: file.size
-    }));
+    message.body.replyTo = formValues.replyTo;
+    message.body.attachments = listOfFiles
+      .filter((file) => file !== null) // Filter out null files
+      .map((file) => ({
+        mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + file.name,
+        thumbnail: "",
+        mimeType: file.type,
+        size: file.size
+      }));
 
     return message;
   }
@@ -1339,7 +1352,6 @@ export class InteractionsComponent implements OnInit {
 
   emitCimEvent(message, eventName) {
     // let dummyMessage=JSON.parse(JSON.stringify(message))
-
     let event: any = new CimEvent(eventName, "MESSAGE", this.conversation.conversationId, message, this.conversation.customer);
     // console.log("event created",event)
 
@@ -1467,7 +1479,8 @@ export class InteractionsComponent implements OnInit {
       // console.log("CX MRD ID==>",this._appConfigService.config.CX_VOICE_MRD)
       queues.forEach((item: any) => {
         console.log(this._appConfigService.config.CX_VOICE_MRD, "<==item ID==>", item.mrdId);
-        if (item.mrdId != this._appConfigService.config.CX_VOICE_MRD && item.mrdId != this._appConfigService.config.CISCO_CC_MRD) chatQueues.push(item);
+        if (item.mrdId != this._appConfigService.config.CX_VOICE_MRD && item.mrdId != this._appConfigService.config.CISCO_CC_MRD)
+          chatQueues.push(item);
       });
       // console.log("let==>", chatQueues);
       this.queueList = chatQueues;
@@ -1738,39 +1751,36 @@ export class InteractionsComponent implements OnInit {
   // }
 
   clear() {
-    this._socketService.stopSLACountDown(this.conversation.conversationId)
+    this._socketService.stopSLACountDown(this.conversation.conversationId);
   }
 
   warn() {
-    this.conversation.SLACountdown.color = "sla-warn"
+    this.conversation.SLACountdown.color = "sla-warn";
   }
 
   ended() {
-    this.conversation.SLACountdown.color = "sla-ended"
-
+    this.conversation.SLACountdown.color = "sla-ended";
   }
 
   popUp() {
-    this._socketService.showSLAPopUp(this.conversation.conversationId)
+    this._socketService.showSLAPopUp(this.conversation.conversationId);
   }
 
   extendSlaTime() {
-
     const event = {
       id: uuidv4(),
       name: "RESET_AGENT_SLA",
       type: "NOTIFICATION",
       timestamp: Date.now(),
       conversationId: this.conversation.conversationId,
-      "data": {}
-    }
+      data: {}
+    };
 
     this._socketService.emit("publishCimEvent", {
       cimEvent: event,
       agentId: this._cacheService.agent.id,
       conversationId: this.conversation.conversationId
     });
-
   }
 
   endActiveCall() {
@@ -1793,13 +1803,9 @@ export class InteractionsComponent implements OnInit {
   }
 
   sendEmail() {
-    if (this._socketService.isSocketConnected) {
-      const formValues = this.emailForm.value;
-      this.constructAndSendCimEvent("EMAIL", "", "", "", "", "", "", formValues, this.listOfFiles);
-      this.emailForm.reset();
-    } else {
-      this.snackBar.open("socket service is not openend..");
-    }
+    const formValues = this.emailForm.value;
+    this.constructAndSendCimEvent("EMAIL", "", "", "", "", "", "", formValues, this.listOfFiles);
+    this.emailForm.reset();
   }
   openEmailThreaded(templateRef, e): void {
     this.emailThreadedView = e;
@@ -1845,17 +1851,29 @@ export class InteractionsComponent implements OnInit {
       subject: `Re: ${message.body.subject}`,
       recipientsCc: [],
       recipientsBcc: [],
-      from: message.header.channelData.serviceIdentifier
+      from: message.header.channelData.serviceIdentifier,
+      replyTo: [message.header.channelData.serviceIdentifier]
     });
 
-    const recipientsToControl = this.emailForm.get("recipientsTo") as FormArray;
-    recipientsToControl.clear();
+    if (isReplyToAllEmail && message.body.recipientsTo.length > 1) {
+      const senderEmail = message.header.channelData.serviceIdentifier;
+      const receiverEmail = message.header.channelData.channelCustomerIdentifier;
 
-    recipientsToControl.push(this.fb.control(message.header.channelData.channelCustomerIdentifier));
+      const recipientsToSet = new Set<string>();
 
-    if (isReplyToAllEmail) {
       message.body.recipientsTo.forEach((recipient: string) => {
-        (this.emailForm.get("recipientsTo") as FormArray).push(this.fb.control(recipient));
+        if (recipient !== senderEmail) {
+          recipientsToSet.add(recipient);
+        }
+      });
+
+      recipientsToSet.add(receiverEmail);
+
+      const recipientsToFormArray = this.emailForm.get("recipientsTo") as FormArray;
+      recipientsToFormArray.clear();
+
+      recipientsToSet.forEach((recipient: string) => {
+        recipientsToFormArray.push(this.fb.control(recipient));
       });
       message.body.recipientsBcc.forEach((recipient: string) => {
         (this.emailForm.get("recipientsBcc") as FormArray).push(this.fb.control(recipient));
@@ -1863,6 +1881,10 @@ export class InteractionsComponent implements OnInit {
       message.body.recipientsCc.forEach((recipient: string) => {
         (this.emailForm.get("recipientsCc") as FormArray).push(this.fb.control(recipient));
       });
+    } else {
+      const recipientsToControl = this.emailForm.get("recipientsTo") as FormArray;
+      recipientsToControl.clear();
+      recipientsToControl.push(this.fb.control(message.header.channelData.channelCustomerIdentifier));
     }
   }
   openEmailComposer(templateRef): void {
@@ -1891,7 +1913,6 @@ export class InteractionsComponent implements OnInit {
   }
 
   onChange(event: any): void {
-    console.log("hre is the fileLisit", this.fileList);
     for (var i = 0; i <= event.target.files.length - 1; i++) {
       var selectedFile = event.target.files[i];
       if (this.listOfFiles.indexOf(selectedFile.name) === -1) {

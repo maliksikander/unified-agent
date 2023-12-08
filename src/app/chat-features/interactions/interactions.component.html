@@ -1945,10 +1945,10 @@
                           <mat-expansion-panel>
                             <mat-expansion-panel-header [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
                               <mat-panel-title>
-                                <div class="panel-header email-panel-header">
+                                <div class="panel-header email-panel-header" >
                                   <ul>
-                                    <li matTooltip="{{ message.header.channelData.channelCustomerIdentifier }}"><span>From:</span> {{ message.header.channelData.channelCustomerIdentifier }}</li>
-                                    <li matTooltip="{{ message.header.channelData.serviceIdentifier }}"><span>To:</span> {{message.header.channelData.serviceIdentifier}} {{ message.body.recipientsTo }}</li>
+                                    <li matTooltip="{{ message.header.channelData.channelCustomerIdentifier }}"><span>From:</span> {{ message.body.from }}</li>
+                                    <li matTooltip="{{ message.body.recipientsTo }}"><span>To:</span> {{ message.body.recipientsTo }}</li>
                                     <li matTooltip="{{ message.header.sender.emailSubject }}"><span>Subject:</span> {{ message.body.subject }}</li>
                                     <li>
                                       {{ message.header.timestamp | date: "EEEE, mm d, y, h:mm:ss a" }}
@@ -1969,7 +1969,7 @@
                               >
                               </quill-editor>
                               <div class="attach-file-preview" *ngFor="let attachment of message.body.attachments">
-                                <a [href]="attachment.mediaUrl">
+                                <a [href]="attachment.mediaUrl" target="_blank" rel="noopener noreferrer">
                                   <mat-icon>file_download</mat-icon>
                                   <img src="assets/file-types/clip.png" />
                                 </a>
@@ -1983,7 +1983,7 @@
                               <span class="view-email-thread" (click)="openEmailThreaded(emailThreadedViewTemplate, message.body.htmlBody)"
                                 >view full thread</span
                               >
-                              <ul>
+                              <ul *ngIf="conversation.activeChannelSessions.length > 0">
                                 <li (click)="openEmailComposer(emailComposeTemplate)" (click)="replyToEmail(message, false)">
                                   <mat-icon>reply</mat-icon>
                                 </li>
@@ -2741,7 +2741,7 @@
                 <textarea
                   maxlength="1000"
                   [disabled]="
-                    !_socketService.isSocketConnected ||
+                    !_socketService.isSocketConnected || (conversation.activeChannelSessions | getCheckedChannelSession)[0].name === 'EMAIL' ||
                     conversation.activeChannelSessions.length == 0 ||
                     !conversation.messageComposerState ||
                     conversation.topicParticipant.role == 'SILENT_MONITOR' ||
@@ -2768,6 +2768,8 @@
                       ? commentId
                         ? 'chat-features.interactions.bot-suggestions-available-for-reply-to-a-comment'
                         : 'chat-features.interactions.bot-suggestions-available'
+                        : (conversation.activeChannelSessions | getCheckedChannelSession)[0].name === 'EMAIL'
+                        ? 'chat-features.interactions.Unable-to-send-message'
                       : _socketService.isSocketConnected && conversation.activeChannelSessions.length > 0 && conversation.messageComposerState
                       ? commentId
                         ? 'chat-features.interactions.Type-a-reply-to-comment'
@@ -2913,7 +2915,8 @@
                     conversationSettings.isFileSharingEnabled &&
                     _socketService.isSocketConnected &&
                     conversation.topicParticipant.role != 'SILENT_MONITOR' &&
-                    !disablingAttatchButtonForInstagramReply
+                    !disablingAttatchButtonForInstagramReply && 
+                    !(conversation.activeChannelSessions | getCheckedChannelSession)[0].name === 'EMAIL'
                   "
                 >
                   <input

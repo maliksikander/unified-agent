@@ -52,9 +52,9 @@ export class socketService {
     //this.createFakeConversation(2);
   }
 
-  // createFakeConversation(count) {
+  //createFakeConversation(count) {
 
-  //   this.onTopicData(mockTopicData, "12345", "11220");
+    // this.onTopicData(mockTopicData, "12345", "11220");
 
   //   if (count == 2) {
   //     let anotherTopicdata: any = JSON.parse(JSON.stringify(mockTopicData));
@@ -62,7 +62,7 @@ export class socketService {
   //     this.onTopicData(anotherTopicdata, "1234567", "2211");
   //   }
 
-  // }
+  //}
 
   connectToSocket() {
     //load pullMode list
@@ -402,7 +402,15 @@ export class socketService {
         ) {
           this.processCommentActions(sameTopicConversation.messages, cimEvent.data);
         }
-        // for agent type message change the status of message
+        if (cimEvent.name.toLowerCase() == "agent_message" && cimEvent.data.body.type.toLowerCase() == "email") {
+          let cimMessage = sameTopicConversation.messages.find((message) => {
+            return message.id == cimEvent.data.id;
+          });
+          if (cimMessage) {
+            cimMessage.header["status"] = "sent";
+            //sameTopicConversation.messages.push(cimEvent.data);
+          }
+        }
         else if (cimEvent.name.toLowerCase() == "agent_message" || cimEvent.name.toLowerCase() == "whisper_message") {
           // find the message is already located in the conversation
           let cimMessage = sameTopicConversation.messages.find((message) => {
@@ -413,6 +421,7 @@ export class socketService {
             cimMessage.header["status"] = "sent";
             cimMessage.body["isWhisper"] = cimEvent.name.toLowerCase() == "whisper_message" ? true : false;
           } else {
+            
             // if no, marked staus as sent and push in the conversation
             cimEvent.data.header["status"] = "sent";
             cimEvent.data.body["isWhisper"] = cimEvent.name.toLowerCase() == "whisper_message" ? true : false;
@@ -546,7 +555,8 @@ export class socketService {
           event.data.header["status"] = "sent";
           conversation.messages.push(event.data);
         }
-      } else if (event.name.toLowerCase() == "third_party_activity") {
+      }  
+      else if (event.name.toLowerCase() == "third_party_activity") {
         if (event.data.header.channelData.additionalAttributes.length > 0) {
           const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => {
             return e.value.toLowerCase() == "outbound";

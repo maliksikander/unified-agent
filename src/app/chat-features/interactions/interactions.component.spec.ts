@@ -2,6 +2,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { TranslateService } from "@ngx-translate/core";
 import { of, throwError } from "rxjs";
 import { InteractionsComponent } from "./interactions.component";
+import { FormBuilder } from "@angular/forms";
 
 describe("InteractionsComponent", () => {
   let component: any;
@@ -16,6 +17,7 @@ describe("InteractionsComponent", () => {
   let snackBar: any;
   let translateService: TranslateService;
   let _sipService: any;
+  let _formbuilder: any;
   let channelSession = {
     channel: {
       channelConnector: {
@@ -52,7 +54,8 @@ describe("InteractionsComponent", () => {
         _finneseService,
         snackBar,
         _sipService,
-        translateService
+        translateService,
+        _formbuilder
       );
     });
 
@@ -90,7 +93,8 @@ describe("InteractionsComponent", () => {
         _finneseService,
         snackBar,
         _sipService,
-        translateService
+        translateService,
+        _formbuilder
       );
     });
 
@@ -132,7 +136,8 @@ describe("InteractionsComponent", () => {
         _finneseService,
         snackBar,
         _sipService,
-        translateService
+        translateService,
+        _formbuilder
       );
     });
 
@@ -166,7 +171,8 @@ describe("InteractionsComponent", () => {
         _finneseService,
         snackBar,
         _sipService,
-        translateService
+        translateService,
+        _formbuilder
       );
     });
 
