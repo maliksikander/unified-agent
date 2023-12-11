@@ -103,7 +103,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
           _THIS.mrdStateChange(e);
         } else if(e.data.agentData.action == "agentLogout"){
           console.log("agent logout event received==>", e);
-          //_THIS.mrdStateChange(e);
+          _THIS.logoutStateChange(e);
         }
      }
     });

@@ -6,7 +6,7 @@ import { Subscription } from "rxjs";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material";
 import { TranslateService } from "@ngx-translate/core";
 import { snackbarService } from "src/app/services/snackbar.service";
-
+//import { DatePipe } from '@angular/common';
 
 @Component({
   selector: "app-announcement-dialog",
@@ -38,17 +38,36 @@ export class AnnouncementDialogComponent implements OnInit {
   announcementForm: FormGroup;
   editAnnouncementObj = {};
   setRowObj = {};
+  //formattedDate = this.datePipe.transform(new Date(), 'medium'); // Adjust the format as needed
 
-  announceDate = new FormControl(new Date(), [Validators.required]);
-  expireDate = new FormControl(new Date(), [Validators.required]);
+  announceDate = new FormControl(new Date(), [
+    Validators.required,
+    this.dateTimeFormatValidator,
+  ]);
+  expireDate = new FormControl(new Date(), [
+    Validators.required,
+    this.dateTimeFormatValidator,
+  ]);
   teamListdata = new FormControl("", [Validators.required]);
   announcementMessage = new FormControl("", [Validators.required]);
   public formGroup = new FormGroup({
     date: new FormControl(null, [Validators.required])
   });
+  dateTimeFormatValidator(control: FormControl) {
+    // Adjust the desired date and time format using a regular expression
+    const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
 
+    if (control.value && !dateFormat.test(control.value.toISOString())) {
+      return { invalidDateFormat: true };
+    }
+
+    return null;
+  }
+
+  
   constructor(
     private dialog: MatDialog,
+    //private datePipe: DatePipe,
     private _cacheService: cacheService,
     private _httpService: httpService,
     private _translateService: TranslateService,
@@ -68,7 +87,9 @@ export class AnnouncementDialogComponent implements OnInit {
 
     // this.expireDateMax=new Date(this.expireDateMin);
     // this.maxDate= this.expireDateMax.setHours(120);
-
+    //let formattedAnnounceDate = this.datePipe.transform(this.announceDate.value, 'short');
+   // let formattedExpireDate = this.datePipe.transform(this.expireDate.value, 'short');
+    //console.log(formattedAnnounceDate,"<<==  ==>>",formattedExpireDate)
 
 
     if (this.dataID !== null) {
@@ -110,6 +131,8 @@ export class AnnouncementDialogComponent implements OnInit {
 
 
   onCreateAnnouncement() {
+
+
 
     this.postData = {
       "teams": this.selectedTeams,

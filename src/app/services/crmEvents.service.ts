@@ -40,7 +40,7 @@ export class crmEventsService {
             // when Agent TASK_STATE_CHANGED in Agent Desk
             else if (e.taskState) {
                 this.eventName = "TASK_STATE_CHANGED";
-                this.agentData = { agentData: e };
+                this.agentData =  e ;
                   if(e.taskState.name === "RESERVED"|| e.taskState.name.toLowerCase() === "reserved"){
                     this.AgentReserved=true;
                     console.log("AgentReserved set to true");
@@ -48,7 +48,7 @@ export class crmEventsService {
             }
             else if(e.name == 'TASK_STATE_CHANGED'){
                 this.eventName = "TASK_STATE_CHANGED";
-                this.agentData = { agentData: e };
+                this.agentData = e ;
             }
 
             // when Agent Answer any chat in Agent Desk
@@ -56,6 +56,7 @@ export class crmEventsService {
 
                 this.eventName = "TASK_STATE_CHANGED";
                 this.agentData = { agentData: e };
+                this.AgentReserved=false;
              }
 
             //when Agent endchat any chat in Agent Desk 

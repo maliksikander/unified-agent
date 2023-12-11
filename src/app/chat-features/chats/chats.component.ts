@@ -20,7 +20,7 @@ export class ChatsComponent implements OnInit {
   currentTabIndex : number = 0;
   
   ngOnInit() {
-    console.log("[",this.previousTabIndex,"]","prevtConversation",this._socketService.conversations[this.previousTabIndex]);
+   // console.log("[",this.previousTabIndex,"]","prevtConversation",this._socketService.conversations[this.previousTabIndex]);
    
     // this.loadLabels()
     //console.log("[",this.index,"]","prevtConversation",this._socketService.conversations[this.index]);
@@ -42,15 +42,15 @@ export class ChatsComponent implements OnInit {
    // console.log("[",this.index,"]","prevtConversation",this._socketService.conversations[this.index]);
     this.currentTabIndex = index;
     this._sharedService.matCurrentTabIndex = index;
-    console.log("chatSwitchIndex",this.currentTabIndex)
+    //console.log("chatSwitchIndex",this.currentTabIndex)
     
-    console.log("[",this.previousTabIndex,"]","prevtConversation",this._socketService.conversations[this.previousTabIndex]);
+    //console.log("[",this.previousTabIndex,"]","prevtConversation",this._socketService.conversations[this.previousTabIndex]);
     
-    console.log("chatConversationS",this._socketService.conversations)
+   // console.log("chatConversationS",this._socketService.conversations)
     const selectedConversation = this._socketService.conversations[this.currentTabIndex];
 
-    console.log("[",this.currentTabIndex,"]","currentConversation",this._socketService.conversations[this.currentTabIndex]);
-    console.log("===>",event.index)
+    //console.log("[",this.currentTabIndex,"]","currentConversation",this._socketService.conversations[this.currentTabIndex]);
+    //console.log("===>",event.index)
     this._crmEventsService.chatSwitching(this._socketService.conversations[this.currentTabIndex],this._socketService.conversations[this.previousTabIndex])
     //if(){}
   }

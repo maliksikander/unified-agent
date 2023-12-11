@@ -362,7 +362,7 @@ export class socketService {
 
   onCimEventHandler(cimEvent, conversationId) {
     console.log("cim event ", JSON.parse(JSON.stringify(cimEvent)));
-    if(JSON.parse(JSON.stringify(cimEvent)).name == 'TASK_STATE_CHANGED'){
+    if(JSON.parse(JSON.stringify(cimEvent)).name == 'TASK_STATE_CHANGED' ){
       this._crmEventsService.postCRMEvent( JSON.parse(JSON.stringify(cimEvent)));
     }
     
