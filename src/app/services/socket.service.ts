@@ -18,6 +18,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { announcementService } from "./announcement.service";
 import { DatePipe } from '@angular/common';
+import { crmEventsService } from "./crmEvents.service";
 
 //const mockTopicData: any = require("../mocks/mockTopicData.json");
 
@@ -49,7 +50,8 @@ export class socketService {
     private _authService: AuthService,
     private snackBar: MatSnackBar,
     private _translateService: TranslateService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private _crmEventsService: crmEventsService
   ) {
     // this.createFakeConversation(2);
   }
@@ -162,6 +164,7 @@ export class socketService {
     this.socket.on("agentPresence", (res: any) => {
       console.log("agent presence", res);
       this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: res.agentPresence });
+      this._crmEventsService.postCRMEvent(res);
     });
 
     this.socket.on("ANNOUNCEMENT_CREATED", (res: any) => {
@@ -180,6 +183,7 @@ export class socketService {
     });
 
     this.socket.on("taskRequest", (res: any) => {
+      this._crmEventsService.postCRMEvent(res);
       console.log("taskRequest==>", res);
       if (res.taskState && res.taskState.name.toLowerCase() == "started") {
         if (res.taskDirection.toLowerCase() == "consult") {
@@ -235,6 +239,7 @@ export class socketService {
     });
 
     this.socket.on("onTopicData", (res: any, callback: any) => {
+      this._crmEventsService.postCRMEvent(JSON.parse(JSON.stringify(res)));
       console.log("onTopicData==>", JSON.parse(JSON.stringify(res)));
       try {
         this.onTopicData(res.topicData, res.conversationId, res.taskId);
@@ -253,6 +258,7 @@ export class socketService {
     });
 
     this.socket.on("topicUnsubscription", (res: any) => {
+      this._crmEventsService.postCRMEvent(res);
       console.log("topicUnsubscription", res);
       if (res.reason.toUpperCase() != "UNSUBSCRIBED" && res.reason.toUpperCase() != "CHAT TRANSFERRED") {
         this._snackbarService.open(this._translateService.instant("snackbar.Conversation-is-closed-due-to") + res.reason, "err");
@@ -361,6 +367,10 @@ export class socketService {
 
   onCimEventHandler(cimEvent, conversationId) {
     console.log("cim event ", JSON.parse(JSON.stringify(cimEvent)));
+    if(JSON.parse(JSON.stringify(cimEvent)).name == 'TASK_STATE_CHANGED' ){
+      this._crmEventsService.postCRMEvent( JSON.parse(JSON.stringify(cimEvent)));
+    }
+
     if (cimEvent.channelSession) {
       if (cimEvent.data && cimEvent.data.header) {
         cimEvent.data.header.channelSession = cimEvent.channelSession;
