@@ -887,7 +887,7 @@ export class InteractionsComponent implements OnInit {
               fd.append("conversationId", `${Math.floor(Math.random() * 90000) + 10000}`);
               let result = this._httpService.uploadToFileEngine(fd).pipe(
                 catchError((error) => {
-                  this._snackbarService.open(`Error while uploading file on Server ${error.error }`, "err");
+                  this._snackbarService.open(`Error while uploading file on Server ${error.error}`, "err");
                   return of(null); // Return observable with a null value to keep processing other files
                 })
               );
@@ -899,7 +899,7 @@ export class InteractionsComponent implements OnInit {
             this._snackbarService.open(files[i].name + this._translateService.instant("snackbar.File-size-should-be-less-than-5MB"), "err");
           }
         }
-        return forkJoin(results)
+        return forkJoin(results);
       }
     } catch (e) {
       return of([]);
@@ -1845,10 +1845,18 @@ export class InteractionsComponent implements OnInit {
     recipientsToControl.removeAt(index);
   }
   replyToEmail(message, isReplyToAllEmail) {
+    const subjectPrefix = "Re:";
+    const currentSubject = message.body.subject || "";
+
+    let newSubject = currentSubject;
+    if (!currentSubject.startsWith(subjectPrefix)) {
+      newSubject = `${subjectPrefix} ${currentSubject}`;
+    }
+
     this.emailForm.patchValue({
       markdownText: "",
       htmlBody: "",
-      subject: `Re: ${message.body.subject}`,
+      subject: newSubject,
       recipientsCc: [],
       recipientsBcc: [],
       from: message.header.channelData.serviceIdentifier,

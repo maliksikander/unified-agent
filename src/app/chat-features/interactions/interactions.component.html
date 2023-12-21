@@ -3253,7 +3253,7 @@
             <mat-form-field class="email-to-list">
               <mat-chip-list #emailToList>
                 <mat-chip
-                  *ngFor="let recipient of emailForm.get('recipientsTo').controls; let i = index"
+                  *ngFor="let recipient of emailForm.get('recipientsTo')['controls']; let i = index"
                   [selectable]="selectable"
                   [removable]="removable"
                   (removed)="remove(i, 'recipientsTo')"
@@ -3283,7 +3283,7 @@
             <mat-form-field class="email-to-list">
               <mat-chip-list #emailCc>
                 <mat-chip
-                  *ngFor="let recipient of emailForm.get('recipientsCc').controls; let i = index"
+                  *ngFor="let recipient of emailForm.get('recipientsCc')['controls'] let i = index"
                   [selectable]="selectable"
                   [removable]="removable"
                   (removed)="remove(i, 'recipientsCc')"
@@ -3309,7 +3309,7 @@
             <mat-form-field class="email-to-list">
               <mat-chip-list #emailToBcc>
                 <mat-chip
-                  *ngFor="let recipient of emailForm.get('recipientsBcc').controls; let i = index"
+                  *ngFor="let recipient of emailForm.get('recipientsBcc')['controls']; let i = index"
                   [selectable]="selectable"
                   [removable]="removable"
                   (removed)="remove(i, 'recipientsBcc')"
