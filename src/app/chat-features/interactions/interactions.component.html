@@ -2915,8 +2915,8 @@
                     conversationSettings.isFileSharingEnabled &&
                     _socketService.isSocketConnected &&
                     conversation.topicParticipant.role != 'SILENT_MONITOR' &&
-                    !disablingAttatchButtonForInstagramReply && 
-                    !(conversation.activeChannelSessions | getCheckedChannelSession)[0].name === 'EMAIL'
+                    !disablingAttatchButtonForInstagramReply &&
+                    !((conversation.activeChannelSessions | getCheckedChannelSession)[0].name === 'EMAIL')
                   "
                 >
                   <input
