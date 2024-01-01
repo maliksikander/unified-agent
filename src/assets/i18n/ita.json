@@ -22,7 +22,7 @@
     "Something-went-wrong":"Something went wrong_ita",
     "The-license-is":"The license is :_ita",
     "Unable-to-process-chat-unsubscribing":"Unable to process chat, unsubscribing..._ita",
-    "Conversation-is-closed-due-to":"Conversation is closed due to _ita",
+    "Conversation-is-closed-due-to":"You are removed due to _ita",
     "Unable-to-process-event-unsubscribing":"Unable to process event, unsubscribing..._ita",
     "you-are-logged-In-from-another-session":"You are logged In from another session_ita",
     "Profile-linked-successfully":"Profile linked successfully_ita",
@@ -105,11 +105,11 @@
 
   },
   "app-header": {
-    "customer-conversation-view": "Customer Conversation View_ita",
-    "customer-list-view": "Customer List View_ita",
+    "customer-conversation-view": "Customer Interactions_ita",
+    "customer-list-view": "Customers_ita",
     "customer-labels": "Customer Labels_ita",
     "subscribed-lists": "Subscribed Lists_ita",
-    "customer-schema": "Customer Schema_ita",
+    "customer-schema": "Customer Attributes_ita",
     "dashboard": "Dashboard_ita",
     "summary-dashboard": "Summary Dashboard_ita",
     "active-conversations-detail": "Active Conversations Detail_ita",
@@ -232,8 +232,9 @@
       "Transfer-To-Queue":"Transfer To Queue_ita",
       "Conference-Request":"Conference Request_ita",
       "Add-To-Conference":"Add To Conference_ita",
+      "Search-Queue":"Search Queue_ita",
       "whisper": "Whisper_ita",
-      "bot-suggestions-available": "Bot suggestions are available type / for viewing_ita",
+      "bot-suggestions-available": "Bot suggestions are available. Type '/' for viewing_ita",
       "for-reply-to-a-comment":"for reply to a comment_ita",
       "Type-a-reply-to-comment":"Type a reply to a comment_ita",
       "Type-a-message": "Type a message here..._ita",
@@ -274,7 +275,13 @@
       "Transfer-To-Agent":"Transfer To Agent_ita",
       "agent-transfer":"Agent Transfer_ita",
       "Search-Queue-OR-Agent":"Search by Queue/Agent Name_ita",
-      "no-data-found":"No Data Found"
+      "no-data-found":"No Data Found_ita",
+      "sla-dialog-leave": "Leave_ita",
+      "sla-dialog-stay": "Stay_ita",
+      "sla-dialog-brached": "SLA breached!_ita",
+      "sla-dialog-expired": "SLA Expired_ita",
+      "sla-dialog-stay-here": "Would you like to stay in the conversation?_ita",
+      "sla-dialog-warning": "You will soon be removed from the conversation"
     },
     "wrap-up-form": {
       "Add-Wrap-Up": "Add Wrap-Up_ita",
@@ -513,12 +520,12 @@
     "origin":"Origin_ita",
     "joined":"joined_ita",
     "active-conversation":"active conversation_ita",
-    "mrd-states":"mrd states_ita",
+    "mrd-states":"MRD States_ita",
     "search-agent":"search agent_ita",
     "agent-stats":"agent stats_ita",
-    "pending-not-ready":"Pending-Not Ready_ita",
-    "agent(s)":"agent(S)_ita",
+    "pending-not-ready":"Pending-Not-Ready_ita",
+    "agent(s)":"agent(s)_ita",
     "direction":"direction_ita",
-    "No-Teams-Available":"No Teams Available"
+    "No-Teams-Available":"No Teams Available_ita"
   }
 }

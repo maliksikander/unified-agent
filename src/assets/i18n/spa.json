@@ -22,7 +22,7 @@
     "Something-went-wrong":"Something went wrong_spa",
     "The-license-is":"The license is :_spa",
     "Unable-to-process-chat-unsubscribing":"Unable to process chat, unsubscribing..._spa",
-    "Conversation-is-closed-due-to":"Conversation is closed due to _spa",
+    "Conversation-is-closed-due-to":"You are removed due to _spa",
     "Unable-to-process-event-unsubscribing":"Unable to process event, unsubscribing..._spa",
     "you-are-logged-In-from-another-session":"You are logged In from another session_spa",
     "Profile-linked-successfully":"Profile linked successfully_spa",
@@ -105,11 +105,11 @@
 
   },
   "app-header": {
-    "customer-conversation-view": "Customer Conversation View_spa",
-    "customer-list-view": "Customer List View_spa",
+    "customer-conversation-view": "Customer Interactions_spa",
+    "customer-list-view": "Customers_spa",
     "customer-labels": "Customer Labels_spa",
     "subscribed-lists": "Subscribed Lists_spa",
-    "customer-schema": "Customer Schema_spa",
+    "customer-schema": "Customer Attributes_spa",
     "dashboard": "Dashboard_spa",
     "summary-dashboard": "Summary Dashboard_spa",
     "active-conversations-detail": "Active Conversations Detail_spa",
@@ -232,8 +232,9 @@
       "Transfer-To-Queue":"Transfer To Queue_spa",
       "Conference-Request":"Conference Request_spa",
       "Add-To-Conference":"Add To Conference_spa",
+      "Search-Queue":"Search Queue_spa",
       "whisper": "Whisper_spa",
-      "bot-suggestions-available": "Bot suggestions are available type / for viewing_spa",
+      "bot-suggestions-available": "Bot suggestions are available. Type '/' for viewing_spa",
       "for-reply-to-a-comment":"for reply to a comment_spa",
       "Type-a-reply-to-comment":"Type a reply to a comment_spa",
       "Type-a-message": "Type a message here..._spa",
@@ -274,7 +275,13 @@
       "Transfer-To-Agent":"Transfer To Agent_spa",
       "agent-transfer":"Agent Transfer_spa",
       "Search-Queue-OR-Agent":"Search by Queue/Agent Name_spa",
-      "no-data-found":"No Data Found"
+      "no-data-found":"No Data Found_spa",
+      "sla-dialog-leave": "Leave_spa",
+      "sla-dialog-stay": "Stay_spa",
+      "sla-dialog-brached": "SLA breached!_spa",
+      "sla-dialog-expired": "SLA Expired_spa",
+      "sla-dialog-stay-here": "Would you like to stay in the conversation?_spa",
+      "sla-dialog-warning": "You will soon be removed from the conversation"
     },
     "wrap-up-form": {
       "Add-Wrap-Up": "Add Wrap-Up_spa",
@@ -513,12 +520,12 @@
     "origin":"Origin_spa",
     "joined":"joined_spa",
     "active-conversation":"active conversation_spa",
-    "mrd-states":"mrd states_spa",
+    "mrd-states":"MRD States_spa",
     "search-agent":"search agent_spa",
     "agent-stats":"agent stats_spa",
-    "pending-not-ready":"Pending-Not Ready_spa",
-    "agent(s)":"agent(S)_spa",
+    "pending-not-ready":"Pending-Not-Ready_spa",
+    "agent(s)":"agent(s)_spa",
     "direction":"direction_spa",
-    "No-Teams-Available":"No Teams Available"
+    "No-Teams-Available":"No Teams Available_spa"
   }
 }

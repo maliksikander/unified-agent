@@ -17,6 +17,7 @@ import { TopicParticipant } from "../models/User/Interfaces";
 import { TranslateService } from "@ngx-translate/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { announcementService } from "./announcement.service";
+import { DatePipe } from '@angular/common';
 
 //const mockTopicData: any = require("../mocks/mockTopicData.json");
 
@@ -48,10 +49,23 @@ export class socketService {
     private _httpService: httpService,
     private _authService: AuthService,
     private snackBar: MatSnackBar,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
+    private datePipe: DatePipe
   ) {
-    //this.onTopicData(mockTopicData, "12345", "");
+    // this.createFakeConversation(2);
   }
+
+  // createFakeConversation(count) {
+
+  //   this.onTopicData(mockTopicData, "12345", "11220");
+
+  //   if (count == 2) {
+  //     let anotherTopicdata: any = JSON.parse(JSON.stringify(mockTopicData));
+  //     anotherTopicdata.customer._id = '12345431213';
+  //     this.onTopicData(anotherTopicdata, "1234567", "2211");
+  //   }
+
+  // }
 
   connectToSocket() {
     //load pullMode list
@@ -265,10 +279,14 @@ export class socketService {
       let sameTopicConversation = this.conversations.find((e) => {
         return e.conversationId == res.conversationId;
       });
-      sameTopicConversation.wrapUpDialog.show = true;
-      sameTopicConversation.wrapUpDialog.durationLeft = res.duration;
 
-      this.startWrapUpTimer(sameTopicConversation);
+      if (sameTopicConversation) {
+        sameTopicConversation.wrapUpDialog.show = true;
+        sameTopicConversation.SLACountdown.inPopUpShow = false;
+        sameTopicConversation.wrapUpDialog.durationLeft = res.duration;
+
+        this.startWrapUpTimer(sameTopicConversation);
+      }
     });
 
     this.socket.on("socketSessionRemoved", (res: any) => {
@@ -446,7 +464,11 @@ export class socketService {
           this.handleTypingStartedEvent(cimEvent, sameTopicConversation);
         } else if (cimEvent.name.toLowerCase() == "participant_role_changed") {
           this.handleParticipantRoleChangedEvent(cimEvent, conversationId);
-        }
+        } else if (cimEvent.name.toLowerCase() == "agent_sla_started") {
+          this.handleAgentSlaStartedEvent(cimEvent, conversationId);
+        } else if (cimEvent.name.toLowerCase() == "agent_sla_stopped") {
+          this.handleAgentSlaStoppedEvent(cimEvent, conversationId);
+        }  
       } else {
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-event-unsubscribing"), "err");
         this.emit("topicUnsubscription", {
@@ -508,6 +530,7 @@ export class socketService {
       topicParticipant: topicData.topicParticipant ? topicData.topicParticipant : "", //own ccuser of Agent
       firstChannelSession: topicData.channelSession ? topicData.channelSession : "",
       messageComposerState: false,
+      SLACountdown: { inPopUpShow: false, inViewShow: false, ref: null, value: 0, color: '' },
       agentParticipants: [] //all Agents in conversations except itself
     };
 
@@ -522,16 +545,16 @@ export class socketService {
         }
       }
       if (event.data.header && event.data.header.sender && event.data.header.sender.type.toLowerCase() == "connector") {
-        event.data.header.sender.senderName = event.data.header.customer.firstName;
-        event.data.header.sender.id = event.data.header.customer._id;
+        event.data.header.sender.senderName = topicData.customer.firstName;
+        event.data.header.sender.id = topicData.customer._id;
         event.data.header.sender.type = "CUSTOMER";
       }
       if (
         (event.name.toLowerCase() == "message_delivery_notification" || event.name.toLowerCase() == "customer_message") &&
         event.data.header.sender.type.toLowerCase() == "connector"
       ) {
-        event.data.header.sender.senderName = event.data.header.customer.firstName;
-        event.data.header.sender.id = event.data.header.customer._id;
+        event.data.header.sender.senderName = topicData.customer.firstName;
+        event.data.header.sender.id = topicData.customer._id;
         event.data.header.sender.type = "CUSTOMER";
       }
       if (
@@ -701,6 +724,13 @@ export class socketService {
     // console.log("conversations==>", this.conversations);
     this._conversationsListener.next(this.conversations);
 
+
+    // recover agent SLA
+    if (topicData.agentSla && topicData.agentSla.action && topicData.agentSla.action != '') {
+
+      this.recoverAgentSla(topicData.agentSla, conversation.SLACountdown, conversationId);
+    }
+
     if (
       topicData &&
       topicData.channelSession &&
@@ -708,6 +738,129 @@ export class socketService {
         (topicData && topicData.channelSession.channel.channelType.name == "CISCO_CC"))
     )
       this._router.navigate(["customers"]);
+  }
+
+
+  recoverAgentSla(agentSla, SLACountdown, conversationId) {
+
+    if (agentSla.action.toLowerCase() == "change_color") {
+      SLACountdown.color = "sla-warn";
+
+    } else if (agentSla.action.toLowerCase() == "show_popup") {
+      SLACountdown.color = "sla-ended";
+      this.showSLAPopUp(conversationId)
+    } else if (agentSla.action.toLowerCase() == "remove_all_agents") {
+      SLACountdown.color = "sla-ended";
+      this.showSLAPopUp(conversationId)
+    }
+    SLACountdown.value = this.calculateDateDifferenceInSeconds(agentSla.startTime, agentSla.totalDuration);
+    console.log("SLACountdown ", SLACountdown)
+    this.startSLACountDown(SLACountdown);
+
+
+  }
+
+  calculateDateDifferenceInSeconds(timeWhenTimerStarted, totalDurationOfTimer) {
+
+    const utcDate1: any = new Date(timeWhenTimerStarted).getTime();
+    const utcDate2: any = new Date(this.getCurrentTimeUTC()).getTime();
+
+    const timeDifference = Math.abs(utcDate2 - utcDate1);
+    const differenceInSeconds = timeDifference / 1000;
+    return Math.round(totalDurationOfTimer - differenceInSeconds);
+  }
+
+  getCurrentTimeUTC() {
+    const currentDate = new Date();
+    return this.datePipe.transform(currentDate, 'yyyy-MM-dd HH:mm:ss', 'UTC');
+  }
+
+  // starts the conversation SLA countdown
+  startSLACountDown(SLACountdown) {
+
+    if (SLACountdown.value > 0) {
+      SLACountdown.inViewShow = true;
+      SLACountdown.ref = setInterval(() => {
+        SLACountdown.value--;
+
+        if (SLACountdown.value === 0) {
+          clearInterval(SLACountdown.ref); // Stop the interval when countdown reaches 0
+          SLACountdown.inViewShow = false;
+        }
+      }, 1000); // Update countdown every second
+    }
+  }
+
+
+  // stops the conversation SLA countdown
+  stopSLACountDown(conversationId) {
+
+    let conversation = this.conversations.find((e) => {
+      //console.log("this is conversation id"+e.conversationId);
+      return e.conversationId == conversationId;
+    });
+
+    if (conversation) {
+      conversation.SLACountdown.value = 0;
+      clearInterval(conversation.SLACountdown.ref);
+      conversation.SLACountdown.ref = null;
+      conversation.SLACountdown.inViewShow = false;
+      conversation.SLACountdown.inPopUpShow = false;
+      conversation.SLACountdown.color = "sla-normal"
+    }
+
+  }
+
+  handleAgentSlaStartedEvent(cimEvent, conversationId) {
+    let conversation = this.conversations.find((e) => {
+      return e.conversationId == conversationId;
+    });
+
+    if (conversation) {
+
+      if (cimEvent.data.action.toLowerCase() == "start_timer") {
+
+        clearInterval(conversation.SLACountdown.ref);
+
+        conversation.SLACountdown.inViewShow = true;
+
+        conversation.SLACountdown.value = cimEvent.data.totalDuration;
+
+        this.startSLACountDown(conversation.SLACountdown);
+
+        conversation.SLACountdown.inPopUpShow = false;
+
+        conversation.SLACountdown.color = "sla-normal"
+
+        console.log("///////////////////////////////////////////// start_timer called")
+
+      } else if (cimEvent.data.action.toLowerCase() == "show_popup") {
+        conversation.SLACountdown.color = "sla-ended";
+        this.showSLAPopUp(conversationId)
+        console.log("///////////////////////////////////////////// show_popup called")
+
+      } else if (cimEvent.data.action.toLowerCase() == "change_color") {
+        conversation.SLACountdown.color = "sla-warn";
+        console.log("///////////////////////////////////////////// change_color called")
+
+      }
+    }
+  }
+
+  handleAgentSlaStoppedEvent(cimEvent, conversationId) {
+    this.stopSLACountDown(conversationId);
+  }
+
+  showSLAPopUp(conversationId) {
+    let conversation = this.conversations.find((e) => {
+      //console.log("this is conversation id"+e.conversationId);
+      return e.conversationId == conversationId;
+    });
+
+    if (conversation) {
+      conversation.SLACountdown.inViewShow = false;
+      conversation.SLACountdown.inPopUpShow = true;
+    }
   }
 
   processSeenMessages(conversation, events) {
@@ -1229,6 +1382,7 @@ export class socketService {
       }
     }
   }
+
 
   upateActiveConversationData(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {

@@ -64,7 +64,6 @@ export class InteractionsComponent implements OnInit {
   timer: any = "00:00";
   cxVoiceSession: any;
   openWrapDialog = false;
-
   isAudioPlaying: boolean[] = [];
   isDialogClosed;
   chatDuringCall = false;
@@ -156,7 +155,7 @@ export class InteractionsComponent implements OnInit {
     private snackBar: MatSnackBar,
     public _sipService: SipService,
     private _translateService: TranslateService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.isCallActive = this._sipService.isCallActive;
@@ -267,7 +266,7 @@ export class InteractionsComponent implements OnInit {
       }
     );
   }
-  emoji() {}
+  emoji() { }
 
   BargeIn() {
     let obj = {
@@ -367,7 +366,7 @@ export class InteractionsComponent implements OnInit {
     if (message.body.type === "COMMENT" && message.header.channelSession.channel.channelType.name === "INSTAGRAM")
       this.disablingAttatchButtonForInstagramReply = true;
     else {
-      console.log("[checkChannelTypeForAttatchementButton] Getting 'false' value .....");
+      console.log("[checkChannelTypeForAttachmentButton] Getting 'false' value .....");
     }
   }
 
@@ -405,7 +404,7 @@ export class InteractionsComponent implements OnInit {
       panelClass: "send-sms-dialog",
       data: { info: this._cacheService.smsDialogData }
     });
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe((result) => { });
     this._cacheService.clearOutboundSmsDialogData();
   }
 
@@ -698,7 +697,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -706,7 +705,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -776,7 +775,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
   externalfilePreviewOpener(url, fileName, type) {
     const dialogRef = this.dialog.open(FilePreviewComponent, {
@@ -786,7 +785,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
 
   uploadFile(files) {
@@ -989,18 +988,18 @@ export class InteractionsComponent implements OnInit {
               msgs.push(event.data);
             }
           }
-          if (event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == "plain") {
+          if (event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain') {
             const fakeChannelSession = {
-              channel: {
-                channelType: event.data.header.schedulingMetaData.channelType
+              "channel": {
+                "channelType": event.data.header.schedulingMetaData.channelType,
               },
-              channelData: event.data.header.channelData
-            };
-            event.data.header["channelSession"] = fakeChannelSession;
+              "channelData": event.data.header.channelData,
+            }
+            event.data.header['channelSession'] = fakeChannelSession;
             let status = this._socketService.getSchduledActivityStatus(cimEvents, event.data.id);
 
             if (status) {
-              event.data.header["scheduledStatus"] = status;
+              event.data.header['scheduledStatus'] = status;
             }
 
             msgs.push(event.data);
@@ -1521,14 +1520,17 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
+
   formatNumber(num) {
     return num.toString().padStart(2, "0");
   }
 
   openWrapUpDialog(timerEnabled: boolean): void {
+
     if (timerEnabled) {
       this.unsubscribeFromConversation();
-    } else {
+    }
+    else {
       this.openWrapDialog = true;
     }
   }
@@ -1581,10 +1583,10 @@ export class InteractionsComponent implements OnInit {
     this.isConversationView = !this.isConversationView;
   }
   videoSwitch(e) {
-    if (e == "jm") {
-      this.videoSrc = "assets/video/sample-vid.mp4";
+    if (e == 'jm') {
+      this.videoSrc = 'assets/video/sample-vid.mp4';
     } else {
-      this.videoSrc = "assets/video/angry-birds.mp4";
+      this.videoSrc = 'assets/video/angry-birds.mp4';
     }
   }
   requestFullscreen(element: Element): void {
@@ -1700,6 +1702,41 @@ export class InteractionsComponent implements OnInit {
   //     console.error("[filterCXQueues] Error :", e);
   //   }
   // }
+  clear() {
+    this._socketService.stopSLACountDown(this.conversation.conversationId)
+  }
+
+  warn() {
+    this.conversation.SLACountdown.color = "sla-warn"
+  }
+
+  ended() {
+    this.conversation.SLACountdown.color = "sla-ended"
+
+  }
+
+  popUp() {
+    this._socketService.showSLAPopUp(this.conversation.conversationId)
+  }
+
+  extendSlaTime() {
+
+    const event = {
+      id: uuidv4(),
+      name: "RESET_AGENT_SLA",
+      type: "NOTIFICATION",
+      timestamp: Date.now(),
+      conversationId: this.conversation.conversationId,
+      "data": {}
+    }
+
+    this._socketService.emit("publishCimEvent", {
+      cimEvent: event,
+      agentId: this._cacheService.agent.id,
+      conversationId: this.conversation.conversationId
+    });
+
+  }
 
   // filterVoiceQueues(queues: Array<any>) {
   //   try {

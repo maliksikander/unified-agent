@@ -35,6 +35,7 @@
         td,th{
           &:nth-child(1){
             width: 35%;
+            text-transform: inherit;
           }
           &:nth-child(2){
             text-align: center;
@@ -248,5 +249,25 @@
         }
       }
     }
+  }
+}
+.stats-label{
+  min-width: 65px;
+}
+@media(max-width: 990px){
+  .active-agent-list-area{
+    padding: 0 5px;
+
+    .filter-area{
+      flex-direction: column;
+    }
+    table{
+      td{
+        padding: 0 5px !important;
+      }
+    }
+  }
+  .container-fluid{
+    padding: 0;
   }
 }

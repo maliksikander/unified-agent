@@ -22,7 +22,7 @@
     "Something-went-wrong":"Something went wrong_ger",
     "The-license-is":"The license is :_ger",
     "Unable-to-process-chat-unsubscribing":"Unable to process chat, unsubscribing..._ger",
-    "Conversation-is-closed-due-to":"Conversation is closed due to _ger",
+    "Conversation-is-closed-due-to":"You are removed due to _ger",
     "Unable-to-process-event-unsubscribing":"Unable to process event, unsubscribing..._ger",
     "you-are-logged-In-from-another-session":"You are logged In from another session_ger",
     "Profile-linked-successfully":"Profile linked successfully_ger",
@@ -105,11 +105,11 @@
 
   },
   "app-header": {
-    "customer-conversation-view": "Customer Conversation View_ger",
-    "customer-list-view": "Customer List View_ger",
+    "customer-conversation-view": "Customer Interactions_ger",
+    "customer-list-view": "Customers_ger",
     "customer-labels": "Customer Labels_ger",
     "subscribed-lists": "Subscribed Lists_ger",
-    "customer-schema": "Customer Schema_ger",
+    "customer-schema": "Customer Attributes_ger",
     "dashboard": "Dashboard_ger",
     "summary-dashboard": "Summary Dashboard_ger",
     "active-conversations-detail": "Active Conversations Detail_ger",
@@ -232,8 +232,9 @@
       "Transfer-To-Queue":"Transfer To Queue_ger",
       "Conference-Request":"Conference Request_ger",
       "Add-To-Conference":"Add To Conference_ger",
+      "Search-Queue":"Search Queue_ger",
       "whisper": "Whisper_ger",
-      "bot-suggestions-available": "Bot suggestions are available type / for viewing_ger",
+      "bot-suggestions-available": "Bot suggestions are available. Type '/' for viewing_ger",
       "for-reply-to-a-comment":"for reply to a comment_ger",
       "Type-a-reply-to-comment":"Type a reply to a comment_ger",
       "Type-a-message": "Type a message here..._ger",
@@ -274,7 +275,13 @@
       "Transfer-To-Agent":"Transfer To Agent_ger",
       "agent-transfer":"Agent Transfer_ger",
       "Search-Queue-OR-Agent":"Search by Queue/Agent Name_ger",
-      "no-data-found":"No Data Found"
+      "no-data-found":"No Data Found_ger",
+      "sla-dialog-leave": "Leave_ger",
+      "sla-dialog-stay": "Stay_ger",
+      "sla-dialog-brached": "SLA breached!_ger",
+      "sla-dialog-expired": "SLA Expired_ger",
+      "sla-dialog-stay-here": "Would you like to stay in the conversation?_ger",
+      "sla-dialog-warning": "You will soon be removed from the conversation"
     },
     "wrap-up-form": {
       "Add-Wrap-Up": "Add Wrap-Up_ger",
@@ -513,12 +520,12 @@
     "origin":"Origin_ger",
     "joined":"joined_ger",
     "active-conversation":"active conversation_ger",
-    "mrd-states":"mrd states_ger",
+    "mrd-states":"MRD States_ger",
     "search-agent":"search agent_ger",
     "agent-stats":"agent stats_ger",
-    "pending-not-ready":"Pending-Not Ready_ger",
-    "agent(s)":"agent(S)_ger",
+    "pending-not-ready":"Pending-Not-Ready_ger",
+    "agent(s)":"agent(s)_ger",
     "direction":"direction_ger",
-    "No-Teams-Available":"No Teams Available"
+    "No-Teams-Available":"No Teams Available_ger"
   }
 }

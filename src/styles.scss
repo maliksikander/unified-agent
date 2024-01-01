@@ -3979,12 +3979,13 @@ mat-select {
 
   margin: 0 auto;
   text-align: center;
-  width: 50%;
+  width: 100%;
+  overflow: hidden;
 
   i {
     font-size: 60px;
     color: #777777;
-    width: 10%;
+    width: 60px;
   }
 
   span {
@@ -4727,4 +4728,30 @@ mat-select {
 
 .manage-dashboard{
   padding-top: 5px;
+}
+
+.left-bar-data{
+
+  &.sla-ended{
+    circle,path{
+      stroke:#BE0000
+    }
+  }
+
+  &.sla-warn{
+    circle,path{
+      stroke:#FFAA00
+    }
+  }
+
+}
+@media(max-width: 768px){
+  .email-composer-dialog {
+    width: calc(100% - 20px) !important;
+  }
+
+  mat-dialog-container{
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 }

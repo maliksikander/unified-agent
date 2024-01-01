@@ -41,7 +41,7 @@
         </mat-form-field> -->
       </div>
     </div>
-    <div class="data-table col">
+    <div class="data-table col dashboard-table">
       <table class="table">
         <thead>
           <tr>
@@ -62,10 +62,10 @@
                 <span class="channel-icon"><img [src]="chat.channelType | channelName | channelLogo | async" /></span>
                 <span *ngIf="'customer' | authPipe: 'view_pii' as result; else maskedpii">
                   <span class="table-main-data" matTooltip="{{ chat.customerName }}">{{
-                    chat.customerName 
+                    chat.customerName
                   }}</span>
                   <small matTooltip="{{ 'globals.channel-identifier' | translate }}"
-                    >({{ chat.channelIdentity  }})</small
+                    > ({{ chat.channelIdentity  }})</small
                   >
                 </span>
 
@@ -82,7 +82,7 @@
                 </ul>
               </td>
               <td>
-                {{ chat.waitingSince | amDuration: "seconds" }} <small>{{ "supervisor.ago" | translate }}</small>
+                {{ chat.waitingSince | amDuration: "seconds" }}
               </td>
               <td>{{ chat.queueName }}</td>
               <!-- <span class="table-trigger">

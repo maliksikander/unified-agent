@@ -2,6 +2,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { NgModule, APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { CommonModule, HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { DatePipe } from '@angular/common';
 
 import { AppRoutingModule } from "./app-routing.module";
 
@@ -194,6 +195,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     appConfigService,
     MessageService,
     TranslateService,
+    DatePipe,
     ConfirmationService,
     {
       provide: APP_INITIALIZER,
