@@ -1234,7 +1234,19 @@ export class InteractionsComponent implements OnInit {
       if (session) return true;
       return false;
     } catch (e) {
-      console.error("[Error] on isCXVoiceSessionActive", e);
+      console.error("[Error] on isCXVoiceSessionActive==>", e);
+    }
+  }
+
+  isCiscoSessionActive() {
+    try {
+      let session = this.conversation.activeChannelSessions.find((channelSession) => {
+        return channelSession.channel.channelType.name.toLowerCase() === "cisco_cc";
+      });
+      if (session) return true;
+      return false;
+    } catch (e) {
+      console.error("[Error] on  isCiscoSessionActive==>", e);
     }
   }
 
@@ -1381,14 +1393,6 @@ export class InteractionsComponent implements OnInit {
     try {
       this._httpService.getAgentsInQueue(this.conversation.conversationId, this._cacheService.agent.id).subscribe(
         (res: any) => {
-          // if (this.isCXVoiceSessionActive() && res && this.isDialogExisting()) {
-          //   // console.log("test4==>");
-          //   this.filterVoiceQueues(res);
-          // } else {
-          //   // console.log("test5==>");
-          //   this.filterNonVoiceQueues(res);
-          //   // this.queueList = res;
-          // }
           this.queueList = res;
         },
         (error) => {
