@@ -1,3 +1,7 @@
+<!-- <button (click)="clear()">clear</button>
+<button (click)="warn()">warn</button>
+<button (click)="ended()">ended</button>
+<button (click)="popUp()">popUp</button> -->
 <div
   class="interaction-main"
   [ngClass]="{
@@ -1757,33 +1761,33 @@
                                           />
                                         </li>
 
-                                        <li *ngIf="callData.additionalDetail?.dialog?.wrapUpReason" class="section-tags">
+                                    <li *ngIf="callData.additionalDetail?.dialog?.wrapUpReason" class="section-tags">
+                                      <ng-container
+                                        *ngIf="
+                                          callData.additionalDetail?.dialog?.wrapUpItems && callData.additionalDetail?.dialog?.wrapUpItems.length > 0
+                                        "
+                                      >
+
+                                        <span
+                                          matTooltip="{{ wrapup }}"
+                                          *ngFor="let wrapup of callData?.additionalDetail?.dialog?.wrapUpItems | sliceFilter: 0:2"
+                                        >
+                                          {{ wrapup }}
+                                        </span>
+                                        <ng-container *ngIf="callData?.additionalDetail?.dialog?.wrapUpItems?.length > 2">
                                           <ng-container
                                             *ngIf="
-                                              callData.additionalDetail?.dialog?.wrapUpItems &&
-                                              callData.additionalDetail?.dialog?.wrapUpItems.length > 0
+                                              callData?.additionalDetail?.dialog?.wrapUpItems
+                                                | sliceFilter: 2:callData?.additionalDetail?.dialog?.wrapUpItems?.length;
+                                              let remainingValues
                                             "
                                           >
-                                            <span
-                                              matTooltip="{{ wrapup }}ee"
-                                              *ngFor="let wrapup of callData?.additionalDetail?.dialog?.wrapUpItems | sliceFilter: 0:2"
+                                            <span matTooltip="{{ remainingValues?.join(', ') }}"
+                                              >+{{ callData.additionalDetail?.dialog?.wrapUpItems?.length - 2 }}</span
                                             >
-                                              {{ wrapup }}
-                                            </span>
-                                            <ng-container *ngIf="callData?.additionalDetail?.dialog?.wrapUpItems?.length > 2">
-                                              <ng-container
-                                                *ngIf="
-                                                  callData?.additionalDetail?.dialog?.wrapUpItems
-                                                    | sliceFilter: 2:callData?.additionalDetail?.dialog?.wrapUpItems?.length;
-                                                  let remainingValues
-                                                "
-                                              >
-                                                <span matTooltip="{{ remainingValues?.join(', ') }}"
-                                                  >+{{ callData.additionalDetail?.dialog?.wrapUpItems?.length - 2 }}</span
-                                                >
-                                              </ng-container>
-                                            </ng-container>
                                           </ng-container>
+                                        </ng-container>
+                                      </ng-container>
 
                                           <!-- <span *ngFor="let reasonCode of callData.dialog?.wrapUpReason | sliceFilter:0:2">
                                   {{reasonCode }}
@@ -1978,34 +1982,34 @@
                               </div>
                             </div>
 
-                            <div
-                              *ngIf="!message.isDeleted && !message.isHidden && message.id != selectedCommentId"
-                              class="comment-controlls post-controlls"
-                            >
-                              <ul>
+                        <div
+                          *ngIf="!message.isDeleted && !message.isHidden && message.id != selectedCommentId"
+                          class="comment-controlls post-controlls"
+                        >
+                          <ul>
+                            <li>
+                              <mat-icon (click)="replyToComment(message)"> chat_bubble_outline</mat-icon>
+                            </li>
+                            <li *ngIf="message.header.channelSession.channel.channelType.name.includes('FACEBOOK')">
+                              <mat-icon [ngClass]="{ liked: message.isLiked }" (click)="commentAction(message, 'like')"> thumb_up </mat-icon>
+                            </li>
+                            <li class="private-reply-icon" (click)="privateReplyToComment(message)">
+                              <img
+                                *ngIf="message.header.channelSession.channel.channelType.name == 'FACEBOOK'"
+                                src="assets/images/facebook-messenger.svg"
+                              />
+                              <img
+                                *ngIf="message.header.channelSession.channel.channelType.name == 'INSTAGRAM'"
+                                src="assets/images/Instagram-chat-2.svg"
+                              />
+                              <img *ngIf="message.header.channelSession.channel.channelType.name == 'TWITTER'" src="" />
+                            </li>
+                            <li class="view-all-options">
+                              <ul *ngIf="viewFullCommentAction">
                                 <li>
-                                  <mat-icon (click)="replyToComment(message)"> chat_bubble_outline</mat-icon>
+                                  <mat-icon (click)="commentAction(message, 'delete')"> delete</mat-icon>
                                 </li>
-                                <li *ngIf="message.header.channelSession.channel.channelType.name.includes('FACEBOOK')">
-                                  <mat-icon [ngClass]="{ liked: message.isLiked }" (click)="commentAction(message, 'like')"> thumb_up </mat-icon>
-                                </li>
-                                <li class="private-reply-icon" (click)="privateReplyToComment(message)">
-                                  <img
-                                    *ngIf="message.header.channelSession.channel.channelType.name == 'FACEBOOK'"
-                                    src="assets/images/facebook-messenger.svg"
-                                  />
-                                  <img
-                                    *ngIf="message.header.channelSession.channel.channelType.name == 'INSTAGRAM'"
-                                    src="assets/images/Instagram-chat-2.svg"
-                                  />
-                                  <img *ngIf="message.header.channelSession.channel.channelType.name == 'TWITTER'" src="" />
-                                </li>
-                                <li class="view-all-options">
-                                  <ul *ngIf="viewFullCommentAction">
-                                    <li>
-                                      <mat-icon (click)="commentAction(message, 'delete')"> delete</mat-icon>
-                                    </li>
-                                    <!-- <li>
+                                <!-- <li>
                                   <mat-icon>person_off</mat-icon>
                                 </li> -->
                                     <li>
@@ -2320,33 +2324,31 @@
                                 <div class="sub-comment">
                                   <!-- <strong>{{ postComments?.from?.name }}</strong> -->
 
-                                  <div *ngIf="!message.isDeleted && !message.isHidden && fullPostView" class="comment-controlls post-controlls">
-                                    <ul>
+                              <div *ngIf="!message.isDeleted && !message.isHidden && fullPostView" class="comment-controlls post-controlls">
+                                <ul>
+                                  <li>
+                                    <mat-icon (click)="replyToComment(message)"> chat_bubble_outline</mat-icon>
+                                  </li>
+                                  <li *ngIf="message.header.channelSession.channel.channelType.name.includes('FACEBOOK')">
+                                    <mat-icon [ngClass]="{ liked: message.isLiked }" (click)="commentAction(message, 'like')"> thumb_up </mat-icon>
+                                  </li>
+                                  <li class="private-reply-icon" (click)="privateReplyToComment(message)">
+                                    <img
+                                      *ngIf="message.header.channelSession.channel.channelType.name == 'FACEBOOK'"
+                                      src="assets/images/facebook-messenger.svg"
+                                    />
+                                    <img
+                                      *ngIf="message.header.channelSession.channel.channelType.name == 'INSTAGRAM'"
+                                      src="assets/images/Instagram-chat-2.svg"
+                                    />
+                                    <img *ngIf="message.header.channelSession.channel.channelType.name == 'TWITTER'" src="" />
+                                  </li>
+                                  <li class="view-all-options">
+                                    <ul *ngIf="viewFullCommentAction">
                                       <li>
-                                        <mat-icon (click)="replyToComment(message)"> chat_bubble_outline</mat-icon>
+                                        <mat-icon (click)="commentAction(message, 'delete')"> delete</mat-icon>
                                       </li>
-                                      <li *ngIf="message.header.channelSession.channel.channelType.name.includes('FACEBOOK')">
-                                        <mat-icon [ngClass]="{ liked: message.isLiked }" (click)="commentAction(message, 'like')">
-                                          thumb_up
-                                        </mat-icon>
-                                      </li>
-                                      <li class="private-reply-icon" (click)="privateReplyToComment(message)">
-                                        <img
-                                          *ngIf="message.header.channelSession.channel.channelType.name == 'FACEBOOK'"
-                                          src="assets/images/facebook-messenger.svg"
-                                        />
-                                        <img
-                                          *ngIf="message.header.channelSession.channel.channelType.name == 'INSTAGRAM'"
-                                          src="assets/images/Instagram-chat-2.svg"
-                                        />
-                                        <img *ngIf="message.header.channelSession.channel.channelType.name == 'TWITTER'" src="" />
-                                      </li>
-                                      <li class="view-all-options">
-                                        <ul *ngIf="viewFullCommentAction">
-                                          <li>
-                                            <mat-icon (click)="commentAction(message, 'delete')"> delete</mat-icon>
-                                          </li>
-                                          <!-- <li>
+                                      <!-- <li>
                                         <mat-icon>person_off</mat-icon>
                                       </li> -->
                                           <li>
@@ -2558,14 +2560,14 @@
 
                   <!-- {{conversation.activeChannelSessions[conversation.activeChannelSessions.length
         -1]?.channel.channelType.name}}  -->
-                  <i class="material-icons"> arrow_drop_down </i>
-                </ng-container>
-              </button>
-              <label *ngIf="conversation.activeChannelSessions.length == 0" style="color: grey; padding-left: 2px"
-                >{{ "chat-features.interactions.none" | translate }}
-              </label>
-            </span>
-          </div>
+            <i class="material-icons"> arrow_drop_down </i>
+          </ng-container>
+        </button>
+        <label *ngIf="conversation.activeChannelSessions.length == 0" style="color: grey; padding-left: 2px"
+          >{{ "chat-features.interactions.none" | translate }}
+        </label>
+      </span>
+    </div>
 
           <mat-menu #channelSwitching="matMenu" yPosition="below" panelClass="custom" [overlapTrigger]="false">
             <button
@@ -2681,56 +2683,52 @@
               <span></span>
             </div>
 
-            <form
-              class="reply-form {{
-                conversation.topicParticipant.role != 'SILENT_MONITOR' &&
-                (conversation?.agentParticipants | countAgentPartcipants: ['PRIMARY', 'ASSISTANT'])
-                  ? 'whisper-tabs'
-                  : ''
+        <form
+          class="reply-form {{ (conversation.topicParticipant.role != 'SILENT_MONITOR' && (conversation?.agentParticipants | countAgentPartcipants: ['PRIMARY', 'ASSISTANT']) ) ? 'whisper-tabs' : '' }}"
+          [ngClass]="{ 'whisper-mode':( conversation.topicParticipant.role != 'SILENT_MONITOR' && isWhisperMode) }"
+
+        >
+          <label *ngIf="message.length > 0" class="count-reply">{{ replyInput.value.length }}/1000</label>
+          <div class="mat-form-field chat-area" [ngClass]="{ 'expand-area-height': expanedHeight > 50 }">
+            <textarea
+              maxlength="1000"
+              [disabled]="
+                !_socketService.isSocketConnected ||
+                conversation.activeChannelSessions.length == 0 ||
+                !conversation.messageComposerState                ||
+                conversation.topicParticipant.role == 'SILENT_MONITOR' ||
+                (!isWhisperMode && conversation.topicParticipant.role == 'ASSISTANT')
+              "
+              (keyup.enter)="onSend(replyInput.value); replyInput.value = null"
+              (focus)="onTextAreaFocus()"
+              (keydown.enter)="onEnterKey($event)"
+              [attr.data-emoji-picker]="conversation.activeChannelSessions.length > 0 ? true : false"
+              [(ngModel)]="message"
+              (keyup)="onKey($event)"
+              name="message"
+              [matAutocomplete]="auto"
+              matInput
+              cdkTextareaAutosize
+              cdkAutosizeMinRows="1"
+              cdkAutosizeMaxRows="5"
+              id="messageTextarea"
+              class="resize-none"
+              #replyInput
+              name="message"
+              placeholder="{{
+                (conversation.messages[conversation.messages.length - 1]?.botSuggestions
+                  ? commentId
+                    ? 'chat-features.interactions.bot-suggestions-available-for-reply-to-a-comment'
+                    : 'chat-features.interactions.bot-suggestions-available'
+                  : _socketService.isSocketConnected && conversation.activeChannelSessions.length > 0 && conversation.messageComposerState
+                  ? commentId
+                    ? 'chat-features.interactions.Type-a-reply-to-comment'
+                    : 'chat-features.interactions.Type-a-message'
+                  : 'chat-features.interactions.Unable-to-send-message'
+                ) | translate
               }}"
-              [ngClass]="{ 'whisper-mode': conversation.topicParticipant.role != 'SILENT_MONITOR' && isWhisperMode }"
-            >
-              <label *ngIf="message.length > 0" class="count-reply">{{ replyInput.value.length }}/1000</label>
-              <div class="mat-form-field chat-area" [ngClass]="{ 'expand-area-height': expanedHeight > 50 }">
-                <textarea
-                  maxlength="1000"
-                  [disabled]="
-                    !_socketService.isSocketConnected ||
-                    conversation.activeChannelSessions.length == 0 ||
-                    !conversation.messageComposerState ||
-                    conversation.topicParticipant.role == 'SILENT_MONITOR' ||
-                    (!isWhisperMode && conversation.topicParticipant.role == 'ASSISTANT')
-                  "
-                  (keyup.enter)="onSend(replyInput.value); replyInput.value = null"
-                  (focus)="onTextAreaFocus()"
-                  (keydown.enter)="onEnterKey($event)"
-                  [attr.data-emoji-picker]="conversation.activeChannelSessions.length > 0 ? true : false"
-                  [(ngModel)]="message"
-                  (keyup)="onKey($event)"
-                  name="message"
-                  [matAutocomplete]="auto"
-                  matInput
-                  cdkTextareaAutosize
-                  cdkAutosizeMinRows="1"
-                  cdkAutosizeMaxRows="5"
-                  id="messageTextarea"
-                  class="resize-none"
-                  #replyInput
-                  name="message"
-                  placeholder="{{
-                    (conversation.messages[conversation.messages.length - 1]?.botSuggestions
-                      ? commentId
-                        ? 'chat-features.interactions.bot-suggestions-available-for-reply-to-a-comment'
-                        : 'chat-features.interactions.bot-suggestions-available'
-                      : _socketService.isSocketConnected && conversation.activeChannelSessions.length > 0 && conversation.messageComposerState
-                      ? commentId
-                        ? 'chat-features.interactions.Type-a-reply-to-comment'
-                        : 'chat-features.interactions.Type-a-message'
-                      : 'chat-features.interactions.Unable-to-send-message'
-                    ) | translate
-                  }}"
-                ></textarea>
-                <!-- [ngClass]="{'animate-content': displaySuggestionsAnimation}" -->
+            ></textarea>
+            <!-- [ngClass]="{'animate-content': displaySuggestionsAnimation}" -->
 
                 <mat-autocomplete
                   #auto="matAutocomplete"
@@ -2964,50 +2962,58 @@
         </div>
       </div>
 
-      <!--  Bot suggestios panel with the conversation view-->
-      <div class="suggestion-main-area" *ngIf="isBotSuggestions">
-        <div class="bot-suggestion-area">
-          <div class="chat-intents">
-            <div class="chat-intents">
-              <div class="search-wrapper">
-                <mat-form-field appearance="outline">
-                  <input matInput type="text" placeholder="Search knowledge base" />
-                  <mat-icon matSuffix>search</mat-icon>
-                </mat-form-field>
-              </div>
-              <div class="main-suggestion-panel">
-                <div class="intents-inner">
-                  <!--            <p *ngFor="let opt of convers">-->
-                  <!--              {{opt.body?.markdownText}} ==llloooll== {{conversation.messages[conversation.messages.length - 1]?.botSuggestions.messageBody.markdownText}} </p>-->
-                  <div class="suggestion-main" *ngFor="let botSuggestion of conversation.botSuggestions">
-                    <ng-container *ngFor="let suggestion of botSuggestion.suggestions">
-                      <!--                <ng-container *ngIf="suggestion.messageBody.type == 'PLAIN'">-->
-                      <div class="suggestion-title">
-                        <span class="suggestion-type">
-                          <mat-icon>chat_bubble</mat-icon>
-                        </span>
-                        <!--                {{conversation.messages.body.markdownText}}-->
-                        <time>11:22 AM</time>
-                      </div>
-                      <span class="suggestion-message" (click)="replyInput.value = suggestion.messageBody.markdownText">{{
-                        suggestion.messageBody.markdownText
-                      }}</span>
-                      <!--              <b>{{intent.confidence.toFixed(2)}}</b>-->
-                      <button mat-mini-fab class="canned-trigger edit-trigger" (click)="replyInput.value = suggestion.messageBody.markdownText">
-                        <i class="material-icons">edit </i>
-                      </button>
-                      <button (click)="onSend(suggestion.messageBody.markdownText)" mat-mini-fab class="canned-trigger send-suggestion">
-                        <i class="material-icons">send </i>
-                      </button>
-                    </ng-container>
+<!--  Bot suggestios panel with the conversation view-->
+  <div class="suggestion-main-area" *ngIf="isBotSuggestions">
+
+    <div class="bot-suggestion-area">
+      <div class="chat-intents">
+        <div class="chat-intents">
+          <div class="search-wrapper">
+            <mat-form-field appearance="outline">
+              <input matInput type="text" placeholder="Search knowledge base" />
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="main-suggestion-panel">
+            <div class="intents-inner">
+              <!--            <p *ngFor="let opt of convers">-->
+              <!--              {{opt.body?.markdownText}} ==llloooll== {{conversation.messages[conversation.messages.length - 1]?.botSuggestions.messageBody.markdownText}} </p>-->
+              <div class="suggestion-main"  *ngFor="let botSuggestion of conversation.botSuggestions">
+
+                <ng-container *ngFor="let suggestion of botSuggestion.suggestions">
+
+
+
+                  <!--                <ng-container *ngIf="suggestion.messageBody.type == 'PLAIN'">-->
+                  <div class="suggestion-title">
+                  <span class="suggestion-type">
+                <mat-icon>chat_bubble</mat-icon>
+              </span>
+                    <!--                {{conversation.messages.body.markdownText}}-->
+                    <time>11:22 AM</time>
                   </div>
-                </div>
+                  <span class="suggestion-message" (click)="replyInput.value = suggestion.messageBody.markdownText">{{suggestion.messageBody.markdownText}}</span>
+                  <!--              <b>{{intent.confidence.toFixed(2)}}</b>-->
+                  <button
+                    mat-mini-fab
+                    class="canned-trigger edit-trigger"
+                    (click)="replyInput.value = suggestion.messageBody.markdownText"
+                  >
+                    <i class="material-icons">edit </i>
+                  </button>
+                  <button (click)="onSend(suggestion.messageBody.markdownText)" mat-mini-fab class="canned-trigger send-suggestion">
+                    <i class="material-icons">send </i>
+                  </button>
+                </ng-container>
               </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
+  </div>
+</div>
   </div>
 
   <!--./Bot suggestions-->
