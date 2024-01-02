@@ -367,9 +367,9 @@ export class socketService {
 
   onCimEventHandler(cimEvent, conversationId) {
     console.log("cim event ", JSON.parse(JSON.stringify(cimEvent)));
-    if(JSON.parse(JSON.stringify(cimEvent)).name == 'TASK_STATE_CHANGED' ){
-      this._crmEventsService.postCRMEvent( JSON.parse(JSON.stringify(cimEvent)));
-    }
+    // if(JSON.parse(JSON.stringify(cimEvent)).name == 'TASK_STATE_CHANGED' ){
+    //   this._crmEventsService.postCRMEvent( JSON.parse(JSON.stringify(cimEvent)));
+    // }
 
     if (cimEvent.channelSession) {
       if (cimEvent.data && cimEvent.data.header) {
@@ -455,6 +455,12 @@ export class socketService {
         this.handleTaskEnqueuedEvent(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "task_state_changed") {
         this.handleTaskStateChangedEvent(cimEvent, conversationId);
+        //cimEvent.agentData.data.task.state.name === 'WRAP_UP' && 
+        //if((this._cacheService.agent.id === cimEvent.agentData.data.task.assignedTo.id)){console.log("========= task state changed ======",this._cacheService.agent.id)}
+        //if(this._cacheService.agent.id === cimEvent.data.task.assignedTo.id ){ //&& (cimEvent.data.task.state.name === 'WRAP_UP')
+          //console.log("========= task state changed ======",this._cacheService.agent.id)}
+          this._crmEventsService.postCRMEvent(cimEvent);
+        
       } else if (cimEvent.name.toLowerCase() == "no_agent_available") {
         this.handleNoAgentEvent(cimEvent, conversationId);
       } else if (cimEvent.name.toLowerCase() == "message_delivery_notification") {

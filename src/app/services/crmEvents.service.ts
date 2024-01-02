@@ -1,5 +1,6 @@
 
 import { EventEmitter, Injectable, Output } from "@angular/core";
+import { appConfigService } from "./appConfig.service";
 
 
 @Injectable({
@@ -12,15 +13,19 @@ export class crmEventsService {
     conversationId = null;
     customerName = null;
     AgentReserved: boolean = false;
+    crmEventsEnabled: boolean ;
 
-    constructor() {
-
+    constructor(public _appConfigService: appConfigService) {
+        this.crmEventsEnabled = this._appConfigService.config.isCrmEventsEnabled;
     }
 
 // function for firing Events for CRM
+
     postCRMEvent(e) {
         try {
             //  when Agent Presence Object Changed
+            if (this.crmEventsEnabled) {
+
             if ('agentStateChanged' in e && 'mrdStateChanges' in e) {
                 if (e.agentStateChanged) {
                     this.eventName = "Agent_State_Change";
@@ -46,7 +51,7 @@ export class crmEventsService {
                     console.log("AgentReserved set to true");
                   }
             }
-            else if(e.name == 'TASK_STATE_CHANGED'){
+            else if(e.name == 'TASK_STATE_CHANGED'&& (e.data.task.state.name === 'WRAP_UP') ){ //&& (e.agentData.data.task.state.name === 'WRAP_UP')
                 this.eventName = "TASK_STATE_CHANGED";
                 this.agentData = e ;
             }
@@ -58,7 +63,12 @@ export class crmEventsService {
                 this.agentData = { agentData: e };
                 this.AgentReserved=false;
              }
-
+ 
+             else if(e.mode == 'queue'){
+                this.eventName = "TASK_STATE_CHANGED";
+                this.agentData = e ;
+            }
+             
             //when Agent endchat any chat in Agent Desk 
             else if (e.reason == "UNSUBSCRIBED") {
                 this.eventName = "Chat_End";
@@ -70,6 +80,11 @@ export class crmEventsService {
                 this.agentData = { agentData: e };
             }
             this.sendEventMessage(this.eventName, this.agentData, this.conversationId, this.customerName);
+           // console.log("Post==>", e)
+        }
+        else{
+            console.log("CRM events are not enabled.");
+        }
         }
         catch (e) {
             console.log("error in e==>", e)
@@ -79,25 +94,28 @@ export class crmEventsService {
 
     chatSwitching(currentCustomerdata, previousCustomerData) {
         try {
+            if (this.crmEventsEnabled) {
             if (currentCustomerdata) {
                 let obj = {
                     event: "Chat_Switching_Event",
                     agentData: {
                         currentCustomer: {
                             conversationId: currentCustomerdata.conversationId,
-                            customer: currentCustomerdata.customer
+                            customer: currentCustomerdata   //currentCustomerdata.customer
                         },
                         previousCustomer: {
                             conversationId: previousCustomerData.conversationId,
-                            customer: previousCustomerData.customer
+                            customer: previousCustomerData     //previousCustomerData.customer 
                         }
                     }
                 };
-                console.log("sending event==>", obj)
+                //console.log("sending event==>", obj)
                 window.postMessage(obj, location.origin);
             }
-            this.sendEventMessage(this.eventName, this.agentData, this.conversationId, this.customerName)
-
+            //this.sendEventMessage(this.eventName, this.agentData, this.conversationId, this.customerName)
+        }else{
+            console.log("CRM events are not enabled.");
+        }
         }
         catch (e) {
             console.log("error in e==>", e)
@@ -117,6 +135,7 @@ export class crmEventsService {
         }
 
         window.postMessage(eventObj, location.origin);
+        console.log("Post sendEventMessage ==>", eventObj)
     }
 
 }

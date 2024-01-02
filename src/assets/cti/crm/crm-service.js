@@ -3,10 +3,10 @@
 window.addEventListener("message", function (e) {
 
     try {
-        if (e.origin !== location.origin)
-            return;
-       console.log("Received a message from the same app:", e.data);
-    }
+        if (location.origin)
+            
+       console.log("Received a message from the same app:", e);
+   }
     catch (e) {
         console.log("Can't received a message from the  app", e)
     }

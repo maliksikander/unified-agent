@@ -18,6 +18,7 @@ import { ConversationSettings } from "../../models/conversationSetting/conversat
 import { SipService } from "src/app/services/sip.service";
 import { HighlightResult } from "ngx-highlightjs";
 import { SendSmsComponent } from "../send-sms/send-sms.component";
+import { crmEventsService } from "src/app/services/crmEvents.service";
 // import {DOCUMENT} from '@angular/common';
 
 // declare var EmojiPicker: any;
@@ -151,7 +152,8 @@ export class InteractionsComponent implements OnInit {
     public _finesseService: finesseService,
     private snackBar: MatSnackBar,
     public _sipService: SipService,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
+    private _crmEventsService: crmEventsService
   ) { }
 
   ngOnInit() {
@@ -1312,8 +1314,14 @@ export class InteractionsComponent implements OnInit {
       queueName: this.requestedQueue.queueName,
       note: this.assistanceRequestNote
     };
-    if (this.requestAction == "transfer") this._socketService.emit("directTransferRequest", data);
-    else if (this.requestAction == "conference") this._socketService.emit("directConferenceRequest", data);
+    if (this.requestAction == "transfer") {this._socketService.emit("directTransferRequest", data);
+   console.log("directTransferRequest", data);
+   this._crmEventsService.postCRMEvent(data);
+  }
+    else if (this.requestAction == "conference") {this._socketService.emit("directConferenceRequest", data);
+    console.log("directConferenceRequest", data);
+    this._crmEventsService.postCRMEvent(data);
+  }
 
     this.showRequestNotification();
   }
