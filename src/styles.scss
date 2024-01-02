@@ -4769,6 +4769,7 @@ mat-select {
 .email-compose-head{
   .mat-form-field-wrapper {
     padding-bottom: 0;
+    line-height: 25px;
   }
   .mat-form-field-infix {
     padding: 0;
@@ -4787,6 +4788,11 @@ mat-select {
         color: #363636;
       }
     }
+  }
+}
+.email-to-list{
+  .mat-chip-list-wrapper{
+    margin: 0;
   }
 }
 
@@ -4895,7 +4901,7 @@ mat-select {
       &:after {
         color: #06c;
       }
-  
+
     }
   }
 
@@ -4913,4 +4919,14 @@ mat-select {
     }
   }
 
+}
+
+.email1count{
+  background: red !important;
+}
+.email2count{
+  background: blue !important;
+}
+.email3count{
+  background: gold !important;
 }

@@ -1790,7 +1790,7 @@
                                             }}
                                           </span>
                                         </ng-container>
-    
+
                                         <ng-container
                                           *ngIf="
                                           callData.additionalDetail?.dialog?.wrapUpItems &&
@@ -2915,7 +2915,7 @@
                     conversationSettings.isFileSharingEnabled &&
                     _socketService.isSocketConnected &&
                     conversation.topicParticipant.role != 'SILENT_MONITOR' &&
-                    !disablingAttatchButtonForInstagramReply && 
+                    !disablingAttatchButtonForInstagramReply &&
                     !(conversation.activeChannelSessions | getCheckedChannelSession)[0].name === 'EMAIL'
                   "
                 >
@@ -3250,9 +3250,9 @@
           <div class="sender-selection">
             <label>To</label>
 
-            <mat-form-field class="email-to-list">
+            <mat-form-field class="email-to-list email-count-list">
               <mat-chip-list #emailToList>
-                <mat-chip
+                <mat-chip [matTooltip]="recipient.value"
                   *ngFor="let recipient of emailForm.get('recipientsTo').controls; let i = index"
                   [selectable]="selectable"
                   [removable]="removable"
@@ -3280,7 +3280,7 @@
           <div class="sender-selection">
             <label>Cc</label>
 
-            <mat-form-field class="email-to-list">
+            <mat-form-field class="email-to-list email-count-list">
               <mat-chip-list #emailCc>
                 <mat-chip
                   *ngFor="let recipient of emailForm.get('recipientsCc').controls; let i = index"
@@ -3306,7 +3306,7 @@
           <div class="sender-selection">
             <label>Bcc</label>
 
-            <mat-form-field class="email-to-list">
+            <mat-form-field class="email-to-list email-count-list">
               <mat-chip-list #emailToBcc>
                 <mat-chip
                   *ngFor="let recipient of emailForm.get('recipientsBcc').controls; let i = index"
