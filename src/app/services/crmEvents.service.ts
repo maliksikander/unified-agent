@@ -13,18 +13,23 @@ export class crmEventsService {
     conversationId = null;
     customerName = null;
     AgentReserved: boolean = false;
-    crmEventsEnabled: boolean ;
+   
 
-    constructor(public _appConfigService: appConfigService) {
-        this.crmEventsEnabled = this._appConfigService.config.isCrmEventsEnabled;
+    constructor(private _appConfigService: appConfigService) {
+       // this.crmEventsEnabled = this._appConfigService.config.isCrmEventsEnabled;
+        //console.log("*********this.crmEventsEnabled***********",this._appConfigService.config.isCrmEventsEnabled)
+        // if(this._appConfigService.config.isCrmEventsEnabled){
+    
+        // }
     }
 
 // function for firing Events for CRM
 
-    postCRMEvent(e) {
+ postCRMEvent(e) {
         try {
+            
             //  when Agent Presence Object Changed
-            if (this.crmEventsEnabled) {
+            if (this._appConfigService.config.isCrmEventsEnabled) {
 
             if ('agentStateChanged' in e && 'mrdStateChanges' in e) {
                 if (e.agentStateChanged) {
@@ -94,7 +99,7 @@ export class crmEventsService {
 
     chatSwitching(currentCustomerdata, previousCustomerData) {
         try {
-            if (this.crmEventsEnabled) {
+            if (this._appConfigService.config.isCrmEventsEnabled) {
             if (currentCustomerdata) {
                 let obj = {
                     event: "Chat_Switching_Event",
