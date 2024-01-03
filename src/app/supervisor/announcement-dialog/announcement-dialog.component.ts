@@ -106,8 +106,8 @@ export class AnnouncementDialogComponent implements OnInit {
     this.postData = {
       teams: this.selectedTeams,
       announcementText: this.announcementMessage.value,
-      expiryTime: this.expireDate.value,
-      scheduledTime: this.announceDate.value,
+      expiryTime: new Date(this.expireDate.value).toISOString(),
+      scheduledTime: new Date(this.announceDate.value).toISOString(),
       supervisorId: this.supervisorId,
       supervisorName: this.supervisor
     };
@@ -130,8 +130,8 @@ export class AnnouncementDialogComponent implements OnInit {
     this.editAnnouncementObj = {
       teams: this.selectedTeams,
       announcementText: this.announcementMessage.value,
-      expiryTime: this.expireDate.value, // this.announceDate.setValue(this.announceDate.value),
-      scheduledTime: this.announceDate.value,
+      expiryTime: new Date(this.expireDate.value).toISOString(),
+      scheduledTime: new Date(this.announceDate.value).toISOString(),
       supervisorId: this.supervisorId,
       supervisorName: this.supervisor
     };
