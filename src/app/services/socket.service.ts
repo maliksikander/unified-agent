@@ -17,7 +17,8 @@ import { TopicParticipant } from "../models/User/Interfaces";
 import { TranslateService } from "@ngx-translate/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { announcementService } from "./announcement.service";
-import { DatePipe } from '@angular/common';
+import { DatePipe } from "@angular/common";
+import { crmEventsService } from "./crmEvents.service";
 
 //const mockTopicData: any = require("../mocks/mockTopicData.json");
 
@@ -50,7 +51,8 @@ export class socketService {
     private _authService: AuthService,
     private snackBar: MatSnackBar,
     private _translateService: TranslateService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private _crmEventsService: crmEventsService
   ) {
     // this.createFakeConversation(2);
   }
@@ -163,6 +165,7 @@ export class socketService {
     this.socket.on("agentPresence", (res: any) => {
       console.log("agent presence", res);
       this._sharedService.serviceChangeMessage({ msg: "stateChanged", data: res.agentPresence });
+      this._crmEventsService.postCRMEvent(res);
     });
 
     this.socket.on("ANNOUNCEMENT_CREATED", (res: any) => {
@@ -182,6 +185,7 @@ export class socketService {
 
     this.socket.on("taskRequest", (res: any) => {
       console.log("taskRequest==>", res);
+      this._crmEventsService.postCRMEvent(res);
       if (res.taskState && res.taskState.name.toLowerCase() == "started") {
         if (res.taskDirection.toLowerCase() == "consult") {
           this.consultTask = undefined;
@@ -242,6 +246,7 @@ export class socketService {
     this.socket.on("onTopicData", (res: any, callback: any) => {
       console.log("onTopicData==>", JSON.parse(JSON.stringify(res)));
       try {
+        this._crmEventsService.postCRMEvent(JSON.parse(JSON.stringify(res)));
         this.onTopicData(res.topicData, res.conversationId, res.taskId);
         if (callback) {
           callback({ status: "ok" });
@@ -258,7 +263,8 @@ export class socketService {
     });
 
     this.socket.on("topicUnsubscription", (res: any) => {
-      console.log("topicUnsubscription", res);
+      console.log("topicUnsubscription==>", res);
+      this._crmEventsService.postCRMEvent(res);
       if (res.reason.toUpperCase() != "UNSUBSCRIBED" && res.reason.toUpperCase() != "CHAT TRANSFERRED") {
         this._snackbarService.open(this._translateService.instant("snackbar.Conversation-is-closed-due-to") + res.reason, "err");
       }
@@ -366,8 +372,8 @@ export class socketService {
   //this.socket.on(){}
 
   onCimEventHandler(cimEvent, conversationId) {
-    console.log("cim event ", JSON.parse(JSON.stringify(cimEvent)));
     try {
+      console.log("cim event ", JSON.parse(JSON.stringify(cimEvent)));
       if (cimEvent.channelSession) {
         if (cimEvent.data && cimEvent.data.header) {
           cimEvent.data.header.channelSession = cimEvent.channelSession;
@@ -452,6 +458,7 @@ export class socketService {
           this.handleTaskEnqueuedEvent(cimEvent, conversationId);
         } else if (cimEvent.name.toLowerCase() == "task_state_changed") {
           this.handleTaskStateChangedEvent(cimEvent, conversationId);
+          this._crmEventsService.postCRMEvent(cimEvent);
           // this.createSystemNotificationMessage(cimEvent);
         } else if (cimEvent.name.toLowerCase() == "no_agent_available") {
           this.handleNoAgentEvent(cimEvent, conversationId);
@@ -468,7 +475,7 @@ export class socketService {
           this.handleAgentSlaStartedEvent(cimEvent, conversationId);
         } else if (cimEvent.name.toLowerCase() == "agent_sla_stopped") {
           this.handleAgentSlaStoppedEvent(cimEvent, conversationId);
-        }  
+        }
       } else {
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-event-unsubscribing"), "err");
         this.emit("topicUnsubscription", {
@@ -530,7 +537,7 @@ export class socketService {
       topicParticipant: topicData.topicParticipant ? topicData.topicParticipant : "", //own ccuser of Agent
       firstChannelSession: topicData.channelSession ? topicData.channelSession : "",
       messageComposerState: false,
-      SLACountdown: { inPopUpShow: false, inViewShow: false, ref: null, value: 0, color: '' },
+      SLACountdown: { inPopUpShow: false, inViewShow: false, ref: null, value: 0, color: "" },
       agentParticipants: [] //all Agents in conversations except itself
     };
 
@@ -724,10 +731,8 @@ export class socketService {
     // console.log("conversations==>", this.conversations);
     this._conversationsListener.next(this.conversations);
 
-
     // recover agent SLA
-    if (topicData.agentSla && topicData.agentSla.action && topicData.agentSla.action != '') {
-
+    if (topicData.agentSla && topicData.agentSla.action && topicData.agentSla.action != "") {
       this.recoverAgentSla(topicData.agentSla, conversation.SLACountdown, conversationId);
     }
 
@@ -740,28 +745,22 @@ export class socketService {
       this._router.navigate(["customers"]);
   }
 
-
   recoverAgentSla(agentSla, SLACountdown, conversationId) {
-
     if (agentSla.action.toLowerCase() == "change_color") {
       SLACountdown.color = "sla-warn";
-
     } else if (agentSla.action.toLowerCase() == "show_popup") {
       SLACountdown.color = "sla-ended";
-      this.showSLAPopUp(conversationId)
+      this.showSLAPopUp(conversationId);
     } else if (agentSla.action.toLowerCase() == "remove_all_agents") {
       SLACountdown.color = "sla-ended";
-      this.showSLAPopUp(conversationId)
+      this.showSLAPopUp(conversationId);
     }
     SLACountdown.value = this.calculateDateDifferenceInSeconds(agentSla.startTime, agentSla.totalDuration);
-    console.log("SLACountdown ", SLACountdown)
+    console.log("SLACountdown ", SLACountdown);
     this.startSLACountDown(SLACountdown);
-
-
   }
 
   calculateDateDifferenceInSeconds(timeWhenTimerStarted, totalDurationOfTimer) {
-
     const utcDate1: any = new Date(timeWhenTimerStarted).getTime();
     const utcDate2: any = new Date(this.getCurrentTimeUTC()).getTime();
 
@@ -772,12 +771,11 @@ export class socketService {
 
   getCurrentTimeUTC() {
     const currentDate = new Date();
-    return this.datePipe.transform(currentDate, 'yyyy-MM-dd HH:mm:ss', 'UTC');
+    return this.datePipe.transform(currentDate, "yyyy-MM-dd HH:mm:ss", "UTC");
   }
 
   // starts the conversation SLA countdown
   startSLACountDown(SLACountdown) {
-
     if (SLACountdown.value > 0) {
       SLACountdown.inViewShow = true;
       SLACountdown.ref = setInterval(() => {
@@ -791,10 +789,8 @@ export class socketService {
     }
   }
 
-
   // stops the conversation SLA countdown
   stopSLACountDown(conversationId) {
-
     let conversation = this.conversations.find((e) => {
       //console.log("this is conversation id"+e.conversationId);
       return e.conversationId == conversationId;
@@ -806,9 +802,8 @@ export class socketService {
       conversation.SLACountdown.ref = null;
       conversation.SLACountdown.inViewShow = false;
       conversation.SLACountdown.inPopUpShow = false;
-      conversation.SLACountdown.color = "sla-normal"
+      conversation.SLACountdown.color = "sla-normal";
     }
-
   }
 
   handleAgentSlaStartedEvent(cimEvent, conversationId) {
@@ -817,9 +812,7 @@ export class socketService {
     });
 
     if (conversation) {
-
       if (cimEvent.data.action.toLowerCase() == "start_timer") {
-
         clearInterval(conversation.SLACountdown.ref);
 
         conversation.SLACountdown.inViewShow = true;
@@ -830,19 +823,16 @@ export class socketService {
 
         conversation.SLACountdown.inPopUpShow = false;
 
-        conversation.SLACountdown.color = "sla-normal"
+        conversation.SLACountdown.color = "sla-normal";
 
-        console.log("///////////////////////////////////////////// start_timer called")
-
+        console.log("///////////////////////////////////////////// start_timer called");
       } else if (cimEvent.data.action.toLowerCase() == "show_popup") {
         conversation.SLACountdown.color = "sla-ended";
-        this.showSLAPopUp(conversationId)
-        console.log("///////////////////////////////////////////// show_popup called")
-
+        this.showSLAPopUp(conversationId);
+        console.log("///////////////////////////////////////////// show_popup called");
       } else if (cimEvent.data.action.toLowerCase() == "change_color") {
         conversation.SLACountdown.color = "sla-warn";
-        console.log("///////////////////////////////////////////// change_color called")
-
+        console.log("///////////////////////////////////////////// change_color called");
       }
     }
   }
@@ -1382,7 +1372,6 @@ export class socketService {
       }
     }
   }
-
 
   upateActiveConversationData(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {

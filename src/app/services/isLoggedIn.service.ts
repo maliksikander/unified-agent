@@ -14,6 +14,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { AuthService } from "./auth.service";
 import { appConfigService } from "./appConfig.service";
 import { announcementService } from "./announcement.service";
+import { crmEventsService } from "./crmEvents.service";
 
 @Injectable({
   providedIn: "root"
@@ -36,7 +37,8 @@ export class isLoggedInService {
     private _translateService: TranslateService,
     private _authService: AuthService,
     private _appConfigService: appConfigService,
-    private _announcementService: announcementService
+    private _announcementService: announcementService,
+    private _crmEventsService: crmEventsService,
   ) {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       this._cacheService.isMobileDevice = true;
@@ -106,6 +108,7 @@ export class isLoggedInService {
             }
           });
           console.log("this is login resp ==>", e.data);
+          this._crmEventsService.postCRMEvent(e.data);
           this._cacheService.agent = e.data.keycloak_User;
           const attributes = e.data.keycloak_User.attributes;
           if (this._appConfigService.config.isCxVoiceEnabled) this.initiateSipService(attributes);
