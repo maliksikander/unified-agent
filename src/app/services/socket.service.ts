@@ -113,12 +113,12 @@ export class socketService {
             "err"
           );
         }
-      } catch (err) {}
+      } catch (err) { }
       if (err.message == "login-failed") {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this.moveToLogin();
@@ -153,7 +153,7 @@ export class socketService {
         try {
           sessionStorage.clear();
           localStorage.removeItem("ccUser");
-        } catch (e) {}
+        } catch (e) { }
         this._cacheService.resetCache();
         this.socket.disconnect();
         this._router.navigate(["login"]).then(() => {
@@ -194,12 +194,16 @@ export class socketService {
             topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.conversationId, "ASSISTANT", "SUBSCRIBED"),
             agentId: this._cacheService.agent.id,
             conversationId: res.conversationId,
+            roomId: res.roomId,
+            roomLabel: res.roomLabel,
             taskId: res.taskId
           });
         } else {
           this.emit("topicSubscription", {
             topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.conversationId, "PRIMARY", "SUBSCRIBED"),
             agentId: this._cacheService.agent.id,
+            roomId: res.roomId,
+            roomLabel: res.roomLabel,
             conversationId: res.conversationId,
             taskId: res.taskId
           });
@@ -225,13 +229,13 @@ export class socketService {
 
     this.socket.on("onCimEvent", (res: any) => {
       try {
-        this.onCimEventHandler(JSON.parse(res.cimEvent), res.conversationId);
+        this.onCimEventHandler(JSON.parse(res.cimEvent), res.roomId, res.conversationId);
       } catch (err) {
         console.error("error on onCimEvent ==>" + err);
         // If got any error while receiving cimEvent then simply unsubscribe to the topic
         this._snackbarService.open(this._translateService.instant("snackbar.Malfunction-event"), "err");
         // this.emit("topicUnsubscription", {
-        //   conversationId: res.conversationId,
+        //   roomId: res.roomId,
         //   agentId: this._cacheService.agent.id
         // });
       }
@@ -246,8 +250,7 @@ export class socketService {
     this.socket.on("onTopicData", (res: any, callback: any) => {
       console.log("onTopicData==>", JSON.parse(JSON.stringify(res)));
       try {
-        this._crmEventsService.postCRMEvent(JSON.parse(JSON.stringify(res)));
-        this.onTopicData(res.topicData, res.conversationId, res.taskId);
+        this.onTopicData(res.topicData, res.conversationId, res.roomId, res.taskId);
         if (callback) {
           callback({ status: "ok" });
         }
@@ -256,6 +259,7 @@ export class socketService {
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-chat-unsubscribing"), "err");
         // If got any error while receiving topicData then simply unsubscribe to the topic
         this.emit("topicUnsubscription", {
+          roomId: res.roomId,
           conversationId: res.conversationId,
           agentId: this._cacheService.agent.id
         });
@@ -296,12 +300,12 @@ export class socketService {
     });
 
     this.socket.on("socketSessionRemoved", (res: any) => {
-      console.log("socketSessionRemoved", res);
+      console.log("socketSessionRemoved event", res);
       this.onSocketSessionRemoved();
     });
 
     this.socket.on("onPullModeSubscribedList", (res: any) => {
-      console.log("onPullModeSubscribedList", res);
+      console.log("onPullModeSubscribedList event", res);
       this._translateService.stream("globals.no-new-conversation").subscribe(
         (text: string) => {
           this._sharedService.mainPagetile = text;
@@ -347,7 +351,7 @@ export class socketService {
   disConnectSocket() {
     try {
       this.socket.disconnect();
-    } catch (err) {}
+    } catch (err) { }
   }
 
   listen(eventName: string) {
@@ -371,7 +375,7 @@ export class socketService {
   }
   //this.socket.on(){}
 
-  onCimEventHandler(cimEvent, conversationId) {
+  onCimEventHandler(cimEvent, roomId, conversationId) {
     try {
       console.log("cim event ", JSON.parse(JSON.stringify(cimEvent)));
       if (cimEvent.channelSession) {
@@ -480,6 +484,7 @@ export class socketService {
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-event-unsubscribing"), "err");
         this.emit("topicUnsubscription", {
           conversationId: conversationId,
+          roomId: roomId,
           agentId: this._cacheService.agent.id
         });
       }
@@ -508,15 +513,16 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._snackbarService.open(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"), "err");
     alert(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"));
   }
   //call on reload and on every new conversation
-  onTopicData(topicData, conversationId, taskId) {
-    // this.removeConversation(conversationId);
+  onTopicData(topicData, conversationId, roomId, taskId) {
+    // this.removeConversation(roomId);
     let conversation = {
+      roomId: roomId,
       conversationId: conversationId,
       taskId,
       wrapUpDialog: {
@@ -1089,14 +1095,14 @@ export class socketService {
     }
   }
 
-  linkCustomerWithInteraction(customerId, conversationId) {
-    this.emit("publishCimEvent", {
-      cimEvent: new CimEvent("ASSOCIATED_CUSTOMER_CHANGED", "NOTIFICATION", conversationId, { Id: customerId }, null),
-      agentId: this._cacheService.agent.id,
-      conversationId: conversationId
-    });
-    this._snackbarService.open(this._translateService.instant("snackbar.CUSTOMER-LINKED-SUCCESSFULLY"), "succ");
-  }
+  // linkCustomerWithInteraction(customerId,conversationId) {
+  //   this.emit("publishCimEvent", {
+  //     cimEvent: new CimEvent("ASSOCIATED_CUSTOMER_CHANGED", "NOTIFICATION",conversationId, roomId,roomLabel, { Id: customerId }, null),
+  //     conversationId: conversationId,
+  //     agentId: this._cacheService.agent.id
+  //   });
+  //   this._snackbarService.open(this._translateService.instant("snackbar.CUSTOMER-LINKED-SUCCESSFULLY"), "succ");
+  // }
 
   handleTaskStateChangedEvent(cimEvent, conversationId) {
     let conversation = this.conversations.find((e) => {
@@ -1443,7 +1449,7 @@ export class socketService {
     try {
       sessionStorage.clear();
       localStorage.removeItem("ccUser");
-    } catch (e) {}
+    } catch (e) { }
     this._cacheService.resetCache();
     this._router.navigate(["login"]);
   }
@@ -1513,13 +1519,13 @@ export class socketService {
                     console.log("limit exceed");
                     this._snackbarService.open(
                       this._translateService.instant("snackbar.The-conversation-is-going-to-linking-with") +
-                        selectedCustomer.firstName +
-                        this._translateService.instant("snackbar.However-the-channel-identifier") +
-                        channelIdentifier +
-                        this._translateService.instant("snackbar.can-not-be-added-in") +
-                        selectedCustomer.firstName +
-                        attr +
-                        this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
+                      selectedCustomer.firstName +
+                      this._translateService.instant("snackbar.However-the-channel-identifier") +
+                      channelIdentifier +
+                      this._translateService.instant("snackbar.can-not-be-added-in") +
+                      selectedCustomer.firstName +
+                      attr +
+                      this._translateService.instant("snackbar.space-unavailable-may-delete-channel-identifer"),
                       "succ",
                       20000,
                       "Ok"
@@ -1817,96 +1823,110 @@ export class socketService {
       });
     } else if (cimEvent.name.toLowerCase() == "task_enqueued") {
       message = CimMessage;
+      let mode;
+      if (cimEvent.data.task.type.mode.toLowerCase() == "agent") {
+        mode = "Agent";
+      } else if (cimEvent.data.task.type.mode.toLowerCase() == "queue") {
+        mode = "Queue";
+      }
+      if (cimEvent.data.task.type.direction == "DIRECT_TRANSFER") {
+        let text = " transfer request has been placed by ";
+        let translationKey = "socket-service.transfer-request-has-been-placed-by";
+        if (!cimEvent.data.task.type.metadata.requestedBy) translationKey = "socket-service.transfer-request-has-been-placed";
+        this._translateService.stream(`${translationKey}`).subscribe((data: string) => {
+          text = data;
+        });
 
-      const queuedMedia = cimEvent.data.task.activeMedia.find((media) => {
-        return media.state.toLowerCase() == "queued";
-      });
+        const queuedMedia = cimEvent.data.task.activeMedia.find((media) => {
+          return media.state.toLowerCase() == "queued";
+        });
 
-      if (queuedMedia) {
+        if (queuedMedia) {
+          let mode;
+          if (queuedMedia.type.mode.toLowerCase() == "agent") {
+            mode = "Agent";
+          } else if (queuedMedia.type.mode.toLowerCase() == "queue") {
+            mode = "Queue";
+          }
+          if (queuedMedia.type.direction == "DIRECT_TRANSFER") {
+            let text = " transfer request has been placed by ";
+            let translationKey = "socket-service.transfer-request-has-been-placed-by";
+            if (!queuedMedia.type.metadata.requestedBy) translationKey = "socket-service.transfer-request-has-been-placed";
+            this._translateService.stream(`${translationKey}`).subscribe((data: string) => {
+              text = data;
+            });
+
+            let string;
+            if (queuedMedia.type.metadata.requestedBy) string = mode + " " + text + " " + queuedMedia.type.metadata.requestedBy;
+            else string = mode + " " + text;
+            message.body["displayText"] = "";
+            message.body.markdownText = string;
+          } else if (queuedMedia.type.direction == "DIRECT_CONFERENCE") {
+            let text = "conference request has been placed by";
+            this._translateService.stream("socket-service.conference-request-has-been-placed-by").subscribe((data: string) => {
+              text = data;
+            });
+            let string = mode + " " + text + " " + queuedMedia.type.metadata.requestedBy;
+            message.body["displayText"] = "";
+            message.body.markdownText = string;
+          } else {
+            message = null;
+          }
+        } else {
+          message = null;
+        }
+      } else if (cimEvent.name.toLowerCase() == "no_agent_available") {
+        message = CimMessage;
         let mode;
-        if (queuedMedia.type.mode.toLowerCase() == "agent") {
+        let direction;
+
+        if (cimEvent.data.requestType.mode.toLowerCase() == "agent") {
           mode = "Agent";
-        } else if (queuedMedia.type.mode.toLowerCase() == "queue") {
+        } else if (cimEvent.data.requestType.mode.toLowerCase() == "queue") {
           mode = "Queue";
         }
-        if (queuedMedia.type.direction == "DIRECT_TRANSFER") {
-          let text = " transfer request has been placed by ";
-          let translationKey = "socket-service.transfer-request-has-been-placed-by";
-          if (!queuedMedia.type.metadata.requestedBy) translationKey = "socket-service.transfer-request-has-been-placed";
-          this._translateService.stream(`${translationKey}`).subscribe((data: string) => {
+
+        if (cimEvent.data.requestType.direction.toLowerCase() == "direct_transfer") {
+          direction = "transfer";
+          let text = "No agent is available for";
+          this._translateService.stream("socket-service.No-agent-is-available-for").subscribe((data: string) => {
             text = data;
           });
-
-          let string;
-          if (queuedMedia.type.metadata.requestedBy) string = mode + " " + text + " " + queuedMedia.type.metadata.requestedBy;
-          else string = mode + " " + text;
+          let string = text + " " + mode + " " + direction;
           message.body["displayText"] = "";
           message.body.markdownText = string;
-        } else if (queuedMedia.type.direction == "DIRECT_CONFERENCE") {
-          let text = "conference request has been placed by";
-          this._translateService.stream("socket-service.conference-request-has-been-placed-by").subscribe((data: string) => {
+        } else if (cimEvent.data.requestType.direction.toLowerCase() == "direct_conference") {
+          direction = "conference";
+
+          let text = "No agent is available for";
+          this._translateService.stream("socket-service.No-agent-is-available-for").subscribe((data: string) => {
             text = data;
           });
-          let string = mode + " " + text + " " + queuedMedia.type.metadata.requestedBy;
+          let string = text + " " + mode + " " + direction;
           message.body["displayText"] = "";
           message.body.markdownText = string;
         } else {
           message = null;
         }
-      } else {
-        message = null;
-      }
-    } else if (cimEvent.name.toLowerCase() == "no_agent_available") {
-      message = CimMessage;
-      let mode;
-      let direction;
+      } else if (cimEvent.name.toLowerCase() == "task_state_changed") {
+        if (cimEvent && cimEvent.data && cimEvent.data.task && cimEvent.data.task.state)
+          message = this.handleTaskStateChangeForAgentTransfer(cimEvent, CimMessage);
 
-      if (cimEvent.data.requestType.mode.toLowerCase() == "agent") {
-        mode = "Agent";
-      } else if (cimEvent.data.requestType.mode.toLowerCase() == "queue") {
-        mode = "Queue";
+        if (
+          cimEvent.data.task.state.reasonCode &&
+          cimEvent.data.task.state.reasonCode.toLowerCase() == "force_closed" &&
+          cimEvent.data.task.activeMedia[cimEvent.data.task.activeMedia.length - 1].type.direction.toLowerCase() == "direct_conference"
+        ) {
+          message = CimMessage;
+          message.body["displayText"] = "";
+          this._translateService.stream("socket-service.conference-request-has-cancelled").subscribe((data: string) => {
+            message.body.markdownText = data;
+          });
+        }
       }
 
-      if (cimEvent.data.requestType.direction.toLowerCase() == "direct_transfer") {
-        direction = "transfer";
-        let text = "No agent is available for";
-        this._translateService.stream("socket-service.No-agent-is-available-for").subscribe((data: string) => {
-          text = data;
-        });
-        let string = text + " " + mode + " " + direction;
-        message.body["displayText"] = "";
-        message.body.markdownText = string;
-      } else if (cimEvent.data.requestType.direction.toLowerCase() == "direct_conference") {
-        direction = "conference";
-
-        let text = "No agent is available for";
-        this._translateService.stream("socket-service.No-agent-is-available-for").subscribe((data: string) => {
-          text = data;
-        });
-        let string = text + " " + mode + " " + direction;
-        message.body["displayText"] = "";
-        message.body.markdownText = string;
-      } else {
-        message = null;
-      }
-    } else if (cimEvent.name.toLowerCase() == "task_state_changed") {
-      if (cimEvent && cimEvent.data && cimEvent.data.task && cimEvent.data.task.state)
-        message = this.handleTaskStateChangeForAgentTransfer(cimEvent, CimMessage);
-
-      if (
-        cimEvent.data.task.state.reasonCode &&
-        cimEvent.data.task.state.reasonCode.toLowerCase() == "force_closed" &&
-        cimEvent.data.task.activeMedia[cimEvent.data.task.activeMedia.length - 1].type.direction.toLowerCase() == "direct_conference"
-      ) {
-        message = CimMessage;
-        message.body["displayText"] = "";
-        this._translateService.stream("socket-service.conference-request-has-cancelled").subscribe((data: string) => {
-          message.body.markdownText = data;
-        });
-      }
+      return message;
     }
-
-    return message;
   }
 
   handleTaskStateChangeForAgentTransfer(cimEvent, CimMessage) {
@@ -2004,6 +2024,7 @@ export class socketService {
     if (conversation.state === "ACTIVE") {
       // if the topic state is 'ACTIVE' then agent needs to request the agent manager for unsubscribe
       this.emit("topicUnsubscription", {
+        roomId: conversation.roomId,
         conversationId: conversation.conversationId,
         agentId: this._cacheService.agent.id
       });
@@ -2019,12 +2040,14 @@ export class socketService {
     }
   }
 
-  getTopicSubscription(conversationId, taskId) {
+  getTopicSubscription(conversationId, roomId, roomLabel, taskId) {
     this.emit("topicSubscription", {
       topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, conversationId, "PRIMARY", "SUBSCRIBED"),
       agentId: this._cacheService.agent.id,
-      conversationId: conversationId,
-      taskId: taskId
+      roomId: roomId,
+      roomLabel: roomLabel,
+      taskId: taskId,
+      conversationId: conversationId
     });
   }
 

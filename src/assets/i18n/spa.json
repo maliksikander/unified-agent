@@ -167,6 +167,7 @@
     "call-in-progress":"Call in progress_spa",
     "initiating-audio-call":"Initiating Audio Call"
   },
+
   "chat-features": {
     "send-sms":{
       "info":"SEND SMS_spa",

@@ -857,7 +857,6 @@ function initiate_call(calledNumber,DN ,callback) {
                         outboundDialingdata.response.dialog.participants[0].state = "INITIATING";
                         outboundDialingdata.response.dialog.state = "INITIATING";
                         outboundDialingdata.response.dialog.isCallEnded = 0;
-
                         dialogStatedata.response.dialog.participants[0].startTime = datetime;
                         dialogStatedata.response.dialog.participants[0].state = "INITIATING";
                         dialogStatedata.response.dialog.state = "INITIATING";

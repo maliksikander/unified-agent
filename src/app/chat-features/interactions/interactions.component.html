@@ -1769,7 +1769,7 @@
                                       >
 
                                         <span
-                                          matTooltip="{{ wrapup }}"
+                                          matTooltip="{{ wrapup }}ee"
                                           *ngFor="let wrapup of callData?.additionalDetail?.dialog?.wrapUpItems | sliceFilter: 0:2"
                                         >
                                           {{ wrapup }}
@@ -1787,7 +1787,7 @@
                                             >
                                           </ng-container>
                                         </ng-container>
-                                      </ng-container>
+                                      </ng-container> -->
 
                                           <!-- <span *ngFor="let reasonCode of callData.dialog?.wrapUpReason | sliceFilter:0:2">
                                   {{reasonCode }}
@@ -3082,6 +3082,7 @@
       [customer]="conversation.customer"
       [customerSuggestions]="conversation.customerSuggestions"
       [firstChannelSession]="conversation.firstChannelSession"
+      [roomId]="conversation.roomId"
       [conversationId]="conversation.conversationId"
       [conversation]="conversation"
       [activeConversationData]="conversation.activeConversationData"
@@ -3134,6 +3135,7 @@
           <textarea maxlength="1000" [(ngModel)]="assistanceRequestNote" rows="5"></textarea>
           <label *ngIf="assistanceRequestNote?.length > 0" class="typing-counter">{{ assistanceRequestNote?.length }}/1000</label>
         </div>
+
       </div>
     </div>
 

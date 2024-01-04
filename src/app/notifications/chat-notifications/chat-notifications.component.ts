@@ -79,7 +79,7 @@ export class ChatNotificationsComponent implements OnInit {
           console.log("external requests==>", this.externalModeRequests);
         } else if (e.msg == "closeExternalModeRequestHeader") {
           this.isCallAcceptClicked = false;
-          let dialog = e.data.dialog ? e.data.dialog : e.data;
+          let dialog = e.data && e.data.dialog ? e.data.dialog : e.data;
           if (this.externalModeRequests.length > 0) {
             let index = this.externalModeRequests.findIndex((item) => {
               return item.dialogData.id == dialog.id;
@@ -128,8 +128,8 @@ export class ChatNotificationsComponent implements OnInit {
     }
   }
 
-  onAcceptCallback(conversationId, taskId, taskDirection) {
-    this.getTopicSubscription(conversationId, taskId, taskDirection);
+  onAcceptCallback(conversationId,roomId,roomLabel, taskId, taskDirection) {
+    this.getTopicSubscription(conversationId,roomId,roomLabel, taskId, taskDirection);
   }
 
   onExternalRequestAccept(data) {
@@ -137,7 +137,7 @@ export class ChatNotificationsComponent implements OnInit {
     this.acceptCall(data);
   }
 
-  getTopicSubscription(conversationId, taskId, taskDirection) {
+  getTopicSubscription(conversationId,roomId, roomLabel,taskId, taskDirection) {
     this._socketService.emit("topicSubscription", {
       topicParticipant: new TopicParticipant(
         "AGENT",
@@ -147,7 +147,9 @@ export class ChatNotificationsComponent implements OnInit {
         "SUBSCRIBED"
       ),
       agentId: this._cacheService.agent.id,
-      conversationId: conversationId,
+      conversationId:conversationId,
+      roomId: roomId,
+      roomLabel:roomLabel,
       taskId: taskId
     });
 
@@ -156,7 +158,7 @@ export class ChatNotificationsComponent implements OnInit {
   }
 
   removePushModeRequestFromRequestArray(conversationId) {
-    let index = this._sharedService.getIndexFromConversationId(conversationId, this.pushModeRequests);
+    let index = this._sharedService.getIndexFromconversationId(conversationId, this.pushModeRequests);
     if (index != -1) {
       this._sharedService.spliceArray(index, this.pushModeRequests);
     }

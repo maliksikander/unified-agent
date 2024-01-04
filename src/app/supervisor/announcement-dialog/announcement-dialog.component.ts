@@ -15,7 +15,7 @@ import { snackbarService } from "src/app/services/snackbar.service";
 export class AnnouncementDialogComponent implements OnInit {
   announceDateMin = new Date();
   maxDate;
-  expireDateMax = new Date();
+  expireDateMax=new Date();
   expireDateMin = new Date();
   FilterSelected = "all";
   announcements = [];

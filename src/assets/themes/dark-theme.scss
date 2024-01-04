@@ -1801,6 +1801,21 @@ $theme: mat-light-theme($primary, $accent, $warn);
             line-height: 32px;
           }
         }
+        .mat-datepicker-content {
+          background-color: #313145;
+        }
+
+        .lbl {
+          color: mat-contrast($dark-primary, 300) !important;
+        }
+
+        .create-label mat-form-field {
+          background: #283f6a;
+        }
+
+        .mat-input-element {
+          caret-color: #ccc !important;
+        }
       }
     }
   }

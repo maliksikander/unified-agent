@@ -165,7 +165,7 @@
   },
   "call-controls":{
     "call-in-progress":"Call in progress_ger",
-    "initiating-audio-call":"Initiating Audio Call"
+    "initiating-audio-call":"Initiating Audio Call_ger"
   },
   "chat-features": {
     "send-sms":{
@@ -225,8 +225,8 @@
     },
     "interactions": {
       "leave-conversation":"Leave Conversation_ger",
-      "Are-you-sure-you-want-to-leave-the-conversation-with":"Are you sure you want to leave the conversation with_ger",
       "Consult":"Consult_ger",
+      "Are-you-sure-you-want-to-leave-the-conversation-with":"Are you sure you want to leave the conversation with_ger",
       "Transfer":"Transfer_ger",
       "Conference":"Conference_ger",
       "Transfer-To-Queue":"Transfer To Queue_ger",

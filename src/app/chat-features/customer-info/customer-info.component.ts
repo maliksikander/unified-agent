@@ -24,6 +24,7 @@ export class CustomerInfoComponent implements OnInit {
   @Input() customer: any;
   @Input() customerSuggestions: any;
   @Input() activeChannelSessions: any;
+  @Input() roomId: any;
   @Input() conversationId: any;
   @Input() conversation: any;
   @Input() activeConversationData: any;

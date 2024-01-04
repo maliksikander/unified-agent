@@ -649,7 +649,7 @@ export class SipService implements OnInit {
         }
       };
       if (intent == "CALL_LEG_ENDED") {
-        let conversationId = this.getCurrentConversationIdORConversation("id");
+        let conversationId = this.getCurrentconversationIdORConversation("id");
         let obj = {
           key: "conversationId",
           type: "String2000",
@@ -701,7 +701,7 @@ export class SipService implements OnInit {
     }
   }
 
-  getCurrentConversationIdORConversation(type) {
+  getCurrentconversationIdORConversation(type) {
     try {
       let conversationList: Array<any> = this._socketService.conversations;
       for (let i = 0; i <= conversationList.length; i++) {
@@ -717,7 +717,7 @@ export class SipService implements OnInit {
         }
       }
     } catch (e) {
-      console.error("[Error] getConversationIdOrConversation Sip==>", e);
+      console.error("[Error] getconversationIdOrConversation Sip==>", e);
     }
   }
 
@@ -986,7 +986,7 @@ export class SipService implements OnInit {
         //     this.handleCallDroppedEvent(cacheId, D1, "call_end", dialogEvent, "DIALOG_ENDED", state);
         //   } else if (D1.dialog.id == dialogState.dialog.id) {
         //     if (D1.dialogState == "active") {
-        //       let conversation = this.getCurrentConversationIdORConversation("conversation");
+        //       let conversation = this.getCurrentconversationIdORConversation("conversation");
         //       if (conversation) {
         //         this.customer = conversation.customer;
         //       }
