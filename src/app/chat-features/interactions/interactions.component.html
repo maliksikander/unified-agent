@@ -1990,8 +1990,11 @@
                             <li>
                               <mat-icon (click)="replyToComment(message)"> chat_bubble_outline</mat-icon>
                             </li>
-                            <li *ngIf="message.header.channelSession.channel.channelType.name.includes('FACEBOOK')">
-                              <mat-icon [ngClass]="{ liked: message.isLiked }" (click)="commentAction(message, 'like')"> thumb_up </mat-icon>
+                            <li *ngIf="!message.header.channelSession.channel.channelType.name.includes('INSTAGRAM')">
+                              <mat-icon [ngClass]="{ 'liked': message.isLiked }" (click)="commentAction(message, 'like')">
+                                {{ message.header.channelSession.channel.channelType.name.includes('TWITTER') ? 'favorite' : 'thumb_up' }}
+                              </mat-icon>
+
                             </li>
                             <li class="private-reply-icon" (click)="privateReplyToComment(message)">
                               <img
@@ -2006,7 +2009,7 @@
                             </li>
                             <li class="view-all-options">
                               <ul *ngIf="viewFullCommentAction">
-                                <li>
+                                <li *ngIf="!(message.header.channelSession.channel.channelType.name == 'TWITTER')">
                                   <mat-icon (click)="commentAction(message, 'delete')"> delete</mat-icon>
                                 </li>
                                 <!-- <li>
@@ -2120,7 +2123,7 @@
                                   ></span>
                                 </p>
                                 <div *ngFor="let post of postData?.socialMediaPost?.attachments">
-                                  <div class="shared-url shared-card-content video-player p-0" *ngIf="post?.mimeType.includes('VIDEO')">
+                                  <div class="shared-url shared-card-content video-player p-0" *ngIf="post?.mimeType && post.mimeType.includes('VIDEO')">
                                     <div class="media-main" *ngIf="post?.mediaUrl">
                                       <vg-player>
                                         <vg-overlay-play></vg-overlay-play>
@@ -2329,8 +2332,11 @@
                                   <li>
                                     <mat-icon (click)="replyToComment(message)"> chat_bubble_outline</mat-icon>
                                   </li>
-                                  <li *ngIf="message.header.channelSession.channel.channelType.name.includes('FACEBOOK')">
-                                    <mat-icon [ngClass]="{ liked: message.isLiked }" (click)="commentAction(message, 'like')"> thumb_up </mat-icon>
+                                  <li *ngIf="!message.header.channelSession.channel.channelType.name.includes('INSTAGRAM')">
+                                    <mat-icon [ngClass]="{ 'liked': message.isLiked }" (click)="commentAction(message, 'like')">
+                                      {{ message.header.channelSession.channel.channelType.name.includes('TWITTER') ? 'favorite' : 'thumb_up' }}
+                                    </mat-icon>
+      
                                   </li>
                                   <li class="private-reply-icon" (click)="privateReplyToComment(message)">
                                     <img
@@ -2345,7 +2351,7 @@
                                   </li>
                                   <li class="view-all-options">
                                     <ul *ngIf="viewFullCommentAction">
-                                      <li>
+                                      <li *ngIf="!(message.header.channelSession.channel.channelType.name == 'TWITTER')">
                                         <mat-icon (click)="commentAction(message, 'delete')"> delete</mat-icon>
                                       </li>
                                       <!-- <li>
