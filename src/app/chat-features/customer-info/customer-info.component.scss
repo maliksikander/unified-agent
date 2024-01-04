@@ -317,7 +317,7 @@
     }
 
     &.multi-channel-list {
-      padding: 0;
+      // padding: 0;
 
       .mat-expansion-panel {
         margin: 0 !important;
@@ -820,4 +820,144 @@ a{
       }
     }
   }
+}
+
+//Activity panel
+.activity-main-panel {
+  display: flex;
+  flex-flow: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  width: 100%;
+
+  span {
+    height: 20px;
+    //margin: 0 5px;
+    font-size: 12px;
+  }
+
+  .activity-icon {
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    text-align: center;
+    margin: 0;
+
+    mat-icon {
+      color: #CE0101;
+      font-size: 16px;
+      width: 22px;
+      height: 22px;
+      line-height: 22px;
+
+    }
+  }
+
+  .activity-time {
+    border-radius: 15px;
+    padding: 0 10px;
+    background: #fff;
+    margin: 0 0 0 3px;
+    max-width: 115px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .activity-actions {
+    margin-left: 0;
+    margin-right: 10px;
+    span {
+      border-bottom: 1px solid #000;
+      font-size: 10px;
+      margin: 0;
+      &:hover{
+        &.delete-activity{
+          color: #CE0101 !important;
+          border-color: #CE0101 !important;
+        } &.reschedule-activity{
+          color: #567E00 !important;
+          border-color: #567E00 !important;
+        }
+      }
+
+      &:first-child {
+        position: relative;
+        margin-right: 9px;
+
+        &:after {
+          content: "";
+          background: #1D1D1D;
+          position: absolute;
+          width: 1px;
+          right: -5px;
+          top: 2px;
+          height: 10px;
+        }
+      }
+    }
+  }
+
+}
+.scheduled-activity-panel {
+  .scheduled-activity-data ul {
+    margin: 0;
+
+    li label {
+
+      margin-right: 10px;
+    }
+  }
+
+  mat-expansion-panel-header {
+    padding: 0 5px !important;
+    border-radius: 5px;
+  }
+
+  span.mat-expansion-indicator {
+    border: 1px solid rgb(204, 204, 204);
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    position: relative;
+    border-radius: 100%;
+  }
+
+  .activity-detail-main {
+    .activity-detail {
+      strong {
+        color: $blue-text-color;
+        font-size: 12px;
+      }
+
+      p {
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
+    }
+  }
+}
+  .activity-notify {
+    font-weight: normal;
+    background: $red-color;
+    width: 15px;
+    height: 15px;
+    border-radius: 100%;
+    text-align: center;
+    font-size: 10px;
+    color: #fff;
+    line-height: 13px;
+    border: 1px solid #fff;
+    position: relative;
+    right: 3px;
+    top: -6px;
+    box-shadow: 0 0 4px #999;
+  }
+.panel-content-main{
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
 }

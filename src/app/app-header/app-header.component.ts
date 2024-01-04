@@ -84,7 +84,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     private _httpService: httpService,
     private _snackBarService: snackbarService,
     private _translateService: TranslateService,
-    private _announcementService: announcementService,
+    public _announcementService: announcementService,
     private dialog: MatDialog
   ) {}
 

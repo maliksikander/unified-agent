@@ -399,9 +399,10 @@ span.field-channel {
     border-left: 1px solid #a0a0a078;
     height: 31px;
     line-height: 31px;
-    top: 6px;
+    top: 50%;
     color: #969696;
     border-radius: 0 3px 3px 0;
+    transform: translate(0, -50%);
     &.clicked {
       box-shadow: 0 10px 0px #fff, 0 0 8px #ccc;
       border-left: 0;
@@ -479,7 +480,7 @@ span.field-channel {
       line-height: 40px;
       vertical-align: middle;
       position: relative;
-      border-bottom: 1px solid #CCCACA;
+      border-bottom: 1px solid #cccaca2b;
 
       button {
         position: relative;
