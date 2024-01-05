@@ -1996,7 +1996,7 @@
                               </mat-icon>
 
                             </li>
-                            <li class="private-reply-icon" (click)="privateReplyToComment(message)">
+                            <li *ngIf="message.header.channelSession.channel.channelType.name == 'FACEBOOK' || message.header.channelSession.channel.channelType.name == 'INSTAGRAM'" class="private-reply-icon" (click)="privateReplyToComment(message)">
                               <img
                                 *ngIf="message.header.channelSession.channel.channelType.name == 'FACEBOOK'"
                                 src="assets/images/facebook-messenger.svg"
@@ -2338,7 +2338,7 @@
                                     </mat-icon>
       
                                   </li>
-                                  <li class="private-reply-icon" (click)="privateReplyToComment(message)">
+                                 <li *ngIf="message.header.channelSession.channel.channelType.name == 'FACEBOOK' || message.header.channelSession.channel.channelType.name == 'INSTAGRAM'" class="private-reply-icon" (click)="privateReplyToComment(message)">
                                     <img
                                       *ngIf="message.header.channelSession.channel.channelType.name == 'FACEBOOK'"
                                       src="assets/images/facebook-messenger.svg"
