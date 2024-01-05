@@ -128,8 +128,8 @@ export class ChatNotificationsComponent implements OnInit {
     }
   }
 
-  onAcceptCallback(conversationId,roomId,roomLabel, taskId, taskDirection) {
-    this.getTopicSubscription(conversationId,roomId,roomLabel, taskId, taskDirection);
+  onAcceptCallback(conversationId, roomId, roomLabel, taskId, taskDirection) {
+    this.getTopicSubscription(conversationId, roomId, roomLabel, taskId, taskDirection);
   }
 
   onExternalRequestAccept(data) {
@@ -137,7 +137,7 @@ export class ChatNotificationsComponent implements OnInit {
     this.acceptCall(data);
   }
 
-  getTopicSubscription(conversationId,roomId, roomLabel,taskId, taskDirection) {
+  getTopicSubscription(conversationId, roomId, roomLabel, taskId, taskDirection) {
     this._socketService.emit("topicSubscription", {
       topicParticipant: new TopicParticipant(
         "AGENT",
@@ -147,9 +147,9 @@ export class ChatNotificationsComponent implements OnInit {
         "SUBSCRIBED"
       ),
       agentId: this._cacheService.agent.id,
-      conversationId:conversationId,
+      conversationId: conversationId,
       roomId: roomId,
-      roomLabel:roomLabel,
+      roomLabel: roomLabel,
       taskId: taskId
     });
 
