@@ -3,22 +3,22 @@ import { v4 as uuidv4 } from "uuid";
 export class CimEvent {
   id: string;
   name: string;
-  conversationId:string;
+  conversationId: string;
   roomId: string;
-  roomLabel:string
+  roomLabel: string;
   type: string;
   timestamp: any;
   data: any;
   eventEmitter: {};
   channelSession: {};
 
-  constructor(name: string, type: string,conversationId:string, roomId: string, data: any, customer: any) {
+  constructor(name: string, type: string, conversationId: string, roomId: string, data: any, customer: any) {
     this.id = uuidv4();
     this.name = name;
     this.type = type;
-    this.conversationId=conversationId;
+    this.conversationId = conversationId;
     this.roomId = roomId;
-    this.roomLabel=data.header.channelSession.roomLabel;
+    this.roomLabel = data.header.channelSession.roomLabel;
     this.timestamp = Date.now();
     this.data = data;
     this.data["header"]["conversationId"] = conversationId;

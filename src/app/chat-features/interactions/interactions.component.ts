@@ -265,7 +265,7 @@ export class InteractionsComponent implements OnInit {
       }
     );
   }
-  emoji() { }
+  emoji() {}
 
   BargeIn() {
     let obj = {
@@ -568,7 +568,14 @@ export class InteractionsComponent implements OnInit {
           message.body.type = "NOTIFICATION";
           message.body.notificationType = "TYPING_STARTED";
 
-          let event: any = new CimEvent("TYPING_INDICATOR", "NOTIFICATION",this.conversation.conversationId, this.conversation.roomId, message, this.conversation.customer);
+          let event: any = new CimEvent(
+            "TYPING_INDICATOR",
+            "NOTIFICATION",
+            this.conversation.conversationId,
+            this.conversation.roomId,
+            message,
+            this.conversation.customer
+          );
 
           this._socketService.emit("publishCimEvent", {
             cimEvent: event,
@@ -701,7 +708,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -709,7 +716,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -779,7 +786,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => { });
+    dialogRef.afterClosed().subscribe((result: any) => {});
   }
   externalfilePreviewOpener(url, fileName, type) {
     const dialogRef = this.dialog.open(FilePreviewComponent, {
@@ -789,7 +796,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => { });
+    dialogRef.afterClosed().subscribe((result: any) => {});
   }
 
   uploadFile(files) {
@@ -1189,7 +1196,14 @@ export class InteractionsComponent implements OnInit {
   emitCimEvent(message, eventName) {
     // let dummyMessage=JSON.parse(JSON.stringify(message))
 
-    let event: any = new CimEvent(eventName, "MESSAGE",this.conversation.conversationId, this.conversation.roomId, message, this.conversation.customer);
+    let event: any = new CimEvent(
+      eventName,
+      "MESSAGE",
+      this.conversation.conversationId,
+      this.conversation.roomId,
+      message,
+      this.conversation.customer
+    );
     // console.log("event created",event)
 
     this._socketService.emit("publishCimEvent", {
@@ -1215,7 +1229,14 @@ export class InteractionsComponent implements OnInit {
   }
 
   emitFBActionEvent(message) {
-    let event: any = new CimEvent("AGENT_MESSAGE", "MESSAGE",this.conversation.conversationId, this.conversation.roomId, message, this.conversation.customer);
+    let event: any = new CimEvent(
+      "AGENT_MESSAGE",
+      "MESSAGE",
+      this.conversation.conversationId,
+      this.conversation.roomId,
+      message,
+      this.conversation.customer
+    );
     this._socketService.emit("publishCimEvent", {
       cimEvent: event,
       agentId: this._cacheService.agent.id,
@@ -1535,7 +1556,6 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-
   formatNumber(num) {
     return num.toString().padStart(2, "0");
   }
@@ -1553,25 +1573,32 @@ export class InteractionsComponent implements OnInit {
       this.openWrapDialog = false;
       if (this.conversation.wrapUpDialog.show) {
         this._socketService.emit("closeWrapup", {
-          cimEvent:null,
+          cimEvent: null,
           roomId: this.conversation.roomId,
           conversationId: this.conversation.conversationId,
           agentId: this._cacheService.agent.id
-        })
+        });
       }
     } else {
       let message = this.getCimMessage();
-       message = this.constructWrapUpEvent(message,  data.wrapups, data.note, this.conversation.firstChannelSession);
-       let wrapUpEvent: any = new CimEvent("AGENT_MESSAGE", "MESSAGE",this.conversation.conversationId, this.conversation.roomId, message, this.conversation.customer);
+      message = this.constructWrapUpEvent(message, data.wrapups, data.note, this.conversation.firstChannelSession);
+      let wrapUpEvent: any = new CimEvent(
+        "AGENT_MESSAGE",
+        "MESSAGE",
+        this.conversation.conversationId,
+        this.conversation.roomId,
+        message,
+        this.conversation.customer
+      );
 
       this.openWrapDialog = false;
       if (this.conversation.wrapUpDialog.show) {
         this._socketService.emit("closeWrapup", {
-          cimEvent:wrapUpEvent,
+          cimEvent: wrapUpEvent,
           roomId: this.conversation.roomId,
           conversationId: this.conversation.conversationId,
           agentId: this._cacheService.agent.id
-        })
+        });
       }
     }
   }

@@ -38,7 +38,7 @@ export class isLoggedInService {
     private _authService: AuthService,
     private _appConfigService: appConfigService,
     private _announcementService: announcementService,
-    private _crmEventsService: crmEventsService,
+    private _crmEventsService: crmEventsService
   ) {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       this._cacheService.isMobileDevice = true;
@@ -140,6 +140,7 @@ export class isLoggedInService {
       console.error("[fetchCCuserAndMoveToLogin] Error==>", e);
     }
   }
+
 
   initiateSipService(attributes) {
     try {

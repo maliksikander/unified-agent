@@ -1,6 +1,6 @@
 {
-  "GAT_URL": "https://cim-dev.expertflow.com/agent-manager",
-  "SOCKET_URL": "https://cim-dev.expertflow.com/agent-manager",
+  "GAT_URL": "http://localhost:3000",
+  "SOCKET_URL": "http://localhost:3000",
   "FILE_SERVER_URL": "https://cim-dev.expertflow.com/file-engine",
   "CCM_URL": "https://cim-dev.expertflow.com/ccm",
   "CIM_CUSTOMER_URL": "https://cim-dev.expertflow.com/cim-customer",
@@ -49,5 +49,5 @@
   "STATIC_QUEUE_TRANSFER_DN":"99887755",
   "AUTO_CALL_ANSWER_TIMER":3,
   "DASHBOARD_REFRESH_TIME" : 10000,
-  "isCrmEventsEnabled": true
+  "isCrmEventsEnabled": false
 }

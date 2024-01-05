@@ -277,15 +277,13 @@ export class PhonebookComponent implements OnInit {
   }
   //to open conversation view for outbound chat
   openCOnversationView(customer) {
-
     let conversation = this._socketService.conversations.find((conversation) => {
-      return conversation.customer._id == customer._id
-    })
+      return conversation.customer._id == customer._id;
+    });
     if (!conversation) {
-      this._socketService.onTopicData({ customer },"FAKE_CONVERSATION", "FAKE_CONVERSATION", "");
+      this._socketService.onTopicData({ customer }, "FAKE_CONVERSATION", "FAKE_CONVERSATION", "");
     }
     this._router.navigate(["customers"]);
-
   }
 
   onColReorder(event) {
@@ -344,7 +342,7 @@ export class PhonebookComponent implements OnInit {
     completeSelectedCustomer["_id"] = selectedCustomer._id;
     this._socketService.linkCustomerWithTopic(completeSelectedCustomer, this.conversationId);
   }
-  backToChat() { }
+  backToChat() {}
   ngOnDestroy() {
     this.paramsSubscription.unsubscribe();
   }
@@ -380,7 +378,7 @@ export class PhonebookComponent implements OnInit {
       this.getCustomers(this.limit, this.offSet, this.sort, this.query);
     }
   }
-  onSelectAll(items: any) { }
+  onSelectAll(items: any) {}
   onDeSelectAll(items: any) {
     this.cancelFilter();
   }

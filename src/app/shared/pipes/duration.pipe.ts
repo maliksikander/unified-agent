@@ -1,7 +1,7 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
-  name: 'duration'
+  name: "duration"
 })
 export class DurationPipe implements PipeTransform {
   transform(value: number): string {
@@ -9,18 +9,18 @@ export class DurationPipe implements PipeTransform {
     const minutes = Math.floor((value % 3600) / 60);
     const seconds = value % 60;
 
-    let result = '';
+    let result = "";
 
     if (hours > 0) {
-      result += hours + 'h ';
+      result += hours + "h ";
     }
 
     if (minutes > 0) {
-      result += minutes + 'm ';
+      result += minutes + "m ";
     }
 
     if (seconds > 0) {
-      result += seconds + 's';
+      result += seconds + "s";
     }
 
     return result.trim();

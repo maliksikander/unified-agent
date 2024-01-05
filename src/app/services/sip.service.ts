@@ -391,7 +391,7 @@ export class SipService implements OnInit {
               callType = "DIRECT_TRANSFER";
               this.showTransferNotification();
             }
-          
+
             this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, callType, undefined);
           }
         } else {

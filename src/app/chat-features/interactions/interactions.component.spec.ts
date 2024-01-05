@@ -16,7 +16,7 @@ describe("InteractionsComponent", () => {
   let snackBar: any;
   let translateService: TranslateService;
   let _sipService: any;
-  let _crmEventsService:any ;
+  let _crmEventsService: any;
   let channelSession = {
     channel: {
       channelConnector: {

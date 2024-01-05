@@ -8,7 +8,7 @@ import { OverlayContainer } from "@angular/cdk/overlay";
 import { httpService } from "./services/http.service";
 import { cacheService } from "./services/cache.service";
 import { TranslateService } from "@ngx-translate/core";
-import { crmEventsService } from './services/crmEvents.service';
+import { crmEventsService } from "./services/crmEvents.service";
 
 @Component({
   selector: "app-root",
@@ -37,7 +37,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     private _sharedService: sharedService,
     private _translateService: TranslateService,
     private ref: ChangeDetectorRef,
-    private _crmEventsService: crmEventsService,
+    private _crmEventsService: crmEventsService
   ) {}
   isdarkMode = false;
 

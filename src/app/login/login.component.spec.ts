@@ -5,13 +5,13 @@ describe("LoginComponent", () => {
   let fixture: LoginComponent;
   let formBuilderMock: FormBuilder;
   let routerMock: any;
-  let appConfigService: any;
+  // let appConfigService: any;
   let isLoggedInServiceMock: any;
-  let appConfigServiceMock: any;
+  // let appConfigServiceMock: any;
 
   beforeEach(() => {
     formBuilderMock = new FormBuilder();
-    fixture = new LoginComponent(appConfigServiceMock, formBuilderMock, isLoggedInServiceMock);
+    fixture = new LoginComponent( formBuilderMock, isLoggedInServiceMock);
   });
 
   describe("Test: Login Form", () => {
