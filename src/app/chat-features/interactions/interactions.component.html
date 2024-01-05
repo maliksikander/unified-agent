@@ -3250,7 +3250,7 @@
           <div class="sender-selection">
             <label>To</label>
 
-            <mat-form-field class="email-to-list">
+            <mat-form-field class="email-to-list email-count-list">
               <mat-chip-list #emailToList>
                 <mat-chip
                   *ngFor="let recipient of emailForm.get('recipientsTo')['controls']; let i = index"
@@ -3280,7 +3280,7 @@
           <div class="sender-selection">
             <label>Cc</label>
 
-            <mat-form-field class="email-to-list">
+            <mat-form-field class="email-to-list email-count-list">
               <mat-chip-list #emailCc>
                 <mat-chip
                   *ngFor="let recipient of emailForm.get('recipientsCc')['controls'] let i = index"
@@ -3306,7 +3306,7 @@
           <div class="sender-selection">
             <label>Bcc</label>
 
-            <mat-form-field class="email-to-list">
+            <mat-form-field class="email-to-list email-count-list">
               <mat-chip-list #emailToBcc>
                 <mat-chip
                   *ngFor="let recipient of emailForm.get('recipientsBcc')['controls']; let i = index"
@@ -3339,7 +3339,7 @@
         </div>
       </div>
 
-      <div class="dialog-main-content m-0">
+      <div class="dialog-main-content m-0 email-dialog-section">
         <div class="row m-0">
           <div class="email-compose-area w-100">
             <!-- <form [formGroup]="emailForm"> -->
