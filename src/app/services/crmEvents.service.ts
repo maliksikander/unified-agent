@@ -82,11 +82,12 @@ export class crmEventsService {
         }
         this.sendEventMessage(this.eventName, this.agentData, this.conversationId, this.customerName);
         // console.log("Post==>", e)
-      } else {
-        console.log("CRM events are not enabled.");
       }
+      // else {
+      // console.log("CRM events are not enabled.");
+      // }
     } catch (e) {
-      console.log("error in e==>", e);
+      console.error("[crmEventsService] Error ==>", e);
     }
   }
 
@@ -111,27 +112,32 @@ export class crmEventsService {
           window.postMessage(obj, location.origin);
         }
         //this.sendEventMessage(this.eventName, this.agentData, this.conversationId, this.customerName)
-      } else {
-        console.log("CRM events are not enabled.");
       }
+      // else {
+      //   console.log("CRM events are not enabled.");
+      // }
     } catch (e) {
-      console.log("error in e==>", e);
+      console.error("[chatSwitching] Error==>", e);
     }
   }
 
   sendEventMessage(eventName: string, agentData: any, conversationId: string | null, customerName: string | null): void {
-    let eventObj: any = {
-      eventName,
-      agentData
-    };
+    try {
+      let eventObj: any = {
+        eventName,
+        agentData
+      };
 
-    if (conversationId !== null && customerName !== null) {
-      eventObj[conversationId] = conversationId;
-      eventObj[customerName] = customerName;
+      if (conversationId !== null && customerName !== null) {
+        eventObj[conversationId] = conversationId;
+        eventObj[customerName] = customerName;
+      }
+
+      window.postMessage(eventObj, location.origin);
+      console.log("Post sendEventMessage ==>", eventObj);
+    } catch (e) {
+      console.error("[sendEventMessage] Error==>", e);
     }
-
-    window.postMessage(eventObj, location.origin);
-    console.log("Post sendEventMessage ==>", eventObj);
   }
 }
 
