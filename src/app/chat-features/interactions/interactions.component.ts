@@ -1029,7 +1029,7 @@ export class InteractionsComponent implements OnInit {
             "voice_activity"
           ].includes(event.name.toLowerCase())
         ) {
-          let message:any = this._socketService.createSystemNotificationMessage(event);
+          let message: any = this._socketService.createSystemNotificationMessage(event);
           if (message) {
             msgs.push(message);
           }

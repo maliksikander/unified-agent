@@ -141,7 +141,6 @@ export class isLoggedInService {
     }
   }
 
-
   initiateSipService(attributes) {
     try {
       if (this._sipService.checkAgentExtensionAttribute(attributes)) {

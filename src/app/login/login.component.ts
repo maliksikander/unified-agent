@@ -21,6 +21,10 @@ export class LoginComponent implements OnInit {
   ngOnInit() {}
 
   login() {
-    this._isLoggedInservice.fetchCCuserAndMoveToLogin(this.loginForm.value, "");
+    try {
+      this._isLoggedInservice.fetchCCuserAndMoveToLogin(this.loginForm.value, "");
+    } catch (e) {
+      console.error("[login] Error==>", e);
+    }
   }
 }

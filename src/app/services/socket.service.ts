@@ -1178,7 +1178,7 @@ export class socketService {
     });
 
     if (conversation) {
-      let message:any = this.createSystemNotificationMessage(cimEvent);
+      let message: any = this.createSystemNotificationMessage(cimEvent);
       if (message) {
         conversation.messages.push(message);
       }
@@ -1284,7 +1284,7 @@ export class socketService {
     });
 
     if (conversation) {
-      let message:any = this.createSystemNotificationMessage(cimEvent);
+      let message: any = this.createSystemNotificationMessage(cimEvent);
       if (message) {
         conversation.messages.push(message);
       }
@@ -1297,7 +1297,7 @@ export class socketService {
     });
 
     if (conversation) {
-      let message:any = this.createSystemNotificationMessage(cimEvent);
+      let message: any = this.createSystemNotificationMessage(cimEvent);
 
       if (cimEvent.data.channel.channelType.name.toLowerCase() == "cisco_cc" || cimEvent.data.channel.channelType.name.toLowerCase() == "cx_voice") {
         cimEvent.data["isDisabled"] = true;
@@ -1371,7 +1371,7 @@ export class socketService {
         });
         conversation.agentParticipants = agentParticipants;
       }
-      let message:any = this.createSystemNotificationMessage(cimEvent);
+      let message: any = this.createSystemNotificationMessage(cimEvent);
 
       if (message) {
         conversation.messages.push(message);
@@ -1406,7 +1406,7 @@ export class socketService {
         });
       }
 
-      let message:any = this.createSystemNotificationMessage(cimEvent);
+      let message: any = this.createSystemNotificationMessage(cimEvent);
 
       if (message) {
         conversation.messages.push(message);
