@@ -63,12 +63,6 @@
           <!--            <mat-icon>question_answer</mat-icon>-->
           <!--          </button>-->
           <!-- <ul class="list-group list-group-horizontal agent-controls call-controls" *ngIf="isCallActive && !ctiBarView && !isMobileDevice">
-            <li class="list-group-item" *ngIf="isCallActive && !ctiBarView">
-              <button mat-icon-button (click)="chatInCall()" [ngClass]="{'active-action': chatDuringCall}"
-                      matTooltip="Chat" aria-label="Chat">
-                <mat-icon>question_answer</mat-icon>
-              </button>
-            </li>
                        <li class="list-group-item">
                          <button mat-icon-button (click)="isBotSuggestions = !isBotSuggestions" [ngClass]="{'active-action': isBotSuggestions}"
                                  matTooltip="Suggestions" aria-label="Suggestions">
@@ -2691,7 +2685,7 @@
 
         <form
           class="reply-form {{ (conversation.topicParticipant.role != 'SILENT_MONITOR' && (conversation?.agentParticipants | countAgentPartcipants: ['PRIMARY', 'ASSISTANT']) ) ? 'whisper-tabs' : '' }}"
-          [ngClass]="{ 'whisper-mode':( conversation.topicParticipant.role != 'SILENT_MONITOR' && isWhisperMode) }"
+          [ngClass]="{ 'whisper-mode':( conversation.topicParticipant.role != 'SILENT_MONITOR' && isWhisperMode && conversation?.agentParticipants.length > 0 )}"
 
         >
           <label *ngIf="message.length > 0" class="count-reply">{{ replyInput.value.length }}/1000</label>

@@ -100,9 +100,8 @@
     "CX-Voice-Connected":"CX VOICE Connected_ita",
     "Call-Ended":"Call Ended_ita",
     "OB-Call-Request":"Outbound call request can not be initated_ita",
-    "queue-name":"Queue Name_ita",
-    "Customer-No":"Customer No"
-
+    "Customer-No":"Customer No_ita",
+    "queue-name":"Queue Name_ita"
   },
   "app-header": {
     "customer-conversation-view": "Customer Interactions_ita",
@@ -123,7 +122,7 @@
     "light-dark": "(Light or dark)_ita",
     "theme": "Theme_ita",
     "logout": "Logout_ita",
-    "active-agents-detail":"active agents detail"
+    "active-agents-detail":"active agents detail_ita"
   },
   "announcements": {
     "team-announcement": "Team Announcement_ita",
@@ -139,7 +138,7 @@
     "delete-announcement": "Delete Announcement_ita",
     "sure-delete-announcement": "Are you sure You want to delete Announcement_ita",
     "cancel": "Cancel_ita",
-    "confirm": "Confirm"
+    "confirm": "Confirm_ita"
   },
   "labels": {
     "label": "Label_ita",
@@ -161,13 +160,12 @@
     "select-all": "Select all_ita",
     "unselect-all": "Unselect all_ita",
     "search": "Search_ita",
-    "no-data-available": "No Data Available"
+    "no-data-available": "No Data Available_ita"
   },
   "call-controls":{
     "call-in-progress":"Call in progress_ita",
-    "initiating-audio-call":"Initiating Audio Call"
+    "initiating-audio-call":"Initiating Audio Call_ita"
   },
-
   "chat-features": {
     "send-sms":{
       "info":"SEND SMS_ita",
@@ -190,7 +188,7 @@
       "characters-limit-1500":"1500 characters_ita",
       "to-view-the-customer-profile":" to view the customer profile_ita",
       "number-should-be-in-range-3-to-20":"Number should be in range 3 to 20_ita",
-      "enter-phone-number":"Enter Phone Number"
+      "enter-phone-number":"Enter Phone Number_ita"
     },
 
     "customer-info": {
@@ -219,10 +217,10 @@
       "device": "Device:en_ita",
       "browser": "Browser:en_ita",
       "country": "Country:en_ita",
-      "language": "Language:en"
+      "language": "Language:en_ita"
     },
     "chats": {
-      "start": "Start a New Conversation"
+      "start": "Start a New Conversation_ita"
     },
     "interactions": {
       "leave-conversation":"Leave Conversation_ita",
@@ -282,7 +280,7 @@
       "sla-dialog-brached": "SLA breached!_ita",
       "sla-dialog-expired": "SLA Expired_ita",
       "sla-dialog-stay-here": "Would you like to stay in the conversation?_ita",
-      "sla-dialog-warning": "You will soon be removed from the conversation"
+      "sla-dialog-warning": "You will soon be removed from the conversation_ita"
     },
     "wrap-up-form": {
       "Add-Wrap-Up": "Add Wrap-Up_ita",
@@ -292,7 +290,7 @@
       "cancel": "Cancel_ita",
       "apply": "Apply_ita",
       "notes": "Notes_ita",
-      "New-Wrap-up": "New Wrap-up..."
+      "New-Wrap-up": "New Wrap-up..._ita"
     }
   },
   "column-preferences": {
@@ -300,7 +298,7 @@
     "column-preferences": "Column Preferences_ita",
     "columns": "Columns_ita",
     "selected-columns": "Selected Columns_ita",
-    "save": "Save"
+    "save": "Save_ita"
     },
   "create-customer": {
     "create-new-customer": "Create New Customer_ita",
@@ -309,7 +307,7 @@
     "max": "*Max._ita",
     "characters-allowed": "characters are allowed_ita",
     "cancel": "Cancel_ita",
-    "create": "Create"
+    "create": "Create_ita"
   },
   "customer-actions": {
     "required": "*Field is required_ita",
@@ -318,7 +316,7 @@
     "characters-allowed": "characters are allowed_ita",
     "cancel": "CANCEL_ita",
     "save": "SAVE_ita",
-    "edit-customer": "Edit Customer"
+    "edit-customer": "Edit Customer_ita"
   },
   "customer-schema": {
     "create-attribute": "Create Attribute_ita",
@@ -356,14 +354,14 @@
     "delete": "Delete_ita",
     "customer-attributes": "Customer Attributes_ita",
     "create-new-ttribute": "Create New Attribute_ita",
-    "options": "Options"
+    "options": "Options_ita"
   },
   "link-conversation": {
     "confirm": "Confirm_ita",
     "add-channel-identifeir": "Add channel Identifer_ita",
     "cancel": "Cancel_ita",
     "like-to-link-conversation": "Would you like to link conversation with _ita",
-    "link-conversation": "Link conversation to "
+    "link-conversation": "Link conversation to_ita"
   },
   "login": {
     "login": "Login_ita",
@@ -371,8 +369,7 @@
     "username": "Username_ita",
     "password": "Password_ita",
     "agent-desk": "AgentDesk_ita",
-    "call-center-experts": "Your Call Center Experts._ita",
-    "": ""
+    "call-center-experts": "Your Call Center Experts._ita"
   },
   "socket-service":{
     "has-joined-the-conversation":"has joined the conversation_ita",
@@ -384,7 +381,7 @@
     "transfer-request-has-been-placed":"transfer request has been placed_ita",
     "conference-request-has-been-placed-by":"conference request has been placed by_ita",
     "No-agent-is-available-for":"No agent is available for_ita",
-    "conference-request-has-cancelled": "Conference request has been cancelled"
+    "conference-request-has-cancelled": "Conference request has been cancelled_ita"
    },
   "globals": {
     "chat": "Chat_ita",
@@ -437,7 +434,7 @@
     "mute":"Mute_ita",
     "unMute":"Unmute_ita",
     "hold":"Hold_ita",
-    "resume":"Resume"
+    "resume":"Resume_ita"
   },
   "pull-mode": {
     "all-list": "All List_ita",
@@ -460,7 +457,7 @@
     "end": "End_ita",
     "UNREAD": "UNREAD_ita",
     "chat": "Chat_ita",
-    "close": "Close"
+    "close": "Close_ita"
   },
   "supervisor": {
     "active-conversations-detail": "Active Conversations Detail_ita",

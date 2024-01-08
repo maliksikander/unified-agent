@@ -100,9 +100,8 @@
     "CX-Voice-Connected":"CX VOICE Connected_ar",
     "Call-Ended":"Call Ended_ar",
     "OB-Call-Request":"Outbound call request can not be initated_ar",
-    "queue-name":"Queue Name_ar",
-    "Customer-No":"Customer No"
-
+    "Customer-No":"Customer No_ar",
+    "queue-name":"Queue Name_ar"
   },
   "app-header": {
     "customer-conversation-view": "Customer Interactions_ar",
@@ -139,7 +138,7 @@
     "delete-announcement": "Delete Announcement_ar",
     "sure-delete-announcement": "Are you sure You want to delete Announcement_ar",
     "cancel": "Cancel_ar",
-    "confirm": "Confirm"
+    "confirm": "Confirm_ar"
   },
   "labels": {
     "label": "Label_ar",
@@ -161,7 +160,7 @@
     "select-all": "Select all_ar",
     "unselect-all": "Unselect all_ar",
     "search": "Search_ar",
-    "no-data-available": "No Data Available"
+    "no-data-available": "No Data Available_ar"
   },
   "call-controls":{
     "call-in-progress":"Call in progress_ar",
@@ -189,7 +188,7 @@
       "characters-limit-1500":"1500 characters_ar",
       "to-view-the-customer-profile":" to view the customer profile_ar",
       "number-should-be-in-range-3-to-20":"Number should be in range 3 to 20_ar",
-      "enter-phone-number":"Enter Phone Number"
+      "enter-phone-number":"Enter Phone Number_ar"
     },
 
     "customer-info": {
@@ -218,7 +217,7 @@
       "device": "Device:en_ar",
       "browser": "Browser:en_ar",
       "country": "Country:en_ar",
-      "language": "Language:en"
+      "language": "Language:en_ar"
     },
     "chats": {
       "start": "Start a New Conversation"
@@ -281,7 +280,7 @@
       "sla-dialog-brached": "SLA breached!_ar",
       "sla-dialog-expired": "SLA Expired_ar",
       "sla-dialog-stay-here": "Would you like to stay in the conversation?_ar",
-      "sla-dialog-warning": "You will soon be removed from the conversation"
+      "sla-dialog-warning": "You will soon be removed from the conversation_ar"
     },
     "wrap-up-form": {
       "Add-Wrap-Up": "Add Wrap-Up_ar",
@@ -291,7 +290,7 @@
       "cancel": "Cancel_ar",
       "apply": "Apply_ar",
       "notes": "Notes_ar",
-      "New-Wrap-up": "New Wrap-up..."
+      "New-Wrap-up": "New Wrap-up..._ar"
     }
   },
   "column-preferences": {
@@ -299,7 +298,7 @@
     "column-preferences": "Column Preferences_ar",
     "columns": "Columns_ar",
     "selected-columns": "Selected Columns_ar",
-    "save": "Save"
+    "save": "Save_ar"
     },
   "create-customer": {
     "create-new-customer": "Create New Customer_ar",
@@ -308,7 +307,7 @@
     "max": "*Max._ar",
     "characters-allowed": "characters are allowed_ar",
     "cancel": "Cancel_ar",
-    "create": "Create"
+    "create": "Create_ar"
   },
   "customer-actions": {
     "required": "*Field is required_ar",
@@ -317,7 +316,7 @@
     "characters-allowed": "characters are allowed_ar",
     "cancel": "CANCEL_ar",
     "save": "SAVE_ar",
-    "edit-customer": "Edit Customer"
+    "edit-customer": "Edit Customer_ar"
   },
   "customer-schema": {
     "create-attribute": "Create Attribute_ar",
@@ -355,14 +354,14 @@
     "delete": "Delete_ar",
     "customer-attributes": "Customer Attributes_ar",
     "create-new-ttribute": "Create New Attribute_ar",
-    "options": "Options"
+    "options": "Options_ar"
   },
   "link-conversation": {
     "confirm": "Confirm_ar",
     "add-channel-identifeir": "Add channel Identifer_ar",
     "cancel": "Cancel_ar",
     "like-to-link-conversation": "Would you like to link conversation with _ar",
-    "link-conversation": "Link conversation to "
+    "link-conversation": "Link conversation to_ar "
   },
   "login": {
     "login": "Login_ar",
@@ -370,8 +369,7 @@
     "username": "Username_ar",
     "password": "Password_ar",
     "agent-desk": "AgentDesk_ar",
-    "call-center-experts": "Your Call Center Experts._ar",
-    "": ""
+    "call-center-experts": "Your Call Center Experts._ar"
   },
   "socket-service":{
     "has-joined-the-conversation":"has joined the conversation_ar",
@@ -383,7 +381,7 @@
     "transfer-request-has-been-placed":"transfer request has been placed_ar",
     "conference-request-has-been-placed-by":"conference request has been placed by_ar",
     "No-agent-is-available-for":"No agent is available for_ar",
-    "conference-request-has-cancelled": "Conference request has been cancelled"
+    "conference-request-has-cancelled": "Conference request has been cancelled_ar"
    },
   "globals": {
     "chat": "Chat_ar",
@@ -436,7 +434,7 @@
     "mute":"Mute_ar",
     "unMute":"Unmute_ar",
     "hold":"Hold_ar",
-    "resume":"Resume"
+    "resume":"Resume_ar"
   },
   "pull-mode": {
     "all-list": "All List_ar",
@@ -459,7 +457,7 @@
     "end": "End_ar",
     "UNREAD": "UNREAD_ar",
     "chat": "Chat_ar",
-    "close": "Close"
+    "close": "Close_ar"
   },
   "supervisor": {
     "active-conversations-detail": "Active Conversations Detail_ar",

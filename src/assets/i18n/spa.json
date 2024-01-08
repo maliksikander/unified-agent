@@ -100,9 +100,8 @@
     "CX-Voice-Connected":"CX VOICE Connected_spa",
     "Call-Ended":"Call Ended_spa",
     "OB-Call-Request":"Outbound call request can not be initated_spa",
-    "queue-name":"Queue Name_spa",
-    "Customer-No":"Customer No"
-
+    "Customer-No":"Customer No_spa",
+    "queue-name":"Queue Name_spa"
   },
   "app-header": {
     "customer-conversation-view": "Customer Interactions_spa",
@@ -139,7 +138,7 @@
     "delete-announcement": "Delete Announcement_spa",
     "sure-delete-announcement": "Are you sure You want to delete Announcement_spa",
     "cancel": "Cancel_spa",
-    "confirm": "Confirm"
+    "confirm": "Confirm_Spa"
   },
   "labels": {
     "label": "Label_spa",
@@ -161,13 +160,12 @@
     "select-all": "Select all_spa",
     "unselect-all": "Unselect all_spa",
     "search": "Search_spa",
-    "no-data-available": "No Data Available"
+    "no-data-available": "No Data Available_spa"
   },
   "call-controls":{
     "call-in-progress":"Call in progress_spa",
-    "initiating-audio-call":"Initiating Audio Call"
+    "initiating-audio-call":"Initiating Audio Call_spa"
   },
-
   "chat-features": {
     "send-sms":{
       "info":"SEND SMS_spa",
@@ -190,7 +188,7 @@
       "characters-limit-1500":"1500 characters_spa",
       "to-view-the-customer-profile":" to view the customer profile_spa",
       "number-should-be-in-range-3-to-20":"Number should be in range 3 to 20_spa",
-      "enter-phone-number":"Enter Phone Number"
+      "enter-phone-number":"Enter Phone Number_spa"
     },
 
     "customer-info": {
@@ -219,10 +217,10 @@
       "device": "Device:en_spa",
       "browser": "Browser:en_spa",
       "country": "Country:en_spa",
-      "language": "Language:en"
+      "language": "Language:en_spa"
     },
     "chats": {
-      "start": "Start a New Conversation"
+      "start": "Start a New Conversation_spa"
     },
     "interactions": {
       "leave-conversation":"Leave Conversation_spa",
@@ -282,7 +280,7 @@
       "sla-dialog-brached": "SLA breached!_spa",
       "sla-dialog-expired": "SLA Expired_spa",
       "sla-dialog-stay-here": "Would you like to stay in the conversation?_spa",
-      "sla-dialog-warning": "You will soon be removed from the conversation"
+      "sla-dialog-warning": "You will soon be removed from the conversation_spa"
     },
     "wrap-up-form": {
       "Add-Wrap-Up": "Add Wrap-Up_spa",
@@ -300,7 +298,7 @@
     "column-preferences": "Column Preferences_spa",
     "columns": "Columns_spa",
     "selected-columns": "Selected Columns_spa",
-    "save": "Save"
+    "save": "Save_spa"
     },
   "create-customer": {
     "create-new-customer": "Create New Customer_spa",
@@ -318,7 +316,7 @@
     "characters-allowed": "characters are allowed_spa",
     "cancel": "CANCEL_spa",
     "save": "SAVE_spa",
-    "edit-customer": "Edit Customer"
+    "edit-customer": "Edit Customer_Spa"
   },
   "customer-schema": {
     "create-attribute": "Create Attribute_spa",
@@ -356,14 +354,14 @@
     "delete": "Delete_spa",
     "customer-attributes": "Customer Attributes_spa",
     "create-new-ttribute": "Create New Attribute_spa",
-    "options": "Options"
+    "options": "Options_spa"
   },
   "link-conversation": {
     "confirm": "Confirm_spa",
     "add-channel-identifeir": "Add channel Identifer_spa",
     "cancel": "Cancel_spa",
     "like-to-link-conversation": "Would you like to link conversation with _spa",
-    "link-conversation": "Link conversation to "
+    "link-conversation": "Link conversation to_spa"
   },
   "login": {
     "login": "Login_spa",
@@ -371,8 +369,7 @@
     "username": "Username_spa",
     "password": "Password_spa",
     "agent-desk": "AgentDesk_spa",
-    "call-center-experts": "Your Call Center Experts._spa",
-    "": ""
+    "call-center-experts": "Your Call Center Experts._spa"
   },
   "socket-service":{
     "has-joined-the-conversation":"has joined the conversation_spa",
@@ -384,7 +381,7 @@
     "transfer-request-has-been-placed":"transfer request has been placed_spa",
     "conference-request-has-been-placed-by":"conference request has been placed by_spa",
     "No-agent-is-available-for":"No agent is available for_spa",
-    "conference-request-has-cancelled": "Conference request has been cancelled"
+    "conference-request-has-cancelled": "Conference request has been cancelled_spa"
    },
   "globals": {
     "chat": "Chat_spa",
@@ -437,7 +434,7 @@
     "mute":"Mute_spa",
     "unMute":"Unmute_spa",
     "hold":"Hold_spa",
-    "resume":"Resume"
+    "resume":"Resume_spa"
   },
   "pull-mode": {
     "all-list": "All List_spa",
@@ -460,7 +457,7 @@
     "end": "End_spa",
     "UNREAD": "UNREAD_spa",
     "chat": "Chat_spa",
-    "close": "Close"
+    "close": "Close_spa"
   },
   "supervisor": {
     "active-conversations-detail": "Active Conversations Detail_spa",

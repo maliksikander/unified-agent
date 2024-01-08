@@ -14,9 +14,12 @@ import { finesseService } from "src/app/services/finesse.service";
 import { ConfirmationDialogComponent } from "src/app/new-components/confirmation-dialog/confirmation-dialog.component";
 import { TranslateService } from "@ngx-translate/core";
 import { CallControlsComponent } from "../../new-components/call-controls/call-controls.component";
-import { SipService } from "src/app/services/sip.service";
-import { SendSmsComponent } from "../send-sms/send-sms.component";
 import { crmEventsService } from "src/app/services/crmEvents.service";
+import { ConversationSettings } from "../../models/conversationSetting/conversationSettings";
+import { SipService } from "src/app/services/sip.service";
+import { HighlightResult } from "ngx-highlightjs";
+import { SendSmsComponent } from "../send-sms/send-sms.component";
+// import {DOCUMENT} from '@angular/common';
 
 // declare var EmojiPicker: any;
 

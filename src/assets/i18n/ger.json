@@ -100,9 +100,8 @@
     "CX-Voice-Connected":"CX VOICE Connected_ger",
     "Call-Ended":"Call Ended_ger",
     "OB-Call-Request":"Outbound call request can not be initated_ger",
-    "queue-name":"Queue Name_ger",
-    "Customer-No":"Customer No"
-
+    "Customer-No":"Customer No_ger",
+    "queue-name":"Queue Name_ger"
   },
   "app-header": {
     "customer-conversation-view": "Customer Interactions_ger",
@@ -123,7 +122,7 @@
     "light-dark": "(Light or dark)_ger",
     "theme": "Theme_ger",
     "logout": "Logout_ger",
-    "active-agents-detail":"active agents detail"
+    "active-agents-detail":"active agents detail_ger"
   },
   "announcements": {
     "team-announcement": "Team Announcement_ger",
@@ -139,7 +138,7 @@
     "delete-announcement": "Delete Announcement_ger",
     "sure-delete-announcement": "Are you sure You want to delete Announcement_ger",
     "cancel": "Cancel_ger",
-    "confirm": "Confirm"
+    "confirm": "Confirm_ger"
   },
   "labels": {
     "label": "Label_ger",
@@ -161,7 +160,7 @@
     "select-all": "Select all_ger",
     "unselect-all": "Unselect all_ger",
     "search": "Search_ger",
-    "no-data-available": "No Data Available"
+    "no-data-available": "No Data Available_ger"
   },
   "call-controls":{
     "call-in-progress":"Call in progress_ger",
@@ -189,7 +188,7 @@
       "characters-limit-1500":"1500 characters_ger",
       "to-view-the-customer-profile":" to view the customer profile_ger",
       "number-should-be-in-range-3-to-20":"Number should be in range 3 to 20_ger",
-      "enter-phone-number":"Enter Phone Number"
+      "enter-phone-number":"Enter Phone Number_ger"
     },
 
     "customer-info": {
@@ -218,10 +217,10 @@
       "device": "Device:en_ger",
       "browser": "Browser:en_ger",
       "country": "Country:en_ger",
-      "language": "Language:en"
+      "language": "Language:en_ger"
     },
     "chats": {
-      "start": "Start a New Conversation"
+      "start": "Start a New Conversation_ger"
     },
     "interactions": {
       "leave-conversation":"Leave Conversation_ger",
@@ -281,7 +280,7 @@
       "sla-dialog-brached": "SLA breached!_ger",
       "sla-dialog-expired": "SLA Expired_ger",
       "sla-dialog-stay-here": "Would you like to stay in the conversation?_ger",
-      "sla-dialog-warning": "You will soon be removed from the conversation"
+      "sla-dialog-warning": "You will soon be removed from the conversation_ger"
     },
     "wrap-up-form": {
       "Add-Wrap-Up": "Add Wrap-Up_ger",
@@ -291,7 +290,7 @@
       "cancel": "Cancel_ger",
       "apply": "Apply_ger",
       "notes": "Notes_ger",
-      "New-Wrap-up": "New Wrap-up..."
+      "New-Wrap-up": "New Wrap-up..._ger"
     }
   },
   "column-preferences": {
@@ -299,7 +298,7 @@
     "column-preferences": "Column Preferences_ger",
     "columns": "Columns_ger",
     "selected-columns": "Selected Columns_ger",
-    "save": "Save"
+    "save": "Save_ger"
     },
   "create-customer": {
     "create-new-customer": "Create New Customer_ger",
@@ -308,7 +307,7 @@
     "max": "*Max._ger",
     "characters-allowed": "characters are allowed_ger",
     "cancel": "Cancel_ger",
-    "create": "Create"
+    "create": "Create_ger"
   },
   "customer-actions": {
     "required": "*Field is required_ger",
@@ -317,7 +316,7 @@
     "characters-allowed": "characters are allowed_ger",
     "cancel": "CANCEL_ger",
     "save": "SAVE_ger",
-    "edit-customer": "Edit Customer"
+    "edit-customer": "Edit Customer_ger"
   },
   "customer-schema": {
     "create-attribute": "Create Attribute_ger",
@@ -355,14 +354,14 @@
     "delete": "Delete_ger",
     "customer-attributes": "Customer Attributes_ger",
     "create-new-ttribute": "Create New Attribute_ger",
-    "options": "Options"
+    "options": "Options_ger"
   },
   "link-conversation": {
     "confirm": "Confirm_ger",
     "add-channel-identifeir": "Add channel Identifer_ger",
     "cancel": "Cancel_ger",
     "like-to-link-conversation": "Would you like to link conversation with _ger",
-    "link-conversation": "Link conversation to "
+    "link-conversation": "Link conversation to_ger "
   },
   "login": {
     "login": "Login_ger",
@@ -370,8 +369,7 @@
     "username": "Username_ger",
     "password": "Password_ger",
     "agent-desk": "AgentDesk_ger",
-    "call-center-experts": "Your Call Center Experts._ger",
-    "": ""
+    "call-center-experts": "Your Call Center Experts._ger"
   },
   "socket-service":{
     "has-joined-the-conversation":"has joined the conversation_ger",
@@ -383,7 +381,7 @@
     "transfer-request-has-been-placed":"transfer request has been placed_ger",
     "conference-request-has-been-placed-by":"conference request has been placed by_ger",
     "No-agent-is-available-for":"No agent is available for_ger",
-    "conference-request-has-cancelled": "Conference request has been cancelled"
+    "conference-request-has-cancelled": "Conference request has been cancelled_ger"
    },
   "globals": {
     "chat": "Chat_ger",
@@ -436,7 +434,7 @@
     "mute":"Mute_ger",
     "unMute":"Unmute_ger",
     "hold":"Hold_ger",
-    "resume":"Resume"
+    "resume":"Resume_ger"
   },
   "pull-mode": {
     "all-list": "All List_ger",
@@ -459,7 +457,7 @@
     "end": "End_ger",
     "UNREAD": "UNREAD_ger",
     "chat": "Chat_ger",
-    "close": "Close"
+    "close": "Close_ger"
   },
   "supervisor": {
     "active-conversations-detail": "Active Conversations Detail_ger",

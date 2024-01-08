@@ -100,9 +100,8 @@
     "CX-Voice-Connected":"CX VOICE Connected_fr",
     "Call-Ended":"Call Ended_fr",
     "OB-Call-Request":"Outbound call request can not be initated_fr",
-    "queue-name":"Queue Name_fr",
-    "Customer-No":"Customer No"
-
+    "Customer-No":"Customer No_fr",
+    "queue-name":"Queue Name_fr"
   },
   "app-header": {
     "customer-conversation-view": "Customer Interactions_fr",
@@ -139,7 +138,7 @@
     "delete-announcement": "Delete Announcement_fr",
     "sure-delete-announcement": "Are you sure You want to delete Announcement_fr",
     "cancel": "Cancel_fr",
-    "confirm": "Confirm"
+    "confirm": "Confirm_fr"
   },
   "labels": {
     "label": "Label_fr",
@@ -161,7 +160,7 @@
     "select-all": "Select all_fr",
     "unselect-all": "Unselect all_fr",
     "search": "Search_fr",
-    "no-data-available": "No Data Available"
+    "no-data-available": "No Data Available_fr"
   },
   "call-controls":{
     "call-in-progress":"Call in progress_fr",
@@ -189,7 +188,7 @@
       "characters-limit-1500":"1500 characters_fr",
       "to-view-the-customer-profile":" to view the customer profile_fr",
       "number-should-be-in-range-3-to-20":"Number should be in range 3 to 20_fr",
-      "enter-phone-number":"Enter Phone Number"
+      "enter-phone-number":"Enter Phone Number_fr"
     },
 
     "customer-info": {
@@ -218,10 +217,10 @@
       "device": "Device:en_fr",
       "browser": "Browser:en_fr",
       "country": "Country:en_fr",
-      "language": "Language:en"
+      "language": "Language:en_fr"
     },
     "chats": {
-      "start": "Start a New Conversation"
+      "start": "Start a New Conversation_fr"
     },
     "interactions": {
       "leave-conversation":"Leave Conversation_fr",
@@ -281,7 +280,7 @@
       "sla-dialog-brached": "SLA breached!_fr",
       "sla-dialog-expired": "SLA Expired_fr",
       "sla-dialog-stay-here": "Would you like to stay in the conversation?_fr",
-      "sla-dialog-warning": "You will soon be removed from the conversation"
+      "sla-dialog-warning": "You will soon be removed from the conversation_fr"
     },
     "wrap-up-form": {
       "Add-Wrap-Up": "Add Wrap-Up_fr",
@@ -291,7 +290,7 @@
       "cancel": "Cancel_fr",
       "apply": "Apply_fr",
       "notes": "Notes_fr",
-      "New-Wrap-up": "New Wrap-up..."
+      "New-Wrap-up": "New Wrap-up..._fr"
     }
   },
   "column-preferences": {
@@ -299,7 +298,7 @@
     "column-preferences": "Column Preferences_fr",
     "columns": "Columns_fr",
     "selected-columns": "Selected Columns_fr",
-    "save": "Save"
+    "save": "Save_fr"
     },
   "create-customer": {
     "create-new-customer": "Create New Customer_fr",
@@ -308,7 +307,7 @@
     "max": "*Max._fr",
     "characters-allowed": "characters are allowed_fr",
     "cancel": "Cancel_fr",
-    "create": "Create"
+    "create": "Create_fr"
   },
   "customer-actions": {
     "required": "*Field is required_fr",
@@ -317,7 +316,7 @@
     "characters-allowed": "characters are allowed_fr",
     "cancel": "CANCEL_fr",
     "save": "SAVE_fr",
-    "edit-customer": "Edit Customer"
+    "edit-customer": "Edit Customer_fr"
   },
   "customer-schema": {
     "create-attribute": "Create Attribute_fr",
@@ -355,14 +354,14 @@
     "delete": "Delete_fr",
     "customer-attributes": "Customer Attributes_fr",
     "create-new-ttribute": "Create New Attribute_fr",
-    "options": "Options"
+    "options": "Options_fr"
   },
   "link-conversation": {
     "confirm": "Confirm_fr",
     "add-channel-identifeir": "Add channel Identifer_fr",
     "cancel": "Cancel_fr",
     "like-to-link-conversation": "Would you like to link conversation with _fr",
-    "link-conversation": "Link conversation to "
+    "link-conversation": "Link conversation to_fr "
   },
   "login": {
     "login": "Login_fr",
@@ -370,8 +369,7 @@
     "username": "Username_fr",
     "password": "Password_fr",
     "agent-desk": "AgentDesk_fr",
-    "call-center-experts": "Your Call Center Experts._fr",
-    "": ""
+    "call-center-experts": "Your Call Center Experts._fr"
   },
   "socket-service":{
     "has-joined-the-conversation":"has joined the conversation_fr",
@@ -383,7 +381,7 @@
     "transfer-request-has-been-placed":"transfer request has been placed_fr",
     "conference-request-has-been-placed-by":"conference request has been placed by_fr",
     "No-agent-is-available-for":"No agent is available for_fr",
-    "conference-request-has-cancelled": "Conference request has been cancelled"
+    "conference-request-has-cancelled": "Conference request has been cancelled_fr"
    },
   "globals": {
     "chat": "Chat_fr",
@@ -436,7 +434,7 @@
     "mute":"Mute_fr",
     "unMute":"Unmute_fr",
     "hold":"Hold_fr",
-    "resume":"Resume"
+    "resume":"Resume_fr"
   },
   "pull-mode": {
     "all-list": "All List_fr",
@@ -459,7 +457,7 @@
     "end": "End_fr",
     "UNREAD": "UNREAD_fr",
     "chat": "Chat_fr",
-    "close": "Close"
+    "close": "Close_fr"
   },
   "supervisor": {
     "active-conversations-detail": "Active Conversations Detail_fr",

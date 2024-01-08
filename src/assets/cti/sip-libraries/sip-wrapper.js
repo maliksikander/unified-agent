@@ -1072,6 +1072,7 @@ function blind_transfer_queue(numberToTransfer, queue, queuetype, callback,dialo
             }
         },
     };
+
     sessionall.refer(target, options).then((res) => {
         console.log('success blind_transfer_queue', res);
         dialogStatedata.response.dialog.callEndReason = "direct-transfered";
