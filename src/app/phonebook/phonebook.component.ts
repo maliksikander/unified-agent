@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { DateAdapter, MatDialog } from "@angular/material";
 import { CreateCustomerComponent } from "../create-customer/create-customer.component";
 import { FormControl } from "@angular/forms";
@@ -30,7 +30,7 @@ export class PhonebookComponent implements OnInit {
     private _router: Router,
     private route: ActivatedRoute,
     private _socketService: socketService,
-    private _snackbarService: snackbarService,
+    private _snackbarService: snackbarService
   ) {
     this.dateAdapter.setLocale("en-GB");
     this._translateService.stream("globals.Search").subscribe((data: string) => {
@@ -89,7 +89,7 @@ export class PhonebookComponent implements OnInit {
 
     if (this._sharedService.isCompactView) {
       this.isMobileDevice = true;
-      console.log('this is a compact view phonebook?', this.isMobileDevice);
+      console.log("this is a compact view phonebook?", this.isMobileDevice);
     }
 
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -231,7 +231,7 @@ export class PhonebookComponent implements OnInit {
   // to open create customer dialog
   createCustomer() {
     const dialogRef = this.dialog.open(CreateCustomerComponent, {
-      panelClass: "create-customer-dialog" + `${this.isMobileDevice ? '-mobile-view-panel' : ''}`,
+      panelClass: "create-customer-dialog" + `${this.isMobileDevice ? "-mobile-view-panel" : ""}`,
       maxWidth: "80vw"
       // height: "80vh",
       // maxHeight: "80vh"
@@ -246,7 +246,7 @@ export class PhonebookComponent implements OnInit {
   // to open user prefernce dialog
   actions() {
     const dialogRef = this.dialog.open(columnPreferences, {
-      panelClass: "edit-customer-dialog" + `${this.isMobileDevice ? '-mobile-view-panel' : ''}`,
+      panelClass: "edit-customer-dialog" + `${this.isMobileDevice ? "-mobile-view-panel" : ""}`,
       maxWidth: "92vw",
       maxHeight: "88vh",
       width: "818px",
@@ -262,7 +262,7 @@ export class PhonebookComponent implements OnInit {
   // to open user customer action dialog
   onRowClick(id, tab, col) {
     const dialogRef = this.dialog.open(CustomerActionsComponent, {
-      panelClass: "create-customer-dialog" + `${this.isMobileDevice ? '-mobile-view-panel' : ''}`,
+      panelClass: "create-customer-dialog" + `${this.isMobileDevice ? "-mobile-view-panel" : ""}`,
       maxWidth: "80vw",
       // maxHeight: "88vh",
       // width: "818px",
@@ -277,15 +277,13 @@ export class PhonebookComponent implements OnInit {
   }
   //to open conversation view for outbound chat
   openCOnversationView(customer) {
-
     let conversation = this._socketService.conversations.find((conversation) => {
-      return conversation.customer._id == customer._id
-    })
+      return conversation.customer._id == customer._id;
+    });
     if (!conversation) {
-      this._socketService.onTopicData({ customer }, "FAKE_CONVERSATION", "");
+      this._socketService.onTopicData({ customer }, "FAKE_CONVERSATION", "FAKE_CONVERSATION", "");
     }
     this._router.navigate(["customers"]);
-
   }
 
   onColReorder(event) {
@@ -344,7 +342,7 @@ export class PhonebookComponent implements OnInit {
     completeSelectedCustomer["_id"] = selectedCustomer._id;
     this._socketService.linkCustomerWithTopic(completeSelectedCustomer, this.conversationId);
   }
-  backToChat() { }
+  backToChat() {}
   ngOnDestroy() {
     this.paramsSubscription.unsubscribe();
   }
@@ -380,7 +378,7 @@ export class PhonebookComponent implements OnInit {
       this.getCustomers(this.limit, this.offSet, this.sort, this.query);
     }
   }
-  onSelectAll(items: any) { }
+  onSelectAll(items: any) {}
   onDeSelectAll(items: any) {
     this.cancelFilter();
   }

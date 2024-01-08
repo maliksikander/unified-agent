@@ -8,7 +8,7 @@ import { socketService } from "./socket.service";
 import { httpService } from "./http.service";
 import { sharedService } from "./shared.service";
 import * as uuid from "uuid";
-import { MatDialogRef } from "@angular/material";
+import { MatDialogRef, MatSnackBar } from "@angular/material";
 
 declare var postMessages;
 
@@ -48,7 +48,8 @@ export class SipService implements OnInit {
     private _socketService: socketService,
     private _httpService: httpService,
     private _snackbarService: snackbarService,
-    private _sharedService: sharedService
+    private _sharedService: sharedService,
+    private snackBar: MatSnackBar
   ) {}
   ngOnInit(): void {}
 
@@ -388,7 +389,9 @@ export class SipService implements OnInit {
             } else if (dialogEvent.response.dialog.callEndReason.toLowerCase() == "direct-transfered") {
               console.log("direct transfer case==>");
               callType = "DIRECT_TRANSFER";
+              this.showTransferNotification();
             }
+
             this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, callType, undefined);
           }
         } else {
@@ -399,6 +402,21 @@ export class SipService implements OnInit {
     } catch (e) {
       console.error("[Error Sip] handleDialogParticipant ==>", e);
     }
+  }
+
+  showTransferNotification() {
+    let msg: string;
+    msg = this._translateService.instant("snackbar.Transfer-request-placed-successfully");
+    // else if (this.requestAction == "conference") msg = this._translateService.instant("snackbar.Conference-request-placed-successfully");
+
+    setTimeout(() => {
+      this.snackBar.open(msg, "", {
+        duration: 4000,
+        panelClass: "chat-success-snackbar",
+        horizontalPosition: "right",
+        verticalPosition: "bottom"
+      });
+    }, 1000);
   }
 
   removeNotification(dialog) {
@@ -631,7 +649,7 @@ export class SipService implements OnInit {
         }
       };
       if (intent == "CALL_LEG_ENDED") {
-        let conversationId = this.getCurrentConversationIdORConversation("id");
+        let conversationId = this.getCurrentconversationIdORConversation("id");
         let obj = {
           key: "conversationId",
           type: "String2000",
@@ -683,7 +701,7 @@ export class SipService implements OnInit {
     }
   }
 
-  getCurrentConversationIdORConversation(type) {
+  getCurrentconversationIdORConversation(type) {
     try {
       let conversationList: Array<any> = this._socketService.conversations;
       for (let i = 0; i <= conversationList.length; i++) {
@@ -699,7 +717,7 @@ export class SipService implements OnInit {
         }
       }
     } catch (e) {
-      console.error("[Error] getConversationIdOrConversation Sip==>", e);
+      console.error("[Error] getconversationIdOrConversation Sip==>", e);
     }
   }
 
@@ -908,6 +926,38 @@ export class SipService implements OnInit {
     }
   }
 
+  getExtensionForTransfer(extensions) {
+    try {
+      if (extensions && extensions != null && extensions.length > 0) return extensions[0];
+      return null;
+    } catch (error) {
+      console.error("[Error on getExtensionForTransferOnSip] ==>", error);
+    }
+  }
+
+  directAgentTransferOnSip(extensions) {
+    try {
+      let ext = this.getExtensionForTransfer(extensions);
+      if (ext) {
+        let command = {
+          action: "SST",
+          parameter: {
+            dialogId: this.activeDialog.id,
+            numberToTransfer: ext,
+            clientCallbackFunction: this.clientCallback
+          }
+        };
+        console.log("directAgentTransferOnSip ==>", command);
+        postMessages(command);
+      } else {
+        this._snackbarService.open(this._translateService.instant("snackbar.CX-Voice-call-canceled"), "err");
+        console.error("[Error on directAgentTransferOnSip] ==> Extension Not Found");
+      }
+    } catch (error) {
+      console.error("[Error on directAgentTransferOnSip] ==>", error);
+    }
+  }
+
   getCurrentAgentFromParticipantList(list: Array<any>) {
     try {
       return list[0];
@@ -919,12 +969,16 @@ export class SipService implements OnInit {
   handleRefreshCase(dialogEvent, dialogState) {
     try {
       let voiceTask = this.getVoiceTask();
+      // console.log("Task 1==>",voiceTask)
       if (voiceTask) {
-        let cacheId = `${this._cacheService.agent.id}:${voiceTask.channelSession.id}`;
+        let cacheId = `${this._cacheService.agent.id}:${voiceTask.channelSessionId}`;
+        // console.log("cacheID==>",cacheId)
         let D1: any = this.getDialogFromCache(cacheId);
+        // console.log("D1 ==>",D1)
         let state;
-        if (voiceTask.state.name.toLowerCase() == "reserved") state = { state: "alerting", taskId: voiceTask.id };
+        if (voiceTask.state.toLowerCase() == "reserved") state = { state: "alerting", taskId: voiceTask.task.id };
         if (D1 && dialogState.dialog == null) {
+          console.log("yo ==>");
           this.handleCallDroppedEvent(cacheId, D1, "call_end", undefined, "DIALOG_ENDED", state);
         }
         // else if (D1 && dialogState.dialog) {
@@ -932,7 +986,7 @@ export class SipService implements OnInit {
         //     this.handleCallDroppedEvent(cacheId, D1, "call_end", dialogEvent, "DIALOG_ENDED", state);
         //   } else if (D1.dialog.id == dialogState.dialog.id) {
         //     if (D1.dialogState == "active") {
-        //       let conversation = this.getCurrentConversationIdORConversation("conversation");
+        //       let conversation = this.getCurrentconversationIdORConversation("conversation");
         //       if (conversation) {
         //         this.customer = conversation.customer;
         //       }
@@ -959,8 +1013,10 @@ export class SipService implements OnInit {
     try {
       let voiceTask = this.getVoiceTask();
       let state;
-      let cacheId = `${this._cacheService.agent.id}:${dialogState.dialog && dialogState.dialog.id ? dialogState.dialog && dialogState.dialog.id : null}`;
-      if (voiceTask) state = { state: "alerting", taskId: voiceTask.id };
+      let cacheId = `${this._cacheService.agent.id}:${
+        dialogState.dialog && dialogState.dialog.id ? dialogState.dialog && dialogState.dialog.id : null
+      }`;
+      if (voiceTask) state = { state: "alerting", taskId: voiceTask.task.id };
       this.handleCallDroppedEvent(cacheId, dialogState, "call_end", undefined, "DIALOG_ENDED", state);
     } catch (e) {
       console.error("[handleNoAnwerEvent] Sip Error ==>", e);
@@ -991,9 +1047,20 @@ export class SipService implements OnInit {
   getVoiceTask() {
     try {
       if (this.taskList && this.taskList.length > 0) {
-        for (let i = 0; i <= this.taskList.length; i++) {
-          if (this.taskList[i] && this.taskList[i].channelSession && this.taskList[i].channelSession.channel.channelType.name == "CX_VOICE")
-            return this.taskList[i];
+        for (let i = 0; i < this.taskList.length; i++) {
+          let activeMedia: Array<any> = this.taskList[i].activeMedia;
+          for (let j = 0; j < activeMedia.length; j++) {
+            if (activeMedia[j] && activeMedia[j].requestSession.channel.channelType.name == "CX_VOICE") {
+              let obj = {
+                channelSessionId: activeMedia[j].requestSession.id,
+                task: this.taskList[i],
+                state: activeMedia[j].state
+              };
+              return obj;
+            }
+          }
+          // if (this.taskList[i] && this.taskList[i].channelSession && this.taskList[i].channelSession.channel.channelType.name == "CX_VOICE")
+          // return this.taskList[i];
         }
       }
       return null;

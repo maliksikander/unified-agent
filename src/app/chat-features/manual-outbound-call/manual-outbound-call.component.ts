@@ -173,7 +173,7 @@ export class ManualOutboundCallComponent implements OnInit, AfterViewInit {
     try {
       this._httpService.getCustomerByChannelTypeAndIdentifier("CX_VOICE", identifier).subscribe(
         (res) => {
-          if (res.customer) this._sipService.makeCallOnSip(res.customer,identifier);
+          if (res.customer) this._sipService.makeCallOnSip(res.customer, identifier);
         },
         (error) => {
           this._sharedService.Interceptor(error.error, "err");

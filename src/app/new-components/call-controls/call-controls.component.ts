@@ -1,9 +1,9 @@
-import {Component, OnInit, Inject, Input} from '@angular/core';
+import { Component, OnInit, Inject, Input } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { cacheService } from "src/app/services/cache.service";
 import { finesseService } from "src/app/services/finesse.service";
 import { SipService } from "src/app/services/sip.service";
-import {sharedService} from '../../services/shared.service';
+import { sharedService } from "../../services/shared.service";
 
 @Component({
   selector: "app-call-controls",

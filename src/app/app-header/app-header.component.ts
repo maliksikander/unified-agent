@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
 import { cacheService } from "../services/cache.service";
 import { sharedService } from "../services/shared.service";
 import { socketService } from "../services/socket.service";
@@ -26,7 +26,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
   @ViewChild("stateTrigger", { static: false }) stateTrigger: any;
   @Output() themeSwitcher = new EventEmitter<any>();
   @Output() languageSwitcher = new EventEmitter<any>();
-  @ViewChild('menuTrigger' , { static: false }) trigger;
+  @ViewChild("menuTrigger", { static: false }) trigger;
   @Input() isMobile: any;
 
   isOutboundEnabled = false;
@@ -84,7 +84,7 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
     private _httpService: httpService,
     private _snackBarService: snackbarService,
     private _translateService: TranslateService,
-    private _announcementService: announcementService,
+    public _announcementService: announcementService,
     private dialog: MatDialog
   ) {}
 
@@ -155,7 +155,6 @@ export class AppHeaderComponent implements OnInit, AfterViewInit {
       // if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
     });
   }
-
 
   countUnreadAnnouncements() {
     this.unreadAnnouncements = 0;

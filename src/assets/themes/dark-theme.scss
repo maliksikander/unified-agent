@@ -501,11 +501,12 @@ $theme: mat-light-theme($primary, $accent, $warn);
     }
 
     .left-bar-trigger {
-      background: mat-color($dark-primary, 800);
+      background: mat-color($dark-primary, 800) !important;
+      box-shadow: 3px 0 3px #2e2e42 !important;
 
       &:before {
-        border-top-color: mat-contrast($dark-primary, 800);
-        border-right-color: mat-contrast($dark-primary, 800);
+        border-top-color: mat-contrast($dark-primary, 800) !important;
+        border-right-color: mat-contrast($dark-primary, 800) !important;
       }
     }
 
@@ -669,7 +670,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
     }
 
     .active-channel {
-      background: mat-color($dark-primary, 700) !important;
+      background: darken(mat-color($dark-primary, 700), 3%) !important;
       border-color: mat-color($dark-primary, 500) !important;
     }
 
@@ -1478,6 +1479,11 @@ $theme: mat-light-theme($primary, $accent, $warn);
           border-color: mat-color($dark-primary, 700) !important;
         }
       }
+       li{
+        color: #b1afaf;
+        border-color: #565656 !important;
+      }
+
     }
 
     mat-expansion-panel-header {
@@ -1762,37 +1768,58 @@ $theme: mat-light-theme($primary, $accent, $warn);
   .announcement-table-area {
     .manage-dashboard {
       table {
-              .announcement-status {
-                span {
-                  background: #f0f0f033 !important;
-                  border: 1px solid #c2c2c252 !important;
+        .announcement-status {
+          span {
+            background: #f0f0f033 !important;
+            border: 1px solid #c2c2c252 !important;
 
-                  &.scheduled {
-                    color: #ff761a !important;
-                    background: #703f1a42 !important;
-                    border: 1px solid #ffd2b380 !important;
-                  }
+            &.scheduled {
+              color: #ff761a !important;
+              background: #703f1a42 !important;
+              border: 1px solid #ffd2b380 !important;
+            }
 
-                  &.active {
-                    color: #25cb8d !important;
-                    background: #437a668c !important;
-                    border: 1px solid #b2f1d957 !important;
-                  }
-                }
+            &.active {
+              color: #25cb8d !important;
+              background: #437a668c !important;
+              border: 1px solid #b2f1d957 !important;
+            }
+          }
+        }
+
+        tr {
+          &:hover {
+            td {
+              &:nth-child(4) {
+                opacity: 1 !important;
               }
-              tr {
-                &:hover {
-                  td {
-                    &:nth-child(4) {
-                      opacity: 1 !important;
-                    }
-                  }
-                }
-                .table-trigger {
-                  height: 35px;
-                  line-height: 32px;
-                }
-              }
+            }
+          }
+
+          .table-trigger {
+            height: 35px;
+            line-height: 32px;
+          }
+        }
+        .mat-datepicker-content {
+          background-color: #313145;
+        }
+
+        .lbl {
+          color: mat-contrast($dark-primary, 300) !important;
+        }
+
+        .create-label mat-form-field {
+          background: #283f6a;
+        }
+
+        .mat-input-element {
+          caret-color: #ccc !important;
+        }
+      }
+    }
+  }
+
         //.announcement-container {
         //  .multi-select-team {
         //    background: transparent !important;
@@ -1842,10 +1869,11 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
         .mat-input-element {
           caret-color: #ccc !important;
+          color: #c8c8c8;
         }
-      }
-    }
-  }
+      // }
+    // }
+  // }
   .announcement-container {
     .multi-select-team, .form-control {
       background: transparent !important;
@@ -1869,4 +1897,81 @@ $theme: mat-light-theme($primary, $accent, $warn);
   .wrap-main-dialog{
     background: mat-color($dark-primary, 400) !important;
   }
+
+  .scheduled-activity-main-panel {
+    .mat-accordion {
+      .scheduled-activity-panel {
+
+        .activity-icon, .activity-time{
+          background: #2e2e42;
+        }
+
+        span.mat-expansion-indicator{
+          background: #ccc;
+        }
+        .activity-actions span{
+          border-color: #ccc;
+        }
+        .mat-expansion-panel-content {
+          border-color: mat-color($dark-primary, 500);
+          .scheduled-activity-data {
+            background: mat-color($dark-primary, 500);
+            li{
+              label{
+                color: #9f9c9c;
+
+                &:after{
+                  color: #9f9c9c;
+                }
+              }
+            }
+          }
+          .activity-detail{
+            strong {
+              color: #4061a0;
+            }
+            p{
+              color: #adacac !important;
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+  .phonebook-main-mobile {
+    .phonebook-name-list {
+      li {
+        ul {
+          li {
+            border: 2px solid  mat-color($dark-primary, 500) !important;
+          }
+        }
+      }
+    }
+  }
+
+  .mobile-menu-backdrop {
+    background: rgb(22 22 44 / 37%);
+  }
+  .menu-main-wrapper.mobile-view{
+    background:  mat-color($dark-primary, 500);
+    box-shadow: 0 0 10px #3b3b5e;
+  }
+
+  .form-control.multi-selection-list{
+    background: mat-color($dark-primary, 700) !important;
+  }
+
+  .active-chat-list-area {
+    .search-wrapper {
+      input {
+        background: mat-color($dark-primary);
+        color: #fff;
+        opacity: .8;
+      }
+    }
+  }
+
 }

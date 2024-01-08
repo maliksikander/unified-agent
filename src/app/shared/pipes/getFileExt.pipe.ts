@@ -7,7 +7,7 @@ export class getFileExtPipe implements PipeTransform {
   constructor(public _appConfigService: appConfigService, private domSanitizer: DomSanitizer) {}
   transform(fileUrl: any, args?: any): any {
     if (fileUrl) {
-      fileUrl = fileUrl.split('.')[fileUrl.split('.').length - 1]
+      fileUrl = fileUrl.split(".")[fileUrl.split(".").length - 1];
       if (fileUrl.includes("excel")) {
         return "xls";
       } else if (fileUrl.includes("octet-stream")) {

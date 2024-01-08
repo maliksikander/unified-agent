@@ -251,7 +251,7 @@ function postMessages(obj, callback) {
             initiate_call(obj.parameter.calledNumber,obj.parameter.Destination_Number, obj.parameter.clientCallbackFunction);
             break;
         case 'SST':
-            blind_transfer(obj.parameter.numberToTransfer,obj.parameter.DN, obj.parameter.clientCallbackFunction,obj.parameter.dialogId);
+            blind_transfer(obj.parameter.numberToTransfer, obj.parameter.clientCallbackFunction,obj.parameter.dialogId);
             break;
         case 'SST_Queue':
             blind_transfer_queue(obj.parameter.numberToTransfer, obj.parameter.queue, obj.parameter.queueType, obj.parameter.clientCallbackFunction,obj.parameter.dialogId);
@@ -294,8 +294,6 @@ function postMessages(obj, callback) {
         case 'unmute_call':
             phone_unmute(obj.parameter.clientCallbackFunction, obj.parameter.dialogId);
             break;
-        case 'SST':
-            console.log('Freeswitch do not support SST currently');
             break;
         case 'conferenceCall':
             console.log('Freeswitch do not support conferenceCall currently');
@@ -487,62 +485,62 @@ function connect_useragent(extension, sip_uri, sip_password, wss, sip_log, callb
                     dialedNumber = dialedNumber != undefined ? dialedNumber[0].raw : loginid;
     
                     call_variable_array = [];
-                    if (variablelist.length === 1) {
-                        if (variablelist[0].replace(/['"]+/g, '') == 'conference') {
+                    // if (variablelist.length === 1) {
+                    //     if (variablelist[0].replace(/['"]+/g, '') == 'conference') {
     
-                            call_variable_array.push({
-                                "name": 'callVariable0',
-                                "value": ''
-                            })
-                            for (let index = 1; index < 10; index++) {
-                                if (invitation.incomingInviteRequest.message.headers['X-Call-Variable' + index]) {
-                                    call_variable_array.push({
-                                        "name": 'callVariable' + index,
-                                        "value": invitation.incomingInviteRequest.message.headers['X-Call-Variable' + index][0]['raw']
-                                    })
-                                    // call_variable_array['call_variable'+index]=session.request.headers['X-Call-Variable'+index][0]['raw']
-                                }
-                            }
-                        } else if (/^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/.test(variablelist[0].replace(/['"]+/g, ''))) {
-                            // call_variable_array['call_variable0'] = variablelist[0].replace(/['"]+/g, '');
-                            call_variable_array.push({
-                                "name": 'callVariable0',
-                                "value": variablelist[0].replace(/['"]+/g, '')
-                            })
-                            wrapupenabler = true;
-                        } else {
-                            // call_variable_array['call_variable0'] = session.request.headers['X-Call-Variable0'][0]['raw'];
-                            call_variable_array.push({
-                                "name": 'callVariable0',
-                                "value": invitation.incomingInviteRequest.message.headers['X-Call-Variable0'][0]['raw']
-                            })
-                            for (let index = 1; index < 10; index++) {
-                                if (invitation.incomingInviteRequest.message.headers['X-Call-Variable' + index]) {
-                                    call_variable_array.push({
-                                        "name": 'callVariable' + index,
-                                        "value": invitation.incomingInviteRequest.message.headers['X-Call-Variable' + index][0]['raw']
-                                    })
-                                    // call_variable_array['call_variable'+index]=session.request.headers['X-Call-Variable'+index][0]['raw']
-                                }
-                            }
-                        }
-                    } else {
-                        if (/^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/.test(variablelist[0].replace(/['"]+/g, ''))) {
-                            // call_variable_array['call_variable0'] = variablelist[0].replace(/['"]+/g, '');
-                            call_variable_array.push({
-                                "name": 'callVariable0',
-                                "value": variablelist[0].replace(/['"]+/g, '')
-                            })
-                            wrapupenabler = true;
-                        }
-                        for (let index = 1; index < variablelist.length; index++) {
-                            call_variable_array.push({
-                                "name": 'callVariable' + index,
-                                "value": variablelist[index]
-                            })
-                        }
+                    //         call_variable_array.push({
+                    //             "name": 'callVariable0',
+                    //             "value": ''
+                    //         })
+                    //         for (let index = 1; index < 10; index++) {
+                    //             if (invitation.incomingInviteRequest.message.headers['X-Call-Variable' + index]) {
+                    //                 call_variable_array.push({
+                    //                     "name": 'callVariable' + index,
+                    //                     "value": invitation.incomingInviteRequest.message.headers['X-Call-Variable' + index][0]['raw']
+                    //                 })
+                    //                 // call_variable_array['call_variable'+index]=session.request.headers['X-Call-Variable'+index][0]['raw']
+                    //             }
+                    //         }
+                    //     } else if (/^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/.test(variablelist[0].replace(/['"]+/g, ''))) {
+                    //         // call_variable_array['call_variable0'] = variablelist[0].replace(/['"]+/g, '');
+                    //         call_variable_array.push({
+                    //             "name": 'callVariable0',
+                    //             "value": variablelist[0].replace(/['"]+/g, '')
+                    //         })
+                    //         wrapupenabler = true;
+                    //     } else {
+                    //         // call_variable_array['call_variable0'] = session.request.headers['X-Call-Variable0'][0]['raw'];
+                    //         call_variable_array.push({
+                    //             "name": 'callVariable0',
+                    //             "value": invitation.incomingInviteRequest.message.headers['X-Call-Variable0'][0]['raw']
+                    //         })
+                    //         for (let index = 1; index < 10; index++) {
+                    //             if (invitation.incomingInviteRequest.message.headers['X-Call-Variable' + index]) {
+                    //                 call_variable_array.push({
+                    //                     "name": 'callVariable' + index,
+                    //                     "value": invitation.incomingInviteRequest.message.headers['X-Call-Variable' + index][0]['raw']
+                    //                 })
+                    //                 // call_variable_array['call_variable'+index]=session.request.headers['X-Call-Variable'+index][0]['raw']
+                    //             }
+                    //         }
+                    //     }
+                    // } else {
+                    //     if (/^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/.test(variablelist[0].replace(/['"]+/g, ''))) {
+                    //         // call_variable_array['call_variable0'] = variablelist[0].replace(/['"]+/g, '');
+                    //         call_variable_array.push({
+                    //             "name": 'callVariable0',
+                    //             "value": variablelist[0].replace(/['"]+/g, '')
+                    //         })
+                    //         wrapupenabler = true;
+                    //     }
+                    //     for (let index = 1; index < variablelist.length; index++) {
+                    //         call_variable_array.push({
+                    //             "name": 'callVariable' + index,
+                    //             "value": variablelist[index]
+                    //         })
+                    //     }
     
-                    }
+                    // }
                     if (invitation.incomingInviteRequest) {
                         dialogStatedata.event = "dialogState";
                         invitedata.event = "newInboundCall";
@@ -964,10 +962,10 @@ function reject_call() {
         error('invalidState', loginid, "invalid action rejectCall", callback);
     }
 }
-function blind_transfer(numberToTransfer,DN, callback,dialogId) {
+function blind_transfer(numberToTransfer, callback,dialogId) {
     var res= lockFunction("blind_transfer", 500); // --- seconds cooldown
     if(!res)return;
-    const undefinedParams = checkUndefinedParams(blind_transfer, [numberToTransfer,DN, callback,dialogId]);
+    const undefinedParams = checkUndefinedParams(blind_transfer, [numberToTransfer, callback,dialogId]);
 
     if (undefinedParams.length > 0) {
         // console.log(`Error: The following parameter(s) are undefined or null: ${undefinedParams.join(', ')}`);
@@ -1008,13 +1006,13 @@ function blind_transfer(numberToTransfer,DN, callback,dialogId) {
             }
         },
     };
-    if(DN){
-        options.requestOptions ={
-            extraHeaders: [
-                'X-DN: ' + DN, // Replace with your desired header and value
-            ]
-        }
-    }
+    // if(DN){
+    //     options.requestOptions ={
+    //         extraHeaders: [
+    //             'X-DN: ' + DN, // Replace with your desired header and value
+    //         ]
+    //     }
+    // }
     sessionall.refer(target, options).then((res) => {
         console.log('success blind_transfer', res);
         dialogStatedata.response.dialog.callEndReason = "direct-transfered";
@@ -1958,6 +1956,7 @@ function terminateAllCalls(){
              terminate_call(element.response.dialog.id);
         }
     }
+    userAgent.stop();
 }
 // Reusable function to check and set the lock state for a specific function
 function lockFunction(funcName, delay) {

@@ -14,6 +14,7 @@ import { finesseService } from "src/app/services/finesse.service";
 import { ConfirmationDialogComponent } from "src/app/new-components/confirmation-dialog/confirmation-dialog.component";
 import { TranslateService } from "@ngx-translate/core";
 import { CallControlsComponent } from "../../new-components/call-controls/call-controls.component";
+import { crmEventsService } from "src/app/services/crmEvents.service";
 import { ConversationSettings } from "../../models/conversationSetting/conversationSettings";
 import { SipService } from "src/app/services/sip.service";
 import { HighlightResult } from "ngx-highlightjs";
@@ -44,7 +45,7 @@ export class InteractionsComponent implements OnInit {
 
   isWhisperMode: boolean = false;
   dispayVideoPIP = true;
-  wrapUpFormData
+  wrapUpFormData;
   scrollSubscriber;
   labels: Array<any> = [];
   quotedMessage: any;
@@ -64,8 +65,6 @@ export class InteractionsComponent implements OnInit {
   timer: any = "00:00";
   cxVoiceSession: any;
   openWrapDialog = false;
-
-
   isAudioPlaying: boolean[] = [];
   isDialogClosed;
   chatDuringCall = false;
@@ -76,10 +75,18 @@ export class InteractionsComponent implements OnInit {
   isBotSuggestions = false;
   isConversationView = true;
   fullScreenView = false;
-  videoSrc = 'assets/video/angry-birds.mp4';
+  videoSrc = "assets/video/angry-birds.mp4";
   element;
   dragPosition = { x: 0, y: 0 };
-
+  queueList: Array<any>;
+  queueORAgentSearch = "";
+  requestedQueue: any;
+  requestedAgent: any;
+  requestTitle: string;
+  requestType: string;
+  noteDialogBtnText: string;
+  assistanceRequestNote: string;
+  requestAction: string;
 
   ngAfterViewInit() {
     this.scrollSubscriber = this.scrollbarRef.scrollable.elementScrolled().subscribe((scrolle: any) => {
@@ -92,12 +99,6 @@ export class InteractionsComponent implements OnInit {
       if (percent > 80) {
         this.showNewMessageNotif = false;
       }
-
-      // console.log("hjhjwdhjwjwh",this.conversation.wrapUpDialog)
-      // if(this.conversation.wrapUpDialog.show)
-      // {
-      //   this.wrapUpDialog(false)
-      // }
     });
   }
 
@@ -117,7 +118,7 @@ export class InteractionsComponent implements OnInit {
   convers: any[];
   ringing = false;
   callControls = true;
-  searchInteraction = '';
+  searchInteraction = "";
   isSuggestion = false;
   displaySuggestionsArea = false;
   cannedTabOpen = false;
@@ -143,7 +144,6 @@ export class InteractionsComponent implements OnInit {
   interactionSearch = false;
   isCallActive = false;
 
-
   constructor(
     private _sharedService: sharedService,
     public _cacheService: cacheService,
@@ -155,21 +155,20 @@ export class InteractionsComponent implements OnInit {
     public _finesseService: finesseService,
     private snackBar: MatSnackBar,
     public _sipService: SipService,
-    private _translateService: TranslateService
-  ) { }
+    private _translateService: TranslateService,
+    private _crmEventsService: crmEventsService
+  ) {}
 
   ngOnInit() {
     this.isCallActive = this._sipService.isCallActive;
     this.element = document.documentElement;
-    // console.log("i am called hello", this._sipService.isCallActive)
     if (this._sharedService.isCompactView) {
       this.isMobileDevice = true;
-      console.log('this is a compact view Interactions view ?', this.isMobileDevice);
+      console.log("this is a compact view Interactions view ==>", this.isMobileDevice);
     }
     // if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     //   this.isMobileDevice = true;
     // }
-    //  console.log("i am called hello")
     if (navigator.userAgent.indexOf("Firefox") != -1) {
       this.dispayVideoPIP = false;
     }
@@ -177,7 +176,8 @@ export class InteractionsComponent implements OnInit {
     // setTimeout(() => {
     //   new EmojiPicker();
     // }, 500);
-    this.isWhisperMode = (this.conversation.topicParticipant.role == "SILENT_MONITOR" || this.conversation.topicParticipant.role == "ASSISTANT") ? true : false;
+    this.isWhisperMode =
+      this.conversation.topicParticipant.role == "SILENT_MONITOR" || this.conversation.topicParticipant.role == "ASSISTANT" ? true : false;
     this.conversationSettings = this._sharedService.conversationSettings;
     this.loadLabels();
 
@@ -188,7 +188,6 @@ export class InteractionsComponent implements OnInit {
     this._sharedService.selectedlangugae.subscribe((data: string) => {
       this.selectedLanguage = data;
     });
-
 
     if (this.selectedLanguage == "ar") {
       this.isRTLView = true;
@@ -204,22 +203,36 @@ export class InteractionsComponent implements OnInit {
 
     if (this.conversation && this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
       if (this._sipService.dialogRef) {
-        // console.log("yo==>");
         this._sipService.isToolbarActive = false;
         this._sipService.dialogRef.close();
         // if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
       }
       if (this._sipService.isCallActive == true && this._sipService.isToolbarActive == false) {
-        // console.log("Test1==>");
         this.ctiControlBar({ conversation: this.conversation });
         this.getVoiceChannelSession();
       }
-      // else {
-      // console.log("Test==>");
-      // this._sipService.dialogRef
-      // }
-      // this.getVoiceChannelSession();
     }
+
+    this._socketService._namedAgentTransferTask.subscribe((data: any) => {
+      try {
+        // console.log("transfered triggered==>", data);
+        if (data) {
+          if (this.conversation.conversationId == data.conversationId) {
+            // console.log("transfered triggered 2==>");
+            if (this.isCXVoiceSessionActive()) {
+              // console.log("transfered triggered 3==>");
+              //send command to Sip.js
+              let requestAgentId = data.task.assignedTo ? data.task.assignedTo.id : null;
+              let requestedAgentFromQueue = this.findAgentinQueueList(this.queueList, requestAgentId);
+              console.log("requested agent ==>", requestedAgentFromQueue);
+              this._sipService.directAgentTransferOnSip(requestedAgentFromQueue.extensions);
+            }
+          }
+        }
+      } catch (e) {
+        console.error("[Agent Transfer Subscriber]==>", e);
+      }
+    });
 
     this.wrapUpFormData = {
       header: this._translateService.instant("chat-features.interactions.wrapup"),
@@ -227,13 +240,21 @@ export class InteractionsComponent implements OnInit {
       conversation: this.conversation,
       RTLDirection: this.isRTLView
     };
-    //this._cacheService.smsDialogData || 
-    if (this.conversation.conversationId === 'FAKE_CONVERSATION') {
+    //this._cacheService.smsDialogData ||
+    if (this.conversation.conversationId === "FAKE_CONVERSATION") {
       this.conversation.messages = [];
-      this.loadPastActivities('FAKE_CONVERSATION');
-
+      this.loadPastActivities("FAKE_CONVERSATION");
     }
+  }
 
+  findAgentinQueueList(array, agentId) {
+    try {
+      const agent = array.reduce((agents, obj) => agents.concat(obj.availableAgents || []), []).find((agent) => agent.id === agentId);
+
+      return agent;
+    } catch (e) {
+      console.error("[findAgentinQueueList] ==>", e);
+    }
   }
 
   loadLabels() {
@@ -247,12 +268,13 @@ export class InteractionsComponent implements OnInit {
       }
     );
   }
-  emoji() { }
+  emoji() {}
 
   BargeIn() {
     let obj = {
       participantId: this.conversation.topicParticipant.participant.id,
-      conversationId: this.conversation.conversationId
+      conversationId: this.conversation.conversationId,
+      roomId: this.conversation.roomId
     };
     this._socketService.emit("JoinAsBargin", obj);
   }
@@ -260,9 +282,10 @@ export class InteractionsComponent implements OnInit {
   moveToWhisperMode() {
     let obj = {
       participantId: this.conversation.topicParticipant.participant.id,
-      conversationId: this.conversation.conversationId
+      conversationId: this.conversation.conversationId,
+      roomId: this.conversation.roomId
     };
-    this._socketService.emit("moveToWhisperMode", obj);
+    this._socketService.emit("joinAsWhisper", obj);
   }
 
   onSend(text) {
@@ -346,6 +369,9 @@ export class InteractionsComponent implements OnInit {
   checkChannelTypeForAttatchementButton(message) {
     if (message.body.type === "COMMENT" && message.header.channelSession.channel.channelType.name === "INSTAGRAM")
       this.disablingAttatchButtonForInstagramReply = true;
+    else {
+      console.log("[checkChannelTypeForAttachmentButton] Getting 'false' value .....");
+    }
   }
 
   //Quoted Reply
@@ -376,14 +402,13 @@ export class InteractionsComponent implements OnInit {
   }
 
   openOutboundSmsDialog() {
-
     const dialogRef = this.dialog.open(SendSmsComponent, {
       maxWidth: "700px",
       width: "100%",
       panelClass: "send-sms-dialog",
-      data: { info: this._cacheService.smsDialogData },
+      data: { info: this._cacheService.smsDialogData }
     });
-    dialogRef.afterClosed().subscribe((result) => { });
+    dialogRef.afterClosed().subscribe((result) => {});
     this._cacheService.clearOutboundSmsDialogData();
   }
 
@@ -456,6 +481,7 @@ export class InteractionsComponent implements OnInit {
         "MESSAGE_DELIVERY_NOTIFICATION",
         "NOTIFICATION",
         this.conversation.conversationId,
+        this.conversation.roomId,
         data,
         this.conversation.customer
       );
@@ -463,7 +489,8 @@ export class InteractionsComponent implements OnInit {
       this._socketService.emit("publishCimEvent", {
         cimEvent: event,
         agentId: this._cacheService.agent.id,
-        conversationId: this.conversation.conversationId
+        conversationId: this.conversation.conversationId,
+        roomId: this.conversation.roomId
       });
 
       this.lastSeenMessageId = messageForSeenNotification.id;
@@ -518,7 +545,12 @@ export class InteractionsComponent implements OnInit {
   //to send typing event
   sendTypingEvent() {
     if (!this.sendTypingStartedEventTimer) {
-      if (this._socketService.isSocketConnected && this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor" && this.conversation.topicParticipant.role.toLowerCase() != "assistant" && !this.isWhisperMode) {
+      if (
+        this._socketService.isSocketConnected &&
+        this.conversation.topicParticipant.role.toLowerCase() != "silent_monitor" &&
+        this.conversation.topicParticipant.role.toLowerCase() != "assistant" &&
+        !this.isWhisperMode
+      ) {
         let message = this.getCimMessage();
         let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
         if (selectedChannelSession) {
@@ -539,12 +571,20 @@ export class InteractionsComponent implements OnInit {
           message.body.type = "NOTIFICATION";
           message.body.notificationType = "TYPING_STARTED";
 
-          let event: any = new CimEvent("TYPING_INDICATOR", "NOTIFICATION", this.conversation.conversationId, message, this.conversation.customer);
+          let event: any = new CimEvent(
+            "TYPING_INDICATOR",
+            "NOTIFICATION",
+            this.conversation.conversationId,
+            this.conversation.roomId,
+            message,
+            this.conversation.customer
+          );
 
           this._socketService.emit("publishCimEvent", {
             cimEvent: event,
             agentId: this._cacheService.agent.id,
-            conversationId: this.conversation.conversationId
+            conversationId: this.conversation.conversationId,
+            roomId: this.conversation.roomId
           });
           this.sendTypingStartedEventTimer = setTimeout(() => {
             this.sendTypingStartedEventTimer = false;
@@ -590,10 +630,15 @@ export class InteractionsComponent implements OnInit {
   }
 
   unsubscribeFromConversation() {
-    console.log("calles", this.conversationSettings);
-
     if (this._socketService.isVoiceChannelSessionExists(this.conversation.activeChannelSessions)) {
-      this.closeConversationConfirmation();
+      let voiceSessionId = this.getVoiceChannelSessionID();
+      let cacheId = `${this._cacheService.agent.id}:${voiceSessionId}`;
+      let cacheDialog = this._sipService.getDialogFromCache(cacheId);
+      if (cacheDialog) {
+        this.closeConversationConfirmation();
+      } else {
+        this._socketService.topicUnsub(this.conversation);
+      }
     } else {
       this._socketService.topicUnsub(this.conversation);
     }
@@ -666,7 +711,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -674,7 +719,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) { }
+      } catch (err) {}
     }, milliseconds);
   }
 
@@ -744,7 +789,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => { });
+    dialogRef.afterClosed().subscribe((result: any) => {});
   }
   externalfilePreviewOpener(url, fileName, type) {
     const dialogRef = this.dialog.open(FilePreviewComponent, {
@@ -754,7 +799,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => { });
+    dialogRef.afterClosed().subscribe((result: any) => {});
   }
 
   uploadFile(files) {
@@ -769,7 +814,7 @@ export class InteractionsComponent implements OnInit {
           if (availableExtentions.includes(fileMimeType.toLowerCase())) {
             let fd = new FormData();
             fd.append("file", files[i]);
-            fd.append("conversationId", `${Math.floor(Math.random() * 90000) + 10000}`);
+            fd.append("roomId", `${Math.floor(Math.random() * 90000) + 10000}`);
             this._httpService.uploadToFileEngine(fd).subscribe(
               (e) => {
                 this.constructAndSendCimEvent(e.type.split("/")[0], e.type, e.name, e.size);
@@ -943,10 +988,10 @@ export class InteractionsComponent implements OnInit {
           event.data.header["status"] = "seen";
           msgs.push(event.data);
         } else if (event.name.toLowerCase() == "third_party_activity") {
-
           if (event.data.header.channelData.additionalAttributes.length > 0) {
-
-            const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => { return e.value.toLowerCase() == "outbound" });
+            const isOutBoundSMSType = event.data.header.channelData.additionalAttributes.find((e) => {
+              return e.value.toLowerCase() == "outbound";
+            });
             if (isOutBoundSMSType) {
               event.data.body["type"] = "outboundsms";
 
@@ -957,22 +1002,21 @@ export class InteractionsComponent implements OnInit {
               msgs.push(event.data);
             }
           }
-          if (event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == 'plain') {
+          if (event.data.header.schedulingMetaData && event.data.body.type.toLowerCase() == "plain") {
             const fakeChannelSession = {
-              "channel": {
-                "channelType": event.data.header.schedulingMetaData.channelType,
+              channel: {
+                channelType: event.data.header.schedulingMetaData.channelType
               },
-              "channelData": event.data.header.channelData,
-            }
-            event.data.header['channelSession'] = fakeChannelSession;
+              channelData: event.data.header.channelData
+            };
+            event.data.header["channelSession"] = fakeChannelSession;
             let status = this._socketService.getSchduledActivityStatus(cimEvents, event.data.id);
 
             if (status) {
-              event.data.header['scheduledStatus'] = status;
+              event.data.header["scheduledStatus"] = status;
             }
 
             msgs.push(event.data);
-
           }
         } else if (
           [
@@ -988,9 +1032,7 @@ export class InteractionsComponent implements OnInit {
             "voice_activity"
           ].includes(event.name.toLowerCase())
         ) {
-          let message = this._socketService.createSystemNotificationMessage(event);
-          // console.log("test1==>", event.name);
-          // if (event.name == "VOICE_ACTIVITY") console.log("past==>", message);
+          let message: any = this._socketService.createSystemNotificationMessage(event);
           if (message) {
             msgs.push(message);
           }
@@ -1047,39 +1089,6 @@ export class InteractionsComponent implements OnInit {
     clearTimeout(this.sendTypingStartedEventTimer);
     this.sendTypingStartedEventTimer = null;
   }
-  // loadBrowserLanguage() {
-  //   let browserLang = navigator.language;
-  //   console.log('Browser language is ' + browserLang);
-  //   // this.selectedLanguage = browserLang;
-  //   if (this.selectedLanguage == "ar") {
-  //     this.isRTLView = true;
-  //   }
-  // }
-
-  // to open dialog form
-  // openWrapUpDialog(timerEnabled: boolean): void {
-  //   if (timerEnabled) {
-  //     this.unsubscribeFromConversation();
-  //   }
-  //   const dialogRef = this.dialog.open(WrapUpFormComponent, {
-  //     disableClose: true,
-  //     panelClass: "wrap-dialog",
-  //     data: {
-  //       header: this._translateService.instant("chat-features.interactions.wrapup"),
-  //       timerEnabled: timerEnabled,
-  //       wrapUpTime: this._sharedService.conversationSettings.wrapUpTime,
-  //       conversation: this.conversation,
-  //       RTLDirection: this.isRTLView
-  //     }
-  //   });
-  //
-  //   dialogRef.afterClosed().subscribe((res) => {
-  //     if (res.event == "apply") {
-  //       this.constructAndSendCimEvent("wrapup", "", "", "", "", res.data.wrapups, res.data.note);
-  //     }
-  //
-  //   });
-  // }
 
   switchChannelSession(channelSession, channelIndex) {
     try {
@@ -1190,13 +1199,21 @@ export class InteractionsComponent implements OnInit {
   emitCimEvent(message, eventName) {
     // let dummyMessage=JSON.parse(JSON.stringify(message))
 
-    let event: any = new CimEvent(eventName, "MESSAGE", this.conversation.conversationId, message, this.conversation.customer);
+    let event: any = new CimEvent(
+      eventName,
+      "MESSAGE",
+      this.conversation.conversationId,
+      this.conversation.roomId,
+      message,
+      this.conversation.customer
+    );
     // console.log("event created",event)
 
     this._socketService.emit("publishCimEvent", {
       cimEvent: event,
       agentId: this._cacheService.agent.id,
-      conversationId: this.conversation.conversationId
+      conversationId: this.conversation.conversationId,
+      roomId: this.conversation.roomId
     });
 
     message.header["status"] = "sending";
@@ -1215,11 +1232,19 @@ export class InteractionsComponent implements OnInit {
   }
 
   emitFBActionEvent(message) {
-    let event: any = new CimEvent("AGENT_MESSAGE", "MESSAGE", this.conversation.conversationId, message, this.conversation.customer);
+    let event: any = new CimEvent(
+      "AGENT_MESSAGE",
+      "MESSAGE",
+      this.conversation.conversationId,
+      this.conversation.roomId,
+      message,
+      this.conversation.customer
+    );
     this._socketService.emit("publishCimEvent", {
       cimEvent: event,
       agentId: this._cacheService.agent.id,
-      conversationId: this.conversation.conversationId
+      conversationId: this.conversation.conversationId,
+      roomId: this.conversation.roomId
     });
 
     // console.log("event data==>", event.data);
@@ -1230,36 +1255,53 @@ export class InteractionsComponent implements OnInit {
     }, 40);
   }
 
-  queueList: any = [];
-
-  queueSearch = "";
-  requestedQueue: any;
-  requestTitle: string;
-  requestType: string;
-  noteDialogBtnText: string;
-
   isCXVoiceSessionActive() {
-    let session = this.conversation.activeChannelSessions.find((channelSession) => {
-      return channelSession.channel.channelType.name.toLowerCase() === "cx_voice";
-    });
-    if (session) return true;
-    return false;
+    try {
+      let session = this.conversation.activeChannelSessions.find((channelSession) => {
+        return channelSession.channel.channelType.name.toLowerCase() === "cx_voice";
+      });
+      if (session) return true;
+      return false;
+    } catch (e) {
+      console.error("[Error] on isCXVoiceSessionActive==>", e);
+    }
   }
 
-  agentAssistanceRequest(templateRef, data, action, requestType): void {
+  isCiscoSessionActive() {
+    try {
+      let session = this.conversation.activeChannelSessions.find((channelSession) => {
+        return channelSession.channel.channelType.name.toLowerCase() === "cisco_cc";
+      });
+      if (session) return true;
+      return false;
+    } catch (e) {
+      console.error("[Error] on  isCiscoSessionActive==>", e);
+    }
+  }
+
+  agentAssistanceRequest(templateRef, queueData, action, requestType, agentData): void {
     try {
       this.requestType = requestType;
       this.requestAction = action;
-
+      this.requestedQueue = queueData;
+      this.requestedAgent = agentData;
       if (this.isCXVoiceSessionActive()) {
         if (requestType == "queue") {
           if (action == "transfer") {
-            this._sipService.directQueueTransferOnSip(data);
+            this._sipService.directQueueTransferOnSip(queueData);
           }
+        } else {
+          // this.requestedAgent = agentData;
+          if (action == "transfer") {
+            this.requestTitle = this._translateService.instant("chat-features.interactions.Transfer-To-Agent");
+            this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Transfer");
+          }
+          this.openAssistanceDialog(templateRef);
         }
       } else {
+        this.requestedQueue = queueData;
         if (requestType == "queue") {
-          this.requestedQueue = data;
+          // this.requestedQueue = queueData;
           if (action == "transfer") {
             this.requestTitle = this._translateService.instant("chat-features.interactions.Transfer-To-Queue");
             this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Transfer");
@@ -1267,73 +1309,129 @@ export class InteractionsComponent implements OnInit {
             this.requestTitle = this._translateService.instant("chat-features.interactions.Conference-Request");
             this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Add-To-Conference");
           }
+        } else {
+          if (action == "transfer") {
+            this.requestTitle = this._translateService.instant("chat-features.interactions.Transfer-To-Agent");
+            this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Transfer");
+          }
+          // else if (action == "conference") {
+          //   this.requestTitle = this._translateService.instant("chat-features.interactions.Conference-Request");
+          //   this.noteDialogBtnText = this._translateService.instant("chat-features.interactions.Add-To-Conference");
+          // }
         }
 
-        // this.requestAction = action;
-
-        const dialogRef = this.dialog.open(templateRef, {
-          panelClass: "consult-dialog"
-        });
-
-        dialogRef.afterClosed().subscribe((result) => {
-          // console.log("The dialog was closed==>", result);
-        });
+        this.openAssistanceDialog(templateRef);
 
         this.consultTransferTrigger.closeMenu();
       }
     } catch (e) {
-      console.error("[Error] on Agent Assitance", e);
+      console.error("[Error] on Agent Assitance :", e);
     }
   }
 
-  assistanceRequestNote: string;
-  requestedAgentForAssistance;
-  requestAction: string;
+  openAssistanceDialog(templateRef) {
+    try {
+      const dialogRef = this.dialog.open(templateRef, {
+        panelClass: "consult-dialog"
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        // console.log("The dialog was closed==>", result);
+      });
+    } catch (e) {
+      console.error("[Error] on openAssistanceDialog:", e);
+    }
+  }
 
   sendAssistanceRequest() {
-    if (this.requestType == "queue") {
-      this.sendQueueRequest();
+    try {
+      if (this.requestType == "queue") {
+        this.sendQueueRequest();
+      } else if (this.requestType == "agent") {
+        this.sendAgentRequest();
+      }
+      this.assistanceRequestNote = "";
+    } catch (e) {
+      console.error("[Error] on sendAssistanceRequest:", e);
     }
-    this.assistanceRequestNote = "";
+  }
+
+  sendAgentRequest() {
+    try {
+      let data = {
+        channelSession: this.setChannelSessionForTransferRequest(),
+        agentParticipant: this.conversation.topicParticipant,
+        mode: "agent",
+        requestedAgentId: this.requestedAgent ? this.requestedAgent.id : null,
+        note: this.assistanceRequestNote,
+        offerToAgent: true
+      };
+      if (this.isCXVoiceSessionActive() && this.isDialogExisting()) data.offerToAgent = false;
+      console.log("transfer data==>", data);
+      if (this.requestAction == "transfer") this._socketService.emit("directTransferRequest", data);
+    } catch (e) {
+      console.error("[Error] on sendAgentRequest:", e);
+    }
   }
 
   sendQueueRequest() {
-    let data = {
-      channelSession: this.conversation.firstChannelSession,
-      agentParticipant: this.conversation.topicParticipant,
-      mode: "queue",
-      queueName: this.requestedQueue.queueName,
-      note: this.assistanceRequestNote
-    };
-    if (this.requestAction == "transfer") this._socketService.emit("directTransferRequest", data);
-    else if (this.requestAction == "conference") this._socketService.emit("directConferenceRequest", data);
+    try {
+      let data = {
+        channelSession: this.conversation.firstChannelSession,
+        agentParticipant: this.conversation.topicParticipant,
+        mode: "queue",
+        queueName: this.requestedQueue.queueName,
+        note: this.assistanceRequestNote
+      };
+      // if (this.requestAction == "transfer") this._socketService.emit("directTransferRequest", data);
+      // else if (this.requestAction == "conference") this._socketService.emit("directConferenceRequest", data);
+      if (this.requestAction == "transfer") {
+        this._socketService.emit("directTransferRequest", data);
+        console.log("directTransferRequest ==>", data);
+        this._crmEventsService.postCRMEvent(data);
+      } else if (this.requestAction == "conference") {
+        this._socketService.emit("directConferenceRequest ==>", data);
+        console.log("directConferenceRequest", data);
+        this._crmEventsService.postCRMEvent(data);
+      }
 
-    this.showRequestNotification();
+      this.showRequestNotification();
+    } catch (e) {
+      console.error("[Error] on sendQueueRequest:", e);
+    }
   }
 
-  filterCXQueues(queues: Array<any>) {
-    try {
-      let cxQueues: Array<any> = [];
-      queues.forEach((item: any) => {
-        if (item.mrdId == this._appConfigService.config.CX_VOICE_MRD) cxQueues.push(item);
+  setChannelSessionForTransferRequest() {
+    if (this.isCXVoiceSessionActive()) {
+      let session = this.conversation.activeChannelSessions.find((channelSession) => {
+        return channelSession.channel.channelType.name.toLowerCase() === "cx_voice";
       });
-      this.queueList = cxQueues;
-    } catch (e) {
-      console.error("[filterCXQueues] Error :", e);
+      if (session) {
+        if (session.id == this._sipService.activeDialog.id) return session;
+      }
+    } else {
+      return this.conversation.firstChannelSession;
     }
+  }
+
+  isDialogExisting() {
+    try {
+      let voiceSessionId = this.getVoiceChannelSessionID();
+      // console.log("test==>", voiceSessionId);
+      let cacheId = `${this._cacheService.agent.id}:${voiceSessionId}`;
+      // console.log("test2==>", cacheId);
+      let cacheDialog = this._sipService.getDialogFromCache(cacheId);
+      // console.log("cacheDialog==>", cacheDialog);
+      if (cacheDialog) return true;
+      return false;
+    } catch (e) {}
   }
 
   getAgentsInQueue() {
     try {
-      this._httpService.getAgentsInQueue(this.conversation.conversationId).subscribe(
+      this._httpService.getAgentsInQueue(this.conversation.conversationId, this._cacheService.agent.id).subscribe(
         (res: any) => {
-          if (this.isCXVoiceSessionActive() && res) {
-            this.filterCXQueues(res);
-          } else {
-            this.queueList = res;
-          }
-
-          // this.queueList = res;
+          this.queueList = res;
         },
         (error) => {
           this._sharedService.Interceptor(error.error, "err");
@@ -1360,45 +1458,53 @@ export class InteractionsComponent implements OnInit {
   }
 
   fullPostViewData(serviceIdentifier, postId, selectedCommentId) {
-    this.selectedCommentId = null;
-    if (serviceIdentifier && postId && selectedCommentId) {
-      this._httpService.getPostData(postId, serviceIdentifier).subscribe(
-        (res: any) => {
-          this.postData = res;
-          this.fullPostView = true;
-          this.selectedCommentId = selectedCommentId;
-        },
-        (error) => {
-          this._sharedService.Interceptor(error.error, "err");
-          console.error("err [getPost]", error.error);
-        }
-      );
-    } else {
-      console.error("err [getFullViewPostData] serviceIdentifier or postId is missing");
+    try {
+      this.selectedCommentId = null;
+      if (serviceIdentifier && postId && selectedCommentId) {
+        this._httpService.getPostData(postId, serviceIdentifier).subscribe(
+          (res: any) => {
+            this.postData = res;
+            this.fullPostView = true;
+            this.selectedCommentId = selectedCommentId;
+          },
+          (error) => {
+            this._sharedService.Interceptor(error.error, "err");
+            console.error("err [getPost]", error.error);
+          }
+        );
+      } else {
+        console.error("err [getFullViewPostData] serviceIdentifier or postId is missing");
+      }
+    } catch (e) {
+      console.error("[fullPostViewData] Error:", e);
     }
   }
 
   ctiControlBar(data) {
-    this.ctiBoxView = true;
-    this.ctiBarView = false;
-    this._sipService.isToolbarActive = true;
-    this._sipService.isToolbarDocked = false;
-    const dialogRef = this.dialog.open(CallControlsComponent, {
-      panelClass: "call-controls-dialog",
-      hasBackdrop: false,
-      minWidth: '300px',
-      position: {
-        top: "8%",
-        right: "8%"
-      },
-      data
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      this.ctiBoxView = false;
-      this.ctiBarView = true;
-      this._sipService.isToolbarDocked = true;
-      if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
-    });
+    try {
+      this.ctiBoxView = true;
+      this.ctiBarView = false;
+      this._sipService.isToolbarActive = true;
+      this._sipService.isToolbarDocked = false;
+      const dialogRef = this.dialog.open(CallControlsComponent, {
+        panelClass: "call-controls-dialog",
+        hasBackdrop: false,
+        minWidth: "300px",
+        position: {
+          top: "8%",
+          right: "8%"
+        },
+        data
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        this.ctiBoxView = false;
+        this.ctiBarView = true;
+        this._sipService.isToolbarDocked = true;
+        if (this._sipService.timeoutId) clearInterval(this._sipService.timeoutId);
+      });
+    } catch (e) {
+      console.error("[ctiControlBar] Error:", e);
+    }
   }
 
   endCallOnSip() {
@@ -1453,39 +1559,49 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-
   formatNumber(num) {
     return num.toString().padStart(2, "0");
   }
 
   openWrapUpDialog(timerEnabled: boolean): void {
-
     if (timerEnabled) {
       this.unsubscribeFromConversation();
-    }
-    else {
+    } else {
       this.openWrapDialog = true;
     }
-
   }
 
   closeWrapDialog(data) {
     if (data == false) {
       this.openWrapDialog = false;
       if (this.conversation.wrapUpDialog.show) {
-        this._socketService.emit("WRAP_UP_CLOSED", {
+        this._socketService.emit("closeWrapup", {
+          cimEvent: null,
+          roomId: this.conversation.roomId,
           conversationId: this.conversation.conversationId,
           agentId: this._cacheService.agent.id
-        })
+        });
       }
     } else {
-      this.constructAndSendCimEvent("wrapup", "", "", "", "", data.wrapups, data.note);
+      let message = this.getCimMessage();
+      message = this.constructWrapUpEvent(message, data.wrapups, data.note, this.conversation.firstChannelSession);
+      let wrapUpEvent: any = new CimEvent(
+        "AGENT_MESSAGE",
+        "MESSAGE",
+        this.conversation.conversationId,
+        this.conversation.roomId,
+        message,
+        this.conversation.customer
+      );
+
       this.openWrapDialog = false;
       if (this.conversation.wrapUpDialog.show) {
-        this._socketService.emit("WRAP_UP_CLOSED", {
+        this._socketService.emit("closeWrapup", {
+          cimEvent: wrapUpEvent,
+          roomId: this.conversation.roomId,
           conversationId: this.conversation.conversationId,
           agentId: this._cacheService.agent.id
-        })
+        });
       }
     }
   }
@@ -1504,17 +1620,19 @@ export class InteractionsComponent implements OnInit {
     this.isAudioPlaying[arrayIndex] = !audioElement.paused;
   }
 
-  isString(val): boolean { return typeof val === 'string'; }
+  isString(val): boolean {
+    return typeof val === "string";
+  }
 
   chatInCall() {
     this.chatDuringCall = !this.chatDuringCall;
     this.isConversationView = !this.isConversationView;
   }
   videoSwitch(e) {
-    if (e == 'jm') {
-      this.videoSrc = 'assets/video/sample-vid.mp4';
+    if (e == "jm") {
+      this.videoSrc = "assets/video/sample-vid.mp4";
     } else {
-      this.videoSrc = 'assets/video/angry-birds.mp4';
+      this.videoSrc = "assets/video/angry-birds.mp4";
     }
   }
   requestFullscreen(element: Element): void {
@@ -1535,6 +1653,68 @@ export class InteractionsComponent implements OnInit {
       (this.element as any).msRequestFullScreen();
     }
   }
+
+  endActiveCall() {
+    try {
+      this.isVideoCall = false;
+      this.isAudioCall = false;
+      this.chatDuringCall = false;
+    } catch (e) {
+      console.error("[endActiveCall] Error:", e);
+    }
+  }
+
+  getVoiceChannelSessionID() {
+    try {
+      for (let i = 0; i < this.conversation.activeChannelSessions.length; i++) {
+        if (
+          (this.conversation.activeChannelSessions[i] &&
+            this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cisco_cc") ||
+          this.conversation.activeChannelSessions[i].channel.channelType.name.toLowerCase() == "cx_voice"
+        ) {
+          return this.conversation.activeChannelSessions[i].id;
+        }
+      }
+      return -1;
+    } catch (e) {
+      console.error("[getVoiceChannelSessionID] Error:", e);
+    }
+  }
+
+  // loadBrowserLanguage() {
+  //   let browserLang = navigator.language;
+  //   console.log('Browser language is ' + browserLang);
+  //   // this.selectedLanguage = browserLang;
+  //   if (this.selectedLanguage == "ar") {
+  //     this.isRTLView = true;
+  //   }
+  // }
+
+  // to open dialog form
+  // openWrapUpDialog(timerEnabled: boolean): void {
+  //   if (timerEnabled) {
+  //     this.unsubscribeFromConversation();
+  //   }
+  //   const dialogRef = this.dialog.open(WrapUpFormComponent, {
+  //     disableClose: true,
+  //     panelClass: "wrap-dialog",
+  //     data: {
+  //       header: this._translateService.instant("chat-features.interactions.wrapup"),
+  //       timerEnabled: timerEnabled,
+  //       wrapUpTime: this._sharedService.conversationSettings.wrapUpTime,
+  //       conversation: this.conversation,
+  //       RTLDirection: this.isRTLView
+  //     }
+  //   });
+  //
+  //   dialogRef.afterClosed().subscribe((res) => {
+  //     if (res.event == "apply") {
+  //       this.constructAndSendCimEvent("wrapup", "", "", "", "", res.data.wrapups, res.data.note);
+  //     }
+  //
+  //   });
+  // }
+
   /*  Close fullscreen  */
   // exitFullscreen() {
   //   if (this.fullScreenView) {
@@ -1556,9 +1736,60 @@ export class InteractionsComponent implements OnInit {
   //   }
   // }
 
-  endActiveCall() {
-    this.isVideoCall = false;
-    this.isAudioCall = false;
-    this.chatDuringCall = false;
+  // filterNonVoiceQueues(queues: Array<any>) {
+  //   try {
+  //     let chatQueues: Array<any> = [];
+  //     queues.forEach((item: any) => {
+  //       if (item.mrdId != this._appConfigService.config.CX_VOICE_MRD && item.mrdId != this._appConfigService.config.CISCO_CC_MRD)
+  //         chatQueues.push(item);
+  //     });
+  //     this.queueList = chatQueues;
+  //   } catch (e) {
+  //     console.error("[filterCXQueues] Error :", e);
+  //   }
+  // }
+  clear() {
+    this._socketService.stopSLACountDown(this.conversation.conversationId);
   }
+
+  warn() {
+    this.conversation.SLACountdown.color = "sla-warn";
+  }
+
+  ended() {
+    this.conversation.SLACountdown.color = "sla-ended";
+  }
+
+  popUp() {
+    this._socketService.showSLAPopUp(this.conversation.conversationId);
+  }
+
+  extendSlaTime() {
+    const event = {
+      id: uuidv4(),
+      name: "RESET_AGENT_SLA",
+      type: "NOTIFICATION",
+      timestamp: Date.now(),
+      conversationId: this.conversation.conversationId,
+      data: {}
+    };
+
+    this._socketService.emit("publishCimEvent", {
+      cimEvent: event,
+      agentId: this._cacheService.agent.id,
+      conversationId: this.conversation.conversationId
+    });
+  }
+
+  // filterVoiceQueues(queues: Array<any>) {
+  //   try {
+  //     let cxQueues: Array<any> = [];
+  //     queues.forEach((item: any) => {
+  //       if (item.mrdId == this._appConfigService.config.CX_VOICE_MRD) cxQueues.push(item);
+  //     });
+  //     this.queueList = cxQueues;
+  //   } catch (e) {
+  //     console.error("[filterCXQueues] Error :", e);
+  //   }
+  // }
 }

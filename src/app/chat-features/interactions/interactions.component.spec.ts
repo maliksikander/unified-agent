@@ -16,6 +16,7 @@ describe("InteractionsComponent", () => {
   let snackBar: any;
   let translateService: TranslateService;
   let _sipService: any;
+  let _crmEventsService: any;
   let channelSession = {
     channel: {
       channelConnector: {
@@ -52,7 +53,8 @@ describe("InteractionsComponent", () => {
         _finneseService,
         snackBar,
         _sipService,
-        translateService
+        translateService,
+        _crmEventsService
       );
     });
 
@@ -90,7 +92,8 @@ describe("InteractionsComponent", () => {
         _finneseService,
         snackBar,
         _sipService,
-        translateService
+        translateService,
+        _crmEventsService
       );
     });
 
@@ -132,7 +135,8 @@ describe("InteractionsComponent", () => {
         _finneseService,
         snackBar,
         _sipService,
-        translateService
+        translateService,
+        _crmEventsService
       );
     });
 
@@ -166,7 +170,8 @@ describe("InteractionsComponent", () => {
         _finneseService,
         snackBar,
         _sipService,
-        translateService
+        translateService,
+        _crmEventsService
       );
     });
 

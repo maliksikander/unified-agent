@@ -20,8 +20,11 @@ describe("Socket service", () => {
   let _authService: any;
   let _snackService: MatSnackBar;
   let _translateService: any;
+  let _datePipe: any;
+  let _crmEventsService: any;
 
   const mockConversation = {
+    roomId: "12345",
     conversationId: "12345",
     messages: [],
     activeChannelSessions: [],
@@ -51,7 +54,9 @@ describe("Socket service", () => {
       _httpService,
       _authService,
       _snackService,
-      _translateService
+      _translateService,
+      _datePipe,
+      _crmEventsService
     );
     component.conversations.push(mockConversation);
   });

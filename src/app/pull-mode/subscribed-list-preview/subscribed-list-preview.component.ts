@@ -24,7 +24,6 @@ export class SubscribedListPreviewComponent implements OnInit {
   labels: Array<any> = [];
   filterView = true;
 
-
   constructor(
     private _httpService: httpService,
     private _sharedService: sharedService,

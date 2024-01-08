@@ -485,9 +485,9 @@ export class httpService {
     });
   }
 
-  getAgentsInQueue(conversationId): Observable<any> {
+  getAgentsInQueue(conversationId, agentId): Observable<any> {
     return this._httpClient.get<any>(
-      `${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.agentInQueueList}?conversationId=${conversationId}`,
+      `${this._appConfigService.config.ROUTING_ENGINE_URL}${this.apiEndpoints.agentInQueueList}?conversationId=${conversationId}&agentId=${agentId}`,
       {
         headers: new HttpHeaders({
           "Content-Type": "application/json"

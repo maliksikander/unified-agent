@@ -103,12 +103,7 @@ export class AnnouncementComponent implements OnInit {
       error: (err: any) => {
         console.error(err);
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-Delete-Announcement"), "err");
-
-
-      },
-
-    })
-
-
+      }
+    });
   }
 }

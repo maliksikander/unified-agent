@@ -1,89 +1,95 @@
 <div class="dialog-header">
-  <h4 mat-dialog-title>{{'create-customer.create-new-customer' | translate}}
+  <h4 mat-dialog-title>
+    {{ "create-customer.create-new-customer" | translate }}
     <!-- <span class="validate-span" (click)="validateForm()">Validate</span> -->
-    <button mat-button mat-dialog-close>
-      <mat-icon (click)="onNoClick()">close</mat-icon>
-    </button>
   </h4>
+  <button mat-button mat-dialog-close>
+    <mat-icon (click)="onNoClick()">close</mat-icon>
+  </button>
 </div>
 
 <mat-dialog-content *ngIf="dataReady" class="main-content-create-customer">
-
   <form [formGroup]="customerForm">
     <div class="row row-customer-form">
       <ng-container *ngFor="let schemaAttribute of schemaAttributes">
-        <div [ngClass]="[schemaAttribute.length >= 116 ? 'col-md-12': 'col-md-6' ]"
-          [class.check-box-field]="schemaAttribute.type == 'boolean'" class="{{schemaAttribute.key}}">
-
+        <div
+          [ngClass]="[schemaAttribute.length >= 116 ? 'col-md-12' : 'col-md-6']"
+          [class.check-box-field]="schemaAttribute.type == 'boolean'"
+          class="{{ schemaAttribute.key }}"
+        >
           <div class="input-field">
-
             <!-- AlphaNumeric | URL | Number | PhoneNumber | Email | String | Password | IP | Name -->
 
             <!-- For Character length less than equal to 115  -->
             <ng-container *ngIf="schemaAttribute.isChannelIdentifier == false">
               <div class="field-set" *ngIf="schemaAttribute.type != 'boolean' && schemaAttribute.key != 'labels'">
-
-                <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
-                    *ngIf="schemaAttribute.isRequired">*</span>
+                <label class="field-label"
+                  >{{ schemaAttribute.label }}<span class="red-clr" *ngIf="schemaAttribute.isRequired">*</span>
                   <!-- <span *ngIf="schemaAttribute.isChannelIdentifier == true" class="field-channel"><img
                       *ngFor="let channelType of schemaAttribute.channelTypes"
                       [src]="getChannelTypeLogo(channelType) | channelLogo | async"></span> -->
                 </label>
 
                 <mat-form-field class="field" appearance="outline">
-                  <input formControlName="{{schemaAttribute.key}}" matInput>
+                  <input formControlName="{{ schemaAttribute.key }}" matInput />
                   <mat-error>
                     <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.required">
-                      {{'create-customer.required' | translate}}
+                      {{ "create-customer.required" | translate }}
                     </div>
                     <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.pattern">
-                      {{'create-customer.invalid' | translate}}
+                      {{ "create-customer.invalid" | translate }}
                     </div>
                     <div *ngIf="customerForm.get(schemaAttribute.key)?.errors?.maxlength">
-                      {{'create-customer.max' | translate}} {{schemaAttribute.length}} {{'create-customer.characters-allowed' | translate}}
+                      {{ "create-customer.max" | translate }} {{ schemaAttribute.length }} {{ "create-customer.characters-allowed" | translate }}
                     </div>
                   </mat-error>
                 </mat-form-field>
               </div>
             </ng-container>
 
-            <ng-container *ngIf="schemaAttribute.isChannelIdentifier == true" formArrayName="{{schemaAttribute.key}}">
+            <ng-container *ngIf="schemaAttribute.isChannelIdentifier == true" formArrayName="{{ schemaAttribute.key }}">
               <div class="field-set" *ngIf="schemaAttribute.type != 'boolean'">
-                <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
-                    *ngIf="schemaAttribute.isRequired">*</span>
-                  <span class="field-channel"><img *ngFor="let channelType of schemaAttribute.channelTypes"
-                      [src]="channelType | channelName  | channelLogo | async" matTooltip="{{channelType}}"></span>
+                <label class="field-label"
+                  >{{ schemaAttribute.label }}<span class="red-clr" *ngIf="schemaAttribute.isRequired">*</span>
+                  <span class="field-channel"
+                    ><img
+                      *ngFor="let channelType of schemaAttribute.channelTypes"
+                      [src]="channelType | channelName | channelLogo | async"
+                      matTooltip="{{ channelType }}"
+                  /></span>
                 </label>
-                <ng-container *ngFor="let attr of getFormControls(schemaAttribute);let i = index">
+                <ng-container *ngFor="let attr of getFormControls(schemaAttribute); let i = index">
                   <mat-form-field class="field" appearance="outline">
-                    <input matInput [formControlName]="i">
+                    <input matInput [formControlName]="i" />
                     <mat-error>
                       <span *ngIf="attr?.errors?.required">
-                        {{'create-customer.required' | translate}}
+                        {{ "create-customer.required" | translate }}
                       </span>
                       <span *ngIf="attr?.errors?.pattern">
-                        {{'create-customer.invalid' | translate}}
+                        {{ "create-customer.invalid" | translate }}
                       </span>
                       <span *ngIf="attr?.errors?.maxlength">
-                        {{'create-customer.max' | translate}}{{schemaAttribute.length}} {{'create-customer.characters-allowed' | translate}}
+                        {{ "create-customer.max" | translate }}{{ schemaAttribute.length }} {{ "create-customer.characters-allowed" | translate }}
                       </span>
                     </mat-error>
                     <div class="btn-test">
-                      <button *ngIf="i == 0" type="button" class="duplicate-action add-field" mat-mini-fab
-                        (click)="onAddFormControl(schemaAttribute)">
+                      <button
+                        *ngIf="i == 0"
+                        type="button"
+                        class="duplicate-action add-field"
+                        mat-mini-fab
+                        (click)="onAddFormControl(schemaAttribute)"
+                      >
                         <mat-icon>add</mat-icon>
                       </button>
-                      <button *ngIf="i > 0" class="duplicate-action remove-field" mat-mini-fab
-                        (click)="onRemoveFormControl(schemaAttribute,i)">
+                      <button *ngIf="i > 0" class="duplicate-action remove-field" mat-mini-fab (click)="onRemoveFormControl(schemaAttribute, i)">
                         <mat-icon>close</mat-icon>
                       </button>
                     </div>
-
                   </mat-form-field>
                 </ng-container>
               </div>
             </ng-container>
-
 
             <!-- For type 'String' and character length greater than equal to 116  -->
             <!-- <div class="field-set" *ngIf=" schemaAttribute.type == 'string'  && schemaAttribute.length >= 116">
@@ -111,9 +117,8 @@
             <!-- Boolean -->
 
             <div class="field-set" *ngIf="schemaAttribute.type == 'boolean'" class="check-box">
-              <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
-                  *ngIf="schemaAttribute.isRequired">*</span></label>
-              <mat-checkbox color="primary" formControlName="{{schemaAttribute.key}}" matInput></mat-checkbox>
+              <label class="field-label">{{ schemaAttribute.label }}<span class="red-clr" *ngIf="schemaAttribute.isRequired">*</span></label>
+              <mat-checkbox color="primary" formControlName="{{ schemaAttribute.key }}" matInput></mat-checkbox>
             </div>
 
             <!-- Date -->
@@ -181,46 +186,47 @@
           </div> -->
 
             <!-- Label   -->
-            <div class="field-set" *ngIf="(schemaAttribute.key == 'labels' && (('customer-labels' | authPipe: 'assign_label'))) as result">
-              <label class="field-label">{{schemaAttribute.label}}<span class="red-clr"
-                  *ngIf="schemaAttribute.is_required">*</span>
-              </label>
+            <div class="field-set" *ngIf="schemaAttribute.key == 'labels' && ('customer-labels' | authPipe: 'assign_label') as result">
+              <label class="field-label">{{ schemaAttribute.label }}<span class="red-clr" *ngIf="schemaAttribute.is_required">*</span> </label>
               <div class="drop">
-                <angular2-multiselect [data]="labelList"  [settings]="labelSettings" #dropdownRef 
-                  (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
-                  (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
-                  (onAddFilterNewItem)="onAddItem($event)" formControlName="{{schemaAttribute.key}}">
-
+                <angular2-multiselect
+                  [data]="labelList"
+                  [settings]="labelSettings"
+                  #dropdownRef
+                  (onSelect)="onItemSelect($event)"
+                  (onDeSelect)="OnItemDeSelect($event)"
+                  (onSelectAll)="onSelectAll($event)"
+                  (onDeSelectAll)="onDeSelectAll($event)"
+                  (onAddFilterNewItem)="onAddItem($event)"
+                  formControlName="{{ schemaAttribute.key }}"
+                >
                   <c-badge>
                     <ng-template let-item="item">
-                      <div class="dot" [ngStyle]="{'background-color':item.colorCode}"></div>
+                      <div class="dot" [ngStyle]="{ 'background-color': item.colorCode }"></div>
 
-                      <label style="margin: 0px;">{{item.name}}</label>
+                      <label style="margin: 0px">{{ item.name }}</label>
                     </ng-template>
                   </c-badge>
                   <c-item>
                     <ng-template let-item="item">
-                      <div class="dot" [ngStyle]="{'background-color':item.colorCode}"></div>
+                      <div class="dot" [ngStyle]="{ 'background-color': item.colorCode }"></div>
 
-                      <label style="color: #333;min-width: 150px;">{{item.name}}</label>
+                      <label style="color: #333; min-width: 150px">{{ item.name }}</label>
                     </ng-template>
                   </c-item>
                 </angular2-multiselect>
               </div>
             </div>
-
           </div>
         </div>
       </ng-container>
     </div>
   </form>
-
 </mat-dialog-content>
 
 <mat-dialog-actions>
-
   <div class="footer-buttons">
-    <button (click)="onNoClick()" class="cancel-btn">{{'create-customer.cancel' | translate}}</button>
-    <button *ngIf="customerForm.valid" (click)="onSave()" class="save-btn">{{'create-customer.create' | translate}}</button>
+    <button (click)="onNoClick()" class="cancel-btn">{{ "create-customer.cancel" | translate }}</button>
+    <button *ngIf="customerForm.valid" (click)="onSave()" class="save-btn">{{ "create-customer.create" | translate }}</button>
   </div>
 </mat-dialog-actions>

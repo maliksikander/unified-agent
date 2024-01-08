@@ -105,6 +105,8 @@ import { SearchSuggestionsPipe } from "./pipes/searchSuggestions.pipe";
 import { checkCiscoSessionPipe } from "./pipes/checkCiscoSession.pipe";
 import { checkCXSessionPipe } from "./pipes/checkCXSession.pipe";
 import { countAgentPartcipantsPipe } from "./pipes/countAgentParticipants.pipe";
+import { QueueSearchPipe } from "./pipes/queueSearch.pipe";
+import { DurationPipe } from "./pipes/duration.pipe";
 @NgModule({
   declarations: [
     getFormattedBytesPipe,
@@ -155,7 +157,9 @@ import { countAgentPartcipantsPipe } from "./pipes/countAgentParticipants.pipe";
     checkCiscoSessionPipe,
     checkCXSessionPipe,
     returnSchemaByKeyPipe,
-    returnSchemaByChannelTypePipe
+    returnSchemaByChannelTypePipe,
+    QueueSearchPipe,
+    DurationPipe
   ],
   imports: [
     NgxDocViewerModule,
@@ -340,7 +344,9 @@ import { countAgentPartcipantsPipe } from "./pipes/countAgentParticipants.pipe";
     checkCiscoSessionPipe,
     checkCXSessionPipe,
     returnSchemaByKeyPipe,
-    returnSchemaByChannelTypePipe
+    returnSchemaByChannelTypePipe,
+    QueueSearchPipe,
+    DurationPipe
   ]
 })
 export class SharedModule {}

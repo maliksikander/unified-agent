@@ -405,7 +405,7 @@
   <mat-sidenav-container hasBackdrop="true" class="right-canned-message-list announcement-tab" [ngClass]="{ 'mat-drawer-opened': sidenav?.opened }">
     <mat-sidenav #sidenav position="end" mode="over" disableClose mode="over">
       <div class="announcement-tab-header">
-        <h4>Announcements</h4>
+        <h4>{{_announcementService.announcementList[0]?.announcementText ? 'Announcements' : 'No Announcement available at this time'}}</h4>
       </div>
       <app-agent-announcements></app-agent-announcements>
     </mat-sidenav>

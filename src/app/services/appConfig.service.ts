@@ -23,7 +23,8 @@ export class appConfigService {
     isCxVoiceEnabled: false,
     CISCO_CC_MRD: "",
     CX_VOICE_MRD: "",
-    DASHBOARD_REFRESH_TIME: 0
+    DASHBOARD_REFRESH_TIME: 0,
+    isCrmEventsEnabled: false
   };
   finesseConfig: any;
   cxSipConfig: any;
@@ -49,6 +50,7 @@ export class appConfigService {
           this.config.UNIFIED_ADMIN_URL = e.UNIFIED_ADMIN_URL;
           this.config.CCM_URL = e.CCM_URL;
           this.config.DASHBOARD_REFRESH_TIME = e.DASHBOARD_REFRESH_TIME;
+          this.config.isCrmEventsEnabled = e.isCrmEventsEnabled;
           (this.config.isCiscoEnabled = e.isCiscoEnabled),
             (this.config.isCxVoiceEnabled = e.isCxVoiceEnabled),
             (this.config.CX_VOICE_MRD = e.CX_VOICE_MRD),

@@ -44,11 +44,10 @@ export class ChatNotificationsComponent implements OnInit {
         if (e.msg == "openPushModeRequestHeader") {
           this.pushModeRequests.push(e.data);
           this._soundService.playRing();
-            this._soundService.openBrowserNotification(
-              this._translateService.instant("snackbar.CHAT-REQUESTED"),
-              this._translateService.instant("snackbar.Incoming-chat-request-on-push-mode-on") + e.data.channelSession.channel.channelType.name
-            );
-          
+          this._soundService.openBrowserNotification(
+            this._translateService.instant("snackbar.CHAT-REQUESTED"),
+            this._translateService.instant("snackbar.Incoming-chat-request-on-push-mode-on") + e.data.channelSession.channel.channelType.name
+          );
         } else if (e.msg == "closePushModeRequestHeader") {
           this.removePushModeRequestFromRequestArray(e.data.conversationId);
         } else if (e.msg == "openPullModeRequestHeader") {
@@ -73,12 +72,14 @@ export class ChatNotificationsComponent implements OnInit {
           this._soundService.playRing();
           this._soundService.openBrowserNotification(
             this._translateService.instant("snackbar.Incoming-Call-Alert"),
-            `${this._translateService.instant("snackbar.Incoming-call-alert-request")} ${e.data && e.data.customer && e.data.customer.firstName ? e.data.customer.firstName : 'N/A'} (${e.data && e.data.identifier ? e.data.identifier : 'N/A'})` 
+            `${this._translateService.instant("snackbar.Incoming-call-alert-request")} ${
+              e.data && e.data.customer && e.data.customer.firstName ? e.data.customer.firstName : "N/A"
+            } (${e.data && e.data.identifier ? e.data.identifier : "N/A"})`
           );
           console.log("external requests==>", this.externalModeRequests);
         } else if (e.msg == "closeExternalModeRequestHeader") {
           this.isCallAcceptClicked = false;
-          let dialog = e.data.dialog ? e.data.dialog : e.data;
+          let dialog = e.data && e.data.dialog ? e.data.dialog : e.data;
           if (this.externalModeRequests.length > 0) {
             let index = this.externalModeRequests.findIndex((item) => {
               return item.dialogData.id == dialog.id;
@@ -127,8 +128,8 @@ export class ChatNotificationsComponent implements OnInit {
     }
   }
 
-  onAcceptCallback(conversationId, taskId, taskDirection) {
-    this.getTopicSubscription(conversationId, taskId, taskDirection);
+  onAcceptCallback(conversationId, roomId, roomLabel, taskId, taskDirection) {
+    this.getTopicSubscription(conversationId, roomId, roomLabel, taskId, taskDirection);
   }
 
   onExternalRequestAccept(data) {
@@ -136,7 +137,7 @@ export class ChatNotificationsComponent implements OnInit {
     this.acceptCall(data);
   }
 
-  getTopicSubscription(conversationId, taskId, taskDirection) {
+  getTopicSubscription(conversationId, roomId, roomLabel, taskId, taskDirection) {
     this._socketService.emit("topicSubscription", {
       topicParticipant: new TopicParticipant(
         "AGENT",
@@ -147,6 +148,8 @@ export class ChatNotificationsComponent implements OnInit {
       ),
       agentId: this._cacheService.agent.id,
       conversationId: conversationId,
+      roomId: roomId,
+      roomLabel: roomLabel,
       taskId: taskId
     });
 
@@ -155,7 +158,7 @@ export class ChatNotificationsComponent implements OnInit {
   }
 
   removePushModeRequestFromRequestArray(conversationId) {
-    let index = this._sharedService.getIndexFromConversationId(conversationId, this.pushModeRequests);
+    let index = this._sharedService.getIndexFromconversationId(conversationId, this.pushModeRequests);
     if (index != -1) {
       this._sharedService.spliceArray(index, this.pushModeRequests);
     }

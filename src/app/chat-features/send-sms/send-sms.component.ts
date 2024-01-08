@@ -198,13 +198,12 @@ export class SendSmsComponent implements OnInit, AfterViewInit {
 
   updateMySelection(option) {
     this.identifiedCustomer = option;
-    
-    this.userData=[];
 
+    this.userData = [];
   }
 
   openCOnversationView(customer) {
-    this._socketService.onTopicData({ customer }, "FAKE_CONVERSATION", "");
+    this._socketService.onTopicData({ customer }, "FAKE_CONVERSATION", "FAKE_CONVERSATION", "");
     this._router.navigate(["customers"]);
     if (this.SMSServiceIdentifier) {
       this._cacheService.storeOutboundSmsDialogData({
@@ -347,7 +346,7 @@ export class SendSmsSnackbarComponent {
   constructor(private _router: Router, private _socketService: socketService, @Inject(MAT_SNACK_BAR_DATA) public data, private dialog: MatDialog) {}
 
   openCOnversationView() {
-    this._socketService.onTopicData({ customer: this.data.info.customer }, "FAKE_CONVERSATION", "");
+    this._socketService.onTopicData({ customer: this.data.info.customer }, "FAKE_CONVERSATION", "FAKE_CONVERSATION", "");
     this._router.navigate(["customers"]);
     this.dialog.closeAll();
   }

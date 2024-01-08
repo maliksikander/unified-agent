@@ -1,4 +1,4 @@
-import {Component, OnInit, HostBinding, ElementRef, ViewChild, AfterViewInit, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, HostBinding, ElementRef, ViewChild, AfterViewInit, ChangeDetectorRef } from "@angular/core";
 import { Router } from "@angular/router";
 import { finesseService } from "./services/finesse.service";
 import { isLoggedInService } from "./services/isLoggedIn.service";
@@ -8,18 +8,19 @@ import { OverlayContainer } from "@angular/cdk/overlay";
 import { httpService } from "./services/http.service";
 import { cacheService } from "./services/cache.service";
 import { TranslateService } from "@ngx-translate/core";
+import { crmEventsService } from "./services/crmEvents.service";
 
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"]
 })
-export class AppComponent implements OnInit, AfterViewInit{
+export class AppComponent implements OnInit, AfterViewInit {
   title = "unified-agent-gadget";
   @HostBinding("class") className = "";
   themeChange;
   timer;
-  @ViewChild('mainArea',  { static: false })
+  @ViewChild("mainArea", { static: false })
   mainArea: ElementRef;
 
   currentRoute: string;
@@ -35,7 +36,8 @@ export class AppComponent implements OnInit, AfterViewInit{
     private _sipService: SipService,
     private _sharedService: sharedService,
     private _translateService: TranslateService,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private _crmEventsService: crmEventsService
   ) {}
   isdarkMode = false;
 
@@ -43,14 +45,12 @@ export class AppComponent implements OnInit, AfterViewInit{
     this.ref.detectChanges();
     if (this.mainArea.nativeElement.offsetWidth < 768) {
       this.isMobile = true;
-      console.log('this.mainArea.nativeElement.offsetWidth ', this.mainArea.nativeElement.offsetWidth);
+      console.log("this.mainArea.nativeElement.offsetWidth ", this.mainArea.nativeElement.offsetWidth);
 
       this.checkCompactView(this.isMobile);
     } else {
       this.checkCompactView(false);
-
     }
-
 
     // if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     //   this.isMobile = true;

@@ -289,6 +289,14 @@
           color: $main-color;
           //background: $main-color-background !important;
         }
+
+        &:disabled {
+          background: #e6e6e6 !important;
+          cursor: not-allowed;
+          mat-icon {
+            color: rgba(0, 0, 0, 0.2) !important;
+          }
+        }
       }
     }
   }
@@ -1784,6 +1792,9 @@
     &.success-btn {
       background: $blue-text-color;
       margin-left: 12px;
+      &.call-assistance{
+        background: $theme-green;
+      }
       color: #fff;
     }
   }
@@ -2745,9 +2756,59 @@ vg-controls.hide {
   }
 }
 
+
+.agent-status {
+  display: block;
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  border-radius: 100%;
+  border: 2px solid #fff;
+  left: 0;
+  top: 8px;
+
+  &.not-available {
+    background: #FF7F00;
+  }
+  &.available {
+    background: #46B71F;
+  }
+}
+
+.no-data-warning{
+  padding: 10px 5px;
+  min-width: 200px;
+}
+
 .chat-transfer-main {
   padding: 10px 5px;
   min-width: 280px;
+
+  // .agent-status {
+  //   display: block;
+  //   width: 12px;
+  //   height: 12px;
+  //   position: absolute;
+  //   border-radius: 100%;
+  //   border: 2px solid #fff;
+  //   left: 0;
+  //   top: 8px;
+
+  //   &.not-available {
+  //     background: #FF7F00;
+  //   }
+  //   &.available {
+  //     background: #46B71F;
+  //   }
+  // }
+
+  .agent-name{
+    display: inline-block;
+    max-width: 150px;
+    text-overflow: ellipsis;
+    white-space: pre;
+    overflow: hidden;
+  }
 
   .transfer-heading {
     font-size: 10px;
@@ -2789,12 +2850,14 @@ vg-controls.hide {
     min-height: 32px;
     height: auto;
     line-height: 22px;
-    padding: 4px 5px;
+    padding: 4px 5px 4px 15px;
     color: #818181;
     font-size: 12px;
     display: flex;
     justify-content: space-between;
     text-transform: capitalize;
+    position: relative;
+    padding-left: 15px;
 
     &:disabled {
       opacity: 0.5;
@@ -2973,7 +3036,7 @@ vg-controls.hide {
 
 .transfer-to {
   color: #818181;
-  padding: 25px 0;
+  // padding: 25px 0;
 
   .support-showcase {
     margin: 0 auto 10px;
@@ -2983,6 +3046,13 @@ vg-controls.hide {
     //background: #F3F6F8;
     line-height: 84px;
     border-radius: 100%;
+    position: relative;
+
+    .agent-status{
+      width:15px;
+      height:15px
+    }
+
   }
 
   h3 {
@@ -4139,7 +4209,7 @@ button.back-to-sms{
       height: 1.5rem;
       vertical-align: middle;
       box-shadow: none;
-
+     
   }
   i.material-icons {
     position: relative;
@@ -4579,3 +4649,58 @@ button.back-to-sms{
   display: none !important;
 }
 
+
+.agent-sla-timer {
+  display: inline-flex;
+  background: #F0F0F0;
+  flex-wrap: nowrap;
+  align-items: center;
+  position: relative;
+  top: 8px;
+  margin-left: 13px;
+  //border: 1px solid #ccc;
+  padding:0 5px 0 1px;
+  border-radius: 30px;
+  min-width: 60px;
+  mat-icon{
+    color: #49BE00;
+  }
+  time{
+    font-size: 12px;
+    color: $dark-gray-color;
+    margin-left: 2px;
+  }
+
+  &.sla-warn{
+    mat-icon{
+      color: #FFAA00;
+    }
+  }
+
+  &.sla-ended{
+    mat-icon{
+      color: #BE0000;
+    }
+  }
+}
+
+.sla-main-action{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .note-dialog-main {
+    background: #fff;
+    width: 100%;
+    max-width: 480px;
+  }
+}

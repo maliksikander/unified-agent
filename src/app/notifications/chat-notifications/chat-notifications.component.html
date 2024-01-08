@@ -34,7 +34,11 @@
             </p>
           </div>
           <div class="notification-trigger">
-            <button (click)="onAcceptCallback(request?.conversationId, request?.taskId, null)" class="mat-flat-button" mat-button>
+            <button
+              (click)="onAcceptCallback(request?.conversationId, request?.roomId, request?.roomLabel, request?.taskId, null)"
+              class="mat-flat-button"
+              mat-button
+            >
               {{ "globals.accept" | translate }}
             </button>
           </div>
@@ -72,7 +76,7 @@
             </p>
           </div>
           <div class="notification-trigger">
-            <button (click)="onAcceptCallback(request?.conversationId, request?.taskId, request?.taskDirection)" class="mat-flat-button" mat-button>
+            <button (click)="onAcceptCallback(request?.conversationId, request?.roomId, request?.roomLabel, request?.taskId, request?.taskDirection)" class="mat-flat-button" mat-button>
               {{ "globals.accept" | translate }}
             </button>
           </div>
@@ -137,7 +141,7 @@
           <div class="chat-request">
             <p class="channel-icon"><img [src]="voiceChannelType?.channelLogo | channelLogo | async" /></p>
           </div>
-            <div class="requested-name">
+          <div class="requested-name">
             <p
               matTooltip="{{
                 request?.customer?.firstName

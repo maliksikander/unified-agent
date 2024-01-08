@@ -24,6 +24,7 @@ export class CustomerInfoComponent implements OnInit {
   @Input() customer: any;
   @Input() customerSuggestions: any;
   @Input() activeChannelSessions: any;
+  @Input() roomId: any;
   @Input() conversationId: any;
   @Input() conversation: any;
   @Input() activeConversationData: any;
@@ -66,6 +67,18 @@ export class CustomerInfoComponent implements OnInit {
     "Glenn Helgass",
     " Ev Gayforth"
   ];
+  activityData: { [key: string]: string } = {
+    "Scheduled by": "John Dillon (Supervisor)",
+    Channel: "WhatsApp",
+    "Channel Id": "41254785224",
+    Type: "Call",
+    "Sub Type": "Outbound",
+    "Scheduled to": "Steve Miller",
+    Queue: "Marketing",
+    "Scheduled on": "23/07/23 - 4:40PM",
+    Campaign: "Broadband Package Upgrade"
+  };
+
   timer = "00:00";
   ciscoVoiceSession;
   cxVoiceSession;
@@ -89,10 +102,9 @@ export class CustomerInfoComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-
     if (this._sharedService.isCompactView) {
       this.isMobileDevice = true;
-      console.log('this is a compact view Interactions view ?', this.isMobileDevice);
+      console.log("this is a compact view Interactions view ?", this.isMobileDevice);
     }
     if (this.activeChannelSessions) this.setActiveChannelSessions(this.activeChannelSessions);
     // this._sipService.getTimer().subscribe((value) => {
