@@ -288,18 +288,18 @@ export class InteractionsComponent implements OnInit {
     }
   }
 
-  initializeForm(): void {
-    this.emailForm = this.fb.group({
-      markdownText: "",
-      htmlBody: "",
-      subject: "",
-      recipientsTo: this.fb.array([]),
-      recipientsCc: this.fb.array([]),
-      recipientsBcc: this.fb.array([]),
-      from: "",
-      replyTo: []
-    });
-  }
+initializeForm(): void {
+  this.emailForm = this.fb.group({
+    markdownText: "",
+    htmlBody: "",
+    subject: "",
+    recipientsTo: this.fb.array([], [Validators.required, Validators.email]),
+    recipientsCc: this.fb.array([], [Validators.email]),
+    recipientsBcc: this.fb.array([], [Validators.email]),
+    from: "",
+    replyTo: []
+  });
+}
 
   loadLabels() {
     this._httpService.getLabels().subscribe(
@@ -877,8 +877,9 @@ export class InteractionsComponent implements OnInit {
       let ln = files.length;
       if (ln > 0) {
         for (var i = 0; i < ln; i++) {
-          const fileSize = files[i].size;
-          const fileMimeType = files[i].name.split(".").pop();
+          if(files[i].size && files[i].name) {
+            const fileSize = files[i].size;
+            const fileMimeType = files[i].name.split(".").pop();
 
           if (fileSize <= 5000000) {
             if (availableExtentions.includes(fileMimeType.toLowerCase())) {
@@ -898,10 +899,14 @@ export class InteractionsComponent implements OnInit {
           } else {
             this._snackbarService.open(files[i].name + this._translateService.instant("snackbar.File-size-should-be-less-than-5MB"), "err");
           }
+        } else {
+          console.error("[File Upload] Error: Invalid file object at index", i, files[i]);
         }
+      }
         return forkJoin(results);
       }
     } catch (e) {
+      console.error("[File Upload] Error :", e);
       return of([]);
     }
     return of([]);
@@ -915,18 +920,25 @@ export class InteractionsComponent implements OnInit {
       let message = this.getCimMessage();
 
       if (msgType.toLowerCase() === "email") {
-        let selectedChannelSession = this.conversation.activeChannelSessions.find((item) => item.isChecked == true);
-        this.uploadFiles(fileList).subscribe(
-          (results) => {
-            console.log("Files uploaded sucessfully are:", results);
-            message = this.constructEmailEvent(message, emailFormValues, selectedChannelSession, results);
-            this.emitCimEvent(message, "AGENT_MESSAGE");
-          },
-          (uploadError) => {
-            console.error("Error uploading files:", uploadError);
-          }
+        let selectedEmailChannelSession = this.conversation.activeChannelSessions.find(
+          (item) => item.isChecked === true && item.channel.name.toLowerCase() === 'email'
         );
-      }
+      
+        if (selectedEmailChannelSession) {
+          this.uploadFiles(fileList).subscribe(
+            (results) => {
+              console.log("Files uploaded successfully are:", results);
+              message = this.constructEmailEvent(message, emailFormValues, selectedEmailChannelSession, results);
+              this.emitCimEvent(message, "AGENT_MESSAGE");
+            },
+            (uploadError) => {
+              console.error("Error uploading files:", uploadError);
+            }
+          );
+        } else {
+          console.error("No selected email channel session found.");
+        }
+      }      
 
       if (msgType.toLowerCase() == "wrapup") {
         message = this.constructWrapUpEvent(message, wrapups, note, this.conversation.firstChannelSession);
@@ -1822,7 +1834,7 @@ export class InteractionsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {});
   }
-  add(event: MatChipInputEvent, recepient: string): void {
+  addEmailInAdressBar(event: MatChipInputEvent, recepient: string): void {
     const recipientsToControl = this.emailForm.get(recepient) as FormArray;
     const input = event.input;
     const value = event.value;
@@ -1838,12 +1850,26 @@ export class InteractionsComponent implements OnInit {
       if (input) {
         input.value = "";
       }
+    } else if(recepient === "recipientsTo" && recipientsToControl.length === 0) {
+      this._snackbarService.open("Email To field cannot be empty", "err");
+      this.hasErrors = true
     }
   }
-  remove(index: number, recepient: string): void {
+
+  removeEmailFromAddressBar(index: number, recepient: string): void {
     const recipientsToControl = this.emailForm.get(recepient) as FormArray;
     recipientsToControl.removeAt(index);
   }
+
+  hasEmailChannelSession(): boolean {
+    return (
+      this.conversation.activeChannelSessions &&
+      this.conversation.activeChannelSessions.some(
+        (session) => session.channel.name === 'Email'
+      )
+    );
+  }
+  
   replyToEmail(message, isReplyToAllEmail) {
     const subjectPrefix = "Re:";
     const currentSubject = message.body.subject || "";
@@ -1893,6 +1919,21 @@ export class InteractionsComponent implements OnInit {
       const recipientsToControl = this.emailForm.get("recipientsTo") as FormArray;
       recipientsToControl.clear();
       recipientsToControl.push(this.fb.control(message.header.channelData.channelCustomerIdentifier));
+    }
+  }
+
+  forwardEmail(message) {
+    this.emailForm.patchValue({
+      markdownText: message.body.markdownText,
+      htmlBody: message.body.htmlBody,
+      subject: "",
+      recipientsCc: [],
+      recipientsBcc: [],
+      from: message.header.channelData.serviceIdentifier,
+      replyTo: [message.header.channelData.serviceIdentifier]
+    });
+    for (let i = 0; i < message.body.attachments.length; i++) {
+      this.listOfFiles.push(message.body.attachments[i]);
     }
   }
   openEmailComposer(templateRef): void {

@@ -727,7 +727,7 @@
 
                       <div
                         class="chat-message-content referred-message-content"
-                        *ngIf="message.header.originalMessageId != null && message.header.originalMessageId != ''"
+                        *ngIf="message.header.originalMessageId != null && message.header.originalMessageId != '' && message.body.type  != 'EMAIL'"
                       >
                         <div
                           class="main-quoted-reply"
@@ -1983,12 +1983,12 @@
                               <span class="view-email-thread" (click)="openEmailThreaded(emailThreadedViewTemplate, message.body.htmlBody)"
                                 >view full thread</span
                               >
-                              <ul *ngIf="conversation.activeChannelSessions.length > 0">
+                              <ul *ngIf="hasEmailChannelSession()">
                                 <li (click)="openEmailComposer(emailComposeTemplate)" (click)="replyToEmail(message, false)">
                                   <mat-icon>reply</mat-icon>
                                 </li>
                                 <li (click)="openEmailComposer(emailComposeTemplate)" (click)="replyToEmail(message, true)"><mat-icon>reply_all</mat-icon></li>
-                                <li><mat-icon>forward</mat-icon></li>
+                                <li (click)="openEmailComposer(emailComposeTemplate)" (click)="forwardEmail(message)" (click)="initUpload(message.body.attachments)"><mat-icon>forward</mat-icon></li>
                                 <li><mat-icon>print</mat-icon></li>
                               </ul>
                             </div>
@@ -3256,7 +3256,7 @@
                   *ngFor="let recipient of emailForm.get('recipientsTo')['controls']; let i = index"
                   [selectable]="selectable"
                   [removable]="removable"
-                  (removed)="remove(i, 'recipientsTo')"
+                  (removed)="removeEmailFromAddressBar(i, 'recipientsTo')"
                   [value]="recipient.value">
                   {{ recipient.value }}
                   <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
@@ -3265,7 +3265,7 @@
                   [matChipInputFor]="emailToList"
                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                   [matChipInputAddOnBlur]="addOnBlur"
-                  (matChipInputTokenEnd)="add($event, 'recipientsTo')"
+                  (matChipInputTokenEnd)="addEmailInAdressBar($event, 'recipientsTo')"
                 />
               </mat-chip-list>
             </mat-form-field>
@@ -3286,7 +3286,7 @@
                   *ngFor="let recipient of emailForm.get('recipientsCc')['controls'] let i = index"
                   [selectable]="selectable"
                   [removable]="removable"
-                  (removed)="remove(i, 'recipientsCc')"
+                  (removed)="removeEmailFromAddressBar(i, 'recipientsCc')"
                 >
                   {{ recipient.value }}
                   <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
@@ -3295,7 +3295,7 @@
                   [matChipInputFor]="emailCc"
                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                   [matChipInputAddOnBlur]="addOnBlur"
-                  (matChipInputTokenEnd)="add($event, 'recipientsCc')"
+                  (matChipInputTokenEnd)="addEmailInAdressBar($event, 'recipientsCc')"
                 />
               </mat-chip-list>
             </mat-form-field>
@@ -3312,7 +3312,7 @@
                   *ngFor="let recipient of emailForm.get('recipientsBcc')['controls']; let i = index"
                   [selectable]="selectable"
                   [removable]="removable"
-                  (removed)="remove(i, 'recipientsBcc')"
+                  (removed)="removeEmailFromAddressBar(i, 'recipientsBcc')"
                 >
                   {{ recipient.value }}
                   <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
@@ -3321,7 +3321,7 @@
                   [matChipInputFor]="emailToBcc"
                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                   [matChipInputAddOnBlur]="addOnBlur"
-                  (matChipInputTokenEnd)="add($event, 'recipientsBcc')"
+                  (matChipInputTokenEnd)="addEmailInAdressBar($event, 'recipientsBcc')"
                 />
               </mat-chip-list>
             </mat-form-field>
@@ -3360,9 +3360,9 @@
 
       <div class="action-trigger email-trigger">
         <span>
-          <button mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial (click)="sendEmail()" [disabled]="hasErrors">
+          <button [disabled]="emailForm.get('recipientsTo').invalid" mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial (click)="sendEmail()">
             Send Email
-          </button>
+          </button>               
           <button mat-button mat-dialog-close class="close-btn">Save as draft</button>
         </span>
         <button mat-icon-button matTooltip="delete" class="discard-email">
