@@ -1834,7 +1834,7 @@ initializeForm(): void {
 
     dialogRef.afterClosed().subscribe((result) => {});
   }
-  addEmailInAdressBar(event: MatChipInputEvent, recepient: string): void {
+  addEmailsInAddressBar(event: MatChipInputEvent, recepient: string): void {
     const recipientsToControl = this.emailForm.get(recepient) as FormArray;
     const input = event.input;
     const value = event.value;
@@ -1889,7 +1889,7 @@ initializeForm(): void {
       replyTo: [message.header.channelData.serviceIdentifier]
     });
 
-    if (isReplyToAllEmail && message.body.recipientsTo.length > 1) {
+    if (isReplyToAllEmail && message.body.recipientsTo.length >= 1 && (message.body.recipientsBcc.length >= 1 || message.body.recipientsCc.length >= 1)) {
       const senderEmail = message.header.channelData.serviceIdentifier;
       const receiverEmail = message.header.channelData.channelCustomerIdentifier;
 
@@ -1940,6 +1940,8 @@ initializeForm(): void {
     (this.emailForm.get("recipientsTo") as FormArray).clear();
     (this.emailForm.get("recipientsBcc") as FormArray).clear();
     (this.emailForm.get("recipientsCc") as FormArray).clear();
+    this.emailCc = false
+    this.emailBcc = false
     this.emailForm.reset();
     this.listOfFiles = [];
     const dialogRef = this.dialog.open(templateRef, {

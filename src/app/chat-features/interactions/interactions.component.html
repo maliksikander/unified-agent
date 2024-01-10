@@ -3265,7 +3265,7 @@
                   [matChipInputFor]="emailToList"
                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                   [matChipInputAddOnBlur]="addOnBlur"
-                  (matChipInputTokenEnd)="addEmailInAdressBar($event, 'recipientsTo')"
+                  (matChipInputTokenEnd)="addEmailsInAddressBar($event, 'recipientsTo')"
                 />
               </mat-chip-list>
             </mat-form-field>
@@ -3295,7 +3295,7 @@
                   [matChipInputFor]="emailCc"
                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                   [matChipInputAddOnBlur]="addOnBlur"
-                  (matChipInputTokenEnd)="addEmailInAdressBar($event, 'recipientsCc')"
+                  (matChipInputTokenEnd)="addEmailsInAddressBar($event, 'recipientsCc')"
                 />
               </mat-chip-list>
             </mat-form-field>
@@ -3321,7 +3321,7 @@
                   [matChipInputFor]="emailToBcc"
                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                   [matChipInputAddOnBlur]="addOnBlur"
-                  (matChipInputTokenEnd)="addEmailInAdressBar($event, 'recipientsBcc')"
+                  (matChipInputTokenEnd)="addEmailsInAddressBar($event, 'recipientsBcc')"
                 />
               </mat-chip-list>
             </mat-form-field>
