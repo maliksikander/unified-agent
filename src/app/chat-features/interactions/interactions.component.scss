@@ -4631,6 +4631,9 @@ button.back-to-sms{
       width: calc(100% - 130px);
       display: flex;
       align-items: center;
+      mat-form-field{
+        width: 100%;
+      }
     }
   }
 

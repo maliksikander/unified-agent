@@ -293,9 +293,9 @@ initializeForm(): void {
     markdownText: "",
     htmlBody: "",
     subject: "",
-    recipientsTo: this.fb.array([], [Validators.required, Validators.email]),
-    recipientsCc: this.fb.array([], [Validators.email]),
-    recipientsBcc: this.fb.array([], [Validators.email]),
+    recipientsTo: this.fb.array([], [Validators.required]),
+    recipientsCc: this.fb.array([]),
+    recipientsBcc: this.fb.array([]),
     from: "",
     replyTo: []
   });
@@ -1835,13 +1835,14 @@ initializeForm(): void {
     dialogRef.afterClosed().subscribe((result) => {});
   }
   addEmailsInAddressBar(event: MatChipInputEvent, recepient: string): void {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const recipientsToControl = this.emailForm.get(recepient) as FormArray;
     const input = event.input;
     const value = event.value;
     const trimmedValue = (value || "").trim();
 
     if (trimmedValue) {
-      const isValidEmail = Validators.email({ value: trimmedValue } as any) === null;
+      const isValidEmail = emailRegex.test(trimmedValue);
       if (isValidEmail) {
         recipientsToControl.push(this.fb.control(trimmedValue));
       } else {
@@ -1852,7 +1853,7 @@ initializeForm(): void {
       }
     } else if(recepient === "recipientsTo" && recipientsToControl.length === 0) {
       this._snackbarService.open("Email To field cannot be empty", "err");
-      this.hasErrors = true
+      // this.hasErrors = true
     }
   }
 

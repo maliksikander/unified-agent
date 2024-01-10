@@ -3360,7 +3360,7 @@
 
       <div class="action-trigger email-trigger">
         <span>
-          <button [disabled]="emailForm.get('recipientsTo').invalid" mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial (click)="sendEmail()">
+          <button [disabled]="!emailForm.valid" mat-button [mat-dialog-close]="true" class="success-btn" cdkFocusInitial (click)="sendEmail()">
             Send Email
           </button>               
           <button mat-button mat-dialog-close class="close-btn">Save as draft</button>
