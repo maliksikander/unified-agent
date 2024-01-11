@@ -142,7 +142,7 @@
     },
     "isActive": true,
     "conversationId":"64a28b0764717d48646830ff",
-    "roomId": "64a28b0764717d48646830ff",
+    "roomInfo": {"id":"64a28b0764717d48646830ff", "mode":"CONTACT_CENTER"},
     "state": {
       "name": "STARTED",
       "reasonCode": "CUSTOMER"
@@ -167,7 +167,7 @@
       "joiningTime": "2023-07-03T08:47:03.066+00:00",
       "token": null,
       "conversationId":null,
-      "roomId": null,
+      "roomInfo": {"id":"64a28b0764717d48646830ff", "mode":"CONTACT_CENTER"},
       "isActive": true,
       "userCredentials": {},
       "state": null,
@@ -308,7 +308,7 @@
         },
         "isActive": true,
         "conversationId":"64a28b0764717d48646830ff",
-        "roomId": "64a28b0764717d48646830ff",
+        "roomInfo": {"id":"64a28b0764717d48646830ff", "mode":"CONTACT_CENTER"},
         "state": {
           "name": "STARTED",
           "reasonCode": "CUSTOMER"
@@ -320,7 +320,7 @@
       "joiningTime": "2023-07-03T08:47:03.120+00:00",
       "token": null,
       "conversationId":"64a28b0764717d48646830ff",
-      "roomId": "64a28b0764717d48646830ff",
+      "roomInfo": {"id":"64a28b0764717d48646830ff", "mode":"CONTACT_CENTER"},
       "isActive": true,
       "userCredentials": {},
       "state": "SUBSCRIBED",
@@ -415,7 +415,7 @@
       "joiningTime": "2023-07-03T08:47:07.867+00:00",
       "token": null,
       "conversationId":"64a28b0764717d48646830ff",
-      "roomId": "64a28b0764717d48646830ff",
+      "roomInfo": {"id":"64a28b0764717d48646830ff", "mode":"CONTACT_CENTER"},
       "isActive": true,
       "userCredentials": null,
       "state": "SUBSCRIBED",
@@ -431,7 +431,7 @@
           "type": "ACTIVITY",
           "timestamp": "2023-09-14T12:25:19.764+00:00",
           "conversationId":null,
-          "roomId": null,
+          "roomInfo": {"id":"64a28b0764717d48646830ff", "mode":"CONTACT_CENTER"},
           "eventEmitter": {
               "id": "360-cf741209-ac87-4db9-8dbe-21f3bb28ff41",
               "type": "CONNECTOR",
@@ -503,7 +503,7 @@
               },
               "isActive": true,
               "conversationId":null,
-              "roomId": null,
+              "roomInfo": {"id":"64a28b0764717d48646830ff", "mode":"CONTACT_CENTER"},
               "state": null,
               "channelSessionDirection": null,
               "active": true
@@ -537,7 +537,7 @@
                   "entities": null,
                   "channelSessionId": null,
                   "conversationId":null,
-                  "roomId": null,
+                  "roomInfo": {"id":"64a28b0764717d48646830ff", "mode":"CONTACT_CENTER"},
                   "customer": {
                       "_id": "6502fb3e3733b656f11000ae",
                       "firstName": null,
@@ -578,7 +578,7 @@
           "type": "ACTIVITY",
           "timestamp": "2023-09-14T12:24:53.169+00:00",
           "conversationId":null,
-          "roomId": null,
+          "roomInfo": {"id":"64a28b0764717d48646830ff", "mode":"CONTACT_CENTER"},
           "eventEmitter": {
               "id": "39051a3b-ed8a-4740-b8fb-47c51b4743bb",
               "type": "APP",
@@ -650,7 +650,7 @@
               },
               "isActive": true,
               "conversationId":null,
-              "roomId": null,
+              "roomInfo": {"id":"64a28b0764717d48646830ff", "mode":"CONTACT_CENTER"},
               "state": null,
               "channelSessionDirection": null,
               "active": true
@@ -678,7 +678,7 @@
                   "entities": null,
                   "channelSessionId": null,
                   "conversationId":null,
-                  "roomId": null,
+                  "roomInfo": {"id":"64a28b0764717d48646830ff", "mode":"CONTACT_CENTER"},
                   "customer": {
                       "_id": "6502fb3e3733b656f11000ae",
                       "firstName": null,
@@ -722,7 +722,7 @@
           "type": "ACTIVITY",
           "timestamp": "2023-09-14T12:24:51.530+00:00",
           "conversationId":null,
-          "roomId": null,
+          "roomInfo": {"id":"64a28b0764717d48646830ff", "mode":"CONTACT_CENTER"},
           "eventEmitter": {
               "id": "39051a3b-ed8a-4740-b8fb-47c51b4743bb",
               "type": "APP",
@@ -794,7 +794,7 @@
               },
               "isActive": true,
               "conversationId":null,
-              "roomId": null,
+              "roomInfo": {"id":"64a28b0764717d48646830ff", "mode":"CONTACT_CENTER"},
               "state": null,
               "channelSessionDirection": null,
               "active": true
@@ -822,7 +822,7 @@
                   "entities": null,
                   "channelSessionId": null,
                   "conversationId":null,
-                  "roomId": null,
+                  "roomInfo": {"id":"64a28b0764717d48646830ff", "mode":"CONTACT_CENTER"},
                   "customer": {
                       "_id": "6502fb3e3733b656f11000ae",
                       "firstName": null,

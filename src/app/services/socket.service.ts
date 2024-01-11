@@ -194,16 +194,14 @@ export class socketService {
             topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.conversationId, "ASSISTANT", "SUBSCRIBED"),
             agentId: this._cacheService.agent.id,
             conversationId: res.conversationId,
-            roomId: res.roomId,
-            roomLabel: res.roomLabel,
+            roomInfo: res.roomInfo,
             taskId: res.taskId
           });
         } else {
           this.emit("topicSubscription", {
             topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, res.conversationId, "PRIMARY", "SUBSCRIBED"),
             agentId: this._cacheService.agent.id,
-            roomId: res.roomId,
-            roomLabel: res.roomLabel,
+            roomInfo: res.roomInfo,
             conversationId: res.conversationId,
             taskId: res.taskId
           });
@@ -229,13 +227,13 @@ export class socketService {
 
     this.socket.on("onCimEvent", (res: any) => {
       try {
-        this.onCimEventHandler(JSON.parse(res.cimEvent), res.roomId, res.conversationId);
+        this.onCimEventHandler(JSON.parse(res.cimEvent), res.roomInfo, res.conversationId);
       } catch (err) {
         console.error("error on onCimEvent ==>" + err);
         // If got any error while receiving cimEvent then simply unsubscribe to the topic
         this._snackbarService.open(this._translateService.instant("snackbar.Malfunction-event"), "err");
         // this.emit("topicUnsubscription", {
-        //   roomId: res.roomId,
+        //   roomInfo: res.roomInfo,
         //   agentId: this._cacheService.agent.id
         // });
       }
@@ -250,7 +248,7 @@ export class socketService {
     this.socket.on("onTopicData", (res: any, callback: any) => {
       console.log("onTopicData==>", JSON.parse(JSON.stringify(res)));
       try {
-        this.onTopicData(res.topicData, res.conversationId, res.roomId, res.taskId);
+        this.onTopicData(res.topicData, res.conversationId, res.roomInfo, res.taskId);
         if (callback) {
           callback({ status: "ok" });
         }
@@ -259,7 +257,7 @@ export class socketService {
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-chat-unsubscribing"), "err");
         // If got any error while receiving topicData then simply unsubscribe to the topic
         this.emit("topicUnsubscription", {
-          roomId: res.roomId,
+          roomInfo: res.roomInfo,
           conversationId: res.conversationId,
           agentId: this._cacheService.agent.id
         });
@@ -375,7 +373,7 @@ export class socketService {
   }
   //this.socket.on(){}
 
-  onCimEventHandler(cimEvent, roomId, conversationId) {
+  onCimEventHandler(cimEvent, roomInfo, conversationId) {
     try {
       console.log("cim event ", JSON.parse(JSON.stringify(cimEvent)));
       if (cimEvent.channelSession) {
@@ -484,7 +482,7 @@ export class socketService {
         this._snackbarService.open(this._translateService.instant("snackbar.Unable-to-process-event-unsubscribing"), "err");
         this.emit("topicUnsubscription", {
           conversationId: conversationId,
-          roomId: roomId,
+          roomInfo: roomInfo,
           agentId: this._cacheService.agent.id
         });
       }
@@ -519,10 +517,10 @@ export class socketService {
     alert(this._translateService.instant("snackbar.you-are-logged-In-from-another-session"));
   }
   //call on reload and on every new conversation
-  onTopicData(topicData, conversationId, roomId, taskId) {
-    // this.removeConversation(roomId);
+  onTopicData(topicData, conversationId, roomInfo, taskId) {
+    // this.removeConversation(roomInfo);
     let conversation = {
-      roomId: roomId,
+      roomInfo: roomInfo,
       conversationId: conversationId,
       taskId,
       wrapUpDialog: {
@@ -1097,7 +1095,7 @@ export class socketService {
 
   // linkCustomerWithInteraction(customerId,conversationId) {
   //   this.emit("publishCimEvent", {
-  //     cimEvent: new CimEvent("ASSOCIATED_CUSTOMER_CHANGED", "NOTIFICATION",conversationId, roomId,roomLabel, { Id: customerId }, null),
+  //     cimEvent: new CimEvent("ASSOCIATED_CUSTOMER_CHANGED", "NOTIFICATION",conversationId, roomInfo, { Id: customerId }, null),
   //     conversationId: conversationId,
   //     agentId: this._cacheService.agent.id
   //   });
@@ -1975,7 +1973,7 @@ export class socketService {
     if (conversation.state === "ACTIVE") {
       // if the topic state is 'ACTIVE' then agent needs to request the agent manager for unsubscribe
       this.emit("topicUnsubscription", {
-        roomId: conversation.roomId,
+        roomInfo: conversation.roomInfo,
         conversationId: conversation.conversationId,
         agentId: this._cacheService.agent.id
       });
@@ -1991,12 +1989,11 @@ export class socketService {
     }
   }
 
-  getTopicSubscription(conversationId, roomId, roomLabel, taskId) {
+  getTopicSubscription(conversationId, roomInfo, taskId) {
     this.emit("topicSubscription", {
       topicParticipant: new TopicParticipant("AGENT", this._cacheService.agent, conversationId, "PRIMARY", "SUBSCRIBED"),
       agentId: this._cacheService.agent.id,
-      roomId: roomId,
-      roomLabel: roomLabel,
+      roomInfo: roomInfo,
       taskId: taskId,
       conversationId: conversationId
     });
