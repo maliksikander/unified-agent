@@ -24,7 +24,7 @@ describe("Socket service", () => {
   let _crmEventsService: any;
 
   const mockConversation = {
-    roomId: "12345",
+    roomInfo: {id:"12345",mode:"CONTACT_CENTER"},
     conversationId: "12345",
     messages: [],
     activeChannelSessions: [],

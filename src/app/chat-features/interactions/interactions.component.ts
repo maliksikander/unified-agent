@@ -274,7 +274,7 @@ export class InteractionsComponent implements OnInit {
     let obj = {
       participantId: this.conversation.topicParticipant.participant.id,
       conversationId: this.conversation.conversationId,
-      roomId: this.conversation.roomId
+      roomInfo: this.conversation.roomInfo
     };
     this._socketService.emit("JoinAsBargin", obj);
   }
@@ -283,7 +283,7 @@ export class InteractionsComponent implements OnInit {
     let obj = {
       participantId: this.conversation.topicParticipant.participant.id,
       conversationId: this.conversation.conversationId,
-      roomId: this.conversation.roomId
+      roomInfo: this.conversation.roomInfo
     };
     this._socketService.emit("joinAsWhisper", obj);
   }
@@ -481,7 +481,7 @@ export class InteractionsComponent implements OnInit {
         "MESSAGE_DELIVERY_NOTIFICATION",
         "NOTIFICATION",
         this.conversation.conversationId,
-        this.conversation.roomId,
+        this.conversation.roomInfo,
         data,
         this.conversation.customer
       );
@@ -490,7 +490,7 @@ export class InteractionsComponent implements OnInit {
         cimEvent: event,
         agentId: this._cacheService.agent.id,
         conversationId: this.conversation.conversationId,
-        roomId: this.conversation.roomId
+        roomInfo: this.conversation.roomInfo
       });
 
       this.lastSeenMessageId = messageForSeenNotification.id;
@@ -575,7 +575,7 @@ export class InteractionsComponent implements OnInit {
             "TYPING_INDICATOR",
             "NOTIFICATION",
             this.conversation.conversationId,
-            this.conversation.roomId,
+            this.conversation.roomInfo,
             message,
             this.conversation.customer
           );
@@ -584,7 +584,7 @@ export class InteractionsComponent implements OnInit {
             cimEvent: event,
             agentId: this._cacheService.agent.id,
             conversationId: this.conversation.conversationId,
-            roomId: this.conversation.roomId
+            roomInfo: this.conversation.roomInfo
           });
           this.sendTypingStartedEventTimer = setTimeout(() => {
             this.sendTypingStartedEventTimer = false;
@@ -814,7 +814,7 @@ export class InteractionsComponent implements OnInit {
           if (availableExtentions.includes(fileMimeType.toLowerCase())) {
             let fd = new FormData();
             fd.append("file", files[i]);
-            fd.append("roomId", `${Math.floor(Math.random() * 90000) + 10000}`);
+            fd.append("roomInfo", `${Math.floor(Math.random() * 90000) + 10000}`);
             this._httpService.uploadToFileEngine(fd).subscribe(
               (e) => {
                 this.constructAndSendCimEvent(e.type.split("/")[0], e.type, e.name, e.size);
@@ -1203,7 +1203,7 @@ export class InteractionsComponent implements OnInit {
       eventName,
       "MESSAGE",
       this.conversation.conversationId,
-      this.conversation.roomId,
+      this.conversation.roomInfo,
       message,
       this.conversation.customer
     );
@@ -1213,7 +1213,7 @@ export class InteractionsComponent implements OnInit {
       cimEvent: event,
       agentId: this._cacheService.agent.id,
       conversationId: this.conversation.conversationId,
-      roomId: this.conversation.roomId
+      roomInfo: this.conversation.roomInfo
     });
 
     message.header["status"] = "sending";
@@ -1236,7 +1236,7 @@ export class InteractionsComponent implements OnInit {
       "AGENT_MESSAGE",
       "MESSAGE",
       this.conversation.conversationId,
-      this.conversation.roomId,
+      this.conversation.roomInfo,
       message,
       this.conversation.customer
     );
@@ -1244,7 +1244,7 @@ export class InteractionsComponent implements OnInit {
       cimEvent: event,
       agentId: this._cacheService.agent.id,
       conversationId: this.conversation.conversationId,
-      roomId: this.conversation.roomId
+      roomInfo: this.conversation.roomInfo
     });
 
     // console.log("event data==>", event.data);
@@ -1577,7 +1577,7 @@ export class InteractionsComponent implements OnInit {
       if (this.conversation.wrapUpDialog.show) {
         this._socketService.emit("closeWrapup", {
           cimEvent: null,
-          roomId: this.conversation.roomId,
+          roomInfo: this.conversation.roomInfo,
           conversationId: this.conversation.conversationId,
           agentId: this._cacheService.agent.id
         });
@@ -1589,7 +1589,7 @@ export class InteractionsComponent implements OnInit {
         "AGENT_MESSAGE",
         "MESSAGE",
         this.conversation.conversationId,
-        this.conversation.roomId,
+        this.conversation.roomInfo,
         message,
         this.conversation.customer
       );
@@ -1598,7 +1598,7 @@ export class InteractionsComponent implements OnInit {
       if (this.conversation.wrapUpDialog.show) {
         this._socketService.emit("closeWrapup", {
           cimEvent: wrapUpEvent,
-          roomId: this.conversation.roomId,
+          roomInfo: this.conversation.roomInfo,
           conversationId: this.conversation.conversationId,
           agentId: this._cacheService.agent.id
         });

@@ -170,7 +170,7 @@
     },
     "isActive": true,
     "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-    "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+    "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
     "state": "STARTED",
     "active": true
   },
@@ -558,7 +558,7 @@
           "value": null
         },
         "isActive": true,
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -569,7 +569,7 @@
       "type": "MESSAGE",
       "timestamp": "2022-06-24T09:08:13.978+00:00",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "data": {
         "id": "2d6b1410-f39d-11ec-b2eb-1579505a1c2e",
         "header": {
@@ -680,7 +680,7 @@
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "42225",
             "serviceIdentifier": "62451",
@@ -964,14 +964,14 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": 1636360645775
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": null,
           "language": null,
           "timestamp": 1636360646969,
@@ -1077,7 +1077,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -1086,7 +1086,7 @@
       "id": "068d2ca0-bff6-4318-a617-adcb7288ddd8",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:30.572+00:00",
       "data": {
@@ -1099,14 +1099,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -1218,7 +1218,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -1227,7 +1227,7 @@
       "id": "068d2ca0-bff6-4318-a617-adcb7288ddd8",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:30.572+00:00",
       "data": {
@@ -1240,14 +1240,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -1359,7 +1359,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -1369,7 +1369,7 @@
       "name": "CUSTOMER_MESSAGE",
       "type": "MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "timestamp": "2021-11-08T08:37:30.572+00:00",
       "data": {
         "id": "4515b200-406f-11ec-b464-a52108c6c",
@@ -1381,14 +1381,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -1500,7 +1500,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -1509,7 +1509,7 @@
       "id": "068d2ca0-bff6-4318-a617-adcb7288ddd8",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:30.572+00:00",
       "data": {
@@ -1521,14 +1521,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -1640,7 +1640,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -1649,7 +1649,7 @@
       "id": "068d2ca0-bff6-4318-a617-adcb7288ddd8",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:30.572+00:00",
       "data": {
@@ -1662,14 +1662,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -1781,7 +1781,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -1790,7 +1790,7 @@
       "id": "068d2ca0-bff6-4318-a617-adcb7288ddd8",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:30.572+00:00",
       "data": {
@@ -1803,14 +1803,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -1922,7 +1922,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -1931,7 +1931,7 @@
       "id": "068d2ca0-bff6-4318-a617-adcb7288ddd8",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:30.572+00:00",
       "data": {
@@ -1944,14 +1944,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -2063,7 +2063,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -2072,7 +2072,7 @@
       "id": "429e2d26-7a38-4459-8096-23f8f9ef282f",
       "name": "BOT_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:31.334+00:00",
       "data": {
@@ -2085,14 +2085,14 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": 1636360645775
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -2204,7 +2204,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -2214,7 +2214,7 @@
       "name": "CUSTOMER_MESSAGE",
       "type": "MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "timestamp": "2021-11-08T08:37:30.572+00:00",
       "data": {
         "id": "4515b200-406f-11ec-b464-a55184008c6c",
@@ -2226,14 +2226,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -2346,7 +2346,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -2355,7 +2355,7 @@
       "id": "068d2ca0-bff6-4318-a617-adcb7288ddd8",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:30.572+00:00",
       "data": {
@@ -2368,14 +2368,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -2488,7 +2488,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -2497,7 +2497,7 @@
       "id": "068d2ca0-bff6-4318-a617-adcb7288ddd8",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:30.572+00:00",
       "data": {
@@ -2510,14 +2510,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -2630,7 +2630,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -2639,7 +2639,7 @@
       "id": "1ed1c1af-4f8f-417c-be0a-5e3d804b518f",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:33.219+00:00",
       "data": {
@@ -2652,14 +2652,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -2778,7 +2778,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -2787,7 +2787,7 @@
       "id": "23a43ff2-b674-463d-9d66-01f4c73201c3",
       "name": "BOT_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:27.013+00:00",
       "data": {
@@ -2800,14 +2800,14 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": 1636360645775
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": null,
           "language": null,
           "timestamp": 1636360646969,
@@ -2940,7 +2940,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -2949,7 +2949,7 @@
       "id": "429e2d26-7a38-4f8f9ef282f",
       "name": "BOT_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:31.334+00:00",
       "data": {
@@ -2962,14 +2962,14 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": 1636360645775
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -3087,7 +3087,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -3096,7 +3096,7 @@
       "id": "1ed1c1af-4f8f-417c-be0a-5e3d804b518f",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:33.219+00:00",
       "data": {
@@ -3109,14 +3109,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -3228,7 +3228,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -3237,7 +3237,7 @@
       "id": "bb0d85fe-fb70-4803-86f1-87369e9726df",
       "name": "BOT_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:33.740+00:00",
       "data": {
@@ -3250,14 +3250,14 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": 1636360645775
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -3363,7 +3363,7 @@
             },
             "isActive": true,
             "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "state": "STARTED",
             "active": true
           }
@@ -3378,7 +3378,7 @@
       "id": "c478ff39-5049-4800-97ab-e1f86a32e373",
       "name": "TASK_STATE_CHANGED",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "NOTIFICATION",
       "timestamp": "2021-11-08T08:37:34.078+00:00",
       "data": {
@@ -3475,7 +3475,7 @@
           },
           "isActive": true,
           "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-          "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+          "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
           "state": "STARTED",
           "active": true
         },
@@ -3500,7 +3500,7 @@
       "id": "1ed1c1af-4f8f-417c-be0a-5e3d804b518f",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:33.219+00:00",
       "data": {
@@ -3513,14 +3513,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -3659,7 +3659,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -3668,7 +3668,7 @@
       "id": "112b92b8-1230-45d8-97f4-d89f2691ac07",
       "name": "TASK_STATE_CHANGED",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "NOTIFICATION",
       "timestamp": "2021-11-08T08:37:34.692+00:00",
       "data": {
@@ -3765,7 +3765,7 @@
           },
           "isActive": true,
           "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-          "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+          "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
           "state": "STARTED",
           "active": true
         },
@@ -3790,7 +3790,7 @@
       "id": "1ed1c1af-4f8f-417c-be0a-5e3d804b518f",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:33.219+00:00",
       "data": {
@@ -3803,7 +3803,7 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
@@ -3817,7 +3817,7 @@
             "additionalAttributes": []
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "language": {},
           "timestamp": 1636360721224,
           "securityInfo": {},
@@ -3928,7 +3928,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -3937,7 +3937,7 @@
       "id": "1ed1c1af-4f8f-417c-be0a-5e3d8445204b518f",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:33.219+00:00",
       "data": {
@@ -3950,14 +3950,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -4075,7 +4075,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -4084,7 +4084,7 @@
       "id": "1ed1c1af-4f8f-417c-be0a-5e3d804b518f",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:33.219+00:00",
       "data": {
@@ -4097,14 +4097,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -4222,7 +4222,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -4231,7 +4231,7 @@
       "id": "1ed1c1af-4f8f-417c-be0a-5e3d804b518f",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:33.219+00:00",
       "data": {
@@ -4245,14 +4245,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -4373,7 +4373,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -4382,7 +4382,7 @@
       "id": "23a43ff2-b674-463d-9d66-01f4c73201c3",
       "name": "BOT_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:27.013+00:00",
       "data": {
@@ -4395,14 +4395,14 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": 1636360645775
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": null,
           "language": null,
           "timestamp": 1636360646969,
@@ -4528,7 +4528,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -4538,7 +4538,7 @@
       "name": "CUSTOMER_MESSAGE",
       "type": "MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "timestamp": "2021-11-08T08:37:33.219+00:00",
       "data": {
         "id": "46a26c80-406f-11ec-b464-a55184008c6c",
@@ -4550,14 +4550,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -4670,7 +4670,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -4679,7 +4679,7 @@
       "id": "1ed1c1af-4f8f-417c-be0a-5e3d804b518f",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:33.219+00:00",
       "data": {
@@ -4692,14 +4692,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -4819,7 +4819,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -4828,7 +4828,7 @@
       "id": "1ed1c1af-4f8f-417c-be0a-5e3d804b518f",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:33.219+00:00",
       "data": {
@@ -4841,14 +4841,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -4961,7 +4961,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -4970,7 +4970,7 @@
       "id": "23a43ff2-b674-463d-9d66-01f4c73201c3",
       "name": "BOT_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:27.013+00:00",
       "data": {
@@ -4983,14 +4983,14 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": 1636360645775
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": null,
           "language": null,
           "timestamp": 1636360646969,
@@ -5102,7 +5102,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -5111,7 +5111,7 @@
       "id": "23a43ff2-b674-463d-9d66-01f4c73201c3",
       "name": "BOT_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:27.013+00:00",
       "data": {
@@ -5124,14 +5124,14 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": 1636360645775
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": null,
           "language": null,
           "timestamp": 1636360646969,
@@ -5243,7 +5243,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -5252,7 +5252,7 @@
       "id": "23a43ff2-b674-463d-9d66-01f4c73201c3",
       "name": "BOT_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:27.013+00:00",
       "data": {
@@ -5265,14 +5265,14 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": 1636360645775
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": null,
           "language": null,
           "timestamp": 1636360646969,
@@ -5386,7 +5386,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -5396,7 +5396,7 @@
       "name": "BOT_MESSAGE",
       "type": "MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "timestamp": "2021-11-08T08:37:27.013+00:00",
       "data": {
         "id": "7a1120f8-3235-4191-9502-8884f8558ae0",
@@ -5408,14 +5408,14 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": 1636360645775
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": null,
           "language": null,
           "timestamp": 1636360646969,
@@ -5692,7 +5692,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -5701,7 +5701,7 @@
       "id": "23a43ff2-b674-463d-9d66-01f4c73201c3",
       "name": "BOT_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:27.013+00:00",
       "data": {
@@ -5714,14 +5714,14 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": 1636360645775
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": null,
           "language": null,
           "timestamp": 1636360646969,
@@ -5828,7 +5828,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -5837,7 +5837,7 @@
       "id": "1ed1c1af-4f8f-417c-be0a-5e3d804b518f",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:33.219+00:00",
       "data": {
@@ -5850,14 +5850,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -6055,7 +6055,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -6064,7 +6064,7 @@
       "id": "1ed1c1af-4f8f-417c-be0a-5e3d804b518f",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:33.219+00:00",
       "data": {
@@ -6077,14 +6077,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -6367,7 +6367,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -6377,7 +6377,7 @@
       "name": "CUSTOMER_MESSAGE",
       "type": "MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "timestamp": "2021-11-08T08:37:33.219+00:00",
       "data": {
         "id": "46a26c80-406f-11ec-b464-a55184008c6c",
@@ -6389,14 +6389,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -6541,7 +6541,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -6551,7 +6551,7 @@
       "name": "AGENT_MESSAGE",
       "type": "MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "timestamp": 1657694228202,
       "data": {
         "id": "6ab91f4f-c5e8-4c65-8271-ab3f64b8d0ae",
@@ -6562,13 +6562,13 @@
             "type": "AGENT",
             "senderName": "RAZA",
             "token": null,
-            "roomId": "522c3d2d-2397-44ff-900f-6c1e99629a08",
+            "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
             "role": "PRIMARY",
             "userCredentials": null,
             "state": "SUBSCRIBED"
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "123449",
             "serviceIdentifier": "1122",
@@ -6783,7 +6783,7 @@
         },
         "isActive": true,
         "conversationId": "522c3d2d-2397-44ff-900f-6c1e99629a08",
-        "roomId": "522c3d2d-2397-44ff-900f-6c1e99629a08",
+        "roomInfo": {"id":"522c3d2d-2397-44ff-900f-6c1e99629a08","mode": "CONTACT_CENTER"},
         "state": "STARTED",
         "active": true
       }
@@ -6792,7 +6792,7 @@
       "id": "068d2ca0-bff6-4318-a617-adcb7288ddd8",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:30.572+00:00",
       "data": {
@@ -6805,14 +6805,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -6927,7 +6927,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -6936,7 +6936,7 @@
       "id": "bb0d85fe-fb70-4803-86f1-87369e9726df",
       "name": "BOT_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:33.740+00:00",
       "data": {
@@ -6949,14 +6949,14 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": 1636360645775
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -7068,7 +7068,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -7078,7 +7078,7 @@
       "id": "068d2ca0-bff6-4318-a617-adcb72hk55",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-12-08T08:37:30.572+00:00",
       "data": {
@@ -7091,14 +7091,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b52b",
+            "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -7218,7 +7218,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -7227,7 +7227,7 @@
       "id": "bb0d85fe-fb70-4803-86f1-87369e9726df",
       "name": "BOT_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:33.740+00:00",
       "data": {
@@ -7240,14 +7240,14 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": 1636360645775
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -7359,7 +7359,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -7369,7 +7369,7 @@
       "id": "068d2ca0-bff6-4318-a617-adcb72hk55",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-12-08T08:37:30.572+00:00",
       "data": {
@@ -7382,14 +7382,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b52b",
+            "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -7509,7 +7509,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -7518,7 +7518,7 @@
       "id": "bb0d85fe-fb70-4803-86f1-87369e9726df",
       "name": "BOT_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-11-08T08:37:33.740+00:00",
       "data": {
@@ -7531,14 +7531,14 @@
             "id": "cdbaa990-8172-43f5-af66-7ee71a5b3cd6",
             "joiningTime": 1636360645775,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+            "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": 1636360645775
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -7650,7 +7650,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
@@ -7660,7 +7660,7 @@
       "id": "068d2ca0-bff6-4318-a617-adcb72hk55",
       "name": "CUSTOMER_MESSAGE",
       "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-      "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+      "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
       "type": "MESSAGE",
       "timestamp": "2021-12-08T08:37:30.572+00:00",
       "data": {
@@ -7673,14 +7673,14 @@
             "id": "61cf275e-f736-48c9-bc56-d5f46a9dcf86",
             "joiningTime": 1636360646203,
             "token": null,
-            "roomId": "15584d31-df86-4052-818f-d2bfdba5b52b",
+            "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
             "isActive": true,
             "userCredentials": {},
             "state": "SUBSCRIBED",
             "stateChangedOn": null
           },
           "conversationId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
-          "roomId": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c",
+          "roomInfo": { "id": "dbff4b9e-3114-41b8-8afa-82e9ed680f5c", "mode": "CONTACT_CENTER" },
           "channelData": {
             "channelCustomerIdentifier": "97962945",
             "serviceIdentifier": "+921218",
@@ -7800,7 +7800,7 @@
         },
         "isActive": true,
         "conversationId": "15584d31-df86-4052-818f-d2bfdba5b92b",
-        "roomId": "15584d31-df86-4052-818f-d2bfdba5b92b",
+        "roomInfo": { "id": "15584d31-df86-4052-818f-d2bfdba5b92b", "mode": "CONTACT_CENTER" },
         "state": "STARTED",
         "active": true
       }
