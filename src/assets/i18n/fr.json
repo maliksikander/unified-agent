@@ -84,7 +84,7 @@
     "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed!_fr",
     "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed_fr",
     "CX-Voice-Login-Success":"CX VOICE: Login Successful with EF Switch_fr",
-    "CX-Voice-call-canceled" : "CX VOICE : Voice Call canceled_fr",
+    "CX-Voice-call-canceled" : "CX VOICE : Voice Call Canceled_fr",
     "SIP-Logout-Successful":"SIP Logout Successful_fr",
     "No-Extension-Found":"No Extension Found For Sip Agent_fr",
     "Unable-to-edit-Active-Announcements":"Unable to edit Active Announcement_fr",
@@ -94,10 +94,12 @@
     "Unable-to-Create-New-Announcement":"Unable to Create New Announcement_fr",
     "Unable-to-Update-Announcement":"Unable to Update Announcement_fr",
     "Unable-to-Delete-Announcement":"Unable to Delete Announcement_fr",
+    "unable-to-fetch-service-identifier-messages-cant-be-sent":"Unable to fetch service identifier, messages cant be sent_fr",
     "Socket-Connected":"Socket Connected_fr",
     "Calling":"Calling_fr",
     "CX-Voice-Connected":"CX VOICE Connected_fr",
     "Call-Ended":"Call Ended_fr",
+    "OB-Call-Request":"Outbound call request can not be initated_fr",
     "Customer-No":"Customer No_fr",
     "queue-name":"Queue Name_fr"
   },
@@ -160,7 +162,35 @@
     "search": "Search_fr",
     "no-data-available": "No Data Available_fr"
   },
+  "call-controls":{
+    "call-in-progress":"Call in progress_fr",
+    "initiating-audio-call":"Initiating Audio Call_fr"
+  },
   "chat-features": {
+    "send-sms":{
+      "info":"SEND SMS_fr",
+      "channel-identity":"Channel Identity_fr",
+      "type-sms":"Type SMS_fr",
+      "invalid-text":"invalid text_fr",
+      "not-empty":"This field can't be empty_fr",
+      "invalid-pattern":"Invalid pattern_fr",
+      "number-should-be-in-range-3-to-15":"Number should be in range 3 to 15_fr",
+      "see-conversation-history":"See Conversation History_fr",
+      "discard":"Discard_fr",
+      "send-sms":"Send SMS_fr",
+      "success-sms":"SMS sent successfully_fr",
+      "update-profile":"To update the customer profile",
+      "click-here":"click here_fr",
+      "the-sms-has-been-sent-to-the":"The SMS has been sent to the\u0020",
+      "on-this-number":" on this number_fr",
+      "new":"new",
+      "customer":" customer",
+      "characters-limit-1500":"1500 characters_fr",
+      "to-view-the-customer-profile":" to view the customer profile_fr",
+      "number-should-be-in-range-3-to-20":"Number should be in range 3 to 20_fr",
+      "enter-phone-number":"Enter Phone Number_fr"
+    },
+    
     "customer-info": {
       "info": "Customer Info_fr",
       "customer-profile": " Customer Profile_fr",
@@ -193,6 +223,7 @@
       "start": "Start a New Conversation_fr"
     },
     "interactions": {
+      "Are-you-sure-you-want-to-leave-the-conversation-with":"Are you sure you want to leave the conversation with_fr",
       "Consult":"Consult_fr",
       "Transfer":"Transfer_fr",
       "Conference":"Conference_fr",
@@ -241,6 +272,8 @@
       "queue-conference": "Queue Conference_fr"
     },
     "wrap-up-form": {
+      "Add-Wrap-Up": "Add Wrap-Up_fr",
+      "Leave-without-wrap-up":"Leave Without Wrap-Up_fr",
       "wrap-up-codes": "Wrap-Up Codes_fr",
       "selected": "Selected_fr",
       "cancel": "Cancel_fr",
@@ -324,7 +357,7 @@
     "valid-credentials": "Please provide a valid username and password to login to your account._fr",
     "username": "Username_fr",
     "password": "Password_fr",
-    "agent-desk": "Agent Desk_fr",
+    "agent-desk": "AgentDesk_fr",
     "call-center-experts": "Your Call Center Experts._fr",
     "": ""
   },
@@ -366,7 +399,7 @@
     "create-new-customer": "Create New Customer_fr",
     "unable-connect-finesse": "Unable to connect with finesse, try refreshing may resolve the problem_fr",
     "enable-javascript": "Please enable JavaScript to continue using this application._fr",
-    "agent-desk": "Agent Desk_fr",
+    "agent-desk": "AgentDesk_fr",
     "select-all": "Select all _fr",
     "unselect-all": "Unselect all_fr",
     "Search": "Search _fr",

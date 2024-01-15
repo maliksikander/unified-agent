@@ -84,7 +84,7 @@
     "CX-Voice-invalid-credentials":"CX VOICE : Connection Failed!_spa",
     "CX-Voice-connection-failed":"CX VOICE : XMPP Connection Failed!_spa",
     "CX-Voice-Login-Success":"CX VOICE: Login Successful with EF Switch_spa",
-    "CX-Voice-call-canceled" : "CX VOICE : Voice Call canceled_spa",
+    "CX-Voice-call-canceled" : "CX VOICE : Voice Call Canceled_spa",
     "SIP-Logout-Successful":"SIP Logout Successful_spa",
     "No-Extension-Found":"No Extension Found For Sip Agent_spa",
     "Unable-to-edit-Active-Announcements":"Unable to edit Active Announcement_spa",
@@ -94,10 +94,12 @@
     "Unable-to-Create-New-Announcement":"Unable to Create New Announcement_spa",
     "Unable-to-Update-Announcement":"Unable to Update Announcement_spa",
     "Unable-to-Delete-Announcement":"Unable to Delete Announcement_spa",
+    "unable-to-fetch-service-identifier-messages-cant-be-sent":"Unable to fetch service identifier, messages cant be sent_spa",
     "Socket-Connected":"Socket Connected_spa",
     "Calling":"Calling_spa",
     "CX-Voice-Connected":"CX VOICE Connected_spa",
     "Call-Ended":"Call Ended_spa",
+    "OB-Call-Request":"Outbound call request can not be initated_spa",
     "Customer-No":"Customer No_spa",
     "queue-name":"Queue Name_spa"
   },
@@ -160,7 +162,35 @@
     "search": "Search_spa",
     "no-data-available": "No Data Available_spa"
   },
+  "call-controls":{
+    "call-in-progress":"Call in progress_spa",
+    "initiating-audio-call":"Initiating Audio Call_spa"
+  },
   "chat-features": {
+    "send-sms":{
+      "info":"SEND SMS_spa",
+      "channel-identity":"Channel Identity_spa",
+      "type-sms":"Type SMS_spa",
+      "invalid-text":"invalid text_spa",
+      "not-empty":"This field can't be empty_spa",
+      "invalid-pattern":"Invalid pattern_spa",
+      "number-should-be-in-range-3-to-15":"Number should be in range 3 to 15_spa",
+      "see-conversation-history":"See Conversation History_spa",
+      "discard":"Discard_spa",
+      "send-sms":"Send SMS_spa",
+      "success-sms":"SMS sent successfully_spa",
+      "update-profile":"To update the customer profile",
+      "click-here":"click here_spa",
+      "the-sms-has-been-sent-to-the":"The SMS has been sent to the\u0020",
+      "on-this-number":" on this number_spa",
+      "new":"new",
+      "customer":"customer",
+      "characters-limit-1500":"1500 characters_spa",
+      "to-view-the-customer-profile":" to view the customer profile_spa",
+      "number-should-be-in-range-3-to-20":"Number should be in range 3 to 20_spa",
+      "enter-phone-number":"Enter Phone Number_spa"
+    },
+    
     "customer-info": {
       "info": "Customer Info_spa",
       "customer-profile": " Customer Profile_spa",
@@ -193,6 +223,7 @@
       "start": "Start a New Conversation_spa"
     },
     "interactions": {
+      "Are-you-sure-you-want-to-leave-the-conversation-with":"Are you sure you want to leave the conversation with_spa",
       "Consult":"Consult_spa",
       "Transfer":"Transfer_spa",
       "Conference":"Conference_spa",
@@ -241,6 +272,8 @@
       "queue-conference": "Queue Conference_spa"
     },
     "wrap-up-form": {
+      "Add-Wrap-Up": "Add Wrap-Up_spa",
+      "Leave-without-wrap-up":"Leave Without Wrap-Up_spa",
       "wrap-up-codes": "Wrap-Up Codes_spa",
       "selected": "Selected_spa",
       "cancel": "Cancel_spa",
@@ -324,7 +357,7 @@
     "valid-credentials": "Please provide a valid username and password to login to your account._spa",
     "username": "Username_spa",
     "password": "Password_spa",
-    "agent-desk": "Agent Desk_spa",
+    "agent-desk": "AgentDesk_spa",
     "call-center-experts": "Your Call Center Experts._spa",
     "": ""
   },
@@ -366,7 +399,7 @@
     "create-new-customer": "Create New Customer_spa",
     "unable-connect-finesse": "Unable to connect with finesse, try refreshing may resolve the problem_spa",
     "enable-javascript": "Please enable JavaScript to continue using this application._spa",
-    "agent-desk": "Agent Desk_spa",
+    "agent-desk": "AgentDesk_spa",
     "select-all": "Select all _spa",
     "unselect-all": "Unselect all_spa",
     "Search": "Search _spa",

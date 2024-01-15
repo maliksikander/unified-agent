@@ -48,6 +48,7 @@ div#main-content {
     img {
       width: 100%;
       max-width: 12vw;
+      min-width: 130px;
     }
 
     //mat-icon {
@@ -85,7 +86,7 @@ div#main-content {
   &.channel-badge{
     right: inherit;
     left: 4px;
-    background: transparent;
+    background: #fff;
     img {
       width: 16px;
       left: 0;

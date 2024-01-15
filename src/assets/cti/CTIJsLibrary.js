@@ -942,9 +942,9 @@ function getDigits(text) {
                 break;
         }
         dialogEvent.response.dialog.ani = getDigits(dialogEvent.response.dialog.ani);
-        dialogEvent.response.dialog.isCallEnded = checkIfCallEnded(dialogEvent.response.dialog);
-        if(dialogEvent.response.dialog.isCallEnded == 1 && dialogEvent.event != "consultCall")
-            dialogEvent.response.dialog.ani = getCallVariableValue(dialog, config.callVariable);
+        //dialogEvent.response.dialog.isCallEnded = checkIfCallEnded(dialogEvent.response.dialog);
+        // if(dialogEvent.response.dialog.isCallEnded == 1 && dialogEvent.event != "consultCall")
+        //     dialogEvent.response.dialog.ani = getCallVariableValue(dialog, config.callVariable);
 
         return dialogEvent;
     }catch(err){

@@ -1,8 +1,9 @@
-import { Component, OnInit, Inject } from "@angular/core";
+import {Component, OnInit, Inject, Input} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { cacheService } from "src/app/services/cache.service";
 import { finesseService } from "src/app/services/finesse.service";
 import { SipService } from "src/app/services/sip.service";
+import {sharedService} from '../../services/shared.service';
 
 @Component({
   selector: "app-call-controls",
@@ -16,14 +17,18 @@ export class CallControlsComponent implements OnInit {
   timer = "00:00";
   fullView = false;
   customerNumber: any = this._sipService.customerNumber;
+  customer: any;
   // ciscoVoiceSession;
   cxVoiceSession;
+  isCalling: boolean = false;
+  // callConnected = false;
 
   constructor(
     public _cacheService: cacheService,
     public dialogRef: MatDialogRef<CallControlsComponent>,
     public _sipService: SipService,
     public _finesseService: finesseService,
+    public _sharedService: sharedService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     // console.log("data==>",this.data)
@@ -35,11 +40,17 @@ export class CallControlsComponent implements OnInit {
     //   this.minutes = Math.floor(value / 60);
     //   this.seconds = value % 60;
     // });
-
+    // setTimeout(() => {
+    // this.isCalling = false;
+    // this.callConnected = true;
+    // }, 5000);
+    this.customer = this._sipService.customer;
     this._sipService._isActiveSub.subscribe((val) => {
       if (val == false) this.cancel();
     });
-    if (this.data.conversation) this.getVoiceChannelSession();
+    if (this.data.conversation) {
+      this.getVoiceChannelSession();
+    } else if (this.data && this.data.isManualOB && this.data.isManualOB == true) this.handleOBCall(this.data);
   }
 
   cancel() {
@@ -69,6 +80,10 @@ export class CallControlsComponent implements OnInit {
     }
   }
 
+  handleOBCall(data) {
+    // this.setToolbarTimer(data.dialogData.id);
+    if (data.isManualOB == true) this.isCalling = true;
+  }
   // stopTimer(): void {
   //   this._sipService.stopTimer();
   // }
@@ -79,24 +94,28 @@ export class CallControlsComponent implements OnInit {
         return channelSession.channel.channelType.name.toLowerCase() === "cx_voice";
       });
       if (this.cxVoiceSession) {
-        const cacheId = `${this._cacheService.agent.id}:${this.cxVoiceSession.id}`;
-        const cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
-        if (cacheDialog) {
-          const currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
-          const startTime = new Date(currentParticipant.startTime);
-          this._sipService.timeoutId = setInterval(() => {
-            const currentTime = new Date();
-            const timedurationinMS = currentTime.getTime() - startTime.getTime();
-            this.msToHMS(timedurationinMS);
-          }, 1000);
-        } else {
-          console.log("No Dialog Found==>");
-        }
+        this.setToolbarTimer(this.cxVoiceSession.id);
       } else {
         clearInterval(this._sipService.timeoutId);
       }
     } catch (e) {
       console.error("[getVoiceChannelSession] Error:", e);
+    }
+  }
+
+  setToolbarTimer(dialogId) {
+    const cacheId = `${this._cacheService.agent.id}:${dialogId}`;
+    const cacheDialog: any = this._sipService.getDialogFromCache(cacheId);
+    if (cacheDialog) {
+      const currentParticipant = this._sipService.getCurrentParticipantFromDialog(cacheDialog.dialog);
+      const startTime = new Date(currentParticipant.startTime);
+      this._sipService.timeoutId = setInterval(() => {
+        const currentTime = new Date();
+        const timedurationinMS = currentTime.getTime() - startTime.getTime();
+        this.msToHMS(timedurationinMS);
+      }, 1000);
+    } else {
+      console.log("No Cache Dialog Found==>");
     }
   }
 

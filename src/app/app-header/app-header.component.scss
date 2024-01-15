@@ -379,7 +379,7 @@
   padding-left: 26px !important;
 
   &.state-trigger {
-    min-width: 160px; 
+    min-width: 160px;
   }
 
   &:hover {
@@ -627,8 +627,8 @@ button.main-menu-item {
       &:disabled{
         cursor: not-allowed;
       }
-    
-      
+
+
     //&.ready {
     //  background: $green-color;
     //  border-color: $green-color;
@@ -752,7 +752,9 @@ button.main-menu-item {
 
 //MRD states
 .mrd-states {
-  background: #f3f6f8;
+  //background: #f3f6f8;
+  max-height: 360px;
+  overflow: auto;
 
   .mrd-text {
     display: block;
@@ -918,7 +920,7 @@ button.main-menu-item {
 }
 @media (max-width: 575px) {
   .right-profile-area {
-    width: calc(100% - 230px) !important;
+    width: 50% !important;
   }
 }
 @media (max-width: 520px) {
@@ -1121,4 +1123,24 @@ button {
   display: block;
   text-overflow: ellipsis;
   width: 140px;
+}
+.sms-trigger{
+  mat-icon{
+    color: $blue-text-color;
+  }
+}
+
+.call-trigger{
+  &:disabled {
+    mat-icon{
+      color: #e6e6e6 !important;
+    }
+    cursor: not-allowed;
+  }
+}
+.agent-menu-trigger{
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  z-index: 2;
 }

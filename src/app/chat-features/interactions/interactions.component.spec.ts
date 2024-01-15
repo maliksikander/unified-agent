@@ -15,7 +15,7 @@ describe("InteractionsComponent", () => {
   let _appConfigService: any;
   let snackBar: any;
   let translateService: TranslateService;
-  let _sipService: any
+  let _sipService: any;
   let channelSession = {
     channel: {
       channelConnector: {
@@ -26,7 +26,7 @@ describe("InteractionsComponent", () => {
       }
     }
   };
-  let serviceIdentifier
+  let serviceIdentifier;
 
   describe("when only post data api returns data ", () => {
     beforeEach(async () => {
@@ -36,9 +36,9 @@ describe("InteractionsComponent", () => {
       });
 
       _httpService = {
-        getPostData: jest.fn((postId,serviceIdentifier) => {
+        getPostData: jest.fn((postId, serviceIdentifier) => {
           return throwError(() => errorResponse);
-        }),
+        })
       };
 
       component = new InteractionsComponent(
@@ -52,8 +52,7 @@ describe("InteractionsComponent", () => {
         _finneseService,
         snackBar,
         _sipService,
-        translateService,
-
+        translateService
       );
     });
 
@@ -76,9 +75,9 @@ describe("InteractionsComponent", () => {
   describe("when post data api returns data ", () => {
     beforeEach(async () => {
       _httpService = {
-        getPostData: jest.fn((postId,serviceIdentifier) => {
+        getPostData: jest.fn(() => {
           return of([{ data: "comments" }]);
-        }),
+        })
       };
       component = new InteractionsComponent(
         _shareredService,
@@ -91,8 +90,7 @@ describe("InteractionsComponent", () => {
         _finneseService,
         snackBar,
         _sipService,
-        translateService,
-
+        translateService
       );
     });
 
@@ -119,7 +117,7 @@ describe("InteractionsComponent", () => {
         status: 404
       });
       _httpService = {
-        getPostData: jest.fn((postId,serviceIdentifier) => {
+        getPostData: jest.fn((postId, serviceIdentifier) => {
           return throwError(() => errorResponse);
         })
       };
@@ -172,12 +170,12 @@ describe("InteractionsComponent", () => {
       );
     });
 
-    it("replyToMessageId should be defined", () => {
+    it("originalMessageId should be defined", () => {
       let message = {
         id: "123"
       };
       component.onQuotedReply(message);
-      expect(component.replyToMessageId).toEqual(message.id);
+      expect(component.originalMessageId).toEqual(message.id);
     });
     it("quoted message should be defined", () => {
       let message = {

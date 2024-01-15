@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from "@angular/core";
+import {Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild} from '@angular/core';
 import { MAT_DIALOG_DATA, MatAutocompleteSelectedEvent, MatDialogRef } from "@angular/material";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { FormControl } from "@angular/forms";
@@ -6,12 +6,17 @@ import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import { httpService } from "src/app/services/http.service";
 import { sharedService } from "src/app/services/shared.service";
+import { snackbarService } from "src/app/services/snackbar.service";
+
+
+
 
 @Component({
   selector: "app-wrap-up-form",
   templateUrl: "./wrap-up-form.component.html",
   styleUrls: ["./wrap-up-form.component.scss"]
 })
+
 export class WrapUpFormComponent implements OnInit {
   selectedWrapUpList: Array<any> = [];
   singleValueList = [];
@@ -25,20 +30,25 @@ export class WrapUpFormComponent implements OnInit {
   removable = true;
   inputWrapup = "";
   categoryList: any = [];
-  wrapUpData;
+
+   // wrapUpData;
   categoryOptions;
+  interval;
+  @Input() wrapUpData: any;
+  @Output() closeWrapDialog = new EventEmitter<any>();
+  timeProgress: number;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    // @Inject(MAT_DIALOG_DATA) public data: any,
     private _httpService: httpService,
     private _sharedService: sharedService,
-    private dialogRef: MatDialogRef<WrapUpFormComponent>
+    private snackBar:snackbarService,
+    // private dialogRef: MatDialogRef<WrapUpFormComponent>,
   ) {}
 
   ngOnInit() {
-    this.wrapUpData = this.data;
-
     this.getWrapUpForm();
+    this.timeProgress=this.wrapUpData.wrapUpDialog.durationLeft;
   }
 
   // to remove selected wrap up from list
@@ -101,6 +111,7 @@ export class WrapUpFormComponent implements OnInit {
         this.categoryOptions = res.attributes[0].categoryOptions;
         this.categoryList = this.categoryOptions.categories;
         this.getCategoryValues();
+        // this.startWrapUpTimer();
       },
       (error) => {
         this._sharedService.Interceptor(error.error, "err");
@@ -136,7 +147,9 @@ export class WrapUpFormComponent implements OnInit {
   }
 
   closeDialog() {
-    this.dialogRef.close({ event: "close" });
+    // this.dialogRef.close({ event: "close" });
+    this.closeWrapDialog.emit(false);
+
   }
 
   onSave() {
@@ -144,6 +157,45 @@ export class WrapUpFormComponent implements OnInit {
       wrapups: this.selectedWrapUpList,
       note: this.notesFormCtrl.value ? this.notesFormCtrl.value : ""
     };
-    this.dialogRef.close({ event: "apply", data });
+    // this.dialogRef.close({ event: "apply", data });
+    this.closeWrapDialog.emit(data);
   }
+
+
+
+// startWrapUpTimer() {
+//   console.log("called");
+//   this.interval = setInterval(() => {
+//     if (this.timeLeft > 0) {
+//       this.timeLeft--;
+
+//     } else {
+//       if (this.timeLeft == 0 && this.wrapUpData.isWrapUpTimer) {
+//         this.closeDialog();
+
+
+//         this.customerLeft('Wrap-up time for the conversation with ‘Jason Slayer’ has expired.', '');
+//         this.stopTimer();
+//       }
+//       this.timeLeft = 0;
+//     }
+//   }, 1000);
+// }
+
+// stopTimer() {
+//   if (this.interval) {
+//     clearInterval(this.interval);
+//   }
+// }
+customerLeft(message: string, action: string) {
+  setTimeout(() => {
+    this.snackBar.open( message, ' ', {
+      duration: 8000,
+      panelClass: 'chat-fail-snackbar',
+      horizontalPosition: 'right',
+      verticalPosition: 'bottom'
+    });
+  }, 1000);
+
+}
 }
