@@ -4122,7 +4122,6 @@ mat-select {
       //width: 400px;
       transition: all .1s;
 
-
       &.call-controls-view {
         .drag-controls {
           position: absolute;
@@ -4137,7 +4136,7 @@ mat-select {
 
         .right-call-controls {
           display: flex;
-          min-width: 340px;
+          min-width: 390px;
           padding: 10px 15px;
           transition: all .1s;
           width: 100%;
@@ -4246,7 +4245,7 @@ mat-select {
     border-radius: 50px;
     height: 50px;
     line-height: 50px;
-    min-width: 340px;
+    min-width: 310px;
   }
 
     &.assistance-actions {
@@ -4781,5 +4780,18 @@ mat-select {
   mat-dialog-container{
     margin-left: 10px;
     margin-right: 10px;
+  }
+}
+
+.dialpad-show{
+  height: auto !important;
+  .keyboard-row button span.mat-button-wrapper {
+    line-height: initial;
+    width: 100%;
+  }
+
+  .assistance-actions{
+    width: fit-content;
+    margin: 5px auto 0;
   }
 }

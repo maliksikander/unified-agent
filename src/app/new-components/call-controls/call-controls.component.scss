@@ -107,7 +107,7 @@ vg-controls{
 .assistance-actions{
   display: flex;
   padding: 0;
-  margin: 0;
+  margin: 3px auto 0;
   position: relative;
   background: #00000080;
   border-radius: 50px;
@@ -121,16 +121,17 @@ vg-controls{
     margin: 0 5px !important;
     vertical-align: middle;
     display: inline-flex;
+    justify-content: center;
 
     button {
       width: 32px;
       height: 32px;
       text-align: center;
       padding: 0;
-      background: #000!important;
+      background: #000;
       box-shadow: none!important;
       mat-icon {
-        color: #fff !important;
+        color: #fff;
         line-height: 29px;
         font-size: 21px;
       }
@@ -167,4 +168,76 @@ vg-controls{
     mat-icon{
         line-height: 26px !important;
     }
+}
+
+//Dialpad
+.dialpad-area{
+  align-self: center;
+  width: 300px;
+  position: relative;
+
+  .remove-chr{
+    position: absolute;
+    right: 0;
+    background: transparent;
+    box-shadow: none;
+    color: #4e4e4e;
+  }
+
+  input{
+    width: 100%;
+    margin-bottom: 5px;
+    background: #222;
+    border: 0;
+    border-radius: 5px;
+    color: #f1f1f1;
+    height: 38px;
+    padding: 0 3em 0 5px;
+  }
+}
+.keyboard-row {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  //max-width: 300px;
+  justify-content: space-between;
+  .key-pair {
+    text-align: center;
+    padding: 0;
+    cursor: pointer;
+    flex: 0 0 30.333333%;
+    background: #222;
+    height: 38px;
+    color: #f1f1f1;
+    margin-bottom: 3px;
+    border-radius: 5px;
+
+    button {
+      display: flex;
+      flex-flow: column;
+      font-size: 16px;
+      width: 100%;
+      height: 38px;
+      justify-content: space-around;
+      color: #DEDEDE;
+    }
+  }
+
+  small {
+    font-size: 8px;
+    display: block;
+  }
+
+}
+.dialpad-show{
+  .dialpad-action{
+    background: #fff !important;
+    mat-icon{
+      color: #000 !important;
+    }
+  }
 }

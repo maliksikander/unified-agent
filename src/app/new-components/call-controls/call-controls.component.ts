@@ -22,6 +22,33 @@ export class CallControlsComponent implements OnInit {
   cxVoiceSession;
   isCalling: boolean = false;
   // callConnected = false;
+  displayDialpad = true;
+  userInput: any = '';
+  keyPad = [{
+    "key": "1", "alpha": ""
+  }, {
+    "key": "2", "alpha": "ABC"
+  }, {
+    "key": "3", "alpha": "DEF"
+  }, {
+    "key": "4", "alpha": "GHI"
+  }, {
+    "key": "5", "alpha": "JKL"
+  }, {
+    "key": "6", "alpha": "MNO"
+  }, {
+    "key": "7", "alpha": "PQRS"
+  }, {
+    "key": "8", "alpha": "TUV"
+  }, {
+    "key": "9", "alpha": "WXYZ",
+  }, {
+    "key": "*", "alpha": "",
+  }, {
+    "key": "0", "alpha": "+",
+  }, {
+    "key": "#", "alpha": "",
+  }];
 
   constructor(
     public _cacheService: cacheService,
@@ -143,4 +170,19 @@ export class CallControlsComponent implements OnInit {
   formatNumber(num) {
     return num.toString().padStart(2, "0");
   }
+
+  showDialpad() {
+    this.displayDialpad = !this.displayDialpad
+  }
+  keyPressed(key: any, myKeyList) {
+    this.userInput += myKeyList;
+    // this.onKeyPress.emit(key.length == 1 ? key : ' ');
+    console.log(myKeyList, 'hii');
+
+
+  }
+removeDialValue() {
+   this.userInput = this.userInput.slice(0, -1);
+}
+
 }

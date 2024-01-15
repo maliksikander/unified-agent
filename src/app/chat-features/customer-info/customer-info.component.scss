@@ -9,6 +9,8 @@
   right: 0;
   background: #fff;
   z-index: 2;
+  top: 50%;
+  transform: translate(0, -50%);
   button {
     position: absolute;
     z-index: 999;

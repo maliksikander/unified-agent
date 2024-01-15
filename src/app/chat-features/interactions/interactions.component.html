@@ -2330,7 +2330,7 @@
                                     <mat-icon [ngClass]="{ 'liked': message.isLiked }" (click)="commentAction(message, 'like')">
                                       {{ message.header.channelSession.channel.channelType.name.includes('TWITTER') ? 'favorite' : 'thumb_up' }}
                                     </mat-icon>
-      
+
                                   </li>
                                  <li *ngIf="message.header.channelSession.channel.channelType.name == 'FACEBOOK' || message.header.channelSession.channel.channelType.name == 'INSTAGRAM'" class="private-reply-icon" (click)="privateReplyToComment(message)">
                                     <img
@@ -3018,18 +3018,38 @@
 
   <!--./Bot suggestions-->
   <div class="customer-info-main">
-    <div
-      class="call-controls-view"
-      *ngIf="
+    <div *ngIf="
         isBarOpened &&
         ctiBarView &&
         _sipService.isCallActive &&
         _sipService.isToolbarActive &&
         _sipService.isToolbarDocked &&
-        (conversation.activeChannelSessions | checkCXSession)
-      "
-    >
-      <div class="right-call-controls row doc-bar">
+        (conversation.activeChannelSessions | checkCXSession) "
+      class="call-controls-view doc-bar-view {{displayDialpad ? 'dialpad-show': ''}}">
+      <div class="row doc-bar">
+        <div *ngIf="displayDialpad" class="dialpad-area">
+          <input
+            class="keyboard-output" type="text"
+            value="{{ userInput }}"
+          />
+          <button class="remove-chr" mat-mini-fab>
+            <mat-icon (click)="removeDialValue()">backspace</mat-icon>
+          </button>
+
+          <div class="keyboard-row">
+
+      <span *ngFor="let keyList of keyPad" class="key-pair" mat-button>
+       <button (click)="keyPressed($event, keyList.key)" class="key" mat-button>
+         {{keyList?.key}}
+         <small>{{keyList?.alpha}}</small>
+       </button>
+        </span>
+          </div>
+
+        </div>
+      </div>
+
+        <div class="right-call-controls row doc-bar">
         <div class="main-showcase customer-info-dp">
           <div class="agent-showcase">
             <img src="assets/images/dummy-user.svg" alt="Customer" />
@@ -3063,6 +3083,9 @@
           </li>
           <li *ngIf="_sipService.isCallHold == true" matTooltip="{{ 'globals.resume' | translate }}" (click)="_sipService.resumeCallOnSip()">
             <button mat-fab><mat-icon>pause_circle_filled</mat-icon></button>
+          </li>
+          <li (click)="showDialpad()">
+            <button class="dialpad-action" mat-fab><mat-icon>dialpad</mat-icon></button>
           </li>
           <li (click)="endCallOnSip()">
             <button class="end-call" mat-fab><mat-icon>call_end</mat-icon></button>
