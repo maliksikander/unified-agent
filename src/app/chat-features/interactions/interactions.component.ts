@@ -820,7 +820,8 @@ export class InteractionsComponent implements OnInit {
                 this.constructAndSendCimEvent(e.type.split("/")[0], e.type, e.name, e.size);
               },
               (error) => {
-                this._snackbarService.open(error, "err");
+               console.error(`Error while uploading file on File Engine ${error.error}`)
+               this._snackbarService.open(`Error while uploading file on File Engine ${error.error}`,"err");
               }
             );
           } else {
@@ -913,7 +914,17 @@ export class InteractionsComponent implements OnInit {
                 size: fileSize,
                 thumbnail: ""
               };
-            }
+            } else if (msgType.toLowerCase() == "audio") { 
+              message.body.type = "AUDIO"; 
+              message.body["caption"] = fileName; 
+              message.body["additionalDetails"] = {}; 
+              message.body["attachment"] = { 
+              mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName, 
+              mimeType: fileMimeType, 
+              size: fileSize, 
+              thumbnail: "" 
+              }; 
+            } 
 
             this.emitCimEvent(message, this.conversation.agentParticipants.length > 0 && this.isWhisperMode ? "WHISPER_MESSAGE" : "AGENT_MESSAGE");
           }
