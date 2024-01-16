@@ -5,5 +5,6 @@ export interface ConversationSettings {
   isMessageFormattingEnabled: boolean;
   isOutboundSmsSendandClose: boolean;
   isOutboundSmsEnabled: boolean;
+  isAutoAnswerEnabled : boolean;
   prefixCode: string;
 }

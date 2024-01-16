@@ -2566,6 +2566,10 @@
         <label *ngIf="conversation.activeChannelSessions.length == 0" style="color: grey; padding-left: 2px"
           >{{ "chat-features.interactions.none" | translate }}
         </label>
+        <span *ngIf="conversation.SLACountdown.inViewShow" class="agent-sla-timer {{conversation.SLACountdown.color}}">
+          <mat-icon>watch_later</mat-icon>
+          <time>{{conversation.SLACountdown.value | duration}}</time>
+        </span>
       </span>
     </div>
 
@@ -3014,6 +3018,36 @@
     </div>
   </div>
 </div>
+
+ <!--Chat SLA dialog-->
+ <div class="sla-main-action" *ngIf="conversation.SLACountdown.inPopUpShow">
+  <div class="note-dialog-main transfer-dialog">
+    <div class="dialog-header">
+      <!-- <h4 mat-dialog-title>{{requestAction ? requestAction + ' Request' : requestedAgentForAssistance.team && isTransfer
+        ? 'Transfer to Queue' : 'Conversation Transfer'}} -->
+      <h4 mat-dialog-title>
+        {{'chat-features.interactions.sla-dialog-expired' | translate}}
+          <span *ngIf="conversation.SLACountdown.value > 0" class="float-right">Time remaining | {{conversation.SLACountdown.value | duration}}</span>
+      </h4>
+    </div>
+    <div class="dialog-main-content sla-dialog-content">
+      <div class="container text-center">
+        <strong>{{'chat-features.interactions.sla-dialog-brached' | translate}}</strong>
+          <p *ngIf="conversation.SLACountdown.value > 0">{{ 'chat-features.interactions.sla-dialog-stay-here' | translate }}</p>
+          <p *ngIf="conversation.SLACountdown.value < 1">{{ 'chat-features.interactions.sla-dialog-warning' | translate }}</p>
+
+      </div>
+    </div>
+
+    <div *ngIf="conversation.SLACountdown.value > 0" class="action-trigger text-center">
+      <button mat-button (click)="onLeaveClick()" class="close-btn">{{'chat-features.interactions.sla-dialog-leave' | translate}}</button>
+      <button (click)="extendSlaTime()" mat-button class="success-btn">
+        {{'chat-features.interactions.sla-dialog-stay' | translate}}
+      </button>
+    </div>
+  </div>
+</div>
+
   </div>
 
   <!--./Bot suggestions-->

@@ -38,6 +38,7 @@ export class sharedService {
     isMessageFormattingEnabled: false,
     isOutboundSmsSendandClose: false,
     isOutboundSmsEnabled: false,
+    isAutoAnswerEnabled: false,
     prefixCode: "45"
   };
 
@@ -61,6 +62,7 @@ export class sharedService {
     this.conversationSettings.isMessageFormattingEnabled = setting.isMessageFormattingEnabled;
     this.conversationSettings.isOutboundSmsSendandClose = setting.isOutboundSmsSendandClose;
     this.conversationSettings.isOutboundSmsEnabled = setting.isOutboundSmsEnabled;
+    this.conversationSettings.isAutoAnswerEnabled = setting.isAutoAnswerEnabled;
     this.conversationSettings.prefixCode = setting.prefixCode ? setting.prefixCode : "";
   }
   getIndexFromconversationId(conversationId, array) {
@@ -78,7 +80,7 @@ export class sharedService {
     this.channelTypeList = channelTypes;
     try {
       localStorage.setItem("channelTypes", JSON.stringify(channelTypes));
-    } catch (e) {}
+    } catch (e) { }
     channelTypes.forEach((channelType) => {
       this._httpService.getChannelLogo(channelType.channelLogo).subscribe((file) => {
         const reader = new FileReader();
