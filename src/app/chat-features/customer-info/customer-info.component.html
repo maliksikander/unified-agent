@@ -369,7 +369,7 @@
                       </mat-menu> -->
                     </div>
                     <ul class="channel-info-list" *ngIf="channelSession.webChannelData">
-                      <li
+                      <li *ngIf="channelSession?.webChannelData?.browserDeviceInfo?.deviceType"
                         matTooltip="{{ 'chat-features.customer-info.device' | translate }} {{
                           channelSession.webChannelData.browserDeviceInfo.deviceType
                             ? channelSession.webChannelData.browserDeviceInfo.deviceType
@@ -386,7 +386,7 @@
                           alt="device"
                         />
                       </li>
-                      <li
+                      <li *ngIf="channelSession?.webChannelData?.browserDeviceInfo?.browserName"
                         matTooltip="{{ 'chat-features.customer-info.browser' | translate }} {{
                           channelSession.webChannelData.browserDeviceInfo.browserName
                             ? channelSession.webChannelData.browserDeviceInfo.browserName
@@ -398,7 +398,7 @@
                           alt="browser"
                         />
                       </li>
-                      <li
+                      <li *ngIf="channelSession?.webChannelData?.locale?.country"
                         matTooltip="{{ 'chat-features.customer-info.country' | translate }} {{
                           channelSession.webChannelData.locale.country
                             ? channelSession.webChannelData.locale.country
@@ -407,7 +407,7 @@
                       >
                         <img src="assets/flags/{{ channelSession.webChannelData.locale.country | webChannelData: 'country' }}.svg" alt="country" />
                       </li>
-                      <li
+                      <li *ngIf="channelSession?.webChannelData?.locale?.language"
                         class="lang-bar"
                         matTooltip="{{ 'chat-features.customer-info.language' | translate }} {{
                           channelSession.webChannelData.locale.language
