@@ -157,7 +157,7 @@ export class InteractionsComponent implements OnInit {
     public _sipService: SipService,
     private _translateService: TranslateService,
     private _crmEventsService: crmEventsService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.isCallActive = this._sipService.isCallActive;
@@ -268,7 +268,7 @@ export class InteractionsComponent implements OnInit {
       }
     );
   }
-  emoji() {}
+  emoji() { }
 
   BargeIn() {
     let obj = {
@@ -408,7 +408,7 @@ export class InteractionsComponent implements OnInit {
       panelClass: "send-sms-dialog",
       data: { info: this._cacheService.smsDialogData }
     });
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe((result) => { });
     this._cacheService.clearOutboundSmsDialogData();
   }
 
@@ -711,7 +711,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-end").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -719,7 +719,7 @@ export class InteractionsComponent implements OnInit {
     setTimeout(() => {
       try {
         document.getElementById("chat-area-start").scrollIntoView({ behavior: behavior, block: "nearest" });
-      } catch (err) {}
+      } catch (err) { }
     }, milliseconds);
   }
 
@@ -789,7 +789,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
   externalfilePreviewOpener(url, fileName, type) {
     const dialogRef = this.dialog.open(FilePreviewComponent, {
@@ -799,7 +799,7 @@ export class InteractionsComponent implements OnInit {
       width: "auto",
       data: { fileName: fileName, url: url, type: type }
     });
-    dialogRef.afterClosed().subscribe((result: any) => {});
+    dialogRef.afterClosed().subscribe((result: any) => { });
   }
 
   uploadFile(files) {
@@ -820,8 +820,8 @@ export class InteractionsComponent implements OnInit {
                 this.constructAndSendCimEvent(e.type.split("/")[0], e.type, e.name, e.size);
               },
               (error) => {
-               console.error(`Error while uploading file on File Engine ${error.error}`)
-               this._snackbarService.open(`Error while uploading file on File Engine ${error.error}`,"err");
+                console.error(`Error while uploading file on File Engine ${error.error}`)
+                this._snackbarService.open(`Error while uploading file on File Engine ${error.error}`, "err");
               }
             );
           } else {
@@ -914,17 +914,17 @@ export class InteractionsComponent implements OnInit {
                 size: fileSize,
                 thumbnail: ""
               };
-            } else if (msgType.toLowerCase() == "audio") { 
-              message.body.type = "AUDIO"; 
-              message.body["caption"] = fileName; 
-              message.body["additionalDetails"] = {}; 
-              message.body["attachment"] = { 
-              mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName, 
-              mimeType: fileMimeType, 
-              size: fileSize, 
-              thumbnail: "" 
-              }; 
-            } 
+            } else if (msgType.toLowerCase() == "audio") {
+              message.body.type = "AUDIO";
+              message.body["caption"] = fileName;
+              message.body["additionalDetails"] = {};
+              message.body["attachment"] = {
+                mediaUrl: this._appConfigService.config.FILE_SERVER_URL + "/api/downloadFileStream?filename=" + fileName,
+                mimeType: fileMimeType,
+                size: fileSize,
+                thumbnail: ""
+              };
+            }
 
             this.emitCimEvent(message, this.conversation.agentParticipants.length > 0 && this.isWhisperMode ? "WHISPER_MESSAGE" : "AGENT_MESSAGE");
           }
@@ -1435,7 +1435,7 @@ export class InteractionsComponent implements OnInit {
       // console.log("cacheDialog==>", cacheDialog);
       if (cacheDialog) return true;
       return false;
-    } catch (e) {}
+    } catch (e) { }
   }
 
   getAgentsInQueue() {
@@ -1782,13 +1782,15 @@ export class InteractionsComponent implements OnInit {
       type: "NOTIFICATION",
       timestamp: Date.now(),
       conversationId: this.conversation.conversationId,
+      roomInfo: this.conversation.roomInfo,
       data: {}
     };
 
     this._socketService.emit("publishCimEvent", {
       cimEvent: event,
       agentId: this._cacheService.agent.id,
-      conversationId: this.conversation.conversationId
+      conversationId: this.conversation.conversationId,
+      roomInfo: this.conversation.roomInfo
     });
   }
 
